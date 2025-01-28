@@ -1,12 +1,15 @@
-﻿{
+{
 	"tag": "proxy",
 	"protocol": "vmess",
-	"settings": {
-		"vnext": [
+	"settings":
+	{
+		"vnext":
+		[
 			{
 				"address": "v2ray.cool",
 				"port": 10086,
-				"users": [
+				"users":
+				[
 					{
 						"id": "a3482e88-686a-4a58-8126-99c9df64b7bf",
 						"security": "auto"
@@ -14,7 +17,8 @@
 				]
 			}
 		],
-		"servers": [
+		"servers":
+		[
 			{
 				"address": "v2ray.cool",
 				"method": "chacha20",
@@ -25,10 +29,12 @@
 			}
 		]
 	},
-	"streamSettings": {
+	"streamSettings":
+	{
 		"network": "tcp"
 	},
-	"mux": {
+	"mux":
+	{
 		"enabled": false
 	}
 }

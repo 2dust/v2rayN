@@ -1,4 +1,4 @@
-﻿global using ServiceLib;
+global using ServiceLib;
 global using ServiceLib.Base;
 global using ServiceLib.Common;
 global using ServiceLib.Enums;

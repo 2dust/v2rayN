@@ -1,36 +1,52 @@
-﻿{
-	"log": {
+{
+	"log":
+	{
 		"access": "Vaccess.log",
 		"error": "Verror.log",
 		"loglevel": "warning"
 	},
-	"inbounds": [],
-	"outbounds": [
+	"inbounds":
+	[
+	],
+	"outbounds":
+	[
 		{
 			"tag": "proxy",
 			"protocol": "vmess",
-			"settings": {
-				"vnext": [{
-					"address": "",
-					"port": 0,
-					"users": [{
-						"id": "",
-						"security": "auto"
-					}]
-				}],
-				"servers": [{
-					"address": "",
-					"method": "",
-					"ota": false,
-					"password": "",
-					"port": 0,
-					"level": 1
-				}]
+			"settings":
+			{
+				"vnext":
+				[
+					{
+						"address": "",
+						"port": 0,
+						"users":
+						[
+							{
+								"id": "",
+								"security": "auto"
+							}
+						]
+					}
+				],
+				"servers":
+				[
+					{
+						"address": "",
+						"method": "",
+						"ota": false,
+						"password": "",
+						"port": 0,
+						"level": 1
+					}
+				]
 			},
-			"streamSettings": {
+			"streamSettings":
+			{
 				"network": "tcp"
 			},
-			"mux": {
+			"mux":
+			{
 				"enabled": false
 			}
 		},
@@ -43,11 +59,14 @@
 			"tag": "block"
 		}
 	],
-	"routing": {
+	"routing":
+	{
 		"domainStrategy": "IPIfNonMatch",
-		"rules": [
+		"rules":
+		[
 			{
-				"inboundTag": [
+				"inboundTag":
+				[
 					"api"
 				],
 				"outboundTag": "api",

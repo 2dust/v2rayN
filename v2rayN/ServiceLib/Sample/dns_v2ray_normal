@@ -1,28 +1,34 @@
 {
-  "hosts": {
-    "dns.google": "8.8.8.8",
-    "proxy.example.com": "127.0.0.1"
-  },
-  "servers": [
-    {
-      "address": "1.1.1.1",
-      "domains": [
-        "geosite:geolocation-!cn"
-      ],
-      "expectIPs": [
-        "geoip:!cn"
-      ]
-    },
-    {
-      "address": "223.5.5.5",
-      "domains": [
-        "geosite:cn"
-      ],
-      "expectIPs": [
-        "geoip:cn"
-      ]
-    },
-    "8.8.8.8",
-    "https://dns.google/dns-query"
-  ]
+	"hosts":
+	{
+		"dns.google": "8.8.8.8",
+		"proxy.example.com": "127.0.0.1"
+	},
+	"servers":
+	[
+		{
+			"address": "1.1.1.1",
+			"domains":
+			[
+				"geosite:geolocation-!cn"
+			],
+			"expectIPs":
+			[
+				"geoip:!cn"
+			]
+		},
+		{
+			"address": "223.5.5.5",
+			"domains":
+			[
+				"geosite:cn"
+			],
+			"expectIPs":
+			[
+				"geoip:cn"
+			]
+		},
+		"8.8.8.8",
+		"https://dns.google/dns-query"
+	]
 }

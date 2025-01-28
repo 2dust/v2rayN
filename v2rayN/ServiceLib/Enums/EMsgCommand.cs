@@ -1,12 +1,12 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums
 {
-    public enum EMsgCommand
-    {
-        ClearMsg,
-        SendMsgView,
-        SendSnackMsg,
-        RefreshProfiles,
-        StopSpeedtest,
-        AppExit
-    }
+	public enum EMsgCommand
+	{
+		ClearMsg,
+		SendMsgView,
+		SendSnackMsg,
+		RefreshProfiles,
+		StopSpeedtest,
+		AppExit
+	}
 }

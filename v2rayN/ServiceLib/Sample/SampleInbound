@@ -1,18 +1,21 @@
-﻿{
+{
 	"tag": "tag1",
 	"port": 10808,
 	"protocol": "socks",
 	"listen": "127.0.0.1",
-	"settings": {
+	"settings":
+	{
 		"auth": "noauth",
 		"udp": true,
 		"allowTransparent": false
 	},
-	"sniffing": {
+	"sniffing":
+	{
 		"enabled": true,
-		"destOverride": [
+		"destOverride":
+		[
 			"http",
 			"tls"
 		]
 	}
-} 
+}

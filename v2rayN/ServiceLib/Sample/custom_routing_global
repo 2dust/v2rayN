@@ -8,21 +8,24 @@
 	{
 		"remarks": "阻断广告",
 		"outboundTag": "block",
-		"domain": [
+		"domain":
+		[
 			"geosite:category-ads-all"
 		]
 	},
 	{
 		"remarks": "绕过局域网IP",
 		"outboundTag": "direct",
-		"ip": [
+		"ip":
+		[
 			"geoip:private"
 		]
 	},
 	{
 		"remarks": "绕过局域网域名",
 		"outboundTag": "direct",
-		"domain": [
+		"domain":
+		[
 			"geosite:private"
 		]
 	},

@@ -1,82 +1,82 @@
-﻿<UserControl
-    x:Class="v2rayN.Desktop.Views.CheckUpdateView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    d:DesignHeight="600"
-    d:DesignWidth="800"
-    x:DataType="vms:CheckUpdateViewModel"
-    mc:Ignorable="d">
+<UserControl
+	x:Class="v2rayN.Desktop.Views.CheckUpdateView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+	xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+	d:DesignHeight="600"
+	d:DesignWidth="800"
+	x:DataType="vms:CheckUpdateViewModel"
+	mc:Ignorable="d">
 
-    <DockPanel Classes="Margin8">
-        <StackPanel
-            HorizontalAlignment="Center"
-            Classes="Margin8"
-            DockPanel.Dock="Bottom"
-            Orientation="Horizontal">
+	<DockPanel Classes="Margin8">
+		<StackPanel
+			HorizontalAlignment="Center"
+			Classes="Margin8"
+			DockPanel.Dock="Bottom"
+			Orientation="Horizontal">
 
-            <TextBlock
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Classes="Margin8"
-                Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
-            <ToggleSwitch
-                x:Name="togEnableCheckPreReleaseUpdate"
-                HorizontalAlignment="Left"
-                Classes="Margin8" />
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Classes="Margin8"
+				Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
+			<ToggleSwitch
+				x:Name="togEnableCheckPreReleaseUpdate"
+				HorizontalAlignment="Left"
+				Classes="Margin8" />
 
-            <Button
-                x:Name="btnCheckUpdate"
-                Width="100"
-                Classes="Margin8"
-                Content="{x:Static resx:ResUI.menuCheckUpdate}" />
-        </StackPanel>
+			<Button
+				x:Name="btnCheckUpdate"
+				Width="100"
+				Classes="Margin8"
+				Content="{x:Static resx:ResUI.menuCheckUpdate}" />
+		</StackPanel>
 
-        <Border
-            Margin="4"
-            VerticalAlignment="Center"
-            Theme="{DynamicResource CardBorder}">
+		<Border
+			Margin="4"
+			VerticalAlignment="Center"
+			Theme="{DynamicResource CardBorder}">
 
-            <ListBox
-                x:Name="lstCheckUpdates"
-                BorderThickness="1"
-                ItemsSource="{Binding CheckUpdateModels}"
-                Theme="{StaticResource ButtonRadioGroupListBox}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Panel Width="500" VerticalAlignment="Center">
-                            <Grid ColumnDefinitions="1*,1*,3*" RowDefinitions="Auto">
-                                <ToggleSwitch
-                                    x:Name="togAutoRefresh"
-                                    Grid.Column="0"
-                                    Margin="8"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{Binding IsSelected}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding CoreType}" />
-                                <TextBlock
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Remarks}"
-                                    TextWrapping="WrapWithOverflow" />
-                            </Grid>
-                        </Panel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ListBox>
-        </Border>
-    </DockPanel>
+			<ListBox
+				x:Name="lstCheckUpdates"
+				BorderThickness="1"
+				ItemsSource="{Binding CheckUpdateModels}"
+				Theme="{StaticResource ButtonRadioGroupListBox}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Vertical" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Panel Width="500" VerticalAlignment="Center">
+							<Grid ColumnDefinitions="1*,1*,3*" RowDefinitions="Auto">
+								<ToggleSwitch
+									x:Name="togAutoRefresh"
+									Grid.Column="0"
+									Margin="8"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Center"
+									IsChecked="{Binding IsSelected}" />
+								<TextBlock
+									Grid.Column="1"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Center"
+									Text="{Binding CoreType}" />
+								<TextBlock
+									Grid.Column="2"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Center"
+									Text="{Binding Remarks}"
+									TextWrapping="WrapWithOverflow" />
+							</Grid>
+						</Panel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ListBox>
+		</Border>
+	</DockPanel>
 </UserControl>

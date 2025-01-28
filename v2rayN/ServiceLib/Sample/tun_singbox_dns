@@ -1,36 +1,40 @@
 {
-  "servers": [
-    {
-      "tag": "remote",
-      "address": "tcp://8.8.8.8",
-      "strategy": "prefer_ipv4",
-      "detour": "proxy"
-    },
-    {
-      "tag": "local",
-      "address": "223.5.5.5",
-      "strategy": "prefer_ipv4",
-      "detour": "direct"
-    },
-    {
-      "tag": "block",
-      "address": "rcode://success"
-    }
-  ],
-  "rules": [
-    {
-      "rule_set": [
-        "geosite-cn",
-        "geosite-geolocation-cn"
-      ],
-      "server": "local"
-    },
-    {
-      "rule_set": [
-        "geosite-category-ads-all"
-      ],
-      "server": "block"
-    }
-  ],
-  "final": "remote"
+	"servers":
+	[
+		{
+			"tag": "remote",
+			"address": "tcp://8.8.8.8",
+			"strategy": "prefer_ipv4",
+			"detour": "proxy"
+		},
+		{
+			"tag": "local",
+			"address": "223.5.5.5",
+			"strategy": "prefer_ipv4",
+			"detour": "direct"
+		},
+		{
+			"tag": "block",
+			"address": "rcode://success"
+		}
+	],
+	"rules":
+	[
+		{
+			"rule_set":
+			[
+				"geosite-cn",
+				"geosite-geolocation-cn"
+			],
+			"server": "local"
+		},
+		{
+			"rule_set":
+			[
+				"geosite-category-ads-all"
+			],
+			"server": "block"
+		}
+	],
+	"final": "remote"
 }

@@ -1,10 +1,14 @@
-﻿{
-	"log": {
+{
+	"log":
+	{
 		"level": "debug",
 		"timestamp": true
 	},
-	"inbounds": [],
-	"outbounds": [
+	"inbounds":
+	[
+	],
+	"outbounds":
+	[
 		{
 			"type": "vless",
 			"tag": "proxy",
@@ -24,10 +28,15 @@
 			"type": "dns"
 		}
 	],
-	"route": {
-		"rules": [
+	"route":
+	{
+		"rules":
+		[
 			{
-				"protocol": [ "dns" ],
+				"protocol":
+				[
+					"dns"
+				],
 				"outbound": "dns_out"
 			}
 		]

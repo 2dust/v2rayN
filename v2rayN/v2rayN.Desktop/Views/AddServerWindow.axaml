@@ -1,759 +1,759 @@
-﻿<Window
-    x:Class="v2rayN.Desktop.Views.AddServerWindow"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="{x:Static resx:ResUI.menuServers}"
-    Width="900"
-    Height="600"
-    x:DataType="vms:AddServerViewModel"
-    ShowInTaskbar="False"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
-    <DockPanel Classes="Margin8">
-        <StackPanel
-            HorizontalAlignment="Center"
-            Classes="Margin8"
-            DockPanel.Dock="Bottom"
-            Orientation="Horizontal">
-            <Button
-                x:Name="btnSave"
-                Width="100"
-                Content="{x:Static resx:ResUI.TbConfirm}"
-                Cursor="Hand"
-                IsDefault="True" />
-            <Button
-                x:Name="btnCancel"
-                Width="100"
-                Margin="8,0"
-                Content="{x:Static resx:ResUI.TbCancel}"
-                Cursor="Hand"
-                IsCancel="True" />
-        </StackPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+<Window
+	x:Class="v2rayN.Desktop.Views.AddServerWindow"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+	xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+	Title="{x:Static resx:ResUI.menuServers}"
+	Width="900"
+	Height="600"
+	x:DataType="vms:AddServerViewModel"
+	ShowInTaskbar="False"
+	WindowStartupLocation="CenterScreen"
+	mc:Ignorable="d">
+	<DockPanel Classes="Margin8">
+		<StackPanel
+			HorizontalAlignment="Center"
+			Classes="Margin8"
+			DockPanel.Dock="Bottom"
+			Orientation="Horizontal">
+			<Button
+				x:Name="btnSave"
+				Width="100"
+				Content="{x:Static resx:ResUI.TbConfirm}"
+				Cursor="Hand"
+				IsDefault="True" />
+			<Button
+				x:Name="btnCancel"
+				Width="100"
+				Margin="8,0"
+				Content="{x:Static resx:ResUI.TbCancel}"
+				Cursor="Hand"
+				IsCancel="True" />
+		</StackPanel>
+		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
-                <Grid
-                    Grid.Row="0"
-                    ColumnDefinitions="180,Auto,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+				<Grid
+					Grid.Row="0"
+					ColumnDefinitions="180,Auto,Auto"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.menuServers}" />
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        Orientation="Horizontal">
-                        <ComboBox
-                            x:Name="cmbCoreType"
-                            Width="100"
-                            Classes="Margin8"
-                            ToolTip.Tip="{x:Static resx:ResUI.TbCoreType}" />
-                    </StackPanel>
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.menuServers}" />
+					<StackPanel
+						Grid.Row="0"
+						Grid.Column="2"
+						Orientation="Horizontal">
+						<ComboBox
+							x:Name="cmbCoreType"
+							Width="100"
+							Classes="Margin8"
+							ToolTip.Tip="{x:Static resx:ResUI.TbCoreType}" />
+					</StackPanel>
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbRemarks}" />
-                    <TextBox
-                        x:Name="txtRemarks"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbRemarks}" />
+					<TextBox
+						x:Name="txtRemarks"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbAddress}" />
-                    <TextBox
-                        x:Name="txtAddress"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbAddress}" />
+					<TextBox
+						x:Name="txtAddress"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPort}" />
-                    <TextBox
-                        x:Name="txtPort"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
-                </Grid>
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPort}" />
+					<TextBox
+						x:Name="txtPort"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
+				</Grid>
 
-                <Separator Grid.Row="1" Margin="0,10" />
+				<Separator Grid.Row="1" Margin="0,10" />
 
-                <Grid
-                    x:Name="gridVMess"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+				<Grid
+					x:Name="gridVMess"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId}" />
-                    <TextBox
-                        x:Name="txtId"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                    <Button
-                        x:Name="btnGUID"
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Margin="4,0"
-                        Content="{x:Static resx:ResUI.TbGUID}" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId}" />
+					<TextBox
+						x:Name="txtId"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+					<Button
+						x:Name="btnGUID"
+						Grid.Row="1"
+						Grid.Column="2"
+						Margin="4,0"
+						Content="{x:Static resx:ResUI.TbGUID}" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbAlterId}" />
-                    <TextBox
-                        x:Name="txtAlterId"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbAlterId}" />
+					<TextBox
+						x:Name="txtAlterId"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="200"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSecurity}" />
-                    <ComboBox
-                        x:Name="cmbSecurity"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridSs"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSecurity}" />
+					<ComboBox
+						x:Name="cmbSecurity"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridSs"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId3}" />
-                    <TextBox
-                        x:Name="txtId3"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId3}" />
+					<TextBox
+						x:Name="txtId3"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSecurity3}" />
-                    <ComboBox
-                        x:Name="cmbSecurity3"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="300"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridSocks"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSecurity3}" />
+					<ComboBox
+						x:Name="cmbSecurity3"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="300"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridSocks"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSecurity4}" />
-                    <TextBox
-                        x:Name="txtSecurity4"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSecurity4}" />
+					<TextBox
+						x:Name="txtSecurity4"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId4}" />
-                    <TextBox
-                        x:Name="txtId4"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridVLESS"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId4}" />
+					<TextBox
+						x:Name="txtId4"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridVLESS"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId5}" />
-                    <TextBox
-                        x:Name="txtId5"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                    <Button
-                        x:Name="btnGUID5"
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Margin="4,0"
-                        Content="{x:Static resx:ResUI.TbGUID}" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId5}" />
+					<TextBox
+						x:Name="txtId5"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+					<Button
+						x:Name="btnGUID5"
+						Grid.Row="1"
+						Grid.Column="2"
+						Margin="4,0"
+						Content="{x:Static resx:ResUI.TbGUID}" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbFlow5}" />
-                    <ComboBox
-                        x:Name="cmbFlow5"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbFlow5}" />
+					<ComboBox
+						x:Name="cmbFlow5"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSecurity5}" />
-                    <TextBox
-                        x:Name="txtSecurity5"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridTrojan"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSecurity5}" />
+					<TextBox
+						x:Name="txtSecurity5"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridTrojan"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId3}" />
-                    <TextBox
-                        x:Name="txtId6"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId3}" />
+					<TextBox
+						x:Name="txtId6"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbFlow5}" />
-                    <ComboBox
-                        x:Name="cmbFlow6"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridHysteria2"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbFlow5}" />
+					<ComboBox
+						x:Name="cmbFlow6"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridHysteria2"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId3}" />
-                    <TextBox
-                        x:Name="txtId7"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId3}" />
+					<TextBox
+						x:Name="txtId7"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPath7}" />
-                    <TextBox
-                        x:Name="txtPath7"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridTuic"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPath7}" />
+					<TextBox
+						x:Name="txtPath7"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridTuic"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId}" />
-                    <TextBox
-                        x:Name="txtId8"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId}" />
+					<TextBox
+						x:Name="txtId8"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbId3}" />
-                    <TextBox
-                        x:Name="txtSecurity8"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbId3}" />
+					<TextBox
+						x:Name="txtSecurity8"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbHeaderType8}" />
-                    <ComboBox
-                        x:Name="cmbHeaderType8"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridWireguard"
-                    Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbHeaderType8}" />
+					<ComboBox
+						x:Name="cmbHeaderType8"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridWireguard"
+					Grid.Row="2"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPrivateKey}" />
-                    <TextBox
-                        x:Name="txtId9"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPrivateKey}" />
+					<TextBox
+						x:Name="txtId9"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPublicKey}" />
-                    <TextBox
-                        x:Name="txtPublicKey9"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPublicKey}" />
+					<TextBox
+						x:Name="txtPublicKey9"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbReserved}" />
-                    <TextBox
-                        x:Name="txtPath9"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbReserved}" />
+					<TextBox
+						x:Name="txtPath9"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbLocalAddress}" />
-                    <TextBox
-                        x:Name="txtRequestHost9"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="4"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbLocalAddress}" />
+					<TextBox
+						x:Name="txtRequestHost9"
+						Grid.Row="4"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="Mtu" />
-                    <TextBox
-                        x:Name="txtShortId9"
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
-                </Grid>
+					<TextBlock
+						Grid.Row="5"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="Mtu" />
+					<TextBox
+						x:Name="txtShortId9"
+						Grid.Row="5"
+						Grid.Column="1"
+						Width="200"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
+				</Grid>
 
-                <Separator
-                    x:Name="sepa2"
-                    Grid.Row="3"
-                    Margin="0,10" />
+				<Separator
+					x:Name="sepa2"
+					Grid.Row="3"
+					Margin="0,10" />
 
-                <Grid
-                    x:Name="gridTransport"
-                    Grid.Row="4"
-                    ColumnDefinitions="180,Auto,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+				<Grid
+					x:Name="gridTransport"
+					Grid.Row="4"
+					ColumnDefinitions="180,Auto,Auto"
+					RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.GbTransport}" />
+					<TextBlock
+						Grid.Row="0"
+						Grid.ColumnSpan="2"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.GbTransport}" />
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbNetwork}" />
-                    <ComboBox
-                        x:Name="cmbNetwork"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TipNetwork}" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbNetwork}" />
+					<ComboBox
+						x:Name="cmbNetwork"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="2"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TipNetwork}" />
 
-                    <TextBlock
-                        x:Name="labHeaderType"
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbHeaderType}" />
-                    <StackPanel
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <ComboBox
-                            x:Name="cmbHeaderType"
-                            Width="200"
-                            Classes="Margin8" />
+					<TextBlock
+						x:Name="labHeaderType"
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbHeaderType}" />
+					<StackPanel
+						Grid.Row="2"
+						Grid.Column="1"
+						VerticalAlignment="Center"
+						Orientation="Horizontal">
+						<ComboBox
+							x:Name="cmbHeaderType"
+							Width="200"
+							Classes="Margin8" />
 
-                        <Button
-                            x:Name="btnExtra"
-                            Width="30"
-                            Height="30"
-                            Margin="10,0"
-                            Theme="{DynamicResource BorderlessButton}">
-                            <Button.Content>
-                                <PathIcon
-                                    Width="20"
-                                    Height="20"
-                                    Data="{StaticResource building_more}"
-                                    Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
-                            </Button.Content>
-                            <Button.Flyout>
-                                <Flyout>
-                                    <StackPanel>
-                                        <TextBlock
-                                            VerticalAlignment="Center"
-                                            Classes="Margin8"
-                                            Text="{x:Static resx:ResUI.TransportExtraTip}" />
-                                        <TextBox
-                                            x:Name="txtExtra"
-                                            Width="400"
-                                            MinHeight="100"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Classes="TextArea Margin8"
-                                            MinLines="6"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
-                    </StackPanel>
-                    <TextBlock
-                        x:Name="tipHeaderType"
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbHeaderType}" />
+						<Button
+							x:Name="btnExtra"
+							Width="30"
+							Height="30"
+							Margin="10,0"
+							Theme="{DynamicResource BorderlessButton}">
+							<Button.Content>
+								<PathIcon
+									Width="20"
+									Height="20"
+									Data="{StaticResource building_more}"
+									Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+							</Button.Content>
+							<Button.Flyout>
+								<Flyout>
+									<StackPanel>
+										<TextBlock
+											VerticalAlignment="Center"
+											Classes="Margin8"
+											Text="{x:Static resx:ResUI.TransportExtraTip}" />
+										<TextBox
+											x:Name="txtExtra"
+											Width="400"
+											MinHeight="100"
+											HorizontalAlignment="Stretch"
+											VerticalAlignment="Center"
+											Classes="TextArea Margin8"
+											MinLines="6"
+											TextWrapping="Wrap" />
+									</StackPanel>
+								</Flyout>
+							</Button.Flyout>
+						</Button>
+					</StackPanel>
+					<TextBlock
+						x:Name="tipHeaderType"
+						Grid.Row="2"
+						Grid.Column="2"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbHeaderType}" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbRequestHost}" />
-                    <TextBox
-                        x:Name="txtRequestHost"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                    <TextBlock
-                        x:Name="tipRequestHost"
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbRequestHost}" />
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbRequestHost}" />
+					<TextBox
+						x:Name="txtRequestHost"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+					<TextBlock
+						x:Name="tipRequestHost"
+						Grid.Row="3"
+						Grid.Column="2"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbRequestHost}" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPath}" />
-                    <TextBox
-                        x:Name="txtPath"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="400"
-                        Classes="Margin8" />
-                    <TextBlock
-                        x:Name="tipPath"
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPath}" />
-                </Grid>
+					<TextBlock
+						Grid.Row="4"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPath}" />
+					<TextBox
+						x:Name="txtPath"
+						Grid.Row="4"
+						Grid.Column="1"
+						Width="400"
+						Classes="Margin8" />
+					<TextBlock
+						x:Name="tipPath"
+						Grid.Row="4"
+						Grid.Column="2"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPath}" />
+				</Grid>
 
-                <Separator Grid.Row="5" Margin="0,10" />
+				<Separator Grid.Row="5" Margin="0,10" />
 
-                <Grid
-                    x:Name="gridTls"
-                    Grid.Row="6"
-                    ColumnDefinitions="180,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+				<Grid
+					x:Name="gridTls"
+					Grid.Row="6"
+					ColumnDefinitions="180,Auto"
+					RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbStreamSecurity}" />
-                    <ComboBox
-                        x:Name="cmbStreamSecurity"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridTlsMore"
-                    Grid.Row="7"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbStreamSecurity}" />
+					<ComboBox
+						x:Name="cmbStreamSecurity"
+						Grid.Row="0"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridTlsMore"
+					Grid.Row="7"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSNI}" />
-                    <TextBox
-                        x:Name="txtSNI"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSNI}" />
+					<TextBox
+						x:Name="txtSNI"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="400"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbFingerprint}" />
-                    <ComboBox
-                        x:Name="cmbFingerprint"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbFingerprint}" />
+					<ComboBox
+						x:Name="cmbFingerprint"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbAlpn}" />
-                    <ComboBox
-                        x:Name="cmbAlpn"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbAlpn}" />
+					<ComboBox
+						x:Name="cmbAlpn"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbAllowInsecure}" />
-                    <ComboBox
-                        x:Name="cmbAllowInsecure"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
-                </Grid>
-                <Grid
-                    x:Name="gridRealityMore"
-                    Grid.Row="7"
-                    ColumnDefinitions="180,Auto"
-                    IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+					<TextBlock
+						Grid.Row="4"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbAllowInsecure}" />
+					<ComboBox
+						x:Name="cmbAllowInsecure"
+						Grid.Row="4"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
+				</Grid>
+				<Grid
+					x:Name="gridRealityMore"
+					Grid.Row="7"
+					ColumnDefinitions="180,Auto"
+					IsVisible="False"
+					RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSNI}" />
-                    <TextBox
-                        x:Name="txtSNI2"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSNI}" />
+					<TextBox
+						x:Name="txtSNI2"
+						Grid.Row="0"
+						Grid.Column="1"
+						Width="400"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbFingerprint}" />
-                    <ComboBox
-                        x:Name="cmbFingerprint2"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="200"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbFingerprint}" />
+					<ComboBox
+						x:Name="cmbFingerprint2"
+						Grid.Row="1"
+						Grid.Column="1"
+						Width="200"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbPublicKey}" />
-                    <TextBox
-                        x:Name="txtPublicKey"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbPublicKey}" />
+					<TextBox
+						x:Name="txtPublicKey"
+						Grid.Row="2"
+						Grid.Column="1"
+						Width="400"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbShortId}" />
-                    <TextBox
-                        x:Name="txtShortId"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbShortId}" />
+					<TextBox
+						x:Name="txtShortId"
+						Grid.Row="3"
+						Grid.Column="1"
+						Width="200"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Classes="Margin8"
-                        Text="{x:Static resx:ResUI.TbSpiderX}" />
-                    <TextBox
-                        x:Name="txtSpiderX"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="400"
-                        HorizontalAlignment="Left"
-                        Classes="Margin8" />
-                </Grid>
-                <Separator Grid.Row="8" Margin="0,10" />
-            </Grid>
-        </ScrollViewer>
-    </DockPanel>
+					<TextBlock
+						Grid.Row="4"
+						Grid.Column="0"
+						VerticalAlignment="Center"
+						Classes="Margin8"
+						Text="{x:Static resx:ResUI.TbSpiderX}" />
+					<TextBox
+						x:Name="txtSpiderX"
+						Grid.Row="4"
+						Grid.Column="1"
+						Width="400"
+						HorizontalAlignment="Left"
+						Classes="Margin8" />
+				</Grid>
+				<Separator Grid.Row="8" Margin="0,10" />
+			</Grid>
+		</ScrollViewer>
+	</DockPanel>
 </Window>

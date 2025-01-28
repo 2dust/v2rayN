@@ -1,123 +1,123 @@
-﻿<reactiveui:ReactiveWindow
-    x:Class="v2rayN.Views.SubSettingWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:reactiveui="http://reactiveui.net"
-    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="{x:Static resx:ResUI.menuSubSetting}"
-    Width="1000"
-    Height="700"
-    x:TypeArguments="vms:SubSettingViewModel"
-    ResizeMode="CanResize"
-    ShowInTaskbar="False"
-    Style="{StaticResource WindowGlobal}"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
-    <materialDesign:DialogHost
-        materialDesign:TransitionAssist.DisableTransitions="True"
-        Identifier="SubDialog"
-        Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
-        <DockPanel>
-            <ToolBarTray DockPanel.Dock="Top">
-                <ToolBar
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ClipToBounds="True"
-                    Style="{StaticResource MaterialDesignToolBar}">
-                    <Button x:Name="menuSubAdd">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="{StaticResource MarginRight8}"
-                                VerticalAlignment="Center"
-                                Kind="Plus" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubAdd}" />
-                        </StackPanel>
-                    </Button>
-                    <Separator />
-                    <Button x:Name="menuSubDelete">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="{StaticResource MarginRight8}"
-                                VerticalAlignment="Center"
-                                Kind="Delete" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubDelete}" />
-                        </StackPanel>
-                    </Button>
-                    <Separator />
-                    <Button x:Name="menuSubEdit">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="{StaticResource MarginRight8}"
-                                VerticalAlignment="Center"
-                                Kind="Edit" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubEdit}" />
-                        </StackPanel>
-                    </Button>
-                    <Separator />
-                    <Button x:Name="menuSubShare">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="{StaticResource MarginRight8}"
-                                VerticalAlignment="Center"
-                                Kind="QrcodePlus" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubShare}" />
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="menuClose" IsCancel="True">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon
-                                Margin="{StaticResource MarginRight8}"
-                                VerticalAlignment="Center"
-                                Kind="Close" />
-                            <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuClose}" />
-                        </StackPanel>
-                    </Button>
-                </ToolBar>
-            </ToolBarTray>
+<reactiveui:ReactiveWindow
+	x:Class="v2rayN.Views.SubSettingWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:reactiveui="http://reactiveui.net"
+	xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+	xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+	Title="{x:Static resx:ResUI.menuSubSetting}"
+	Width="1000"
+	Height="700"
+	x:TypeArguments="vms:SubSettingViewModel"
+	ResizeMode="CanResize"
+	ShowInTaskbar="False"
+	Style="{StaticResource WindowGlobal}"
+	WindowStartupLocation="CenterScreen"
+	mc:Ignorable="d">
+	<materialDesign:DialogHost
+		materialDesign:TransitionAssist.DisableTransitions="True"
+		Identifier="SubDialog"
+		Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
+		<DockPanel>
+			<ToolBarTray DockPanel.Dock="Top">
+				<ToolBar
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					ClipToBounds="True"
+					Style="{StaticResource MaterialDesignToolBar}">
+					<Button x:Name="menuSubAdd">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon
+								Margin="{StaticResource MarginRight8}"
+								VerticalAlignment="Center"
+								Kind="Plus" />
+							<TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubAdd}" />
+						</StackPanel>
+					</Button>
+					<Separator />
+					<Button x:Name="menuSubDelete">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon
+								Margin="{StaticResource MarginRight8}"
+								VerticalAlignment="Center"
+								Kind="Delete" />
+							<TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubDelete}" />
+						</StackPanel>
+					</Button>
+					<Separator />
+					<Button x:Name="menuSubEdit">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon
+								Margin="{StaticResource MarginRight8}"
+								VerticalAlignment="Center"
+								Kind="Edit" />
+							<TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubEdit}" />
+						</StackPanel>
+					</Button>
+					<Separator />
+					<Button x:Name="menuSubShare">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon
+								Margin="{StaticResource MarginRight8}"
+								VerticalAlignment="Center"
+								Kind="QrcodePlus" />
+							<TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuSubShare}" />
+						</StackPanel>
+					</Button>
+					<Button x:Name="menuClose" IsCancel="True">
+						<StackPanel Orientation="Horizontal">
+							<materialDesign:PackIcon
+								Margin="{StaticResource MarginRight8}"
+								VerticalAlignment="Center"
+								Kind="Close" />
+							<TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuClose}" />
+						</StackPanel>
+					</Button>
+				</ToolBar>
+			</ToolBarTray>
 
-            <DataGrid
-                x:Name="lstSubscription"
-                AutoGenerateColumns="False"
-                BorderThickness="1"
-                CanUserAddRows="False"
-                CanUserResizeRows="False"
-                CanUserSortColumns="False"
-                EnableRowVirtualization="True"
-                GridLinesVisibility="All"
-                HeadersVisibility="Column"
-                IsReadOnly="True"
-                Style="{StaticResource DefDataGrid}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Remarks}"
-                        Header="{x:Static resx:ResUI.LvRemarks}" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Url}"
-                        Header="{x:Static resx:ResUI.LvUrl}" />
-                    <DataGridCheckBoxColumn
-                        Width="100"
-                        Binding="{Binding Enabled}"
-                        Header="{x:Static resx:ResUI.LvEnabled}" />
-                    <DataGridTextColumn
-                        Width="150"
-                        Binding="{Binding AutoUpdateInterval}"
-                        Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
-                    <DataGridTextColumn
-                        Width="150"
-                        Binding="{Binding UserAgent}"
-                        Header="{x:Static resx:ResUI.LvUserAgent}" />
-                    <DataGridTextColumn
-                        Width="80"
-                        Binding="{Binding Sort}"
-                        Header="{x:Static resx:ResUI.LvSort}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
-    </materialDesign:DialogHost>
+			<DataGrid
+				x:Name="lstSubscription"
+				AutoGenerateColumns="False"
+				BorderThickness="1"
+				CanUserAddRows="False"
+				CanUserResizeRows="False"
+				CanUserSortColumns="False"
+				EnableRowVirtualization="True"
+				GridLinesVisibility="All"
+				HeadersVisibility="Column"
+				IsReadOnly="True"
+				Style="{StaticResource DefDataGrid}">
+				<DataGrid.Columns>
+					<DataGridTextColumn
+						Width="*"
+						Binding="{Binding Remarks}"
+						Header="{x:Static resx:ResUI.LvRemarks}" />
+					<DataGridTextColumn
+						Width="*"
+						Binding="{Binding Url}"
+						Header="{x:Static resx:ResUI.LvUrl}" />
+					<DataGridCheckBoxColumn
+						Width="100"
+						Binding="{Binding Enabled}"
+						Header="{x:Static resx:ResUI.LvEnabled}" />
+					<DataGridTextColumn
+						Width="150"
+						Binding="{Binding AutoUpdateInterval}"
+						Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+					<DataGridTextColumn
+						Width="150"
+						Binding="{Binding UserAgent}"
+						Header="{x:Static resx:ResUI.LvUserAgent}" />
+					<DataGridTextColumn
+						Width="80"
+						Binding="{Binding Sort}"
+						Header="{x:Static resx:ResUI.LvSort}" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</DockPanel>
+	</materialDesign:DialogHost>
 </reactiveui:ReactiveWindow>
