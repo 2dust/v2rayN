@@ -6,13 +6,11 @@
 
 	<PropertyGroup>
 		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-		<Deterministic>true</Deterministic>
 		<ErrorReport>none</ErrorReport>
 		<NoWarn>CA1031;CS1591;NU1507</NoWarn>
 		<Nullable>annotations</Nullable>
-		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<AnalysisLevel>latest-all</AnalysisLevel>
 
 		<Authors>2dust</Authors>
 		<Company>2dust</Company>
@@ -29,17 +27,9 @@
 		<TargetFramework>net8.0-windows10.0.17763</TargetFramework>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<RollForward>latestMinor</RollForward>
-		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-
-		<AnalysisLevel>latest-all</AnalysisLevel>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>false</IsTestProject>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
 		<DebugType>embedded</DebugType>
