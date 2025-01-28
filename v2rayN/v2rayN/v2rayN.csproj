@@ -3,20 +3,17 @@
 	<PropertyGroup>
 		<GenerateSatelliteAssembliesForCore>true</GenerateSatelliteAssembliesForCore>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows10.0.17763</TargetFramework>
-		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Resources\v2rayN.ico</ApplicationIcon>
-		<Copyright>Copyright © 2017-2025 (GPLv3)</Copyright>
-		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" />
 		<PackageReference Include="H.NotifyIcon.Wpf" />
-		<PackageReference Include="ReactiveUI.Fody"/>
+		<PackageReference Include="ReactiveUI.Fody">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
 		<PackageReference Include="ReactiveUI.WPF" />
 	</ItemGroup>
 

@@ -1,0 +1,65 @@
+<Project>
+
+	<PropertyGroup>
+		<Version>7.7.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+		<ErrorReport>none</ErrorReport>
+		<NoWarn>CA1031;CS1591;NU1507</NoWarn>
+		<Nullable>annotations</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+
+		<Authors>2dust</Authors>
+		<Company>2dust</Company>
+		<PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Copyright>Copyright © 2017-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
+		<Description>A GUI client for Windows, Linux and macOS, supports Xray, sing-box and others.</Description>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryBranch>master</RepositoryBranch>
+		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/$(Company)/v2rayN</PackageProjectUrl>
+		<PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+
+		<TargetFramework>net8.0-windows10.0.17763</TargetFramework>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<RollForward>latestMinor</RollForward>
+		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<DebugType>embedded</DebugType>
+		<Optimize>false</Optimize>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<DebuggerSupport>false</DebuggerSupport>
+		<DebugSymbols>false</DebugSymbols>
+		<DebugType>none</DebugType>
+		<Optimize>true</Optimize>
+
+		<EventSourceSupport>false</EventSourceSupport>
+		<StackTraceSupport>false</StackTraceSupport>
+		<MetricsSupport>false</MetricsSupport>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<UseNativeHttpHandler>true</UseNativeHttpHandler>
+		<AutoreleasePoolSupport>false</AutoreleasePoolSupport>
+		<InvariantGlobalization>false</InvariantGlobalization>
+		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+
+		<PublishTrimmed>false</PublishTrimmed>
+		<PublishReadyToRun>false</PublishReadyToRun>
+		<PublishSingleFile>true</PublishSingleFile>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	</PropertyGroup>
+
+</Project>

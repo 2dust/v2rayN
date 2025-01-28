@@ -4,7 +4,6 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 		<CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
-		<NoWarn>$(NoWarn);NU1507</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
