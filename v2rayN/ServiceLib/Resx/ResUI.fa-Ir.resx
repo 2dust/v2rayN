@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1392,5 +1392,8 @@
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>کپی کردن دستور پروکسی در کلیپ بورد</value>
+  </data>
+  <data name="TbSettingsAutoUpdateCoreInterval" xml:space="preserve">
+    <value>فاصله زمانی به روزرسانی خودکار فایل های Core و GUI (ساعت)</value>
   </data>
 </root>
