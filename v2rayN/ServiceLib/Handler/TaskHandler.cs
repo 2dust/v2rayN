@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler
+namespace ServiceLib.Handler
 {
     public class TaskHandler
     {
@@ -9,6 +9,8 @@
         {
             Task.Run(() => UpdateTaskRunSubscription(config, updateFunc));
             Task.Run(() => UpdateTaskRunGeo(config, updateFunc));
+            Task.Run(() => UpdateTaskRunCore(config, updateFunc));
+            Task.Run(() => UpdateTaskRunGui(config, updateFunc));
         }
 
         private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> updateFunc)
@@ -46,7 +48,6 @@
         {
             var autoUpdateGeoTime = DateTime.Now;
 
-            //await Task.Delay(1000 * 120);
             Logging.SaveLog("UpdateTaskRunGeo");
 
             var updateHandle = new UpdateService();
@@ -64,6 +65,69 @@
                             updateFunc?.Invoke(false, msg);
                         });
                         autoUpdateGeoTime = dtNow;
+                    }
+                }
+            }
+        }
+
+        private async Task UpdateTaskRunCore(Config config, Action<bool, string> updateFunc)
+        {
+            var autoUpdateCoreTime = DateTime.Now;
+
+            Logging.SaveLog("UpdateTaskRunCore");
+
+            var updateHandle = new UpdateService();
+            while (true)
+            {
+                await Task.Delay(1000 * 3600);
+
+                var dtNow = DateTime.Now;
+                if (config.GuiItem.AutoUpdateCoreInterval > 0)
+                {
+                    if ((dtNow - autoUpdateCoreTime).Hours % config.GuiItem.AutoUpdateCoreInterval == 0)
+                    {
+                        await updateHandle.CheckUpdateCore(ECoreType.Xray, config, (bool success, string msg) =>
+                        {
+                            updateFunc?.Invoke(success, msg);
+                        }, false);
+
+                        await updateHandle.CheckUpdateCore(ECoreType.sing_box, config, (bool success, string msg) =>
+                        {
+                            updateFunc?.Invoke(success, msg);
+                        }, false);
+
+                        await updateHandle.CheckUpdateCore(ECoreType.mihomo, config, (bool success, string msg) =>
+                        {
+                            updateFunc?.Invoke(success, msg);
+                        }, false);
+
+                        autoUpdateCoreTime = dtNow;
+                    }
+                }
+            }
+        }
+
+        private async Task UpdateTaskRunGui(Config config, Action<bool, string> updateFunc)
+        {
+            var autoUpdateGuiTime = DateTime.Now;
+
+            Logging.SaveLog("UpdateTaskRunGui");
+
+            var updateHandle = new UpdateService();
+            while (true)
+            {
+                await Task.Delay(1000 * 3600);
+
+                var dtNow = DateTime.Now;
+                if (config.GuiItem.AutoUpdateCoreInterval > 0)
+                {
+                    if ((dtNow - autoUpdateGuiTime).Hours % config.GuiItem.AutoUpdateCoreInterval == 0)
+                    {
+                        await updateHandle.CheckUpdateGuiN(config, (bool success, string msg) =>
+                        {
+                            updateFunc?.Invoke(success, msg);
+                        }, false);
+                        autoUpdateGuiTime = dtNow;
                     }
                 }
             }
