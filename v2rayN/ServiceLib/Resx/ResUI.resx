@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -684,6 +684,9 @@
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval for Geo files (hours)</value>
+  </data>
+  <data name="TbSettingsAutoUpdateCoreInterval" xml:space="preserve">
+    <value>Automatic update interval for Core and GUI files (hours)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: basic settings</value>
