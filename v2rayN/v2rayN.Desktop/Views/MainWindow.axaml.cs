@@ -389,7 +389,8 @@ namespace v2rayN.Desktop.Views
             _blCloseByUser = true;
             StorageUI();
 
-            await ViewModel?.MyAppExitAsync(false);
+	        await ViewModel?.MyAppExitAsync(false);
+	        Close();
         }
 
         #endregion Event
