@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -683,7 +683,10 @@
     <value>启动后隐藏窗口</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>自动更新Geo文件的间隔(小时)</value>
+    <value>自动更新 Geo 文件间隔(小时)</value>
+  </data>
+  <data name="TbSettingsAutoUpdateCoreInterval" xml:space="preserve">
+    <value>Core和GUI文件自动更新间隔(小时)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: 基础设置</value>
@@ -1389,5 +1392,14 @@
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>复制终端代理命令至剪贴板</value>
+  </data>
+  <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
+    <value>自动更新 Geo 文件间隔(小时)</value>
+  </data>
+  <data name="TbSettingsAutoUpdateCoreInterval" xml:space="preserve">
+    <value>Core和GUI文件自动更新间隔(小时)</value>
+  </data>
+  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
+    <value>托盘右键菜单服务器展示数量限制</value>
   </data>
 </root>
