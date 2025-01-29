@@ -52,5 +52,6 @@ internal class Program
         //.WithInterFont()
         .WithFontByDefault()
         .LogToTrace()
-        .UseReactiveUI();
+        .UseReactiveUI()
+        .With(new MacOSPlatformOptions { ShowInDock = false});
 }
