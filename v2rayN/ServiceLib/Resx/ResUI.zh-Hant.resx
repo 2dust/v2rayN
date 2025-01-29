@@ -1391,4 +1391,7 @@
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>複製終端代理指令至剪貼簿</value>
   </data>
+  <data name="TbSettingsAutoUpdateCoreInterval" xml:space="preserve">
+    <value>Core和GUI檔案自動更新間隔(小時)</value>
+  </data>
 </root>
