@@ -66,6 +66,43 @@ namespace ServiceLib.Services
 
                     try
                     {
+                        var toPath = Utils.GetBinPath("", type.ToString());
+                        if (!Directory.Exists(toPath))
+                        {
+                            Directory.CreateDirectory(toPath);
+                        }
+
+                        if (fileName.Contains(".tar.gz"))
+                        {
+                            FileManager.DecompressTarFile(fileName, toPath);
+                            var dir = new DirectoryInfo(toPath);
+                            if (dir.Exists)
+                            {
+                                foreach (var subDir in dir.GetDirectories())
+                                {
+                                    FileManager.CopyDirectory(subDir.FullName, toPath, false, true);
+                                    subDir.Delete(true);
+                                }
+                            }
+                        }
+                        else if (fileName.Contains(".gz"))
+                        {
+                            FileManager.DecompressFile(fileName, toPath, type.ToString());
+                        }
+                        else
+                        {
+                            FileManager.ZipExtractToFile(fileName, toPath, "");
+                        }
+
+                        if (Utils.IsNonWindows())
+                        {
+                            var coreFile = Path.Combine(toPath, type.ToString().ToLower());
+                            if (File.Exists(coreFile))
+                            {
+                                Utils.SetLinuxChmod(coreFile).Wait();
+                            }
+                        }
+
                         _updateFunc?.Invoke(true, fileName);
                     }
                     catch (Exception ex)
