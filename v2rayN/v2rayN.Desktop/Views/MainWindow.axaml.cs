@@ -390,7 +390,6 @@ namespace v2rayN.Desktop.Views
             StorageUI();
 
 	        await ViewModel?.MyAppExitAsync(false);
-	        Close();
         }
 
         #endregion Event
@@ -414,6 +413,10 @@ namespace v2rayN.Desktop.Views
 	        {
 		        if (Utils.IsOSX() || _config.UiItem.Hide2TrayWhenClose)
 		        {
+			        foreach (var ownedWindow in this.OwnedWindows)
+			        {
+				        ownedWindow.Close();
+			        }
 			        this.Hide();
 		        }
 		        else
