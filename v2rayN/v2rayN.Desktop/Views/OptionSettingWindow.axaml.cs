@@ -176,13 +176,6 @@ namespace v2rayN.Desktop.Views
                 txbSettingsExceptionTip.IsVisible = false;
                 panSystemProxyAdvanced.IsVisible = false;
             }
-
-            if (Utils.IsOSX())
-            {
-                tbAutoRun.IsVisible = false;
-                togAutoRun.IsVisible = false;
-                //TODO
-            }
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
