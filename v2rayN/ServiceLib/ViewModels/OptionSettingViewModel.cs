@@ -1,4 +1,4 @@
-﻿using ReactiveUI;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 
@@ -58,6 +58,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public bool EnableDragDropSort { get; set; }
         [Reactive] public bool DoubleClick2Activate { get; set; }
         [Reactive] public int AutoUpdateInterval { get; set; }
+        [Reactive] public int AutoUpdateCoreInterval { get; set; }
         [Reactive] public int TrayMenuServersLimit { get; set; }
         [Reactive] public string CurrentFontFamily { get; set; }
         [Reactive] public int SpeedTestTimeout { get; set; }
@@ -174,6 +175,7 @@ namespace ServiceLib.ViewModels
             EnableDragDropSort = _config.UiItem.EnableDragDropSort;
             DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
             AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
+            AutoUpdateCoreInterval = _config.GuiItem.AutoUpdateCoreInterval;
             TrayMenuServersLimit = _config.GuiItem.TrayMenuServersLimit;
             CurrentFontFamily = _config.UiItem.CurrentFontFamily;
             SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
@@ -327,6 +329,7 @@ namespace ServiceLib.ViewModels
             _config.UiItem.AutoHideStartup = AutoHideStartup;
             _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
             _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
+            _config.GuiItem.AutoUpdateCoreInterval = AutoUpdateCoreInterval;
             _config.UiItem.EnableDragDropSort = EnableDragDropSort;
             _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
             _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
