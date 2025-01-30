@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Text;
 
 namespace ServiceLib.Handler
@@ -83,7 +83,14 @@ namespace ServiceLib.Handler
             UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
             await CoreStop();
             await Task.Delay(100);
-            await CoreStart(node);
+
+			if (Utils.IsWindows() && _config.TunModeItem.EnableTun)
+			{
+				await Task.Delay(100);
+				await WindowsUtils.RemoveTunDevice();
+			}
+
+			await CoreStart(node);
             await CoreStartPreService(node);
             if (_process != null)
             {
