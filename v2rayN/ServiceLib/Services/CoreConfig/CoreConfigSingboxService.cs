@@ -1048,7 +1048,8 @@ namespace ServiceLib.Services.CoreConfig
                     var countDomain = 0;
                     foreach (var it in item.Domain)
                     {
-                        if (ParseV2Domain(it, rule1)) countDomain++;
+                        if (ParseV2Domain(it, rule1))
+                            countDomain++;
                     }
                     if (countDomain > 0)
                     {
@@ -1062,7 +1063,8 @@ namespace ServiceLib.Services.CoreConfig
                     var countIp = 0;
                     foreach (var it in item.Ip)
                     {
-                        if (ParseV2Address(it, rule2)) countIp++;
+                        if (ParseV2Address(it, rule2))
+                            countIp++;
                     }
                     if (countIp > 0)
                     {
@@ -1148,12 +1150,14 @@ namespace ServiceLib.Services.CoreConfig
             }
             else if (address.StartsWith("geoip:"))
             {
-                if (rule.geoip is null) { rule.geoip = new(); }
+                if (rule.geoip is null)
+                { rule.geoip = new(); }
                 rule.geoip?.Add(address.Substring(6));
             }
             else
             {
-                if (rule.ip_cidr is null) { rule.ip_cidr = new(); }
+                if (rule.ip_cidr is null)
+                { rule.ip_cidr = new(); }
                 rule.ip_cidr?.Add(address);
             }
             return true;
@@ -1271,7 +1275,8 @@ namespace ServiceLib.Services.CoreConfig
         {
             static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
             {
-                if (rule_set != null) ruleSets.AddRange(rule_set);
+                if (rule_set != null)
+                    ruleSets.AddRange(rule_set);
             }
             var geosite = "geosite";
             var geoip = "geoip";
@@ -1339,7 +1344,8 @@ namespace ServiceLib.Services.CoreConfig
             singboxConfig.route.rule_set = [];
             foreach (var item in new HashSet<string>(ruleSets))
             {
-                if (Utils.IsNullOrEmpty(item)) { continue; }
+                if (Utils.IsNullOrEmpty(item))
+                { continue; }
                 var customRuleset = customRulesets.FirstOrDefault(t => t.tag != null && t.tag.Equals(item));
                 if (customRuleset is null)
                 {

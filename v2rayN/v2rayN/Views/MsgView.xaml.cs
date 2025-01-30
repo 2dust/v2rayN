@@ -1,7 +1,7 @@
-using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Threading;
+using ReactiveUI;
 
 namespace v2rayN.Views
 {
@@ -37,7 +37,8 @@ namespace v2rayN.Views
             switch (action)
             {
                 case EViewAction.DispatcherShowMsg:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ShowMsg(obj);

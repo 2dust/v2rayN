@@ -1,7 +1,7 @@
-﻿using Avalonia.ReactiveUI;
+using System.Reactive.Disposables;
+using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
-using System.Reactive.Disposables;
 
 namespace v2rayN.Desktop.Views
 {
@@ -27,14 +27,16 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.DispatcherCheckUpdate:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.UpdateViewResult((CheckUpdateModel)obj),
                     DispatcherPriority.Default);
                     break;
 
                 case EViewAction.DispatcherCheckUpdateFinished:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.UpdateFinishedResult((bool)obj),
                     DispatcherPriority.Default);

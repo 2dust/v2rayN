@@ -1,4 +1,4 @@
-﻿using System.Net.WebSockets;
+using System.Net.WebSockets;
 using System.Text;
 
 namespace ServiceLib.Services.Statistics
@@ -109,7 +109,8 @@ namespace ServiceLib.Services.Statistics
 
         private void ParseOutput(string source, out ulong up, out ulong down)
         {
-            up = 0; down = 0;
+            up = 0;
+            down = 0;
             try
             {
                 var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);

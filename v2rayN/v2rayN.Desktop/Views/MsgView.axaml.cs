@@ -1,8 +1,8 @@
+using System.Reactive.Disposables;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
@@ -27,7 +27,8 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.DispatcherShowMsg:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
 
                     Dispatcher.UIThread.Post(() =>
                         ShowMsg(obj),

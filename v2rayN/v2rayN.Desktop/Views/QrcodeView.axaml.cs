@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 
 namespace v2rayN.Desktop.Views
@@ -28,7 +28,8 @@ namespace v2rayN.Desktop.Views
 
         private Bitmap? ByteToBitmap(byte[]? bytes)
         {
-            if (bytes is null) return null;
+            if (bytes is null)
+                return null;
 
             using var ms = new MemoryStream(bytes);
             return new Bitmap(ms);

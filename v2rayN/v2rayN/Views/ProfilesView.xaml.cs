@@ -1,6 +1,3 @@
-using MaterialDesignThemes.Wpf;
-using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +5,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using MaterialDesignThemes.Wpf;
+using ReactiveUI;
+using Splat;
 using v2rayN.Base;
 using Point = System.Windows.Point;
 
@@ -99,7 +99,8 @@ namespace v2rayN.Views
             switch (action)
             {
                 case EViewAction.SetClipboardData:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     WindowsUtils.SetClipboardData((string)obj);
                     break;
 
@@ -122,7 +123,8 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.SaveFileDialog:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     if (UI.SaveFileDialog(out string fileName, "Config|*.json") != true)
                     {
                         return false;
@@ -131,24 +133,29 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.AddServerWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
 
                 case EViewAction.AddServer2Window:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
 
                 case EViewAction.ShareServer:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     ShareServer((string)obj);
                     break;
 
                 case EViewAction.SubEditWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
 
                 case EViewAction.DispatcherSpeedTest:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.SetSpeedTestResult((SpeedTestResult)obj);
@@ -403,13 +410,16 @@ namespace v2rayN.Views
                        Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 // Get the dragged Item
-                if (sender is not DataGrid listView) return;
+                if (sender is not DataGrid listView)
+                    return;
                 var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
-                if (listViewItem == null) return;           // Abort
-                                                            // Find the data behind the ListViewItem
+                if (listViewItem == null)
+                    return;           // Abort
+                                      // Find the data behind the ListViewItem
                 ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                if (item == null) return;                   // Abort
-                                                            // Initialize the drag & drop operation
+                if (item == null)
+                    return;                   // Abort
+                                              // Initialize the drag & drop operation
                 startIndex = lstProfiles.SelectedIndex;
                 DataObject dragData = new(formatData, item);
                 DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
@@ -429,7 +439,8 @@ namespace v2rayN.Views
             if (e.Data.GetDataPresent(formatData) && sender == e.Source)
             {
                 // Get the drop Item destination
-                if (sender is not DataGrid listView) return;
+                if (sender is not DataGrid listView)
+                    return;
                 var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null)
                 {
@@ -439,7 +450,8 @@ namespace v2rayN.Views
                 }
                 // Find the data behind the Item
                 ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-                if (item == null) return;
+                if (item == null)
+                    return;
                 // Move item into observable collection
                 // (this will be automatically reflected to lstView.ItemsSource)
                 e.Effects = DragDropEffects.Move;

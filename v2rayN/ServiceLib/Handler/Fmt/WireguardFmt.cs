@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler.Fmt
+namespace ServiceLib.Handler.Fmt
 {
     public class WireguardFmt : BaseFmt
     {
@@ -12,7 +12,8 @@
             };
 
             var url = Utils.TryUri(str);
-            if (url == null) return null;
+            if (url == null)
+                return null;
 
             item.Address = url.IdnHost;
             item.Port = url.Port;
@@ -31,7 +32,8 @@
 
         public static string? ToUri(ProfileItem? item)
         {
-            if (item == null) return null;
+            if (item == null)
+                return null;
             string url = string.Empty;
 
             string remark = string.Empty;

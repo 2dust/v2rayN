@@ -1,11 +1,11 @@
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Text;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Text;
 
 namespace ServiceLib.ViewModels
 {

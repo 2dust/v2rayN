@@ -1,11 +1,10 @@
-﻿using Avalonia.Controls;
+using System.Reactive.Disposables;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
@@ -95,7 +94,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.RoutingRuleDetailsWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog<bool>(this);
 
                 case EViewAction.ImportRulesFromFile:
@@ -108,7 +108,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.SetClipboardData:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     await AvaUtils.SetClipboardData(this, (string)obj);
                     break;
 

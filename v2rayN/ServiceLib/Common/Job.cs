@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace ServiceLib.Common
@@ -75,7 +75,8 @@ namespace ServiceLib.Common
 
         private void Dispose(bool disposing)
         {
-            if (disposed) return;
+            if (disposed)
+                return;
             disposed = true;
 
             if (disposing)

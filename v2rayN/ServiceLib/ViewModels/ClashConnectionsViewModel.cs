@@ -1,9 +1,9 @@
+using System.Reactive;
+using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Reactive;
-using System.Reactive.Linq;
 
 namespace ServiceLib.ViewModels
 {
@@ -115,7 +115,8 @@ namespace ServiceLib.ViewModels
 
                 lstModel.Add(model);
             }
-            if (lstModel.Count <= 0) { return; }
+            if (lstModel.Count <= 0)
+            { return; }
 
             _connectionItems.AddRange(lstModel);
         }

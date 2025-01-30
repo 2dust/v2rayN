@@ -1,5 +1,5 @@
-﻿using ReactiveUI;
 using System.Reactive.Disposables;
+using ReactiveUI;
 using v2rayN.ViewModels;
 
 namespace v2rayN.Views
@@ -15,7 +15,8 @@ namespace v2rayN.Views
             ViewModel = new ThemeSettingViewModel();
             foreach (ETheme it in Enum.GetValues(typeof(ETheme)))
             {
-                if ((int)it > 2) continue;
+                if ((int)it > 2)
+                    continue;
                 cmbCurrentTheme.Items.Add(it.ToString());
             }
 

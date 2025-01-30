@@ -1,8 +1,8 @@
-﻿using Avalonia.Controls;
+using System.Reactive.Disposables;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views

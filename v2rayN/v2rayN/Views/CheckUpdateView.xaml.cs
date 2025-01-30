@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Threading;
+using ReactiveUI;
 
 namespace v2rayN.Views
 {
@@ -27,7 +27,8 @@ namespace v2rayN.Views
             switch (action)
             {
                 case EViewAction.DispatcherCheckUpdate:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.UpdateViewResult((CheckUpdateModel)obj);
@@ -35,7 +36,8 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.DispatcherCheckUpdateFinished:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.UpdateFinishedResult((bool)obj);

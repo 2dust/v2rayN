@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using WebDav;
 
 namespace ServiceLib.Handler
@@ -61,7 +61,8 @@ namespace ServiceLib.Handler
 
         private async Task<bool> TryCreateDir()
         {
-            if (_client is null) return false;
+            if (_client is null)
+                return false;
             try
             {
                 var result2 = await _client.Mkcol(_webDir);

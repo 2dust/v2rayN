@@ -1,9 +1,9 @@
+using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
-using System.Reactive.Disposables;
 
 namespace v2rayN.Desktop.Views
 {
@@ -34,7 +34,8 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.DispatcherRefreshConnections:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.RefreshConnections((List<ConnectionItem>?)obj),
                      DispatcherPriority.Default);

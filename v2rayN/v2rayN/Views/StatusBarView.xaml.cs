@@ -1,9 +1,9 @@
-﻿using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ReactiveUI;
+using Splat;
 using v2rayN.Handler;
 
 namespace v2rayN.Views
@@ -77,7 +77,8 @@ namespace v2rayN.Views
             switch (action)
             {
                 case EViewAction.DispatcherServerAvailability:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.TestServerAvailabilityResult((string)obj);
@@ -98,8 +99,10 @@ namespace v2rayN.Views
                         Application.Current.MainWindow.Icon = WindowsHandler.Instance.GetAppIcon(_config);
                     }), DispatcherPriority.Normal);
                     break;
+
                 case EViewAction.SetClipboardData:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     WindowsUtils.SetClipboardData((string)obj);
                     break;
             }
@@ -110,7 +113,8 @@ namespace v2rayN.Views
         {
             tbNotify.Dispose();
             var service = Locator.Current.GetService<MainWindowViewModel>();
-            if (service != null) await service.MyAppExitAsync(false);
+            if (service != null)
+                await service.MyAppExitAsync(false);
         }
 
         private void txtRunningInfoDisplay_MouseDoubleClick(object sender, MouseButtonEventArgs e)

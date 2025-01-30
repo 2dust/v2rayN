@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler.Fmt
+namespace ServiceLib.Handler.Fmt
 {
     public class SocksFmt : BaseFmt
     {
@@ -23,7 +23,8 @@
 
         public static string? ToUri(ProfileItem? item)
         {
-            if (item == null) return null;
+            if (item == null)
+                return null;
             var url = string.Empty;
 
             var remark = string.Empty;
@@ -86,7 +87,8 @@
         private static ProfileItem? ResolveSocksNew(string result)
         {
             var parsedUrl = Utils.TryUri(result);
-            if (parsedUrl == null) return null;
+            if (parsedUrl == null)
+                return null;
 
             ProfileItem item = new()
             {

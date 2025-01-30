@@ -1,5 +1,5 @@
-﻿using Downloader;
 using System.Net;
+using Downloader;
 
 namespace ServiceLib.Common
 {

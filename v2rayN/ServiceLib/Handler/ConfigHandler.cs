@@ -873,7 +873,8 @@ namespace ServiceLib.Handler
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
-            if (!config.GuiItem.KeepOlderDedupl) lstProfile.Reverse();
+            if (!config.GuiItem.KeepOlderDedupl)
+                lstProfile.Reverse();
 
             foreach (ProfileItem item in lstProfile)
             {
@@ -1363,7 +1364,8 @@ namespace ServiceLib.Handler
             };
 
             var uri = Utils.TryUri(url);
-            if (uri == null) return -1;
+            if (uri == null)
+                return -1;
             //Do not allow http protocol
             if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
             {

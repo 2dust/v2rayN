@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using ReactiveUI;
 
 namespace ServiceLib.Services
 {
@@ -119,7 +119,8 @@ namespace ServiceLib.Services
 
         private void ExitLoop(string x)
         {
-            if (_exitLoop) return;
+            if (_exitLoop)
+                return;
             _exitLoop = true;
             UpdateFunc("", ResUI.SpeedtestingStop);
         }
@@ -261,7 +262,8 @@ namespace ServiceLib.Services
                 UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
                 var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
-                if (item is null) continue;
+                if (item is null)
+                    continue;
 
                 var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
 
@@ -323,7 +325,8 @@ namespace ServiceLib.Services
                 UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
                 var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
-                if (item is null) continue;
+                if (item is null)
+                    continue;
 
                 var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
                 _ = downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>

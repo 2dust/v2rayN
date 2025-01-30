@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using ReactiveUI;
 
 namespace v2rayN.Views
 {
@@ -89,7 +89,8 @@ namespace v2rayN.Views
 
                 case EViewAction.RoutingRuleDetailsWindow:
 
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return (new RoutingRuleDetailsWindow((RulesItem)obj)).ShowDialog() ?? false;
 
                 case EViewAction.ImportRulesFromFile:
@@ -102,7 +103,8 @@ namespace v2rayN.Views
                     break;
 
                 case EViewAction.SetClipboardData:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     WindowsUtils.SetClipboardData((string)obj);
                     break;
 

@@ -1,9 +1,9 @@
-using ReactiveUI;
-using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using ReactiveUI;
+using Splat;
 
 namespace v2rayN.Views
 {
@@ -52,7 +52,8 @@ namespace v2rayN.Views
 
                 case EViewAction.DispatcherProxiesDelayTest:
 
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
                         ViewModel?.ProxiesDelayTestResult((SpeedTestResult)obj);

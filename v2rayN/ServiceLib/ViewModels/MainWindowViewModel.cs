@@ -1,7 +1,7 @@
+using System.Reactive;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Reactive;
 
 namespace ServiceLib.ViewModels
 {
@@ -570,7 +570,8 @@ namespace ServiceLib.ViewModels
             {
                 Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
             }
-            else { TabMainSelectedIndex = 0; }
+            else
+            { TabMainSelectedIndex = 0; }
         }
 
         private async Task LoadCore()

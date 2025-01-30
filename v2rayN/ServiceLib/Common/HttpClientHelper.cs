@@ -38,13 +38,15 @@ namespace ServiceLib.Common
 
         public async Task<string?> GetAsync(string url)
         {
-            if (Utils.IsNullOrEmpty(url)) return null;
+            if (Utils.IsNullOrEmpty(url))
+                return null;
             return await httpClient.GetStringAsync(url);
         }
 
         public async Task<string?> GetAsync(HttpClient client, string url, CancellationToken token = default)
         {
-            if (Utils.IsNullOrEmpty(url)) return null;
+            if (Utils.IsNullOrEmpty(url))
+                return null;
             return await client.GetStringAsync(url, token);
         }
 
@@ -75,11 +77,13 @@ namespace ServiceLib.Common
         {
             ArgumentNullException.ThrowIfNull(url);
             ArgumentNullException.ThrowIfNull(fileName);
-            if (File.Exists(fileName)) File.Delete(fileName);
+            if (File.Exists(fileName))
+                File.Delete(fileName);
 
             using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
 
-            if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
+            if (!response.IsSuccessStatusCode)
+                throw new Exception(response.StatusCode.ToString());
 
             var total = response.Content.Headers.ContentLength ?? -1L;
             var canReportProgress = total != -1 && progress != null;
@@ -97,7 +101,8 @@ namespace ServiceLib.Common
                 var read = await stream.ReadAsync(buffer, token);
                 totalRead += read;
 
-                if (read == 0) break;
+                if (read == 0)
+                    break;
                 await file.WriteAsync(buffer.AsMemory(0, read), token);
 
                 if (canReportProgress)

@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
+using ReactiveUI;
 
 namespace v2rayN.Views
 {
@@ -72,7 +72,8 @@ namespace v2rayN.Views
 
                 case EViewAction.RoutingRuleSettingWindow:
 
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return (new RoutingRuleSettingWindow((RoutingItem)obj)).ShowDialog() ?? false;
             }
             return await Task.FromResult(true);

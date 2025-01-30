@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -75,9 +75,12 @@ namespace v2rayN.Views
         {
             var res = new StringBuilder();
 
-            if (item.Control) res.Append($"{ModifierKeys.Control}+");
-            if (item.Shift) res.Append($"{ModifierKeys.Shift}+");
-            if (item.Alt) res.Append($"{ModifierKeys.Alt}+");
+            if (item.Control)
+                res.Append($"{ModifierKeys.Control}+");
+            if (item.Shift)
+                res.Append($"{ModifierKeys.Shift}+");
+            if (item.Alt)
+                res.Append($"{ModifierKeys.Alt}+");
             if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
                 res.Append($"{(Key)item.KeyCode}");
 

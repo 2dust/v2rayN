@@ -1,10 +1,10 @@
-﻿using Avalonia.Controls;
+using System.Reactive.Disposables;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
@@ -75,7 +75,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.RoutingRuleSettingWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog<bool>(this);
             }
             return await Task.FromResult(true);

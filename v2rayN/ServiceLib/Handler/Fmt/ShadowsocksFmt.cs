@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler.Fmt
 {
@@ -26,7 +26,8 @@ namespace ServiceLib.Handler.Fmt
 
         public static string? ToUri(ProfileItem? item)
         {
-            if (item == null) return null;
+            if (item == null)
+                return null;
             string url = string.Empty;
 
             string remark = string.Empty;
@@ -82,7 +83,8 @@ namespace ServiceLib.Handler.Fmt
         private static ProfileItem? ResolveSip002(string result)
         {
             var parsedUrl = Utils.TryUri(result);
-            if (parsedUrl == null) return null;
+            if (parsedUrl == null)
+                return null;
 
             ProfileItem item = new()
             {

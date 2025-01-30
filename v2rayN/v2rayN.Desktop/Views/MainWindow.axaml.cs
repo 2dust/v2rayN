@@ -1,4 +1,5 @@
-﻿using Avalonia;
+using System.Reactive.Disposables;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
@@ -10,7 +11,6 @@ using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
@@ -181,11 +181,13 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.AddServerWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
                 case EViewAction.AddServer2Window:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(this);
 
                 case EViewAction.DNSSettingWindow:
@@ -210,7 +212,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.DispatcherStatistics:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.SetStatisticsResult((ServerSpeedItem)obj),
                     DispatcherPriority.Default);
@@ -389,7 +392,7 @@ namespace v2rayN.Desktop.Views
             _blCloseByUser = true;
             StorageUI();
 
-	        await ViewModel?.MyAppExitAsync(false);
+            await ViewModel?.MyAppExitAsync(false);
         }
 
         #endregion Event
@@ -398,32 +401,32 @@ namespace v2rayN.Desktop.Views
 
         public void ShowHideWindow(bool? blShow)
         {
-	        var bl = blShow ?? (!_config.UiItem.ShowInTaskbar ^ (WindowState==WindowState.Minimized));
-	        if (bl)
-	        {
-		        this.Show();
-		        if (this.WindowState == WindowState.Minimized)
-		        {
-			        this.WindowState = WindowState.Normal;
-		        }
-		        this.Activate();
-		        this.Focus();
-	        }
-	        else
-	        {
-		        if (Utils.IsOSX() || _config.UiItem.Hide2TrayWhenClose)
-		        {
-			        foreach (var ownedWindow in this.OwnedWindows)
-			        {
-				        ownedWindow.Close();
-			        }
-			        this.Hide();
-		        }
-		        else
-		        {
-			        this.WindowState = WindowState.Minimized;
-		        }
-	        }
+            var bl = blShow ?? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized));
+            if (bl)
+            {
+                this.Show();
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    this.WindowState = WindowState.Normal;
+                }
+                this.Activate();
+                this.Focus();
+            }
+            else
+            {
+                if (Utils.IsOSX() || _config.UiItem.Hide2TrayWhenClose)
+                {
+                    foreach (var ownedWindow in this.OwnedWindows)
+                    {
+                        ownedWindow.Close();
+                    }
+                    this.Hide();
+                }
+                else
+                {
+                    this.WindowState = WindowState.Minimized;
+                }
+            }
 
             _config.UiItem.ShowInTaskbar = bl;
         }

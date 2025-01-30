@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -18,8 +18,9 @@ namespace v2rayN.Desktop.Common
         public static async Task<string?> OpenFileDialog(Window owner, FilePickerFileType? filter)
         {
             var sp = GetStorageProvider(owner);
-            if (sp is null) return null;
-          
+            if (sp is null)
+                return null;
+
             // Start async operation to open the dialog.
             var files = await sp.OpenFilePickerAsync(new FilePickerOpenOptions
             {
@@ -33,7 +34,8 @@ namespace v2rayN.Desktop.Common
         public static async Task<string?> SaveFileDialog(Window owner, string filter)
         {
             var sp = GetStorageProvider(owner);
-            if (sp is null) return null;
+            if (sp is null)
+                return null;
 
             // Start async operation to open the dialog.
             var files = await sp.SaveFilePickerAsync(new FilePickerSaveOptions

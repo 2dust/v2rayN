@@ -1,8 +1,8 @@
-﻿using DynamicData;
+using System.Reactive;
+using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Reactive;
 
 namespace ServiceLib.ViewModels
 {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 
 namespace ServiceLib.Handler.Fmt
 {
@@ -214,7 +214,8 @@ namespace ServiceLib.Handler.Fmt
         {
             foreach (var item in s)
             {
-                if (str.Contains(item, StringComparison.OrdinalIgnoreCase)) return true;
+                if (str.Contains(item, StringComparison.OrdinalIgnoreCase))
+                    return true;
             }
             return false;
         }

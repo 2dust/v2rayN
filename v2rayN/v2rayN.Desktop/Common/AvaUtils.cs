@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -13,7 +13,8 @@ namespace v2rayN.Desktop.Common
             try
             {
                 var clipboard = TopLevel.GetTopLevel(owner)?.Clipboard;
-                if (clipboard == null) return null;
+                if (clipboard == null)
+                    return null;
                 return await clipboard.GetTextAsync();
             }
             catch
@@ -27,7 +28,8 @@ namespace v2rayN.Desktop.Common
             try
             {
                 var clipboard = TopLevel.GetTopLevel(visual)?.Clipboard;
-                if (clipboard == null) return;
+                if (clipboard == null)
+                    return;
                 var dataObject = new DataObject();
                 dataObject.Set(DataFormats.Text, strData);
                 await clipboard.SetDataObjectAsync(dataObject);

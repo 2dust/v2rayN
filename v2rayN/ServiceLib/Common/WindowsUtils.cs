@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Win32;
@@ -56,21 +55,20 @@ namespace ServiceLib.Common
 
         public static async Task RemoveTunDevice()
         {
-	        try
-	        {
-		        var sum = MD5.HashData(Encoding.UTF8.GetBytes("wintunsingbox_tun"));
-		        var guid = new Guid(sum);
-		        var pnpUtilPath = @"C:\Windows\System32\pnputil.exe";
-		        var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
+            try
+            {
+                var sum = MD5.HashData(Encoding.UTF8.GetBytes("wintunsingbox_tun"));
+                var guid = new Guid(sum);
+                var pnpUtilPath = @"C:\Windows\System32\pnputil.exe";
+                var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
 
-				// Try to remove the device
-				await Utils.GetCliWrapOutput(pnpUtilPath, arg);
-				 
-			}
-			catch (Exception ex)
-			{
-				Logging.SaveLog(_tag, ex);
-			}
-		}
-	}
+                // Try to remove the device
+                await Utils.GetCliWrapOutput(pnpUtilPath, arg);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
+        }
+    }
 }

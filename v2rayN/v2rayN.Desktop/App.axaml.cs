@@ -64,7 +64,8 @@ public partial class App : Application
             {
                 var clipboardData = await AvaUtils.GetClipboardData(desktop.MainWindow);
                 var service = Locator.Current.GetService<MainWindowViewModel>();
-                if (service != null) _ = service.AddServerViaClipboardAsync(clipboardData);
+                if (service != null)
+                    _ = service.AddServerViaClipboardAsync(clipboardData);
             }
         }
     }
@@ -72,7 +73,8 @@ public partial class App : Application
     private async void MenuExit_Click(object? sender, EventArgs e)
     {
         var service = Locator.Current.GetService<MainWindowViewModel>();
-        if (service != null) await service.MyAppExitAsync(true);
+        if (service != null)
+            await service.MyAppExitAsync(true);
         service?.Shutdown(true);
     }
 }

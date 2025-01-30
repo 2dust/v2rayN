@@ -1,9 +1,9 @@
+using System.Reactive;
+using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Reactive;
-using System.Reactive.Linq;
 using static ServiceLib.Models.ClashProviders;
 using static ServiceLib.Models.ClashProxies;
 

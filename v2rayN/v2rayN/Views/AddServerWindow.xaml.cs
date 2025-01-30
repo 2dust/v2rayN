@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
+using ReactiveUI;
 
 namespace v2rayN.Views
 {

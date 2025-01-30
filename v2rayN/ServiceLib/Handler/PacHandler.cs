@@ -1,4 +1,4 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 using System.Text;
 
 namespace ServiceLib.Handler
@@ -89,7 +89,8 @@ namespace ServiceLib.Handler
 
         public static void Stop()
         {
-            if (_tcpListener == null) return;
+            if (_tcpListener == null)
+                return;
             try
             {
                 _isRunning = false;

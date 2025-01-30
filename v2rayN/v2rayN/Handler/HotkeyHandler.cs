@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -37,16 +37,20 @@ namespace v2rayN.Handler
         private void Init()
         {
             _hotkeyTriggerDic.Clear();
-            if (_config.GlobalHotkeys == null) return;
+            if (_config.GlobalHotkeys == null)
+                return;
             foreach (var item in _config.GlobalHotkeys)
             {
                 if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
                 {
                     int key = KeyInterop.VirtualKeyFromKey((Key)item.KeyCode);
                     KeyModifiers modifiers = KeyModifiers.None;
-                    if (item.Control) modifiers |= KeyModifiers.Ctrl;
-                    if (item.Shift) modifiers |= KeyModifiers.Shift;
-                    if (item.Alt) modifiers |= KeyModifiers.Alt;
+                    if (item.Control)
+                        modifiers |= KeyModifiers.Ctrl;
+                    if (item.Shift)
+                        modifiers |= KeyModifiers.Shift;
+                    if (item.Alt)
+                        modifiers |= KeyModifiers.Alt;
                     key = (key << 16) | (int)modifiers;
                     if (!_hotkeyTriggerDic.ContainsKey(key))
                     {
@@ -111,9 +115,12 @@ namespace v2rayN.Handler
 
             var mdif = (KeyModifiers)_fsModifiers;
             var key = KeyInterop.KeyFromVirtualKey(_vkey);
-            if ((mdif & KeyModifiers.Ctrl) == KeyModifiers.Ctrl) _hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
-            if ((mdif & KeyModifiers.Alt) == KeyModifiers.Alt) _hotkeyStr.Append($"{KeyModifiers.Alt}+");
-            if ((mdif & KeyModifiers.Shift) == KeyModifiers.Shift) _hotkeyStr.Append($"{KeyModifiers.Shift}+");
+            if ((mdif & KeyModifiers.Ctrl) == KeyModifiers.Ctrl)
+                _hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
+            if ((mdif & KeyModifiers.Alt) == KeyModifiers.Alt)
+                _hotkeyStr.Append($"{KeyModifiers.Alt}+");
+            if ((mdif & KeyModifiers.Shift) == KeyModifiers.Shift)
+                _hotkeyStr.Append($"{KeyModifiers.Shift}+");
             _hotkeyStr.Append(key.ToString());
 
             foreach (var name in _hotkeyTriggerDic[hotkeycode])

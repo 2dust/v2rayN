@@ -1,13 +1,10 @@
-using Microsoft.Win32;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace v2rayN
 {
@@ -63,8 +60,6 @@ namespace v2rayN
                 new System.Windows.Int32Rect(0, 0, icon.Width, icon.Height),
                 BitmapSizeOptions.FromEmptyOptions());
         }
-
-       
 
         public static void SetDarkBorder(Window window, string? theme)
         {

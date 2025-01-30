@@ -1,7 +1,7 @@
-﻿using Avalonia;
+using System.Reactive.Disposables;
+using Avalonia;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.ViewModels;
 
 namespace v2rayN.Desktop.Views

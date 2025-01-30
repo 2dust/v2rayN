@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace ServiceLib.ViewModels
 {

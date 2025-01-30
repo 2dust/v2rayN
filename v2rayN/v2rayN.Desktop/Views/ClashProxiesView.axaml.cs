@@ -1,10 +1,10 @@
+using System.Reactive.Disposables;
 using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DynamicData;
 using ReactiveUI;
 using Splat;
-using System.Reactive.Disposables;
 
 namespace v2rayN.Desktop.Views
 {
@@ -49,7 +49,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.DispatcherProxiesDelayTest:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.ProxiesDelayTestResult((SpeedTestResult)obj),
                         DispatcherPriority.Default);

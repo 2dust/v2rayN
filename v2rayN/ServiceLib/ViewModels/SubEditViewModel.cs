@@ -1,6 +1,6 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using System.Reactive;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace ServiceLib.ViewModels
 {

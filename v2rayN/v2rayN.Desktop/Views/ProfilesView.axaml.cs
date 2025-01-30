@@ -1,3 +1,4 @@
+using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -7,7 +8,6 @@ using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
-using System.Reactive.Disposables;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views
@@ -112,7 +112,8 @@ namespace v2rayN.Desktop.Views
             switch (action)
             {
                 case EViewAction.SetClipboardData:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     await AvaUtils.SetClipboardData(this, (string)obj);
                     break;
 
@@ -135,7 +136,8 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.SaveFileDialog:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     var fileName = await UI.SaveFileDialog(_window, "");
                     if (fileName.IsNullOrEmpty())
                     {
@@ -145,24 +147,29 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case EViewAction.AddServerWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
 
                 case EViewAction.AddServer2Window:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(_window);
 
                 case EViewAction.ShareServer:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     await ShareServer((string)obj);
                     break;
 
                 case EViewAction.SubEditWindow:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     return await new SubEditWindow((SubItem)obj).ShowDialog<bool>(_window);
 
                 case EViewAction.DispatcherSpeedTest:
-                    if (obj is null) return false;
+                    if (obj is null)
+                        return false;
                     Dispatcher.UIThread.Post(() =>
                         ViewModel?.SetSpeedTestResult((SpeedTestResult)obj),
                     DispatcherPriority.Default);
@@ -198,7 +205,8 @@ namespace v2rayN.Desktop.Views
         private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
         {
             var source = e.Source as Border;
-            if (source?.Name == "HeaderBackground") return;
+            if (source?.Name == "HeaderBackground")
+                return;
             if (_config.UiItem.DoubleClick2Activate)
             {
                 ViewModel?.SetDefaultServer();

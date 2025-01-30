@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
+using System.Reactive;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Reactive;
 
 namespace ServiceLib.ViewModels
 {

@@ -1,4 +1,3 @@
-﻿using System.Diagnostics;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 
@@ -30,12 +29,12 @@ namespace ServiceLib.Handler
             }
             else if (Utils.IsOSX())
             {
-	            await ClearTaskOSX();
+                await ClearTaskOSX();
 
-	            if (config.GuiItem.AutoRun)
-	            {
-		            await SetTaskOSX();
-	            }
+                if (config.GuiItem.AutoRun)
+                {
+                    await SetTaskOSX();
+                }
             }
 
             return true;
@@ -172,46 +171,46 @@ namespace ServiceLib.Handler
 
         private static async Task ClearTaskOSX()
         {
-	        try
-	        {
-		        var launchAgentPath = GetLaunchAgentPathMacOS();
-		        if (File.Exists(launchAgentPath))
-		        {
-			        var args = new[] { "-c", $"launchctl unload -w \"{launchAgentPath}\"" };
-			        await Utils.GetCliWrapOutput("/bin/bash", args);
+            try
+            {
+                var launchAgentPath = GetLaunchAgentPathMacOS();
+                if (File.Exists(launchAgentPath))
+                {
+                    var args = new[] { "-c", $"launchctl unload -w \"{launchAgentPath}\"" };
+                    await Utils.GetCliWrapOutput("/bin/bash", args);
 
-			        File.Delete(launchAgentPath);
-		        }
-	        }
-	        catch (Exception ex)
-	        {
-		        Logging.SaveLog(_tag, ex);
-	        }
+                    File.Delete(launchAgentPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
         }
 
         private static async Task SetTaskOSX()
         {
-	        try
-	        {
-		        var plistContent = GenerateLaunchAgentPlist();
-		        var launchAgentPath = GetLaunchAgentPathMacOS();
-		        await File.WriteAllTextAsync(launchAgentPath, plistContent);
+            try
+            {
+                var plistContent = GenerateLaunchAgentPlist();
+                var launchAgentPath = GetLaunchAgentPathMacOS();
+                await File.WriteAllTextAsync(launchAgentPath, plistContent);
 
-		        var args = new[] { "-c", $"launchctl load -w \"{launchAgentPath}\"" };
-		        await Utils.GetCliWrapOutput("/bin/bash", args);
-	        }
-	        catch (Exception ex)
-	        {
-		        Logging.SaveLog(_tag, ex);
-	        }
+                var args = new[] { "-c", $"launchctl load -w \"{launchAgentPath}\"" };
+                await Utils.GetCliWrapOutput("/bin/bash", args);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
         }
 
         private static string GetLaunchAgentPathMacOS()
         {
-	        var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-	        var launchAgentPath = Path.Combine(homePath, "Library", "LaunchAgents", $"{Global.AppName}-LaunchAgent.plist");
-	        Directory.CreateDirectory(Path.GetDirectoryName(launchAgentPath));
-	        return launchAgentPath;
+            var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var launchAgentPath = Path.Combine(homePath, "Library", "LaunchAgents", $"{Global.AppName}-LaunchAgent.plist");
+            Directory.CreateDirectory(Path.GetDirectoryName(launchAgentPath));
+            return launchAgentPath;
         }
 
         private static string GenerateLaunchAgentPlist()

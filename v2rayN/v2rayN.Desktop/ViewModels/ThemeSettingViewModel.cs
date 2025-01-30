@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
@@ -7,7 +8,6 @@ using Avalonia.Styling;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Semi.Avalonia;
-using System.Reactive.Linq;
 
 namespace v2rayN.Desktop.ViewModels
 {
@@ -100,7 +100,8 @@ namespace v2rayN.Desktop.ViewModels
         private void ModifyFontSize()
         {
             double size = CurrentFontSize;
-            if (size < Global.MinFontSize) return;
+            if (size < Global.MinFontSize)
+                return;
 
             Style style = new(x => Selectors.Or(
                 x.OfType<Button>(),

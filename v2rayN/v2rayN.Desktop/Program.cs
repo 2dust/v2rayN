@@ -53,5 +53,5 @@ internal class Program
         .WithFontByDefault()
         .LogToTrace()
         .UseReactiveUI()
-        .With(new MacOSPlatformOptions { ShowInDock = false});
+        .With(new MacOSPlatformOptions { ShowInDock = false });
 }
