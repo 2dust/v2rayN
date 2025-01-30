@@ -368,6 +368,7 @@ namespace ServiceLib.Services
             try
             {
                 var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+                var coreUrl = await GetUrlFromCore(coreInfo) ?? string.Empty;
                 SemanticVersion curVersion;
                 string message;
                 string? url;
@@ -379,28 +380,28 @@ namespace ServiceLib.Services
                         {
                             curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
-                            url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"));
+                            url = string.Format(coreUrl, version.ToVersionString("v"));
                             break;
                         }
                     case ECoreType.mihomo:
                         {
                             curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion);
-                            url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"));
+                            url = string.Format(coreUrl, version.ToVersionString("v"));
                             break;
                         }
                     case ECoreType.sing_box:
                         {
                             curVersion = await GetCoreVersion(type);
                             message = string.Format(ResUI.IsLatestCore, type, curVersion.ToVersionString("v"));
-                            url = string.Format(GetUrlFromCore(coreInfo), version.ToVersionString("v"), version);
+                            url = string.Format(coreUrl, version.ToVersionString("v"), version);
                             break;
                         }
                     case ECoreType.v2rayN:
                         {
                             curVersion = new SemanticVersion(Utils.GetVersionInfo());
                             message = string.Format(ResUI.IsLatestN, type, curVersion);
-                            url = string.Format(GetUrlFromCore(coreInfo), version);
+                            url = string.Format(coreUrl, version);
                             break;
                         }
                     default:
@@ -422,17 +423,18 @@ namespace ServiceLib.Services
             }
         }
 
-        private string? GetUrlFromCore(CoreInfo? coreInfo)
+        private async Task<string?> GetUrlFromCore(CoreInfo? coreInfo)
         {
             if (Utils.IsWindows())
             {
                 //Check for standalone windows .Net version
-                if (coreInfo?.CoreType == ECoreType.v2rayN
-                    && File.Exists(Path.Combine(Utils.StartupPath(), "wpfgfx_cor3.dll"))
-                    && File.Exists(Path.Combine(Utils.StartupPath(), "D3DCompiler_47_cor3.dll"))
-                   )
+                if (coreInfo?.CoreType == ECoreType.v2rayN && RuntimeInformation.ProcessArchitecture == Architecture.X64)
                 {
-                    return coreInfo?.DownloadUrlWin64?.Replace(".zip", "-SelfContained.zip");
+                    var runtimes = await Utils.GetCliWrapOutput("dotnet", "--list-runtimes");
+                    if (runtimes == null || runtimes.Contains("Microsoft.WindowsDesktop.App 8") == false)
+                    {
+                        return coreInfo?.DownloadUrlWin64?.Replace(".zip", "-SelfContained.zip");
+                    }
                 }
 
                 return RuntimeInformation.ProcessArchitecture switch
