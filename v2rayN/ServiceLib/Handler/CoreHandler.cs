@@ -82,11 +82,11 @@ namespace ServiceLib.Handler
             UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
             UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
             await CoreStop();
-            await Task.Delay(100);
+            await Task.Delay(1000);
 
-            if (Utils.IsWindows() && _config.TunModeItem.EnableTun)
+            if (Utils.IsWindows()
             {
-                await Task.Delay(100);
+                await Task.Delay(1000);
                 await WindowsUtils.RemoveTunDevice();
             }
 
