@@ -2,7 +2,7 @@ root = true
 
 [*]
 charset = utf-8
-indent_style = tab
+indent_style = space
 tab_width = 4
 indent_size = 4
 end_of_line = crlf
@@ -84,13 +84,13 @@ csharp_style_prefer_readonly_struct_member = true:warning
 csharp_prefer_braces = true:warning
 csharp_prefer_simple_using_statement = true:warning
 csharp_prefer_system_threading_lock = true:warning
-csharp_style_namespace_declarations = block_scoped:warning
+csharp_style_namespace_declarations = file_scoped:warning
 csharp_style_prefer_method_group_conversion = true:warning
 csharp_style_prefer_primary_constructors = true:warning
 csharp_style_prefer_top_level_statements = false:warning
 csharp_prefer_simple_default_expression = true:warning
 csharp_style_deconstructed_variable_declaration = true:warning
-csharp_style_implicit_object_creation_when_type_is_apparent = false:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
 csharp_style_inlined_variable_declaration = true:warning
 csharp_style_prefer_index_operator = false:warning
 csharp_style_prefer_local_over_anonymous_function = true:warning
