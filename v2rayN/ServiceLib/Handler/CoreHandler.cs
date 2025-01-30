@@ -84,7 +84,7 @@ namespace ServiceLib.Handler
             await CoreStop();
             await Task.Delay(1000);
 
-            if (Utils.IsWindows()
+            if (Utils.IsWindows())
             {
                 await Task.Delay(1000);
                 await WindowsUtils.RemoveTunDevice();
