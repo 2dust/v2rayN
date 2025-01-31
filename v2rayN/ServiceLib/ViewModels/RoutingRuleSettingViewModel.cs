@@ -257,7 +257,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var result = Utils.LoadResource(fileName);
+            var result = EmbedUtils.LoadResource(fileName);
             if (Utils.IsNullOrEmpty(result))
             {
                 return;

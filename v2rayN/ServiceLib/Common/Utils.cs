@@ -17,56 +17,6 @@ namespace ServiceLib.Common
     {
         private static readonly string _tag = "Utils";
 
-        #region 资源操作
-
-        /// <summary>
-        /// 获取嵌入文本资源
-        /// </summary>
-        /// <param name="res"></param>
-        /// <returns></returns>
-        public static string GetEmbedText(string res)
-        {
-            var result = string.Empty;
-
-            try
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                using var stream = assembly.GetManifestResourceStream(res);
-                ArgumentNullException.ThrowIfNull(stream);
-                using StreamReader reader = new(stream);
-                result = reader.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 取得存储资源
-        /// </summary>
-        /// <returns></returns>
-        public static string? LoadResource(string? res)
-        {
-            try
-            {
-                if (File.Exists(res))
-                {
-                    return File.ReadAllText(res);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-
-            return null;
-        }
-
-        #endregion 资源操作
-
         #region 转换函数
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace ServiceLib.Handler
         public static Config? LoadConfig()
         {
             Config? config = null;
-            var result = Utils.LoadResource(Utils.GetConfigPath(_configRes));
+            var result = EmbedUtils.LoadResource(Utils.GetConfigPath(_configRes));
             if (Utils.IsNotEmpty(result))
             {
                 config = JsonUtils.Deserialize<Config>(result);
@@ -1735,7 +1735,7 @@ namespace ServiceLib.Handler
                 Url = string.Empty,
                 Sort = maxSort + 1,
             };
-            await AddBatchRoutingRules(item2, Utils.GetEmbedText(Global.CustomRoutingFileName + "white"));
+            await AddBatchRoutingRules(item2, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "white"));
 
             //Blacklist
             var item3 = new RoutingItem()
@@ -1744,7 +1744,7 @@ namespace ServiceLib.Handler
                 Url = string.Empty,
                 Sort = maxSort + 2,
             };
-            await AddBatchRoutingRules(item3, Utils.GetEmbedText(Global.CustomRoutingFileName + "black"));
+            await AddBatchRoutingRules(item3, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "black"));
 
             //Global
             var item1 = new RoutingItem()
@@ -1753,7 +1753,7 @@ namespace ServiceLib.Handler
                 Url = string.Empty,
                 Sort = maxSort + 3,
             };
-            await AddBatchRoutingRules(item1, Utils.GetEmbedText(Global.CustomRoutingFileName + "global"));
+            await AddBatchRoutingRules(item1, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "global"));
 
             if (!blImportAdvancedRules)
             {

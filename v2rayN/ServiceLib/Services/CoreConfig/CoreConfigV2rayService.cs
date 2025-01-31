@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text.Json.Nodes;
 
@@ -36,7 +36,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                var result = Utils.GetEmbedText(Global.V2raySampleClient);
+                var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
                 if (Utils.IsNullOrEmpty(result))
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -91,8 +91,8 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                string result = Utils.GetEmbedText(Global.V2raySampleClient);
-                string txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                string result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+                string txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -214,8 +214,8 @@ namespace ServiceLib.Services.CoreConfig
 
                 ret.Msg = ResUI.InitialConfiguration;
 
-                var result = Utils.GetEmbedText(Global.V2raySampleClient);
-                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+                var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
                 if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -428,7 +428,7 @@ namespace ServiceLib.Services.CoreConfig
 
         private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
         {
-            string result = Utils.GetEmbedText(Global.V2raySampleInbound);
+            string result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
             if (Utils.IsNullOrEmpty(result))
             {
                 return new();
@@ -992,7 +992,7 @@ namespace ServiceLib.Services.CoreConfig
                             };
 
                             //request Host
-                            string request = Utils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                            string request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
                             string[] arrHost = host.Split(',');
                             string host2 = string.Join(",".AppendQuotes(), arrHost);
                             request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
@@ -1028,7 +1028,7 @@ namespace ServiceLib.Services.CoreConfig
                 var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
                 if (Utils.IsNullOrEmpty(normalDNS))
                 {
-                    normalDNS = Utils.GetEmbedText(Global.DNSV2rayNormalFileName);
+                    normalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
                 }
 
                 //Outbound Freedom domainStrategy
@@ -1196,7 +1196,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 //current proxy
                 var outbound = v2rayConfig.outbounds.First();
-                var txtOutbound = Utils.GetEmbedText(Global.V2raySampleOutbound);
+                var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
 
                 //Previous proxy
                 var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);

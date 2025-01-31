@@ -35,7 +35,7 @@ namespace ServiceLib.Handler
             var path = Path.Combine(_configPath, "pac.txt");
             if (!File.Exists(path))
             {
-                var pac = Utils.GetEmbedText(Global.PacFileName);
+                var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
                 await File.AppendAllTextAsync(path, pac);
             }
 

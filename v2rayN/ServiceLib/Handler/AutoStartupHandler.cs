@@ -142,7 +142,7 @@ namespace ServiceLib.Handler
         {
             try
             {
-                var linuxConfig = Utils.GetEmbedText(Global.LinuxAutostartConfig);
+                var linuxConfig = EmbedUtils.GetEmbedText(Global.LinuxAutostartConfig);
                 if (linuxConfig.IsNotEmpty())
                 {
                     linuxConfig = linuxConfig.Replace("$ExecPath$", Utils.GetExePath());
