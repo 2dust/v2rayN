@@ -414,7 +414,7 @@ namespace v2rayN.Desktop.Views
             }
             else
             {
-                if (Utils.IsOSX() || _config.UiItem.Hide2TrayWhenClose)
+                if (_config.UiItem.Hide2TrayWhenClose)
                 {
                     foreach (var ownedWindow in this.OwnedWindows)
                     {
