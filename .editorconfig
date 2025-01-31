@@ -58,7 +58,7 @@ dotnet_remove_unnecessary_suppression_exclusions = none
 dotnet_style_allow_multiple_blank_lines_experimental = false:warning
 dotnet_style_allow_statement_immediately_after_block_experimental = true:warning
 
-csharp_style_var_elsewhere = false:warning
+csharp_style_var_elsewhere = true:warning
 csharp_style_var_for_built_in_types = true:warning
 csharp_style_var_when_type_is_apparent = true:warning
 csharp_style_expression_bodied_accessors = when_on_single_line:warning
