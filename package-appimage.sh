@@ -64,7 +64,7 @@ sudo chmod 0755 "${PackagePath}/AppDir/AppRun"
 
 # desktop && PATH
 
-wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod a+x appimagetool-x86_64.AppImage
 sudo apt install -y libfuse2
 sudo ./appimagetool-x86_64.AppImage "${PackagePath}/AppDir"
