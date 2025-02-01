@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -502,7 +501,8 @@ namespace ServiceLib.Common
         {
             try
             {
-                return Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(3) ?? "0.0";
+                var info = FileVersionInfo.GetVersionInfo(GetExePath());
+                return $"{info.FileMajorPart}.{info.FileMinorPart}.{info.FileBuildPart}";
             }
             catch (Exception ex)
             {
