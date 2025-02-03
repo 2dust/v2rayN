@@ -188,6 +188,15 @@ namespace ServiceLib.Handler
                     Arguments = " {0}",
                     Url = Global.BrookCoreUrl,
                     AbsolutePath = true,
+                },
+
+                new CoreInfo
+                {
+                    CoreType = ECoreType.overtls,
+                    CoreExes = [ "overtls-bin", "overtls"],
+                    Arguments = "-r client -c {0}",
+                    Url = Global.OvertlsCoreUrl,
+                    AbsolutePath = false,
                 }
 
             ];

@@ -19,6 +19,7 @@ namespace ServiceLib
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string JuicityCoreUrl = "https://github.com/juicity/juicity/releases";
         public const string BrookCoreUrl = "https://github.com/txthinking/brook/releases";
+        public const string OvertlsCoreUrl = "https://github.com/ShadowsocksR-Live/overtls/releases";
         public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-{0}/{1}.srs";
         public const string IPAPIUrl = "https://api.ip.sb/geoip";
 
