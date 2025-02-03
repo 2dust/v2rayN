@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler
+namespace ServiceLib.Handler
 {
     public sealed class CoreInfoHandler
     {
@@ -44,7 +44,7 @@
             }
             if (fileName.IsNullOrEmpty())
             {
-                msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo.CoreType.ToString()), string.Join(", ", coreInfo.CoreExes.ToArray()), coreInfo.Url);
+                msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo?.CoreType.ToString()), coreInfo?.CoreExes?.LastOrDefault(), coreInfo?.Url);
                 Logging.SaveLog(msg);
             }
             return fileName;
@@ -71,7 +71,7 @@
                 {
                     CoreType = ECoreType.v2fly,
                     CoreExes = ["wv2ray", "v2ray"],
-                    Arguments = "",
+                    Arguments = "{0}",
                     Url = Global.V2flyCoreUrl,
                     ReleaseApiUrl = Global.V2flyCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     Match = "V2Ray",
@@ -83,7 +83,7 @@
                 {
                     CoreType = ECoreType.v2fly_v5,
                     CoreExes = ["v2ray"],
-                    Arguments = "run -c config.json -format jsonv5",
+                    Arguments = "run -c {0} -format jsonv5",
                     Url = Global.V2flyCoreUrl,
                     ReleaseApiUrl = Global.V2flyCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     Match = "V2Ray",
@@ -94,7 +94,7 @@
                 new CoreInfo
                 {
                     CoreType = ECoreType.Xray,
-                    CoreExes = ["xray", "wxray"],
+                    CoreExes = ["wxray","xray"],
                     Arguments = "run -c {0}",
                     Url = Global.XrayCoreUrl,
                     ReleaseApiUrl = Global.XrayCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
@@ -112,8 +112,8 @@
                 new CoreInfo
                 {
                     CoreType = ECoreType.mihomo,
-                    CoreExes = ["mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-linux-amd64", "mihomo", "clash"],
-                    Arguments = "-f config.json" + PortableMode(),
+                    CoreExes = ["mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-linux-amd64", "clash", "mihomo"],
+                    Arguments = "-f {0}" + PortableMode(),
                     Url = Global.MihomoCoreUrl,
                     ReleaseApiUrl = Global.MihomoCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     DownloadUrlWin64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-windows-amd64-compatible-{0}.zip",
@@ -131,17 +131,16 @@
                 {
                     CoreType = ECoreType.hysteria,
                     CoreExes = ["hysteria-windows-amd64", "hysteria"],
-                    Arguments = "",
+                    Arguments = "-c {0}",
                     Url = Global.HysteriaCoreUrl,
-                    ReleaseApiUrl = Global.HysteriaCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     RedirectInfo = true,
                 },
 
                 new CoreInfo
                 {
                     CoreType = ECoreType.naiveproxy,
-                    CoreExes = ["naiveproxy", "naive"],
-                    Arguments = "config.json",
+                    CoreExes = [ "naive", "naiveproxy"],
+                    Arguments = "{0}",
                     Url = Global.NaiveproxyCoreUrl,
                     RedirectInfo = false,
                 },
@@ -150,7 +149,7 @@
                 {
                     CoreType = ECoreType.tuic,
                     CoreExes = ["tuic-client", "tuic"],
-                    Arguments = "-c config.json",
+                    Arguments = "-c {0}",
                     Url = Global.TuicCoreUrl,
                     RedirectInfo = true,
                 },
@@ -177,7 +176,7 @@
                 {
                     CoreType = ECoreType.juicity,
                     CoreExes = ["juicity-client", "juicity"],
-                    Arguments = "run -c config.json",
+                    Arguments = "run -c {0}",
                     Url = Global.JuicityCoreUrl
                 },
 
@@ -185,9 +184,8 @@
                 {
                     CoreType = ECoreType.hysteria2,
                     CoreExes = ["hysteria-windows-amd64", "hysteria-linux-amd64", "hysteria"],
-                    Arguments = "",
+                    Arguments = "-c {0}",
                     Url = Global.HysteriaCoreUrl,
-                    ReleaseApiUrl = Global.HysteriaCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     RedirectInfo = true,
                 }
 
