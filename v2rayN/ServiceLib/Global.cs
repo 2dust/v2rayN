@@ -1,4 +1,4 @@
-﻿namespace ServiceLib
+namespace ServiceLib
 {
     public class Global
     {
@@ -18,6 +18,7 @@
         public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
         public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
         public const string JuicityCoreUrl = "https://github.com/juicity/juicity/releases";
+        public const string BrookCoreUrl = "https://github.com/txthinking/brook/releases";
         public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-{0}/{1}.srs";
         public const string IPAPIUrl = "https://api.ip.sb/geoip";
 

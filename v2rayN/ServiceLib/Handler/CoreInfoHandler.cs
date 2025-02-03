@@ -76,7 +76,6 @@ namespace ServiceLib.Handler
                     ReleaseApiUrl = Global.V2flyCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     Match = "V2Ray",
                     VersionArg = "-version",
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -88,7 +87,6 @@ namespace ServiceLib.Handler
                     ReleaseApiUrl = Global.V2flyCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     Match = "V2Ray",
                     VersionArg = "version",
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -106,7 +104,6 @@ namespace ServiceLib.Handler
                     DownloadUrlOSXArm64 = Global.XrayCoreUrl + "/download/{0}/Xray-macos-arm64-v8a.zip",
                     Match = "Xray",
                     VersionArg = "-version",
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -124,7 +121,6 @@ namespace ServiceLib.Handler
                     DownloadUrlOSXArm64 = Global.MihomoCoreUrl + "/download/{0}/mihomo-darwin-arm64-{0}.gz",
                     Match = "Mihomo",
                     VersionArg = "-v",
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -133,7 +129,6 @@ namespace ServiceLib.Handler
                     CoreExes = ["hysteria-windows-amd64", "hysteria"],
                     Arguments = "-c {0}",
                     Url = Global.HysteriaCoreUrl,
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -142,7 +137,6 @@ namespace ServiceLib.Handler
                     CoreExes = [ "naive", "naiveproxy"],
                     Arguments = "{0}",
                     Url = Global.NaiveproxyCoreUrl,
-                    RedirectInfo = false,
                 },
 
                 new CoreInfo
@@ -151,7 +145,6 @@ namespace ServiceLib.Handler
                     CoreExes = ["tuic-client", "tuic"],
                     Arguments = "-c {0}",
                     Url = Global.TuicCoreUrl,
-                    RedirectInfo = true,
                 },
 
                 new CoreInfo
@@ -160,7 +153,7 @@ namespace ServiceLib.Handler
                     CoreExes = ["sing-box-client", "sing-box"],
                     Arguments = "run -c {0} --disable-color",
                     Url = Global.SingboxCoreUrl,
-                    RedirectInfo = true,
+
                     ReleaseApiUrl = Global.SingboxCoreUrl.Replace(Global.GithubUrl, Global.GithubApiUrl),
                     DownloadUrlWin64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-windows-amd64.zip",
                     DownloadUrlWinArm64 = Global.SingboxCoreUrl + "/download/{0}/sing-box-{1}-windows-arm64.zip",
@@ -186,7 +179,15 @@ namespace ServiceLib.Handler
                     CoreExes = ["hysteria-windows-amd64", "hysteria-linux-amd64", "hysteria"],
                     Arguments = "-c {0}",
                     Url = Global.HysteriaCoreUrl,
-                    RedirectInfo = true,
+                },
+
+                new CoreInfo
+                {
+                    CoreType = ECoreType.brook,
+                    CoreExes = ["brook_windows_amd64", "brook_linux_amd64", "brook"],
+                    Arguments = " {0}",
+                    Url = Global.BrookCoreUrl,
+                    AbsolutePath = true,
                 }
 
             ];

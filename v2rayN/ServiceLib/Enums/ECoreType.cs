@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums
 {
     public enum ECoreType
     {
@@ -12,6 +12,7 @@
         sing_box = 24,
         juicity = 25,
         hysteria2 = 26,
+        brook = 27,
         v2rayN = 99
     }
 }

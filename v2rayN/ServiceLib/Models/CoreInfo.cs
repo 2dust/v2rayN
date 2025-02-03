@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Models
+namespace ServiceLib.Models
 {
     [Serializable]
     public class CoreInfo
@@ -16,6 +16,6 @@
         public string? DownloadUrlOSXArm64 { get; set; }
         public string? Match { get; set; }
         public string? VersionArg { get; set; }
-        public bool RedirectInfo { get; set; }
+        public bool AbsolutePath { get; set; }
     }
 }

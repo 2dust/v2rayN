@@ -225,7 +225,7 @@ namespace ServiceLib.Handler
                     StartInfo = new()
                     {
                         FileName = fileName,
-                        Arguments = string.Format(coreInfo.Arguments, configPath),
+                        Arguments = string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetConfigPath(configPath) : configPath),
                         WorkingDirectory = Utils.GetConfigPath(),
                         UseShellExecute = false,
                         RedirectStandardOutput = displayLog,
