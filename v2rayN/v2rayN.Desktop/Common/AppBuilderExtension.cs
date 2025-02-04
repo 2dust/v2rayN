@@ -7,7 +7,7 @@ namespace v2rayN.Desktop.Common
     {
         public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
         {
-            var uri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+            var uri = Path.Combine(Global.AvaAssets, "Fonts#Segoe UI Emoji");
             return appBuilder.With(new FontManagerOptions()
             {
                 DefaultFamilyName = uri,
