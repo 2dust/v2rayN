@@ -350,7 +350,7 @@ namespace v2rayN.Desktop.Views
             //ShowHideWindow(false);
 
             NoticeHandler.Instance.SendMessageAndEnqueue("Not yet implemented.(还未实现)");
-            return;
+            await Task.CompletedTask;
             //if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             //{
             //    //var bytes = QRCodeHelper.CaptureScreen(desktop);

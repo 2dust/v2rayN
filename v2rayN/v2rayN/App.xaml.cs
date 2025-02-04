@@ -10,7 +10,6 @@ namespace v2rayN
     public partial class App : Application
     {
         public static EventWaitHandle ProgramStarted;
-        private static Config _config;
 
         public App()
         {

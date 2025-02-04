@@ -69,7 +69,7 @@ namespace ServiceLib.Handler.SysProxy
                 }
                 return result;
             }
-            catch (Exception ex)
+            catch
             {
                 SetProxyFallback(strProxy, exceptions, type);
                 return false;
