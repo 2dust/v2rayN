@@ -24,18 +24,18 @@ public static class ProcUtils
             if (arguments.Contains(' '))
                 arguments = arguments.AppendQuotes();
 
-            Process process = new()
+            Process proc = new()
             {
                 StartInfo = new ProcessStartInfo
                 {
                     UseShellExecute = true,
                     FileName = fileName,
                     Arguments = arguments,
-                    WorkingDirectory = dir
+                    WorkingDirectory = dir ?? string.Empty
                 }
             };
-            process.Start();
-            return process.Id;
+            proc.Start();
+            return dir is null ? null : proc.Id;
         }
         catch (Exception ex)
         {
