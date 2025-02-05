@@ -129,8 +129,8 @@ namespace ServiceLib.Handler
                 new CoreInfo
                 {
                     CoreType = ECoreType.hysteria,
-                    CoreExes = ["hysteria-windows-amd64", "hysteria"],
-                    Arguments = "-c {0}",
+                    CoreExes = ["hysteria"],
+                    Arguments = "",
                     Url = GetCoreUrl(ECoreType.hysteria),
                 },
 
@@ -180,7 +180,7 @@ namespace ServiceLib.Handler
                 {
                     CoreType = ECoreType.hysteria2,
                     CoreExes = ["hysteria-windows-amd64", "hysteria-linux-amd64", "hysteria"],
-                    Arguments = "-c {0}",
+                    Arguments = "",
                     Url = GetCoreUrl(ECoreType.hysteria2),
                 },
 
