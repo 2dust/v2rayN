@@ -243,7 +243,7 @@ namespace ServiceLib.Services
             _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
-        public async Task RunAvailabilityCheck(Action<bool, string> updateFunc)
+        public async Task<string> RunAvailabilityCheck()
         {
             var downloadHandle = new DownloadService();
             var time = await downloadHandle.RunAvailabilityCheck(null);
@@ -255,7 +255,7 @@ namespace ServiceLib.Services
                 ip = $"({ipInfo?.country_code}) {ipInfo?.ip}";
             }
 
-            updateFunc?.Invoke(false, string.Format(ResUI.TestMeOutput, time, ip));
+            return string.Format(ResUI.TestMeOutput, time, ip);
         }
 
         #region CheckUpdate private

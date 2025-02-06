@@ -311,11 +311,11 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            await (new UpdateService()).RunAvailabilityCheck(async (bool success, string msg) =>
-            {
-                NoticeHandler.Instance.SendMessageEx(msg);
-                _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
-            });
+
+            var msg = await (new UpdateService()).RunAvailabilityCheck();
+
+            NoticeHandler.Instance.SendMessageEx(msg);
+            _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
         }
 
         public void TestServerAvailabilityResult(string msg)
