@@ -105,14 +105,9 @@ namespace ServiceLib.Handler
 
             if (Utils.IsNullOrEmpty(config.UiItem.CurrentLanguage))
             {
-                if (Thread.CurrentThread.CurrentCulture.Name.Equals("zh-cn", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    config.UiItem.CurrentLanguage = Global.Languages.First();
-                }
-                else
-                {
-                    config.UiItem.CurrentLanguage = Global.Languages[2];
-                }
+                config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
+                    ? Global.Languages.First()
+                    : Global.Languages[2];
             }
 
             config.ConstItem ??= new ConstItem();
