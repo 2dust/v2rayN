@@ -259,11 +259,6 @@ namespace ServiceLib.ViewModels
             Locator.Current.GetService<MainWindowViewModel>()?.Reload();
         }
 
-        private void UpdateSpeedtestHandler(SpeedTestResult result)
-        {
-            _updateView?.Invoke(EViewAction.DispatcherSpeedTest, result);
-        }
-
         public void SetSpeedTestResult(SpeedTestResult result)
         {
             if (Utils.IsNullOrEmpty(result.IndexId))
@@ -272,7 +267,7 @@ namespace ServiceLib.ViewModels
                 NoticeHandler.Instance.Enqueue(result.Delay);
                 return;
             }
-            var item = _profileItems.Where(it => it.IndexId == result.IndexId).FirstOrDefault();
+            var item = _profileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
             if (item != null)
             {
                 if (Utils.IsNotEmpty(result.Delay))
@@ -293,7 +288,7 @@ namespace ServiceLib.ViewModels
         {
             try
             {
-                var item = _profileItems.Where(it => it.IndexId == update.IndexId).FirstOrDefault();
+                var item = _profileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
                 if (item != null)
                 {
                     item.TodayDown = Utils.HumanFy(update.TodayDown);
@@ -726,9 +721,11 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            //ClearTestResult();
 
-            _ = new SpeedtestService(_config, lstSelecteds, actionType, UpdateSpeedtestHandler);
+            _ = new SpeedtestService(_config, actionType, lstSelecteds, (SpeedTestResult result) =>
+             {
+                 _updateView?.Invoke(EViewAction.DispatcherSpeedTest, result);
+             });
         }
 
         public void ServerSpeedtestStop()

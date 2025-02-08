@@ -1391,4 +1391,7 @@
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>複製終端代理指令至剪貼簿</value>
   </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>開始對失敗部分進行重新測試，剩餘 {0} 個。可按 ESC 終止...</value>
+  </data>
 </root>

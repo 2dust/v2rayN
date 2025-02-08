@@ -1393,4 +1393,7 @@
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>Copy proxy command to clipboard</value>
   </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Starting retesting failed parts, {0} remaining. Press ESC to terminate...</value>
+  </data>
 </root>

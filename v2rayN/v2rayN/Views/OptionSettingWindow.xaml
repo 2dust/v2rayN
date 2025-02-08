@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.OptionSettingWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -776,7 +776,7 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
                             TextWrapping="Wrap" />
-
+                        <!--
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="0"
@@ -792,7 +792,7 @@
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefTextBox}" />
-
+                        -->
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"

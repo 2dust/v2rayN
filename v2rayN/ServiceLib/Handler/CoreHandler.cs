@@ -287,7 +287,7 @@ namespace ServiceLib.Handler
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
-                UpdateFunc(true, ex.Message);
+                UpdateFunc(mayNeedSudo, ex.Message);
                 return null;
             }
         }

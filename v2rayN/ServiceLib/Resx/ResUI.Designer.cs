@@ -2095,6 +2095,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Starting retesting failed parts, {0} remaining. Press ESC to terminate... 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingTestFailedPart {
+            get {
+                return ResourceManager.GetString("SpeedtestingTestFailedPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Waiting for testing (press ESC to terminate)... 的本地化字符串。
         /// </summary>
         public static string SpeedtestingWait {

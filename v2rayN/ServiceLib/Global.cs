@@ -72,6 +72,7 @@ namespace ServiceLib
         public const string LocalAppData = "V2RAYN_LOCAL_APPLICATION_DATA";
         public const string V2RayLocalAsset = "V2RAY_LOCATION_ASSET";
         public const string XrayLocalAsset = "XRAY_LOCATION_ASSET";
+        public const int SpeedTestPageSize = 1000;
 
         public static readonly List<string> IEProxyProtocols =
         [

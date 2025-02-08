@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.OptionSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -518,7 +518,7 @@
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyLinuxTip}"
                             TextWrapping="Wrap" />
-
+                        <!--
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="0"
@@ -532,7 +532,7 @@
                             Width="200"
                             HorizontalAlignment="Left"
                             Classes="Margin8" />
-
+                        -->
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"

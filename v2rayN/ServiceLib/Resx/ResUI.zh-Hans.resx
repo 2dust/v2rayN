@@ -1390,4 +1390,7 @@
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>复制终端代理命令至剪贴板</value>
   </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>开始对失败部分进行重新测试，剩余 {0} 个。可按 ESC 终止...</value>
+  </data>
 </root>
