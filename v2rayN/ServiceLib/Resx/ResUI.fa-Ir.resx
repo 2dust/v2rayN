@@ -1394,6 +1394,6 @@
     <value>کپی کردن دستور پروکسی در کلیپ بورد</value>
   </data>
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
-    <value>Starting retesting failed parts, {0} remaining. Press ESC to terminate...</value>
+    <value>شروع آزمایش مجدد قطعات ناموفق، {0} باقی مانده است. برای خاتمه ESC را فشار دهید...</value>
   </data>
 </root>
