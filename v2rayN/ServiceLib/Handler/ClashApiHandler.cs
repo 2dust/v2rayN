@@ -1,4 +1,4 @@
-﻿using static ServiceLib.Models.ClashProxies;
+using static ServiceLib.Models.ClashProxies;
 
 namespace ServiceLib.Handler
 {
@@ -38,63 +38,63 @@ namespace ServiceLib.Handler
         public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Action<ClashProxyModel?, string> updateFunc)
         {
             Task.Run(() =>
-        {
-            if (blAll)
             {
-                for (int i = 0; i < 5; i++)
+                if (blAll)
                 {
-                    if (_proxies != null)
+                    for (var i = 0; i < 5; i++)
                     {
-                        break;
+                        if (_proxies != null)
+                        {
+                            break;
+                        }
+                        Task.Delay(5000).Wait();
                     }
-                    Task.Delay(5000).Wait();
+                    if (_proxies == null)
+                    {
+                        return;
+                    }
+                    lstProxy = new List<ClashProxyModel>();
+                    foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
+                    {
+                        if (Global.notAllowTestType.Contains(kv.Value.type.ToLower()))
+                        {
+                            continue;
+                        }
+                        lstProxy.Add(new ClashProxyModel()
+                        {
+                            Name = kv.Value.name,
+                            Type = kv.Value.type.ToLower(),
+                        });
+                    }
                 }
-                if (_proxies == null)
+
+                if (lstProxy == null)
                 {
                     return;
                 }
-                lstProxy = new List<ClashProxyModel>();
-                foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
+                var urlBase = $"{GetApiUrl()}/proxies";
+                urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
+
+                var tasks = new List<Task>();
+                foreach (var it in lstProxy)
                 {
-                    if (Global.notAllowTestType.Contains(kv.Value.type.ToLower()))
+                    if (Global.notAllowTestType.Contains(it.Type.ToLower()))
                     {
                         continue;
                     }
-                    lstProxy.Add(new ClashProxyModel()
+                    var name = it.Name;
+                    var url = string.Format(urlBase, name);
+                    tasks.Add(Task.Run(async () =>
                     {
-                        Name = kv.Value.name,
-                        Type = kv.Value.type.ToLower(),
-                    });
+                        var result = await HttpClientHelper.Instance.TryGetAsync(url);
+                        updateFunc?.Invoke(it, result);
+                    }));
                 }
-            }
+                Task.WaitAll(tasks.ToArray());
 
-            if (lstProxy == null)
-            {
-                return;
-            }
-            var urlBase = $"{GetApiUrl()}/proxies";
-            urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
-
-            List<Task> tasks = new List<Task>();
-            foreach (var it in lstProxy)
-            {
-                if (Global.notAllowTestType.Contains(it.Type.ToLower()))
-                {
-                    continue;
-                }
-                var name = it.Name;
-                var url = string.Format(urlBase, name);
-                tasks.Add(Task.Run(async () =>
-                {
-                    var result = await HttpClientHelper.Instance.TryGetAsync(url);
-                    updateFunc?.Invoke(it, result);
-                }));
-            }
-            Task.WaitAll(tasks.ToArray());
-
-            Task.Delay(1000).Wait();
-            updateFunc?.Invoke(null, "");
-        });
+                Task.Delay(1000).Wait();
+                updateFunc?.Invoke(null, "");
+            });
         }
 
         public List<ProxiesItem>? GetClashProxyGroups()
@@ -120,7 +120,7 @@ namespace ServiceLib.Handler
             try
             {
                 var url = $"{GetApiUrl()}/proxies/{name}";
-                Dictionary<string, string> headers = new Dictionary<string, string>();
+                var headers = new Dictionary<string, string>();
                 headers.Add("name", nameNode);
                 await HttpClientHelper.Instance.PutAsync(url, headers);
             }
@@ -148,7 +148,7 @@ namespace ServiceLib.Handler
             try
             {
                 var url = $"{GetApiUrl()}/configs?force=true";
-                Dictionary<string, string> headers = new Dictionary<string, string>();
+                var headers = new Dictionary<string, string>();
                 headers.Add("path", filePath);
                 await HttpClientHelper.Instance.PutAsync(url, headers);
             }

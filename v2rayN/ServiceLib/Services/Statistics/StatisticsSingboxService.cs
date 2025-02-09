@@ -21,7 +21,7 @@ namespace ServiceLib.Services.Statistics
             Task.Run(Run);
         }
 
-        private async void Init()
+        private async Task Init()
         {
             await Task.Delay(5000);
 
@@ -53,9 +53,9 @@ namespace ServiceLib.Services.Statistics
             }
         }
 
-        private async void Run()
+        private async Task Run()
         {
-            Init();
+            await Init();
 
             while (!_exitFlag)
             {
@@ -73,7 +73,7 @@ namespace ServiceLib.Services.Statistics
                         {
                             webSocket.Abort();
                             webSocket = null;
-                            Init();
+                            await Init();
                             continue;
                         }
 

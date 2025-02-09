@@ -23,7 +23,7 @@ namespace ServiceLib.Services.Statistics
             _exitFlag = true;
         }
 
-        private async void Run()
+        private async Task Run()
         {
             while (!_exitFlag)
             {
