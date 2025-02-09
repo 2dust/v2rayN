@@ -344,10 +344,10 @@
     <value>لطفاً DNS سفارشی صحیح را پر کنید</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*ws path</value>
+    <value>* مسیر ws</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
-    <value>*h2 path</value>
+    <value>* مسیر h2</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
     <value>*QUIC key/Kcp seed</value>
@@ -356,13 +356,13 @@
     <value>*grpc serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host Separated by commas (,)</value>
+    <value>*هاست http جدا شده با کاما (،)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*ws host</value>
+    <value>*هاست ws</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host Separated by commas (,)</value>
+    <value>*هاست h2 با کاما (،) جدا شده است</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC securty</value>
@@ -377,7 +377,7 @@
     <value>*QUIC camouflage type</value>
   </data>
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*grpc mode</value>
+    <value>*حالت grpc</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -404,7 +404,7 @@
     <value>درحال تست کردن...</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
-    <value>LAN</value>
+    <value>شبکه محلی</value>
   </data>
   <data name="LabLocal" xml:space="preserve">
     <value>محلی</value>
