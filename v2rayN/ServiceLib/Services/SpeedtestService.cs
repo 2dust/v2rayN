@@ -1,34 +1,47 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using ReactiveUI;
 
 namespace ServiceLib.Services
 {
     public class SpeedtestService
     {
+        private static readonly string _tag = "SpeedtestService";
         private Config? _config;
         private Action<SpeedTestResult>? _updateFunc;
+        private static readonly ConcurrentBag<string> _lstExitLoop = new();
 
-        private bool _exitLoop = false;
-        private static readonly string _tag = "SpeedtestService";
-
-        public SpeedtestService(Config config, ESpeedActionType actionType, List<ProfileItem> selecteds, Action<SpeedTestResult> updateFunc)
+        public SpeedtestService(Config config, Action<SpeedTestResult> updateFunc)
         {
             _config = config;
             _updateFunc = updateFunc;
+        }
 
-            MessageBus.Current.Listen<string>(EMsgCommand.StopSpeedtest.ToString()).Subscribe(ExitLoop);
-
+        public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
+        {
             Task.Run(async () =>
             {
+                var exitLoopKey = Utils.GetGuid(false);
+                _lstExitLoop.Add(exitLoopKey);
+
                 var lstSelected = GetClearItem(actionType, selecteds);
-                await RunAsync(actionType, lstSelected);
+                await RunAsync(actionType, lstSelected, exitLoopKey);
                 UpdateFunc("", ResUI.SpeedtestingCompleted);
             });
         }
 
-        private async Task RunAsync(ESpeedActionType actionType, List<ServerTestItem> lstSelected, int pageSize = 0)
+        public void ExitLoop()
+        {
+            if (_lstExitLoop.Count > 0)
+            {
+                UpdateFunc("", ResUI.SpeedtestingStop);
+
+                _lstExitLoop.Clear();
+            }
+        }
+
+        private async Task RunAsync(ESpeedActionType actionType, List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
         {
             if (actionType == ESpeedActionType.Tcping)
             {
@@ -47,9 +60,9 @@ namespace ServiceLib.Services
             {
                 var ret = actionType switch
                 {
-                    ESpeedActionType.Realping => await RunRealPingAsync(lst),
-                    ESpeedActionType.Speedtest => await RunSpeedTestAsync(lst),
-                    ESpeedActionType.Mixedtest => await RunMixedTestAsync(lst),
+                    ESpeedActionType.Realping => await RunRealPingAsync(lst, exitLoopKey),
+                    ESpeedActionType.Speedtest => await RunSpeedTestAsync(lst, exitLoopKey),
+                    ESpeedActionType.Mixedtest => await RunMixedTestAsync(lst, exitLoopKey),
                     _ => true
                 };
                 if (ret == false)
@@ -63,14 +76,14 @@ namespace ServiceLib.Services
             var pageSizeNext = pageSize / 2;
             if (lstFailed.Count > 0 && pageSizeNext > 0)
             {
-                if (_exitLoop)
+                if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
                 {
                     UpdateFunc("", ResUI.SpeedtestingSkip);
                     return;
                 }
 
                 UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
-                await RunAsync(actionType, lstFailed, pageSizeNext);
+                await RunAsync(actionType, lstFailed, exitLoopKey, pageSizeNext);
             }
         }
 
@@ -143,14 +156,6 @@ namespace ServiceLib.Services
             return lstTest;
         }
 
-        private void ExitLoop(string x)
-        {
-            if (_exitLoop)
-                return;
-            _exitLoop = true;
-            UpdateFunc("", ResUI.SpeedtestingStop);
-        }
-
         private async Task RunTcpingAsync(List<ServerTestItem> selecteds)
         {
             try
@@ -190,7 +195,7 @@ namespace ServiceLib.Services
             }
         }
 
-        private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds)
+        private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
         {
             var pid = -1;
             try
@@ -249,7 +254,7 @@ namespace ServiceLib.Services
             return true;
         }
 
-        private async Task<bool> RunSpeedTestAsync(List<ServerTestItem> selecteds)
+        private async Task<bool> RunSpeedTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
         {
             var pid = -1;
             pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
@@ -265,11 +270,12 @@ namespace ServiceLib.Services
 
             foreach (var it in selecteds)
             {
-                if (_exitLoop)
+                if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
                 {
                     UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     continue;
                 }
+
                 if (!it.AllowTest)
                 {
                     continue;
@@ -311,7 +317,7 @@ namespace ServiceLib.Services
             return true;
         }
 
-        private async Task<bool> RunSpeedTestMulti(List<ServerTestItem> selecteds)
+        private async Task<bool> RunSpeedTestMultiAsync(List<ServerTestItem> selecteds, string exitLoopKey)
         {
             var pid = -1;
             pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
@@ -327,7 +333,7 @@ namespace ServiceLib.Services
 
             foreach (var it in selecteds)
             {
-                if (_exitLoop)
+                if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
                 {
                     UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     continue;
@@ -376,9 +382,9 @@ namespace ServiceLib.Services
             return true;
         }
 
-        private async Task<bool> RunMixedTestAsync(List<ServerTestItem> selecteds)
+        private async Task<bool> RunMixedTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
         {
-            var ret = await RunRealPingAsync(selecteds);
+            var ret = await RunRealPingAsync(selecteds, exitLoopKey);
             if (ret == false)
             {
                 return false;
@@ -386,7 +392,7 @@ namespace ServiceLib.Services
 
             await Task.Delay(1000);
 
-            var ret2 = await RunSpeedTestMulti(selecteds);
+            var ret2 = await RunSpeedTestMultiAsync(selecteds, exitLoopKey);
             if (ret2 == false)
             {
                 return false;
