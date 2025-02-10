@@ -128,7 +128,7 @@ namespace ServiceLib.Services.CoreConfig
                 //Mixin
                 try
                 {
-                    MixinContent(fileContent, node);
+                    await MixinContent(fileContent, node);
                 }
                 catch (Exception ex)
                 {
@@ -158,20 +158,21 @@ namespace ServiceLib.Services.CoreConfig
             }
         }
 
-        private void MixinContent(Dictionary<string, object> fileContent, ProfileItem node)
+        private async Task MixinContent(Dictionary<string, object> fileContent, ProfileItem node)
         {
-            //if (!_config.clashUIItem.enableMixinContent)
-            //{
-            //    return;
-            //}
-
-            var path = Utils.GetConfigPath(Global.ClashMixinConfigFileName);
-            if (!File.Exists(path))
+            if (!_config.ClashUIItem.EnableMixinContent)
             {
                 return;
             }
 
-            var txtFile = File.ReadAllText(Utils.GetConfigPath(Global.ClashMixinConfigFileName));
+            var path = Utils.GetConfigPath(Global.ClashMixinConfigFileName);
+            if (!File.Exists(path))
+            {
+                var mixin = EmbedUtils.GetEmbedText(Global.ClashMixinYaml);
+                await File.AppendAllTextAsync(path, mixin);
+            }
+
+            var txtFile = await File.ReadAllTextAsync(Utils.GetConfigPath(Global.ClashMixinConfigFileName));
 
             var mixinContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
             if (mixinContent == null)
