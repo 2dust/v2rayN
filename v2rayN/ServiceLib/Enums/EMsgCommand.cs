@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums
 {
     public enum EMsgCommand
     {
@@ -6,7 +6,6 @@
         SendMsgView,
         SendSnackMsg,
         RefreshProfiles,
-        StopSpeedtest,
         AppExit
     }
 }
