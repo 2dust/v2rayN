@@ -17,9 +17,11 @@ echo "When this file exists, app will not store configs under this folder" >"${P
 if [ $Arch = "linux-64" ]; then
     Arch2="x86_64"
     Arch3="amd64"
+    Interpreter="ld-linux-x86-64.so.2"
 else
     Arch2="aarch64"
     Arch3="arm64"
+    Interpreter="ld-linux-aarch64.so.1"
 fi
 echo $Arch2
 
@@ -29,6 +31,7 @@ cat >"${PackagePath}/AppDir/AppRun" <<-EOF
 HERE="\$(dirname "\$(readlink -f "\${0}")")"
 export PATH="\${HERE}"/opt/v2rayN/:"\${PATH}"
 export LD_LIBRARY_PATH="\${HERE}"/opt/v2rayN/:"\${LD_LIBRARY_PATH}"
+cd "\${HERE}/opt/v2rayN"
 exec "\${HERE}/opt/v2rayN/v2rayN" \$@
 EOF
 
@@ -45,9 +48,41 @@ EOF
 
 sudo cp "${PackagePath}/AppDir/opt/v2rayN/v2rayN.png" "${PackagePath}/AppDir/v2rayN.png"
 sudo dpkg --add-architecture ${Arch3}
+sudo apt update
 mkdir deb_folder
 cd deb_folder
-apt download libicu74:${Arch3}
+apt download libstdc++6:${Arch3}
+apt download libc6:${Arch3}
+apt download libcrypt1:${Arch3}
+apt download libgcc-s1:${Arch3}
+apt download libidn2-0:${Arch3}
+apt download gcc-12-base:${Arch3}
+apt download zlib1g:${Arch3}
+apt download libfreetype6:${Arch3}
+apt download libexpat1:${Arch3}
+apt download libbrotli1:${Arch3}
+apt download libx11-6:${Arch3}
+apt download libx11-xcb1:${Arch3}
+apt download libxcb1:${Arch3}
+apt download libxau6:${Arch3}
+apt download libxdmcp6:${Arch3}
+apt download libbsd0:${Arch3}
+apt download libmd0:${Arch3}
+apt download libice6:${Arch3}
+apt download libsm6:${Arch3}
+apt download libuuid1:${Arch3}
+apt download libxrandr2:${Arch3}
+apt download libxext6:${Arch3}
+apt download libxrender1:${Arch3}
+apt download libxi6:${Arch3}
+apt download libsm6:${Arch3}
+apt download libxcursor1:${Arch3}
+apt download libxfixes3:${Arch3}
+apt download libpng16-16:${Arch3} || true
+apt download libpng16-16t64:${Arch3} || true
+apt download libicu66:${Arch3} || true
+apt download libicu70:${Arch3} || true
+apt download libicu74:${Arch3} || true
 apt download libfontconfig1:${Arch3} || true
 apt download libfontconfig:${Arch3} || true
 mkdir ../output_folder
@@ -61,6 +96,12 @@ rm -rf deb_folder output_folder
 
 sudo chmod 0755 "${PackagePath}/AppDir/opt/v2rayN/v2rayN"
 sudo chmod 0755 "${PackagePath}/AppDir/AppRun"
+
+sudo apt install -y patchelf
+
+pushd "${PackagePath}/AppDir/opt/v2rayN"
+patchelf --set-interpreter ${Interpreter} v2rayN
+popd
 
 # desktop && PATH
 
