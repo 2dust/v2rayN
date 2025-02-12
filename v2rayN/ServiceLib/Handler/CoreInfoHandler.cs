@@ -75,7 +75,7 @@ namespace ServiceLib.Handler
                 new CoreInfo
                 {
                     CoreType = ECoreType.v2fly,
-                    CoreExes = ["wv2ray", "v2ray"],
+                    CoreExes = ["v2ray"],
                     Arguments = "{0}",
                     Url = GetCoreUrl(ECoreType.v2fly),
                     Match = "V2Ray",
@@ -95,7 +95,7 @@ namespace ServiceLib.Handler
                 new CoreInfo
                 {
                     CoreType = ECoreType.Xray,
-                    CoreExes = ["wxray","xray"],
+                    CoreExes = ["xray"],
                     Arguments = "run -c {0}",
                     Url = GetCoreUrl(ECoreType.Xray),
                     ReleaseApiUrl = urlXray.Replace(Global.GithubUrl, Global.GithubApiUrl),
