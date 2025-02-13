@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler
+namespace ServiceLib.Handler
 {
     public sealed class AppHandler
     {
@@ -98,6 +98,7 @@
             {
                 FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
                 FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
+                FileManager.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
             });
         }
 

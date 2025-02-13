@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Models
+namespace ServiceLib.Models
 {
     [Serializable]
     public class ServerTestItem
@@ -8,6 +8,6 @@
         public int Port { get; set; }
         public EConfigType ConfigType { get; set; }
         public bool AllowTest { get; set; }
-        public int Delay { get; set; }
+        public int QueueNum { get; set; }
     }
 }

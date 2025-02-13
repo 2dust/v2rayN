@@ -86,17 +86,43 @@ public static class ProcUtils
         GetProcessKeyInfo(proc, review, out var procId, out var fileName, out var processName);
 
         try
-        { proc?.Kill(true); }
-        catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+        {
+            if (Utils.IsNonWindows())
+            {
+                proc?.Kill(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
         try
-        { proc?.Kill(); }
-        catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+        {
+            proc?.Kill();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
         try
-        { proc?.Close(); }
-        catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+        {
+            proc?.Close();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
         try
-        { proc?.Dispose(); }
-        catch (Exception ex) { Logging.SaveLog(_tag, ex); }
+        {
+            proc?.Dispose();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
 
         await Task.Delay(300);
         await ProcessKillByKeyInfo(review, procId, fileName, processName);

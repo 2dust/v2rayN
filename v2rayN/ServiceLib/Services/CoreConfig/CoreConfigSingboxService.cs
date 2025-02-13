@@ -242,6 +242,66 @@ namespace ServiceLib.Services.CoreConfig
             }
         }
 
+        public async Task<RetResult> GenerateClientSpeedtestConfig(ProfileItem node, int port)
+        {
+            var ret = new RetResult();
+            try
+            {
+                if (node is not { Port: > 0 })
+                {
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
+                }
+                if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
+                {
+                    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                    return ret;
+                }
+
+                ret.Msg = ResUI.InitialConfiguration;
+
+                var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+                if (Utils.IsNullOrEmpty(result))
+                {
+                    ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                    return ret;
+                }
+
+                var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
+                if (singboxConfig == null)
+                {
+                    ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                    return ret;
+                }
+
+                await GenLog(singboxConfig);
+                await GenOutbound(node, singboxConfig.outbounds.First());
+                await GenMoreOutbounds(node, singboxConfig);
+                await GenDnsDomains(null, singboxConfig, null);
+
+                singboxConfig.route.rules.Clear();
+                singboxConfig.inbounds.Clear();
+                singboxConfig.inbounds.Add(new()
+                {
+                    tag = $"{EInboundProtocol.mixed}{port}",
+                    listen = Global.Loopback,
+                    listen_port = port,
+                    type = EInboundProtocol.mixed.ToString(),
+                });
+
+                ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
+                ret.Success = true;
+                ret.Data = JsonUtils.Serialize(singboxConfig);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+        }
+
         public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
         {
             var ret = new RetResult();
@@ -1264,7 +1324,7 @@ namespace ServiceLib.Services.CoreConfig
                 singboxConfig.experimental.cache_file = new CacheFile4Sbox()
                 {
                     enabled = true,
-                    path = Utils.GetConfigPath("cache.db")
+                    path = Utils.GetBinConfigPath("cache.db")
                 };
             }
 

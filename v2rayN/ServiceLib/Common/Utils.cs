@@ -433,10 +433,22 @@ namespace ServiceLib.Common
         {
             try
             {
-                var ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-                var ipEndPoints = ipProperties.GetActiveTcpListeners();
-                //var lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
-                return ipEndPoints.Any(endPoint => endPoint.Port == port);
+                List<IPEndPoint> lstIpEndPoints = new();
+                List<TcpConnectionInformation> lstTcpConns = new();
+
+                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
+                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
+                lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
+
+                if (lstIpEndPoints?.FindIndex(it => it.Port == port) >= 0)
+                {
+                    return true;
+                }
+
+                if (lstTcpConns?.FindIndex(it => it.LocalEndPoint.Port == port) >= 0)
+                {
+                    return true;
+                }
             }
             catch (Exception ex)
             {
@@ -771,6 +783,24 @@ namespace ServiceLib.Common
         public static string GetFontsPath(string filename = "")
         {
             var tempPath = Path.Combine(StartupPath(), "guiFonts");
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+
+            if (Utils.IsNullOrEmpty(filename))
+            {
+                return tempPath;
+            }
+            else
+            {
+                return Path.Combine(tempPath, filename);
+            }
+        }
+
+        public static string GetBinConfigPath(string filename = "")
+        {
+            var tempPath = Path.Combine(StartupPath(), "binConfigs");
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);

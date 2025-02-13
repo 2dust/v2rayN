@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler
+namespace ServiceLib.Handler
 {
     /// <summary>
     /// Core configuration file processing class
@@ -105,6 +105,30 @@
             {
                 return result;
             }
+            await File.WriteAllTextAsync(fileName, result.Data.ToString());
+            return result;
+        }
+
+        public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, ProfileItem node, ServerTestItem testItem, string fileName)
+        {
+            var result = new RetResult();
+            var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+            var port = Utils.GetFreePort(initPort + testItem.QueueNum);
+            testItem.Port = port;
+
+            if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
+            {
+                result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(node, port);
+            }
+            else
+            {
+                result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(node, port);
+            }
+            if (result.Success != true)
+            {
+                return result;
+            }
+
             await File.WriteAllTextAsync(fileName, result.Data.ToString());
             return result;
         }
