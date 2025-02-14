@@ -1372,9 +1372,6 @@
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>هنگام بستن پنجره در سینی پنهان شوید</value>
   </data>
-  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
-    <value>تعداد در هر زمان برای دسته خودکار در طول تست سرعت (حداکثر 1000)</value>
-  </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>موارد استثنا: از سرور پروکسی برای آدرس های زیر استفاده نکنید. برای جدا کردن ورودی ها از کاما (،) استفاده کنید.</value>
   </data>

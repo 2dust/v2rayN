@@ -1369,9 +1369,6 @@
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>关闭窗口时隐藏至托盘</value>
   </data>
-  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
-    <value>测试时自动分批的每批数量（最大1000）</value>
-  </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>例外：对于下列地址不使用代理配置文件。使用逗号(,)分隔。</value>
   </data>

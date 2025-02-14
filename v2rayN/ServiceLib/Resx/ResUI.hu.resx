@@ -1372,9 +1372,6 @@
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Minimálás tálcára ablak zárásakor</value>
   </data>
-  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
-    <value>Szám / időszak az automatikus batch során a sebességvizsgálat során (maximum 1000)</value>
-  </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>Kivétel. Ne használj proxy szervert a címeknél, évezz pontosvesszőt (,)</value>
   </data>
