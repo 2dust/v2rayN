@@ -1,4 +1,4 @@
-﻿using SQLite;
+using SQLite;
 
 namespace ServiceLib.Models
 {
@@ -11,5 +11,6 @@ namespace ServiceLib.Models
         public int Delay { get; set; }
         public decimal Speed { get; set; }
         public int Sort { get; set; }
+        public string? Message { get; set; }
     }
 }

@@ -926,7 +926,7 @@
     <value>Speed(M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>Failed to run Core, please see the log</value>
+    <value>Failed to run Core, please check the prompt information</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>Remarks regular filter</value>

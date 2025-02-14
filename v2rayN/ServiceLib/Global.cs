@@ -64,8 +64,6 @@ namespace ServiceLib
         public const string GrpcGunMode = "gun";
         public const string GrpcMultiMode = "multi";
         public const int MaxPort = 65536;
-        public const string DelayUnit = "";
-        public const string SpeedUnit = "";
         public const int MinFontSize = 8;
         public const string RebootAs = "rebootas";
         public const string AvaAssets = "avares://v2rayN/Assets/";
@@ -105,10 +103,10 @@ namespace ServiceLib
 
         public static readonly List<string> SpeedTestUrls =
         [
-            @"https://speed.cloudflare.com/__down?bytes=100000000",
-            @"https://speed.cloudflare.com/__down?bytes=50000000",
+            @"https://cachefly.cachefly.net/50mb.test",
             @"https://speed.cloudflare.com/__down?bytes=10000000",
-            @"https://cachefly.cachefly.net/50mb.test"
+            @"https://speed.cloudflare.com/__down?bytes=50000000",
+            @"https://speed.cloudflare.com/__down?bytes=100000000",
         ];
 
         public static readonly List<string> SpeedPingTestUrls =

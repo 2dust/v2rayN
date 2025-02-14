@@ -754,9 +754,9 @@ namespace ServiceLib.Handler
                                   Security = t.Security,
                                   Network = t.Network,
                                   StreamSecurity = t.StreamSecurity,
-                                  Delay = t33 == null ? 0 : t33.Delay,
-                                  Speed = t33 == null ? 0 : t33.Speed,
-                                  Sort = t33 == null ? 0 : t33.Sort
+                                  Delay = t33?.Delay ?? 0,
+                                  Speed = t33?.Speed ?? 0,
+                                  Sort = t33?.Sort ?? 0
                               }).ToList();
 
             Enum.TryParse(colName, true, out EServerColName name);

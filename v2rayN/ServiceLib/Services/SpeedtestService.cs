@@ -62,7 +62,7 @@ namespace ServiceLib.Services
                     break;
 
                 case ESpeedActionType.Mixedtest:
-                    await RunMixedTestAsync(lstSelected, 5, exitLoopKey);
+                    await RunMixedTestAsync(lstSelected, 6, exitLoopKey);
                     break;
             }
         }
@@ -100,18 +100,18 @@ namespace ServiceLib.Services
                     case ESpeedActionType.Tcping:
                     case ESpeedActionType.Realping:
                         UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
-                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, "0");
+                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, 0);
                         break;
 
                     case ESpeedActionType.Speedtest:
                         UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
-                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "0");
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, 0);
                         break;
 
                     case ESpeedActionType.Mixedtest:
                         UpdateFunc(it.IndexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
-                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, "0");
-                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "0");
+                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, 0);
+                        ProfileExHandler.Instance.SetTestSpeed(it.IndexId, 0);
                         break;
                 }
             }
@@ -132,11 +132,10 @@ namespace ServiceLib.Services
                 {
                     try
                     {
-                        var time = await GetTcpingTime(it.Address, it.Port);
-                        var output = FormatOut(time, Global.DelayUnit);
+                        var responseTime = await GetTcpingTime(it.Address, it.Port);
 
-                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
-                        UpdateFunc(it.IndexId, output);
+                        ProfileExHandler.Instance.SetTestDelay(it.IndexId, responseTime);
+                        UpdateFunc(it.IndexId, responseTime.ToString());
                     }
                     catch (Exception ex)
                     {
@@ -145,6 +144,7 @@ namespace ServiceLib.Services
                 }));
             }
             Task.WaitAll([.. tasks]);
+            await Task.CompletedTask;
         }
 
         private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
@@ -282,15 +282,13 @@ namespace ServiceLib.Services
         {
             var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
             var responseTime = await downloadHandle.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
-            var output = FormatOut(responseTime, Global.DelayUnit);
 
-            ProfileExHandler.Instance.SetTestDelay(it.IndexId, output);
-            UpdateFunc(it.IndexId, output);
+            ProfileExHandler.Instance.SetTestDelay(it.IndexId, responseTime);
+            UpdateFunc(it.IndexId, responseTime.ToString());
         }
 
         private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it)
         {
-            ProfileExHandler.Instance.SetTestSpeed(it.IndexId, "-1");
             UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
             var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
@@ -301,7 +299,7 @@ namespace ServiceLib.Services
                 decimal.TryParse(msg, out var dec);
                 if (dec > 0)
                 {
-                    ProfileExHandler.Instance.SetTestSpeed(it.IndexId, msg);
+                    ProfileExHandler.Instance.SetTestSpeed(it.IndexId, dec);
                 }
                 UpdateFunc(it.IndexId, "", msg);
             });
@@ -326,7 +324,10 @@ namespace ServiceLib.Services
 
                 var result = clientSocket.BeginConnect(endPoint, null, null);
                 if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
+                {
                     throw new TimeoutException("connect timeout (5s): " + url);
+                }
+
                 clientSocket.EndConnect(result);
 
                 timer.Stop();
@@ -357,14 +358,13 @@ namespace ServiceLib.Services
             return lstTest;
         }
 
-        private string FormatOut(object time, string unit)
-        {
-            return $"{time}";
-        }
-
         private void UpdateFunc(string indexId, string delay, string speed = "")
         {
             _updateFunc?.Invoke(new() { IndexId = indexId, Delay = delay, Speed = speed });
+            if (indexId.IsNotEmpty() && speed.IsNotEmpty())
+            {
+                ProfileExHandler.Instance.SetTestMessage(indexId, speed);
+            }
         }
     }
 }

@@ -926,7 +926,7 @@
     <value>速度(M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>运行Core失败，请查看日志</value>
+    <value>运行 Core 失败，请查看提示信息</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>别名正则过滤</value>

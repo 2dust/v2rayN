@@ -196,7 +196,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Failed to run Core, please see the log 的本地化字符串。
+        ///   查找类似 Failed to run Core, please check the prompt information 的本地化字符串。
         /// </summary>
         public static string FailedToRunCore {
             get {

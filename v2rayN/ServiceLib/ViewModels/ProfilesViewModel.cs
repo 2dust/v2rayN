@@ -269,20 +269,22 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var item = _profileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
-            if (item != null)
+            if (item == null)
             {
-                if (Utils.IsNotEmpty(result.Delay))
-                {
-                    int.TryParse(result.Delay, out int temp);
-                    item.Delay = temp;
-                    item.DelayVal = $"{result.Delay} {Global.DelayUnit}";
-                }
-                if (Utils.IsNotEmpty(result.Speed))
-                {
-                    item.SpeedVal = $"{result.Speed} {Global.SpeedUnit}";
-                }
-                _profileItems.Replace(item, JsonUtils.DeepCopy(item));
+                return;
             }
+
+            if (Utils.IsNotEmpty(result.Delay))
+            {
+                int.TryParse(result.Delay, out var temp);
+                item.Delay = temp;
+                item.DelayVal = result.Delay ?? string.Empty;
+            }
+            if (Utils.IsNotEmpty(result.Speed))
+            {
+                item.SpeedVal = result.Speed ?? string.Empty;
+            }
+            _profileItems.Replace(item, JsonUtils.DeepCopy(item));
         }
 
         public void UpdateStatistics(ServerSpeedItem update)
@@ -421,10 +423,11 @@ namespace ServiceLib.ViewModels
                             Subid = t.Subid,
                             SubRemarks = t.SubRemarks,
                             IsActive = t.IndexId == _config.IndexId,
-                            Sort = t33 == null ? 0 : t33.Sort,
-                            Delay = t33 == null ? 0 : t33.Delay,
-                            DelayVal = t33?.Delay != 0 ? $"{t33?.Delay} {Global.DelayUnit}" : string.Empty,
-                            SpeedVal = t33?.Speed != 0 ? $"{t33?.Speed} {Global.SpeedUnit}" : string.Empty,
+                            Sort = t33?.Sort ?? 0,
+                            Delay = t33?.Delay ?? 0,
+                            Speed = t33?.Speed ?? 0,
+                            DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
+                            SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
                             TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
                             TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
                             TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),

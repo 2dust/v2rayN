@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 
 //using System.Reactive.Linq;
 
@@ -8,7 +8,7 @@ namespace ServiceLib.Handler
     {
         private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
         private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
-        private Queue<string> _queIndexIds = new();
+        private readonly Queue<string> _queIndexIds = new();
         public static ProfileExHandler Instance => _instance.Value;
         private static readonly string _tag = "ProfileExHandler";
 
@@ -59,7 +59,7 @@ namespace ServiceLib.Handler
                 List<ProfileExItem> lstInserts = [];
                 List<ProfileExItem> lstUpdates = [];
 
-                for (int i = 0; i < cnt; i++)
+                for (var i = 0; i < cnt; i++)
                 {
                     var id = _queIndexIds.Dequeue();
                     var item = lstExists.FirstOrDefault(t => t.IndexId == id);
@@ -78,13 +78,18 @@ namespace ServiceLib.Handler
                         lstInserts.Add(itemNew);
                     }
                 }
+
                 try
                 {
-                    if (lstInserts.Count() > 0)
+                    if (lstInserts.Count > 0)
+                    {
                         await SQLiteHelper.Instance.InsertAllAsync(lstInserts);
+                    }
 
-                    if (lstUpdates.Count() > 0)
+                    if (lstUpdates.Count > 0)
+                    {
                         await SQLiteHelper.Instance.UpdateAllAsync(lstUpdates);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -93,17 +98,24 @@ namespace ServiceLib.Handler
             }
         }
 
-        private void AddProfileEx(string indexId, ref ProfileExItem? profileEx)
+        private ProfileExItem AddProfileEx(string indexId)
         {
-            profileEx = new()
+            var profileEx = new ProfileExItem()
             {
                 IndexId = indexId,
                 Delay = 0,
                 Speed = 0,
-                Sort = 0
+                Sort = 0,
+                Message = string.Empty
             };
             _lstProfileEx.Add(profileEx);
             IndexIdEnqueue(indexId);
+            return profileEx;
+        }
+
+        private ProfileExItem GetProfileExItem(string? indexId)
+        {
+            return _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId) ?? AddProfileEx(indexId);
         }
 
         public async Task ClearAll()
@@ -124,39 +136,34 @@ namespace ServiceLib.Handler
             }
         }
 
-        public void SetTestDelay(string indexId, string delayVal)
+        public void SetTestDelay(string indexId, int delay)
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
+            var profileEx = GetProfileExItem(indexId);
 
-            int.TryParse(delayVal, out int delay);
             profileEx.Delay = delay;
             IndexIdEnqueue(indexId);
         }
 
-        public void SetTestSpeed(string indexId, string speedVal)
+        public void SetTestSpeed(string indexId, decimal speed)
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
+            var profileEx = GetProfileExItem(indexId);
 
-            decimal.TryParse(speedVal, out decimal speed);
             profileEx.Speed = speed;
+            IndexIdEnqueue(indexId);
+        }
+
+        public void SetTestMessage(string indexId, string message)
+        {
+            var profileEx = GetProfileExItem(indexId);
+
+            profileEx.Message = message;
             IndexIdEnqueue(indexId);
         }
 
         public void SetSort(string indexId, int sort)
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
+            var profileEx = GetProfileExItem(indexId);
+
             profileEx.Sort = sort;
             IndexIdEnqueue(indexId);
         }

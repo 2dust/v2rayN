@@ -927,7 +927,7 @@
     <value>速度(M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>執行Core失敗，請查閲日誌</value>
+    <value>執行Core失敗，請查看提示訊息</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>別名正則過濾</value>
