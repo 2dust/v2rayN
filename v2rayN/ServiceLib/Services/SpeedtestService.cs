@@ -58,11 +58,11 @@ namespace ServiceLib.Services
                     break;
 
                 case ESpeedActionType.Speedtest:
-                    await RunMixedTestAsync(lstSelected, 1, exitLoopKey);
+                    await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey);
                     break;
 
                 case ESpeedActionType.Mixedtest:
-                    await RunMixedTestAsync(lstSelected, 6, exitLoopKey);
+                    await RunMixedTestAsync(lstSelected, 6, true, exitLoopKey);
                     break;
             }
         }
@@ -177,7 +177,15 @@ namespace ServiceLib.Services
                 }
 
                 UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
-                await RunRealPingBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
+
+                if (pageSizeNext > 6)
+                {
+                    await RunRealPingBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
+                }
+                else
+                {
+                    await RunMixedTestAsync(lstSelected, 6, false, exitLoopKey);
+                }
             }
         }
 
@@ -226,7 +234,7 @@ namespace ServiceLib.Services
             return true;
         }
 
-        private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, string exitLoopKey)
+        private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
         {
             using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
             var downloadHandle = new DownloadService();
@@ -252,9 +260,12 @@ namespace ServiceLib.Services
                         pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(it);
                         if (pid > 0)
                         {
-                            await Task.Delay(1000);
+                            await Task.Delay(500);
                             await DoRealPing(downloadHandle, it);
-                            await DoSpeedTest(downloadHandle, it);
+                            if (blSpeedTest)
+                            {
+                                await DoSpeedTest(downloadHandle, it);
+                            }
                         }
                         else
                         {
