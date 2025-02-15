@@ -141,7 +141,7 @@ namespace ServiceLib.Handler
 
             var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
             var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
-            var proc = await CoreHandler.Instance.RunProcess(coreInfo, fileName, true, false);
+            var proc = await RunProcess(coreInfo, fileName, true, false);
             if (proc is null)
             {
                 return -1;

@@ -518,7 +518,20 @@
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyLinuxTip}"
                             TextWrapping="Wrap" />
-                  
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Classes="Margin8"
+                            Text="{x:Static resx:ResUI.TbSettingsMixedConcurrencyCount}" />
+                        <ComboBox
+                            x:Name="cmbMixedConcurrencyCount"
+                            Grid.Row="16"
+                            Grid.Column="1"
+                            Width="200"
+                            Classes="Margin8" />
+
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"

@@ -125,6 +125,10 @@ namespace ServiceLib.Handler
             {
                 config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrl;
             }
+            if (config.SpeedTestItem.MixedConcurrencyCount < 1)
+            {
+                config.SpeedTestItem.MixedConcurrencyCount = 5;
+            }
 
             config.Mux4RayItem ??= new()
             {

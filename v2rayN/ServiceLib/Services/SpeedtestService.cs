@@ -62,7 +62,7 @@ namespace ServiceLib.Services
                     break;
 
                 case ESpeedActionType.Mixedtest:
-                    await RunMixedTestAsync(lstSelected, 6, true, exitLoopKey);
+                    await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
                     break;
             }
         }
@@ -178,13 +178,13 @@ namespace ServiceLib.Services
 
                 UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
 
-                if (pageSizeNext > 6)
+                if (pageSizeNext > _config.SpeedTestItem.MixedConcurrencyCount)
                 {
                     await RunRealPingBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
                 }
                 else
                 {
-                    await RunMixedTestAsync(lstSelected, 6, false, exitLoopKey);
+                    await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, false, exitLoopKey);
                 }
             }
         }

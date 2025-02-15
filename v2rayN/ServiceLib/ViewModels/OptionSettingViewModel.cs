@@ -63,6 +63,7 @@ namespace ServiceLib.ViewModels
         [Reactive] public int SpeedTestTimeout { get; set; }
         [Reactive] public string SpeedTestUrl { get; set; }
         [Reactive] public string SpeedPingTestUrl { get; set; }
+        [Reactive] public int MixedConcurrencyCount { get; set; }
         [Reactive] public bool EnableHWA { get; set; }
         [Reactive] public string SubConvertUrl { get; set; }
         [Reactive] public int MainGirdOrientation { get; set; }
@@ -177,6 +178,7 @@ namespace ServiceLib.ViewModels
             CurrentFontFamily = _config.UiItem.CurrentFontFamily;
             SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
             SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
+            MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
             SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
             EnableHWA = _config.GuiItem.EnableHWA;
             SubConvertUrl = _config.ConstItem.SubConvertUrl;
@@ -330,6 +332,7 @@ namespace ServiceLib.ViewModels
             _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
             _config.UiItem.CurrentFontFamily = CurrentFontFamily;
             _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
+            _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
             _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
             _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
             _config.GuiItem.EnableHWA = EnableHWA;

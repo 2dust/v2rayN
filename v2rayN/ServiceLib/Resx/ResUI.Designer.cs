@@ -3221,6 +3221,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Number per time for auto batch during speedtest(max 1000) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMixedConcurrencyCount {
+            get {
+                return ResourceManager.GetString("TbSettingsMixedConcurrencyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box Mux Protocol 的本地化字符串。
         /// </summary>
         public static string TbSettingsMux4SboxProtocol {

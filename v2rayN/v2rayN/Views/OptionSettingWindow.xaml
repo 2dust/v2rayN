@@ -776,7 +776,22 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyTip}"
                             TextWrapping="Wrap" />
-                       
+
+                        <TextBlock
+                            Grid.Row="16"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMixedConcurrencyCount}" />
+                        <ComboBox
+                            x:Name="cmbMixedConcurrencyCount"
+                            Grid.Row="16"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefComboBox}" />
+
                         <TextBlock
                             Grid.Row="17"
                             Grid.Column="0"

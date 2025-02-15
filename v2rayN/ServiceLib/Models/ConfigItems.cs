@@ -156,6 +156,7 @@ namespace ServiceLib.Models
         public int SpeedTestTimeout { get; set; }
         public string SpeedTestUrl { get; set; }
         public string SpeedPingTestUrl { get; set; }
+        public int MixedConcurrencyCount { get; set; }
     }
 
     [Serializable]

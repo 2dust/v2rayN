@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1368,6 +1368,9 @@
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>关闭窗口时隐藏至托盘</value>
+  </data>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>多线程测试时的并发数量</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>例外：对于下列地址不使用代理配置文件。使用逗号(,)分隔。</value>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1371,6 +1371,9 @@
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>
+  </data>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>The number of concurrent during multi-test</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
