@@ -25,8 +25,6 @@
         <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
         <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
         <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
-
         <UseSystemResourceKeys>true</UseSystemResourceKeys>
-        <PublishSingleFile>true</PublishSingleFile>
     </PropertyGroup>
 </Project>
