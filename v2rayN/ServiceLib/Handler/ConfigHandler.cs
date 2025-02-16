@@ -1051,6 +1051,27 @@ namespace ServiceLib.Handler
             return itemSocks;
         }
 
+        public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
+        {
+            var lstModel = await AppHandler.Instance.ProfileItems(subid, "");
+            if (lstModel is { Count: <= 0 })
+            {
+                return -1;
+            }
+            var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
+            var lstProfile = (from t in lstModel
+                              join t2 in lstProfileExs on t.IndexId equals t2.IndexId
+                              where t2.Delay == -1
+                              select t.IndexId).ToList();
+
+            foreach (var item in lstProfile)
+            {
+                await RemoveProfileItem(config, item);
+            }
+
+            return lstProfile.Count;
+        }
+
         #endregion Server
 
         #region Batch add servers

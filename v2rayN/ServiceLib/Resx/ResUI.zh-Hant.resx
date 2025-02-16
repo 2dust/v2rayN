@@ -1394,4 +1394,13 @@
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
     <value>開始對失敗部分進行重新測試，剩餘 {0} 個。可按 ESC 終止...</value>
   </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>按測試結果</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>按測試結果移除無效</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>移除無效測試結果 {0} 個。</value>
+  </data>
 </root>

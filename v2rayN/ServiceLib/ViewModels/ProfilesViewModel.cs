@@ -79,6 +79,7 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
+        public ReactiveCommand<Unit, Unit> RemoveInvalidServerResultCmd { get; }
 
         //servers export
         public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
@@ -196,6 +197,10 @@ namespace ServiceLib.ViewModels
             SortServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
             {
                 await SortServer(EServerColName.DelayVal.ToString());
+            });
+            RemoveInvalidServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await RemoveInvalidServerResult();
             });
             //servers export
             Export2ClientConfigCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -657,6 +662,13 @@ namespace ServiceLib.ViewModels
             }
             _dicHeaderSort[colName] = !asc;
             RefreshServers();
+        }
+
+        public async Task RemoveInvalidServerResult()
+        {
+            var count = await ConfigHandler.RemoveInvalidServerResult(_config, _config.SubIndexId);
+            RefreshServers();
+            NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
         }
 
         //move server

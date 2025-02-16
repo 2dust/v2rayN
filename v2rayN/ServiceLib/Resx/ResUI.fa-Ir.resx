@@ -1396,4 +1396,13 @@
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
     <value>شروع آزمایش مجدد قطعات ناموفق، {0} باقی مانده است. برای خاتمه ESC را فشار دهید...</value>
   </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>By test result</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Remove invalid by test results</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>Removed {0} invalid test results.</value>
+  </data>
 </root>

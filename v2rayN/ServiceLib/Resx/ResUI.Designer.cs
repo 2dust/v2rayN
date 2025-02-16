@@ -1312,6 +1312,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remove invalid by test results 的本地化字符串。
+        /// </summary>
+        public static string menuRemoveInvalidServerResult {
+            get {
+                return ResourceManager.GetString("menuRemoveInvalidServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Remove selected servers (Delete) 的本地化字符串。
         /// </summary>
         public static string menuRemoveServer {
@@ -1681,6 +1690,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 By test result 的本地化字符串。
+        /// </summary>
+        public static string menuTestServerResult {
+            get {
+                return ResourceManager.GetString("menuTestServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0} Website 的本地化字符串。
         /// </summary>
         public static string menuWebsiteItem {
@@ -2001,6 +2019,15 @@ namespace ServiceLib.Resx {
         public static string RemoveDuplicateServerResult {
             get {
                 return ResourceManager.GetString("RemoveDuplicateServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Removed {0} invalid test results. 的本地化字符串。
+        /// </summary>
+        public static string RemoveInvalidServerResultTip {
+            get {
+                return ResourceManager.GetString("RemoveInvalidServerResultTip", resourceCulture);
             }
         }
         
@@ -3221,7 +3248,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Number per time for auto batch during speedtest(max 1000) 的本地化字符串。
+        ///   查找类似 The number of concurrent during multi-test 的本地化字符串。
         /// </summary>
         public static string TbSettingsMixedConcurrencyCount {
             get {

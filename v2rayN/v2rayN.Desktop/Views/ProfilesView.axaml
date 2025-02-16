@@ -104,14 +104,16 @@
                         <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
                         <Separator />
                         <MenuItem x:Name="menuSetDefaultMultipleServer" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}" />
-
                         <MenuItem x:Name="menuSetDefaultLoadBalanceServer" Header="{x:Static resx:ResUI.menuSetDefaultLoadBalanceServer}" />
                         <Separator />
                         <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />
                         <MenuItem x:Name="menuRealPingServer" Header="{x:Static resx:ResUI.menuRealPingServer}" />
                         <MenuItem x:Name="menuSpeedServer" Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
+                            <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                            <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
+                        </MenuItem>
                         <Separator />
                         <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
                             <MenuItem>
