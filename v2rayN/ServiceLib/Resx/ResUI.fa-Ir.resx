@@ -210,9 +210,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>جابجایی</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>محتوای اشتراک اصلی را پاک کنید</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>دانلود Core با موفقیت</value>
   </data>
@@ -715,9 +712,6 @@
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>استثناها: از سرور پروکسی برای آدرس هایی که با موارد زیر شروع می شوند استفاده نکنید. برای جدا کردن ورودی ها از نقطه ویرگول (;) استفاده کنید.</value>
   </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>پورت Http</value>
-  </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>نمایش سرعت واقعی (نیاز به راه اندازی مجدد)</value>
   </data>
@@ -1050,9 +1044,6 @@
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>نمایش یا پنهان کردن پنجره اصلی</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>شما در حال حاضر در حال اجرای یک بسته مستقل هستید، لطفاً فایل SelfContained.7z را به صورت دستی دانلود کنید تا آن را از حالت فشرده خارج کرده و بازنویسی کنید!</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>پیکربندی سفارشی ساکس پورت</value>

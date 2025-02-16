@@ -175,10 +175,10 @@
     <value>初始化配置</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} {1} 已是最新版本</value>
+    <value>{0} {1} 已是最新版本。</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} {1} 已是最新版本</value>
+    <value>{0} {1} 已是最新版本。</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
     <value>地址</value>
@@ -209,9 +209,6 @@
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>传输协议</value>
-  </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>清除原订阅内容</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>下载Core成功</value>
@@ -277,7 +274,7 @@
     <value>请先选择服务器</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>服务器去重完成。原数量: {0}，现数量: {1}</value>
+    <value>服务器去重完成。原数量: {0}，现数量: {1}。</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
     <value>是否确定移除服务器？</value>
@@ -714,9 +711,6 @@
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号(;)分隔。</value>
-  </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>本地http监听端口</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>显示实时速度（需重启）</value>
@@ -1251,9 +1245,6 @@
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>显示或隐藏主界面</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>您当前运行的是独立包，请手动下载 SelfContained.7z文件解压覆盖！</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>自定义配置的Socks端口</value>

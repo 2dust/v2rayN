@@ -210,9 +210,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Протокол</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Очистить контент оригинальной подписки</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>Ядро успешно загружено</value>
   </data>
@@ -721,9 +718,6 @@
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>Исключение. Не используйте прокси-сервер для адресов, начинающихся с (,), используйте точку с запятой (;)</value>
   </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>HTTP порт</value>
-  </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>Display real-time speed</value>
   </data>
@@ -1209,9 +1203,6 @@
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
     <value>Add [TUIC] server</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>Enable IPv6 Address</value>

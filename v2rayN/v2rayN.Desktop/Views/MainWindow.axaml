@@ -9,7 +9,7 @@
     xmlns:view="using:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
-    Width="900"
+    Width="1000"
     Height="600"
     MinWidth="900"
     x:DataType="vms:MainWindowViewModel"

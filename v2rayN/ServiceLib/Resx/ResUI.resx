@@ -210,9 +210,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Transport</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Clear original subscription content</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>Download Core successfully</value>
   </data>
@@ -329,7 +326,7 @@
     <value>Please fill in the URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
+    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace.</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
     <value>Download GeoFile: {0} successfully</value>
@@ -715,9 +712,6 @@
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>Exclusions: Do not use proxy server for addresses beginning with the following. Use semicolon (;) to separate entries.</value>
   </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>HTTP Port</value>
-  </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>Display real-time speed (requires restart)</value>
   </data>
@@ -950,7 +944,7 @@
     <value>Enable sorting servers by drag-n-drop (requires restart)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
-    <value>AutoRefresh</value>
+    <value>Auto refresh</value>
   </data>
   <data name="SpeedtestingSkip" xml:space="preserve">
     <value>Skip test</value>
@@ -1115,7 +1109,7 @@
     <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Auto ScrollToEnd</value>
+    <value>Auto scroll to end</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Speed Ping Test URL</value>
@@ -1255,9 +1249,6 @@
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Show or hide the main window</value>
   </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
-  </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Custom config socks port</value>
   </data>
@@ -1355,7 +1346,7 @@
     <value>System sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password is encrypted and stored only in local files.</value>
+    <value>The password is encrypted and stored only in local files</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Please set the sudo password in Tun mode settings first</value>

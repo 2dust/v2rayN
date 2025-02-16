@@ -61,7 +61,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Do you want to append rules? Choose yes to append, choose otherwise to replace 的本地化字符串。
+        ///   查找类似 Do you want to append rules? Choose yes to append, choose otherwise to replace. 的本地化字符串。
         /// </summary>
         public static string AddBatchRoutingRulesYesNo {
             get {
@@ -1708,15 +1708,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Clear original subscription content 的本地化字符串。
-        /// </summary>
-        public static string MsgClearSubscription {
-            get {
-                return ResourceManager.GetString("MsgClearSubscription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Download GeoFile: {0} successfully 的本地化字符串。
         /// </summary>
         public static string MsgDownloadGeoFileSuccessfully {
@@ -2231,7 +2222,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 AutoRefresh 的本地化字符串。
+        ///   查找类似 Auto refresh 的本地化字符串。
         /// </summary>
         public static string TbAutoRefresh {
             get {
@@ -2240,7 +2231,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Auto ScrollToEnd 的本地化字符串。
+        ///   查找类似 Auto scroll to end 的本地化字符串。
         /// </summary>
         public static string TbAutoScrollToEnd {
             get {
@@ -3140,15 +3131,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 HTTP Port 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsHttpPort {
-            get {
-                return ResourceManager.GetString("TbSettingsHttpPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Hysteria Max bandwidth (Up/Dw) 的本地化字符串。
         /// </summary>
         public static string TbSettingsHysteriaBandwidth {
@@ -3203,7 +3185,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The password is encrypted and stored only in local files. 的本地化字符串。
+        ///   查找类似 The password is encrypted and stored only in local files 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {
             get {
@@ -3901,15 +3883,6 @@ namespace ServiceLib.Resx {
         public static string UngroupedServers {
             get {
                 return ResourceManager.GetString("UngroupedServers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it! 的本地化字符串。
-        /// </summary>
-        public static string UpdateStandalonePackageTip {
-            get {
-                return ResourceManager.GetString("UpdateStandalonePackageTip", resourceCulture);
             }
         }
         

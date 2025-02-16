@@ -210,9 +210,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Szállítás</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Eredeti előfizetési tartalom törlése</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>A Core letöltése sikerült</value>
   </data>
@@ -714,9 +711,6 @@
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>Kivétel. Ne használjon proxy szervert a címek esetében, amelyek pontosan itt kezdődnek, használjon pontosvesszőt (;)</value>
-  </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>HTTP Port</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>Display real-time speed</value>
@@ -1254,9 +1248,6 @@
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Fő ablak megjelenítése vagy elrejtése</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>Jelenleg egy önálló csomagot futtatsz, kérlek, töltsd le manuálisan a SelfContained.7z fájlt, bontsd ki és írd felül!</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Testreszabott konfigurációs socks port</value>
