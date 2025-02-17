@@ -427,22 +427,32 @@ namespace ServiceLib.Services
         {
             if (Utils.IsWindows())
             {
-                //Check for standalone windows .Net version
-                if (coreInfo?.CoreType == ECoreType.v2rayN && RuntimeInformation.ProcessArchitecture == Architecture.X64)
-                {
-                    var runtimes = await Utils.GetCliWrapOutput("dotnet", "--list-runtimes");
-                    if (runtimes == null || runtimes.Contains("Microsoft.WindowsDesktop.App 8") == false)
-                    {
-                        return coreInfo?.DownloadUrlWin64?.Replace(".zip", "-SelfContained.zip");
-                    }
-                }
-
-                return RuntimeInformation.ProcessArchitecture switch
+                var url = RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.Arm64 => coreInfo?.DownloadUrlWinArm64,
                     Architecture.X64 => coreInfo?.DownloadUrlWin64,
                     _ => null,
                 };
+
+                if (coreInfo?.CoreType != ECoreType.v2rayN)
+                {
+                    return url;
+                }
+
+                //Check for standalone windows .Net version
+                if (File.Exists(Path.Combine(Utils.GetBaseDirectory(), "wpfgfx_cor3.dll"))
+                    && File.Exists(Path.Combine(Utils.GetBaseDirectory(), "D3DCompiler_47_cor3.dll")))
+                {
+                    return url?.Replace(".zip", "-SelfContained.zip");
+                }
+
+                //Check for avalonia desktop windows version
+                if (File.Exists(Path.Combine(Utils.GetBaseDirectory(), "libHarfBuzzSharp.dll")))
+                {
+                    return url?.Replace(".zip", "-desktop.zip");
+                }
+
+                return url;
             }
             else if (Utils.IsLinux())
             {

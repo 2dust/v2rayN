@@ -47,4 +47,22 @@ jobs:
         name: v2rayN-windows-desktop
         path: |
           ${{ github.workspace }}/v2rayN/Release/windows*
-    
+
+    # release zip archive
+    - name: Package release zip archive
+      if: github.event.inputs.release_tag != ''
+      run: |
+        chmod 755 package-release-zip.sh
+        ./package-release-zip.sh $OutputArch $OutputPath64
+        mv "v2rayN-${OutputArch}.zip" "v2rayN-${OutputArch}-desktop.zip"
+        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+        mv "v2rayN-${OutputArchArm}.zip" "v2rayN-${OutputArchArm}-desktop.zip"
+
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
