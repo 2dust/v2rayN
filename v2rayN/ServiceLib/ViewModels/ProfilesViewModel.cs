@@ -520,7 +520,7 @@ namespace ServiceLib.ViewModels
             }
             var exists = lstSelecteds.Exists(t => t.IndexId == _config.IndexId);
 
-            await ConfigHandler.RemoveServer(_config, lstSelecteds);
+            await ConfigHandler.RemoveServers(_config, lstSelecteds);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
             if (lstSelecteds.Count == _profileItems.Count)
             {
