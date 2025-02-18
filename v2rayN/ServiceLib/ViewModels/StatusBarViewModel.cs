@@ -60,6 +60,9 @@ namespace ServiceLib.ViewModels
         [Reactive]
         public int SystemProxySelected { get; set; }
 
+        [Reactive]
+        public bool BlSystemProxyPacVisible { get; set; }
+
         #endregion System Proxy
 
         #region UI
@@ -96,6 +99,7 @@ namespace ServiceLib.ViewModels
             SelectedRouting = new();
             SelectedServer = new();
             RunningServerToolTipText = "-";
+            BlSystemProxyPacVisible = Utils.IsWindows();
 
             if (_config.TunModeItem.EnableTun && AllowEnableTun())
             {

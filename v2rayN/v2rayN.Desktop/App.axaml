@@ -46,6 +46,12 @@
                             Header="{x:Static resx:ResUI.menuSystemProxyNothing}"
                             IsChecked="{Binding BlSystemProxyNothing}"
                             ToggleType="Radio" />
+                        <NativeMenuItem
+                            Command="{Binding SystemProxyPacCmd}"
+                            Header="{x:Static resx:ResUI.menuSystemProxyPac}"
+                            IsChecked="{Binding BlSystemProxyPac}"
+                            IsVisible="{Binding BlSystemProxyPacVisible}"
+                            ToggleType="Radio" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />

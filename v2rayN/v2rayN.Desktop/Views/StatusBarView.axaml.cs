@@ -43,6 +43,11 @@ namespace v2rayN.Desktop.Views
             });
 
             //spEnableTun.IsVisible = (Utils.IsWindows() || AppHandler.Instance.IsAdministrator);
+
+            if (Utils.IsNonWindows() && cmbSystemProxy.Items.IsReadOnly == false)
+            {
+                cmbSystemProxy.Items.RemoveAt(cmbSystemProxy.Items.Count - 1);
+            }
         }
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
