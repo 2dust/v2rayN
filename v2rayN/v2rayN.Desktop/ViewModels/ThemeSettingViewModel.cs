@@ -119,6 +119,17 @@ namespace v2rayN.Desktop.ViewModels
                 Value = size,
             });
             Application.Current?.Styles.Add(style);
+
+            ModifyFontSizeEx(size);
+        }
+
+        private void ModifyFontSizeEx(double size)
+        {
+            //DataGrid
+            var rowHeight = 20 + (size / 2);
+            var style = new Style(x => x.OfType<DataGrid>());
+            style.Add(new Setter(DataGrid.RowHeightProperty, rowHeight));
+            Application.Current?.Styles.Add(style);
         }
 
         private void ModifyFontFamily()

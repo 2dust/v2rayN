@@ -787,6 +787,7 @@
                         Classes="Margin8" />
 
                     <TextBlock
+                        x:Name="labLinuxSudoPassword"
                         Grid.Row="7"
                         Grid.Column="0"
                         VerticalAlignment="Center"
@@ -800,6 +801,7 @@
                         HorizontalAlignment="Left"
                         Classes="Margin8" />
                     <TextBlock
+                        x:Name="labLinuxSudoPasswordTip"
                         Grid.Row="7"
                         Grid.Column="2"
                         VerticalAlignment="Center"

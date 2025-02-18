@@ -174,6 +174,9 @@ namespace v2rayN.Desktop.Views
             if (Utils.IsWindows())
             {
                 txbSettingsExceptionTip2.IsVisible = false;
+                txtLinuxSudoPassword.IsVisible = false;
+                labLinuxSudoPassword.IsVisible = false;
+                labLinuxSudoPasswordTip.IsVisible = false;
             }
             else
             {
