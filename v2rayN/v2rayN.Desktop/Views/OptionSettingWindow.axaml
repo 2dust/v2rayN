@@ -2,6 +2,7 @@
     x:Class="v2rayN.Desktop.Views.OptionSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -219,8 +220,7 @@
                             Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
-                            Classes="Margin8"
-                            ToolTip.Tip="Level" />
+                            Classes="Margin8" />
 
                         <TextBlock
                             Grid.Row="14"
@@ -505,13 +505,12 @@
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
-                        <ComboBox
+                        <ctrls:AutoCompleteBox
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
-                            Width="200"
-                            Classes="Margin8"
-                            MaxDropDownHeight="1000" />
+                            Width="300"
+                            Classes="Margin8" />
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="2"
@@ -552,8 +551,8 @@
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
-                        <ComboBox
-                            x:Name="cmbSpeedTestUrl"
+                        <ctrls:AutoCompleteBox
+                            Name="cmbSpeedTestUrl"
                             Grid.Row="18"
                             Grid.Column="1"
                             Width="300"
@@ -565,7 +564,7 @@
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}" />
-                        <ComboBox
+                        <ctrls:AutoCompleteBox
                             x:Name="cmbSpeedPingTestUrl"
                             Grid.Row="19"
                             Grid.Column="1"
@@ -578,13 +577,12 @@
                             VerticalAlignment="Center"
                             Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
-                        <ComboBox
+                        <ctrls:AutoCompleteBox
                             x:Name="cmbSubConvertUrl"
                             Grid.Row="20"
                             Grid.Column="1"
                             Width="300"
-                            Classes="Margin8"
-                            ToolTip.Tip="Convert Url" />
+                            Classes="Margin8" />
 
                         <TextBlock
                             Grid.Row="21"
@@ -596,7 +594,7 @@
                             x:Name="cmbMainGirdOrientation"
                             Grid.Row="21"
                             Grid.Column="1"
-                            Width="300"
+                            Width="200"
                             Classes="Margin8" />
 
                         <TextBlock
@@ -687,8 +685,7 @@
                             <ComboBox
                                 x:Name="cmbsystemProxyAdvancedProtocol"
                                 MinWidth="400"
-                                Classes="Margin8"
-                                ToolTip.Tip="Protocol" />
+                                Classes="Margin8" />
                         </StackPanel>
                     </StackPanel>
 

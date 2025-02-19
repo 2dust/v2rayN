@@ -74,18 +74,11 @@ namespace v2rayN.Desktop.Views
             {
                 cmbSpeedTestTimeout.Items.Add(i * 5);
             }
-            Global.SpeedTestUrls.ForEach(it =>
-            {
-                cmbSpeedTestUrl.Items.Add(it);
-            });
-            Global.SpeedPingTestUrls.ForEach(it =>
-            {
-                cmbSpeedPingTestUrl.Items.Add(it);
-            });
-            Global.SubConvertUrls.ForEach(it =>
-            {
-                cmbSubConvertUrl.Items.Add(it);
-            });
+
+            cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
+            cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
+            cmbSubConvertUrl.ItemsSource = Global.SubConvertUrls;
+
             Global.GeoFilesSources.ForEach(it =>
             {
                 cmbGetFilesSourceUrl.Items.Add(it);
@@ -139,12 +132,12 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.Hide2TrayWhenClose, v => v.togHide2TrayWhenClose.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.AutoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.SelectedValue).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.SelectedValue).DisposeWith(disposables);
@@ -215,8 +208,9 @@ namespace v2rayN.Desktop.Views
         private async Task InitSettingFont()
         {
             var lstFonts = await GetFonts();
-            lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-            cmbcurrentFontFamily.Items.Add(string.Empty);
+
+            lstFonts.Add(string.Empty);
+            cmbcurrentFontFamily.ItemsSource = lstFonts;
         }
 
         private async Task<List<string>> GetFonts()
