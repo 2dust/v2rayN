@@ -372,9 +372,8 @@ namespace v2rayN.Desktop.Views
         private void StorageUI(string? n = null)
         {
             List<ColumnItem> lvColumnItem = new();
-            for (int k = 0; k < lstProfiles.Columns.Count; k++)
+            foreach (var item2 in lstProfiles.Columns)
             {
-                var item2 = lstProfiles.Columns[k];
                 if (item2.Tag == null)
                 {
                     continue;

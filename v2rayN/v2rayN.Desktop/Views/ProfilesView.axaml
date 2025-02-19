@@ -84,6 +84,7 @@
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
+                CanUserReorderColumns="True"
                 BorderThickness="1"
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"

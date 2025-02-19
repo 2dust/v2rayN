@@ -353,9 +353,9 @@ namespace v2rayN.Views
         private void StorageUI(string? n = null)
         {
             List<ColumnItem> lvColumnItem = new();
-            for (int k = 0; k < lstProfiles.Columns.Count; k++)
+            foreach (var t in lstProfiles.Columns)
             {
-                var item2 = (MyDGTextColumn)lstProfiles.Columns[k];
+                var item2 = (MyDGTextColumn)t;
                 lvColumnItem.Add(new()
                 {
                     Name = item2.ExName,
