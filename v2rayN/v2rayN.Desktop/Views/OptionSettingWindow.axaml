@@ -459,6 +459,7 @@
                             Classes="Margin8" />
 
                         <TextBlock
+                            x:Name="labHide2TrayWhenClose"
                             Grid.Row="9"
                             Grid.Column="0"
                             VerticalAlignment="Center"

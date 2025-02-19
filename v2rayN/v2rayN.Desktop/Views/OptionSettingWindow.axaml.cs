@@ -174,14 +174,26 @@ namespace v2rayN.Desktop.Views
             if (Utils.IsWindows())
             {
                 txbSettingsExceptionTip2.IsVisible = false;
+
                 txtLinuxSudoPassword.IsVisible = false;
                 labLinuxSudoPassword.IsVisible = false;
                 labLinuxSudoPasswordTip.IsVisible = false;
+
+                labHide2TrayWhenClose.IsVisible = false;
+                togHide2TrayWhenClose.IsVisible = false;
             }
-            else
+            else if (Utils.IsLinux())
             {
                 txbSettingsExceptionTip.IsVisible = false;
                 panSystemProxyAdvanced.IsVisible = false;
+            }
+            else if (Utils.IsOSX())
+            {
+                txbSettingsExceptionTip.IsVisible = false;
+                panSystemProxyAdvanced.IsVisible = false;
+
+                labHide2TrayWhenClose.IsVisible = false;
+                togHide2TrayWhenClose.IsVisible = false;
             }
         }
 

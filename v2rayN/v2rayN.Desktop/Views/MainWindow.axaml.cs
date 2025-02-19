@@ -414,18 +414,17 @@ namespace v2rayN.Desktop.Views
             }
             else
             {
-                if (Utils.IsOSX() || _config.UiItem.Hide2TrayWhenClose)
-                {
-                    foreach (var ownedWindow in this.OwnedWindows)
-                    {
-                        ownedWindow.Close();
-                    }
-                    this.Hide();
-                }
-                else
+                if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
                 {
                     this.WindowState = WindowState.Minimized;
+                    return;
                 }
+
+                foreach (var ownedWindow in this.OwnedWindows)
+                {
+                    ownedWindow.Close();
+                }
+                this.Hide();
             }
 
             _config.UiItem.ShowInTaskbar = bl;
