@@ -764,7 +764,7 @@
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin8}"
                             MaxDropDownHeight="1000"
                             Style="{StaticResource DefComboBox}" />
@@ -867,7 +867,7 @@
                             x:Name="cmbMainGirdOrientation"
                             Grid.Row="21"
                             Grid.Column="1"
-                            Width="300"
+                            Width="200"
                             Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 

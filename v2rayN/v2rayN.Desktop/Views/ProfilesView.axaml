@@ -89,6 +89,7 @@
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
+                ScrollViewer.AllowAutoHide="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding ProfileItems}">
                 <DataGrid.KeyBindings>
