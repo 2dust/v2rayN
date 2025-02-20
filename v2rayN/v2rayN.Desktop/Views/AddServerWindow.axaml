@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.AddServerWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -514,14 +514,12 @@
 
                         <Button
                             x:Name="btnExtra"
-                            Width="30"
-                            Height="30"
+                            Width="{StaticResource IconButtonWidth}"
+                            Height="{StaticResource IconButtonHeight}"
                             Margin="10,0"
                             Theme="{DynamicResource BorderlessButton}">
                             <Button.Content>
                                 <PathIcon
-                                    Width="20"
-                                    Height="20"
                                     Data="{StaticResource building_more}"
                                     Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                             </Button.Content>

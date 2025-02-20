@@ -23,4 +23,9 @@
     <Style Selector="DataGrid">
         <Setter Property="RowHeight" Value="24" />
     </Style>
+
+    <Style Selector="PathIcon">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+    </Style>
 </Styles>

@@ -88,17 +88,13 @@
                         <TextBlock Classes="Margin8" Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
                         <Button
-                            Width="30"
-                            Height="30"
-                            MinWidth="30"
+                            Width="{StaticResource IconButtonWidth}"
+                            Height="{StaticResource IconButtonHeight}"
+                            MinWidth="{StaticResource IconButtonWidth}"
                             Margin="10,0"
                             Theme="{DynamicResource BorderlessButton}">
                             <Button.Content>
-                                <PathIcon
-                                    Width="20"
-                                    Height="20"
-                                    Data="{StaticResource building_more}"
-                                    Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                                <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                             </Button.Content>
                             <Button.Flyout>
                                 <Flyout>
