@@ -22,43 +22,43 @@
     <Button
         Width="{StaticResource IconButtonWidth}"
         Height="{StaticResource IconButtonHeight}"
-        Margin="10,0"
+        Margin="{StaticResource MarginLr8}"
         Theme="{DynamicResource BorderlessButton}">
         <Button.Content>
             <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
         </Button.Content>
         <Button.Flyout>
             <Flyout>
-                <StackPanel Margin="0,12">
+                <StackPanel Margin="{StaticResource MarginTb8}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsTheme}" />
                         <ComboBox
                             x:Name="cmbCurrentTheme"
-                            HorizontalAlignment="Center"
-                            Classes="Margin8" />
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsFontSize}" />
                         <ComboBox
                             x:Name="cmbCurrentFontSize"
-                            HorizontalAlignment="Center"
-                            Classes="Margin8" />
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
+                            Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Classes="Margin8"
                             Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                         <ComboBox
                             x:Name="cmbCurrentLanguage"
-                            HorizontalAlignment="Center"
-                            Classes="Margin8" />
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
             </Flyout>

@@ -12,10 +12,10 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Classes="Margin8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
+            Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
-            Classes="Margin8"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -27,7 +27,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="True" />
@@ -39,36 +39,36 @@
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.menuSubscription}" />
 
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvRemarks}" />
 
                 <TextBox
                     x:Name="txtRemarks"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     TextWrapping="Wrap" />
 
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvUrl}" />
                 <TextBox
                     x:Name="txtUrl"
                     Grid.Row="2"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     TextWrapping="Wrap"
                     Watermark="{x:Static resx:ResUI.SubUrlTips}" />
                 <Button
@@ -76,7 +76,7 @@
                     Grid.Column="2"
                     Width="{StaticResource IconButtonWidth}"
                     Height="{StaticResource IconButtonHeight}"
-                    Margin="10,0"
+                    Margin="{StaticResource MarginLr8}"
                     Theme="{DynamicResource BorderlessButton}">
                     <Button.Content>
                         <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
@@ -85,16 +85,17 @@
                         <Flyout>
                             <StackPanel>
                                 <TextBlock
+                                    Margin="{StaticResource Margin4}"
                                     VerticalAlignment="Center"
-                                    Classes="Margin8"
                                     Text="{x:Static resx:ResUI.LvMoreUrl}" />
                                 <TextBox
                                     x:Name="txtMoreUrl"
                                     Width="400"
                                     MinHeight="100"
+                                    Margin="{StaticResource Margin4}"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Center"
-                                    Classes="TextArea Margin8"
+                                    Classes="TextArea"
                                     MinLines="4"
                                     TextWrapping="Wrap"
                                     Watermark="{x:Static resx:ResUI.SubUrlTips}" />
@@ -106,150 +107,148 @@
                 <TextBlock
                     Grid.Row="3"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvEnabled}" />
 
                 <DockPanel
                     Grid.Row="3"
                     Grid.Column="1"
-                    Classes="Margin8">
+                    Margin="{StaticResource Margin4}">
                     <ToggleSwitch
                         x:Name="togEnable"
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Center"
-                        Classes="Margin8"
                         DockPanel.Dock="Left" />
 
                     <TextBox
                         x:Name="txtAutoUpdateInterval"
                         Width="100"
+                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
                         DockPanel.Dock="Right"
                         Watermark="{x:Static resx:ResUI.SubUrlTips}" />
 
                     <TextBlock
+                        Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
                         Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
                 </DockPanel>
 
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvFilter}" />
                 <TextBox
                     x:Name="txtFilter"
                     Grid.Row="5"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Watermark="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvConvertTarget}" />
                 <ComboBox
                     x:Name="cmbConvertTarget"
                     Grid.Row="6"
                     Grid.Column="1"
                     Width="200"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     ToolTip.Tip="{x:Static resx:ResUI.LvConvertTargetTip}" />
 
                 <TextBlock
                     Grid.Row="7"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvUserAgent}" />
                 <TextBox
                     x:Name="txtUserAgent"
                     Grid.Row="7"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     TextWrapping="Wrap"
                     Watermark="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="8"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
                     Grid.Row="8"
                     Grid.Column="1"
                     Width="100"
-                    HorizontalAlignment="Left"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left" />
 
                 <TextBlock
                     Grid.Row="9"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
                     Grid.Row="9"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
 
                 <TextBlock
                     Grid.Row="10"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
                     Grid.Row="10"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
 
                 <TextBlock
                     Grid.Row="11"
                     Grid.Column="0"
-                    Margin="4"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
                     Grid.Row="11"
                     Grid.Column="1"
                     Width="200"
-                    Margin="4"
+                    Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    Classes="Margin8"
                     ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}"
                     Watermark="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
                     Grid.Row="12"
                     Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
                     Grid.Row="12"
                     Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     TextWrapping="Wrap" />
 
             </Grid>

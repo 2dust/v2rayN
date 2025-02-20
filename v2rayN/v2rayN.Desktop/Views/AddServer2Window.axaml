@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.AddServer2Window"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,10 +13,10 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Classes="Margin8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             HorizontalAlignment="Center"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -28,7 +28,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="True" />
@@ -39,14 +39,14 @@
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.menuServers}" />
 
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbRemarks}" />
 
                 <TextBox
@@ -56,13 +56,13 @@
                     Width="400"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}" />
 
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbAddress}" />
                 <TextBox
                     x:Name="txtAddress"
@@ -71,7 +71,7 @@
                     Width="400"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     IsReadOnly="True" />
                 <StackPanel
                     Grid.Row="2"
@@ -80,11 +80,11 @@
                     Orientation="Horizontal">
                     <Button
                         x:Name="btnBrowse"
-                        Margin="2,0"
+                        Margin="{StaticResource MarginLr4}"
                         Content="{x:Static resx:ResUI.TbBrowse}" />
                     <Button
                         x:Name="btnEdit"
-                        Margin="2,0"
+                        Margin="{StaticResource MarginLr4}"
                         Content="{x:Static resx:ResUI.TbEdit}" />
                 </StackPanel>
 
@@ -92,7 +92,7 @@
                     Grid.Row="3"
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbCoreType}" />
                 <ComboBox
                     x:Name="cmbCoreType"
@@ -100,27 +100,27 @@
                     Grid.Column="1"
                     Width="200"
                     HorizontalAlignment="Left"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     MaxDropDownHeight="1000" />
 
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbDisplayLog}" />
                 <StackPanel
                     Grid.Row="4"
                     Grid.Column="1"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Orientation="Horizontal">
                     <ToggleSwitch
                         x:Name="togDisplayLog"
                         HorizontalAlignment="Left"
-                        Classes="Margin8" />
+                        Margin="{StaticResource Margin4}" />
                     <TextBlock
-                        Margin="8,0"
                         VerticalAlignment="Center"
+                        Margin="{StaticResource MarginLr8}"
                         Text="{x:Static resx:ResUI.TipDisplayLog}" />
                 </StackPanel>
 
@@ -128,7 +128,7 @@
                     Grid.Row="5"
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbPreSocksPort}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
@@ -136,12 +136,12 @@
                     Grid.Column="1"
                     Width="200"
                     HorizontalAlignment="Left"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}" />
                 <StackPanel
                     Grid.Row="6"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
-                    Classes="Margin8">
+                    Margin="{StaticResource Margin4}">
                     <TextBlock
                         Width="500"
                         VerticalAlignment="Center"
@@ -149,8 +149,8 @@
                         TextWrapping="Wrap" />
                     <TextBlock
                         Width="500"
-                        Margin="8,0"
                         VerticalAlignment="Center"
+                        Margin="{StaticResource MarginLr8}"
                         Text="{x:Static resx:ResUI.CustomServerTips}"
                         TextWrapping="Wrap" />
                 </StackPanel>

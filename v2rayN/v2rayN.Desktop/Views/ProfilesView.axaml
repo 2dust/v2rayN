@@ -19,7 +19,7 @@
             <WrapPanel Margin="2" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding SubItems}"
                     Theme="{DynamicResource PureCardRadioGroupListBox}">
@@ -34,7 +34,7 @@
                     x:Name="btnEditSub"
                     Width="{StaticResource IconButtonWidth}"
                     Height="{StaticResource IconButtonHeight}"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
@@ -46,7 +46,7 @@
                     x:Name="btnAddSub"
                     Width="{StaticResource IconButtonWidth}"
                     Height="{StaticResource IconButtonHeight}"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
@@ -59,7 +59,7 @@
                     x:Name="btnAutofitColumnWidth"
                     Width="{StaticResource IconButtonWidth}"
                     Height="{StaticResource IconButtonHeight}"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
@@ -71,7 +71,7 @@
                 <TextBox
                     x:Name="txtServerFilter"
                     Width="200"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     VerticalContentAlignment="Center"
                     Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
             </WrapPanel>
@@ -157,9 +157,9 @@
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="8,0" Orientation="Horizontal">
+                                <StackPanel Margin="{StaticResource MarginLr8}" Orientation="Horizontal">
                                     <Label
-                                        Margin="0,0,8,0"
+                                        Margin="{StaticResource MarginLr4}"
                                         Classes="Solid Red"
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
                                         IsVisible="{Binding IsActive}"
@@ -205,7 +205,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                    Margin="8,0"
+                                    Margin="{StaticResource MarginLr8}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"

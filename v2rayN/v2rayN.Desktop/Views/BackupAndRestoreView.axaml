@@ -14,84 +14,84 @@
         </Style>
     </UserControl.Styles>
 
-    <DockPanel Classes="Margin8">
-        <StackPanel Classes="Margin8" DockPanel.Dock="Bottom">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Bottom">
             <TextBlock
                 Name="txtMsg"
                 HorizontalAlignment="Left"
-                Classes="Margin8" />
+                Margin="{StaticResource Margin4}" />
         </StackPanel>
 
         <StackPanel>
             <Border
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Theme="{DynamicResource CardBorder}">
 
                 <Grid
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     ColumnDefinitions="300,200"
                     RowDefinitions="Auto,Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.menuLocalBackupAndRestore}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.menuLocalBackup}" />
                     <Button
                         Name="menuLocalBackup"
                         Grid.Row="1"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Content="{x:Static resx:ResUI.menuLocalBackup}" />
 
                     <Separator
                         Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        Margin="0,8" />
+                        Margin="{StaticResource MarginTb8}" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.menuLocalRestore}" />
                     <Button
                         Name="menuLocalRestore"
                         Grid.Row="3"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Content="{x:Static resx:ResUI.menuLocalRestore}" />
                 </Grid>
             </Border>
             <Border
-                Margin="4"
+                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Theme="{DynamicResource CardBorder}">
                 <Grid
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     ColumnDefinitions="300,200"
                     RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                     <StackPanel
                         Grid.Row="0"
                         Grid.Column="0"
                         Orientation="Horizontal">
-                        <TextBlock Classes="Margin8" Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
+                        <TextBlock Margin="{StaticResource Margin4}" Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
                         <Button
                             Width="{StaticResource IconButtonWidth}"
                             Height="{StaticResource IconButtonHeight}"
                             MinWidth="{StaticResource IconButtonWidth}"
-                            Margin="10,0"
+                            Margin="{StaticResource MarginLr8}"
                             Theme="{DynamicResource BorderlessButton}">
                             <Button.Content>
                                 <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
@@ -104,7 +104,7 @@
                                                 Grid.Row="0"
                                                 Grid.Column="0"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 Text="{x:Static resx:ResUI.LvWebDavUrl}" />
 
                                             <TextBox
@@ -112,14 +112,14 @@
                                                 Grid.Row="0"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 TextWrapping="Wrap" />
 
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Grid.Column="0"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 Text="{x:Static resx:ResUI.LvWebDavUserName}" />
 
                                             <TextBox
@@ -127,13 +127,13 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8" />
+                                                Margin="{StaticResource Margin4}" />
 
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Grid.Column="0"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 Text="{x:Static resx:ResUI.LvWebDavPassword}" />
 
                                             <TextBox
@@ -141,13 +141,13 @@
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8" />
+                                                Margin="{StaticResource Margin4}" />
 
                                             <TextBlock
                                                 Grid.Row="3"
                                                 Grid.Column="0"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 Text="{x:Static resx:ResUI.LvWebDavDirName}" />
 
                                             <TextBox
@@ -155,7 +155,7 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8" />
+                                                Margin="{StaticResource Margin4}" />
 
                                             <Button
                                                 x:Name="menuWebDavCheck"
@@ -163,7 +163,7 @@
                                                 Grid.Column="1"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
-                                                Classes="Margin8"
+                                                Margin="{StaticResource Margin4}"
                                                 Content="{x:Static resx:ResUI.LvWebDavCheck}" />
                                         </Grid>
                                     </StackPanel>
@@ -177,33 +177,33 @@
                         Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.menuRemoteBackup}" />
                     <Button
                         Name="menuRemoteBackup"
                         Grid.Row="1"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Content="{x:Static resx:ResUI.menuRemoteBackup}" />
 
                     <Separator
                         Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        Margin="0,8" />
+                        Margin="{StaticResource MarginTb8}" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.menuRemoteRestore}" />
                     <Button
                         Name="menuRemoteRestore"
                         Grid.Row="3"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Content="{x:Static resx:ResUI.menuRemoteRestore}" />
                 </Grid>
             </Border>

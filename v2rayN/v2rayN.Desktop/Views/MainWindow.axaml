@@ -22,7 +22,7 @@
         CloseOnClickAway="True"
         DisableOpeningAnimation="True">
         <DockPanel>
-            <DockPanel Classes="Margin8" DockPanel.Dock="Top">
+            <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
                 <Menu Margin="0,1">
                     <MenuItem Padding="8,0">

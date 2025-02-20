@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.RoutingRuleSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <DockPanel>
         <StackPanel
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
             <Menu>
@@ -28,7 +28,7 @@
 
         <StackPanel
             HorizontalAlignment="Right"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -40,14 +40,14 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="True" />
         </StackPanel>
 
         <Grid
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             ColumnDefinitions="Auto,Auto,Auto"
             DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
@@ -55,7 +55,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.LvRemarks}" />
             <StackPanel
                 Grid.Row="0"
@@ -69,25 +69,25 @@
                     Width="300"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     TextWrapping="Wrap" />
 
                 <TextBlock
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
                     Width="100"
                     HorizontalAlignment="Left"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}" />
             </StackPanel>
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.TbdomainStrategy}" />
             <StackPanel
                 Grid.Row="1"
@@ -96,22 +96,22 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy"
                     Width="200"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}" />
                 <TextBlock
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
                 <ComboBox
                     x:Name="cmbdomainStrategy4Singbox"
                     Width="200"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}" />
             </StackPanel>
 
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.LvUrl}" />
             <TextBox
                 x:Name="txtUrl"
@@ -120,7 +120,7 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 TextWrapping="Wrap" />
 
             <!--
@@ -128,7 +128,7 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.LvCustomIcon}" />
             <TextBox
                 x:Name="txtCustomIcon"
@@ -137,13 +137,13 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowseCustomIcon"
                 Grid.Row="3"
                 Grid.Column="2"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
             -->
 
@@ -151,7 +151,7 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8">
+                Margin="{StaticResource Margin4}">
                 <HyperlinkButton Classes="WithIcon" Click="linkCustomRulesetPath4Singbox">
                     <TextBlock Text="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}" />
                 </HyperlinkButton>
@@ -163,13 +163,13 @@
                 Width="600"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowseCustomRulesetPath4Singbox"
                 Grid.Row="4"
                 Grid.Column="2"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
         </Grid>
 

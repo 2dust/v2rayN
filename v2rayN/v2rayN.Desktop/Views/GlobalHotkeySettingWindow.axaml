@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.GlobalHotkeySettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,16 +13,16 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Classes="Margin8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             HorizontalAlignment="Center"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
                 x:Name="btnReset"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbReset}" />
             <Button
                 x:Name="btnSave"
@@ -33,7 +33,7 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="True" />
@@ -49,14 +49,14 @@
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbGlobalHotkeySetting}" />
 
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbDisplayGUI}" />
 
                     <TextBox
@@ -64,68 +64,68 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         IsReadOnly="True" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbClearSystemProxy}" />
                     <TextBox
                         x:Name="txtGlobalHotkey1"
                         Grid.Row="2"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         IsReadOnly="True" />
 
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbSetSystemProxy}" />
                     <TextBox
                         x:Name="txtGlobalHotkey2"
                         Grid.Row="3"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         IsReadOnly="True" />
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbNotChangeSystemProxy}" />
                     <TextBox
                         x:Name="txtGlobalHotkey3"
                         Grid.Row="4"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         IsReadOnly="True" />
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         Text="{x:Static resx:ResUI.TbSystemProxyPac}" />
                     <TextBox
                         x:Name="txtGlobalHotkey4"
                         Grid.Row="5"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Classes="Margin8"
+                        Margin="{StaticResource Margin4}"
                         IsReadOnly="True" />
                 </Grid>
 
                 <TextBlock
                     Grid.Row="1"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Text="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}" />
             </Grid>
         </ScrollViewer>

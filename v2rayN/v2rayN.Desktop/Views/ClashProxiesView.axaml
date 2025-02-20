@@ -17,32 +17,32 @@
 
     <DockPanel Margin="2">
         <WrapPanel
+            Margin="{StaticResource Margin4}"
             VerticalAlignment="Center"
-            Classes="Margin8"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.menuRulemode}" />
             <ComboBox
                 x:Name="cmbRulemode"
                 Width="100"
-                Margin="8,0">
+                Margin="{StaticResource MarginLr8}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.menuModeDirect}" />
             </ComboBox>
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbSorting}" />
             <ComboBox
                 x:Name="cmbSorting"
                 Width="100"
-                Margin="8,0">
+                Margin="{StaticResource MarginLr8}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDefault}" />
@@ -52,7 +52,7 @@
                 x:Name="menuProxiesReload"
                 Width="{StaticResource IconButtonWidth}"
                 Height="{StaticResource IconButtonHeight}"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProxiesReload}">
@@ -65,7 +65,7 @@
                 x:Name="menuProxiesDelaytest"
                 Width="{StaticResource IconButtonWidth}"
                 Height="{StaticResource IconButtonHeight}"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProxiesDelaytest}">
@@ -75,12 +75,12 @@
             </Button>
 
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleSwitch
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left" />
         </WrapPanel>
         <DockPanel>
@@ -101,7 +101,7 @@
                             Margin="-8,-4"
                             Padding="0"
                             Theme="{StaticResource CardBorder}">
-                            <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
+                            <Grid Margin="{StaticResource Margin4}" RowDefinitions="1*,8,1*">
                                 <DockPanel Grid.Row="0">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
                                     <TextBlock Text="{Binding Name}" />
@@ -143,7 +143,7 @@
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
                                     IsVisible="{Binding IsActive}" />
-                                <Grid Classes="Margin8" RowDefinitions="1*,8,1*">
+                                <Grid Margin="{StaticResource Margin4}" RowDefinitions="1*,8,1*">
                                     <TextBlock Grid.Row="0" Text="{Binding Name}" />
                                     <DockPanel Grid.Row="2">
                                         <TextBlock

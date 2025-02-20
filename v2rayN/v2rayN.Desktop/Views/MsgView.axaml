@@ -11,14 +11,14 @@
     <DockPanel Margin="2">
         <WrapPanel
             VerticalAlignment="Center"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBox
                 x:Name="cmbMsgFilter"
                 Width="200"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalContentAlignment="Center"
                 Watermark="{x:Static resx:ResUI.MsgFilterTitle}" />
 
@@ -26,7 +26,7 @@
                 x:Name="btnCopy"
                 Width="{StaticResource IconButtonWidth}"
                 Height="{StaticResource IconButtonHeight}"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Click="menuMsgViewCopyAll_Click"
                 Theme="{DynamicResource BorderlessButton}"
@@ -37,7 +37,7 @@
             </Button>
             <Button
                 x:Name="btnClear"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Click="menuMsgViewClear_Click"
                 Theme="{DynamicResource BorderlessButton}"
@@ -47,22 +47,22 @@
                 </Button.Content>
             </Button>
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleSwitch
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
             <ToggleSwitch
                 x:Name="togScrollToEnd"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />

@@ -10,4 +10,11 @@
 
     <x:Double x:Key="IconButtonWidth">32</x:Double>
     <x:Double x:Key="IconButtonHeight">32</x:Double>
+
+    <Thickness x:Key="Margin2">2</Thickness>
+    <Thickness x:Key="MarginLr4">4,0</Thickness>
+    <Thickness x:Key="Margin4">4</Thickness>
+    <Thickness x:Key="MarginLr8">8,0</Thickness>
+    <Thickness x:Key="MarginTb8">0,8</Thickness>
+    <Thickness x:Key="Margin8">8</Thickness>
 </ResourceDictionary>

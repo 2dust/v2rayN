@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.RoutingRuleDetailsWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <DockPanel>
         <Grid
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             ColumnDefinitions="Auto,Auto,Auto"
             DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
@@ -23,7 +23,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.LvRemarks}" />
             <TextBox
                 x:Name="txtRemarks"
@@ -31,39 +31,39 @@
                 Grid.Column="1"
                 Width="200"
                 HorizontalAlignment="Left"
-                Classes="Margin8" />
+                Margin="{StaticResource Margin4}" />
             <ToggleSwitch
                 x:Name="togEnabled"
                 Grid.Row="0"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Classes="Margin8" />
+                Margin="{StaticResource Margin4}" />
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="outboundTag" />
             <ComboBox
                 x:Name="cmbOutboundTag"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="200"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 MaxDropDownHeight="1000" />
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
 
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="port" />
             <TextBox
                 x:Name="txtPort"
@@ -71,12 +71,12 @@
                 Grid.Column="1"
                 Width="200"
                 HorizontalAlignment="Left"
-                Classes="Margin8" />
+                Margin="{StaticResource Margin4}" />
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                Classes="Margin8">
+                Margin="{StaticResource Margin4}">
                 <HyperlinkButton Classes="WithIcon" Click="linkRuleobjectDoc_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
                 </HyperlinkButton>
@@ -86,14 +86,14 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="protocol" />
             <ListBox
                 x:Name="clbProtocol"
                 Grid.Row="3"
                 Grid.Column="1"
                 HorizontalAlignment="Left"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
 
@@ -101,20 +101,20 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="inboundTag" />
             <ListBox
                 x:Name="clbInboundTag"
                 Grid.Row="4"
                 Grid.Column="1"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
 
 
@@ -122,26 +122,26 @@
                 Grid.Row="5"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="network" />
             <ComboBox
                 x:Name="cmbNetwork"
                 Grid.Row="5"
                 Grid.Column="1"
                 Width="200"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 MaxDropDownHeight="1000" />
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 Text="{x:Static resx:ResUI.TbRoutingTips}" />
         </Grid>
 
         <StackPanel
             HorizontalAlignment="Right"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <StackPanel
@@ -161,13 +161,13 @@
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 Cursor="Hand"
                 IsCancel="True" />
         </StackPanel>
 
-        <Grid Classes="Margin8" ColumnDefinitions="1*,10,1*,10,1*">
+        <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="1*,10,1*,10,1*">
             <HeaderedContentControl
                 Grid.Column="0"
                 BorderBrush="Gray"

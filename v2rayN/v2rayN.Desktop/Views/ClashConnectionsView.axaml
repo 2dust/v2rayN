@@ -14,23 +14,23 @@
     <DockPanel Margin="2">
         <WrapPanel
             VerticalAlignment="Center"
-            Classes="Margin8"
+            Margin="{StaticResource Margin4}"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBox
                 x:Name="txtHostFilter"
                 Width="200"
-                Margin="8,0"
                 VerticalContentAlignment="Center"
+                Margin="{StaticResource MarginLr8}"
                 Watermark="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
 
             <Button
                 x:Name="btnConnectionCloseAll"
                 Width="{StaticResource IconButtonWidth}"
                 Height="{StaticResource IconButtonHeight}"
-                Margin="8,0"
                 Classes="Success"
+                Margin="{StaticResource MarginLr8}"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <Button.Content>
@@ -42,8 +42,8 @@
                 x:Name="btnAutofitColumnWidth"
                 Width="{StaticResource IconButtonWidth}"
                 Height="{StaticResource IconButtonHeight}"
-                Margin="8,0"
                 Classes="Success"
+                Margin="{StaticResource MarginLr8}"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                 <Button.Content>
@@ -52,13 +52,13 @@
             </Button>
 
             <TextBlock
-                Margin="8,0"
                 VerticalAlignment="Center"
+                Margin="{StaticResource MarginLr8}"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleSwitch
                 x:Name="togAutoRefresh"
-                Margin="8,0"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                Margin="{StaticResource MarginLr8}" />
         </WrapPanel>
 
         <DataGrid

@@ -11,38 +11,38 @@
     x:DataType="vms:CheckUpdateViewModel"
     mc:Ignorable="d">
 
-    <DockPanel Classes="Margin8">
+    <DockPanel Margin="{StaticResource Margin8}">
         <Border
-            Margin="4"
+            Margin="{StaticResource Margin4}"
             VerticalAlignment="Center"
             DockPanel.Dock="Bottom"
             Theme="{DynamicResource CardBorder}">
 
             <StackPanel
+                Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Center"
-                Classes="Margin8"
                 Orientation="Horizontal">
 
                 <TextBlock
+                    Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Classes="Margin8"
                     Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
                 <ToggleSwitch
                     x:Name="togEnableCheckPreReleaseUpdate"
-                    HorizontalAlignment="Left"
-                    Classes="Margin8" />
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left" />
 
                 <Button
                     x:Name="btnCheckUpdate"
                     Width="100"
-                    Classes="Margin8"
+                    Margin="{StaticResource Margin4}"
                     Content="{x:Static resx:ResUI.menuCheckUpdate}" />
             </StackPanel>
         </Border>
 
         <Border
-            Margin="4"
+            Margin="{StaticResource Margin4}"
             VerticalAlignment="Center"
             Theme="{DynamicResource CardBorder}">
 
@@ -63,7 +63,7 @@
                                 <ToggleSwitch
                                     x:Name="togAutoRefresh"
                                     Grid.Column="0"
-                                    Margin="8"
+                                    Margin="{StaticResource Margin4}"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
