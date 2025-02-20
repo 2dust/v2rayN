@@ -19,10 +19,16 @@
             <WrapPanel Margin="2" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
-                    MaxHeight="200"
+                    Margin="4,0"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding SubItems}"
-                    Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                    Theme="{DynamicResource PureCardRadioGroupListBox}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
 
                 <Button
                     x:Name="btnEditSub"
@@ -84,14 +90,14 @@
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
-                CanUserReorderColumns="True"
                 BorderThickness="1"
+                CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
-                ScrollViewer.AllowAutoHide="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding ProfileItems}">
+                ItemsSource="{Binding ProfileItems}"
+                ScrollViewer.AllowAutoHide="False">
                 <DataGrid.KeyBindings>
                     <KeyBinding Command="{Binding Export2ShareUrlCmd}" Gesture="Ctrl+C" />
                     <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
