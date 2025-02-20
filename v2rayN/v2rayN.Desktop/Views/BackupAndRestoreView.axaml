@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="v2rayN.Desktop.Views.BackupAndRestoreView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -55,7 +55,8 @@
                     <Separator
                         Grid.Row="2"
                         Grid.Column="0"
-                        Grid.ColumnSpan="2" />
+                        Grid.ColumnSpan="2"
+                        Margin="0,8" />
 
                     <TextBlock
                         Grid.Row="3"
@@ -193,7 +194,8 @@
                     <Separator
                         Grid.Row="2"
                         Grid.Column="0"
-                        Grid.ColumnSpan="2" />
+                        Grid.ColumnSpan="2"
+                        Margin="0,8" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
