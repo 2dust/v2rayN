@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Media;
 
 namespace v2rayN.Desktop.Common
@@ -10,7 +10,7 @@ namespace v2rayN.Desktop.Common
             var uri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
             return appBuilder.With(new FontManagerOptions()
             {
-                DefaultFamilyName = uri,
+                //DefaultFamilyName = uri,
                 FontFallbacks = new[] { new FontFallback { FontFamily = new FontFamily(uri) } }
             });
         }

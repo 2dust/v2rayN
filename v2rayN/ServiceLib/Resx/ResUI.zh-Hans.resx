@@ -1331,7 +1331,7 @@
     <value>请不要使用不安全的HTTP协议订阅地址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>安装字体到系统中，重启设置</value>
+    <value>安装字体到系统中，选择或填入字体名称，重启设置</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>是否确定退出？</value>

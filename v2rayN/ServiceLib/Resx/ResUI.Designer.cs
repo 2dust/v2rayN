@@ -2879,7 +2879,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Install the font to the system and restart the settings 的本地化字符串。
+        ///   查找类似 Install the font to the system, select or fill in the font name, restart the settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamilyLinuxTip {
             get {

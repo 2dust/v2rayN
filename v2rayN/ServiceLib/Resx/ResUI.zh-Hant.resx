@@ -1212,7 +1212,7 @@
     <value>請不要使用不安全的HTTP協定訂閱位址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>安裝字型到系統中，重新啟動設定</value>
+    <value>安裝字體到系統中，選擇或填入字體名稱，重新啟動設定</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>是否確定退出？</value>
