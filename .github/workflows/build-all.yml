@@ -1,0 +1,69 @@
+name: release all platforms
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Trigger build windows
+        if: github.event.inputs.release_tag != ''
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows.yml/dispatches \
+            -d "{
+              \"ref\": \"master\",
+              \"inputs\": {
+                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+              }
+            }"
+
+      - name: Trigger build linux
+        if: github.event.inputs.release_tag != ''
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-linux.yml/dispatches \
+            -d "{
+              \"ref\": \"master\",
+              \"inputs\": {
+                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+              }
+            }"
+
+      - name: Trigger build osx
+        if: github.event.inputs.release_tag != ''
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-osx.yml/dispatches \
+            -d "{
+              \"ref\": \"master\",
+              \"inputs\": {
+                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+              }
+            }"
+
+      - name: Trigger build windows desktop
+        if: github.event.inputs.release_tag != ''
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-desktop.yml/dispatches \
+            -d "{
+              \"ref\": \"master\",
+              \"inputs\": {
+                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+              }
+            }"
