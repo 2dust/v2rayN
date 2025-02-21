@@ -87,8 +87,7 @@
             <ListBox
                 x:Name="lstProxyGroups"
                 DockPanel.Dock="Left"
-                ItemsSource="{Binding ProxyGroups}"
-                Theme="{StaticResource ButtonRadioGroupListBox}">
+                ItemsSource="{Binding ProxyGroups}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -96,11 +95,11 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border
+                        <Label
                             Width="160"
-                            Margin="-8,-4"
+                            Margin="-4,-6"
                             Padding="0"
-                            Theme="{StaticResource CardBorder}">
+                            Theme="{DynamicResource TagLabel}">
                             <Grid Margin="{StaticResource Margin4}" RowDefinitions="1*,8,1*">
                                 <DockPanel Grid.Row="0">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding Type}" />
@@ -108,15 +107,12 @@
                                 </DockPanel>
                                 <TextBlock Grid.Row="2" Text="{Binding Now}" />
                             </Grid>
-                        </Border>
+                        </Label>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
 
-            <ListBox
-                x:Name="lstProxyDetails"
-                ItemsSource="{Binding ProxyDetails}"
-                Theme="{StaticResource ButtonRadioGroupListBox}">
+            <ListBox x:Name="lstProxyDetails" ItemsSource="{Binding ProxyDetails}">
                 <ItemsControl.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
@@ -130,11 +126,11 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border
+                        <Label
                             Width="160"
-                            Margin="-12,-4"
+                            Margin="-10,-6"
                             Padding="0"
-                            Theme="{StaticResource CardBorder}">
+                            Theme="{DynamicResource TagLabel}">
                             <DockPanel>
                                 <Border
                                     Width="5"
@@ -154,7 +150,7 @@
                                     </DockPanel>
                                 </Grid>
                             </DockPanel>
-                        </Border>
+                        </Label>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
