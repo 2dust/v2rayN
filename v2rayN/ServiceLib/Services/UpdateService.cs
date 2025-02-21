@@ -237,8 +237,8 @@ namespace ServiceLib.Services
 
         public async Task UpdateGeoFileAll(Config config, Action<bool, string> updateFunc)
         {
-            await UpdateGeoFile("geosite", config, updateFunc);
-            await UpdateGeoFile("geoip", config, updateFunc);
+            await UpdateGeoFiles(config, updateFunc);
+            await UpdateOtherFiles(config, updateFunc);
             await UpdateSrsFileAll(config, updateFunc);
             _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
@@ -479,7 +479,7 @@ namespace ServiceLib.Services
 
         #region Geo private
 
-        private async Task UpdateGeoFile(string geoName, Config config, Action<bool, string> updateFunc)
+        private async Task UpdateGeoFiles(Config config, Action<bool, string> updateFunc)
         {
             _updateFunc = updateFunc;
 
@@ -487,11 +487,28 @@ namespace ServiceLib.Services
                 ? Global.GeoUrl
                 : config.ConstItem.GeoSourceUrl;
 
-            var fileName = $"{geoName}.dat";
-            var targetPath = Utils.GetBinPath($"{fileName}");
-            var url = string.Format(geoUrl, geoName);
+            List<string> files = ["geosite", "geoip"];
+            foreach (var geoName in files)
+            {
+                var fileName = $"{geoName}.dat";
+                var targetPath = Utils.GetBinPath($"{fileName}");
+                var url = string.Format(geoUrl, geoName);
 
-            await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+                await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+            }
+        }
+
+        private async Task UpdateOtherFiles(Config config, Action<bool, string> updateFunc)
+        {
+            _updateFunc = updateFunc;
+
+            foreach (var url in Global.OtherGeoUrls)
+            {
+                var fileName = Path.GetFileName(url);
+                var targetPath = Utils.GetBinPath($"{fileName}");
+
+                await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+            }
         }
 
         private async Task UpdateSrsFileAll(Config config, Action<bool, string> updateFunc)

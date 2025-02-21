@@ -507,6 +507,13 @@ namespace ServiceLib
             { ECoreType.v2rayN, "2dust/v2rayN" },
         };
 
+        public static readonly List<string> OtherGeoUrls =
+        [
+            @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat",
+            @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb",
+            @"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+        ];
+
         #endregion const
     }
 }
