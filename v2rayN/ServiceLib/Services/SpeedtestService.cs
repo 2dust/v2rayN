@@ -261,10 +261,17 @@ namespace ServiceLib.Services
                         if (pid > 0)
                         {
                             await Task.Delay(500);
-                            await DoRealPing(downloadHandle, it);
+                            var delay = await DoRealPing(downloadHandle, it);
                             if (blSpeedTest)
                             {
-                                await DoSpeedTest(downloadHandle, it);
+                                if (delay > 0)
+                                {
+                                    await DoSpeedTest(downloadHandle, it);
+                                }
+                                else
+                                {
+                                    UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
+                                }
                             }
                         }
                         else
@@ -289,13 +296,14 @@ namespace ServiceLib.Services
             Task.WaitAll(tasks.ToArray());
         }
 
-        private async Task DoRealPing(DownloadService downloadHandle, ServerTestItem it)
+        private async Task<int> DoRealPing(DownloadService downloadHandle, ServerTestItem it)
         {
             var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
             var responseTime = await downloadHandle.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
             ProfileExHandler.Instance.SetTestDelay(it.IndexId, responseTime);
             UpdateFunc(it.IndexId, responseTime.ToString());
+            return responseTime;
         }
 
         private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it)
