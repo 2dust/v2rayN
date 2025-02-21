@@ -472,7 +472,7 @@ namespace ServiceLib.Services
                     _ => null,
                 };
             }
-            return null;
+            return await Task.FromResult("");
         }
 
         #endregion CheckUpdate private
