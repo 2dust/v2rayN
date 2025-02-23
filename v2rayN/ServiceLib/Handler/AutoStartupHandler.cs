@@ -177,7 +177,7 @@ namespace ServiceLib.Handler
                 if (File.Exists(launchAgentPath))
                 {
                     var args = new[] { "-c", $"launchctl unload -w \"{launchAgentPath}\"" };
-                    await Utils.GetCliWrapOutput("/bin/bash", args);
+                    await Utils.GetCliWrapOutput(Global.LinuxBash, args);
 
                     File.Delete(launchAgentPath);
                 }
@@ -197,7 +197,7 @@ namespace ServiceLib.Handler
                 await File.WriteAllTextAsync(launchAgentPath, plistContent);
 
                 var args = new[] { "-c", $"launchctl load -w \"{launchAgentPath}\"" };
-                await Utils.GetCliWrapOutput("/bin/bash", args);
+                await Utils.GetCliWrapOutput(Global.LinuxBash, args);
             }
             catch (Exception ex)
             {

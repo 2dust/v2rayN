@@ -857,7 +857,7 @@ namespace ServiceLib.Common
         private static async Task<string?> GetLinuxUserId()
         {
             var arg = new List<string>() { "-c", "id -u" };
-            return await GetCliWrapOutput("/bin/bash", arg);
+            return await GetCliWrapOutput(Global.LinuxBash, arg);
         }
 
         public static async Task<string?> SetLinuxChmod(string? fileName)
@@ -868,14 +868,14 @@ namespace ServiceLib.Common
                 fileName = fileName.AppendQuotes();
             //File.SetUnixFileMode(fileName, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
-            return await GetCliWrapOutput("/bin/bash", arg);
+            return await GetCliWrapOutput(Global.LinuxBash, arg);
         }
 
         public static async Task<string?> GetLinuxFontFamily(string lang)
         {
             // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
             var arg = new List<string>() { "-c", $"fc-list : family" };
-            return await GetCliWrapOutput("/bin/bash", arg);
+            return await GetCliWrapOutput(Global.LinuxBash, arg);
         }
 
         public static string? GetHomePath()
@@ -888,7 +888,7 @@ namespace ServiceLib.Common
         public static async Task<string?> GetListNetworkServices()
         {
             var arg = new List<string>() { "-c", $"networksetup -listallnetworkservices" };
-            return await GetCliWrapOutput("/bin/bash", arg);
+            return await GetCliWrapOutput(Global.LinuxBash, arg);
         }
 
         #endregion Platform
