@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Function to set proxy
+set_proxy() {
+    IP=$1
+    PORT=$2
+
+    shift 2
+    BYPASS_DOMAINS=("$@")
+    # If no bypass domains are provided, set it to empty by default
+    if [ ${#BYPASS_DOMAINS[@]} -eq 0 ]; then
+        BYPASS_DOMAINS=("")
+    fi
+
+    # Get all network service names
+    SERVICES=$(networksetup -listallnetworkservices | grep -v '*')
+
+    # Loop through each network service
+    echo "$SERVICES" | while read -r SERVICE; do
+        echo "Setting proxy for network service '$SERVICE'..."
+        # Set HTTP proxy
+        networksetup -setwebproxy "$SERVICE" "$IP" "$PORT"
+
+        # Set HTTPS proxy
+        networksetup -setsecurewebproxy "$SERVICE" "$IP" "$PORT"
+
+        # Set SOCKS proxy
+        networksetup -setsocksfirewallproxy "$SERVICE" "$IP" "$PORT"
+
+        # Set bypass domains
+        networksetup -setproxybypassdomains "$SERVICE" "${BYPASS_DOMAINS[@]}"
+        echo "Proxy for network service '$SERVICE' has been set to $IP:$PORT"
+    done
+    echo "Proxy settings for all network services are complete!"
+}
+
+# Function to disable proxy
+clear_proxy() {
+    # Get all network service names
+    SERVICES=$(networksetup -listallnetworkservices | grep -v '*')
+
+    # Loop through each network service
+    echo "$SERVICES" | while read -r SERVICE; do
+        echo "Disabling proxy and clearing bypass domains for network service '$SERVICE'..."
+        # Disable HTTP proxy
+        networksetup -setwebproxystate "$SERVICE" off
+
+        # Disable HTTPS proxy
+        networksetup -setsecurewebproxystate "$SERVICE" off
+
+        # Disable SOCKS proxy
+        networksetup -setsocksfirewallproxystate "$SERVICE" off
+
+        echo "Proxy for network service '$SERVICE' has been disabled"
+    done
+    echo "Proxy for all network services has been disabled!"
+}
+
+# Main script logic
+if [ "$1" == "set" ]; then
+    # Check if enough parameters are passed for setting proxy
+    if [ "$#" -lt 3 ]; then
+        echo "Usage: $0 set <IP Address> <Port> [Bypass Domain 1 Bypass Domain 2 ...]"
+        exit 1
+    fi
+    set_proxy "$2" "$3" "${@:4}"
+elif [ "$1" == "clear" ]; then
+    clear_proxy
+else
+    echo "Usage:"
+    echo "  To set proxy:    $0 set <IP Address> <Port> [Bypass Domain 1 Bypass Domain 2 ...]"
+    echo "  To clear proxy: $0 clear"
+    exit 1
+fi
