@@ -38,6 +38,7 @@ namespace ServiceLib
         public const string ClashTunYaml = NamespaceSample + "clash_tun_yaml";
         public const string LinuxAutostartConfig = NamespaceSample + "linux_autostart_config";
         public const string PacFileName = NamespaceSample + "pac";
+        public const string ProxySetOSXShellFileName = NamespaceSample + "proxy_set_osx_sh";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";
