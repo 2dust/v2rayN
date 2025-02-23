@@ -380,7 +380,7 @@ namespace ServiceLib.Handler
         private async Task<string> CreateLinuxShellFile(string cmdLine, string fileName)
         {
             //Shell scripts
-            var shFilePath = Utils.GetBinPath(AppHandler.Instance.IsAdministrator ? "root_" + fileName : fileName);
+            var shFilePath = Utils.GetBinConfigPath(AppHandler.Instance.IsAdministrator ? "root_" + fileName : fileName);
             File.Delete(shFilePath);
             var sb = new StringBuilder();
             sb.AppendLine("#!/bin/sh");
