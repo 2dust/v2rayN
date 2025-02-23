@@ -336,21 +336,19 @@ namespace ServiceLib.Services
                     ipAddress = ipHostInfo.AddressList.First();
                 }
 
-                var timer = Stopwatch.StartNew();
-
                 IPEndPoint endPoint = new(ipAddress, port);
                 using Socket clientSocket = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
+                var timer = Stopwatch.StartNew();
                 var result = clientSocket.BeginConnect(endPoint, null, null);
                 if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
                 {
                     throw new TimeoutException("connect timeout (5s): " + url);
                 }
-
-                clientSocket.EndConnect(result);
-
                 timer.Stop();
                 responseTime = (int)timer.Elapsed.TotalMilliseconds;
+
+                clientSocket.EndConnect(result);
             }
             catch (Exception ex)
             {
