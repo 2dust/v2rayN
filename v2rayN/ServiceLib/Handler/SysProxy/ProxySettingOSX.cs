@@ -28,11 +28,11 @@ namespace ServiceLib.Handler.SysProxy
             {
                 var contents = EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName);
                 await File.AppendAllTextAsync(fileName, contents);
+
+                await Utils.SetLinuxChmod(fileName);
             }
 
-            await Utils.SetLinuxChmod(fileName);
-
-            await Utils.GetCliWrapOutput(Global.LinuxBash, args);
+            await Utils.GetCliWrapOutput(fileName, args);
         }
     }
 }
