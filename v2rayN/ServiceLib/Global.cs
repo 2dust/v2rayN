@@ -39,6 +39,7 @@ namespace ServiceLib
         public const string LinuxAutostartConfig = NamespaceSample + "linux_autostart_config";
         public const string PacFileName = NamespaceSample + "pac";
         public const string ProxySetOSXShellFileName = NamespaceSample + "proxy_set_osx_sh";
+        public const string ProxySetLinuxShellFileName = NamespaceSample + "proxy_set_linux_sh";
 
         public const string DefaultSecurity = "auto";
         public const string DefaultNetwork = "tcp";

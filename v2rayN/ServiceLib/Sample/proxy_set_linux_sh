@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# Function to set proxy for GNOME
+set_gnome_proxy() {
+    local MODE=$1
+    local PROXY_IP=$2
+    local PROXY_PORT=$3
+    local IGNORE_HOSTS=$4
+
+    # Set the proxy mode
+    gsettings set org.gnome.system.proxy mode "$MODE"
+
+    if [ "$MODE" == "manual" ]; then
+        # List of protocols
+        local PROTOCOLS=("http" "https" "ftp" "socks")
+
+        # Loop through protocols to set the proxy
+        for PROTOCOL in "${PROTOCOLS[@]}"; do
+            gsettings set org.gnome.system.proxy.$PROTOCOL host "$PROXY_IP"
+            gsettings set org.gnome.system.proxy.$PROTOCOL port "$PROXY_PORT"
+        done
+
+        # Set ignored hosts
+        gsettings set org.gnome.system.proxy ignore-hosts "['$IGNORE_HOSTS']"
+
+        echo "GNOME: Manual proxy settings applied."
+        echo "Proxy IP: $PROXY_IP"
+        echo "Proxy Port: $PROXY_PORT"
+        echo "Ignored Hosts: $IGNORE_HOSTS"
+    elif [ "$MODE" == "none" ]; then
+        echo "GNOME: Proxy disabled."
+    else
+        echo "GNOME: Invalid mode. Use 'none' or 'manual'."
+        exit 1
+    fi
+}
+
+# Function to set proxy for KDE
+set_kde_proxy() {
+    local MODE=$1
+    local PROXY_IP=$2
+    local PROXY_PORT=$3
+    local IGNORE_HOSTS=$4
+
+    # Determine the correct kwriteconfig command based on KDE_SESSION_VERSION
+    if [ "$KDE_SESSION_VERSION" == "6" ]; then
+        KWRITECONFIG="kwriteconfig6"
+    else
+        KWRITECONFIG="kwriteconfig5"
+    fi
+
+    # KDE uses kwriteconfig to modify proxy settings
+    if [ "$MODE" == "manual" ]; then
+        # Set proxy for all protocols
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 1
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpsProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ftpProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key socksProxy "http://$PROXY_IP:$PROXY_PORT"
+
+        # Set ignored hosts
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key NoProxyFor "$IGNORE_HOSTS"
+
+        echo "KDE: Manual proxy settings applied."
+        echo "Proxy IP: $PROXY_IP"
+        echo "Proxy Port: $PROXY_PORT"
+        echo "Ignored Hosts: $IGNORE_HOSTS"
+    elif [ "$MODE" == "none" ]; then
+        # Disable proxy
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 0
+        echo "KDE: Proxy disabled."
+    else
+        echo "KDE: Invalid mode. Use 'none' or 'manual'."
+        exit 1
+    fi
+
+    # Apply changes by restarting KDE's network settings
+    dbus-send --type=signal /KIO/Scheduler org.kde.KIO.Scheduler.reparseSlaveConfiguration string:""
+}
+
+# Detect the current desktop environment
+detect_desktop_environment() {
+    if [ "$XDG_CURRENT_DESKTOP" == "GNOME" ] || [ "$XDG_CURRENT_DESKTOP" == "ubuntu:GNOME" ] || [ "$XDG_SESSION_DESKTOP" == "GNOME" ] || [ "$XDG_SESSION_DESKTOP" == "ubuntu:GNOME" ]; then
+        echo "gnome"
+    elif [ "$XDG_CURRENT_DESKTOP" == "KDE" ] || [ "$XDG_CURRENT_DESKTOP" == "plasma" ] || [ "$XDG_SESSION_DESKTOP" == "KDE" ] || [ "$XDG_SESSION_DESKTOP" == "plasma" ]; then
+        echo "kde"
+    else
+        echo "unsupported"
+    fi
+}
+
+# Main script logic
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <mode> [proxy_ip proxy_port ignore_hosts]"
+    echo "  mode: 'none' or 'manual'"
+    echo "  If mode is 'manual', provide proxy IP, port, and ignore hosts."
+    exit 1
+fi
+
+# Get the mode
+MODE=$1
+PROXY_IP=$2
+PROXY_PORT=$3
+IGNORE_HOSTS=$4
+
+# Detect desktop environment
+DE=$(detect_desktop_environment)
+
+# Apply settings based on the desktop environment
+if [ "$DE" == "gnome" ]; then
+    set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+elif [ "$DE" == "kde" ]; then
+    set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+    set_kde_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+else
+    echo "Unsupported desktop environment: $DE"
+    exit 1
+fi

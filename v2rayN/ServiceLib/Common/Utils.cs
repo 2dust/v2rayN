@@ -885,12 +885,6 @@ namespace ServiceLib.Common
                 : Environment.GetEnvironmentVariable("HOME");
         }
 
-        public static async Task<string?> GetListNetworkServices()
-        {
-            var arg = new List<string>() { "-c", $"networksetup -listallnetworkservices" };
-            return await GetCliWrapOutput(Global.LinuxBash, arg);
-        }
-
         #endregion Platform
     }
 }

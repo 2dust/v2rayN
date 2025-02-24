@@ -2,8 +2,8 @@
 
 # Function to set proxy
 set_proxy() {
-    IP=$1
-    PORT=$2
+    PROXY_IP=$1
+    PROXY_PORT=$2
 
     shift 2
     BYPASS_DOMAINS=("$@")
@@ -19,17 +19,17 @@ set_proxy() {
     echo "$SERVICES" | while read -r SERVICE; do
         echo "Setting proxy for network service '$SERVICE'..."
         # Set HTTP proxy
-        networksetup -setwebproxy "$SERVICE" "$IP" "$PORT"
+        networksetup -setwebproxy "$SERVICE" "$PROXY_IP" "$PROXY_PORT"
 
         # Set HTTPS proxy
-        networksetup -setsecurewebproxy "$SERVICE" "$IP" "$PORT"
+        networksetup -setsecurewebproxy "$SERVICE" "$PROXY_IP" "$PROXY_PORT"
 
         # Set SOCKS proxy
-        networksetup -setsocksfirewallproxy "$SERVICE" "$IP" "$PORT"
+        networksetup -setsocksfirewallproxy "$SERVICE" "$PROXY_IP" "$PROXY_PORT"
 
         # Set bypass domains
         networksetup -setproxybypassdomains "$SERVICE" "${BYPASS_DOMAINS[@]}"
-        echo "Proxy for network service '$SERVICE' has been set to $IP:$PORT"
+        echo "Proxy for network service '$SERVICE' has been set to $PROXY_IP:$PROXY_PORT"
     done
     echo "Proxy settings for all network services are complete!"
 }
