@@ -10,8 +10,8 @@
     mc:Ignorable="d">
     <DockPanel Margin="2">
         <WrapPanel
-            VerticalAlignment="Center"
             Margin="{StaticResource Margin4}"
+            VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
@@ -37,6 +37,8 @@
             </Button>
             <Button
                 x:Name="btnClear"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
                 Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Click="menuMsgViewClear_Click"
