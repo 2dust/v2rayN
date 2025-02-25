@@ -68,9 +68,8 @@ jobs:
     - name: Package AppImage
       if: github.event.inputs.release_tag != ''
       run: |
-        chmod 755 package-appimage.sh
-        ./package-appimage.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
-        ./package-appimage.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+        chmod a+x package-appimage.sh
+        ./package-appimage.sh
 
     - name: Upload AppImage to release
       uses: svenstaro/upload-release-action@v2

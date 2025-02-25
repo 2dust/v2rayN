@@ -1,0 +1,37 @@
+app: v2rayN
+binpatch: true
+
+ingredients:
+  script:
+    - export FileName="v2rayN-${AppImageOutputArch}.zip"
+    - wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/${FileName}"
+    - 7z x $FileName -aoa
+    - cp -rf v2rayN-${AppImageOutputArch}/* $OutputPath
+
+script:
+  - mkdir -p usr/bin usr/lib
+  - cp -rf $OutputPath usr/lib/v2rayN
+  - echo "When this file exists, app will not store configs under this folder" > usr/lib/v2rayN/NotStoreConfigHere.txt
+  - ln -sf usr/lib/v2rayN/v2rayN usr/bin/v2rayN
+  - chmod a+x usr/lib/v2rayN/v2rayN
+  - find usr -type f -exec sh -c 'file "{}" | grep -qi "executable" && chmod +x "{}"' \;
+  - install -Dm644 usr/lib/v2rayN/v2rayN.png v2rayN.png
+  - install -Dm644 usr/lib/v2rayN/v2rayN.png usr/share/pixmaps/v2rayN.png
+  - cat > v2rayN.desktop <<EOF
+  - [Desktop Entry]
+  - Name=v2rayN
+  - Comment=A GUI client for Windows and Linux, support Xray core and sing-box-core and others
+  - Exec=v2rayN
+  - Icon=v2rayN
+  - Terminal=false
+  - Type=Application
+  - Categories=Network;
+  - EOF
+  - install -Dm644 v2rayN.desktop usr/share/applications/v2rayN.desktop
+  - cat > AppRun <<\EOF
+  - #!/bin/sh
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - cd ${HERE}/usr/lib/v2rayN
+  - exec ${HERE}/usr/lib/v2rayN/v2rayN $@
+  - EOF
+  - chmod a+x AppRun
