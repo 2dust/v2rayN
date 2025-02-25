@@ -158,6 +158,7 @@ namespace ServiceLib.Handler
                 Length = "100-200",
                 Interval = "10-20"
             };
+            config.GlobalHotkeys ??= new();
 
             if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
             {

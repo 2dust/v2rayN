@@ -1,62 +1,80 @@
+using System.Reactive.Disposables;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ReactiveUI;
 using v2rayN.Handler;
 
 namespace v2rayN.Views
 {
     public partial class GlobalHotkeySettingWindow
     {
-        private static Config? _config;
-        private Dictionary<object, KeyEventItem> _textBoxKeyEventItem = new();
+        private readonly List<object> _textBoxKeyEventItem = new();
 
         public GlobalHotkeySettingWindow()
         {
             InitializeComponent();
 
             this.Owner = Application.Current.MainWindow;
-            _config = AppHandler.Instance.Config;
-            _config.GlobalHotkeys ??= new();
+
+            ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
 
             btnReset.Click += btnReset_Click;
-            btnSave.Click += btnSave_ClickAsync;
-
-            txtGlobalHotkey0.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
-            txtGlobalHotkey1.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
-            txtGlobalHotkey2.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
-            txtGlobalHotkey3.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
-            txtGlobalHotkey4.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
 
             HotkeyHandler.Instance.IsPause = true;
             this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
-            WindowsUtils.SetDarkBorder(this, _config.UiItem.CurrentTheme);
-            InitData();
+
+            this.WhenActivated(disposables =>
+            {
+                this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            });
+            WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+
+            Init();
+            BindingData();
         }
 
-        private void InitData()
+        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
-            _textBoxKeyEventItem = new()
+            switch (action)
             {
-                { txtGlobalHotkey0,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.ShowForm) },
-                { txtGlobalHotkey1,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyClear) },
-                { txtGlobalHotkey2,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxySet) },
-                { txtGlobalHotkey3,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyUnchanged)},
-                { txtGlobalHotkey4,GetKeyEventItemByEGlobalHotkey(_config.GlobalHotkeys,EGlobalHotkey.SystemProxyPac)}
-            };
+                case EViewAction.CloseWindow:
+                    this.DialogResult = true;
+                    break;
+            }
+            return await Task.FromResult(true);
+        }
 
-            BindingData();
+        private void Init()
+        {
+            _textBoxKeyEventItem.Add(txtGlobalHotkey0);
+            _textBoxKeyEventItem.Add(txtGlobalHotkey1);
+            _textBoxKeyEventItem.Add(txtGlobalHotkey2);
+            _textBoxKeyEventItem.Add(txtGlobalHotkey3);
+            _textBoxKeyEventItem.Add(txtGlobalHotkey4);
+
+            for (var index = 0; index < _textBoxKeyEventItem.Count; index++)
+            {
+                var sender = _textBoxKeyEventItem[index];
+                if (sender is not TextBox txtBox)
+                {
+                    continue;
+                }
+                txtBox.Tag = (EGlobalHotkey)index;
+                txtBox.PreviewKeyDown += TxtGlobalHotkey_PreviewKeyDown;
+            }
         }
 
         private void TxtGlobalHotkey_PreviewKeyDown(object? sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (sender is null)
+            if (sender is not TextBox txtBox)
             {
                 return;
             }
 
-            var item = _textBoxKeyEventItem[sender];
+            var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
             var modifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
 
             item.KeyCode = (int)(e.Key == Key.System ? (modifierKeys.Contains(e.SystemKey) ? Key.None : e.SystemKey) : (modifierKeys.Contains(e.Key) ? Key.None : e.Key));
@@ -64,38 +82,50 @@ namespace v2rayN.Views
             item.Control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
             item.Shift = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
-            (sender as TextBox)!.Text = KeyEventItemToString(item);
+            txtBox.Text = KeyEventItemToString(item);
         }
 
-        private KeyEventItem GetKeyEventItemByEGlobalHotkey(List<KeyEventItem> lstKey, EGlobalHotkey eg)
+        private void BindingData()
         {
-            return JsonUtils.DeepCopy(lstKey.Find((it) => it.EGlobalHotkey == eg) ?? new()
+            foreach (var sender in _textBoxKeyEventItem)
             {
-                EGlobalHotkey = eg,
-                Control = false,
-                Alt = false,
-                Shift = false,
-                KeyCode = null
-            });
+                if (sender is not TextBox txtBox)
+                {
+                    continue;
+                }
+
+                var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
+                txtBox.Text = KeyEventItemToString(item);
+            }
         }
 
-        private string KeyEventItemToString(KeyEventItem item)
+        private void btnReset_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel?.ResetKeyEventItem();
+            BindingData();
+        }
+
+        private string KeyEventItemToString(KeyEventItem? item)
+        {
+            if (item == null)
+            {
+                return string.Empty;
+            }
             var res = new StringBuilder();
 
             if (item.Control)
             {
-                res.Append($"{ModifierKeys.Control}+");
+                res.Append($"{ModifierKeys.Control} +");
             }
 
             if (item.Shift)
             {
-                res.Append($"{ModifierKeys.Shift}+");
+                res.Append($"{ModifierKeys.Shift} +");
             }
 
             if (item.Alt)
             {
-                res.Append($"{ModifierKeys.Alt}+");
+                res.Append($"{ModifierKeys.Alt} +");
             }
 
             if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
@@ -104,50 +134,6 @@ namespace v2rayN.Views
             }
 
             return res.ToString();
-        }
-
-        private void BindingData()
-        {
-            foreach (var item in _textBoxKeyEventItem)
-            {
-                if (item.Value.KeyCode != null && (Key)item.Value.KeyCode != Key.None)
-                {
-                    (item.Key as TextBox)!.Text = KeyEventItemToString(item.Value);
-                }
-                else
-                {
-                    (item.Key as TextBox)!.Text = string.Empty;
-                }
-            }
-        }
-
-        private async void btnSave_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            _config.GlobalHotkeys = _textBoxKeyEventItem.Values.ToList();
-
-            if (await ConfigHandler.SaveConfig(_config) == 0)
-            {
-                HotkeyHandler.Instance.ReLoad();
-                this.DialogResult = true;
-            }
-            else
-            {
-                UI.Show(ResUI.OperationFailed);
-            }
-        }
-
-        private void btnReset_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var k in _textBoxKeyEventItem.Keys)
-            {
-                var item = _textBoxKeyEventItem[k];
-
-                item.Alt = false;
-                item.Control = false;
-                item.Shift = false;
-                item.KeyCode = (int)Key.None;
-            }
-            BindingData();
         }
     }
 }

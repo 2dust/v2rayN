@@ -29,10 +29,6 @@ namespace v2rayN.Handler
         private void Init()
         {
             _hotkeyTriggerDic.Clear();
-            if (AppHandler.Instance.Config.GlobalHotkeys == null)
-            {
-                return;
-            }
             foreach (var item in AppHandler.Instance.Config.GlobalHotkeys)
             {
                 if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
