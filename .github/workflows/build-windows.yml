@@ -46,7 +46,7 @@ jobs:
 
   
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4.6.0
+      uses: actions/upload-artifact@v4.6.1
       with:
         name: v2rayN-windows
         path: |
