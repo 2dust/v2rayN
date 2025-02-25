@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="v2rayN"
+    Title="{x:Static resx:ResUI.menuAddCustomServer}"
     Width="700"
     Height="500"
     x:DataType="vms:AddServer2ViewModel"
@@ -15,8 +15,8 @@
     mc:Ignorable="d">
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
-            HorizontalAlignment="Center"
             Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
@@ -45,8 +45,8 @@
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
-                    VerticalAlignment="Center"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbRemarks}" />
 
                 <TextBox
@@ -54,24 +54,24 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="400"
+                    Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Margin="{StaticResource Margin4}" />
+                    VerticalAlignment="Center" />
 
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
-                    VerticalAlignment="Center"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbAddress}" />
                 <TextBox
                     x:Name="txtAddress"
                     Grid.Row="2"
                     Grid.Column="1"
                     Width="400"
+                    Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Margin="{StaticResource Margin4}"
                     IsReadOnly="True" />
                 <StackPanel
                     Grid.Row="2"
@@ -91,23 +91,23 @@
                 <TextBlock
                     Grid.Row="3"
                     Grid.Column="0"
-                    VerticalAlignment="Center"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbCoreType}" />
                 <ComboBox
                     x:Name="cmbCoreType"
                     Grid.Row="3"
                     Grid.Column="1"
                     Width="200"
-                    HorizontalAlignment="Left"
                     Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
                     MaxDropDownHeight="1000" />
 
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
-                    VerticalAlignment="Center"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbDisplayLog}" />
                 <StackPanel
                     Grid.Row="4"
@@ -116,27 +116,27 @@
                     Orientation="Horizontal">
                     <ToggleSwitch
                         x:Name="togDisplayLog"
-                        HorizontalAlignment="Left"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                     <TextBlock
-                        VerticalAlignment="Center"
                         Margin="{StaticResource MarginLr8}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TipDisplayLog}" />
                 </StackPanel>
 
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
-                    VerticalAlignment="Center"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbPreSocksPort}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
                     Grid.Row="5"
                     Grid.Column="1"
                     Width="200"
-                    HorizontalAlignment="Left"
-                    Margin="{StaticResource Margin4}" />
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left" />
                 <StackPanel
                     Grid.Row="6"
                     Grid.Column="1"
@@ -149,8 +149,8 @@
                         TextWrapping="Wrap" />
                     <TextBlock
                         Width="500"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource MarginLr8}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.CustomServerTips}"
                         TextWrapping="Wrap" />
                 </StackPanel>
