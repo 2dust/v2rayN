@@ -167,7 +167,10 @@ namespace v2rayN.Desktop.Views
 
         private void lstRules_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
+            }
         }
 
         private void LstRules_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)

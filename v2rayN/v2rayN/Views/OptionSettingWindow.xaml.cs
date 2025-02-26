@@ -259,7 +259,10 @@ namespace v2rayN.Views
 
         private void ClbdestOverride_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
+            }
         }
     }
 }

@@ -113,7 +113,10 @@ namespace v2rayN.Views
 
         private void lstRoutings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
+            }
         }
 
         private void LstRoutings_MouseDoubleClick(object sender, MouseButtonEventArgs e)

@@ -1,7 +1,5 @@
 using System.Reactive;
-using System.Text;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace ServiceLib.ViewModels
 {

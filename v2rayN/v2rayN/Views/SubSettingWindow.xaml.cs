@@ -94,7 +94,10 @@ namespace v2rayN.Views
 
         private void LstSubscription_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
+            }
         }
 
         private void menuClose_Click(object sender, System.Windows.RoutedEventArgs e)

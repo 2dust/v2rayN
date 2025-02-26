@@ -162,7 +162,10 @@ namespace v2rayN.Views
 
         private void lstRules_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
+            }
         }
 
         private void LstRules_MouseDoubleClick(object sender, MouseButtonEventArgs e)

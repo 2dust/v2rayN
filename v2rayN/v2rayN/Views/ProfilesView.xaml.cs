@@ -201,7 +201,10 @@ namespace v2rayN.Views
 
         private void lstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
+            }
         }
 
         private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)

@@ -79,12 +79,18 @@ namespace v2rayN.Views
 
         private void ClbProtocol_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.ProtocolItems = clbProtocol.SelectedItems.Cast<string>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.ProtocolItems = clbProtocol.SelectedItems.Cast<string>().ToList();
+            }
         }
 
         private void ClbInboundTag_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ViewModel.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
+            if (ViewModel != null)
+            {
+                ViewModel.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
+            }
         }
 
         private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)
