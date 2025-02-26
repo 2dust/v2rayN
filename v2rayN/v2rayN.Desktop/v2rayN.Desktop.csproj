@@ -26,6 +26,7 @@
 		<PackageReference Include="ReactiveUI.Fody">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
+        <PackageReference Include="GlobalHotKeys.Windows" />
 	</ItemGroup>
 
 	<ItemGroup>

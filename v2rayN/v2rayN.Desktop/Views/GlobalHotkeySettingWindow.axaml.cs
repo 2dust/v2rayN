@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views
 {
@@ -20,8 +21,8 @@ namespace v2rayN.Desktop.Views
 
             btnReset.Click += btnReset_Click;
 
-            //HotkeyHandler.Instance.IsPause = true;
-            //this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
+            HotkeyHandler.Instance.IsPause = true;
+            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
             btnCancel.Click += (s, e) => this.Close();
 
             this.WhenActivated(disposables =>
