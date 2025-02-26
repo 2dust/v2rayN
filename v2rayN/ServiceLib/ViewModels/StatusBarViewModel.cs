@@ -316,6 +316,8 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
+            _updateView?.Invoke(EViewAction.DispatcherServerAvailability, ResUI.Speedtesting);
+
             var msg = await (new UpdateService()).RunAvailabilityCheck();
 
             NoticeHandler.Instance.SendMessageEx(msg);

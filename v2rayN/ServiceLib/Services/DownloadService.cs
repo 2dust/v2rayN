@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
@@ -222,20 +222,20 @@ namespace ServiceLib.Services
 
         public async Task<int> RunAvailabilityCheck(IWebProxy? webProxy)
         {
+            var responseTime = -1;
             try
             {
                 webProxy ??= await GetWebProxy(true);
+                var config = AppHandler.Instance.Config;
 
-                try
+                for (var i = 0; i < 2; i++)
                 {
-                    var config = AppHandler.Instance.Config;
-                    var responseTime = await GetRealPingTime(config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
-                    return responseTime;
-                }
-                catch (Exception ex)
-                {
-                    Logging.SaveLog(_tag, ex);
-                    return -1;
+                    responseTime = await GetRealPingTime(config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
+                    if (responseTime > 0)
+                    {
+                        break;
+                    }
+                    await Task.Delay(500);
                 }
             }
             catch (Exception ex)
@@ -243,6 +243,7 @@ namespace ServiceLib.Services
                 Logging.SaveLog(_tag, ex);
                 return -1;
             }
+            return responseTime;
         }
 
         public async Task<int> GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout)
