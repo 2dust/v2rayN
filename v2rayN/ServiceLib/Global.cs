@@ -69,7 +69,7 @@ namespace ServiceLib
         public const int MinFontSize = 8;
         public const string RebootAs = "rebootas";
         public const string AvaAssets = "avares://v2rayN/Assets/";
-        public const string LocalAppData = "V2RAYN_LOCAL_APPLICATION_DATA";
+        public const string LocalAppData = "V2RAYN_LOCAL_APPLICATION_DATA_V2";
         public const string V2RayLocalAsset = "V2RAY_LOCATION_ASSET";
         public const string XrayLocalAsset = "XRAY_LOCATION_ASSET";
         public const int SpeedTestPageSize = 1000;
