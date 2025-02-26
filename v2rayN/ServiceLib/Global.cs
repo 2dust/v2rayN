@@ -429,12 +429,12 @@ namespace ServiceLib
             "fakedns+others"
         ];
 
-        public static readonly List<string> TunMtus =
+        public static readonly List<int> TunMtus =
         [
-            "1280",
-            "1408",
-            "1500",
-            "9000"
+            1280,
+            1408,
+            1500,
+            9000
         ];
 
         public static readonly List<string> TunStacks =

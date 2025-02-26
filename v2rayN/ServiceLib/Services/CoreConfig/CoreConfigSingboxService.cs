@@ -599,7 +599,7 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     if (_config.TunModeItem.Mtu <= 0)
                     {
-                        _config.TunModeItem.Mtu = Utils.ToInt(Global.TunMtus.First());
+                        _config.TunModeItem.Mtu = Global.TunMtus.First();
                     }
                     if (Utils.IsNullOrEmpty(_config.TunModeItem.Stack))
                     {
@@ -745,7 +745,7 @@ namespace ServiceLib.Services.CoreConfig
                             outbound.peer_public_key = node.PublicKey;
                             outbound.reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList();
                             outbound.local_address = Utils.String2List(node.RequestHost);
-                            outbound.mtu = Utils.ToInt(node.ShortId.IsNullOrEmpty() ? Global.TunMtus.FirstOrDefault() : node.ShortId);
+                            outbound.mtu = Utils.ToInt(node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId);
                             break;
                         }
                 }

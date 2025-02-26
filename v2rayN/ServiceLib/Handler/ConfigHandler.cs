@@ -725,7 +725,7 @@ namespace ServiceLib.Handler
             profileItem.Network = string.Empty;
             if (profileItem.ShortId.IsNullOrEmpty())
             {
-                profileItem.ShortId = Global.TunMtus.FirstOrDefault();
+                profileItem.ShortId = Global.TunMtus.First().ToString();
             }
 
             if (profileItem.Id.IsNullOrEmpty())
