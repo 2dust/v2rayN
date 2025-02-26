@@ -86,7 +86,7 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuSortServerResult).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RemoveInvalidServerResultCmd, v => v.menuRemoveInvalidServerResult).DisposeWith(disposables);
-                
+
                 //servers export
                 this.BindCommand(ViewModel, vm => vm.Export2ClientConfigCmd, v => v.menuExport2ClientConfig).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
@@ -102,11 +102,16 @@ namespace v2rayN.Desktop.Views
         private async void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
         {
             e.Handled = true;
-            await ViewModel?.SortServer(e.Column.Tag.ToString());
+
+            if (ViewModel != null && e.Column?.Tag?.ToString() != null)
+            {
+                await ViewModel.SortServer(e.Column.Tag.ToString());
+            }
+
             e.Handled = false;
         }
 
-        //#region Event
+        #region Event
 
         private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
         {
@@ -179,7 +184,9 @@ namespace v2rayN.Desktop.Views
 
                 case EViewAction.DispatcherRefreshServersBiz:
                     Dispatcher.UIThread.Post(() =>
-                        ViewModel?.RefreshServersBiz(),
+                    {
+                        _ = RefreshServersBiz();
+                    },
                     DispatcherPriority.Default);
                     break;
             }
@@ -196,6 +203,19 @@ namespace v2rayN.Desktop.Views
 
             var dialog = new QrcodeView(url);
             await DialogHost.Show(dialog);
+        }
+
+        public async Task RefreshServersBiz()
+        {
+            if (ViewModel != null)
+            {
+                await ViewModel.RefreshServersBiz();
+            }
+
+            if (lstProfiles.SelectedIndex > 0)
+            {
+                lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
+            }
         }
 
         private void lstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -333,9 +353,9 @@ namespace v2rayN.Desktop.Views
             }
         }
 
-        //#endregion Event
+        #endregion Event
 
-        //#region UI
+        #region UI
 
         private void RestoreUI()
         {
@@ -388,9 +408,9 @@ namespace v2rayN.Desktop.Views
             _config.UiItem.MainColumnItem = lvColumnItem;
         }
 
-        //#endregion UI
+        #endregion UI
 
-        //#region Drag and Drop
+        #region Drag and Drop
 
         //private Point startPoint = new();
         //private int startIndex = -1;
@@ -480,6 +500,6 @@ namespace v2rayN.Desktop.Views
         //    }
         //}
 
-        //#endregion Drag and Drop
+        #endregion Drag and Drop
     }
 }

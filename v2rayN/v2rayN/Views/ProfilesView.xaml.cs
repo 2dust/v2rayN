@@ -166,7 +166,7 @@ namespace v2rayN.Views
                 case EViewAction.DispatcherRefreshServersBiz:
                     Application.Current?.Dispatcher.Invoke((() =>
                     {
-                        ViewModel?.RefreshServersBiz();
+                        _ = RefreshServersBiz();
                     }), DispatcherPriority.Normal);
                     break;
             }
@@ -184,6 +184,19 @@ namespace v2rayN.Views
             };
 
             await DialogHost.Show(dialog, "RootDialog");
+        }
+
+        public async Task RefreshServersBiz()
+        {
+            if (ViewModel != null)
+            {
+                await ViewModel.RefreshServersBiz();
+            }
+
+            if (lstProfiles.SelectedIndex > 0)
+            {
+                lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
+            }
         }
 
         private void lstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

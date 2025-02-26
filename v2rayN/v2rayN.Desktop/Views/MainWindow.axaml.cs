@@ -247,7 +247,10 @@ namespace v2rayN.Desktop.Views
 
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = await AvaUtils.GetClipboardData(this);
-                    ViewModel?.AddServerViaClipboardAsync(clipboardData);
+                    if (ViewModel != null)
+                    {
+                        await ViewModel.AddServerViaClipboardAsync(clipboardData);
+                    }
                     break;
 
                 case EViewAction.AdjustMainLvColWidth:
@@ -294,7 +297,10 @@ namespace v2rayN.Desktop.Views
                     break;
 
                 case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
-                    await ViewModel?.MyAppExitAsync(true);
+                    if (ViewModel != null)
+                    {
+                        await ViewModel.MyAppExitAsync(true);
+                    }
                     break;
             }
 
@@ -309,7 +315,10 @@ namespace v2rayN.Desktop.Views
                 {
                     case Key.V:
                         var clipboardData = await AvaUtils.GetClipboardData(this);
-                        ViewModel?.AddServerViaClipboardAsync(clipboardData);
+                        if (ViewModel != null)
+                        {
+                            await ViewModel.AddServerViaClipboardAsync(clipboardData);
+                        }
                         break;
 
                     case Key.S:
@@ -358,7 +367,11 @@ namespace v2rayN.Desktop.Views
             {
                 return;
             }
-            await ViewModel?.ScanImageResult(fileName);
+
+            if (ViewModel != null)
+            {
+                await ViewModel.ScanImageResult(fileName);
+            }
         }
 
         private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
@@ -382,8 +395,10 @@ namespace v2rayN.Desktop.Views
 
             _blCloseByUser = true;
             StorageUI();
-
-            await ViewModel?.MyAppExitAsync(false);
+            if (ViewModel != null)
+            {
+                await ViewModel.MyAppExitAsync(false);
+            }
         }
 
         #endregion Event
