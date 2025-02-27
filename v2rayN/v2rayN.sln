@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayN.Desktop", "v2rayN.De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazTool", "AmazTool\AmazTool.csproj", "{47D68B1C-601C-4C69-873B-FFF0DC13EC97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHotKeys", "GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj", "{CB3DE54F-3A26-AE02-1299-311132C32156}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,12 +26,12 @@
 		<PackageReference Include="ReactiveUI.Fody">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-        <PackageReference Include="GlobalHotKeys.Windows" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectCapability Include="Avalonia" />
 		<AvaloniaResource Include="Assets\**" />
+		<ProjectReference Include="..\GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj" />
 		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>
 

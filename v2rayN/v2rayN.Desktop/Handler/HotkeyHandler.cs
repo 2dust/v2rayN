@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using Avalonia.Win32.Input;
 using GlobalHotKeys;
-using GlobalHotKeys.Native.Types;
 
 namespace v2rayN.Desktop.Handler
 {
