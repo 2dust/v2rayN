@@ -20,9 +20,13 @@ public static class ProcUtils
         try
         {
             if (fileName.Contains(' '))
+            {
                 fileName = fileName.AppendQuotes();
+            }
             if (arguments.Contains(' '))
+            {
                 arguments = arguments.AppendQuotes();
+            }
 
             Process proc = new()
             {
