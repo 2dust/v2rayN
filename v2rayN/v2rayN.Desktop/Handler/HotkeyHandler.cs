@@ -24,7 +24,6 @@ namespace v2rayN.Desktop.Handler
         {
             _config = config;
             _updateFunc = updateFunc;
-            _hotKeyManager = new GlobalHotKeys.HotKeyManager();
 
             Register();
         }
@@ -36,6 +35,11 @@ namespace v2rayN.Desktop.Handler
 
         private void Register()
         {
+            if (_config.GlobalHotkeys.Any(t => t.KeyCode > 0) == false)
+            {
+                return;
+            }
+            _hotKeyManager ??= new GlobalHotKeys.HotKeyManager();
             _hotkeyTriggerDic.Clear();
 
             foreach (var item in _config.GlobalHotkeys)
