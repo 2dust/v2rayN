@@ -17,10 +17,11 @@
             x:Name="txtContent"
             Grid.Row="1"
             Width="300"
+            MaxHeight="100"
             Margin="{StaticResource MarginTb8}"
             VerticalAlignment="Center"
             IsReadOnly="True"
-            MaxLines="1" />
+            TextWrapping="WrapWithOverflow" />
 
     </Grid>
 </UserControl>

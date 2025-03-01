@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 
 namespace v2rayN.Desktop.Views
 {
@@ -17,7 +18,7 @@ namespace v2rayN.Desktop.Views
             txtContent.Text = url;
             imgQrcode.Source = GetQRCode(url);
 
-            //  btnCancel.Click += (s, e) => this.Close();
+            txtContent.GotFocus += (_, _) => Dispatcher.UIThread.Post(() => { txtContent.SelectAll(); });
         }
 
         private Bitmap? GetQRCode(string? url)
@@ -29,7 +30,9 @@ namespace v2rayN.Desktop.Views
         private Bitmap? ByteToBitmap(byte[]? bytes)
         {
             if (bytes is null)
+            {
                 return null;
+            }
 
             using var ms = new MemoryStream(bytes);
             return new Bitmap(ms);
