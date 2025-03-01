@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace AmazTool
 {
@@ -14,9 +14,9 @@ namespace AmazTool
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public static string GetPath(string fileName)
+        public static string GetPath(string? fileName)
         {
-            string startupPath = StartupPath();
+            var startupPath = StartupPath();
             if (string.IsNullOrEmpty(fileName))
             {
                 return startupPath;
@@ -25,6 +25,7 @@ namespace AmazTool
         }
 
         public static string V2rayN => "v2rayN";
+        public static string AmazTool => "AmazTool";
 
         public static void StartV2RayN()
         {
@@ -44,9 +45,14 @@ namespace AmazTool
         {
             for (var i = second; i > 0; i--)
             {
-                Console.WriteLine(i);
+                Utils.WriteLine(i);
                 Thread.Sleep(1000);
             }
+        }
+
+        public static void WriteLine(object obj)
+        {
+            Console.WriteLine(obj);
         }
     }
 }
