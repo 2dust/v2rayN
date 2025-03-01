@@ -197,6 +197,7 @@ namespace ServiceLib.Models
     {
         public int UpMbps { get; set; }
         public int DownMbps { get; set; }
+        public int HopInterval { get; set; } = 30;
     }
 
     [Serializable]

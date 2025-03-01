@@ -730,6 +730,13 @@ namespace ServiceLib.Services.CoreConfig
 
                             outbound.up_mbps = _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
                             outbound.down_mbps = _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
+                            if (node.Ports.IsNotEmpty())
+                            {
+                                outbound.server_port = null;
+                                outbound.server_ports = node.Ports.Split(",").ToList();
+                                outbound.hop_interval = _config.HysteriaItem.HopInterval > 0 ? $"{_config.HysteriaItem.HopInterval}s" : null;
+                            }
+
                             break;
                         }
                     case EConfigType.TUIC:

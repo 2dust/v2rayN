@@ -1396,4 +1396,10 @@
   <data name="RemoveInvalidServerResultTip" xml:space="preserve">
     <value>Removed {0} invalid test results.</value>
   </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Server port range</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Will cover the port, separate with commas (,)</value>
+  </data>
 </root>

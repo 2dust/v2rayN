@@ -1393,4 +1393,10 @@
   <data name="RemoveInvalidServerResultTip" xml:space="preserve">
     <value>移除无效测试结果 {0} 个。</value>
   </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>跳跃端口范围</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>会覆盖端口，多组时用逗号(,)隔开</value>
+  </data>
 </root>

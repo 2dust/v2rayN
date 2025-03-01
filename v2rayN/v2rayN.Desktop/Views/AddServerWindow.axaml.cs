@@ -178,6 +178,7 @@ namespace v2rayN.Desktop.Views
                     case EConfigType.Hysteria2:
                         this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId7.Text).DisposeWith(disposables);
                         this.Bind(ViewModel, vm => vm.SelectedSource.Path, v => v.txtPath7.Text).DisposeWith(disposables);
+                        this.Bind(ViewModel, vm => vm.SelectedSource.Ports, v => v.txtPorts7.Text).DisposeWith(disposables);
                         break;
 
                     case EConfigType.TUIC:

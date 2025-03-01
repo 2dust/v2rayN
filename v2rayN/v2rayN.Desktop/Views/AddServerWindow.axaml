@@ -308,7 +308,7 @@
                 <Grid
                     x:Name="gridHysteria2"
                     Grid.Row="2"
-                    ColumnDefinitions="180,Auto"
+                    ColumnDefinitions="180,Auto,Auto"
                     IsVisible="False"
                     RowDefinitions="Auto,Auto,Auto,Auto">
 
@@ -337,6 +337,25 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbPorts7}" />
+                    <TextBox
+                        x:Name="txtPorts7"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbPorts7Tips}" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"

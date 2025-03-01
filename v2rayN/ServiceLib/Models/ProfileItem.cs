@@ -1,4 +1,4 @@
-﻿using SQLite;
+using SQLite;
 
 namespace ServiceLib.Models
 {
@@ -64,11 +64,11 @@ namespace ServiceLib.Models
 
         [PrimaryKey]
         public string IndexId { get; set; }
-
         public EConfigType ConfigType { get; set; }
         public int ConfigVersion { get; set; }
         public string Address { get; set; }
         public int Port { get; set; }
+        public string Ports { get; set; }
         public string Id { get; set; }
         public int AlterId { get; set; }
         public string Security { get; set; }

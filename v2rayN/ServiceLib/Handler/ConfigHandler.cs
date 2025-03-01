@@ -217,6 +217,7 @@ namespace ServiceLib.Handler
                 item.Remarks = profileItem.Remarks;
                 item.Address = profileItem.Address;
                 item.Port = profileItem.Port;
+                item.Ports = profileItem.Ports;
 
                 item.Id = profileItem.Id;
                 item.AlterId = profileItem.AlterId;

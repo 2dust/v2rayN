@@ -2537,6 +2537,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server port range 的本地化字符串。
+        /// </summary>
+        public static string TbPorts7 {
+            get {
+                return ResourceManager.GetString("TbPorts7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Will cover the port, separate with commas (,) 的本地化字符串。
+        /// </summary>
+        public static string TbPorts7Tips {
+            get {
+                return ResourceManager.GetString("TbPorts7Tips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Socks port 的本地化字符串。
         /// </summary>
         public static string TbPreSocksPort {
