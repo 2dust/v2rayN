@@ -49,7 +49,7 @@ namespace v2rayN.Desktop.Handler
                 }
 
                 var vKey = KeyInterop.VirtualKeyFromKey((Key)item.KeyCode);
-                var modifiers = Modifiers.NoRepeat;
+                var modifiers = Modifiers.None;
                 if (item.Control)
                 {
                     modifiers |= Modifiers.Control;
