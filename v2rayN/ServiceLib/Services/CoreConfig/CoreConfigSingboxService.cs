@@ -733,7 +733,15 @@ namespace ServiceLib.Services.CoreConfig
                             if (node.Ports.IsNotEmpty())
                             {
                                 outbound.server_port = null;
-                                outbound.server_ports = node.Ports.Split(",").ToList();
+                                outbound.server_ports = new List<string>();
+                                var ports = node.Ports.Split(',')
+                                    .Select(p => p.Trim())
+                                    .Where(p => !string.IsNullOrEmpty(p))
+                                    .ToList();
+                                foreach (var it in ports)
+                                {
+                                    outbound.server_ports.Add(it.Contains('-') ? it.Replace('-', ':') : it);
+                                }
                                 outbound.hop_interval = _config.HysteriaItem.HopInterval > 0 ? $"{_config.HysteriaItem.HopInterval}s" : null;
                             }
 
