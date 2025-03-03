@@ -95,8 +95,8 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            await ProxiesReload();
             _ = DelayTestTask();
+            await ProxiesReload();
         }
 
         private async Task DoRulemodeSelected(bool c)
@@ -383,8 +383,6 @@ namespace ServiceLib.ViewModels
 
         private async Task ProxiesDelayTest(bool blAll)
         {
-            //UpdateHandler(false, "Clash Proxies Latency Test");
-
             ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
             {
                 if (item == null)
@@ -434,13 +432,13 @@ namespace ServiceLib.ViewModels
 
         public async Task DelayTestTask()
         {
-            var lastTime = DateTime.Now;
-            _ = Task.Run(async () =>
+            Task.Run(async () =>
             {
+                var numOfExecuted = 1;
                 while (true)
                 {
                     await Task.Delay(1000 * 60);
-
+                    numOfExecuted++;
                     if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
                     {
                         continue;
@@ -449,13 +447,11 @@ namespace ServiceLib.ViewModels
                     {
                         continue;
                     }
-                    var dtNow = DateTime.Now;
-                    if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
+                    if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
                     {
                         continue;
                     }
                     await ProxiesDelayTest();
-                    lastTime = dtNow;
                 }
             });
             await Task.CompletedTask;

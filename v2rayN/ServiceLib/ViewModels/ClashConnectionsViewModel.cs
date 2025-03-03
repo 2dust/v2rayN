@@ -53,26 +53,31 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            var lastTime = DateTime.Now;
+            Task.Run(async () =>
+            {
+                var numOfExecuted = 1;
+                while (true)
+                {
+                    await Task.Delay(1000 * 5);
+                    numOfExecuted++;
+                    if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                    {
+                        continue;
+                    }
 
-            Observable.Interval(TimeSpan.FromSeconds(5))
-              .Subscribe(async x =>
-              {
-                  if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
-                  {
-                      return;
-                  }
-                  var dtNow = DateTime.Now;
-                  if (_config.ClashUIItem.ConnectionsRefreshInterval > 0)
-                  {
-                      if ((dtNow - lastTime).Minutes % _config.ClashUIItem.ConnectionsRefreshInterval == 0)
-                      {
-                          await GetClashConnections();
-                          lastTime = dtNow;
-                      }
-                      Task.Delay(1000).Wait();
-                  }
-              });
+                    if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
+                    {
+                        continue;
+                    }
+                    await GetClashConnections();
+                }
+            });
+
             await Task.CompletedTask;
         }
 

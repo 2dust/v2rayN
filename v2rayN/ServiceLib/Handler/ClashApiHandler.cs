@@ -7,9 +7,9 @@ namespace ServiceLib.Handler
         private static readonly Lazy<ClashApiHandler> instance = new(() => new());
         public static ClashApiHandler Instance => instance.Value;
 
+        private static readonly string _tag = "ClashApiHandler";
         private Dictionary<string, ProxiesItem>? _proxies;
         public Dictionary<string, object> ProfileContent { get; set; }
-        private static readonly string _tag = "ClashApiHandler";
 
         public async Task<Tuple<ClashProxies, ClashProviders>?> GetClashProxiesAsync(Config config)
         {
@@ -54,7 +54,7 @@ namespace ServiceLib.Handler
                         return;
                     }
                     lstProxy = new List<ClashProxyModel>();
-                    foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
+                    foreach (var kv in _proxies)
                     {
                         if (Global.notAllowTestType.Contains(kv.Value.type.ToLower()))
                         {

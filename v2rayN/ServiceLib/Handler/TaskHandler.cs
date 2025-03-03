@@ -26,7 +26,7 @@ namespace ServiceLib.Handler
                 //Execute once 20 minute
                 if (numOfExecuted % 20 == 0)
                 {
-                    Logging.SaveLog("Execute save config");
+                    //Logging.SaveLog("Execute save config");
 
                     await ConfigHandler.SaveConfig(config);
                     await ProfileExHandler.Instance.SaveTo();
@@ -35,7 +35,7 @@ namespace ServiceLib.Handler
                 //Execute once 1 hour
                 if (numOfExecuted % 60 == 0)
                 {
-                    Logging.SaveLog("Execute delete expired files");
+                    //Logging.SaveLog("Execute delete expired files");
 
                     FileManager.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
                     FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
@@ -72,7 +72,7 @@ namespace ServiceLib.Handler
                     updateFunc?.Invoke(success, msg);
                     if (success)
                     {
-                        Logging.SaveLog("Update subscription end" + msg);
+                        Logging.SaveLog($"Update subscription end. {msg}");
                     }
                 });
                 item.UpdateTime = updateTime;
