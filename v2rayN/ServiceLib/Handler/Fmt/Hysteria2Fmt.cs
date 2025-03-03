@@ -24,6 +24,8 @@ namespace ServiceLib.Handler.Fmt
             item.Path = Utils.UrlDecode(query["obfs-password"] ?? "");
             item.AllowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
+            item.Ports = Utils.UrlDecode(query["mport"] ?? "").Replace('-', ':');
+
             return item;
         }
 
@@ -53,6 +55,10 @@ namespace ServiceLib.Handler.Fmt
                 dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
             }
             dicQuery.Add("insecure", item.AllowInsecure.ToLower() == "true" ? "1" : "0");
+            if (Utils.IsNotEmpty(item.Ports))
+            {
+                dicQuery.Add("mport", Utils.UrlEncode(item.Ports.Replace(':', '-')));
+            }
 
             return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
         }
