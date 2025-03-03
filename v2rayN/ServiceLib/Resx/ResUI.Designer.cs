@@ -2483,7 +2483,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Address(Ip,Ipv6) 的本地化字符串。
+        ///   查找类似 Address(Ipv4,Ipv6) 的本地化字符串。
         /// </summary>
         public static string TbLocalAddress {
             get {

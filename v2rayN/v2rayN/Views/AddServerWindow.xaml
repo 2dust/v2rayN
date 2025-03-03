@@ -479,6 +479,7 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
+                        materialDesign:HintAssist.Hint="1000:2000,3000:4000"
                         Style="{StaticResource DefTextBox}" />
                     <TextBlock
                         Grid.Row="3"
@@ -609,6 +610,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
+                        materialDesign:HintAssist.Hint="2,3,4"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
@@ -624,6 +626,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
+                        materialDesign:HintAssist.Hint="Ipv4,Ipv6"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
@@ -640,6 +643,7 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
+                        materialDesign:HintAssist.Hint="1500"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
 

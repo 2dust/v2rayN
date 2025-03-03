@@ -349,7 +349,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        Watermark="1000:2000,3000:4000" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -448,7 +449,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        Watermark="2,3,4" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -461,7 +463,8 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="400"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        Watermark="Ipv4,Ipv6" />
 
                     <TextBlock
                         Grid.Row="5"
@@ -475,7 +478,8 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        Watermark="1500" />
                 </Grid>
 
                 <Separator

@@ -1326,7 +1326,7 @@
     <value>Reserved(2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>Address(Ipv4,Ipv6)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>使用系統hosts</value>

@@ -1100,7 +1100,7 @@
     <value>Reserved(2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>Address(Ipv4,Ipv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>obfs password</value>

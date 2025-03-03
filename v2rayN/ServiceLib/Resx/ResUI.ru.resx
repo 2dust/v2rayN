@@ -1052,7 +1052,7 @@
     <value>obfs password</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>Address(Ipv4,Ipv6)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Default domain strategy for outbound</value>

@@ -1319,7 +1319,7 @@
     <value>Previous proxy remarks</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>آدرس (IP, IPv6)</value>
+    <value>آدرس (IPv4, IPv6)</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
     <value>Reserved(2,3,4)</value>
