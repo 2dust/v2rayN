@@ -80,8 +80,6 @@ namespace ServiceLib.Handler
             Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
             Logging.LoggingEnabled(_config.GuiItem.EnableLog);
 
-            ClearExpiredFiles();
-
             return true;
         }
 
@@ -90,16 +88,6 @@ namespace ServiceLib.Handler
             _statePort = null;
             _statePort2 = null;
             return true;
-        }
-
-        private void ClearExpiredFiles()
-        {
-            Task.Run(() =>
-            {
-                FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
-                FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
-                FileManager.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
-            });
         }
 
         #endregion Init

@@ -20,14 +20,6 @@ namespace ServiceLib.Handler
         public async Task Init()
         {
             await InitData();
-            _ = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    await Task.Delay(1000 * 600);
-                    await SaveQueueIndexIds();
-                }
-            });
         }
 
         public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()

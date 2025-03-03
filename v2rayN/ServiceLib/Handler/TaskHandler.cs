@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler
+namespace ServiceLib.Handler
 {
     public class TaskHandler
     {
@@ -7,65 +7,91 @@
 
         public void RegUpdateTask(Config config, Action<bool, string> updateFunc)
         {
-            Task.Run(() => UpdateTaskRunSubscription(config, updateFunc));
-            Task.Run(() => UpdateTaskRunGeo(config, updateFunc));
+            Task.Run(() => ScheduledTasks(config, updateFunc));
+        }
+
+        private async Task ScheduledTasks(Config config, Action<bool, string> updateFunc)
+        {
+            Logging.SaveLog("Setup Scheduled Tasks");
+
+            var numOfExecuted = 1;
+            while (true)
+            {
+                //1 minute
+                await Task.Delay(1000 * 60);
+
+                //Execute once 1 minute
+                await UpdateTaskRunSubscription(config, updateFunc);
+
+                //Execute once 20 minute
+                if (numOfExecuted % 20 == 0)
+                {
+                    Logging.SaveLog("Execute save config");
+
+                    await ConfigHandler.SaveConfig(config);
+                    await ProfileExHandler.Instance.SaveTo();
+                }
+
+                //Execute once 1 hour
+                if (numOfExecuted % 60 == 0)
+                {
+                    Logging.SaveLog("Execute delete expired files");
+
+                    FileManager.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
+                    FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
+                    FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
+
+                    //Check once 1 hour
+                    await UpdateTaskRunGeo(config, numOfExecuted / 60, updateFunc);
+                }
+
+                numOfExecuted++;
+            }
         }
 
         private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> updateFunc)
         {
-            await Task.Delay(60000);
-            Logging.SaveLog("UpdateTaskRunSubscription");
+            var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+            var lstSubs = (await AppHandler.Instance.SubItems())?
+                .Where(t => t.AutoUpdateInterval > 0)
+                .Where(t => updateTime - t.UpdateTime >= t.AutoUpdateInterval * 60)
+                .ToList();
 
-            var updateHandle = new UpdateService();
-            while (true)
+            if (lstSubs is not { Count: > 0 })
             {
-                var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-                var lstSubs = (await AppHandler.Instance.SubItems())
-                            .Where(t => t.AutoUpdateInterval > 0)
-                            .Where(t => updateTime - t.UpdateTime >= t.AutoUpdateInterval * 60)
-                            .ToList();
+                return;
+            }
 
-                foreach (var item in lstSubs)
+            Logging.SaveLog("Execute update subscription");
+            var updateHandle = new UpdateService();
+
+            foreach (var item in lstSubs)
+            {
+                await updateHandle.UpdateSubscriptionProcess(config, item.Id, true, (bool success, string msg) =>
                 {
-                    await updateHandle.UpdateSubscriptionProcess(config, item.Id, true, (bool success, string msg) =>
-                        {
-                            updateFunc?.Invoke(success, msg);
-                            if (success)
-                                Logging.SaveLog("subscription" + msg);
-                        });
-                    item.UpdateTime = updateTime;
-                    await ConfigHandler.AddSubItem(config, item);
-
-                    await Task.Delay(5000);
-                }
-                await Task.Delay(60000);
+                    updateFunc?.Invoke(success, msg);
+                    if (success)
+                    {
+                        Logging.SaveLog("Update subscription end" + msg);
+                    }
+                });
+                item.UpdateTime = updateTime;
+                await ConfigHandler.AddSubItem(config, item);
+                await Task.Delay(1000);
             }
         }
 
-        private async Task UpdateTaskRunGeo(Config config, Action<bool, string> updateFunc)
+        private async Task UpdateTaskRunGeo(Config config, int hours, Action<bool, string> updateFunc)
         {
-            var autoUpdateGeoTime = DateTime.Now;
-
-            //await Task.Delay(1000 * 120);
-            Logging.SaveLog("UpdateTaskRunGeo");
-
-            var updateHandle = new UpdateService();
-            while (true)
+            if (config.GuiItem.AutoUpdateInterval > 0 && hours > 0 && hours % config.GuiItem.AutoUpdateInterval == 0)
             {
-                await Task.Delay(1000 * 3600);
+                Logging.SaveLog("Execute update geo files");
 
-                var dtNow = DateTime.Now;
-                if (config.GuiItem.AutoUpdateInterval > 0)
+                var updateHandle = new UpdateService();
+                await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
                 {
-                    if ((dtNow - autoUpdateGeoTime).Hours % config.GuiItem.AutoUpdateInterval == 0)
-                    {
-                        await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
-                        {
-                            updateFunc?.Invoke(false, msg);
-                        });
-                        autoUpdateGeoTime = dtNow;
-                    }
-                }
+                    updateFunc?.Invoke(false, msg);
+                });
             }
         }
     }

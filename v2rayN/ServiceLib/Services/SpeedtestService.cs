@@ -25,8 +25,6 @@ namespace ServiceLib.Services
                 await RunAsync(actionType, selecteds);
                 await ProfileExHandler.Instance.SaveTo();
                 UpdateFunc("", ResUI.SpeedtestingCompleted);
-
-                FileManager.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
             });
         }
 
