@@ -14,7 +14,7 @@ namespace AmazTool
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public static string GetPath(string? fileName)
+        public static string GetPath(string fileName)
         {
             var startupPath = StartupPath();
             if (string.IsNullOrEmpty(fileName))
@@ -25,7 +25,6 @@ namespace AmazTool
         }
 
         public static string V2rayN => "v2rayN";
-        public static string AmazTool => "AmazTool";
 
         public static void StartV2RayN()
         {
@@ -45,14 +44,9 @@ namespace AmazTool
         {
             for (var i = second; i > 0; i--)
             {
-                Utils.WriteLine(i);
+                Console.WriteLine(i);
                 Thread.Sleep(1000);
             }
-        }
-
-        public static void WriteLine(object obj)
-        {
-            Console.WriteLine(obj);
         }
     }
 }

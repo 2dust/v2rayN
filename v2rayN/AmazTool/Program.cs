@@ -7,33 +7,20 @@ namespace AmazTool
         {
             if (args.Length == 0)
             {
-                Utils.WriteLine(Resx.Resource.Guidelines);
-                Utils.Waiting(5);
+                Console.WriteLine(Resx.Resource.Guidelines);
+                Thread.Sleep(5000);
                 return;
             }
 
             var argData = Uri.UnescapeDataString(string.Join(" ", args));
             if (argData.Equals("rebootas"))
             {
-                Utils.Waiting(1);
+                Thread.Sleep(1000);
                 Utils.StartV2RayN();
                 return;
             }
-           
-            var tryTimes = 0;
-            UpgradeApp.Init();
-            while (tryTimes++ < 3)
-            {
-                if (!UpgradeApp.Upgrade(argData))
-                {
-                    continue;
-                }
 
-                Utils.WriteLine(Resx.Resource.Restartv2rayN);
-                Utils.Waiting(3);
-                Utils.StartV2RayN();
-                break;
-            }
+            UpgradeApp.Upgrade(argData);
         }
     }
 }
