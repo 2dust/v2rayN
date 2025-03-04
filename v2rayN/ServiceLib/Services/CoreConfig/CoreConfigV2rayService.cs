@@ -916,7 +916,7 @@ namespace ServiceLib.Services.CoreConfig
                         kcpSettings.header = new Header4Ray
                         {
                             type = node.HeaderType,
-                            domain = host
+                            domain = host.IsNullOrEmpty() ? null : host
                         };
                         if (Utils.IsNotEmpty(path))
                         {
