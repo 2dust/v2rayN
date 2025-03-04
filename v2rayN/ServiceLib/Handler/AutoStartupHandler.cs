@@ -109,7 +109,7 @@ namespace ServiceLib.Handler
             task.Settings.RunOnlyIfIdle = false;
             task.Settings.IdleSettings.StopOnIdleEnd = false;
             task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
-            task.Triggers.Add(new Microsoft.Win32.TaskScheduler.LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(20) });
+            task.Triggers.Add(new Microsoft.Win32.TaskScheduler.LogonTrigger { UserId = logonUser, Delay = TimeSpan.FromSeconds(30) });
             task.Principal.RunLevel = Microsoft.Win32.TaskScheduler.TaskRunLevel.Highest;
             task.Actions.Add(new Microsoft.Win32.TaskScheduler.ExecAction(fileName.AppendQuotes(), null, Path.GetDirectoryName(fileName)));
 
