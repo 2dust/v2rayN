@@ -291,6 +291,8 @@ namespace ServiceLib.Models
         public object request { get; set; }
 
         public object response { get; set; }
+
+        public string? domain { get; set; }
     }
 
     public class KcpSettings4Ray

@@ -915,7 +915,8 @@ namespace ServiceLib.Services.CoreConfig
                         kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
                         kcpSettings.header = new Header4Ray
                         {
-                            type = node.HeaderType
+                            type = node.HeaderType,
+                            domain = host.IsNullOrEmpty() ? null : host
                         };
                         if (Utils.IsNotEmpty(path))
                         {
