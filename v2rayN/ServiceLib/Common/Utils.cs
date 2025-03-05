@@ -363,11 +363,6 @@ namespace ServiceLib.Common
             return text == "null";
         }
 
-        public static bool IsNotEmpty(string? text)
-        {
-            return !string.IsNullOrEmpty(text);
-        }
-
         /// <summary>
         /// 验证Domain地址是否合法
         /// </summary>

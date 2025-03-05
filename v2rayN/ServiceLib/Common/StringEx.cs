@@ -6,7 +6,7 @@ namespace ServiceLib.Common
     {
         public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
         {
-            return string.IsNullOrEmpty(value);
+            return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
         }
 
         public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? value)

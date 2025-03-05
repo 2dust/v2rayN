@@ -108,7 +108,7 @@ namespace ServiceLib.Services
             try
             {
                 var result1 = await DownloadStringAsync(url, blProxy, userAgent, 15);
-                if (Utils.IsNotEmpty(result1))
+                if (result1.IsNotEmpty())
                 {
                     return result1;
                 }
@@ -126,7 +126,7 @@ namespace ServiceLib.Services
             try
             {
                 var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent, 15);
-                if (Utils.IsNotEmpty(result2))
+                if (result2.IsNotEmpty())
                 {
                     return result2;
                 }
@@ -168,7 +168,7 @@ namespace ServiceLib.Services
 
                 Uri uri = new(url);
                 //Authorization Header
-                if (Utils.IsNotEmpty(uri.UserInfo))
+                if (uri.UserInfo.IsNotEmpty())
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
                 }

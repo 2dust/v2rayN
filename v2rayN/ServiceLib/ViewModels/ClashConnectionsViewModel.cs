@@ -32,7 +32,7 @@ namespace ServiceLib.ViewModels
 
             var canEditRemove = this.WhenAnyValue(
              x => x.SelectedSource,
-             selectedSource => selectedSource != null && Utils.IsNotEmpty(selectedSource.Id));
+             selectedSource => selectedSource != null && selectedSource.Id.IsNotEmpty());
 
             this.WhenAnyValue(
                x => x.AutoRefresh,

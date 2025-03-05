@@ -78,12 +78,12 @@ namespace ServiceLib.Handler.Fmt
             item.AlterId = vmessQRCode.aid;
             item.Security = Utils.ToString(vmessQRCode.scy);
 
-            item.Security = Utils.IsNotEmpty(vmessQRCode.scy) ? vmessQRCode.scy : Global.DefaultSecurity;
-            if (Utils.IsNotEmpty(vmessQRCode.net))
+            item.Security = vmessQRCode.scy.IsNotEmpty() ? vmessQRCode.scy : Global.DefaultSecurity;
+            if (vmessQRCode.net.IsNotEmpty())
             {
                 item.Network = vmessQRCode.net;
             }
-            if (Utils.IsNotEmpty(vmessQRCode.type))
+            if (vmessQRCode.type.IsNotEmpty())
             {
                 item.HeaderType = vmessQRCode.type;
             }

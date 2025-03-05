@@ -153,11 +153,11 @@ namespace ServiceLib.Handler
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";
-            if (Utils.IsNotEmpty(subid))
+            if (subid.IsNotEmpty())
             {
                 sql += $" and a.subid = '{subid}'";
             }
-            if (Utils.IsNotEmpty(filter))
+            if (filter.IsNotEmpty())
             {
                 if (filter.Contains('\''))
                 {

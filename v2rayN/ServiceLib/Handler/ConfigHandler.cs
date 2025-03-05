@@ -22,7 +22,7 @@ namespace ServiceLib.Handler
         {
             Config? config = null;
             var result = EmbedUtils.LoadResource(Utils.GetConfigPath(_configRes));
-            if (Utils.IsNotEmpty(result))
+            if (result.IsNotEmpty())
             {
                 config = JsonUtils.Deserialize<Config>(result);
             }
@@ -858,7 +858,7 @@ namespace ServiceLib.Handler
             {
                 return -1;
             }
-            if (Utils.IsNotEmpty(profileItem.Security) && profileItem.Security != Global.None)
+            if (profileItem.Security.IsNotEmpty() && profileItem.Security != Global.None)
             {
                 profileItem.Security = Global.None;
             }
@@ -897,7 +897,7 @@ namespace ServiceLib.Handler
         {
             profileItem.ConfigVersion = 2;
 
-            if (Utils.IsNotEmpty(profileItem.StreamSecurity))
+            if (profileItem.StreamSecurity.IsNotEmpty())
             {
                 if (profileItem.StreamSecurity != Global.StreamSecurity
                      && profileItem.StreamSecurity != Global.StreamSecurityReality)
@@ -917,7 +917,7 @@ namespace ServiceLib.Handler
                 }
             }
 
-            if (Utils.IsNotEmpty(profileItem.Network) && !Global.Networks.Contains(profileItem.Network))
+            if (profileItem.Network.IsNotEmpty() && !Global.Networks.Contains(profileItem.Network))
             {
                 profileItem.Network = Global.DefaultNetwork;
             }
@@ -1091,7 +1091,7 @@ namespace ServiceLib.Handler
 
             var subFilter = string.Empty;
             //remove sub items
-            if (isSub && Utils.IsNotEmpty(subid))
+            if (isSub && subid.IsNotEmpty())
             {
                 await RemoveServersViaSubid(config, subid, isSub);
                 subFilter = (await AppHandler.Instance.GetSubItem(subid))?.Filter ?? "";
@@ -1122,7 +1122,7 @@ namespace ServiceLib.Handler
                 }
 
                 //exist sub items //filter
-                if (isSub && Utils.IsNotEmpty(subid) && Utils.IsNotEmpty(subFilter))
+                if (isSub && subid.IsNotEmpty() && subFilter.IsNotEmpty())
                 {
                     if (!Regex.IsMatch(profileItem.Remarks, subFilter))
                     {
@@ -1185,7 +1185,7 @@ namespace ServiceLib.Handler
             }
             if (lstProfiles != null && lstProfiles.Count > 0)
             {
-                if (isSub && Utils.IsNotEmpty(subid))
+                if (isSub && subid.IsNotEmpty())
                 {
                     await RemoveServersViaSubid(config, subid, isSub);
                 }
@@ -1241,7 +1241,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (isSub && Utils.IsNotEmpty(subid))
+            if (isSub && subid.IsNotEmpty())
             {
                 await RemoveServersViaSubid(config, subid, isSub);
             }
@@ -1266,7 +1266,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (isSub && Utils.IsNotEmpty(subid))
+            if (isSub && subid.IsNotEmpty())
             {
                 await RemoveServersViaSubid(config, subid, isSub);
             }
@@ -1299,7 +1299,7 @@ namespace ServiceLib.Handler
             }
             List<ProfileItem>? lstOriSub = null;
             ProfileItem? activeProfile = null;
-            if (isSub && Utils.IsNotEmpty(subid))
+            if (isSub && subid.IsNotEmpty())
             {
                 lstOriSub = await AppHandler.Instance.ProfileItems(subid);
                 activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);

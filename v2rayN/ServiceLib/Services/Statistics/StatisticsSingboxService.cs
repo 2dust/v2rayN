@@ -87,7 +87,7 @@ namespace ServiceLib.Services.Statistics
                         while (!res.CloseStatus.HasValue)
                         {
                             var result = Encoding.UTF8.GetString(buffer, 0, res.Count);
-                            if (Utils.IsNotEmpty(result))
+                            if (result.IsNotEmpty())
                             {
                                 ParseOutput(result, out ulong up, out ulong down);
 

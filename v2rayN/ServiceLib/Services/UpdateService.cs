@@ -123,7 +123,7 @@ namespace ServiceLib.Services
                 var url = item.Url.TrimEx();
                 var userAgent = item.UserAgent.TrimEx();
                 var hashCode = $"{item.Remarks}->";
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (Utils.IsNotEmpty(subId) && item.Id != subId))
+                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (subId.IsNotEmpty() && item.Id != subId))
                 {
                     //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                     continue;
@@ -149,7 +149,7 @@ namespace ServiceLib.Services
                 //one url
                 url = Utils.GetPunycode(url);
                 //convert
-                if (Utils.IsNotEmpty(item.ConvertTarget))
+                if (item.ConvertTarget.IsNotEmpty())
                 {
                     var subConvertUrl = Utils.IsNullOrEmpty(config.ConstItem.SubConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
                     url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
@@ -169,9 +169,9 @@ namespace ServiceLib.Services
                 }
 
                 //more url
-                if (Utils.IsNullOrEmpty(item.ConvertTarget) && Utils.IsNotEmpty(item.MoreUrl.TrimEx()))
+                if (Utils.IsNullOrEmpty(item.ConvertTarget) && item.MoreUrl.TrimEx().IsNotEmpty())
                 {
-                    if (Utils.IsNotEmpty(result) && Utils.IsBase64String(result))
+                    if (result.IsNotEmpty() && Utils.IsBase64String(result))
                     {
                         result = Utils.Base64Decode(result);
                     }
@@ -190,7 +190,7 @@ namespace ServiceLib.Services
                         {
                             result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
                         }
-                        if (Utils.IsNotEmpty(result2))
+                        if (result2.IsNotEmpty())
                         {
                             if (Utils.IsBase64String(result2))
                             {

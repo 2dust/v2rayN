@@ -117,7 +117,7 @@ namespace ServiceLib.Services.CoreConfig
                 if (_config.TunModeItem.EnableTun)
                 {
                     var tun = EmbedUtils.GetEmbedText(Global.ClashTunYaml);
-                    if (Utils.IsNotEmpty(tun))
+                    if (tun.IsNotEmpty())
                     {
                         var tunContent = YamlUtils.FromYaml<Dictionary<string, object>>(tun);
                         if (tunContent != null)

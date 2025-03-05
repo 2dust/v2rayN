@@ -16,12 +16,12 @@ namespace ServiceLib.Handler.Fmt
 
         protected static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
         {
-            if (Utils.IsNotEmpty(item.Flow))
+            if (item.Flow.IsNotEmpty())
             {
                 dicQuery.Add("flow", item.Flow);
             }
 
-            if (Utils.IsNotEmpty(item.StreamSecurity))
+            if (item.StreamSecurity.IsNotEmpty())
             {
                 dicQuery.Add("security", item.StreamSecurity);
             }
@@ -32,27 +32,27 @@ namespace ServiceLib.Handler.Fmt
                     dicQuery.Add("security", securityDef);
                 }
             }
-            if (Utils.IsNotEmpty(item.Sni))
+            if (item.Sni.IsNotEmpty())
             {
                 dicQuery.Add("sni", item.Sni);
             }
-            if (Utils.IsNotEmpty(item.Alpn))
+            if (item.Alpn.IsNotEmpty())
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
             }
-            if (Utils.IsNotEmpty(item.Fingerprint))
+            if (item.Fingerprint.IsNotEmpty())
             {
                 dicQuery.Add("fp", Utils.UrlEncode(item.Fingerprint));
             }
-            if (Utils.IsNotEmpty(item.PublicKey))
+            if (item.PublicKey.IsNotEmpty())
             {
                 dicQuery.Add("pbk", Utils.UrlEncode(item.PublicKey));
             }
-            if (Utils.IsNotEmpty(item.ShortId))
+            if (item.ShortId.IsNotEmpty())
             {
                 dicQuery.Add("sid", Utils.UrlEncode(item.ShortId));
             }
-            if (Utils.IsNotEmpty(item.SpiderX))
+            if (item.SpiderX.IsNotEmpty())
             {
                 dicQuery.Add("spx", Utils.UrlEncode(item.SpiderX));
             }
@@ -61,21 +61,21 @@ namespace ServiceLib.Handler.Fmt
                 dicQuery.Add("allowInsecure", "1");
             }
 
-            dicQuery.Add("type", Utils.IsNotEmpty(item.Network) ? item.Network : nameof(ETransport.tcp));
+            dicQuery.Add("type", item.Network.IsNotEmpty() ? item.Network : nameof(ETransport.tcp));
 
             switch (item.Network)
             {
                 case nameof(ETransport.tcp):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
-                    if (Utils.IsNotEmpty(item.RequestHost))
+                    dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
+                    if (item.RequestHost.IsNotEmpty())
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
                     break;
 
                 case nameof(ETransport.kcp):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
-                    if (Utils.IsNotEmpty(item.Path))
+                    dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
+                    if (item.Path.IsNotEmpty())
                     {
                         dicQuery.Add("seed", Utils.UrlEncode(item.Path));
                     }
@@ -83,30 +83,30 @@ namespace ServiceLib.Handler.Fmt
 
                 case nameof(ETransport.ws):
                 case nameof(ETransport.httpupgrade):
-                    if (Utils.IsNotEmpty(item.RequestHost))
+                    if (item.RequestHost.IsNotEmpty())
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
-                    if (Utils.IsNotEmpty(item.Path))
+                    if (item.Path.IsNotEmpty())
                     {
                         dicQuery.Add("path", Utils.UrlEncode(item.Path));
                     }
                     break;
 
                 case nameof(ETransport.xhttp):
-                    if (Utils.IsNotEmpty(item.RequestHost))
+                    if (item.RequestHost.IsNotEmpty())
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
-                    if (Utils.IsNotEmpty(item.Path))
+                    if (item.Path.IsNotEmpty())
                     {
                         dicQuery.Add("path", Utils.UrlEncode(item.Path));
                     }
-                    if (Utils.IsNotEmpty(item.HeaderType) && Global.XhttpMode.Contains(item.HeaderType))
+                    if (item.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(item.HeaderType))
                     {
                         dicQuery.Add("mode", Utils.UrlEncode(item.HeaderType));
                     }
-                    if (Utils.IsNotEmpty(item.Extra))
+                    if (item.Extra.IsNotEmpty())
                     {
                         dicQuery.Add("extra", Utils.UrlEncode(item.Extra));
                     }
@@ -115,24 +115,24 @@ namespace ServiceLib.Handler.Fmt
                 case nameof(ETransport.http):
                 case nameof(ETransport.h2):
                     dicQuery["type"] = nameof(ETransport.http);
-                    if (Utils.IsNotEmpty(item.RequestHost))
+                    if (item.RequestHost.IsNotEmpty())
                     {
                         dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
                     }
-                    if (Utils.IsNotEmpty(item.Path))
+                    if (item.Path.IsNotEmpty())
                     {
                         dicQuery.Add("path", Utils.UrlEncode(item.Path));
                     }
                     break;
 
                 case nameof(ETransport.quic):
-                    dicQuery.Add("headerType", Utils.IsNotEmpty(item.HeaderType) ? item.HeaderType : Global.None);
+                    dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
                     dicQuery.Add("quicSecurity", Utils.UrlEncode(item.RequestHost));
                     dicQuery.Add("key", Utils.UrlEncode(item.Path));
                     break;
 
                 case nameof(ETransport.grpc):
-                    if (Utils.IsNotEmpty(item.Path))
+                    if (item.Path.IsNotEmpty())
                     {
                         dicQuery.Add("authority", Utils.UrlEncode(item.RequestHost));
                         dicQuery.Add("serviceName", Utils.UrlEncode(item.Path));

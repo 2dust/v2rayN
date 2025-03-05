@@ -72,7 +72,7 @@ namespace ServiceLib.ViewModels
 
             this.WhenAnyValue(
                x => x.SelectedGroup,
-               y => y != null && Utils.IsNotEmpty(y.Name))
+               y => y != null && y.Name.IsNotEmpty())
                    .Subscribe(c => RefreshProxyDetails(c));
 
             this.WhenAnyValue(
@@ -219,7 +219,7 @@ namespace ServiceLib.ViewModels
                     continue;
                 }
                 var item = _proxyGroups.Where(t => t.Name == kv.Key).FirstOrDefault();
-                if (item != null && Utils.IsNotEmpty(item.Name))
+                if (item != null && item.Name.IsNotEmpty())
                 {
                     continue;
                 }

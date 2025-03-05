@@ -33,7 +33,7 @@ namespace ServiceLib.Handler
             {
                 return result;
             }
-            if (Utils.IsNotEmpty(fileName) && result.Data != null)
+            if (fileName.IsNotEmpty() && result.Data != null)
             {
                 await File.WriteAllTextAsync(fileName, result.Data.ToString());
             }

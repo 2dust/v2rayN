@@ -60,7 +60,7 @@ namespace ServiceLib.Common
             var reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
 
-            if (result != null && Utils.IsNotEmpty(result.Text))
+            if (result != null && result.Text.IsNotEmpty())
             {
                 return result.Text;
             }

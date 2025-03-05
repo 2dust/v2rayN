@@ -31,7 +31,7 @@ namespace ServiceLib.Handler.Fmt
             string url = string.Empty;
 
             string remark = string.Empty;
-            if (Utils.IsNotEmpty(item.Remarks))
+            if (item.Remarks.IsNotEmpty())
             {
                 remark = "#" + Utils.UrlEncode(item.Remarks);
             }
@@ -58,7 +58,7 @@ namespace ServiceLib.Handler.Fmt
             ProfileItem item = new();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
-            if (Utils.IsNotEmpty(tag))
+            if (tag.IsNotEmpty())
             {
                 item.Remarks = Utils.UrlDecode(tag);
             }
@@ -122,7 +122,7 @@ namespace ServiceLib.Handler.Fmt
             {
                 //obfs-host exists
                 var obfsHost = queryParameters["plugin"]?.Split(';').FirstOrDefault(t => t.Contains("obfs-host"));
-                if (queryParameters["plugin"].Contains("obfs=http") && Utils.IsNotEmpty(obfsHost))
+                if (queryParameters["plugin"].Contains("obfs=http") && obfsHost.IsNotEmpty())
                 {
                     obfsHost = obfsHost?.Replace("obfs-host=", "");
                     item.Network = Global.DefaultNetwork;

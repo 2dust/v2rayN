@@ -11,7 +11,7 @@ namespace v2rayN.Converters
             try
             {
                 var fontFamily = AppHandler.Instance.Config.UiItem.CurrentFontFamily;
-                if (Utils.IsNotEmpty(fontFamily))
+                if (fontFamily.IsNotEmpty())
                 {
                     var fontPath = Utils.GetFontsPath();
                     MyFont = new FontFamily(new Uri(@$"file:///{fontPath}\"), $"./#{fontFamily}");

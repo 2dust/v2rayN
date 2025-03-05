@@ -563,7 +563,7 @@ namespace ServiceLib.Services.CoreConfig
                     inbound.domain_strategy = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainStrategy4Singbox) ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
 
                     var routing = await ConfigHandler.GetDefaultRouting(_config);
-                    if (Utils.IsNotEmpty(routing.DomainStrategy4Singbox))
+                    if (routing.DomainStrategy4Singbox.IsNotEmpty())
                     {
                         inbound.domain_strategy = routing.DomainStrategy4Singbox;
                     }
@@ -583,7 +583,7 @@ namespace ServiceLib.Services.CoreConfig
                             singboxConfig.inbounds.Add(inbound3);
 
                             //auth
-                            if (Utils.IsNotEmpty(_config.Inbound.First().User) && Utils.IsNotEmpty(_config.Inbound.First().Pass))
+                            if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
                             {
                                 inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
                             }
@@ -674,8 +674,8 @@ namespace ServiceLib.Services.CoreConfig
                     case EConfigType.SOCKS:
                         {
                             outbound.version = "5";
-                            if (Utils.IsNotEmpty(node.Security)
-                              && Utils.IsNotEmpty(node.Id))
+                            if (node.Security.IsNotEmpty()
+                              && node.Id.IsNotEmpty())
                             {
                                 outbound.username = node.Security;
                                 outbound.password = node.Id;
@@ -684,8 +684,8 @@ namespace ServiceLib.Services.CoreConfig
                         }
                     case EConfigType.HTTP:
                         {
-                            if (Utils.IsNotEmpty(node.Security)
-                              && Utils.IsNotEmpty(node.Id))
+                            if (node.Security.IsNotEmpty()
+                              && node.Id.IsNotEmpty())
                             {
                                 outbound.username = node.Security;
                                 outbound.password = node.Id;
@@ -719,7 +719,7 @@ namespace ServiceLib.Services.CoreConfig
                         {
                             outbound.password = node.Id;
 
-                            if (Utils.IsNotEmpty(node.Path))
+                            if (node.Path.IsNotEmpty())
                             {
                                 outbound.obfs = new()
                                 {
@@ -775,7 +775,7 @@ namespace ServiceLib.Services.CoreConfig
         {
             try
             {
-                if (_config.CoreBasicItem.MuxEnabled && Utils.IsNotEmpty(_config.Mux4SboxItem.Protocol))
+                if (_config.CoreBasicItem.MuxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
                 {
                     var mux = new Multiplex4Sbox()
                     {
@@ -801,11 +801,11 @@ namespace ServiceLib.Services.CoreConfig
                 if (node.StreamSecurity == Global.StreamSecurityReality || node.StreamSecurity == Global.StreamSecurity)
                 {
                     var server_name = string.Empty;
-                    if (Utils.IsNotEmpty(node.Sni))
+                    if (node.Sni.IsNotEmpty())
                     {
                         server_name = node.Sni;
                     }
-                    else if (Utils.IsNotEmpty(node.RequestHost))
+                    else if (node.RequestHost.IsNotEmpty())
                     {
                         server_name = Utils.String2List(node.RequestHost)?.First();
                     }
@@ -816,7 +816,7 @@ namespace ServiceLib.Services.CoreConfig
                         insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
                         alpn = node.GetAlpn(),
                     };
-                    if (Utils.IsNotEmpty(node.Fingerprint))
+                    if (node.Fingerprint.IsNotEmpty())
                     {
                         tls.utls = new Utls4Sbox()
                         {
@@ -878,7 +878,7 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.ws):
                         transport.type = nameof(ETransport.ws);
                         transport.path = Utils.IsNullOrEmpty(node.Path) ? null : node.Path;
-                        if (Utils.IsNotEmpty(node.RequestHost))
+                        if (node.RequestHost.IsNotEmpty())
                         {
                             transport.headers = new()
                             {
@@ -1085,7 +1085,7 @@ namespace ServiceLib.Services.CoreConfig
                     outbound = item.OutboundTag,
                 };
 
-                if (Utils.IsNotEmpty(item.Port))
+                if (item.Port.IsNotEmpty())
                 {
                     if (item.Port.Contains("-"))
                     {
@@ -1096,7 +1096,7 @@ namespace ServiceLib.Services.CoreConfig
                         rule.port = new List<int> { Utils.ToInt(item.Port) };
                     }
                 }
-                if (Utils.IsNotEmpty(item.Network))
+                if (item.Network.IsNotEmpty())
                 {
                     rule.network = Utils.String2List(item.Network);
                 }
@@ -1290,7 +1290,7 @@ namespace ServiceLib.Services.CoreConfig
             });
 
             var lstDomain = singboxConfig.outbounds
-                           .Where(t => Utils.IsNotEmpty(t.server) && Utils.IsDomain(t.server))
+                           .Where(t => t.server.IsNotEmpty() && Utils.IsDomain(t.server))
                            .Select(t => t.server)
                            .Distinct()
                            .ToList();
@@ -1394,10 +1394,10 @@ namespace ServiceLib.Services.CoreConfig
             List<Ruleset4Sbox> customRulesets = [];
 
             var routing = await ConfigHandler.GetDefaultRouting(_config);
-            if (Utils.IsNotEmpty(routing.CustomRulesetPath4Singbox))
+            if (routing.CustomRulesetPath4Singbox.IsNotEmpty())
             {
                 var result = EmbedUtils.LoadResource(routing.CustomRulesetPath4Singbox);
-                if (Utils.IsNotEmpty(result))
+                if (result.IsNotEmpty())
                 {
                     customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
                         .Where(t => t.tag != null)

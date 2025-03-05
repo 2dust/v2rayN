@@ -279,13 +279,13 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            if (Utils.IsNotEmpty(result.Delay))
+            if (result.Delay.IsNotEmpty())
             {
                 int.TryParse(result.Delay, out var temp);
                 item.Delay = temp;
                 item.DelayVal = result.Delay ?? string.Empty;
             }
-            if (Utils.IsNotEmpty(result.Speed))
+            if (result.Speed.IsNotEmpty())
             {
                 item.SpeedVal = result.Speed ?? string.Empty;
             }

@@ -28,7 +28,7 @@ namespace ServiceLib.Handler.Fmt
             var url = string.Empty;
 
             var remark = string.Empty;
-            if (Utils.IsNotEmpty(item.Remarks))
+            if (item.Remarks.IsNotEmpty())
             {
                 remark = "#" + Utils.UrlEncode(item.Remarks);
             }

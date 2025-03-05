@@ -62,7 +62,7 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveSettingAsync()
         {
-            if (Utils.IsNotEmpty(normalDNS))
+            if (normalDNS.IsNotEmpty())
             {
                 var obj = JsonUtils.ParseJson(normalDNS);
                 if (obj != null && obj["servers"] != null)
@@ -77,7 +77,7 @@ namespace ServiceLib.ViewModels
                     }
                 }
             }
-            if (Utils.IsNotEmpty(normalDNS2))
+            if (normalDNS2.IsNotEmpty())
             {
                 var obj2 = JsonUtils.Deserialize<Dns4Sbox>(normalDNS2);
                 if (obj2 == null)
@@ -86,7 +86,7 @@ namespace ServiceLib.ViewModels
                     return;
                 }
             }
-            if (Utils.IsNotEmpty(tunDNS2))
+            if (tunDNS2.IsNotEmpty())
             {
                 var obj2 = JsonUtils.Deserialize<Dns4Sbox>(tunDNS2);
                 if (obj2 == null)

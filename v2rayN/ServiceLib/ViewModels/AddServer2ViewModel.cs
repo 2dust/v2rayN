@@ -80,7 +80,7 @@ namespace ServiceLib.ViewModels
             if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
-                if (Utils.IsNotEmpty(item.IndexId))
+                if (item.IndexId.IsNotEmpty())
                 {
                     SelectedSource = JsonUtils.DeepCopy(item);
                 }

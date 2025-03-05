@@ -99,7 +99,7 @@ namespace ServiceLib.Common
                     }
                     try
                     {
-                        if (Utils.IsNotEmpty(ignoredName) && entry.Name.Contains(ignoredName))
+                        if (ignoredName.IsNotEmpty() && entry.Name.Contains(ignoredName))
                         {
                             continue;
                         }
@@ -174,7 +174,7 @@ namespace ServiceLib.Common
             // Get the files in the source directory and copy to the destination directory
             foreach (var file in dir.GetFiles())
             {
-                if (Utils.IsNotEmpty(ignoredName) && file.Name.Contains(ignoredName))
+                if (ignoredName.IsNotEmpty() && file.Name.Contains(ignoredName))
                 {
                     continue;
                 }
