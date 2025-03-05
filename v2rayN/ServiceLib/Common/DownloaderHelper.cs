@@ -10,7 +10,7 @@ namespace ServiceLib.Common
 
         public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace ServiceLib.Common
 
         public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 throw new ArgumentNullException(nameof(url));
             }
@@ -119,11 +119,11 @@ namespace ServiceLib.Common
 
         public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 throw new ArgumentNullException(nameof(url));
             }
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 throw new ArgumentNullException(nameof(fileName));
             }

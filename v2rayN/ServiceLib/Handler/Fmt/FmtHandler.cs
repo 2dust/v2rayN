@@ -37,7 +37,7 @@
             try
             {
                 string str = config.TrimEx();
-                if (Utils.IsNullOrEmpty(str))
+                if (str.IsNullOrEmpty())
                 {
                     msg = ResUI.FailedReadConfiguration;
                     return null;

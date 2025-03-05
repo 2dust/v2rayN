@@ -301,7 +301,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (Utils.IsNullOrEmpty(SelectedServer.ID))
+            if (SelectedServer.ID.IsNullOrEmpty())
             {
                 return;
             }

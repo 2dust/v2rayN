@@ -131,7 +131,7 @@ namespace ServiceLib.Handler
 
         public async Task<List<ProfileItem>?> ProfileItems(string subid)
         {
-            if (Utils.IsNullOrEmpty(subid))
+            if (subid.IsNullOrEmpty())
             {
                 return await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync();
             }
@@ -171,7 +171,7 @@ namespace ServiceLib.Handler
 
         public async Task<ProfileItem?> GetProfileItem(string indexId)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (indexId.IsNullOrEmpty())
             {
                 return null;
             }
@@ -180,7 +180,7 @@ namespace ServiceLib.Handler
 
         public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
         {
-            if (Utils.IsNullOrEmpty(remarks))
+            if (remarks.IsNullOrEmpty())
             {
                 return null;
             }

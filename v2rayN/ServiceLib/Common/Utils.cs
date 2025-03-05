@@ -252,7 +252,7 @@ namespace ServiceLib.Common
         public static NameValueCollection ParseQueryString(string query)
         {
             var result = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
-            if (IsNullOrEmpty(query))
+            if (query.IsNullOrEmpty())
             {
                 return result;
             }
@@ -298,7 +298,7 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static string GetPunycode(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return url;
             }
@@ -331,7 +331,7 @@ namespace ServiceLib.Common
 
         public static string Convert2Comma(string text)
         {
-            if (IsNullOrEmpty(text))
+            if (text.IsNullOrEmpty())
             {
                 return text;
             }
@@ -353,15 +353,6 @@ namespace ServiceLib.Common
             return oText.All(char.IsNumber);
         }
 
-        public static bool IsNullOrEmpty(string? text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return true;
-            }
-
-            return text == "null";
-        }
 
         /// <summary>
         /// 验证Domain地址是否合法
@@ -369,7 +360,7 @@ namespace ServiceLib.Common
         /// <param name="domain"></param>
         public static bool IsDomain(string? domain)
         {
-            if (IsNullOrEmpty(domain))
+            if (domain.IsNullOrEmpty())
             {
                 return false;
             }
@@ -655,7 +646,7 @@ namespace ServiceLib.Common
         public static string GetPath(string fileName)
         {
             var startupPath = StartupPath();
-            if (IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return startupPath;
             }
@@ -691,7 +682,7 @@ namespace ServiceLib.Common
                 Directory.CreateDirectory(tempPath);
             }
 
-            if (IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }
@@ -720,7 +711,7 @@ namespace ServiceLib.Common
                 Directory.CreateDirectory(tempPath);
             }
 
-            if (Utils.IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }
@@ -747,7 +738,7 @@ namespace ServiceLib.Common
                 }
             }
 
-            if (IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }
@@ -765,7 +756,7 @@ namespace ServiceLib.Common
                 Directory.CreateDirectory(tempPath);
             }
 
-            if (Utils.IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }
@@ -783,7 +774,7 @@ namespace ServiceLib.Common
                 Directory.CreateDirectory(tempPath);
             }
 
-            if (Utils.IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }
@@ -801,7 +792,7 @@ namespace ServiceLib.Common
                 Directory.CreateDirectory(tempPath);
             }
 
-            if (Utils.IsNullOrEmpty(filename))
+            if (filename.IsNullOrEmpty())
             {
                 return tempPath;
             }

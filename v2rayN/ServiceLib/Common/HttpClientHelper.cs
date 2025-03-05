@@ -22,7 +22,7 @@ namespace ServiceLib.Common
 
         public async Task<string?> TryGetAsync(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
                 return null;
 
             try
@@ -38,14 +38,14 @@ namespace ServiceLib.Common
 
         public async Task<string?> GetAsync(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
                 return null;
             return await httpClient.GetStringAsync(url);
         }
 
         public async Task<string?> GetAsync(HttpClient client, string url, CancellationToken token = default)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
                 return null;
             return await client.GetStringAsync(url, token);
         }
@@ -123,7 +123,7 @@ namespace ServiceLib.Common
 
         public async Task DownloadDataAsync4Speed(HttpClient client, string url, IProgress<string> progress, CancellationToken token = default)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 throw new ArgumentNullException(nameof(url));
             }

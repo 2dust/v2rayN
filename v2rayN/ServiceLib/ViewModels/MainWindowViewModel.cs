@@ -421,7 +421,7 @@ namespace ServiceLib.ViewModels
 
         public async Task ScanImageResult(string fileName)
         {
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
@@ -432,7 +432,7 @@ namespace ServiceLib.ViewModels
 
         private async Task AddScanResultAsync(string? result)
         {
-            if (Utils.IsNullOrEmpty(result))
+            if (result.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.NoValidQRcodeFound);
             }

@@ -266,7 +266,7 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveSettingAsync()
         {
-            if (Utils.IsNullOrEmpty(localPort.ToString()) || !Utils.IsNumeric(localPort.ToString())
+            if (localPort.ToString().IsNullOrEmpty() || !Utils.IsNumeric(localPort.ToString())
                || localPort <= 0 || localPort >= Global.MaxPort)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FillLocalListeningPort);

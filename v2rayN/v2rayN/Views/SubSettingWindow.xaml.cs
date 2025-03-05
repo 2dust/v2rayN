@@ -65,7 +65,7 @@ namespace v2rayN.Views
 
         private async void ShareSub(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return;
             }

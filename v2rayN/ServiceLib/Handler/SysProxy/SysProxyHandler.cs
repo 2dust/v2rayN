@@ -75,7 +75,7 @@
             }
 
             strProxy = string.Empty;
-            if (Utils.IsNullOrEmpty(config.SystemProxyItem.SystemProxyAdvancedProtocol))
+            if (config.SystemProxyItem.SystemProxyAdvancedProtocol.IsNullOrEmpty())
             {
                 strProxy = $"{Global.Loopback}:{port}";
             }

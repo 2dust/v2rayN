@@ -234,10 +234,10 @@ namespace v2rayN.Views
                             //    continue;
                             //}
                             var fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture)];
-                            if (Utils.IsNullOrEmpty(fontFamily))
+                            if (fontFamily.IsNullOrEmpty())
                             {
                                 fontFamily = glyph.Win32FamilyNames[new CultureInfo(culture2)];
-                                if (Utils.IsNullOrEmpty(fontFamily))
+                                if (fontFamily.IsNullOrEmpty())
                                 {
                                     continue;
                                 }

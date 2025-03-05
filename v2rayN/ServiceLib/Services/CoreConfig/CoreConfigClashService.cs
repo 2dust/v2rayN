@@ -45,7 +45,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 string addressFileName = node.Address;
-                if (Utils.IsNullOrEmpty(addressFileName))
+                if (addressFileName.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
                     return ret;

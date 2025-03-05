@@ -193,7 +193,7 @@ namespace ServiceLib.ViewModels
             {
                 foreach (var it in proxyGroups)
                 {
-                    if (Utils.IsNullOrEmpty(it.name) || !_proxies.ContainsKey(it.name))
+                    if (it.name.IsNullOrEmpty() || !_proxies.ContainsKey(it.name))
                     {
                         continue;
                     }
@@ -256,7 +256,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var name = SelectedGroup?.Name;
-            if (Utils.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 return;
             }
@@ -341,21 +341,21 @@ namespace ServiceLib.ViewModels
 
         public async Task SetActiveProxy()
         {
-            if (SelectedGroup == null || Utils.IsNullOrEmpty(SelectedGroup.Name))
+            if (SelectedGroup == null || SelectedGroup.Name.IsNullOrEmpty())
             {
                 return;
             }
-            if (SelectedDetail == null || Utils.IsNullOrEmpty(SelectedDetail.Name))
+            if (SelectedDetail == null || SelectedDetail.Name.IsNullOrEmpty())
             {
                 return;
             }
             var name = SelectedGroup.Name;
-            if (Utils.IsNullOrEmpty(name))
+            if (name.IsNullOrEmpty())
             {
                 return;
             }
             var nameNode = SelectedDetail.Name;
-            if (Utils.IsNullOrEmpty(nameNode))
+            if (nameNode.IsNullOrEmpty())
             {
                 return;
             }
@@ -390,7 +390,7 @@ namespace ServiceLib.ViewModels
                     await GetClashProxies(true);
                     return;
                 }
-                if (Utils.IsNullOrEmpty(result))
+                if (result.IsNullOrEmpty())
                 {
                     return;
                 }

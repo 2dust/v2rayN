@@ -240,7 +240,7 @@ namespace ServiceLib.Handler
         private async Task<Process?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
         {
             var fileName = CoreInfoHandler.Instance.GetCoreExecFile(coreInfo, out var msg);
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 UpdateFunc(false, msg);
                 return null;
@@ -274,13 +274,13 @@ namespace ServiceLib.Handler
                 {
                     proc.OutputDataReceived += (sender, e) =>
                     {
-                        if (Utils.IsNullOrEmpty(e.Data))
+                        if (e.Data.IsNullOrEmpty())
                             return;
                         UpdateFunc(false, e.Data + Environment.NewLine);
                     };
                     proc.ErrorDataReceived += (sender, e) =>
                     {
-                        if (Utils.IsNullOrEmpty(e.Data))
+                        if (e.Data.IsNullOrEmpty())
                             return;
                         UpdateFunc(false, e.Data + Environment.NewLine);
                     };

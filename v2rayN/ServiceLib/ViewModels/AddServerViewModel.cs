@@ -41,19 +41,19 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveServerAsync()
         {
-            if (Utils.IsNullOrEmpty(SelectedSource.Remarks))
+            if (SelectedSource.Remarks.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
                 return;
             }
 
-            if (Utils.IsNullOrEmpty(SelectedSource.Address))
+            if (SelectedSource.Address.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FillServerAddress);
                 return;
             }
             var port = SelectedSource.Port.ToString();
-            if (Utils.IsNullOrEmpty(port) || !Utils.IsNumeric(port)
+            if (port.IsNullOrEmpty() || !Utils.IsNumeric(port)
                 || SelectedSource.Port <= 0 || SelectedSource.Port >= Global.MaxPort)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.FillCorrectServerPort);
@@ -61,12 +61,12 @@ namespace ServiceLib.ViewModels
             }
             if (SelectedSource.ConfigType == EConfigType.Shadowsocks)
             {
-                if (Utils.IsNullOrEmpty(SelectedSource.Id))
+                if (SelectedSource.Id.IsNullOrEmpty())
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.FillPassword);
                     return;
                 }
-                if (Utils.IsNullOrEmpty(SelectedSource.Security))
+                if (SelectedSource.Security.IsNullOrEmpty())
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                     return;
@@ -75,7 +75,7 @@ namespace ServiceLib.ViewModels
             if (SelectedSource.ConfigType != EConfigType.SOCKS
                 && SelectedSource.ConfigType != EConfigType.HTTP)
             {
-                if (Utils.IsNullOrEmpty(SelectedSource.Id))
+                if (SelectedSource.Id.IsNullOrEmpty())
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.FillUUID);
                     return;

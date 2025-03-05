@@ -267,7 +267,7 @@ namespace ServiceLib.ViewModels
 
         public void SetSpeedTestResult(SpeedTestResult result)
         {
-            if (Utils.IsNullOrEmpty(result.IndexId))
+            if (result.IndexId.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.SendMessageEx(result.Delay);
                 NoticeHandler.Instance.Enqueue(result.Delay);
@@ -350,7 +350,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             _serverFilter = ServerFilter;
-            if (Utils.IsNullOrEmpty(_serverFilter))
+            if (_serverFilter.IsNullOrEmpty())
             {
                 RefreshServers();
             }
@@ -476,7 +476,7 @@ namespace ServiceLib.ViewModels
 
         public async Task EditServerAsync(EConfigType eConfigType)
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.IndexId))
+            if (string.IsNullOrEmpty(SelectedProfile?.IndexId))
             {
                 return;
             }
@@ -557,7 +557,7 @@ namespace ServiceLib.ViewModels
 
         public async Task SetDefaultServer()
         {
-            if (Utils.IsNullOrEmpty(SelectedProfile?.IndexId))
+            if (string.IsNullOrEmpty(SelectedProfile?.IndexId))
             {
                 return;
             }
@@ -566,7 +566,7 @@ namespace ServiceLib.ViewModels
 
         public async Task SetDefaultServer(string indexId)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (indexId.IsNullOrEmpty())
             {
                 return;
             }
@@ -598,7 +598,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (Utils.IsNullOrEmpty(SelectedServer.ID))
+            if (SelectedServer.ID.IsNullOrEmpty())
             {
                 return;
             }
@@ -614,7 +614,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
             var url = FmtHandler.GetShareUri(item);
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return;
             }
@@ -649,7 +649,7 @@ namespace ServiceLib.ViewModels
 
         public async Task SortServer(string colName)
         {
-            if (Utils.IsNullOrEmpty(colName))
+            if (colName.IsNullOrEmpty())
             {
                 return;
             }
@@ -776,7 +776,7 @@ namespace ServiceLib.ViewModels
 
         public async Task Export2ClientConfigResult(string fileName, ProfileItem item)
         {
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
@@ -803,7 +803,7 @@ namespace ServiceLib.ViewModels
             foreach (var it in lstSelecteds)
             {
                 var url = FmtHandler.GetShareUri(it);
-                if (Utils.IsNullOrEmpty(url))
+                if (url.IsNullOrEmpty())
                 {
                     continue;
                 }

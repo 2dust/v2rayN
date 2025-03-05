@@ -69,7 +69,7 @@ namespace v2rayN.Desktop.Views
 
         private async Task ShareSub(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return;
             }

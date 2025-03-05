@@ -160,7 +160,7 @@ namespace ServiceLib.Services
                     UseProxy = webProxy != null
                 });
 
-                if (Utils.IsNullOrEmpty(userAgent))
+                if (userAgent.IsNullOrEmpty())
                 {
                     userAgent = Utils.GetVersion(false);
                 }
@@ -201,7 +201,7 @@ namespace ServiceLib.Services
 
                 var webProxy = await GetWebProxy(blProxy);
 
-                if (Utils.IsNullOrEmpty(userAgent))
+                if (userAgent.IsNullOrEmpty())
                 {
                     userAgent = Utils.GetVersion(false);
                 }

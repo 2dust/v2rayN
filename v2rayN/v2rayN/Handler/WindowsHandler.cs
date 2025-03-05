@@ -56,7 +56,7 @@ namespace v2rayN.Handler
             try
             {
                 var item = await ConfigHandler.GetDefaultRouting(config);
-                if (item == null || Utils.IsNullOrEmpty(item.CustomIcon) || !File.Exists(item.CustomIcon))
+                if (item == null || item.CustomIcon.IsNullOrEmpty() || !File.Exists(item.CustomIcon))
                 {
                     return null;
                 }

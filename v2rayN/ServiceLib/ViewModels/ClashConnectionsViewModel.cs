@@ -100,7 +100,7 @@ namespace ServiceLib.ViewModels
             var lstModel = new List<ClashConnectionModel>();
             foreach (var item in connections ?? new())
             {
-                var host = $"{(Utils.IsNullOrEmpty(item.metadata.host) ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+                var host = $"{(item.metadata.host.IsNullOrEmpty() ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
                 if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
                 {
                     continue;

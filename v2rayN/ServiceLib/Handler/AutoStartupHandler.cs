@@ -85,7 +85,7 @@ namespace ServiceLib.Handler
         /// <exception cref="ArgumentNullException"></exception>
         public static void AutoStartTaskService(string taskName, string fileName, string description)
         {
-            if (Utils.IsNullOrEmpty(taskName))
+            if (taskName.IsNullOrEmpty())
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace ServiceLib.Handler
             var logonUser = WindowsIdentity.GetCurrent().Name;
             using var taskService = new Microsoft.Win32.TaskScheduler.TaskService();
             var tasks = taskService.RootFolder.GetTasks(new Regex(taskName));
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 foreach (var t in tasks)
                 {

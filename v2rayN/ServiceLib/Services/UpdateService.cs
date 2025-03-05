@@ -123,7 +123,7 @@ namespace ServiceLib.Services
                 var url = item.Url.TrimEx();
                 var userAgent = item.UserAgent.TrimEx();
                 var hashCode = $"{item.Remarks}->";
-                if (Utils.IsNullOrEmpty(id) || Utils.IsNullOrEmpty(url) || (subId.IsNotEmpty() && item.Id != subId))
+                if (id.IsNullOrEmpty() || url.IsNullOrEmpty() || (subId.IsNotEmpty() && item.Id != subId))
                 {
                     //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
                     continue;
@@ -151,7 +151,7 @@ namespace ServiceLib.Services
                 //convert
                 if (item.ConvertTarget.IsNotEmpty())
                 {
-                    var subConvertUrl = Utils.IsNullOrEmpty(config.ConstItem.SubConvertUrl) ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
+                    var subConvertUrl = config.ConstItem.SubConvertUrl.IsNullOrEmpty() ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
                     url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
                     if (!url.Contains("target="))
                     {
@@ -163,13 +163,13 @@ namespace ServiceLib.Services
                     }
                 }
                 var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
-                if (blProxy && Utils.IsNullOrEmpty(result))
+                if (blProxy && result.IsNullOrEmpty())
                 {
                     result = await downloadHandle.TryDownloadString(url, false, userAgent);
                 }
 
                 //more url
-                if (Utils.IsNullOrEmpty(item.ConvertTarget) && item.MoreUrl.TrimEx().IsNotEmpty())
+                if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimEx().IsNotEmpty())
                 {
                     if (result.IsNotEmpty() && Utils.IsBase64String(result))
                     {
@@ -180,13 +180,13 @@ namespace ServiceLib.Services
                     foreach (var it in lstUrl)
                     {
                         var url2 = Utils.GetPunycode(it);
-                        if (Utils.IsNullOrEmpty(url2))
+                        if (url2.IsNullOrEmpty())
                         {
                             continue;
                         }
 
                         var result2 = await downloadHandle.TryDownloadString(url2, blProxy, userAgent);
-                        if (blProxy && Utils.IsNullOrEmpty(result2))
+                        if (blProxy && result2.IsNullOrEmpty())
                         {
                             result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
                         }
@@ -204,7 +204,7 @@ namespace ServiceLib.Services
                     }
                 }
 
-                if (Utils.IsNullOrEmpty(result))
+                if (result.IsNullOrEmpty())
                 {
                     _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
                 }
@@ -287,7 +287,7 @@ namespace ServiceLib.Services
             {
                 var url = coreInfo?.ReleaseApiUrl;
                 var result = await downloadHandle.TryDownloadString(url, true, Global.AppName);
-                if (Utils.IsNullOrEmpty(result))
+                if (result.IsNullOrEmpty())
                 {
                     return new RetResult(false, "");
                 }

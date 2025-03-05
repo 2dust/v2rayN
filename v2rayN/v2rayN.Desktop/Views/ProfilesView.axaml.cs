@@ -196,7 +196,7 @@ namespace v2rayN.Desktop.Views
 
         public async Task ShareServer(string url)
         {
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 return;
             }

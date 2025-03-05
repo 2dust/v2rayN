@@ -114,7 +114,7 @@ namespace ServiceLib.ViewModels
         public async Task LocalRestore(string fileName)
         {
             DisplayOperationMsg();
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
@@ -164,7 +164,7 @@ namespace ServiceLib.ViewModels
 
         private async Task<bool> CreateZipFileFromDirectory(string fileName)
         {
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return false;
             }

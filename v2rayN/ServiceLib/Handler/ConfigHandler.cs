@@ -67,7 +67,7 @@ namespace ServiceLib.Handler
             }
 
             config.RoutingBasicItem ??= new();
-            if (Utils.IsNullOrEmpty(config.RoutingBasicItem.DomainStrategy))
+            if (config.RoutingBasicItem.DomainStrategy.IsNullOrEmpty())
             {
                 config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();
             }
@@ -103,7 +103,7 @@ namespace ServiceLib.Handler
             };
             config.UiItem.MainColumnItem ??= new();
 
-            if (Utils.IsNullOrEmpty(config.UiItem.CurrentLanguage))
+            if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
             {
                 config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
                     ? Global.Languages.First()
@@ -117,11 +117,11 @@ namespace ServiceLib.Handler
             {
                 config.SpeedTestItem.SpeedTestTimeout = 10;
             }
-            if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedTestUrl))
+            if (config.SpeedTestItem.SpeedTestUrl.IsNullOrEmpty())
             {
                 config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
             }
-            if (Utils.IsNullOrEmpty(config.SpeedTestItem.SpeedPingTestUrl))
+            if (config.SpeedTestItem.SpeedPingTestUrl.IsNullOrEmpty())
             {
                 config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrl;
             }
@@ -354,7 +354,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> SetDefaultServerIndex(Config config, string? indexId)
         {
-            if (Utils.IsNullOrEmpty(indexId))
+            if (indexId.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -506,7 +506,7 @@ namespace ServiceLib.Handler
 
             profileItem.Address = newFileName;
             profileItem.ConfigType = EConfigType.Custom;
-            if (Utils.IsNullOrEmpty(profileItem.Remarks))
+            if (profileItem.Remarks.IsNullOrEmpty())
             {
                 profileItem.Remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
             }
@@ -624,7 +624,7 @@ namespace ServiceLib.Handler
 
             profileItem.Address = profileItem.Address.TrimEx();
             profileItem.Id = profileItem.Id.TrimEx();
-            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
+            if (profileItem.StreamSecurity.IsNullOrEmpty())
             {
                 profileItem.StreamSecurity = Global.StreamSecurity;
             }
@@ -654,7 +654,7 @@ namespace ServiceLib.Handler
             profileItem.Path = profileItem.Path.TrimEx();
             profileItem.Network = string.Empty;
 
-            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
+            if (profileItem.StreamSecurity.IsNullOrEmpty())
             {
                 profileItem.StreamSecurity = Global.StreamSecurity;
             }
@@ -689,11 +689,11 @@ namespace ServiceLib.Handler
                 profileItem.HeaderType = Global.TuicCongestionControls.FirstOrDefault()!;
             }
 
-            if (Utils.IsNullOrEmpty(profileItem.StreamSecurity))
+            if (profileItem.StreamSecurity.IsNullOrEmpty())
             {
                 profileItem.StreamSecurity = Global.StreamSecurity;
             }
-            if (Utils.IsNullOrEmpty(profileItem.Alpn))
+            if (profileItem.Alpn.IsNullOrEmpty())
             {
                 profileItem.Alpn = "h3";
             }
@@ -906,11 +906,11 @@ namespace ServiceLib.Handler
                 }
                 else
                 {
-                    if (Utils.IsNullOrEmpty(profileItem.AllowInsecure))
+                    if (profileItem.AllowInsecure.IsNullOrEmpty())
                     {
                         profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
                     }
-                    if (Utils.IsNullOrEmpty(profileItem.Fingerprint) && profileItem.StreamSecurity == Global.StreamSecurityReality)
+                    if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == Global.StreamSecurityReality)
                     {
                         profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;
                     }
@@ -923,7 +923,7 @@ namespace ServiceLib.Handler
             }
 
             var maxSort = -1;
-            if (Utils.IsNullOrEmpty(profileItem.IndexId))
+            if (profileItem.IndexId.IsNullOrEmpty())
             {
                 profileItem.IndexId = Utils.GetGuid(false);
                 maxSort = ProfileExHandler.Instance.GetMaxSort();
@@ -1084,7 +1084,7 @@ namespace ServiceLib.Handler
         /// <returns>成功导入的数量</returns>
         private static async Task<int> AddBatchServersCommon(Config config, string strData, string subid, bool isSub)
         {
-            if (Utils.IsNullOrEmpty(strData))
+            if (strData.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1163,7 +1163,7 @@ namespace ServiceLib.Handler
 
         private static async Task<int> AddBatchServers4Custom(Config config, string strData, string subid, bool isSub)
         {
-            if (Utils.IsNullOrEmpty(strData))
+            if (strData.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1236,7 +1236,7 @@ namespace ServiceLib.Handler
             {
                 profileItem = NaiveproxyFmt.ResolveFull(strData, subRemarks);
             }
-            if (profileItem is null || Utils.IsNullOrEmpty(profileItem.Address))
+            if (profileItem is null || profileItem.Address.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1261,7 +1261,7 @@ namespace ServiceLib.Handler
 
         private static async Task<int> AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub)
         {
-            if (Utils.IsNullOrEmpty(strData))
+            if (strData.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1293,7 +1293,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> AddBatchServers(Config config, string strData, string subid, bool isSub)
         {
-            if (Utils.IsNullOrEmpty(strData))
+            if (strData.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1424,7 +1424,7 @@ namespace ServiceLib.Handler
                 item.Memo = subItem.Memo;
             }
 
-            if (Utils.IsNullOrEmpty(item.Id))
+            if (item.Id.IsNullOrEmpty())
             {
                 item.Id = Utils.GetGuid(false);
 
@@ -1457,7 +1457,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> RemoveServersViaSubid(Config config, string subid, bool isSub)
         {
-            if (Utils.IsNullOrEmpty(subid))
+            if (subid.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1508,7 +1508,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> SaveRoutingItem(Config config, RoutingItem item)
         {
-            if (Utils.IsNullOrEmpty(item.Id))
+            if (item.Id.IsNullOrEmpty())
             {
                 item.Id = Utils.GetGuid(false);
             }
@@ -1531,7 +1531,7 @@ namespace ServiceLib.Handler
         /// <returns></returns>
         public static async Task<int> AddBatchRoutingRules(RoutingItem routingItem, string strData)
         {
-            if (Utils.IsNullOrEmpty(strData))
+            if (strData.IsNullOrEmpty())
             {
                 return -1;
             }
@@ -1549,7 +1549,7 @@ namespace ServiceLib.Handler
             routingItem.RuleNum = lstRules.Count;
             routingItem.RuleSet = JsonUtils.Serialize(lstRules, false);
 
-            if (Utils.IsNullOrEmpty(routingItem.Id))
+            if (routingItem.Id.IsNullOrEmpty())
             {
                 routingItem.Id = Utils.GetGuid(false);
             }
@@ -1820,7 +1820,7 @@ namespace ServiceLib.Handler
                 return -1;
             }
 
-            if (Utils.IsNullOrEmpty(item.Id))
+            if (item.Id.IsNullOrEmpty())
             {
                 item.Id = Utils.GetGuid(false);
             }

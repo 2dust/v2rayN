@@ -267,7 +267,7 @@ namespace v2rayN.Views
             cmbHeaderType.Items.Clear();
 
             var network = cmbNetwork.SelectedItem.ToString();
-            if (Utils.IsNullOrEmpty(network))
+            if (network.IsNullOrEmpty())
             {
                 cmbHeaderType.Items.Add(Global.None);
                 return;
@@ -308,7 +308,7 @@ namespace v2rayN.Views
         private void SetTips()
         {
             var network = cmbNetwork.SelectedItem.ToString();
-            if (Utils.IsNullOrEmpty(network))
+            if (network.IsNullOrEmpty())
             {
                 network = Global.DefaultNetwork;
             }

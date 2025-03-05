@@ -224,7 +224,7 @@ namespace ServiceLib.ViewModels
         private async Task SaveRoutingAsync()
         {
             string remarks = SelectedRouting.Remarks;
-            if (Utils.IsNullOrEmpty(remarks))
+            if (remarks.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
                 return;
@@ -252,13 +252,13 @@ namespace ServiceLib.ViewModels
 
         public async Task ImportRulesFromFileAsync(string fileName)
         {
-            if (Utils.IsNullOrEmpty(fileName))
+            if (fileName.IsNullOrEmpty())
             {
                 return;
             }
 
             var result = EmbedUtils.LoadResource(fileName);
-            if (Utils.IsNullOrEmpty(result))
+            if (result.IsNullOrEmpty())
             {
                 return;
             }
@@ -288,7 +288,7 @@ namespace ServiceLib.ViewModels
         private async Task ImportRulesFromUrl()
         {
             var url = SelectedRouting.Url;
-            if (Utils.IsNullOrEmpty(url))
+            if (url.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.MsgNeedUrl);
                 return;
@@ -311,7 +311,7 @@ namespace ServiceLib.ViewModels
             {
                 blReplace = true;
             }
-            if (Utils.IsNullOrEmpty(clipboardData))
+            if (clipboardData.IsNullOrEmpty())
             {
                 return -1;
             }

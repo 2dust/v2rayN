@@ -37,7 +37,7 @@ namespace ServiceLib.Services.CoreConfig
                 ret.Msg = ResUI.InitialConfiguration;
 
                 var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-                if (Utils.IsNullOrEmpty(result))
+                if (result.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
                     return ret;
@@ -93,7 +93,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 string result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
                 string txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
                     return ret;
@@ -135,7 +135,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                     {
-                        if (Utils.IsNullOrEmpty(item.Id) || !Utils.IsGuidByParse(item.Id))
+                        if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
                         {
                             continue;
                         }
@@ -216,7 +216,7 @@ namespace ServiceLib.Services.CoreConfig
 
                 var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
                 var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-                if (Utils.IsNullOrEmpty(result) || txtOutbound.IsNullOrEmpty())
+                if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
                     return ret;
@@ -261,7 +261,7 @@ namespace ServiceLib.Services.CoreConfig
                     var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
                     if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                     {
-                        if (item is null || Utils.IsNullOrEmpty(item.Id) || !Utils.IsGuidByParse(item.Id))
+                        if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
                         {
                             continue;
                         }
@@ -371,7 +371,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-                if (Utils.IsNullOrEmpty(result))
+                if (result.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
                     return ret;
@@ -487,7 +487,7 @@ namespace ServiceLib.Services.CoreConfig
         private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
         {
             string result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
-            if (Utils.IsNullOrEmpty(result))
+            if (result.IsNullOrEmpty())
             {
                 return new();
             }
@@ -515,7 +515,7 @@ namespace ServiceLib.Services.CoreConfig
                 if (v2rayConfig.routing?.rules != null)
                 {
                     v2rayConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
-                    v2rayConfig.routing.domainMatcher = Utils.IsNullOrEmpty(_config.RoutingBasicItem.DomainMatcher) ? null : _config.RoutingBasicItem.DomainMatcher;
+                    v2rayConfig.routing.domainMatcher = _config.RoutingBasicItem.DomainMatcher.IsNullOrEmpty() ? null : _config.RoutingBasicItem.DomainMatcher;
 
                     var routing = await ConfigHandler.GetDefaultRouting(_config);
                     if (routing != null)
@@ -551,11 +551,11 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     return 0;
                 }
-                if (Utils.IsNullOrEmpty(rule.port))
+                if (rule.port.IsNullOrEmpty())
                 {
                     rule.port = null;
                 }
-                if (Utils.IsNullOrEmpty(rule.network))
+                if (rule.network.IsNullOrEmpty())
                 {
                     rule.network = null;
                 }
@@ -1027,7 +1027,7 @@ namespace ServiceLib.Services.CoreConfig
                     case nameof(ETransport.grpc):
                         GrpcSettings4Ray grpcSettings = new()
                         {
-                            authority = Utils.IsNullOrEmpty(host) ? null : host,
+                            authority = host.IsNullOrEmpty() ? null : host,
                             serviceName = path,
                             multiMode = node.HeaderType == Global.GrpcMultiMode,
                             idle_timeout = _config.GrpcItem.IdleTimeout,
@@ -1085,7 +1085,7 @@ namespace ServiceLib.Services.CoreConfig
                 var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
                 var normalDNS = item?.NormalDNS;
                 var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
-                if (Utils.IsNullOrEmpty(normalDNS))
+                if (normalDNS.IsNullOrEmpty())
                 {
                     normalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
                 }
@@ -1156,7 +1156,7 @@ namespace ServiceLib.Services.CoreConfig
                 {
                     var dnsServer = new DnsServer4Ray()
                     {
-                        address = Utils.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+                        address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
                         domains = [node.Address]
                     };
                     servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));

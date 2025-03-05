@@ -48,12 +48,12 @@ namespace ServiceLib.Models
 
         public List<string>? GetAlpn()
         {
-            return Utils.IsNullOrEmpty(Alpn) ? null : Utils.String2List(Alpn);
+            return Alpn.IsNullOrEmpty() ? null : Utils.String2List(Alpn);
         }
 
         public string GetNetwork()
         {
-            if (Utils.IsNullOrEmpty(Network) || !Global.Networks.Contains(Network))
+            if (Network.IsNullOrEmpty() || !Global.Networks.Contains(Network))
             {
                 return Global.DefaultNetwork;
             }
