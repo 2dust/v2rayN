@@ -375,7 +375,7 @@ namespace v2rayN.Views
                 lvColumnItem.Add(new()
                 {
                     Name = item2.ExName,
-                    Width = item2.Visibility == Visibility.Visible ? Utils.ToInt(item2.ActualWidth) : -1,
+                    Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
                     Index = item2.DisplayIndex
                 });
             }

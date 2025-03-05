@@ -461,8 +461,8 @@ namespace v2rayN.Desktop.Views
 
         private void StorageUI(string? n = null)
         {
-            _config.UiItem.MainWidth = Utils.ToInt(this.Width);
-            _config.UiItem.MainHeight = Utils.ToInt(this.Height);
+            _config.UiItem.MainWidth = this.Width;
+            _config.UiItem.MainHeight = this.Height;
 
             if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
             {

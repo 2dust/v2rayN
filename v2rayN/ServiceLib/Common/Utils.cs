@@ -20,7 +20,7 @@ namespace ServiceLib.Common
         #region 转换函数
 
         /// <summary>
-        /// 转逗号分隔的字符串
+        /// Convert to comma-separated string
         /// </summary>
         /// <param name="lst"></param>
         /// <param name="wrap"></param>
@@ -51,7 +51,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// 逗号分隔的字符串
+        /// Comma-separated string
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -65,7 +65,7 @@ namespace ServiceLib.Common
                 }
 
                 str = str.Replace(Environment.NewLine, "");
-                return new List<string>(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                return new(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// 逗号分隔的字符串,先排序后转List
+        /// Comma-separated string, sorted and then converted to List
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -98,7 +98,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// Base64编码
+        /// Base64 Encode
         /// </summary>
         /// <param name="plainText"></param>
         /// <returns></returns>
@@ -118,7 +118,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// Base64解码
+        /// Base64 Decode
         /// </summary>
         /// <param name="plainText"></param>
         /// <returns></returns>
@@ -127,7 +127,10 @@ namespace ServiceLib.Common
             try
             {
                 if (plainText.IsNullOrEmpty())
+                {
                     return "";
+                }
+
                 plainText = plainText.Trim()
                     .Replace(Environment.NewLine, "")
                     .Replace("\n", "")
@@ -150,18 +153,6 @@ namespace ServiceLib.Common
             }
 
             return string.Empty;
-        }
-
-        public static int ToInt(object? obj)
-        {
-            try
-            {
-                return Convert.ToInt32(obj ?? string.Empty);
-            }
-            catch
-            {
-                return 0;
-            }
         }
 
         public static bool ToBool(object obj)
@@ -344,7 +335,7 @@ namespace ServiceLib.Common
         #region 数据检查
 
         /// <summary>
-        /// 判断输入的是否是数字
+        /// Determine if the input is a number
         /// </summary>
         /// <param name="oText"></param>
         /// <returns></returns>
@@ -353,9 +344,8 @@ namespace ServiceLib.Common
             return oText.All(char.IsNumber);
         }
 
-
         /// <summary>
-        /// 验证Domain地址是否合法
+        /// Validate if the domain address is valid
         /// </summary>
         /// <param name="domain"></param>
         public static bool IsDomain(string? domain)
@@ -477,7 +467,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// 取得版本
+        /// Get version
         /// </summary>
         /// <returns></returns>
         public static string GetVersion(bool blFull = true)
@@ -515,7 +505,7 @@ namespace ServiceLib.Common
         }
 
         /// <summary>
-        /// 取得GUID
+        /// GUID
         /// </summary>
         /// <returns></returns>
         public static string GetGuid(bool full = true)

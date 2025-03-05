@@ -77,7 +77,7 @@ namespace ServiceLib.Handler.Fmt
                 return null;
             }
             item.Address = arr1[1][..indexPort];
-            item.Port = Utils.ToInt(arr1[1][(indexPort + 1)..]);
+            item.Port = (arr1[1][(indexPort + 1)..]).ToInt();
             item.Security = arr21.First();
             item.Id = arr21[1];
 

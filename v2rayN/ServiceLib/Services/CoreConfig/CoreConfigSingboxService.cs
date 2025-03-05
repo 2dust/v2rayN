@@ -755,7 +755,7 @@ namespace ServiceLib.Services.CoreConfig
                             outbound.peer_public_key = node.PublicKey;
                             outbound.reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList();
                             outbound.local_address = Utils.String2List(node.RequestHost);
-                            outbound.mtu = Utils.ToInt(node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId);
+                            outbound.mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt();
                             break;
                         }
                 }
@@ -1093,7 +1093,7 @@ namespace ServiceLib.Services.CoreConfig
                     }
                     else
                     {
-                        rule.port = new List<int> { Utils.ToInt(item.Port) };
+                        rule.port = new List<int> { item.Port.ToInt() };
                     }
                 }
                 if (item.Network.IsNotEmpty())

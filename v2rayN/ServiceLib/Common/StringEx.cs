@@ -70,5 +70,10 @@ namespace ServiceLib.Common
         {
             return string.IsNullOrEmpty(value) ? string.Empty : $"\"{value}\"";
         }
+
+        public static int ToInt(this string? value, int defaultValue = 0)
+        {
+            return int.TryParse(value, out var result) ? result : defaultValue;
+        }
     }
 }

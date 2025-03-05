@@ -76,7 +76,7 @@ namespace ServiceLib.Handler.Fmt
             item.Security = details.Groups["method"].Value;
             item.Id = details.Groups["password"].Value;
             item.Address = details.Groups["hostname"].Value;
-            item.Port = Utils.ToInt(details.Groups["port"].Value);
+            item.Port = details.Groups["port"].Value.ToInt();
             return item;
         }
 
@@ -162,7 +162,7 @@ namespace ServiceLib.Handler.Fmt
                         Security = it.method,
                         Id = it.password,
                         Address = it.server,
-                        Port = Utils.ToInt(it.server_port)
+                        Port = it.server_port.ToInt()
                     };
                     lst.Add(ssItem);
                 }
