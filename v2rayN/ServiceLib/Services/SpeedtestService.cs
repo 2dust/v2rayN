@@ -141,8 +141,7 @@ namespace ServiceLib.Services
                     }
                 }));
             }
-            Task.WaitAll([.. tasks]);
-            await Task.CompletedTask;
+            await Task.WhenAll(tasks);
         }
 
         private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
@@ -216,7 +215,7 @@ namespace ServiceLib.Services
                         await DoRealPing(downloadHandle, it);
                     }));
                 }
-                Task.WaitAll(tasks.ToArray());
+                await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {
@@ -291,7 +290,7 @@ namespace ServiceLib.Services
                     }
                 }));
             }
-            Task.WaitAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
         }
 
         private async Task<int> DoRealPing(DownloadService downloadHandle, ServerTestItem it)
