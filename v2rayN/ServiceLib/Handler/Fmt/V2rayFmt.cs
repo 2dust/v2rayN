@@ -1,10 +1,10 @@
-﻿namespace ServiceLib.Handler.Fmt
+namespace ServiceLib.Handler.Fmt
 {
     public class V2rayFmt : BaseFmt
     {
         public static List<ProfileItem>? ResolveFullArray(string strData, string? subRemarks)
         {
-            var configObjects = JsonUtils.Deserialize<Object[]>(strData);
+            var configObjects = JsonUtils.Deserialize<object[]>(strData);
             if (configObjects != null && configObjects.Length > 0)
             {
                 List<ProfileItem> lstResult = [];

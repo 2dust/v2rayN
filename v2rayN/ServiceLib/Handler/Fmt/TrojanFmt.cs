@@ -13,7 +13,9 @@ namespace ServiceLib.Handler.Fmt
 
             var url = Utils.TryUri(str);
             if (url == null)
+            {
                 return null;
+            }
 
             item.Address = url.IdnHost;
             item.Port = url.Port;
@@ -21,7 +23,7 @@ namespace ServiceLib.Handler.Fmt
             item.Id = Utils.UrlDecode(url.UserInfo);
 
             var query = Utils.ParseQueryString(url.Query);
-            ResolveStdTransport(query, ref item);
+            _ = ResolveStdTransport(query, ref item);
 
             return item;
         }
@@ -29,16 +31,16 @@ namespace ServiceLib.Handler.Fmt
         public static string? ToUri(ProfileItem? item)
         {
             if (item == null)
+            {
                 return null;
-            string url = string.Empty;
-
-            string remark = string.Empty;
+            }
+            var remark = string.Empty;
             if (item.Remarks.IsNotEmpty())
             {
                 remark = "#" + Utils.UrlEncode(item.Remarks);
             }
             var dicQuery = new Dictionary<string, string>();
-            GetStdTransport(item, null, ref dicQuery);
+            _ = GetStdTransport(item, null, ref dicQuery);
 
             return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Id, dicQuery, remark);
         }

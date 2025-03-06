@@ -27,10 +27,10 @@ namespace ServiceLib.Handler.Fmt
         public static string? ToUri(ProfileItem? item)
         {
             if (item == null)
+            {
                 return null;
-            string url = string.Empty;
-
-            string remark = string.Empty;
+            }
+            var remark = string.Empty;
             if (item.Remarks.IsNotEmpty())
             {
                 remark = "#" + Utils.UrlEncode(item.Remarks);
@@ -53,7 +53,9 @@ namespace ServiceLib.Handler.Fmt
         {
             var match = UrlFinder.Match(result);
             if (!match.Success)
+            {
                 return null;
+            }
 
             ProfileItem item = new();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
@@ -72,7 +74,9 @@ namespace ServiceLib.Handler.Fmt
                 return null;
             }
             if (!details.Success)
+            {
                 return null;
+            }
             item.Security = details.Groups["method"].Value;
             item.Id = details.Groups["password"].Value;
             item.Address = details.Groups["hostname"].Value;
@@ -84,7 +88,9 @@ namespace ServiceLib.Handler.Fmt
         {
             var parsedUrl = Utils.TryUri(result);
             if (parsedUrl == null)
+            {
                 return null;
+            }
 
             ProfileItem item = new()
             {
@@ -96,7 +102,7 @@ namespace ServiceLib.Handler.Fmt
             //2022-blake3
             if (rawUserInfo.Contains(':'))
             {
-                string[] userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
+                var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
                 if (userInfoParts.Length != 2)
                 {
                     return null;
@@ -107,8 +113,8 @@ namespace ServiceLib.Handler.Fmt
             else
             {
                 // parse base64 UserInfo
-                string userInfo = Utils.Base64Decode(rawUserInfo);
-                string[] userInfoParts = userInfo.Split(new[] { ':' }, 2);
+                var userInfo = Utils.Base64Decode(rawUserInfo);
+                var userInfoParts = userInfo.Split(new[] { ':' }, 2);
                 if (userInfoParts.Length != 2)
                 {
                     return null;

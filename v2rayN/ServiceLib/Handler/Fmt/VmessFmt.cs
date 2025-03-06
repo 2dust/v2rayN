@@ -20,10 +20,10 @@ namespace ServiceLib.Handler.Fmt
         public static string? ToUri(ProfileItem? item)
         {
             if (item == null)
+            {
                 return null;
-            string url = string.Empty;
-
-            VmessQRCode vmessQRCode = new()
+            }
+            var vmessQRCode = new VmessQRCode
             {
                 v = item.ConfigVersion,
                 ps = item.Remarks.TrimEx(),
@@ -42,7 +42,7 @@ namespace ServiceLib.Handler.Fmt
                 fp = item.Fingerprint
             };
 
-            url = JsonUtils.Serialize(vmessQRCode);
+            var url = JsonUtils.Serialize(vmessQRCode);
             url = Utils.Base64Encode(url);
             url = $"{Global.ProtocolShares[EConfigType.VMess]}{url}";
 
@@ -60,7 +60,7 @@ namespace ServiceLib.Handler.Fmt
             result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
             result = Utils.Base64Decode(result);
 
-            VmessQRCode? vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
+            var vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
             if (vmessQRCode == null)
             {
                 msg = ResUI.FailedConversionConfiguration;
@@ -100,7 +100,7 @@ namespace ServiceLib.Handler.Fmt
 
         public static ProfileItem? ResolveStdVmess(string str)
         {
-            ProfileItem item = new()
+            var item = new ProfileItem
             {
                 ConfigType = EConfigType.VMess,
                 Security = "auto"
@@ -108,7 +108,9 @@ namespace ServiceLib.Handler.Fmt
 
             var url = Utils.TryUri(str);
             if (url == null)
+            {
                 return null;
+            }
 
             item.Address = url.IdnHost;
             item.Port = url.Port;

@@ -215,7 +215,9 @@ namespace ServiceLib.Handler.Fmt
             foreach (var item in s)
             {
                 if (str.Contains(item, StringComparison.OrdinalIgnoreCase))
+                {
                     return true;
+                }
             }
             return false;
         }
