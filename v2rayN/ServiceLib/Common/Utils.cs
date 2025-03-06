@@ -27,27 +27,22 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static string List2String(List<string>? lst, bool wrap = false)
         {
+            if (lst == null || lst.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            var separator = wrap ? "," + Environment.NewLine : ",";
+
             try
             {
-                if (lst == null)
-                {
-                    return string.Empty;
-                }
-                if (wrap)
-                {
-                    return string.Join("," + Environment.NewLine, lst);
-                }
-                else
-                {
-                    return string.Join(",", lst);
-                }
+                return string.Join(separator, lst);
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
+                return string.Empty;
             }
-
-            return string.Empty;
         }
 
         /// <summary>
@@ -57,22 +52,21 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static List<string>? String2List(string? str)
         {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return null;
+            }
+
             try
             {
-                if (str == null)
-                {
-                    return null;
-                }
-
-                str = str.Replace(Environment.NewLine, "");
-                return new(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                str = str.Replace(Environment.NewLine, string.Empty);
+                return new List<string>(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
+                return null;
             }
-
-            return null;
         }
 
         /// <summary>
@@ -82,19 +76,9 @@ namespace ServiceLib.Common
         /// <returns></returns>
         public static List<string>? String2ListSorted(string str)
         {
-            try
-            {
-                str = str.Replace(Environment.NewLine, "");
-                List<string> list = new(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
-                list.Sort();
-                return list;
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-
-            return null;
+            var lst = String2List(str);
+            lst?.Sort();
+            return lst;
         }
 
         /// <summary>
@@ -179,55 +163,25 @@ namespace ServiceLib.Common
             }
         }
 
-        private static void ToHumanReadable(long amount, out double result, out string unit)
-        {
-            var factor = 1024u;
-            //long KBs = amount / factor;
-            var KBs = amount;
-            if (KBs > 0)
-            {
-                // multi KB
-                var MBs = KBs / factor;
-                if (MBs > 0)
-                {
-                    // multi MB
-                    var GBs = MBs / factor;
-                    if (GBs > 0)
-                    {
-                        // multi GB
-                        var TBs = GBs / factor;
-                        if (TBs > 0)
-                        {
-                            result = TBs + ((GBs % factor) / (factor + 0.0));
-                            unit = "TB";
-                            return;
-                        }
-
-                        result = GBs + ((MBs % factor) / (factor + 0.0));
-                        unit = "GB";
-                        return;
-                    }
-
-                    result = MBs + ((KBs % factor) / (factor + 0.0));
-                    unit = "MB";
-                    return;
-                }
-
-                result = KBs + ((amount % factor) / (factor + 0.0));
-                unit = "KB";
-                return;
-            }
-            else
-            {
-                result = amount;
-                unit = "B";
-            }
-        }
-
         public static string HumanFy(long amount)
         {
-            ToHumanReadable(amount, out var result, out var unit);
-            return $"{result:f1} {unit}";
+            if (amount <= 0)
+            {
+                return $"{amount:f1} B";
+            }
+
+            string[] units = ["KB", "MB", "GB", "TB", "PB"];
+            var unitIndex = 0;
+            double size = amount;
+
+            // Loop and divide by 1024 until a suitable unit is found
+            while (size >= 1024 && unitIndex < units.Length - 1)
+            {
+                size /= 1024;
+                unitIndex++;
+            }
+
+            return $"{size:f1} {units[unitIndex]}";
         }
 
         public static string UrlEncode(string url)
