@@ -23,14 +23,7 @@ namespace ServiceLib.Services
                 SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
 
                 var progress = new Progress<string>();
-                progress.ProgressChanged += (sender, value) =>
-                {
-                    if (updateFunc != null)
-                    {
-                        string msg = $"{value}";
-                        updateFunc?.Invoke(false, msg);
-                    }
-                };
+                progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
 
                 await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
                       url,
@@ -56,10 +49,7 @@ namespace ServiceLib.Services
                 UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
                 var progress = new Progress<double>();
-                progress.ProgressChanged += (sender, value) =>
-                {
-                    UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
-                };
+                progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
 
                 var webProxy = await GetWebProxy(blProxy);
                 await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
@@ -263,7 +253,7 @@ namespace ServiceLib.Services
                 for (var i = 0; i < 2; i++)
                 {
                     var timer = Stopwatch.StartNew();
-                    await client.GetAsync(url, cts.Token);
+                    await client.GetAsync(url, cts.Token).ConfigureAwait(false);
                     timer.Stop();
                     oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
                     await Task.Delay(100);
