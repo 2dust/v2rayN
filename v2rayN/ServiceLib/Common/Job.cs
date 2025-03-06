@@ -15,27 +15,29 @@ namespace ServiceLib.Common
         public Job()
         {
             handle = CreateJobObject(IntPtr.Zero, null);
-            IntPtr extendedInfoPtr = IntPtr.Zero;
-            JOBOBJECT_BASIC_LIMIT_INFORMATION info = new()
+            var extendedInfoPtr = IntPtr.Zero;
+            var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
             {
                 LimitFlags = 0x2000
             };
 
-            JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new()
+            var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
             {
                 BasicLimitInformation = info
             };
 
             try
             {
-                int length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+                var length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
                 extendedInfoPtr = Marshal.AllocHGlobal(length);
                 Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
                 if (!SetInformationJobObject(handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr,
                         (uint)length))
+                {
                     throw new Exception(string.Format("Unable to set information.  Error: {0}",
                         Marshal.GetLastWin32Error()));
+                }
             }
             finally
             {
@@ -48,7 +50,7 @@ namespace ServiceLib.Common
 
         public bool AddProcess(IntPtr processHandle)
         {
-            bool succ = AssignProcessToJobObject(handle, processHandle);
+            var succ = AssignProcessToJobObject(handle, processHandle);
 
             if (!succ)
             {
@@ -76,7 +78,9 @@ namespace ServiceLib.Common
         private void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
             disposed = true;
 
             if (disposing)
@@ -104,7 +108,7 @@ namespace ServiceLib.Common
         private static extern IntPtr CreateJobObject(IntPtr a, string? lpName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, UInt32 cbJobObjectInfoLength);
+        private static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
@@ -121,34 +125,34 @@ namespace ServiceLib.Common
     [StructLayout(LayoutKind.Sequential)]
     internal struct IO_COUNTERS
     {
-        public UInt64 ReadOperationCount;
-        public UInt64 WriteOperationCount;
-        public UInt64 OtherOperationCount;
-        public UInt64 ReadTransferCount;
-        public UInt64 WriteTransferCount;
-        public UInt64 OtherTransferCount;
+        public ulong ReadOperationCount;
+        public ulong WriteOperationCount;
+        public ulong OtherOperationCount;
+        public ulong ReadTransferCount;
+        public ulong WriteTransferCount;
+        public ulong OtherTransferCount;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     internal struct JOBOBJECT_BASIC_LIMIT_INFORMATION
     {
-        public Int64 PerProcessUserTimeLimit;
-        public Int64 PerJobUserTimeLimit;
-        public UInt32 LimitFlags;
+        public long PerProcessUserTimeLimit;
+        public long PerJobUserTimeLimit;
+        public uint LimitFlags;
         public UIntPtr MinimumWorkingSetSize;
         public UIntPtr MaximumWorkingSetSize;
-        public UInt32 ActiveProcessLimit;
+        public uint ActiveProcessLimit;
         public UIntPtr Affinity;
-        public UInt32 PriorityClass;
-        public UInt32 SchedulingClass;
+        public uint PriorityClass;
+        public uint SchedulingClass;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct SECURITY_ATTRIBUTES
     {
-        public UInt32 nLength;
+        public uint nLength;
         public IntPtr lpSecurityDescriptor;
-        public Int32 bInheritHandle;
+        public int bInheritHandle;
     }
 
     [StructLayout(LayoutKind.Sequential)]
