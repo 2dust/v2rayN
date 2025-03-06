@@ -42,7 +42,7 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveServerAsync()
         {
-            string remarks = SelectedSource.Remarks;
+            var remarks = SelectedSource.Remarks;
             if (remarks.IsNullOrEmpty())
             {
                 NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);

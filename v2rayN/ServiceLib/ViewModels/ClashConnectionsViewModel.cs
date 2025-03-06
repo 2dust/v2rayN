@@ -53,7 +53,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 var numOfExecuted = 1;
                 while (true)
@@ -89,7 +89,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, ret?.connections);
+            _ = _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, ret?.connections);
         }
 
         public void RefreshConnections(List<ConnectionItem>? connections)
@@ -106,22 +106,23 @@ namespace ServiceLib.ViewModels
                     continue;
                 }
 
-                ClashConnectionModel model = new();
-
-                model.Id = item.id;
-                model.Network = item.metadata.network;
-                model.Type = item.metadata.type;
-                model.Host = host;
-                var sp = (dtNow - item.start);
-                model.Time = sp.TotalSeconds < 0 ? 1 : sp.TotalSeconds;
-                model.Elapsed = sp.ToString(@"hh\:mm\:ss");
-                item.chains?.Reverse();
-                model.Chain = $"{item.rule} , {string.Join("->", item.chains ?? new())}";
+                var model = new ClashConnectionModel
+                {
+                    Id = item.id,
+                    Network = item.metadata.network,
+                    Type = item.metadata.type,
+                    Host = host,
+                    Time = (dtNow - item.start).TotalSeconds < 0 ? 1 : (dtNow - item.start).TotalSeconds,
+                    Elapsed = (dtNow - item.start).ToString(@"hh\:mm\:ss"),
+                    Chain = $"{item.rule} , {string.Join("->", item.chains ?? new())}"
+                };
 
                 lstModel.Add(model);
             }
             if (lstModel.Count <= 0)
-            { return; }
+            {
+                return;
+            }
 
             _connectionItems.AddRange(lstModel);
         }
