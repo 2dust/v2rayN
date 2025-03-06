@@ -37,7 +37,7 @@ namespace ServiceLib.Handler
 
         public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Action<ClashProxyModel?, string> updateFunc)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (blAll)
                 {
@@ -47,7 +47,7 @@ namespace ServiceLib.Handler
                         {
                             break;
                         }
-                        Task.Delay(5000).Wait();
+                        await Task.Delay(5000);
                     }
                     if (_proxies == null)
                     {
@@ -90,9 +90,8 @@ namespace ServiceLib.Handler
                         updateFunc?.Invoke(it, result);
                     }));
                 }
-                Task.WaitAll(tasks.ToArray());
-
-                Task.Delay(1000).Wait();
+                await Task.WhenAll(tasks);
+                await Task.Delay(1000);
                 updateFunc?.Invoke(null, "");
             });
         }
