@@ -23,7 +23,7 @@ public partial class App : Application
 
         var ViewModel = new StatusBarViewModel(null);
         Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
-        this.DataContext = ViewModel;
+        DataContext = ViewModel;
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -65,7 +65,9 @@ public partial class App : Application
                 var clipboardData = await AvaUtils.GetClipboardData(desktop.MainWindow);
                 var service = Locator.Current.GetService<MainWindowViewModel>();
                 if (service != null)
+                {
                     _ = service.AddServerViaClipboardAsync(clipboardData);
+                }
             }
         }
     }
@@ -74,7 +76,9 @@ public partial class App : Application
     {
         var service = Locator.Current.GetService<MainWindowViewModel>();
         if (service != null)
+        {
             await service.MyAppExitAsync(true);
+        }
         service?.Shutdown(true);
     }
 }

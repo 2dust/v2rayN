@@ -19,7 +19,9 @@ namespace v2rayN.Desktop.Common
         {
             var sp = GetStorageProvider(owner);
             if (sp is null)
+            {
                 return null;
+            }
 
             // Start async operation to open the dialog.
             var files = await sp.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -35,7 +37,9 @@ namespace v2rayN.Desktop.Common
         {
             var sp = GetStorageProvider(owner);
             if (sp is null)
+            {
                 return null;
+            }
 
             // Start async operation to open the dialog.
             var files = await sp.SaveFilePickerAsync(new FilePickerSaveOptions

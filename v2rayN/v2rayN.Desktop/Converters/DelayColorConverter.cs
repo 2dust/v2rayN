@@ -8,14 +8,14 @@ namespace v2rayN.Desktop.Converters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            int.TryParse(value?.ToString(), out var delay);
+            _ = int.TryParse(value?.ToString(), out var delay);
 
-            if (delay <= 0)
-                return new SolidColorBrush(Colors.Red);
-            if (delay <= 500)
-                return new SolidColorBrush(Colors.Green);
-            else
-                return new SolidColorBrush(Colors.IndianRed);
+            return delay switch
+            {
+                <= 0 => new SolidColorBrush(Colors.Red),
+                <= 500 => new SolidColorBrush(Colors.Green),
+                _ => new SolidColorBrush(Colors.IndianRed)
+            };
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

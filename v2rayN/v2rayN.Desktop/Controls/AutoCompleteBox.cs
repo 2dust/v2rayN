@@ -27,7 +27,9 @@ public class AutoCompleteBox : Avalonia.Controls.AutoCompleteBox
     {
         base.OnGotFocus(e);
         if (IsDropDownOpen)
+        {
             return;
+        }
         SetCurrentValue(IsDropDownOpenProperty, true);
     }
 
