@@ -5,7 +5,7 @@ namespace ServiceLib.Services.Statistics
 {
     public class StatisticsSingboxService
     {
-        private Config _config;
+        private readonly Config _config;
         private bool _exitFlag;
         private ClientWebSocket? webSocket;
         private Action<ServerSpeedItem>? _updateFunc;
@@ -18,7 +18,7 @@ namespace ServiceLib.Services.Statistics
             _updateFunc = updateFunc;
             _exitFlag = false;
 
-            Task.Run(Run);
+            _ = Task.Run(Run);
         }
 
         private async Task Init()
@@ -68,8 +68,7 @@ namespace ServiceLib.Services.Statistics
                     }
                     if (webSocket != null)
                     {
-                        if (webSocket.State == WebSocketState.Aborted
-                            || webSocket.State == WebSocketState.Closed)
+                        if (webSocket.State is WebSocketState.Aborted or WebSocketState.Closed)
                         {
                             webSocket.Abort();
                             webSocket = null;
@@ -89,7 +88,7 @@ namespace ServiceLib.Services.Statistics
                             var result = Encoding.UTF8.GetString(buffer, 0, res.Count);
                             if (result.IsNotEmpty())
                             {
-                                ParseOutput(result, out ulong up, out ulong down);
+                                ParseOutput(result, out var up, out var down);
 
                                 _updateFunc?.Invoke(new ServerSpeedItem()
                                 {

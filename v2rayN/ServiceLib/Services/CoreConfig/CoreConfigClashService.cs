@@ -44,7 +44,7 @@ namespace ServiceLib.Services.CoreConfig
                     File.Delete(fileName);
                 }
 
-                string addressFileName = node.Address;
+                var addressFileName = node.Address;
                 if (addressFileName.IsNullOrEmpty())
                 {
                     ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -60,9 +60,9 @@ namespace ServiceLib.Services.CoreConfig
                     return ret;
                 }
 
-                string tagYamlStr1 = "!<str>";
-                string tagYamlStr2 = "__strn__";
-                string tagYamlStr3 = "!!str";
+                var tagYamlStr1 = "!<str>";
+                var tagYamlStr2 = "__strn__";
+                var tagYamlStr3 = "!!str";
                 var txtFile = File.ReadAllText(addressFileName);
                 txtFile = txtFile.Replace(tagYamlStr1, tagYamlStr2);
 
@@ -121,7 +121,9 @@ namespace ServiceLib.Services.CoreConfig
                     {
                         var tunContent = YamlUtils.FromYaml<Dictionary<string, object>>(tun);
                         if (tunContent != null)
+                        {
                             fileContent["tun"] = tunContent["tun"];
+                        }
                     }
                 }
 
@@ -202,8 +204,8 @@ namespace ServiceLib.Services.CoreConfig
 
         private void ModifyContentMerge(Dictionary<string, object> fileContent, string key, object value)
         {
-            bool blPrepend = false;
-            bool blRemoved = false;
+            var blPrepend = false;
+            var blRemoved = false;
             if (key.StartsWith("prepend-"))
             {
                 blPrepend = true;
@@ -244,17 +246,11 @@ namespace ServiceLib.Services.CoreConfig
             if (blPrepend)
             {
                 lstValue.Reverse();
-                foreach (var item in lstValue)
-                {
-                    lstOri.Insert(0, item);
-                }
+                lstValue.ForEach(item => lstOri.Insert(0, item));
             }
             else
             {
-                foreach (var item in lstValue)
-                {
-                    lstOri.Add(item);
-                }
+                lstValue.ForEach(item => lstOri.Add(item));
             }
         }
 
