@@ -44,9 +44,9 @@ namespace v2rayN.Desktop.Views
                 this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.lstRoutings.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, vm => vm.SelectedSource, v => v.lstRoutings.SelectedItem).DisposeWith(disposables);
 
-                this.Bind(ViewModel, vm => vm.domainStrategy, v => v.cmbdomainStrategy.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.domainMatcher, v => v.cmbdomainMatcher.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.domainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainStrategy, v => v.cmbdomainStrategy.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainMatcher, v => v.cmbdomainMatcher.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.SelectedValue).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedAddCmd, v => v.menuRoutingAdvancedAdd).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.RoutingAdvancedAddCmd, v => v.menuRoutingAdvancedAdd2).DisposeWith(disposables);

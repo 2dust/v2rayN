@@ -6,15 +6,15 @@ namespace ServiceLib.ViewModels
 {
     public class DNSSettingViewModel : MyReactiveObject
     {
-        [Reactive] public bool useSystemHosts { get; set; }
-        [Reactive] public string domainStrategy4Freedom { get; set; }
-        [Reactive] public string domainDNSAddress { get; set; }
-        [Reactive] public string normalDNS { get; set; }
+        [Reactive] public bool UseSystemHosts { get; set; }
+        [Reactive] public string DomainStrategy4Freedom { get; set; }
+        [Reactive] public string DomainDNSAddress { get; set; }
+        [Reactive] public string NormalDNS { get; set; }
 
-        [Reactive] public string domainStrategy4Freedom2 { get; set; }
-        [Reactive] public string domainDNSAddress2 { get; set; }
-        [Reactive] public string normalDNS2 { get; set; }
-        [Reactive] public string tunDNS2 { get; set; }
+        [Reactive] public string DomainStrategy4Freedom2 { get; set; }
+        [Reactive] public string DomainDNSAddress2 { get; set; }
+        [Reactive] public string NormalDNS2 { get; set; }
+        [Reactive] public string TunDNS2 { get; set; }
 
         public ReactiveCommand<Unit, Unit> SaveCmd { get; }
         public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
@@ -31,14 +31,14 @@ namespace ServiceLib.ViewModels
 
             ImportDefConfig4V2rayCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                normalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
+                NormalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
                 await Task.CompletedTask;
             });
 
             ImportDefConfig4SingboxCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                normalDNS2 = EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName);
-                tunDNS2 = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
+                NormalDNS2 = EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName);
+                TunDNS2 = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
                 await Task.CompletedTask;
             });
 
@@ -48,47 +48,47 @@ namespace ServiceLib.ViewModels
         private async Task Init()
         {
             var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
-            useSystemHosts = item.UseSystemHosts;
-            domainStrategy4Freedom = item?.DomainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress = item?.DomainDNSAddress ?? string.Empty;
-            normalDNS = item?.NormalDNS ?? string.Empty;
+            UseSystemHosts = item.UseSystemHosts;
+            DomainStrategy4Freedom = item?.DomainStrategy4Freedom ?? string.Empty;
+            DomainDNSAddress = item?.DomainDNSAddress ?? string.Empty;
+            NormalDNS = item?.NormalDNS ?? string.Empty;
 
             var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
-            domainStrategy4Freedom2 = item2?.DomainStrategy4Freedom ?? string.Empty;
-            domainDNSAddress2 = item2?.DomainDNSAddress ?? string.Empty;
-            normalDNS2 = item2?.NormalDNS ?? string.Empty;
-            tunDNS2 = item2?.TunDNS ?? string.Empty;
+            DomainStrategy4Freedom2 = item2?.DomainStrategy4Freedom ?? string.Empty;
+            DomainDNSAddress2 = item2?.DomainDNSAddress ?? string.Empty;
+            NormalDNS2 = item2?.NormalDNS ?? string.Empty;
+            TunDNS2 = item2?.TunDNS ?? string.Empty;
         }
 
         private async Task SaveSettingAsync()
         {
-            if (normalDNS.IsNotEmpty())
+            if (NormalDNS.IsNotEmpty())
             {
-                var obj = JsonUtils.ParseJson(normalDNS);
+                var obj = JsonUtils.ParseJson(NormalDNS);
                 if (obj != null && obj["servers"] != null)
                 {
                 }
                 else
                 {
-                    if (normalDNS.Contains('{') || normalDNS.Contains('}'))
+                    if (NormalDNS.Contains('{') || NormalDNS.Contains('}'))
                     {
                         NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
                         return;
                     }
                 }
             }
-            if (normalDNS2.IsNotEmpty())
+            if (NormalDNS2.IsNotEmpty())
             {
-                var obj2 = JsonUtils.Deserialize<Dns4Sbox>(normalDNS2);
+                var obj2 = JsonUtils.Deserialize<Dns4Sbox>(NormalDNS2);
                 if (obj2 == null)
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }
-            if (tunDNS2.IsNotEmpty())
+            if (TunDNS2.IsNotEmpty())
             {
-                var obj2 = JsonUtils.Deserialize<Dns4Sbox>(tunDNS2);
+                var obj2 = JsonUtils.Deserialize<Dns4Sbox>(TunDNS2);
                 if (obj2 == null)
                 {
                     NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
@@ -97,21 +97,21 @@ namespace ServiceLib.ViewModels
             }
 
             var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
-            item.DomainStrategy4Freedom = domainStrategy4Freedom;
-            item.DomainDNSAddress = domainDNSAddress;
-            item.UseSystemHosts = useSystemHosts;
-            item.NormalDNS = normalDNS;
+            item.DomainStrategy4Freedom = DomainStrategy4Freedom;
+            item.DomainDNSAddress = DomainDNSAddress;
+            item.UseSystemHosts = UseSystemHosts;
+            item.NormalDNS = NormalDNS;
             await ConfigHandler.SaveDNSItems(_config, item);
 
             var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
-            item2.DomainStrategy4Freedom = domainStrategy4Freedom2;
-            item2.DomainDNSAddress = domainDNSAddress2;
-            item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(normalDNS2));
-            item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(tunDNS2));
+            item2.DomainStrategy4Freedom = DomainStrategy4Freedom2;
+            item2.DomainDNSAddress = DomainDNSAddress2;
+            item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(NormalDNS2));
+            item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(TunDNS2));
             await ConfigHandler.SaveDNSItems(_config, item2);
 
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            _ = _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
     }
 }

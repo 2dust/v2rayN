@@ -18,13 +18,13 @@ namespace ServiceLib.ViewModels
         public IList<RoutingItemModel> SelectedSources { get; set; }
 
         [Reactive]
-        public string domainStrategy { get; set; }
+        public string DomainStrategy { get; set; }
 
         [Reactive]
-        public string domainMatcher { get; set; }
+        public string DomainMatcher { get; set; }
 
         [Reactive]
-        public string domainStrategy4Singbox { get; set; }
+        public string DomainStrategy4Singbox { get; set; }
 
         public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
         public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
@@ -74,9 +74,9 @@ namespace ServiceLib.ViewModels
         {
             SelectedSource = new();
 
-            domainStrategy = _config.RoutingBasicItem.DomainStrategy;
-            domainMatcher = _config.RoutingBasicItem.DomainMatcher;
-            domainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
+            DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
+            DomainMatcher = _config.RoutingBasicItem.DomainMatcher;
+            DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
             await ConfigHandler.InitBuiltinRouting(_config);
             await RefreshRoutingItems();
@@ -91,11 +91,7 @@ namespace ServiceLib.ViewModels
             var routings = await AppHandler.Instance.RoutingItems();
             foreach (var item in routings)
             {
-                bool def = false;
-                if (item.Id == _config.RoutingBasicItem.RoutingIndexId)
-                {
-                    def = true;
-                }
+                var def = item.Id == _config.RoutingBasicItem.RoutingIndexId;
 
                 var it = new RoutingItemModel()
                 {
@@ -114,9 +110,9 @@ namespace ServiceLib.ViewModels
 
         private async Task SaveRoutingAsync()
         {
-            _config.RoutingBasicItem.DomainStrategy = domainStrategy;
-            _config.RoutingBasicItem.DomainMatcher = domainMatcher;
-            _config.RoutingBasicItem.DomainStrategy4Singbox = domainStrategy4Singbox;
+            _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
+            _config.RoutingBasicItem.DomainMatcher = DomainMatcher;
+            _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
 
             if (await ConfigHandler.SaveConfig(_config) == 0)
             {

@@ -36,15 +36,15 @@ namespace v2rayN.Desktop.Views
 
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.useSystemHosts, v => v.togUseSystemHosts.IsChecked).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.domainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.domainDNSAddress, v => v.cmbdomainDNSAddress.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.normalDNS, v => v.txtnormalDNS.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.UseSystemHosts, v => v.togUseSystemHosts.IsChecked).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainDNSAddress, v => v.cmbdomainDNSAddress.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.NormalDNS, v => v.txtnormalDNS.Text).DisposeWith(disposables);
 
-                this.Bind(ViewModel, vm => vm.domainStrategy4Freedom2, v => v.cmbdomainStrategy4Out.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.domainDNSAddress2, v => v.cmbdomainDNSAddress2.SelectedValue).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.normalDNS2, v => v.txtnormalDNS2.Text).DisposeWith(disposables);
-                this.Bind(ViewModel, vm => vm.tunDNS2, v => v.txttunDNS2.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainStrategy4Freedom2, v => v.cmbdomainStrategy4Out.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.DomainDNSAddress2, v => v.cmbdomainDNSAddress2.SelectedValue).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.NormalDNS2, v => v.txtnormalDNS2.Text).DisposeWith(disposables);
+                this.Bind(ViewModel, vm => vm.TunDNS2, v => v.txttunDNS2.Text).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
