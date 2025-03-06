@@ -60,7 +60,7 @@ namespace ServiceLib.Handler.SysProxy
             try
             {
                 // set proxy for LAN
-                bool result = SetConnectionProxy(null, strProxy, exceptions, type);
+                var result = SetConnectionProxy(null, strProxy, exceptions, type);
                 // set proxy for dial up connections
                 var connections = EnumerateRasEntries();
                 foreach (var connection in connections)
@@ -71,16 +71,16 @@ namespace ServiceLib.Handler.SysProxy
             }
             catch
             {
-                SetProxyFallback(strProxy, exceptions, type);
+                _ = SetProxyFallback(strProxy, exceptions, type);
                 return false;
             }
         }
 
         private static bool SetConnectionProxy(string? connectionName, string? strProxy, string? exceptions, int type)
         {
-            InternetPerConnOptionList list = new();
+            var list = new InternetPerConnOptionList();
 
-            int optionCount = 1;
+            var optionCount = 1;
             if (type == 1) // No proxy
             {
                 optionCount = 1;
@@ -90,8 +90,8 @@ namespace ServiceLib.Handler.SysProxy
                 optionCount = string.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
 
-            int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
-            PerConnOption m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
+            var m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
+            var m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
             if (type == 2) // named proxy
             {
                 m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY);
@@ -103,11 +103,9 @@ namespace ServiceLib.Handler.SysProxy
                 m_Option = PerConnOption.INTERNET_PER_CONN_AUTOCONFIG_URL;
             }
 
-            //int optionCount = Utile.IsNullOrEmpty(strProxy) ? 1 : (Utile.IsNullOrEmpty(exceptions) ? 2 : 3);
-            InternetConnectionOption[] options = new InternetConnectionOption[optionCount];
+            var options = new InternetConnectionOption[optionCount];
             // USE a proxy server ...
             options[0].m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
-            //options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
             options[0].m_Value.m_Int = m_Int;
             // use THIS proxy server
             if (optionCount > 1)
@@ -135,20 +133,20 @@ namespace ServiceLib.Handler.SysProxy
             list.dwOptionCount = options.Length;
             list.dwOptionError = 0;
 
-            int optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
+            var optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
             // make a pointer out of all that ...
-            nint optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length); // !! remember to deallocate memory 4
+            var optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length); // !! remember to deallocate memory 4
             // copy the array over into that spot in memory ...
-            for (int i = 0; i < options.Length; ++i)
+            for (var i = 0; i < options.Length; ++i)
             {
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    nint opt = new(optionsPtr.ToInt64() + (i * optSize));
+                    var opt = new nint(optionsPtr.ToInt64() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
                 else
                 {
-                    nint opt = new(optionsPtr.ToInt32() + (i * optSize));
+                    var opt = new nint(optionsPtr.ToInt32() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
             }
@@ -156,14 +154,14 @@ namespace ServiceLib.Handler.SysProxy
             list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
-            nint ipcoListPtr = Marshal.AllocCoTaskMem(list.dwSize); // !! remember to deallocate memory 5
+            var ipcoListPtr = Marshal.AllocCoTaskMem(list.dwSize); // !! remember to deallocate memory 5
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
-            bool isSuccess = NativeMethods.InternetSetOption(nint.Zero,
+            var isSuccess = NativeMethods.InternetSetOption(nint.Zero,
                InternetOption.INTERNET_OPTION_PER_CONNECTION_OPTION,
                ipcoListPtr, list.dwSize);
-            int returnvalue = 0; // ERROR_SUCCESS
+            var returnvalue = 0; // ERROR_SUCCESS
             if (!isSuccess)
             {  // get the error codes, they might be helpful
                 returnvalue = Marshal.GetLastPInvokeError();
@@ -171,13 +169,15 @@ namespace ServiceLib.Handler.SysProxy
             else
             {
                 // Notify the system that the registry settings have been changed and cause them to be refreshed
-                NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_SETTINGS_CHANGED, nint.Zero, 0);
-                NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_REFRESH, nint.Zero, 0);
+                _ = NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_SETTINGS_CHANGED, nint.Zero, 0);
+                _ = NativeMethods.InternetSetOption(nint.Zero, InternetOption.INTERNET_OPTION_REFRESH, nint.Zero, 0);
             }
 
             // FREE the data ASAP
             if (list.szConnection != nint.Zero)
+            {
                 Marshal.FreeHGlobal(list.szConnection); // release mem 3
+            }
             if (optionCount > 1)
             {
                 Marshal.FreeHGlobal(options[1].m_Value.m_StringPtr); // release mem 1
@@ -204,18 +204,18 @@ namespace ServiceLib.Handler.SysProxy
         /// <exception cref="ApplicationException">Error message with win32 error code</exception>
         private static IEnumerable<string> EnumerateRasEntries()
         {
-            int entries = 0;
+            var entries = 0;
             // attempt to query with 1 entry buffer
-            RASENTRYNAME[] rasEntryNames = new RASENTRYNAME[1];
-            int bufferSize = Marshal.SizeOf(typeof(RASENTRYNAME));
+            var rasEntryNames = new RASENTRYNAME[1];
+            var bufferSize = Marshal.SizeOf(typeof(RASENTRYNAME));
             rasEntryNames[0].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
 
-            uint result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
+            var result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
             // increase buffer if the buffer is not large enough
             if (result == (uint)ErrorCode.ERROR_BUFFER_TOO_SMALL)
             {
                 rasEntryNames = new RASENTRYNAME[bufferSize / Marshal.SizeOf(typeof(RASENTRYNAME))];
-                for (int i = 0; i < rasEntryNames.Length; i++)
+                for (var i = 0; i < rasEntryNames.Length; i++)
                 {
                     rasEntryNames[i].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
                 }
@@ -225,7 +225,7 @@ namespace ServiceLib.Handler.SysProxy
             if (result == 0)
             {
                 var entryNames = new List<string>();
-                for (int i = 0; i < entries; i++)
+                for (var i = 0; i < entries; i++)
                 {
                     entryNames.Add(rasEntryNames[i].szEntryName);
                 }
