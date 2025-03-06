@@ -1668,7 +1668,7 @@ namespace ServiceLib.Handler
 
         public static async Task<int> InitRouting(Config config, bool blImportAdvancedRules = false)
         {
-            if (string.IsNullOrEmpty(config.ConstItem.RouteRulesTemplateSourceUrl))
+            if (config.ConstItem.RouteRulesTemplateSourceUrl.IsNullOrEmpty())
             {
                 await InitBuiltinRouting(config, blImportAdvancedRules);
             }
@@ -1684,7 +1684,7 @@ namespace ServiceLib.Handler
         {
             var downloadHandle = new DownloadService();
             var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl, true, "");
-            if (string.IsNullOrEmpty(templateContent))
+            if (templateContent.IsNullOrEmpty())
                 return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
             var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
@@ -1701,14 +1701,14 @@ namespace ServiceLib.Handler
             {
                 var item = template.RoutingItems[i];
 
-                if (string.IsNullOrEmpty(item.Url) && string.IsNullOrEmpty(item.RuleSet))
+                if (item.Url.IsNullOrEmpty() && item.RuleSet.IsNullOrEmpty())
                     continue;
 
-                var ruleSetsString = !string.IsNullOrEmpty(item.RuleSet)
+                var ruleSetsString = !item.RuleSet.IsNullOrEmpty()
                     ? item.RuleSet
                     : await downloadHandle.TryDownloadString(item.Url, true, "");
 
-                if (string.IsNullOrEmpty(ruleSetsString))
+                if (ruleSetsString.IsNullOrEmpty())
                     continue;
 
                 item.Remarks = $"{template.Version}-{item.Remarks}";
@@ -1841,17 +1841,17 @@ namespace ServiceLib.Handler
 
             var downloadHandle = new DownloadService();
             var templateContent = await downloadHandle.TryDownloadString(url, true, "");
-            if (string.IsNullOrEmpty(templateContent))
+            if (templateContent.IsNullOrEmpty())
                 return currentItem;
 
             var template = JsonUtils.Deserialize<DNSItem>(templateContent);
             if (template == null)
                 return currentItem;
 
-            if (!string.IsNullOrEmpty(template.NormalDNS))
+            if (!template.NormalDNS.IsNullOrEmpty())
                 template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
 
-            if (!string.IsNullOrEmpty(template.TunDNS))
+            if (!template.TunDNS.IsNullOrEmpty())
                 template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
 
             template.Id = currentItem.Id;

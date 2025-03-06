@@ -96,7 +96,6 @@ namespace ServiceLib.ViewModels
         private async Task Init()
         {
             _ = DelayTestTask();
-            await ProxiesReload();
         }
 
         private async Task DoRulemodeSelected(bool c)
@@ -135,20 +134,10 @@ namespace ServiceLib.ViewModels
             RefreshProxyDetails(c);
         }
 
-        private void UpdateHandler(bool notify, string msg)
-        {
-            NoticeHandler.Instance.SendMessageEx(msg);
-        }
-
         public async Task ProxiesReload()
         {
             await GetClashProxies(true);
             await ProxiesDelayTest();
-        }
-
-        public async Task ProxiesDelayTest()
-        {
-            await ProxiesDelayTest(true);
         }
 
         #region proxy function
@@ -218,7 +207,7 @@ namespace ServiceLib.ViewModels
                 {
                     continue;
                 }
-                var item = _proxyGroups.Where(t => t.Name == kv.Key).FirstOrDefault();
+                var item = _proxyGroups.FirstOrDefault(t => t.Name == kv.Key);
                 if (item != null && item.Name.IsNotEmpty())
                 {
                     continue;
@@ -369,7 +358,7 @@ namespace ServiceLib.ViewModels
             await ClashApiHandler.Instance.ClashSetActiveProxy(name, nameNode);
 
             selectedProxy.now = nameNode;
-            var group = _proxyGroups.Where(it => it.Name == SelectedGroup.Name).FirstOrDefault();
+            var group = _proxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
             if (group != null)
             {
                 group.Now = nameNode;
@@ -381,7 +370,7 @@ namespace ServiceLib.ViewModels
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
         }
 
-        private async Task ProxiesDelayTest(bool blAll)
+        private async Task ProxiesDelayTest(bool blAll = true)
         {
             ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
             {
@@ -403,19 +392,19 @@ namespace ServiceLib.ViewModels
         public void ProxiesDelayTestResult(SpeedTestResult result)
         {
             //UpdateHandler(false, $"{item.name}={result}");
-            var detail = _proxyDetails.Where(it => it.Name == result.IndexId).FirstOrDefault();
+            var detail = _proxyDetails.FirstOrDefault(it => it.Name == result.IndexId);
             if (detail != null)
             {
                 var dicResult = JsonUtils.Deserialize<Dictionary<string, object>>(result.Delay);
-                if (dicResult != null && dicResult.ContainsKey("delay"))
+                if (dicResult != null && dicResult.TryGetValue("delay", out var value))
                 {
-                    detail.Delay = Convert.ToInt32(dicResult["delay"].ToString());
+                    detail.Delay = Convert.ToInt32(value.ToString());
                     detail.DelayName = $"{detail.Delay}ms";
                 }
-                else if (dicResult != null && dicResult.ContainsKey("message"))
+                else if (dicResult != null && dicResult.TryGetValue("message", out var value1))
                 {
                     detail.Delay = _delayTimeout;
-                    detail.DelayName = $"{dicResult["message"]}";
+                    detail.DelayName = $"{value1}";
                 }
                 else
                 {
@@ -432,28 +421,28 @@ namespace ServiceLib.ViewModels
 
         public async Task DelayTestTask()
         {
-            Task.Run(async () =>
-            {
-                var numOfExecuted = 1;
-                while (true)
-                {
-                    await Task.Delay(1000 * 60);
-                    numOfExecuted++;
-                    if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
-                    {
-                        continue;
-                    }
-                    if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
-                    {
-                        continue;
-                    }
-                    if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
-                    {
-                        continue;
-                    }
-                    await ProxiesDelayTest();
-                }
-            });
+            _ = Task.Run(async () =>
+              {
+                  var numOfExecuted = 1;
+                  while (true)
+                  {
+                      await Task.Delay(1000 * 60);
+                      numOfExecuted++;
+                      if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                      {
+                          continue;
+                      }
+                      if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
+                      {
+                          continue;
+                      }
+                      if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
+                      {
+                          continue;
+                      }
+                      await ProxiesDelayTest();
+                  }
+              });
             await Task.CompletedTask;
         }
 

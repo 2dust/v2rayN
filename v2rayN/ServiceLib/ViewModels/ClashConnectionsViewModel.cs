@@ -53,32 +53,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            _ = Task.Run(async () =>
-            {
-                var numOfExecuted = 1;
-                while (true)
-                {
-                    await Task.Delay(1000 * 5);
-                    numOfExecuted++;
-                    if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
-                    {
-                        continue;
-                    }
-
-                    if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
-                    {
-                        continue;
-                    }
-
-                    if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
-                    {
-                        continue;
-                    }
-                    await GetClashConnections();
-                }
-            });
-
-            await Task.CompletedTask;
+            _ = DelayTestTask();
         }
 
         private async Task GetClashConnections()
@@ -145,6 +120,36 @@ namespace ServiceLib.ViewModels
             }
             await ClashApiHandler.Instance.ClashConnectionClose(id);
             await GetClashConnections();
+        }
+
+        public async Task DelayTestTask()
+        {
+            _ = Task.Run(async () =>
+            {
+                var numOfExecuted = 1;
+                while (true)
+                {
+                    await Task.Delay(1000 * 5);
+                    numOfExecuted++;
+                    if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                    {
+                        continue;
+                    }
+
+                    if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
+                    {
+                        continue;
+                    }
+
+                    if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
+                    {
+                        continue;
+                    }
+                    await GetClashConnections();
+                }
+            });
+
+            await Task.CompletedTask;
         }
     }
 }

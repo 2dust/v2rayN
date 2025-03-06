@@ -87,7 +87,7 @@ namespace ServiceLib.Handler.SysProxy
             }
             else if (type is 2 or 4) // named proxy or autoproxy script URL
             {
-                optionCount = string.IsNullOrEmpty(exceptions) ? 2 : 3;
+                optionCount = exceptions.IsNullOrEmpty() ? 2 : 3;
             }
 
             var m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
