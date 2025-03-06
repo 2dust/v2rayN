@@ -1,29 +1,29 @@
-﻿namespace ServiceLib.Common
+namespace ServiceLib.Common
 {
     public class SemanticVersion
     {
-        private int major;
-        private int minor;
-        private int patch;
-        private string version;
+        private readonly int major;
+        private readonly int minor;
+        private readonly int patch;
+        private readonly string version;
 
         public SemanticVersion(int major, int minor, int patch)
         {
             this.major = major;
             this.minor = minor;
             this.patch = patch;
-            this.version = $"{major}.{minor}.{patch}";
+            version = $"{major}.{minor}.{patch}";
         }
 
         public SemanticVersion(string? version)
         {
             try
             {
-                if (version.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(version))
                 {
-                    this.major = 0;
-                    this.minor = 0;
-                    this.patch = 0;
+                    major = 0;
+                    minor = 0;
+                    patch = 0;
                     return;
                 }
                 this.version = version.RemovePrefix('v');
@@ -31,15 +31,15 @@
                 var parts = this.version.Split('.');
                 if (parts.Length == 2)
                 {
-                    this.major = int.Parse(parts.First());
-                    this.minor = int.Parse(parts.Last());
-                    this.patch = 0;
+                    major = int.Parse(parts.First());
+                    minor = int.Parse(parts.Last());
+                    patch = 0;
                 }
                 else if (parts.Length is 3 or 4)
                 {
-                    this.major = int.Parse(parts[0]);
-                    this.minor = int.Parse(parts[1]);
-                    this.patch = int.Parse(parts[2]);
+                    major = int.Parse(parts[0]);
+                    minor = int.Parse(parts[1]);
+                    patch = int.Parse(parts[2]);
                 }
                 else
                 {
@@ -48,9 +48,9 @@
             }
             catch
             {
-                this.major = 0;
-                this.minor = 0;
-                this.patch = 0;
+                major = 0;
+                minor = 0;
+                patch = 0;
             }
         }
 
@@ -58,7 +58,7 @@
         {
             if (obj is SemanticVersion other)
             {
-                return this.major == other.major && this.minor == other.minor && this.patch == other.patch;
+                return major == other.major && minor == other.minor && patch == other.patch;
             }
             else
             {
@@ -68,7 +68,7 @@
 
         public override int GetHashCode()
         {
-            return this.major.GetHashCode() ^ this.minor.GetHashCode() ^ this.patch.GetHashCode();
+            return major.GetHashCode() ^ minor.GetHashCode() ^ patch.GetHashCode();
         }
 
         /// <summary>
@@ -77,18 +77,18 @@
         /// <returns>major.minor.patch</returns>
         public override string ToString()
         {
-            return this.version;
+            return version;
         }
 
         public string ToVersionString(string? prefix = null)
         {
             if (prefix == null)
             {
-                return this.version;
+                return version;
             }
             else
             {
-                return $"{prefix}{this.version}";
+                return $"{prefix}{version}";
             }
         }
 
@@ -108,31 +108,31 @@
 
         private bool GreaterEquals(SemanticVersion other)
         {
-            if (this.major < other.major)
+            if (major < other.major)
             {
                 return false;
             }
-            else if (this.major > other.major)
+            else if (major > other.major)
             {
                 return true;
             }
             else
             {
-                if (this.minor < other.minor)
+                if (minor < other.minor)
                 {
                     return false;
                 }
-                else if (this.minor > other.minor)
+                else if (minor > other.minor)
                 {
                     return true;
                 }
                 else
                 {
-                    if (this.patch < other.patch)
+                    if (patch < other.patch)
                     {
                         return false;
                     }
-                    else if (this.patch > other.patch)
+                    else if (patch > other.patch)
                     {
                         return true;
                     }
@@ -146,31 +146,31 @@
 
         private bool LessEquals(SemanticVersion other)
         {
-            if (this.major < other.major)
+            if (major < other.major)
             {
                 return true;
             }
-            else if (this.major > other.major)
+            else if (major > other.major)
             {
                 return false;
             }
             else
             {
-                if (this.minor < other.minor)
+                if (minor < other.minor)
                 {
                     return true;
                 }
-                else if (this.minor > other.minor)
+                else if (minor > other.minor)
                 {
                     return false;
                 }
                 else
                 {
-                    if (this.patch < other.patch)
+                    if (patch < other.patch)
                     {
                         return true;
                     }
-                    else if (this.patch > other.patch)
+                    else if (patch > other.patch)
                     {
                         return false;
                     }
