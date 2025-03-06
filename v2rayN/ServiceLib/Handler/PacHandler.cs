@@ -15,7 +15,7 @@ namespace ServiceLib.Handler
 
         public static async Task Start(string configPath, int httpPort, int pacPort)
         {
-            _needRestart = (configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning);
+            _needRestart = configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
 
             _configPath = configPath;
             _httpPort = httpPort;
@@ -70,7 +70,7 @@ namespace ServiceLib.Handler
                         }
 
                         var client = await _tcpListener.AcceptTcpClientAsync();
-                        await Task.Run(() => { WriteContent(client); });
+                        await Task.Run(() => WriteContent(client));
                     }
                     catch
                     {
@@ -90,7 +90,9 @@ namespace ServiceLib.Handler
         public static void Stop()
         {
             if (_tcpListener == null)
+            {
                 return;
+            }
             try
             {
                 _isRunning = false;
