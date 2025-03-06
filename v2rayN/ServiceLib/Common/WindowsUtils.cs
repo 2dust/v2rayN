@@ -63,7 +63,7 @@ namespace ServiceLib.Common
                 var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
 
                 // Try to remove the device
-                await Utils.GetCliWrapOutput(pnpUtilPath, arg);
+                _ = await Utils.GetCliWrapOutput(pnpUtilPath, arg);
             }
             catch (Exception ex)
             {

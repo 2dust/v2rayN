@@ -1,4 +1,4 @@
-﻿using YamlDotNet.Core;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -62,9 +62,6 @@ namespace ServiceLib.Common
 
         public static string? PreprocessYaml(string str)
         {
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance)
-                .Build();
             try
             {
                 var mergingParser = new MergingParser(new Parser(new StringReader(str)));

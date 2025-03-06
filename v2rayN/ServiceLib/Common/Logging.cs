@@ -28,7 +28,9 @@ namespace ServiceLib.Common
         public static void SaveLog(string strContent)
         {
             if (!LogManager.IsLoggingEnabled())
+            {
                 return;
+            }
 
             LogManager.GetLogger("Log1").Info(strContent);
         }
@@ -36,7 +38,9 @@ namespace ServiceLib.Common
         public static void SaveLog(string strTitle, Exception ex)
         {
             if (!LogManager.IsLoggingEnabled())
+            {
                 return;
+            }
 
             var logger = LogManager.GetLogger("Log2");
             logger.Debug($"{strTitle},{ex.Message}");

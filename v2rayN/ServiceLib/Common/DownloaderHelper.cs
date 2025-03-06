@@ -86,7 +86,7 @@ namespace ServiceLib.Common
             //};
             downloader.DownloadProgressChanged += (sender, value) =>
             {
-                var ts = (DateTime.Now - totalDatetime);
+                var ts = DateTime.Now - totalDatetime;
                 if (progress != null && ts.Seconds > totalSecond)
                 {
                     hasValue = true;
@@ -146,10 +146,7 @@ namespace ServiceLib.Common
             var progressPercentage = 0;
             var hasValue = false;
             await using var downloader = new Downloader.DownloadService(downloadOpt);
-            downloader.DownloadStarted += (sender, value) =>
-            {
-                progress?.Report(0);
-            };
+            downloader.DownloadStarted += (sender, value) => progress?.Report(0);
             downloader.DownloadProgressChanged += (sender, value) =>
             {
                 hasValue = true;

@@ -22,7 +22,9 @@ namespace ServiceLib.Common
         public static bool BeginWithAny(this string s, IEnumerable<char> chars)
         {
             if (s.IsNullOrEmpty())
+            {
                 return false;
+            }
             return chars.Contains(s.First());
         }
 
@@ -36,7 +38,9 @@ namespace ServiceLib.Common
             while (reader.ReadLine() is { } line)
             {
                 if (line.IsWhiteSpace())
+                {
                     continue;
+                }
                 yield return line;
             }
         }

@@ -1,4 +1,4 @@
-﻿using System.Formats.Tar;
+using System.Formats.Tar;
 using System.IO.Compression;
 using System.Text;
 
@@ -163,13 +163,15 @@ namespace ServiceLib.Common
 
             // Check if the source directory exists
             if (!dir.Exists)
+            {
                 throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+            }
 
             // Cache directories before we start copying
             var dirs = dir.GetDirectories();
 
             // Create the destination directory
-            Directory.CreateDirectory(destinationDir);
+            _ = Directory.CreateDirectory(destinationDir);
 
             // Get the files in the source directory and copy to the destination directory
             foreach (var file in dir.GetFiles())
@@ -187,7 +189,7 @@ namespace ServiceLib.Common
                 {
                     continue;
                 }
-                file.CopyTo(targetFilePath, overwrite);
+                _ = file.CopyTo(targetFilePath, overwrite);
             }
 
             // If recursive and copying subdirectories, recursively call this method

@@ -7,7 +7,7 @@ namespace ServiceLib.Common
     {
         private static readonly Lazy<SQLiteHelper> _instance = new(() => new());
         public static SQLiteHelper Instance => _instance.Value;
-        private string _connstr;
+        private readonly string _connstr;
         private SQLiteConnection _db;
         private SQLiteAsyncConnection _dbAsync;
         private readonly string _configDB = "guiNDB.db";
