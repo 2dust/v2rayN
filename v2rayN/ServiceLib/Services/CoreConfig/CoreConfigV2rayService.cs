@@ -582,7 +582,7 @@ namespace ServiceLib.Services.CoreConfig
                     var it = JsonUtils.DeepCopy(rule);
                     it.ip = null;
                     it.type = "field";
-                    for (int k = it.domain.Count - 1; k >= 0; k--)
+                    for (var k = it.domain.Count - 1; k >= 0; k--)
                     {
                         if (it.domain[k].StartsWith("#"))
                         {

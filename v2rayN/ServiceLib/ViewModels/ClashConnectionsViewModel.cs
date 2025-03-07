@@ -58,7 +58,7 @@ namespace ServiceLib.ViewModels
 
         private async Task GetClashConnections()
         {
-            var ret = await ClashApiHandler.Instance.GetClashConnectionsAsync(_config);
+            var ret = await ClashApiHandler.Instance.GetClashConnectionsAsync();
             if (ret == null)
             {
                 return;

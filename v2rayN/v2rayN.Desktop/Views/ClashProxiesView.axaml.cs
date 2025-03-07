@@ -27,9 +27,9 @@ namespace v2rayN.Desktop.Views
                 this.Bind(ViewModel, vm => vm.SelectedDetail, v => v.lstProxyDetails.SelectedItem).DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.ProxiesReloadCmd, v => v.menuProxiesReload).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.ProxiesDelaytestCmd, v => v.menuProxiesDelaytest).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.ProxiesDelayTestCmd, v => v.menuProxiesDelaytest).DisposeWith(disposables);
 
-                this.BindCommand(ViewModel, vm => vm.ProxiesDelaytestPartCmd, v => v.menuProxiesDelaytestPart).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.ProxiesDelayTestPartCmd, v => v.menuProxiesDelaytestPart).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ProxiesSelectActivityCmd, v => v.menuProxiesSelectActivity).DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.RuleModeSelected, v => v.cmbRulemode.SelectedIndex).DisposeWith(disposables);

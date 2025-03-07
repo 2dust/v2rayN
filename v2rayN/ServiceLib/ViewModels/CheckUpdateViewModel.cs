@@ -75,6 +75,14 @@ namespace ServiceLib.ViewModels
 
         private async Task CheckUpdate()
         {
+            await Task.Run(async () =>
+            {
+                await CheckUpdateTask();
+            });
+        }
+
+        private async Task CheckUpdateTask()
+        {
             _lstUpdated.Clear();
             _lstUpdated = _checkUpdateModel.Where(x => x.IsSelected == true)
                     .Select(x => new CheckUpdateModel() { CoreType = x.CoreType }).ToList();
