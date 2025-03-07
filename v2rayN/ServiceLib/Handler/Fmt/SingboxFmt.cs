@@ -5,51 +5,44 @@ namespace ServiceLib.Handler.Fmt
         public static List<ProfileItem>? ResolveFullArray(string strData, string? subRemarks)
         {
             var configObjects = JsonUtils.Deserialize<object[]>(strData);
-            if (configObjects != null && configObjects.Length > 0)
+            if (configObjects is not { Length: > 0 })
             {
-                List<ProfileItem> lstResult = [];
-                foreach (var configObject in configObjects)
-                {
-                    var objectString = JsonUtils.Serialize(configObject);
-                    var singboxCon = JsonUtils.Deserialize<SingboxConfig>(objectString);
-                    if (singboxCon?.inbounds?.Count > 0
-                        && singboxCon.outbounds?.Count > 0
-                        && singboxCon.route != null)
-                    {
-                        var fileName = WriteAllText(objectString);
-
-                        var profileIt = new ProfileItem
-                        {
-                            CoreType = ECoreType.sing_box,
-                            Address = fileName,
-                            Remarks = subRemarks ?? "singbox_custom",
-                        };
-                        lstResult.Add(profileIt);
-                    }
-                }
-                return lstResult;
+                return null;
             }
-            return null;
+
+            List<ProfileItem> lstResult = [];
+            foreach (var configObject in configObjects)
+            {
+                var objectString = JsonUtils.Serialize(configObject);
+                var profileIt = ResolveFull(objectString, subRemarks);
+                if (profileIt != null)
+                {
+                    lstResult.Add(profileIt);
+                }
+            }
+            return lstResult;
         }
 
         public static ProfileItem? ResolveFull(string strData, string? subRemarks)
         {
-            var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(strData);
-            if (singboxConfig?.inbounds?.Count > 0
-                && singboxConfig.outbounds?.Count > 0
-                && singboxConfig.route != null)
+            var config = JsonUtils.ParseJson(strData);
+            if (config?["inbounds"] == null
+                || config["outbounds"] == null
+                || config["route"] == null
+                || config["dns"] == null)
             {
-                var fileName = WriteAllText(strData);
-                var profileItem = new ProfileItem
-                {
-                    CoreType = ECoreType.sing_box,
-                    Address = fileName,
-                    Remarks = subRemarks ?? "singbox_custom"
-                };
-
-                return profileItem;
+                return null;
             }
-            return null;
+
+            var fileName = WriteAllText(strData);
+            var profileItem = new ProfileItem
+            {
+                CoreType = ECoreType.sing_box,
+                Address = fileName,
+                Remarks = subRemarks ?? "singbox_custom"
+            };
+
+            return profileItem;
         }
     }
 }
