@@ -564,13 +564,20 @@ namespace ServiceLib.Common
         {
             try
             {
+                var basePath = GetBaseDirectory();
                 //When this file exists, it is equivalent to having no permission to read and write
-                if (File.Exists(Path.Combine(GetBaseDirectory(), "NotStoreConfigHere.txt")))
+                if (File.Exists(Path.Combine(basePath, "NotStoreConfigHere.txt")))
                 {
                     return false;
                 }
 
-                var tempPath = Path.Combine(GetBaseDirectory(), "guiTemps");
+                //Check if it is installed by Windows WinGet
+                if (IsWindows() && basePath.Contains("Users") && basePath.Contains("WinGet"))
+                {
+                    return false;
+                }
+
+                var tempPath = Path.Combine(basePath, "guiTemps");
                 if (!Directory.Exists(tempPath))
                 {
                     Directory.CreateDirectory(tempPath);
