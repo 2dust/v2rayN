@@ -184,7 +184,7 @@ namespace ServiceLib.Services.CoreConfig
                 }
                 v2rayConfig.routing.rules.Add(new()
                 {
-                    network = "tcp,udp",
+                    ip = ["0.0.0.0/0", "::/0"],
                     balancerTag = balancer.tag,
                     type = "field"
                 });
