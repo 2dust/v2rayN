@@ -182,12 +182,24 @@ namespace ServiceLib.Services.CoreConfig
                         rule.balancerTag = balancer.tag;
                     }
                 }
-                v2rayConfig.routing.rules.Add(new()
+                if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
                 {
-                    network = "tcp,udp",
-                    balancerTag = balancer.tag,
-                    type = "field"
-                });
+                    v2rayConfig.routing.rules.Add(new()
+                    {
+                        ip = ["0.0.0.0/0", "::/0"],
+                        balancerTag = balancer.tag,
+                        type = "field"
+                    });
+                }
+                else
+                {
+                    v2rayConfig.routing.rules.Add(new()
+                    {
+                        network = "tcp,udp",
+                        balancerTag = balancer.tag,
+                        type = "field"
+                    });
+                }
 
                 ret.Success = true;
                 ret.Data = JsonUtils.Serialize(v2rayConfig);
