@@ -951,22 +951,27 @@ namespace ServiceLib.Handler
                 return false;
             }
 
+            static bool AreEqual(string? a, string? b)
+            {
+                return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
+            }
+
             return o.ConfigType == n.ConfigType
-                && o.Address == n.Address
+                && AreEqual(o.Address, n.Address)
                 && o.Port == n.Port
-                && o.Id == n.Id
-                && o.Security == n.Security
-                && o.Network == n.Network
-                && o.HeaderType == n.HeaderType
-                && o.RequestHost == n.RequestHost
-                && o.Path == n.Path
+                && AreEqual(o.Id, n.Id)
+                && AreEqual(o.Security, n.Security)
+                && AreEqual(o.Network, n.Network)
+                && AreEqual(o.HeaderType, n.HeaderType)
+                && AreEqual(o.RequestHost, n.RequestHost)
+                && AreEqual(o.Path, n.Path)
                 && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-                && o.Flow == n.Flow
-                && o.Sni == n.Sni
-                && o.Alpn == n.Alpn
-                && o.Fingerprint == n.Fingerprint
-                && o.PublicKey == n.PublicKey
-                && o.ShortId == n.ShortId
+                && AreEqual(o.Flow, n.Flow)
+                && AreEqual(o.Sni, n.Sni)
+                && AreEqual(o.Alpn, n.Alpn)
+                && AreEqual(o.Fingerprint, n.Fingerprint)
+                && AreEqual(o.PublicKey, n.PublicKey)
+                && AreEqual(o.ShortId, n.ShortId)
                 && (!remarks || o.Remarks == n.Remarks);
         }
 
