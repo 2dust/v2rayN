@@ -33,11 +33,12 @@ namespace ServiceLib.Handler
         private static async Task InitText()
         {
             var path = Path.Combine(_configPath, "pac.txt");
-            if (!File.Exists(path))
+            if (File.Exists(path))
             {
-                var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
-                await File.AppendAllTextAsync(path, pac);
+                File.Delete(path);
             }
+            var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
+            await File.AppendAllTextAsync(path, pac);
 
             var pacText =
                 (await File.ReadAllTextAsync(path)).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
