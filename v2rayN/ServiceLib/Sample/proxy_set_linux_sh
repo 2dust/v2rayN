@@ -80,13 +80,19 @@ set_kde_proxy() {
 
 # Detect the current desktop environment
 detect_desktop_environment() {
-    if [ "$XDG_CURRENT_DESKTOP" == "GNOME" ] || [ "$XDG_CURRENT_DESKTOP" == "ubuntu:GNOME" ] || [ "$XDG_SESSION_DESKTOP" == "GNOME" ] || [ "$XDG_SESSION_DESKTOP" == "ubuntu:GNOME" ]; then
+    if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"GNOME"* ]]; then
         echo "gnome"
-    elif [ "$XDG_CURRENT_DESKTOP" == "KDE" ] || [ "$XDG_CURRENT_DESKTOP" == "plasma" ] || [ "$XDG_SESSION_DESKTOP" == "KDE" ] || [ "$XDG_SESSION_DESKTOP" == "plasma" ]; then
-        echo "kde"
-    else
-        echo "unsupported"
+        return
     fi
+
+    local KDE_ENVIRONMENTS=("KDE" "plasma")
+    for ENV in "${KDE_ENVIRONMENTS[@]}"; do
+        if [ "$XDG_CURRENT_DESKTOP" == "$ENV" ] || [ "$XDG_SESSION_DESKTOP" == "$ENV" ]; then
+            echo "kde"
+            return
+        fi
+    done
+    echo "unsupported"
 }
 
 # Main script logic
