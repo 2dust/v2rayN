@@ -9,8 +9,8 @@
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.5" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.5" />
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.5" />
-    <PackageVersion Include="CliWrap" Version="3.8.1" />
-    <PackageVersion Include="Downloader" Version="3.3.3" />
+    <PackageVersion Include="CliWrap" Version="3.8.2" />
+    <PackageVersion Include="Downloader" Version="3.3.4" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.0" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
@@ -22,7 +22,7 @@
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.5" />
     <PackageVersion Include="Splat.NLog" Version="15.3.1" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
-    <PackageVersion Include="TaskScheduler" Version="2.12.0" />
+    <PackageVersion Include="TaskScheduler" Version="2.12.1" />
     <PackageVersion Include="WebDav.Client" Version="2.8.0" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />
     <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
