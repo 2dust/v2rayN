@@ -871,13 +871,19 @@ namespace ServiceLib.Handler
         public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
         {
             var lstProfile = await AppHandler.Instance.ProfileItems(subId);
+            if (lstProfile == null)
+            {
+                return new Tuple<int, int>(0, 0);
+            }
 
             List<ProfileItem> lstKeep = new();
             List<ProfileItem> lstRemove = new();
             if (!config.GuiItem.KeepOlderDedupl)
+            {
                 lstProfile.Reverse();
+            }
 
-            foreach (ProfileItem item in lstProfile)
+            foreach (var item in lstProfile)
             {
                 if (!lstKeep.Exists(i => CompareProfileItem(i, item, false)))
                 {
@@ -944,35 +950,35 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        private static bool CompareProfileItem(ProfileItem o, ProfileItem n, bool remarks)
+        private static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
         {
             if (o == null || n == null)
             {
                 return false;
             }
 
+            return o.ConfigType == n.ConfigType
+                   && AreEqual(o.Address, n.Address)
+                   && o.Port == n.Port
+                   && AreEqual(o.Id, n.Id)
+                   && AreEqual(o.Security, n.Security)
+                   && AreEqual(o.Network, n.Network)
+                   && AreEqual(o.HeaderType, n.HeaderType)
+                   && AreEqual(o.RequestHost, n.RequestHost)
+                   && AreEqual(o.Path, n.Path)
+                   && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
+                   && AreEqual(o.Flow, n.Flow)
+                   && AreEqual(o.Sni, n.Sni)
+                   && AreEqual(o.Alpn, n.Alpn)
+                   && AreEqual(o.Fingerprint, n.Fingerprint)
+                   && AreEqual(o.PublicKey, n.PublicKey)
+                   && AreEqual(o.ShortId, n.ShortId)
+                   && (!remarks || o.Remarks == n.Remarks);
+
             static bool AreEqual(string? a, string? b)
             {
                 return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
             }
-
-            return o.ConfigType == n.ConfigType
-                && AreEqual(o.Address, n.Address)
-                && o.Port == n.Port
-                && AreEqual(o.Id, n.Id)
-                && AreEqual(o.Security, n.Security)
-                && AreEqual(o.Network, n.Network)
-                && AreEqual(o.HeaderType, n.HeaderType)
-                && AreEqual(o.RequestHost, n.RequestHost)
-                && AreEqual(o.Path, n.Path)
-                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-                && AreEqual(o.Flow, n.Flow)
-                && AreEqual(o.Sni, n.Sni)
-                && AreEqual(o.Alpn, n.Alpn)
-                && AreEqual(o.Fingerprint, n.Fingerprint)
-                && AreEqual(o.PublicKey, n.PublicKey)
-                && AreEqual(o.ShortId, n.ShortId)
-                && (!remarks || o.Remarks == n.Remarks);
         }
 
         private static async Task<int> RemoveProfileItem(Config config, string indexId)
@@ -1010,8 +1016,7 @@ namespace ServiceLib.Handler
                 return result;
             }
 
-            var fileName = configPath;
-            if (!File.Exists(fileName))
+            if (!File.Exists(configPath))
             {
                 return result;
             }

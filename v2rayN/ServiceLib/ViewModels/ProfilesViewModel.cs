@@ -448,7 +448,7 @@ namespace ServiceLib.ViewModels
 
         private async Task<List<ProfileItem>?> GetProfileItems(bool latest)
         {
-            var lstSelecteds = new List<ProfileItem>();
+            var lstSelected = new List<ProfileItem>();
             if (SelectedProfiles == null || SelectedProfiles.Count <= 0)
             {
                 return null;
@@ -462,16 +462,16 @@ namespace ServiceLib.ViewModels
                     var item = await AppHandler.Instance.GetProfileItem(profile.IndexId);
                     if (item is not null)
                     {
-                        lstSelecteds.Add(item);
+                        lstSelected.Add(item);
                     }
                 }
             }
             else
             {
-                lstSelecteds = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(orderProfiles));
+                lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(orderProfiles));
             }
 
-            return lstSelecteds;
+            return lstSelected;
         }
 
         public async Task EditServerAsync(EConfigType eConfigType)
@@ -509,8 +509,8 @@ namespace ServiceLib.ViewModels
 
         public async Task RemoveServerAsync()
         {
-            var lstSelecteds = await GetProfileItems(true);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(true);
+            if (lstSelected == null)
             {
                 return;
             }
@@ -518,11 +518,11 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            var exists = lstSelecteds.Exists(t => t.IndexId == _config.IndexId);
+            var exists = lstSelected.Exists(t => t.IndexId == _config.IndexId);
 
-            await ConfigHandler.RemoveServers(_config, lstSelecteds);
+            await ConfigHandler.RemoveServers(_config, lstSelected);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-            if (lstSelecteds.Count == _profileItems.Count)
+            if (lstSelected.Count == _profileItems.Count)
             {
                 _profileItems.Clear();
             }
@@ -536,19 +536,22 @@ namespace ServiceLib.ViewModels
         private async Task RemoveDuplicateServer()
         {
             var tuple = await ConfigHandler.DedupServerList(_config, _config.SubIndexId);
-            RefreshServers();
-            Reload();
+            if (tuple.Item1 > 0 || tuple.Item2 > 0)
+            {
+                RefreshServers();
+                Reload();
+            }
             NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
         }
 
         private async Task CopyServer()
         {
-            var lstSelecteds = await GetProfileItems(false);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(false);
+            if (lstSelected == null)
             {
                 return;
             }
-            if (await ConfigHandler.CopyServer(_config, lstSelecteds) == 0)
+            if (await ConfigHandler.CopyServer(_config, lstSelected) == 0)
             {
                 RefreshServers();
                 NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
@@ -564,7 +567,7 @@ namespace ServiceLib.ViewModels
             await SetDefaultServer(SelectedProfile.IndexId);
         }
 
-        public async Task SetDefaultServer(string indexId)
+        public async Task SetDefaultServer(string? indexId)
         {
             if (indexId.IsNullOrEmpty())
             {
@@ -594,11 +597,7 @@ namespace ServiceLib.ViewModels
             {
                 return;
             }
-            if (SelectedServer == null)
-            {
-                return;
-            }
-            if (SelectedServer.ID.IsNullOrEmpty())
+            if (SelectedServer == null || SelectedServer.ID.IsNullOrEmpty())
             {
                 return;
             }
@@ -624,13 +623,13 @@ namespace ServiceLib.ViewModels
 
         private async Task SetDefaultMultipleServer(ECoreType coreType)
         {
-            var lstSelecteds = await GetProfileItems(true);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(true);
+            if (lstSelected == null)
             {
                 return;
             }
 
-            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelecteds, coreType);
+            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType);
             if (ret.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
@@ -679,19 +678,18 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var lstSelecteds = await GetProfileItems(true);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(true);
+            if (lstSelected == null)
             {
                 return;
             }
 
-            await ConfigHandler.MoveToGroup(_config, lstSelecteds, SelectedMoveToGroup.Id);
+            await ConfigHandler.MoveToGroup(_config, lstSelected, SelectedMoveToGroup.Id);
             NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
 
             RefreshServers();
             SelectedMoveToGroup = null;
             SelectedMoveToGroup = new();
-            //Reload();
         }
 
         public async Task MoveServer(EMove eMove)
@@ -703,7 +701,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            int index = _lstProfile.IndexOf(item);
+            var index = _lstProfile.IndexOf(item);
             if (index < 0)
             {
                 return;
@@ -732,14 +730,14 @@ namespace ServiceLib.ViewModels
             {
                 SelectedProfiles = _profileItems;
             }
-            var lstSelecteds = await GetProfileItems(false);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(false);
+            if (lstSelected == null)
             {
                 return;
             }
 
             _speedtestService ??= new SpeedtestService(_config, (SpeedTestResult result) => _updateView?.Invoke(EViewAction.DispatcherSpeedTest, result));
-            _speedtestService?.RunLoop(actionType, lstSelecteds);
+            _speedtestService?.RunLoop(actionType, lstSelected);
         }
 
         public void ServerSpeedtestStop()
@@ -793,14 +791,14 @@ namespace ServiceLib.ViewModels
 
         public async Task Export2ShareUrlAsync(bool blEncode)
         {
-            var lstSelecteds = await GetProfileItems(true);
-            if (lstSelecteds == null)
+            var lstSelected = await GetProfileItems(true);
+            if (lstSelected == null)
             {
                 return;
             }
 
             StringBuilder sb = new();
-            foreach (var it in lstSelecteds)
+            foreach (var it in lstSelected)
             {
                 var url = FmtHandler.GetShareUri(it);
                 if (url.IsNullOrEmpty())
