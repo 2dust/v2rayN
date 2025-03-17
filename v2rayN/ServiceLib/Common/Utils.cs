@@ -225,15 +225,54 @@ namespace ServiceLib.Common
 
         public static string GetMd5(string str)
         {
-            var byteOld = Encoding.UTF8.GetBytes(str);
-            var byteNew = MD5.HashData(byteOld);
-            StringBuilder sb = new(32);
-            foreach (var b in byteNew)
+            if (string.IsNullOrEmpty(str))
             {
-                sb.Append(b.ToString("x2"));
+                return string.Empty;
             }
 
-            return sb.ToString();
+            try
+            {
+                var byteOld = Encoding.UTF8.GetBytes(str);
+                var byteNew = MD5.HashData(byteOld);
+                StringBuilder sb = new(32);
+                foreach (var b in byteNew)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                return string.Empty;
+            }
+        }
+
+        public static string GetFileHash(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                return string.Empty;
+            }
+
+            try
+            {
+                using var md5 = MD5.Create();
+                using var stream = File.OpenRead(filePath);
+                var hash = md5.ComputeHash(stream);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                return string.Empty;
+            }
         }
 
         /// <summary>

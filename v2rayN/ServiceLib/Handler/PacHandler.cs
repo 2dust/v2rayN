@@ -33,6 +33,13 @@ namespace ServiceLib.Handler
         private static async Task InitText()
         {
             var path = Path.Combine(_configPath, "pac.txt");
+
+            // Delete the old pac file
+            if (File.Exists(path) && Utils.GetFileHash(path).Equals("b590c07280f058ef05d5394aa2f927fe"))
+            {
+                File.Delete(path);
+            }
+
             if (!File.Exists(path))
             {
                 var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
