@@ -53,7 +53,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            _ = DelayTestTask();
+            await DelayTestTask();
         }
 
         private async Task GetClashConnections()

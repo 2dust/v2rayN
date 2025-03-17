@@ -95,7 +95,7 @@ namespace ServiceLib.ViewModels
 
         private async Task Init()
         {
-            _ = DelayTestTask();
+            await DelayTestTask();
         }
 
         private async Task DoRuleModeSelected(bool c)
@@ -366,7 +366,7 @@ namespace ServiceLib.ViewModels
 
         private async Task ProxiesDelayTest(bool blAll = true)
         {
-            ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
+            ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), (item, result) =>
             {
                 if (item == null || result.IsNullOrEmpty())
                 {
