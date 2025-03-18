@@ -18,11 +18,11 @@ namespace v2rayN
         /// <returns></returns>
         public static string? GetClipboardData()
         {
-            string? strData = string.Empty;
+            var strData = string.Empty;
             try
             {
-                IDataObject data = Clipboard.GetDataObject();
-                if (data.GetDataPresent(DataFormats.UnicodeText))
+                var data = Clipboard.GetDataObject();
+                if (data?.GetDataPresent(DataFormats.UnicodeText) == true)
                 {
                     strData = data.GetData(DataFormats.UnicodeText)?.ToString();
                 }

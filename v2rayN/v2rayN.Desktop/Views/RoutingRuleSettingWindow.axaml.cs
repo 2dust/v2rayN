@@ -109,13 +109,20 @@ namespace v2rayN.Desktop.Views
 
                 case EViewAction.SetClipboardData:
                     if (obj is null)
+                    {
                         return false;
+                    }
+
                     await AvaUtils.SetClipboardData(this, (string)obj);
                     break;
 
                 case EViewAction.ImportRulesFromClipboard:
                     var clipboardData = await AvaUtils.GetClipboardData(this);
-                    ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
+                    if (clipboardData.IsNotEmpty())
+                    {
+                        ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
+                    }
+
                     break;
             }
 

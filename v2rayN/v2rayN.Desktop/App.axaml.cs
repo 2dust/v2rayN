@@ -63,6 +63,10 @@ public partial class App : Application
             if (desktop.MainWindow != null)
             {
                 var clipboardData = await AvaUtils.GetClipboardData(desktop.MainWindow);
+                if (clipboardData.IsNullOrEmpty())
+                {
+                    return;
+                }
                 var service = Locator.Current.GetService<MainWindowViewModel>();
                 if (service != null)
                 {

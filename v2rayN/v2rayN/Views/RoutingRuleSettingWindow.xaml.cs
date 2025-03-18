@@ -110,7 +110,10 @@ namespace v2rayN.Views
 
                 case EViewAction.ImportRulesFromClipboard:
                     var clipboardData = WindowsUtils.GetClipboardData();
-                    ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
+                    if (clipboardData.IsNotEmpty())
+                    {
+                        ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
+                    }
                     break;
             }
 

@@ -14,7 +14,10 @@ namespace v2rayN.Desktop.Common
             {
                 var clipboard = TopLevel.GetTopLevel(owner)?.Clipboard;
                 if (clipboard == null)
+                {
                     return null;
+                }
+
                 return await clipboard.GetTextAsync();
             }
             catch

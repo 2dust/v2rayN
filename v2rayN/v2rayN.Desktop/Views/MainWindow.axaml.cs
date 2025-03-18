@@ -247,7 +247,7 @@ namespace v2rayN.Desktop.Views
 
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = await AvaUtils.GetClipboardData(this);
-                    if (ViewModel != null)
+                    if (clipboardData.IsNotEmpty() && ViewModel != null)
                     {
                         await ViewModel.AddServerViaClipboardAsync(clipboardData);
                     }
@@ -315,7 +315,7 @@ namespace v2rayN.Desktop.Views
                 {
                     case Key.V:
                         var clipboardData = await AvaUtils.GetClipboardData(this);
-                        if (ViewModel != null)
+                        if (clipboardData.IsNotEmpty() && ViewModel != null)
                         {
                             await ViewModel.AddServerViaClipboardAsync(clipboardData);
                         }

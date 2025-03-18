@@ -232,7 +232,10 @@ namespace v2rayN.Views
 
                 case EViewAction.AddServerViaClipboard:
                     var clipboardData = WindowsUtils.GetClipboardData();
-                    ViewModel?.AddServerViaClipboardAsync(clipboardData);
+                    if (clipboardData.IsNotEmpty())
+                    {
+                        ViewModel?.AddServerViaClipboardAsync(clipboardData);
+                    }
                     break;
 
                 case EViewAction.AdjustMainLvColWidth:
@@ -284,11 +287,20 @@ namespace v2rayN.Views
                 {
                     case Key.V:
                         if (Keyboard.FocusedElement is TextBox)
+                        {
                             return;
+                        }
+
                         var clipboardData = WindowsUtils.GetClipboardData();
-                        var service = Locator.Current.GetService<MainWindowViewModel>();
-                        if (service != null)
-                            _ = service.AddServerViaClipboardAsync(clipboardData);
+                        if (clipboardData.IsNotEmpty())
+                        {
+                            var service = Locator.Current.GetService<MainWindowViewModel>();
+                            if (service != null)
+                            {
+                                _ = service.AddServerViaClipboardAsync(clipboardData);
+                            }
+                        }
+
                         break;
 
                     case Key.S:
