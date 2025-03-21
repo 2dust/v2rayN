@@ -239,7 +239,9 @@ namespace ServiceLib.Services
         {
             await UpdateGeoFiles(config, updateFunc);
             await UpdateOtherFiles(config, updateFunc);
-            await UpdateSrsFileAll(config, updateFunc);
+            if (config.CoreBasicItem.EnableCacheFile4Sbox && (config.CheckUpdateItem.SelectedCoreTypes?.Contains(ECoreType.sing_box.ToString()) ?? true)){
+                await UpdateSrsFileAll(config, updateFunc);
+            }
             _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
         }
 
