@@ -510,6 +510,9 @@ namespace ServiceLib.Services
                 var targetPath = Utils.GetBinPath($"{fileName}");
 
                 await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+                if (!(config.CheckUpdateItem.SelectedCoreTypes?.Contains(ECoreType.mihomo.ToString()) ?? true)) {
+                    break;
+                }
             }
         }
 
