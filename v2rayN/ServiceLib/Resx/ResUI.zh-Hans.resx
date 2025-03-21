@@ -166,7 +166,7 @@
     <value>请填写服务器地址</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
-    <value>请填写用户ID</value>
+    <value>请填写用户 ID</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
     <value>配置不正确，请检查</value>
@@ -211,7 +211,7 @@
     <value>传输协议</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>下载Core成功</value>
+    <value>下载 Core 成功</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>导入订阅内容失败</value>
@@ -244,16 +244,16 @@
     <value>更新订阅开始</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>更新Core成功</value>
+    <value>更新 Core 成功</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>更新Core成功！正在重启服务...</value>
+    <value>更新 Core 成功！正在重启服务...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>非VMess或ss协议</value>
+    <value>非 VMess 或 ss 协议</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>在文件夹 ({0}) 下未找到Core文件 (文件名:{1})，请下载后放入文件夹，下载地址: {2}</value>
+    <value>在文件夹 ({0}) 下未找到 Core 文件 (文件名:{1})，请下载后放入文件夹，下载地址: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成，未发现有效二维码</value>
@@ -286,8 +286,7 @@
     <value>启动服务({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>配置成功
-{0}</value>
+    <value>配置成功。 {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>成功导入自定义配置服务器</value>
@@ -317,13 +316,13 @@
     <value>别名</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>可选地址(Url)</value>
+    <value>可选地址 (Url)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>数量</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>请填写Url</value>
+    <value>请填写 Url</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
     <value>是否追加规则？选择“是”则追加，选择“否”则全部替换。</value>
@@ -338,7 +337,7 @@
     <value>自定义图标</value>
   </data>
   <data name="FillCorrectDNSText" xml:space="preserve">
-    <value>请填写正确的自定义DNS</value>
+    <value>请填写正确的自定义 DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
     <value>*ws/httpupgrade/xhttp path</value>
@@ -353,25 +352,25 @@
     <value>*grpc serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host中间逗号(,)分隔</value>
+    <value>*http host 中间逗号 (,) 分隔</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
     <value>*ws/httpupgrade/xhttp host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host中间逗号(,)分隔</value>
+    <value>*h2 host 中间逗号 (,) 分隔</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC 加密方式</value>
   </data>
   <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*tcp伪装类型</value>
+    <value>*tcp 伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*kcp伪装类型</value>
+    <value>*kcp 伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC伪装类型</value>
+    <value>*QUIC 伪装类型</value>
   </data>
   <data name="TransportHeaderTypeTip4" xml:space="preserve">
     <value>*grpc 模式</value>
@@ -443,10 +442,10 @@
     <value>设置</value>
   </data>
   <data name="menuSubGroupUpdate" xml:space="preserve">
-    <value>更新当前订阅(不通过代理)</value>
+    <value>更新当前订阅 (不通过代理)</value>
   </data>
   <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
-    <value>更新当前订阅(通过代理)</value>
+    <value>更新当前订阅 (通过代理)</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
     <value>订阅分组</value>
@@ -455,10 +454,10 @@
     <value>订阅分组设置</value>
   </data>
   <data name="menuSubUpdate" xml:space="preserve">
-    <value>更新全部订阅(不通过代理)</value>
+    <value>更新全部订阅 (不通过代理)</value>
   </data>
   <data name="menuSubUpdateViaProxy" xml:space="preserve">
-    <value>更新全部订阅(通过代理)</value>
+    <value>更新全部订阅 (通过代理)</value>
   </data>
   <data name="menuSystemproxy" xml:space="preserve">
     <value>系统代理</value>
@@ -470,7 +469,7 @@
     <value>不改变系统代理</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>Pac模式</value>
+    <value>Pac 模式</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
     <value>自动配置系统代理</value>
@@ -479,7 +478,7 @@
     <value>颜色</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>语言(需重启)</value>
+    <value>语言 (需重启)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
     <value>从剪贴板导入分享链接 (Ctrl+V)</value>
@@ -494,7 +493,7 @@
     <value>移除重复的服务器</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>移除所选服务器(多选) (Delete)</value>
+    <value>移除所选服务器 (多选) (Delete)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
     <value>设为活动服务器 (Enter)</value>
@@ -503,40 +502,40 @@
     <value>清除所有服务统计数据</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>测试服务器真连接延迟(多选) (Ctrl+R)</value>
+    <value>测试服务器真连接延迟 (多选) (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按测试结果排序</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>测试服务器速度(多选) (Ctrl+T)</value>
+    <value>测试服务器速度 (多选) (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>测试服务器延迟Tcping(多选) (Ctrl+O)</value>
+    <value>测试服务器延迟 Tcping (多选) (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>导出所选服务器完整配置</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>导出分享链接至剪贴板(多选) (Ctrl+C)</value>
+    <value>导出分享链接至剪贴板 (多选) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>添加自定义配置服务器</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>添加[Shadowsocks]服务器</value>
+    <value>添加 [Shadowsocks] 服务器</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加[SOCKS]服务器</value>
+    <value>添加 [SOCKS] 服务器</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>添加[Trojan]服务器</value>
+    <value>添加 [Trojan] 服务器</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>添加[VLESS]服务器</value>
+    <value>添加 [VLESS] 服务器</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>添加[VMess]服务器</value>
+    <value>添加 [VMess] 服务器</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>全选 (Ctrl+A)</value>
@@ -572,7 +571,7 @@
     <value>排序</value>
   </data>
   <data name="LvUserAgent" xml:space="preserve">
-    <value>User Agent(可选)</value>
+    <value>User Agent (可选)</value>
   </data>
   <data name="TbCancel" xml:space="preserve">
     <value>取消</value>
@@ -581,88 +580,88 @@
     <value>确定</value>
   </data>
   <data name="GbTransport" xml:space="preserve">
-    <value>底层传输方式(transport)</value>
+    <value>底层传输方式 (transport)</value>
   </data>
   <data name="TbAddress" xml:space="preserve">
-    <value>地址(address)</value>
+    <value>地址 (address)</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>跳过证书验证(allowInsecure)</value>
+    <value>跳过证书验证 (allowInsecure)</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>Alpn</value>
   </data>
   <data name="TbAlterId" xml:space="preserve">
-    <value>额外ID(alterId)</value>
+    <value>额外 ID (alterId)</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Fingerprint</value>
   </data>
   <data name="TbHeaderType" xml:space="preserve">
-    <value>伪装类型(type)</value>
+    <value>伪装类型 (type)</value>
   </data>
   <data name="TbId" xml:space="preserve">
-    <value>用户ID(id)</value>
+    <value>用户 ID (id)</value>
   </data>
   <data name="TbNetwork" xml:space="preserve">
-    <value>传输协议(network)</value>
+    <value>传输协议 (network)</value>
   </data>
   <data name="TbPath" xml:space="preserve">
-    <value>路径(path)</value>
+    <value>路径 (path)</value>
   </data>
   <data name="TbPort" xml:space="preserve">
-    <value>端口(port)</value>
+    <value>端口 (port)</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
-    <value>别名(remarks)</value>
+    <value>别名 (remarks)</value>
   </data>
   <data name="TbRequestHost" xml:space="preserve">
-    <value>伪装域名(host)</value>
+    <value>伪装域名 (host)</value>
   </data>
   <data name="TbSecurity" xml:space="preserve">
-    <value>加密方式(security)</value>
+    <value>加密方式 (security)</value>
   </data>
   <data name="TbSNI" xml:space="preserve">
     <value>SNI</value>
   </data>
   <data name="TbStreamSecurity" xml:space="preserve">
-    <value>传输层安全(TLS)</value>
+    <value>传输层安全 (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*默认tcp，选错会无法连接</value>
+    <value>*默认 tcp，选错会无法连接</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
-    <value>Core类型</value>
+    <value>Core 类型</value>
   </data>
   <data name="TbFlow5" xml:space="preserve">
-    <value>流控(flow)</value>
+    <value>流控 (flow)</value>
   </data>
   <data name="TbGUID" xml:space="preserve">
     <value>生成</value>
   </data>
   <data name="TbId3" xml:space="preserve">
-    <value>密码(password)</value>
+    <value>密码 (password)</value>
   </data>
   <data name="TbId4" xml:space="preserve">
-    <value>密码(可选)</value>
+    <value>密码 (可选)</value>
   </data>
   <data name="TbId5" xml:space="preserve">
-    <value>用户ID(id)</value>
+    <value>用户 ID (id)</value>
   </data>
   <data name="TbSecurity3" xml:space="preserve">
-    <value>加密方式(encryption)</value>
+    <value>加密方式 (encryption)</value>
   </data>
   <data name="TbSecurity4" xml:space="preserve">
-    <value>用户名(可选)</value>
+    <value>用户名 (可选)</value>
   </data>
   <data name="TbSecurity5" xml:space="preserve">
-    <value>加密方式(encryption)</value>
+    <value>加密方式 (encryption)</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
-    <value>Socks端口</value>
+    <value>Socks 端口</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>*自定义配置的Socks端口值，可不设置；当设置此值后，将使用Xray/sing-box(Tun)额外启动一个前置Socks服务，提供分流和速度显示等功能</value>
+    <value>*自定义配置的 Socks 端口值，可不设置；当设置此值后，将使用 Xray/sing-box (Tun) 额外启动一个前置 Socks 服务，提供分流和速度显示等功能</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>浏览</value>
@@ -671,7 +670,7 @@
     <value>编辑</value>
   </data>
   <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
-    <value>高级代理设置，协议选择(可选)</value>
+    <value>高级代理设置，协议选择 (可选)</value>
   </data>
   <data name="TbSettingsAllowLAN" xml:space="preserve">
     <value>允许来自局域网的连接</value>
@@ -680,22 +679,22 @@
     <value>启动后隐藏窗口</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>自动更新Geo文件的间隔(小时)</value>
+    <value>自动更新 Geo 文件的间隔 (小时)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: 基础设置</value>
   </data>
   <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>v2ray DNS设置</value>
+    <value>v2ray DNS 设置</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
-    <value>Core: KCP设置</value>
+    <value>Core: KCP 设置</value>
   </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
     <value>Core 类型设置</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>默认跳过证书验证(allowInsecure)</value>
+    <value>默认跳过证书验证 (allowInsecure)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
     <value>Outbound Freedom domainStrategy</value>
@@ -704,13 +703,13 @@
     <value>自动调整服务器列宽在更新订阅后</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
-    <value>检查Pre-Release更新(请谨慎启用)</value>
+    <value>检查 Pre-Release 更新 (请谨慎启用)</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
     <value>例外</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号(;)分隔。</value>
+    <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号 (;) 分隔。</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>显示实时速度（需重启）</value>
@@ -725,7 +724,7 @@
     <value>日志等级</value>
   </data>
   <data name="TbSettingsMuxEnabled" xml:space="preserve">
-    <value>开启Mux多路复用</value>
+    <value>开启 Mux 多路复用</value>
   </data>
   <data name="TbSettingsN" xml:space="preserve">
     <value>v2rayN 设置</value>
@@ -734,10 +733,10 @@
     <value>认证密码</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自定义DNS(可多个，用逗号(,)分隔)</value>
+    <value>自定义 DNS (可多个，用逗号 (,) 分隔)</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
-    <value>解除Win10 UWP应用回环代理限制</value>
+    <value>解除 Win10 UWP 应用回环代理限制</value>
   </data>
   <data name="TbSettingsSniffingEnabled" xml:space="preserve">
     <value>开启流量探测</value>
@@ -746,25 +745,25 @@
     <value>本地混合监听端口</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
-    <value>开机启动(可能会不成功)</value>
+    <value>开机启动 (可能会不成功)</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
     <value>启用流量统计（需重启）</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
-    <value>订阅转换网址(可选)</value>
+    <value>订阅转换网址 (可选)</value>
   </data>
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>系统代理设置</value>
   </data>
   <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>启用安全协议TLS v1.3 (订阅/检查更新)</value>
+    <value>启用安全协议 TLS v1.3 (订阅/检查更新)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>托盘右键菜单服务器展示数量限制</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
-    <value>开启UDP</value>
+    <value>开启 UDP</value>
   </data>
   <data name="TbSettingsUser" xml:space="preserve">
     <value>认证用户名</value>
@@ -791,7 +790,7 @@
     <value>自动配置系统代理</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
-    <value>Pac模式</value>
+    <value>Pac 模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
     <value>分享服务器 (Ctrl+F)</value>
@@ -818,7 +817,7 @@
     <value>上移 (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>过滤器(支持正则)</value>
+    <value>过滤器 (支持正则)</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官网</value>
@@ -845,19 +844,19 @@
     <value>域名解析策略</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.阻止的Domain或IP</value>
+    <value>3.阻止的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.直连的Domain或IP</value>
+    <value>2.直连的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.代理的Domain或IP</value>
+    <value>1.代理的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>预定义规则集列表</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*设置的路由规则，用逗号(,)分隔；正则中的逗号用&lt;COMMA&gt;替代</value>
+    <value>*设置的路由规则，用逗号 (,) 分隔；正则中的逗号用 &lt;COMMA&gt; 替代</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>从剪贴板中导入规则</value>
@@ -866,7 +865,7 @@
     <value>从文件中导入规则</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>从订阅Url中导入规则</value>
+    <value>从订阅 Url 中导入规则</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
     <value>规则集设置</value>
@@ -893,7 +892,7 @@
     <value>规则详细说明文档</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支持填写DnsObject，JSON格式，点击查看文档</value>
+    <value>支持填写 DnsObject，JSON 格式，点击查看文档</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分组此处请留空</value>
@@ -905,7 +904,7 @@
     <value>系统代理设置改变</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
-    <value>仅限路由(routeOnly)</value>
+    <value>仅限路由 (routeOnly)</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
     <value>请勿将代理服务器用于本地（Intranet）地址</value>
@@ -914,10 +913,10 @@
     <value>一键多线程测试延迟和速度 (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>延迟(ms)</value>
+    <value>延迟 (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>速度(M/s)</value>
+    <value>速度 (M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>运行 Core 失败，请查看提示信息</value>
@@ -929,7 +928,7 @@
     <value>显示日志</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>启用Tun</value>
+    <value>启用 Tun</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>为局域网开启新的端口</value>
@@ -941,7 +940,7 @@
     <value>移至订阅分组</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>启用服务器拖放排序(需重启)</value>
+    <value>启用服务器拖放排序（需重启）</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
@@ -959,22 +958,22 @@
     <value>测试完成</value>
   </data>
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
-    <value>默认TLS指纹(fingerprint)</value>
+    <value>默认 TLS 指纹 (fingerprint)</value>
   </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
-    <value>用户代理(User-Agent)</value>
+    <value>用户代理 (User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>仅对tcp/http、ws协议生效</value>
+    <value>仅对 tcp/http、ws 协议生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>当前字体(需重启)</value>
+    <value>当前字体（需重启）</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>拷贝字体TTF/TTC文件到目录guiFonts，重启设置</value>
+    <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启设置</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac端口= +3；Xray API端口= +4；mihomo API端口= +5；</value>
+    <value>Pac 端口 = +3；Xray API 端口 = +4；mihomo API 端口 = +5；</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>以管理员权限设置此项，在启动后获得管理员权限</value>
@@ -1001,10 +1000,10 @@
     <value>SpiderX</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>启用硬件加速(需重启)</value>
+    <value>启用硬件加速（需重启）</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待测试中（按ESC终止）...</value>
+    <value>等待测试中（按 ESC 终止）...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
@@ -1016,10 +1015,10 @@
     <value>以管理员身份重启</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>更多地址(url)，用逗号(,)分隔；订阅转换将失效</value>
+    <value>更多地址 (url)，用逗号 (,) 分隔；订阅转换将失效</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
-    <value>自动更新间隔(分钟)</value>
+    <value>自动更新间隔 (分钟)</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
     <value>启用日志存到文件</value>
@@ -1031,25 +1030,25 @@
     <value>不需要转换时请留空</value>
   </data>
   <data name="menuDNSSetting" xml:space="preserve">
-    <value>DNS设置</value>
+    <value>DNS 设置</value>
   </data>
   <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>sing-box DNS设置</value>
+    <value>sing-box DNS 设置</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>请填写 DNS JSON 结构，点击查看文档</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>点击导入默认DNS配置</value>
+    <value>点击导入默认 DNS 配置</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>sing-box域名解析策略</value>
+    <value>sing-box 域名解析策略</value>
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路复用协议</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>进程名全称 (Tun模式)</value>
+    <value>进程名全称 (Tun 模式)</value>
   </data>
   <data name="TbRoutingRuleDomain" xml:space="preserve">
     <value>Domain</value>
@@ -1058,16 +1057,16 @@
     <value>IP 或 IP CIDR</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>添加[Hysteria2]服务器</value>
+    <value>添加 [Hysteria2] 服务器</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria 最大带宽(Up/Dw)</value>
+    <value>Hysteria 最大带宽 (Up/Dw)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>使用系统hosts</value>
+    <value>使用系统 hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>添加[TUIC]服务器</value>
+    <value>添加 [TUIC] 服务器</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
@@ -1085,22 +1084,22 @@
     <value>启用额外监听端口</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
-    <value>启用IPv6</value>
+    <value>启用 IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加[WireGuard]服务器</value>
+    <value>添加 [WireGuard] 服务器</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved(2,3,4)</value>
+    <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ipv4,Ipv6)</value>
+    <value>Address (Ipv4,Ipv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
-    <value>混淆密码(obfs password)</value>
+    <value>混淆密码 (obfs password)</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
     <value>(Domain 或 IP 或 进程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
@@ -1121,19 +1120,19 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>添加[HTTP]服务器</value>
+    <value>添加 [HTTP] 服务器</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>启用分片（Fragment）</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>使用Xray且非Tun模式启用，和分组前置代理冲突</value>
+    <value>使用 Xray 且非 Tun 模式启用，和分组前置代理冲突</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>启用sing-box（规则集文件）的缓存文件</value>
+    <value>启用 sing-box（规则集文件）的缓存文件</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>自定义sing-box rule-set</value>
+    <value>自定义 sing-box rule-set</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>操作成功。请点击设置菜单重启应用。</value>
@@ -1220,25 +1219,25 @@
     <value>设为活动节点 (Enter)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
-    <value>Outbound默认解析策略</value>
+    <value>Outbound 默认解析策略</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
     <value>多服务器最低延迟 (多选)</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>主界面布局方向(需重启)</value>
+    <value>主界面布局方向（需重启）</value>
   </data>
   <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
     <value>多服务器负载均衡 (多选)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
-    <value>Outbound域名解析地址</value>
+    <value>Outbound 域名解析地址</value>
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
     <value>自动调整列宽</value>
   </data>
   <data name="menuExport2ShareUrlBase64" xml:space="preserve">
-    <value>导出分享链接至剪贴板(多选) Base64编码</value>
+    <value>导出分享链接至剪贴板 (多选) Base64 编码</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
     <value>导出所选服务器完整配置至剪贴板</value>
@@ -1247,7 +1246,7 @@
     <value>显示或隐藏主界面</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>自定义配置的Socks端口</value>
+    <value>自定义配置的 Socks 端口</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>备份和还原</value>
@@ -1283,7 +1282,7 @@
     <value>WebDav 服务器地址</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
-    <value>远程文件夹名称(可选)</value>
+    <value>远程文件夹名称 (可选)</value>
   </data>
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
     <value>无效备份文件</value>
@@ -1295,16 +1294,16 @@
     <value>活动</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
-    <value>Geo文件来源(可选)</value>
+    <value>Geo 文件来源 (可选)</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>升级工具App不存在</value>
+    <value>升级工具 App 不存在</value>
   </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
-    <value>sing-box ruleset文件来源(可选)</value>
+    <value>sing-box ruleset 文件来源 (可选)</value>
   </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
-    <value>路由规则集来源(可选)</value>
+    <value>路由规则集来源 (可选)</value>
   </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
     <value>中国区域用户可忽略此项</value>
@@ -1325,10 +1324,10 @@
     <value>扫描图片中的二维码</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
-    <value>地址(Url)无效</value>
+    <value>地址 (Url) 无效</value>
   </data>
   <data name="InsecureUrlProtocol" xml:space="preserve">
-    <value>请不要使用不安全的HTTP协议订阅地址</value>
+    <value>请不要使用不安全的 HTTP 协议订阅地址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
     <value>安装字体到系统中，选择或填入字体名称，重启设置</value>
@@ -1340,16 +1339,16 @@
     <value>备注备忘</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
-    <value>系统的sudo密码</value>
+    <value>系统的 sudo 密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密码已加密且只存储在本地文件中，无密码则每次都要输入</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>请先在Tun模式设置中设置sudo密码</value>
+    <value>请先在 Tun 模式设置中设置 sudo 密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>请不要用sudo运行本程序</value>
+    <value>请不要用 sudo 运行本程序</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp 模式</value>
@@ -1364,7 +1363,7 @@
     <value>多线程测试时的并发数量</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>例外：对于下列地址不使用代理配置文件。使用逗号(,)分隔。</value>
+    <value>例外：对于下列地址不使用代理配置文件。使用逗号 (,) 分隔。</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>流量探测类型</value>
@@ -1397,6 +1396,6 @@
     <value>跳跃端口范围</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>会覆盖端口，多组时用逗号(,)隔开</value>
+    <value>会覆盖端口，多组时用逗号 (,) 隔开</value>
   </data>
 </root>

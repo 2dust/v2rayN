@@ -286,8 +286,7 @@
     <value>شروع سرویس ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>پیکربندی با موفقیت انجام شد
-{0}</value>
+    <value>پیکربندی با موفقیت انجام شد{0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>سرور پیکربندی سفارشی با موفقیت وارد شد.</value>

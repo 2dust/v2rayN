@@ -118,37 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Restartv2rayN" xml:space="preserve">
-    <value>正在重启，请等待...</value>
+    <value>正在重啟，請等待...</value>
   </data>
   <data name="Guidelines" xml:space="preserve">
-    <value>请从主应用运行。</value>
+    <value>請從主應用程式運行。</value>
   </data>
   <data name="UpgradeFileNotFound" xml:space="preserve">
-    <value>升级失败，文件不存在。</value>
+    <value>升級失敗，檔案不存在。</value>
   </data>
   <data name="InProgress" xml:space="preserve">
-    <value>正在进行中，请等待...</value>
+    <value>正在進行中，請等待...</value>
   </data>
   <data name="TryTerminateProcess" xml:space="preserve">
-    <value>尝试结束 v2rayN 进程...</value>
+    <value>嘗試結束 v2rayN 進程...</value>
   </data>
   <data name="FailedTerminateProcess" xml:space="preserve">
-    <value>请手动关闭正在运行的 v2rayN，否则可能升级失败。</value>
+    <value>請手動關閉正在執行的 v2rayN，否則可能會升級失敗。</value>
   </data>
   <data name="StartUnzipping" xml:space="preserve">
-    <value>开始解压缩更新包...</value>
+    <value>開始解壓縮更新包...</value>
   </data>
   <data name="SuccessUnzipping" xml:space="preserve">
-    <value>解压缩更新包成功。</value>
+    <value>解壓縮更新包成功。</value>
   </data>
   <data name="FailedUnzipping" xml:space="preserve">
-    <value>解压缩更新包失败。</value>
+    <value>解壓縮更新包失敗。</value>
   </data>
   <data name="FailedUpgrade" xml:space="preserve">
-    <value>升级失败。</value>
+    <value>升級失敗。</value>
   </data>
   <data name="SuccessUpgrade" xml:space="preserve">
-    <value>升级成功。</value>
+    <value>升級成功。</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>提示</value>

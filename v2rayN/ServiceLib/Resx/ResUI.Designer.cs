@@ -79,7 +79,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Export Share Link to Clipboard Successfully 的本地化字符串。
+        ///   查找类似 Export share link to clipboard successfully 的本地化字符串。
         /// </summary>
         public static string BatchExportURLSuccessfully {
             get {
@@ -88,7 +88,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please check the server settings first 的本地化字符串。
+        ///   查找类似 Please check the server settings first. 的本地化字符串。
         /// </summary>
         public static string CheckServerSettings {
             get {
@@ -97,7 +97,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Invalid configuration format 的本地化字符串。
+        ///   查找类似 Invalid configuration format. 的本地化字符串。
         /// </summary>
         public static string ConfigurationFormatIncorrect {
             get {
@@ -133,7 +133,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download 的本地化字符串。
+        ///   查找类似 Download speed 的本地化字符串。
         /// </summary>
         public static string downloadSpeed {
             get {
@@ -142,7 +142,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Whether to download? {0} 的本地化字符串。
+        ///   查找类似 Do you want to download? {0} 的本地化字符串。
         /// </summary>
         public static string DownloadYesNo {
             get {
@@ -1384,7 +1384,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 RoutingRuleDetailsSetting 的本地化字符串。
+        ///   查找类似 Routing Rule Details Setting 的本地化字符串。
         /// </summary>
         public static string menuRoutingRuleDetailsSetting {
             get {
@@ -1834,7 +1834,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Is unpacking...... 的本地化字符串。
+        ///   查找类似 Is unpacking... 的本地化字符串。
         /// </summary>
         public static string MsgUnpacking {
             get {
@@ -1942,7 +1942,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please Fill Remarks 的本地化字符串。
+        ///   查找类似 Please fill Remarks 的本地化字符串。
         /// </summary>
         public static string PleaseFillRemarks {
             get {
@@ -2041,7 +2041,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 {0},One of the required. 的本地化字符串。
+        ///   查找类似 {0}, One of the required. 的本地化字符串。
         /// </summary>
         public static string RoutingRuleDetailRequiredTips {
             get {
@@ -2149,8 +2149,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Configuration successful
-        ///{0} 的本地化字符串。
+        ///   查找类似 Configuration successful. {0} 的本地化字符串。
         /// </summary>
         public static string SuccessfulConfiguration {
             get {
@@ -2195,7 +2194,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 AllowInsecure 的本地化字符串。
+        ///   查找类似 Allow Insecure 的本地化字符串。
         /// </summary>
         public static string TbAllowInsecure {
             get {
@@ -2213,7 +2212,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 AlterID 的本地化字符串。
+        ///   查找类似 Alter ID 的本地化字符串。
         /// </summary>
         public static string TbAlterId {
             get {
@@ -2321,7 +2320,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Supports DnsObject; Click to view documentation 的本地化字符串。
+        ///   查找类似 Supports Dns Object; Click to view documentation 的本地化字符串。
         /// </summary>
         public static string TbDnsObjectDoc {
             get {
@@ -2573,7 +2572,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 PrivateKey 的本地化字符串。
+        ///   查找类似 Private Key 的本地化字符串。
         /// </summary>
         public static string TbPrivateKey {
             get {
@@ -2591,7 +2590,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 PublicKey 的本地化字符串。
+        ///   查找类似 Public Key 的本地化字符串。
         /// </summary>
         public static string TbPublicKey {
             get {
@@ -2717,7 +2716,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 (Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag 的本地化字符串。
+        ///   查找类似 (Domain or IP or Proc Name) and Port and Protocol and Inbound Tag =&gt; Outbound Tag 的本地化字符串。
         /// </summary>
         public static string TbRuleMatchingTips {
             get {
@@ -2726,7 +2725,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Ruleobject Doc 的本地化字符串。
+        ///   查找类似 Rule object Doc 的本地化字符串。
         /// </summary>
         public static string TbRuleobjectDoc {
             get {
@@ -2879,7 +2878,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 CoreType settings 的本地化字符串。
+        ///   查找类似 Core Type settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsCoreType {
             get {
@@ -2906,7 +2905,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Copy the font TTF/TTC file to the directory guiFonts; Reopen the settings window 的本地化字符串。
+        ///   查找类似 Copy the font TTF/TTC file to the directory gui Fonts; Reopen the settings window 的本地化字符串。
         /// </summary>
         public static string TbSettingsCurrentFontFamilyTip {
             get {
@@ -2915,7 +2914,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 AllowInsecure 的本地化字符串。
+        ///   查找类似 Allow Insecure 的本地化字符串。
         /// </summary>
         public static string TbSettingsDefAllowInsecure {
             get {
@@ -2978,7 +2977,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Outbound Freedom domainStrategy 的本地化字符串。
+        ///   查找类似 Outbound Freedom domain Strategy 的本地化字符串。
         /// </summary>
         public static string TbSettingsDomainStrategy4Freedom {
             get {
@@ -3320,7 +3319,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 RouteOnly 的本地化字符串。
+        ///   查找类似 Route Only 的本地化字符串。
         /// </summary>
         public static string TbSettingsRouteOnly {
             get {
@@ -3392,7 +3391,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 SpeedTest Single Timeout Value 的本地化字符串。
+        ///   查找类似 Speed Test Single Timeout Value 的本地化字符串。
         /// </summary>
         public static string TbSettingsSpeedTestTimeout {
             get {
@@ -3401,7 +3400,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 SpeedTest URL 的本地化字符串。
+        ///   查找类似 Speed Test URL 的本地化字符串。
         /// </summary>
         public static string TbSettingsSpeedTestUrl {
             get {
@@ -3491,7 +3490,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 TunMode settings 的本地化字符串。
+        ///   查找类似 Tun Mode settings 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunMode {
             get {
@@ -3527,7 +3526,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 ShortId 的本地化字符串。
+        ///   查找类似 Short Id 的本地化字符串。
         /// </summary>
         public static string TbShortId {
             get {
@@ -3662,7 +3661,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 SpiderX 的本地化字符串。
+        ///   查找类似 Spider X 的本地化字符串。
         /// </summary>
         public static string TbSpiderX {
             get {
@@ -3689,7 +3688,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The delay : {0} ms, {1} 的本地化字符串。
+        ///   查找类似 The delay: {0} ms, {1} 的本地化字符串。
         /// </summary>
         public static string TestMeOutput {
             get {
@@ -3743,7 +3742,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 * After setting this value, an socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display 的本地化字符串。
+        ///   查找类似 * After setting this value, a socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display 的本地化字符串。
         /// </summary>
         public static string TipPreSocksPort {
             get {
@@ -3752,7 +3751,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 XHTTP Extra raw JSON, format: { XHTTPObject } 的本地化字符串。
+        ///   查找类似 XHTTP Extra raw JSON, format: { XHTTP Object } 的本地化字符串。
         /// </summary>
         public static string TransportExtraTip {
             get {
@@ -3806,7 +3805,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws/httpupgrade/xhttp path 的本地化字符串。
+        ///   查找类似 *ws/http upgrade/xhttp path 的本地化字符串。
         /// </summary>
         public static string TransportPathTip1 {
             get {
@@ -3833,7 +3832,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *grpc serviceName 的本地化字符串。
+        ///   查找类似 *grpc service Name 的本地化字符串。
         /// </summary>
         public static string TransportPathTip4 {
             get {
@@ -3860,7 +3859,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 *ws/httpupgrade/xhttp host 的本地化字符串。
+        ///   查找类似 *ws/http upgrade/xhttp host 的本地化字符串。
         /// </summary>
         public static string TransportRequestHostTip2 {
             get {
@@ -3905,7 +3904,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 UpgradeApp does not exist 的本地化字符串。
+        ///   查找类似 Upgrade App does not exist 的本地化字符串。
         /// </summary>
         public static string UpgradeAppNotExistTip {
             get {

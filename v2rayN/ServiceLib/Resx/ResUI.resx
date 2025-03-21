@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Export Share Link to Clipboard Successfully</value>
+    <value>Export share link to clipboard successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the server settings first</value>
+    <value>Please check the server settings first.</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value>Invalid configuration format</value>
+    <value>Invalid configuration format.</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually.</value>
@@ -133,10 +133,10 @@
     <value>Downloading...</value>
   </data>
   <data name="downloadSpeed" xml:space="preserve">
-    <value>Download</value>
+    <value>Download speed</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>Whether to download? {0}</value>
+    <value>Do you want to download? {0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>Failed to convert configuration file</value>
@@ -235,7 +235,7 @@
     <value>Invalid subscription content</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>Is unpacking......</value>
+    <value>Is unpacking...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
     <value>Update subscriptions end</value>
@@ -262,7 +262,7 @@
     <value>Operation failed, please check and retry</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Please Fill Remarks</value>
+    <value>Please fill Remarks</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
     <value>Please select the encryption method</value>
@@ -286,8 +286,7 @@
     <value>Start service ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Configuration successful
-{0}</value>
+    <value>Configuration successful. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>Custom configuration server imported successfully</value>
@@ -299,7 +298,7 @@
     <value>Scan import the shared link successfully</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>The delay : {0} ms, {1}</value>
+    <value>The delay: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>Operation success</value>
@@ -311,7 +310,7 @@
     <value>Are you sure to remove the rules?</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0},One of the required.</value>
+    <value>{0}, One of the required.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>Remarks</value>
@@ -341,7 +340,7 @@
     <value>Please fill in the correct custom DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*ws/httpupgrade/xhttp path</value>
+    <value>*ws/http upgrade/xhttp path</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
     <value>*h2 path</value>
@@ -350,13 +349,13 @@
     <value>*QUIC key/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc serviceName</value>
+    <value>*grpc service Name</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http host Separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*ws/httpupgrade/xhttp host</value>
+    <value>*ws/http upgrade/xhttp host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
     <value>*h2 host Separated by commas (,)</value>
@@ -587,13 +586,13 @@
     <value>Address</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>AllowInsecure</value>
+    <value>Allow Insecure</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>ALPN</value>
   </data>
   <data name="TbAlterId" xml:space="preserve">
-    <value>AlterID</value>
+    <value>Alter ID</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Fingerprint</value>
@@ -662,7 +661,7 @@
     <value>Socks port</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
+    <value>* After setting this value, a socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Browse</value>
@@ -692,13 +691,13 @@
     <value>Core: KCP settings</value>
   </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
-    <value>CoreType settings</value>
+    <value>Core Type settings</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>AllowInsecure</value>
+    <value>Allow Insecure</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
-    <value>Outbound Freedom domainStrategy</value>
+    <value>Outbound Freedom domain Strategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
     <value>Automatically adjust column width after subscription update</value>
@@ -884,16 +883,16 @@
     <value>Remove Rule (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
-    <value>RoutingRuleDetailsSetting</value>
+    <value>Routing Rule Details Setting</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
     <value>Domain, ip, process are auto sorted when saving</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
-    <value>Ruleobject Doc</value>
+    <value>Rule object Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Supports DnsObject; Click to view documentation</value>
+    <value>Supports Dns Object; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
@@ -905,7 +904,7 @@
     <value>System proxy setting is changed</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
-    <value>RouteOnly</value>
+    <value>Route Only</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
     <value>Do not use proxy servers for local (intranet) addresses</value>
@@ -935,7 +934,7 @@
     <value>New Port for LAN</value>
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
-    <value>TunMode settings</value>
+    <value>Tun Mode settings</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>Move to group</value>
@@ -971,7 +970,7 @@
     <value>Font family (requires restart)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Copy the font TTF/TTC file to the directory guiFonts; Reopen the settings window</value>
+    <value>Copy the font TTF/TTC file to the directory gui Fonts; Reopen the settings window</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
@@ -983,22 +982,22 @@
     <value>Font Size</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>SpeedTest Single Timeout Value</value>
+    <value>Speed Test Single Timeout Value</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>SpeedTest URL</value>
+    <value>Speed Test URL</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
+    <value>Public Key</value>
   </data>
   <data name="TbShortId" xml:space="preserve">
-    <value>ShortId</value>
+    <value>Short Id</value>
   </data>
   <data name="TbSpiderX" xml:space="preserve">
-    <value>SpiderX</value>
+    <value>Spider X</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Enable hardware acceleration (requires restart)</value>
@@ -1094,7 +1093,7 @@
     <value>Add [WireGuard] server</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
+    <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
     <value>Reserved(2,3,4)</value>
@@ -1106,7 +1105,7 @@
     <value>obfs password</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+    <value>(Domain or IP or Proc Name) and Port and Protocol and Inbound Tag =&gt; Outbound Tag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
     <value>Auto scroll to end</value>
@@ -1304,7 +1303,7 @@
     <value>sing-box ruleset files source (optional)</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>UpgradeApp does not exist</value>
+    <value>Upgrade App does not exist</value>
   </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
     <value>Routing rules source (optional)</value>
@@ -1358,7 +1357,7 @@
     <value>*xhttp mode</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>XHTTP Extra raw JSON, format: { XHTTPObject }</value>
+    <value>XHTTP Extra raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>

@@ -286,8 +286,7 @@
     <value>Запуск сервиса ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Конфигурация успешна
-{0}</value>
+    <value>Конфигурация успешна {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>Пользовательский сервер конфигурации успешно импортирован.</value>

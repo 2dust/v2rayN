@@ -61,7 +61,7 @@ namespace AmazTool.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Failed to terminate the v2rayN.Close it manually,or the upgrade may fail. 的本地化字符串。
+        ///   查找类似 Failed to terminate the v2rayN. Close it manually, or the upgrade may fail. 的本地化字符串。
         /// </summary>
         internal static string FailedTerminateProcess {
             get {

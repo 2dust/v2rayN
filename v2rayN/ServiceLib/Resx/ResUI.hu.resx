@@ -286,8 +286,7 @@
     <value>Szolgáltatás indítása ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Konfiguráció sikeres
-{0}</value>
+    <value>Konfiguráció sikeres {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>A testreszabott konfigurációs szerver sikeresen importálva</value>
