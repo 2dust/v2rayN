@@ -1291,7 +1291,7 @@
     <value>Chain</value>
   </data>
   <data name="TbSortingHost" xml:space="preserve">
-    <value>Host</value>
+    <value>هاست</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>استفاده کردن از System Hosts</value>
@@ -1306,7 +1306,7 @@
     <value>پایان تست...</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy remarks</value>
+    <value>نام مستعار پروکسی بعدی</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>پسورد obfs</value>
@@ -1315,7 +1315,7 @@
     <value>کنترل تراکم</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy remarks</value>
+    <value>نام مستعار پروکسی قبلی</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>آدرس (IPv4, IPv6)</value>
@@ -1363,7 +1363,7 @@
     <value>هنگام بستن پنجره در سینی پنهان شوید</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
-    <value>The number of concurrent during multi-test</value>
+    <value>تعداد همزمان در طول چند آزمون</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>موارد استثنا: از سرور پروکسی برای آدرس های زیر استفاده نکنید. برای جدا کردن ورودی ها از کاما (،) استفاده کنید.</value>
@@ -1387,18 +1387,18 @@
     <value>شروع آزمایش مجدد قطعات ناموفق، {0} باقی مانده است. برای خاتمه ESC را فشار دهید...</value>
   </data>
   <data name="menuTestServerResult" xml:space="preserve">
-    <value>By test result</value>
+    <value>با نتیجه آزمایش</value>
   </data>
   <data name="menuRemoveInvalidServerResult" xml:space="preserve">
-    <value>Remove invalid by test results</value>
+    <value>حذف نامعتبر با نتایج آزمایش</value>
   </data>
   <data name="RemoveInvalidServerResultTip" xml:space="preserve">
-    <value>Removed {0} invalid test results.</value>
+    <value>{0} نتایج آزمایش نامعتبر حذف شد.</value>
   </data>
   <data name="TbPorts7" xml:space="preserve">
-    <value>Server port range</value>
+    <value>محدوده پورت سرور</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>Will cover the port, separate with commas (,)</value>
+    <value>مخفی و پورت می شود، با کاما (،) جدا می شود</value>
   </data>
 </root>
