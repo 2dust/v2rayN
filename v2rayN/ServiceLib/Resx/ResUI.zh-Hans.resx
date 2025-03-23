@@ -253,7 +253,7 @@
     <value>非 VMess 或 ss 协议</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>在文件夹 ({0}) 下未找到 Core 文件 (文件名:{1})，请下载后放入文件夹，下载地址: {2}</value>
+    <value>在文件夹 ({0}) 下未找到 Core 文件 (文件名: {1})，请下载后放入文件夹，下载地址: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>扫描完成，未发现有效二维码</value>
@@ -283,7 +283,7 @@
     <value>客户端配置文件保存在：{0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>启动服务({0})...</value>
+    <value>启动服务 ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
     <value>配置成功。 {0}</value>
@@ -325,7 +325,7 @@
     <value>请填写 Url</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>是否追加规则？选择“是”则追加，选择“否”则全部替换。</value>
+    <value>是否追加规则？选择"是"则追加，选择"否"则全部替换。</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
     <value>下载 GeoFile：{0} 成功</value>

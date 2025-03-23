@@ -136,7 +136,7 @@
     <value>Download speed</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>Do you want to download? {0}</value>
+    <value>Do you want to download {0}?</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>Failed to convert configuration file</value>
@@ -154,22 +154,22 @@
     <value>Failed to read configuration file</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>Please fill in the correct format server port</value>
+    <value>Please enter the correct server port format.</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
-    <value>Please fill in the local listening port</value>
+    <value>Please enter the local listening port.</value>
   </data>
   <data name="FillPassword" xml:space="preserve">
-    <value>Please fill in the password</value>
+    <value>Please enter the password.</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>Please fill in the server address</value>
+    <value>Please enter the server address.</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
-    <value>Please fill in the user ID</value>
+    <value>Please enter the user ID.</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>Is not the correct configuration, please check</value>
+    <value>This is not the correct configuration, please check</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
@@ -211,46 +211,46 @@
     <value>Transport</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Download Core successfully</value>
+    <value>Downloaded Core successfully</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>Failed to import subscription content</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Get subscription content successfully</value>
+    <value>Got subscription content successfully</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>No valid subscriptions set</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>Resolve {0} successfully</value>
+    <value>Resolved {0} successfully</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
-    <value>Start getting subscriptions</value>
+    <value>Started getting subscriptions</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
-    <value>Start updating {0}...</value>
+    <value>Started updating {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Invalid subscription content</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>Is unpacking...</value>
+    <value>Unpacking...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>Update subscriptions end</value>
+    <value>Subscription update ended</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>Update subscriptions start</value>
+    <value>Subscription update started</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Update Core successfully</value>
+    <value>Updated Core successfully</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>Update Core successfully! Restarting service...</value>
+    <value>Updated Core successfully! Restarting service...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-VMess or ss protocol</value>
+    <value>Non-VMess or SS protocol</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
@@ -277,13 +277,13 @@
     <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>Are you sure to remove the server?</value>
+    <value>Are you sure you want to remove the server?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})...</value>
+    <value>Starting service ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
     <value>Configuration successful. {0}</value>
@@ -295,22 +295,22 @@
     <value>{0} servers have been imported from clipboard</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import the shared link successfully</value>
+    <value>Successfully scanned and imported the shared link</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>The delay: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
-    <value>Operation success</value>
+    <value>Operation successful</value>
   </data>
   <data name="PleaseSelectRules" xml:space="preserve">
     <value>Please select rules</value>
   </data>
   <data name="RemoveRules" xml:space="preserve">
-    <value>Are you sure to remove the rules?</value>
+    <value>Are you sure you want to remove the rules?</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0}, One of the required.</value>
+    <value>{0}, one of the required fields.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>Remarks</value>
@@ -322,13 +322,13 @@
     <value>Count</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Please fill in the URL</value>
+    <value>Please enter the URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace.</value>
+    <value>Do you want to append rules? Choose yes to append, no to replace.</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>Download GeoFile: {0} successfully</value>
+    <value>Downloaded GeoFile: {0} successfully</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>Information</value>
@@ -349,16 +349,16 @@
     <value>*QUIC key/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc service Name</value>
+    <value>*grpc service name</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host Separated by commas (,)</value>
+    <value>*http host separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
     <value>*ws/http upgrade/xhttp host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host Separated by commas (,)</value>
+    <value>*h2 host separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC security</value>
@@ -382,7 +382,7 @@
     <value>*kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>Global hotkey {0} registered failed, reason {1}</value>
+    <value>Global hotkey {0} registration failed, reason: {1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>Global hotkey {0} registered successfully</value>
@@ -676,7 +676,7 @@
     <value>Allow connections from the LAN</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Auto hide startup</value>
+    <value>Auto hide on startup</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Automatic update interval for Geo files (hours)</value>
@@ -715,7 +715,7 @@
     <value>Display real-time speed (requires restart)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Keep the older when de-duplicating</value>
+    <value>Keep older entries when de-duplicating</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>Enable Log</value>
@@ -778,7 +778,7 @@
     <value>Global Hotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Set directly by pressing the keyboard; Takes effect after restart</value>
+    <value>Set directly by pressing the keyboard; takes effect after restart</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>Do not change system proxy</value>
@@ -817,7 +817,7 @@
     <value>Up (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>Filter, support regular</value>
+    <value>Filter, supports regular expressions</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} Website</value>
@@ -844,13 +844,13 @@
     <value>Domain strategy</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.Block Domain or IP</value>
+    <value>3. Block Domain or IP</value>
   </data>
   <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.Direct Domain or IP</value>
+    <value>2. Direct Domain or IP</value>
   </data>
   <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.Proxy Domain or IP</value>
+    <value>1. Proxy Domain or IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>Pre-defined Rule Set List</value>
@@ -886,22 +886,22 @@
     <value>Routing Rule Details Setting</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Domain, ip, process are auto sorted when saving</value>
+    <value>Domain, IP, process are auto-sorted when saving</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>Rule object Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Supports Dns Object; Click to view documentation</value>
+    <value>Supports DNS Object; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
-    <value>Routing setting is changed</value>
+    <value>Routing setting has changed</value>
   </data>
   <data name="TipChangeSystemProxy" xml:space="preserve">
-    <value>System proxy setting is changed</value>
+    <value>System proxy setting has changed</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
     <value>Route Only</value>
@@ -913,10 +913,10 @@
     <value>One-click multi-test latency and speed (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>Delay(ms)</value>
+    <value>Delay (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Speed(M/s)</value>
+    <value>Speed (M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>Failed to run Core, please check the prompt information</value>
@@ -1063,7 +1063,7 @@
     <value>Add [Hysteria2] server</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria Max bandwidth (Up/Dw)</value>
+    <value>Hysteria Max bandwidth (Up/Down)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>Use System Hosts</value>
@@ -1081,7 +1081,7 @@
     <value>Next proxy remarks</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exists and is unique</value>
+    <value>Please make sure the remarks exist and are unique</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>Enable additional Inbound</value>
@@ -1096,10 +1096,10 @@
     <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved(2,3,4)</value>
+    <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ipv4,Ipv6)</value>
+    <value>Address (IPv4, IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>obfs password</value>
@@ -1114,7 +1114,7 @@
     <value>Speed Ping Test URL</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Updating subscription, only determine remarks exists</value>
+    <value>Updating subscription, only determining if remarks exist</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Test terminating...</value>
@@ -1135,7 +1135,7 @@
     <value>Enable cache file for sing-box (ruleset files)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>Custom the rule-set of sing-box</value>
+    <value>Customize the rule-set of sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>Successful operation. Click the settings menu to reboot the app.</value>
@@ -1189,7 +1189,7 @@
     <value>Close Connection</value>
   </data>
   <data name="menuConnectionCloseAll" xml:space="preserve">
-    <value>Close All Connection</value>
+    <value>Close All Connections</value>
   </data>
   <data name="TbProxies" xml:space="preserve">
     <value>Proxies</value>
@@ -1273,16 +1273,16 @@
     <value>Remote (WebDAV)</value>
   </data>
   <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav Url</value>
+    <value>WebDAV URL</value>
   </data>
   <data name="LvWebDavUserName" xml:space="preserve">
-    <value>WebDav User Name</value>
+    <value>WebDAV User Name</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
-    <value>WebDav Password</value>
+    <value>WebDAV Password</value>
   </data>
   <data name="LvWebDavCheck" xml:space="preserve">
-    <value>WebDav Check</value>
+    <value>WebDAV Check</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>Remote folder name (optional)</value>
@@ -1327,7 +1327,7 @@
     <value>Scan QR code in the image</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
-    <value>Invalid address (Url)</value>
+    <value>Invalid address (URL)</value>
   </data>
   <data name="InsecureUrlProtocol" xml:space="preserve">
     <value>Please do not use the insecure HTTP protocol subscription address</value>
@@ -1336,7 +1336,7 @@
     <value>Install the font to the system, select or fill in the font name, restart the settings</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
-    <value>Are you sure to exit?</value>
+    <value>Are you sure you want to exit?</value>
   </data>
   <data name="LvMemo" xml:space="preserve">
     <value>Remarks Memo</value>
@@ -1363,7 +1363,7 @@
     <value>Hide to tray when closing the window</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
-    <value>The number of concurrent during multi-test</value>
+    <value>The number of concurrent tests during multi-test</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>Exclusions: Do not use proxy server for the following addresses. Use comma (,) to separate entries.</value>
