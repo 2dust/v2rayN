@@ -136,7 +136,7 @@
     <value>دانلود</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>آیا برای دانلود؟ {0}</value>
+    <value>آیا می خواهید {0} را دانلود کنید؟</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>تبدیل فایل پیکربندی انجام نشد</value>
@@ -154,22 +154,22 @@
     <value>فایل پیکربندی خوانده نشد</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>لطفا فرمت صحیح پورت سرور را پر کنید</value>
+    <value>لطفا فرمت صحیح پورت سرور را وارد کنید.</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
-    <value>لطفاً پورت گوش دادن محلی را پر کنید</value>
+    <value>لطفاً پورت گوش دادن محلی را وارد کنید.</value>
   </data>
   <data name="FillPassword" xml:space="preserve">
-    <value>لطفا رمز عبور را وارد کنید</value>
+    <value>لطفا رمز عبور را وارد کنید.</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>لطفا آدرس سرور را وارد کنید</value>
+    <value>لطفا آدرس سرور را وارد کنید.</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
-    <value>لطفا شناسه کاربری را وارد کنید</value>
+    <value>لطفا شناسه کاربری را وارد کنید.</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>پیکربندی درستی نیست، لطفا بررسی کنید</value>
+    <value>این پیکربندی صحیحی نیست، لطفا بررسی کنید.</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>پیکربندی اولیه</value>
@@ -211,10 +211,10 @@
     <value>جابجایی</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>دانلود Core با موفقیت</value>
+    <value>هسته با موفقیت دانلود شد</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
-    <value>محتوای اشتراک وارد نشد</value>
+    <value>محتوای اشتراک با موفقیت وارد نشد</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
     <value>محتوای اشتراک با موفقیت دریافت شد</value>
@@ -223,19 +223,19 @@
     <value>هیچ اشتراک معتبری تنظیم نشده است</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>حل {0} با موفقیت</value>
+    <value>{0} با موفقیت حل شد</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
-    <value>شروع به دریافت اشتراک شد</value>
+    <value>شروع به دریافت اشتراک کرد</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
-    <value>شروع بروزرسانی {0}...</value>
+    <value>شروع به‌روزرسانی {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>محتوای اشتراک نامعتبر است</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>در حال باز کردن بسته می باشد ...</value>
+    <value>باز کردن بسته بندی...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
     <value>بروزرسانی اشتراک به پایان رسید</value>
@@ -277,7 +277,7 @@
     <value>حذف مجدد سرورها تکمیل شد. قدیمی: {0}، جدید: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>آیا مطمئن هستید که سرور را حذف می کنید؟</value>
+    <value>آیا مطمئن هستید که می خواهید سرور را حذف کنید؟</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>فایل پیکربندی کلاینت در این آدرس ذخیره می شود: {0}</value>
@@ -295,22 +295,22 @@
     <value>{0} سرورها از کلیپ بورد وارد شده اند.</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>اسکن URL وارد کردن با موفقیت</value>
+    <value>آدرس اینترنتی با موفقیت اسکن و وارد شد</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>پینگ سرویس فعلی: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
-    <value>موفقیت عملیات</value>
+    <value>عملیات با موفقیت انجام شد</value>
   </data>
   <data name="PleaseSelectRules" xml:space="preserve">
     <value>لطفا قوانین را انتخاب کنید</value>
   </data>
   <data name="RemoveRules" xml:space="preserve">
-    <value>آیا مطمئن هستید که قوانین را حذف می کنید؟</value>
+    <value>آیا مطمئن هستید که می خواهید قوانین را حذف کنید؟</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0},یکی از مورد نیاز.</value>
+    <value>{0}، یکی از فیلدهای الزامی است.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>ملاحظات</value>
@@ -325,10 +325,10 @@
     <value>لطفا آدرس (آدرس اینترنتی) را وارد کنید</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>آیا می خواهید قوانین را اضافه کنید؟ برای ضمیمه بله را انتخاب کنید، در غیر این صورت جایگزین کنید</value>
+    <value>آآیا می خواهید قوانین را اضافه کنید؟ بله برای افزودن، نه برای جایگزینی را انتخاب کنید.<</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>دانلود GeoFile: {0} با موفقیت</value>
+    <value>GeoFile بارگیری شد: {0} با موفقیت</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>اطلاعات</value>
@@ -382,7 +382,7 @@
     <value>*Kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>کلید میانبر جهانی {0} ثبت نشد، دلیل کلید میانبر جهانی {0} ثبت ناموفق بود، دلیل {1}{1}</value>
+    <value>ثبت کلید جهانی {0} انجام نشد، دلیل: {1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>کلید میانبر جهانی {0} با موفقیت ثبت شد</value>
@@ -676,7 +676,7 @@
     <value>اتصالات از LAN را مجاز کنید</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>راه اندازی مخفی کردن خودکار</value>
+    <value>مخفی کردن خودکار هنگام راه اندازی</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>فاصله به روز رسانی خودکار برای فایل های Geo (ساعت)</value>
@@ -715,7 +715,7 @@
     <value>نمایش سرعت واقعی (نیاز به راه اندازی مجدد)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>هنگام حذف کپی، قدیمی تر را نگه دارید</value>
+    <value>ورودی‌های قدیمی‌تر را هنگام حذف کپی نگه دارید</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>ثبت گزارش های محلی</value>
@@ -778,7 +778,7 @@
     <value>تنظیم کلید میانبر جهانی</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>مستقیماً با فشار دادن صفحه کلید تنظیم کنید، بعد از راه اندازی مجدد اعمال شود</value>
+    <value>مستقیماً با فشار دادن صفحه کلید تنظیم کنید. پس از راه اندازی مجدد اعمال می شود</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>پروکسی سیستم را تغییر ندهید</value>
@@ -817,7 +817,7 @@
     <value>بالا (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>فیلتر، پشتیبانی منظم</value>
+    <value>فیلتر، از عبارات منظم پشتیبانی می کند</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} وب سایت</value>
@@ -1081,7 +1081,7 @@
     <value>فایل پشتیبان نامعتبر است</value>
   </data>
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
-    <value>Host filter</value>
+    <value>فیلتر هسته</value>
   </data>
   <data name="TipActiveServer" xml:space="preserve">
     <value>فعال سازی</value>
@@ -1255,7 +1255,7 @@
     <value>افزودن سرور [TUIC]</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی وجود دارد</value>
+    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی آیا وجود دارد!</value>
   </data>
   <data name="menuProxiesReload" xml:space="preserve">
     <value>تازه سازی پروکسی ها</value>
@@ -1279,7 +1279,7 @@
     <value>از Xray استفاده کنید و حالت non-Tun را فعال کنید، که با پراکسی قبلی گروه در تضاد است</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>سفارش سازی مجموعه قوانین از sing box</value>
+    <value>سفارش سازی مجموعه قوانین sing box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>عملکرد موفقیت آمیز بود، روی منوی تنظیمات کلیک کنید تا برنامه راه اندازی مجدد شود.</value>
@@ -1321,7 +1321,7 @@
     <value>آدرس (IPv4, IPv6)</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved(2,3,4)</value>
+    <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>کلید خصوصی</value>
@@ -1336,7 +1336,7 @@
     <value>فعال سازی additional Inbound</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>لطفاً مطمئن شوید که ملاحظات وجود دارد و منحصر به فرد است</value>
+    <value>لطفاً مطمئن شوید که ملاحظات وجود دارند و منحصر به فرد هستند</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
     <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
