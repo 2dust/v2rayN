@@ -325,7 +325,7 @@
     <value>لطفا آدرس (آدرس اینترنتی) را وارد کنید</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>آآیا می خواهید قوانین را اضافه کنید؟ بله برای افزودن، نه برای جایگزینی را انتخاب کنید.<</value>
+    <value>آآیا می خواهید قوانین را اضافه کنید؟ بله برای افزودن، نه برای جایگزینی را انتخاب کنید.</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
     <value>GeoFile بارگیری شد: {0} با موفقیت</value>
