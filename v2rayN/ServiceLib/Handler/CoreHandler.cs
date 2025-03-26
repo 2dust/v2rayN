@@ -24,6 +24,7 @@ namespace ServiceLib.Handler
 
             Environment.SetEnvironmentVariable(Global.V2RayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable(Global.XrayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable(Global.XrayLocalCert, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
 
             //Copy the bin folder to the storage location (for init)
             if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
