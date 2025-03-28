@@ -1,3 +1,7 @@
+using DynamicData;
+using ServiceLib.Enums;
+using ServiceLib.Models;
+
 namespace ServiceLib.Handler
 {
     /// <summary>
@@ -133,16 +137,23 @@ namespace ServiceLib.Handler
             return result;
         }
 
-        public static async Task<RetResult> GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, ECoreType coreType)
+        public static async Task<RetResult> GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
         {
             var result = new RetResult();
-            if (coreType == ECoreType.sing_box)
+            if (multipleLoad == EMultipleLoad.RoundRobin)
             {
-                result = await new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds);
+                result = await new CoreConfigV2rayService(config).GenerateClientMultipleRoundRobinConfig(selecteds);
             }
-            else if (coreType == ECoreType.Xray)
+            else
             {
-                result = await new CoreConfigV2rayService(config).GenerateClientMultipleLoadConfig(selecteds);
+                if (coreType == ECoreType.sing_box)
+                {
+                    result = await new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds);
+                }
+                else if (coreType == ECoreType.Xray)
+                {
+                    result = await new CoreConfigV2rayService(config).GenerateClientMultipleLeastPingConfig(selecteds);
+                }
             }
 
             if (result.Success != true)

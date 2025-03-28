@@ -152,11 +152,11 @@ namespace ServiceLib.ViewModels
             }, canEditRemove);
             SetDefaultMultipleServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await SetDefaultMultipleServer(ECoreType.sing_box);
+                await SetDefaultMultipleServer(EMultipleLoad.LeastPing);
             }, canEditRemove);
             SetDefaultLoadBalanceServerCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await SetDefaultMultipleServer(ECoreType.Xray);
+                await SetDefaultMultipleServer(EMultipleLoad.RoundRobin);
             }, canEditRemove);
 
             //servers move
@@ -621,7 +621,7 @@ namespace ServiceLib.ViewModels
             await _updateView?.Invoke(EViewAction.ShareServer, url);
         }
 
-        private async Task SetDefaultMultipleServer(ECoreType coreType)
+        private async Task SetDefaultMultipleServer(EMultipleLoad multipleLoad)
         {
             var lstSelected = await GetProfileItems(true);
             if (lstSelected == null)
@@ -629,7 +629,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType);
+            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, multipleLoad);
             if (ret.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);

@@ -77,7 +77,17 @@ namespace ServiceLib.Services.CoreConfig
             }
         }
 
-        public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
+        public async Task<RetResult> GenerateClientMultipleRoundRobinConfig(List<ProfileItem> selecteds)
+        {
+            return await GenerateClientMultipleLoadConfig(selecteds, EMultipleLoad.RoundRobin);
+        }
+
+        public async Task<RetResult> GenerateClientMultipleLeastPingConfig(List<ProfileItem> selecteds)
+        {
+            return await GenerateClientMultipleLoadConfig(selecteds, EMultipleLoad.LeastPing);
+        }
+
+        public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
         {
             var ret = new RetResult();
 
@@ -164,13 +174,16 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 //add balancers
-                var balancer = new BalancersItem4Ray
+                if (multipleLoad == EMultipleLoad.RoundRobin)
                 {
-                    selector = [Global.ProxyTag],
-                    strategy = new() { type = "roundRobin" },
-                    tag = $"{Global.ProxyTag}-round",
-                };
-                v2rayConfig.routing.balancers = [balancer];
+                    await GenRoundRobinBalancer(v2rayConfig);
+                }
+                else
+                {
+                    await GenLeastPingBalancer(v2rayConfig);
+                }
+
+                var balancer = v2rayConfig.routing.balancers.First();
 
                 //add rule
                 var rules = v2rayConfig.routing.rules.Where(t => t.outboundTag == Global.ProxyTag).ToList();
@@ -1314,6 +1327,37 @@ namespace ServiceLib.Services.CoreConfig
             }
 
             return 0;
+        }
+
+        private async Task<int> GenRoundRobinBalancer(V2rayConfig v2rayConfig)
+        {
+            var balancer = new BalancersItem4Ray
+            {
+                selector = [Global.ProxyTag],
+                strategy = new() { type = "roundRobin" },
+                tag = $"{Global.ProxyTag}-round",
+            };
+            v2rayConfig.routing.balancers = [balancer];
+            return await Task.FromResult(0);
+        }
+
+        private async Task<int> GenLeastPingBalancer(V2rayConfig v2rayConfig)
+        {
+            var observatory = new Observatory4Ray
+            {
+                subjectSelector = [Global.ProxyTag],
+                probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                probeInterval = "3m"
+            };
+            var balancer = new BalancersItem4Ray
+            {
+                selector = [Global.ProxyTag],
+                strategy = new() { type = "leastPing" },
+                tag = $"{Global.ProxyTag}-round",
+            };
+            v2rayConfig.routing.balancers = [balancer];
+            v2rayConfig.observatory = observatory;
+            return await Task.FromResult(0);
         }
 
         #endregion private gen function
