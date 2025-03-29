@@ -141,7 +141,7 @@ namespace ServiceLib.ViewModels
             {
                 if (blNew)
                 {
-                    _rules.Add(item);
+                    _rules.Insert(0, item);
                 }
                 RefreshRulesItems();
             }
