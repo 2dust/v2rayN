@@ -663,7 +663,6 @@
   <data name="TipPreSocksPort" xml:space="preserve">
     <value>*自訂設定的 Socks 埠值，可不設定；當設定此值後，將使用 Xray/sing-box (Tun) 額外啟動一個前置 Socks 服務，提供分流和速度顯示等功能</value>
   </data>
-  <!--********************************************-->
   <data name="TbBrowse" xml:space="preserve">
     <value>瀏覽</value>
   </data>
@@ -1051,14 +1050,26 @@
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>行程名全稱 (Tun 模式)</value>
   </data>
-  <data name="TbRoutingRuleDomain" xml:space="preserve">
-    <value>Domain</value>
-  </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
   </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>添加 [Hysteria2] 伺服器</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria 最大頻寬 (Up/Dw)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>使用系統 hosts</value>
+  </data>
   <data name="menuAddTuicServer" xml:space="preserve">
     <value>新增 [TUIC] 伺服器</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>擁塞控制算法</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理別名</value>
@@ -1074,6 +1085,21 @@
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>啟用 IPv6</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>添加 [WireGuard] 伺服器</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved (2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address (Ipv4,Ipv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>混淆密碼 (obfs password)</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
     <value>(Domain 或 IP 或 行程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
@@ -1096,11 +1122,11 @@
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>新增 [HTTP] 伺服器</value>
   </data>
-  <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>啟用分片（Fragment）</value>
-  </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>使用 Xray 且非 Tun 模式啟用，和分組前置代理衝突</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>啟用分片（Fragment）</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>啟用 sing-box（規則集檔案）的快取檔案</value>
@@ -1113,6 +1139,93 @@
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>打開儲存所在的位置</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>路由鏈</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>預設</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>延遲</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>下載速度</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>下載流量</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>主機</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>網路</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>上傳速度</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>上傳流量</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>目前連線</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>關閉連線</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>關閉所有連線</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>目前代理</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>規則模式</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>直連</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>全局</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>随原配置</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>規則</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>延遲測試</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>目前部分節點延遲測試</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>重新整理</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>設為活動節點 (Enter)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Outbound 預設解析策略</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>主界面佈局方向 (需重啟)</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Outbound 域名解析位址</value>
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
     <value>自動調整列寬</value>
@@ -1150,17 +1263,17 @@
   <data name="menuRemoteBackupAndRestore" xml:space="preserve">
     <value>遠端 (WebDAV)</value>
   </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDav 伺服器位址</value>
+  </data>
   <data name="LvWebDavUserName" xml:space="preserve">
     <value>WebDav 賬戶</value>
-  </data>
-  <data name="LvWebDavCheck" xml:space="preserve">
-    <value>WebDav 可用檢查</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
     <value>WebDav 密碼</value>
   </data>
-  <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav 伺服器位址</value>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDav 可用檢查</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>遠端資料夾名稱 (可選)</value>
@@ -1177,17 +1290,14 @@
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>Geo 檔案來源 (可選)</value>
   </data>
-  <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>升級工具 App 不存在</value>
-  </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
     <value>sing-box ruleset 檔案來源 (可選)</value>
   </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>升級工具 App 不存在</value>
+  </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
     <value>路由規則集來源 (可選)</value>
-  </data>
-  <data name="TbSettingsChinaUserTip" xml:space="preserve">
-    <value>中國區域用戶可忽略此項</value>
   </data>
   <data name="menuRegionalPresets" xml:space="preserve">
     <value>區域預置設定</value>
@@ -1200,6 +1310,9 @@
   </data>
   <data name="menuRegionalPresetsIran" xml:space="preserve">
     <value>伊朗</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>中國區域用戶可忽略此項</value>
   </data>
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>掃描圖片中的二維碼</value>
@@ -1218,126 +1331,6 @@
   </data>
   <data name="LvMemo" xml:space="preserve">
     <value>備註備忘</value>
-  </data>
-  <data name="TbHeaderType8" xml:space="preserve">
-    <value>擁塞控制算法</value>
-  </data>
-  <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>設為活動節點 (Enter)</value>
-  </data>
-  <data name="menuProxiesReload" xml:space="preserve">
-    <value>重新整理</value>
-  </data>
-  <data name="TbSorting" xml:space="preserve">
-    <value>排序</value>
-  </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
-    <value>延遲測試</value>
-  </data>
-  <data name="menuModeRule" xml:space="preserve">
-    <value>規則</value>
-  </data>
-  <data name="menuModeNothing" xml:space="preserve">
-    <value>随原配置</value>
-  </data>
-  <data name="menuModeGlobal" xml:space="preserve">
-    <value>全局</value>
-  </data>
-  <data name="menuModeDirect" xml:space="preserve">
-    <value>直連</value>
-  </data>
-  <data name="menuRulemode" xml:space="preserve">
-    <value>規則模式</value>
-  </data>
-  <data name="TbProxies" xml:space="preserve">
-    <value>目前代理</value>
-  </data>
-  <data name="menuConnectionCloseAll" xml:space="preserve">
-    <value>關閉所有連線</value>
-  </data>
-  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
-    <value>Outbound 預設解析策略</value>
-  </data>
-  <data name="menuConnectionClose" xml:space="preserve">
-    <value>關閉連線</value>
-  </data>
-  <data name="TbSortingUpTraffic" xml:space="preserve">
-    <value>上傳流量</value>
-  </data>
-  <data name="TbSortingUpSpeed" xml:space="preserve">
-    <value>上傳速度</value>
-  </data>
-  <data name="TbSortingType" xml:space="preserve">
-    <value>類型</value>
-  </data>
-  <data name="TbSortingTime" xml:space="preserve">
-    <value>時間</value>
-  </data>
-  <data name="TbSortingNetwork" xml:space="preserve">
-    <value>網路</value>
-  </data>
-  <data name="TbSortingName" xml:space="preserve">
-    <value>名稱</value>
-  </data>
-  <data name="TbSortingHost" xml:space="preserve">
-    <value>主機</value>
-  </data>
-  <data name="TbSortingDownTraffic" xml:space="preserve">
-    <value>下載流量</value>
-  </data>
-  <data name="TbSortingDownSpeed" xml:space="preserve">
-    <value>下載速度</value>
-  </data>
-  <data name="TbSortingDelay" xml:space="preserve">
-    <value>延遲</value>
-  </data>
-  <data name="TbSortingDefault" xml:space="preserve">
-    <value>預設</value>
-  </data>
-  <data name="TbConnections" xml:space="preserve">
-    <value>目前連線</value>
-  </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>多伺服器最低延遲 (多選)</value>
-  </data>
-  <data name="menuProxiesDelaytestPart" xml:space="preserve">
-    <value>目前部分節點延遲測試</value>
-  </data>
-  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
-    <value>多伺服器負載平衡 (多選)</value>
-  </data>
-  <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>添加 [Hysteria2] 伺服器</value>
-  </data>
-  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria 最大頻寬 (Up/Dw)</value>
-  </data>
-  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>主界面佈局方向 (需重啟)</value>
-  </data>
-  <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加 [WireGuard] 伺服器</value>
-  </data>
-  <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
-  </data>
-  <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
-  </data>
-  <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address (Ipv4,Ipv6)</value>
-  </data>
-  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>使用系統 hosts</value>
-  </data>
-  <data name="TbSortingChain" xml:space="preserve">
-    <value>路由鏈</value>
-  </data>
-  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
-    <value>Outbound 域名解析位址</value>
-  </data>
-  <data name="TbPath7" xml:space="preserve">
-    <value>混淆密碼 (obfs password)</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>系統的 sudo 密碼</value>
@@ -1398,5 +1391,23 @@
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>會覆蓋端口，多組時用逗號 (,) 隔開</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
+    <value>多伺服器 Xray (多選)</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+    <value>多伺服器隨機</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+    <value>多伺服器輪詢</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+    <value>多伺服器最低延遲</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+    <value>多伺服器最穩定</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+    <value>多伺服器最低延遲 sing-box (多選)</value>
   </data>
 </root>

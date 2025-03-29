@@ -99,8 +99,13 @@
                         <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
                         <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
                         <Separator />
-                        <MenuItem x:Name="menuSetDefaultMultipleServer" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}" />
-                        <MenuItem x:Name="menuSetDefaultLoadBalanceServer" Header="{x:Static resx:ResUI.menuSetDefaultLoadBalanceServer}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXray}">
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRandom}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRoundRobin}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastPing}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
+                        </MenuItem>
+                        <MenuItem x:Name="menuSetDefaultMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
                         <Separator />
                         <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />

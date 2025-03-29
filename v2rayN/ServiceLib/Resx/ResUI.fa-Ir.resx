@@ -936,20 +936,218 @@
   <data name="TbSettingsTunMode" xml:space="preserve">
     <value>تنظیمات TunMode</value>
   </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>انتقال به گروه</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>فعال کردن مرتب‌سازی سرورها با کشیدن و رها کردن (نیاز به راه‌اندازی مجدد)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>بازخوانی خودکار</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>رد شدن از آزمون</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>ویرایش سرور (Ctrl+D)</value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>دوبار کلیک کردن سرور باعث فعال شدن آن می شود</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>تست تکمیل شد</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>اثر انگشت tls پیش فرض</value>
+  </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
     <value>این پارامتر فقط برای tcp/http و ws معتبر است</value>
   </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>FontFamily (نیاز به راه اندازی مجدد)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید. پنجره تنظیمات را دوباره باز کنید</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>پورت Pac = +3; پورت Xray API = +4; پورت mihomo API = +5;</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>این را با امتیازات ادمین تنظیم کنید، پس از راه اندازی، امتیازات مدیر را دریافت کنید</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>اندازه فونت</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>یمقدار تاخیر تست سرعت منفرد</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>/آدرس اینترنتی SpeedTest</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>بالا و پایین حرکت کنید</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
+  </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>فعال‌ سازی شتاب‌ دهنده سخت‌ افزاری (نیاز به راه‌اندازی مجدد)</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>در انتظار آزمایش (برای پایان دادن به ESC فشار دهید)...</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>لطفاً در صورت قطع غیرعادی آن را خاموش کنید</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>به روز رسانی ها فعال نیستند، از این اشتراک رد شوید</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>به عنوان مدیر راه اندازی مجدد</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>نشانی‌های وب بیشتر که با کاما از هم جدا شده‌اند. تبدیل اشتراک نامعتبر خواهد بود</value>
+  </data>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>فاصله به روز رسانی خودکار (دقیقه)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>فعال کردن ورود به فایل</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>تبدیل نوع هدف</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>اگر نیازی به تبدیل نیست، لطفاً خالی بگذارید</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>تنظیمات DNS</value>
+  </data>
+  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
+    <value>تنظیمات DNS sing-box</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>لطفا ساختار DNS را پر کنید، برای مشاهده سند کلیک کنید</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>برای وارد کردن تنظیمات پیش‌فرض DNS کلیک کنید</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>استراتژی دامنه sing-box</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>پروتکل sing-box Mux</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>نام کامل فرانید (حالت Tun)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP or IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>دامنه</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>Add [Hysteria2] server</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>حداکتر پهنای باند هیستریا (آپلود/دانلود)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>استفاده کردن از System Hosts</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>افزودن سرور [TUIC]</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>کنترل تراکم</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>نام مستعار پروکسی قبلی</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>نام مستعار پروکسی بعدی</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>لطفاً مطمئن شوید که ملاحظات وجود دارند و منحصر به فرد هستند</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>فعال سازی additional Inbound</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>فعال سازی آدرس IPv6</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>افزودن سرور [WireGuard]</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>کلید خصوصی</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved (2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>آدرس (IPv4, IPv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>پسورد obfs</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>خودکار ScrollToEnd</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>آدرس اینترنتی تست پینگ سرعت</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی آیا وجود دارد!</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>پایان تست...</value>
+  </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>*grpc Authority</value>
+  </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>افزودن سرور [HTTP]</value>
+  </data>
+  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
+    <value>از Xray استفاده کنید و حالت non-Tun را فعال کنید، که با پراکسی قبلی گروه در تضاد است</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>فعال کردن فرگمنت</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>فعال کردن کش فایل مجموعه قوانین برای sing-box</value>
   </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>سفارش سازی مجموعه قوانین sing box</value>
+  </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>عملکرد موفقیت آمیز بود، روی منوی تنظیمات کلیک کنید تا برنامه راه اندازی مجدد شود.</value>
+  </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>باز کردن محل ذخیره سازی</value>
+  </data>
   <data name="TbSorting" xml:space="preserve">
     <value>مرتب سازی</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Chain</value>
   </data>
   <data name="TbSortingDefault" xml:space="preserve">
     <value>پیش فرض</value>
@@ -963,11 +1161,20 @@
   <data name="TbSortingDownTraffic" xml:space="preserve">
     <value>ترافیک دانلود</value>
   </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>هاست</value>
+  </data>
   <data name="TbSortingName" xml:space="preserve">
     <value>نام</value>
   </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>شبکه</value>
+  </data>
   <data name="TbSortingTime" xml:space="preserve">
     <value>زمان</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>نوع</value>
   </data>
   <data name="TbSortingUpSpeed" xml:space="preserve">
     <value>سرعت اپلود</value>
@@ -1008,26 +1215,17 @@
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
     <value>تست تاخیر قسمت گره (نقطه اتصال)</value>
   </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>تازه سازی پروکسی ها</value>
+  </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
     <value>انتخاب گره فعال (Enter)</value>
-  </data>
-  <data name="menuRemoteBackup" xml:space="preserve">
-    <value>پشتیبان گیری از راه دور (WebDAV)</value>
-  </data>
-  <data name="menuRemoteRestore" xml:space="preserve">
-    <value>بازیابی از راه دور (WebDAV)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>استراتژی دامنه پیش فرض برای خروجی</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>کمترین تأخیر چند سروره</value>
-  </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
     <value>جهت چیدمان اصلی (نیاز به راه اندازی مجدد)</value>
-  </data>
-  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
-    <value>تعادل بار چند سروره</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>آدرس DNS خروجی</value>
@@ -1055,6 +1253,12 @@
   </data>
   <data name="menuLocalRestore" xml:space="preserve">
     <value>بازیابی از محلی</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>پشتیبان گیری از راه دور (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>بازیابی از راه دور (WebDAV)</value>
   </data>
   <data name="menuLocalBackupAndRestore" xml:space="preserve">
     <value>محلی</value>
@@ -1131,216 +1335,6 @@
   <data name="LvMemo" xml:space="preserve">
     <value>یادداشت ملاحظات</value>
   </data>
-  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
-    <value>فعال کردن ورود به فایل</value>
-  </data>
-  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
-    <value>به روز رسانی ها فعال نیستند، از این اشتراک رد شوید</value>
-  </data>
-  <data name="menuRebootAsAdmin" xml:space="preserve">
-    <value>به عنوان مدیر راه اندازی مجدد</value>
-  </data>
-  <data name="LvMoreUrl" xml:space="preserve">
-    <value>نشانی‌های وب بیشتر که با کاما از هم جدا شده‌اند. تبدیل اشتراک نامعتبر خواهد بود</value>
-  </data>
-  <data name="SpeedDisplayText" xml:space="preserve">
-    <value>{0} : {1}/s↑ | {2}/s↓</value>
-  </data>
-  <data name="LvAutoUpdateInterval" xml:space="preserve">
-    <value>فاصله به روز رسانی خودکار (دقیقه)</value>
-  </data>
-  <data name="LvConvertTarget" xml:space="preserve">
-    <value>تبدیل نوع هدف</value>
-  </data>
-  <data name="LvConvertTargetTip" xml:space="preserve">
-    <value>اگر نیازی به تبدیل نیست، لطفاً خالی بگذارید</value>
-  </data>
-  <data name="TipDisplayLog" xml:space="preserve">
-    <value>لطفاً در صورت قطع غیرعادی آن را خاموش کنید</value>
-  </data>
-  <data name="menuDNSSetting" xml:space="preserve">
-    <value>تنظیمات DNS</value>
-  </data>
-  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>لطفا ساختار DNS را پر کنید، برای مشاهده سند کلیک کنید</value>
-  </data>
-  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>برای وارد کردن تنظیمات پیش‌فرض DNS کلیک کنید</value>
-  </data>
-  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>استراتژی دامنه sing-box</value>
-  </data>
-  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
-    <value>پروتکل sing-box Mux</value>
-  </data>
-  <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>نام کامل فرانید (حالت Tun)</value>
-  </data>
-  <data name="TbRoutingRuleIP" xml:space="preserve">
-    <value>IP or IP CIDR</value>
-  </data>
-  <data name="TbRoutingRuleDomain" xml:space="preserve">
-    <value>دامنه</value>
-  </data>
-  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>تنظیمات DNS sing-box</value>
-  </data>
-  <data name="SpeedtestingWait" xml:space="preserve">
-    <value>در انتظار آزمایش (برای پایان دادن به ESC فشار دهید)...</value>
-  </data>
-  <data name="TbSpiderX" xml:space="preserve">
-    <value>SpiderX</value>
-  </data>
-  <data name="TbShortId" xml:space="preserve">
-    <value>ShortId</value>
-  </data>
-  <data name="menuMoveToGroup" xml:space="preserve">
-    <value>انتقال به گروه</value>
-  </data>
-  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>فعال کردن مرتب‌سازی سرورها با کشیدن و رها کردن (نیاز به راه‌اندازی مجدد)</value>
-  </data>
-  <data name="TbAutoRefresh" xml:space="preserve">
-    <value>بازخوانی خودکار</value>
-  </data>
-  <data name="SpeedtestingSkip" xml:space="preserve">
-    <value>رد شدن از آزمون</value>
-  </data>
-  <data name="menuEditServer" xml:space="preserve">
-    <value>ویرایش سرور (Ctrl+D)</value>
-  </data>
-  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>دوبار کلیک کردن سرور باعث فعال شدن آن می شود</value>
-  </data>
-  <data name="SpeedtestingCompleted" xml:space="preserve">
-    <value>تست تکمیل شد</value>
-  </data>
-  <data name="TbSettingsDefFingerprint" xml:space="preserve">
-    <value>اثر انگشت tls پیش فرض</value>
-  </data>
-  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>FontFamily (نیاز به راه اندازی مجدد)</value>
-  </data>
-  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>فایل TTF/TTC فونت را در دایرکتوری guiFonts کپی کنید. پنجره تنظیمات را دوباره باز کنید</value>
-  </data>
-  <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>پورت Pac = +3; پورت Xray API = +4; پورت mihomo API = +5;</value>
-  </data>
-  <data name="TbSettingsStartBootTip" xml:space="preserve">
-    <value>این را با امتیازات ادمین تنظیم کنید، پس از راه اندازی، امتیازات مدیر را دریافت کنید</value>
-  </data>
-  <data name="TbSettingsFontSize" xml:space="preserve">
-    <value>اندازه فونت</value>
-  </data>
-  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>یمقدار تاخیر تست سرعت منفرد</value>
-  </data>
-  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>/آدرس اینترنتی SpeedTest</value>
-  </data>
-  <data name="menuMoveTo" xml:space="preserve">
-    <value>بالا و پایین حرکت کنید</value>
-  </data>
-  <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
-  </data>
-  <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Hysteria2] server</value>
-  </data>
-  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>حداکتر پهنای باند هیستریا (آپلود/دانلود)</value>
-  </data>
-  <data name="menuAddTuicServer" xml:space="preserve">
-    <value>افزودن سرور [TUIC]</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی آیا وجود دارد!</value>
-  </data>
-  <data name="menuProxiesReload" xml:space="preserve">
-    <value>تازه سازی پروکسی ها</value>
-  </data>
-  <data name="TbSortingNetwork" xml:space="preserve">
-    <value>شبکه</value>
-  </data>
-  <data name="TbSortingType" xml:space="preserve">
-    <value>نوع</value>
-  </data>
-  <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
-  </data>
-  <data name="menuAddHttpServer" xml:space="preserve">
-    <value>افزودن سرور [HTTP]</value>
-  </data>
-  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>آدرس اینترنتی تست پینگ سرعت</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>از Xray استفاده کنید و حالت non-Tun را فعال کنید، که با پراکسی قبلی گروه در تضاد است</value>
-  </data>
-  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>سفارش سازی مجموعه قوانین sing box</value>
-  </data>
-  <data name="NeedRebootTips" xml:space="preserve">
-    <value>عملکرد موفقیت آمیز بود، روی منوی تنظیمات کلیک کنید تا برنامه راه اندازی مجدد شود.</value>
-  </data>
-  <data name="menuOpenTheFileLocation" xml:space="preserve">
-    <value>باز کردن محل ذخیره سازی</value>
-  </data>
-  <data name="TbSortingChain" xml:space="preserve">
-    <value>Chain</value>
-  </data>
-  <data name="TbSortingHost" xml:space="preserve">
-    <value>هاست</value>
-  </data>
-  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>استفاده کردن از System Hosts</value>
-  </data>
-  <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>فعال کردن فرگمنت</value>
-  </data>
-  <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>خودکار ScrollToEnd</value>
-  </data>
-  <data name="SpeedtestingStop" xml:space="preserve">
-    <value>پایان تست...</value>
-  </data>
-  <data name="LvNextProfile" xml:space="preserve">
-    <value>نام مستعار پروکسی بعدی</value>
-  </data>
-  <data name="TbPath7" xml:space="preserve">
-    <value>پسورد obfs</value>
-  </data>
-  <data name="TbHeaderType8" xml:space="preserve">
-    <value>کنترل تراکم</value>
-  </data>
-  <data name="LvPrevProfile" xml:space="preserve">
-    <value>نام مستعار پروکسی قبلی</value>
-  </data>
-  <data name="TbLocalAddress" xml:space="preserve">
-    <value>آدرس (IPv4, IPv6)</value>
-  </data>
-  <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
-  </data>
-  <data name="TbPrivateKey" xml:space="preserve">
-    <value>کلید خصوصی</value>
-  </data>
-  <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>افزودن سرور [WireGuard]</value>
-  </data>
-  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
-    <value>فعال سازی آدرس IPv6</value>
-  </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>فعال سازی additional Inbound</value>
-  </data>
-  <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>لطفاً مطمئن شوید که ملاحظات وجود دارند و منحصر به فرد هستند</value>
-  </data>
-  <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
-  </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>رمز عبور sudo سیستم</value>
   </data>
@@ -1400,5 +1394,23 @@
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>مخفی و پورت می شود، با کاما (،) جدا می شود</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
+    <value>چند سرور Xray (چند انتخابی)</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+    <value>چند سرور تصادفی</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+    <value>چند سرور گردشی</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+    <value>چند سرور کمترین تأخیر</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+    <value>چند سرور پایدارترین</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+    <value>چند سرور کمترین تأخیر sing-box (چند انتخابی)</value>
   </data>
 </root>

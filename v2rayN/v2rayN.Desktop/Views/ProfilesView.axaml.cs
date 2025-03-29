@@ -67,8 +67,11 @@ namespace v2rayN.Desktop.Views
                 this.BindCommand(ViewModel, vm => vm.CopyServerCmd, v => v.menuCopyServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.SetDefaultServerCmd, v => v.menuSetDefaultServer).DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.ShareServerCmd, v => v.menuShareServer).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerCmd, v => v.menuSetDefaultMultipleServer).DisposeWith(disposables);
-                this.BindCommand(ViewModel, vm => vm.SetDefaultLoadBalanceServerCmd, v => v.menuSetDefaultLoadBalanceServer).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerXrayRandomCmd, v => v.menuSetDefaultMultipleServerXrayRandom).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerXrayRoundRobinCmd, v => v.menuSetDefaultMultipleServerXrayRoundRobin).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerXrayLeastPingCmd, v => v.menuSetDefaultMultipleServerXrayLeastPing).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerXrayLeastLoadCmd, v => v.menuSetDefaultMultipleServerXrayLeastLoad).DisposeWith(disposables);
+                this.BindCommand(ViewModel, vm => vm.SetDefaultMultipleServerSingBoxLeastPingCmd, v => v.menuSetDefaultMultipleServerSingBoxLeastPing).DisposeWith(disposables);
 
                 //servers move
                 //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbMoveToGroup.ItemsSource).DisposeWith(disposables);
