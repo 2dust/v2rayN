@@ -7,10 +7,19 @@
 
     <Style Selector="DataGrid">
         <Setter Property="RowHeight" Value="24" />
+        <Setter Property="ScrollViewer.AllowAutoHide" Value="False" />
     </Style>
 
     <Style Selector="PathIcon">
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
+    </Style>
+
+    <Style Selector="TextBox">
+        <Setter Property="ScrollViewer.AllowAutoHide" Value="False" />
+    </Style>
+
+    <Style Selector="ScrollViewer">
+        <Setter Property="AllowAutoHide" Value="False" />
     </Style>
 </Styles>

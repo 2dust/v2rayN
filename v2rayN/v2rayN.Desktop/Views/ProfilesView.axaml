@@ -81,11 +81,11 @@
                 BorderThickness="1"
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
+                Classes.InsetContent="True"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
                 IsReadOnly="True"
-                ItemsSource="{Binding ProfileItems}"
-                ScrollViewer.AllowAutoHide="False">
+                ItemsSource="{Binding ProfileItems}">
                 <DataGrid.KeyBindings>
                     <KeyBinding Command="{Binding Export2ShareUrlCmd}" Gesture="Ctrl+C" />
                     <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
