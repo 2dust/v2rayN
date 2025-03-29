@@ -1005,7 +1005,7 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds,ECoreType coreType, EMultipleLoad multipleLoad)
+        public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
         {
             var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
             var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);

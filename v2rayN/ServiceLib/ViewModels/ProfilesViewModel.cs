@@ -67,8 +67,6 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastPingCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastLoadCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerSingBoxLeastPingCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultLoadBalanceServerCmd { get; }
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
