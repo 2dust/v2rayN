@@ -62,8 +62,11 @@ namespace ServiceLib.ViewModels
         public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
         public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
         public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerCmd { get; }
-        public ReactiveCommand<Unit, Unit> SetDefaultLoadBalanceServerCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayRandomCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayRoundRobinCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastPingCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastLoadCmd { get; }
+        public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerSingBoxLeastPingCmd { get; }
 
         //servers move
         public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -150,13 +153,25 @@ namespace ServiceLib.ViewModels
             {
                 await ShareServerAsync();
             }, canEditRemove);
-            SetDefaultMultipleServerCmd = ReactiveCommand.CreateFromTask(async () =>
+            SetDefaultMultipleServerXrayRandomCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await SetDefaultMultipleServer(ECoreType.sing_box);
+                await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.Random);
             }, canEditRemove);
-            SetDefaultLoadBalanceServerCmd = ReactiveCommand.CreateFromTask(async () =>
+            SetDefaultMultipleServerXrayRoundRobinCmd = ReactiveCommand.CreateFromTask(async () =>
             {
-                await SetDefaultMultipleServer(ECoreType.Xray);
+                await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.RoundRobin);
+            }, canEditRemove);
+            SetDefaultMultipleServerXrayLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.LeastPing);
+            }, canEditRemove);
+            SetDefaultMultipleServerXrayLeastLoadCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.LeastLoad);
+            }, canEditRemove);
+            SetDefaultMultipleServerSingBoxLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await SetDefaultMultipleServer(ECoreType.sing_box, EMultipleLoad.LeastPing);
             }, canEditRemove);
 
             //servers move
@@ -621,7 +636,7 @@ namespace ServiceLib.ViewModels
             await _updateView?.Invoke(EViewAction.ShareServer, url);
         }
 
-        private async Task SetDefaultMultipleServer(ECoreType coreType)
+        private async Task SetDefaultMultipleServer(ECoreType coreType, EMultipleLoad multipleLoad)
         {
             var lstSelected = await GetProfileItems(true);
             if (lstSelected == null)
@@ -629,7 +644,7 @@ namespace ServiceLib.ViewModels
                 return;
             }
 
-            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType);
+            var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType, multipleLoad);
             if (ret.Success != true)
             {
                 NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);

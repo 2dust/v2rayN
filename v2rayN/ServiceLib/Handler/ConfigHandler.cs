@@ -1005,12 +1005,12 @@ namespace ServiceLib.Handler
             return 0;
         }
 
-        public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType)
+        public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
         {
             var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
             var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
 
-            var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType);
+            var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, multipleLoad);
             if (result.Success != true)
             {
                 return result;
@@ -1023,7 +1023,14 @@ namespace ServiceLib.Handler
 
             var profileItem = await AppHandler.Instance.GetProfileItem(indexId) ?? new();
             profileItem.IndexId = indexId;
-            profileItem.Remarks = coreType == ECoreType.sing_box ? ResUI.menuSetDefaultMultipleServer : ResUI.menuSetDefaultLoadBalanceServer;
+            profileItem.Remarks = multipleLoad switch
+            {
+                EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
+                EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
+                EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
+                _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+            };
             profileItem.Address = Global.CoreMultipleLoadConfigFileName;
             profileItem.ConfigType = EConfigType.Custom;
             profileItem.CoreType = coreType;

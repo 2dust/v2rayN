@@ -77,7 +77,7 @@ namespace ServiceLib.Services.CoreConfig
             }
         }
 
-        public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
+        public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
         {
             var ret = new RetResult();
 
@@ -164,13 +164,9 @@ namespace ServiceLib.Services.CoreConfig
                 }
 
                 //add balancers
-                var balancer = new BalancersItem4Ray
-                {
-                    selector = [Global.ProxyTag],
-                    strategy = new() { type = "roundRobin" },
-                    tag = $"{Global.ProxyTag}-round",
-                };
-                v2rayConfig.routing.balancers = [balancer];
+                await GenBalancer(v2rayConfig, multipleLoad);
+
+                var balancer = v2rayConfig.routing.balancers.First();
 
                 //add rule
                 var rules = v2rayConfig.routing.rules.Where(t => t.outboundTag == Global.ProxyTag).ToList();
@@ -1314,6 +1310,36 @@ namespace ServiceLib.Services.CoreConfig
             }
 
             return 0;
+        }
+
+        private async Task<int> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
+        {
+            if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.LeastPing)
+            {
+                var observatory = new Observatory4Ray
+                {
+                    subjectSelector = [Global.ProxyTag],
+                    probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                    probeInterval = "3m"
+                };
+                v2rayConfig.observatory = observatory;
+            }
+            var strategyType = multipleLoad switch
+            {
+                EMultipleLoad.Random => "random",
+                EMultipleLoad.RoundRobin => "roundRobin",
+                EMultipleLoad.LeastPing => "leastPing",
+                EMultipleLoad.LeastLoad => "leastLoad",
+                _ => "roundRobin",
+            };
+            var balancer = new BalancersItem4Ray
+            {
+                selector = [Global.ProxyTag],
+                strategy = new() { type = strategyType },
+                tag = $"{Global.ProxyTag}-round",
+            };
+            v2rayConfig.routing.balancers = [balancer];
+            return await Task.FromResult(0);
         }
 
         #endregion private gen function

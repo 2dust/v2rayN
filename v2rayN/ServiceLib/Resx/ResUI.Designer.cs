@@ -1474,20 +1474,56 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-server load balancing 的本地化字符串。
+        ///   查找类似 Multi-Server lowest latency sing-box 的本地化字符串。
         /// </summary>
-        public static string menuSetDefaultLoadBalanceServer {
+        public static string menuSetDefaultMultipleServerSingBoxLeastPing {
             get {
-                return ResourceManager.GetString("menuSetDefaultLoadBalanceServer", resourceCulture);
+                return ResourceManager.GetString("menuSetDefaultMultipleServerSingBoxLeastPing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server lowest latency 的本地化字符串。
+        ///   查找类似 Multi-Server Xray 的本地化字符串。
         /// </summary>
-        public static string menuSetDefaultMultipleServer {
+        public static string menuSetDefaultMultipleServerXray {
             get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServer", resourceCulture);
+                return ResourceManager.GetString("menuSetDefaultMultipleServerXray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Server LeastLoad 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServerXrayLeastLoad {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Server LeastPing 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServerXrayLeastPing {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Server Random 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServerXrayRandom {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Server RoundRobin 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServerXrayRoundRobin {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRoundRobin", resourceCulture);
             }
         }
         
