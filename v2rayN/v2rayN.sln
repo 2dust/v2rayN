@@ -13,6 +13,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazTool", "AmazTool\AmazTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHotKeys", "GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj", "{CB3DE54F-3A26-AE02-1299-311132C32156}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Action", "GitHub Action", "{1EACFDC8-ADD8-4F29-AF60-92AA55D59908}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build-all.yml = ..\.github\workflows\build-all.yml
+		..\.github\workflows\build-linux.yml = ..\.github\workflows\build-linux.yml
+		..\.github\workflows\build-osx.yml = ..\.github\workflows\build-osx.yml
+		..\.github\workflows\build-windows-desktop.yml = ..\.github\workflows\build-windows-desktop.yml
+		..\.github\workflows\build-windows.yml = ..\.github\workflows\build-windows.yml
+		..\package-appimage.sh = ..\package-appimage.sh
+		..\package-debian.sh = ..\package-debian.sh
+		..\package-osx.sh = ..\package-osx.sh
+		..\package-release-zip.sh = ..\package-release-zip.sh
+		..\pkg2appimage.yml = ..\pkg2appimage.yml
+		..\.github\workflows\winget-publish.yml = ..\.github\workflows\winget-publish.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
