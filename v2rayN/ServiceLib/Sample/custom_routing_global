@@ -6,13 +6,6 @@
 		"network": "udp"
 	},
 	{
-		"remarks": "阻断广告",
-		"outboundTag": "block",
-		"domain": [
-			"geosite:category-ads-all"
-		]
-	},
-	{
 		"remarks": "绕过局域网IP",
 		"outboundTag": "direct",
 		"ip": [

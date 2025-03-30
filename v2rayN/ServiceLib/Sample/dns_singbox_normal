@@ -23,12 +23,6 @@
         "geosite-cn"
       ],
       "server": "local"
-    },
-    {
-      "rule_set": [
-        "geosite-category-ads-all"
-      ],
-      "server": "block"
     }
   ],
   "final": "remote"
