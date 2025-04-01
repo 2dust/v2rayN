@@ -90,6 +90,11 @@ detect_desktop_environment() {
         return
     fi
 
+    if [[ "$XDG_CURRENT_DESKTOP" == *"X-Cinnamon"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"cinnamon"* ]]; then
+        echo "gnome"
+        return
+    fi
+    
     local KDE_ENVIRONMENTS=("KDE" "plasma")
     for ENV in "${KDE_ENVIRONMENTS[@]}"; do
         if [ "$XDG_CURRENT_DESKTOP" == "$ENV" ] || [ "$XDG_SESSION_DESKTOP" == "$ENV" ]; then
