@@ -1395,22 +1395,25 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Will cover the port, separate with commas (,)</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
-    <value>Többszerveres Xray (többválasztásos)</value>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-server to custom configuration</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>Többszerveres véletlenszerű</value>
+    <value>Multi-server Random by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Többszerveres körforgásos</value>
+    <value>Multi-server RoundRobin by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Többszerveres legkisebb késleltetésű</value>
+    <value>Multi-server LeastPing by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Többszerveres legstabilabb</value>
+    <value>Multi-server LeastLoad by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>Többszerveres legkisebb késleltetésű sing-box (többválasztásos)</value>
+    <value>Multi-server LeastPing by sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Export server</value>
   </data>
 </root>

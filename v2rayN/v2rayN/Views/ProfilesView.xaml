@@ -120,7 +120,7 @@
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuShareServer}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXray}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}">
                             <MenuItem
                                 x:Name="menuSetDefaultMultipleServerXrayRandom"
                                 Height="{StaticResource MenuItemHeight}"
@@ -137,11 +137,12 @@
                                 x:Name="menuSetDefaultMultipleServerXrayLeastLoad"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
+                            <Separator />
+                            <MenuItem
+                                x:Name="menuSetDefaultMultipleServerSingBoxLeastPing"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
                         </MenuItem>
-                        <MenuItem
-                            x:Name="menuSetDefaultMultipleServerSingBoxLeastPing"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuMixedTestServer"
@@ -211,7 +212,7 @@
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ClientConfig}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem
                                 x:Name="menuExport2ClientConfig"
                                 Height="{StaticResource MenuItemHeight}"
@@ -220,8 +221,7 @@
                                 x:Name="menuExport2ClientConfigClipboard"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuExport2ClientConfigClipboard}" />
-                        </MenuItem>
-                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ShareUrl}">
+                            <Separator />
                             <MenuItem
                                 x:Name="menuExport2ShareUrl"
                                 Height="{StaticResource MenuItemHeight}"

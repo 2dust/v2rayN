@@ -1395,22 +1395,25 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Will cover the port, separate with commas (,)</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
-    <value>Мультисерверный Xray (множественный выбор)</value>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-server to custom configuration</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>Мультисерверный случайный</value>
+    <value>Multi-server Random by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Мультисерверный круговой</value>
+    <value>Multi-server RoundRobin by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Мультисерверная минимальная задержка</value>
+    <value>Multi-server LeastPing by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Мультисерверный наиболее стабильный</value>
+    <value>Multi-server LeastLoad by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>Мультисерверная минимальная задержка sing-box (множественный выбор)</value>
+    <value>Multi-server LeastPing by sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Export server</value>
   </data>
 </root>

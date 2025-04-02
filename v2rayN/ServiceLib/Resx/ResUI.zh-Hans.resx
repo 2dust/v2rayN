@@ -1392,22 +1392,25 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>会覆盖端口，多组时用逗号 (,) 隔开</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
-    <value>多服务器 Xray (多选)</value>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>多服务器产生自定义配置 (多选)</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>多服务器随机</value>
+    <value>多服务器随机 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多服务器轮询</value>
+    <value>多服务器负载均衡  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多服务器最低延迟</value>
+    <value>多服务器最低延迟  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多服务器最稳定</value>
+    <value>多服务器最稳定  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>多服务器最低延迟 sing-box (多选)</value>
+    <value>多服务器最低延迟 sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>导出服务器</value>
   </data>
 </root>

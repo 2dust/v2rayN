@@ -1395,22 +1395,25 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>مخفی و پورت می شود، با کاما (،) جدا می شود</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXray" xml:space="preserve">
-    <value>چند سرور Xray (چند انتخابی)</value>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-server to custom configuration</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>چند سرور تصادفی</value>
+    <value>Multi-server Random by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>چند سرور گردشی</value>
+    <value>Multi-server RoundRobin by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>چند سرور کمترین تأخیر</value>
+    <value>Multi-server LeastPing by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>چند سرور پایدارترین</value>
+    <value>Multi-server LeastLoad by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>چند سرور کمترین تأخیر sing-box (چند انتخابی)</value>
+    <value>Multi-server LeastPing by sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Export server</value>
   </data>
 </root>

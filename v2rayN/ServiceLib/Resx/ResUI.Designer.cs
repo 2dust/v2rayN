@@ -934,6 +934,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Export server 的本地化字符串。
+        /// </summary>
+        public static string menuExportConfig {
+            get {
+                return ResourceManager.GetString("menuExportConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Global Hotkey Setting 的本地化字符串。
         /// </summary>
         public static string menuGlobalHotkeySetting {
@@ -1474,7 +1483,16 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server lowest latency sing-box 的本地化字符串。
+        ///   查找类似 Multi-server to custom configuration 的本地化字符串。
+        /// </summary>
+        public static string menuSetDefaultMultipleServer {
+            get {
+                return ResourceManager.GetString("menuSetDefaultMultipleServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-server LeastPing by sing-box 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServerSingBoxLeastPing {
             get {
@@ -1483,16 +1501,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXray {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXray", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Server LeastLoad 的本地化字符串。
+        ///   查找类似 Multi-server LeastLoad by Xray 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServerXrayLeastLoad {
             get {
@@ -1501,7 +1510,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server LeastPing 的本地化字符串。
+        ///   查找类似 Multi-server LeastPing by Xray 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServerXrayLeastPing {
             get {
@@ -1510,7 +1519,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server Random 的本地化字符串。
+        ///   查找类似 Multi-server Random by Xray 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServerXrayRandom {
             get {
@@ -1519,7 +1528,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Multi-Server RoundRobin 的本地化字符串。
+        ///   查找类似 Multi-server RoundRobin by Xray 的本地化字符串。
         /// </summary>
         public static string menuSetDefaultMultipleServerXrayRoundRobin {
             get {
