@@ -1,8 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace ServiceLib.Common
-{
+namespace ServiceLib.Common;
     /*
      * See:
      * http://stackoverflow.com/questions/6266820/working-example-of-createjobobject-setinformationjobobject-pinvoke-in-net
@@ -178,4 +177,4 @@ namespace ServiceLib.Common
     }
 
     #endregion Helper classes
-}
+

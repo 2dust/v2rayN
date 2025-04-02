@@ -7,132 +7,131 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using v2rayN.Desktop.Handler;
 
-namespace v2rayN.Desktop.Views
+namespace v2rayN.Desktop.Views;
+
+public partial class GlobalHotkeySettingWindow : ReactiveWindow<GlobalHotkeySettingViewModel>
 {
-    public partial class GlobalHotkeySettingWindow : ReactiveWindow<GlobalHotkeySettingViewModel>
+    private readonly List<object> _textBoxKeyEventItem = new();
+
+    public GlobalHotkeySettingWindow()
     {
-        private readonly List<object> _textBoxKeyEventItem = new();
+        InitializeComponent();
 
-        public GlobalHotkeySettingWindow()
+        ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
+
+        btnReset.Click += btnReset_Click;
+
+        HotkeyHandler.Instance.IsPause = true;
+        this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
+        btnCancel.Click += (s, e) => this.Close();
+
+        this.WhenActivated(disposables =>
         {
-            InitializeComponent();
+            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+        });
 
-            ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
+        Init();
+        BindingData();
+    }
 
-            btnReset.Click += btnReset_Click;
-
-            HotkeyHandler.Instance.IsPause = true;
-            this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
-            btnCancel.Click += (s, e) => this.Close();
-
-            this.WhenActivated(disposables =>
-            {
-                this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-            });
-
-            Init();
-            BindingData();
+    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
+    {
+        switch (action)
+        {
+            case EViewAction.CloseWindow:
+                this.Close(true);
+                break;
         }
+        return await Task.FromResult(true);
+    }
 
-        private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
+    private void Init()
+    {
+        _textBoxKeyEventItem.Add(txtGlobalHotkey0);
+        _textBoxKeyEventItem.Add(txtGlobalHotkey1);
+        _textBoxKeyEventItem.Add(txtGlobalHotkey2);
+        _textBoxKeyEventItem.Add(txtGlobalHotkey3);
+        _textBoxKeyEventItem.Add(txtGlobalHotkey4);
+
+        for (var index = 0; index < _textBoxKeyEventItem.Count; index++)
         {
-            switch (action)
-            {
-                case EViewAction.CloseWindow:
-                    this.Close(true);
-                    break;
-            }
-            return await Task.FromResult(true);
-        }
-
-        private void Init()
-        {
-            _textBoxKeyEventItem.Add(txtGlobalHotkey0);
-            _textBoxKeyEventItem.Add(txtGlobalHotkey1);
-            _textBoxKeyEventItem.Add(txtGlobalHotkey2);
-            _textBoxKeyEventItem.Add(txtGlobalHotkey3);
-            _textBoxKeyEventItem.Add(txtGlobalHotkey4);
-
-            for (var index = 0; index < _textBoxKeyEventItem.Count; index++)
-            {
-                var sender = _textBoxKeyEventItem[index];
-                if (sender is not TextBox txtBox)
-                {
-                    continue;
-                }
-                txtBox.Tag = (EGlobalHotkey)index;
-                txtBox.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
-            }
-        }
-
-        private void TxtGlobalHotkey_PreviewKeyDown(object? sender, KeyEventArgs e)
-        {
-            e.Handled = true;
+            var sender = _textBoxKeyEventItem[index];
             if (sender is not TextBox txtBox)
             {
-                return;
+                continue;
+            }
+            txtBox.Tag = (EGlobalHotkey)index;
+            txtBox.KeyDown += TxtGlobalHotkey_PreviewKeyDown;
+        }
+    }
+
+    private void TxtGlobalHotkey_PreviewKeyDown(object? sender, KeyEventArgs e)
+    {
+        e.Handled = true;
+        if (sender is not TextBox txtBox)
+        {
+            return;
+        }
+
+        var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
+        var modifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
+
+        item.KeyCode = (int)(e.Key == Key.System ? modifierKeys.Contains(Key.System) ? Key.None : Key.System : modifierKeys.Contains(e.Key) ? Key.None : e.Key);
+        item.Alt = (e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
+        item.Control = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
+        item.Shift = (e.KeyModifiers & KeyModifiers.Shift) == KeyModifiers.Shift;
+
+        txtBox.Text = KeyEventItemToString(item);
+    }
+
+    private void BindingData()
+    {
+        foreach (var sender in _textBoxKeyEventItem)
+        {
+            if (sender is not TextBox txtBox)
+            {
+                continue;
             }
 
             var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
-            var modifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
-
-            item.KeyCode = (int)(e.Key == Key.System ? modifierKeys.Contains(Key.System) ? Key.None : Key.System : modifierKeys.Contains(e.Key) ? Key.None : e.Key);
-            item.Alt = (e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
-            item.Control = (e.KeyModifiers & KeyModifiers.Control) == KeyModifiers.Control;
-            item.Shift = (e.KeyModifiers & KeyModifiers.Shift) == KeyModifiers.Shift;
-
             txtBox.Text = KeyEventItemToString(item);
         }
+    }
 
-        private void BindingData()
+    private void btnReset_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel?.ResetKeyEventItem();
+        BindingData();
+    }
+
+    private string KeyEventItemToString(KeyEventItem? item)
+    {
+        if (item == null)
         {
-            foreach (var sender in _textBoxKeyEventItem)
-            {
-                if (sender is not TextBox txtBox)
-                {
-                    continue;
-                }
+            return string.Empty;
+        }
+        var res = new StringBuilder();
 
-                var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
-                txtBox.Text = KeyEventItemToString(item);
-            }
+        if (item.Control)
+        {
+            res.Append($"{KeyModifiers.Control} +");
         }
 
-        private void btnReset_Click(object sender, RoutedEventArgs e)
+        if (item.Shift)
         {
-            ViewModel?.ResetKeyEventItem();
-            BindingData();
+            res.Append($"{KeyModifiers.Shift} +");
         }
 
-        private string KeyEventItemToString(KeyEventItem? item)
+        if (item.Alt)
         {
-            if (item == null)
-            {
-                return string.Empty;
-            }
-            var res = new StringBuilder();
-
-            if (item.Control)
-            {
-                res.Append($"{KeyModifiers.Control} +");
-            }
-
-            if (item.Shift)
-            {
-                res.Append($"{KeyModifiers.Shift} +");
-            }
-
-            if (item.Alt)
-            {
-                res.Append($"{KeyModifiers.Alt} +");
-            }
-
-            if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
-            {
-                res.Append($"{(Key)item.KeyCode}");
-            }
-
-            return res.ToString();
+            res.Append($"{KeyModifiers.Alt} +");
         }
+
+        if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
+        {
+            res.Append($"{(Key)item.KeyCode}");
+        }
+
+        return res.ToString();
     }
 }

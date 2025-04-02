@@ -1,115 +1,114 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace ServiceLib.Handler
+namespace ServiceLib.Handler;
+
+public class PacHandler
 {
-    public class PacHandler
+    private static string _configPath;
+    private static int _httpPort;
+    private static int _pacPort;
+    private static TcpListener? _tcpListener;
+    private static byte[] _writeContent;
+    private static bool _isRunning;
+    private static bool _needRestart = true;
+
+    public static async Task Start(string configPath, int httpPort, int pacPort)
     {
-        private static string _configPath;
-        private static int _httpPort;
-        private static int _pacPort;
-        private static TcpListener? _tcpListener;
-        private static byte[] _writeContent;
-        private static bool _isRunning;
-        private static bool _needRestart = true;
+        _needRestart = configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
 
-        public static async Task Start(string configPath, int httpPort, int pacPort)
+        _configPath = configPath;
+        _httpPort = httpPort;
+        _pacPort = pacPort;
+
+        await InitText();
+
+        if (_needRestart)
         {
-            _needRestart = configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
+            Stop();
+            RunListener();
+        }
+    }
 
-            _configPath = configPath;
-            _httpPort = httpPort;
-            _pacPort = pacPort;
+    private static async Task InitText()
+    {
+        var path = Path.Combine(_configPath, "pac.txt");
 
-            await InitText();
-
-            if (_needRestart)
-            {
-                Stop();
-                RunListener();
-            }
+        // Delete the old pac file
+        if (File.Exists(path) && Utils.GetFileHash(path).Equals("b590c07280f058ef05d5394aa2f927fe"))
+        {
+            File.Delete(path);
         }
 
-        private static async Task InitText()
+        if (!File.Exists(path))
         {
-            var path = Path.Combine(_configPath, "pac.txt");
-
-            // Delete the old pac file
-            if (File.Exists(path) && Utils.GetFileHash(path).Equals("b590c07280f058ef05d5394aa2f927fe"))
-            {
-                File.Delete(path);
-            }
-
-            if (!File.Exists(path))
-            {
-                var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
-                await File.AppendAllTextAsync(path, pac);
-            }
-
-            var pacText =
-                (await File.ReadAllTextAsync(path)).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
-
-            var sb = new StringBuilder();
-            sb.AppendLine("HTTP/1.0 200 OK");
-            sb.AppendLine("Content-type:application/x-ns-proxy-autoconfig");
-            sb.AppendLine("Connection:close");
-            sb.AppendLine("Content-Length:" + Encoding.UTF8.GetByteCount(pacText));
-            sb.AppendLine();
-            sb.Append(pacText);
-            _writeContent = Encoding.UTF8.GetBytes(sb.ToString());
+            var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
+            await File.AppendAllTextAsync(path, pac);
         }
 
-        private static void RunListener()
+        var pacText =
+            (await File.ReadAllTextAsync(path)).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
+
+        var sb = new StringBuilder();
+        sb.AppendLine("HTTP/1.0 200 OK");
+        sb.AppendLine("Content-type:application/x-ns-proxy-autoconfig");
+        sb.AppendLine("Connection:close");
+        sb.AppendLine("Content-Length:" + Encoding.UTF8.GetByteCount(pacText));
+        sb.AppendLine();
+        sb.Append(pacText);
+        _writeContent = Encoding.UTF8.GetBytes(sb.ToString());
+    }
+
+    private static void RunListener()
+    {
+        _tcpListener = TcpListener.Create(_pacPort);
+        _isRunning = true;
+        _tcpListener.Start();
+        Task.Factory.StartNew(async () =>
         {
-            _tcpListener = TcpListener.Create(_pacPort);
-            _isRunning = true;
-            _tcpListener.Start();
-            Task.Factory.StartNew(async () =>
+            while (_isRunning)
             {
-                while (_isRunning)
+                try
                 {
-                    try
+                    if (!_tcpListener.Pending())
                     {
-                        if (!_tcpListener.Pending())
-                        {
-                            await Task.Delay(10);
-                            continue;
-                        }
+                        await Task.Delay(10);
+                        continue;
+                    }
 
-                        var client = await _tcpListener.AcceptTcpClientAsync();
-                        await Task.Run(() => WriteContent(client));
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
+                    var client = await _tcpListener.AcceptTcpClientAsync();
+                    await Task.Run(() => WriteContent(client));
                 }
-            }, TaskCreationOptions.LongRunning);
-        }
+                catch
+                {
+                    // ignored
+                }
+            }
+        }, TaskCreationOptions.LongRunning);
+    }
 
-        private static void WriteContent(TcpClient client)
-        {
-            var stream = client.GetStream();
-            stream.Write(_writeContent, 0, _writeContent.Length);
-            stream.Flush();
-        }
+    private static void WriteContent(TcpClient client)
+    {
+        var stream = client.GetStream();
+        stream.Write(_writeContent, 0, _writeContent.Length);
+        stream.Flush();
+    }
 
-        public static void Stop()
+    public static void Stop()
+    {
+        if (_tcpListener == null)
         {
-            if (_tcpListener == null)
-            {
-                return;
-            }
-            try
-            {
-                _isRunning = false;
-                _tcpListener.Stop();
-                _tcpListener = null;
-            }
-            catch
-            {
-                // ignored
-            }
+            return;
+        }
+        try
+        {
+            _isRunning = false;
+            _tcpListener.Stop();
+            _tcpListener = null;
+        }
+        catch
+        {
+            // ignored
         }
     }
 }

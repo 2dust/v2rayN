@@ -2,63 +2,62 @@ using System.Reactive;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace ServiceLib.ViewModels
+namespace ServiceLib.ViewModels;
+
+public class SubEditViewModel : MyReactiveObject
 {
-    public class SubEditViewModel : MyReactiveObject
+    [Reactive]
+    public SubItem SelectedSource { get; set; }
+
+    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+
+    public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        [Reactive]
-        public SubItem SelectedSource { get; set; }
+        _config = AppHandler.Instance.Config;
+        _updateView = updateView;
 
-        public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-
-        public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
+        SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _config = AppHandler.Instance.Config;
-            _updateView = updateView;
+            await SaveSubAsync();
+        });
 
-            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SaveSubAsync();
-            });
+        SelectedSource = subItem.Id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
+    }
 
-            SelectedSource = subItem.Id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
+    private async Task SaveSubAsync()
+    {
+        var remarks = SelectedSource.Remarks;
+        if (remarks.IsNullOrEmpty())
+        {
+            NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+            return;
         }
 
-        private async Task SaveSubAsync()
+        var url = SelectedSource.Url;
+        if (url.IsNotEmpty())
         {
-            var remarks = SelectedSource.Remarks;
-            if (remarks.IsNullOrEmpty())
+            var uri = Utils.TryUri(url);
+            if (uri == null)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+                NoticeHandler.Instance.Enqueue(ResUI.InvalidUrlTip);
                 return;
             }
+            //Do not allow http protocol
+            if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
+            {
+                NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
+                //return;
+            }
+        }
 
-            var url = SelectedSource.Url;
-            if (url.IsNotEmpty())
-            {
-                var uri = Utils.TryUri(url);
-                if (uri == null)
-                {
-                    NoticeHandler.Instance.Enqueue(ResUI.InvalidUrlTip);
-                    return;
-                }
-                //Do not allow http protocol
-                if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
-                {
-                    NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
-                    //return;
-                }
-            }
-
-            if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
-            }
-            else
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
-            }
+        if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
+        {
+            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            _updateView?.Invoke(EViewAction.CloseWindow, null);
+        }
+        else
+        {
+            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 }

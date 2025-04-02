@@ -1,9 +1,8 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums;
+
+public enum EPresetType
 {
-    public enum EPresetType
-    {
-        Default = 0,
-        Russia = 1,
-        Iran = 2,
-    }
+    Default = 0,
+    Russia = 1,
+    Iran = 2,
 }

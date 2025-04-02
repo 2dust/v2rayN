@@ -1,9 +1,8 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
-namespace v2rayN.Base
+namespace v2rayN.Base;
+
+internal class MyDGTextColumn : DataGridTextColumn
 {
-    internal class MyDGTextColumn : DataGridTextColumn
-    {
-        public string ExName { get; set; }
-    }
+    public string ExName { get; set; }
 }

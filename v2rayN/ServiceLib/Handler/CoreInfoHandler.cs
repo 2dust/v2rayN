@@ -1,65 +1,65 @@
-namespace ServiceLib.Handler
-{
-    public sealed class CoreInfoHandler
-    {
-        private static readonly Lazy<CoreInfoHandler> _instance = new(() => new());
-        private List<CoreInfo>? _coreInfo;
-        public static CoreInfoHandler Instance => _instance.Value;
+namespace ServiceLib.Handler;
 
-        public CoreInfoHandler()
+public sealed class CoreInfoHandler
+{
+    private static readonly Lazy<CoreInfoHandler> _instance = new(() => new());
+    private List<CoreInfo>? _coreInfo;
+    public static CoreInfoHandler Instance => _instance.Value;
+
+    public CoreInfoHandler()
+    {
+        InitCoreInfo();
+    }
+
+    public CoreInfo? GetCoreInfo(ECoreType coreType)
+    {
+        if (_coreInfo == null)
         {
             InitCoreInfo();
         }
+        return _coreInfo?.FirstOrDefault(t => t.CoreType == coreType);
+    }
 
-        public CoreInfo? GetCoreInfo(ECoreType coreType)
+    public List<CoreInfo> GetCoreInfo()
+    {
+        if (_coreInfo == null)
         {
-            if (_coreInfo == null)
-            {
-                InitCoreInfo();
-            }
-            return _coreInfo?.FirstOrDefault(t => t.CoreType == coreType);
+            InitCoreInfo();
         }
+        return _coreInfo ?? [];
+    }
 
-        public List<CoreInfo> GetCoreInfo()
+    public string GetCoreExecFile(CoreInfo? coreInfo, out string msg)
+    {
+        var fileName = string.Empty;
+        msg = string.Empty;
+        foreach (var name in coreInfo?.CoreExes)
         {
-            if (_coreInfo == null)
+            var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
+            if (File.Exists(vName))
             {
-                InitCoreInfo();
+                fileName = vName;
+                break;
             }
-            return _coreInfo ?? [];
         }
-
-        public string GetCoreExecFile(CoreInfo? coreInfo, out string msg)
+        if (fileName.IsNullOrEmpty())
         {
-            var fileName = string.Empty;
-            msg = string.Empty;
-            foreach (var name in coreInfo?.CoreExes)
-            {
-                var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
-                if (File.Exists(vName))
-                {
-                    fileName = vName;
-                    break;
-                }
-            }
-            if (fileName.IsNullOrEmpty())
-            {
-                msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo?.CoreType.ToString()), coreInfo?.CoreExes?.LastOrDefault(), coreInfo?.Url);
-                Logging.SaveLog(msg);
-            }
-            return fileName;
+            msg = string.Format(ResUI.NotFoundCore, Utils.GetBinPath("", coreInfo?.CoreType.ToString()), coreInfo?.CoreExes?.LastOrDefault(), coreInfo?.Url);
+            Logging.SaveLog(msg);
         }
+        return fileName;
+    }
 
-        private void InitCoreInfo()
-        {
-            var urlN = GetCoreUrl(ECoreType.v2rayN);
-            var urlXray = GetCoreUrl(ECoreType.Xray);
-            var urlMihomo = GetCoreUrl(ECoreType.mihomo);
-            var urlSingbox = GetCoreUrl(ECoreType.sing_box);
+    private void InitCoreInfo()
+    {
+        var urlN = GetCoreUrl(ECoreType.v2rayN);
+        var urlXray = GetCoreUrl(ECoreType.Xray);
+        var urlMihomo = GetCoreUrl(ECoreType.mihomo);
+        var urlSingbox = GetCoreUrl(ECoreType.sing_box);
 
-            _coreInfo =
-            [
-                new CoreInfo
+        _coreInfo =
+        [
+            new CoreInfo
                 {
                     CoreType = ECoreType.v2rayN,
                     Url = GetCoreUrl(ECoreType.v2rayN),
@@ -202,17 +202,16 @@ namespace ServiceLib.Handler
                     AbsolutePath = false,
                 }
 
-            ];
-        }
+        ];
+    }
 
-        private static string PortableMode()
-        {
-            return $" -d {Utils.GetBinPath("").AppendQuotes()}";
-        }
+    private static string PortableMode()
+    {
+        return $" -d {Utils.GetBinPath("").AppendQuotes()}";
+    }
 
-        private static string GetCoreUrl(ECoreType eCoreType)
-        {
-            return $"{Global.GithubUrl}/{Global.CoreUrls[eCoreType]}/releases";
-        }
+    private static string GetCoreUrl(ECoreType eCoreType)
+    {
+        return $"{Global.GithubUrl}/{Global.CoreUrls[eCoreType]}/releases";
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace ServiceLib.Models
+namespace ServiceLib.Models;
+
+[Serializable]
+public class RoutingTemplate
 {
-    [Serializable]
-    public class RoutingTemplate
-    {
-        public string Version { get; set; }
-        public RoutingItem[] RoutingItems { get; set; }
-    }
+    public string Version { get; set; }
+    public RoutingItem[] RoutingItems { get; set; }
 }

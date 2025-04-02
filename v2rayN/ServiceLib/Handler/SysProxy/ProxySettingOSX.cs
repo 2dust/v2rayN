@@ -1,38 +1,37 @@
-namespace ServiceLib.Handler.SysProxy
+namespace ServiceLib.Handler.SysProxy;
+
+public class ProxySettingOSX
 {
-    public class ProxySettingOSX
+    private static readonly string _proxySetFileName = $"{Global.ProxySetOSXShellFileName.Replace(Global.NamespaceSample, "")}.sh";
+
+    public static async Task SetProxy(string host, int port, string exceptions)
     {
-        private static readonly string _proxySetFileName = $"{Global.ProxySetOSXShellFileName.Replace(Global.NamespaceSample, "")}.sh";
-
-        public static async Task SetProxy(string host, int port, string exceptions)
+        List<string> args = ["set", host, port.ToString()];
+        if (exceptions.IsNotEmpty())
         {
-            List<string> args = ["set", host, port.ToString()];
-            if (exceptions.IsNotEmpty())
-            {
-                args.AddRange(exceptions.Split(','));
-            }
-
-            await ExecCmd(args);
+            args.AddRange(exceptions.Split(','));
         }
 
-        public static async Task UnsetProxy()
+        await ExecCmd(args);
+    }
+
+    public static async Task UnsetProxy()
+    {
+        List<string> args = ["clear"];
+        await ExecCmd(args);
+    }
+
+    private static async Task ExecCmd(List<string> args)
+    {
+        var fileName = Utils.GetBinConfigPath(_proxySetFileName);
+        if (!File.Exists(fileName))
         {
-            List<string> args = ["clear"];
-            await ExecCmd(args);
+            var contents = EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName);
+            await File.AppendAllTextAsync(fileName, contents);
+
+            await Utils.SetLinuxChmod(fileName);
         }
 
-        private static async Task ExecCmd(List<string> args)
-        {
-            var fileName = Utils.GetBinConfigPath(_proxySetFileName);
-            if (!File.Exists(fileName))
-            {
-                var contents = EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName);
-                await File.AppendAllTextAsync(fileName, contents);
-
-                await Utils.SetLinuxChmod(fileName);
-            }
-
-            await Utils.GetCliWrapOutput(fileName, args);
-        }
+        await Utils.GetCliWrapOutput(fileName, args);
     }
 }

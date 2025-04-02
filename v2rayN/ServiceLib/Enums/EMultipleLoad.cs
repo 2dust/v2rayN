@@ -1,10 +1,9 @@
-namespace ServiceLib.Enums
+namespace ServiceLib.Enums;
+
+public enum EMultipleLoad
 {
-    public enum EMultipleLoad
-    {
-        Random,
-        RoundRobin,
-        LeastPing,
-        LeastLoad
-    }
+    Random,
+    RoundRobin,
+    LeastPing,
+    LeastLoad
 }

@@ -1,12 +1,11 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
-namespace v2rayN.Views
+namespace v2rayN.Views;
+
+public partial class QrcodeView : UserControl
 {
-    public partial class QrcodeView : UserControl
+    public QrcodeView()
     {
-        public QrcodeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

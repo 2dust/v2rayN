@@ -1,65 +1,64 @@
 using System.Reactive;
 using ReactiveUI;
 
-namespace ServiceLib.ViewModels
+namespace ServiceLib.ViewModels;
+
+public class GlobalHotkeySettingViewModel : MyReactiveObject
 {
-    public class GlobalHotkeySettingViewModel : MyReactiveObject
+    private readonly List<KeyEventItem> _globalHotkeys;
+
+    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+
+    public GlobalHotkeySettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        private readonly List<KeyEventItem> _globalHotkeys;
+        _config = AppHandler.Instance.Config;
+        _updateView = updateView;
 
-        public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+        _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
 
-        public GlobalHotkeySettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+        SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _config = AppHandler.Instance.Config;
-            _updateView = updateView;
+            await SaveSettingAsync();
+        });
+    }
 
-            _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
-
-            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SaveSettingAsync();
-            });
-        }
-
-        public KeyEventItem GetKeyEventItem(EGlobalHotkey eg)
+    public KeyEventItem GetKeyEventItem(EGlobalHotkey eg)
+    {
+        var item = _globalHotkeys.FirstOrDefault((it) => it.EGlobalHotkey == eg);
+        if (item != null)
         {
-            var item = _globalHotkeys.FirstOrDefault((it) => it.EGlobalHotkey == eg);
-            if (item != null)
-            {
-                return item;
-            }
-
-            item = new()
-            {
-                EGlobalHotkey = eg,
-                Control = false,
-                Alt = false,
-                Shift = false,
-                KeyCode = null
-            };
-            _globalHotkeys.Add(item);
-
             return item;
         }
 
-        public void ResetKeyEventItem()
+        item = new()
         {
-            _globalHotkeys.Clear();
+            EGlobalHotkey = eg,
+            Control = false,
+            Alt = false,
+            Shift = false,
+            KeyCode = null
+        };
+        _globalHotkeys.Add(item);
+
+        return item;
+    }
+
+    public void ResetKeyEventItem()
+    {
+        _globalHotkeys.Clear();
+    }
+
+    private async Task SaveSettingAsync()
+    {
+        _config.GlobalHotkeys = _globalHotkeys;
+
+        if (await ConfigHandler.SaveConfig(_config) == 0)
+        {
+            _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
-
-        private async Task SaveSettingAsync()
+        else
         {
-            _config.GlobalHotkeys = _globalHotkeys;
-
-            if (await ConfigHandler.SaveConfig(_config) == 0)
-            {
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
-            }
-            else
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
-            }
+            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 }

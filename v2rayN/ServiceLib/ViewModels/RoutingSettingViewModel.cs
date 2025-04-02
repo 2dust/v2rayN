@@ -3,199 +3,198 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace ServiceLib.ViewModels
+namespace ServiceLib.ViewModels;
+
+public class RoutingSettingViewModel : MyReactiveObject
 {
-    public class RoutingSettingViewModel : MyReactiveObject
+    #region Reactive
+
+    private IObservableCollection<RoutingItemModel> _routingItems = new ObservableCollectionExtended<RoutingItemModel>();
+    public IObservableCollection<RoutingItemModel> RoutingItems => _routingItems;
+
+    [Reactive]
+    public RoutingItemModel SelectedSource { get; set; }
+
+    public IList<RoutingItemModel> SelectedSources { get; set; }
+
+    [Reactive]
+    public string DomainStrategy { get; set; }
+
+    [Reactive]
+    public string DomainMatcher { get; set; }
+
+    [Reactive]
+    public string DomainStrategy4Singbox { get; set; }
+
+    public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
+    public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
+    public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
+    public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
+
+    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public bool IsModified { get; set; }
+
+    #endregion Reactive
+
+    public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        #region Reactive
+        _config = AppHandler.Instance.Config;
+        _updateView = updateView;
 
-        private IObservableCollection<RoutingItemModel> _routingItems = new ObservableCollectionExtended<RoutingItemModel>();
-        public IObservableCollection<RoutingItemModel> RoutingItems => _routingItems;
+        var canEditRemove = this.WhenAnyValue(
+            x => x.SelectedSource,
+            selectedSource => selectedSource != null && !selectedSource.Remarks.IsNullOrEmpty());
 
-        [Reactive]
-        public RoutingItemModel SelectedSource { get; set; }
-
-        public IList<RoutingItemModel> SelectedSources { get; set; }
-
-        [Reactive]
-        public string DomainStrategy { get; set; }
-
-        [Reactive]
-        public string DomainMatcher { get; set; }
-
-        [Reactive]
-        public string DomainStrategy4Singbox { get; set; }
-
-        public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
-        public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
-        public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
-        public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
-
-        public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-        public bool IsModified { get; set; }
-
-        #endregion Reactive
-
-        public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+        RoutingAdvancedAddCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _config = AppHandler.Instance.Config;
-            _updateView = updateView;
+            await RoutingAdvancedEditAsync(true);
+        });
+        RoutingAdvancedRemoveCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await RoutingAdvancedRemoveAsync();
+        }, canEditRemove);
+        RoutingAdvancedSetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await RoutingAdvancedSetDefault();
+        }, canEditRemove);
+        RoutingAdvancedImportRulesCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await RoutingAdvancedImportRules();
+        });
 
-            var canEditRemove = this.WhenAnyValue(
-                x => x.SelectedSource,
-                selectedSource => selectedSource != null && !selectedSource.Remarks.IsNullOrEmpty());
+        SaveCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await SaveRoutingAsync();
+        });
 
-            RoutingAdvancedAddCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await RoutingAdvancedEditAsync(true);
-            });
-            RoutingAdvancedRemoveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await RoutingAdvancedRemoveAsync();
-            }, canEditRemove);
-            RoutingAdvancedSetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await RoutingAdvancedSetDefault();
-            }, canEditRemove);
-            RoutingAdvancedImportRulesCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await RoutingAdvancedImportRules();
-            });
+        _ = Init();
+    }
 
-            SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SaveRoutingAsync();
-            });
+    private async Task Init()
+    {
+        SelectedSource = new();
 
-            _ = Init();
+        DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
+        DomainMatcher = _config.RoutingBasicItem.DomainMatcher;
+        DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
+
+        await ConfigHandler.InitBuiltinRouting(_config);
+        await RefreshRoutingItems();
+    }
+
+    #region Refresh Save
+
+    public async Task RefreshRoutingItems()
+    {
+        _routingItems.Clear();
+
+        var routings = await AppHandler.Instance.RoutingItems();
+        foreach (var item in routings)
+        {
+            var def = item.Id == _config.RoutingBasicItem.RoutingIndexId;
+
+            var it = new RoutingItemModel()
+            {
+                IsActive = def,
+                RuleNum = item.RuleNum,
+                Id = item.Id,
+                Remarks = item.Remarks,
+                Url = item.Url,
+                CustomIcon = item.CustomIcon,
+                CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
+                Sort = item.Sort,
+            };
+            _routingItems.Add(it);
         }
+    }
 
-        private async Task Init()
+    private async Task SaveRoutingAsync()
+    {
+        _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
+        _config.RoutingBasicItem.DomainMatcher = DomainMatcher;
+        _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
+
+        if (await ConfigHandler.SaveConfig(_config) == 0)
         {
-            SelectedSource = new();
-
-            DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
-            DomainMatcher = _config.RoutingBasicItem.DomainMatcher;
-            DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
-
-            await ConfigHandler.InitBuiltinRouting(_config);
-            await RefreshRoutingItems();
+            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
-
-        #region Refresh Save
-
-        public async Task RefreshRoutingItems()
+        else
         {
-            _routingItems.Clear();
-
-            var routings = await AppHandler.Instance.RoutingItems();
-            foreach (var item in routings)
-            {
-                var def = item.Id == _config.RoutingBasicItem.RoutingIndexId;
-
-                var it = new RoutingItemModel()
-                {
-                    IsActive = def,
-                    RuleNum = item.RuleNum,
-                    Id = item.Id,
-                    Remarks = item.Remarks,
-                    Url = item.Url,
-                    CustomIcon = item.CustomIcon,
-                    CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
-                    Sort = item.Sort,
-                };
-                _routingItems.Add(it);
-            }
+            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
 
-        private async Task SaveRoutingAsync()
+    #endregion Refresh Save
+
+    public async Task RoutingAdvancedEditAsync(bool blNew)
+    {
+        RoutingItem item;
+        if (blNew)
         {
-            _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
-            _config.RoutingBasicItem.DomainMatcher = DomainMatcher;
-            _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-
-            if (await ConfigHandler.SaveConfig(_config) == 0)
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-                _updateView?.Invoke(EViewAction.CloseWindow, null);
-            }
-            else
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
-            }
+            item = new();
         }
-
-        #endregion Refresh Save
-
-        public async Task RoutingAdvancedEditAsync(bool blNew)
+        else
         {
-            RoutingItem item;
-            if (blNew)
-            {
-                item = new();
-            }
-            else
-            {
-                item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
-                if (item is null)
-                {
-                    return;
-                }
-            }
-            if (await _updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
-            {
-                await RefreshRoutingItems();
-                IsModified = true;
-            }
-        }
-
-        public async Task RoutingAdvancedRemoveAsync()
-        {
-            if (SelectedSource is null || SelectedSource.Remarks.IsNullOrEmpty())
-            {
-                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
-                return;
-            }
-            if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+            item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+            if (item is null)
             {
                 return;
             }
-            foreach (var it in SelectedSources ?? [SelectedSource])
-            {
-                var item = await AppHandler.Instance.GetRoutingItem(it?.Id);
-                if (item != null)
-                {
-                    await ConfigHandler.RemoveRoutingItem(item);
-                }
-            }
-
+        }
+        if (await _updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
+        {
             await RefreshRoutingItems();
             IsModified = true;
         }
+    }
 
-        public async Task RoutingAdvancedSetDefault()
+    public async Task RoutingAdvancedRemoveAsync()
+    {
+        if (SelectedSource is null || SelectedSource.Remarks.IsNullOrEmpty())
         {
-            var item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
-            if (item is null)
+            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            return;
+        }
+        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        {
+            return;
+        }
+        foreach (var it in SelectedSources ?? [SelectedSource])
+        {
+            var item = await AppHandler.Instance.GetRoutingItem(it?.Id);
+            if (item != null)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
-                return;
-            }
-
-            if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
-            {
-                await RefreshRoutingItems();
-                IsModified = true;
+                await ConfigHandler.RemoveRoutingItem(item);
             }
         }
 
-        private async Task RoutingAdvancedImportRules()
+        await RefreshRoutingItems();
+        IsModified = true;
+    }
+
+    public async Task RoutingAdvancedSetDefault()
+    {
+        var item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+        if (item is null)
         {
-            if (await ConfigHandler.InitRouting(_config, true) == 0)
-            {
-                await RefreshRoutingItems();
-                IsModified = true;
-            }
+            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            return;
+        }
+
+        if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
+        {
+            await RefreshRoutingItems();
+            IsModified = true;
+        }
+    }
+
+    private async Task RoutingAdvancedImportRules()
+    {
+        if (await ConfigHandler.InitRouting(_config, true) == 0)
+        {
+            await RefreshRoutingItems();
+            IsModified = true;
         }
     }
 }

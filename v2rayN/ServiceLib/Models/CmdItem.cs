@@ -1,8 +1,7 @@
-﻿namespace ServiceLib.Models
+namespace ServiceLib.Models;
+
+public class CmdItem
 {
-    public class CmdItem
-    {
-        public string? Cmd { get; set; }
-        public List<string>? Arguments { get; set; }
-    }
+    public string? Cmd { get; set; }
+    public List<string>? Arguments { get; set; }
 }
