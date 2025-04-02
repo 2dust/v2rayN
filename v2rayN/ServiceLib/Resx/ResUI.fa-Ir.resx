@@ -1396,24 +1396,24 @@
     <value>مخفی و پورت می شود، با کاما (،) جدا می شود</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-server to custom configuration</value>
+    <value>چند سرور به پیکربندی سفارشی</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>Multi-server Random by Xray</value>
+    <value>چند سرور تصادفی توسط Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Multi-server RoundRobin by Xray</value>
+    <value>چند سرور RoundRobin توسط Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Multi-server LeastPing by Xray</value>
+    <value>چند سرور LeastPing توسط Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Multi-server LeastLoad by Xray</value>
+    <value>چند سرور LeastLoad توسط Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>Multi-server LeastPing by sing-box</value>
+    <value>LeastPing چند سرور توسط sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>Export server</value>
+    <value>صادر کردن سرور</value>
   </data>
 </root>
