@@ -80,6 +80,10 @@ public sealed class AppHandler
         Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
         Logging.LoggingEnabled(_config.GuiItem.EnableLog);
 
+        //First determine the port value
+        _ = StatePort;
+        _ = StatePort2;
+
         return true;
     }
 
