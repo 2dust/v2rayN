@@ -67,6 +67,9 @@ public class Rule4Sbox
     public List<string>? process_name { get; set; }
     public List<string>? rule_set { get; set; }
     public List<Rule4Sbox>? rules { get; set; }
+    public string? action { get; set; }
+    public string? strategy { get; set; }
+    public List<string>? sniffer { get; set; }
 }
 
 [Serializable]
@@ -76,7 +79,6 @@ public class Inbound4Sbox
     public string tag { get; set; }
     public string listen { get; set; }
     public int? listen_port { get; set; }
-    public string? domain_strategy { get; set; }
     public string interface_name { get; set; }
     public List<string>? address { get; set; }
     public int? mtu { get; set; }
@@ -84,8 +86,6 @@ public class Inbound4Sbox
     public bool? strict_route { get; set; }
     public bool? endpoint_independent_nat { get; set; }
     public string? stack { get; set; }
-    public bool? sniff { get; set; }
-    public bool? sniff_override_destination { get; set; }
     public List<User4Sbox> users { get; set; }
 }
 
@@ -134,6 +134,32 @@ public class Outbound4Sbox
     public HyObfs4Sbox? obfs { get; set; }
     public List<string>? outbounds { get; set; }
     public bool? interrupt_exist_connections { get; set; }
+}
+
+public class Endpoints4Sbox
+{
+    public string type { get; set; }
+    public string tag { get; set; }
+    public bool? system { get; set; }
+    public string? name { get; set; }
+    public int? mtu { get; set; }
+    public List<string> address { get; set; }
+    public string private_key { get; set; }
+    public int listen_port { get; set; }
+    public string? udp_timeout { get; set; }
+    public int? workers { get; set; }
+    public List<Peer4Sbox> peers { get; set; }
+}
+
+public class Peer4Sbox
+{
+    public string address { get; set; }
+    public int port { get; set; }
+    public string public_key { get; set; }
+    public string? pre_shared_key { get; set; }
+    public List<string> allowed_ips { get; set; }
+    public int? persistent_keepalive_interval { get; set; }
+    public List<int> reserved { get; set; }
 }
 
 public class Tls4Sbox

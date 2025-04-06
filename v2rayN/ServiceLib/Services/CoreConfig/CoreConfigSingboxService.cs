@@ -1,6 +1,7 @@
 using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
+using DynamicData;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -534,15 +535,6 @@ public class CoreConfigSingboxService
                 singboxConfig.inbounds.Add(inbound);
 
                 inbound.listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                inbound.sniff = _config.Inbound.First().SniffingEnabled;
-                inbound.sniff_override_destination = _config.Inbound.First().RouteOnly ? false : _config.Inbound.First().SniffingEnabled;
-                inbound.domain_strategy = _config.RoutingBasicItem.DomainStrategy4Singbox.IsNullOrEmpty() ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
-
-                var routing = await ConfigHandler.GetDefaultRouting(_config);
-                if (routing.DomainStrategy4Singbox.IsNotEmpty())
-                {
-                    inbound.domain_strategy = routing.DomainStrategy4Singbox;
-                }
 
                 if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
@@ -587,8 +579,6 @@ public class CoreConfigSingboxService
                 tunInbound.mtu = _config.TunModeItem.Mtu;
                 tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                 tunInbound.stack = _config.TunModeItem.Stack;
-                tunInbound.sniff = _config.Inbound.First().SniffingEnabled;
-                //tunInbound.sniff_override_destination = _config.inbound.First().routeOnly ? false : _config.inbound.First().sniffingEnabled;
                 if (_config.TunModeItem.EnableIPv6Address == false)
                 {
                     tunInbound.address = ["172.18.0.1/30"];
@@ -1115,8 +1105,6 @@ public class CoreConfigSingboxService
     {
         try
         {
-            var dnsOutbound = "dns_out";
-
             if (_config.TunModeItem.EnableTun)
             {
                 singboxConfig.route.auto_detect_interface = true;
@@ -1131,7 +1119,7 @@ public class CoreConfigSingboxService
                 singboxConfig.route.rules.Add(new()
                 {
                     port = new() { 53 },
-                    outbound = dnsOutbound,
+                    action = "hijack-dns",
                     process_name = lstDnsExe
                 });
 
@@ -1142,13 +1130,26 @@ public class CoreConfigSingboxService
                 });
             }
 
-            if (!_config.Inbound.First().SniffingEnabled)
+            if (_config.Inbound.First().SniffingEnabled)
             {
                 singboxConfig.route.rules.Add(new()
                 {
-                    port = [53],
-                    network = ["udp"],
-                    outbound = dnsOutbound
+                    action = "sniff",
+                    sniffer = new() { "dns", _config.Inbound.First().DestOverride }
+                });
+                singboxConfig.route.rules.Add(new()
+                {
+                    protocol = new() { "dns" },
+                    action = "hijack-dns"
+                });
+            }
+            else
+            {
+                singboxConfig.route.rules.Add(new()
+                {
+                    port = new() { 53 },
+                    network = new() { "udp" },
+                    action = "hijack-dns"
                 });
             }
 
@@ -1162,6 +1163,21 @@ public class CoreConfigSingboxService
                 outbound = Global.ProxyTag,
                 clash_mode = ERuleMode.Global.ToString()
             });
+
+            if (!(_config.Inbound.First().RouteOnly || _config.TunModeItem.EnableTun))
+            {
+                var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.IsNullOrEmpty() ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
+                var defaultRouting = await ConfigHandler.GetDefaultRouting(_config);
+                if (defaultRouting.DomainStrategy4Singbox.IsNotEmpty())
+                {
+                    domainStrategy = defaultRouting.DomainStrategy4Singbox;
+                }
+                singboxConfig.route.rules.Add(new()
+                {
+                    action = "resolve",
+                    strategy = domainStrategy
+                });
+            }
 
             var routing = await ConfigHandler.GetDefaultRouting(_config);
             if (routing != null)
@@ -1222,10 +1238,15 @@ public class CoreConfigSingboxService
             item.OutboundTag = await GenRoutingUserRuleOutbound(item.OutboundTag, singboxConfig);
             var rules = singboxConfig.route.rules;
 
-            var rule = new Rule4Sbox()
+            var rule = new Rule4Sbox();
+            if (item.OutboundTag == "block")
             {
-                outbound = item.OutboundTag,
-            };
+                rule.action = "reject";
+            }
+            else
+            {
+                rule.outbound = item.OutboundTag;
+            }
 
             if (item.Port.IsNotEmpty())
             {
