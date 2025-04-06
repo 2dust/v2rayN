@@ -8,13 +8,13 @@
       139,
       5353
     ],
-    "outbound": "block"
+    "action": "reject"
   },
   {
     "ip_cidr": [
       "224.0.0.0/3",
       "ff00::/8"
     ],
-    "outbound": "block"
+    "action": "reject"
   }
 ]
