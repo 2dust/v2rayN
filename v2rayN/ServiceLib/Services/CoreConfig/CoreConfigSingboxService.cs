@@ -1134,8 +1134,7 @@ public class CoreConfigSingboxService
             {
                 singboxConfig.route.rules.Add(new()
                 {
-                    action = "sniff",
-                    sniffer = new() { "dns", _config.Inbound.First().DestOverride }
+                    action = "sniff"
                 });
                 singboxConfig.route.rules.Add(new()
                 {
