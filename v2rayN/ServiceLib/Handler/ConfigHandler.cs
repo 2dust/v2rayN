@@ -1023,14 +1023,21 @@ public class ConfigHandler
 
         var profileItem = await AppHandler.Instance.GetProfileItem(indexId) ?? new();
         profileItem.IndexId = indexId;
-        profileItem.Remarks = multipleLoad switch
+        if (coreType == ECoreType.Xray)
         {
-            EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
-            EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
-            EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
-            EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
-            _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
-        };
+            profileItem.Remarks = multipleLoad switch
+            {
+                EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
+                EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
+                EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
+                _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+            };
+        }
+        else if (coreType == ECoreType.sing_box)
+        {
+            profileItem.Remarks = ResUI.menuSetDefaultMultipleServerSingBoxLeastPing;
+        }
         profileItem.Address = Global.CoreMultipleLoadConfigFileName;
         profileItem.ConfigType = EConfigType.Custom;
         profileItem.CoreType = coreType;
