@@ -2,6 +2,7 @@ using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
 using DynamicData;
+using ServiceLib.Models;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -610,6 +611,16 @@ public class CoreConfigSingboxService
             outbound.server = node.Address;
             outbound.server_port = node.Port;
             outbound.type = Global.ProtocolTypes[node.ConfigType];
+
+            if (Utils.IsDomain(node.Address))
+            {
+                outbound.domain_resolver = new()
+                {
+                    server = "local_local",
+                    // TODO
+                    //strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
+                };
+            }
 
             switch (node.ConfigType)
             {
@@ -1453,17 +1464,71 @@ public class CoreConfigSingboxService
         dns4Sbox.rules ??= [];
 
         var tag = "local_local";
+        var localDnsAddress = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress;
+        string? localDnsType = null;
+        //string? dhcpDnsInterface = null;
+        if (localDnsAddress == "local")
+        {
+            localDnsType = "local";
+            localDnsAddress = null;
+        }
+        else if (localDnsAddress.StartsWith("dhcp"))
+        {
+            localDnsType = "dhcp";
+            //if (localDnsAddress.Length > 7) // dhcp://
+            //{
+            //    localDnsAddress = localDnsAddress.Substring(7);
+            //}
+            localDnsAddress = null;
+        }
+        else if (localDnsAddress.StartsWith("tcp"))
+        {
+            localDnsType = "tcp";
+            if (localDnsAddress.Length > 6) // tcp://
+            {
+                localDnsAddress = localDnsAddress.Substring(6);
+            }
+        }
+        else if (localDnsAddress.StartsWith("tls"))
+        {
+            localDnsType = "tls";
+            if (localDnsAddress.Length > 6) // tls://
+            {
+                localDnsAddress = localDnsAddress.Substring(6);
+            }
+        }
+        else if (localDnsAddress.StartsWith("https"))
+        {
+            localDnsType = "https";
+            if (localDnsAddress.Length > 8) // https://
+            {
+                localDnsAddress = localDnsAddress.Substring(8);
+            }
+        }
+        else if (localDnsAddress.StartsWith("quic"))
+        {
+            localDnsType = "quic";
+            if (localDnsAddress.Length > 7) // quic://
+            {
+                localDnsAddress = localDnsAddress.Substring(7);
+            }
+        }
+        else
+        {
+            localDnsType = "udp";
+        }
+
         dns4Sbox.servers.Add(new()
         {
             tag = tag,
-            address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
-            detour = Global.DirectTag,
-            strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom,
+            type = localDnsType,
+            server = localDnsAddress
         });
         dns4Sbox.rules.Insert(0, new()
         {
             server = tag,
-            clash_mode = ERuleMode.Direct.ToString()
+            clash_mode = ERuleMode.Direct.ToString(),
+            strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
         });
         dns4Sbox.rules.Insert(0, new()
         {
@@ -1471,27 +1536,14 @@ public class CoreConfigSingboxService
             clash_mode = ERuleMode.Global.ToString()
         });
 
-        var lstDomain = singboxConfig.outbounds
-                       .Where(t => t.server.IsNotEmpty() && Utils.IsDomain(t.server))
-                       .Select(t => t.server)
-                       .Distinct()
-                       .ToList();
-        if (lstDomain != null && lstDomain.Count > 0)
-        {
-            dns4Sbox.rules.Insert(0, new()
-            {
-                server = tag,
-                domain = lstDomain
-            });
-        }
-
         //Tun2SocksAddress
         if (_config.TunModeItem.EnableTun && node?.ConfigType == EConfigType.SOCKS && Utils.IsDomain(node?.Sni))
         {
             dns4Sbox.rules.Insert(0, new()
             {
                 server = tag,
-                domain = [node?.Sni]
+                domain = [node?.Sni],
+                strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
             });
         }
 

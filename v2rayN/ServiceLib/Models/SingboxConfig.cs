@@ -29,7 +29,6 @@ public class Dns4Sbox
     public bool? independent_cache { get; set; }
     public bool? reverse_mapping { get; set; }
     public string? client_subnet { get; set; }
-    public Fakeip4Sbox? fakeip { get; set; }
 }
 
 public class Route4Sbox
@@ -134,6 +133,7 @@ public class Outbound4Sbox
     public HyObfs4Sbox? obfs { get; set; }
     public List<string>? outbounds { get; set; }
     public bool? interrupt_exist_connections { get; set; }
+    public Rule4Sbox? domain_resolver { get; set; }
 }
 
 public class Endpoints4Sbox
@@ -220,12 +220,14 @@ public class HyObfs4Sbox
 public class Server4Sbox
 {
     public string? tag { get; set; }
-    public string? address { get; set; }
-    public string? address_resolver { get; set; }
-    public string? address_strategy { get; set; }
-    public string? strategy { get; set; }
     public string? detour { get; set; }
+    public string? inet4_range { get; set; }
+    public string? inet6_range { get; set; }
     public string? client_subnet { get; set; }
+    public string? type { get; set; }
+    public string? server { get; set; }
+    public string? server_resolver { get; set; }
+    //public string? interface { get; set; }
 }
 
 public class Experimental4Sbox
@@ -253,13 +255,6 @@ public class Stats4Sbox
     public List<string>? inbounds { get; set; }
     public List<string>? outbounds { get; set; }
     public List<string>? users { get; set; }
-}
-
-public class Fakeip4Sbox
-{
-    public bool enabled { get; set; }
-    public string inet4_range { get; set; }
-    public string inet6_range { get; set; }
 }
 
 public class CacheFile4Sbox
