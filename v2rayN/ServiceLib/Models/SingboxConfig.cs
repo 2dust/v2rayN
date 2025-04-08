@@ -8,6 +8,7 @@ public class SingboxConfig
     public Dns4Sbox? dns { get; set; }
     public List<Inbound4Sbox> inbounds { get; set; }
     public List<Outbound4Sbox> outbounds { get; set; }
+    public List<Endpoints4Sbox>? endpoints { get; set; }
     public Route4Sbox route { get; set; }
     public Experimental4Sbox? experimental { get; set; }
 }
@@ -96,10 +97,8 @@ public class User4Sbox
     public string password { get; set; }
 }
 
-public class Outbound4Sbox
+public class Outbound4Sbox : BaseServer4Sbox
 {
-    public string type { get; set; }
-    public string tag { get; set; }
     public string? server { get; set; }
     public int? server_port { get; set; }
     public List<string>? server_ports { get; set; }
@@ -114,7 +113,6 @@ public class Outbound4Sbox
     public int? recv_window_conn { get; set; }
     public int? recv_window { get; set; }
     public bool? disable_mtu_discovery { get; set; }
-    public string? detour { get; set; }
     public string? method { get; set; }
     public string? username { get; set; }
     public string? password { get; set; }
@@ -122,26 +120,14 @@ public class Outbound4Sbox
     public string? version { get; set; }
     public string? network { get; set; }
     public string? packet_encoding { get; set; }
-    public List<string>? local_address { get; set; }
-    public string? private_key { get; set; }
-    public string? peer_public_key { get; set; }
-    public List<int>? reserved { get; set; }
-    public int? mtu { get; set; }
     public string? plugin { get; set; }
     public string? plugin_opts { get; set; }
-    public Tls4Sbox? tls { get; set; }
-    public Multiplex4Sbox? multiplex { get; set; }
-    public Transport4Sbox? transport { get; set; }
-    public HyObfs4Sbox? obfs { get; set; }
     public List<string>? outbounds { get; set; }
     public bool? interrupt_exist_connections { get; set; }
-    public Rule4Sbox? domain_resolver { get; set; }
 }
 
-public class Endpoints4Sbox
+public class Endpoints4Sbox : BaseServer4Sbox
 {
-    public string type { get; set; }
-    public string tag { get; set; }
     public bool? system { get; set; }
     public string? name { get; set; }
     public int? mtu { get; set; }
@@ -219,14 +205,11 @@ public class HyObfs4Sbox
     public string? password { get; set; }
 }
 
-public class Server4Sbox
+public class Server4Sbox : BaseServer4Sbox
 {
-    public string? tag { get; set; }
-    public string? detour { get; set; }
     public string? inet4_range { get; set; }
     public string? inet6_range { get; set; }
     public string? client_subnet { get; set; }
-    public string? type { get; set; }
     public string? server { get; set; }
     public string? server_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
@@ -276,4 +259,34 @@ public class Ruleset4Sbox
     public string? url { get; set; }
     public string? download_detour { get; set; }
     public string? update_interval { get; set; }
+}
+
+public abstract class DialFields4Sbox
+{
+    public string? detour { get; set; }
+    public string? bind_interface { get; set; }
+    public string? inet4_bind_address { get; set; }
+    public string? inet6_bind_address { get; set; }
+    public int? routing_mark { get; set; }
+    public bool? reuse_addr { get; set; }
+    public string? netns { get; set; }
+    public string? connect_timeout { get; set; }
+    public bool? tcp_fast_open { get; set; }
+    public bool? tcp_multi_path { get; set; }
+    public bool? udp_fragment { get; set; }
+    public Rule4Sbox? domain_resolver { get; set; } // or string
+    public string? network_strategy { get; set; }
+    public List<string>? network_type { get; set; }
+    public List<string>? fallback_network_type { get; set; }
+    public string? fallback_delay { get; set; }
+    public Tls4Sbox? tls { get; set; }
+    public Multiplex4Sbox? multiplex { get; set; }
+    public Transport4Sbox? transport { get; set; }
+    public HyObfs4Sbox? obfs { get; set; }
+}
+
+public abstract class BaseServer4Sbox : DialFields4Sbox
+{
+    public string type { get; set; }
+    public string tag { get; set; }
 }
