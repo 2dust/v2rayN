@@ -1380,24 +1380,28 @@ public class CoreConfigSingboxService
         {
             return false;
         }
-        else if (address.StartsWith("geoip:!"))
-        {
-            return false;
-        }
         else if (address.Equals("geoip:private"))
         {
             rule.ip_is_private = true;
         }
         else if (address.StartsWith("geoip:"))
         {
-            if (rule.geoip is null)
-            { rule.geoip = new(); }
+            rule.geoip ??= new();
             rule.geoip?.Add(address.Substring(6));
+        }
+        else if (address.Equals("geoip:!private"))
+        {
+            rule.ip_is_private = false;
+        }
+        else if (address.StartsWith("geoip:!"))
+        {
+            rule.geoip ??= new();
+            rule.geoip?.Add(address.Substring(6));
+            rule.invert = true;
         }
         else
         {
-            if (rule.ip_cidr is null)
-            { rule.ip_cidr = new(); }
+            rule.ip_cidr ??= new();
             rule.ip_cidr?.Add(address);
         }
         return true;
