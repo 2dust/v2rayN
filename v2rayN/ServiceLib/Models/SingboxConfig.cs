@@ -8,6 +8,7 @@ public class SingboxConfig
     public Dns4Sbox? dns { get; set; }
     public List<Inbound4Sbox> inbounds { get; set; }
     public List<Outbound4Sbox> outbounds { get; set; }
+    public List<Endpoints4Sbox>? endpoints { get; set; }
     public Route4Sbox route { get; set; }
     public Experimental4Sbox? experimental { get; set; }
 }
@@ -123,11 +124,6 @@ public class Outbound4Sbox
     public string? version { get; set; }
     public string? network { get; set; }
     public string? packet_encoding { get; set; }
-    public List<string>? local_address { get; set; }
-    public string? private_key { get; set; }
-    public string? peer_public_key { get; set; }
-    public List<int>? reserved { get; set; }
-    public int? mtu { get; set; }
     public string? plugin { get; set; }
     public string? plugin_opts { get; set; }
     public Tls4Sbox? tls { get; set; }
@@ -152,6 +148,8 @@ public class Endpoints4Sbox
     public string? udp_timeout { get; set; }
     public int? workers { get; set; }
     public List<Peer4Sbox> peers { get; set; }
+    public string? detour { get; set; }
+    public Rule4Sbox? domain_resolver { get; set; }
 }
 
 public class Peer4Sbox
