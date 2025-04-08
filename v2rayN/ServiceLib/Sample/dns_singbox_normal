@@ -16,6 +16,13 @@
   ],
   "rules": [
     {
+      "domain_suffix": [
+        "googleapis.cn",
+        "gstatic.com"
+      ],
+      "server": "remote"
+    },
+    {
       "rule_set": [
         "geosite-cn"
       ],
