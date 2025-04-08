@@ -125,7 +125,7 @@ public class Global
     [
         "",
             @"https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/{0}.dat",
-            @"https://cdn.jsdelivr.net/gh/chocolate4u/Iran-v2ray-rules@release/{0}.dat"
+            @"https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/{0}.dat"
     ];
 
     public static readonly List<string> SingboxRulesetSources =
