@@ -131,7 +131,6 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
                 gridTls.IsVisible = false;
-                cmbCoreType.IsEnabled = false;
 
                 break;
         }

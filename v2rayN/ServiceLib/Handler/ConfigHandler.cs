@@ -716,7 +716,6 @@ public class ConfigHandler
     public static async Task<int> AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.WireGuard;
-        profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Id = profileItem.Id.TrimEx();

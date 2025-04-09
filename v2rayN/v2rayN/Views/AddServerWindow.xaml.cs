@@ -125,7 +125,6 @@ public partial class AddServerWindow
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
                 gridTls.Visibility = Visibility.Collapsed;
-                cmbCoreType.IsEnabled = false;
 
                 break;
         }
