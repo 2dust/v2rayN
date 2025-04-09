@@ -12,14 +12,7 @@ public class CoreConfigClashService
     {
         _config = config;
     }
-
-    /// <summary>
-    /// 生成配置文件
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="fileName"></param>
-    /// <param name="msg"></param>
-    /// <returns></returns>
+ 
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();

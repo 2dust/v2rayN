@@ -661,7 +661,7 @@ public class CoreConfigV2rayService
                         {
                             usersItem = vnextItem.users.First();
                         }
-                        //远程服务器用户ID
+                
                         usersItem.id = node.Id;
                         usersItem.alterId = node.AlterId;
                         usersItem.email = Global.UserEMail;
@@ -1143,7 +1143,7 @@ public class CoreConfigV2rayService
                 obj["servers"] = JsonUtils.SerializeToNode(servers);
             }
 
-            // 追加至 dns 设置
+            // Append to dns settings
             if (item.UseSystemHosts)
             {
                 var systemHosts = Utils.GetSystemHosts();

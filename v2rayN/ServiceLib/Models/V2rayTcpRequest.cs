@@ -1,8 +1,5 @@
 namespace ServiceLib.Models;
 
-/// <summary>
-/// Tcp伪装http的Request，只要Host
-/// </summary>
 public class V2rayTcpRequest
 {
     /// <summary>

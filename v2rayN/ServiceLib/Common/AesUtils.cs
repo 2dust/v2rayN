@@ -8,7 +8,7 @@ public class AesUtils
     private const int KeySize = 256; // AES-256
     private const int IvSize = 16;   // AES block size
     private const int Iterations = 10000;
-    private static readonly byte[] Salt = Encoding.ASCII.GetBytes("saltysalt".PadRight(16, ' ')); // google浏览器默认盐值
+    private static readonly byte[] Salt = Encoding.ASCII.GetBytes("saltysalt".PadRight(16, ' ')); 
     private static readonly string DefaultPassword = Utils.GetMd5(Utils.GetHomePath() + "AesUtils");
 
     /// <summary>

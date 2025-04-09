@@ -19,7 +19,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// 只打开一个进程
+    /// Open only one process
     /// </summary>
     /// <param name="e"></param>
     protected override void OnStartup(StartupEventArgs e)

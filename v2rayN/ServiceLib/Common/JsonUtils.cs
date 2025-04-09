@@ -88,7 +88,7 @@ public class JsonUtils
             {
                 WriteIndented = indented,
                 DefaultIgnoreCondition = nullValue ? JsonIgnoreCondition.Never : JsonIgnoreCondition.WhenWritingNull,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping // 避免转义加号
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
             result = JsonSerializer.Serialize(obj, options);
         }

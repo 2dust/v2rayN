@@ -12,10 +12,6 @@ internal static class WindowsUtils
 {
     private static readonly string _tag = "WindowsUtils";
 
-    /// <summary>
-    /// 获取剪贴板数
-    /// </summary>
-    /// <returns></returns>
     public static string? GetClipboardData()
     {
         var strData = string.Empty;
@@ -35,10 +31,6 @@ internal static class WindowsUtils
         return strData;
     }
 
-    /// <summary>
-    /// 拷贝至剪贴板
-    /// </summary>
-    /// <returns></returns>
     public static void SetClipboardData(string strData)
     {
         try

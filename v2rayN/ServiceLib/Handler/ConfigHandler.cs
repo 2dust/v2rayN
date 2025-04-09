@@ -3,9 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
-/// <summary>
-/// 本软件配置文件处理类
-/// </summary>
 public class ConfigHandler
 {
     private static readonly string _configRes = Global.ConfigFileName;
@@ -14,10 +11,12 @@ public class ConfigHandler
     #region ConfigHandler
 
     /// <summary>
-    /// 载入配置文件
+    /// Load the application configuration file
+    /// If the file exists, deserialize it from JSON
+    /// If not found, create a new Config object with default settings
+    /// Initialize default values for missing configuration sections
     /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
+    /// <returns>Config object containing application settings or null if there's an error</returns>
     public static Config? LoadConfig()
     {
         Config? config = null;
@@ -169,10 +168,11 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 保参数
+    /// Save the configuration to a file
+    /// First writes to a temporary file, then replaces the original file
     /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
+    /// <param name="config">Configuration object to be saved</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SaveConfig(Config config)
     {
         try
@@ -204,6 +204,13 @@ public class ConfigHandler
 
     #region Server
 
+    /// <summary>
+    /// Add a server profile to the configuration
+    /// Dispatches the request to the appropriate method based on the config type
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Server profile to add</param>
+    /// <returns>Result of the operation (0 if successful, -1 if failed)</returns>
     public static async Task<int> AddServer(Config config, ProfileItem profileItem)
     {
         var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
@@ -258,11 +265,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a VMess server
+    /// Validates and processes VMess-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">VMess profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddVMessServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.VMess;
@@ -291,11 +300,11 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 移除服务器
+    /// Remove multiple servers from the configuration
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="indexes"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="indexes">List of server profiles to remove</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> RemoveServers(Config config, List<ProfileItem> indexes)
     {
         var subid = "TempRemoveSubId";
@@ -311,11 +320,12 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 克隆服务器
+    /// Clone server profiles
+    /// Creates copies of the specified server profiles with "-clone" appended to the remarks
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="index"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="indexes">List of server profiles to clone</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> CopyServer(Config config, List<ProfileItem> indexes)
     {
         foreach (var it in indexes)
@@ -347,11 +357,12 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 设置活动服务器
+    /// Set the default server by its index ID
+    /// Updates the configuration to use the specified server as default
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="item"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="indexId">Index ID of the server to set as default</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SetDefaultServerIndex(Config config, string? indexId)
     {
         if (indexId.IsNullOrEmpty())
@@ -366,6 +377,13 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Set a default server from the provided list of profiles
+    /// Ensures there's always a valid default server selected
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="lstProfile">List of profile models to choose from</param>
+    /// <returns>Result of SetDefaultServerIndex operation</returns>
     public static async Task<int> SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
     {
         if (lstProfile.Exists(t => t.IndexId == config.IndexId))
@@ -386,6 +404,12 @@ public class ConfigHandler
         return await SetDefaultServerIndex(config, item?.IndexId);
     }
 
+    /// <summary>
+    /// Get the current default server profile
+    /// If the current default is invalid, selects a new default
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <returns>The default profile item or null if none exists</returns>
     public static async Task<ProfileItem?> GetDefaultServer(Config config)
     {
         var item = await AppHandler.Instance.GetProfileItem(config.IndexId);
@@ -400,13 +424,15 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 移动服务器
+    /// Move a server in the list to a different position
+    /// Supports moving to top, up, down, bottom or specific position
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="lstProfile"></param>
-    /// <param name="index"></param>
-    /// <param name="eMove"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="lstProfile">List of server profiles</param>
+    /// <param name="index">Index of the server to move</param>
+    /// <param name="eMove">Direction to move the server</param>
+    /// <param name="pos">Target position when using EMove.Position</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveServer(Config config, List<ProfileItem> lstProfile, int index, EMove eMove, int pos = -1)
     {
         int count = lstProfile.Count;
@@ -474,11 +500,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 添加自定义服务器
+    /// Add a custom server configuration from a file
+    /// Copies the configuration file to the app's config directory
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Profile item with the file path in Address</param>
+    /// <param name="blDelete">Whether to delete the source file after copying</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddCustomServer(Config config, ProfileItem profileItem, bool blDelete)
     {
         var fileName = profileItem.Address;
@@ -517,11 +545,12 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Edit an existing custom server configuration
+    /// Updates the server's properties without changing the file
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Profile item with updated properties</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
     {
         var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
@@ -551,11 +580,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a Shadowsocks server
+    /// Validates and processes Shadowsocks-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Shadowsocks profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddShadowsocksServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Shadowsocks;
@@ -579,11 +610,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a SOCKS server
+    /// Processes SOCKS-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">SOCKS profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddSocksServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.SOCKS;
@@ -596,11 +629,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit an HTTP server
+    /// Processes HTTP-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">HTTP profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddHttpServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.HTTP;
@@ -613,11 +648,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a Trojan server
+    /// Validates and processes Trojan-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Trojan profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddTrojanServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Trojan;
@@ -639,11 +676,14 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a Hysteria2 server
+    /// Validates and processes Hysteria2-specific settings
+    /// Sets the core type to sing_box as required by Hysteria2
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Hysteria2 profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Hysteria2;
@@ -669,11 +709,14 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a TUIC server
+    /// Validates and processes TUIC-specific settings
+    /// Sets the core type to sing_box as required by TUIC
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">TUIC profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddTuicServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.TUIC;
@@ -708,11 +751,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a WireGuard server
+    /// Validates and processes WireGuard-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">WireGuard profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.WireGuard;
@@ -738,6 +783,15 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Sort the server list by the specified column
+    /// Updates the sort order in the profile extension data
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="subId">Subscription ID to filter servers</param>
+    /// <param name="colName">Column name to sort by</param>
+    /// <param name="asc">Sort in ascending order if true, descending if false</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SortServers(Config config, string subId, string colName, bool asc)
     {
         var lstModel = await AppHandler.Instance.ProfileItems(subId, "");
@@ -831,11 +885,13 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit server
+    /// Add or edit a VLESS server
+    /// Validates and processes VLESS-specific settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="profileItem"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">VLESS profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddVlessServer(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.VLESS;
@@ -867,6 +923,13 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Remove duplicate servers from a subscription
+    /// Compares servers based on their properties rather than just names
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="subId">Subscription ID to deduplicate</param>
+    /// <returns>Tuple with total count and remaining count after deduplication</returns>
     public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
     {
         var lstProfile = await AppHandler.Instance.ProfileItems(subId);
@@ -898,6 +961,14 @@ public class ConfigHandler
         return new Tuple<int, int>(lstProfile.Count, lstKeep.Count);
     }
 
+    /// <summary>
+    /// Common server addition logic used by all server types
+    /// Sets common properties and handles sorting and persistence
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Profile item to add</param>
+    /// <param name="toFile">Whether to save to database</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> AddServerCommon(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigVersion = 2;
@@ -949,6 +1020,14 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Compare two profile items to determine if they represent the same server
+    /// Used for deduplication and server matching
+    /// </summary>
+    /// <param name="o">First profile item</param>
+    /// <param name="n">Second profile item</param>
+    /// <param name="remarks">Whether to compare remarks</param>
+    /// <returns>True if the profiles match, false otherwise</returns>
     private static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
     {
         if (o == null || n == null)
@@ -980,6 +1059,13 @@ public class ConfigHandler
         }
     }
 
+    /// <summary>
+    /// Remove a single server profile by its index ID
+    /// Deletes the configuration file if it's a custom config
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="indexId">Index ID of the profile to remove</param>
+    /// <returns>0 if successful</returns>
     private static async Task<int> RemoveProfileItem(Config config, string indexId)
     {
         try
@@ -1004,6 +1090,15 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Create a custom server that combines multiple servers for load balancing
+    /// Generates a configuration file that references multiple servers
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="selecteds">Selected servers to combine</param>
+    /// <param name="coreType">Core type to use (Xray or sing_box)</param>
+    /// <param name="multipleLoad">Load balancing algorithm</param>
+    /// <returns>Result object with success state and data</returns>
     public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
     {
         var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
@@ -1047,6 +1142,14 @@ public class ConfigHandler
         return result;
     }
 
+    /// <summary>
+    /// Get a SOCKS server profile for pre-SOCKS functionality
+    /// Used when TUN mode is enabled or when a custom config has a pre-SOCKS port
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="node">Server node that might need pre-SOCKS</param>
+    /// <param name="coreType">Core type being used</param>
+    /// <returns>A SOCKS profile item or null if not needed</returns>
     public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
         ProfileItem? itemSocks = null;
@@ -1076,6 +1179,13 @@ public class ConfigHandler
         return itemSocks;
     }
 
+    /// <summary>
+    /// Remove servers with invalid test results (timeout)
+    /// Useful for cleaning up subscription lists
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="subid">Subscription ID to filter servers</param>
+    /// <returns>Number of removed servers or -1 if failed</returns>
     public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
     {
         var lstModel = await AppHandler.Instance.ProfileItems(subid, "");
@@ -1099,12 +1209,14 @@ public class ConfigHandler
     #region Batch add servers
 
     /// <summary>
-    /// 批量添加服务器
+    /// Add multiple servers from string data (common protocols)
+    /// Parses the string data into server profiles
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="strData"></param>
-    /// <param name="subid"></param>
-    /// <returns>成功导入的数量</returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="strData">String data containing server information</param>
+    /// <param name="subid">Subscription ID to associate with the servers</param>
+    /// <param name="isSub">Whether this is from a subscription</param>
+    /// <returns>Number of successfully imported servers or -1 if failed</returns>
     private static async Task<int> AddBatchServersCommon(Config config, string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
@@ -1184,6 +1296,15 @@ public class ConfigHandler
         return countServers;
     }
 
+    /// <summary>
+    /// Add servers from custom configuration formats (sing-box, v2ray, etc.)
+    /// Handles various configuration formats and imports them as custom configs
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="strData">String data containing server information</param>
+    /// <param name="subid">Subscription ID to associate with the servers</param>
+    /// <param name="isSub">Whether this is from a subscription</param>
+    /// <returns>Number of successfully imported servers or -1 if failed</returns>
     private static async Task<int> AddBatchServers4Custom(Config config, string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
@@ -1282,6 +1403,15 @@ public class ConfigHandler
         }
     }
 
+    /// <summary>
+    /// Add Shadowsocks servers from SIP008 format
+    /// SIP008 is a JSON-based format for Shadowsocks servers
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="strData">String data in SIP008 format</param>
+    /// <param name="subid">Subscription ID to associate with the servers</param>
+    /// <param name="isSub">Whether this is from a subscription</param>
+    /// <returns>Number of successfully imported servers or -1 if failed</returns>
     private static async Task<int> AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
@@ -1314,6 +1444,15 @@ public class ConfigHandler
         return -1;
     }
 
+    /// <summary>
+    /// Main entry point for adding batch servers from various formats
+    /// Tries different parsing methods to import as many servers as possible
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="strData">String data containing server information</param>
+    /// <param name="subid">Subscription ID to associate with the servers</param>
+    /// <param name="isSub">Whether this is from a subscription</param>
+    /// <returns>Number of successfully imported servers or -1 if failed</returns>
     public static async Task<int> AddBatchServers(Config config, string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
@@ -1386,11 +1525,12 @@ public class ConfigHandler
     #region Sub & Group
 
     /// <summary>
-    /// add sub
+    /// Add a subscription item from URL
+    /// Creates a new subscription with default settings
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="url"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="url">Subscription URL</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddSubItem(Config config, string url)
     {
         //already exists
@@ -1422,6 +1562,12 @@ public class ConfigHandler
         return await AddSubItem(config, subItem);
     }
 
+    /// <summary>
+    /// Add or update a subscription item
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="subItem">Subscription item to add or update</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddSubItem(Config config, SubItem subItem)
     {
         var item = await AppHandler.Instance.GetSubItem(subItem.Id);
@@ -1473,11 +1619,12 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// 移除服务器
+    /// Remove servers associated with a subscription ID
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="subid"></param>
-    /// <returns></returns>
+    /// <param name="config">Current configuration</param>
+    /// <param name="subid">Subscription ID</param>
+    /// <param name="isSub">Whether to only remove servers marked as subscription items</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> RemoveServersViaSubid(Config config, string subid, bool isSub)
     {
         if (subid.IsNullOrEmpty())
@@ -1501,6 +1648,12 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Delete a subscription item and all its associated servers
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="id">Subscription ID to delete</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> DeleteSubItem(Config config, string id)
     {
         var item = await AppHandler.Instance.GetSubItem(id);
@@ -1514,6 +1667,13 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Move servers to a different group (subscription)
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="lstProfile">List of profiles to move</param>
+    /// <param name="subid">Target subscription ID</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> MoveToGroup(Config config, List<ProfileItem> lstProfile, string subid)
     {
         foreach (var item in lstProfile)
@@ -1529,6 +1689,12 @@ public class ConfigHandler
 
     #region Routing
 
+    /// <summary>
+    /// Save a routing item to the database
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="item">Routing item to save</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SaveRoutingItem(Config config, RoutingItem item)
     {
         if (item.Id.IsNullOrEmpty())
@@ -1547,11 +1713,11 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// AddBatchRoutingRules
+    /// Add multiple routing rules to a routing item
     /// </summary>
-    /// <param name="config"></param>
-    /// <param name="strData"></param>
-    /// <returns></returns>
+    /// <param name="routingItem">Routing item to add rules to</param>
+    /// <param name="strData">JSON string containing rules data</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddBatchRoutingRules(RoutingItem routingItem, string strData)
     {
         if (strData.IsNullOrEmpty())
@@ -1588,12 +1754,14 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// MoveRoutingRule
+    /// Move a routing rule within a rules list
+    /// Supports moving to top, up, down, bottom or specific position
     /// </summary>
-    /// <param name="routingItem"></param>
-    /// <param name="index"></param>
-    /// <param name="eMove"></param>
-    /// <returns></returns>
+    /// <param name="rules">List of routing rules</param>
+    /// <param name="index">Index of the rule to move</param>
+    /// <param name="eMove">Direction to move the rule</param>
+    /// <param name="pos">Target position when using EMove.Position</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveRoutingRule(List<RulesItem> rules, int index, EMove eMove, int pos = -1)
     {
         int count = rules.Count;
@@ -1664,6 +1832,12 @@ public class ConfigHandler
         return await Task.FromResult(0);
     }
 
+    /// <summary>
+    /// Set the default routing configuration
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="routingItem">Routing item to set as default</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
     {
         if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.Id == routingItem.Id).CountAsync() > 0)
@@ -1676,6 +1850,12 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Get the current default routing configuration
+    /// If no default is set, selects the first available routing item
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <returns>The default routing item</returns>
     public static async Task<RoutingItem> GetDefaultRouting(Config config)
     {
         var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
@@ -1689,6 +1869,12 @@ public class ConfigHandler
         return item;
     }
 
+    /// <summary>
+    /// Initialize routing rules from built-in or external templates
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> InitRouting(Config config, bool blImportAdvancedRules = false)
     {
         if (config.ConstItem.RouteRulesTemplateSourceUrl.IsNullOrEmpty())
@@ -1703,6 +1889,13 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Initialize routing rules from external templates
+    /// Downloads and processes routing templates from a URL
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
     {
         var downloadHandle = new DownloadService();
@@ -1751,6 +1944,13 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Initialize built-in routing rules
+    /// Creates default routing configurations (whitelist, blacklist, global)
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
     {
         var ver = "V3-";
@@ -1804,6 +2004,10 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Remove a routing item from the database
+    /// </summary>
+    /// <param name="routingItem">Routing item to remove</param>
     public static async Task RemoveRoutingItem(RoutingItem routingItem)
     {
         await SQLiteHelper.Instance.DeleteAsync(routingItem);
@@ -1813,6 +2017,12 @@ public class ConfigHandler
 
     #region DNS
 
+    /// <summary>
+    /// Initialize built-in DNS configurations
+    /// Creates default DNS items for V2Ray and sing-box
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinDNS(Config config)
     {
         var items = await AppHandler.Instance.DNSItems();
@@ -1836,6 +2046,12 @@ public class ConfigHandler
         return 0;
     }
 
+    /// <summary>
+    /// Save a DNS item to the database
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="item">DNS item to save</param>
+    /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SaveDNSItems(Config config, DNSItem item)
     {
         if (item == null)
@@ -1858,6 +2074,13 @@ public class ConfigHandler
         }
     }
 
+    /// <summary>
+    /// Get an external DNS configuration from URL
+    /// Downloads and processes DNS templates
+    /// </summary>
+    /// <param name="type">Core type (Xray or sing-box)</param>
+    /// <param name="url">URL of the DNS template</param>
+    /// <returns>DNS item with configuration from the URL</returns>
     public static async Task<DNSItem> GetExternalDNSItem(ECoreType type, string url)
     {
         var currentItem = await AppHandler.Instance.GetDNSItem(type);
@@ -1889,6 +2112,13 @@ public class ConfigHandler
 
     #region Regional Presets
 
+    /// <summary>
+    /// Apply regional presets for geo-specific configurations
+    /// Sets up geo files, routing rules, and DNS for specific regions
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="type">Type of preset (Default, Russia, Iran)</param>
+    /// <returns>True if successful</returns>
     public static async Task<bool> ApplyRegionalPreset(Config config, EPresetType type)
     {
         switch (type)
