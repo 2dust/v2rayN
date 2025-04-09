@@ -466,7 +466,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Next proxy remarks 的本地化字符串。
+        ///   查找类似 Next proxy Configuration remarks 的本地化字符串。
         /// </summary>
         public static string LvNextProfile {
             get {
@@ -484,7 +484,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Previous proxy remarks 的本地化字符串。
+        ///   查找类似 Previous proxy Configuration remarks 的本地化字符串。
         /// </summary>
         public static string LvPrevProfile {
             get {
@@ -493,7 +493,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please make sure the remarks exist and are unique 的本地化字符串。
+        ///   查找类似 Please make sure the Configuration remarks exist and are unique 的本地化字符串。
         /// </summary>
         public static string LvPrevProfileTip {
             get {

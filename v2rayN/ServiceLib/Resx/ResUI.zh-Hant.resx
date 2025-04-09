@@ -1071,14 +1071,14 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>擁塞控制算法</value>
   </data>
-  <data name="LvPrevProfile" xml:space="preserve">
-    <value>前置代理別名</value>
+    <data name="LvPrevProfile" xml:space="preserve">
+    <value>前置代理設定檔別名</value>
   </data>
-  <data name="LvNextProfile" xml:space="preserve">
-    <value>落地代理別名</value>
+    <data name="LvNextProfile" xml:space="preserve">
+    <value>落地代理設定檔別名</value>
   </data>
-  <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>請確保別名存在並且唯一</value>
+    <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>請確保設定檔別名存在並且唯一</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>啟用額外偵聽連接埠</value>

@@ -1075,13 +1075,13 @@
     <value>Congestion control</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy remarks</value>
+    <value>Previous proxy Configuration remarks</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy remarks</value>
+    <value>Next proxy Configuration remarks</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exist and are unique</value>
+    <value>Please make sure the Configuration remarks exist and are unique</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>Enable additional Inbound</value>
