@@ -127,6 +127,26 @@ public class Outboundsettings4Ray
     public int? userLevel { get; set; }
 
     public FragmentItem4Ray? fragment { get; set; }
+
+    public string? secretKey { get; set; }
+
+    public List<string>? address { get; set; }
+
+    public List<WireguardPeer4Ray>? peers { get; set; }
+
+    public bool? noKernelTun { get; set; }
+
+    public int? mtu { get; set; }
+
+    public List<int>? reserved { get; set; }
+
+    public int? workers { get; set; }
+}
+
+public class WireguardPeer4Ray
+{
+    public string endpoint { get; set; }
+    public string publicKey { get; set; }
 }
 
 public class VnextItem4Ray

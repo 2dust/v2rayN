@@ -120,7 +120,7 @@ public class CoreConfigV2rayService
                 {
                     continue;
                 }
-                if (it.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.WireGuard)
+                if (it.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC)
                 {
                     continue;
                 }
@@ -805,6 +805,26 @@ public class CoreConfigV2rayService
                         outbound.settings.vnext = null;
                         break;
                     }
+                case EConfigType.WireGuard:
+                    {
+                        var peer = new WireguardPeer4Ray
+                        {
+                            publicKey = node.PublicKey,
+                            endpoint = node.Address + ":" + node.Port.ToString()
+                        };
+                        var setting = new Outboundsettings4Ray
+                        {
+                            address = Utils.String2List(node.RequestHost),
+                            secretKey = node.Id,
+                            reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList(),
+                            mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt(),
+                            peers = new List<WireguardPeer4Ray> { peer }
+                        };
+                        outbound.settings = setting;
+                        outbound.settings.vnext = null;
+                        outbound.settings.servers = null;
+                        break;
+                    }
             }
 
             outbound.protocol = Global.ProtocolTypes[node.ConfigType];
@@ -1270,8 +1290,7 @@ public class CoreConfigV2rayService
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom
                 && prevNode.ConfigType != EConfigType.Hysteria2
-                && prevNode.ConfigType != EConfigType.TUIC
-                && prevNode.ConfigType != EConfigType.WireGuard)
+                && prevNode.ConfigType != EConfigType.TUIC)
             {
                 var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(prevNode, prevOutbound);
@@ -1289,8 +1308,7 @@ public class CoreConfigV2rayService
             if (nextNode is not null
                 && nextNode.ConfigType != EConfigType.Custom
                 && nextNode.ConfigType != EConfigType.Hysteria2
-                && nextNode.ConfigType != EConfigType.TUIC
-                && nextNode.ConfigType != EConfigType.WireGuard)
+                && nextNode.ConfigType != EConfigType.TUIC)
             {
                 var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(nextNode, nextOutbound);
