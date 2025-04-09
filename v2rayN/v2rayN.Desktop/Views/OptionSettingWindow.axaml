@@ -813,7 +813,7 @@
                 <Grid
                     Margin="{StaticResource Margin4}"
                     ColumnDefinitions="Auto,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
@@ -888,6 +888,19 @@
                     <ComboBox
                         x:Name="cmbCoreType6"
                         Grid.Row="6"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="Wireguard" />
+                    <ComboBox
+                        x:Name="cmbCoreType9"
+                        Grid.Row="7"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />

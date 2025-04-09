@@ -100,6 +100,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string CoreType4 { get; set; }
     [Reactive] public string CoreType5 { get; set; }
     [Reactive] public string CoreType6 { get; set; }
+    [Reactive] public string CoreType9 { get; set; }
 
     #endregion CoreType
 
@@ -259,6 +260,10 @@ public class OptionSettingViewModel : MyReactiveObject
                 case 6:
                     CoreType6 = type;
                     break;
+
+                case 9:
+                    CoreType9 = type;
+                    break;
             }
         });
         await Task.CompletedTask;
@@ -405,6 +410,10 @@ public class OptionSettingViewModel : MyReactiveObject
 
                 case 6:
                     type = CoreType6;
+                    break;
+
+                case 9:
+                    type = CoreType9;
                     break;
 
                 default:
