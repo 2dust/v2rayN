@@ -121,7 +121,7 @@
     <value>导出分享链接至剪贴板成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>请先检查服务器设置</value>
+    <value>请先检查配置文件设置</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>配置格式不正确</value>
@@ -148,13 +148,13 @@
     <value>获取默认配置失败</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>导入自定义配置服务器失败</value>
+    <value>导入自定义配置文件失败</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>读取配置文件失败</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>请填写正确格式的服务器端口</value>
+    <value>请填写正确格式的端口</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>请填写本地监听端口</value>
@@ -163,7 +163,7 @@
     <value>请填写密码</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>请填写服务器地址</value>
+    <value>请填写地址</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
     <value>请填写用户 ID</value>
@@ -271,13 +271,13 @@
     <value>请选择协议</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>请先选择服务器</value>
+    <value>请先选择配置文件</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>服务器去重完成。原数量: {0}，现数量: {1}。</value>
+    <value>配置文件去重完成。原数量: {0}，现数量: {1}。</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>是否确定移除服务器？</value>
+    <value>是否确定移除配置文件？</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>客户端配置文件保存在：{0}</value>
@@ -289,10 +289,10 @@
     <value>配置成功。 {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>成功导入自定义配置服务器</value>
+    <value>成功导入自定义配置文件</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>成功从剪贴板导入 {0} 个服务器</value>
+    <value>成功从剪贴板导入 {0} 个配置文件</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
     <value>扫描导入分享链接成功</value>
@@ -388,13 +388,13 @@
     <value>注册全局热键 {0} 成功</value>
   </data>
   <data name="UngroupedServers" xml:space="preserve">
-    <value>未分组服务器</value>
+    <value>未分组配置文件</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>所有</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>请浏览导入服务器配置</value>
+    <value>请浏览导入配置文件配置</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>测试中...</value>
@@ -406,7 +406,7 @@
     <value>本地</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>服务器过滤器，按回车执行</value>
+    <value>配置文件过滤器，按回车执行</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>检查更新</value>
@@ -436,7 +436,7 @@
     <value>路由设置</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>服务器</value>
+    <value>配置文件</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>设置</value>
@@ -487,55 +487,55 @@
     <value>扫描屏幕上的二维码 (Ctrl+S)</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>克隆所选服务器</value>
+    <value>克隆所选配置文件</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>移除重复的服务器</value>
+    <value>移除重复的配置文件</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>移除所选服务器 (多选) (Delete)</value>
+    <value>移除所选配置文件 (多选) (Delete)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>设为活动服务器 (Enter)</value>
+    <value>设为活动配置文件 (Enter)</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服务统计数据</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>测试服务器真连接延迟 (多选) (Ctrl+R)</value>
+    <value>测试配置文件真连接延迟 (多选) (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按测试结果排序</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>测试服务器速度 (多选) (Ctrl+T)</value>
+    <value>测试配置文件速度 (多选) (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>测试服务器延迟 Tcping (多选) (Ctrl+O)</value>
+    <value>测试配置文件延迟 Tcping (多选) (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>导出所选服务器完整配置</value>
+    <value>导出所选配置文件完整配置</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>导出分享链接至剪贴板 (多选) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>添加自定义配置服务器</value>
+    <value>添加自定义配置文件</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>添加 [Shadowsocks] 服务器</value>
+    <value>添加 [Shadowsocks] 配置文件</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加 [SOCKS] 服务器</value>
+    <value>添加 [SOCKS] 配置文件</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>添加 [Trojan] 服务器</value>
+    <value>添加 [Trojan] 配置文件</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>添加 [VLESS] 服务器</value>
+    <value>添加 [VLESS] 配置文件</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>添加 [VMess] 服务器</value>
+    <value>添加 [VMess] 配置文件</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>全选 (Ctrl+A)</value>
@@ -700,7 +700,7 @@
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>自动调整服务器列宽在更新订阅后</value>
+    <value>自动调整配置文件列宽在更新订阅后</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>检查 Pre-Release 更新 (请谨慎启用)</value>
@@ -760,7 +760,7 @@
     <value>启用安全协议 TLS v1.3 (订阅/检查更新)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>托盘右键菜单服务器展示数量限制</value>
+    <value>托盘右键菜单配置文件展示数量限制</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>开启 UDP</value>
@@ -793,7 +793,7 @@
     <value>Pac 模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>分享服务器 (Ctrl+F)</value>
+    <value>分享配置文件 (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>路由</value>
@@ -940,7 +940,7 @@
     <value>移至订阅分组</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>启用服务器拖放排序（需重启）</value>
+    <value>启用配置文件拖放排序（需重启）</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
@@ -949,10 +949,10 @@
     <value>跳过测试</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>编辑服务器 (Ctrl+D)</value>
+    <value>编辑配置文件 (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>主界面双击设为活动服务器</value>
+    <value>主界面双击设为活动配置文件</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>测试完成</value>
@@ -1057,7 +1057,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>添加 [Hysteria2] 服务器</value>
+    <value>添加 [Hysteria2] 配置文件</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria 最大带宽 (Up/Dw)</value>
@@ -1066,7 +1066,7 @@
     <value>使用系统 hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>添加 [TUIC] 服务器</value>
+    <value>添加 [TUIC] 配置文件</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
@@ -1087,7 +1087,7 @@
     <value>启用 IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加 [WireGuard] 服务器</value>
+    <value>添加 [WireGuard] 配置文件</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1120,7 +1120,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>添加 [HTTP] 服务器</value>
+    <value>添加 [HTTP] 配置文件</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>使用 Xray 且非 Tun 模式启用，和分组前置代理冲突</value>
@@ -1234,7 +1234,7 @@
     <value>导出分享链接至剪贴板 (多选) Base64 编码</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>导出所选服务器完整配置至剪贴板</value>
+    <value>导出所选配置文件完整配置至剪贴板</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>显示或隐藏主界面</value>
@@ -1393,24 +1393,24 @@
     <value>会覆盖端口，多组时用逗号 (,) 隔开</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>多服务器产生自定义配置 (多选)</value>
+    <value>多配置文件产生自定义配置 (多选)</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>多服务器随机 Xray</value>
+    <value>多配置文件随机 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多服务器负载均衡  Xray</value>
+    <value>多配置文件负载均衡  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多服务器最低延迟  Xray</value>
+    <value>多配置文件最低延迟  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多服务器最稳定  Xray</value>
+    <value>多配置文件最稳定  Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>多服务器最低延迟 sing-box</value>
+    <value>多配置文件最低延迟 sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>导出服务器</value>
+    <value>导出配置文件</value>
   </data>
 </root>
