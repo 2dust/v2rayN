@@ -64,6 +64,7 @@ public partial class OptionSettingWindow : ReactiveWindow<OptionSettingViewModel
             cmbCoreType4.Items.Add(it);
             cmbCoreType5.Items.Add(it);
             cmbCoreType6.Items.Add(it);
+            cmbCoreType9.Items.Add(it);
         });
 
         for (var i = 2; i <= 8; i++)
@@ -160,6 +161,7 @@ public partial class OptionSettingWindow : ReactiveWindow<OptionSettingViewModel
             this.Bind(ViewModel, vm => vm.CoreType4, v => v.cmbCoreType4.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });

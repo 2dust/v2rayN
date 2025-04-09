@@ -66,6 +66,7 @@ public partial class OptionSettingWindow
             cmbCoreType4.Items.Add(it);
             cmbCoreType5.Items.Add(it);
             cmbCoreType6.Items.Add(it);
+            cmbCoreType9.Items.Add(it);
         });
 
         for (var i = 2; i <= 8; i++)
@@ -178,6 +179,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.CoreType4, v => v.cmbCoreType4.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
