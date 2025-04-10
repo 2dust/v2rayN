@@ -1320,46 +1320,36 @@ public class CoreConfigSingboxService
             localDnsType = "local";
             localDnsAddress = null;
         }
-        else if (localDnsAddress.StartsWith("dhcp"))
+        else if (localDnsAddress.StartsWith("dhcp") && localDnsAddress.Length > 7)
         {
             localDnsType = "dhcp";
-            //if (localDnsAddress.Length > 7) // dhcp://
-            //{
-            //    localDnsAddress = localDnsAddress.Substring(7);
-            //}
+            // // dhcp://
+            // dhcpDnsInterface = localDnsAddress.Substring(7);
             localDnsAddress = null;
         }
-        else if (localDnsAddress.StartsWith("tcp"))
+        else if (localDnsAddress.StartsWith("tcp") && localDnsAddress.Length > 6)
         {
             localDnsType = "tcp";
-            if (localDnsAddress.Length > 6) // tcp://
-            {
-                localDnsAddress = localDnsAddress.Substring(6);
-            }
+            // tcp://
+            localDnsAddress = localDnsAddress.Substring(6);
         }
-        else if (localDnsAddress.StartsWith("tls"))
+        else if (localDnsAddress.StartsWith("tls") && localDnsAddress.Length > 6)
         {
             localDnsType = "tls";
-            if (localDnsAddress.Length > 6) // tls://
-            {
-                localDnsAddress = localDnsAddress.Substring(6);
-            }
+            // tls://
+            localDnsAddress = localDnsAddress.Substring(6);
         }
-        else if (localDnsAddress.StartsWith("https"))
+        else if (localDnsAddress.StartsWith("https") && localDnsAddress.Length > 8)
         {
             localDnsType = "https";
-            if (localDnsAddress.Length > 8) // https://
-            {
-                localDnsAddress = localDnsAddress.Substring(8);
-            }
+            // https://
+            localDnsAddress = localDnsAddress.Substring(8);
         }
-        else if (localDnsAddress.StartsWith("quic"))
+        else if (localDnsAddress.StartsWith("quic") && localDnsAddress.Length > 7)
         {
             localDnsType = "quic";
-            if (localDnsAddress.Length > 7) // quic://
-            {
-                localDnsAddress = localDnsAddress.Substring(7);
-            }
+            // quic://
+            localDnsAddress = localDnsAddress.Substring(7);
         }
         else
         {
