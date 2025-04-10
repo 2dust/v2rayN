@@ -655,6 +655,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add [Anytls] Configuration 的本地化字符串。
+        /// </summary>
+        public static string menuAddAnytlsServer {
+            get {
+                return ResourceManager.GetString("menuAddAnytlsServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add a custom configuration Configuration 的本地化字符串。
         /// </summary>
         public static string menuAddCustomServer {

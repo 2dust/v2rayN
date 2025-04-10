@@ -101,7 +101,7 @@ public class CoreHandler
 
     public async Task<int> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC) ? ECoreType.sing_box : ECoreType.Xray;
+        var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls) ? ECoreType.sing_box : ECoreType.Xray;
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);

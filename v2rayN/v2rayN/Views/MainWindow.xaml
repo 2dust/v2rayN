@@ -108,6 +108,10 @@
                                     x:Name="menuAddTuicServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddTuicServer}" />
+                                <MenuItem
+                                    x:Name="menuAddAnytlsServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
                             </MenuItem>
                         </Menu>
                         <Separator />

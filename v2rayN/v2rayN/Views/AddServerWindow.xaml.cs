@@ -96,6 +96,10 @@ public partial class AddServerWindow
                 gridTls.Visibility = Visibility.Collapsed;
 
                 break;
+            case EConfigType.Anytls:
+                gridAnytls.Visibility = Visibility.Visible;
+                cmbCoreType.IsEnabled = false;
+                break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
 
@@ -160,6 +164,10 @@ public partial class AddServerWindow
                     this.Bind(ViewModel, vm => vm.SelectedSource.Path, v => v.txtPath9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.RequestHost, v => v.txtRequestHost9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId9.Text).DisposeWith(disposables);
+                    break;
+
+                case EConfigType.Anytls:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId10.Text).DisposeWith(disposables);
                     break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
