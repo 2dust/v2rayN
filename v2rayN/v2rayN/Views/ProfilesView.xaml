@@ -41,7 +41,8 @@
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuSubEdit}">
+                    ToolTip="{x:Static resx:ResUI.menuSubEdit}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSubEdit}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Edit" />
                 </Button>
                 <Button
@@ -50,7 +51,8 @@
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuSubAdd}">
+                    ToolTip="{x:Static resx:ResUI.menuSubAdd}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSubAdd}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                 </Button>
 
@@ -60,7 +62,8 @@
                     Height="30"
                     Margin="{StaticResource MarginLeftRight8}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
                 </Button>
                 <TextBox
@@ -70,7 +73,8 @@
                     VerticalContentAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
-                    Style="{StaticResource DefTextBox}" />
+                    Style="{StaticResource DefTextBox}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}" />
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
