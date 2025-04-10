@@ -20,6 +20,7 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddTuicServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddWireguardServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddAnytlsServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
@@ -110,6 +111,10 @@ public class MainWindowViewModel : MyReactiveObject
         AddWireguardServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(true, EConfigType.WireGuard);
+        });
+        AddAnytlsServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.Anytls);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {

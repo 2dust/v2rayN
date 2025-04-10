@@ -169,7 +169,8 @@ public class Global
             { EConfigType.Trojan, "trojan://" },
             { EConfigType.Hysteria2, "hysteria2://" },
             { EConfigType.TUIC, "tuic://" },
-            { EConfigType.WireGuard, "wireguard://" }
+            { EConfigType.WireGuard, "wireguard://" },
+            { EConfigType.Anytls, "anytls://" }
         };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -182,7 +183,8 @@ public class Global
             { EConfigType.Trojan, "trojan" },
             { EConfigType.Hysteria2, "hysteria2" },
             { EConfigType.TUIC, "tuic" },
-            { EConfigType.WireGuard, "wireguard" }
+            { EConfigType.WireGuard, "wireguard" },
+            { EConfigType.Anytls, "anytls" }
         };
 
     public static readonly List<string> VmessSecurities =

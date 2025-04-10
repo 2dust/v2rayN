@@ -46,6 +46,7 @@
                         <Separator />
                         <MenuItem x:Name="menuAddHysteria2Server" Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
                         <MenuItem x:Name="menuAddTuicServer" Header="{x:Static resx:ResUI.menuAddTuicServer}" />
+                        <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
                     </MenuItem>
 
                     <MenuItem Padding="8,0">

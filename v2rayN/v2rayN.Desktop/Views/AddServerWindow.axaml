@@ -481,6 +481,26 @@
                         HorizontalAlignment="Left"
                         Watermark="1500" />
                 </Grid>
+                <Grid
+                    x:Name="gridAnytls"
+                    Grid.Row="2"
+                    ColumnDefinitions="180,Auto"
+                    IsVisible="False"
+                    RowDefinitions="Auto,Auto,Auto">
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbId3}" />
+                    <TextBox
+                        x:Name="txtId10"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+                </Grid>
 
                 <Separator
                     x:Name="sepa2"

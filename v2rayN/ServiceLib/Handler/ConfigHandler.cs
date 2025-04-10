@@ -259,6 +259,7 @@ public class ConfigHandler
             EConfigType.Hysteria2 => await AddHysteria2Server(config, item),
             EConfigType.TUIC => await AddTuicServer(config, item),
             EConfigType.WireGuard => await AddWireguardServer(config, item),
+            EConfigType.Anytls => await AddAnytlsServer(config, item),
             _ => -1,
         };
         return ret;
@@ -784,6 +785,35 @@ public class ConfigHandler
     }
 
     /// <summary>
+    /// Add or edit a Anytls server
+    /// Validates and processes Anytls-specific settings
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Anytls profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddAnytlsServer(Config config, ProfileItem profileItem, bool toFile = true)
+    {
+        profileItem.ConfigType = EConfigType.Anytls;
+        profileItem.CoreType = ECoreType.sing_box;
+
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Network = string.Empty;
+        if (profileItem.StreamSecurity.IsNullOrEmpty())
+        {
+            profileItem.StreamSecurity = Global.StreamSecurity;
+        }
+        if (profileItem.Id.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        await AddServerCommon(config, profileItem, toFile);
+        return 0;
+    }
+
+    /// <summary>
     /// Sort the server list by the specified column
     /// Updates the sort order in the profile extension data
     /// </summary>
@@ -1292,6 +1322,7 @@ public class ConfigHandler
                 EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
                 EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
                 EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
+                EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
                 _ => -1,
             };
 
