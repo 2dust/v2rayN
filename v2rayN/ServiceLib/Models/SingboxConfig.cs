@@ -227,6 +227,12 @@ public class Server4Sbox
     public string? server { get; set; }
     public string? server_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
+    // Deprecated
+    public string? address { get; set; }
+    public string? address_resolver { get; set; }
+    public string? address_strategy { get; set; }
+    public string? strategy { get; set; }
+    // Deprecated End
 }
 
 public class Experimental4Sbox

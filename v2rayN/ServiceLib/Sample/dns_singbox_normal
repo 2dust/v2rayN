@@ -4,14 +4,12 @@
       "tag": "remote",
       "type": "tcp",
       "server": "8.8.8.8",
-      "strategy": "prefer_ipv4",
       "detour": "proxy"
     },
     {
       "tag": "local",
       "type": "udp",
-      "server": "223.5.5.5",
-      "strategy": "prefer_ipv4"
+      "server": "223.5.5.5"
     }
   ],
   "rules": [

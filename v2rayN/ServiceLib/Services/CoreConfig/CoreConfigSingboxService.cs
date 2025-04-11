@@ -1427,7 +1427,14 @@ public class CoreConfigSingboxService
             }
             singboxConfig.dns = dns4Sbox;
 
-            await GenDnsDomains(node, singboxConfig, item);
+            if (dns4Sbox.servers != null && dns4Sbox.servers.Count > 0 && dns4Sbox.servers.First().address.IsNullOrEmpty())
+            {
+                await GenDnsDomains(node, singboxConfig, item);
+            }
+            else
+            {
+                await GenDnsDomainsLegacy(node, singboxConfig, item);
+            }
         }
         catch (Exception ex)
         {
@@ -1518,6 +1525,59 @@ public class CoreConfigSingboxService
                 server = tag,
                 domain = [node?.Sni],
                 strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
+            });
+        }
+
+        singboxConfig.dns = dns4Sbox;
+        return await Task.FromResult(0);
+    }
+
+    private async Task<int> GenDnsDomainsLegacy(ProfileItem? node, SingboxConfig singboxConfig, DNSItem? dNSItem)
+    {
+        var dns4Sbox = singboxConfig.dns ?? new();
+        dns4Sbox.servers ??= [];
+        dns4Sbox.rules ??= [];
+
+        var tag = "local_local";
+        dns4Sbox.servers.Add(new()
+        {
+            tag = tag,
+            address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+            detour = Global.DirectTag,
+            strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom,
+        });
+        dns4Sbox.rules.Insert(0, new()
+        {
+            server = tag,
+            clash_mode = ERuleMode.Direct.ToString()
+        });
+        dns4Sbox.rules.Insert(0, new()
+        {
+            server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
+            clash_mode = ERuleMode.Global.ToString()
+        });
+
+        var lstDomain = singboxConfig.outbounds
+                       .Where(t => t.server.IsNotEmpty() && Utils.IsDomain(t.server))
+                       .Select(t => t.server)
+                       .Distinct()
+                       .ToList();
+        if (lstDomain != null && lstDomain.Count > 0)
+        {
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = tag,
+                domain = lstDomain
+            });
+        }
+
+        //Tun2SocksAddress
+        if (_config.TunModeItem.EnableTun && node?.ConfigType == EConfigType.SOCKS && Utils.IsDomain(node?.Sni))
+        {
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = tag,
+                domain = [node?.Sni]
             });
         }
 
