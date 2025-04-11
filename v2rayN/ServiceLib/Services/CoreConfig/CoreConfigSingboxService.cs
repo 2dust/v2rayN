@@ -614,11 +614,11 @@ public class CoreConfigSingboxService
 
             if (Utils.IsDomain(node.Address))
             {
+                var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
                 outbound.domain_resolver = new()
                 {
                     server = "local_local",
-                    // TODO
-                    //strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
+                    strategy = string.IsNullOrEmpty(item?.DomainStrategy4Freedom) ? null : item?.DomainStrategy4Freedom
                 };
             }
 
