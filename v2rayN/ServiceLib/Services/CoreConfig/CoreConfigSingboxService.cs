@@ -825,7 +825,6 @@ public class CoreConfigSingboxService
         try
         {
             endpoints.address = Utils.String2List(node.RequestHost);
-            // Utils.GetFreePort() 9090 ?
             endpoints.listen_port = Utils.GetFreePort();
             endpoints.type = Global.ProtocolTypes[node.ConfigType];
 
