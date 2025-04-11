@@ -121,7 +121,7 @@
     <value>Export share link to clipboard successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the server settings first.</value>
+    <value>Please check the Configuration settings first.</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>Invalid configuration format.</value>
@@ -148,13 +148,13 @@
     <value>Failed to get the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Failed to import custom configuration server</value>
+    <value>Failed to import custom configuration Configuration</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>Please enter the correct server port format.</value>
+    <value>Please enter the correct port format.</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>Please enter the local listening port.</value>
@@ -163,7 +163,7 @@
     <value>Please enter the password.</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>Please enter the server address.</value>
+    <value>Please enter the address.</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
     <value>Please enter the user ID.</value>
@@ -271,13 +271,13 @@
     <value>Please select a protocol</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>Please select the server first</value>
+    <value>Please select the Configuration first</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+    <value>Configurations deduplication completed. Old: {0}, New: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>Are you sure you want to remove the server?</value>
+    <value>Are you sure you want to remove the Configuration?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
@@ -289,10 +289,10 @@
     <value>Configuration successful. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Custom configuration server imported successfully</value>
+    <value>Custom configuration Configuration imported successfully</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} servers have been imported from clipboard</value>
+    <value>{0} Configurations have been imported from clipboard</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
     <value>Successfully scanned and imported the shared link</value>
@@ -394,7 +394,7 @@
     <value>All</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Please browse to import server configuration</value>
+    <value>Please browse to import Configuration configuration</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Testing...</value>
@@ -406,7 +406,7 @@
     <value>Local</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Server filter, press Enter to execute</value>
+    <value>Configuration filter, press Enter to execute</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Check Update</value>
@@ -436,7 +436,7 @@
     <value>Routing Setting</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>Servers</value>
+    <value>Configurations</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>Settings</value>
@@ -487,55 +487,55 @@
     <value>Scan QR code on the screen (Ctrl+S)</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>Clone selected server</value>
+    <value>Clone selected Configuration</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>Remove duplicate servers</value>
+    <value>Remove duplicate Configurations</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Remove selected servers (Delete)</value>
+    <value>Remove selected Configurations (Delete)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Set as active server (Enter)</value>
+    <value>Set as active Configuration (Enter)</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Test servers real delay (Ctrl+R)</value>
+    <value>Test Configurations real delay (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Sort by test result</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Test servers download speed (Ctrl+T)</value>
+    <value>Test Configurations download speed (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Test servers with tcping (Ctrl+O)</value>
+    <value>Test Configurations with tcping (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Export selected server for complete configuration</value>
+    <value>Export selected Configuration for complete configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Export Share Link to Clipboard (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Add a custom configuration server</value>
+    <value>Add a custom configuration Configuration</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>Add [Shadowsocks] server</value>
+    <value>Add [Shadowsocks] Configuration</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Add [SOCKS] server</value>
+    <value>Add [SOCKS] Configuration</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>Add [Trojan] server</value>
+    <value>Add [Trojan] Configuration</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>Add [VLESS] server</value>
+    <value>Add [VLESS] Configuration</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>Add [VMess] server</value>
+    <value>Add [VMess] Configuration</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>Select all (Ctrl+A)</value>
@@ -760,7 +760,7 @@
     <value>Enable Security Protocol TLS v1.3 (subscription/update)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tray right-click menu servers display limit</value>
+    <value>Tray right-click menu Configurations display limit</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Enable UDP</value>
@@ -793,7 +793,7 @@
     <value>PAC mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Share Server (Ctrl+F)</value>
+    <value>Share Configuration (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routing</value>
@@ -940,7 +940,7 @@
     <value>Move to group</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>Enable sorting servers by drag-n-drop (requires restart)</value>
+    <value>Enable sorting Configurations by drag-n-drop (requires restart)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Auto refresh</value>
@@ -949,10 +949,10 @@
     <value>Skip test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Edit Server (Ctrl+D)</value>
+    <value>Edit Configuration (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Double-clicking server makes it active</value>
+    <value>Double-clicking Configuration makes it active</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>Test completed</value>
@@ -1060,7 +1060,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Hysteria2] server</value>
+    <value>Add [Hysteria2] Configuration</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria Max bandwidth (Up/Down)</value>
@@ -1069,19 +1069,19 @@
     <value>Use System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [TUIC] server</value>
+    <value>Add [TUIC] Configuration</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy remarks</value>
+    <value>Previous proxy Configuration remarks</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy remarks</value>
+    <value>Next proxy Configuration remarks</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exist and are unique</value>
+    <value>Please make sure the Configuration remarks exist and are unique</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>Enable additional Inbound</value>
@@ -1090,7 +1090,7 @@
     <value>Enable IPv6 Address</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [WireGuard] server</value>
+    <value>Add [WireGuard] Configuration</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>Private Key</value>
@@ -1123,7 +1123,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [HTTP] server</value>
+    <value>Add [HTTP] Configuration</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
@@ -1237,7 +1237,7 @@
     <value>Export Base64-encoded Share Links to Clipboard</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Export selected server for complete configuration to clipboard</value>
+    <value>Export selected Configuration for complete configuration to clipboard</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Show or hide the main window</value>
@@ -1390,30 +1390,30 @@
     <value>Removed {0} invalid test results.</value>
   </data>
   <data name="TbPorts7" xml:space="preserve">
-    <value>Server port range</value>
+    <value>Configuration port range</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Will cover the port, separate with commas (,)</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-server to custom configuration</value>
+    <value>Multi-Configuration to custom configuration</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
-    <value>Multi-server Random by Xray</value>
+    <value>Multi-Configuration Random by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Multi-server RoundRobin by Xray</value>
+    <value>Multi-Configuration RoundRobin by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Multi-server LeastPing by Xray</value>
+    <value>Multi-Configuration LeastPing by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Multi-server LeastLoad by Xray</value>
+    <value>Multi-Configuration LeastLoad by Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>Multi-server LeastPing by sing-box</value>
+    <value>Multi-Configuration LeastPing by sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>Export server</value>
+    <value>Export Configuration</value>
   </data>
 </root>

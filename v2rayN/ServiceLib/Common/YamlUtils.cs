@@ -11,7 +11,7 @@ public class YamlUtils
     #region YAML
 
     /// <summary>
-    /// 反序列化成对象
+    /// Deserialize
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="str"></param>
@@ -34,7 +34,7 @@ public class YamlUtils
     }
 
     /// <summary>
-    /// 序列化
+    /// Serialize
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>

@@ -8,10 +8,13 @@ public class BaseFmt
     {
         if (Utils.IsIpv6(address))
         {
-            // 检查地址是否已经被方括号包围，如果没有，则添加方括号
+            // Check if the address is already surrounded by square brackets, if not, add square brackets
             return address.StartsWith('[') && address.EndsWith(']') ? address : $"[{address}]";
         }
-        return address;  // 如果不是IPv6地址，直接返回原地址
+        else
+        {
+            return address;
+        }
     }
 
     protected static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
