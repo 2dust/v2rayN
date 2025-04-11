@@ -61,7 +61,7 @@
                         x:Name="togEnableTun"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center" AutomationProperties.Name="{x:Static resx:ResUI.TbEnableTunAs}" />
                 </StackPanel>
 
                 <StackPanel
@@ -75,7 +75,8 @@
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemproxy}">
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
@@ -89,7 +90,8 @@
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"/>
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
@@ -107,7 +109,8 @@
             ToolTipText="v2rayN">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu Style="{StaticResource DefContextMenu}">
-                    <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}">
+                    <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}"
+                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyClear}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -119,7 +122,8 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxySet" Height="{StaticResource MenuItemHeight}">
+                    <MenuItem x:Name="menuSystemProxySet" Height="{StaticResource MenuItemHeight}"
+                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxySet}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -131,7 +135,8 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxyNothing" Height="{StaticResource MenuItemHeight}">
+                    <MenuItem x:Name="menuSystemProxyNothing" Height="{StaticResource MenuItemHeight}"
+                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyNothing}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -143,7 +148,8 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxyPac" Height="{StaticResource MenuItemHeight}">
+                    <MenuItem x:Name="menuSystemProxyPac" Height="{StaticResource MenuItemHeight}"
+                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyPac}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -156,7 +162,8 @@
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator x:Name="sepRoutings" />
-                    <MenuItem x:Name="menuRoutings" Height="Auto">
+                    <MenuItem x:Name="menuRoutings" Height="Auto"
+                              AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
                         <MenuItem.Header>
                             <DockPanel>
                                 <ComboBox
@@ -165,11 +172,12 @@
                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
                                     DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                    Style="{StaticResource MaterialDesignFilledComboBox}"
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Height="Auto">
+                    <MenuItem Height="Auto" AutomationProperties.Name="{x:Static resx:ResUI.menuServers}">
                         <MenuItem.Header>
                             <DockPanel>
                                 <ComboBox
@@ -178,7 +186,8 @@
                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuServers}"
                                     DisplayMemberPath="Text"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                    Style="{StaticResource MaterialDesignFilledComboBox}"
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"/>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
