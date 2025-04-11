@@ -18,15 +18,18 @@
         "googleapis.cn",
         "gstatic.com"
       ],
-      "server": "remote"
+      "server": "remote",
+      "strategy": "prefer_ipv4"
     },
     {
       "rule_set": [
         "geosite-cn",
         "geosite-geolocation-cn"
       ],
-      "server": "local"
+      "server": "local",
+      "strategy": "prefer_ipv4"
     }
   ],
-  "final": "remote"
+  "final": "remote",
+  "strategy": "prefer_ipv4"
 }
