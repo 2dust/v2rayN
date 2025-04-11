@@ -1620,45 +1620,50 @@ public class CoreConfigSingboxService
         var localDnsAddress = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress;
         string? localDnsType = null;
         string? dhcpDnsInterface = null;
+        var dnsProtocols = new List<string>
+        {
+            "dhcp",
+            "https",
+            "tcp",
+            "tls",
+            "quic",
+            "h3",
+            "udp"
+        };
         if (localDnsAddress == "local")
         {
             localDnsType = "local";
             localDnsAddress = null;
         }
-        else if (localDnsAddress.StartsWith("dhcp") && localDnsAddress.Length > 7)
+        else if (dnsProtocols.Any(protocol => localDnsAddress.StartsWith(protocol)))
         {
-            localDnsType = "dhcp";
-            // dhcp://
-            dhcpDnsInterface = localDnsAddress.Substring(7);
-            if (dhcpDnsInterface == "auto")
+            var protocol = dnsProtocols.First(p => localDnsAddress.StartsWith(p));
+            localDnsType = protocol;
+            // +3 for "://"
+            if (localDnsAddress.Length > protocol.Length + 3)
             {
-                dhcpDnsInterface = null;
+                localDnsAddress = localDnsAddress.Substring(protocol.Length + 3);
+                if (protocol == "dhcp")
+                {
+                    dhcpDnsInterface = localDnsAddress;
+                    if (dhcpDnsInterface == "auto")
+                    {
+                        dhcpDnsInterface = null;
+                    }
+                    localDnsAddress = null;
+                }
+                else if (protocol is "https" or "h3")
+                {
+                    if (localDnsAddress.Contains('/'))
+                    {
+                        localDnsAddress = localDnsAddress.Substring(0, localDnsAddress.IndexOf('/'));
+                    }
+                }
             }
-            localDnsAddress = null;
-        }
-        else if (localDnsAddress.StartsWith("tcp") && localDnsAddress.Length > 6)
-        {
-            localDnsType = "tcp";
-            // tcp://
-            localDnsAddress = localDnsAddress.Substring(6);
-        }
-        else if (localDnsAddress.StartsWith("tls") && localDnsAddress.Length > 6)
-        {
-            localDnsType = "tls";
-            // tls://
-            localDnsAddress = localDnsAddress.Substring(6);
-        }
-        else if (localDnsAddress.StartsWith("https") && localDnsAddress.Length > 8)
-        {
-            localDnsType = "https";
-            // https://
-            localDnsAddress = localDnsAddress.Substring(8);
-        }
-        else if (localDnsAddress.StartsWith("quic") && localDnsAddress.Length > 7)
-        {
-            localDnsType = "quic";
-            // quic://
-            localDnsAddress = localDnsAddress.Substring(7);
+            else
+            {
+                localDnsAddress = null;
+            }
         }
         else
         {
