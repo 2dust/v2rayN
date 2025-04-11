@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ServiceLib.Models;
 
 public class SingboxConfig
@@ -226,7 +228,7 @@ public class Server4Sbox
     public string? type { get; set; }
     public string? server { get; set; }
     public string? server_resolver { get; set; }
-    //public string? interface { get; set; }
+    [JsonPropertyName("interface")] public string? Interface { get; set; }
 }
 
 public class Experimental4Sbox
