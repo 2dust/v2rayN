@@ -818,6 +818,7 @@ public class CoreConfigSingboxService
                         };
                         endpoint.private_key = node.Id;
                         endpoint.mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt();
+                        endpoint.peers = new() { peer };
                         break;
                     }
             }
