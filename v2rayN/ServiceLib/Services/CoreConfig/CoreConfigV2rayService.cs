@@ -1343,7 +1343,7 @@ public class CoreConfigV2rayService
                 && nextNode.ConfigType != EConfigType.Custom
                 && nextNode.ConfigType != EConfigType.Hysteria2
                 && nextNode.ConfigType != EConfigType.TUIC
-                && prevNode.ConfigType != EConfigType.Anytls)
+                && nextNode.ConfigType != EConfigType.Anytls)
             {
                 var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(nextNode, nextOutbound);

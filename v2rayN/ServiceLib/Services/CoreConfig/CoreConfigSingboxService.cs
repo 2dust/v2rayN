@@ -853,6 +853,7 @@ public class CoreConfigSingboxService
                         };
                         endpoints.private_key = node.Id;
                         endpoints.mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt();
+                        endpoints.peers = new() { peer };
                         break;
                     }
             }
@@ -1088,6 +1089,7 @@ public class CoreConfigSingboxService
                     var nextEndpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
                     await GenEndpoint(nextNode, nextEndpoint);
                     nextEndpoint.tag = Global.ProxyTag;
+                    singboxConfig.endpoints ??= new();
                     singboxConfig.endpoints.Insert(0, nextEndpoint);
 
                     nextEndpoint.detour = tag;
@@ -1097,6 +1099,7 @@ public class CoreConfigSingboxService
                     var nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                     await GenOutbound(nextNode, nextOutbound);
                     nextOutbound.tag = Global.ProxyTag;
+                    singboxConfig.outbounds ??= new();
                     singboxConfig.outbounds.Insert(0, nextOutbound);
 
                     nextOutbound.detour = tag;
