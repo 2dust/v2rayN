@@ -1176,11 +1176,14 @@ public class CoreConfigV2rayService
     private async Task<int> GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
     {
         if (node == null)
-        { return 0; }
+        {
+            return 0;
+        }
         var servers = dns["servers"];
         if (servers != null)
         {
             var domainList = new List<string>();
+            string? wireguardEndpointDomain = null;
             if (Utils.IsDomain(node.Address))
             {
                 domainList.Add(node.Address);
@@ -1188,7 +1191,7 @@ public class CoreConfigV2rayService
             var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
             if (subItem is not null)
             {
-                //Previous proxy
+                // Previous proxy
                 var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                 if (prevNode is not null
                     && prevNode.ConfigType != EConfigType.Custom
@@ -1199,7 +1202,7 @@ public class CoreConfigV2rayService
                     domainList.Add(prevNode.Address);
                 }
 
-                //Next proxy
+                // Next proxy
                 var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
                 if (nextNode is not null
                     && nextNode.ConfigType != EConfigType.Custom
@@ -1207,7 +1210,14 @@ public class CoreConfigV2rayService
                     && nextNode.ConfigType != EConfigType.TUIC
                     && Utils.IsDomain(nextNode.Address))
                 {
-                    domainList.Add(nextNode.Address);
+                    if (nextNode.ConfigType == EConfigType.WireGuard)
+                    {
+                        wireguardEndpointDomain = nextNode.Address;
+                    }
+                    else
+                    {
+                        domainList.Add(nextNode.Address);
+                    }
                 }
             }
             if (domainList.Count > 0)
@@ -1217,6 +1227,16 @@ public class CoreConfigV2rayService
                     address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
                     skipFallback = true,
                     domains = domainList
+                };
+                servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
+            }
+            if (wireguardEndpointDomain is not null)
+            {
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+                    skipFallback = true,
+                    domains = new() { wireguardEndpointDomain }
                 };
                 servers.AsArray().Insert(0, JsonUtils.SerializeToNode(dnsServer));
             }
