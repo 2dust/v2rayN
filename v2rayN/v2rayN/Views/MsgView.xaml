@@ -27,14 +27,16 @@
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
                 IsEditable="True"
-                Style="{StaticResource DefComboBox}" />
+                Style="{StaticResource DefComboBox}"
+                AutomationProperties.Name="{x:Static resx:ResUI.MsgFilterTitle}" />
             <Button
                 x:Name="btnCopy"
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
+                ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
             </Button>
             <Button
@@ -43,7 +45,8 @@
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
+                ToolTip="{x:Static resx:ResUI.menuMsgViewClear}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
             </Button>
             <TextBlock
@@ -55,7 +58,8 @@
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
-                IsChecked="True" />
+                IsChecked="True"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}" />
             <TextBlock
                 Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
@@ -65,7 +69,8 @@
                 x:Name="togScrollToEnd"
                 Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
-                IsChecked="True" />
+                IsChecked="True"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
         </WrapPanel>
         <TextBox
             Name="txtMsg"
