@@ -39,6 +39,7 @@ public class Route4Sbox
     public bool? auto_detect_interface { get; set; }
     public List<Rule4Sbox> rules { get; set; }
     public List<Ruleset4Sbox>? rule_set { get; set; }
+    public string? final { get; set; }
 }
 
 [Serializable]
