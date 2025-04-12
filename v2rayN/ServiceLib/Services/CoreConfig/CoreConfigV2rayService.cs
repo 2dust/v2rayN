@@ -1185,6 +1185,7 @@ public class CoreConfigV2rayService
                 var dnsServer = new DnsServer4Ray()
                 {
                     address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+                    skipFallback = true,
                     domains = [node.Address]
                 };
                 servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
