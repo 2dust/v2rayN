@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+    <data name="MoreOptions" xml:space="preserve">
+    <value>更多选项</value>
+</data>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
     <value>导出分享链接至剪贴板成功</value>
   </data>

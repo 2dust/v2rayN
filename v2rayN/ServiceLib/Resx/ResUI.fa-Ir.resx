@@ -1416,4 +1416,7 @@
   <data name="menuExportConfig" xml:space="preserve">
     <value>صادر کردن سرور</value>
   </data>
+    <data name="MoreOptions" xml:space="preserve">
+  <value>گزینه‌های بیشتر</value>
+</data>
 </root>

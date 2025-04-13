@@ -1416,4 +1416,7 @@
   <data name="menuExportConfig" xml:space="preserve">
     <value>Export Configuration</value>
   </data>
+    <data name="MoreOptions" xml:space="preserve">
+    <value>More Options</value>
+</data>
 </root>
