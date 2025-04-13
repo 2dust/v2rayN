@@ -147,8 +147,7 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0"
->>>>>>> ce6572af3da479b546bc9ea764a4462050ea0ba5
+                            <MenuItem Padding="8,0" Width="86"
                                       AutomationProperties.Name="{x:Static resx:ResUI.menuSetting}">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
