@@ -1,7 +1,9 @@
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -22,6 +24,8 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
+
+        Loaded += MainWindow_Loaded;
 
         _config = AppHandler.Instance.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
@@ -153,6 +157,15 @@ public partial class MainWindow
         {
             ShowHideWindow(true);
         }));
+    }
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+                var popupBox = themePopupBox;
+
+        var toggleButton = FindVisualChild<ToggleButton>(popupBox, "PART_Toggle");
+
+        AutomationProperties.SetName(toggleButton, ServiceLib.Resx.ResUI.MoreOptions);
     }
 
     private void DelegateSnackMsg(string content)
@@ -464,6 +477,27 @@ public partial class MainWindow
         {
             ProcUtils.ProcessStart(item.Tag.ToString());
         }
+    }
+
+    private T FindVisualChild<T>(DependencyObject parent, string name) where T : DependencyObject
+    {
+        if (parent == null)
+            return null;
+
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T childType && child is FrameworkElement element && element.Name == name)
+            {
+                return childType;
+            }
+
+            var result = FindVisualChild<T>(child, name);
+            if (result != null)
+                return result;
+        }
+
+        return null;
     }
 
     #endregion UI
