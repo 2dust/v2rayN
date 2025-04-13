@@ -83,6 +83,14 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
                                 <MenuItem
+                                    x:Name="menuAddTrojanServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                                <MenuItem
+                                    x:Name="menuAddWireguardServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                                <MenuItem
                                     x:Name="menuAddSocksServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddSocksServer}" />
@@ -90,10 +98,6 @@
                                     x:Name="menuAddHttpServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddHttpServer}" />
-                                <MenuItem
-                                    x:Name="menuAddTrojanServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuAddHysteria2Server"
@@ -103,10 +107,6 @@
                                     x:Name="menuAddTuicServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddTuicServer}" />
-                                <MenuItem
-                                    x:Name="menuAddWireguardServer"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -147,7 +147,8 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem Padding="8,0" Width="86"
+                            <MenuItem Padding="8,0"
+>>>>>>> ce6572af3da479b546bc9ea764a4462050ea0ba5
                                       AutomationProperties.Name="{x:Static resx:ResUI.menuSetting}">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">

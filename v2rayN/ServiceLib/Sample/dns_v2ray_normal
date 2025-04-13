@@ -15,6 +15,7 @@
     },
     {
       "address": "223.5.5.5",
+      "skipFallback": true,
       "domains": [
         "geosite:cn"
       ],

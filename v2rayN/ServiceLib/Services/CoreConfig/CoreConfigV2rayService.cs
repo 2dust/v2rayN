@@ -1176,18 +1176,69 @@ public class CoreConfigV2rayService
     private async Task<int> GenDnsDomains(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
     {
         if (node == null)
-        { return 0; }
+        {
+            return 0;
+        }
         var servers = dns["servers"];
         if (servers != null)
         {
+            var domainList = new List<string>();
+            string? wireguardEndpointDomain = null;
             if (Utils.IsDomain(node.Address))
+            {
+                domainList.Add(node.Address);
+            }
+            var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+            if (subItem is not null)
+            {
+                // Previous proxy
+                var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                if (prevNode is not null
+                    && prevNode.ConfigType != EConfigType.Custom
+                    && prevNode.ConfigType != EConfigType.Hysteria2
+                    && prevNode.ConfigType != EConfigType.TUIC
+                    && Utils.IsDomain(prevNode.Address))
+                {
+                    domainList.Add(prevNode.Address);
+                }
+
+                // Next proxy
+                var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+                if (nextNode is not null
+                    && nextNode.ConfigType != EConfigType.Custom
+                    && nextNode.ConfigType != EConfigType.Hysteria2
+                    && nextNode.ConfigType != EConfigType.TUIC
+                    && Utils.IsDomain(nextNode.Address))
+                {
+                    if (nextNode.ConfigType == EConfigType.WireGuard)
+                    {
+                        wireguardEndpointDomain = nextNode.Address;
+                    }
+                    else
+                    {
+                        domainList.Add(nextNode.Address);
+                    }
+                }
+            }
+            if (domainList.Count > 0)
             {
                 var dnsServer = new DnsServer4Ray()
                 {
                     address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
-                    domains = [node.Address]
+                    skipFallback = true,
+                    domains = domainList
                 };
                 servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
+            }
+            if (wireguardEndpointDomain is not null)
+            {
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+                    skipFallback = true,
+                    domains = new() { wireguardEndpointDomain }
+                };
+                servers.AsArray().Insert(0, JsonUtils.SerializeToNode(dnsServer));
             }
         }
         return await Task.FromResult(0);
