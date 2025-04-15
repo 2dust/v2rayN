@@ -26,6 +26,7 @@
                 Margin="{StaticResource MarginLeftRight8}"
                 materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
+                AutomationProperties.Name="{x:Static resx:ResUI.MsgFilterTitle}"
                 IsEditable="True"
                 Style="{StaticResource DefComboBox}"
                 AutomationProperties.Name="{x:Static resx:ResUI.MsgFilterTitle}" />
@@ -34,6 +35,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}"
                 AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}">
@@ -44,6 +46,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewClear}"
                 AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}">
@@ -58,8 +61,13 @@
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
+<<<<<<< HEAD
                 IsChecked="True"
                 AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}" />
+=======
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}"
+                IsChecked="True" />
+>>>>>>> 456ffb200a76caccad8ad5528bf602492b98ae31
             <TextBlock
                 Margin="{StaticResource MarginLeftRight8}"
                 VerticalAlignment="Center"
@@ -69,8 +77,13 @@
                 x:Name="togScrollToEnd"
                 Margin="{StaticResource MarginLeftRight8}"
                 HorizontalAlignment="Left"
+<<<<<<< HEAD
                 IsChecked="True"
                 AutomationProperties.Name="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+=======
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoScrollToEnd}"
+                IsChecked="True" />
+>>>>>>> 456ffb200a76caccad8ad5528bf602492b98ae31
         </WrapPanel>
         <TextBox
             Name="txtMsg"
