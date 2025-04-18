@@ -318,7 +318,10 @@ public class StatusBarViewModel : MyReactiveObject
 
         _updateView?.Invoke(EViewAction.DispatcherServerAvailability, ResUI.Speedtesting);
 
-        var msg = await (new UpdateService()).RunAvailabilityCheck();
+        var msg = await Task.Run(async () =>
+        {
+            return await (new UpdateService()).RunAvailabilityCheck();
+        });
 
         NoticeHandler.Instance.SendMessageEx(msg);
         _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);

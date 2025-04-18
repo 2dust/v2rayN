@@ -548,8 +548,11 @@ public class MainWindowViewModel : MyReactiveObject
 
         BlReloadEnabled = false;
 
-        await LoadCore();
-        await SysProxyHandler.UpdateSysProxy(_config, false);
+        await Task.Run(async () =>
+        {
+            await LoadCore();
+            await SysProxyHandler.UpdateSysProxy(_config, false);
+        });
         Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
         _updateView?.Invoke(EViewAction.DispatcherReload, null);
