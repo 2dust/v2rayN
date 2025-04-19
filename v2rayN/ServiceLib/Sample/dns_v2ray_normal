@@ -5,7 +5,16 @@
   },
   "servers": [
     {
-      "address": "1.1.1.1",
+      "address": "tcp://1.1.1.1",
+      "domains": [
+        "geosite:geolocation-!cn"
+      ],
+      "expectIPs": [
+        "geoip:!cn"
+      ]
+    },
+    {
+      "address": "tcp://8.8.8.8"",
       "domains": [
         "geosite:geolocation-!cn"
       ],
@@ -23,7 +32,6 @@
         "geoip:cn"
       ]
     },
-    "8.8.8.8",
     "https://dns.google/dns-query"
   ]
 }
