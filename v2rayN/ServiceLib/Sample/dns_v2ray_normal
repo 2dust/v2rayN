@@ -5,7 +5,7 @@
   },
   "servers": [
     {
-      "address": "tcp://1.1.1.1",
+      "address": "https://1.1.1.1/dns-query",
       "domains": [
         "geosite:geolocation-!cn"
       ],
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "address": "tcp://8.8.8.8"",
+      "address": "https://dns.google/dns-query",
       "domains": [
         "geosite:geolocation-!cn"
       ],
