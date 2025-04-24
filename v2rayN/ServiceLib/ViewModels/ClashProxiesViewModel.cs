@@ -174,6 +174,11 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public void RefreshProxyGroups()
     {
+        if (_proxies == null)
+        {
+            return;
+        }
+
         var selectedName = SelectedGroup?.Name;
         _proxyGroups.Clear();
 
@@ -229,7 +234,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             else
             {
                 SelectedGroup = _proxyGroups.First();
-            }
+            } 
         }
         else
         {
@@ -297,8 +302,10 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private ProxiesItem? TryGetProxy(string name)
     {
-        if (_proxies is null)
+        if (_proxies == null)
+        {
             return null;
+        }
         _proxies.TryGetValue(name, out var proxy2);
         if (proxy2 != null)
         {
