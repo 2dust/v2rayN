@@ -1071,13 +1071,13 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
   </data>
-    <data name="LvPrevProfile" xml:space="preserve">
+  <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理配置文件别名</value>
   </data>
-    <data name="LvNextProfile" xml:space="preserve">
+  <data name="LvNextProfile" xml:space="preserve">
     <value>落地代理配置文件別名</value>
   </data>
-    <data name="LvPrevProfileTip" xml:space="preserve">
+  <data name="LvPrevProfileTip" xml:space="preserve">
     <value>请确保配置文件别名存在并唯一</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
@@ -1336,7 +1336,7 @@
     <value>系统的 sudo 密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>密码已加密且只存储在本地文件中，无密码则每次都要输入</value>
+    <value>输入的密码无法校验，所以请确保输入正确。如果因为输入错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>请先在 Tun 模式设置中设置 sudo 密码</value>

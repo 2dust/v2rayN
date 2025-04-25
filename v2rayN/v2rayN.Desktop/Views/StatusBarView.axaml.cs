@@ -4,9 +4,11 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
+using DialogHostAvalonia;
 using ReactiveUI;
 using Splat;
 using v2rayN.Desktop.Common;
+using static QRCoder.PayloadGenerator;
 
 namespace v2rayN.Desktop.Views;
 
@@ -81,6 +83,10 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
                     return false;
                 await AvaUtils.SetClipboardData(this, (string)obj);
                 break;
+
+            case EViewAction.PasswordInput:
+                return await PasswordInputAsync();
+                break;
         }
         return await Task.FromResult(true);
     }
@@ -94,6 +100,20 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             iconslist[0].Icon = desktop.MainWindow.Icon;
             TrayIcon.SetIcons(Application.Current, iconslist);
         }
+    }
+
+    private async Task<bool> PasswordInputAsync()
+    {
+        var dialog = new SudoPasswordInputView();
+        var obj = await DialogHost.Show(dialog);
+        if (obj == null)
+        {
+            togEnableTun.IsChecked = false;
+            return false;
+        }
+
+        AppHandler.Instance.LinuxSudoPwd = obj.ToString() ?? string.Empty;
+        return true;
     }
 
     private void TxtRunningServerDisplay_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
