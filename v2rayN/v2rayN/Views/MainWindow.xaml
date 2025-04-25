@@ -40,7 +40,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         ClipToBounds="True"
-                        Style="{StaticResource MaterialDesignToolBar}">
+                        Style="{StaticResource MaterialDesignToolBar}"
+                        KeyboardNavigation.TabNavigation="Continue">
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="8,0"
                                 AutomationProperties.Name="{x:Static resx:ResUI.menuServers}">
