@@ -1339,7 +1339,7 @@
     <value>رمز عبور sudo سیستم</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>رمز عبور رمزگذاری شده و فقط در فایل های محلی ذخیره می شود.</value>
+    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>لطفاً ابتدا رمز عبور sudo را در تنظیمات حالت Tun تنظیم کنید</value>

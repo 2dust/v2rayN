@@ -40,6 +40,8 @@ public sealed class AppHandler
         }
     }
 
+    public string LinuxSudoPwd { get; set; }
+
     #endregion Property
 
     #region Init

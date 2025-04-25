@@ -436,11 +436,13 @@ public class StatusBarViewModel : MyReactiveObject
                     Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                     return;
                 }
-                else if (Utils.IsOSX())
+                else
                 {
-                    _config.TunModeItem.EnableTun = false;
-                    NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordIsEmpty);
-                    return;
+                    if (await _updateView?.Invoke(EViewAction.PasswordInput, null) == false)
+                    {
+                        _config.TunModeItem.EnableTun = false;
+                        return;
+                    }
                 }
             }
             await ConfigHandler.SaveConfig(_config);
@@ -456,11 +458,11 @@ public class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
+            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         else if (Utils.IsOSX())
         {
-            return _config.TunModeItem.LinuxSudoPwd.IsNotEmpty();
+            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         return false;
     }

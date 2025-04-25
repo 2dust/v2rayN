@@ -153,7 +153,6 @@ public partial class OptionSettingWindow : ReactiveWindow<OptionSettingViewModel
             this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunEnableExInbound, v => v.togEnableExInbound.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunEnableIPv6Address, v => v.togEnableIPv6Address.IsChecked).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.TunLinuxSudoPassword, v => v.txtLinuxSudoPassword.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType2, v => v.cmbCoreType2.SelectedValue).DisposeWith(disposables);
@@ -169,10 +168,6 @@ public partial class OptionSettingWindow : ReactiveWindow<OptionSettingViewModel
         if (Utils.IsWindows())
         {
             txbSettingsExceptionTip2.IsVisible = false;
-
-            txtLinuxSudoPassword.IsVisible = false;
-            labLinuxSudoPassword.IsVisible = false;
-            labLinuxSudoPasswordTip.IsVisible = false;
 
             labHide2TrayWhenClose.IsVisible = false;
             togHide2TrayWhenClose.IsVisible = false;
