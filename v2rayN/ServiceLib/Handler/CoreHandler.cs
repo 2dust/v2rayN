@@ -155,6 +155,12 @@ public class CoreHandler
     {
         try
         {
+            if (_linuxSudoPid > 0)
+            {
+                await KillProcessAsLinuxSudo();
+                _linuxSudoPid = -1;
+            }
+
             if (_process != null)
             {
                 await ProcUtils.ProcessKill(_process, true);
@@ -166,12 +172,6 @@ public class CoreHandler
                 await ProcUtils.ProcessKill(_processPre, true);
                 _processPre = null;
             }
-
-            if (_linuxSudoPid > 0)
-            {
-                await KillProcessAsLinuxSudo();
-            }
-            _linuxSudoPid = -1;
         }
         catch (Exception ex)
         {
@@ -390,7 +390,7 @@ public class CoreHandler
 
         await File.WriteAllTextAsync(shFilePath, sb.ToString());
         await Utils.SetLinuxChmod(shFilePath);
-        Logging.SaveLog(shFilePath);
+        //Logging.SaveLog(shFilePath);
 
         return shFilePath;
     }
