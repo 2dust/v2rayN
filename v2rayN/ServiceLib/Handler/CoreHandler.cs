@@ -13,7 +13,7 @@ public class CoreHandler
     private Config _config;
     private Process? _process;
     private Process? _processPre;
-    private int _linuxSudoPid = -1;
+    private bool _linuxSudo = false;
     private Action<bool, string>? _updateFunc;
     private const string _tag = "CoreHandler";
 
@@ -155,21 +155,21 @@ public class CoreHandler
     {
         try
         {
-            if (_linuxSudoPid > 0)
+            if (_linuxSudo)
             {
-                await KillProcessAsLinuxSudo();
-                _linuxSudoPid = -1;
+                await CoreAdminHandler.Instance.KillProcessAsLinuxSudo();
+                _linuxSudo = false;
             }
 
             if (_process != null)
             {
-                await ProcUtils.ProcessKill(_process, true);
+                await ProcUtils.ProcessKill(_process, Utils.IsWindows());
                 _process = null;
             }
 
             if (_processPre != null)
             {
-                await ProcUtils.ProcessKill(_processPre, true);
+                await ProcUtils.ProcessKill(_processPre, Utils.IsWindows());
                 _processPre = null;
             }
         }
@@ -225,13 +225,6 @@ public class CoreHandler
         _updateFunc?.Invoke(notify, msg);
     }
 
-    private bool IsNeedSudo(ECoreType eCoreType)
-    {
-        return _config.TunModeItem.EnableTun
-               && eCoreType == ECoreType.sing_box
-               && Utils.IsNonWindows();
-    }
-
     #endregion Private
 
     #region Process
@@ -243,6 +236,16 @@ public class CoreHandler
         {
             UpdateFunc(false, msg);
             return null;
+        }
+
+        if (mayNeedSudo
+            && _config.TunModeItem.EnableTun
+            && coreInfo.CoreType == ECoreType.sing_box
+            && Utils.IsNonWindows())
+        {
+            _linuxSudo = true;
+            await CoreAdminHandler.Instance.Init(_config, _updateFunc);
+            return await CoreAdminHandler.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
         }
 
         try
@@ -263,37 +266,24 @@ public class CoreHandler
                 }
             };
 
-            var isNeedSudo = mayNeedSudo && IsNeedSudo(coreInfo.CoreType);
-            if (isNeedSudo)
-            {
-                await RunProcessAsLinuxSudo(proc, fileName, coreInfo, configPath);
-            }
-
             if (displayLog)
             {
                 proc.OutputDataReceived += (sender, e) =>
                 {
-                    if (e.Data.IsNullOrEmpty())
-                        return;
-                    UpdateFunc(false, e.Data + Environment.NewLine);
+                    if (e.Data.IsNotEmpty())
+                    {
+                        UpdateFunc(false, e.Data + Environment.NewLine);
+                    }
                 };
                 proc.ErrorDataReceived += (sender, e) =>
                 {
-                    if (e.Data.IsNullOrEmpty())
-                        return;
-                    UpdateFunc(false, e.Data + Environment.NewLine);
+                    if (e.Data.IsNotEmpty())
+                    {
+                        UpdateFunc(false, e.Data + Environment.NewLine);
+                    }
                 };
             }
             proc.Start();
-
-            if (isNeedSudo && AppHandler.Instance.LinuxSudoPwd.IsNotEmpty())
-            {
-                await proc.StandardInput.WriteLineAsync();
-                await Task.Delay(10);
-                await proc.StandardInput.WriteLineAsync(AppHandler.Instance.LinuxSudoPwd);
-            }
-            if (isNeedSudo)
-                _linuxSudoPid = proc.Id;
 
             if (displayLog)
             {
@@ -318,82 +308,4 @@ public class CoreHandler
     }
 
     #endregion Process
-
-    #region Linux
-
-    private async Task RunProcessAsLinuxSudo(Process proc, string fileName, CoreInfo coreInfo, string configPath)
-    {
-        var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-
-        var shFilePath = await CreateLinuxShellFile(cmdLine, "run_as_sudo.sh");
-        proc.StartInfo.FileName = shFilePath;
-        proc.StartInfo.Arguments = "";
-        proc.StartInfo.WorkingDirectory = "";
-        if (AppHandler.Instance.LinuxSudoPwd.IsNotEmpty())
-        {
-            proc.StartInfo.StandardInputEncoding = Encoding.UTF8;
-            proc.StartInfo.RedirectStandardInput = true;
-        }
-    }
-
-    private async Task KillProcessAsLinuxSudo()
-    {
-        var cmdLine = $"pkill -P {_linuxSudoPid} ; kill {_linuxSudoPid}";
-        var shFilePath = await CreateLinuxShellFile(cmdLine, "kill_as_sudo.sh");
-        Process proc = new()
-        {
-            StartInfo = new()
-            {
-                FileName = shFilePath,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardInputEncoding = Encoding.UTF8,
-                RedirectStandardInput = true
-            }
-        };
-        proc.Start();
-
-        if (AppHandler.Instance.LinuxSudoPwd.IsNotEmpty())
-        {
-            try
-            {
-                await proc.StandardInput.WriteLineAsync();
-                await Task.Delay(10);
-                await proc.StandardInput.WriteLineAsync(AppHandler.Instance.LinuxSudoPwd);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
-
-        var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-        await proc.WaitForExitAsync(timeout.Token);
-        await Task.Delay(1000);
-    }
-
-    private async Task<string> CreateLinuxShellFile(string cmdLine, string fileName)
-    {
-        //Shell scripts
-        var shFilePath = Utils.GetBinConfigPath(AppHandler.Instance.IsAdministrator ? "root_" + fileName : fileName);
-        File.Delete(shFilePath);
-        var sb = new StringBuilder();
-        sb.AppendLine("#!/bin/sh");
-        if (AppHandler.Instance.IsAdministrator)
-        {
-            sb.AppendLine($"{cmdLine}");
-        }
-        else
-        {
-            sb.AppendLine($"sudo -S {cmdLine}");
-        }
-
-        await File.WriteAllTextAsync(shFilePath, sb.ToString());
-        await Utils.SetLinuxChmod(shFilePath);
-        //Logging.SaveLog(shFilePath);
-
-        return shFilePath;
-    }
-
-    #endregion Linux
 }

@@ -454,7 +454,7 @@ public class StatusBarViewModel : MyReactiveObject
     {
         if (Utils.IsWindows())
         {
-            return AppHandler.Instance.IsAdministrator;
+            return Utils.IsAdministrator();
         }
         else if (Utils.IsLinux())
         {
