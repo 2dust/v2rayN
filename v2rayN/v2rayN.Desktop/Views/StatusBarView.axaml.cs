@@ -8,7 +8,6 @@ using DialogHostAvalonia;
 using ReactiveUI;
 using Splat;
 using v2rayN.Desktop.Common;
-using static QRCoder.PayloadGenerator;
 
 namespace v2rayN.Desktop.Views;
 
