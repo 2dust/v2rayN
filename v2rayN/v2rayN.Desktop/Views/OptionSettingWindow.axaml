@@ -784,28 +784,6 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
-                    <TextBlock
-                        x:Name="labLinuxSudoPassword"
-                        Grid.Row="7"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPassword}" />
-                    <TextBox
-                        x:Name="txtLinuxSudoPassword"
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
-                    <TextBlock
-                        x:Name="labLinuxSudoPasswordTip"
-                        Grid.Row="7"
-                        Grid.Column="2"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPasswordTip}"
-                        TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
 

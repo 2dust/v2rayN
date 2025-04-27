@@ -20,6 +20,7 @@ public enum EViewAction
     BrowseServer,
     ImportRulesFromFile,
     InitSettingFont,
+    PasswordInput,
     SubEditWindow,
     RoutingRuleSettingWindow,
     RoutingRuleDetailsWindow,

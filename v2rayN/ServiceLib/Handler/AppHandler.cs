@@ -31,14 +31,7 @@ public sealed class AppHandler
         }
     }
 
-    public bool IsAdministrator
-    {
-        get
-        {
-            _isAdministrator ??= Utils.IsAdministrator();
-            return _isAdministrator.Value;
-        }
-    }
+    public string LinuxSudoPwd { get; set; }
 
     #endregion Property
 

@@ -61,7 +61,8 @@
                         x:Name="togEnableTun"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center" AutomationProperties.Name="{x:Static resx:ResUI.TbEnableTunAs}" />
+                        VerticalAlignment="Center"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbEnableTunAs}" />
                 </StackPanel>
 
                 <StackPanel
@@ -74,9 +75,9 @@
                         Width="160"
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuSystemproxy}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemproxy}"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemproxy}">
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
                         <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyNothing}" />
@@ -88,10 +89,10 @@
                         Width="160"
                         Margin="{StaticResource MarginLeftRight8}"
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
                         <ComboBox.ItemContainerStyle>
                             <Style TargetType="ComboBoxItem">
                                 <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
@@ -115,8 +116,10 @@
             ToolTipText="v2rayN">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu Style="{StaticResource DefContextMenu}">
-                    <MenuItem x:Name="menuSystemProxyClear" Height="{StaticResource MenuItemHeight}"
-                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyClear}">
+                    <MenuItem
+                        x:Name="menuSystemProxyClear"
+                        Height="{StaticResource MenuItemHeight}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyClear}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -128,8 +131,10 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxySet" Height="{StaticResource MenuItemHeight}"
-                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxySet}">
+                    <MenuItem
+                        x:Name="menuSystemProxySet"
+                        Height="{StaticResource MenuItemHeight}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxySet}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -141,8 +146,10 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxyNothing" Height="{StaticResource MenuItemHeight}"
-                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyNothing}">
+                    <MenuItem
+                        x:Name="menuSystemProxyNothing"
+                        Height="{StaticResource MenuItemHeight}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyNothing}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -154,8 +161,10 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem x:Name="menuSystemProxyPac" Height="{StaticResource MenuItemHeight}"
-                              AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyPac}">
+                    <MenuItem
+                        x:Name="menuSystemProxyPac"
+                        Height="{StaticResource MenuItemHeight}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSystemProxyPac}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -168,18 +177,20 @@
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator x:Name="sepRoutings" />
-                    <MenuItem x:Name="menuRoutings" Height="Auto"
-                              AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
+                    <MenuItem
+                        x:Name="menuRoutings"
+                        Height="Auto"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
                         <MenuItem.Header>
                             <DockPanel>
                                 <ComboBox
                                     x:Name="cmbRoutings"
                                     MaxWidth="300"
                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                                     DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}"
-                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
+                                    Style="{StaticResource MaterialDesignFilledComboBox}">
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
@@ -196,10 +207,10 @@
                                     x:Name="cmbServers"
                                     MaxWidth="300"
                                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuServers}"
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"
                                     DisplayMemberPath="Text"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}"
-                                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}">
+                                    Style="{StaticResource MaterialDesignFilledComboBox}">
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="AutomationProperties.Name" Value="{Binding Text}" />
