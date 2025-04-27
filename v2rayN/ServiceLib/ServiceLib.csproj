@@ -1,100 +1,79 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net8.0</TargetFramework>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<Nullable>enable</Nullable>
-	<Version>7.7.0</Version>
-	<Platforms>AnyCPU;ARM64</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
- 
-	<ItemGroup>
-		<PackageReference Include="Downloader" Version="3.3.3" />
-		<PackageReference Include="ReactiveUI" Version="20.1.63" />
-		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="Splat.NLog" Version="15.2.22" />
-		<PackageReference Include="WebDav.Client" Version="2.8.0" />
-		<PackageReference Include="YamlDotNet" Version="16.3.0" />
-		<PackageReference Include="QRCoder" Version="1.6.0" />
-		<PackageReference Include="CliWrap" Version="3.7.1" /> 
-		<PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
-		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
-		<PackageReference Include="TaskScheduler" Version="2.11.0" />
-
-	</ItemGroup>
-	
-  <ItemGroup>
-    <EmbeddedResource Include="Sample\clash_mixin_yaml" />
-    <EmbeddedResource Include="Sample\clash_tun_yaml" />
-    <EmbeddedResource Include="Sample\custom_routing_black" />
-    <EmbeddedResource Include="Sample\custom_routing_global" />
-    <EmbeddedResource Include="Sample\custom_routing_white" />
-    <EmbeddedResource Include="Sample\dns_singbox_normal" />
-    <EmbeddedResource Include="Sample\dns_v2ray_normal" />
-    <EmbeddedResource Include="Sample\pac" />
-    <EmbeddedResource Include="Sample\SampleClientConfig" />
-    <EmbeddedResource Include="Sample\SampleHttpRequest" />
-    <EmbeddedResource Include="Sample\SampleHttpResponse" />
-    <EmbeddedResource Include="Sample\SampleInbound" />
-    <EmbeddedResource Include="Sample\SampleOutbound" />
-    <EmbeddedResource Include="Sample\SingboxSampleClientConfig" />
-    <EmbeddedResource Include="Sample\SingboxSampleOutbound" />
-    <EmbeddedResource Include="Sample\tun_singbox_dns" />
-    <EmbeddedResource Include="Sample\tun_singbox_inbound" />
-    <EmbeddedResource Include="Sample\tun_singbox_rules" />
-    <EmbeddedResource Include="Sample\linux_autostart_config" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Update="Resx\ResUI.Designer.cs">
-	    <DependentUpon>ResUI.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
+		<PackageReference Include="Downloader" />
+		<PackageReference Include="ReactiveUI">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="ReactiveUI.Fody" />
+		<PackageReference Include="sqlite-net-pcl" />
+		<PackageReference Include="Splat.NLog" />
+		<PackageReference Include="WebDav.Client" />
+		<PackageReference Include="YamlDotNet" />
+		<PackageReference Include="QRCoder" />
+		<PackageReference Include="CliWrap" />
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" />
+		<PackageReference Include="TaskScheduler" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
-	    <SubType>Designer</SubType>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.hu.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.resx">
-	    <SubType>Designer</SubType>
-	    <LastGenOutput>ResUI.Designer.cs</LastGenOutput>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.ru.resx">
-	    <SubType>Designer</SubType>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
-	    <SubType>Designer</SubType>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
-	    <SubType>Designer</SubType>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
+		<EmbeddedResource Include="Sample\clash_mixin_yaml" />
+		<EmbeddedResource Include="Sample\clash_tun_yaml" />
+		<EmbeddedResource Include="Sample\custom_routing_black" />
+		<EmbeddedResource Include="Sample\custom_routing_global" />
+		<EmbeddedResource Include="Sample\custom_routing_white" />
+		<EmbeddedResource Include="Sample\dns_singbox_normal" />
+		<EmbeddedResource Include="Sample\dns_v2ray_normal" />
+		<EmbeddedResource Include="Sample\pac" />
+		<EmbeddedResource Include="Sample\proxy_set_linux_sh" />
+		<EmbeddedResource Include="Sample\proxy_set_osx_sh" />
+		<EmbeddedResource Include="Sample\SampleClientConfig" />
+		<EmbeddedResource Include="Sample\SampleHttpRequest" />
+		<EmbeddedResource Include="Sample\SampleHttpResponse" />
+		<EmbeddedResource Include="Sample\SampleInbound" />
+		<EmbeddedResource Include="Sample\SampleOutbound" />
+		<EmbeddedResource Include="Sample\SingboxSampleClientConfig" />
+		<EmbeddedResource Include="Sample\SingboxSampleOutbound" />
+		<EmbeddedResource Include="Sample\tun_singbox_dns" />
+		<EmbeddedResource Include="Sample\tun_singbox_inbound" />
+		<EmbeddedResource Include="Sample\tun_singbox_rules" />
+		<EmbeddedResource Include="Sample\linux_autostart_config" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Resx\ResUI.Designer.cs">
+			<DependentUpon>ResUI.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
+			<SubType>Designer</SubType>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.hu.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.resx">
+			<SubType>Designer</SubType>
+			<LastGenOutput>ResUI.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.ru.resx">
+			<SubType>Designer</SubType>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
+			<SubType>Designer</SubType>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
+			<SubType>Designer</SubType>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

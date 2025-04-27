@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.OptionSettingWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -764,7 +764,7 @@
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin8}"
                             MaxDropDownHeight="1000"
                             Style="{StaticResource DefComboBox}" />
@@ -783,15 +783,14 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsSpeedTestPageSize}" />
-                        <TextBox
-                            x:Name="txtSpeedTestPageSize"
+                            Text="{x:Static resx:ResUI.TbSettingsMixedConcurrencyCount}" />
+                        <ComboBox
+                            x:Name="cmbMixedConcurrencyCount"
                             Grid.Row="16"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource DefTextBox}" />
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="17"
@@ -868,7 +867,7 @@
                             x:Name="cmbMainGirdOrientation"
                             Grid.Row="21"
                             Grid.Column="1"
-                            Width="300"
+                            Width="200"
                             Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 
@@ -1099,6 +1098,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -1189,6 +1189,21 @@
                     <ComboBox
                         x:Name="cmbCoreType6"
                         Grid.Row="6"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin8}"
+                        Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="Wireguard" />
+                    <ComboBox
+                        x:Name="cmbCoreType9"
+                        Grid.Row="7"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin8}"

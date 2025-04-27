@@ -1,99 +1,98 @@
-﻿namespace ServiceLib.Handler.SysProxy
+namespace ServiceLib.Handler.SysProxy;
+
+public static class SysProxyHandler
 {
-    public static class SysProxyHandler
+    private static readonly string _tag = "SysProxyHandler";
+
+    public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
     {
-        private static readonly string _tag = "SysProxyHandler";
+        var type = config.SystemProxyItem.SysProxyType;
 
-        public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
+        if (forceDisable && type != ESysProxyType.Unchanged)
         {
-            var type = config.SystemProxyItem.SysProxyType;
-
-            if (forceDisable && type != ESysProxyType.Unchanged)
-            {
-                type = ESysProxyType.ForcedClear;
-            }
-
-            try
-            {
-                var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
-                var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
-                if (port <= 0)
-                {
-                    return false;
-                }
-                switch (type)
-                {
-                    case ESysProxyType.ForcedChange when Utils.IsWindows():
-                        {
-                            GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
-                            ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
-                            break;
-                        }
-                    case ESysProxyType.ForcedChange when Utils.IsLinux():
-                        await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
-                        break;
-
-                    case ESysProxyType.ForcedChange when Utils.IsOSX():
-                        await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
-                        break;
-
-                    case ESysProxyType.ForcedClear when Utils.IsWindows():
-                        ProxySettingWindows.UnsetProxy();
-                        break;
-
-                    case ESysProxyType.ForcedClear when Utils.IsLinux():
-                        await ProxySettingLinux.UnsetProxy();
-                        break;
-
-                    case ESysProxyType.ForcedClear when Utils.IsOSX():
-                        await ProxySettingOSX.UnsetProxy();
-                        break;
-
-                    case ESysProxyType.Pac when Utils.IsWindows():
-                        await SetWindowsProxyPac(port);
-                        break;
-                }
-
-                if (type != ESysProxyType.Pac && Utils.IsWindows())
-                {
-                    PacHandler.Stop();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-            return true;
+            type = ESysProxyType.ForcedClear;
         }
 
-        private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
+        try
         {
-            strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
-            if (config.SystemProxyItem.NotProxyLocalAddress)
+            var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+            var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
+            if (port <= 0)
             {
-                strExceptions = $"<local>;{strExceptions}";
+                return false;
+            }
+            switch (type)
+            {
+                case ESysProxyType.ForcedChange when Utils.IsWindows():
+                    {
+                        GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
+                        ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
+                        break;
+                    }
+                case ESysProxyType.ForcedChange when Utils.IsLinux():
+                    await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
+                    break;
+
+                case ESysProxyType.ForcedChange when Utils.IsOSX():
+                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
+                    break;
+
+                case ESysProxyType.ForcedClear when Utils.IsWindows():
+                    ProxySettingWindows.UnsetProxy();
+                    break;
+
+                case ESysProxyType.ForcedClear when Utils.IsLinux():
+                    await ProxySettingLinux.UnsetProxy();
+                    break;
+
+                case ESysProxyType.ForcedClear when Utils.IsOSX():
+                    await ProxySettingOSX.UnsetProxy();
+                    break;
+
+                case ESysProxyType.Pac when Utils.IsWindows():
+                    await SetWindowsProxyPac(port);
+                    break;
             }
 
-            strProxy = string.Empty;
-            if (Utils.IsNullOrEmpty(config.SystemProxyItem.SystemProxyAdvancedProtocol))
+            if (type != ESysProxyType.Pac && Utils.IsWindows())
             {
-                strProxy = $"{Global.Loopback}:{port}";
+                PacHandler.Stop();
             }
-            else
-            {
-                strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
-                    .Replace("{ip}", Global.Loopback)
-                    .Replace("{http_port}", port.ToString())
-                    .Replace("{socks_port}", port.ToString());
-            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return true;
+    }
+
+    private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
+    {
+        strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
+        if (config.SystemProxyItem.NotProxyLocalAddress)
+        {
+            strExceptions = $"<local>;{strExceptions}";
         }
 
-        private static async Task SetWindowsProxyPac(int port)
+        strProxy = string.Empty;
+        if (config.SystemProxyItem.SystemProxyAdvancedProtocol.IsNullOrEmpty())
         {
-            var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
-            await PacHandler.Start(Utils.GetConfigPath(), port, portPac);
-            var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
-            ProxySettingWindows.SetProxy(strProxy, "", 4);
+            strProxy = $"{Global.Loopback}:{port}";
         }
+        else
+        {
+            strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
+                .Replace("{ip}", Global.Loopback)
+                .Replace("{http_port}", port.ToString())
+                .Replace("{socks_port}", port.ToString());
+        }
+    }
+
+    private static async Task SetWindowsProxyPac(int port)
+    {
+        var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
+        await PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+        var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+        ProxySettingWindows.SetProxy(strProxy, "", 4);
     }
 }

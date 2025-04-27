@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -210,9 +210,6 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Szállítás</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Eredeti előfizetési tartalom törlése</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>A Core letöltése sikerült</value>
   </data>
@@ -289,8 +286,7 @@
     <value>Szolgáltatás indítása ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Konfiguráció sikeres
-{0}</value>
+    <value>Konfiguráció sikeres {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
     <value>A testreszabott konfigurációs szerver sikeresen importálva</value>
@@ -715,9 +711,6 @@
   <data name="TbSettingsExceptionTip" xml:space="preserve">
     <value>Kivétel. Ne használjon proxy szervert a címek esetében, amelyek pontosan itt kezdődnek, használjon pontosvesszőt (;)</value>
   </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>HTTP Port</value>
-  </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>Display real-time speed</value>
   </data>
@@ -1106,7 +1099,7 @@
     <value>Fenntartva (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Cím (Ip,Ipv6)</value>
+    <value>Cím (Ipv4,Ipv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>obfs jelszó</value>
@@ -1231,14 +1224,8 @@
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Alapértelmezett domain stratégia a kimenő forgalomhoz</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-szerver alacsony késleltetés</value>
-  </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
     <value>Fő elrendezés irányítása (indítás szükséges)</value>
-  </data>
-  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
-    <value>Multi-szerver terheléselosztás</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Kimenő DNS cím</value>
@@ -1254,9 +1241,6 @@
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Fő ablak megjelenítése vagy elrejtése</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>Jelenleg egy önálló csomagot futtatsz, kérlek, töltsd le manuálisan a SelfContained.7z fájlt, bontsd ki és írd felül!</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Testreszabott konfigurációs socks port</value>
@@ -1355,7 +1339,7 @@
     <value>Rendszer sudo jelszó</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>A jelszó titkosítva és csak a helyi fájlokban tárolva.</value>
+    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Kérlek, először állítsd be a sudo jelszót a Tun módban</value>
@@ -1372,8 +1356,8 @@
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Minimálás tálcára ablak zárásakor</value>
   </data>
-  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
-    <value>Szám / időszak az automatikus batch során a sebességvizsgálat során (maximum 1000)</value>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>The number of concurrent during multi-test</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
     <value>Kivétel. Ne használj proxy szervert a címeknél, évezz pontosvesszőt (,)</value>
@@ -1392,5 +1376,44 @@
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>Copy proxy command to clipboard</value>
+  </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Starting retesting failed parts, {0} remaining. Press ESC to terminate...</value>
+  </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>By test result</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Remove invalid by test results</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>Removed {0} invalid test results.</value>
+  </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Server port range</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Will cover the port, separate with commas (,)</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-server to custom configuration</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+    <value>Multi-server Random by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+    <value>Multi-server RoundRobin by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+    <value>Multi-server LeastPing by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+    <value>Multi-server LeastLoad by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+    <value>Multi-server LeastPing by sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Export server</value>
   </data>
 </root>

@@ -23,39 +23,39 @@ jobs:
       matrix:
         configuration: [Release]
 
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     - name: Setup
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v4.3.1
       with:
         dotnet-version: '8.0.x'
 
     - name: Build
       run: |
         cd v2rayN 
-        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64
-        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPathArm64
-        dotnet publish 	./v2rayN/v2rayN.csproj 	-c Release 	-r win-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:EnableWindowsTargeting=true	-o $OutputPath64Sc
-        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-x64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true  -p:EnableWindowsTargeting=true	-o $OutputPath64
-        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-arm64 	--self-contained false 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true  -p:EnableWindowsTargeting=true	-o $OutputPathArm64
-        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r win-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true  -p:EnableWindowsTargeting=true	-o $OutputPath64Sc
+        dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-x64   --self-contained=false -p:EnableWindowsTargeting=true -o $OutputPath64
+        dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-arm64 --self-contained=false -p:EnableWindowsTargeting=true -o $OutputPathArm64
+        dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-x64   --self-contained=true  -p:EnableWindowsTargeting=true -o $OutputPath64Sc
+        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-x64   --self-contained=false -p:EnableWindowsTargeting=true -o $OutputPath64
+        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-arm64 --self-contained=false -p:EnableWindowsTargeting=true -o $OutputPathArm64
+        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-x64   --self-contained=true  -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPath64Sc
 
   
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: v2rayN-windows
         path: |
-          ${{ github.workspace }}/v2rayN/Release/windows* 
+          ${{ github.workspace }}/v2rayN/Release/windows*
     
     # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''
-      run: | 
+      run: |
         chmod 755 package-release-zip.sh
         ./package-release-zip.sh $OutputArch $OutputPath64
         ./package-release-zip.sh $OutputArchArm $OutputPathArm64

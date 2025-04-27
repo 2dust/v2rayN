@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.SubSettingWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveUserControl
+<reactiveui:ReactiveUserControl
     x:Class="v2rayN.Views.ThemeSettingView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.GlobalHotkeySettingWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,11 +8,10 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="{x:Static resx:ResUI.menuSetting}"
+    Title="{x:Static resx:ResUI.menuGlobalHotkeySetting}"
     Width="700"
     Height="500"
-    x:TypeArguments="vms:SubEditViewModel"
-    KeyDown="GlobalHotkeySettingWindow_KeyDown"
+    x:TypeArguments="vms:GlobalHotkeySettingViewModel"
     ShowInTaskbar="False"
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
@@ -92,7 +91,6 @@
                         VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
-                        PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown"
                         Style="{StaticResource MyOutlinedTextBox}" />
 
                     <TextBlock
@@ -110,7 +108,6 @@
                         VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
-                        PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown"
                         Style="{StaticResource MyOutlinedTextBox}" />
 
                     <TextBlock
@@ -128,7 +125,6 @@
                         VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
-                        PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown"
                         Style="{StaticResource MyOutlinedTextBox}" />
                     <TextBlock
                         Grid.Row="4"
@@ -145,7 +141,6 @@
                         VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
-                        PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown"
                         Style="{StaticResource MyOutlinedTextBox}" />
                     <TextBlock
                         Grid.Row="5"
@@ -162,7 +157,6 @@
                         VerticalAlignment="Center"
                         AcceptsReturn="True"
                         IsReadOnly="True"
-                        PreviewKeyDown="TxtGlobalHotkey_PreviewKeyDown"
                         Style="{StaticResource MyOutlinedTextBox}" />
                 </Grid>
 

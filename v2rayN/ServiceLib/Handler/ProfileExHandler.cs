@@ -1,183 +1,181 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 
 //using System.Reactive.Linq;
 
-namespace ServiceLib.Handler
+namespace ServiceLib.Handler;
+
+public class ProfileExHandler
 {
-    public class ProfileExHandler
+    private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
+    private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
+    private readonly Queue<string> _queIndexIds = new();
+    public static ProfileExHandler Instance => _instance.Value;
+    private static readonly string _tag = "ProfileExHandler";
+
+    public ProfileExHandler()
     {
-        private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
-        private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
-        private Queue<string> _queIndexIds = new();
-        public static ProfileExHandler Instance => _instance.Value;
-        private static readonly string _tag = "ProfileExHandler";
+        //Init();
+    }
 
-        public ProfileExHandler()
+    public async Task Init()
+    {
+        await InitData();
+    }
+
+    public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()
+    {
+        return await Task.FromResult(_lstProfileEx);
+    }
+
+    private async Task InitData()
+    {
+        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
+
+        _lstProfileEx = new(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
+    }
+
+    private void IndexIdEnqueue(string indexId)
+    {
+        if (indexId.IsNotEmpty() && !_queIndexIds.Contains(indexId))
         {
-            //Init();
+            _queIndexIds.Enqueue(indexId);
         }
+    }
 
-        public async Task Init()
+    private async Task SaveQueueIndexIds()
+    {
+        var cnt = _queIndexIds.Count;
+        if (cnt > 0)
         {
-            await InitData();
-            _ = Task.Run(async () =>
+            var lstExists = await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync();
+            List<ProfileExItem> lstInserts = [];
+            List<ProfileExItem> lstUpdates = [];
+
+            for (var i = 0; i < cnt; i++)
             {
-                while (true)
+                var id = _queIndexIds.Dequeue();
+                var item = lstExists.FirstOrDefault(t => t.IndexId == id);
+                var itemNew = _lstProfileEx?.FirstOrDefault(t => t.IndexId == id);
+                if (itemNew is null)
                 {
-                    await Task.Delay(1000 * 600);
-                    await SaveQueueIndexIds();
+                    continue;
                 }
-            });
-        }
 
-        public async Task<ConcurrentBag<ProfileExItem>> GetProfileExs()
-        {
-            return await Task.FromResult(_lstProfileEx);
-        }
-
-        private async Task InitData()
-        {
-            await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
-
-            _lstProfileEx = new(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
-        }
-
-        private void IndexIdEnqueue(string indexId)
-        {
-            if (Utils.IsNotEmpty(indexId) && !_queIndexIds.Contains(indexId))
-            {
-                _queIndexIds.Enqueue(indexId);
-            }
-        }
-
-        private async Task SaveQueueIndexIds()
-        {
-            var cnt = _queIndexIds.Count;
-            if (cnt > 0)
-            {
-                var lstExists = await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync();
-                List<ProfileExItem> lstInserts = [];
-                List<ProfileExItem> lstUpdates = [];
-
-                for (int i = 0; i < cnt; i++)
+                if (item is not null)
                 {
-                    var id = _queIndexIds.Dequeue();
-                    var item = lstExists.FirstOrDefault(t => t.IndexId == id);
-                    var itemNew = _lstProfileEx?.FirstOrDefault(t => t.IndexId == id);
-                    if (itemNew is null)
-                    {
-                        continue;
-                    }
-
-                    if (item is not null)
-                    {
-                        lstUpdates.Add(itemNew);
-                    }
-                    else
-                    {
-                        lstInserts.Add(itemNew);
-                    }
+                    lstUpdates.Add(itemNew);
                 }
-                try
+                else
                 {
-                    if (lstInserts.Count() > 0)
-                        await SQLiteHelper.Instance.InsertAllAsync(lstInserts);
-
-                    if (lstUpdates.Count() > 0)
-                        await SQLiteHelper.Instance.UpdateAllAsync(lstUpdates);
-                }
-                catch (Exception ex)
-                {
-                    Logging.SaveLog(_tag, ex);
+                    lstInserts.Add(itemNew);
                 }
             }
-        }
 
-        private void AddProfileEx(string indexId, ref ProfileExItem? profileEx)
-        {
-            profileEx = new()
-            {
-                IndexId = indexId,
-                Delay = 0,
-                Speed = 0,
-                Sort = 0
-            };
-            _lstProfileEx.Add(profileEx);
-            IndexIdEnqueue(indexId);
-        }
-
-        public async Task ClearAll()
-        {
-            await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
-            _lstProfileEx = new();
-        }
-
-        public async Task SaveTo()
-        {
             try
             {
-                await SaveQueueIndexIds();
+                if (lstInserts.Count > 0)
+                {
+                    await SQLiteHelper.Instance.InsertAllAsync(lstInserts);
+                }
+
+                if (lstUpdates.Count > 0)
+                {
+                    await SQLiteHelper.Instance.UpdateAllAsync(lstUpdates);
+                }
             }
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
             }
         }
+    }
 
-        public void SetTestDelay(string indexId, string delayVal)
+    private ProfileExItem AddProfileEx(string indexId)
+    {
+        var profileEx = new ProfileExItem()
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
+            IndexId = indexId,
+            Delay = 0,
+            Speed = 0,
+            Sort = 0,
+            Message = string.Empty
+        };
+        _lstProfileEx.Add(profileEx);
+        IndexIdEnqueue(indexId);
+        return profileEx;
+    }
 
-            int.TryParse(delayVal, out int delay);
-            profileEx.Delay = delay;
-            IndexIdEnqueue(indexId);
-        }
+    private ProfileExItem GetProfileExItem(string? indexId)
+    {
+        return _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId) ?? AddProfileEx(indexId);
+    }
 
-        public void SetTestSpeed(string indexId, string speedVal)
+    public async Task ClearAll()
+    {
+        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
+        _lstProfileEx = new();
+    }
+
+    public async Task SaveTo()
+    {
+        try
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
-
-            decimal.TryParse(speedVal, out decimal speed);
-            profileEx.Speed = speed;
-            IndexIdEnqueue(indexId);
+            await SaveQueueIndexIds();
         }
-
-        public void SetSort(string indexId, int sort)
+        catch (Exception ex)
         {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                AddProfileEx(indexId, ref profileEx);
-            }
-            profileEx.Sort = sort;
-            IndexIdEnqueue(indexId);
+            Logging.SaveLog(_tag, ex);
         }
+    }
 
-        public int GetSort(string indexId)
-        {
-            var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-            if (profileEx == null)
-            {
-                return 0;
-            }
-            return profileEx.Sort;
-        }
+    public void SetTestDelay(string indexId, int delay)
+    {
+        var profileEx = GetProfileExItem(indexId);
 
-        public int GetMaxSort()
+        profileEx.Delay = delay;
+        IndexIdEnqueue(indexId);
+    }
+
+    public void SetTestSpeed(string indexId, decimal speed)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.Speed = speed;
+        IndexIdEnqueue(indexId);
+    }
+
+    public void SetTestMessage(string indexId, string message)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.Message = message;
+        IndexIdEnqueue(indexId);
+    }
+
+    public void SetSort(string indexId, int sort)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.Sort = sort;
+        IndexIdEnqueue(indexId);
+    }
+
+    public int GetSort(string indexId)
+    {
+        var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
+        if (profileEx == null)
         {
-            if (_lstProfileEx.Count <= 0)
-            {
-                return 0;
-            }
-            return _lstProfileEx.Max(t => t == null ? 0 : t.Sort);
+            return 0;
         }
+        return profileEx.Sort;
+    }
+
+    public int GetMaxSort()
+    {
+        if (_lstProfileEx.Count <= 0)
+        {
+            return 0;
+        }
+        return _lstProfileEx.Max(t => t == null ? 0 : t.Sort);
     }
 }

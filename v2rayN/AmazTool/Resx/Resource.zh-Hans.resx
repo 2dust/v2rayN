@@ -133,7 +133,7 @@
     <value>尝试结束 v2rayN 进程...</value>
   </data>
   <data name="FailedTerminateProcess" xml:space="preserve">
-    <value>请手动关闭正在运行的v2rayN，否则可能升级失败。</value>
+    <value>请手动关闭正在运行的 v2rayN，否则可能升级失败。</value>
   </data>
   <data name="StartUnzipping" xml:space="preserve">
     <value>开始解压缩更新包...</value>

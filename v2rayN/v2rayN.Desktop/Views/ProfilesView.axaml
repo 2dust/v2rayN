@@ -19,65 +19,59 @@
             <WrapPanel Margin="2" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
-                    MaxHeight="200"
+                    Margin="{StaticResource MarginLr4}"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding SubItems}"
-                    Theme="{DynamicResource PureCardRadioGroupListBox}" />
+                    Theme="{DynamicResource PureCardRadioGroupListBox}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
 
                 <Button
                     x:Name="btnEditSub"
-                    Width="30"
-                    Height="30"
-                    Margin="4,0"
+                    Width="{StaticResource IconButtonWidth}"
+                    Height="{StaticResource IconButtonHeight}"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                     <Button.Content>
-                        <PathIcon
-                            Width="24"
-                            Height="24"
-                            Data="{StaticResource building_edit}"
-                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource building_edit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
                 <Button
                     x:Name="btnAddSub"
-                    Width="30"
-                    Height="30"
-                    Margin="4,0"
+                    Width="{StaticResource IconButtonWidth}"
+                    Height="{StaticResource IconButtonHeight}"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                     <Button.Content>
-                        <PathIcon
-                            Width="24"
-                            Height="24"
-                            Data="{StaticResource building_add}"
-                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource building_add}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
 
                 <Button
                     x:Name="btnAutofitColumnWidth"
-                    Width="30"
-                    Height="30"
-                    Margin="4,0"
+                    Width="{StaticResource IconButtonWidth}"
+                    Height="{StaticResource IconButtonHeight}"
+                    Margin="{StaticResource MarginLr4}"
                     Classes="Success"
                     Theme="{DynamicResource BorderlessButton}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <Button.Content>
-                        <PathIcon
-                            Width="24"
-                            Height="24"
-                            Data="{StaticResource building_fit}"
-                            Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource building_fit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                     </Button.Content>
                 </Button>
 
                 <TextBox
                     x:Name="txtServerFilter"
                     Width="200"
-                    Margin="4,0"
+                    Margin="{StaticResource MarginLr4}"
                     VerticalContentAlignment="Center"
                     Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
             </WrapPanel>
@@ -85,7 +79,9 @@
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
                 BorderThickness="1"
+                CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
+                Classes.InsetContent="True"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
                 IsReadOnly="True"
@@ -103,15 +99,23 @@
                         <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
                         <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
                         <Separator />
-                        <MenuItem x:Name="menuSetDefaultMultipleServer" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}" />
-
-                        <MenuItem x:Name="menuSetDefaultLoadBalanceServer" Header="{x:Static resx:ResUI.menuSetDefaultLoadBalanceServer}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}">
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRandom}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRoundRobin}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastPing}" />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
+                            <Separator />
+                            <MenuItem x:Name="menuSetDefaultMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
+                        </MenuItem>
                         <Separator />
                         <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />
                         <MenuItem x:Name="menuRealPingServer" Header="{x:Static resx:ResUI.menuRealPingServer}" />
                         <MenuItem x:Name="menuSpeedServer" Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
+                            <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                            <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
+                        </MenuItem>
                         <Separator />
                         <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
                             <MenuItem>
@@ -135,11 +139,10 @@
                         </MenuItem>
                         <MenuItem x:Name="menuSelectAll" Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ClientConfig}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem x:Name="menuExport2ClientConfig" Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
                             <MenuItem x:Name="menuExport2ClientConfigClipboard" Header="{x:Static resx:ResUI.menuExport2ClientConfigClipboard}" />
-                        </MenuItem>
-                        <MenuItem Header="{x:Static resx:ResUI.menuExport2ShareUrl}">
+                            <Separator />
                             <MenuItem x:Name="menuExport2ShareUrl" Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
                         </MenuItem>
@@ -159,9 +162,9 @@
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="8,0" Orientation="Horizontal">
+                                <StackPanel Margin="{StaticResource MarginLr8}" Orientation="Horizontal">
                                     <Label
-                                        Margin="0,0,8,0"
+                                        Margin="{StaticResource MarginLr4}"
                                         Classes="Solid Red"
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
                                         IsVisible="{Binding IsActive}"
@@ -207,7 +210,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                    Margin="8,0"
+                                    Margin="{StaticResource MarginLr8}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"

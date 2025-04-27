@@ -1,13 +1,12 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums;
+
+public enum ETheme
 {
-    public enum ETheme
-    {
-        FollowSystem,
-        Dark,
-        Light,
-        Aquatic,
-        Desert,
-        Dusk,
-        NightSky
-    }
+    FollowSystem,
+    Dark,
+    Light,
+    Aquatic,
+    Desert,
+    Dusk,
+    NightSky
 }

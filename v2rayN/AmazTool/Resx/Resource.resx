@@ -133,7 +133,7 @@
     <value>Try to terminate the v2rayN process...</value>
   </data>
   <data name="FailedTerminateProcess" xml:space="preserve">
-    <value>Failed to terminate the v2rayN.Close it manually,or the upgrade may fail.</value>
+    <value>Failed to terminate the v2rayN. Close it manually, or the upgrade may fail.</value>
   </data>
   <data name="StartUnzipping" xml:space="preserve">
     <value>Start extracting the update package...</value>

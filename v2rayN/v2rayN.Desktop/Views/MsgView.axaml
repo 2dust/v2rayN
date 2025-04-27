@@ -10,80 +10,72 @@
     mc:Ignorable="d">
     <DockPanel Margin="2">
         <WrapPanel
+            Margin="{StaticResource Margin4}"
             VerticalAlignment="Center"
-            Classes="Margin8"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBox
                 x:Name="cmbMsgFilter"
                 Width="200"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalContentAlignment="Center"
                 Watermark="{x:Static resx:ResUI.MsgFilterTitle}" />
 
             <Button
                 x:Name="btnCopy"
-                Width="30"
-                Height="30"
-                Margin="8,0"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Click="menuMsgViewCopyAll_Click"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <Button.Content>
-                    <PathIcon
-                        Width="20"
-                        Height="20"
-                        Data="{StaticResource building_copy}"
-                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource building_copy}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
             <Button
                 x:Name="btnClear"
-                Width="30"
-                Height="30"
-                Margin="8,0"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Margin="{StaticResource MarginLr8}"
                 Classes="Success"
                 Click="menuMsgViewClear_Click"
                 Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <Button.Content>
-                    <PathIcon
-                        Width="20"
-                        Height="20"
-                        Data="{StaticResource building_delete}"
-                        Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource building_delete}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleSwitch
                 x:Name="togAutoRefresh"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
             <TextBlock
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
             <ToggleSwitch
                 x:Name="togScrollToEnd"
-                Margin="8,0"
+                Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
         </WrapPanel>
         <TextBox
             Name="txtMsg"
+            VerticalAlignment="Stretch"
             BorderThickness="0"
             Classes="TextArea"
             IsReadOnly="True"
             TextAlignment="Left"
-            VerticalAlignment="Stretch"
             TextWrapping="Wrap">
             <TextBox.ContextMenu>
                 <ContextMenu>

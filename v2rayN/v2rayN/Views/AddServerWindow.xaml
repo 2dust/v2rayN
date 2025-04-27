@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.AddServerWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -432,6 +432,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
@@ -463,6 +464,30 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbPorts7}" />
+                    <TextBox
+                        x:Name="txtPorts7"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left"
+                        materialDesign:HintAssist.Hint="1000:2000,3000:4000"
+                        Style="{StaticResource DefTextBox}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbPorts7Tips}" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"
@@ -585,6 +610,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
+                        materialDesign:HintAssist.Hint="2,3,4"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
@@ -600,6 +626,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
+                        materialDesign:HintAssist.Hint="Ipv4,Ipv6"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
@@ -616,6 +643,7 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
+                        materialDesign:HintAssist.Hint="1500"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
 

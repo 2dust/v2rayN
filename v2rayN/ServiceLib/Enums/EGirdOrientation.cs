@@ -1,9 +1,8 @@
-﻿namespace ServiceLib.Enums
+namespace ServiceLib.Enums;
+
+public enum EGirdOrientation
 {
-    public enum EGirdOrientation
-    {
-        Horizontal,
-        Vertical,
-        Tab,
-    }
+    Horizontal,
+    Vertical,
+    Tab,
 }

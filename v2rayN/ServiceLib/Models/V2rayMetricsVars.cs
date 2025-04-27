@@ -1,11 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 
-namespace ServiceLib.Models
+namespace ServiceLib.Models;
+
+internal class V2rayMetricsVars
 {
-    internal class V2rayMetricsVars
-    {
-        public V2rayMetricsVarsStats? stats { get; set; }
-    }
+    public V2rayMetricsVarsStats? stats { get; set; }
 }
 
 public class V2rayMetricsVarsStats

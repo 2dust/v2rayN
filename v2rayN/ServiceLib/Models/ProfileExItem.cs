@@ -1,15 +1,15 @@
-﻿using SQLite;
+using SQLite;
 
-namespace ServiceLib.Models
+namespace ServiceLib.Models;
+
+[Serializable]
+public class ProfileExItem
 {
-    [Serializable]
-    public class ProfileExItem
-    {
-        [PrimaryKey]
-        public string IndexId { get; set; }
+    [PrimaryKey]
+    public string IndexId { get; set; }
 
-        public int Delay { get; set; }
-        public decimal Speed { get; set; }
-        public int Sort { get; set; }
-    }
+    public int Delay { get; set; }
+    public decimal Speed { get; set; }
+    public int Sort { get; set; }
+    public string? Message { get; set; }
 }

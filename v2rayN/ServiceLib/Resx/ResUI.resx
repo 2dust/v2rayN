@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Export Share Link to Clipboard Successfully</value>
+    <value>Export share link to clipboard successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the server settings first</value>
+    <value>Please check the Configuration settings first.</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value>Invalid configuration format</value>
+    <value>Invalid configuration format.</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
     <value>Note that custom configuration relies entirely on your own configuration and does not work with all settings. If you want to use the system proxy, please modify the listening port manually.</value>
@@ -133,10 +133,10 @@
     <value>Downloading...</value>
   </data>
   <data name="downloadSpeed" xml:space="preserve">
-    <value>Download</value>
+    <value>Download speed</value>
   </data>
   <data name="DownloadYesNo" xml:space="preserve">
-    <value>Whether to download? {0}</value>
+    <value>Do you want to download {0}?</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>Failed to convert configuration file</value>
@@ -148,28 +148,28 @@
     <value>Failed to get the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Failed to import custom configuration server</value>
+    <value>Failed to import custom configuration Configuration</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>Please fill in the correct format server port</value>
+    <value>Please enter the correct port format.</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
-    <value>Please fill in the local listening port</value>
+    <value>Please enter the local listening port.</value>
   </data>
   <data name="FillPassword" xml:space="preserve">
-    <value>Please fill in the password</value>
+    <value>Please enter the password.</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>Please fill in the server address</value>
+    <value>Please enter the address.</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
-    <value>Please fill in the user ID</value>
+    <value>Please enter the user ID.</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>Is not the correct configuration, please check</value>
+    <value>This is not the correct configuration, please check</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
     <value>Initial Configuration</value>
@@ -210,50 +210,47 @@
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Transport</value>
   </data>
-  <data name="MsgClearSubscription" xml:space="preserve">
-    <value>Clear original subscription content</value>
-  </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Download Core successfully</value>
+    <value>Downloaded Core successfully</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
     <value>Failed to import subscription content</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Get subscription content successfully</value>
+    <value>Got subscription content successfully</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>No valid subscriptions set</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>Resolve {0} successfully</value>
+    <value>Resolved {0} successfully</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
-    <value>Start getting subscriptions</value>
+    <value>Started getting subscriptions</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
-    <value>Start updating {0}...</value>
+    <value>Started updating {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Invalid subscription content</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>Is unpacking......</value>
+    <value>Unpacking...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>Update subscriptions end</value>
+    <value>Subscription update ended</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>Update subscriptions start</value>
+    <value>Subscription update started</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>Update Core successfully</value>
+    <value>Updated Core successfully</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>Update Core successfully! Restarting service...</value>
+    <value>Updated Core successfully! Restarting service...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Non-VMess or ss protocol</value>
+    <value>Non-VMess or SS protocol</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>The Core file (file name: {1}) was not found under the folder ({0}), please download and put it in the folder, download address: {2}</value>
@@ -265,7 +262,7 @@
     <value>Operation failed, please check and retry</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Please Fill Remarks</value>
+    <value>Please fill Remarks</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
     <value>Please select the encryption method</value>
@@ -274,77 +271,76 @@
     <value>Please select a protocol</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>Please select the server first</value>
+    <value>Please select the Configuration first</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Servers deduplication completed. Old: {0}, New: {1}.</value>
+    <value>Configurations deduplication completed. Old: {0}, New: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>Are you sure to remove the server?</value>
+    <value>Are you sure you want to remove the Configuration?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Start service ({0})...</value>
+    <value>Starting service ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Configuration successful
-{0}</value>
+    <value>Configuration successful. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Custom configuration server imported successfully</value>
+    <value>Custom configuration Configuration imported successfully</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} servers have been imported from clipboard</value>
+    <value>{0} Configurations have been imported from clipboard</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Scan import the shared link successfully</value>
+    <value>Successfully scanned and imported the shared link</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>The delay : {0} ms, {1}</value>
+    <value>The delay: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
-    <value>Operation success</value>
+    <value>Operation successful</value>
   </data>
   <data name="PleaseSelectRules" xml:space="preserve">
     <value>Please select rules</value>
   </data>
   <data name="RemoveRules" xml:space="preserve">
-    <value>Are you sure to remove the rules?</value>
+    <value>Are you sure you want to remove the rules?</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0},One of the required.</value>
+    <value>{0}, one of the required fields.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>Remarks</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>URL(Optional)</value>
+    <value>URL (optional)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
     <value>Count</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Please fill in the URL</value>
+    <value>Please enter the URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>Do you want to append rules? Choose yes to append, choose otherwise to replace</value>
+    <value>Do you want to append rules? Choose yes to append, no to replace.</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>Download GeoFile: {0} successfully</value>
+    <value>Downloaded GeoFile: {0} successfully</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
     <value>Information</value>
   </data>
   <data name="LvCustomIcon" xml:space="preserve">
-    <value>Custom Icon</value>
+    <value>Custom icon</value>
   </data>
   <data name="FillCorrectDNSText" xml:space="preserve">
     <value>Please fill in the correct custom DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*ws/httpupgrade/xhttp path</value>
+    <value>*ws/http upgrade/xhttp path</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
     <value>*h2 path</value>
@@ -353,16 +349,16 @@
     <value>*QUIC key/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc serviceName</value>
+    <value>*grpc service name</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host Separated by commas (,)</value>
+    <value>*http host separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*ws/httpupgrade/xhttp host</value>
+    <value>*ws/http upgrade/xhttp host</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host Separated by commas (,)</value>
+    <value>*h2 host separated by commas (,)</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC security</value>
@@ -386,7 +382,7 @@
     <value>*kcp seed</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>Global hotkey {0} registered failed, reason {1}</value>
+    <value>Global hotkey {0} registration failed, reason: {1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>Global hotkey {0} registered successfully</value>
@@ -398,7 +394,7 @@
     <value>All</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Please browse to import server configuration</value>
+    <value>Please browse to import Configuration configuration</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Testing...</value>
@@ -410,7 +406,7 @@
     <value>Local</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Server filter, press Enter to execute</value>
+    <value>Configuration filter, press Enter to execute</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Check Update</value>
@@ -437,7 +433,7 @@
     <value>Routing Setting</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>Servers</value>
+    <value>Configurations</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>Settings</value>
@@ -488,55 +484,55 @@
     <value>Scan QR code on the screen (Ctrl+S)</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>Clone selected server</value>
+    <value>Clone selected Configuration</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>Remove duplicate servers</value>
+    <value>Remove duplicate Configurations</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Remove selected servers (Delete)</value>
+    <value>Remove selected Configurations (Delete)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Set as active server (Enter)</value>
+    <value>Set as active Configuration (Enter)</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Test servers real delay (Ctrl+R)</value>
+    <value>Test Configurations real delay (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Sort by test result</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Test servers download speed (Ctrl+T)</value>
+    <value>Test Configurations download speed (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Test servers with tcping (Ctrl+O)</value>
+    <value>Test Configurations with tcping (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Export selected server for complete configuration</value>
+    <value>Export selected Configuration for complete configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Export Share Link to Clipboard (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Add a custom configuration server</value>
+    <value>Add a custom configuration Configuration</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>Add [Shadowsocks] server</value>
+    <value>Add [Shadowsocks] Configuration</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Add [SOCKS] server</value>
+    <value>Add [SOCKS] Configuration</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>Add [Trojan] server</value>
+    <value>Add [Trojan] Configuration</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>Add [VLESS] server</value>
+    <value>Add [VLESS] Configuration</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>Add [VMess] server</value>
+    <value>Add [VMess] Configuration</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>Select all (Ctrl+A)</value>
@@ -587,13 +583,13 @@
     <value>Address</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>AllowInsecure</value>
+    <value>Allow Insecure</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>ALPN</value>
   </data>
   <data name="TbAlterId" xml:space="preserve">
-    <value>AlterID</value>
+    <value>Alter ID</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Fingerprint</value>
@@ -662,7 +658,7 @@
     <value>Socks port</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* After setting this value, an socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
+    <value>* After setting this value, a socks service will be started using Xray/sing-box(Tun) to provide functions such as speed display</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Browse</value>
@@ -677,10 +673,10 @@
     <value>Allow connections from the LAN</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Auto hide startup</value>
+    <value>Auto hide on startup</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Automatic update interval of Geo (hours)</value>
+    <value>Automatic update interval for Geo files (hours)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: basic settings</value>
@@ -692,16 +688,16 @@
     <value>Core: KCP settings</value>
   </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
-    <value>CoreType settings</value>
+    <value>Core Type settings</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>AllowInsecure</value>
+    <value>Allow Insecure</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
-    <value>Outbound Freedom domainStrategy</value>
+    <value>Outbound Freedom domain Strategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Automatically adjust column width after updating subscription</value>
+    <value>Automatically adjust column width after subscription update</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>Check for pre-release updates</value>
@@ -710,16 +706,13 @@
     <value>Exception</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses beginning with,Use semicolon (;)</value>
-  </data>
-  <data name="TbSettingsHttpPort" xml:space="preserve">
-    <value>HTTP Port</value>
+    <value>Exclusions: Do not use proxy server for addresses beginning with the following. Use semicolon (;) to separate entries.</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>Display real-time speed (Require restart)</value>
+    <value>Display real-time speed (requires restart)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Keep older when deduplication</value>
+    <value>Keep older entries when de-duplicating</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>Enable Log</value>
@@ -752,7 +745,7 @@
     <value>Start on boot</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Enable traffic statistics (Require restart)</value>
+    <value>Enable traffic statistics (requires restart)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>Subscription conversion URL</value>
@@ -764,7 +757,7 @@
     <value>Enable Security Protocol TLS v1.3 (subscription/update)</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tray right-click menu servers display limit</value>
+    <value>Tray right-click menu Configurations display limit</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Enable UDP</value>
@@ -782,7 +775,7 @@
     <value>Global Hotkey Settings</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Set directly by pressing the keyboard, take effect after restart</value>
+    <value>Set directly by pressing the keyboard; takes effect after restart</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
     <value>Do not change system proxy</value>
@@ -797,7 +790,7 @@
     <value>PAC mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Share Server (Ctrl+F)</value>
+    <value>Share Configuration (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routing</value>
@@ -821,7 +814,7 @@
     <value>Up (U)</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>Filter, support regular</value>
+    <value>Filter, supports regular expressions</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} Website</value>
@@ -839,7 +832,7 @@
     <value>Remove selected (Delete)</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Set as active rule(Enter)</value>
+    <value>Set as active rule (Enter)</value>
   </data>
   <data name="TbdomainMatcher" xml:space="preserve">
     <value>Domain Matcher</value>
@@ -848,19 +841,19 @@
     <value>Domain strategy</value>
   </data>
   <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.Block Domain or IP</value>
+    <value>3. Block Domain or IP</value>
   </data>
   <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.Direct Domain or IP</value>
+    <value>2. Direct Domain or IP</value>
   </data>
   <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.Proxy Domain or IP</value>
+    <value>1. Proxy Domain or IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>Pre-defined Rule Set List</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*Set the rules, separated by commas (,); The comma in the regular is replaced by &lt;COMMA&gt;</value>
+    <value>*Separate rules by commas (,); For a literal comma use &lt;COMMA&gt;; Prefix # to ignore a rule</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
     <value>Import Rules From Clipboard</value>
@@ -887,43 +880,43 @@
     <value>Remove Rule (Delete)</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
-    <value>RoutingRuleDetailsSetting</value>
+    <value>Routing Rule Details Setting</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Domain, ip, process are auto sorted when saving</value>
+    <value>Domain, IP, process are auto-sorted when saving</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
-    <value>Ruleobject Doc</value>
+    <value>Rule object Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Support DnsObject, Click to view the document</value>
+    <value>Supports DNS Object; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
-    <value>Routing setting is changed</value>
+    <value>Routing setting has changed</value>
   </data>
   <data name="TipChangeSystemProxy" xml:space="preserve">
-    <value>System proxy setting is changed</value>
+    <value>System proxy setting has changed</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
-    <value>RouteOnly</value>
+    <value>Route Only</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
     <value>Do not use proxy servers for local (intranet) addresses</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>One-click multi test Latency and speed (Ctrl+E)</value>
+    <value>One-click multi-test latency and speed (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>Delay(ms)</value>
+    <value>Delay (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Speed(M/s)</value>
+    <value>Speed (M/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>Failed to run Core, please see the log</value>
+    <value>Failed to run Core, please check the prompt information</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
     <value>Remarks regular filter</value>
@@ -938,25 +931,25 @@
     <value>New Port for LAN</value>
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
-    <value>TunMode settings</value>
+    <value>Tun Mode settings</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
     <value>Move to group</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>Enable Server Drag Drop Sort(Require restart)</value>
+    <value>Enable sorting Configurations by drag-n-drop (requires restart)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
-    <value>AutoRefresh</value>
+    <value>Auto refresh</value>
   </data>
   <data name="SpeedtestingSkip" xml:space="preserve">
     <value>Skip test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Edit Server (Ctrl+D)</value>
+    <value>Edit Configuration (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Double-click server make active</value>
+    <value>Double-clicking Configuration makes it active</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>Test completed</value>
@@ -971,10 +964,10 @@
     <value>This parameter is valid only for tcp/http and ws</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>FontFamily(Require restart)</value>
+    <value>Font family (requires restart)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Copy the font TTF/TTC file to the directory guiFonts, restart the settings</value>
+    <value>Copy the font TTF/TTC file to the directory gui Fonts; Reopen the settings window</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
@@ -986,25 +979,25 @@
     <value>Font Size</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>SpeedTest Single Timeout Value</value>
+    <value>Speed Test Single Timeout Value</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>SpeedTest URL</value>
+    <value>Speed Test URL</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
+    <value>Public Key</value>
   </data>
   <data name="TbShortId" xml:space="preserve">
-    <value>ShortId</value>
+    <value>Short Id</value>
   </data>
   <data name="TbSpiderX" xml:space="preserve">
-    <value>SpiderX</value>
+    <value>Spider X</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Enable hardware acceleration(Require restart)</value>
+    <value>Enable hardware acceleration (requires restart)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
     <value>Waiting for testing (press ESC to terminate)...</value>
@@ -1064,28 +1057,28 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Hysteria2] server</value>
+    <value>Add [Hysteria2] Configuration</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria Max bandwidth (Up/Dw)</value>
+    <value>Hysteria Max bandwidth (Up/Down)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>Use System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [TUIC] server</value>
+    <value>Add [TUIC] Configuration</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy remarks</value>
+    <value>Previous proxy Configuration remarks</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy remarks</value>
+    <value>Next proxy Configuration remarks</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Please make sure the remarks exists and is unique</value>
+    <value>Please make sure the Configuration remarks exist and are unique</value>
   </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>Enable additional Inbound</value>
@@ -1094,31 +1087,31 @@
     <value>Enable IPv6 Address</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [WireGuard] server</value>
+    <value>Add [WireGuard] Configuration</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
-    <value>PrivateKey</value>
+    <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved(2,3,4)</value>
+    <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address(Ip,Ipv6)</value>
+    <value>Address (IPv4, IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>obfs password</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain or IP or ProcName) and Port and Protocol and InboundTag =&gt; OutboundTag</value>
+    <value>(Domain or IP or Proc Name) and Port and Protocol and Inbound Tag =&gt; Outbound Tag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Auto ScrollToEnd</value>
+    <value>Auto scroll to end</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Speed Ping Test URL</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Updating subscription, only determine remarks exists</value>
+    <value>Updating subscription, only determining if remarks exist</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Test terminating...</value>
@@ -1127,7 +1120,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [HTTP] server</value>
+    <value>Add [HTTP] Configuration</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
@@ -1139,7 +1132,7 @@
     <value>Enable cache file for sing-box (ruleset files)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>Custom the rule-set of sing-box</value>
+    <value>Customize the rule-set of sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>Successful operation. Click the settings menu to reboot the app.</value>
@@ -1193,7 +1186,7 @@
     <value>Close Connection</value>
   </data>
   <data name="menuConnectionCloseAll" xml:space="preserve">
-    <value>Close All Connection</value>
+    <value>Close All Connections</value>
   </data>
   <data name="TbProxies" xml:space="preserve">
     <value>Proxies</value>
@@ -1228,14 +1221,8 @@
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Default domain strategy for outbound</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-Server lowest latency</value>
-  </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Main layout orientation(Require restart)</value>
-  </data>
-  <data name="menuSetDefaultLoadBalanceServer" xml:space="preserve">
-    <value>Multi-server load balancing</value>
+    <value>Main layout orientation (requires restart)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Outbound DNS address</value>
@@ -1247,13 +1234,10 @@
     <value>Export Base64-encoded Share Links to Clipboard</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Export selected server for complete configuration to clipboard</value>
+    <value>Export selected Configuration for complete configuration to clipboard</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Show or hide the main window</value>
-  </data>
-  <data name="UpdateStandalonePackageTip" xml:space="preserve">
-    <value>You are currently running a standalone package, please manually download the SelfContained.7z file to unzip and overwrite it!</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
     <value>Custom config socks port</value>
@@ -1280,16 +1264,16 @@
     <value>Remote (WebDAV)</value>
   </data>
   <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDav Url</value>
+    <value>WebDAV URL</value>
   </data>
   <data name="LvWebDavUserName" xml:space="preserve">
-    <value>WebDav User Name</value>
+    <value>WebDAV User Name</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
-    <value>WebDav Password</value>
+    <value>WebDAV Password</value>
   </data>
   <data name="LvWebDavCheck" xml:space="preserve">
-    <value>WebDav Check</value>
+    <value>WebDAV Check</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>Remote folder name (optional)</value>
@@ -1310,7 +1294,7 @@
     <value>sing-box ruleset files source (optional)</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>UpgradeApp does not exist</value>
+    <value>Upgrade App does not exist</value>
   </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
     <value>Routing rules source (optional)</value>
@@ -1334,16 +1318,16 @@
     <value>Scan QR code in the image</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
-    <value>Invalid address (Url)</value>
+    <value>Invalid address (URL)</value>
   </data>
   <data name="InsecureUrlProtocol" xml:space="preserve">
     <value>Please do not use the insecure HTTP protocol subscription address</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>Install the font to the system and restart the settings</value>
+    <value>Install the font to the system, select or fill in the font name, restart the settings</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
-    <value>Are you sure to exit?</value>
+    <value>Are you sure you want to exit?</value>
   </data>
   <data name="LvMemo" xml:space="preserve">
     <value>Remarks Memo</value>
@@ -1352,7 +1336,7 @@
     <value>System sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password is encrypted and stored only in local files.</value>
+    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Please set the sudo password in Tun mode settings first</value>
@@ -1364,16 +1348,16 @@
     <value>*xhttp mode</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>XHTTP Extra raw JSON, format: { XHTTPObject }</value>
+    <value>XHTTP Extra raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>
   </data>
-  <data name="TbSettingsSpeedTestPageSize" xml:space="preserve">
-    <value>Number per time for auto batch during speedtest(max 1000)</value>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>The number of concurrent tests during multi-test</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Exception. Do not use proxy server for addresses,with a comma (,)</value>
+    <value>Exclusions: Do not use proxy server for the following addresses. Use comma (,) to separate entries.</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>Sniffing type</value>
@@ -1389,5 +1373,44 @@
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>Copy proxy command to clipboard</value>
+  </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Starting retesting failed parts, {0} remaining. Press ESC to terminate...</value>
+  </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>By test result</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Remove invalid by test results</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>Removed {0} invalid test results.</value>
+  </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Configuration port range</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Will cover the port, separate with commas (,)</value>
+  </data>
+  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
+    <value>Multi-Configuration to custom configuration</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+    <value>Multi-Configuration Random by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+    <value>Multi-Configuration RoundRobin by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+    <value>Multi-Configuration LeastPing by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+    <value>Multi-Configuration LeastLoad by Xray</value>
+  </data>
+  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+    <value>Multi-Configuration LeastPing by sing-box</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Export Configuration</value>
   </data>
 </root>

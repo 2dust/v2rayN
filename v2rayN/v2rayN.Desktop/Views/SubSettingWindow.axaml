@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="v2rayN.Desktop.Views.SubSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -19,9 +19,9 @@
         CloseOnClickAway="True"
         DisableOpeningAnimation="True"
         Identifier="dialogHostSub">
-        <DockPanel Classes="Margin8">
+        <DockPanel Margin="{StaticResource Margin8}">
             <StackPanel
-                Classes="Margin8"
+                Margin="{StaticResource Margin4}"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Menu>

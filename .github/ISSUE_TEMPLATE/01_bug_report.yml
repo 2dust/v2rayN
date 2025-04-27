@@ -4,6 +4,13 @@ title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: input
+    id: "os-version"
+    attributes:
+      label: "操作系统和版本"
+      description: "操作系统和版本"
+    validations:
+      required: true
+  - type: input
     id: "expectation"
     attributes:
       label: "预期情况"

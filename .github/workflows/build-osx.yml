@@ -22,34 +22,42 @@ jobs:
       matrix:
         configuration: [Release]
 
-    runs-on: macos-latest 
+    runs-on: macos-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Setup
+      uses: actions/setup-dotnet@v4.3.1
+      with:
+        dotnet-version: '8.0.x'
 
     - name: Build
       run: |
         cd v2rayN 
-        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPath64
-        dotnet publish 	./v2rayN.Desktop/v2rayN.Desktop.csproj 	-c Release 	-r osx-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true 	-o $OutputPathArm64
-        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r osx-x64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPath64
-        dotnet publish 	./AmazTool/AmazTool.csproj 	-c Release 	-r osx-arm64 	--self-contained true 	-p:PublishReadyToRun=false 	-p:PublishSingleFile=true -p:PublishTrimmed=true	-o $OutputPathArm64
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-x64   --self-contained=true -o $OutputPath64
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-arm64 --self-contained=true -o $OutputPathArm64
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-x64   --self-contained=true -p:PublishTrimmed=true -o $OutputPath64
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-arm64 --self-contained=true -p:PublishTrimmed=true -o $OutputPathArm64
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: v2rayN-macos
         path: |
           ${{ github.workspace }}/v2rayN/Release/macos*
     
     # release osx package
-    - name: Package osx 
+    - name: Package osx
       if: github.event.inputs.release_tag != ''
       run: |
         brew install create-dmg
         chmod 755 package-osx.sh
-        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }} 
+        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
         ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
     
     - name: Upload dmg to release
@@ -59,11 +67,12 @@ jobs:
         file: ${{ github.workspace }}/v2rayN*.dmg
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
+        prerelease: true
 
     # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''
-      run: | 
+      run: |
         chmod 755 package-release-zip.sh
         ./package-release-zip.sh $OutputArch $OutputPath64
         ./package-release-zip.sh $OutputArchArm $OutputPathArm64
