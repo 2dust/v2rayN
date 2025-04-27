@@ -199,7 +199,13 @@
                                     DisplayMemberPath="Text"
                                     FontSize="{DynamicResource StdFontSize}"
                                     Style="{StaticResource MaterialDesignFilledComboBox}"
-                                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"/>
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="AutomationProperties.Name" Value="{Binding Text}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
