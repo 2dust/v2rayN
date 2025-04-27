@@ -91,7 +91,13 @@
                         DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"/>
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
@@ -173,7 +179,13 @@
                                     DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
                                     Style="{StaticResource MaterialDesignFilledComboBox}"
-                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"/>
+                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
