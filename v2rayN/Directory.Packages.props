@@ -18,13 +18,13 @@
     <PackageVersion Include="ReactiveUI" Version="20.2.45" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageVersion Include="ReactiveUI.WPF" Version="20.2.45" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.6" />
-    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.6" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.7" />
+    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.7" />
     <PackageVersion Include="Splat.NLog" Version="15.3.1" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.1" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.21" />
   </ItemGroup>
 </Project>
