@@ -25,6 +25,6 @@
     <PackageVersion Include="TaskScheduler" Version="2.12.1" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.21" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
   </ItemGroup>
 </Project>
