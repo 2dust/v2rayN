@@ -18,6 +18,9 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
+        <Style x:Key="AccessibleMyChipListBoxItem" TargetType="ListBoxItem" BasedOn="{StaticResource MyChipListBoxItem}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -26,8 +29,9 @@
                     x:Name="lstGroup"
                     MaxHeight="200"
                     FontSize="{DynamicResource StdFontSize}"
-                    ItemContainerStyle="{StaticResource MyChipListBoxItem}"
-                    Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+                    ItemContainerStyle="{StaticResource AccessibleMyChipListBoxItem}"
+                    Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Remarks}" />

@@ -92,7 +92,13 @@
                         AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
@@ -184,7 +190,13 @@
                                     AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                                     DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                    Style="{StaticResource MaterialDesignFilledComboBox}">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -198,7 +210,13 @@
                                     AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"
                                     DisplayMemberPath="Text"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
+                                    Style="{StaticResource MaterialDesignFilledComboBox}">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="AutomationProperties.Name" Value="{Binding Text}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
