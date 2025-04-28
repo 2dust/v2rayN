@@ -238,66 +238,19 @@ public class CoreHandler
             return null;
         }
 
-        if (mayNeedSudo
-            && _config.TunModeItem.EnableTun
-            && coreInfo.CoreType == ECoreType.sing_box
-            && Utils.IsNonWindows())
-        {
-            _linuxSudo = true;
-            await CoreAdminHandler.Instance.Init(_config, _updateFunc);
-            return await CoreAdminHandler.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
-        }
-
         try
         {
-            Process proc = new()
+            if (mayNeedSudo
+                && _config.TunModeItem.EnableTun
+                && coreInfo.CoreType == ECoreType.sing_box
+                && Utils.IsNonWindows())
             {
-                StartInfo = new()
-                {
-                    FileName = fileName,
-                    Arguments = string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath),
-                    WorkingDirectory = Utils.GetBinConfigPath(),
-                    UseShellExecute = false,
-                    RedirectStandardOutput = displayLog,
-                    RedirectStandardError = displayLog,
-                    CreateNoWindow = true,
-                    StandardOutputEncoding = displayLog ? Encoding.UTF8 : null,
-                    StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
-                }
-            };
-
-            if (displayLog)
-            {
-                proc.OutputDataReceived += (sender, e) =>
-                {
-                    if (e.Data.IsNotEmpty())
-                    {
-                        UpdateFunc(false, e.Data + Environment.NewLine);
-                    }
-                };
-                proc.ErrorDataReceived += (sender, e) =>
-                {
-                    if (e.Data.IsNotEmpty())
-                    {
-                        UpdateFunc(false, e.Data + Environment.NewLine);
-                    }
-                };
-            }
-            proc.Start();
-
-            if (displayLog)
-            {
-                proc.BeginOutputReadLine();
-                proc.BeginErrorReadLine();
+                _linuxSudo = true;
+                await CoreAdminHandler.Instance.Init(_config, _updateFunc);
+                return await CoreAdminHandler.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
             }
 
-            await Task.Delay(500);
-            AppHandler.Instance.AddProcess(proc.Handle);
-            if (proc is null or { HasExited: true })
-            {
-                throw new Exception(ResUI.FailedToRunCore);
-            }
-            return proc;
+            return await RunProcessNormal(fileName, coreInfo, configPath, displayLog);
         }
         catch (Exception ex)
         {
@@ -305,6 +258,58 @@ public class CoreHandler
             UpdateFunc(mayNeedSudo, ex.Message);
             return null;
         }
+    }
+
+    private async Task<Process?> RunProcessNormal(string fileName, CoreInfo? coreInfo, string configPath, bool displayLog)
+    {
+        Process proc = new()
+        {
+            StartInfo = new()
+            {
+                FileName = fileName,
+                Arguments = string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath),
+                WorkingDirectory = Utils.GetBinConfigPath(),
+                UseShellExecute = false,
+                RedirectStandardOutput = displayLog,
+                RedirectStandardError = displayLog,
+                CreateNoWindow = true,
+                StandardOutputEncoding = displayLog ? Encoding.UTF8 : null,
+                StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
+            }
+        };
+
+        if (displayLog)
+        {
+            proc.OutputDataReceived += (sender, e) =>
+            {
+                if (e.Data.IsNotEmpty())
+                {
+                    UpdateFunc(false, e.Data + Environment.NewLine);
+                }
+            };
+            proc.ErrorDataReceived += (sender, e) =>
+            {
+                if (e.Data.IsNotEmpty())
+                {
+                    UpdateFunc(false, e.Data + Environment.NewLine);
+                }
+            };
+        }
+        proc.Start();
+
+        if (displayLog)
+        {
+            proc.BeginOutputReadLine();
+            proc.BeginErrorReadLine();
+        }
+
+        await Task.Delay(100);
+        AppHandler.Instance.AddProcess(proc.Handle);
+        if (proc is null or { HasExited: true })
+        {
+            throw new Exception(ResUI.FailedToRunCore);
+        }
+        return proc;
     }
 
     #endregion Process

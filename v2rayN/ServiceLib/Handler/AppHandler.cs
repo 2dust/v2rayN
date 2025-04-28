@@ -9,7 +9,6 @@ public sealed class AppHandler
     private int? _statePort;
     private int? _statePort2;
     private Job? _processJob;
-    private bool? _isAdministrator;
     public static AppHandler Instance => _instance.Value;
     public Config Config => _config;
 
