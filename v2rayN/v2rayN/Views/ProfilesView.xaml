@@ -18,9 +18,6 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
-        <Style x:Key="AccessibleMyChipListBoxItem" TargetType="ListBoxItem" BasedOn="{StaticResource MyChipListBoxItem}">
-            <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
-        </Style>
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -29,7 +26,6 @@
                     x:Name="lstGroup"
                     MaxHeight="200"
                     FontSize="{DynamicResource StdFontSize}"
-                    ItemContainerStyle="{StaticResource AccessibleMyChipListBoxItem}"
                     Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}"
                     AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}">
                     <ListBox.ItemTemplate>
@@ -37,6 +33,29 @@
                             <TextBlock Text="{Binding Remarks}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyChipListBoxItem}">
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <RadioButton
+                                            IsChecked="{TemplateBinding IsSelected}"
+                                            Content="{TemplateBinding Content}"
+                                            AutomationProperties.Name="{Binding Remarks}">
+                                            <RadioButton.ContentTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock
+                                                        AutomationProperties.Name="{Binding Remarks}" />
+                                                </DataTemplate>
+                                            </RadioButton.ContentTemplate>
+                                        </RadioButton>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListBox>
 
                 <Button
