@@ -113,6 +113,7 @@
                 HeadersVisibility="All"
                 IsReadOnly="True"
                 RowHeaderWidth="40"
+                KeyboardNavigation.TabNavigation="Once"
                 Style="{StaticResource DefDataGrid}">
                 <DataGrid.InputBindings>
                     <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />
