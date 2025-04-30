@@ -989,12 +989,12 @@ public class CoreConfigSingboxService
                 });
             }
 
-            singboxConfig.route.rules.Insert(0, new()
+            singboxConfig.route.rules.Add(new()
             {
                 outbound = Global.DirectTag,
                 clash_mode = ERuleMode.Direct.ToString()
             });
-            singboxConfig.route.rules.Insert(0, new()
+            singboxConfig.route.rules.Add(new()
             {
                 outbound = Global.ProxyTag,
                 clash_mode = ERuleMode.Global.ToString()
@@ -1278,12 +1278,12 @@ public class CoreConfigSingboxService
             detour = Global.DirectTag,
             strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom,
         });
-        dns4Sbox.rules.Insert(0, new()
+        dns4Sbox.rules.Add(new()
         {
             server = tag,
             clash_mode = ERuleMode.Direct.ToString()
         });
-        dns4Sbox.rules.Insert(0, new()
+        dns4Sbox.rules.Add(new()
         {
             server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
             clash_mode = ERuleMode.Global.ToString()
