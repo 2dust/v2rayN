@@ -14,11 +14,10 @@
     ]
   },
   {
-    "remarks": "Google cn",
+    "remarks": "Google CN",
     "outboundTag": "proxy",
     "domain": [
-      "domain:googleapis.cn",
-      "domain:gstatic.com"
+      "geosite:google@cn"
     ]
   },
   {
