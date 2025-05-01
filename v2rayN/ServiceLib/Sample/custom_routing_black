@@ -17,7 +17,8 @@
     "remarks": "Google CN",
     "outboundTag": "proxy",
     "domain": [
-      "geosite:google@cn"
+      "geosite:google@cn",
+      "domain:gstatic.com"
     ]
   },
   {
