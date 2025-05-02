@@ -1278,12 +1278,12 @@ public class CoreConfigSingboxService
             detour = Global.DirectTag,
             strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom,
         });
-        dns4Sbox.rules.Add(new()
+        dns4Sbox.rules.Insert(0, new()
         {
             server = tag,
             clash_mode = ERuleMode.Direct.ToString()
         });
-        dns4Sbox.rules.Add(new()
+        dns4Sbox.rules.Insert(0, new()
         {
             server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
             clash_mode = ERuleMode.Global.ToString()
