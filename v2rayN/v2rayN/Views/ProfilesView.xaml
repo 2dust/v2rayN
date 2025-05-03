@@ -35,7 +35,6 @@
                     </ListBox.ItemTemplate>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource MyChipListBoxItem}">
-                            <Setter Property="Focusable" Value="False" />
                             <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
                             <Setter Property="Template">
                                 <Setter.Value>
