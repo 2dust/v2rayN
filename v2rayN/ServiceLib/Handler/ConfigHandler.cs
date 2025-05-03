@@ -799,8 +799,11 @@ public class ConfigHandler
         {
             return -1;
         }
+        var lstServerStat = (config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
         var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
         var lstProfile = (from t in lstModel
+                          join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
+                          from t22 in t2b.DefaultIfEmpty()
                           join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
                           from t33 in t3b.DefaultIfEmpty()
                           select new ProfileItemModel
@@ -815,7 +818,11 @@ public class ConfigHandler
                               StreamSecurity = t.StreamSecurity,
                               Delay = t33?.Delay ?? 0,
                               Speed = t33?.Speed ?? 0,
-                              Sort = t33?.Sort ?? 0
+                              Sort = t33?.Sort ?? 0,
+                              TodayDown = (t22?.TodayDown ?? 0).ToString("D16"),
+                              TodayUp = (t22?.TodayUp ?? 0).ToString("D16"),
+                              TotalDown = (t22?.TotalDown ?? 0).ToString("D16"),
+                              TotalUp = (t22?.TotalUp ?? 0).ToString("D16"),
                           }).ToList();
 
         Enum.TryParse(colName, true, out EServerColName name);
@@ -833,6 +840,10 @@ public class ConfigHandler
                 EServerColName.DelayVal => lstProfile.OrderBy(t => t.Delay).ToList(),
                 EServerColName.SpeedVal => lstProfile.OrderBy(t => t.Speed).ToList(),
                 EServerColName.SubRemarks => lstProfile.OrderBy(t => t.Subid).ToList(),
+                EServerColName.TodayDown => lstProfile.OrderBy(t => t.TodayDown).ToList(),
+                EServerColName.TodayUp => lstProfile.OrderBy(t => t.TodayUp).ToList(),
+                EServerColName.TotalDown => lstProfile.OrderBy(t => t.TotalDown).ToList(),
+                EServerColName.TotalUp => lstProfile.OrderBy(t => t.TotalUp).ToList(),
                 _ => lstProfile
             };
         }
@@ -849,6 +860,10 @@ public class ConfigHandler
                 EServerColName.DelayVal => lstProfile.OrderByDescending(t => t.Delay).ToList(),
                 EServerColName.SpeedVal => lstProfile.OrderByDescending(t => t.Speed).ToList(),
                 EServerColName.SubRemarks => lstProfile.OrderByDescending(t => t.Subid).ToList(),
+                EServerColName.TodayDown => lstProfile.OrderByDescending(t => t.TodayDown).ToList(),
+                EServerColName.TodayUp => lstProfile.OrderByDescending(t => t.TodayUp).ToList(),
+                EServerColName.TotalDown => lstProfile.OrderByDescending(t => t.TotalDown).ToList(),
+                EServerColName.TotalUp => lstProfile.OrderByDescending(t => t.TotalUp).ToList(),
                 _ => lstProfile
             };
         }
