@@ -10,9 +10,6 @@
       "domains": [
         "domain:googleapis.cn",
         "domain:gstatic.com"
-      ],
-      "expectIPs": [
-        "geoip:!cn"
       ]
     },
     {
