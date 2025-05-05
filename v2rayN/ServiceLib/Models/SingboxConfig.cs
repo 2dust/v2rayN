@@ -228,6 +228,10 @@ public class Server4Sbox
     public string? server { get; set; }
     public string? domain_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
+    public int? server_port { get; set; }
+    public string? path { get; set; }
+    public Headers4Sbox? headers { get; set; }
+    public Tls4Sbox? tls { get; set; }
     // Deprecated
     public string? address { get; set; }
     public string? address_resolver { get; set; }
