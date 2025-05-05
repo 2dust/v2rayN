@@ -53,6 +53,7 @@ public class Rule4Sbox
     public string? mode { get; set; }
     public bool? ip_is_private { get; set; }
     public string? client_subnet { get; set; }
+    public int? rewrite_ttl { get; set; }
     public bool? invert { get; set; }
     public string? clash_mode { get; set; }
     public List<string>? inbound { get; set; }
@@ -74,6 +75,24 @@ public class Rule4Sbox
     public string? action { get; set; }
     public string? strategy { get; set; }
     public List<string>? sniffer { get; set; }
+    public string? rcode { get; set; }
+    public List<object>? query_type { get; set; }
+    public List<string>? answer { get; set; }
+    public List<string>? ns { get; set; }
+    public List<string>? extra { get; set; }
+    public string? method { get; set; }
+    public bool? no_drop { get; set; }
+    public bool? source_ip_is_private { get; set; }
+    public bool? ip_accept_any { get; set; }
+    public int? source_port { get; set; }
+    public List<string>? source_port_range { get; set; }
+    public List<string>? network_type { get; set; }
+    public bool? network_is_expensive { get; set; }
+    public bool? network_is_constrained { get; set; }
+    public List<string>? wifi_ssid { get; set; }
+    public List<string>? wifi_bssid { get; set; }
+    public bool? rule_set_ip_cidr_match_source { get; set; }
+    public bool? rule_set_ip_cidr_accept_empty { get; set; }
 }
 
 [Serializable]
