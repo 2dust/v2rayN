@@ -979,26 +979,6 @@ public class CoreConfigSingboxService
         try
         {
             var dnsOutbound = "dns_out";
-            if (!_config.Inbound.First().SniffingEnabled)
-            {
-                singboxConfig.route.rules.Add(new()
-                {
-                    port = [53],
-                    network = ["udp"],
-                    outbound = dnsOutbound
-                });
-            }
-
-            singboxConfig.route.rules.Add(new()
-            {
-                outbound = Global.DirectTag,
-                clash_mode = ERuleMode.Direct.ToString()
-            });
-            singboxConfig.route.rules.Add(new()
-            {
-                outbound = Global.ProxyTag,
-                clash_mode = ERuleMode.Global.ToString()
-            });
 
             if (_config.TunModeItem.EnableTun)
             {
@@ -1024,6 +1004,27 @@ public class CoreConfigSingboxService
                     process_name = lstDirectExe
                 });
             }
+
+            if (!_config.Inbound.First().SniffingEnabled)
+            {
+                singboxConfig.route.rules.Add(new()
+                {
+                    port = [53],
+                    network = ["udp"],
+                    outbound = dnsOutbound
+                });
+            }
+
+            singboxConfig.route.rules.Add(new()
+            {
+                outbound = Global.DirectTag,
+                clash_mode = ERuleMode.Direct.ToString()
+            });
+            singboxConfig.route.rules.Add(new()
+            {
+                outbound = Global.ProxyTag,
+                clash_mode = ERuleMode.Global.ToString()
+            });
 
             var routing = await ConfigHandler.GetDefaultRouting(_config);
             if (routing != null)
