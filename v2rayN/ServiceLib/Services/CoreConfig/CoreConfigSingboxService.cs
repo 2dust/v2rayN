@@ -1621,65 +1621,19 @@ public class CoreConfigSingboxService
 
         var tag = "local_local";
         var localDnsAddress = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress;
-        string? localDnsType = null;
-        string? dhcpDnsInterface = null;
-        var dnsProtocols = new List<string>
-        {
-            "dhcp",
-            "https",
-            "tcp",
-            "tls",
-            "quic",
-            "h3",
-            "udp"
-        };
-        if (localDnsAddress == "local")
-        {
-            localDnsType = "local";
-            localDnsAddress = null;
-        }
-        else if (dnsProtocols.Any(protocol => localDnsAddress.StartsWith(protocol)))
-        {
-            var protocol = dnsProtocols.First(p => localDnsAddress.StartsWith(p));
-            localDnsType = protocol;
-            // +3 for "://"
-            if (localDnsAddress.Length > protocol.Length + 3)
-            {
-                localDnsAddress = localDnsAddress.Substring(protocol.Length + 3);
-                if (protocol == "dhcp")
-                {
-                    dhcpDnsInterface = localDnsAddress;
-                    if (dhcpDnsInterface == "auto")
-                    {
-                        dhcpDnsInterface = null;
-                    }
-                    localDnsAddress = null;
-                }
-                else if (protocol is "https" or "h3")
-                {
-                    if (localDnsAddress.Contains('/'))
-                    {
-                        localDnsAddress = localDnsAddress.Substring(0, localDnsAddress.IndexOf('/'));
-                    }
-                }
-            }
-            else
-            {
-                localDnsAddress = null;
-            }
-        }
-        else
-        {
-            localDnsType = "udp";
-        }
+
+        var (dnsType, dnsHost, dnsPort, dnsPath) = ParseDnsAddress(localDnsAddress);
 
         dns4Sbox.servers.Add(new()
         {
             tag = tag,
-            type = localDnsType,
-            server = localDnsAddress,
-            Interface = dhcpDnsInterface
+            type = dnsType,
+            server = dnsHost,
+            Interface = dnsType == "dhcp" ? dnsHost : null,
+            server_port = dnsPort,
+            path = dnsPath
         });
+
         dns4Sbox.rules.Insert(0, new()
         {
             server = tag,
@@ -1757,6 +1711,91 @@ public class CoreConfigSingboxService
 
         singboxConfig.dns = dns4Sbox;
         return await Task.FromResult(0);
+    }
+
+    private (string type, string? host, int? port, string? path) ParseDnsAddress(string address)
+    {
+        string type = "udp";
+        string? host = null;
+        int? port = null;
+        string? path = null;
+
+        if (address is "local" or "localhost")
+        {
+            return ("local", null, null, null);
+        }
+
+        if (address.StartsWith("dhcp://", StringComparison.OrdinalIgnoreCase))
+        {
+            string interface_name = address.Substring(7);
+            return ("dhcp", interface_name == "auto" ? null : interface_name, null, null);
+        }
+
+        if (!address.Contains("://"))
+        {
+            // udp dns
+            host = address;
+            return (type, host, port, path);
+        }
+
+        try
+        {
+            int protocolEndIndex = address.IndexOf("://", StringComparison.Ordinal);
+            type = address.Substring(0, protocolEndIndex).ToLower();
+
+            var uri = new Uri(address);
+            host = uri.Host;
+
+            if (!uri.IsDefaultPort)
+            {
+                port = uri.Port;
+            }
+
+            if ((type == "https" || type == "h3") && !string.IsNullOrEmpty(uri.AbsolutePath) && uri.AbsolutePath != "/")
+            {
+                path = uri.AbsolutePath;
+            }
+        }
+        catch (UriFormatException)
+        {
+            int protocolEndIndex = address.IndexOf("://", StringComparison.Ordinal);
+            if (protocolEndIndex > 0)
+            {
+                type = address.Substring(0, protocolEndIndex).ToLower();
+                string remaining = address.Substring(protocolEndIndex + 3);
+
+                int portIndex = remaining.IndexOf(':');
+                int pathIndex = remaining.IndexOf('/');
+
+                if (portIndex > 0)
+                {
+                    host = remaining.Substring(0, portIndex);
+                    string portPart = pathIndex > portIndex
+                        ? remaining.Substring(portIndex + 1, pathIndex - portIndex - 1)
+                        : remaining.Substring(portIndex + 1);
+
+                    if (int.TryParse(portPart, out int parsedPort))
+                    {
+                        port = parsedPort;
+                    }
+                }
+                else if (pathIndex > 0)
+                {
+                    host = remaining.Substring(0, pathIndex);
+                }
+                else
+                {
+                    host = remaining;
+                }
+
+                if (pathIndex > 0 && (type == "https" || type == "h3"))
+                {
+                    path = remaining.Substring(pathIndex);
+                }
+            }
+        }
+
+        return (type, host, port, path);
     }
 
     private async Task<int> GenExperimental(SingboxConfig singboxConfig)

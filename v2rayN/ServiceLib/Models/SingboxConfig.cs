@@ -214,6 +214,9 @@ public class Server4Sbox : BaseServer4Sbox
     public string? server { get; set; }
     public new string? domain_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
+    public int? server_port { get; set; }
+    public string? path { get; set; }
+    public Headers4Sbox? headers { get; set; }
     // Deprecated
     public string? address { get; set; }
     public string? address_resolver { get; set; }
