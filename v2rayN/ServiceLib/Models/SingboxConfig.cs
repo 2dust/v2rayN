@@ -226,7 +226,7 @@ public class Server4Sbox
     public string? client_subnet { get; set; }
     public string? type { get; set; }
     public string? server { get; set; }
-    public string? server_resolver { get; set; }
+    public string? domain_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
     // Deprecated
     public string? address { get; set; }
