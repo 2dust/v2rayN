@@ -212,7 +212,7 @@ public class Server4Sbox : BaseServer4Sbox
     public string? inet6_range { get; set; }
     public string? client_subnet { get; set; }
     public string? server { get; set; }
-    public string? server_resolver { get; set; }
+    public new string? domain_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
     // Deprecated
     public string? address { get; set; }
