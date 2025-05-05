@@ -1518,8 +1518,7 @@ public class CoreConfigSingboxService
         dns4Sbox.rules.Insert(0, new()
         {
             server = tag,
-            clash_mode = ERuleMode.Direct.ToString(),
-            strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom
+            clash_mode = ERuleMode.Direct.ToString()
         });
         dns4Sbox.rules.Insert(0, new()
         {
