@@ -43,7 +43,7 @@ public partial class App : Application
     {
         if (e.ExceptionObject != null)
         {
-            Logging.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject!);
+            Logging.SaveLog("CurrentDomain_UnhandledException", (Exception)e.ExceptionObject);
         }
     }
 
