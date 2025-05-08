@@ -1088,14 +1088,11 @@ public class CoreConfigSingboxService
 
             if (item.Port.IsNotEmpty())
             {
-                if (item.Port.Contains("-"))
-                {
-                    rule.port_range = new List<string> { item.Port.Replace("-", ":") };
-                }
-                else
-                {
-                    rule.port = new List<int> { item.Port.ToInt() };
-                }
+                var portRanges = item.Port.Split(',').Where(it => it.Contains('-')).Select(it => it.Replace("-", ":")).ToList();
+                var ports = item.Port.Split(',').Where(it => !it.Contains('-')).Select(it => it.ToInt()).ToList();
+
+                rule.port_range = portRanges.Count > 0 ? portRanges : null;
+                rule.port = ports.Count > 0 ? ports : null;
             }
             if (item.Network.IsNotEmpty())
             {
