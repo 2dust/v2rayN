@@ -248,12 +248,12 @@ public class UpdateService
         var downloadHandle = new DownloadService();
         var time = await downloadHandle.RunAvailabilityCheck(null);
         var ip = Global.None;
-        if (time > 0)
-        {
-            var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, Global.IPAPIUrl);
-            var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-            ip = $"({ipInfo?.country_code}) {ipInfo?.ip}";
-        }
+        //if (time > 0)
+        //{
+        //    var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, Global.IPAPIUrl);
+        //    var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
+        //    ip = $"({ipInfo?.country_code}) {ipInfo?.ip}";
+        //}
 
         return string.Format(ResUI.TestMeOutput, time, ip);
     }
