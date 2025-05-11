@@ -156,6 +156,7 @@ public class SpeedTestItem
     public string SpeedTestUrl { get; set; }
     public string SpeedPingTestUrl { get; set; }
     public int MixedConcurrencyCount { get; set; }
+    public string IPAPIUrl { get; set; }
 }
 
 [Serializable]

@@ -8,9 +8,7 @@ public class Global
     public const string GithubUrl = "https://github.com";
     public const string GithubApiUrl = "https://api.github.com/repos";
     public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-    public const string SpeedPingTestUrl = @"https://www.google.com/generate_204";
     public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-{0}/{1}.srs";
-    public const string IPAPIUrl = "https://api.ip.sb/geoip";
 
     public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
     public const string ConfigFileName = "guiNConfig.json";
@@ -517,6 +515,16 @@ public class Global
         @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat",
             @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb",
             @"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+    ];
+
+    public static readonly List<string> IPAPIUrls =
+    [
+        @"https://speed.cloudflare.com/meta",
+        @"https://api.ip.sb/geoip",
+        @"https://api-ipv4.ip.sb/geoip",
+        @"https://api-ipv6.ip.sb/geoip",
+        @"https://api.ipapi.is",
+        @""
     ];
 
     #endregion const

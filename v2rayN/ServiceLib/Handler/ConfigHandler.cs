@@ -122,7 +122,7 @@ public class ConfigHandler
         }
         if (config.SpeedTestItem.SpeedPingTestUrl.IsNullOrEmpty())
         {
-            config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrl;
+            config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrls.First();
         }
         if (config.SpeedTestItem.MixedConcurrencyCount < 1)
         {

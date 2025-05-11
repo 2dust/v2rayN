@@ -320,7 +320,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         var msg = await Task.Run(async () =>
         {
-            return await (new UpdateService()).RunAvailabilityCheck();
+            return await ConnectionHandler.Instance.RunAvailabilityCheck();
         });
 
         NoticeHandler.Instance.SendMessageEx(msg);
