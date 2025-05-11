@@ -1417,6 +1417,6 @@
     <value>صادر کردن سرور</value>
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
-    <value>Current connection info test URL</value>
+    <value>URL آزمایش اطلاعات اتصال فعلی</value>
   </data>
 </root>
