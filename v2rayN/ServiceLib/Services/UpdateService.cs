@@ -194,11 +194,11 @@ public class UpdateService
                     {
                         if (Utils.IsBase64String(result2))
                         {
-                            result += Utils.Base64Decode(result2);
+                            result += Environment.NewLine + Utils.Base64Decode(result2);
                         }
                         else
                         {
-                            result += result2;
+                            result += Environment.NewLine + result2;
                         }
                     }
                 }
