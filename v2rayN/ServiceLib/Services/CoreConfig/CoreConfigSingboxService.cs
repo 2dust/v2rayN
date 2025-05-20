@@ -1052,7 +1052,6 @@ public class CoreConfigSingboxService
         var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         var coreInfoResult = CoreInfoHandler.Instance.GetCoreInfo();
-        var fileSuffix = Utils.IsWindows() ? ".exe" : "";
 
         foreach (var coreConfig in coreInfoResult)
         {
@@ -1063,13 +1062,11 @@ public class CoreConfigSingboxService
 
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                var executableName = $"{baseExeName}{fileSuffix}";
-
                 if (coreConfig.CoreType != ECoreType.sing_box)
                 {
-                    dnsExeSet.Add(executableName);
+                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
                 }
-                directExeSet.Add(executableName);
+                directExeSet.Add(Utils.GetExeName(baseExeName));
             }
         }
 
