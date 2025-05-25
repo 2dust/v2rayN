@@ -45,7 +45,7 @@ public partial class SubSettingWindow : ReactiveWindow<SubSettingViewModel>
                 break;
 
             case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveServer) == ButtonResult.No)
+                if (await UI.ShowYesNo(this, ResUI.RemoveServer) != ButtonResult.Yes)
                 {
                     return false;
                 }

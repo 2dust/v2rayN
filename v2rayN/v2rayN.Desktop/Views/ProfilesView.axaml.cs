@@ -138,7 +138,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 break;
 
             case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(_window, ResUI.RemoveServer) == ButtonResult.No)
+                if (await UI.ShowYesNo(_window, ResUI.RemoveServer) != ButtonResult.Yes)
                 {
                     return false;
                 }
