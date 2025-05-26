@@ -721,7 +721,7 @@
     <value>Записывать логи</value>
   </data>
   <data name="TbSettingsLogLevel" xml:space="preserve">
-    <value>Уровень логгирования</value>
+    <value>Уровень записи логов</value>
   </data>
   <data name="TbSettingsMuxEnabled" xml:space="preserve">
     <value>Включить мультиплексирование Mux</value>
@@ -743,10 +743,6 @@
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
     <value>Смешанный порт</value>
-  </data>
-  <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>порт Pac = +3; порт API Xray = +4; порт API mihomo = +5;</value>
-  </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Автозапуск</value>
   </data>
@@ -991,7 +987,7 @@
     <value>Размер шрифта</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>Таймаут одиночного спидтеста</value>
+    <value>Тайм-аут одиночного тестирования скорости</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>URL для тестирования скорости</value>
@@ -1030,7 +1026,7 @@
     <value>Интервал автоматического обновления в минутах</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
-    <value>Включить логгирование в файл</value>
+    <value>Включить запись логов в файл</value>
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
     <value>Преобразовать тип цели</value>
