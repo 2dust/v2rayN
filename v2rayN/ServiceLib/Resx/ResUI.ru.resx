@@ -743,11 +743,9 @@
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
     <value>Смешанный порт</value>
+  </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
     <value>Автозапуск</value>
-  </data>
-  <data name="TbSettingsStartBootTip" xml:space="preserve">
-    <value>Установите это с правами администратора</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
     <value>Включить статистику (требуется перезагрузка)</value>
@@ -897,7 +895,7 @@
     <value>Документация RuleObject</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Поддерживаются DNS-объекты; нажмите для просмотра документации</value>
+    <value>Поддерживаются DNS-объекты, нажмите для просмотра документации</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>Необязательное поле</value>
@@ -978,7 +976,7 @@
     <value>Скопируйте файл шрифта TTF/TTC в каталог guiFonts и заново откройте окно настроек</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac порт = +3; Xray API порт = +4; mihomo API порт = +5;</value>
+    <value>Pac порт = +3,Xray API порт = +4, mihomo API порт = +5</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
     <value>Установите это с правами администратора</value>
@@ -1017,7 +1015,7 @@
     <value>Перезагрузить как администратор</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>Дополнительные URL через запятую; конвертация подписки недоступна</value>
+    <value>Дополнительные URL через запятую, конвертация подписки недоступна</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0} : {1}/s↑ | {2}/s↓</value>
@@ -1041,7 +1039,7 @@
     <value>Настройки DNS sing-box</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>Заполните структуру DNS; нажмите, чтобы открыть документ</value>
+    <value>Заполните структуру DNS, нажмите, чтобы открыть документ</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
     <value>Нажмите, чтобы импортировать конфигурацию DNS по умолчанию</value>
@@ -1071,7 +1069,7 @@
     <value>Использовать системные узлы</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Добавить [TUIC] сервер</value>
+    <value>Добавить сервер [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Контроль перегрузок</value>
@@ -1092,7 +1090,7 @@
     <value>Включить IPv6 адреса</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Добавить [WireGuard] сервер</value>
+    <value>Добавить сервер [WireGuard]</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>Приватный ключ</value>
@@ -1113,7 +1111,7 @@
     <value>Автоматическая прокрутка в конец</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>URL для быстрой проверки Ping</value>
+    <value>URL для быстрой проверки реальной задержки</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
     <value>Обновляя подписку, проверять лишь наличие примечаний</value>
@@ -1125,10 +1123,10 @@
     <value>*gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Добавить [HTTP] сервер</value>
+    <value>Добавить сервер [HTTP]</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>Используйте Xray и отключите режим TUN; он конфликтует с предыдущим прокси-сервером группы</value>
+    <value>Используйте Xray и отключите режим TUN, так как он конфликтует с предыдущим прокси-сервером группы</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Включить фрагментацию (Fragment)</value>
@@ -1140,7 +1138,7 @@
     <value>Пользовательский набор правил для sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
-    <value>Операция успешна. Откройте меню «Настройки» и перезапустите приложение</value>
+    <value>Операция успешна. Перезапустите приложение</value>
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>Открыть место хранения</value>
@@ -1395,7 +1393,7 @@
     <value>Диапазон портов сервера</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>Заменит указанный порт; перечисляйте через запятую (,)</value>
+    <value>Заменит указанный порт, перечисляйте через запятую (,)</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
     <value>От мультиконфигурации к пользовательской конфигурации</value>
