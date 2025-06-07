@@ -241,6 +241,7 @@
                 <DataGrid.Resources>
                     <Style BasedOn="{StaticResource MaterialDesignDataGridRow}" TargetType="DataGridRow">
                         <EventSetter Event="MouseDoubleClick" Handler="LstProfiles_MouseDoubleClick" />
+                        <Setter Property="AutomationProperties.Name" Value="{Binding Remarks}" />
                     </Style>
                     <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                         <EventSetter Event="Click" Handler="LstProfiles_ColumnHeader_Click" />
