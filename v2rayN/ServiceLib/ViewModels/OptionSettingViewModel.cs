@@ -70,6 +70,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string GeoFileSourceUrl { get; set; }
     [Reactive] public string SrsFileSourceUrl { get; set; }
     [Reactive] public string RoutingRulesSourceUrl { get; set; }
+    [Reactive] public string IPAPIUrl { get; set; }
 
     #endregion UI
 
@@ -88,7 +89,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int TunMtu { get; set; }
     [Reactive] public bool TunEnableExInbound { get; set; }
     [Reactive] public bool TunEnableIPv6Address { get; set; }
-    [Reactive] public string TunLinuxSudoPassword { get; set; }
 
     #endregion Tun mode
 
@@ -187,6 +187,7 @@ public class OptionSettingViewModel : MyReactiveObject
         GeoFileSourceUrl = _config.ConstItem.GeoSourceUrl;
         SrsFileSourceUrl = _config.ConstItem.SrsSourceUrl;
         RoutingRulesSourceUrl = _config.ConstItem.RouteRulesTemplateSourceUrl;
+        IPAPIUrl = _config.SpeedTestItem.IPAPIUrl;
 
         #endregion UI
 
@@ -205,7 +206,6 @@ public class OptionSettingViewModel : MyReactiveObject
         TunMtu = _config.TunModeItem.Mtu;
         TunEnableExInbound = _config.TunModeItem.EnableExInbound;
         TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
-        TunLinuxSudoPassword = _config.TunModeItem.LinuxSudoPwd;
 
         #endregion Tun mode
 
@@ -346,6 +346,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
         _config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
         _config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
+        _config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
 
         //systemProxy
         _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
@@ -358,10 +359,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.TunModeItem.Mtu = TunMtu;
         _config.TunModeItem.EnableExInbound = TunEnableExInbound;
         _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
-        if (TunLinuxSudoPassword != _config.TunModeItem.LinuxSudoPwd)
-        {
-            _config.TunModeItem.LinuxSudoPwd = DesUtils.Encrypt(TunLinuxSudoPassword);
-        }
 
         //coreType
         await SaveCoreType();

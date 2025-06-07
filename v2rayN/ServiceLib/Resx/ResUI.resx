@@ -1339,7 +1339,7 @@
     <value>System sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password is encrypted and stored only in local files</value>
+    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Please set the sudo password in Tun mode settings first</value>
@@ -1415,5 +1415,8 @@
   </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>Export Configuration</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>Current connection info test URL</value>
   </data>
 </root>

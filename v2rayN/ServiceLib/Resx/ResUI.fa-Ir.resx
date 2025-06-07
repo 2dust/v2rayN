@@ -1339,7 +1339,7 @@
     <value>رمز عبور sudo سیستم</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>رمز عبور رمزگذاری شده و فقط در فایل های محلی ذخیره می شود.</value>
+    <value>رمز عبوری که وارد کرده اید تایید نمی شود، بنابراین مطمئن شوید که آن را به درستی وارد کرده اید. اگر برنامه به دلیل ورودی نادرست به درستی کار نمی کند، لطفاً برنامه را مجدداً راه اندازی کنید. رمز عبور ذخیره نمی شود و پس از هر بار راه اندازی مجدد باید آن را دوباره وارد کنید.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>لطفاً ابتدا رمز عبور sudo را در تنظیمات حالت Tun تنظیم کنید</value>
@@ -1415,5 +1415,8 @@
   </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>صادر کردن سرور</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>URL آزمایش اطلاعات اتصال فعلی</value>
   </data>
 </root>

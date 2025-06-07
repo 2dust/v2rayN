@@ -194,11 +194,11 @@ public class UpdateService
                     {
                         if (Utils.IsBase64String(result2))
                         {
-                            result += Utils.Base64Decode(result2);
+                            result += Environment.NewLine + Utils.Base64Decode(result2);
                         }
                         else
                         {
-                            result += result2;
+                            result += Environment.NewLine + result2;
                         }
                     }
                 }
@@ -241,21 +241,6 @@ public class UpdateService
         await UpdateOtherFiles(config, updateFunc);
         await UpdateSrsFileAll(config, updateFunc);
         _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
-    }
-
-    public async Task<string> RunAvailabilityCheck()
-    {
-        var downloadHandle = new DownloadService();
-        var time = await downloadHandle.RunAvailabilityCheck(null);
-        var ip = Global.None;
-        if (time > 0)
-        {
-            var result = await downloadHandle.TryDownloadString(Global.IPAPIUrl, true, Global.IPAPIUrl);
-            var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-            ip = $"({ipInfo?.country_code}) {ipInfo?.ip}";
-        }
-
-        return string.Format(ResUI.TestMeOutput, time, ip);
     }
 
     #region CheckUpdate private

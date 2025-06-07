@@ -1339,7 +1339,7 @@
     <value>Rendszer sudo jelszó</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>A jelszó titkosítva és csak a helyi fájlokban tárolva.</value>
+    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
     <value>Kérlek, először állítsd be a sudo jelszót a Tun módban</value>
@@ -1415,5 +1415,8 @@
   </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>Export server</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>Current connection info test URL</value>
   </data>
 </root>

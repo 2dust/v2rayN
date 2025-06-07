@@ -132,7 +132,7 @@ public partial class MainWindow
             }
         });
 
-        this.Title = $"{Utils.GetVersion()} - {(AppHandler.Instance.IsAdministrator ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+        this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
         if (!_config.GuiItem.EnableHWA)
         {

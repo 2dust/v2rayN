@@ -343,7 +343,7 @@
                     <Grid
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             x:Name="tbAutoRun"
@@ -655,6 +655,20 @@
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="25"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsIPAPIUrl}" />
+                        <ComboBox
+                            x:Name="cmbIPAPIUrl"
+                            Grid.Row="25"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin4}" />
+
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -784,28 +798,6 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
-                    <TextBlock
-                        x:Name="labLinuxSudoPassword"
-                        Grid.Row="7"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPassword}" />
-                    <TextBox
-                        x:Name="txtLinuxSudoPassword"
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
-                    <TextBlock
-                        x:Name="labLinuxSudoPasswordTip"
-                        Grid.Row="7"
-                        Grid.Column="2"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPasswordTip}"
-                        TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
 

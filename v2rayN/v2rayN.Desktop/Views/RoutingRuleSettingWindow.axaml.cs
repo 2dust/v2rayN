@@ -80,14 +80,14 @@ public partial class RoutingRuleSettingWindow : ReactiveWindow<RoutingRuleSettin
                 break;
 
             case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveServer) == ButtonResult.No)
+                if (await UI.ShowYesNo(this, ResUI.RemoveServer) != ButtonResult.Yes)
                 {
                     return false;
                 }
                 break;
 
             case EViewAction.AddBatchRoutingRulesYesNo:
-                if (await UI.ShowYesNo(this, ResUI.AddBatchRoutingRulesYesNo) == ButtonResult.No)
+                if (await UI.ShowYesNo(this, ResUI.AddBatchRoutingRulesYesNo) != ButtonResult.Yes)
                 {
                     return false;
                 }

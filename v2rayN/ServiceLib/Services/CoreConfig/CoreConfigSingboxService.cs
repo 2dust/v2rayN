@@ -979,26 +979,6 @@ public class CoreConfigSingboxService
         try
         {
             var dnsOutbound = "dns_out";
-            if (!_config.Inbound.First().SniffingEnabled)
-            {
-                singboxConfig.route.rules.Add(new()
-                {
-                    port = [53],
-                    network = ["udp"],
-                    outbound = dnsOutbound
-                });
-            }
-
-            singboxConfig.route.rules.Insert(0, new()
-            {
-                outbound = Global.DirectTag,
-                clash_mode = ERuleMode.Direct.ToString()
-            });
-            singboxConfig.route.rules.Insert(0, new()
-            {
-                outbound = Global.ProxyTag,
-                clash_mode = ERuleMode.Global.ToString()
-            });
 
             if (_config.TunModeItem.EnableTun)
             {
@@ -1025,6 +1005,27 @@ public class CoreConfigSingboxService
                 });
             }
 
+            if (!_config.Inbound.First().SniffingEnabled)
+            {
+                singboxConfig.route.rules.Add(new()
+                {
+                    port = [53],
+                    network = ["udp"],
+                    outbound = dnsOutbound
+                });
+            }
+
+            singboxConfig.route.rules.Add(new()
+            {
+                outbound = Global.DirectTag,
+                clash_mode = ERuleMode.Direct.ToString()
+            });
+            singboxConfig.route.rules.Add(new()
+            {
+                outbound = Global.ProxyTag,
+                clash_mode = ERuleMode.Global.ToString()
+            });
+
             var routing = await ConfigHandler.GetDefaultRouting(_config);
             if (routing != null)
             {
@@ -1047,28 +1048,30 @@ public class CoreConfigSingboxService
 
     private void GenRoutingDirectExe(out List<string> lstDnsExe, out List<string> lstDirectExe)
     {
-        lstDnsExe = new();
-        lstDirectExe = new();
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
-        foreach (var it in coreInfo)
+        var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        var coreInfoResult = CoreInfoHandler.Instance.GetCoreInfo();
+
+        foreach (var coreConfig in coreInfoResult)
         {
-            if (it.CoreType == ECoreType.v2rayN)
+            if (coreConfig.CoreType == ECoreType.v2rayN)
             {
                 continue;
             }
-            foreach (var it2 in it.CoreExes)
-            {
-                if (!lstDnsExe.Contains(it2) && it.CoreType != ECoreType.sing_box)
-                {
-                    lstDnsExe.Add($"{it2}.exe");
-                }
 
-                if (!lstDirectExe.Contains(it2))
+            foreach (var baseExeName in coreConfig.CoreExes)
+            {
+                if (coreConfig.CoreType != ECoreType.sing_box)
                 {
-                    lstDirectExe.Add($"{it2}.exe");
+                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
                 }
+                directExeSet.Add(Utils.GetExeName(baseExeName));
             }
         }
+
+        lstDnsExe = new List<string>(dnsExeSet);
+        lstDirectExe = new List<string>(directExeSet);
     }
 
     private async Task<int> GenRoutingUserRule(RulesItem item, List<Rule4Sbox> rules)
@@ -1087,14 +1090,11 @@ public class CoreConfigSingboxService
 
             if (item.Port.IsNotEmpty())
             {
-                if (item.Port.Contains("-"))
-                {
-                    rule.port_range = new List<string> { item.Port.Replace("-", ":") };
-                }
-                else
-                {
-                    rule.port = new List<int> { item.Port.ToInt() };
-                }
+                var portRanges = item.Port.Split(',').Where(it => it.Contains('-')).Select(it => it.Replace("-", ":")).ToList();
+                var ports = item.Port.Split(',').Where(it => !it.Contains('-')).Select(it => it.ToInt()).ToList();
+
+                rule.port_range = portRanges.Count > 0 ? portRanges : null;
+                rule.port = ports.Count > 0 ? ports : null;
             }
             if (item.Network.IsNotEmpty())
             {

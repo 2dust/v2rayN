@@ -147,7 +147,6 @@ public class TunModeItem
     public int Mtu { get; set; }
     public bool EnableExInbound { get; set; }
     public bool EnableIPv6Address { get; set; }
-    public string? LinuxSudoPwd { get; set; }
 }
 
 [Serializable]
@@ -157,6 +156,7 @@ public class SpeedTestItem
     public string SpeedTestUrl { get; set; }
     public string SpeedPingTestUrl { get; set; }
     public int MixedConcurrencyCount { get; set; }
+    public string IPAPIUrl { get; set; }
 }
 
 [Serializable]

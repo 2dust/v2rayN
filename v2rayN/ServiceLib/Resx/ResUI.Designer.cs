@@ -3202,6 +3202,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Current connection info test URL 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsIPAPIUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsIPAPIUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Keep older entries when de-duplicating 的本地化字符串。
         /// </summary>
         public static string TbSettingsKeepOlderDedupl {
@@ -3247,7 +3256,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The password is encrypted and stored only in local files 的本地化字符串。
+        ///   查找类似 The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart. 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {
             get {
