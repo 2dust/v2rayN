@@ -614,6 +614,7 @@ public class CoreConfigV2rayService
                 if (rule.port.IsNotEmpty()
                     || rule.protocol?.Count > 0
                     || rule.inboundTag?.Count > 0
+                    || rule.network != null
                     )
                 {
                     var it = JsonUtils.DeepCopy(rule);
