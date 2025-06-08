@@ -1151,7 +1151,7 @@ public class CoreConfigSingboxService
             }
 
             if (!hasDomainIp
-                && (rule.port != null || rule.port_range != null || rule.protocol != null || rule.inbound != null))
+                && (rule.port != null || rule.port_range != null || rule.protocol != null || rule.inbound != null || rule.network != null))
             {
                 rules.Add(rule);
             }
