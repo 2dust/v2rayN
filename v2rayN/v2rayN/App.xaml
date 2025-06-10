@@ -149,6 +149,7 @@
                 BasedOn="{StaticResource MaterialDesignDataGrid}"
                 TargetType="{x:Type DataGrid}">
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+                <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
             </Style>
             <Style
                 x:Key="DefTextBox"
