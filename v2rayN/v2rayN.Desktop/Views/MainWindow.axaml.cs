@@ -388,7 +388,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private async void MenuClose_Click(object? sender, RoutedEventArgs e)
     {
-        if (await UI.ShowYesNo(this, ResUI.menuExitTips) == ButtonResult.No)
+        if (await UI.ShowYesNo(this, ResUI.menuExitTips) != ButtonResult.Yes)
         {
             return;
         }

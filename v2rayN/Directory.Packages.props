@@ -5,10 +5,10 @@
     <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.2.8" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.2.8" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.8" />
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.8" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.0" />
     <PackageVersion Include="CliWrap" Version="3.8.2" />
     <PackageVersion Include="Downloader" Version="3.3.4" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.0" />

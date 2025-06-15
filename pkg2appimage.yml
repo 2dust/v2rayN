@@ -4,7 +4,7 @@ binpatch: true
 ingredients:
   script:
     - export FileName="v2rayN-${AppImageOutputArch}.zip"
-    - wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/${FileName}"
+    - wget -nv -O $FileName "https://github.com/cg3s/v2rayN-core-bin/raw/refs/heads/master/${FileName}"
     - 7z x $FileName -aoa
     - cp -rf v2rayN-${AppImageOutputArch}/* $OutputPath
 

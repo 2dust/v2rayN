@@ -95,6 +95,21 @@ detect_desktop_environment() {
         return
     fi
     
+    if [[ "$XDG_CURRENT_DESKTOP" == *"UKUI"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"ukui"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"DDE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"dde"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"mate"* ]]; then
+        echo "gnome"
+        return
+    fi
+
     local KDE_ENVIRONMENTS=("KDE" "plasma")
     for ENV in "${KDE_ENVIRONMENTS[@]}"; do
         if [ "$XDG_CURRENT_DESKTOP" == "$ENV" ] || [ "$XDG_SESSION_DESKTOP" == "$ENV" ]; then

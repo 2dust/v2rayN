@@ -138,7 +138,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 break;
 
             case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(_window, ResUI.RemoveServer) == ButtonResult.No)
+                if (await UI.ShowYesNo(_window, ResUI.RemoveServer) != ButtonResult.Yes)
                 {
                     return false;
                 }
@@ -345,9 +345,16 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     private void AutofitColumnWidth()
     {
-        foreach (var it in lstProfiles.Columns)
+        try
         {
-            it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            foreach (var it in lstProfiles.Columns)
+            {
+                it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("ProfilesView", ex);
         }
     }
 

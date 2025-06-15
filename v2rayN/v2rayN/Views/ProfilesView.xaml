@@ -25,6 +25,7 @@
                 <ListBox
                     x:Name="lstGroup"
                     MaxHeight="200"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}"
                     FontSize="{DynamicResource StdFontSize}"
                     ItemContainerStyle="{StaticResource MyChipListBoxItem}"
                     Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">

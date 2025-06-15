@@ -328,7 +328,7 @@ public class CoreConfigV2rayService
                 {
                     listen = Global.Loopback,
                     port = port,
-                    protocol = EInboundProtocol.socks.ToString(),
+                    protocol = EInboundProtocol.mixed.ToString(),
                 };
                 inbound.tag = inbound.protocol + inbound.port.ToString();
                 v2rayConfig.inbounds.Add(inbound);
@@ -403,7 +403,7 @@ public class CoreConfigV2rayService
                 tag = $"{EInboundProtocol.socks}{port}",
                 listen = Global.Loopback,
                 port = port,
-                protocol = EInboundProtocol.socks.ToString(),
+                protocol = EInboundProtocol.mixed.ToString(),
             });
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
@@ -507,7 +507,7 @@ public class CoreConfigV2rayService
         }
         inbound.tag = protocol.ToString();
         inbound.port = inItem.LocalPort + (int)protocol;
-        inbound.protocol = EInboundProtocol.socks.ToString();
+        inbound.protocol = EInboundProtocol.mixed.ToString();
         inbound.settings.udp = inItem.UdpEnabled;
         inbound.sniffing.enabled = inItem.SniffingEnabled;
         inbound.sniffing.destOverride = inItem.DestOverride;
@@ -614,6 +614,7 @@ public class CoreConfigV2rayService
                 if (rule.port.IsNotEmpty()
                     || rule.protocol?.Count > 0
                     || rule.inboundTag?.Count > 0
+                    || rule.network != null
                     )
                 {
                     var it = JsonUtils.DeepCopy(rule);

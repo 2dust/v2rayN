@@ -1413,4 +1413,7 @@
   <data name="menuExportConfig" xml:space="preserve">
     <value>صادر کردن سرور</value>
   </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>URL آزمایش اطلاعات اتصال فعلی</value>
+  </data>
 </root>

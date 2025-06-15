@@ -52,9 +52,16 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
 
     private void AutofitColumnWidth()
     {
-        foreach (var it in lstConnections.Columns)
+        try
         {
-            it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            foreach (var it in lstConnections.Columns)
+            {
+                it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("ClashConnectionsView", ex);
         }
     }
 

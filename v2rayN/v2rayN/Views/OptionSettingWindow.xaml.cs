@@ -101,6 +101,10 @@ public partial class OptionSettingWindow
         {
             cmbRoutingRulesSourceUrl.Items.Add(it);
         });
+        Global.IPAPIUrls.ForEach(it =>
+        {
+            cmbIPAPIUrl.Items.Add(it);
+        });
         foreach (EGirdOrientation it in Enum.GetValues(typeof(EGirdOrientation)))
         {
             cmbMainGirdOrientation.Items.Add(it.ToString());
@@ -162,6 +166,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RoutingRulesSourceUrl, v => v.cmbRoutingRulesSourceUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);

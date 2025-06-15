@@ -1410,4 +1410,7 @@
   <data name="menuExportConfig" xml:space="preserve">
     <value>匯出設定檔</value>
   </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>目前連接資訊測試地址</value>
+  </data>
 </root>

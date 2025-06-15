@@ -1413,4 +1413,7 @@
   <data name="menuExportConfig" xml:space="preserve">
     <value>Export Configuration</value>
   </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>Current connection info test URL</value>
+  </data>
 </root>

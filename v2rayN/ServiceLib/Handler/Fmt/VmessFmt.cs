@@ -6,9 +6,9 @@ public class VmessFmt : BaseFmt
     {
         msg = ResUI.ConfigurationFormatIncorrect;
         ProfileItem? item;
-        if (str.IndexOf('?') > 0 && str.IndexOf('&') > 0)
+        if (str.IndexOf('@') > 0)
         {
-            item = ResolveStdVmess(str);
+            item = ResolveStdVmess(str) ?? ResolveVmess(str, out msg);
         }
         else
         {

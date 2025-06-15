@@ -68,7 +68,7 @@ public partial class RoutingSettingWindow : ReactiveWindow<RoutingSettingViewMod
                 break;
 
             case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveRules) == ButtonResult.No)
+                if (await UI.ShowYesNo(this, ResUI.RemoveRules) != ButtonResult.Yes)
                 {
                     return false;
                 }

@@ -3193,6 +3193,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Current connection info test URL 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsIPAPIUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsIPAPIUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Keep older entries when de-duplicating 的本地化字符串。
         /// </summary>
         public static string TbSettingsKeepOlderDedupl {
