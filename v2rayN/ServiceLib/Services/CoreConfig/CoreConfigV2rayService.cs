@@ -1372,7 +1372,8 @@ public class CoreConfigV2rayService
             {
                 subjectSelector = [Global.ProxyTag],
                 probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
-                probeInterval = "3m"
+                probeInterval = "3m",
+                enableConcurrency = true
             };
             v2rayConfig.observatory = observatory;
         }
