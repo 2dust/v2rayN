@@ -67,8 +67,8 @@ public class GrpcItem
 public class GUIItem
 {
     public bool AutoRun { get; set; }
-    public bool EnableStatistics { get; set; }
-    public bool DisplayRealTimeSpeed { get; set; }
+    public bool EnableStatistics { get; set; } = true;
+    public bool DisplayRealTimeSpeed { get; set; } = true;
     public bool KeepOlderDedupl { get; set; }
     public int AutoUpdateInterval { get; set; }
     public bool EnableSecurityProtocolTls13 { get; set; }
@@ -100,7 +100,7 @@ public class UIItem
     public string CurrentFontFamily { get; set; }
     public int CurrentFontSize { get; set; }
     public bool EnableDragDropSort { get; set; }
-    public bool DoubleClick2Activate { get; set; }
+    public bool DoubleClick2Activate { get; set; } = true;
     public bool AutoHideStartup { get; set; }
     public bool Hide2TrayWhenClose { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
