@@ -1366,16 +1366,31 @@ public class CoreConfigV2rayService
 
     private async Task<int> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
     {
-        if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.LeastPing)
+        if (multipleLoad == EMultipleLoad.LeastPing)
         {
             var observatory = new Observatory4Ray
             {
                 subjectSelector = [Global.ProxyTag],
                 probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
                 probeInterval = "3m",
-                enableConcurrency = true
+                enableConcurrency = true,
             };
             v2rayConfig.observatory = observatory;
+        }
+        else if (multipleLoad == EMultipleLoad.LeastLoad)
+        {
+            var burstObservatory = new BurstObservatory4Ray
+            {
+                subjectSelector = [Global.ProxyTag],
+                pingConfig = new()
+                {
+                    destination = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                    interval = "5m",
+                    timeout = "30s",
+                    sampling = 2,
+                }
+            };
+            v2rayConfig.burstObservatory = burstObservatory;
         }
         var strategyType = multipleLoad switch
         {
