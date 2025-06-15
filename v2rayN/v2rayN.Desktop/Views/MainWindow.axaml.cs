@@ -29,7 +29,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         InitializeComponent();
 
         _config = AppHandler.Instance.Config;
-        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.BottomRight };
+        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         this.KeyDown += MainWindow_KeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
