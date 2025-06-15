@@ -552,6 +552,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             await LoadCore();
             await SysProxyHandler.UpdateSysProxy(_config, false);
+            await Task.Delay(1000);
         });
         Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 

@@ -196,6 +196,7 @@ public class SpeedtestService
             {
                 return false;
             }
+            await Task.Delay(1000);
 
             var downloadHandle = new DownloadService();
 
@@ -255,9 +256,13 @@ public class SpeedtestService
                 try
                 {
                     pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(it);
-                    if (pid > 0)
+                    if (pid < 0)
                     {
-                        await Task.Delay(500);
+                        UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                    }
+                    else
+                    {
+                        await Task.Delay(1000);
                         var delay = await DoRealPing(downloadHandle, it);
                         if (blSpeedTest)
                         {
@@ -270,10 +275,6 @@ public class SpeedtestService
                                 UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                             }
                         }
-                    }
-                    else
-                    {
-                        UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
                     }
                 }
                 catch (Exception ex)
