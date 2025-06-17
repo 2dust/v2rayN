@@ -651,9 +651,10 @@ public class CoreConfigSingboxService
             if (Utils.IsDomain(node.Address))
             {
                 var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+                var localDnsAddress = string.IsNullOrEmpty(item?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : item?.DomainDNSAddress;
                 outbound.domain_resolver = new()
                 {
-                    server = "local_local",
+                    server = localDnsAddress.StartsWith("tag://") ? localDnsAddress.Substring(6) : "local_resolver",
                     strategy = string.IsNullOrEmpty(item?.DomainStrategy4Freedom) ? null : item?.DomainStrategy4Freedom
                 };
             }
@@ -795,9 +796,10 @@ public class CoreConfigSingboxService
             if (Utils.IsDomain(node.Address))
             {
                 var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+                var localDnsAddress = string.IsNullOrEmpty(item?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : item?.DomainDNSAddress;
                 endpoint.domain_resolver = new()
                 {
-                    server = "local_local",
+                    server = localDnsAddress.StartsWith("tag://") ? localDnsAddress.Substring(6) : "local_resolver",
                     strategy = string.IsNullOrEmpty(item?.DomainStrategy4Freedom) ? null : item?.DomainStrategy4Freedom
                 };
             }
@@ -1618,26 +1620,48 @@ public class CoreConfigSingboxService
         dns4Sbox.servers ??= [];
         dns4Sbox.rules ??= [];
 
-        var tag = "local_local";
+        var tag = "local_resolver";
         var localDnsAddress = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.SingboxDomainDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress;
 
-        var (dnsType, dnsHost, dnsPort, dnsPath) = ParseDnsAddress(localDnsAddress);
-
-        dns4Sbox.servers.Add(new()
+        if (localDnsAddress.StartsWith("tag://"))
         {
-            tag = tag,
-            type = dnsType,
-            server = dnsHost,
-            Interface = dnsType == "dhcp" ? dnsHost : null,
-            server_port = dnsPort,
-            path = dnsPath
-        });
+            tag = localDnsAddress.Substring(6);
 
-        dns4Sbox.rules.Insert(0, new()
+            var localDnsTag = "local_local";
+
+            dns4Sbox.servers.Add(new()
+            {
+                tag = localDnsTag,
+                type = "local"
+            });
+
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = localDnsTag,
+                clash_mode = ERuleMode.Direct.ToString()
+            });
+        }
+        else
         {
-            server = tag,
-            clash_mode = ERuleMode.Direct.ToString()
-        });
+            var (dnsType, dnsHost, dnsPort, dnsPath) = ParseDnsAddress(localDnsAddress);
+
+            dns4Sbox.servers.Add(new()
+            {
+                tag = tag,
+                type = dnsType,
+                server = dnsHost,
+                Interface = dnsType == "dhcp" ? dnsHost : null,
+                server_port = dnsPort,
+                path = dnsPath
+            });
+
+            dns4Sbox.rules.Insert(0, new()
+            {
+                server = tag,
+                clash_mode = ERuleMode.Direct.ToString()
+            });
+        }
+
         dns4Sbox.rules.Insert(0, new()
         {
             server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
