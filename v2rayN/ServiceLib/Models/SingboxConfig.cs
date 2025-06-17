@@ -236,6 +236,8 @@ public class Server4Sbox : BaseServer4Sbox
     public int? server_port { get; set; }
     public string? path { get; set; }
     public Headers4Sbox? headers { get; set; }
+    // public List<string>? path { get; set; } // hosts
+    public Dictionary<string, object>? predefined { get; set; }
     // Deprecated
     public string? address { get; set; }
     public string? address_resolver { get; set; }
