@@ -1979,7 +1979,7 @@ public class ConfigHandler
             items = await AppHandler.Instance.RoutingItems();
         }
 
-        if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(ver)).ToList().Count > 0)
+        if (!blImportAdvancedRules && items.Count > 0)
         {
             return 0;
         }
