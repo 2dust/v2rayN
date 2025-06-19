@@ -34,7 +34,7 @@
                 IsCancel="True" />
         </StackPanel>
 
-        <TabControl HorizontalContentAlignment="Left">
+        <TabControl HorizontalContentAlignment="Stretch">
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -90,16 +90,18 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <Grid Margin="{StaticResource Margin4}">
+                    <HeaderedContentControl
+                        Margin="{StaticResource Margin4}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Header="HTTP/SOCKS">
                         <TextBox
-                            x:Name="txtnormalDNS"
-                            Margin="{StaticResource Margin4}"
+                            Name="txtnormalDNS"
                             VerticalAlignment="Stretch"
-                            BorderThickness="1"
                             Classes="TextArea"
-                            TextWrapping="Wrap"
-                            Watermark="HTTP/SOCKS" />
-                    </Grid>
+                            MinLines="10"
+                            TextWrapping="Wrap" />
+                    </HeaderedContentControl>
                 </DockPanel>
             </TabItem>
 
@@ -144,31 +146,34 @@
 
                     <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="*,10,*">
 
-                        <TextBox
-                            x:Name="txtnormalDNS2"
+                        <HeaderedContentControl
                             Grid.Column="0"
-                            Width="400"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
+                            BorderBrush="Gray"
                             BorderThickness="1"
-                            Classes="TextArea"
-                            Margin="{StaticResource Margin4}"
-                            TextWrapping="Wrap"
-                            Watermark="HTTP/SOCKS" />
+                            Header="HTTP/SOCKS">
+                            <TextBox
+                                Name="txtnormalDNS2"
+                                VerticalAlignment="Stretch"
+                                Classes="TextArea"
+                                MinLines="10"
+                                TextWrapping="Wrap" />
+                        </HeaderedContentControl>
 
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
 
-                        <TextBox
-                            x:Name="txttunDNS2"
+                        <HeaderedContentControl
                             Grid.Column="2"
-                            Width="400"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
+                            BorderBrush="Gray"
                             BorderThickness="1"
-                            Classes="TextArea"
-                            Margin="{StaticResource Margin4}"
-                            TextWrapping="Wrap"
-                            Watermark="{x:Static resx:ResUI.TbSettingsTunMode}" />
+                            Header="{x:Static resx:ResUI.TbSettingsTunMode}">
+                            <TextBox
+                                Name="txttunDNS2"
+                                VerticalAlignment="Stretch"
+                                Classes="TextArea"
+                                MinLines="10"
+                                TextWrapping="Wrap" />
+                        </HeaderedContentControl>
+
                     </Grid>
                 </DockPanel>
             </TabItem>
