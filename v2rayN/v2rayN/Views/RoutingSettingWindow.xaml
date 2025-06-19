@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveWindow
+<reactiveui:ReactiveWindow
     x:Class="v2rayN.Views.RoutingSettingWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -29,68 +29,25 @@
                 VerticalAlignment="Center"
                 ClipToBounds="True"
                 Style="{StaticResource MaterialDesignToolBar}">
-                <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                    <MenuItem x:Name="menuRoutingAdvanced" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon
-                                    Margin="{StaticResource MarginRight8}"
-                                    VerticalAlignment="Center"
-                                    Kind="Routes" />
-                                <TextBlock Text="{x:Static resx:ResUI.menuRoutingAdvanced}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                        <MenuItem
-                            x:Name="menuRoutingAdvancedAdd2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
-                        <MenuItem
-                            x:Name="menuRoutingAdvancedImportRules2"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
-                    </MenuItem>
-                </Menu>
+                <Button x:Name="menuRoutingAdvancedAdd2">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Margin="{StaticResource MarginRight8}"
+                            VerticalAlignment="Center"
+                            Kind="Plus" />
+                        <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
+                    </StackPanel>
+                </Button>
                 <Separator />
-                <TextBlock
-                    Margin="{StaticResource MarginLeft8}"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}">
-                    <Hyperlink Click="linkdomainStrategy_Click">
-                        <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy}" />
-                        <materialDesign:PackIcon Kind="Link" />
-                    </Hyperlink>
-                </TextBlock>
-                <ComboBox
-                    x:Name="cmbdomainStrategy"
-                    Width="110"
-                    Margin="{StaticResource MarginLeft8}"
-                    Style="{StaticResource DefComboBox}" />
-                <Separator />
-                <TextBlock
-                    Margin="{StaticResource MarginLeft8}"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.TbdomainMatcher}" />
-                <ComboBox
-                    x:Name="cmbdomainMatcher"
-                    Width="60"
-                    Margin="{StaticResource MarginLeft8}"
-                    Style="{StaticResource DefComboBox}" />
-                <Separator />
-                <TextBlock
-                    Margin="{StaticResource MarginLeft8}"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource ToolbarTextBlock}">
-                    <Hyperlink Click="linkdomainStrategy4Singbox_Click">
-                        <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
-                        <materialDesign:PackIcon Kind="Link" />
-                    </Hyperlink>
-                </TextBlock>
-                <ComboBox
-                    x:Name="cmbdomainStrategy4Singbox"
-                    Width="100"
-                    Margin="{StaticResource MarginLeft8}"
-                    Style="{StaticResource DefComboBox}" />
+                <Button x:Name="menuRoutingAdvancedImportRules2">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Margin="{StaticResource MarginRight8}"
+                            VerticalAlignment="Center"
+                            Kind="Import" />
+                        <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
 
@@ -122,82 +79,145 @@
                 Style="{StaticResource DefButton}" />
         </StackPanel>
 
-        <DockPanel>
-            <TabControl x:Name="tabAdvanced">
-                <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRoutingTabRuleList}">
-                    <DataGrid
-                        x:Name="lstRoutings"
-                        AutoGenerateColumns="False"
-                        BorderThickness="1"
-                        CanUserAddRows="False"
-                        CanUserResizeRows="False"
-                        CanUserSortColumns="False"
-                        EnableRowVirtualization="True"
-                        GridLinesVisibility="All"
-                        HeadersVisibility="Column"
-                        IsReadOnly="True"
-                        Style="{StaticResource DefDataGrid}">
-                        <DataGrid.ContextMenu>
-                            <ContextMenu Style="{StaticResource DefContextMenu}">
-                                <MenuItem
-                                    x:Name="menuRoutingAdvancedAdd"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
-                                <MenuItem
-                                    x:Name="menuRoutingAdvancedRemove"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}" />
-                                <MenuItem
-                                    x:Name="menuRoutingAdvancedSelectAll"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuSelectAll}" />
-                                <MenuItem
-                                    x:Name="menuRoutingAdvancedSetDefault"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}" />
-                                <Separator />
-                                <MenuItem
-                                    x:Name="menuRoutingAdvancedImportRules"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                        <DataGrid.Resources>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
-                                        <Setter Property="Foreground" Value="Black" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Width="*"
-                                Binding="{Binding Remarks}"
-                                Header="{x:Static resx:ResUI.LvRemarks}" />
-                            <DataGridTextColumn
-                                Width="60"
-                                Binding="{Binding RuleNum}"
-                                Header="{x:Static resx:ResUI.LvCount}" />
-                            <DataGridTextColumn
-                                Width="60"
-                                Binding="{Binding Sort}"
-                                Header="{x:Static resx:ResUI.LvSort}" />
-                            <DataGridTextColumn
-                                Width="*"
-                                Binding="{Binding Url}"
-                                Header="{x:Static resx:ResUI.LvUrl}" />
-                            <DataGridTextColumn
-                                Width="300"
-                                Binding="{Binding CustomIcon}"
-                                Header="{x:Static resx:ResUI.LvCustomIcon}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
+        <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}">
+                <Hyperlink Click="linkdomainStrategy_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy}" />
+                    <materialDesign:PackIcon Kind="Link" />
+                </Hyperlink>
+            </TextBlock>
+            <ComboBox
+                x:Name="cmbdomainStrategy"
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                Style="{StaticResource DefComboBox}" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbdomainMatcher}" />
+            <ComboBox
+                x:Name="cmbdomainMatcher"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                Style="{StaticResource DefComboBox}" />
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}">
+                <Hyperlink Click="linkdomainStrategy4Singbox_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
+                    <materialDesign:PackIcon Kind="Link" />
+                </Hyperlink>
+            </TextBlock>
+            <ComboBox
+                x:Name="cmbdomainStrategy4Singbox"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                Style="{StaticResource DefComboBox}" />
+        </Grid>
+
+        <TabControl x:Name="tabAdvanced">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRoutingTabRuleList}">
+                <DataGrid
+                    x:Name="lstRoutings"
+                    AutoGenerateColumns="False"
+                    BorderThickness="1"
+                    CanUserAddRows="False"
+                    CanUserResizeRows="False"
+                    CanUserSortColumns="False"
+                    EnableRowVirtualization="True"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    Style="{StaticResource DefDataGrid}">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu Style="{StaticResource DefContextMenu}">
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedAdd"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedRemove"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedSelectAll"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuSelectAll}" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedSetDefault"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}" />
+                            <Separator />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedImportRules"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="60"
+                            Binding="{Binding RuleNum}"
+                            Header="{x:Static resx:ResUI.LvCount}" />
+                        <DataGridTextColumn
+                            Width="60"
+                            Binding="{Binding Sort}"
+                            Header="{x:Static resx:ResUI.LvSort}" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Url}"
+                            Header="{x:Static resx:ResUI.LvUrl}" />
+                        <DataGridTextColumn
+                            Width="300"
+                            Binding="{Binding CustomIcon}"
+                            Header="{x:Static resx:ResUI.LvCustomIcon}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </reactiveui:ReactiveWindow>
