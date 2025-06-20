@@ -336,7 +336,7 @@ public class CoreConfigSingboxService
             await GenExperimental(singboxConfig);
             singboxConfig.outbounds.RemoveAt(0);
 
-            var tagProxy = new List<string>();
+            var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
                 if (it.ConfigType == EConfigType.Custom)
@@ -370,41 +370,17 @@ public class CoreConfigSingboxService
                 }
 
                 //outbound
-                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                await GenOutbound(item, outbound);
-                outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                singboxConfig.outbounds.Insert(0, outbound);
-                tagProxy.Add(outbound.tag);
+                proxyProfiles.Add(item);
             }
-            if (tagProxy.Count <= 0)
+            if (proxyProfiles.Count <= 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            await GenOutboundsList(proxyProfiles, singboxConfig);
 
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
-
-            //add urltest outbound
-            var outUrltest = new Outbound4Sbox
-            {
-                type = "urltest",
-                tag = $"{Global.ProxyTag}-auto",
-                outbounds = tagProxy,
-                interrupt_exist_connections = false,
-            };
-            singboxConfig.outbounds.Insert(0, outUrltest);
-
-            //add selector outbound
-            var outSelector = new Outbound4Sbox
-            {
-                type = "selector",
-                tag = Global.ProxyTag,
-                outbounds = JsonUtils.DeepCopy(tagProxy),
-                interrupt_exist_connections = false,
-            };
-            outSelector.outbounds.Insert(0, outUrltest.tag);
-            singboxConfig.outbounds.Insert(0, outSelector);
 
             ret.Success = true;
             ret.Data = JsonUtils.Serialize(singboxConfig);
@@ -965,6 +941,114 @@ public class CoreConfigSingboxService
                 outbound.tag = $"{Global.ProxyTag}1";
                 nextOutbound.detour = outbound.tag;
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return 0;
+    }
+
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig)
+    {
+        try
+        {
+            var proxyOutbounds = new List<Outbound4Sbox>();
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var chainProxy = new Dictionary<string, (Outbound4Sbox?, Outbound4Sbox?)>();
+            var proxyTags = new List<string>();
+
+            var index = 0;
+
+            foreach (var node in nodes)
+            {
+                index++;
+                Outbound4Sbox? prevOutbound = null;
+                Outbound4Sbox? nextOutbound = null;
+                if (node.Subid.IsNotEmpty())
+                {
+                    var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+                    if (chainProxy.ContainsKey(node.Subid))
+                    {
+                        (prevOutbound, nextOutbound) = chainProxy[node.Subid];
+                    }
+                    else if (subItem is not null)
+                    {
+                        var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                        if (prevNode is not null
+                            && prevNode.ConfigType != EConfigType.Custom)
+                        {
+                            prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                            await GenOutbound(prevNode, prevOutbound);
+                        }
+
+                        var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+                        if (nextNode is not null
+                            && nextNode.ConfigType != EConfigType.Custom)
+                        {
+                            nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                            await GenOutbound(nextNode, nextOutbound);
+                        }
+
+                        chainProxy.TryAdd(node.Subid, (prevOutbound, nextOutbound));
+
+                        if (prevOutbound is not null)
+                        {
+                            prevOutbound.tag = $"1-{Global.ProxyTag}-{index}";
+                            proxyOutbounds.Add(prevOutbound);
+                        }
+                    }
+                }
+                if (node.ConfigType is EConfigType.Custom)
+                {
+                    continue;
+                }
+                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                await GenOutbound(node, outbound);
+                outbound.tag = $"{Global.ProxyTag}-{index}";
+                proxyTags.Add(outbound.tag);
+                proxyOutbounds.Add(outbound);
+
+                if (prevOutbound is not null)
+                {
+                    outbound.detour = prevOutbound.tag;
+                }
+
+                if (nextOutbound is not null)
+                {
+                    var nextOutboundCopy = JsonUtils.DeepCopy(nextOutbound);
+
+                    nextOutboundCopy.tag = outbound.tag;
+                    outbound.tag = $"3-{Global.ProxyTag}-{index}";
+                    nextOutboundCopy.detour = outbound.tag;
+                    proxyOutbounds.Add(nextOutboundCopy);
+                }
+            }
+
+            //add urltest outbound
+            var outUrltest = new Outbound4Sbox
+            {
+                type = "urltest",
+                tag = $"{Global.ProxyTag}-auto",
+                outbounds = proxyTags,
+                interrupt_exist_connections = false,
+            };
+            proxyOutbounds.Insert(0, outUrltest);
+
+            //add selector outbound
+            var outSelector = new Outbound4Sbox
+            {
+                type = "selector",
+                tag = Global.ProxyTag,
+                outbounds = JsonUtils.DeepCopy(proxyTags),
+                interrupt_exist_connections = false,
+            };
+            outSelector.outbounds.Insert(0, outUrltest.tag);
+            proxyOutbounds.Insert(0, outSelector);
+
+            proxyOutbounds.AddRange(singboxConfig.outbounds);
+            singboxConfig.outbounds = proxyOutbounds;
         }
         catch (Exception ex)
         {
