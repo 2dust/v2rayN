@@ -11,11 +11,6 @@ public partial class App : Application
 {
     public override void Initialize()
     {
-        if (!AppHandler.Instance.InitApp())
-        {
-            Environment.Exit(0);
-            return;
-        }
         AvaloniaXamlLoader.Load(this);
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

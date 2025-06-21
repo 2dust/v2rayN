@@ -105,6 +105,7 @@ public class UIItem
     public bool Hide2TrayWhenClose { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public bool ShowInTaskbar { get; set; }
+    public bool MacOSShowInDock { get; set; }
 }
 
 [Serializable]
