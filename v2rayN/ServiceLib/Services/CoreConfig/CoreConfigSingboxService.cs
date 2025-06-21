@@ -336,7 +336,7 @@ public class CoreConfigSingboxService
             await GenExperimental(singboxConfig);
             singboxConfig.outbounds.RemoveAt(0);
 
-            var tagProxy = new List<string>();
+            var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
                 if (it.ConfigType == EConfigType.Custom)
@@ -370,41 +370,17 @@ public class CoreConfigSingboxService
                 }
 
                 //outbound
-                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                await GenOutbound(item, outbound);
-                outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                singboxConfig.outbounds.Insert(0, outbound);
-                tagProxy.Add(outbound.tag);
+                proxyProfiles.Add(item);
             }
-            if (tagProxy.Count <= 0)
+            if (proxyProfiles.Count <= 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            await GenOutboundsList(proxyProfiles, singboxConfig);
 
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
-
-            //add urltest outbound
-            var outUrltest = new Outbound4Sbox
-            {
-                type = "urltest",
-                tag = $"{Global.ProxyTag}-auto",
-                outbounds = tagProxy,
-                interrupt_exist_connections = false,
-            };
-            singboxConfig.outbounds.Insert(0, outUrltest);
-
-            //add selector outbound
-            var outSelector = new Outbound4Sbox
-            {
-                type = "selector",
-                tag = Global.ProxyTag,
-                outbounds = JsonUtils.DeepCopy(tagProxy),
-                interrupt_exist_connections = false,
-            };
-            outSelector.outbounds.Insert(0, outUrltest.tag);
-            singboxConfig.outbounds.Insert(0, outSelector);
 
             ret.Success = true;
             ret.Data = JsonUtils.Serialize(singboxConfig);
@@ -965,6 +941,179 @@ public class CoreConfigSingboxService
                 outbound.tag = $"{Global.ProxyTag}1";
                 nextOutbound.detour = outbound.tag;
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return 0;
+    }
+
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig)
+    {
+        try
+        {
+            // Get outbound template and initialize lists
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                return 0;
+            }
+
+            var resultOutbounds = new List<Outbound4Sbox>();
+            var prevOutbounds = new List<Outbound4Sbox>(); // Separate list for prev outbounds
+            var proxyTags = new List<string>(); // For selector and urltest outbounds
+
+            // Cache for chain proxies to avoid duplicate generation
+            var chainProxyCache = new Dictionary<string, (string?, Outbound4Sbox?)>();
+            var prevProxyTags = new Dictionary<string, string>(); // Map from profile name to tag
+            int prevIndex = 0; // Index for prev outbounds
+
+            // Process each node
+            int index = 0;
+            foreach (var node in nodes)
+            {
+                index++;
+
+                // Skip unsupported config types
+                if (node.ConfigType is EConfigType.Custom)
+                {
+                    continue;
+                }
+
+                // Handle proxy chain
+                string? prevTag = null;
+                Outbound4Sbox? nextOutbound = null;
+
+                if (node.Subid.IsNotEmpty())
+                {
+                    // Check if chain proxy is already cached
+                    if (chainProxyCache.TryGetValue(node.Subid, out var chainProxy))
+                    {
+                        prevTag = chainProxy.Item1;
+                        nextOutbound = chainProxy.Item2;
+                    }
+                    else
+                    {
+                        // Generate chain proxy and cache it
+                        var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+                        if (subItem != null)
+                        {
+                            // Process previous proxy
+                            if (!subItem.PrevProfile.IsNullOrEmpty())
+                            {
+                                // Check if this previous proxy was already created
+                                if (prevProxyTags.TryGetValue(subItem.PrevProfile, out var existingTag))
+                                {
+                                    prevTag = existingTag;
+                                }
+                                else
+                                {
+                                    var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                                    if (prevNode != null && prevNode.ConfigType != EConfigType.Custom)
+                                    {
+                                        prevIndex++;
+                                        var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                                        await GenOutbound(prevNode, prevOutbound);
+
+                                        prevTag = $"{Global.ProxyTag}-prev-{prevIndex}";
+                                        prevOutbound.tag = prevTag;
+                                        prevProxyTags[subItem.PrevProfile] = prevTag;
+
+                                        // Add to prev outbounds list (will be added at the end)
+                                        prevOutbounds.Add(prevOutbound);
+                                    }
+                                }
+                            }
+
+                            // Process next proxy
+                            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+                            if (nextNode != null && nextNode.ConfigType != EConfigType.Custom)
+                            {
+                                nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                                await GenOutbound(nextNode, nextOutbound);
+                            }
+
+                            // Cache the chain proxy
+                            chainProxyCache[node.Subid] = (prevTag, nextOutbound);
+                        }
+                    }
+                }
+
+                // Create main outbound
+                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+
+                await GenOutbound(node, outbound);
+                outbound.tag = $"{Global.ProxyTag}-{index}";
+
+                // Configure proxy chain relationships
+                if (nextOutbound != null)
+                {
+                    // If there's a next proxy, it should be the final outbound in the chain
+                    var originalTag = outbound.tag;
+                    outbound.tag = $"mid-{Global.ProxyTag}-{index}";
+
+                    var nextOutboundCopy = JsonUtils.DeepCopy(nextOutbound);
+                    nextOutboundCopy.tag = originalTag;
+                    nextOutboundCopy.detour = outbound.tag; // Use detour instead of sockopt
+
+                    if (prevTag != null)
+                    {
+                        outbound.detour = prevTag;
+                    }
+
+                    // Add to proxy tags for selector/urltest
+                    proxyTags.Add(originalTag);
+
+                    // Add in reverse order to ensure final outbound is added first
+                    resultOutbounds.Add(nextOutboundCopy);  // Final outbound (exposed to internet)
+                    resultOutbounds.Add(outbound);          // Middle outbound
+                }
+                else
+                {
+                    // If no next proxy, the main outbound is the final one
+                    if (prevTag != null)
+                    {
+                        outbound.detour = prevTag;
+                    }
+
+                    // Add to proxy tags for selector/urltest
+                    proxyTags.Add(outbound.tag);
+                    resultOutbounds.Add(outbound);
+                }
+            }
+
+            // Add urltest outbound (auto selection based on latency)
+            if (proxyTags.Count > 0)
+            {
+                var outUrltest = new Outbound4Sbox
+                {
+                    type = "urltest",
+                    tag = $"{Global.ProxyTag}-auto",
+                    outbounds = proxyTags,
+                    interrupt_exist_connections = false,
+                };
+
+                // Add selector outbound (manual selection)
+                var outSelector = new Outbound4Sbox
+                {
+                    type = "selector",
+                    tag = Global.ProxyTag,
+                    outbounds = JsonUtils.DeepCopy(proxyTags),
+                    interrupt_exist_connections = false,
+                };
+                outSelector.outbounds.Insert(0, outUrltest.tag);
+
+                // Insert these at the beginning
+                resultOutbounds.Insert(0, outUrltest);
+                resultOutbounds.Insert(0, outSelector);
+            }
+
+            // Merge results: first the selector/urltest/proxies, then other outbounds, and finally prev outbounds
+            resultOutbounds.AddRange(prevOutbounds);
+            resultOutbounds.AddRange(singboxConfig.outbounds);
+            singboxConfig.outbounds = resultOutbounds;
         }
         catch (Exception ex)
         {

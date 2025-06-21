@@ -113,7 +113,7 @@ public class CoreConfigV2rayService
             await GenStatistic(v2rayConfig);
             v2rayConfig.outbounds.RemoveAt(0);
 
-            var tagProxy = new List<string>();
+            var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
                 if (it.ConfigType == EConfigType.Custom)
@@ -151,17 +151,14 @@ public class CoreConfigV2rayService
                 }
 
                 //outbound
-                var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(item, outbound);
-                outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                v2rayConfig.outbounds.Insert(0, outbound);
-                tagProxy.Add(outbound.tag);
+                proxyProfiles.Add(item);
             }
-            if (tagProxy.Count <= 0)
+            if (proxyProfiles.Count <= 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            await GenOutboundsList(proxyProfiles, v2rayConfig);
 
             //add balancers
             await GenBalancer(v2rayConfig, multipleLoad);
@@ -1355,6 +1352,188 @@ public class CoreConfigV2rayService
                     dialerProxy = outbound.tag
                 };
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return 0;
+    }
+
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            // Get template and initialize list
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                return 0;
+            }
+
+            var resultOutbounds = new List<Outbounds4Ray>();
+            var prevOutbounds = new List<Outbounds4Ray>(); // Separate list for prev outbounds and fragment
+
+            // Handle fragment outbound
+            Outbounds4Ray? fragmentOutbound = null;
+            if (_config.CoreBasicItem.EnableFragment)
+            {
+                fragmentOutbound = new Outbounds4Ray
+                {
+                    protocol = "freedom",
+                    tag = $"fragment-{Global.ProxyTag}",
+                    settings = new()
+                    {
+                        fragment = new()
+                        {
+                            packets = _config.Fragment4RayItem?.Packets,
+                            length = _config.Fragment4RayItem?.Length,
+                            interval = _config.Fragment4RayItem?.Interval
+                        }
+                    }
+                };
+                // Add to prevOutbounds instead of v2rayConfig.outbounds
+                prevOutbounds.Add(fragmentOutbound);
+            }
+
+            // Cache for chain proxies to avoid duplicate generation
+            var chainProxyCache = new Dictionary<string, (string?, Outbounds4Ray?)>();
+            var prevProxyTags = new Dictionary<string, string>(); // Map from profile name to tag
+            int prevIndex = 0; // Index for prev outbounds
+
+            // Process nodes
+            int index = 0;
+            foreach (var node in nodes)
+            {
+                index++;
+
+                // Skip unsupported config types
+                if (node.ConfigType is EConfigType.Custom or EConfigType.Hysteria2 or EConfigType.TUIC)
+                {
+                    continue;
+                }
+
+                // Handle proxy chain
+                string? prevTag = null;
+                Outbounds4Ray? nextOutbound = null;
+
+                if (!node.Subid.IsNullOrEmpty())
+                {
+                    // Check if chain proxy is already cached
+                    if (chainProxyCache.TryGetValue(node.Subid, out var chainProxy))
+                    {
+                        prevTag = chainProxy.Item1;
+                        nextOutbound = chainProxy.Item2;
+                    }
+                    else
+                    {
+                        // Generate chain proxy and cache it
+                        var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+                        if (subItem != null)
+                        {
+                            // Process previous proxy
+                            if (!subItem.PrevProfile.IsNullOrEmpty())
+                            {
+                                // Check if this previous proxy was already created
+                                if (prevProxyTags.TryGetValue(subItem.PrevProfile, out var existingTag))
+                                {
+                                    prevTag = existingTag;
+                                }
+                                else
+                                {
+                                    var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                                    if (prevNode != null
+                                        && prevNode.ConfigType != EConfigType.Custom
+                                        && prevNode.ConfigType != EConfigType.Hysteria2
+                                        && prevNode.ConfigType != EConfigType.TUIC)
+                                    {
+                                        prevIndex++;
+                                        var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                                        await GenOutbound(prevNode, prevOutbound);
+
+                                        prevTag = $"{Global.ProxyTag}-prev-{prevIndex}";
+                                        prevOutbound.tag = prevTag;
+                                        prevProxyTags[subItem.PrevProfile] = prevTag;
+
+                                        // Set fragment if needed
+                                        if (fragmentOutbound != null && prevOutbound.streamSettings?.security.IsNullOrEmpty() == false)
+                                        {
+                                            prevOutbound.streamSettings.sockopt = new()
+                                            {
+                                                dialerProxy = fragmentOutbound.tag
+                                            };
+                                        }
+
+                                        // Add to prev outbounds list (will be added at the end)
+                                        prevOutbounds.Add(prevOutbound);
+                                    }
+                                }
+                            }
+
+                            // Process next proxy
+                            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+                            if (nextNode != null
+                                && nextNode.ConfigType != EConfigType.Custom
+                                && nextNode.ConfigType != EConfigType.Hysteria2
+                                && nextNode.ConfigType != EConfigType.TUIC)
+                            {
+                                nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                                await GenOutbound(nextNode, nextOutbound);
+                            }
+
+                            // Cache the chain proxy
+                            chainProxyCache[node.Subid] = (prevTag, nextOutbound);
+                        }
+                    }
+                }
+
+                // Create main outbound
+                var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+
+                await GenOutbound(node, outbound);
+                outbound.tag = $"{Global.ProxyTag}-{index}";
+
+                // Configure proxy chain relationships
+                if (nextOutbound != null)
+                {
+                    // If there's a next proxy, it should be the final outbound in the chain
+                    var originalTag = outbound.tag;
+                    outbound.tag = $"mid-{Global.ProxyTag}-{index}";
+
+                    var nextOutboundCopy = JsonUtils.DeepCopy(nextOutbound);
+                    nextOutboundCopy.tag = originalTag;
+                    nextOutboundCopy.streamSettings.sockopt = new() { dialerProxy = outbound.tag };
+
+                    if (prevTag != null)
+                    {
+                        outbound.streamSettings.sockopt = new() { dialerProxy = prevTag };
+                    }
+
+                    // Add in reverse order to ensure final outbound is added first
+                    resultOutbounds.Add(nextOutboundCopy);  // Final outbound (exposed to internet)
+                    resultOutbounds.Add(outbound);          // Middle outbound
+                }
+                else
+                {
+                    // If no next proxy, the main outbound is the final one
+                    if (prevTag != null)
+                    {
+                        outbound.streamSettings.sockopt = new() { dialerProxy = prevTag };
+                    }
+                    else if (fragmentOutbound != null && outbound.streamSettings?.security.IsNullOrEmpty() == false)
+                    {
+                        outbound.streamSettings.sockopt = new() { dialerProxy = fragmentOutbound.tag };
+                    }
+
+                    resultOutbounds.Add(outbound);
+                }
+            }
+
+            // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
+            resultOutbounds.AddRange(prevOutbounds);
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
         }
         catch (Exception ex)
         {
