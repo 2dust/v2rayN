@@ -35,4 +35,5 @@ jobs:
           Write-Host "Version: $ver"
           Write-Host "x64 URL: $x64InstallerUrl"
           Write-Host "arm64 URL: $arm64InstallerUrl"
-          .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$x64InstallerUrl|x64" -u "$arm64InstallerUrl|arm64" -t $gitToken
+          
+          .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$x64InstallerUrl|x64" "$arm64InstallerUrl|arm64" -t $gitToken
