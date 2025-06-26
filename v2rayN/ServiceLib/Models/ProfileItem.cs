@@ -1,9 +1,10 @@
+using ReactiveUI;
 using SQLite;
 
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ProfileItem
+public class ProfileItem: ReactiveObject
 {
     public ProfileItem()
     {
