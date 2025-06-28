@@ -134,6 +134,9 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.hyUpMbps, v => v.txtUpMbps.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.hyDownMbps, v => v.txtDownMbps.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.enableFragment, v => v.togenableFragment.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.fragmentInterval, v => v.txtfragmentinterval.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.fragmentLength, v => v.txtfragmentlength.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.fragmentPackets, v => v.txtfragmentpackets.Text).DisposeWith(disposables);
 
             //this.Bind(ViewModel, vm => vm.Kcpmtu, v => v.txtKcpmtu.Text).DisposeWith(disposables);
             //this.Bind(ViewModel, vm => vm.Kcptti, v => v.txtKcptti.Text).DisposeWith(disposables);

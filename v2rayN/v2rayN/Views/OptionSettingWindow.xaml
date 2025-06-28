@@ -66,6 +66,9 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -399,6 +402,54 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}"
                             TextWrapping="Wrap" />
+
+
+                        <TextBlock
+                            Grid.Row="21"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}" />
+                        <TextBox
+                            x:Name="txtfragmentpackets"
+                            Grid.Row="21"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefTextBox}" />
+
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentLength}" />
+                        <TextBox
+                            x:Name="txtfragmentlength"
+                            Grid.Row="22"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefTextBox}" />
+
+
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}" />
+                        <TextBox
+                            x:Name="txtfragmentinterval"
+                            Grid.Row="23"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefTextBox}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

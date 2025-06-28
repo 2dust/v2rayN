@@ -29,6 +29,9 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int hyUpMbps { get; set; }
     [Reactive] public int hyDownMbps { get; set; }
     [Reactive] public bool enableFragment { get; set; }
+    [Reactive] public string fragmentPackets { get; set; }
+    [Reactive] public string fragmentInterval { get; set; }
+    [Reactive] public string fragmentLength { get; set; }
 
     #endregion Core
 
@@ -146,6 +149,9 @@ public class OptionSettingViewModel : MyReactiveObject
         hyUpMbps = _config.HysteriaItem.UpMbps;
         hyDownMbps = _config.HysteriaItem.DownMbps;
         enableFragment = _config.CoreBasicItem.EnableFragment;
+        fragmentInterval = _config.Fragment4RayItem.Interval;
+        fragmentLength = _config.Fragment4RayItem.Length;
+        fragmentPackets = _config.Fragment4RayItem.Packets;
 
         #endregion Core
 
@@ -321,6 +327,9 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.HysteriaItem.UpMbps = hyUpMbps;
         _config.HysteriaItem.DownMbps = hyDownMbps;
         _config.CoreBasicItem.EnableFragment = enableFragment;
+        _config.Fragment4RayItem.Packets = fragmentPackets;
+        _config.Fragment4RayItem.Interval = fragmentInterval;
+        _config.Fragment4RayItem.Length = fragmentLength;
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;

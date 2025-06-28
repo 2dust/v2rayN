@@ -1131,6 +1131,15 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Enable fragment</value>
   </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Fragment Interval</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Fragment Length</value>
+  </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Fragment Packets</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Enable cache file for sing-box (ruleset files)</value>
   </data>
