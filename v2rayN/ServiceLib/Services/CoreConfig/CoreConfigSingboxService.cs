@@ -751,7 +751,8 @@ public class CoreConfigSingboxService
     {
         try
         {
-            if (_config.CoreBasicItem.MuxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
+            var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
+            if (muxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
             {
                 var mux = new Multiplex4Sbox()
                 {

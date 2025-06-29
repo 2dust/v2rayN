@@ -246,6 +246,7 @@ public class ConfigHandler
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
             item.Extra = profileItem.Extra;
+            item.MuxEnabled = profileItem.MuxEnabled;
         }
 
         var ret = item.ConfigType switch

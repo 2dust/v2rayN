@@ -155,6 +155,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
@@ -214,12 +215,27 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleButton
+                        x:Name="togmuxEnabled"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSs"
                     Grid.Row="2"
                     Visibility="Hidden">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -259,6 +275,20 @@
                         Width="300"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleButton
+                        x:Name="togmuxEnabled3"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSocks"
@@ -310,6 +340,7 @@
                     Grid.Row="2"
                     Visibility="Hidden">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -373,12 +404,27 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleButton
+                        x:Name="togmuxEnabled5"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridTrojan"
                     Grid.Row="2"
                     Visibility="Hidden">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -418,6 +464,20 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleButton
+                        x:Name="togmuxEnabled6"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridHysteria2"

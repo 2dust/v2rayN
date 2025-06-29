@@ -631,7 +631,7 @@ public class CoreConfigV2rayService
     {
         try
         {
-            var muxEnabled = _config.CoreBasicItem.MuxEnabled;
+            var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
             switch (node.ConfigType)
             {
                 case EConfigType.VMess:
