@@ -1360,6 +1360,7 @@ public class CoreConfigV2rayService
             var prevOutbounds = new List<Outbounds4Ray>(); // Separate list for prev outbounds and fragment
 
             // Cache for chain proxies to avoid duplicate generation
+            var nextProxyCache = new Dictionary<string, Outbounds4Ray?>();
             var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
             int prevIndex = 0; // Index for prev outbounds
 
@@ -1372,7 +1373,11 @@ public class CoreConfigV2rayService
                 // Handle proxy chain
                 string? prevTag = null;
                 var currentOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                Outbounds4Ray? nextOutbound = null;
+                var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
+                if (nextOutbound != null)
+                {
+                    nextOutbound = JsonUtils.DeepCopy(nextOutbound);
+                }
 
                 var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
 
@@ -1382,9 +1387,9 @@ public class CoreConfigV2rayService
 
                 if (!node.Subid.IsNullOrEmpty())
                 {
-                    if (prevProxyTags.ContainsKey(node.Subid))
+                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
                     {
-                        prevTag = prevProxyTags[node.Subid]; // maybe null
+                        prevTag = value; // maybe null
                     }
                     else
                     {
@@ -1403,7 +1408,11 @@ public class CoreConfigV2rayService
                         prevProxyTags[node.Subid] = prevTag;
                     }
 
-                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag);
+                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag, nextOutbound);
+                    if (!nextProxyCache.ContainsKey(node.Subid))
+                    {
+                        nextProxyCache[node.Subid] = nextOutbound;
+                    }
                 }
 
                 if (nextOutbound is not null)
@@ -1434,10 +1443,11 @@ public class CoreConfigV2rayService
     /// <param name="subItem">The subscription item containing proxy chain information.</param>
     /// <param name="outbound">The current outbound configuration. Its tag must be set before calling this method.</param>
     /// <param name="prevOutboundTag">The tag of the previous outbound in the chain, if any.</param>
+    /// <param name="nextOutbound">The outbound for the next proxy in the chain, if already created. If null, will be created inside.</param>
     /// <returns>
     /// The outbound configuration for the next proxy in the chain, or null if no next proxy exists.
     /// </returns>
-    private async Task<Outbounds4Ray?> GenChainOutbounds(SubItem subItem, Outbounds4Ray outbound, string? prevOutboundTag)
+    private async Task<Outbounds4Ray?> GenChainOutbounds(SubItem subItem, Outbounds4Ray outbound, string? prevOutboundTag, Outbounds4Ray? nextOutbound = null)
     {
         try
         {
@@ -1453,14 +1463,16 @@ public class CoreConfigV2rayService
 
             // Next proxy
             var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            Outbounds4Ray? nextOutbound = null;
             if (nextNode is not null
                 && nextNode.ConfigType != EConfigType.Custom
                 && nextNode.ConfigType != EConfigType.Hysteria2
                 && nextNode.ConfigType != EConfigType.TUIC)
             {
-                nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(nextNode, nextOutbound);
+                if (nextOutbound == null)
+                {
+                    nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                    await GenOutbound(nextNode, nextOutbound);
+                }
                 nextOutbound.tag = outbound.tag;
 
                 outbound.tag = $"mid-{outbound.tag}";

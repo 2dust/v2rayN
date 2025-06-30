@@ -959,6 +959,7 @@ public class CoreConfigSingboxService
             var proxyTags = new List<string>(); // For selector and urltest outbounds
 
             // Cache for chain proxies to avoid duplicate generation
+            var nextProxyCache = new Dictionary<string, Outbound4Sbox?>();
             var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
             int prevIndex = 0; // Index for prev outbounds
 
@@ -971,19 +972,24 @@ public class CoreConfigSingboxService
                 // Handle proxy chain
                 string? prevTag = null;
                 var currentOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                Outbound4Sbox? nextOutbound = null;
+                var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
+                if (nextOutbound != null)
+                {
+                    nextOutbound = JsonUtils.DeepCopy(nextOutbound);
+                }
 
                 var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
 
                 // current proxy
                 await GenOutbound(node, currentOutbound);
                 currentOutbound.tag = $"{Global.ProxyTag}-{index}";
+                proxyTags.Add(currentOutbound.tag);
 
                 if (!node.Subid.IsNullOrEmpty())
                 {
-                    if (prevProxyTags.ContainsKey(node.Subid))
+                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
                     {
-                        prevTag = prevProxyTags[node.Subid]; // maybe null
+                        prevTag = value; // maybe null
                     }
                     else
                     {
@@ -1000,7 +1006,11 @@ public class CoreConfigSingboxService
                         prevProxyTags[node.Subid] = prevTag;
                     }
 
-                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag);
+                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag, nextOutbound);
+                    if (!nextProxyCache.ContainsKey(node.Subid))
+                    {
+                        nextProxyCache[node.Subid] = nextOutbound;
+                    }
                 }
 
                 if (nextOutbound is not null)
@@ -1057,10 +1067,11 @@ public class CoreConfigSingboxService
     /// <param name="subItem">The subscription item containing proxy chain information.</param>
     /// <param name="outbound">The current outbound configuration. Its tag must be set before calling this method.</param>
     /// <param name="prevOutboundTag">The tag of the previous outbound in the chain, if any.</param>
+    /// <param name="nextOutbound">The outbound for the next proxy in the chain, if already created. If null, will be created inside.</param>
     /// <returns>
     /// The outbound configuration for the next proxy in the chain, or null if no next proxy exists.
     /// </returns>
-    private async Task<Outbound4Sbox?> GenChainOutbounds(SubItem subItem, Outbound4Sbox outbound, string? prevOutboundTag)
+    private async Task<Outbound4Sbox?> GenChainOutbounds(SubItem subItem, Outbound4Sbox outbound, string? prevOutboundTag, Outbound4Sbox? nextOutbound = null)
     {
         try
         {
@@ -1073,12 +1084,14 @@ public class CoreConfigSingboxService
 
             // Next proxy
             var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            Outbound4Sbox? nextOutbound = null;
             if (nextNode is not null
                 && nextNode.ConfigType != EConfigType.Custom)
             {
-                nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                await GenOutbound(nextNode, nextOutbound);
+                if (nextOutbound == null)
+                {
+                    nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                    await GenOutbound(nextNode, nextOutbound);
+                }
                 nextOutbound.tag = outbound.tag;
 
                 outbound.tag = $"mid-{outbound.tag}";
