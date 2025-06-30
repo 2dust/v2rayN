@@ -918,29 +918,21 @@ public class CoreConfigSingboxService
 
             //Previous proxy
             var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            string? prevOutboundTag = null;
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom)
             {
                 var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                 await GenOutbound(prevNode, prevOutbound);
-                prevOutbound.tag = $"{Global.ProxyTag}2";
+                prevOutboundTag = $"prev-{Global.ProxyTag}";
+                prevOutbound.tag = prevOutboundTag;
                 singboxConfig.outbounds.Add(prevOutbound);
-
-                outbound.detour = prevOutbound.tag;
             }
+            var nextOutbound = await GenChainOutbounds(subItem, outbound, prevOutboundTag);
 
-            //Next proxy
-            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            if (nextNode is not null
-                && nextNode.ConfigType != EConfigType.Custom)
+            if (nextOutbound is not null)
             {
-                var nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                await GenOutbound(nextNode, nextOutbound);
-                nextOutbound.tag = Global.ProxyTag;
                 singboxConfig.outbounds.Insert(0, nextOutbound);
-
-                outbound.tag = $"{Global.ProxyTag}1";
-                nextOutbound.detour = outbound.tag;
             }
         }
         catch (Exception ex)
@@ -967,8 +959,8 @@ public class CoreConfigSingboxService
             var proxyTags = new List<string>(); // For selector and urltest outbounds
 
             // Cache for chain proxies to avoid duplicate generation
-            var chainProxyCache = new Dictionary<string, (string?, Outbound4Sbox?)>();
-            var prevProxyTags = new Dictionary<string, string>(); // Map from profile name to tag
+            var nextProxyCache = new Dictionary<string, Outbound4Sbox?>();
+            var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
             int prevIndex = 0; // Index for prev outbounds
 
             // Process each node
@@ -977,112 +969,55 @@ public class CoreConfigSingboxService
             {
                 index++;
 
-                // Skip unsupported config types
-                if (node.ConfigType is EConfigType.Custom)
-                {
-                    continue;
-                }
-
                 // Handle proxy chain
                 string? prevTag = null;
-                Outbound4Sbox? nextOutbound = null;
-
-                if (node.Subid.IsNotEmpty())
+                var currentOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
+                if (nextOutbound != null)
                 {
-                    // Check if chain proxy is already cached
-                    if (chainProxyCache.TryGetValue(node.Subid, out var chainProxy))
+                    nextOutbound = JsonUtils.DeepCopy(nextOutbound);
+                }
+
+                var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+
+                // current proxy
+                await GenOutbound(node, currentOutbound);
+                currentOutbound.tag = $"{Global.ProxyTag}-{index}";
+                proxyTags.Add(currentOutbound.tag);
+
+                if (!node.Subid.IsNullOrEmpty())
+                {
+                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
                     {
-                        prevTag = chainProxy.Item1;
-                        nextOutbound = chainProxy.Item2;
+                        prevTag = value; // maybe null
                     }
                     else
                     {
-                        // Generate chain proxy and cache it
-                        var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
-                        if (subItem != null)
+                        var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                        if (prevNode is not null
+                            && prevNode.ConfigType != EConfigType.Custom)
                         {
-                            // Process previous proxy
-                            if (!subItem.PrevProfile.IsNullOrEmpty())
-                            {
-                                // Check if this previous proxy was already created
-                                if (prevProxyTags.TryGetValue(subItem.PrevProfile, out var existingTag))
-                                {
-                                    prevTag = existingTag;
-                                }
-                                else
-                                {
-                                    var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-                                    if (prevNode != null && prevNode.ConfigType != EConfigType.Custom)
-                                    {
-                                        prevIndex++;
-                                        var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                                        await GenOutbound(prevNode, prevOutbound);
-
-                                        prevTag = $"{Global.ProxyTag}-prev-{prevIndex}";
-                                        prevOutbound.tag = prevTag;
-                                        prevProxyTags[subItem.PrevProfile] = prevTag;
-
-                                        // Add to prev outbounds list (will be added at the end)
-                                        prevOutbounds.Add(prevOutbound);
-                                    }
-                                }
-                            }
-
-                            // Process next proxy
-                            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-                            if (nextNode != null && nextNode.ConfigType != EConfigType.Custom)
-                            {
-                                nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                                await GenOutbound(nextNode, nextOutbound);
-                            }
-
-                            // Cache the chain proxy
-                            chainProxyCache[node.Subid] = (prevTag, nextOutbound);
+                            var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                            await GenOutbound(prevNode, prevOutbound);
+                            prevTag = $"prev-{Global.ProxyTag}-{++prevIndex}";
+                            prevOutbound.tag = prevTag;
+                            prevOutbounds.Add(prevOutbound);
                         }
+                        prevProxyTags[node.Subid] = prevTag;
                     }
-                }
 
-                // Create main outbound
-                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-
-                await GenOutbound(node, outbound);
-                outbound.tag = $"{Global.ProxyTag}-{index}";
-
-                // Configure proxy chain relationships
-                if (nextOutbound != null)
-                {
-                    // If there's a next proxy, it should be the final outbound in the chain
-                    var originalTag = outbound.tag;
-                    outbound.tag = $"mid-{Global.ProxyTag}-{index}";
-
-                    var nextOutboundCopy = JsonUtils.DeepCopy(nextOutbound);
-                    nextOutboundCopy.tag = originalTag;
-                    nextOutboundCopy.detour = outbound.tag; // Use detour instead of sockopt
-
-                    if (prevTag != null)
+                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag, nextOutbound);
+                    if (!nextProxyCache.ContainsKey(node.Subid))
                     {
-                        outbound.detour = prevTag;
+                        nextProxyCache[node.Subid] = nextOutbound;
                     }
-
-                    // Add to proxy tags for selector/urltest
-                    proxyTags.Add(originalTag);
-
-                    // Add in reverse order to ensure final outbound is added first
-                    resultOutbounds.Add(nextOutboundCopy);  // Final outbound (exposed to internet)
-                    resultOutbounds.Add(outbound);          // Middle outbound
                 }
-                else
+
+                if (nextOutbound is not null)
                 {
-                    // If no next proxy, the main outbound is the final one
-                    if (prevTag != null)
-                    {
-                        outbound.detour = prevTag;
-                    }
-
-                    // Add to proxy tags for selector/urltest
-                    proxyTags.Add(outbound.tag);
-                    resultOutbounds.Add(outbound);
+                    resultOutbounds.Add(nextOutbound);
                 }
+                resultOutbounds.Add(currentOutbound);
             }
 
             // Add urltest outbound (auto selection based on latency)
@@ -1122,6 +1057,53 @@ public class CoreConfigSingboxService
         }
 
         return 0;
+    }
+
+    /// <summary>
+    /// Generates a chained outbound configuration for the given subItem and outbound.
+    /// The outbound's tag must be set before calling this method.
+    /// Returns the next proxy's outbound configuration, which may be null if no next proxy exists.
+    /// </summary>
+    /// <param name="subItem">The subscription item containing proxy chain information.</param>
+    /// <param name="outbound">The current outbound configuration. Its tag must be set before calling this method.</param>
+    /// <param name="prevOutboundTag">The tag of the previous outbound in the chain, if any.</param>
+    /// <param name="nextOutbound">The outbound for the next proxy in the chain, if already created. If null, will be created inside.</param>
+    /// <returns>
+    /// The outbound configuration for the next proxy in the chain, or null if no next proxy exists.
+    /// </returns>
+    private async Task<Outbound4Sbox?> GenChainOutbounds(SubItem subItem, Outbound4Sbox outbound, string? prevOutboundTag, Outbound4Sbox? nextOutbound = null)
+    {
+        try
+        {
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+
+            if (!prevOutboundTag.IsNullOrEmpty())
+            {
+                outbound.detour = prevOutboundTag;
+            }
+
+            // Next proxy
+            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            if (nextNode is not null
+                && nextNode.ConfigType != EConfigType.Custom)
+            {
+                if (nextOutbound == null)
+                {
+                    nextOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                    await GenOutbound(nextNode, nextOutbound);
+                }
+                nextOutbound.tag = outbound.tag;
+
+                outbound.tag = $"mid-{outbound.tag}";
+                nextOutbound.detour = outbound.tag;
+            }
+            return nextOutbound;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return null;
     }
 
     private async Task<int> GenRouting(SingboxConfig singboxConfig)
