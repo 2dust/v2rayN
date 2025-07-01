@@ -1,11 +1,11 @@
 using System.Reactive.Disposables;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class DNSSettingWindow : ReactiveWindow<DNSSettingViewModel>
+public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
 {
     private static Config _config;
 

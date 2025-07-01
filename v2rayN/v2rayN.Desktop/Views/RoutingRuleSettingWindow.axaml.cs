@@ -2,14 +2,14 @@ using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class RoutingRuleSettingWindow : ReactiveWindow<RoutingRuleSettingViewModel>
+public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingViewModel>
 {
     public RoutingRuleSettingWindow()
     {

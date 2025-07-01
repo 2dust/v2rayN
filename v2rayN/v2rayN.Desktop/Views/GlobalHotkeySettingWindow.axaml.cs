@@ -3,13 +3,13 @@ using System.Text;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class GlobalHotkeySettingWindow : ReactiveWindow<GlobalHotkeySettingViewModel>
+public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingViewModel>
 {
     private readonly List<object> _textBoxKeyEventItem = new();
 

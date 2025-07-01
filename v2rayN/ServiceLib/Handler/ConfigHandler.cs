@@ -101,6 +101,7 @@ public class ConfigHandler
             EnableAutoAdjustMainLvColWidth = true
         };
         config.UiItem.MainColumnItem ??= new();
+        config.UiItem.WindowSizeItem ??= new();
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
@@ -2174,4 +2175,34 @@ public class ConfigHandler
     }
 
     #endregion Regional Presets
+
+    #region UIItem
+
+    public static WindowSizeItem? GetWindowSizeItem(Config config, string typeName)
+    {
+        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
+        {
+            return null;
+        }
+
+        return sizeItem;
+    }
+
+    public static int SaveWindowSizeItem(Config config, string typeName, double width, double height)
+    {
+        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        if (sizeItem == null)
+        {
+            sizeItem = new WindowSizeItem { TypeName = typeName };
+            config.UiItem.WindowSizeItem.Add(sizeItem);
+        }
+
+        sizeItem.Width = width;
+        sizeItem.Height = height;
+
+        return 0;
+    }
+
+    #endregion UIItem
 }

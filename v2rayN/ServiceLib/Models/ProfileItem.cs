@@ -4,7 +4,7 @@ using SQLite;
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ProfileItem: ReactiveObject
+public class ProfileItem : ReactiveObject
 {
     public ProfileItem()
     {

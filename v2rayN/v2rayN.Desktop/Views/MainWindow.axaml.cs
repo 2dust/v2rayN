@@ -5,18 +5,18 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
+public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
     private WindowNotificationManager? _manager;
@@ -154,7 +154,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         }
         menuAddServerViaScan.IsVisible = false;
 
-        RestoreUI();
         AddHelpMenuItem();
         MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
@@ -436,14 +435,14 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         _config.UiItem.ShowInTaskbar = bl;
     }
 
+    protected override void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        base.OnLoaded(sender, e);
+        RestoreUI();
+    }
+
     private void RestoreUI()
     {
-        if (_config.UiItem.MainWidth > 0 && _config.UiItem.MainHeight > 0)
-        {
-            Width = _config.UiItem.MainWidth;
-            Height = _config.UiItem.MainHeight;
-        }
-
         if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
         {
             if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
@@ -461,8 +460,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private void StorageUI(string? n = null)
     {
-        _config.UiItem.MainWidth = this.Width;
-        _config.UiItem.MainHeight = this.Height;
+        ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {

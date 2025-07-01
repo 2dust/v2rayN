@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class SubEditWindow : ReactiveWindow<SubEditViewModel>
+public partial class SubEditWindow : WindowBase<SubEditViewModel>
 {
     public SubEditWindow()
     {

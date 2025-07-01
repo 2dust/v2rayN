@@ -1,11 +1,11 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class OptionSettingWindow : ReactiveWindow<OptionSettingViewModel>
+public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 {
     private static Config _config;
 

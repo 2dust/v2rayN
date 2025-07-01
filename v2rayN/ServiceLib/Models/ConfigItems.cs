@@ -89,8 +89,6 @@ public class UIItem
 {
     public bool EnableAutoAdjustMainLvColWidth { get; set; }
     public bool EnableUpdateSubOnlyRemarksExist { get; set; }
-    public double MainWidth { get; set; }
-    public double MainHeight { get; set; }
     public double MainGirdHeight1 { get; set; }
     public double MainGirdHeight2 { get; set; }
     public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
@@ -103,9 +101,10 @@ public class UIItem
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
     public bool Hide2TrayWhenClose { get; set; }
-    public List<ColumnItem> MainColumnItem { get; set; }
     public bool ShowInTaskbar { get; set; }
     public bool MacOSShowInDock { get; set; }
+    public List<ColumnItem> MainColumnItem { get; set; }
+    public List<WindowSizeItem> WindowSizeItem { get; set; }
 }
 
 [Serializable]
@@ -245,4 +244,12 @@ public class Fragment4RayItem
     public string? Packets { get; set; }
     public string? Length { get; set; }
     public string? Interval { get; set; }
+}
+
+[Serializable]
+public class WindowSizeItem
+{
+    public string TypeName { get; set; }
+    public double Width { get; set; }
+    public double Height { get; set; }
 }

@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
+public partial class AddServerWindow : WindowBase<AddServerViewModel>
 {
     public AddServerWindow()
     {
