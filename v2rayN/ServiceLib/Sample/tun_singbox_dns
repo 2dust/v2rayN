@@ -23,8 +23,7 @@
     },
     {
       "rule_set": [
-        "geosite-cn",
-        "geosite-geolocation-cn"
+        "geosite-cn"
       ],
       "server": "local",
       "strategy": "prefer_ipv4"
