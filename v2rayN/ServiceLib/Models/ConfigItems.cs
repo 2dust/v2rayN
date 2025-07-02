@@ -89,8 +89,8 @@ public class UIItem
 {
     public bool EnableAutoAdjustMainLvColWidth { get; set; }
     public bool EnableUpdateSubOnlyRemarksExist { get; set; }
-    public double MainGirdHeight1 { get; set; }
-    public double MainGirdHeight2 { get; set; }
+    public int MainGirdHeight1 { get; set; }
+    public int MainGirdHeight2 { get; set; }
     public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
     public string? ColorPrimaryName { get; set; }
     public string? CurrentTheme { get; set; }
@@ -250,6 +250,6 @@ public class Fragment4RayItem
 public class WindowSizeItem
 {
     public string TypeName { get; set; }
-    public double Width { get; set; }
-    public double Height { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
 }

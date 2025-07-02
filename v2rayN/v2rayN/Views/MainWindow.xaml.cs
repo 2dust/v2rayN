@@ -423,13 +423,11 @@ public partial class MainWindow
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
     }
 

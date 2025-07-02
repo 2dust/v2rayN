@@ -2198,8 +2198,18 @@ public class ConfigHandler
             config.UiItem.WindowSizeItem.Add(sizeItem);
         }
 
-        sizeItem.Width = width;
-        sizeItem.Height = height;
+        sizeItem.Width = (int)width;
+        sizeItem.Height = (int)height;
+
+        return 0;
+    }
+
+    public static int SaveMainGirdHeight(Config config, double height1, double height2)
+    {
+        var uiItem = config.UiItem ?? new();
+
+        uiItem.MainGirdHeight1 = (int)(height1 + 0.1);
+        uiItem.MainGirdHeight2 = (int)(height2 + 0.1);
 
         return 0;
     }

@@ -30,7 +30,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
             Height = sizeItem.Height;
 
             var workingArea = (Screens.ScreenFromWindow(this) ?? Screens.Primary).WorkingArea;
-            var scaling = VisualRoot is not null ? VisualRoot.RenderScaling : 1.0;
+            var scaling = VisualRoot?.RenderScaling ?? 1.0;
 
             var x = workingArea.X + ((workingArea.Width - (Width * scaling)) / 2);
             var y = workingArea.Y + ((workingArea.Height - (Height * scaling)) / 2);
