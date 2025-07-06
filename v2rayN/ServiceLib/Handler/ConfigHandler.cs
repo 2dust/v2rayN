@@ -1857,12 +1857,25 @@ public class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
     {
-        if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.Id == routingItem.Id).CountAsync() > 0)
+        var items = await AppHandler.Instance.RoutingItems();
+        if (items.Any(t => t.Id == routingItem.Id && t.IsActive == true))
         {
-            config.RoutingBasicItem.RoutingIndexId = routingItem.Id;
+            return -1;
         }
 
-        await SaveConfig(config);
+        foreach (var item in items)
+        {
+            if (item.Id == routingItem.Id)
+            {
+                item.IsActive = true;
+            }
+            else
+            {
+                item.IsActive = false;
+            }
+        }
+
+        await SQLiteHelper.Instance.UpdateAllAsync(items);
 
         return 0;
     }
@@ -1875,7 +1888,7 @@ public class ConfigHandler
     /// <returns>The default routing item</returns>
     public static async Task<RoutingItem> GetDefaultRouting(Config config)
     {
-        var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
+        var item = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.IsActive == true);
         if (item is null)
         {
             var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
@@ -1983,6 +1996,18 @@ public class ConfigHandler
 
         if (!blImportAdvancedRules && items.Count > 0)
         {
+            //migrate 
+            //TODO Temporary code to be removed later
+            if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
+            {
+                var item = items.FirstOrDefault(t => t.Id == config.RoutingBasicItem.RoutingIndexId);
+                if (item != null)
+                {
+                    await SetDefaultRouting(config, item);
+                }
+                config.RoutingBasicItem.RoutingIndexId = string.Empty;
+            }
+
             return 0;
         }
 

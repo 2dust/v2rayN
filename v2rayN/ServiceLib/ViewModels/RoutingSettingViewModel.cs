@@ -91,11 +91,9 @@ public class RoutingSettingViewModel : MyReactiveObject
         var routings = await AppHandler.Instance.RoutingItems();
         foreach (var item in routings)
         {
-            var def = item.Id == _config.RoutingBasicItem.RoutingIndexId;
-
             var it = new RoutingItemModel()
             {
-                IsActive = def,
+                IsActive = item.IsActive,
                 RuleNum = item.RuleNum,
                 Id = item.Id,
                 Remarks = item.Remarks,

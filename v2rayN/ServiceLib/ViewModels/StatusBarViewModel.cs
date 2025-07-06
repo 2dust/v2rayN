@@ -372,7 +372,7 @@ public class StatusBarViewModel : MyReactiveObject
         foreach (var item in routings)
         {
             _routingItems.Add(item);
-            if (item.Id == _config.RoutingBasicItem.RoutingIndexId)
+            if (item.IsActive)
             {
                 SelectedRouting = item;
             }
@@ -393,10 +393,6 @@ public class StatusBarViewModel : MyReactiveObject
 
         var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
-        {
-            return;
-        }
-        if (_config.RoutingBasicItem.RoutingIndexId == item.Id)
         {
             return;
         }
