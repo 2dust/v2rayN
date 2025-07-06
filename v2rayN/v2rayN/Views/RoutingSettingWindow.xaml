@@ -57,12 +57,6 @@
             HorizontalAlignment="Right"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
-            <StackPanel
-                Width="600"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-                <TextBlock Style="{StaticResource ToolbarTextBlock}" Text="{x:Static resx:ResUI.TbRoutingTips}" />
-            </StackPanel>
             <Button
                 x:Name="btnSave"
                 Width="100"
