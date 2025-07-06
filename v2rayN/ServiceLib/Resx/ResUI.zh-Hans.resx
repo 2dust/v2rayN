@@ -132,12 +132,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>下载开始...</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>下载</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>是否下载？{0}</value>
-  </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>转换配置文件失败</value>
   </data>
@@ -386,9 +380,6 @@
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>注册全局热键 {0} 成功</value>
-  </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>未分组配置文件</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>所有</value>
@@ -822,9 +813,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官网</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>高级功能</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>添加规则集</value>
   </data>
@@ -842,15 +830,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.阻止的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.直连的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.代理的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>预定义规则集列表</value>
@@ -1337,12 +1316,6 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>输入的密码无法校验，所以请确保输入正确。如果因为输入错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>请先在 Tun 模式设置中设置 sudo 密码</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>请不要用 sudo 运行本程序</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp 模式</value>

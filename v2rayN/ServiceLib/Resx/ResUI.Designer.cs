@@ -133,24 +133,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download speed 的本地化字符串。
-        /// </summary>
-        public static string downloadSpeed {
-            get {
-                return ResourceManager.GetString("downloadSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Do you want to download {0}? 的本地化字符串。
-        /// </summary>
-        public static string DownloadYesNo {
-            get {
-                return ResourceManager.GetString("DownloadYesNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Failed to convert configuration file 的本地化字符串。
         /// </summary>
         public static string FailedConversionConfiguration {
@@ -1344,15 +1326,6 @@ namespace ServiceLib.Resx {
         public static string menuRouting {
             get {
                 return ResourceManager.GetString("menuRouting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Advanced Function 的本地化字符串。
-        /// </summary>
-        public static string menuRoutingAdvanced {
-            get {
-                return ResourceManager.GetString("menuRoutingAdvanced", resourceCulture);
             }
         }
         
@@ -2716,33 +2689,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 3. Block Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabBlock {
-            get {
-                return ResourceManager.GetString("TbRoutingTabBlock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 2. Direct Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabDirect {
-            get {
-                return ResourceManager.GetString("TbRoutingTabDirect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 1. Proxy Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabProxy {
-            get {
-                return ResourceManager.GetString("TbRoutingTabProxy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Pre-defined Rule Set List 的本地化字符串。
         /// </summary>
         public static string TbRoutingTabRuleList {
@@ -3234,24 +3180,6 @@ namespace ServiceLib.Resx {
         public static string TbSettingsLinuxSudoPassword {
             get {
                 return ResourceManager.GetString("TbSettingsLinuxSudoPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Please set the sudo password in Tun mode settings first 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsLinuxSudoPasswordIsEmpty {
-            get {
-                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordIsEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Please do not run this app with sudo 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsLinuxSudoPasswordNotSudoRunApp {
-            get {
-                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordNotSudoRunApp", resourceCulture);
             }
         }
         
@@ -3945,15 +3873,6 @@ namespace ServiceLib.Resx {
         public static string TransportRequestHostTip5 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Ungrouped 的本地化字符串。
-        /// </summary>
-        public static string UngroupedServers {
-            get {
-                return ResourceManager.GetString("UngroupedServers", resourceCulture);
             }
         }
         

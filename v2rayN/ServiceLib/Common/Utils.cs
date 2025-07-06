@@ -816,18 +816,6 @@ public class Utils
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         }
         return false;
-        //else
-        //{
-        //    var id = GetLinuxUserId().Result ?? "1000";
-        //    if (int.TryParse(id, out var userId))
-        //    {
-        //        return userId == 0;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
     }
 
     private static async Task<string?> GetLinuxUserId()

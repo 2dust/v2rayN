@@ -134,20 +134,19 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                     break;
             }
         });
+         
 
-        this.Title = $"{Utils.GetVersion()}";
         if (Utils.IsWindows())
         {
+            this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+
             ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
             HotkeyHandler.Instance.Init(_config, OnHotkeyHandler);
         }
         else
         {
-            if (Utils.IsAdministrator())
-            {
-                this.Title = $"{Utils.GetVersion()} - {ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp}";
-                NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp);
-            }
+            this.Title = $"{Utils.GetVersion()}";
+
             menuRebootAsAdmin.IsVisible = false;
             menuSettingsSetUWP.IsVisible = false;
             menuGlobalHotkeySetting.IsVisible = false;

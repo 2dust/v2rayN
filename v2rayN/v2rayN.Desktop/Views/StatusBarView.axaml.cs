@@ -85,7 +85,6 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
             case EViewAction.PasswordInput:
                 return await PasswordInputAsync();
-                break;
         }
         return await Task.FromResult(true);
     }

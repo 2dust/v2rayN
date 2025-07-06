@@ -132,12 +132,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>درحال دانلود...</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>دانلود</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>آیا می خواهید {0} را دانلود کنید؟</value>
-  </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>تبدیل فایل پیکربندی انجام نشد</value>
   </data>
@@ -386,9 +380,6 @@
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>کلید میانبر جهانی {0} با موفقیت ثبت شد</value>
-  </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>گروه بندی نشده</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>همه سرورها</value>
@@ -822,9 +813,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} وب سایت</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>عملکرد پیشرفته</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>اضافه کردن</value>
   </data>
@@ -842,15 +830,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>استراتژی دامنه</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3. مسدود کردن دامنه یا آیپی</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2. دایرکت کردن دامنه یا IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1. پروکسی کردن دامنه یا IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>لیست مجموعه قوانین از پیش تعریف شده</value>
@@ -1340,12 +1319,6 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>رمز عبوری که وارد کرده اید تایید نمی شود، بنابراین مطمئن شوید که آن را به درستی وارد کرده اید. اگر برنامه به دلیل ورودی نادرست به درستی کار نمی کند، لطفاً برنامه را مجدداً راه اندازی کنید. رمز عبور ذخیره نمی شود و پس از هر بار راه اندازی مجدد باید آن را دوباره وارد کنید.</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>لطفاً ابتدا رمز عبور sudo را در تنظیمات حالت Tun تنظیم کنید</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>لطفا این برنامه را با sudo اجرا نکنید</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*حالت xhttp</value>
