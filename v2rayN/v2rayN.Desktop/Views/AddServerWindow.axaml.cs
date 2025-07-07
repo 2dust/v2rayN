@@ -105,6 +105,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Anytls:
                 gridAnytls.IsVisible = true;
+                lstStreamSecurity.Add(Global.StreamSecurityReality);
                 cmbCoreType.IsEnabled = false;
                 break;
         }

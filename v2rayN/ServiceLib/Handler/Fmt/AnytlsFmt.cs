@@ -24,8 +24,7 @@ public class AnytlsFmt : BaseFmt
         item.Id = rawUserInfo;
 
         var query = Utils.ParseQueryString(parsedUrl.Query);
-        item.Sni = query["sni"] ?? Global.None;
-        item.AllowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
+        _ = ResolveStdTransport(query, ref item);
 
         return item;
     }
@@ -43,11 +42,7 @@ public class AnytlsFmt : BaseFmt
         }
         var pw = item.Id;
         var dicQuery = new Dictionary<string, string>();
-        if (item.Sni.IsNotEmpty())
-        {
-            dicQuery.Add("sni", item.Sni);
-        }
-        dicQuery.Add("insecure", item.AllowInsecure.ToLower() == "true" ? "1" : "0");
+        _ = GetStdTransport(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.Anytls, item.Address, item.Port, pw, dicQuery, remark);
     }
