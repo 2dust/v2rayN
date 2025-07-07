@@ -84,7 +84,7 @@ detect_desktop_environment() {
         echo "gnome"
         return
     fi
-    
+
     if [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"XFCE"* ]]; then
         echo "gnome"
         return
@@ -94,7 +94,7 @@ detect_desktop_environment() {
         echo "gnome"
         return
     fi
-    
+
     if [[ "$XDG_CURRENT_DESKTOP" == *"UKUI"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"ukui"* ]]; then
         echo "gnome"
         return
@@ -144,6 +144,6 @@ elif [ "$DE" == "kde" ]; then
     set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
     set_kde_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
 else
-    echo "Unsupported desktop environment: $DE"
+    echo "Unsupported desktop environment: $DE" >&2
     exit 1
 fi
