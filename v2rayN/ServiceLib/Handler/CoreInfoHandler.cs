@@ -200,6 +200,15 @@ public sealed class CoreInfoHandler
                     Arguments = "-r client -c {0}",
                     Url =  GetCoreUrl(ECoreType.overtls),
                     AbsolutePath = false,
+                },
+
+                new CoreInfo
+                {
+                    CoreType = ECoreType.shadowquic,
+                    CoreExes = [ "shadowquic", "shadowquic"],
+                    Arguments = "-c {0}",
+                    Url =  GetCoreUrl(ECoreType.shadowquic),
+                    AbsolutePath = false,
                 }
 
         ];
