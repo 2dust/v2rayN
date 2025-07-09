@@ -29,9 +29,6 @@ set_gnome_proxy() {
         echo "Ignored Hosts: $IGNORE_HOSTS"
     elif [ "$MODE" == "none" ]; then
         echo "GNOME: Proxy disabled."
-    else
-        echo "GNOME: Invalid mode. Use 'none' or 'manual'."
-        exit 1
     fi
 }
 
@@ -69,9 +66,6 @@ set_kde_proxy() {
         # Disable proxy
         $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 0
         echo "KDE: Proxy disabled."
-    else
-        echo "KDE: Invalid mode. Use 'none' or 'manual'."
-        exit 1
     fi
 
     # Apply changes by restarting KDE's network settings
@@ -84,7 +78,7 @@ detect_desktop_environment() {
         echo "gnome"
         return
     fi
-    
+
     if [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"XFCE"* ]]; then
         echo "gnome"
         return
@@ -94,7 +88,7 @@ detect_desktop_environment() {
         echo "gnome"
         return
     fi
-    
+
     if [[ "$XDG_CURRENT_DESKTOP" == *"UKUI"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"ukui"* ]]; then
         echo "gnome"
         return
@@ -117,6 +111,15 @@ detect_desktop_environment() {
             return
         fi
     done
+
+    # Fallback to GNOME method if CLI utility is available. This solves the
+    # proxy configuration issues on minimal installation systems, like setups
+    # with only window managers, that borrow some parts from big DEs.
+    if command -v gsettings >/dev/null 2>&1; then
+        echo "gnome"
+        return
+    fi
+
     echo "unsupported"
 }
 
@@ -134,6 +137,11 @@ PROXY_IP=$2
 PROXY_PORT=$3
 IGNORE_HOSTS=$4
 
+if ! [[ "$MODE" =~ ^(manual|none)$ ]]; then
+    echo "Invalid mode. Use 'none' or 'manual'." >&2
+    exit 1
+fi
+
 # Detect desktop environment
 DE=$(detect_desktop_environment)
 
@@ -144,6 +152,6 @@ elif [ "$DE" == "kde" ]; then
     set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
     set_kde_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
 else
-    echo "Unsupported desktop environment: $DE"
+    echo "Unsupported desktop environment: $DE" >&2
     exit 1
 fi
