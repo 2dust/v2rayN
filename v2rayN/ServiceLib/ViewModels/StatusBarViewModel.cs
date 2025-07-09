@@ -34,6 +34,8 @@ public class StatusBarViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
     public ReactiveCommand<Unit, Unit> CopyProxyCmdToClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
+    public ReactiveCommand<Unit, Unit> ShowWindowCmd { get; }
+    public ReactiveCommand<Unit, Unit> HideWindowCmd { get; }
 
     #region System Proxy
 
@@ -91,6 +93,9 @@ public class StatusBarViewModel : MyReactiveObject
     [Reactive]
     public bool EnableTun { get; set; }
 
+    [Reactive]
+    public bool BlIsNonWindows { get; set; }
+
     #endregion UI
 
     public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -100,6 +105,7 @@ public class StatusBarViewModel : MyReactiveObject
         SelectedServer = new();
         RunningServerToolTipText = "-";
         BlSystemProxyPacVisible = Utils.IsWindows();
+        BlIsNonWindows = Utils.IsNonWindows();
 
         if (_config.TunModeItem.EnableTun && AllowEnableTun())
         {
@@ -143,11 +149,21 @@ public class StatusBarViewModel : MyReactiveObject
             Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(null);
             await Task.CompletedTask;
         });
+        ShowWindowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(true);
+            await Task.CompletedTask;
+        });
+        HideWindowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(false);
+            await Task.CompletedTask;
+        });
 
         AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await AddServerViaClipboard();
-        });
+            {
+                await AddServerViaClipboard();
+            });
         AddServerViaScanCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerViaScan();
