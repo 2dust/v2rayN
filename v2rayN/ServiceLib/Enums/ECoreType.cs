@@ -14,5 +14,6 @@ public enum ECoreType
     hysteria2 = 26,
     brook = 27,
     overtls = 28,
+    shadowquic = 29,
     v2rayN = 99
 }
