@@ -17,26 +17,30 @@ public partial class DNSSettingWindow
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
-        cmbdomainStrategy4Freedom.ItemsSource = Global.DomainStrategy4Freedoms;
-        cmbdomainStrategy4Out.ItemsSource = Global.SingboxDomainStrategy4Out;
-        cmbdomainDNSAddress.ItemsSource = Global.DomainDNSAddress;
-        cmbdomainDNSAddress2.ItemsSource = Global.SingboxDomainDNSAddress;
+        cmbRayFreedomDNSStrategy.ItemsSource = Global.DomainStrategy4Freedoms;
+        cmbSBDirectDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
+        cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
+        cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
+        cmbSBResolverDNS.ItemsSource = Global.DomainDirectDNSAddress.Concat(new[] { "dhcp://auto" });
+        cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
+        cmbSBFinalResolverDNS.ItemsSource = Global.DomainPureIPDNSAddress;
 
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.UseSystemHosts, v => v.togUseSystemHosts.IsChecked).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainStrategy4Freedom, v => v.cmbdomainStrategy4Freedom.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainDNSAddress, v => v.cmbdomainDNSAddress.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.NormalDNS, v => v.txtnormalDNS.Text).DisposeWith(disposables);
-
-            this.Bind(ViewModel, vm => vm.DomainStrategy4Freedom2, v => v.cmbdomainStrategy4Out.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainDNSAddress2, v => v.cmbdomainDNSAddress2.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.NormalDNS2, v => v.txtnormalDNS2.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.TunDNS2, v => v.txttunDNS2.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AddCommonHosts, v => v.togAddCommonHosts.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FakeIP, v => v.togFakeIP.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.BlockBindingQuery, v => v.togBlockBindingQuery.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.DirectDNS, v => v.cmbDirectDNS.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RemoteDNS, v => v.cmbRemoteDNS.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SingboxOutboundsResolveDNS, v => v.cmbSBResolverDNS.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SingboxFinalResolveDNS, v => v.cmbSBFinalResolverDNS.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RayStrategy4Freedom, v => v.cmbRayFreedomDNSStrategy.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SingboxStrategy4Direct, v => v.cmbSBDirectDNSStrategy.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SingboxStrategy4Proxy, v => v.cmbSBRemoteDNSStrategy.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Hosts, v => v.txtHosts.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCmd, v => v.btnImportDefConfig4V2ray).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCmd, v => v.btnImportDefConfig4Singbox).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
     }

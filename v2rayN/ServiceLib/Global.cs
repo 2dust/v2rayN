@@ -351,25 +351,42 @@ public class Global
 
     public static readonly List<string> SingboxDomainStrategy4Out =
     [
-        "ipv4_only",
+        "",
+            "ipv4_only",
             "prefer_ipv4",
             "prefer_ipv6",
-            "ipv6_only",
-            ""
+            "ipv6_only"
     ];
 
-    public static readonly List<string> DomainDNSAddress =
+    public static readonly List<string> DomainDirectDNSAddress =
     [
-        "223.5.5.5",
-            "223.6.6.6",
+        "https://dns.alidns.com/dns-query",
+            "https://doh.pub/dns-query",
+            "223.5.5.5",
+            "119.29.29.29",
             "localhost"
     ];
 
-    public static readonly List<string> SingboxDomainDNSAddress =
+    public static readonly List<string> DomainRemoteDNSAddress =
+    [
+        "https://cloudflare-dns.com/dns-query",
+            "https://dns.cloudflare.com/dns-query",
+            "https://dns.google/dns-query",
+            "https://doh.dns.sb/dns-query",
+            "https://doh.opendns.com/dns-query",
+            "https://common.dot.dns.yandex.net",
+            "8.8.8.8",
+            "1.1.1.1",
+            "185.222.222.222",
+            "208.67.222.222",
+            "77.88.8.8"
+    ];
+
+    public static readonly List<string> DomainPureIPDNSAddress =
     [
         "223.5.5.5",
-            "223.6.6.6",
-            "dhcp://auto"
+            "119.29.29.29",
+            "localhost"
     ];
 
     public static readonly List<string> Languages =
@@ -538,6 +555,23 @@ public class Global
         DirectTag,
         BlockTag
     ];
+
+    public static readonly Dictionary<string, List<string>> PredefinedHosts = new()
+        {
+            { "dns.google", new List<string> { "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844" } },
+            { "dns.alidns.com", new List<string> { "223.5.5.5", "223.6.6.6", "2400:3200::1", "2400:3200:baba::1" } },
+            { "one.one.one.one", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
+            { "1dot1dot1dot1.cloudflare-dns.com", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
+            { "cloudflare-dns.com", new List<string> { "104.16.249.249", "104.16.248.249", "2606:4700::6810:f8f9", "2606:4700::6810:f9f9" } },
+            { "dns.cloudflare.com", new List<string> { "104.16.132.229", "104.16.133.229", "2606:4700::6810:84e5", "2606:4700::6810:85e5" } },
+            { "dot.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
+            { "dns.quad9.net", new List<string> { "9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9" } },
+            { "dns.yandex.net", new List<string> { "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff" } },
+            { "dns.sb", new List<string> { "185.222.222.222", "2a09::" } },
+            { "dns.umbrella.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
+            { "dns.sse.cisco.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
+            { "engage.cloudflareclient.com", new List<string> { "162.159.192.1", "2606:4700:d0::a29f:c001" } }
+        };
 
     #endregion const
 }

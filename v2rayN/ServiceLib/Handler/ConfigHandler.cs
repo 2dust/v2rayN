@@ -112,6 +112,18 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
+        config.DNSItem ??= new DNSItem()
+        {
+            UseSystemHosts = false,
+            AddCommonHosts = true,
+            FakeIP = false,
+            BlockBindingQuery = true,
+            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
+            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
+        };
+
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
         {
@@ -2089,101 +2101,6 @@ public class ConfigHandler
 
     #endregion Routing
 
-    #region DNS
-
-    /// <summary>
-    /// Initialize built-in DNS configurations
-    /// Creates default DNS items for V2Ray and sing-box
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <returns>0 if successful</returns>
-    public static async Task<int> InitBuiltinDNS(Config config)
-    {
-        var items = await AppHandler.Instance.DNSItems();
-        if (items.Count <= 0)
-        {
-            var item = new DNSItem()
-            {
-                Remarks = "V2ray",
-                CoreType = ECoreType.Xray,
-            };
-            await SaveDNSItems(config, item);
-
-            var item2 = new DNSItem()
-            {
-                Remarks = "sing-box",
-                CoreType = ECoreType.sing_box,
-            };
-            await SaveDNSItems(config, item2);
-        }
-
-        return 0;
-    }
-
-    /// <summary>
-    /// Save a DNS item to the database
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="item">DNS item to save</param>
-    /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SaveDNSItems(Config config, DNSItem item)
-    {
-        if (item == null)
-        {
-            return -1;
-        }
-
-        if (item.Id.IsNullOrEmpty())
-        {
-            item.Id = Utils.GetGuid(false);
-        }
-
-        if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-
-    /// <summary>
-    /// Get an external DNS configuration from URL
-    /// Downloads and processes DNS templates
-    /// </summary>
-    /// <param name="type">Core type (Xray or sing-box)</param>
-    /// <param name="url">URL of the DNS template</param>
-    /// <returns>DNS item with configuration from the URL</returns>
-    public static async Task<DNSItem> GetExternalDNSItem(ECoreType type, string url)
-    {
-        var currentItem = await AppHandler.Instance.GetDNSItem(type);
-
-        var downloadHandle = new DownloadService();
-        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
-        if (templateContent.IsNullOrEmpty())
-            return currentItem;
-
-        var template = JsonUtils.Deserialize<DNSItem>(templateContent);
-        if (template == null)
-            return currentItem;
-
-        if (!template.NormalDNS.IsNullOrEmpty())
-            template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
-
-        if (!template.TunDNS.IsNullOrEmpty())
-            template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
-
-        template.Id = currentItem.Id;
-        template.Enabled = currentItem.Enabled;
-        template.Remarks = currentItem.Remarks;
-        template.CoreType = type;
-
-        return template;
-    }
-
-    #endregion DNS
-
     #region Regional Presets
 
     /// <summary>
@@ -2203,7 +2120,6 @@ public class ConfigHandler
                 config.ConstItem.RouteRulesTemplateSourceUrl = "";
 
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
-                await InitBuiltinDNS(config);
 
                 return true;
 
@@ -2212,8 +2128,8 @@ public class ConfigHandler
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
+                //await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
+                //await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
                 return true;
 
@@ -2222,8 +2138,8 @@ public class ConfigHandler
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
+                //await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
+                //await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
 
                 return true;
         }

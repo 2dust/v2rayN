@@ -193,16 +193,6 @@ public sealed class AppHandler
         return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Id == id);
     }
 
-    public async Task<List<DNSItem>?> DNSItems()
-    {
-        return await SQLiteHelper.Instance.TableAsync<DNSItem>().ToListAsync();
-    }
-
-    public async Task<DNSItem?> GetDNSItem(ECoreType eCoreType)
-    {
-        return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
-    }
-
     #endregion SqliteHelper
 
     #region Core Type
