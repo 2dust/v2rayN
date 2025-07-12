@@ -187,6 +187,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please fill in the correct custom config 的本地化字符串。
+        /// </summary>
+        public static string FillCorrectConfigText {
+            get {
+                return ResourceManager.GetString("FillCorrectConfigText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill in the correct custom DNS 的本地化字符串。
         /// </summary>
         public static string FillCorrectDNSText {
@@ -849,6 +858,15 @@ namespace ServiceLib.Resx {
         public static string menuCopyServer {
             get {
                 return ResourceManager.GetString("menuCopyServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom Config 的本地化字符串。
+        /// </summary>
+        public static string menuCustomConfig {
+            get {
+                return ResourceManager.GetString("menuCustomConfig", resourceCulture);
             }
         }
         
@@ -2383,6 +2401,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Custom Config 的本地化字符串。
+        /// </summary>
+        public static string TbCustomConfigEnable {
+            get {
+                return ResourceManager.GetString("TbCustomConfigEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box Custom Config 的本地化字符串。
+        /// </summary>
+        public static string TbCustomConfigSingbox {
+            get {
+                return ResourceManager.GetString("TbCustomConfigSingbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {
@@ -2725,6 +2761,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 v2ray Custom Config 的本地化字符串。
+        /// </summary>
+        public static string TbRayCustomConfig {
+            get {
+                return ResourceManager.GetString("TbRayCustomConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Override Outbound Config, routing.balancers and routing.rules.outboundTag Only 的本地化字符串。
+        /// </summary>
+        public static string TbRayCustomConfigDesc {
+            get {
+                return ResourceManager.GetString("TbRayCustomConfigDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Alias (remarks) 的本地化字符串。
         /// </summary>
         public static string TbRemarks {
@@ -2910,6 +2964,15 @@ namespace ServiceLib.Resx {
         public static string TbSBRemoteResolveStrategy {
             get {
                 return ResourceManager.GetString("TbSBRemoteResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Override Outbound And Endpoint Config Only 的本地化字符串。
+        /// </summary>
+        public static string TbSBCustomConfigDesc {
+            get {
+                return ResourceManager.GetString("TbSBCustomConfigDesc", resourceCulture);
             }
         }
         

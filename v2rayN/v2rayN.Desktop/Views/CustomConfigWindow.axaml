@@ -1,0 +1,144 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.CustomConfigWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuCustomConfig}"
+    Width="900"
+    Height="600"
+    x:DataType="vms:CustomConfigViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand"
+                IsCancel="True" />
+        </StackPanel>
+
+        <TabControl HorizontalContentAlignment="Stretch">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRayCustomConfig}">
+                <Grid Margin="{StaticResource Margin4}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbRayCustomConfigDesc}" />
+                    
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
+                        <ToggleSwitch
+                            x:Name="rayCustomConfigEnable"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                    </Grid>
+
+                    <TextBox
+                        x:Name="rayCustomConfig"
+                        Grid.Row="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderThickness="1"
+                        Classes="TextArea"
+                        Margin="{StaticResource Margin4}"
+                        TextWrapping="Wrap"
+                        Watermark="xray json config" />
+                </Grid>
+            </TabItem>
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbCustomConfigSingbox}">
+                <Grid Margin="{StaticResource Margin4}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSBCustomConfigDesc}" />
+                    
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
+                        <ToggleSwitch
+                            x:Name="sbCustomConfigEnable"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                    </Grid>
+
+                    <Grid Grid.Row="2" Margin="{StaticResource Margin4}" ColumnDefinitions="*,10,*">
+
+                        <TextBox
+                            x:Name="sbCustomConfig"
+                            Grid.Column="0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="1"
+                            Classes="TextArea"
+                            Margin="{StaticResource Margin4}"
+                            TextWrapping="Wrap"
+                            Watermark="sing-box json config" />
+
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                        <TextBox
+                            x:Name="sbCustomTunConfig"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="1"
+                            Classes="TextArea"
+                            Margin="{StaticResource Margin4}"
+                            TextWrapping="Wrap"
+                            Watermark="sing-box json tun config" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

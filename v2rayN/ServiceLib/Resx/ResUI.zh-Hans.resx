@@ -1467,4 +1467,25 @@
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
     <value>自定义 DNS 已启用，此页面配置将无效</value>
   </data>
+  <data name="FillCorrectConfigText" xml:space="preserve">
+    <value>请填写正确的自定义配置</value>
+  </data>
+  <data name="menuCustomConfig" xml:space="preserve">
+    <value>自定义配置</value>
+  </data>
+  <data name="TbCustomConfigEnable" xml:space="preserve">
+    <value>启用自定义配置</value>
+  </data>
+  <data name="TbRayCustomConfig" xml:space="preserve">
+    <value>v2ray 自定义配置</value>
+  </data>
+  <data name="TbCustomConfigSingbox" xml:space="preserve">
+    <value>sing-box 自定义配置</value>
+  </data>
+  <data name="TbRayCustomConfigDesc" xml:space="preserve">
+    <value>仅覆盖出站配置，routing.balancers 和 routing.rules.outboundTag</value>
+  </data>
+  <data name="TbSBCustomConfigDesc" xml:space="preserve">
+    <value>仅覆盖出站和端点配置</value>
+  </data>
 </root>

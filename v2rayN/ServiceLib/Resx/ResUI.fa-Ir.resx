@@ -1470,4 +1470,25 @@
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
     <value>Custom DNS Enabled, This Page's Settings Invalid</value>
   </data>
+  <data name="FillCorrectConfigText" xml:space="preserve">
+    <value>Please fill in the correct custom config</value>
+  </data>
+  <data name="menuCustomConfig" xml:space="preserve">
+    <value>Custom Config</value>
+  </data>
+  <data name="TbCustomConfigEnable" xml:space="preserve">
+    <value>Enable Custom Config</value>
+  </data>
+  <data name="TbRayCustomConfig" xml:space="preserve">
+    <value>v2ray Custom Config</value>
+  </data>
+  <data name="TbCustomConfigSingbox" xml:space="preserve">
+    <value>sing-box Custom Config</value>
+  </data>
+  <data name="TbRayCustomConfigDesc" xml:space="preserve">
+    <value>Override Outbound Config, routing.balancers and routing.rules.outboundTag Only</value>
+  </data>
+  <data name="TbSBCustomConfigDesc" xml:space="preserve">
+    <value>Override Outbound And Endpoint Config Only</value>
+  </data>
 </root>

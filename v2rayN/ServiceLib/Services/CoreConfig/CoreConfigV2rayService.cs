@@ -3,6 +3,7 @@ using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using ServiceLib.Models;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -68,7 +69,39 @@ public class CoreConfigV2rayService
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(v2rayConfig);
+
+            var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
+            if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
+            {
+                //var customConfigObj = JsonUtils.Deserialize<V2rayConfig>(customConfig.Config);
+                //if (customConfigObj != null)
+                //{
+                //    customConfigObj.outbounds = JsonUtils.DeepCopy(v2rayConfig.outbounds);
+                //    v2rayConfig = customConfigObj;
+                //}
+                // spik deserialize
+                var customConfigNode = JsonNode.Parse(customConfig.Config);
+                if (customConfigNode != null)
+                {
+                    //customConfigNode["outbounds"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.outbounds));
+                    // append outbounds instead of override
+                    if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
+                    {
+                        if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.outbounds)) is JsonArray newOutbounds)
+                        {
+                            foreach (var outbound in newOutbounds)
+                            {
+                                customOutboundsNode.Add(outbound?.DeepClone());
+                            }
+                        }
+                    }
+                    ret.Data = customConfigNode.ToJsonString(new() { WriteIndented = true });
+                }
+            }
+            else
+            {
+                ret.Data = JsonUtils.Serialize(v2rayConfig);
+            }
             return ret;
         }
         catch (Exception ex)
@@ -197,7 +230,82 @@ public class CoreConfigV2rayService
             }
 
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(v2rayConfig);
+
+            var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
+            if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
+            {
+                //var customConfigObj = JsonUtils.Deserialize<V2rayConfig>(customConfig.Config);
+                //if (customConfigObj != null)
+                //{
+                //    foreach (var rule in customConfigObj.routing.rules)
+                //    {
+                //        if (rule.outboundTag == Global.ProxyTag)
+                //        {
+                //            rule.outboundTag = null;
+                //            rule.balancerTag = balancer.tag;
+                //        }
+                //    }
+                //    customConfigObj.routing.balancers = JsonUtils.DeepCopy(v2rayConfig.routing.balancers);
+                //    customConfigObj.outbounds = JsonUtils.DeepCopy(v2rayConfig.outbounds);
+                //    v2rayConfig = customConfigObj;
+                //}
+                // skip deserialize
+                var customConfigNode = JsonNode.Parse(customConfig.Config);
+                if (customConfigNode != null)
+                {
+                    var rulesNode = customConfigNode["routing"]?["rules"];
+                    if (rulesNode != null)
+                    {
+                        foreach (var rule in rulesNode.AsArray())
+                        {
+                            if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                            {
+                                rule["outboundTag"] = null;
+                                rule["balancerTag"] = balancer.tag;
+                            }
+                        }
+                    }
+                    
+                    // Ensure routing node exists
+                    if (customConfigNode["routing"] == null)
+                    {
+                        customConfigNode["routing"] = new JsonObject();
+                    }
+                    
+                    // Handle balancers - append instead of override
+                    if (customConfigNode["routing"]["balancers"] is JsonArray customBalancersNode)
+                    {
+                        if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.routing.balancers)) is JsonArray newBalancers)
+                        {
+                            foreach (var balancerNode in newBalancers)
+                            {
+                                customBalancersNode.Add(balancerNode?.DeepClone());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        customConfigNode["routing"]["balancers"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.routing.balancers));
+                    }
+                    
+                    // append outbounds instead of override
+                    if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
+                    {
+                        if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.outbounds)) is JsonArray newOutbounds)
+                        {
+                            foreach (var outbound in newOutbounds)
+                            {
+                                customOutboundsNode.Add(outbound?.DeepClone());
+                            }
+                        }
+                    }
+                    ret.Data = customConfigNode.ToJsonString(new() { WriteIndented = true });
+                }
+            }
+            else
+            {
+                ret.Data = JsonUtils.Serialize(v2rayConfig);
+            }
             return ret;
         }
         catch (Exception ex)
