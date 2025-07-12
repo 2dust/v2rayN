@@ -269,4 +269,5 @@ public class DNSItem
     public string? SingboxStrategy4Direct { get; set; }
     public string? SingboxStrategy4Proxy { get; set; }
     public string? Hosts { get; set; }
+    public string? DirectExpectedIPs { get; set; }
 }

@@ -212,6 +212,8 @@ public class DnsServer4Ray
     public string? address { get; set; }
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
+    public List<string>? expectedIPs { get; set; }
+    public List<string>? unexpectedIPs { get; set; }
 }
 
 public class Routing4Ray

@@ -217,6 +217,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -281,8 +282,32 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbPreventDNSLeaks}" />
 
+
                         <TextBlock
                             Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPs}" />
+                        <ComboBox
+                            x:Name="cmbDirectExpectedIPs"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="200"
+                            IsEditable="True"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPsDesc}" />
+
+                        <TextBlock
+                            Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin8}"
@@ -291,7 +316,7 @@
                             Text="{x:Static resx:ResUI.TbDNSHostsConfig}" />
                         <TextBox
                             x:Name="txtHosts"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin8}"

@@ -1763,6 +1763,10 @@ public class CoreConfigSingboxService
                 {
                     rule.server = "dns_direct";
                     rule.strategy = dNSItem.SingboxStrategy4Direct.IsNullOrEmpty() ? null : dNSItem.SingboxStrategy4Direct;
+                    if (!dNSItem.DirectExpectedIPs.IsNullOrEmpty())
+                    {
+                        rule.rule_set = new() { dNSItem.DirectExpectedIPs };
+                    }
                 }
                 else if (item.OutboundTag == Global.ProxyTag)
                 {

@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -1286,30 +1288,37 @@ public class CoreConfigV2rayService
         v2rayConfig.dns ??= new Dns4Ray();
         v2rayConfig.dns.servers ??= new List<object>();
 
+        var options = new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        };
+
         if (proxyDomainList.Count > 0)
         {
             foreach (var dnsDomain in remoteDNSAddress)
             {
-                var dnsServer = new DnsServer4Ray()
+                var dnsServer = new DnsServer4Ray
                 {
                     address = dnsDomain,
                     skipFallback = true,
                     domains = proxyDomainList
                 };
-                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer, options));
             }
         }
+
         if (directDomainList.Count > 0)
         {
             foreach (var dnsDomain in directDNSAddress)
             {
-                var dnsServer = new DnsServer4Ray()
+                var dnsServer = new DnsServer4Ray
                 {
                     address = dnsDomain,
                     skipFallback = true,
-                    domains = directDomainList
+                    domains = directDomainList,
+                    expectedIPs = dNSItem.DirectExpectedIPs.IsNullOrEmpty() ? null : new() { dNSItem.DirectExpectedIPs }
                 };
-                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer, options));
             }
         }
         if (proxyGeositeList.Count > 0)
@@ -1322,7 +1331,7 @@ public class CoreConfigV2rayService
                     skipFallback = true,
                     domains = proxyGeositeList
                 };
-                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer, options));
             }
         }
         if (directGeositeList.Count > 0)
@@ -1333,9 +1342,10 @@ public class CoreConfigV2rayService
                 {
                     address = dnsDomain,
                     skipFallback = true,
-                    domains = directGeositeList
+                    domains = directGeositeList,
+                    expectedIPs = dNSItem.DirectExpectedIPs.IsNullOrEmpty() ? null : new() { dNSItem.DirectExpectedIPs }
                 };
-                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer, options));
             }
         }
 

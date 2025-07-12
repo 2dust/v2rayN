@@ -2842,7 +2842,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable to Override sing-box DoH Resolver 的本地化字符串。
+        ///   查找类似 The sing-box DoH resolution server can be overwritten 的本地化字符串。
         /// </summary>
         public static string TbSBDoHOverride {
             get {
@@ -3837,6 +3837,24 @@ namespace ServiceLib.Resx {
         public static string TbSystemProxyPac {
             get {
                 return ResourceManager.GetString("TbSystemProxyPac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Validate Direct Expected IPs 的本地化字符串。
+        /// </summary>
+        public static string TbValidateDirectExpectedIPs {
+            get {
+                return ResourceManager.GetString("TbValidateDirectExpectedIPs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 After configuration, validates returned IPs, returning only expected IPs 的本地化字符串。
+        /// </summary>
+        public static string TbValidateDirectExpectedIPsDesc {
+            get {
+                return ResourceManager.GetString("TbValidateDirectExpectedIPsDesc", resourceCulture);
             }
         }
         

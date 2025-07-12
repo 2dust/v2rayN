@@ -18,6 +18,7 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string? SingboxStrategy4Direct { get; set; }
     [Reactive] public string? SingboxStrategy4Proxy { get; set; }
     [Reactive] public string? Hosts { get; set; }
+    [Reactive] public string? DirectExpectedIPs { get; set; }
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     //public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
@@ -61,6 +62,7 @@ public class DNSSettingViewModel : MyReactiveObject
         SingboxStrategy4Direct = item.SingboxStrategy4Direct;
         SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
         Hosts = item.Hosts;
+        DirectExpectedIPs = item.DirectExpectedIPs;
     }
 
     private async Task SaveSettingAsync()
@@ -77,6 +79,7 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.DNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
         _config.DNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
         _config.DNSItem.Hosts = Hosts;
+        _config.DNSItem.DirectExpectedIPs = DirectExpectedIPs;
         await ConfigHandler.SaveConfig(_config);
         if (_updateView != null)
         {

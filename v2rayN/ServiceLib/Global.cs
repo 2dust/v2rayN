@@ -573,5 +573,13 @@ public class Global
             { "engage.cloudflareclient.com", new List<string> { "162.159.192.1", "2606:4700:d0::a29f:c001" } }
         };
 
+    public static readonly List<string> ExpectedIPs =
+    [
+        "geoip:cn",
+            "geoip:ir",
+            "geoip:ru",
+            ""
+    ];
+
     #endregion const
 }

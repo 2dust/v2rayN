@@ -175,7 +175,7 @@
                     <Grid
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,*">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,*">
 
                         <TextBlock
                             Grid.Row="0"
@@ -231,6 +231,25 @@
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPs}" />
+                        <ComboBox
+                            x:Name="cmbDirectExpectedIPs"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin4}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPsDesc}" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -238,7 +257,7 @@
 
                         <TextBox
                             x:Name="txtHosts"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"
