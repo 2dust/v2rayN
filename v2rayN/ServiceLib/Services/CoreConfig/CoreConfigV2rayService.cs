@@ -1166,6 +1166,32 @@ public class CoreConfigV2rayService
 
     private async Task<int> GenDnsServers(ProfileItem? node, V2rayConfig v2rayConfig, DNSItem dNSItem)
     {
+        var directDNSAddress = dNSItem?.DirectDNS?
+            .Split(dNSItem.DirectDNS?.Contains(',') == true ? ',' : ';')
+            .Select(addr => addr.Trim())
+            .Where(addr => !string.IsNullOrEmpty(addr))
+            .Select(addr => addr.StartsWith("dhcp", StringComparison.OrdinalIgnoreCase) ? "localhost" : addr)
+            .Distinct()
+            .ToList();
+
+        if (directDNSAddress != null && directDNSAddress.Count == 0)
+        {
+            directDNSAddress = new() { Global.DomainDirectDNSAddress.FirstOrDefault() };
+        }
+
+        var remoteDNSAddress = dNSItem?.RemoteDNS?
+            .Split(dNSItem.RemoteDNS?.Contains(',') == true ? ',' : ';')
+            .Select(addr => addr.Trim())
+            .Where(addr => !string.IsNullOrEmpty(addr))
+            .Select(addr => addr.StartsWith("dhcp", StringComparison.OrdinalIgnoreCase) ? "localhost" : addr)
+            .Distinct()
+            .ToList();
+
+        if (remoteDNSAddress != null && remoteDNSAddress.Count == 0)
+        {
+            remoteDNSAddress = new() { Global.DomainRemoteDNSAddress.FirstOrDefault() };
+        }
+
         var directDomainList = new List<string>();
         var directGeositeList = new List<string>();
         var proxyDomainList = new List<string>();
@@ -1262,45 +1288,63 @@ public class CoreConfigV2rayService
 
         if (proxyDomainList.Count > 0)
         {
-            var dnsServer = new DnsServer4Ray()
+            foreach (var dnsDomain in remoteDNSAddress)
             {
-                address = dNSItem.RemoteDNS,
-                skipFallback = true,
-                domains = proxyDomainList
-            };
-            v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
-        }
-        if (proxyGeositeList.Count > 0)
-        {
-            var dnsServer = new DnsServer4Ray()
-            {
-                address = dNSItem.RemoteDNS,
-                skipFallback = true,
-                domains = proxyGeositeList
-            };
-            v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = dnsDomain,
+                    skipFallback = true,
+                    domains = proxyDomainList
+                };
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+            }
         }
         if (directDomainList.Count > 0)
         {
-            var dnsServer = new DnsServer4Ray()
+            foreach (var dnsDomain in directDNSAddress)
             {
-                address = dNSItem.DirectDNS,
-                skipFallback = true,
-                domains = directDomainList
-            };
-            v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = dnsDomain,
+                    skipFallback = true,
+                    domains = directDomainList
+                };
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+            }
+        }
+        if (proxyGeositeList.Count > 0)
+        {
+            foreach (var dnsDomain in remoteDNSAddress)
+            {
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = dnsDomain,
+                    skipFallback = true,
+                    domains = proxyGeositeList
+                };
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+            }
         }
         if (directGeositeList.Count > 0)
         {
-            var dnsServer = new DnsServer4Ray()
+            foreach (var dnsDomain in directDNSAddress)
             {
-                address = dNSItem.DirectDNS,
-                skipFallback = true,
-                domains = directGeositeList
-            };
-            v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+                var dnsServer = new DnsServer4Ray()
+                {
+                    address = dnsDomain,
+                    skipFallback = true,
+                    domains = directGeositeList
+                };
+                v2rayConfig.dns.servers.Add(JsonUtils.SerializeToNode(dnsServer));
+            }
         }
-        v2rayConfig.dns.servers.Add(dNSItem.RemoteDNS); // fallback DNS server
+
+        // fallback DNS server
+        // TODO: Select fallback DNS server based on routing rules
+        foreach (var dnsDomain in remoteDNSAddress)
+        {
+            v2rayConfig.dns.servers.Add(dnsDomain);
+        }
         return await Task.FromResult(0);
     }
 

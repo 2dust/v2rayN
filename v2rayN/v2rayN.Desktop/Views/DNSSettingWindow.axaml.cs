@@ -21,9 +21,9 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         cmbSBDirectDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
-        cmbSBResolverDNS.ItemsSource = Global.DomainDirectDNSAddress.Concat(new[] { "dhcp://auto" });
+        cmbSBResolverDNS.ItemsSource = Global.DomainDirectDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
         cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
-        cmbSBFinalResolverDNS.ItemsSource = Global.DomainPureIPDNSAddress;
+        cmbSBFinalResolverDNS.ItemsSource = Global.DomainPureIPDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
 
         this.WhenActivated(disposables =>
         {
