@@ -255,7 +255,7 @@ public class WindowSizeItem
 }
 
 [Serializable]
-public class DNSItem
+public class SimpleDNSItem
 {
     public bool? UseSystemHosts { get; set; }
     public bool? AddCommonHosts { get; set; }

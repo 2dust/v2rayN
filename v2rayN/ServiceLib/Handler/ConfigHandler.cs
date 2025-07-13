@@ -112,7 +112,7 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
-        config.DNSItem ??= new DNSItem()
+        config.SimpleDNSItem ??= new SimpleDNSItem()
         {
             UseSystemHosts = false,
             AddCommonHosts = true,
@@ -2119,7 +2119,7 @@ public class ConfigHandler
                 config.ConstItem.SrsSourceUrl = "";
                 config.ConstItem.RouteRulesTemplateSourceUrl = "";
 
-                await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
+                //await SQLiteHelper.Instance.DeleteAllAsync<SimpleDNSItem>();
 
                 return true;
 

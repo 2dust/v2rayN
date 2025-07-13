@@ -63,7 +63,6 @@ public sealed class AppHandler
         SQLiteHelper.Instance.CreateTable<ServerStatItem>();
         SQLiteHelper.Instance.CreateTable<RoutingItem>();
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
-        SQLiteHelper.Instance.CreateTable<DNSItem>();
         return true;
     }
 

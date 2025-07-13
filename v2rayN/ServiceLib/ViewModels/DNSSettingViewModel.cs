@@ -49,7 +49,7 @@ public class DNSSettingViewModel : MyReactiveObject
     private async Task Init()
     {
         _config = AppHandler.Instance.Config;
-        var item = _config.DNSItem;
+        var item = _config.SimpleDNSItem;
         UseSystemHosts = item.UseSystemHosts;
         AddCommonHosts = item.AddCommonHosts;
         FakeIP = item.FakeIP;
@@ -67,19 +67,19 @@ public class DNSSettingViewModel : MyReactiveObject
 
     private async Task SaveSettingAsync()
     {
-        _config.DNSItem.UseSystemHosts = UseSystemHosts;
-        _config.DNSItem.AddCommonHosts = AddCommonHosts;
-        _config.DNSItem.FakeIP = FakeIP;
-        _config.DNSItem.BlockBindingQuery = BlockBindingQuery;
-        _config.DNSItem.DirectDNS = DirectDNS;
-        _config.DNSItem.RemoteDNS = RemoteDNS;
-        _config.DNSItem.RayStrategy4Freedom = RayStrategy4Freedom;
-        _config.DNSItem.SingboxOutboundsResolveDNS = SingboxOutboundsResolveDNS;
-        _config.DNSItem.SingboxFinalResolveDNS = SingboxFinalResolveDNS;
-        _config.DNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
-        _config.DNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
-        _config.DNSItem.Hosts = Hosts;
-        _config.DNSItem.DirectExpectedIPs = DirectExpectedIPs;
+        _config.SimpleDNSItem.UseSystemHosts = UseSystemHosts;
+        _config.SimpleDNSItem.AddCommonHosts = AddCommonHosts;
+        _config.SimpleDNSItem.FakeIP = FakeIP;
+        _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
+        _config.SimpleDNSItem.DirectDNS = DirectDNS;
+        _config.SimpleDNSItem.RemoteDNS = RemoteDNS;
+        _config.SimpleDNSItem.RayStrategy4Freedom = RayStrategy4Freedom;
+        _config.SimpleDNSItem.SingboxOutboundsResolveDNS = SingboxOutboundsResolveDNS;
+        _config.SimpleDNSItem.SingboxFinalResolveDNS = SingboxFinalResolveDNS;
+        _config.SimpleDNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
+        _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
+        _config.SimpleDNSItem.Hosts = Hosts;
+        _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
         await ConfigHandler.SaveConfig(_config);
         if (_updateView != null)
         {

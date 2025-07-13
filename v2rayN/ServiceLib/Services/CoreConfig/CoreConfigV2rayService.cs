@@ -1139,7 +1139,7 @@ public class CoreConfigV2rayService
     {
         try
         {
-            var dNSItem = _config.DNSItem;
+            var dNSItem = _config.SimpleDNSItem;
             var domainStrategy4Freedom = dNSItem?.RayStrategy4Freedom;
 
             //Outbound Freedom domainStrategy
@@ -1166,7 +1166,7 @@ public class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenDnsServers(ProfileItem? node, V2rayConfig v2rayConfig, DNSItem dNSItem)
+    private async Task<int> GenDnsServers(ProfileItem? node, V2rayConfig v2rayConfig, SimpleDNSItem simpleDNSItem)
     {
         static List<string> ParseDnsAddresses(string? dnsInput, string defaultAddress)
         {
@@ -1194,8 +1194,8 @@ public class CoreConfigV2rayService
             });
         }
 
-        var directDNSAddress = ParseDnsAddresses(dNSItem?.DirectDNS, Global.DomainDirectDNSAddress.FirstOrDefault());
-        var remoteDNSAddress = ParseDnsAddresses(dNSItem?.RemoteDNS, Global.DomainRemoteDNSAddress.FirstOrDefault());
+        var directDNSAddress = ParseDnsAddresses(simpleDNSItem?.DirectDNS, Global.DomainDirectDNSAddress.FirstOrDefault());
+        var remoteDNSAddress = ParseDnsAddresses(simpleDNSItem?.RemoteDNS, Global.DomainRemoteDNSAddress.FirstOrDefault());
 
         var directDomainList = new List<string>();
         var directGeositeList = new List<string>();
@@ -1205,9 +1205,9 @@ public class CoreConfigV2rayService
         var expectedIPs = new List<string>();
         var regionNames = new HashSet<string>();
 
-        if (!string.IsNullOrEmpty(dNSItem?.DirectExpectedIPs))
+        if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
-            expectedIPs = dNSItem.DirectExpectedIPs
+            expectedIPs = simpleDNSItem.DirectExpectedIPs
                 .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
@@ -1319,20 +1319,20 @@ public class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenDnsHosts(V2rayConfig v2rayConfig, DNSItem dNSItem)
+    private async Task<int> GenDnsHosts(V2rayConfig v2rayConfig, SimpleDNSItem simpleDNSItem)
     {
-        if (dNSItem.AddCommonHosts == false && dNSItem.UseSystemHosts == false && dNSItem.Hosts.IsNullOrEmpty())
+        if (simpleDNSItem.AddCommonHosts == false && simpleDNSItem.UseSystemHosts == false && simpleDNSItem.Hosts.IsNullOrEmpty())
         {
             return await Task.FromResult(0);
         }
         v2rayConfig.dns ??= new Dns4Ray();
         v2rayConfig.dns.hosts ??= new Dictionary<string, List<string>>();
-        if (dNSItem.AddCommonHosts == true)
+        if (simpleDNSItem.AddCommonHosts == true)
         {
             v2rayConfig.dns.hosts = Global.PredefinedHosts;
         }
 
-        if (dNSItem.UseSystemHosts == true)
+        if (simpleDNSItem.UseSystemHosts == true)
         {
             var systemHosts = Utils.GetSystemHosts();
             if (systemHosts.Count > 0)
@@ -1352,7 +1352,7 @@ public class CoreConfigV2rayService
             }
         }
 
-        var userHostsMap = dNSItem.Hosts?
+        var userHostsMap = simpleDNSItem.Hosts?
             .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
             .Where(line => !string.IsNullOrWhiteSpace(line))
             .Where(line => line.Contains(' '))
