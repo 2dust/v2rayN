@@ -1461,4 +1461,10 @@
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
     <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs</value>
   </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>Enable Custom DNS</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>Custom DNS Enabled, This Page's Settings Invalid</value>
+  </data>
 </root>

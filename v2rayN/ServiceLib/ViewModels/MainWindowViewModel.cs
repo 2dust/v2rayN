@@ -219,6 +219,7 @@ public class MainWindowViewModel : MyReactiveObject
         _config.UiItem.ShowInTaskbar = true;
 
         await ConfigHandler.InitBuiltinRouting(_config);
+        await ConfigHandler.InitBuiltinDNS(_config);
         await ProfileExHandler.Instance.Init();
         await CoreHandler.Instance.Init(_config, UpdateHandler);
         TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);

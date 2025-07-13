@@ -239,6 +239,12 @@ public class Server4Sbox : BaseServer4Sbox
     public Headers4Sbox? headers { get; set; }
     // public List<string>? path { get; set; } // hosts
     public Dictionary<string, List<string>>? predefined { get; set; }
+    // Deprecated
+    public string? address { get; set; }
+    public string? address_resolver { get; set; }
+    public string? address_strategy { get; set; }
+    public string? strategy { get; set; }
+    // Deprecated End
 }
 
 public class Experimental4Sbox

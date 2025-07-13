@@ -2365,6 +2365,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Custom DNS 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnable {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom DNS Enabled, This Page&apos;s Settings Invalid 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnabledPageInvalid {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnabledPageInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {

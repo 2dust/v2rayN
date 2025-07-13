@@ -20,9 +20,21 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string? Hosts { get; set; }
     [Reactive] public string? DirectExpectedIPs { get; set; }
 
+    [Reactive] public bool UseSystemHostsCompatible { get; set; }
+    [Reactive] public string DomainStrategy4FreedomCompatible { get; set; }
+    [Reactive] public string DomainDNSAddressCompatible { get; set; }
+    [Reactive] public string NormalDNSCompatible { get; set; }
+
+    [Reactive] public string DomainStrategy4Freedom2Compatible { get; set; }
+    [Reactive] public string DomainDNSAddress2Compatible { get; set; }
+    [Reactive] public string NormalDNS2Compatible { get; set; }
+    [Reactive] public string TunDNS2Compatible { get; set; }
+    [Reactive] public bool RayCustomDNSEnableCompatible { get; set; }
+    [Reactive] public bool SBCustomDNSEnableCompatible { get; set; }
+
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-    //public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCmd { get; }
-    //public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCmd { get; }
+    public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
+    public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCompatibleCmd { get; }
 
     public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
@@ -30,18 +42,18 @@ public class DNSSettingViewModel : MyReactiveObject
         _updateView = updateView;
         SaveCmd = ReactiveCommand.CreateFromTask(SaveSettingAsync);
 
-        //ImportDefConfig4V2rayCmd = ReactiveCommand.CreateFromTask(async () =>
-        //{
-        //    NormalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
-        //    await Task.CompletedTask;
-        //});
+        ImportDefConfig4V2rayCompatibleCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            NormalDNSCompatible = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
+            await Task.CompletedTask;
+        });
 
-        //ImportDefConfig4SingboxCmd = ReactiveCommand.CreateFromTask(async () =>
-        //{
-        //    NormalDNS2 = EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName);
-        //    TunDNS2 = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
-        //    await Task.CompletedTask;
-        //});
+        ImportDefConfig4SingboxCompatibleCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            NormalDNS2Compatible = EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName);
+            TunDNS2Compatible = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
+            await Task.CompletedTask;
+        });
 
         _ = Init();
     }
@@ -63,6 +75,20 @@ public class DNSSettingViewModel : MyReactiveObject
         SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
+
+        var item1 = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+        RayCustomDNSEnableCompatible = item1.Enabled;
+        UseSystemHostsCompatible = item1.UseSystemHosts;
+        DomainStrategy4FreedomCompatible = item1?.DomainStrategy4Freedom ?? string.Empty;
+        DomainDNSAddressCompatible = item1?.DomainDNSAddress ?? string.Empty;
+        NormalDNSCompatible = item1?.NormalDNS ?? string.Empty;
+
+        var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+        SBCustomDNSEnableCompatible = item2.Enabled;
+        DomainStrategy4Freedom2Compatible = item2?.DomainStrategy4Freedom ?? string.Empty;
+        DomainDNSAddress2Compatible = item2?.DomainDNSAddress ?? string.Empty;
+        NormalDNS2Compatible = item2?.NormalDNS ?? string.Empty;
+        TunDNS2Compatible = item2?.TunDNS ?? string.Empty;
     }
 
     private async Task SaveSettingAsync()
@@ -80,6 +106,57 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
+
+        if (NormalDNSCompatible.IsNotEmpty())
+        {
+            var obj = JsonUtils.ParseJson(NormalDNSCompatible);
+            if (obj != null && obj["servers"] != null)
+            {
+            }
+            else
+            {
+                if (NormalDNSCompatible.Contains('{') || NormalDNSCompatible.Contains('}'))
+                {
+                    NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                    return;
+                }
+            }
+        }
+        if (NormalDNS2Compatible.IsNotEmpty())
+        {
+            var obj2 = JsonUtils.Deserialize<Dns4Sbox>(NormalDNS2Compatible);
+            if (obj2 == null)
+            {
+                NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                return;
+            }
+        }
+        if (TunDNS2Compatible.IsNotEmpty())
+        {
+            var obj2 = JsonUtils.Deserialize<Dns4Sbox>(TunDNS2Compatible);
+            if (obj2 == null)
+            {
+                NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                return;
+            }
+        }
+
+        var item1 = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+        item1.Enabled = RayCustomDNSEnableCompatible;
+        item1.DomainStrategy4Freedom = DomainStrategy4FreedomCompatible;
+        item1.DomainDNSAddress = DomainDNSAddressCompatible;
+        item1.UseSystemHosts = UseSystemHostsCompatible;
+        item1.NormalDNS = NormalDNSCompatible;
+        await ConfigHandler.SaveDNSItems(_config, item1);
+
+        var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+        item2.Enabled = RayCustomDNSEnableCompatible;
+        item2.DomainStrategy4Freedom = DomainStrategy4Freedom2Compatible;
+        item2.DomainDNSAddress = DomainDNSAddress2Compatible;
+        item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(NormalDNS2Compatible));
+        item2.TunDNS = JsonUtils.Serialize(JsonUtils.ParseJson(TunDNS2Compatible));
+        await ConfigHandler.SaveDNSItems(_config, item2);
+
         await ConfigHandler.SaveConfig(_config);
         if (_updateView != null)
         {

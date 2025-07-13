@@ -1461,4 +1461,10 @@
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
     <value>配置后，会对相应地区域名（如 geosite:cn）的返回 IP 进行校验，仅返回期望 IP</value>
   </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>启用自定义 DNS</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>自定义 DNS 已启用，此页面配置将无效</value>
+  </data>
 </root>
