@@ -2725,6 +2725,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Can fill in the configuration remarks, please make sure it exist and are unique 的本地化字符串。
+        /// </summary>
+        public static string TbRuleOutboundTagTip {
+            get {
+                return ResourceManager.GetString("TbRuleOutboundTagTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Encryption method (security) 的本地化字符串。
         /// </summary>
         public static string TbSecurity {

@@ -54,11 +54,11 @@ public class CoreConfigV2rayService
 
             await GenInbounds(v2rayConfig);
 
-            await GenRouting(v2rayConfig);
-
             await GenOutbound(node, v2rayConfig.outbounds.First());
 
             await GenMoreOutbounds(node, v2rayConfig);
+
+            await GenRouting(v2rayConfig);
 
             await GenDns(node, v2rayConfig);
 
@@ -556,6 +556,8 @@ public class CoreConfigV2rayService
             {
                 return 0;
             }
+            rule.outboundTag = await GenRoutingUserRuleOutbound(rule.outboundTag, v2rayConfig);
+
             if (rule.port.IsNullOrEmpty())
             {
                 rule.port = null;
@@ -627,6 +629,31 @@ public class CoreConfigV2rayService
         return await Task.FromResult(0);
     }
 
+    private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, V2rayConfig v2rayConfig)
+    {
+        if (outboundTag is Global.ProxyTag or Global.ProxyTag or Global.BlockTag)
+        {
+            return outboundTag;
+        }
+
+        var node = await AppHandler.Instance.GetProfileItemViaRemarks(outboundTag);
+        if (node == null
+            || node.ConfigType == EConfigType.Custom
+            || node.ConfigType == EConfigType.Hysteria2
+            || node.ConfigType == EConfigType.TUIC)
+        {
+            return Global.ProxyTag;
+        }
+
+        var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+        var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+        await GenOutbound(node, outbound);
+        outbound.tag = Global.ProxyTag + node.IndexId.ToString();
+        v2rayConfig.outbounds.Add(outbound);
+
+        return outbound.tag;
+    }
+
     private async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
     {
         try
@@ -659,7 +686,7 @@ public class CoreConfigV2rayService
                         {
                             usersItem = vnextItem.users.First();
                         }
-                
+
                         usersItem.id = node.Id;
                         usersItem.alterId = node.AlterId;
                         usersItem.email = Global.UserEMail;
@@ -1318,7 +1345,7 @@ public class CoreConfigV2rayService
 
             //Previous proxy
             var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-            string? prevOutboundTag = null; 
+            string? prevOutboundTag = null;
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom
                 && prevNode.ConfigType != EConfigType.Hysteria2

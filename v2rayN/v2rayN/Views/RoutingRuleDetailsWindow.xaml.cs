@@ -74,7 +74,7 @@ public partial class RoutingRuleDetailsWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        cmbOutboundTag.Focus();
+        txtRemarks.Focus();
     }
 
     private void ClbProtocol_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

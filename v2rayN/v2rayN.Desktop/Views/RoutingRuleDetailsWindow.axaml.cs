@@ -23,9 +23,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
-        cmbOutboundTag.Items.Add(Global.ProxyTag);
-        cmbOutboundTag.Items.Add(Global.DirectTag);
-        cmbOutboundTag.Items.Add(Global.BlockTag);
+        cmbOutboundTag.ItemsSource = new List<string> { Global.ProxyTag, Global.DirectTag, Global.BlockTag };
         Global.RuleProtocols.ForEach(it =>
         {
             clbProtocol.Items.Add(it);
@@ -54,7 +52,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Port, v => v.txtPort.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Enabled, v => v.togEnabled.IsChecked).DisposeWith(disposables);
@@ -80,7 +78,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
-        cmbOutboundTag.Focus();
+        txtRemarks.Focus();
     }
 
     private void ClbProtocol_SelectionChanged(object? sender, SelectionChangedEventArgs e)

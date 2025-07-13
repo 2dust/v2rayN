@@ -1392,4 +1392,7 @@
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>Current connection info test URL</value>
   </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Can fill in the configuration remarks, please make sure it exist and are unique</value>
+  </data>
 </root>

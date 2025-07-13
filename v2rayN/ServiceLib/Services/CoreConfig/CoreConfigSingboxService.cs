@@ -1166,7 +1166,7 @@ public class CoreConfigSingboxService
                 {
                     if (item.Enabled)
                     {
-                        await GenRoutingUserRule(item, singboxConfig.route.rules);
+                        await GenRoutingUserRule(item, singboxConfig);
                     }
                 }
             }
@@ -1206,7 +1206,7 @@ public class CoreConfigSingboxService
         lstDirectExe = new List<string>(directExeSet);
     }
 
-    private async Task<int> GenRoutingUserRule(RulesItem item, List<Rule4Sbox> rules)
+    private async Task<int> GenRoutingUserRule(RulesItem item, SingboxConfig singboxConfig)
     {
         try
         {
@@ -1214,6 +1214,8 @@ public class CoreConfigSingboxService
             {
                 return 0;
             }
+            item.OutboundTag = await GenRoutingUserRuleOutbound(item.OutboundTag, singboxConfig);
+            var rules = singboxConfig.route.rules;
 
             var rule = new Rule4Sbox()
             {
@@ -1363,6 +1365,29 @@ public class CoreConfigSingboxService
             rule.ip_cidr?.Add(address);
         }
         return true;
+    }
+
+    private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, SingboxConfig singboxConfig)
+    {
+        if (outboundTag is Global.ProxyTag or Global.ProxyTag or Global.BlockTag)
+        {
+            return outboundTag;
+        }
+
+        var node = await AppHandler.Instance.GetProfileItemViaRemarks(outboundTag);
+        if (node == null
+            || node.ConfigType == EConfigType.Custom)
+        {
+            return Global.ProxyTag;
+        }
+
+        var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+        var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+        await GenOutbound(node, outbound);
+        outbound.tag = Global.ProxyTag + node.IndexId.ToString();
+        singboxConfig.outbounds.Add(outbound);
+
+        return outbound.tag;
     }
 
     private async Task<int> GenDns(ProfileItem? node, SingboxConfig singboxConfig)

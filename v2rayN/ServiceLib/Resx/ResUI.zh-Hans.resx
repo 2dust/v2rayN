@@ -1389,4 +1389,7 @@
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>当前连接信息测试地址</value>
   </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>可以填写配置文件别名，请确保存在并唯一</value>
+  </data>
 </root>
