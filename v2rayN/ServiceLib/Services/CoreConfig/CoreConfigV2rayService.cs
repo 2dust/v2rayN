@@ -631,7 +631,7 @@ public class CoreConfigV2rayService
 
     private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, V2rayConfig v2rayConfig)
     {
-        if (outboundTag is Global.ProxyTag or Global.ProxyTag or Global.BlockTag)
+        if (outboundTag is Global.ProxyTag or Global.DirectTag or Global.BlockTag)
         {
             return outboundTag;
         }
