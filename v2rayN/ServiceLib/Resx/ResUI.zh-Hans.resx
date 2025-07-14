@@ -703,7 +703,7 @@
     <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号 (;) 分隔。</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>显示实时速度（需重启）</value>
+    <value>显示实时速度 (需重启)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>去重时保留序号较小的项</value>
@@ -739,7 +739,7 @@
     <value>开机启动 (可能会不成功)</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>启用流量统计（需重启）</value>
+    <value>启用流量统计 (需重启)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>订阅转换网址 (可选)</value>
@@ -886,7 +886,7 @@
     <value>仅限路由 (routeOnly)</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
-    <value>请勿将代理服务器用于本地（Intranet）地址</value>
+    <value>请勿将代理服务器用于本地 (Intranet) 地址</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>一键多线程测试延迟和速度 (Ctrl+E)</value>
@@ -919,7 +919,7 @@
     <value>移至订阅分组</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>启用配置文件拖放排序（需重启）</value>
+    <value>启用配置文件拖放排序 (需重启)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
@@ -946,7 +946,7 @@
     <value>仅对 tcp/http、ws 协议生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>当前字体（需重启）</value>
+    <value>当前字体 (需重启)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
     <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启设置</value>
@@ -979,10 +979,10 @@
     <value>SpiderX</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>启用硬件加速（需重启）</value>
+    <value>启用硬件加速 (需重启)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待测试中（按 ESC 终止）...</value>
+    <value>等待测试中 (按 ESC 终止)...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
@@ -1105,10 +1105,10 @@
     <value>使用 Xray 且非 Tun 模式启用，和分组前置代理冲突</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>启用分片（Fragment）</value>
+    <value>启用分片 (Fragment)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>启用 sing-box（规则集文件）的缓存文件</value>
+    <value>启用 sing-box (规则集文件) 的缓存文件</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>自定义 sing-box rule-set</value>
@@ -1201,7 +1201,7 @@
     <value>Outbound 默认解析策略</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>主界面布局方向（需重启）</value>
+    <value>主界面布局方向 (需重启)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Outbound 域名解析地址</value>
