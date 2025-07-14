@@ -949,7 +949,7 @@
     <value>当前字体 (需重启)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启设置</value>
+    <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启生效</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac 端口 = +3；Xray API 端口 = +4；mihomo API 端口 = +5；</value>
@@ -1075,7 +1075,7 @@
     <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address (Ipv4,Ipv6)</value>
+    <value>Address (IPv4,IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密码 (obfs password)</value>
@@ -1303,7 +1303,7 @@
     <value>请不要使用不安全的 HTTP 协议订阅地址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>安装字体到系统中，选择或填入字体名称，重启设置</value>
+    <value>安装字体到系统中，选择或填入字体名称，重启生效</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>是否确定退出？</value>
@@ -1318,7 +1318,7 @@
     <value>输入的密码无法校验，所以请确保输入正确。如果因为输入错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp 模式</value>
+    <value>*XHTTP 模式</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
@@ -1339,7 +1339,7 @@
     <value>开启第二个本地监听端口</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks：本地端口，socks2：第二个本地端口，socks3：局域网端口</value>
+    <value>Socks：本地端口，Socks2：第二个本地端口，Socks3：局域网端口</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主题</value>
@@ -1372,13 +1372,13 @@
     <value>多配置文件随机 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多配置文件负载均衡  Xray</value>
+    <value>多配置文件负载均衡 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多配置文件最低延迟  Xray</value>
+    <value>多配置文件最低延迟 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多配置文件最稳定  Xray</value>
+    <value>多配置文件最稳定 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>多配置文件最低延迟 sing-box</value>
