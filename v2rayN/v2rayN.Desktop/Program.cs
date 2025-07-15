@@ -61,11 +61,7 @@ internal class Program
             //.WithInterFont()
             .WithFontByDefault()
             .LogToTrace()
-#if OS_OSX
             .UseReactiveUI()
             .With(new MacOSPlatformOptions { ShowInDock = AppHandler.Instance.Config.UiItem.MacOSShowInDock });
-#else
-            .UseReactiveUI();
-#endif
     }
 }
