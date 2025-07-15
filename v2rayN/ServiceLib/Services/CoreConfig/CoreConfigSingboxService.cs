@@ -1369,7 +1369,7 @@ public class CoreConfigSingboxService
 
     private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, SingboxConfig singboxConfig)
     {
-        if (outboundTag is Global.ProxyTag or Global.DirectTag or Global.BlockTag)
+        if (Global.OutboundTags.Contains(outboundTag))
         {
             return outboundTag;
         }

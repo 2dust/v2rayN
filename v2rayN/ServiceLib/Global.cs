@@ -528,5 +528,12 @@ public class Global
         @""
     ];
 
+    public static readonly List<string> OutboundTags =
+    [
+        ProxyTag,
+        DirectTag,
+        BlockTag
+    ];
+
     #endregion const
 }
