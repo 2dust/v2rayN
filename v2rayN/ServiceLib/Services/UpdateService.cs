@@ -536,6 +536,11 @@ public class UpdateService
             }
         }
 
+        //append dns items TODO
+        geoSiteFiles.Add("cn");
+        geoSiteFiles.Add("geolocation-cn");
+        geoSiteFiles.Add("category-ads-all");
+
         var path = Utils.GetBinPath("srss");
         if (!Directory.Exists(path))
         {
