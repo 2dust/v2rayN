@@ -16,23 +16,11 @@ public partial class RoutingRuleDetailsWindow
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
-  
-        Global.OutboundTags.ForEach(it =>
-        {
-            cmbOutboundTag.Items.Add(it);
-        });
-        Global.RuleProtocols.ForEach(it =>
-        {
-            clbProtocol.Items.Add(it);
-        });
-        Global.InboundTags.ForEach(it =>
-        {
-            clbInboundTag.Items.Add(it);
-        });
-        Global.RuleNetworks.ForEach(it =>
-        {
-            cmbNetwork.Items.Add(it);
-        });
+
+        cmbOutboundTag.ItemsSource = Global.OutboundTags;
+        clbProtocol.ItemsSource = Global.RuleProtocols;
+        clbInboundTag.ItemsSource = Global.InboundTags;
+        cmbNetwork.ItemsSource = Global.RuleNetworks;
 
         if (!rulesItem.Id.IsNullOrEmpty())
         {

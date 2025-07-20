@@ -25,11 +25,8 @@ public partial class MsgView
         menuMsgViewCopy.Click += menuMsgViewCopy_Click;
         menuMsgViewCopyAll.Click += menuMsgViewCopyAll_Click;
         menuMsgViewClear.Click += menuMsgViewClear_Click;
-
-        Global.PresetMsgFilters.ForEach(it =>
-        {
-            cmbMsgFilter.Items.Add(it);
-        });
+                
+        cmbMsgFilter.ItemsSource = Global.PresetMsgFilters;
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

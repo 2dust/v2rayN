@@ -323,6 +323,14 @@ public class Utils
         return text.Replace("，", ",").Replace(Environment.NewLine, ",");
     }
 
+    public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
+    {
+        return Enum.GetValues(typeof(TEnum))
+            .Cast<TEnum>()
+            .Select(e => e.ToString())
+            .ToList();
+    }
+
     #endregion 转换函数
 
     #region 数据检查

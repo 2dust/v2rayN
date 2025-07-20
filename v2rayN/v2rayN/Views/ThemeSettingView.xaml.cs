@@ -13,22 +13,10 @@ public partial class ThemeSettingView
     {
         InitializeComponent();
         ViewModel = new ThemeSettingViewModel();
-        foreach (ETheme it in Enum.GetValues(typeof(ETheme)))
-        {
-            if ((int)it > 2)
-                continue;
-            cmbCurrentTheme.Items.Add(it.ToString());
-        }
 
-        for (int i = Global.MinFontSize; i <= Global.MinFontSize + 10; i++)
-        {
-            cmbCurrentFontSize.Items.Add(i.ToString());
-        }
-
-        Global.Languages.ForEach(it =>
-        {
-            cmbCurrentLanguage.Items.Add(it);
-        });
+        cmbCurrentTheme.ItemsSource = Utils.GetEnumNames<ETheme>().Take(3).ToList();
+        cmbCurrentFontSize.ItemsSource = Enumerable.Range(Global.MinFontSize, 11).ToList();
+        cmbCurrentLanguage.ItemsSource = Global.Languages;
 
         this.WhenActivated(disposables =>
         {

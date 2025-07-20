@@ -134,7 +134,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                     break;
             }
         });
-         
 
         if (Utils.IsWindows())
         {

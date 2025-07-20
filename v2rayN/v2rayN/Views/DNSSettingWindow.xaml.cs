@@ -17,22 +17,10 @@ public partial class DNSSettingWindow
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
-        Global.DomainStrategy4Freedoms.ForEach(it =>
-        {
-            cmbdomainStrategy4Freedom.Items.Add(it);
-        });
-        Global.SingboxDomainStrategy4Out.ForEach(it =>
-        {
-            cmbdomainStrategy4Out.Items.Add(it);
-        });
-        Global.DomainDNSAddress.ForEach(it =>
-        {
-            cmbdomainDNSAddress.Items.Add(it);
-        });
-        Global.SingboxDomainDNSAddress.ForEach(it =>
-        {
-            cmbdomainDNSAddress2.Items.Add(it);
-        });
+        cmbdomainStrategy4Freedom.ItemsSource = Global.DomainStrategy4Freedoms;
+        cmbdomainStrategy4Out.ItemsSource = Global.SingboxDomainStrategy4Out;
+        cmbdomainDNSAddress.ItemsSource = Global.DomainDNSAddress;
+        cmbdomainDNSAddress2.ItemsSource = Global.SingboxDomainDNSAddress;
 
         this.WhenActivated(disposables =>
         {

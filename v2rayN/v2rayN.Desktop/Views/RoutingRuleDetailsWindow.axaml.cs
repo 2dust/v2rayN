@@ -25,18 +25,9 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
 
         cmbOutboundTag.ItemsSource = Global.OutboundTags;
-        Global.RuleProtocols.ForEach(it =>
-        {
-            clbProtocol.Items.Add(it);
-        });
-        Global.InboundTags.ForEach(it =>
-        {
-            clbInboundTag.Items.Add(it);
-        });
-        Global.RuleNetworks.ForEach(it =>
-        {
-            cmbNetwork.Items.Add(it);
-        });
+        clbProtocol.ItemsSource = Global.RuleProtocols;
+        clbInboundTag.ItemsSource = Global.InboundTags;
+        cmbNetwork.ItemsSource = Global.RuleNetworks;
 
         if (!rulesItem.Id.IsNullOrEmpty())
         {
