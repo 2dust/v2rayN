@@ -26,7 +26,7 @@ public class DownloaderHelper
         var downloadOpt = new DownloadConfiguration()
         {
             Timeout = timeout * 1000,
-            MaxTryAgainOnFailover = 2,
+            MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
                     Headers = headers,
@@ -64,7 +64,7 @@ public class DownloaderHelper
         var downloadOpt = new DownloadConfiguration()
         {
             Timeout = timeout * 1000,
-            MaxTryAgainOnFailover = 2,
+            MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
                     Timeout= timeout * 1000,
@@ -135,7 +135,7 @@ public class DownloaderHelper
         var downloadOpt = new DownloadConfiguration()
         {
             Timeout = timeout * 1000,
-            MaxTryAgainOnFailover = 2,
+            MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
                     Timeout= timeout * 1000,

@@ -10,7 +10,7 @@
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.2" />
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.2" />
     <PackageVersion Include="CliWrap" Version="3.9.0" />
-    <PackageVersion Include="Downloader" Version="3.3.4" />
+    <PackageVersion Include="Downloader" Version="4.0.2" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.0" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
