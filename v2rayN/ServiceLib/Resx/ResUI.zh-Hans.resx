@@ -1456,9 +1456,9 @@
     <value>DNS 进阶设置</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>校验直连期望 IP</value>
+    <value>校验相应地区域名 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>配置后，会对返回的 IP 的进行校验，只返回期望 IP</value>
+    <value>配置后，会对相应地区域名（如 geosite:cn）的返回 IP 进行校验，仅返回期望 IP</value>
   </data>
 </root>

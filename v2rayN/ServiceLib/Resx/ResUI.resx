@@ -1459,9 +1459,9 @@
     <value>Advanced DNS Settings</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>Validate Direct Expected IPs</value>
+    <value>Validate Regional Domain IPs</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>After configuration, validates returned IPs, returning only expected IPs</value>
+    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs</value>
   </data>
 </root>
