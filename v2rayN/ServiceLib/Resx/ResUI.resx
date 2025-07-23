@@ -1318,7 +1318,7 @@
     <value>System sudo password</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
+    <value>The password is only saved for the current session and will be requested again after the application is restarted. If the password provided is incorrect, this input form will reappear on the next attempt.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp mode</value>
