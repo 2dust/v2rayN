@@ -112,17 +112,10 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
-        config.SimpleDNSItem ??= new SimpleDNSItem()
+        if (config.SimpleDNSItem == null)
         {
-            UseSystemHosts = false,
-            AddCommonHosts = true,
-            FakeIP = false,
-            BlockBindingQuery = true,
-            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
-            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
-            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
-            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
-        };
+            InitBuiltinSimpleDNS(config);
+        }
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -2196,6 +2189,38 @@ public class ConfigHandler
 
     #endregion DNS
 
+    #region Simple DNS
+
+    public static int InitBuiltinSimpleDNS(Config config)
+    {
+        config.SimpleDNSItem = new SimpleDNSItem()
+        {
+            UseSystemHosts = false,
+            AddCommonHosts = true,
+            FakeIP = false,
+            BlockBindingQuery = true,
+            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
+            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
+        };
+        return 0;
+    }
+
+    public static async Task<SimpleDNSItem> GetExternalSimpleDNSItem(string url)
+    {
+        var downloadHandle = new DownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
+        if (templateContent.IsNullOrEmpty())
+            return null;
+        var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
+        if (template == null)
+            return null;
+        return template;
+    }
+
+    #endregion Simple DNS
+
     #region Regional Presets
 
     /// <summary>
@@ -2217,6 +2242,8 @@ public class ConfigHandler
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                 await InitBuiltinDNS(config);
 
+                InitBuiltinSimpleDNS(config);
+
                 return true;
 
             case EPresetType.Russia:
@@ -2227,6 +2254,8 @@ public class ConfigHandler
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
+
                 return true;
 
             case EPresetType.Iran:
@@ -2236,6 +2265,8 @@ public class ConfigHandler
 
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
+
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
 
                 return true;
         }
