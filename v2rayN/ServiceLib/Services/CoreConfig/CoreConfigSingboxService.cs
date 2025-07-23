@@ -513,6 +513,92 @@ public class CoreConfigSingboxService
         }
     }
 
+    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    {
+        var ret = new RetResult();
+        try
+        {
+            if (node == null
+                || node.Port <= 0)
+            {
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
+            }
+            if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
+            {
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                return ret;
+            }
+
+            ret.Msg = ResUI.InitialConfiguration;
+
+            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+            if (result.IsNullOrEmpty())
+            {
+                ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                return ret;
+            }
+
+            var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
+            if (singboxConfig == null)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+
+            await GenLog(singboxConfig);
+
+            var inbound = new Inbound4Sbox()
+            {
+                type = EInboundProtocol.mixed.ToString(),
+                tag = EInboundProtocol.socks.ToString(),
+                listen = Global.Loopback,
+                listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.split)
+            };
+            singboxConfig.inbounds = new() { inbound };
+
+            if (node.ConfigType == EConfigType.WireGuard)
+            {
+                singboxConfig.outbounds.RemoveAt(0);
+                var endpoints = new Endpoints4Sbox();
+                await GenEndpoint(node, endpoints);
+                endpoints.tag = Global.ProxyTag;
+                singboxConfig.endpoints = new() { endpoints };
+            }
+            else
+            {
+                await GenOutbound(node, singboxConfig.outbounds.First());
+            }
+
+            if (singboxConfig.endpoints == null)
+            {
+                singboxConfig.outbounds = new() { JsonUtils.DeepCopy(singboxConfig.outbounds.First()) };
+            }
+            else
+            {
+                singboxConfig.outbounds.Clear();
+            }
+
+            await GenMoreOutbounds(node, singboxConfig);
+
+            ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
+            ret.Success = true;
+            var config = JsonNode.Parse(JsonUtils.Serialize(singboxConfig)).AsObject();
+
+            config.Remove("route");
+
+            ret.Data = config.ToJsonString(new() { WriteIndented = true });
+
+            return ret;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            ret.Msg = ResUI.FailedGenDefaultConfiguration;
+            return ret;
+        }
+    }
+
     #endregion public gen function
 
     #region private gen function

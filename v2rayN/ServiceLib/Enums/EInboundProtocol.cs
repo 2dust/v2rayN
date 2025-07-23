@@ -9,5 +9,6 @@ public enum EInboundProtocol
     api,
     api2,
     mixed,
+    split,
     speedtest = 21
 }
