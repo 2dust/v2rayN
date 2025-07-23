@@ -64,6 +64,7 @@ public class CoreAdminHandler
         catch (Exception ex)
         {
             _linuxSudoPid = -1;
+            AppHandler.Instance.LinuxSudoPwd = "";
             throw new Exception(ResUI.FailedToRunCore, ex);
         }
 
