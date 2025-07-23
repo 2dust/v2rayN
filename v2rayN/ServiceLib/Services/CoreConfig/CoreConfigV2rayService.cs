@@ -1234,9 +1234,10 @@ public class CoreConfigV2rayService
         }
 
         var routing = await ConfigHandler.GetDefaultRouting(_config);
+        List<RulesItem>? rules = null;
         if (routing != null)
         {
-            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
+            rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
             foreach (var item in rules)
             {
                 if (!item.Enabled || item.Domain is null || item.Domain.Count == 0)
@@ -1319,7 +1320,14 @@ public class CoreConfigV2rayService
         AddDnsServers(directDNSAddress, directGeositeList);
         AddDnsServers(directDNSAddress, expectedDomainList, expectedIPs);
 
-        v2rayConfig.dns.servers.AddRange(remoteDNSAddress);
+        var useDirectDns = rules?.LastOrDefault() is { } lastRule &&
+                          lastRule.OutboundTag == Global.DirectTag &&
+                          (lastRule.Port == "0-65535" ||
+                           lastRule.Network == "tcp,udp" ||
+                           lastRule.Ip?.Contains("0.0.0.0/0") == true);
+
+        var defaultDnsServers = useDirectDns ? directDNSAddress : remoteDNSAddress;
+        v2rayConfig.dns.servers.AddRange(defaultDnsServers);
 
         return 0;
     }

@@ -1608,7 +1608,20 @@ public class CoreConfigSingboxService
 
             singboxConfig.dns ??= new Dns4Sbox();
             singboxConfig.dns.independent_cache = true;
-            singboxConfig.dns.final = "dns_remote"; // TODO: Select fallback DNS server based on routing rules
+
+            var routing = await ConfigHandler.GetDefaultRouting(_config);
+            var useDirectDns = false;
+            if (routing != null)
+            {
+                var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
+
+                useDirectDns = rules?.LastOrDefault() is { } lastRule &&
+                                  lastRule.OutboundTag == Global.DirectTag &&
+                                  (lastRule.Port == "0-65535" ||
+                                   lastRule.Network == "tcp,udp" ||
+                                   lastRule.Ip?.Contains("0.0.0.0/0") == true);
+            }
+            singboxConfig.dns.final = useDirectDns ? "dns_direct" : "dns_remote";
         }
         catch (Exception ex)
         {

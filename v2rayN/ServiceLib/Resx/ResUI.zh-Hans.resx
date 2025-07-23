@@ -1408,7 +1408,7 @@
     <value>直连 DNS</value>
   </data>
   <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
-    <value>出站 DNS 解析</value>
+    <value>出站 DNS 解析（sing-box）</value>
   </data>
   <data name="TbSBOutboundDomainResolve" xml:space="preserve">
     <value>解析出站域名</value>
