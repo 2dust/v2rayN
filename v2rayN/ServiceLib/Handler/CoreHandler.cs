@@ -247,16 +247,30 @@ public class CoreHandler
                     PreSocksPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.split);
                 }
             }
+            else if (EnableTun)
+            {
+                PreCoreType = ECoreType.sing_box;
+
+                if (PreCoreType != CoreType) // CoreType is xray
+                {
+                    SplitCore = true;
+                    PreSocksPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.split);
+                }
+                else // CoreType is sing_box
+                {
+                    PreCoreType = null;
+                }
+            }
         }
     }
 
     private async Task<bool> CoreStart(CoreLaunchContext context)
     {
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = context.SplitCore 
-            ? await CoreConfigHandler.GeneratePureEndpointConfig(context.Node, fileName) 
+        var result = context.SplitCore
+            ? await CoreConfigHandler.GeneratePureEndpointConfig(context.Node, fileName)
             : await CoreConfigHandler.GenerateClientConfig(context.Node, fileName);
-        
+
         if (result.Success != true)
         {
             UpdateFunc(true, result.Msg);
