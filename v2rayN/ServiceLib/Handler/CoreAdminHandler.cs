@@ -58,7 +58,7 @@ public class CoreAdminHandler
             process = Process.GetProcessById(_linuxSudoPid);
             await Task.Delay(5000); // Sudo exit on wrong password takes 2-4 sec.
             if (process.HasExited)
-                throw new InvalidOperationException("Process exited too soon, likely improper sudo password.");
+                throw new InvalidOperationException("Process ended too early, likely due to an incorrect sudo password.");
         }
         catch (Exception ex)
         {
