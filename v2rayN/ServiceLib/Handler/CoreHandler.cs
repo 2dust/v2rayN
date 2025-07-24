@@ -225,6 +225,24 @@ public class CoreHandler
                     PreCoreType = null;
                 }
             }
+            else if (!SplitCore && !EnableTun)
+            {
+                switch (Node.CoreType)
+                {
+                    case ECoreType.hysteria2:
+                    case ECoreType.tuic:
+                        Node.CoreType = ECoreType.sing_box;
+                        CoreType = ECoreType.sing_box;
+                        break;
+                    case ECoreType.v2fly:
+                    case ECoreType.v2fly_v5:
+                        Node.CoreType = ECoreType.Xray;
+                        CoreType = ECoreType.Xray;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -251,14 +269,14 @@ public class CoreHandler
             {
                 PreCoreType = ECoreType.sing_box;
 
-                if (PreCoreType != CoreType) // CoreType is xray
+                if (PreCoreType == CoreType) // CoreType is sing_box
+                {
+                    PreCoreType = null;
+                }
+                else // CoreType is xray, hysteria2, tuic, etc.
                 {
                     SplitCore = true;
                     PreSocksPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.split);
-                }
-                else // CoreType is sing_box
-                {
-                    PreCoreType = null;
                 }
             }
         }
