@@ -1198,43 +1198,6 @@ public class ConfigHandler
     }
 
     /// <summary>
-    /// Get a SOCKS server profile for pre-SOCKS functionality
-    /// Used when TUN mode is enabled or when a custom config has a pre-SOCKS port
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="node">Server node that might need pre-SOCKS</param>
-    /// <param name="coreType">Core type being used</param>
-    /// <returns>A SOCKS profile item or null if not needed</returns>
-    public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
-    {
-        ProfileItem? itemSocks = null;
-        if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
-        {
-            itemSocks = new ProfileItem()
-            {
-                CoreType = ECoreType.sing_box,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Sni = node.Address, //Tun2SocksAddress
-                Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
-            };
-        }
-        else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
-        {
-            var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
-            itemSocks = new ProfileItem()
-            {
-                CoreType = preCoreType,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = node.PreSocksPort.Value,
-            };
-        }
-        await Task.CompletedTask;
-        return itemSocks;
-    }
-
-    /// <summary>
     /// Remove servers with invalid test results (timeout)
     /// Useful for cleaning up subscription lists
     /// </summary>
