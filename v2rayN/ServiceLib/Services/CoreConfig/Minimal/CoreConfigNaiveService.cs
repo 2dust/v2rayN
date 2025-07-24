@@ -23,13 +23,11 @@ public class CoreConfigNaiveService
                 return ret;
             }
 
-            // TODO: EConfigType.Naive
-
-            //if (node.ConfigType != EConfigType.Naive)
-            //{
-            //    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
-            //    return ret;
-            //}
+            if (node.ConfigType != EConfigType.NaiveProxy)
+            {
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
+                return ret;
+            }
 
             var configJsonNode = new JsonObject();
 
