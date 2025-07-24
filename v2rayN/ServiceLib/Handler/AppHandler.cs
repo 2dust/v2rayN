@@ -235,5 +235,16 @@ public sealed class AppHandler
         return item?.CoreType ?? ECoreType.Xray;
     }
 
+    public ECoreType GetSplitCoreType(ProfileItem profileItem, EConfigType eConfigType)
+    {
+        if (profileItem?.CoreType != null)
+        {
+            return (ECoreType)profileItem.CoreType;
+        }
+
+        var item = _config.SplitCoreItem.SplitCoreTypes?.FirstOrDefault(it => it.ConfigType == eConfigType);
+        return item?.CoreType ?? ECoreType.Xray;
+    }
+
     #endregion Core Type
 }

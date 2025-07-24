@@ -43,6 +43,17 @@ public partial class OptionSettingWindow
         cmbCoreType6.ItemsSource = Global.CoreTypes;
         cmbCoreType9.ItemsSource = Global.CoreTypes;
 
+        cmbCoreSplitRouteType.ItemsSource = Global.CoreTypes;
+
+        cmbCoreSplitType1.ItemsSource = Global.CoreTypes;
+        cmbCoreSplitType3.ItemsSource = Global.CoreTypes;
+        cmbCoreSplitType4.ItemsSource = Global.CoreTypes;
+        cmbCoreSplitType5.ItemsSource = Global.CoreTypes;
+        cmbCoreSplitType6.ItemsSource = Global.CoreTypes;
+        cmbCoreSplitType7.ItemsSource = Global.Hysteria2CoreTypes;
+        cmbCoreSplitType8.ItemsSource = Global.TuicCoreTypes;
+        cmbCoreSplitType9.ItemsSource = Global.CoreTypes;
+
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(2, 7).ToList();
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
         cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
@@ -130,6 +141,18 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.Text).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.EnableSplitCore, v => v.togCoreSplit.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RouteSplitCoreType, v => v.cmbCoreSplitRouteType.Text).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.SplitCoreType1, v => v.cmbCoreSplitType1.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType3, v => v.cmbCoreSplitType3.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType4, v => v.cmbCoreSplitType4.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType5, v => v.cmbCoreSplitType5.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType6, v => v.cmbCoreSplitType6.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType7, v => v.cmbCoreSplitType7.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType8, v => v.cmbCoreSplitType8.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SplitCoreType9, v => v.cmbCoreSplitType9.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });

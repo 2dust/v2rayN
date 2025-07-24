@@ -23,11 +23,11 @@ public class CoreConfigJuicityService
                 return ret;
             }
 
-            //if (node.ConfigType != EConfigType.Juicity)
-            //{
-            //    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
-            //    return ret;
-            //}
+            if (node.ConfigType != EConfigType.Juicity)
+            {
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
+                return ret;
+            }
 
             var configJsonNode = new JsonObject();
 

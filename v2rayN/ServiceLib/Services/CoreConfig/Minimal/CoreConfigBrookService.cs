@@ -21,11 +21,11 @@ public class CoreConfigBrookService
                 return ret;
             }
 
-            //if (node.ConfigType != EConfigType.Brook)
-            //{
-            //    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
-            //    return ret;
-            //}
+            if (node.ConfigType != EConfigType.Brook)
+            {
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
+                return ret;
+            }
 
             var processArgs = "client";
 

@@ -278,6 +278,30 @@ public class Global
             "sing_box"
     ];
 
+    public static readonly List<string> Hysteria2CoreTypes =
+    [
+        "sing_box",
+            "Hysteria2"
+    ];
+
+    public static readonly List<string> TuicCoreTypes =
+    [
+        "sing_box",
+            "TUIC"
+    ];
+
+    public static readonly List<EConfigType> SupportSplitConfigTypes =
+    [
+        EConfigType.VMess,
+            EConfigType.VLESS,
+            EConfigType.Shadowsocks,
+            EConfigType.Trojan,
+            EConfigType.Hysteria2,
+            EConfigType.TUIC,
+            EConfigType.WireGuard,
+            EConfigType.SOCKS,
+    ];
+
     public static readonly List<string> DomainStrategies =
     [
         "AsIs",

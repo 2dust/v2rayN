@@ -21,11 +21,11 @@ public class CoreConfigShadowquicService
                 return ret;
             }
 
-            //if (node.ConfigType != EConfigType.Shadowquic)
-            //{
-            //    ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
-            //    return ret;
-            //}
+            if (node.ConfigType != EConfigType.Shadowquic)
+            {
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.ConfigType}";
+                return ret;
+            }
 
             var configYamlNode = new Dictionary<string, object>();
 

@@ -139,6 +139,14 @@ public class CoreTypeItem
 }
 
 [Serializable]
+public class SplitCoreItem
+{
+    public bool EnableSplitCore { get; set; }
+    public List<CoreTypeItem> SplitCoreTypes { get; set; }
+    public ECoreType RouteCoreType { get; set; }
+}
+
+[Serializable]
 public class TunModeItem
 {
     public bool EnableTun { get; set; }

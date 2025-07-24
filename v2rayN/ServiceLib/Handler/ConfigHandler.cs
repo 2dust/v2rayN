@@ -165,6 +165,13 @@ public class ConfigHandler
             config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
         }
 
+        config.SplitCoreItem ??= new()
+        {
+            EnableSplitCore = false,
+            SplitCoreTypes = new List<CoreTypeItem>(),
+            RouteCoreType = ECoreType.Xray
+        };
+
         return config;
     }
 

@@ -1,6 +1,7 @@
 using System.Reactive;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Models;
 
 namespace ServiceLib.ViewModels;
 
@@ -103,6 +104,21 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string CoreType9 { get; set; }
 
     #endregion CoreType
+
+    #region SplitCoreType
+
+    [Reactive] public bool EnableSplitCore { get; set; }
+    [Reactive] public string SplitCoreType1 { get; set; }
+    [Reactive] public string SplitCoreType3 { get; set; }
+    [Reactive] public string SplitCoreType4 { get; set; }
+    [Reactive] public string SplitCoreType5 { get; set; }
+    [Reactive] public string SplitCoreType6 { get; set; }
+    [Reactive] public string SplitCoreType7 { get; set; }
+    [Reactive] public string SplitCoreType8 { get; set; }
+    [Reactive] public string SplitCoreType9 { get; set; }
+    [Reactive] public string RouteSplitCoreType { get; set; }
+
+    #endregion SplitCoreType
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
@@ -210,14 +226,13 @@ public class OptionSettingViewModel : MyReactiveObject
         #endregion Tun mode
 
         await InitCoreType();
+
+        await InitSplitCoreItem();
     }
 
     private async Task InitCoreType()
     {
-        if (_config.CoreTypeItem == null)
-        {
-            _config.CoreTypeItem = new List<CoreTypeItem>();
-        }
+        _config.CoreTypeItem ??= new List<CoreTypeItem>();
 
         foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
         {
@@ -232,6 +247,7 @@ public class OptionSettingViewModel : MyReactiveObject
                 CoreType = ECoreType.Xray
             });
         }
+
         _config.CoreTypeItem.ForEach(it =>
         {
             var type = it.CoreType.ToString();
@@ -263,6 +279,87 @@ public class OptionSettingViewModel : MyReactiveObject
 
                 case 9:
                     CoreType9 = type;
+                    break;
+            }
+        });
+        await Task.CompletedTask;
+    }
+
+    private async Task InitSplitCoreItem()
+    {
+        _config.SplitCoreItem ??= new()
+        {
+            EnableSplitCore = false,
+            SplitCoreTypes = new List<CoreTypeItem>(),
+            RouteCoreType = ECoreType.Xray
+        };
+
+        foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
+        {
+            if (_config.SplitCoreItem.SplitCoreTypes.FindIndex(t => t.ConfigType == it) >= 0)
+            {
+                continue;
+            }
+
+            if (it is EConfigType.Hysteria2 or EConfigType.TUIC)
+            {
+                _config.SplitCoreItem.SplitCoreTypes.Add(new CoreTypeItem()
+                {
+                    ConfigType = it,
+                    CoreType = ECoreType.sing_box
+                });
+                continue;
+            }
+            if (it is EConfigType.Custom)
+            {
+                continue;
+            }
+
+            _config.SplitCoreItem.SplitCoreTypes.Add(new CoreTypeItem()
+            {
+                ConfigType = it,
+                CoreType = ECoreType.Xray
+            });
+        }
+
+        EnableSplitCore = _config.SplitCoreItem.EnableSplitCore;
+        RouteSplitCoreType = _config.SplitCoreItem.RouteCoreType.ToString();
+
+        _config.SplitCoreItem.SplitCoreTypes.ForEach(it =>
+        {
+            var type = it.CoreType.ToString();
+            switch ((int)it.ConfigType)
+            {
+                case 1:
+                    SplitCoreType1 = type;
+                    break;
+
+                case 3:
+                    SplitCoreType3 = type;
+                    break;
+
+                case 4:
+                    SplitCoreType4 = type;
+                    break;
+
+                case 5:
+                    SplitCoreType5 = type;
+                    break;
+
+                case 6:
+                    SplitCoreType6 = type;
+                    break;
+
+                case 7:
+                    SplitCoreType7 = type;
+                    break;
+
+                case 8:
+                    SplitCoreType8 = type;
+                    break;
+
+                case 9:
+                    SplitCoreType9 = type;
                     break;
             }
         });
@@ -362,6 +459,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
         //coreType
         await SaveCoreType();
+        await SaveSplitCoreType();
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
@@ -418,6 +516,48 @@ public class OptionSettingViewModel : MyReactiveObject
             }
             item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
         }
+        await Task.CompletedTask;
+    }
+
+    private async Task SaveSplitCoreType()
+    {
+        for (int k = 1; k <= _config.SplitCoreItem.SplitCoreTypes.Count; k++)
+        {
+            var item = _config.SplitCoreItem.SplitCoreTypes[k - 1];
+            var type = string.Empty;
+            switch ((int)item.ConfigType)
+            {
+                case 1:
+                    type = SplitCoreType1;
+                    break;
+                case 3:
+                    type = SplitCoreType3;
+                    break;
+                case 4:
+                    type = SplitCoreType4;
+                    break;
+                case 5:
+                    type = SplitCoreType5;
+                    break;
+                case 6:
+                    type = SplitCoreType6;
+                    break;
+                case 7:
+                    type = SplitCoreType7;
+                    break;
+                case 8:
+                    type = SplitCoreType8;
+                    break;
+                case 9:
+                    type = SplitCoreType9;
+                    break;
+                default:
+                    continue;
+            }
+            item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
+        }
+        _config.SplitCoreItem.RouteCoreType = (ECoreType)Enum.Parse(typeof(ECoreType), RouteSplitCoreType);
+        _config.SplitCoreItem.EnableSplitCore = EnableSplitCore;
         await Task.CompletedTask;
     }
 }
