@@ -29,9 +29,9 @@ public class CoreAdminHandler
 
     public async Task<Process?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
     {
-        Process process = null;
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
         var shFilePath = await CreateLinuxShellFile(cmdLine, "run_as_sudo.sh");
+        Process? process = null;
 
         var cmdTask = Cli.Wrap(shFilePath)
             .WithWorkingDirectory(Utils.GetBinConfigPath())
@@ -51,13 +51,12 @@ public class CoreAdminHandler
             .WithValidation(CommandResultValidation.None)
             .ExecuteAsync();
 
-
         _linuxSudoPid = cmdTask.ProcessId;
 
         try
         {
             process = Process.GetProcessById(_linuxSudoPid);
-            await Task.Delay(5000);  // Sudo exit on wrong password takes 2-4 sec.
+            await Task.Delay(5000); // Sudo exit on wrong password takes 2-4 sec.
             if (process.HasExited)
                 throw new InvalidOperationException("Process exited too soon, likely improper sudo password.");
         }
