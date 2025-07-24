@@ -74,7 +74,8 @@ public class CoreConfigHy2Service
                 configJsonNode["bandwidth"] = bandwidthObject;
             }
 
-            ret.Data = configJsonNode.ToJsonString(new() { WriteIndented = true });
+            ret.Success = true;
+            ret.Data = JsonUtils.Serialize(configJsonNode, true);
 
             return await Task.FromResult(ret);
         }

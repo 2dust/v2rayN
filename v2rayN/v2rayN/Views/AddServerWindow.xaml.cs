@@ -72,7 +72,8 @@ public partial class AddServerWindow
                 gridHysteria2.Visibility = Visibility.Visible;
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
-                cmbCoreType.IsEnabled = false;
+                //cmbCoreType.IsEnabled = false;
+                cmbCoreType.ItemsSource = Global.Hysteria2CoreTypes;
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.Text = string.Empty;
                 break;
@@ -81,7 +82,8 @@ public partial class AddServerWindow
                 gridTuic.Visibility = Visibility.Visible;
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
-                cmbCoreType.IsEnabled = false;
+                //cmbCoreType.IsEnabled = false;
+                cmbCoreType.ItemsSource = Global.TuicCoreTypes;
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.Text = string.Empty;
 

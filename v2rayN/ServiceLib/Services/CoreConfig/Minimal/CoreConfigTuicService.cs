@@ -51,17 +51,28 @@ public class CoreConfigTuicService
             };
 
             // outbound
+            var alpn = new JsonArray();
+            foreach(var item in node.GetAlpn() ?? new List<string>())
+            {
+                alpn.Add(item);
+            }
+            if (alpn.Count == 0)
+            {
+                alpn.Add("h3");
+            }
+
             configJsonNode["relay"] = new JsonObject
             {
                 ["server"] = node.Address + ":" + node.Port,
                 ["uuid"] = node.Id,
                 ["password"] = node.Security,
                 ["udp_relay_mode"] = "quic",
-                ["congestion_control"] = "bbr",
-                ["alpn"] = new JsonArray { "h3", "spdy/3.1" }
+                ["congestion_control"] = node.HeaderType,
+                ["alpn"] = alpn
             };
 
-            ret.Data = configJsonNode.ToJsonString(new() { WriteIndented = true });
+            ret.Success = true;
+            ret.Data = JsonUtils.Serialize(configJsonNode, true);
 
             return await Task.FromResult(ret);
         }

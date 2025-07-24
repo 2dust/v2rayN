@@ -3427,6 +3427,33 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Outbound and routing are decoupled. If their Core types differ, two separate cores will be activated. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSplitCoreDoc1 {
+            get {
+                return ResourceManager.GetString("TbSettingsSplitCoreDoc1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Routing Core defaults to sing-box when Tun is enabled. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSplitCoreDoc2 {
+            get {
+                return ResourceManager.GetString("TbSettingsSplitCoreDoc2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable separation of outbound and routing cores 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSplitCoreEnable {
+            get {
+                return ResourceManager.GetString("TbSettingsSplitCoreEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box ruleset files source (optional) 的本地化字符串。
         /// </summary>
         public static string TbSettingsSrsFilesSource {

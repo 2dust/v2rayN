@@ -36,6 +36,7 @@ public class CoreConfigBrookService
             processArgs += " --server " + node.Address + ":" + node.Port;
             processArgs += " --password " + node.Id;
 
+            ret.Success = true;
             ret.Data = processArgs;
 
             return await Task.FromResult(ret);

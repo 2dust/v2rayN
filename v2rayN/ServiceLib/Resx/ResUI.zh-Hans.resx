@@ -1401,4 +1401,13 @@
   <data name="menuAddAnytlsServer" xml:space="preserve">
     <value>添加 [Anytls] 配置文件</value>
   </data>
+  <data name="TbSettingsSplitCoreEnable" xml:space="preserve">
+    <value>启用出站核心与路由核心分离</value>
+  </data>
+  <data name="TbSettingsSplitCoreDoc1" xml:space="preserve">
+    <value>出站与路由分离，出站与分流 Core 类型不同时，将启用两个核心</value>
+  </data>
+  <data name="TbSettingsSplitCoreDoc2" xml:space="preserve">
+    <value>启用 Tun 时，路由 Core 为 sing-box</value>
+  </data>
 </root>

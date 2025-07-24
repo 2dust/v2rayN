@@ -39,7 +39,8 @@ public class CoreConfigNaiveService
             // outbound
             configJsonNode["proxy"] = (node.Network == "quic" ? "quic://" : Global.HttpsProtocol) + node.Id + "@" + node.Address + ":" + node.Port;
 
-            ret.Data = configJsonNode.ToJsonString(new() { WriteIndented = true });
+            ret.Success = true;
+            ret.Data = JsonUtils.Serialize(configJsonNode, true);
 
             return await Task.FromResult(ret);
         }

@@ -1401,4 +1401,13 @@
   <data name="menuAddAnytlsServer" xml:space="preserve">
     <value>新增 [Anytls] 設定檔</value>
   </data>
+  <data name="TbSettingsSplitCoreEnable" xml:space="preserve">
+    <value>Enable separation of outbound and routing cores</value>
+  </data>
+  <data name="TbSettingsSplitCoreDoc1" xml:space="preserve">
+    <value>Outbound and routing are decoupled. If their Core types differ, two separate cores will be activated.</value>
+  </data>
+  <data name="TbSettingsSplitCoreDoc2" xml:space="preserve">
+    <value>Routing Core defaults to sing-box when Tun is enabled.</value>
+  </data>
 </root>

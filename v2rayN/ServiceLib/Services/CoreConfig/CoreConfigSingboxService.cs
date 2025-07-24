@@ -2,6 +2,7 @@ using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Reactive;
+using System.Text.Json.Nodes;
 using DynamicData;
 using ServiceLib.Models;
 
@@ -587,7 +588,7 @@ public class CoreConfigSingboxService
 
             config.Remove("route");
 
-            ret.Data = config.ToJsonString(new() { WriteIndented = true });
+            ret.Data = JsonUtils.Serialize(config, true);
 
             return ret;
         }

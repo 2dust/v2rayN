@@ -56,9 +56,10 @@ public class CoreConfigJuicityService
                 configJsonNode["sni"] = node.Sni;
             }
             configJsonNode["allow_insecure"] = node.AllowInsecure == "true";
-            configJsonNode["congestion_control"] = "bbr";
+            configJsonNode["congestion_control"] = node.HeaderType;
 
-            ret.Data = configJsonNode.ToJsonString(new() { WriteIndented = true });
+            ret.Success = true;
+            ret.Data = JsonUtils.Serialize(configJsonNode, true);
 
             return await Task.FromResult(ret);
         }

@@ -281,13 +281,13 @@ public class Global
     public static readonly List<string> Hysteria2CoreTypes =
     [
         "sing_box",
-            "Hysteria2"
+            "hysteria2"
     ];
 
     public static readonly List<string> TuicCoreTypes =
     [
         "sing_box",
-            "TUIC"
+            "tuic"
     ];
 
     public static readonly List<EConfigType> SupportSplitConfigTypes =

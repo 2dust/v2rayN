@@ -1,3 +1,5 @@
+using System.Text.Json.Nodes;
+
 namespace ServiceLib.Services.CoreConfig.Minimal;
 public class CoreConfigShadowquicService
 {
@@ -51,14 +53,24 @@ public class CoreConfigShadowquicService
             configYamlNode["inbound"] = inboundNode;
 
             // outbound
+            var alpn = new JsonArray();
+            foreach (var item in node.GetAlpn() ?? new List<string>())
+            {
+                alpn.Add(item);
+            }
+            if (alpn.Count == 0)
+            {
+                alpn.Add("h3");
+            }
+
             var outboundNode = new Dictionary<string, object>
             {
                 ["type"] = "shadowquic",
                 ["addr"] = node.Address + ":" + node.Port,
                 ["password"] = node.Id,
                 ["username"] = node.Security,
-                ["alpn"] = new List<string> { "h3" },
-                ["congestion-control"] = "bbr",
+                ["alpn"] = alpn,
+                ["congestion-control"] = node.HeaderType,
                 ["zero-rtt"] = true
             };
             if (node.Sni.IsNotEmpty())
@@ -67,6 +79,7 @@ public class CoreConfigShadowquicService
             }
             configYamlNode["outbound"] = outboundNode;
 
+            ret.Success = true;
             ret.Data = YamlUtils.ToYaml(configYamlNode);
 
             return await Task.FromResult(ret);
