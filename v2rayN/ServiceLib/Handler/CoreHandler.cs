@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Text;
 using ServiceLib.Enums;
 using ServiceLib.Models;
+using static SQLite.SQLite3;
 
 namespace ServiceLib.Handler;
 
@@ -265,7 +266,8 @@ public class CoreHandler
         }
         
         _process = proc;
-        _config.RunningCoreType = AppHandler.Instance.GetCoreType(context.Node, context.Node.ConfigType);
+        var (_, coreType, preCoreType) = AppHandler.Instance.GetCoreAndPreType(context.Node);
+        _config.RunningCoreType = (ECoreType)(preCoreType != null ? preCoreType : coreType);
         return true;
     }
 
