@@ -24,7 +24,7 @@ public class Hysteria2Fmt : BaseFmt
         item.Path = Utils.UrlDecode(query["obfs-password"] ?? "");
         item.AllowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
 
-        item.Ports = Utils.UrlDecode(query["mport"] ?? "").Replace('-', ':');
+        item.Ports = Utils.UrlDecode(query["mport"] ?? "");
 
         return item;
     }

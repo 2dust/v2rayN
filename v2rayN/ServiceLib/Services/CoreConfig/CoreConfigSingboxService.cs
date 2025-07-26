@@ -706,12 +706,17 @@ public class CoreConfigSingboxService
 
                         outbound.up_mbps = _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
                         outbound.down_mbps = _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
-                        if (node.Ports.IsNotEmpty())
+                        if (node.Ports.IsNotEmpty() && (node.Ports.Contains(':') || node.Ports.Contains('-') || node.Ports.Contains(',')))
                         {
                             outbound.server_port = null;
                             outbound.server_ports = node.Ports.Split(',')
-                                .Where(p => p.Trim().IsNotEmpty())
-                                .Select(p => p.Replace('-', ':'))
+                                .Select(p => p.Trim())
+                                .Where(p => p.IsNotEmpty())
+                                .Select(p =>
+                                {
+                                    var port = p.Replace('-', ':');
+                                    return port.Contains(':') ? port : $"{port}:{port}";
+                                })
                                 .ToList();
                             outbound.hop_interval = _config.HysteriaItem.HopInterval > 0 ? $"{_config.HysteriaItem.HopInterval}s" : null;
                         }
