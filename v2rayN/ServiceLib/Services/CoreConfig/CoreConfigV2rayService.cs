@@ -95,7 +95,7 @@ public class CoreConfigV2rayService
                             }
                         }
                     }
-                    ret.Data = customConfigNode.ToJsonString(new() { WriteIndented = true });
+                    ret.Data = JsonUtils.Serialize(customConfigNode);
                 }
             }
             else
@@ -299,7 +299,7 @@ public class CoreConfigV2rayService
                             }
                         }
                     }
-                    ret.Data = customConfigNode.ToJsonString(new() { WriteIndented = true });
+                    ret.Data = JsonUtils.Serialize(customConfigNode);
                 }
             }
             else
@@ -1570,7 +1570,7 @@ public class CoreConfigV2rayService
 
             await GenDnsDomainsCompatible(node, obj, item);
 
-            v2rayConfig.dns = JsonUtils.Deserialize<Dns4Ray>(obj.ToJsonString());
+            v2rayConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(obj));
         }
         catch (Exception ex)
         {
