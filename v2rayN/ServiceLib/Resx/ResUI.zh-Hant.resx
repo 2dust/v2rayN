@@ -1392,4 +1392,7 @@
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
     <value>可以填寫設定檔別名，請確保存在並唯一</value>
   </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>sudo 密碼已經驗證成功，請忽略錯誤密碼提示！</value>
+  </data>
 </root>

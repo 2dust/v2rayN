@@ -1395,4 +1395,7 @@
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
     <value>Can fill in the configuration remarks, please make sure it exist and are unique</value>
   </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>Sudo password has been verified successfully, please ignore the incorrect password prompts!</value>
+  </data>
 </root>
