@@ -31,31 +31,48 @@ public class CoreAdminHandler
     {
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
         var shFilePath = await CreateLinuxShellFile(cmdLine, "run_as_sudo.sh");
-        Process? process = null;
 
-        var cmdTask = Cli.Wrap(shFilePath)
-            .WithWorkingDirectory(Utils.GetBinConfigPath())
-            .WithStandardInputPipe(PipeSource.FromString(AppHandler.Instance.LinuxSudoPwd))
-            .WithStandardOutputPipe(PipeTarget.ToDelegate(
-                s =>
-                {
-                    if (!string.IsNullOrEmpty(s))
-                        UpdateFunc(false, s + Environment.NewLine);
-                }))
-            .WithStandardErrorPipe(PipeTarget.ToDelegate(
-                s =>
-                {
-                    if (!string.IsNullOrEmpty(s))
-                        UpdateFunc(false, s + Environment.NewLine);
-                }))
-            .WithValidation(CommandResultValidation.None)
-            .ExecuteAsync();
+        Process process = new()
+        {
+            StartInfo = new()
+            {
+                FileName = shFilePath,
+                WorkingDirectory = Utils.GetBinConfigPath(),
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            }
+        };
 
-        _linuxSudoPid = cmdTask.ProcessId;
+        process.OutputDataReceived += (sender, e) =>
+        {
+            if (e.Data.IsNotEmpty())
+            {
+                UpdateFunc(false, e.Data + Environment.NewLine);
+            }
+        };
+
+        process.ErrorDataReceived += (sender, e) =>
+        {
+            if (e.Data.IsNotEmpty())
+            {
+                UpdateFunc(false, e.Data + Environment.NewLine);
+            }
+        };
+
+        process.Start();
+
+        process.StandardInput.WriteLine(AppHandler.Instance.LinuxSudoPwd);
+        process.StandardInput.Close();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+
+        _linuxSudoPid = process.Id;
 
         try
         {
-            process = Process.GetProcessById(_linuxSudoPid);
             await Task.Delay(5000); // Sudo exit on wrong password takes 2-4 sec.
             if (process.HasExited)
                 throw new InvalidOperationException("Process ended too early, likely due to an incorrect sudo password.");
