@@ -1910,7 +1910,7 @@ public class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() == true) && (!customConfig.ProxyDetour.IsNullOrEmpty()))
+            else if ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() == true) && (!customConfig.ProxyDetour.IsNullOrEmpty()) && !(Utils.IsPrivateNetwork(outbound.settings?.servers?.FirstOrDefault()?.address ?? string.Empty) || Utils.IsPrivateNetwork(outbound.settings?.vnext?.FirstOrDefault()?.address ?? string.Empty)))
             {
                 outbound.streamSettings ??= new StreamSettings4Ray();
                 outbound.streamSettings.sockopt ??= new Sockopt4Ray();

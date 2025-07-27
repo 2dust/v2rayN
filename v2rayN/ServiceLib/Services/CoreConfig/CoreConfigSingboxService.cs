@@ -2232,7 +2232,7 @@ public class CoreConfigSingboxService
                     continue;
                 }
             }
-            else if (outbound.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()))
+            else if (outbound.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()) && !Utils.IsPrivateNetwork(outbound.server ?? string.Empty))
             {
                 outbound.detour = customConfig.ProxyDetour;
             }
