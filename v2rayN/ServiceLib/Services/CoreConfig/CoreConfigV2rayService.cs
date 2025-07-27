@@ -73,18 +73,9 @@ public class CoreConfigV2rayService
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
             if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
             {
-                //var customConfigObj = JsonUtils.Deserialize<V2rayConfig>(customConfig.Config);
-                //if (customConfigObj != null)
-                //{
-                //    customConfigObj.outbounds = JsonUtils.DeepCopy(v2rayConfig.outbounds);
-                //    v2rayConfig = customConfigObj;
-                //}
-                // spik deserialize
                 var customConfigNode = JsonNode.Parse(customConfig.Config);
                 if (customConfigNode != null)
                 {
-                    //customConfigNode["outbounds"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.outbounds));
-                    // append outbounds instead of override
                     if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
                     {
                         if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.outbounds)) is JsonArray newOutbounds)
@@ -234,22 +225,6 @@ public class CoreConfigV2rayService
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
             if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
             {
-                //var customConfigObj = JsonUtils.Deserialize<V2rayConfig>(customConfig.Config);
-                //if (customConfigObj != null)
-                //{
-                //    foreach (var rule in customConfigObj.routing.rules)
-                //    {
-                //        if (rule.outboundTag == Global.ProxyTag)
-                //        {
-                //            rule.outboundTag = null;
-                //            rule.balancerTag = balancer.tag;
-                //        }
-                //    }
-                //    customConfigObj.routing.balancers = JsonUtils.DeepCopy(v2rayConfig.routing.balancers);
-                //    customConfigObj.outbounds = JsonUtils.DeepCopy(v2rayConfig.outbounds);
-                //    v2rayConfig = customConfigObj;
-                //}
-                // skip deserialize
                 var customConfigNode = JsonNode.Parse(customConfig.Config);
                 if (customConfigNode != null)
                 {

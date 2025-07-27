@@ -81,21 +81,16 @@ public class CoreConfigSingboxService
             ret.Success = true;
 
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
+            var customConfigItem = customConfig.Config;
+            if (_config.TunModeItem.EnableTun)
             {
-                //var customConfigObj = JsonUtils.Deserialize<SingboxConfig>(customConfig.Config);
-                //if (customConfigObj != null)
-                //{
-                //    customConfigObj.outbounds = JsonUtils.DeepCopy(singboxConfig.outbounds);
-                //    singboxConfig = customConfigObj;
-                //}
-
-                // skip deserialize
-                var customConfigNode = JsonNode.Parse(customConfig.Config);
+                customConfigItem = customConfig.TunConfig;
+            }
+            if (customConfig.Enabled && (!customConfigItem.IsNullOrEmpty()))
+            {
+                var customConfigNode = JsonNode.Parse(customConfigItem);
                 if (customConfigNode != null)
                 {
-                    // customConfigNode["outbounds"] = JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds));
-                    // append outbounds instead of override
                     if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
                     {
                         if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds)) is JsonArray newOutbounds)
@@ -106,7 +101,6 @@ public class CoreConfigSingboxService
                             }
                         }
                     }
-                    // endpoints
                     if (customConfigNode["endpoints"] is JsonArray customEndpointsNode)
                     {
                         if (singboxConfig.endpoints != null && JsonNode.Parse(JsonUtils.Serialize(singboxConfig.endpoints)) is JsonArray newEndpoints)
@@ -477,20 +471,16 @@ public class CoreConfigSingboxService
             ret.Success = true;
 
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            if (customConfig.Enabled && (!customConfig.Config.IsNullOrEmpty()))
+            var customConfigItem = customConfig.Config;
+            if (_config.TunModeItem.EnableTun)
             {
-                //var customConfigObj = JsonUtils.Deserialize<SingboxConfig>(customConfig.Config);
-                //if (customConfigObj != null)
-                //{
-                //    customConfigObj.outbounds = JsonUtils.DeepCopy(singboxConfig.outbounds);
-                //    singboxConfig = customConfigObj;
-                //}
-                // skip deserialize
-                var customConfigNode = JsonNode.Parse(customConfig.Config);
+                customConfigItem = customConfig.TunConfig;
+            }
+            if (customConfig.Enabled && (!customConfigItem.IsNullOrEmpty()))
+            {
+                var customConfigNode = JsonNode.Parse(customConfigItem);
                 if (customConfigNode != null)
                 {
-                    // customConfigNode["outbounds"] = JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds));
-                    // append outbounds instead of override
                     if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
                     {
                         if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds)) is JsonArray newOutbounds)
@@ -501,7 +491,6 @@ public class CoreConfigSingboxService
                             }
                         }
                     }
-                    // endpoints
                     if (customConfigNode["endpoints"] is JsonArray customEndpointsNode)
                     {
                         if (singboxConfig.endpoints != null && JsonNode.Parse(JsonUtils.Serialize(singboxConfig.endpoints)) is JsonArray newEndpoints)
