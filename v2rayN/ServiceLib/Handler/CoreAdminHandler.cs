@@ -74,8 +74,6 @@ public class CoreAdminHandler
 
         await Task.Delay(10);
         await proc.StandardInput.WriteLineAsync(AppHandler.Instance.LinuxSudoPwd);
-        await Task.Delay(10);
-        await proc.StandardInput.WriteLineAsync(AppHandler.Instance.LinuxSudoPwd);
 
         await Task.Delay(100);
         if (proc is null or { HasExited: true })
