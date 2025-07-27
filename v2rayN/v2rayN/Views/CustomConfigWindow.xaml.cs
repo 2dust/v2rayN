@@ -21,9 +21,13 @@ public partial class CustomConfigWindow
         {
             this.Bind(ViewModel, vm => vm.EnableCustomConfig4Ray, v => v.rayCustomConfigEnable.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CustomConfig4Ray, v => v.rayCustomConfig.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AddProxyOnly4Ray, v => v.togAddProxyProtocolOutboundOnly4Ray.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.ProxyDetour4Ray, v => v.txtProxyDetour4Ray.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableCustomConfig4Singbox, v => v.sbCustomConfigEnable.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CustomConfig4Singbox, v => v.sbCustomConfig.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CustomTunConfig4Singbox, v => v.sbCustomTunConfig.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AddProxyOnly4Singbox, v => v.togAddProxyProtocolOutboundOnly4Singbox.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.ProxyDetour4Singbox, v => v.txtProxyDetour4Singbox.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });

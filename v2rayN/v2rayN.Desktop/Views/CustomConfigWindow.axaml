@@ -59,6 +59,30 @@
                         </StackPanel>
                     </Grid>
 
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
+                            <ToggleSwitch
+                                x:Name="togAddProxyProtocolOutboundOnly4Ray"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
+                            <TextBox
+                                x:Name="txtProxyDetour4Ray"
+                                Width="200"
+                                Margin="{StaticResource Margin4}" />
+                        </StackPanel>
+                    </WrapPanel>
+
                     <HeaderedContentControl
                         Margin="{StaticResource Margin4}"
                         BorderBrush="Gray"
@@ -96,6 +120,30 @@
                                 HorizontalAlignment="Left" />
                         </StackPanel>
                     </Grid>
+
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
+                            <ToggleSwitch
+                                x:Name="togAddProxyProtocolOutboundOnly4Singbox"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
+                            <TextBox
+                                x:Name="txtProxyDetour4Singbox"
+                                Width="200"
+                                Margin="{StaticResource Margin4}" />
+                        </StackPanel>
+                    </WrapPanel>
 
                     <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="*,10,*">
 

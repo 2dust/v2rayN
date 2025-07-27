@@ -2248,6 +2248,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Do Not Add Non-Proxy Protocol Outbound 的本地化字符串。
+        /// </summary>
+        public static string TbAddProxyProtocolOutboundOnly {
+            get {
+                return ResourceManager.GetString("TbAddProxyProtocolOutboundOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         public static string TbAddress {
@@ -2383,24 +2392,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable Custom DNS 的本地化字符串。
-        /// </summary>
-        public static string TbCustomDNSEnable {
-            get {
-                return ResourceManager.GetString("TbCustomDNSEnable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Custom DNS Enabled, This Page&apos;s Settings Invalid 的本地化字符串。
-        /// </summary>
-        public static string TbCustomDNSEnabledPageInvalid {
-            get {
-                return ResourceManager.GetString("TbCustomDNSEnabledPageInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable Custom Config 的本地化字符串。
         /// </summary>
         public static string TbCustomConfigEnable {
@@ -2415,6 +2406,24 @@ namespace ServiceLib.Resx {
         public static string TbCustomConfigSingbox {
             get {
                 return ResourceManager.GetString("TbCustomConfigSingbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Custom DNS 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnable {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom DNS Enabled, This Page&apos;s Settings Invalid 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnabledPageInvalid {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnabledPageInvalid", resourceCulture);
             }
         }
         
@@ -2770,7 +2779,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Override Outbound Config, routing.balancers and routing.rules.outboundTag Only 的本地化字符串。
+        ///   查找类似 Add Outbound Config Only, routing.balancers and routing.rules.outboundTag 的本地化字符串。
         /// </summary>
         public static string TbRayCustomConfigDesc {
             get {
@@ -2905,6 +2914,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add Outbound and Endpoint Config Only 的本地化字符串。
+        /// </summary>
+        public static string TbSBCustomConfigDesc {
+            get {
+                return ResourceManager.GetString("TbSBCustomConfigDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
         /// </summary>
         public static string TbSBDirectResolveStrategy {
@@ -2964,15 +2982,6 @@ namespace ServiceLib.Resx {
         public static string TbSBRemoteResolveStrategy {
             get {
                 return ResourceManager.GetString("TbSBRemoteResolveStrategy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Override Outbound And Endpoint Config Only 的本地化字符串。
-        /// </summary>
-        public static string TbSBCustomConfigDesc {
-            get {
-                return ResourceManager.GetString("TbSBCustomConfigDesc", resourceCulture);
             }
         }
         
@@ -3756,6 +3765,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsUseSystemHosts {
             get {
                 return ResourceManager.GetString("TbSettingsUseSystemHosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set Upstream Proxy Tag 的本地化字符串。
+        /// </summary>
+        public static string TbSetUpstreamProxyDetour {
+            get {
+                return ResourceManager.GetString("TbSetUpstreamProxyDetour", resourceCulture);
             }
         }
         

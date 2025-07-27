@@ -1483,9 +1483,15 @@
     <value>sing-box 自定义配置</value>
   </data>
   <data name="TbRayCustomConfigDesc" xml:space="preserve">
-    <value>仅覆盖出站配置，routing.balancers 和 routing.rules.outboundTag</value>
+    <value>仅添加出站配置，routing.balancers 和 routing.rules.outboundTag</value>
   </data>
   <data name="TbSBCustomConfigDesc" xml:space="preserve">
-    <value>仅覆盖出站和端点配置</value>
+    <value>仅添加出站和端点配置</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>不添加非代理协议出站</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>设置上游代理 tag</value>
   </data>
 </root>

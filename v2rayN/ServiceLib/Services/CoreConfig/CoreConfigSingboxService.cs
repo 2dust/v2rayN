@@ -81,43 +81,7 @@ public class CoreConfigSingboxService
             ret.Success = true;
 
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            var customConfigItem = customConfig.Config;
-            if (_config.TunModeItem.EnableTun)
-            {
-                customConfigItem = customConfig.TunConfig;
-            }
-            if (customConfig.Enabled && (!customConfigItem.IsNullOrEmpty()))
-            {
-                var customConfigNode = JsonNode.Parse(customConfigItem);
-                if (customConfigNode != null)
-                {
-                    if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
-                    {
-                        if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds)) is JsonArray newOutbounds)
-                        {
-                            foreach (var outbound in newOutbounds)
-                            {
-                                customOutboundsNode.Add(outbound?.DeepClone());
-                            }
-                        }
-                    }
-                    if (customConfigNode["endpoints"] is JsonArray customEndpointsNode)
-                    {
-                        if (singboxConfig.endpoints != null && JsonNode.Parse(JsonUtils.Serialize(singboxConfig.endpoints)) is JsonArray newEndpoints)
-                        {
-                            foreach (var endpoint in newEndpoints)
-                            {
-                                customEndpointsNode.Add(endpoint?.DeepClone());
-                            }
-                        }
-                    }
-                    ret.Data = JsonUtils.Serialize(customConfigNode);
-                }
-            }
-            else
-            {
-                ret.Data = JsonUtils.Serialize(singboxConfig);
-            }
+            ret.Data = await ApplyCustomConfig(customConfig, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -471,43 +435,7 @@ public class CoreConfigSingboxService
             ret.Success = true;
 
             var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            var customConfigItem = customConfig.Config;
-            if (_config.TunModeItem.EnableTun)
-            {
-                customConfigItem = customConfig.TunConfig;
-            }
-            if (customConfig.Enabled && (!customConfigItem.IsNullOrEmpty()))
-            {
-                var customConfigNode = JsonNode.Parse(customConfigItem);
-                if (customConfigNode != null)
-                {
-                    if (customConfigNode["outbounds"] is JsonArray customOutboundsNode)
-                    {
-                        if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.outbounds)) is JsonArray newOutbounds)
-                        {
-                            foreach (var outbound in newOutbounds)
-                            {
-                                customOutboundsNode.Add(outbound?.DeepClone());
-                            }
-                        }
-                    }
-                    if (customConfigNode["endpoints"] is JsonArray customEndpointsNode)
-                    {
-                        if (singboxConfig.endpoints != null && JsonNode.Parse(JsonUtils.Serialize(singboxConfig.endpoints)) is JsonArray newEndpoints)
-                        {
-                            foreach (var endpoint in newEndpoints)
-                            {
-                                customEndpointsNode.Add(endpoint?.DeepClone());
-                            }
-                        }
-                    }
-                    ret.Data = JsonUtils.Serialize(customConfigNode);
-                }
-            }
-            else
-            {
-                ret.Data = JsonUtils.Serialize(singboxConfig);
-            }
+            ret.Data = await ApplyCustomConfig(customConfig, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -2272,6 +2200,62 @@ public class CoreConfigSingboxService
         }
 
         return 0;
+    }
+
+    private async Task<string> ApplyCustomConfig(CustomConfigItem customConfig, SingboxConfig singboxConfig)
+    {
+        var customConfigItem = customConfig.Config;
+        if (_config.TunModeItem.EnableTun)
+        {
+            customConfigItem = customConfig.TunConfig;
+        }
+
+        if (!customConfig.Enabled || customConfigItem.IsNullOrEmpty())
+        {
+            return JsonUtils.Serialize(singboxConfig);
+        }
+
+        var customConfigNode = JsonNode.Parse(customConfigItem);
+        if (customConfigNode == null)
+        {
+            return JsonUtils.Serialize(singboxConfig);
+        }
+
+        // Process outbounds
+        var customOutboundsNode = customConfigNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
+        foreach (var outbound in singboxConfig.outbounds)
+        {
+            if (outbound.type.ToLower() is "direct" or "block")
+            {
+                if (customConfig.AddProxyOnly == true)
+                {
+                    continue;
+                }
+            }
+            else if (outbound.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()))
+            {
+                outbound.detour = customConfig.ProxyDetour;
+            }
+            customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
+        }
+        customConfigNode["outbounds"] = customOutboundsNode;
+
+        // Process endpoints
+        if (singboxConfig.endpoints != null && singboxConfig.endpoints.Count > 0)
+        {
+            var customEndpointsNode = customConfigNode["endpoints"] is JsonArray endpoints ? endpoints : new JsonArray();
+            foreach (var endpoint in singboxConfig.endpoints)
+            {
+                if (endpoint.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()))
+                {
+                    endpoint.detour = customConfig.ProxyDetour;
+                }
+                customEndpointsNode.Add(JsonUtils.DeepCopy(endpoint));
+            }
+            customConfigNode["endpoints"] = customEndpointsNode;
+        }
+
+        return await Task.FromResult(JsonUtils.Serialize(customConfigNode));
     }
 
     #endregion private gen function

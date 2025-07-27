@@ -1483,9 +1483,15 @@
     <value>sing-box Custom Config</value>
   </data>
   <data name="TbRayCustomConfigDesc" xml:space="preserve">
-    <value>Override Outbound Config, routing.balancers and routing.rules.outboundTag Only</value>
+    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag</value>
   </data>
   <data name="TbSBCustomConfigDesc" xml:space="preserve">
-    <value>Override Outbound And Endpoint Config Only</value>
+    <value>Add Outbound and Endpoint Config Only</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>Do Not Add Non-Proxy Protocol Outbound</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>Set Upstream Proxy Tag</value>
   </data>
 </root>
