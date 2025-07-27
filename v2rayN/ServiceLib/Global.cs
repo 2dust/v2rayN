@@ -76,6 +76,13 @@ public class Global
     public const int SpeedTestPageSize = 1000;
     public const string LinuxBash = "/bin/bash";
 
+    public const string SingboxDirectDNSTag = "direct_dns";
+    public const string SingboxRemoteDNSTag = "remote_dns";
+    public const string SingboxOutboundResolverTag = "outbound_resolver";
+    public const string SingboxFinalResolverTag = "final_resolver";
+    public const string SingboxHostsDNSTag = "hosts_dns";
+    public const string SingboxFakeDNSTag = "fake_dns";
+
     public static readonly List<string> IEProxyProtocols =
     [
         "{ip}:{http_port}",
