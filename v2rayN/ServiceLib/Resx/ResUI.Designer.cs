@@ -2203,6 +2203,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Incorrect password, please try again. 的本地化字符串。
+        /// </summary>
+        public static string SudoIncorrectPasswordTip {
+            get {
+                return ResourceManager.GetString("SudoIncorrectPasswordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sudo password has been verified successfully, please ignore the incorrect password prompts! 的本地化字符串。
         /// </summary>
         public static string SudoPwdVerfiedSuccessTip {
@@ -3202,7 +3211,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart. 的本地化字符串。
+        ///   查找类似 The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart. 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {
             get {

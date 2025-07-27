@@ -1318,7 +1318,7 @@
     <value>Rendszer sudo jelszó</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
+    <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp mód</value>
@@ -1397,5 +1397,8 @@
   </data>
   <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
     <value>Sudo password has been verified successfully, please ignore the incorrect password prompts!</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Incorrect password, please try again.</value>
   </data>
 </root>

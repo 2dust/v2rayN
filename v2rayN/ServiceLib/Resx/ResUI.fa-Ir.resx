@@ -1318,7 +1318,7 @@
     <value>رمز عبور sudo سیستم</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>رمز عبوری که وارد کرده اید تایید نمی شود، بنابراین مطمئن شوید که آن را به درستی وارد کرده اید. اگر برنامه به دلیل ورودی نادرست به درستی کار نمی کند، لطفاً برنامه را مجدداً راه اندازی کنید. رمز عبور ذخیره نمی شود و پس از هر بار راه اندازی مجدد باید آن را دوباره وارد کنید.</value>
+    <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*حالت xhttp</value>
@@ -1397,5 +1397,8 @@
   </data>
   <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
     <value>Sudo password has been verified successfully, please ignore the incorrect password prompts!</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Incorrect password, please try again.</value>
   </data>
 </root>

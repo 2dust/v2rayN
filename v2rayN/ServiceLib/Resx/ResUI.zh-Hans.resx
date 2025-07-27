@@ -1315,7 +1315,7 @@
     <value>系统的 sudo 密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>输入的密码无法校验，所以请确保输入正确。如果因为输入错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
+    <value>密码将调用命令行校验，如果因为校验错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*XHTTP 模式</value>
@@ -1394,5 +1394,8 @@
   </data>
   <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
     <value>sudo 密码已经验证成功，请忽略错误密码提示！</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>密码错误，请重试。</value>
   </data>
 </root>

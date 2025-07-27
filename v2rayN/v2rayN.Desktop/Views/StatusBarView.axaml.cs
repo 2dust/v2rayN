@@ -104,13 +104,15 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
     {
         var dialog = new SudoPasswordInputView();
         var obj = await DialogHost.Show(dialog);
-        if (obj == null)
+
+        var password = obj?.ToString();
+        if (password.IsNullOrEmpty())
         {
             togEnableTun.IsChecked = false;
             return false;
         }
 
-        AppHandler.Instance.LinuxSudoPwd = obj.ToString() ?? string.Empty;
+        AppHandler.Instance.LinuxSudoPwd = password;
         return true;
     }
 

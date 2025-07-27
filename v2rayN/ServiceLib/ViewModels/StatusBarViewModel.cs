@@ -436,30 +436,34 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task DoEnableTun(bool c)
     {
-        if (_config.TunModeItem.EnableTun != EnableTun)
+        if (_config.TunModeItem.EnableTun == EnableTun)
         {
-            _config.TunModeItem.EnableTun = EnableTun;
+            return;
+        }
+
+        _config.TunModeItem.EnableTun = EnableTun;
+
+        if (EnableTun && AllowEnableTun() == false)
+        {
             // When running as a non-administrator, reboot to administrator mode
-            if (EnableTun && AllowEnableTun() == false)
+            if (Utils.IsWindows())
             {
-                if (Utils.IsWindows())
+                _config.TunModeItem.EnableTun = false;
+                Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                return;
+            }
+            else
+            {
+                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
+                if (passwordResult == false)
                 {
                     _config.TunModeItem.EnableTun = false;
-                    Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                     return;
                 }
-                else
-                {
-                    if (await _updateView?.Invoke(EViewAction.PasswordInput, null) == false)
-                    {
-                        _config.TunModeItem.EnableTun = false;
-                        return;
-                    }
-                }
             }
-            await ConfigHandler.SaveConfig(_config);
-            Locator.Current.GetService<MainWindowViewModel>()?.Reload();
         }
+        await ConfigHandler.SaveConfig(_config);
+        Locator.Current.GetService<MainWindowViewModel>()?.Reload();
     }
 
     private bool AllowEnableTun()
