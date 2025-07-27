@@ -41,90 +41,79 @@
         </StackPanel>
 
         <TabControl HorizontalContentAlignment="Left">
-
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRayCustomConfig}">
-                <Grid Margin="{StaticResource Margin8}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <DockPanel Margin="{StaticResource Margin8}">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <TextBlock
-                        Grid.Row="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbRayCustomConfigDesc}" />
-                    
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock
+                                Grid.Row="0"
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbRayCustomConfigDesc}" />
+                        </StackPanel>
 
-                        <TextBlock
-                                Grid.Column="0"
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock
                                 Margin="{StaticResource Margin8}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
-                        <ToggleButton
+                            <ToggleButton
                                 x:Name="rayCustomConfigEnable"
-                                Grid.Column="1"
                                 Margin="{StaticResource Margin8}"
                                 HorizontalAlignment="Left" />
+                        </StackPanel>
                     </Grid>
 
                     <TextBox
-                            x:Name="rayCustomConfig"
-                            Grid.Row="2"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            materialDesign:HintAssist.Hint="xray json config"
-                            AcceptsReturn="True"
-                            BorderThickness="1"
-                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                            TextWrapping="Wrap"
-                            VerticalScrollBarVisibility="Auto" />
-                </Grid>
+                        x:Name="rayCustomConfig"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Stretch"
+                        materialDesign:HintAssist.Hint="xray json config"
+                        AcceptsReturn="True"
+                        BorderThickness="1"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                </DockPanel>
             </TabItem>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbCustomConfigSingbox}">
-                <Grid Margin="{StaticResource Margin8}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    
-                    <TextBlock
-                        Grid.Row="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSBCustomConfigDesc}" />
+                <DockPanel Margin="{StaticResource Margin8}">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock
+                                Grid.Row="0"
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSBCustomConfigDesc}" />
+                        </StackPanel>
 
-                        <TextBlock
-                                Grid.Column="0"
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock
                                 Margin="{StaticResource Margin8}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
-                        <ToggleButton
+                            <ToggleButton
                                 x:Name="sbCustomConfigEnable"
-                                Grid.Column="1"
                                 Margin="{StaticResource Margin8}"
                                 HorizontalAlignment="Left" />
+                        </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Row="2" Margin="{StaticResource Margin8}">
+                    <Grid Margin="{StaticResource Margin8}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="10" />
@@ -132,35 +121,30 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBox
-                                x:Name="sbCustomConfig"
-                                Grid.Column="0"
-                                Margin="{StaticResource Margin8}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                materialDesign:HintAssist.Hint="sing-box json config"
-                                AcceptsReturn="True"
-                                BorderThickness="1"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
+                            x:Name="sbCustomConfig"
+                            Grid.Column="0"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="sing-box json config"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
 
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
 
                         <TextBox
-                                x:Name="sbCustomTunConfig"
-                                Grid.Column="2"
-                                Margin="{StaticResource Margin8}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                materialDesign:HintAssist.Hint="sing-box json tun config"
-                                AcceptsReturn="True"
-                                BorderThickness="1"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                TextWrapping="Wrap"
-                                VerticalScrollBarVisibility="Auto" />
-
+                            x:Name="sbCustomTunConfig"
+                            Grid.Column="2"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="sing-box json tun config"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
                     </Grid>
-                </Grid>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </DockPanel>
