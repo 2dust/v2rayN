@@ -50,17 +50,10 @@ public class CoreAdminHandler
             }
         };
 
-        var sudoVerified = false;
         DataReceivedEventHandler dataHandler = (sender, e) =>
         {
             if (e.Data.IsNotEmpty())
             {
-                if (!sudoVerified && e.Data.Contains(_sudoAccessText))
-                {
-                    sudoVerified = true;
-                    UpdateFunc(false, ResUI.SudoPwdVerfiedSuccessTip + Environment.NewLine);
-                    return;
-                }
                 UpdateFunc(false, e.Data + Environment.NewLine);
             }
         };
@@ -116,7 +109,7 @@ public class CoreAdminHandler
         }
         else
         {
-            sb.AppendLine($"sudo -S echo \"{_sudoAccessText}\" && sudo -S {cmdLine}");
+            sb.AppendLine($"sudo -S {cmdLine}");
         }
 
         await File.WriteAllTextAsync(shFilePath, sb.ToString());
