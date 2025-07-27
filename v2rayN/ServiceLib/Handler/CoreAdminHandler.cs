@@ -109,7 +109,7 @@ public class CoreAdminHandler
         }
         else
         {
-            sb.AppendLine($"sudo -S {cmdLine}");
+            sb.AppendLine($"sudo -S -k -p '' {cmdLine}");
         }
 
         await File.WriteAllTextAsync(shFilePath, sb.ToString());
