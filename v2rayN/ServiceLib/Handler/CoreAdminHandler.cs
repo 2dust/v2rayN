@@ -9,7 +9,6 @@ public class CoreAdminHandler
     private static readonly Lazy<CoreAdminHandler> _instance = new(() => new());
     public static CoreAdminHandler Instance => _instance.Value;
     private Config _config;
-    private readonly string _sudoAccessText = "SUDO_ACCESS_VERIFIED";
     private Action<bool, string>? _updateFunc;
     private int _linuxSudoPid = -1;
 
