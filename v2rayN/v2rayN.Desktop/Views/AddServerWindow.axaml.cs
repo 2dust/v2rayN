@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
+public partial class AddServerWindow : WindowBase<AddServerViewModel>
 {
     public AddServerWindow()
     {
@@ -26,41 +26,22 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
         ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 
-        Global.CoreTypes.ForEach(it =>
-        {
-            cmbCoreType.Items.Add(it);
-        });
-        cmbCoreType.Items.Add(string.Empty);
+        cmbCoreType.ItemsSource = Global.CoreTypes.AppendEmpty();
+        cmbNetwork.ItemsSource = Global.Networks;
+        cmbFingerprint.ItemsSource = Global.Fingerprints;
+        cmbFingerprint2.ItemsSource = Global.Fingerprints;
+        cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
+        cmbAlpn.ItemsSource = Global.Alpns;
 
-        cmbStreamSecurity.Items.Add(string.Empty);
-        cmbStreamSecurity.Items.Add(Global.StreamSecurity);
-
-        Global.Networks.ForEach(it =>
-        {
-            cmbNetwork.Items.Add(it);
-        });
-        Global.Fingerprints.ForEach(it =>
-        {
-            cmbFingerprint.Items.Add(it);
-            cmbFingerprint2.Items.Add(it);
-        });
-        Global.AllowInsecure.ForEach(it =>
-        {
-            cmbAllowInsecure.Items.Add(it);
-        });
-        Global.Alpns.ForEach(it =>
-        {
-            cmbAlpn.Items.Add(it);
-        });
+        var lstStreamSecurity = new List<string>();
+        lstStreamSecurity.Add(string.Empty);
+        lstStreamSecurity.Add(Global.StreamSecurity);
 
         switch (profileItem.ConfigType)
         {
             case EConfigType.VMess:
                 gridVMess.IsVisible = true;
-                Global.VmessSecurities.ForEach(it =>
-                {
-                    cmbSecurity.Items.Add(it);
-                });
+                cmbSecurity.ItemsSource = Global.VmessSecurities;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
                     profileItem.Security = Global.DefaultSecurity;
@@ -69,10 +50,7 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
             case EConfigType.Shadowsocks:
                 gridSs.IsVisible = true;
-                AppHandler.Instance.GetShadowsocksSecurities(profileItem).ForEach(it =>
-                {
-                    cmbSecurity3.Items.Add(it);
-                });
+                cmbSecurity3.ItemsSource = AppHandler.Instance.GetShadowsocksSecurities(profileItem);
                 break;
 
             case EConfigType.SOCKS:
@@ -82,11 +60,8 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
             case EConfigType.VLESS:
                 gridVLESS.IsVisible = true;
-                cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
-                Global.Flows.ForEach(it =>
-                {
-                    cmbFlow5.Items.Add(it);
-                });
+                lstStreamSecurity.Add(Global.StreamSecurityReality);
+                cmbFlow5.ItemsSource = Global.Flows;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
                     profileItem.Security = Global.None;
@@ -95,11 +70,8 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
             case EConfigType.Trojan:
                 gridTrojan.IsVisible = true;
-                cmbStreamSecurity.Items.Add(Global.StreamSecurityReality);
-                Global.Flows.ForEach(it =>
-                {
-                    cmbFlow6.Items.Add(it);
-                });
+                lstStreamSecurity.Add(Global.StreamSecurityReality);
+                cmbFlow6.ItemsSource = Global.Flows;
                 break;
 
             case EConfigType.Hysteria2:
@@ -119,10 +91,7 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
 
-                Global.TuicCongestionControls.ForEach(it =>
-                {
-                    cmbHeaderType8.Items.Add(it);
-                });
+                cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
                 break;
 
             case EConfigType.WireGuard:
@@ -134,6 +103,7 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
                 break;
         }
+        cmbStreamSecurity.ItemsSource = lstStreamSecurity;
 
         gridTlsMore.IsVisible = false;
 
@@ -150,11 +120,13 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.AlterId, v => v.txtAlterId.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Security, v => v.cmbSecurity.SelectedValue).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Shadowsocks:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId3.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Security, v => v.cmbSecurity3.SelectedValue).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.SOCKS:
@@ -167,11 +139,13 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId5.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Flow, v => v.cmbFlow5.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Security, v => v.txtSecurity5.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled5.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Trojan:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId6.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Flow, v => v.cmbFlow6.SelectedValue).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled6.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Hysteria2:
@@ -268,44 +242,41 @@ public partial class AddServerWindow : ReactiveWindow<AddServerViewModel>
 
     private void SetHeaderType()
     {
-        cmbHeaderType.Items.Clear();
+        var lstHeaderType = new List<string>();
 
         var network = cmbNetwork.SelectedItem.ToString();
         if (network.IsNullOrEmpty())
         {
-            cmbHeaderType.Items.Add(Global.None);
+            lstHeaderType.Add(Global.None);
+            cmbHeaderType.ItemsSource = lstHeaderType;
+            cmbHeaderType.SelectedIndex = 0;
             return;
         }
 
         if (network == nameof(ETransport.tcp))
         {
-            cmbHeaderType.Items.Add(Global.None);
-            cmbHeaderType.Items.Add(Global.TcpHeaderHttp);
+            lstHeaderType.Add(Global.None);
+            lstHeaderType.Add(Global.TcpHeaderHttp);
         }
         else if (network is nameof(ETransport.kcp) or nameof(ETransport.quic))
         {
-            cmbHeaderType.Items.Add(Global.None);
-            Global.KcpHeaderTypes.ForEach(it =>
-            {
-                cmbHeaderType.Items.Add(it);
-            });
+            lstHeaderType.Add(Global.None);
+            lstHeaderType.AddRange(Global.KcpHeaderTypes);
         }
         else if (network is nameof(ETransport.xhttp))
         {
-            Global.XhttpMode.ForEach(it =>
-            {
-                cmbHeaderType.Items.Add(it);
-            });
+            lstHeaderType.AddRange(Global.XhttpMode);
         }
         else if (network == nameof(ETransport.grpc))
         {
-            cmbHeaderType.Items.Add(Global.GrpcGunMode);
-            cmbHeaderType.Items.Add(Global.GrpcMultiMode);
+            lstHeaderType.Add(Global.GrpcGunMode);
+            lstHeaderType.Add(Global.GrpcMultiMode);
         }
         else
         {
-            cmbHeaderType.Items.Add(Global.None);
+            lstHeaderType.Add(Global.None);
         }
+        cmbHeaderType.ItemsSource = lstHeaderType;
         cmbHeaderType.SelectedIndex = 0;
     }
 

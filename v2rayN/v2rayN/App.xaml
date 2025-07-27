@@ -215,7 +215,7 @@
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
                 <Setter Property="TextElement.FontFamily" Value="{x:Static conv:MaterialDesignFonts.MyFont}" />
                 <Setter Property="FontFamily" Value="{x:Static conv:MaterialDesignFonts.MyFont}" />
-                <Setter Property="ResizeMode" Value="NoResize" />
+                <Setter Property="ResizeMode" Value="CanResize" />
             </Style>
             <Style
                 x:Key="ViewGlobal"

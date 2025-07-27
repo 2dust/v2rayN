@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class RoutingRuleDetailsWindow : ReactiveWindow<RoutingRuleDetailsViewModel>
+public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsViewModel>
 {
     public RoutingRuleDetailsWindow()
     {
@@ -23,21 +23,11 @@ public partial class RoutingRuleDetailsWindow : ReactiveWindow<RoutingRuleDetail
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
-        cmbOutboundTag.Items.Add(Global.ProxyTag);
-        cmbOutboundTag.Items.Add(Global.DirectTag);
-        cmbOutboundTag.Items.Add(Global.BlockTag);
-        Global.RuleProtocols.ForEach(it =>
-        {
-            clbProtocol.Items.Add(it);
-        });
-        Global.InboundTags.ForEach(it =>
-        {
-            clbInboundTag.Items.Add(it);
-        });
-        Global.RuleNetworks.ForEach(it =>
-        {
-            cmbNetwork.Items.Add(it);
-        });
+
+        cmbOutboundTag.ItemsSource = Global.OutboundTags;
+        clbProtocol.ItemsSource = Global.RuleProtocols;
+        clbInboundTag.ItemsSource = Global.InboundTags;
+        cmbNetwork.ItemsSource = Global.RuleNetworks;
 
         if (!rulesItem.Id.IsNullOrEmpty())
         {
@@ -54,7 +44,7 @@ public partial class RoutingRuleDetailsWindow : ReactiveWindow<RoutingRuleDetail
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Port, v => v.txtPort.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Enabled, v => v.togEnabled.IsChecked).DisposeWith(disposables);
@@ -80,7 +70,7 @@ public partial class RoutingRuleDetailsWindow : ReactiveWindow<RoutingRuleDetail
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
-        cmbOutboundTag.Focus();
+        txtRemarks.Focus();
     }
 
     private void ClbProtocol_SelectionChanged(object? sender, SelectionChangedEventArgs e)

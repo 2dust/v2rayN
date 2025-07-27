@@ -139,7 +139,6 @@ public partial class MainWindow
             RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
         }
 
-        RestoreUI();
         AddHelpMenuItem();
         WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
         MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
@@ -395,20 +394,14 @@ public partial class MainWindow
         _config.UiItem.ShowInTaskbar = bl;
     }
 
+    protected override void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        base.OnLoaded(sender, e);
+        RestoreUI();
+    }
+
     private void RestoreUI()
     {
-        if (_config.UiItem.MainWidth > 0 && _config.UiItem.MainHeight > 0)
-        {
-            Width = _config.UiItem.MainWidth;
-            Height = _config.UiItem.MainHeight;
-        }
-
-        var maxWidth = SystemParameters.WorkArea.Width;
-        var maxHeight = SystemParameters.WorkArea.Height;
-        if (Width > maxWidth)
-            Width = maxWidth;
-        if (Height > maxHeight)
-            Height = maxHeight;
         if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
         {
             if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
@@ -426,18 +419,15 @@ public partial class MainWindow
 
     private void StorageUI(string? n = null)
     {
-        _config.UiItem.MainWidth = this.Width;
-        _config.UiItem.MainHeight = this.Height;
+        ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
     }
 

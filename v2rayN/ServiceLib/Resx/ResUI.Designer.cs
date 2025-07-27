@@ -133,24 +133,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download speed 的本地化字符串。
-        /// </summary>
-        public static string downloadSpeed {
-            get {
-                return ResourceManager.GetString("downloadSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Do you want to download {0}? 的本地化字符串。
-        /// </summary>
-        public static string DownloadYesNo {
-            get {
-                return ResourceManager.GetString("DownloadYesNo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Failed to convert configuration file 的本地化字符串。
         /// </summary>
         public static string FailedConversionConfiguration {
@@ -1339,15 +1321,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Advanced Function 的本地化字符串。
-        /// </summary>
-        public static string menuRoutingAdvanced {
-            get {
-                return ResourceManager.GetString("menuRoutingAdvanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Add 的本地化字符串。
         /// </summary>
         public static string menuRoutingAdvancedAdd {
@@ -2221,6 +2194,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Incorrect password, please try again. 的本地化字符串。
+        /// </summary>
+        public static string SudoIncorrectPasswordTip {
+            get {
+                return ResourceManager.GetString("SudoIncorrectPasswordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sudo password has been verified successfully, please ignore the incorrect password prompts! 的本地化字符串。
+        /// </summary>
+        public static string SudoPwdVerfiedSuccessTip {
+            get {
+                return ResourceManager.GetString("SudoPwdVerfiedSuccessTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         public static string TbAddress {
@@ -2707,33 +2698,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 3. Block Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabBlock {
-            get {
-                return ResourceManager.GetString("TbRoutingTabBlock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 2. Direct Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabDirect {
-            get {
-                return ResourceManager.GetString("TbRoutingTabDirect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 1. Proxy Domain or IP 的本地化字符串。
-        /// </summary>
-        public static string TbRoutingTabProxy {
-            get {
-                return ResourceManager.GetString("TbRoutingTabProxy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Pre-defined Rule Set List 的本地化字符串。
         /// </summary>
         public static string TbRoutingTabRuleList {
@@ -2766,6 +2730,15 @@ namespace ServiceLib.Resx {
         public static string TbRuleobjectDoc {
             get {
                 return ResourceManager.GetString("TbRuleobjectDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Can fill in the configuration remarks, please make sure it exist and are unique 的本地化字符串。
+        /// </summary>
+        public static string TbRuleOutboundTagTip {
+            get {
+                return ResourceManager.GetString("TbRuleOutboundTagTip", resourceCulture);
             }
         }
         
@@ -3229,25 +3202,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please set the sudo password in Tun mode settings first 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsLinuxSudoPasswordIsEmpty {
-            get {
-                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordIsEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Please do not run this app with sudo 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsLinuxSudoPasswordNotSudoRunApp {
-            get {
-                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordNotSudoRunApp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart. 的本地化字符串。
+        ///   查找类似 The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart. 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {
             get {
@@ -3936,15 +3891,6 @@ namespace ServiceLib.Resx {
         public static string TransportRequestHostTip5 {
             get {
                 return ResourceManager.GetString("TransportRequestHostTip5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Ungrouped 的本地化字符串。
-        /// </summary>
-        public static string UngroupedServers {
-            get {
-                return ResourceManager.GetString("UngroupedServers", resourceCulture);
             }
         }
         

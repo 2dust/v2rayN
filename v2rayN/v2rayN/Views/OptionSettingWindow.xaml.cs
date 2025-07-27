@@ -21,94 +21,39 @@ public partial class OptionSettingWindow
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
-        Global.destOverrideProtocols.ForEach(it =>
-        {
-            clbdestOverride.Items.Add(it);
-        });
+        clbdestOverride.ItemsSource = Global.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
             clbdestOverride.SelectedItems.Add(it);
         });
-        Global.IEProxyProtocols.ForEach(it =>
-        {
-            cmbsystemProxyAdvancedProtocol.Items.Add(it);
-        });
-        Global.LogLevels.ForEach(it =>
-        {
-            cmbloglevel.Items.Add(it);
-        });
-        Global.Fingerprints.ForEach(it =>
-        {
-            cmbdefFingerprint.Items.Add(it);
-        });
-        Global.UserAgent.ForEach(it =>
-        {
-            cmbdefUserAgent.Items.Add(it);
-        });
-        Global.SingboxMuxs.ForEach(it =>
-        {
-            cmbmux4SboxProtocol.Items.Add(it);
-        });
 
-        Global.TunMtus.ForEach(it =>
-        {
-            cmbMtu.Items.Add(it);
-        });
-        Global.TunStacks.ForEach(it =>
-        {
-            cmbStack.Items.Add(it);
-        });
-        Global.CoreTypes.ForEach(it =>
-        {
-            cmbCoreType1.Items.Add(it);
-            cmbCoreType2.Items.Add(it);
-            cmbCoreType3.Items.Add(it);
-            cmbCoreType4.Items.Add(it);
-            cmbCoreType5.Items.Add(it);
-            cmbCoreType6.Items.Add(it);
-            cmbCoreType9.Items.Add(it);
-        });
+        cmbsystemProxyAdvancedProtocol.ItemsSource = Global.IEProxyProtocols;
+        cmbloglevel.ItemsSource = Global.LogLevels;
+        cmbdefFingerprint.ItemsSource = Global.Fingerprints;
+        cmbdefUserAgent.ItemsSource = Global.UserAgent;
+        cmbmux4SboxProtocol.ItemsSource = Global.SingboxMuxs;
+        cmbMtu.ItemsSource = Global.TunMtus;
+        cmbStack.ItemsSource = Global.TunStacks;
 
-        for (var i = 2; i <= 8; i++)
-        {
-            cmbMixedConcurrencyCount.Items.Add(i);
-        }
-        for (var i = 2; i <= 6; i++)
-        {
-            cmbSpeedTestTimeout.Items.Add(i * 5);
-        }
-        Global.SpeedTestUrls.ForEach(it =>
-        {
-            cmbSpeedTestUrl.Items.Add(it);
-        });
-        Global.SpeedPingTestUrls.ForEach(it =>
-        {
-            cmbSpeedPingTestUrl.Items.Add(it);
-        });
-        Global.SubConvertUrls.ForEach(it =>
-        {
-            cmbSubConvertUrl.Items.Add(it);
-        });
-        Global.GeoFilesSources.ForEach(it =>
-        {
-            cmbGetFilesSourceUrl.Items.Add(it);
-        });
-        Global.SingboxRulesetSources.ForEach(it =>
-        {
-            cmbSrsFilesSourceUrl.Items.Add(it);
-        });
-        Global.RoutingRulesSources.ForEach(it =>
-        {
-            cmbRoutingRulesSourceUrl.Items.Add(it);
-        });
-        Global.IPAPIUrls.ForEach(it =>
-        {
-            cmbIPAPIUrl.Items.Add(it);
-        });
-        foreach (EGirdOrientation it in Enum.GetValues(typeof(EGirdOrientation)))
-        {
-            cmbMainGirdOrientation.Items.Add(it.ToString());
-        }
+        cmbCoreType1.ItemsSource = Global.CoreTypes;
+        cmbCoreType2.ItemsSource = Global.CoreTypes;
+        cmbCoreType3.ItemsSource = Global.CoreTypes;
+        cmbCoreType4.ItemsSource = Global.CoreTypes;
+        cmbCoreType5.ItemsSource = Global.CoreTypes;
+        cmbCoreType6.ItemsSource = Global.CoreTypes;
+        cmbCoreType9.ItemsSource = Global.CoreTypes;
+
+        cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(2, 7).ToList();
+        cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
+        cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
+        cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
+        cmbSubConvertUrl.ItemsSource = Global.SubConvertUrls;
+        cmbGetFilesSourceUrl.ItemsSource = Global.GeoFilesSources;
+        cmbSrsFilesSourceUrl.ItemsSource = Global.SingboxRulesetSources;
+        cmbRoutingRulesSourceUrl.ItemsSource = Global.RoutingRulesSources;
+        cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
+
+        cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
 
         this.WhenActivated(disposables =>
         {
@@ -209,8 +154,7 @@ public partial class OptionSettingWindow
     private async Task InitSettingFont()
     {
         var lstFonts = await GetFonts(Utils.GetFontsPath());
-        lstFonts.ForEach(it => { cmbcurrentFontFamily.Items.Add(it); });
-        cmbcurrentFontFamily.Items.Add(string.Empty);
+        cmbcurrentFontFamily.ItemsSource = lstFonts.AppendEmpty();
     }
 
     private async Task<List<string>> GetFonts(string path)

@@ -1,7 +1,8 @@
-<reactiveui:ReactiveWindow
+<base:WindowBase
     x:Class="v2rayN.Views.RoutingRuleDetailsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -52,7 +53,8 @@
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center" />
 
             <TextBlock
                 Grid.Row="1"
@@ -67,6 +69,7 @@
                 Grid.Column="1"
                 Width="200"
                 Margin="{StaticResource Margin4}"
+                IsEditable="True"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
             <TextBlock
@@ -74,8 +77,9 @@
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
+                Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
 
             <TextBlock
                 Grid.Row="2"
@@ -96,13 +100,10 @@
                 Grid.Row="2"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}">
-                <Hyperlink Click="linkRuleobjectDoc_Click">
-                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
-                    <materialDesign:PackIcon Kind="Link" />
-                </Hyperlink>
-            </TextBlock>
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
 
             <TextBlock
                 Grid.Row="3"
@@ -119,6 +120,17 @@
                 HorizontalAlignment="Left"
                 FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}">
+                <Hyperlink Click="linkRuleobjectDoc_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
+                    <materialDesign:PackIcon Kind="Link" />
+                </Hyperlink>
+            </TextBlock>
 
             <TextBlock
                 Grid.Row="4"
@@ -139,6 +151,7 @@
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
 
@@ -163,6 +176,7 @@
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
                 Text="{x:Static resx:ResUI.TbRoutingTips}" />
         </Grid>
@@ -242,4 +256,4 @@
             </GroupBox>
         </Grid>
     </DockPanel>
-</reactiveui:ReactiveWindow>
+</base:WindowBase>

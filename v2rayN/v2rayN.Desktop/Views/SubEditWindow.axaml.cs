@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class SubEditWindow : ReactiveWindow<SubEditViewModel>
+public partial class SubEditWindow : WindowBase<SubEditViewModel>
 {
     public SubEditWindow()
     {
@@ -22,10 +22,7 @@ public partial class SubEditWindow : ReactiveWindow<SubEditViewModel>
 
         ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
-        Global.SubConvertTargets.ForEach(it =>
-        {
-            cmbConvertTarget.Items.Add(it);
-        });
+        cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 
         this.WhenActivated(disposables =>
         {

@@ -22,10 +22,18 @@ jobs:
           $github = Invoke-RestMethod -uri "https://api.github.com/repos/cg3s/v2rayN/releases" 
 
           $targetRelease = $github | Where-Object -Property prerelease -match 'False' | Select -First 1
-          $installerUrl  = $targetRelease | Select -ExpandProperty assets -First 1 | Where-Object -Property name -match 'v2rayN-windows-64\.zip*' | Select -ExpandProperty browser_download_url
-
+          
+          $x64InstallerUrl = $targetRelease | Select -ExpandProperty assets -First 1 | Where-Object -Property name -match 'v2rayN-windows-64\.zip' | Select -ExpandProperty browser_download_url
+          $arm64InstallerUrl = $targetRelease | Select -ExpandProperty assets -First 1 | Where-Object -Property name -match 'v2rayN-windows-arm64\.zip' | Select -ExpandProperty browser_download_url
+          
           $ver = $targetRelease.tag_name
 
           # getting latest wingetcreate file
           iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
-          .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$installerUrl|x64" -t $gitToken
+          
+          Write-Host "Updating with both x64 and arm64 installers"
+          Write-Host "Version: $ver"
+          Write-Host "x64 URL: $x64InstallerUrl"
+          Write-Host "arm64 URL: $arm64InstallerUrl"
+          
+          .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$x64InstallerUrl|x64" "$arm64InstallerUrl|arm64" -t $gitToken

@@ -215,7 +215,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             await ViewModel.RefreshServersBiz();
         }
 
-        if (lstProfiles.SelectedIndex > 0)
+        if (lstProfiles.SelectedIndex >= 0)
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
         }
@@ -347,6 +347,24 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         try
         {
+            //First scroll horizontally to the initial position to avoid the control crash bug
+            if (lstProfiles.SelectedIndex >= 0)
+            {
+                lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, lstProfiles.Columns[0]);
+            }
+            else
+            {
+                var model = lstProfiles.ItemsSource.Cast<ProfileItemModel>();
+                if (model.Any())
+                {
+                    lstProfiles.ScrollIntoView(model.First(), lstProfiles.Columns[0]);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             foreach (var it in lstProfiles.Columns)
             {
                 it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);

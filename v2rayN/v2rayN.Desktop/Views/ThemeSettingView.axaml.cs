@@ -16,20 +16,9 @@ public partial class ThemeSettingView : ReactiveUserControl<ThemeSettingViewMode
         InitializeComponent();
         ViewModel = new ThemeSettingViewModel();
 
-        foreach (ETheme it in Enum.GetValues(typeof(ETheme)))
-        {
-            cmbCurrentTheme.Items.Add(it.ToString());
-        }
-
-        for (int i = Global.MinFontSize; i <= Global.MinFontSize + 10; i++)
-        {
-            cmbCurrentFontSize.Items.Add(i);
-        }
-
-        Global.Languages.ForEach(it =>
-        {
-            cmbCurrentLanguage.Items.Add(it);
-        });
+        cmbCurrentTheme.ItemsSource = Utils.GetEnumNames<ETheme>();
+        cmbCurrentFontSize.ItemsSource = Enumerable.Range(Global.MinFontSize, 11).ToList();
+        cmbCurrentLanguage.ItemsSource = Global.Languages;
 
         this.WhenActivated(disposables =>
         {

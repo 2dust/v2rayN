@@ -2,14 +2,14 @@ using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class RoutingSettingWindow : ReactiveWindow<RoutingSettingViewModel>
+public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 {
     private bool _manualClose = false;
 
@@ -26,18 +26,9 @@ public partial class RoutingSettingWindow : ReactiveWindow<RoutingSettingViewMod
 
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
-        Global.DomainStrategies.ForEach(it =>
-        {
-            cmbdomainStrategy.Items.Add(it);
-        });
-        Global.DomainMatchers.ForEach(it =>
-        {
-            cmbdomainMatcher.Items.Add(it);
-        });
-        Global.DomainStrategies4Singbox.ForEach(it =>
-        {
-            cmbdomainStrategy4Singbox.Items.Add(it);
-        });
+        cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
+        cmbdomainMatcher.ItemsSource = Global.DomainMatchers;
+        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {

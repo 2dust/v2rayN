@@ -507,6 +507,7 @@ public class Global
             { ECoreType.juicity, "juicity/juicity" },
             { ECoreType.brook, "txthinking/brook" },
             { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
+            { ECoreType.shadowquic, "spongebob888/shadowquic" },
             { ECoreType.v2rayN, "cg3s/v2rayN" },
         };
 
@@ -525,6 +526,13 @@ public class Global
         @"https://api-ipv6.ip.sb/geoip",
         @"https://api.ipapi.is",
         @""
+    ];
+
+    public static readonly List<string> OutboundTags =
+    [
+        ProxyTag,
+        DirectTag,
+        BlockTag
     ];
 
     #endregion const

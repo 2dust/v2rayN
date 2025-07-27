@@ -132,12 +132,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>Letöltés...</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>Letöltés</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>Le szeretné tölteni? {0}</value>
-  </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>Nem sikerült a konfigurációs fájl átalakítása</value>
   </data>
@@ -386,9 +380,6 @@
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>A globális billentyűparancs {0} sikeresen bejegyezve</value>
-  </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>Összegyűjtetlen</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>Összes</value>
@@ -822,9 +813,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} Weboldal</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>Fejlett funkció</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>Hozzáadás</value>
   </data>
@@ -842,15 +830,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain stratégia</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3. Domain vagy IP blokkolása</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2. Közvetlen domain vagy IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1. Proxy domain vagy IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>Előre definiált szabálykészletlista</value>
@@ -1339,13 +1318,7 @@
     <value>Rendszer sudo jelszó</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password you entered cannot be verified, so make sure you enter it correctly. If the application does not work properly due to an incorrect input, please restart the application. The password will not be stored and you will need to enter it again after each restart.</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>Kérlek, először állítsd be a sudo jelszót a Tun módban</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>Kérlek, ne futtasd ezt az alkalmazást sudo-ként</value>
+    <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp mód</value>
@@ -1418,5 +1391,14 @@
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>Current connection info test URL</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Can fill in the configuration remarks, please make sure it exist and are unique</value>
+  </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>Sudo password has been verified successfully, please ignore the incorrect password prompts!</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Incorrect password, please try again.</value>
   </data>
 </root>

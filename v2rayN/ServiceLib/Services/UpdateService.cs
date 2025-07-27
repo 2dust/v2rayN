@@ -485,6 +485,12 @@ public class UpdateService
 
     private async Task UpdateOtherFiles(Config config, Action<bool, string> updateFunc)
     {
+        //If it is not in China area, no update is required
+        if (config.ConstItem.GeoSourceUrl.IsNotEmpty())
+        {
+            return;
+        }
+
         _updateFunc = updateFunc;
 
         foreach (var url in Global.OtherGeoUrls)
@@ -529,6 +535,11 @@ public class UpdateService
                 }
             }
         }
+
+        //append dns items TODO
+        geoSiteFiles.Add("cn");
+        geoSiteFiles.Add("geolocation-cn");
+        geoSiteFiles.Add("category-ads-all");
 
         var path = Utils.GetBinPath("srss");
         if (!Directory.Exists(path))

@@ -132,12 +132,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>下载开始...</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>下载</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>是否下载？{0}</value>
-  </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>转换配置文件失败</value>
   </data>
@@ -386,9 +380,6 @@
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>注册全局热键 {0} 成功</value>
-  </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>未分组配置文件</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>所有</value>
@@ -709,7 +700,7 @@
     <value>例外：对于下列字符开头的地址，不使用代理配置文件。使用分号 (;) 分隔。</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>显示实时速度（需重启）</value>
+    <value>显示实时速度 (需重启)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>去重时保留序号较小的项</value>
@@ -745,7 +736,7 @@
     <value>开机启动 (可能会不成功)</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>启用流量统计（需重启）</value>
+    <value>启用流量统计 (需重启)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>订阅转换网址 (可选)</value>
@@ -819,9 +810,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官网</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>高级功能</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>添加规则集</value>
   </data>
@@ -839,15 +827,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.阻止的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.直连的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.代理的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>预定义规则集列表</value>
@@ -904,7 +883,7 @@
     <value>仅限路由 (routeOnly)</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
-    <value>请勿将代理服务器用于本地（Intranet）地址</value>
+    <value>请勿将代理服务器用于本地 (Intranet) 地址</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>一键多线程测试延迟和速度 (Ctrl+E)</value>
@@ -937,7 +916,7 @@
     <value>移至订阅分组</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>启用配置文件拖放排序（需重启）</value>
+    <value>启用配置文件拖放排序 (需重启)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
@@ -964,10 +943,10 @@
     <value>仅对 tcp/http、ws 协议生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>当前字体（需重启）</value>
+    <value>当前字体 (需重启)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启设置</value>
+    <value>拷贝字体 TTF/TTC 文件到目录 guiFonts，重启生效</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac 端口 = +3；Xray API 端口 = +4；mihomo API 端口 = +5；</value>
@@ -997,10 +976,10 @@
     <value>SpiderX</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>启用硬件加速（需重启）</value>
+    <value>启用硬件加速 (需重启)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待测试中（按 ESC 终止）...</value>
+    <value>等待测试中 (按 ESC 终止)...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
@@ -1093,7 +1072,7 @@
     <value>Reserved (2,3,4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Address (Ipv4,Ipv6)</value>
+    <value>Address (IPv4,IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>混淆密码 (obfs password)</value>
@@ -1123,10 +1102,10 @@
     <value>使用 Xray 且非 Tun 模式启用，和分组前置代理冲突</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>启用分片（Fragment）</value>
+    <value>启用分片 (Fragment)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>启用 sing-box（规则集文件）的缓存文件</value>
+    <value>启用 sing-box (规则集文件) 的缓存文件</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>自定义 sing-box rule-set</value>
@@ -1219,7 +1198,7 @@
     <value>Outbound 默认解析策略</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>主界面布局方向（需重启）</value>
+    <value>主界面布局方向 (需重启)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Outbound 域名解析地址</value>
@@ -1321,7 +1300,7 @@
     <value>请不要使用不安全的 HTTP 协议订阅地址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>安装字体到系统中，选择或填入字体名称，重启设置</value>
+    <value>安装字体到系统中，选择或填入字体名称，重启生效</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>是否确定退出？</value>
@@ -1333,16 +1312,10 @@
     <value>系统的 sudo 密码</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>输入的密码无法校验，所以请确保输入正确。如果因为输入错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>请先在 Tun 模式设置中设置 sudo 密码</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>请不要用 sudo 运行本程序</value>
+    <value>密码将调用命令行校验，如果因为校验错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp 模式</value>
+    <value>*XHTTP 模式</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
@@ -1363,7 +1336,7 @@
     <value>开启第二个本地监听端口</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks：本地端口，socks2：第二个本地端口，socks3：局域网端口</value>
+    <value>Socks：本地端口，Socks2：第二个本地端口，Socks3：局域网端口</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主题</value>
@@ -1396,13 +1369,13 @@
     <value>多配置文件随机 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多配置文件负载均衡  Xray</value>
+    <value>多配置文件负载均衡 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多配置文件最低延迟  Xray</value>
+    <value>多配置文件最低延迟 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多配置文件最稳定  Xray</value>
+    <value>多配置文件最稳定 Xray</value>
   </data>
   <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>多配置文件最低延迟 sing-box</value>
@@ -1412,5 +1385,14 @@
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>当前连接信息测试地址</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>可以填写配置文件别名，请确保存在并唯一</value>
+  </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>sudo 密码已经验证成功，请忽略错误密码提示！</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>密码错误，请重试。</value>
   </data>
 </root>

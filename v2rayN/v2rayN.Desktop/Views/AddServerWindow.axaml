@@ -105,7 +105,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="180,Auto,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -152,13 +152,26 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleSwitch
+                        x:Name="togmuxEnabled"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSs"
                     Grid.Row="2"
                     ColumnDefinitions="180,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -185,6 +198,19 @@
                         Grid.Column="1"
                         Width="300"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleSwitch
+                        x:Name="togmuxEnabled3"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSocks"
@@ -224,7 +250,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="180,Auto,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -271,13 +297,26 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleSwitch
+                        x:Name="togmuxEnabled5"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridTrojan"
                     Grid.Row="2"
                     ColumnDefinitions="180,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -304,6 +343,19 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+                    <ToggleSwitch
+                        x:Name="togmuxEnabled6"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridHysteria2"

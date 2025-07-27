@@ -1,16 +1,16 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using DialogHostAvalonia;
 using DynamicData;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class SubSettingWindow : ReactiveWindow<SubSettingViewModel>
+public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
 {
     private bool _manualClose = false;
 

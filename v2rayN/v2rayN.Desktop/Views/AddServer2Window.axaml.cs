@@ -1,12 +1,12 @@
 using System.Reactive.Disposables;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class AddServer2Window : ReactiveWindow<AddServer2ViewModel>
+public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
 {
     public AddServer2Window()
     {
@@ -21,13 +21,7 @@ public partial class AddServer2Window : ReactiveWindow<AddServer2ViewModel>
         btnCancel.Click += (s, e) => this.Close();
         ViewModel = new AddServer2ViewModel(profileItem, UpdateViewHandler);
 
-        foreach (ECoreType it in Enum.GetValues(typeof(ECoreType)))
-        {
-            if (it == ECoreType.v2rayN)
-                continue;
-            cmbCoreType.Items.Add(it.ToString());
-        }
-        cmbCoreType.Items.Add(string.Empty);
+        cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != ECoreType.v2rayN.ToString()).ToList().AppendEmpty();
 
         this.WhenActivated(disposables =>
         {

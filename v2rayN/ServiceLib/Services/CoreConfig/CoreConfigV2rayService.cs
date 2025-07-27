@@ -54,11 +54,11 @@ public class CoreConfigV2rayService
 
             await GenInbounds(v2rayConfig);
 
-            await GenRouting(v2rayConfig);
-
             await GenOutbound(node, v2rayConfig.outbounds.First());
 
             await GenMoreOutbounds(node, v2rayConfig);
+
+            await GenRouting(v2rayConfig);
 
             await GenDns(node, v2rayConfig);
 
@@ -113,7 +113,7 @@ public class CoreConfigV2rayService
             await GenStatistic(v2rayConfig);
             v2rayConfig.outbounds.RemoveAt(0);
 
-            var tagProxy = new List<string>();
+            var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
                 if (it.ConfigType == EConfigType.Custom)
@@ -151,17 +151,14 @@ public class CoreConfigV2rayService
                 }
 
                 //outbound
-                var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(item, outbound);
-                outbound.tag = $"{Global.ProxyTag}-{tagProxy.Count + 1}";
-                v2rayConfig.outbounds.Insert(0, outbound);
-                tagProxy.Add(outbound.tag);
+                proxyProfiles.Add(item);
             }
-            if (tagProxy.Count <= 0)
+            if (proxyProfiles.Count <= 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            await GenOutboundsList(proxyProfiles, v2rayConfig);
 
             //add balancers
             await GenBalancer(v2rayConfig, multipleLoad);
@@ -559,6 +556,8 @@ public class CoreConfigV2rayService
             {
                 return 0;
             }
+            rule.outboundTag = await GenRoutingUserRuleOutbound(rule.outboundTag, v2rayConfig);
+
             if (rule.port.IsNullOrEmpty())
             {
                 rule.port = null;
@@ -630,11 +629,36 @@ public class CoreConfigV2rayService
         return await Task.FromResult(0);
     }
 
+    private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, V2rayConfig v2rayConfig)
+    {
+        if (Global.OutboundTags.Contains(outboundTag))
+        {
+            return outboundTag;
+        }
+
+        var node = await AppHandler.Instance.GetProfileItemViaRemarks(outboundTag);
+        if (node == null
+            || node.ConfigType == EConfigType.Custom
+            || node.ConfigType == EConfigType.Hysteria2
+            || node.ConfigType == EConfigType.TUIC)
+        {
+            return Global.ProxyTag;
+        }
+
+        var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+        var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+        await GenOutbound(node, outbound);
+        outbound.tag = Global.ProxyTag + node.IndexId.ToString();
+        v2rayConfig.outbounds.Add(outbound);
+
+        return outbound.tag;
+    }
+
     private async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
     {
         try
         {
-            var muxEnabled = _config.CoreBasicItem.MuxEnabled;
+            var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
             switch (node.ConfigType)
             {
                 case EConfigType.VMess:
@@ -662,7 +686,7 @@ public class CoreConfigV2rayService
                         {
                             usersItem = vnextItem.users.First();
                         }
-                
+
                         usersItem.id = node.Id;
                         usersItem.alterId = node.AlterId;
                         usersItem.email = Global.UserEMail;
@@ -1321,6 +1345,7 @@ public class CoreConfigV2rayService
 
             //Previous proxy
             var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            string? prevOutboundTag = null;
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom
                 && prevNode.ConfigType != EConfigType.Hysteria2
@@ -1328,32 +1353,15 @@ public class CoreConfigV2rayService
             {
                 var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(prevNode, prevOutbound);
-                prevOutbound.tag = $"{Global.ProxyTag}2";
+                prevOutboundTag = $"prev-{Global.ProxyTag}";
+                prevOutbound.tag = prevOutboundTag;
                 v2rayConfig.outbounds.Add(prevOutbound);
-
-                outbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = prevOutbound.tag
-                };
             }
+            var nextOutbound = await GenChainOutbounds(subItem, outbound, prevOutboundTag);
 
-            //Next proxy
-            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            if (nextNode is not null
-                && nextNode.ConfigType != EConfigType.Custom
-                && nextNode.ConfigType != EConfigType.Hysteria2
-                && nextNode.ConfigType != EConfigType.TUIC)
+            if (nextOutbound is not null)
             {
-                var nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(nextNode, nextOutbound);
-                nextOutbound.tag = Global.ProxyTag;
                 v2rayConfig.outbounds.Insert(0, nextOutbound);
-
-                outbound.tag = $"{Global.ProxyTag}1";
-                nextOutbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = outbound.tag
-                };
             }
         }
         catch (Exception ex)
@@ -1364,17 +1372,178 @@ public class CoreConfigV2rayService
         return 0;
     }
 
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig)
+    {
+        try
+        {
+            // Get template and initialize list
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                return 0;
+            }
+
+            var resultOutbounds = new List<Outbounds4Ray>();
+            var prevOutbounds = new List<Outbounds4Ray>(); // Separate list for prev outbounds and fragment
+
+            // Cache for chain proxies to avoid duplicate generation
+            var nextProxyCache = new Dictionary<string, Outbounds4Ray?>();
+            var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
+            int prevIndex = 0; // Index for prev outbounds
+
+            // Process nodes
+            int index = 0;
+            foreach (var node in nodes)
+            {
+                index++;
+
+                // Handle proxy chain
+                string? prevTag = null;
+                var currentOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
+                if (nextOutbound != null)
+                {
+                    nextOutbound = JsonUtils.DeepCopy(nextOutbound);
+                }
+
+                var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+
+                // current proxy
+                await GenOutbound(node, currentOutbound);
+                currentOutbound.tag = $"{Global.ProxyTag}-{index}";
+
+                if (!node.Subid.IsNullOrEmpty())
+                {
+                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
+                    {
+                        prevTag = value; // maybe null
+                    }
+                    else
+                    {
+                        var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                        if (prevNode is not null
+                            && prevNode.ConfigType != EConfigType.Custom
+                            && prevNode.ConfigType != EConfigType.Hysteria2
+                            && prevNode.ConfigType != EConfigType.TUIC)
+                        {
+                            var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                            await GenOutbound(prevNode, prevOutbound);
+                            prevTag = $"prev-{Global.ProxyTag}-{++prevIndex}";
+                            prevOutbound.tag = prevTag;
+                            prevOutbounds.Add(prevOutbound);
+                        }
+                        prevProxyTags[node.Subid] = prevTag;
+                    }
+
+                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag, nextOutbound);
+                    if (!nextProxyCache.ContainsKey(node.Subid))
+                    {
+                        nextProxyCache[node.Subid] = nextOutbound;
+                    }
+                }
+
+                if (nextOutbound is not null)
+                {
+                    resultOutbounds.Add(nextOutbound);
+                }
+                resultOutbounds.Add(currentOutbound);
+            }
+
+            // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
+            resultOutbounds.AddRange(prevOutbounds);
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return 0;
+    }
+
+    /// <summary>
+    /// Generates a chained outbound configuration for the given subItem and outbound.
+    /// The outbound's tag must be set before calling this method.
+    /// Returns the next proxy's outbound configuration, which may be null if no next proxy exists.
+    /// </summary>
+    /// <param name="subItem">The subscription item containing proxy chain information.</param>
+    /// <param name="outbound">The current outbound configuration. Its tag must be set before calling this method.</param>
+    /// <param name="prevOutboundTag">The tag of the previous outbound in the chain, if any.</param>
+    /// <param name="nextOutbound">The outbound for the next proxy in the chain, if already created. If null, will be created inside.</param>
+    /// <returns>
+    /// The outbound configuration for the next proxy in the chain, or null if no next proxy exists.
+    /// </returns>
+    private async Task<Outbounds4Ray?> GenChainOutbounds(SubItem subItem, Outbounds4Ray outbound, string? prevOutboundTag, Outbounds4Ray? nextOutbound = null)
+    {
+        try
+        {
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+
+            if (!prevOutboundTag.IsNullOrEmpty())
+            {
+                outbound.streamSettings.sockopt = new()
+                {
+                    dialerProxy = prevOutboundTag
+                };
+            }
+
+            // Next proxy
+            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            if (nextNode is not null
+                && nextNode.ConfigType != EConfigType.Custom
+                && nextNode.ConfigType != EConfigType.Hysteria2
+                && nextNode.ConfigType != EConfigType.TUIC)
+            {
+                if (nextOutbound == null)
+                {
+                    nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+                    await GenOutbound(nextNode, nextOutbound);
+                }
+                nextOutbound.tag = outbound.tag;
+
+                outbound.tag = $"mid-{outbound.tag}";
+                nextOutbound.streamSettings.sockopt = new()
+                {
+                    dialerProxy = outbound.tag
+                };
+            }
+            return nextOutbound;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return null;
+    }
+
     private async Task<int> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
     {
-        if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.LeastPing)
+        if (multipleLoad == EMultipleLoad.LeastPing)
         {
             var observatory = new Observatory4Ray
             {
                 subjectSelector = [Global.ProxyTag],
                 probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
-                probeInterval = "3m"
+                probeInterval = "3m",
+                enableConcurrency = true,
             };
             v2rayConfig.observatory = observatory;
+        }
+        else if (multipleLoad == EMultipleLoad.LeastLoad)
+        {
+            var burstObservatory = new BurstObservatory4Ray
+            {
+                subjectSelector = [Global.ProxyTag],
+                pingConfig = new()
+                {
+                    destination = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                    interval = "5m",
+                    timeout = "30s",
+                    sampling = 2,
+                }
+            };
+            v2rayConfig.burstObservatory = burstObservatory;
         }
         var strategyType = multipleLoad switch
         {

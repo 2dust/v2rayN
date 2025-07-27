@@ -101,6 +101,7 @@ public class ConfigHandler
             EnableAutoAdjustMainLvColWidth = true
         };
         config.UiItem.MainColumnItem ??= new();
+        config.UiItem.WindowSizeItem ??= new();
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
@@ -250,6 +251,7 @@ public class ConfigHandler
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
             item.Extra = profileItem.Extra;
+            item.MuxEnabled = profileItem.MuxEnabled;
         }
 
         var ret = item.ConfigType switch
@@ -1859,12 +1861,25 @@ public class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
     {
-        if (await SQLiteHelper.Instance.TableAsync<RoutingItem>().Where(t => t.Id == routingItem.Id).CountAsync() > 0)
+        var items = await AppHandler.Instance.RoutingItems();
+        if (items.Any(t => t.Id == routingItem.Id && t.IsActive == true))
         {
-            config.RoutingBasicItem.RoutingIndexId = routingItem.Id;
+            return -1;
         }
 
-        await SaveConfig(config);
+        foreach (var item in items)
+        {
+            if (item.Id == routingItem.Id)
+            {
+                item.IsActive = true;
+            }
+            else
+            {
+                item.IsActive = false;
+            }
+        }
+
+        await SQLiteHelper.Instance.UpdateAllAsync(items);
 
         return 0;
     }
@@ -1877,7 +1892,7 @@ public class ConfigHandler
     /// <returns>The default routing item</returns>
     public static async Task<RoutingItem> GetDefaultRouting(Config config)
     {
-        var item = await AppHandler.Instance.GetRoutingItem(config.RoutingBasicItem.RoutingIndexId);
+        var item = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.IsActive == true);
         if (item is null)
         {
             var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
@@ -1983,8 +1998,20 @@ public class ConfigHandler
             items = await AppHandler.Instance.RoutingItems();
         }
 
-        if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(ver)).ToList().Count > 0)
+        if (!blImportAdvancedRules && items.Count > 0)
         {
+            //migrate 
+            //TODO Temporary code to be removed later
+            if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
+            {
+                var item = items.FirstOrDefault(t => t.Id == config.RoutingBasicItem.RoutingIndexId);
+                if (item != null)
+                {
+                    await SetDefaultRouting(config, item);
+                }
+                config.RoutingBasicItem.RoutingIndexId = string.Empty;
+            }
+
             return 0;
         }
 
@@ -2177,4 +2204,44 @@ public class ConfigHandler
     }
 
     #endregion Regional Presets
+
+    #region UIItem
+
+    public static WindowSizeItem? GetWindowSizeItem(Config config, string typeName)
+    {
+        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
+        {
+            return null;
+        }
+
+        return sizeItem;
+    }
+
+    public static int SaveWindowSizeItem(Config config, string typeName, double width, double height)
+    {
+        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        if (sizeItem == null)
+        {
+            sizeItem = new WindowSizeItem { TypeName = typeName };
+            config.UiItem.WindowSizeItem.Add(sizeItem);
+        }
+
+        sizeItem.Width = (int)width;
+        sizeItem.Height = (int)height;
+
+        return 0;
+    }
+
+    public static int SaveMainGirdHeight(Config config, double height1, double height2)
+    {
+        var uiItem = config.UiItem ?? new();
+
+        uiItem.MainGirdHeight1 = (int)(height1 + 0.1);
+        uiItem.MainGirdHeight2 = (int)(height2 + 0.1);
+
+        return 0;
+    }
+
+    #endregion UIItem
 }

@@ -5,18 +5,18 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
+using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Handler;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
+public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
     private WindowNotificationManager? _manager;
@@ -29,7 +29,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         InitializeComponent();
 
         _config = AppHandler.Instance.Config;
-        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.BottomRight };
+        _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         this.KeyDown += MainWindow_KeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
@@ -135,26 +135,23 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             }
         });
 
-        this.Title = $"{Utils.GetVersion()}";
         if (Utils.IsWindows())
         {
+            this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+
             ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
             HotkeyHandler.Instance.Init(_config, OnHotkeyHandler);
         }
         else
         {
-            if (Utils.IsAdministrator())
-            {
-                this.Title = $"{Utils.GetVersion()} - {ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp}";
-                NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.TbSettingsLinuxSudoPasswordNotSudoRunApp);
-            }
+            this.Title = $"{Utils.GetVersion()}";
+
             menuRebootAsAdmin.IsVisible = false;
             menuSettingsSetUWP.IsVisible = false;
             menuGlobalHotkeySetting.IsVisible = false;
         }
         menuAddServerViaScan.IsVisible = false;
 
-        RestoreUI();
         AddHelpMenuItem();
         MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
@@ -436,14 +433,14 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         _config.UiItem.ShowInTaskbar = bl;
     }
 
+    protected override void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        base.OnLoaded(sender, e);
+        RestoreUI();
+    }
+
     private void RestoreUI()
     {
-        if (_config.UiItem.MainWidth > 0 && _config.UiItem.MainHeight > 0)
-        {
-            Width = _config.UiItem.MainWidth;
-            Height = _config.UiItem.MainHeight;
-        }
-
         if (_config.UiItem.MainGirdHeight1 > 0 && _config.UiItem.MainGirdHeight2 > 0)
         {
             if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
@@ -461,18 +458,15 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
     private void StorageUI(string? n = null)
     {
-        _config.UiItem.MainWidth = this.Width;
-        _config.UiItem.MainHeight = this.Height;
+        ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain.ColumnDefinitions[0].ActualWidth + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain.ColumnDefinitions[2].ActualWidth + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            _config.UiItem.MainGirdHeight1 = Math.Ceiling(gridMain1.RowDefinitions[0].ActualHeight + 0.1);
-            _config.UiItem.MainGirdHeight2 = Math.Ceiling(gridMain1.RowDefinitions[2].ActualHeight + 0.1);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
     }
 

@@ -1,9 +1,10 @@
+using ReactiveUI;
 using SQLite;
 
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ProfileItem
+public class ProfileItem : ReactiveObject
 {
     public ProfileItem()
     {
@@ -93,4 +94,5 @@ public class ProfileItem
     public string ShortId { get; set; }
     public string SpiderX { get; set; }
     public string Extra { get; set; }
+    public bool? MuxEnabled { get; set; }
 }

@@ -1,7 +1,8 @@
-<reactiveui:ReactiveWindow
+<base:WindowBase
     x:Class="v2rayN.Views.AddServer2Window"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -198,4 +199,4 @@
             </Grid>
         </ScrollViewer>
     </DockPanel>
-</reactiveui:ReactiveWindow>
+</base:WindowBase>

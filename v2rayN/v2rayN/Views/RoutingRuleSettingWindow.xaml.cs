@@ -21,15 +21,9 @@ public partial class RoutingRuleSettingWindow
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
 
         ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
-        Global.DomainStrategies.ForEach(it =>
-        {
-            cmbdomainStrategy.Items.Add(it);
-        });
-        cmbdomainStrategy.Items.Add(string.Empty);
-        Global.DomainStrategies4Singbox.ForEach(it =>
-        {
-            cmbdomainStrategy4Singbox.Items.Add(it);
-        });
+
+        cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
+        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {

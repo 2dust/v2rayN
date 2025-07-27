@@ -34,6 +34,8 @@ public class StatusBarViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
     public ReactiveCommand<Unit, Unit> CopyProxyCmdToClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
+    public ReactiveCommand<Unit, Unit> ShowWindowCmd { get; }
+    public ReactiveCommand<Unit, Unit> HideWindowCmd { get; }
 
     #region System Proxy
 
@@ -91,6 +93,9 @@ public class StatusBarViewModel : MyReactiveObject
     [Reactive]
     public bool EnableTun { get; set; }
 
+    [Reactive]
+    public bool BlIsNonWindows { get; set; }
+
     #endregion UI
 
     public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -100,6 +105,7 @@ public class StatusBarViewModel : MyReactiveObject
         SelectedServer = new();
         RunningServerToolTipText = "-";
         BlSystemProxyPacVisible = Utils.IsWindows();
+        BlIsNonWindows = Utils.IsNonWindows();
 
         if (_config.TunModeItem.EnableTun && AllowEnableTun())
         {
@@ -143,11 +149,21 @@ public class StatusBarViewModel : MyReactiveObject
             Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(null);
             await Task.CompletedTask;
         });
+        ShowWindowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(true);
+            await Task.CompletedTask;
+        });
+        HideWindowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(false);
+            await Task.CompletedTask;
+        });
 
         AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await AddServerViaClipboard();
-        });
+            {
+                await AddServerViaClipboard();
+            });
         AddServerViaScanCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerViaScan();
@@ -372,7 +388,7 @@ public class StatusBarViewModel : MyReactiveObject
         foreach (var item in routings)
         {
             _routingItems.Add(item);
-            if (item.Id == _config.RoutingBasicItem.RoutingIndexId)
+            if (item.IsActive)
             {
                 SelectedRouting = item;
             }
@@ -393,10 +409,6 @@ public class StatusBarViewModel : MyReactiveObject
 
         var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
-        {
-            return;
-        }
-        if (_config.RoutingBasicItem.RoutingIndexId == item.Id)
         {
             return;
         }
@@ -424,30 +436,34 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task DoEnableTun(bool c)
     {
-        if (_config.TunModeItem.EnableTun != EnableTun)
+        if (_config.TunModeItem.EnableTun == EnableTun)
         {
-            _config.TunModeItem.EnableTun = EnableTun;
+            return;
+        }
+
+        _config.TunModeItem.EnableTun = EnableTun;
+
+        if (EnableTun && AllowEnableTun() == false)
+        {
             // When running as a non-administrator, reboot to administrator mode
-            if (EnableTun && AllowEnableTun() == false)
+            if (Utils.IsWindows())
             {
-                if (Utils.IsWindows())
+                _config.TunModeItem.EnableTun = false;
+                Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                return;
+            }
+            else
+            {
+                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
+                if (passwordResult == false)
                 {
                     _config.TunModeItem.EnableTun = false;
-                    Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
                     return;
                 }
-                else
-                {
-                    if (await _updateView?.Invoke(EViewAction.PasswordInput, null) == false)
-                    {
-                        _config.TunModeItem.EnableTun = false;
-                        return;
-                    }
-                }
             }
-            await ConfigHandler.SaveConfig(_config);
-            Locator.Current.GetService<MainWindowViewModel>()?.Reload();
         }
+        await ConfigHandler.SaveConfig(_config);
+        Locator.Current.GetService<MainWindowViewModel>()?.Reload();
     }
 
     private bool AllowEnableTun()
@@ -500,8 +516,16 @@ public class StatusBarViewModel : MyReactiveObject
     {
         try
         {
-            SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
-            SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
+            if (_config.IsRunningCore(ECoreType.sing_box))
+            {
+                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, EInboundProtocol.mixed, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
+                SpeedDirectDisplay = string.Empty;
+            }
+            else
+            {
+                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
+                SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
+            }
         }
         catch
         {

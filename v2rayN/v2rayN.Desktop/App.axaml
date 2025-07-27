@@ -6,8 +6,8 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:semi="https://irihi.tech/semi"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    x:DataType="vms:StatusBarViewModel"
     Name="v2rayN"
+    x:DataType="vms:StatusBarViewModel"
     RequestedThemeVariant="Default">
     <Application.Styles>
         <semi:SemiTheme />
@@ -33,6 +33,16 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem
+                            Command="{Binding ShowWindowCmd}"
+                            Header="{x:Static resx:ResUI.TbDisplayGUI}"
+                            IsVisible="{Binding BlIsNonWindows}" />
+                        <NativeMenuItem
+                            Command="{Binding NotifyLeftClickCmd}"
+                            Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}"
+                            IsVisible="{Binding BlIsNonWindows}" />
+                        <NativeMenuItem Command="{Binding CopyProxyCmdToClipboardCmd}" Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem
                             Command="{Binding SystemProxyClearCmd}"
                             Header="{x:Static resx:ResUI.menuSystemProxyClear}"
                             IsChecked="{Binding BlSystemProxyClear}"
@@ -55,13 +65,9 @@
                             ToggleType="Radio" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                        <NativeMenuItem Header="{x:Static resx:ResUI.menuAddServerViaScan}" IsVisible="False" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
                         <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Command="{Binding CopyProxyCmdToClipboardCmd}" Header="{x:Static resx:ResUI.menuCopyProxyCmdToClipboard}" />
-                        <NativeMenuItemSeparator />
-                        <NativeMenuItem Command="{Binding NotifyLeftClickCmd}" Header="{x:Static resx:ResUI.menuShowOrHideMainWindow}" />
                         <NativeMenuItem Click="MenuExit_Click" Header="{x:Static resx:ResUI.menuExit}" />
                     </NativeMenu>
                 </TrayIcon.Menu>

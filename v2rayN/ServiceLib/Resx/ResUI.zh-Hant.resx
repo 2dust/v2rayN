@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>匯出分享链接至剪貼簿成功</value>
+    <value>匯出分享連結至剪貼簿成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
     <value>請先檢查設定檔設定</value>
@@ -131,12 +131,6 @@
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
-  </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>下載</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>是否下載？{0}</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>轉換設定檔失敗</value>
@@ -295,7 +289,7 @@
     <value>成功從剪貼簿匯入 {0} 個設定檔</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>掃描匯入分享链接成功</value>
+    <value>掃描匯入分享連結成功</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
     <value>目前延遲: {0} ms，{1}</value>
@@ -387,9 +381,6 @@
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>註冊全域快速鍵 {0} 成功</value>
   </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>未分組設定檔</value>
-  </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>所有</value>
   </data>
@@ -478,7 +469,7 @@
     <value>語言 (需重啟)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>從剪貼簿導入分享鏈接 (Ctrl+V)</value>
+    <value>從剪貼簿導入分享連結 (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>掃描螢幕上的二維碼 (Ctrl+S)</value>
@@ -514,7 +505,7 @@
     <value>匯出所選設定檔完整設定</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>匯出分享链接至剪貼簿 (多選) (Ctrl+C)</value>
+    <value>匯出分享連結至剪貼簿 (多選) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>新增自訂設定設定檔</value>
@@ -819,9 +810,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} 官網</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>進階功能</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>新增規則集</value>
   </data>
@@ -839,15 +827,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.阻止的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.直連的 Domain 或 IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.代理的 Domain 或 IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>預定義規則集列表</value>
@@ -889,7 +868,7 @@
     <value>規則詳細說明檔案</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支援填寫 DnsObject，JSON 格式，點擊查看説明</value>
+    <value>支援填寫 DnsObject，JSON 格式，點擊查看說明</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分組此處請留空</value>
@@ -1000,7 +979,7 @@
     <value>啟用硬體加速 (需重啟)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待测试中（按 ESC 终止）...</value>
+    <value>等待測試中（按 ESC 終止）...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>當有異常斷流時請關閉</value>
@@ -1099,10 +1078,10 @@
     <value>混淆密碼 (obfs password)</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Domain 或 IP 或 行程名) 与 Port 与 Protocol 与 InboundTag =&gt; OutboundTag</value>
+    <value>(Domain 或 IP 或 行程名) 與 Port 與 Protocol 與 InboundTag =&gt; OutboundTag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>自动滚动到末尾</value>
+    <value>自動滾動到末尾</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真連線測試位址</value>
@@ -1198,7 +1177,7 @@
     <value>全局</value>
   </data>
   <data name="menuModeNothing" xml:space="preserve">
-    <value>随原配置</value>
+    <value>隨原配置</value>
   </data>
   <data name="menuModeRule" xml:space="preserve">
     <value>規則</value>
@@ -1228,7 +1207,7 @@
     <value>自動調整列寬</value>
   </data>
   <data name="menuExport2ShareUrlBase64" xml:space="preserve">
-    <value>匯出分享链接至剪貼簿 (多選) Base64 编码</value>
+    <value>匯出分享連結至剪貼簿 (多選) Base64 編碼</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
     <value>匯出所選設定檔完整設定至剪貼簿</value>
@@ -1264,7 +1243,7 @@
     <value>WebDav 伺服器位址</value>
   </data>
   <data name="LvWebDavUserName" xml:space="preserve">
-    <value>WebDav 賬戶</value>
+    <value>WebDav 帳戶</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
     <value>WebDav 密碼</value>
@@ -1333,13 +1312,7 @@
     <value>系統的 sudo 密碼</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>輸入的密碼無法校驗，所以請確保輸入正確。如果因為輸入錯誤導致無法正常運作時，請重新啟動本應用。 密碼不會存儲，每次重啟後都需要再次輸入。</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>請先在 Tun 模式設定中設定 sudo 密碼</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>請不要用 sudo 來運行此 App</value>
+    <value>密碼將調用命令行校驗，如果因為校驗錯誤導致無法正常運行時，請重啟本應用。密碼不會存儲，每次重啟後都需要再次輸入。</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp 模式</value>
@@ -1363,7 +1336,7 @@
     <value>開啟第二個本機監聽埠</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks：本地端口，socks2：第二個本地端口，socks3：區域網路端口</value>
+    <value>socks：本地埠，socks2：第二個本地埠，socks3：區域網路埠</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主題</value>
@@ -1384,10 +1357,10 @@
     <value>移除無效測試結果 {0} 個。</value>
   </data>
   <data name="TbPorts7" xml:space="preserve">
-    <value>跳躍端口範圍</value>
+    <value>跳躍埠範圍</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>會覆蓋端口，多組時用逗號 (,) 隔開</value>
+    <value>會覆蓋埠，多組時用逗號 (,) 隔開</value>
   </data>
   <data name="menuSetDefaultMultipleServer" xml:space="preserve">
     <value>多設定檔產生自訂配置 (多選)</value>
@@ -1412,5 +1385,14 @@
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>目前連接資訊測試地址</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>可以填寫設定檔別名，請確保存在並唯一</value>
+  </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>sudo 密碼已經驗證成功，請忽略錯誤密碼提示！</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>密碼錯誤，請重試。</value>
   </data>
 </root>

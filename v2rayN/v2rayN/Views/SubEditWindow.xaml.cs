@@ -15,10 +15,7 @@ public partial class SubEditWindow
 
         ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
-        Global.SubConvertTargets.ForEach(it =>
-        {
-            cmbConvertTarget.Items.Add(it);
-        });
+        cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 
         this.WhenActivated(disposables =>
         {

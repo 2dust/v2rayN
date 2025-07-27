@@ -323,6 +323,14 @@ public class Utils
         return text.Replace("，", ",").Replace(Environment.NewLine, ",");
     }
 
+    public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
+    {
+        return Enum.GetValues(typeof(TEnum))
+            .Cast<TEnum>()
+            .Select(e => e.ToString())
+            .ToList();
+    }
+
     #endregion 转换函数
 
     #region 数据检查
@@ -582,7 +590,7 @@ public class Utils
             var result = await cmd.ExecuteBufferedAsync();
             if (result.IsSuccess)
             {
-                return result.StandardOutput.ToString();
+                return result.StandardOutput ?? "";
             }
 
             Logging.SaveLog(result.ToString() ?? "");
@@ -816,18 +824,6 @@ public class Utils
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         }
         return false;
-        //else
-        //{
-        //    var id = GetLinuxUserId().Result ?? "1000";
-        //    if (int.TryParse(id, out var userId))
-        //    {
-        //        return userId == 0;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
     }
 
     private static async Task<string?> GetLinuxUserId()
@@ -839,12 +835,44 @@ public class Utils
     public static async Task<string?> SetLinuxChmod(string? fileName)
     {
         if (fileName.IsNullOrEmpty())
+        {
             return null;
+        }
+        if (SetUnixFileMode(fileName))
+        {
+            Logging.SaveLog($"Successfully set the file execution permission, {fileName}");
+            return "";
+        }
+
         if (fileName.Contains(' '))
+        {
             fileName = fileName.AppendQuotes();
-        //File.SetUnixFileMode(fileName, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        }
         var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
         return await GetCliWrapOutput(Global.LinuxBash, arg);
+    }
+
+    public static bool SetUnixFileMode(string? fileName)
+    {
+        try
+        {
+            if (fileName.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            if (File.Exists(fileName))
+            {
+                var currentMode = File.GetUnixFileMode(fileName);
+                File.SetUnixFileMode(fileName, currentMode | UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute);
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("SetUnixFileMode", ex);
+        }
+        return false;
     }
 
     public static async Task<string?> GetLinuxFontFamily(string lang)

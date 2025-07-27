@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ServiceLib.Common;
 
-public static class StringEx
+public static class Extension
 {
     public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
     {
@@ -78,5 +78,10 @@ public static class StringEx
     public static int ToInt(this string? value, int defaultValue = 0)
     {
         return int.TryParse(value, out var result) ? result : defaultValue;
+    }
+
+    public static List<string> AppendEmpty(this IEnumerable<string> source)
+    {
+        return source.Concat(new[] { string.Empty }).ToList();
     }
 }

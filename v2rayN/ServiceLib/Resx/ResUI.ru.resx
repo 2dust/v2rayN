@@ -132,12 +132,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
-  <data name="downloadSpeed" xml:space="preserve">
-    <value>Скорость загрузки</value>
-  </data>
-  <data name="DownloadYesNo" xml:space="preserve">
-    <value>Хотите загрузить {0}?</value>
-  </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
     <value>Не удалось преобразовать файл конфигурации</value>
   </data>
@@ -386,9 +380,6 @@
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
     <value>Глобальная горячая клавиша {0} зарегистрирована успешно</value>
-  </data>
-  <data name="UngroupedServers" xml:space="preserve">
-    <value>Разгруппировано</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
     <value>Все серверы</value>
@@ -822,9 +813,6 @@
   <data name="menuWebsiteItem" xml:space="preserve">
     <value>{0} веб-сайт</value>
   </data>
-  <data name="menuRoutingAdvanced" xml:space="preserve">
-    <value>Расширенная функция</value>
-  </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>Добавить</value>
   </data>
@@ -842,15 +830,6 @@
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Доменная стратегия</value>
-  </data>
-  <data name="TbRoutingTabBlock" xml:space="preserve">
-    <value>3.Заблокировать домен или IP</value>
-  </data>
-  <data name="TbRoutingTabDirect" xml:space="preserve">
-    <value>2.Прямой домен или IP</value>
-  </data>
-  <data name="TbRoutingTabProxy" xml:space="preserve">
-    <value>1.Прокси домен или IP</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>Предустановленный список наборов правил</value>
@@ -1336,13 +1315,7 @@
     <value>Пароль sudo системы</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>Введенный вами пароль не может быть подтвержден, поэтому убедитесь, что вы ввели его правильно. Если приложение не работает должным образом из-за неправильного ввода, то перезапустите его. Пароль не будет сохранен, и вам придется вводить его заново после каждого перезапуска</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordIsEmpty" xml:space="preserve">
-    <value>Сначала задайте пароль sudo в настройках TUN-режима</value>
-  </data>
-  <data name="TbSettingsLinuxSudoPasswordNotSudoRunApp" xml:space="preserve">
-    <value>Не запускайте программу как суперпользователь</value>
+    <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*XHTTP-режим</value>
@@ -1415,5 +1388,14 @@
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>URL для тестирования текущего соединения</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Can fill in the configuration remarks, please make sure it exist and are unique</value>
+  </data>
+  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
+    <value>Sudo password has been verified successfully, please ignore the incorrect password prompts!</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Incorrect password, please try again.</value>
   </data>
 </root>
