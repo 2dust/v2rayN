@@ -1245,16 +1245,18 @@ public class CoreConfigSingboxService
             var item = _config.SimpleDNSItem;
 
             var defaultDomainResolverTag = Global.SingboxOutboundResolverTag;
+            var directDNSStrategy = item.SingboxStrategy4Direct.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : item.SingboxStrategy4Direct;
 
             var rawDNSItem = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem != null && rawDNSItem.Enabled == true)
             {
                 defaultDomainResolverTag = Global.SingboxFinalResolverTag;
+                directDNSStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : rawDNSItem.DomainStrategy4Freedom;
             }
             singboxConfig.route.default_domain_resolver = new()
             {
                 server = defaultDomainResolverTag,
-                strategy = item.SingboxStrategy4Direct
+                strategy = directDNSStrategy
             };
 
             if (_config.TunModeItem.EnableTun)
