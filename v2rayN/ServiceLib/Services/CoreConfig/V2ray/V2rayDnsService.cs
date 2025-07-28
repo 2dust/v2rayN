@@ -188,7 +188,7 @@ public partial class CoreConfigV2rayService
                 {
                     var profileNode = await AppManager.Instance.GetProfileItemViaRemarks(profile);
                     if (profileNode is not null &&
-                        profileNode.ConfigType is not (EConfigType.Custom or EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls) &&
+                        Global.XraySupportConfigType.Contains(profileNode.ConfigType) &&
                         Utils.IsDomain(profileNode.Address))
                     {
                         directDomainList.Add(profileNode.Address);
@@ -391,9 +391,7 @@ public partial class CoreConfigV2rayService
                 // Previous proxy
                 var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                 if (prevNode is not null
-                    && prevNode.ConfigType != EConfigType.Custom
-                    && prevNode.ConfigType != EConfigType.Hysteria2
-                    && prevNode.ConfigType != EConfigType.TUIC
+                    && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType)
                     && Utils.IsDomain(prevNode.Address))
                 {
                     domainList.Add(prevNode.Address);
@@ -402,9 +400,7 @@ public partial class CoreConfigV2rayService
                 // Next proxy
                 var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
                 if (nextNode is not null
-                    && nextNode.ConfigType != EConfigType.Custom
-                    && nextNode.ConfigType != EConfigType.Hysteria2
-                    && nextNode.ConfigType != EConfigType.TUIC
+                    && Global.SingboxSupportConfigType.Contains(nextNode.ConfigType)
                     && Utils.IsDomain(nextNode.Address))
                 {
                     domainList.Add(nextNode.Address);

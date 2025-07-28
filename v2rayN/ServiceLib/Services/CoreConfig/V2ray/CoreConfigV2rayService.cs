@@ -110,11 +110,7 @@ public partial class CoreConfigV2rayService(Config config)
             var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
-                if (it.ConfigType == EConfigType.Custom)
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls)
+                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }
@@ -250,7 +246,7 @@ public partial class CoreConfigV2rayService(Config config)
 
             foreach (var it in selecteds)
             {
-                if (it.ConfigType == EConfigType.Custom)
+                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }
