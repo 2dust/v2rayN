@@ -120,7 +120,7 @@ public class CoreConfigV2rayService
                 {
                     continue;
                 }
-                if (it.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC)
+                if (it.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls)
                 {
                     continue;
                 }
@@ -640,7 +640,8 @@ public class CoreConfigV2rayService
         if (node == null
             || node.ConfigType == EConfigType.Custom
             || node.ConfigType == EConfigType.Hysteria2
-            || node.ConfigType == EConfigType.TUIC)
+            || node.ConfigType == EConfigType.TUIC
+            || node.ConfigType == EConfigType.Anytls)
         {
             return Global.ProxyTag;
         }
@@ -1222,6 +1223,7 @@ public class CoreConfigV2rayService
                     && prevNode.ConfigType != EConfigType.Custom
                     && prevNode.ConfigType != EConfigType.Hysteria2
                     && prevNode.ConfigType != EConfigType.TUIC
+                    && prevNode.ConfigType != EConfigType.Anytls
                     && Utils.IsDomain(prevNode.Address))
                 {
                     domainList.Add(prevNode.Address);
@@ -1233,6 +1235,7 @@ public class CoreConfigV2rayService
                     && nextNode.ConfigType != EConfigType.Custom
                     && nextNode.ConfigType != EConfigType.Hysteria2
                     && nextNode.ConfigType != EConfigType.TUIC
+                    && nextNode.ConfigType != EConfigType.Anytls
                     && Utils.IsDomain(nextNode.Address))
                 {
                     domainList.Add(nextNode.Address);
