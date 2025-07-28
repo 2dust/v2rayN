@@ -35,7 +35,7 @@ public class CoreConfigNaiveService
             configJsonNode["listen"] = Global.SocksProtocol + Global.Loopback + ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString();
 
             // outbound
-            configJsonNode["proxy"] = (node.Network == "quic" ? "quic://" : Global.HttpsProtocol) + node.Id + "@" + node.Address + ":" + node.Port;
+            configJsonNode["proxy"] = (node.HeaderType == "quic" ? "quic://" : Global.HttpsProtocol) + node.Id + "@" + node.Address + ":" + node.Port;
 
             ret.Success = true;
             ret.Data = JsonUtils.Serialize(configJsonNode, true);

@@ -843,6 +843,10 @@ public class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Id = profileItem.Id.TrimEx();
         profileItem.Network = string.Empty;
+        if (!Global.NaiveProxyProtocols.Contains(profileItem.HeaderType))
+        {
+            profileItem.HeaderType = Global.NaiveProxyProtocols.FirstOrDefault()!;
+        }
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
