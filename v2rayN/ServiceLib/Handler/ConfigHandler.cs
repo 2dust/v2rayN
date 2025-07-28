@@ -2099,18 +2099,38 @@ public class ConfigHandler
     /// <summary>
     /// Initialize built-in DNS configurations
     /// Creates default DNS items for V2Ray and sing-box
+    /// Also checks existing DNS items and disables those with empty NormalDNS
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinDNS(Config config)
     {
         var items = await AppHandler.Instance.DNSItems();
+        
+        // Check existing DNS items and disable those with empty NormalDNS
+        var needsUpdate = false;
+        foreach (var existingItem in items)
+        {
+            if (existingItem.NormalDNS.IsNullOrEmpty() && existingItem.Enabled)
+            {
+                existingItem.Enabled = false;
+                needsUpdate = true;
+            }
+        }
+        
+        // Update items if any changes were made
+        if (needsUpdate)
+        {
+            await SQLiteHelper.Instance.UpdateAllAsync(items);
+        }
+        
         if (items.Count <= 0)
         {
             var item = new DNSItem()
             {
                 Remarks = "V2ray",
                 CoreType = ECoreType.Xray,
+                Enabled = false,
             };
             await SaveDNSItems(config, item);
 
@@ -2118,6 +2138,7 @@ public class ConfigHandler
             {
                 Remarks = "sing-box",
                 CoreType = ECoreType.sing_box,
+                Enabled = false,
             };
             await SaveDNSItems(config, item2);
         }
