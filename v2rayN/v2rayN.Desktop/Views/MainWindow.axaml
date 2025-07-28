@@ -47,6 +47,11 @@
                         <MenuItem x:Name="menuAddHysteria2Server" Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
                         <MenuItem x:Name="menuAddTuicServer" Header="{x:Static resx:ResUI.menuAddTuicServer}" />
                         <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                        <Separator />
+                        <MenuItem x:Name="menuAddBrookServer" Header="{x:Static resx:ResUI.menuAddBrookServer}" />
+                        <MenuItem x:Name="menuAddJuicityServer" Header="{x:Static resx:ResUI.menuAddJuicityServer}" />
+                        <MenuItem x:Name="menuAddNaiveServer" Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
+                        <MenuItem x:Name="menuAddShadowquicServer" Header="{x:Static resx:ResUI.menuAddShadowquicServer}" />
                     </MenuItem>
 
                     <MenuItem Padding="8,0">
