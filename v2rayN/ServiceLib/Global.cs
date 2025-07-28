@@ -170,7 +170,11 @@ public class Global
             { EConfigType.Hysteria2, "hysteria2://" },
             { EConfigType.TUIC, "tuic://" },
             { EConfigType.WireGuard, "wireguard://" },
-            { EConfigType.Anytls, "anytls://" }
+            { EConfigType.Anytls, "anytls://" },
+            { EConfigType.NaiveProxy, "naive://" },
+            { EConfigType.Juicity, "juicity://" },
+            { EConfigType.Brook, "brook://" },
+            { EConfigType.Shadowquic, "shadowquic://" }
         };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -184,7 +188,11 @@ public class Global
             { EConfigType.Hysteria2, "hysteria2" },
             { EConfigType.TUIC, "tuic" },
             { EConfigType.WireGuard, "wireguard" },
-            { EConfigType.Anytls, "anytls" }
+            { EConfigType.Anytls, "anytls" },
+            { EConfigType.NaiveProxy, "naiveproxy" },
+            { EConfigType.Juicity, "juicity" },
+            { EConfigType.Brook, "brook" },
+            { EConfigType.Shadowquic, "shadowquic" }
         };
 
     public static readonly List<string> VmessSecurities =
