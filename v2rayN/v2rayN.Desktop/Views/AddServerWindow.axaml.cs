@@ -91,7 +91,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
 
-                cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
+                cmbHeaderType8.ItemsSource = Global.CongestionControls;
                 break;
 
             case EConfigType.WireGuard:

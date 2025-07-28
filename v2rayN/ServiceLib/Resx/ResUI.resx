@@ -1413,4 +1413,19 @@
   <data name="TbSettingsSplitCoreDoc2" xml:space="preserve">
     <value>Routing Core defaults to sing-box when Tun is enabled.</value>
   </data>
+  <data name="menuAddBrookServer" xml:space="preserve">
+    <value>Add [Brook] Configuration</value>
+  </data>
+  <data name="menuAddJuicityServer" xml:space="preserve">
+    <value>Add [Juicity] Configuration</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>Add [Naive] Configuration</value>
+  </data>
+  <data name="menuAddShadowquicServer" xml:space="preserve">
+    <value>Add [Shadowquic] Configuration</value>
+  </data>
+  <data name="TbHeaderType100" xml:space="preserve">
+    <value>Proxy Protocol</value>
+  </data>
 </root>

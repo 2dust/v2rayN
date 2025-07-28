@@ -112,6 +112,23 @@
                                     x:Name="menuAddAnytlsServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                                <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuAddBrookServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddBrookServer}" />
+                                <MenuItem
+                                    x:Name="menuAddJuicityServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddJuicityServer}" />
+                                <MenuItem
+                                    x:Name="menuAddNaiveServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
+                                <MenuItem
+                                    x:Name="menuAddShadowquicServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddShadowquicServer}" />
                             </MenuItem>
                         </Menu>
                         <Separator />

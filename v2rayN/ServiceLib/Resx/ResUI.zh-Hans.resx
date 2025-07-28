@@ -1410,4 +1410,19 @@
   <data name="TbSettingsSplitCoreDoc2" xml:space="preserve">
     <value>启用 Tun 时，路由 Core 为 sing-box</value>
   </data>
+  <data name="menuAddBrookServer" xml:space="preserve">
+    <value>添加 [Brook] 配置文件</value>
+  </data>
+  <data name="menuAddJuicityServer" xml:space="preserve">
+    <value>添加 [Juicity] 配置文件</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>添加 [Naive] 配置文件</value>
+  </data>
+  <data name="menuAddShadowquicServer" xml:space="preserve">
+    <value>添加 [Shadowquic] 配置文件</value>
+  </data>
+  <data name="TbHeaderType100" xml:space="preserve">
+    <value>代理协议</value>
+  </data>
 </root>

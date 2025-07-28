@@ -290,6 +290,26 @@ public class Global
             "tuic"
     ];
 
+    public static readonly List<string> NaiveProxyCoreTypes =
+    [
+        "naiveproxy"
+    ];
+
+    public static readonly List<string> JuicityProxyCoreTypes =
+    [
+        "juicity"
+    ];
+
+    public static readonly List<string> BrookCoreTypes =
+    [
+        "brook"
+    ];
+
+    public static readonly List<string> ShadowquicCoreTypes =
+    [
+        "shadowquic"
+    ];
+
     public static readonly List<EConfigType> SupportSplitConfigTypes =
     [
         EConfigType.VMess,
@@ -488,11 +508,18 @@ public class Global
             ""
     ];
 
-    public static readonly List<string> TuicCongestionControls =
+    public static readonly List<string> CongestionControls =
     [
         "cubic",
             "new_reno",
             "bbr"
+    ];
+
+    public static readonly List<string> NaiveProxyProtocols =
+    [
+        "https",
+            "http",
+            "quic"
     ];
 
     public static readonly List<string> allowSelectType =

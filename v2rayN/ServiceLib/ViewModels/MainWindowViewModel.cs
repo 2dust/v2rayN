@@ -25,6 +25,10 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaImageCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddBrookServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddJuicityServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddNaiveServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddShadowquicServerCmd { get; }
 
     //Subscription
     public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
@@ -115,6 +119,22 @@ public class MainWindowViewModel : MyReactiveObject
         AddAnytlsServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(true, EConfigType.Anytls);
+        });
+        AddBrookServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.Brook);
+        });
+        AddJuicityServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.Juicity);
+        });
+        AddNaiveServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.NaiveProxy);
+        });
+        AddShadowquicServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.Shadowquic);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
