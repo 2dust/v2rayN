@@ -96,6 +96,7 @@ public partial class AddServerWindow
                 gridTls.Visibility = Visibility.Collapsed;
 
                 break;
+
             case EConfigType.Anytls:
                 gridAnytls.Visibility = Visibility.Visible;
                 cmbCoreType.IsEnabled = false;
