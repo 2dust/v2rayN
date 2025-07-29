@@ -60,6 +60,27 @@ public class CoreConfigHy2Service
             configJsonNode["server"] = node.Address + ":" + port;
             configJsonNode["auth"] = node.Id;
 
+            if (node.Sni.IsNotEmpty())
+            {
+                configJsonNode["tls"] = new JsonObject
+                {
+                    ["sni"] = node.Sni,
+                    ["insecure"] = node.AllowInsecure.ToLower() == "true"
+                };
+            }
+
+            if (node.Path.IsNotEmpty())
+            {
+                configJsonNode["obfs"] = new JsonObject
+                {
+                    ["type"] = "salamander ",
+                    ["salamander"] = new JsonObject
+                    {
+                        ["password"] = node.Path
+                    }
+                };
+            }
+
             var bandwidthObject = new JsonObject();
             if (_config.HysteriaItem.UpMbps > 0)
             {
