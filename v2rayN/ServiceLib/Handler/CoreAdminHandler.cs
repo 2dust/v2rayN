@@ -20,6 +20,8 @@ public class CoreAdminHandler
         }
         _config = config;
         _updateFunc = updateFunc;
+
+        await Task.CompletedTask;
     }
 
     private void UpdateFunc(bool notify, string msg)
@@ -49,13 +51,13 @@ public class CoreAdminHandler
             }
         };
 
-        DataReceivedEventHandler dataHandler = (sender, e) =>
+        void dataHandler(object sender, DataReceivedEventArgs e)
         {
             if (e.Data.IsNotEmpty())
             {
                 UpdateFunc(false, e.Data + Environment.NewLine);
             }
-        };
+        }
 
         proc.OutputDataReceived += dataHandler;
         proc.ErrorDataReceived += dataHandler;

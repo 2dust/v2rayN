@@ -1392,9 +1392,6 @@
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
     <value>可以填写配置文件别名，请确保存在并唯一</value>
   </data>
-  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
-    <value>sudo 密码已经验证成功，请忽略错误密码提示！</value>
-  </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
     <value>密码错误，请重试。</value>
   </data>
