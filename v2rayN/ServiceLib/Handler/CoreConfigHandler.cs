@@ -23,11 +23,11 @@ public class CoreConfigHandler
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
-        else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
+        else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box || (Global.SingboxSupportConfigType.Contains(node.ConfigType) && !Global.XraySupportConfigType.Contains(node.ConfigType)))
         {
             result = await new CoreConfigSingboxService(config).GenerateClientConfigContent(node);
         }
-        else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.Xray)
+        else if (Global.XraySupportConfigType.Contains(node.ConfigType))
         {
             result = await new CoreConfigV2rayService(config).GenerateClientConfigContent(node);
         }
@@ -159,7 +159,7 @@ public class CoreConfigHandler
         {
             result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(node, port);
         }
-        else
+        else if (Global.XraySupportConfigType.Contains(node.ConfigType))
         {
             result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(node, port);
         }
@@ -179,7 +179,7 @@ public class CoreConfigHandler
         {
             result = await new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds);
         }
-        else
+        else if (coreType == ECoreType.Xray)
         {
             result = await new CoreConfigV2rayService(config).GenerateClientMultipleLoadConfig(selecteds, multipleLoad);
         }

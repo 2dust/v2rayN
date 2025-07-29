@@ -256,7 +256,7 @@ public sealed class AppHandler
         var coreType = GetCoreType(profileItem, profileItem.ConfigType);
         ECoreType? preCoreType = null;
 
-        var pureEndpointCore = GetSplitCoreType(profileItem, profileItem.ConfigType);
+        var pureEndpointCore = profileItem.CoreType ?? GetSplitCoreType(profileItem, profileItem.ConfigType);
         var splitRouteCore = _config.SplitCoreItem.RouteCoreType;
         var enableTun = _config.TunModeItem.EnableTun;
 
