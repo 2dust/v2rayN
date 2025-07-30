@@ -813,7 +813,7 @@ public class Utils
         }
     }
 
-    public static string GetBinConfigPath(string filename = "")
+    public static string GetBinConfigPath(string filename = "", ECoreType coreType = ECoreType.v2rayN)
     {
         var tempPath = Path.Combine(StartupPath(), "binConfigs");
         if (!Directory.Exists(tempPath))
@@ -827,8 +827,25 @@ public class Utils
         }
         else
         {
-            return Path.Combine(tempPath, filename);
+            return Path.Combine(tempPath, GetBinConfigFileName(filename, coreType));
         }
+    }
+
+    public static string GetBinConfigFileName(string filename, ECoreType coreType = ECoreType.v2rayN)
+    {
+        var fileSuffix = coreType switch
+        {
+            ECoreType.sing_box => ".json",
+            ECoreType.Xray => ".json",
+            ECoreType.hysteria2 => ".json",
+            ECoreType.naiveproxy => ".json",
+            ECoreType.tuic => ".json",
+            ECoreType.juicity => ".json",
+            ECoreType.brook => ".cac",
+            ECoreType.shadowquic => ".yaml",
+            _ => string.Empty
+        };
+        return filename.EndsWith(fileSuffix) ? filename : $"{filename}{fileSuffix}";
     }
 
     #endregion TempPath
