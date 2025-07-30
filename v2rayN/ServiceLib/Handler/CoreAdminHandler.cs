@@ -96,7 +96,10 @@ public class CoreAdminHandler
         {
             var shellFileName = Utils.IsOSX() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
             var shFilePath = await FileManager.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
-
+            if (shFilePath.Contains(' '))
+            {
+                shFilePath = shFilePath.AppendQuotes();
+            }
             var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
             var result = await Cli.Wrap(Global.LinuxBash)
                 .WithArguments(arg)
