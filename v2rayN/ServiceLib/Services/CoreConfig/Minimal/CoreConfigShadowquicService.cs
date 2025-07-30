@@ -53,7 +53,7 @@ public class CoreConfigShadowquicService
             configYamlNode["inbound"] = inboundNode;
 
             // outbound
-            var alpn = new JsonArray();
+            var alpn = new List<string>();
             foreach (var item in node.GetAlpn() ?? new List<string>())
             {
                 alpn.Add(item);
