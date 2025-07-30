@@ -223,4 +223,28 @@ public static class FileManager
             // ignored
         }
     }
+
+    /// <summary>
+    /// Creates a Linux shell file with the specified contents.
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <param name="contents"></param>
+    /// <param name="overwrite"></param>
+    /// <returns></returns>
+    public static async Task<string> CreateLinuxShellFile(string fileName, string contents, bool overwrite)
+    {
+        var shFilePath = Utils.GetBinConfigPath(fileName);
+
+        // Check if the file already exists and if we should overwrite it
+        if (!overwrite && File.Exists(shFilePath))
+        {
+            return shFilePath;
+        }
+
+        File.Delete(shFilePath);
+        await File.WriteAllTextAsync(shFilePath, contents);
+        await Utils.SetLinuxChmod(shFilePath);
+
+        return shFilePath;
+    }
 }

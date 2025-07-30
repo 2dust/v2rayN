@@ -23,14 +23,7 @@ public class ProxySettingOSX
 
     private static async Task ExecCmd(List<string> args)
     {
-        var fileName = Utils.GetBinConfigPath(_proxySetFileName);
-        if (!File.Exists(fileName))
-        {
-            var contents = EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName);
-            await File.AppendAllTextAsync(fileName, contents);
-
-            await Utils.SetLinuxChmod(fileName);
-        }
+        var fileName = await FileManager.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName), false);
 
         await Utils.GetCliWrapOutput(fileName, args);
     }

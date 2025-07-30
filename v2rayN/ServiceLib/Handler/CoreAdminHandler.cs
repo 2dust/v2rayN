@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using CliWrap;
+using CliWrap.Buffered;
 
 namespace ServiceLib.Handler;
 
@@ -11,6 +12,7 @@ public class CoreAdminHandler
     private Config _config;
     private Action<bool, string>? _updateFunc;
     private int _linuxSudoPid = -1;
+    private const string _tag = "CoreAdminHandler";
 
     public async Task Init(Config config, Action<bool, string> updateFunc)
     {
@@ -31,8 +33,11 @@ public class CoreAdminHandler
 
     public async Task<Process?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
     {
+        StringBuilder sb = new();
+        sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        var shFilePath = await CreateLinuxShellFile(cmdLine, "run_as_sudo.sh");
+        sb.AppendLine($"sudo -S {cmdLine}");
+        var shFilePath = await FileManager.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
         Process proc = new()
         {
@@ -87,35 +92,24 @@ public class CoreAdminHandler
             return;
         }
 
-        var cmdLine = $"pkill -P {_linuxSudoPid} ; kill {_linuxSudoPid}";
-        var shFilePath = await CreateLinuxShellFile(cmdLine, "kill_as_sudo.sh");
+        try
+        {
+            var shellFileName = Utils.IsOSX() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
+            var shFilePath = await FileManager.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
 
-        await Cli.Wrap(shFilePath)
-           .WithStandardInputPipe(PipeSource.FromString(AppHandler.Instance.LinuxSudoPwd))
-           .ExecuteAsync();
+            var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
+            var result = await Cli.Wrap(Global.LinuxBash)
+                .WithArguments(arg)
+                .WithStandardInputPipe(PipeSource.FromString(AppHandler.Instance.LinuxSudoPwd))
+                .ExecuteBufferedAsync();
+
+            UpdateFunc(false, result.StandardOutput.ToString());
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
 
         _linuxSudoPid = -1;
-    }
-
-    private async Task<string> CreateLinuxShellFile(string cmdLine, string fileName)
-    {
-        var shFilePath = Utils.GetBinConfigPath(fileName);
-        File.Delete(shFilePath);
-
-        var sb = new StringBuilder();
-        sb.AppendLine("#!/bin/sh");
-        if (Utils.IsAdministrator())
-        {
-            sb.AppendLine($"{cmdLine}");
-        }
-        else
-        {
-            sb.AppendLine($"sudo -S {cmdLine}");
-        }
-
-        await File.WriteAllTextAsync(shFilePath, sb.ToString());
-        await Utils.SetLinuxChmod(shFilePath);
-
-        return shFilePath;
     }
 }

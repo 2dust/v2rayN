@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# Process Terminator Script for macOS
+# This script forcibly terminates a process and all its descendant processes
+#
+
+# Check if PID argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <PID>"
+    exit 1
+fi
+
+PID=$1
+
+# Validate that input is a valid PID (numeric)
+if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
+    echo "Error: The PID must be a numeric value"
+    exit 1
+fi
+
+# Check if the process exists
+if ! ps -p $PID > /dev/null; then
+    echo "Warning: No process found with PID $PID"
+    exit 0
+fi
+
+# Recursive function to find and kill all descendant processes
+kill_descendants() {
+    local parent=$1
+    # Use ps -eo pid,ppid for macOS compatibility
+    local children=$(ps -eo pid=,ppid= | awk -v ppid=$parent '$2==ppid {print $1}')
+    
+    echo "Processing children of PID: $parent..."
+    for child in $children; do
+        kill_descendants "$child"
+        echo "Terminating child process: $child"
+        kill -9 "$child" 2>/dev/null || true
+    done
+}
+
+echo "============================================"
+echo "Starting termination of process $PID and all its descendants"
+echo "============================================"
+
+# Find and kill all descendant processes
+kill_descendants "$PID"
+
+# Finally kill the main process
+echo "Terminating main process: $PID"
+kill -9 "$PID" 2>/dev/null || true
+
+echo "============================================"
+echo "Process $PID and all its descendants have been terminated"
+echo "============================================"
+
+exit 0
