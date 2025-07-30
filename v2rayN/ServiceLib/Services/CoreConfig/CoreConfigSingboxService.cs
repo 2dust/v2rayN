@@ -519,7 +519,7 @@ public class CoreConfigSingboxService
     {
         try
         {
-            var listen = "::";
+            var listen = "0.0.0.0";
             singboxConfig.inbounds = [];
 
             if (!_config.TunModeItem.EnableTun
