@@ -1,17 +1,9 @@
 using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig.Minimal;
-public class CoreConfigTuicService
+public class CoreConfigTuicService(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigTuicService";
-
-    public CoreConfigTuicService(Config config)
-    {
-        _config = config;
-    }
-
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -47,7 +39,7 @@ public class CoreConfigTuicService
             // inbound
             configJsonNode["local"] = new JsonObject
             {
-                ["server"] = Global.Loopback + ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString()
+                ["server"] = Global.Loopback + ":" + port.ToString()
             };
 
             // outbound

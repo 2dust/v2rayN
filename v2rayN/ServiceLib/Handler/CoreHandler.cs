@@ -130,10 +130,12 @@ public class CoreHandler
             return -1;
         }
 
-        var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
+        var context = new CoreLaunchContext(node, _config);
+        context.AdjustForConfigType();
+        var coreType = context.CoreType;
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName, coreType);
-        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
+        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
         {
             return -1;
@@ -179,63 +181,13 @@ public class CoreHandler
 
     #region Private
 
-    /// <summary>
-    /// Core launch context that encapsulates all parameters required for launching
-    /// </summary>
-    private class CoreLaunchContext
-    {
-        public ProfileItem Node { get; set; }
-        public bool SplitCore { get; set; }
-        public ECoreType CoreType { get; set; }
-        public ECoreType? PreCoreType { get; set; }
-        public ECoreType PureEndpointCore { get; set; }
-        public ECoreType SplitRouteCore { get; set; }
-        public bool EnableTun { get; set; }
-        public int PreSocksPort { get; set; }
-
-        public CoreLaunchContext(ProfileItem node, Config config)
-        {
-            Node = node;
-            SplitCore = config.SplitCoreItem.EnableSplitCore;
-            CoreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
-            PureEndpointCore = AppHandler.Instance.GetSplitCoreType(node, node.ConfigType);
-            SplitRouteCore = config.SplitCoreItem.RouteCoreType;
-            EnableTun = config.TunModeItem.EnableTun;
-            PreSocksPort = 0;
-            PreCoreType = null;
-        }
-
-        /// <summary>
-        /// Adjust context parameters based on configuration type
-        /// </summary>
-        public void AdjustForConfigType()
-        {
-            (SplitCore, CoreType, PreCoreType) = AppHandler.Instance.GetCoreAndPreType(Node);
-            if (Node.ConfigType == EConfigType.Custom)
-            {
-                if (Node.PreSocksPort > 0)
-                {
-                    PreSocksPort = Node.PreSocksPort.Value;
-                }
-                else
-                {
-                    EnableTun = false;
-                }
-            }
-            else if (PreCoreType != null)
-            {
-                PreSocksPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.split);
-            }
-        }
-    }
-
     private async Task<bool> CoreStart(CoreLaunchContext context)
     {
         var coreType = context.SplitCore ? context.PureEndpointCore : context.CoreType;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName, coreType);
         var result = context.SplitCore
-            ? await CoreConfigHandler.GeneratePureEndpointConfig(context.Node, fileName)
-            : await CoreConfigHandler.GenerateClientConfig(context.Node, fileName);
+            ? await CoreConfigHandler.GeneratePassthroughConfig(context, fileName)
+            : await CoreConfigHandler.GenerateClientConfig(context, fileName);
 
         if (result.Success != true)
         {
@@ -287,8 +239,9 @@ public class CoreHandler
             Sni = context.EnableTun && Utils.IsDomain(context.Node.Address) ? context.Node.Address : string.Empty, //Tun2SocksAddress
             Port = context.PreSocksPort
         };
-        
-        var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
+        var itemSocksLaunch = new CoreLaunchContext(itemSocks, _config);
+
+        var result = await CoreConfigHandler.GenerateClientConfig(itemSocksLaunch, fileName);
         if (!result.Success)
         {
             UpdateFunc(true, result.Msg);

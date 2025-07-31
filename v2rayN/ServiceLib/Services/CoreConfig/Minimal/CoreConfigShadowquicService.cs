@@ -1,17 +1,9 @@
 using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig.Minimal;
-public class CoreConfigShadowquicService
+public class CoreConfigShadowquicService(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigShadowquicService";
-
-    public CoreConfigShadowquicService(Config config)
-    {
-        _config = config;
-    }
-
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -48,7 +40,7 @@ public class CoreConfigShadowquicService
             var inboundNode = new Dictionary<string, object>
             {
                 ["type"] = "socks5",
-                ["listen"] = Global.Loopback + ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString()
+                ["listen"] = Global.Loopback + ":" + port.ToString()
             };
             configYamlNode["inbound"] = inboundNode;
 

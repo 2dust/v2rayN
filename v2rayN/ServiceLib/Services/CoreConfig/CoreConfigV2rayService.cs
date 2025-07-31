@@ -5,19 +5,11 @@ using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig;
 
-public class CoreConfigV2rayService
+public class CoreConfigV2rayService(Config config) : CoreConfigServiceBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigV2rayService";
-
-    public CoreConfigV2rayService(Config config)
-    {
-        _config = config;
-    }
-
     #region public gen function
 
-    public async Task<RetResult> GenerateClientConfigContent(ProfileItem node)
+    public override async Task<RetResult> GenerateClientConfigContent(ProfileItem node)
     {
         var ret = new RetResult();
         try
@@ -78,7 +70,7 @@ public class CoreConfigV2rayService
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
+    public override async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
     {
         var ret = new RetResult();
 
@@ -203,7 +195,7 @@ public class CoreConfigV2rayService
         }
     }
 
-    public async Task<RetResult> GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
+    public override async Task<RetResult> GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
     {
         var ret = new RetResult();
         try
@@ -355,7 +347,7 @@ public class CoreConfigV2rayService
         }
     }
 
-    public async Task<RetResult> GenerateClientSpeedtestConfig(ProfileItem node, int port)
+    public override async Task<RetResult> GenerateClientSpeedtestConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -413,7 +405,7 @@ public class CoreConfigV2rayService
         }
     }
 
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -449,13 +441,18 @@ public class CoreConfigV2rayService
 
             await GenLog(v2rayConfig);
 
-            var inbound = GetInbound(_config.Inbound.First(), EInboundProtocol.split, true);
-            inbound.sniffing = new Sniffing4Ray
+            v2rayConfig.inbounds = new() { new()
             {
-                enabled = false
-            };
-
-            v2rayConfig.inbounds = new() { inbound };
+                tag = EInboundProtocol.socks.ToString(),
+                listen = Global.Loopback,
+                port = port,
+                protocol = EInboundProtocol.mixed.ToString(),
+                settings = new Inboundsettings4Ray()
+                {
+                    udp = true,
+                    auth = "noauth"
+                },
+            } };
 
             await GenOutbound(node, v2rayConfig.outbounds.First());
 

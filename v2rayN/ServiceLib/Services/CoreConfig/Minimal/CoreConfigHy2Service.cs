@@ -1,17 +1,9 @@
 using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig.Minimal;
-public class CoreConfigHy2Service
+public class CoreConfigHy2Service(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigHy2Service";
-
-    public CoreConfigHy2Service(Config config)
-    {
-        _config = config;
-    }
-
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -34,14 +26,14 @@ public class CoreConfigHy2Service
             // inbound
             configJsonNode["socks5"] = new JsonObject
             {
-                ["listen"] = Global.Loopback + ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString()
+                ["listen"] = Global.Loopback + ":" + port.ToString()
             };
 
             // outbound
-            var port = string.Empty;
+            var outboundPort = string.Empty;
             if (node.Ports.IsNotEmpty())
             {
-                port = node.Ports.Replace(':', '-');
+                outboundPort = node.Ports.Replace(':', '-');
                 if (_config.HysteriaItem.HopInterval > 0)
                 {
                     configJsonNode["transport"] = new JsonObject
@@ -55,9 +47,9 @@ public class CoreConfigHy2Service
             }
             else
             {
-                port = node.Port.ToString();
+                outboundPort = node.Port.ToString();
             }
-            configJsonNode["server"] = node.Address + ":" + port;
+            configJsonNode["server"] = node.Address + ":" + outboundPort;
             configJsonNode["auth"] = node.Id;
 
             if (node.Sni.IsNotEmpty())

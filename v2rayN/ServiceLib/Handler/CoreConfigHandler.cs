@@ -9,33 +9,26 @@ public class CoreConfigHandler
 {
     private static readonly string _tag = "CoreConfigHandler";
 
-    public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
+    public static async Task<RetResult> GenerateClientConfig(CoreLaunchContext context, string? fileName)
     {
-        var config = AppHandler.Instance.Config;
         var result = new RetResult();
 
-        if (node.ConfigType == EConfigType.Custom)
+        if (context.ConfigType == EConfigType.Custom)
         {
-            result = node.CoreType switch
-            {
-                ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
-                ECoreType.sing_box => await new CoreConfigSingboxService(config).GenerateClientCustomConfig(node, fileName),
-                _ => await GenerateClientCustomConfig(node, fileName)
-            };
-        }
-        else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box || (Global.SingboxSupportConfigType.Contains(node.ConfigType) && !Global.XraySupportConfigType.Contains(node.ConfigType)))
-        {
-            result = await new CoreConfigSingboxService(config).GenerateClientConfigContent(node);
-        }
-        else if (Global.XraySupportConfigType.Contains(node.ConfigType))
-        {
-            result = await new CoreConfigV2rayService(config).GenerateClientConfigContent(node);
+            result = await GetCoreConfigServiceForCustom(context.CoreType).GenerateClientCustomConfig(context.Node, fileName);
         }
         else
         {
-            result.Msg = ResUI.OperationFailed;
-            result.Success = false;
-            return result;
+            try
+            {
+                result = await GetCoreConfigServiceForClientConfig(context.CoreType).GenerateClientConfigContent(context.Node);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                result.Msg = ResUI.FailedGenDefaultConfiguration;
+                return result;
+            }
         }
         if (result.Success != true)
         {
@@ -49,96 +42,44 @@ public class CoreConfigHandler
         return result;
     }
 
-    public static async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node, string? fileName)
+    public static async Task<RetResult> GeneratePassthroughConfig(CoreLaunchContext context, string? fileName)
     {
-        var config = AppHandler.Instance.Config;
         var result = new RetResult();
 
-        var coreType = AppHandler.Instance.GetSplitCoreType(node, node.ConfigType);
-
-        result = coreType switch
-        {
-            ECoreType.sing_box => await new CoreConfigSingboxService(config).GeneratePureEndpointConfig(node),
-            ECoreType.Xray => await new CoreConfigV2rayService(config).GeneratePureEndpointConfig(node),
-            ECoreType.hysteria2 => await new CoreConfigHy2Service(config).GeneratePureEndpointConfig(node),
-            ECoreType.naiveproxy => await new CoreConfigNaiveService(config).GeneratePureEndpointConfig(node),
-            ECoreType.tuic => await new CoreConfigTuicService(config).GeneratePureEndpointConfig(node),
-            ECoreType.juicity => await new CoreConfigJuicityService(config).GeneratePureEndpointConfig(node),
-            ECoreType.brook => await new CoreConfigBrookService(config).GeneratePureEndpointConfig(node),
-            ECoreType.shadowquic => await new CoreConfigShadowquicService(config).GeneratePureEndpointConfig(node),
-            _ => throw new NotImplementedException(),
-        };
-
-        if (result.Success != true)
-        {
-            return result;
-        }
-        if (fileName.IsNotEmpty() && result.Data != null)
-        {
-            await File.WriteAllTextAsync(fileName, result.Data.ToString());
-        }
-        return result;
-    }
-
-    private static async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
-    {
-        var ret = new RetResult();
         try
         {
-            if (node == null || fileName is null)
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            if (File.Exists(fileName))
-            {
-                File.SetAttributes(fileName, FileAttributes.Normal); //If the file has a read-only attribute, direct deletion will fail
-                File.Delete(fileName);
-            }
-
-            string addressFileName = node.Address;
-            if (!File.Exists(addressFileName))
-            {
-                addressFileName = Utils.GetConfigPath(addressFileName);
-            }
-            if (!File.Exists(addressFileName))
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-            File.Copy(addressFileName, fileName);
-            File.SetAttributes(fileName, FileAttributes.Normal); //Copy will keep the attributes of addressFileName, so we need to add write permissions to fileName just in case of addressFileName is a read-only file.
-
-            //check again
-            if (!File.Exists(fileName))
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-
-            ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
-            ret.Success = true;
-            return await Task.FromResult(ret);
+            result = await GetCoreConfigServiceForPassthrough(context.CoreType).GeneratePassthroughConfig(context.Node);
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            ret.Msg = ResUI.FailedGenDefaultConfiguration;
-            return ret;
+            result.Msg = ResUI.FailedGenDefaultConfiguration;
+            return result;
         }
+
+        if (result.Success != true)
+        {
+            return result;
+        }
+        if (fileName.IsNotEmpty() && result.Data != null)
+        {
+            await File.WriteAllTextAsync(fileName, result.Data.ToString());
+        }
+        return result;
     }
 
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType)
     {
         var result = new RetResult();
-        if (coreType == ECoreType.sing_box)
+        try
         {
-            result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(selecteds);
+            result = await GetCoreConfigServiceForMultipleSpeedtest(coreType).GenerateClientSpeedtestConfig(selecteds);
         }
-        else if (coreType == ECoreType.Xray)
+        catch (Exception ex)
         {
-            result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(selecteds);
+            Logging.SaveLog(_tag, ex);
+            result.Msg = ResUI.FailedGenDefaultConfiguration;
+            return result;
         }
         if (result.Success != true)
         {
@@ -148,21 +89,24 @@ public class CoreConfigHandler
         return result;
     }
 
-    public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, ProfileItem node, ServerTestItem testItem, string fileName)
+    public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, CoreLaunchContext context, ServerTestItem testItem, string fileName)
     {
         var result = new RetResult();
         var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
         var port = Utils.GetFreePort(initPort + testItem.QueueNum);
         testItem.Port = port;
 
-        if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
+        try
         {
-            result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(node, port);
+            result = await GetCoreConfigServiceForSpeedtest(context.CoreType).GenerateClientSpeedtestConfig(context.Node, port);
         }
-        else if (Global.XraySupportConfigType.Contains(node.ConfigType))
+        catch (Exception ex)
         {
-            result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(node, port);
+            Logging.SaveLog(_tag, ex);
+            result.Msg = ResUI.FailedGenDefaultConfiguration;
+            return result;
         }
+
         if (result.Success != true)
         {
             return result;
@@ -190,5 +134,95 @@ public class CoreConfigHandler
         }
         await File.WriteAllTextAsync(fileName, result.Data.ToString());
         return result;
+    }
+
+    private static CoreConfigServiceMinimalBase GetCoreConfigServiceForPassthrough(ECoreType coreType)
+    {
+        switch (coreType)
+        {
+            case ECoreType.sing_box:
+                return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            case ECoreType.Xray:
+                return new CoreConfigV2rayService(AppHandler.Instance.Config);
+            case ECoreType.hysteria2:
+                return new CoreConfigHy2Service(AppHandler.Instance.Config);
+            case ECoreType.naiveproxy:
+                return new CoreConfigNaiveService(AppHandler.Instance.Config);
+            case ECoreType.tuic:
+                return new CoreConfigTuicService(AppHandler.Instance.Config);
+            case ECoreType.juicity:
+                return new CoreConfigJuicityService(AppHandler.Instance.Config);
+            case ECoreType.brook:
+                return new CoreConfigBrookService(AppHandler.Instance.Config);
+            case ECoreType.shadowquic:
+                return new CoreConfigShadowquicService(AppHandler.Instance.Config);
+            default:
+                throw new NotImplementedException($"Core type {coreType} is not implemented for passthrough configuration.");
+        }
+    }
+
+    private static CoreConfigServiceMinimalBase GetCoreConfigServiceForSpeedtest(ECoreType coreType)
+    {
+        switch (coreType)
+        {
+            case ECoreType.sing_box:
+                return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            case ECoreType.Xray:
+                return new CoreConfigV2rayService(AppHandler.Instance.Config);
+            case ECoreType.hysteria2:
+                return new CoreConfigHy2Service(AppHandler.Instance.Config);
+            case ECoreType.naiveproxy:
+                return new CoreConfigNaiveService(AppHandler.Instance.Config);
+            case ECoreType.tuic:
+                return new CoreConfigTuicService(AppHandler.Instance.Config);
+            case ECoreType.juicity:
+                return new CoreConfigJuicityService(AppHandler.Instance.Config);
+            case ECoreType.brook:
+                return new CoreConfigBrookService(AppHandler.Instance.Config);
+            case ECoreType.shadowquic:
+                return new CoreConfigShadowquicService(AppHandler.Instance.Config);
+            default:
+                throw new NotImplementedException($"Core type {coreType} is not implemented for passthrough configuration.");
+        }
+    }
+
+    private static CoreConfigServiceBase GetCoreConfigServiceForMultipleSpeedtest(ECoreType coreType)
+    {
+        switch (coreType)
+        {
+            case ECoreType.sing_box:
+                return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            case ECoreType.Xray:
+                return new CoreConfigV2rayService(AppHandler.Instance.Config);
+            default:
+                throw new NotImplementedException($"Core type {coreType} is not implemented for passthrough configuration.");
+        }
+    }
+
+    private static CoreConfigServiceMinimalBase GetCoreConfigServiceForCustom(ECoreType coreType)
+    {
+        switch (coreType)
+        {
+            case ECoreType.mihomo:
+                return new CoreConfigClashService(AppHandler.Instance.Config);
+            case ECoreType.sing_box:
+                return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            default:
+                // CoreConfigServiceMinimalBase
+                return new CoreConfigV2rayService(AppHandler.Instance.Config);
+        }
+    }
+
+    private static CoreConfigServiceBase GetCoreConfigServiceForClientConfig(ECoreType coreType)
+    {
+        switch (coreType)
+        {
+            case ECoreType.sing_box:
+                return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            case ECoreType.Xray:
+                return new CoreConfigV2rayService(AppHandler.Instance.Config);
+            default:
+                throw new NotImplementedException($"Core type {coreType} is not implemented for client configuration.");
+        }
     }
 }

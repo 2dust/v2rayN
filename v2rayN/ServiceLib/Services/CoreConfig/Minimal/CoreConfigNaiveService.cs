@@ -1,17 +1,9 @@
 using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig.Minimal;
-public class CoreConfigNaiveService
+public class CoreConfigNaiveService(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigNaiveService";
-
-    public CoreConfigNaiveService(Config config)
-    {
-        _config = config;
-    }
-
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -32,7 +24,7 @@ public class CoreConfigNaiveService
             var configJsonNode = new JsonObject();
 
             // inbound
-            configJsonNode["listen"] = Global.SocksProtocol + Global.Loopback + ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString();
+            configJsonNode["listen"] = Global.SocksProtocol + Global.Loopback + ":" + port.ToString();
 
             // outbound
             configJsonNode["proxy"] = (node.HeaderType == "quic" ? "quic://" : Global.HttpsProtocol) + node.Id + "@" + node.Address + ":" + node.Port;

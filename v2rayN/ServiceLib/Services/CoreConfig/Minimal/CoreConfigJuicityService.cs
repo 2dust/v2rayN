@@ -1,17 +1,9 @@
 using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig.Minimal;
-public class CoreConfigJuicityService
+public class CoreConfigJuicityService(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigJuicityService";
-
-    public CoreConfigJuicityService(Config config)
-    {
-        _config = config;
-    }
-
-    public async Task<RetResult> GeneratePureEndpointConfig(ProfileItem node)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
         var ret = new RetResult();
         try
@@ -45,7 +37,7 @@ public class CoreConfigJuicityService
             configJsonNode["log_level"] = logLevel;
 
             // inbound
-            configJsonNode["listen"] = ":" + AppHandler.Instance.GetLocalPort(EInboundProtocol.split).ToString();
+            configJsonNode["listen"] = ":" + port.ToString();
 
             // outbound
             configJsonNode["server"] = node.Address + ":" + node.Port;

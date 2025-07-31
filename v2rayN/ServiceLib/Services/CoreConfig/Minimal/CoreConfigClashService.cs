@@ -1,19 +1,21 @@
-namespace ServiceLib.Services.CoreConfig;
+namespace ServiceLib.Services.CoreConfig.Minimal;
 
 /// <summary>
 /// Core configuration file processing class
 /// </summary>
-public class CoreConfigClashService
+public class CoreConfigClashService(Config config) : CoreConfigServiceMinimalBase(config)
 {
-    private Config _config;
-    private static readonly string _tag = "CoreConfigClashService";
-
-    public CoreConfigClashService(Config config)
+    protected override async Task<RetResult> GeneratePassthroughConfig(ProfileItem node, int port)
     {
-        _config = config;
+        var ret = new RetResult
+        {
+            Success = false,
+            Msg = ResUI.OperationFailed
+        };
+        return await Task.FromResult(ret);
     }
 
-    public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
+    public override async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
         if (node == null || fileName is null)
