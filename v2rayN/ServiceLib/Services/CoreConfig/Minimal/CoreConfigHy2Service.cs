@@ -99,4 +99,73 @@ public class CoreConfigHy2Service(Config config) : CoreConfigServiceMinimalBase(
             return await Task.FromResult(ret);
         }
     }
+
+    public override async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
+    {
+        var ret = new RetResult();
+        try
+        {
+            if (node == null || fileName is null)
+            {
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
+            }
+
+            if (File.Exists(fileName))
+            {
+                File.SetAttributes(fileName, FileAttributes.Normal); //If the file has a read-only attribute, direct deletion will fail
+                File.Delete(fileName);
+            }
+
+            string addressFileName = node.Address;
+            if (!File.Exists(addressFileName))
+            {
+                addressFileName = Utils.GetConfigPath(addressFileName);
+            }
+            if (!File.Exists(addressFileName))
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+            // Try deserializing the file to check if it is a valid JSON or YAML file
+            var fileContent = File.ReadAllText(addressFileName);
+            var jsonContent = JsonUtils.Deserialize<JsonObject>(fileContent);
+            if (jsonContent != null)
+            {
+                File.Copy(addressFileName, fileName);
+            }
+            else
+            {
+                // If it's YAML, convert to JSON and write it
+                var yamlContent = YamlUtils.FromYaml<Dictionary<string, object>>(fileContent);
+                if (yamlContent != null)
+                {
+                    File.WriteAllText(fileName, JsonUtils.Serialize(yamlContent, true));
+                }
+                else
+                {
+                    ret.Msg = ResUI.FailedReadConfiguration + "2";
+                    return ret;
+                }
+            }
+            File.SetAttributes(fileName, FileAttributes.Normal); //Copy will keep the attributes of addressFileName, so we need to add write permissions to fileName just in case of addressFileName is a read-only file.
+
+            //check again
+            if (!File.Exists(fileName))
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+
+            ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
+            ret.Success = true;
+            return await Task.FromResult(ret);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            ret.Msg = ResUI.FailedGenDefaultConfiguration;
+            return ret;
+        }
+    }
 }

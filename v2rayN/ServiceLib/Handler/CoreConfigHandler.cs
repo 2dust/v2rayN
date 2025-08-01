@@ -207,6 +207,8 @@ public class CoreConfigHandler
                 return new CoreConfigClashService(AppHandler.Instance.Config);
             case ECoreType.sing_box:
                 return new CoreConfigSingboxService(AppHandler.Instance.Config);
+            case ECoreType.hysteria2:
+                return new CoreConfigHy2Service(AppHandler.Instance.Config);
             default:
                 // CoreConfigServiceMinimalBase
                 return new CoreConfigV2rayService(AppHandler.Instance.Config);
