@@ -246,6 +246,7 @@ public class ConfigHandler
             item.PublicKey = profileItem.PublicKey;
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
+            item.Mldsa65Verify = profileItem.Mldsa65Verify;
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
         }

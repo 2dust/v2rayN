@@ -340,6 +340,7 @@ public class TlsSettings4Ray
     public string? publicKey { get; set; }
     public string? shortId { get; set; }
     public string? spiderX { get; set; }
+    public string? mldsa65Verify { get; set; }
 }
 
 public class TcpSettings4Ray

@@ -1398,4 +1398,7 @@
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
     <value>Helytelen jelszó, próbálja újra.</value>
   </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
 </root>

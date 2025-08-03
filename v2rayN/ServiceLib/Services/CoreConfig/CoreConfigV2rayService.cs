@@ -944,6 +944,7 @@ public class CoreConfigV2rayService
                     publicKey = node.PublicKey,
                     shortId = node.ShortId,
                     spiderX = node.SpiderX,
+                    mldsa65Verify = node.Mldsa65Verify,
                     show = false,
                 };
 

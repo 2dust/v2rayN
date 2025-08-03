@@ -1395,4 +1395,7 @@
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
     <value>密码错误，请重试。</value>
   </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
 </root>

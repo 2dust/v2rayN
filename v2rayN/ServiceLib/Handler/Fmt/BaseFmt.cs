@@ -59,6 +59,10 @@ public class BaseFmt
         {
             dicQuery.Add("spx", Utils.UrlEncode(item.SpiderX));
         }
+        if (item.Mldsa65Verify.IsNotEmpty())
+        {
+            dicQuery.Add("pqv", Utils.UrlEncode(item.Mldsa65Verify));
+        }       
         if (item.AllowInsecure.Equals("true"))
         {
             dicQuery.Add("allowInsecure", "1");
@@ -159,6 +163,7 @@ public class BaseFmt
         item.PublicKey = Utils.UrlDecode(query["pbk"] ?? "");
         item.ShortId = Utils.UrlDecode(query["sid"] ?? "");
         item.SpiderX = Utils.UrlDecode(query["spx"] ?? "");
+        item.Mldsa65Verify = Utils.UrlDecode(query["pqv"] ?? "");
         item.AllowInsecure = (query["allowInsecure"] ?? "") == "1" ? "true" : "";
 
         item.Network = query["type"] ?? nameof(ETransport.tcp);

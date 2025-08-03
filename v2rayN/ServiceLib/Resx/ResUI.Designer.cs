@@ -2518,6 +2518,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Mldsa65Verify 的本地化字符串。
+        /// </summary>
+        public static string TbMldsa65Verify {
+            get {
+                return ResourceManager.GetString("TbMldsa65Verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Transport protocol(network) 的本地化字符串。
         /// </summary>
         public static string TbNetwork {
