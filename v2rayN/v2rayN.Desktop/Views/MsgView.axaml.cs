@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
@@ -9,9 +10,12 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
+    private readonly ScrollViewer _scrollViewer;
+
     public MsgView()
     {
         InitializeComponent();
+        _scrollViewer = this.FindControl<ScrollViewer>("msgScrollViewer");
 
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
@@ -43,14 +47,14 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         txtMsg.Text = msg.ToString();
         if (togScrollToEnd.IsChecked ?? true)
         {
-            txtMsg.CaretIndex = int.MaxValue;
+            _scrollViewer?.ScrollToEnd();
         }
     }
 
     public void ClearMsg()
     {
         ViewModel?.ClearMsg();
-        txtMsg.Clear();
+        txtMsg.Text = "";
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
