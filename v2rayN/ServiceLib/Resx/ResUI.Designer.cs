@@ -2779,7 +2779,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add Outbound Config Only, routing.balancers and routing.rules.outboundTag 的本地化字符串。
+        ///   查找类似 Add Outbound Config Only, routing.balancers and routing.rules.outboundTag, Click to view the document 的本地化字符串。
         /// </summary>
         public static string TbRayFullConfigTemplateDesc {
             get {
@@ -2959,7 +2959,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add Outbound and Endpoint Config Only 的本地化字符串。
+        ///   查找类似 Add Outbound and Endpoint Config Only, Click to view the document 的本地化字符串。
         /// </summary>
         public static string TbSBFullConfigTemplateDesc {
             get {

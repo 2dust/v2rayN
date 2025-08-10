@@ -1480,7 +1480,7 @@
     <value>v2ray 完整配置模板</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>仅添加出站配置，routing.balancers 和 routing.rules.outboundTag</value>
+    <value>仅添加出站配置，routing.balancers 和 routing.rules.outboundTag，点击查看文档</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
     <value>不添加非代理协议出站</value>
@@ -1492,7 +1492,7 @@
     <value>sing-box 完整配置模板</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>仅添加出站和端点配置</value>
+    <value>仅添加出站和端点配置，点击查看文档</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
     <value>此功能供高级用户和有特殊需求的用户使用。 启用此功能后，将忽略 Core 的基础设置，DNS 设置 ，路由设置。你需要保证系统代理的端口和流量统计等功能的配置正确，一切都由你来设置。</value>

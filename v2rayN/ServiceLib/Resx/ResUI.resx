@@ -1483,7 +1483,7 @@
     <value>v2ray Full Config Template</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag</value>
+    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag, Click to view the document</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
     <value>Do Not Add Non-Proxy Protocol Outbound</value>
@@ -1495,7 +1495,7 @@
     <value>sing-box Full Config Template</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound and Endpoint Config Only</value>
+    <value>Add Outbound and Endpoint Config Only, Click to view the document</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
     <value>This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core's basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you.</value>

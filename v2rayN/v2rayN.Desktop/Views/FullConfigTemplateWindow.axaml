@@ -49,9 +49,11 @@
                         <TextBlock
                             Grid.Row="1"
                             Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbRayFullConfigTemplateDesc}"
-                            TextWrapping="Wrap" />
+                            VerticalAlignment="Center">
+                            <HyperlinkButton Classes="WithIcon" Click="linkFullConfigTemplateDoc_Click">
+                                <TextBlock Text="{x:Static resx:ResUI.TbRayFullConfigTemplateDesc}" />
+                            </HyperlinkButton>
+                        </TextBlock>
 
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
                             <TextBlock
@@ -117,9 +119,11 @@
                         <TextBlock
                             Grid.Row="1"
                             Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBFullConfigTemplateDesc}"
-                            TextWrapping="Wrap" />
+                            VerticalAlignment="Center">
+                            <HyperlinkButton Classes="WithIcon" Click="linkFullConfigTemplateDoc_Click">
+                                <TextBlock Text="{x:Static resx:ResUI.TbSBFullConfigTemplateDesc}" />
+                            </HyperlinkButton>
+                        </TextBlock>
 
                         <StackPanel Grid.Row="2" Orientation="Horizontal">
                             <TextBlock
