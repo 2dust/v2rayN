@@ -73,6 +73,7 @@
         <ScrollViewer x:Name="msgScrollViewer" VerticalScrollBarVisibility="Auto">
             <SelectableTextBlock
                 Name="txtMsg"
+                Margin="{StaticResource Margin8}"
                 VerticalAlignment="Stretch"
                 Classes="TextArea"
                 TextAlignment="Left"

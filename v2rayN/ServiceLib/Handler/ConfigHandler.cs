@@ -1997,7 +1997,7 @@ public class ConfigHandler
 
         if (!blImportAdvancedRules && items.Count > 0)
         {
-            //migrate 
+            //migrate
             //TODO Temporary code to be removed later
             if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
             {

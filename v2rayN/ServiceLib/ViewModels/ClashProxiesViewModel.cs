@@ -234,7 +234,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             else
             {
                 SelectedGroup = _proxyGroups.First();
-            } 
+            }
         }
         else
         {

@@ -411,11 +411,11 @@ public class Utils
                 // Link-local address fe80::/10
                 if (ipBytes[0] == 0xfe && (ipBytes[1] & 0xc0) == 0x80)
                     return true;
-                
+
                 // Unique local address fc00::/7 (typically fd00::/8)
                 if ((ipBytes[0] & 0xfe) == 0xfc)
                     return true;
-                
+
                 // Private portion in IPv4-mapped addresses ::ffff:0:0/96
                 if (address.IsIPv4MappedToIPv6)
                 {

@@ -62,7 +62,7 @@ public class BaseFmt
         if (item.Mldsa65Verify.IsNotEmpty())
         {
             dicQuery.Add("pqv", Utils.UrlEncode(item.Mldsa65Verify));
-        }       
+        }
         if (item.AllowInsecure.Equals("true"))
         {
             dicQuery.Add("allowInsecure", "1");

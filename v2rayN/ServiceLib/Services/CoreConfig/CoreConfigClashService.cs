@@ -12,7 +12,7 @@ public class CoreConfigClashService
     {
         _config = config;
     }
- 
+
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
