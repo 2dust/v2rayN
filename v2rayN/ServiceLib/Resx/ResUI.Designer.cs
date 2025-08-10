@@ -3238,7 +3238,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Use Xray and enable non-Tun mode, which conflicts with the group previous proxy 的本地化字符串。
+        ///   查找类似 which conflicts with the group previous proxy 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableFragmentTips {
             get {

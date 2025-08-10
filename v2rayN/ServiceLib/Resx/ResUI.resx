@@ -1105,7 +1105,7 @@
     <value>Add [HTTP] Configuration</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>Use Xray and enable non-Tun mode, which conflicts with the group previous proxy</value>
+    <value>which conflicts with the group previous proxy</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Enable fragment</value>
