@@ -112,10 +112,7 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
-        if (config.SimpleDNSItem == null)
-        {
-            InitBuiltinSimpleDNS(config);
-        }
+        config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -2212,9 +2209,9 @@ public class ConfigHandler
 
     #region Simple DNS
 
-    public static int InitBuiltinSimpleDNS(Config config)
+    public static SimpleDNSItem InitBuiltinSimpleDNS()
     {
-        config.SimpleDNSItem = new SimpleDNSItem()
+        return new SimpleDNSItem()
         {
             UseSystemHosts = false,
             AddCommonHosts = true,
@@ -2225,7 +2222,6 @@ public class ConfigHandler
             SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
             SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
         };
-        return 0;
     }
 
     public static async Task<SimpleDNSItem> GetExternalSimpleDNSItem(string url)
@@ -2263,9 +2259,8 @@ public class ConfigHandler
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                 await InitBuiltinDNS(config);
 
-                InitBuiltinSimpleDNS(config);
-
-                return true;
+                config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                break;
 
             case EPresetType.Russia:
                 config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
@@ -2275,9 +2270,8 @@ public class ConfigHandler
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
-                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
-
-                return true;
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json") ?? InitBuiltinSimpleDNS();
+                break;
 
             case EPresetType.Iran:
                 config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
@@ -2287,12 +2281,11 @@ public class ConfigHandler
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
 
-                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
-
-                return true;
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json") ?? InitBuiltinSimpleDNS();
+                break;
         }
 
-        return false;
+        return true;
     }
 
     #endregion Regional Presets
