@@ -179,6 +179,9 @@ public class Tls4Sbox
     public List<string>? alpn { get; set; }
     public Utls4Sbox? utls { get; set; }
     public Reality4Sbox? reality { get; set; }
+    public bool? fragment { get; set; }
+    public string? fragment_fallback_delay { get; set; }
+    public bool? record_fragment { get; set; }
 }
 
 public class Multiplex4Sbox

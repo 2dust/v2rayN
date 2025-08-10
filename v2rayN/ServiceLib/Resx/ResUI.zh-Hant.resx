@@ -1102,7 +1102,7 @@
     <value>新增 [HTTP] 設定檔</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>使用 Xray 且非 Tun 模式啟用，和分組前置代理衝突</value>
+    <value>和分組前置代理衝突</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>啟用分片（Fragment）</value>
