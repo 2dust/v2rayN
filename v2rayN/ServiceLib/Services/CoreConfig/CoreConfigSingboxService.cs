@@ -1022,7 +1022,8 @@ public class CoreConfigSingboxService
             }
 
             //current proxy
-            BaseServer4Sbox? outbound = singboxConfig.endpoints?.FirstOrDefault(t => t.tag == Global.ProxyTag) == null ? singboxConfig.outbounds.First() : null;
+            BaseServer4Sbox? outbound = singboxConfig.endpoints?.FirstOrDefault(t => t.tag == Global.ProxyTag, null);
+            outbound ??= singboxConfig.outbounds.First();
 
             var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
 
