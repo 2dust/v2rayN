@@ -92,8 +92,7 @@
                         AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                         DisplayMemberPath="Remarks"
                         FontSize="{DynamicResource StdFontSize}"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                    </ComboBox>
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
@@ -185,8 +184,7 @@
                                     AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                                     DisplayMemberPath="Remarks"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}">
-                                </ComboBox>
+                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>
@@ -200,8 +198,7 @@
                                     AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"
                                     DisplayMemberPath="Text"
                                     FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}">
-                                </ComboBox>
+                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
                             </DockPanel>
                         </MenuItem.Header>
                     </MenuItem>

@@ -39,7 +39,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThBasicDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
-                        Margin="{StaticResource Margin4}"
+                        Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
@@ -50,7 +50,7 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbCustomDNSEnabledPageInvalid}" />
-                        
+
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
@@ -186,7 +186,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThAdvancedDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
-                        Margin="{StaticResource Margin4}"
+                        Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
 
@@ -284,13 +284,14 @@
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Stretch"
-                            Watermark="{x:Static resx:ResUI.TbDNSHostsConfig}"
                             BorderThickness="1"
                             Classes="TextArea"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"
+                            Watermark="{x:Static resx:ResUI.TbDNSHostsConfig}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">
@@ -298,7 +299,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock
                                 Margin="{StaticResource Margin4}"
@@ -309,7 +310,7 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left" />
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock
                                 Margin="{StaticResource Margin4}"
@@ -387,7 +388,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock
                                 Margin="{StaticResource Margin4}"
@@ -398,7 +399,7 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left" />
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock Margin="{StaticResource Margin4}" VerticalAlignment="Center">
                                 <HyperlinkButton Classes="WithIcon" Click="linkDnsSingboxObjectDoc_Click">

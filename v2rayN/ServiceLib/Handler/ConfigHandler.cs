@@ -2106,7 +2106,7 @@ public class ConfigHandler
     public static async Task<int> InitBuiltinDNS(Config config)
     {
         var items = await AppHandler.Instance.DNSItems();
-        
+
         // Check existing DNS items and disable those with empty NormalDNS
         var needsUpdate = false;
         foreach (var existingItem in items)
@@ -2117,13 +2117,13 @@ public class ConfigHandler
                 needsUpdate = true;
             }
         }
-        
+
         // Update items if any changes were made
         if (needsUpdate)
         {
             await SQLiteHelper.Instance.UpdateAllAsync(items);
         }
-        
+
         if (items.Count <= 0)
         {
             var item = new DNSItem()

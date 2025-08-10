@@ -83,8 +83,8 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Width="200"
-                            IsEditable="True"
                             Margin="{StaticResource Margin8}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
@@ -99,8 +99,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Width="200"
-                            IsEditable="True"
                             Margin="{StaticResource Margin8}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
@@ -115,8 +115,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="200"
-                            IsEditable="True"
                             Margin="{StaticResource Margin8}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="3"
@@ -138,8 +138,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
-                            IsEditable="True"
                             Margin="{StaticResource Margin8}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="4"
@@ -304,7 +304,6 @@
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbPreventDNSLeaks}" />
 
-
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
@@ -317,8 +316,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
-                            IsEditable="True"
                             Margin="{StaticResource Margin8}"
+                            IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="4"
@@ -360,19 +359,19 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock
-                                    Margin="{StaticResource Margin8}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ToolbarTextBlock}"
-                                    Text="{x:Static resx:ResUI.TbCustomDNSEnable}" />
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbCustomDNSEnable}" />
                             <ToggleButton
-                                    x:Name="togRayCustomDNSEnableCompatible"
-                                    Margin="{StaticResource Margin8}"
-                                    HorizontalAlignment="Left" />
+                                x:Name="togRayCustomDNSEnableCompatible"
+                                Margin="{StaticResource Margin8}"
+                                HorizontalAlignment="Left" />
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock
                                 Margin="{StaticResource Margin8}"
@@ -458,19 +457,19 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock
-                                    Margin="{StaticResource Margin8}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ToolbarTextBlock}"
-                                    Text="{x:Static resx:ResUI.TbCustomDNSEnable}" />
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbCustomDNSEnable}" />
                             <ToggleButton
-                                    x:Name="togSBCustomDNSEnableCompatible"
-                                    Margin="{StaticResource Margin8}"
-                                    HorizontalAlignment="Left" />
+                                x:Name="togSBCustomDNSEnableCompatible"
+                                Margin="{StaticResource Margin8}"
+                                HorizontalAlignment="Left" />
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock
                                 Margin="{StaticResource Margin8}"

@@ -1,6 +1,5 @@
-using static QRCoder.PayloadGenerator;
-
 namespace ServiceLib.Handler.Fmt;
+
 public class AnytlsFmt : BaseFmt
 {
     public static ProfileItem? Resolve(string str, out string msg)
