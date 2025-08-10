@@ -1401,4 +1401,7 @@
   <data name="TbMldsa65Verify" xml:space="preserve">
     <value>Mldsa65Verify</value>
   </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>Добавить сервер [Anytls]</value>
+  </data>
 </root>

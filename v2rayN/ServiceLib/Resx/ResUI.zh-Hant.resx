@@ -1398,4 +1398,7 @@
   <data name="TbMldsa65Verify" xml:space="preserve">
     <value>Mldsa65Verify</value>
   </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>新增 [Anytls] 設定檔</value>
+  </data>
 </root>

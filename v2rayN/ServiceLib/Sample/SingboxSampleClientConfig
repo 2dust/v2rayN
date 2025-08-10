@@ -1,4 +1,4 @@
-﻿{
+{
 	"log": {
 		"level": "debug",
 		"timestamp": true
@@ -14,22 +14,10 @@
 		{
 			"type": "direct",
 			"tag": "direct"
-		},
-		{
-			"type": "block",
-			"tag": "block"
-		},
-		{
-			"tag": "dns_out",
-			"type": "dns"
 		}
 	],
 	"route": {
 		"rules": [
-			{
-				"protocol": [ "dns" ],
-				"outbound": "dns_out"
-			}
 		]
 	}
 }

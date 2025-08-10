@@ -2,29 +2,33 @@
   "servers": [
     {
       "tag": "remote",
-      "address": "tcp://8.8.8.8",
-      "strategy": "prefer_ipv4",
+      "type": "tcp",
+      "server": "8.8.8.8",
       "detour": "proxy"
     },
     {
       "tag": "local",
-      "address": "223.5.5.5",
-      "strategy": "prefer_ipv4",
-      "detour": "direct"
-    },
-    {
-      "tag": "block",
-      "address": "rcode://success"
+      "type": "udp",
+      "server": "223.5.5.5"
     }
   ],
   "rules": [
     {
-      "rule_set": [
-        "geosite-cn",
-        "geosite-geolocation-cn"
+      "domain_suffix": [
+        "googleapis.cn",
+        "gstatic.com"
       ],
-      "server": "local"
+      "server": "remote",
+      "strategy": "prefer_ipv4"
+    },
+    {
+      "rule_set": [
+        "geosite-cn"
+      ],
+      "server": "local",
+      "strategy": "prefer_ipv4"
     }
   ],
-  "final": "remote"
+  "final": "remote",
+  "strategy": "prefer_ipv4"
 }

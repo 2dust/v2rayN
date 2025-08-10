@@ -122,7 +122,7 @@ public partial class RoutingSettingWindow
 
     private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
     {
-        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
+        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
     }
 
     private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
