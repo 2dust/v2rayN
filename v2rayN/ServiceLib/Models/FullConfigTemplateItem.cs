@@ -3,7 +3,7 @@ using SQLite;
 namespace ServiceLib.Models;
 
 [Serializable]
-public class CustomConfigItem
+public class FullConfigTemplateItem
 {
     [PrimaryKey]
     public string Id { get; set; }

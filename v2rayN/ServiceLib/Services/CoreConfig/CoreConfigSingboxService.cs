@@ -80,8 +80,8 @@ public class CoreConfigSingboxService
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
 
-            var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            ret.Data = await ApplyCustomConfig(customConfig, singboxConfig);
+            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -434,8 +434,8 @@ public class CoreConfigSingboxService
 
             ret.Success = true;
 
-            var customConfig = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-            ret.Data = await ApplyCustomConfig(customConfig, singboxConfig);
+            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -2202,60 +2202,60 @@ public class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<string> ApplyCustomConfig(CustomConfigItem customConfig, SingboxConfig singboxConfig)
+    private async Task<string> ApplyFullConfigTemplate(FullConfigTemplateItem fullConfigTemplate, SingboxConfig singboxConfig)
     {
-        var customConfigItem = customConfig.Config;
+        var fullConfigTemplateItem = fullConfigTemplate.Config;
         if (_config.TunModeItem.EnableTun)
         {
-            customConfigItem = customConfig.TunConfig;
+            fullConfigTemplateItem = fullConfigTemplate.TunConfig;
         }
 
-        if (!customConfig.Enabled || customConfigItem.IsNullOrEmpty())
+        if (!fullConfigTemplate.Enabled || fullConfigTemplateItem.IsNullOrEmpty())
         {
             return JsonUtils.Serialize(singboxConfig);
         }
 
-        var customConfigNode = JsonNode.Parse(customConfigItem);
-        if (customConfigNode == null)
+        var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
+        if (fullConfigTemplateNode == null)
         {
             return JsonUtils.Serialize(singboxConfig);
         }
 
         // Process outbounds
-        var customOutboundsNode = customConfigNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
+        var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
         foreach (var outbound in singboxConfig.outbounds)
         {
             if (outbound.type.ToLower() is "direct" or "block")
             {
-                if (customConfig.AddProxyOnly == true)
+                if (fullConfigTemplate.AddProxyOnly == true)
                 {
                     continue;
                 }
             }
-            else if (outbound.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()) && !Utils.IsPrivateNetwork(outbound.server ?? string.Empty))
+            else if (outbound.detour.IsNullOrEmpty() && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()) && !Utils.IsPrivateNetwork(outbound.server ?? string.Empty))
             {
-                outbound.detour = customConfig.ProxyDetour;
+                outbound.detour = fullConfigTemplate.ProxyDetour;
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
-        customConfigNode["outbounds"] = customOutboundsNode;
+        fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         // Process endpoints
         if (singboxConfig.endpoints != null && singboxConfig.endpoints.Count > 0)
         {
-            var customEndpointsNode = customConfigNode["endpoints"] is JsonArray endpoints ? endpoints : new JsonArray();
+            var customEndpointsNode = fullConfigTemplateNode["endpoints"] is JsonArray endpoints ? endpoints : new JsonArray();
             foreach (var endpoint in singboxConfig.endpoints)
             {
-                if (endpoint.detour.IsNullOrEmpty() && (!customConfig.ProxyDetour.IsNullOrEmpty()))
+                if (endpoint.detour.IsNullOrEmpty() && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()))
                 {
-                    endpoint.detour = customConfig.ProxyDetour;
+                    endpoint.detour = fullConfigTemplate.ProxyDetour;
                 }
                 customEndpointsNode.Add(JsonUtils.DeepCopy(endpoint));
             }
-            customConfigNode["endpoints"] = customEndpointsNode;
+            fullConfigTemplateNode["endpoints"] = customEndpointsNode;
         }
 
-        return await Task.FromResult(JsonUtils.Serialize(customConfigNode));
+        return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));
     }
 
     #endregion private gen function

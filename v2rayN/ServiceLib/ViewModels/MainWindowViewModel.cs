@@ -39,7 +39,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
     public ReactiveCommand<Unit, Unit> DNSSettingCmd { get; }
-    public ReactiveCommand<Unit, Unit> CustomConfigCmd { get; }
+    public ReactiveCommand<Unit, Unit> FullConfigTemplateCmd { get; }
     public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
     public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
     public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
@@ -170,9 +170,9 @@ public class MainWindowViewModel : MyReactiveObject
         {
             await DNSSettingAsync();
         });
-        CustomConfigCmd = ReactiveCommand.CreateFromTask(async () =>
+        FullConfigTemplateCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await CustomConfigAsync();
+            await FullConfigTemplateAsync();
         });
         GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -225,7 +225,7 @@ public class MainWindowViewModel : MyReactiveObject
 
         await ConfigHandler.InitBuiltinRouting(_config);
         await ConfigHandler.InitBuiltinDNS(_config);
-        await ConfigHandler.InitBuiltinCustomConfig(_config);
+        await ConfigHandler.InitBuiltinFullConfigTemplate(_config);
         await ProfileExHandler.Instance.Init();
         await CoreHandler.Instance.Init(_config, UpdateHandler);
         TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
@@ -514,9 +514,9 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    private async Task CustomConfigAsync()
+    private async Task FullConfigTemplateAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.CustomConfigWindow, null);
+        var ret = await _updateView?.Invoke(EViewAction.FullConfigTemplateWindow, null);
         if (ret == true)
         {
             await Reload();

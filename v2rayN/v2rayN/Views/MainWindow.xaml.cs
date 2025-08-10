@@ -97,7 +97,7 @@ public partial class MainWindow
             this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.CustomConfigCmd, v => v.menuCustomConfig).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
@@ -187,8 +187,8 @@ public partial class MainWindow
             case EViewAction.OptionSettingWindow:
                 return (new OptionSettingWindow().ShowDialog() ?? false);
 
-            case EViewAction.CustomConfigWindow:
-                return (new CustomConfigWindow().ShowDialog() ?? false);
+            case EViewAction.FullConfigTemplateWindow:
+                return (new FullConfigTemplateWindow().ShowDialog() ?? false);
 
             case EViewAction.GlobalHotkeySettingWindow:
                 return (new GlobalHotkeySettingWindow().ShowDialog() ?? false);

@@ -187,11 +187,11 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please fill in the correct custom config 的本地化字符串。
+        ///   查找类似 Please fill in the correct config template 的本地化字符串。
         /// </summary>
-        public static string FillCorrectConfigText {
+        public static string FillCorrectConfigTemplateText {
             get {
-                return ResourceManager.GetString("FillCorrectConfigText", resourceCulture);
+                return ResourceManager.GetString("FillCorrectConfigTemplateText", resourceCulture);
             }
         }
         
@@ -862,15 +862,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom Config 的本地化字符串。
-        /// </summary>
-        public static string menuCustomConfig {
-            get {
-                return ResourceManager.GetString("menuCustomConfig", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 DNS Settings 的本地化字符串。
         /// </summary>
         public static string menuDNSSetting {
@@ -948,6 +939,15 @@ namespace ServiceLib.Resx {
         public static string menuExportConfig {
             get {
                 return ResourceManager.GetString("menuExportConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Full Config Template Setting 的本地化字符串。
+        /// </summary>
+        public static string menuFullConfigTemplate {
+            get {
+                return ResourceManager.GetString("menuFullConfigTemplate", resourceCulture);
             }
         }
         
@@ -2392,24 +2392,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable Custom Config 的本地化字符串。
-        /// </summary>
-        public static string TbCustomConfigEnable {
-            get {
-                return ResourceManager.GetString("TbCustomConfigEnable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 sing-box Custom Config 的本地化字符串。
-        /// </summary>
-        public static string TbCustomConfigSingbox {
-            get {
-                return ResourceManager.GetString("TbCustomConfigSingbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable Custom DNS 的本地化字符串。
         /// </summary>
         public static string TbCustomDNSEnable {
@@ -2550,6 +2532,24 @@ namespace ServiceLib.Resx {
         public static string TbFlow5 {
             get {
                 return ResourceManager.GetString("TbFlow5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core&apos;s basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you. 的本地化字符串。
+        /// </summary>
+        public static string TbFullConfigTemplateDesc {
+            get {
+                return ResourceManager.GetString("TbFullConfigTemplateDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable Full Config Template 的本地化字符串。
+        /// </summary>
+        public static string TbFullConfigTemplateEnable {
+            get {
+                return ResourceManager.GetString("TbFullConfigTemplateEnable", resourceCulture);
             }
         }
         
@@ -2770,20 +2770,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v2ray Custom Config 的本地化字符串。
+        ///   查找类似 v2ray Full Config Template 的本地化字符串。
         /// </summary>
-        public static string TbRayCustomConfig {
+        public static string TbRayFullConfigTemplate {
             get {
-                return ResourceManager.GetString("TbRayCustomConfig", resourceCulture);
+                return ResourceManager.GetString("TbRayFullConfigTemplate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Add Outbound Config Only, routing.balancers and routing.rules.outboundTag 的本地化字符串。
         /// </summary>
-        public static string TbRayCustomConfigDesc {
+        public static string TbRayFullConfigTemplateDesc {
             get {
-                return ResourceManager.GetString("TbRayCustomConfigDesc", resourceCulture);
+                return ResourceManager.GetString("TbRayFullConfigTemplateDesc", resourceCulture);
             }
         }
         
@@ -2914,15 +2914,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Add Outbound and Endpoint Config Only 的本地化字符串。
-        /// </summary>
-        public static string TbSBCustomConfigDesc {
-            get {
-                return ResourceManager.GetString("TbSBCustomConfigDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
         /// </summary>
         public static string TbSBDirectResolveStrategy {
@@ -2955,6 +2946,24 @@ namespace ServiceLib.Resx {
         public static string TbSBFallbackDNSResolve {
             get {
                 return ResourceManager.GetString("TbSBFallbackDNSResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box Full Config Template 的本地化字符串。
+        /// </summary>
+        public static string TbSBFullConfigTemplate {
+            get {
+                return ResourceManager.GetString("TbSBFullConfigTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Outbound and Endpoint Config Only 的本地化字符串。
+        /// </summary>
+        public static string TbSBFullConfigTemplateDesc {
+            get {
+                return ResourceManager.GetString("TbSBFullConfigTemplateDesc", resourceCulture);
             }
         }
         

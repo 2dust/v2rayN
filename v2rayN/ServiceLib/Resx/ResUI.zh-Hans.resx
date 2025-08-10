@@ -1467,31 +1467,34 @@
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
     <value>自定义 DNS 已启用，此页面配置将无效</value>
   </data>
-  <data name="FillCorrectConfigText" xml:space="preserve">
-    <value>请填写正确的自定义配置</value>
+  <data name="FillCorrectConfigTemplateText" xml:space="preserve">
+    <value>请填写正确的配置模板</value>
   </data>
-  <data name="menuCustomConfig" xml:space="preserve">
-    <value>自定义配置</value>
+  <data name="menuFullConfigTemplate" xml:space="preserve">
+    <value>完整配置模板设置</value>
   </data>
-  <data name="TbCustomConfigEnable" xml:space="preserve">
-    <value>启用自定义配置</value>
+  <data name="TbFullConfigTemplateEnable" xml:space="preserve">
+    <value>启用完整配置模板</value>
   </data>
-  <data name="TbRayCustomConfig" xml:space="preserve">
-    <value>v2ray 自定义配置</value>
+  <data name="TbRayFullConfigTemplate" xml:space="preserve">
+    <value>v2ray 完整配置模板</value>
   </data>
-  <data name="TbCustomConfigSingbox" xml:space="preserve">
-    <value>sing-box 自定义配置</value>
-  </data>
-  <data name="TbRayCustomConfigDesc" xml:space="preserve">
+  <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
     <value>仅添加出站配置，routing.balancers 和 routing.rules.outboundTag</value>
-  </data>
-  <data name="TbSBCustomConfigDesc" xml:space="preserve">
-    <value>仅添加出站和端点配置</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
     <value>不添加非代理协议出站</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
     <value>设置上游代理 tag</value>
+  </data>
+  <data name="TbSBFullConfigTemplate" xml:space="preserve">
+    <value>sing-box 完整配置模板</value>
+  </data>
+  <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
+    <value>仅添加出站和端点配置</value>
+  </data>
+  <data name="TbFullConfigTemplateDesc" xml:space="preserve">
+    <value>此功能供高级用户和有特殊需求的用户使用。 启用此功能后，将忽略 Core 的基础设置，DNS 设置 ，路由设置。你需要保证系统代理的端口和流量统计等功能的配置正确，一切都由你来设置。</value>
   </data>
 </root>

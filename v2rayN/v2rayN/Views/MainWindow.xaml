@@ -174,9 +174,9 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuDNSSetting}" />
                                 <MenuItem
-                                    x:Name="menuCustomConfig"
+                                    x:Name="menuFullConfigTemplate"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuCustomConfig}" />
+                                    Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
                                 <MenuItem
                                     x:Name="menuGlobalHotkeySetting"
                                     Height="{StaticResource MenuItemHeight}"

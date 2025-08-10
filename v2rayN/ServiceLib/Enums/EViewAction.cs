@@ -29,7 +29,7 @@ public enum EViewAction
     DNSSettingWindow,
     RoutingSettingWindow,
     OptionSettingWindow,
-    CustomConfigWindow,
+    FullConfigTemplateWindow,
     GlobalHotkeySettingWindow,
     SubSettingWindow,
     DispatcherSpeedTest,

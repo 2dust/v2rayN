@@ -2240,29 +2240,29 @@ public class ConfigHandler
 
     #region Custom Config
 
-    public static async Task<int> InitBuiltinCustomConfig(Config config)
+    public static async Task<int> InitBuiltinFullConfigTemplate(Config config)
     {
-        var items = await AppHandler.Instance.CustomConfigItem();
+        var items = await AppHandler.Instance.FullConfigTemplateItem();
         if (items.Count <= 0)
         {
-            var item = new CustomConfigItem()
+            var item = new FullConfigTemplateItem()
             {
                 Remarks = "V2ray",
                 CoreType = ECoreType.Xray,
             };
-            await SaveCustomConfigItem(config, item);
+            await SaveFullConfigTemplate(config, item);
 
-            var item2 = new CustomConfigItem()
+            var item2 = new FullConfigTemplateItem()
             {
                 Remarks = "sing-box",
                 CoreType = ECoreType.sing_box,
             };
-            await SaveCustomConfigItem(config, item2);
+            await SaveFullConfigTemplate(config, item2);
         }
 
         return 0;
     }
-    public static async Task<int> SaveCustomConfigItem(Config config, CustomConfigItem item)
+    public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
     {
         if (item == null)
         {

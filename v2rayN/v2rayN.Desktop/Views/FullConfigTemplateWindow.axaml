@@ -1,15 +1,15 @@
 <Window
-    x:Class="v2rayN.Desktop.Views.CustomConfigWindow"
+    x:Class="v2rayN.Desktop.Views.FullConfigTemplateWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="{x:Static resx:ResUI.menuCustomConfig}"
+    Title="{x:Static resx:ResUI.menuFullConfigTemplate}"
     Width="900"
     Height="600"
-    x:DataType="vms:CustomConfigViewModel"
+    x:DataType="vms:FullConfigTemplateViewModel"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -35,25 +35,31 @@
         </StackPanel>
 
         <TabControl HorizontalContentAlignment="Stretch">
-            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRayCustomConfig}">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRayFullConfigTemplate}">
                 <DockPanel Margin="{StaticResource Margin4}">
-                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto">
+                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto,Auto">
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbRayFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
                             <TextBlock
-                                Grid.Row="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbRayCustomConfigDesc}" />
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
+                                Text="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
                             <ToggleSwitch
-                                x:Name="rayCustomConfigEnable"
+                                x:Name="rayFullConfigTemplateEnable"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left" />
                         </StackPanel>
@@ -87,9 +93,9 @@
                         Margin="{StaticResource Margin4}"
                         BorderBrush="Gray"
                         BorderThickness="1"
-                        Header="xray json config">
+                        Header="xray config template json">
                         <TextBox
-                            x:Name="rayCustomConfig"
+                            x:Name="rayFullConfigTemplate"
                             VerticalAlignment="Stretch"
                             Classes="TextArea"
                             MinLines="10"
@@ -97,25 +103,31 @@
                     </HeaderedContentControl>
                 </DockPanel>
             </TabItem>
-            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbCustomConfigSingbox}">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbSBFullConfigTemplate}">
                 <DockPanel Margin="{StaticResource Margin4}">
-                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto">
+                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto,Auto">
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSBFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
                             <TextBlock
-                                Grid.Row="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbSBCustomConfigDesc}" />
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbCustomConfigEnable}" />
+                                Text="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
                             <ToggleSwitch
-                                x:Name="sbCustomConfigEnable"
+                                x:Name="sbFullConfigTemplateEnable"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left" />
                         </StackPanel>
@@ -151,9 +163,9 @@
                             Grid.Column="0"
                             BorderBrush="Gray"
                             BorderThickness="1"
-                            Header="sing-box json config">
+                            Header="sing-box config template json">
                             <TextBox
-                                x:Name="sbCustomConfig"
+                                x:Name="sbFullConfigTemplate"
                                 VerticalAlignment="Stretch"
                                 Classes="TextArea"
                                 MinLines="10"
@@ -166,9 +178,9 @@
                             Grid.Column="2"
                             BorderBrush="Gray"
                             BorderThickness="1"
-                            Header="sing-box json tun config">
+                            Header="sing-box tun config template json">
                             <TextBox
-                                x:Name="sbCustomTunConfig"
+                                x:Name="sbFullTunConfigTemplate"
                                 VerticalAlignment="Stretch"
                                 Classes="TextArea"
                                 MinLines="10"

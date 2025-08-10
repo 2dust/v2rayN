@@ -4,23 +4,23 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace ServiceLib.ViewModels;
-public class CustomConfigViewModel : MyReactiveObject
+public class FullConfigTemplateViewModel : MyReactiveObject
 {
     #region Reactive
     [Reactive]
-    public bool EnableCustomConfig4Ray { get; set; }
+    public bool EnableFullConfigTemplate4Ray { get; set; }
 
     [Reactive]
-    public bool EnableCustomConfig4Singbox { get; set; }
+    public bool EnableFullConfigTemplate4Singbox { get; set; }
 
     [Reactive]
-    public string CustomConfig4Ray { get; set; }
+    public string FullConfigTemplate4Ray { get; set; }
 
     [Reactive]
-    public string CustomConfig4Singbox { get; set; }
+    public string FullConfigTemplate4Singbox { get; set; }
 
     [Reactive]
-    public string CustomTunConfig4Singbox { get; set; }
+    public string FullTunConfigTemplate4Singbox { get; set; }
 
     [Reactive]
     public bool AddProxyOnly4Ray { get; set; }
@@ -37,7 +37,7 @@ public class CustomConfigViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     #endregion Reactive
 
-    public CustomConfigViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public FullConfigTemplateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
         _config = AppHandler.Instance.Config;
         _updateView = updateView;
@@ -50,16 +50,16 @@ public class CustomConfigViewModel : MyReactiveObject
     }
     private async Task Init()
     {
-        var item = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
-        EnableCustomConfig4Ray = item?.Enabled ?? false;
-        CustomConfig4Ray = item?.Config ?? string.Empty;
+        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        EnableFullConfigTemplate4Ray = item?.Enabled ?? false;
+        FullConfigTemplate4Ray = item?.Config ?? string.Empty;
         AddProxyOnly4Ray = item?.AddProxyOnly ?? false;
         ProxyDetour4Ray = item?.ProxyDetour ?? string.Empty;
 
-        var item2 = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-        EnableCustomConfig4Singbox = item2?.Enabled ?? false;
-        CustomConfig4Singbox = item2?.Config ?? string.Empty;
-        CustomTunConfig4Singbox = item2?.TunConfig ?? string.Empty;
+        var item2 = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        EnableFullConfigTemplate4Singbox = item2?.Enabled ?? false;
+        FullConfigTemplate4Singbox = item2?.Config ?? string.Empty;
+        FullTunConfigTemplate4Singbox = item2?.TunConfig ?? string.Empty;
         AddProxyOnly4Singbox = item2?.AddProxyOnly ?? false;
         ProxyDetour4Singbox = item2?.ProxyDetour ?? string.Empty;
     }
@@ -78,33 +78,33 @@ public class CustomConfigViewModel : MyReactiveObject
 
     private async Task<bool> SaveXrayConfigAsync()
     {
-        var item = await AppHandler.Instance.GetCustomConfigItem(ECoreType.Xray);
-        item.Enabled = EnableCustomConfig4Ray;
+        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        item.Enabled = EnableFullConfigTemplate4Ray;
         item.Config = null;
 
-        item.Config = CustomConfig4Ray;
+        item.Config = FullConfigTemplate4Ray;
 
         item.AddProxyOnly = AddProxyOnly4Ray;
         item.ProxyDetour = ProxyDetour4Ray;
 
-        await ConfigHandler.SaveCustomConfigItem(_config, item);
+        await ConfigHandler.SaveFullConfigTemplate(_config, item);
         return true;
     }
 
     private async Task<bool> SaveSingboxConfigAsync()
     {
-        var item = await AppHandler.Instance.GetCustomConfigItem(ECoreType.sing_box);
-        item.Enabled = EnableCustomConfig4Singbox;
+        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        item.Enabled = EnableFullConfigTemplate4Singbox;
         item.Config = null;
         item.TunConfig = null;
 
-        item.Config = CustomConfig4Singbox;
-        item.TunConfig = CustomTunConfig4Singbox;
+        item.Config = FullConfigTemplate4Singbox;
+        item.TunConfig = FullTunConfigTemplate4Singbox;
 
         item.AddProxyOnly = AddProxyOnly4Singbox;
         item.ProxyDetour = ProxyDetour4Singbox;
 
-        await ConfigHandler.SaveCustomConfigItem(_config, item);
+        await ConfigHandler.SaveFullConfigTemplate(_config, item);
         return true;
     }
 }
