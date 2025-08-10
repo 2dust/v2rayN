@@ -1440,9 +1440,6 @@
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
     <value>阻止 SVCB 和 HTTPS 查询</value>
   </data>
-  <data name="TbPreventDNSLeaks" xml:space="preserve">
-    <value>避免 DNS 泄漏</value>
-  </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
     <value>DNS Hosts：（“域名1 ip1 ip2” 一行一个）</value>
   </data>
@@ -1466,6 +1463,9 @@
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
     <value>自定义 DNS 已启用，此页面配置将无效</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>避免域名分流规则失效</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>请填写正确的配置模板</value>
