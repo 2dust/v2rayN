@@ -5,7 +5,7 @@ namespace ServiceLib.Models;
 public class V2rayConfig
 {
     public Log4Ray log { get; set; }
-    public object dns { get; set; }
+    public Dns4Ray dns { get; set; }
     public List<Inbounds4Ray> inbounds { get; set; }
     public List<Outbounds4Ray> outbounds { get; set; }
     public Routing4Ray routing { get; set; }
@@ -203,7 +203,8 @@ public class Response4Ray
 
 public class Dns4Ray
 {
-    public List<string> servers { get; set; }
+    public Dictionary<string, List<string>>? hosts { get; set; }
+    public List<object> servers { get; set; }
 }
 
 public class DnsServer4Ray
@@ -211,6 +212,8 @@ public class DnsServer4Ray
     public string? address { get; set; }
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
+    public List<string>? expectedIPs { get; set; }
+    public List<string>? unexpectedIPs { get; set; }
 }
 
 public class Routing4Ray

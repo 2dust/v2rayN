@@ -1401,4 +1401,70 @@
   <data name="menuAddAnytlsServer" xml:space="preserve">
     <value>添加 [Anytls] 配置文件</value>
   </data>
+  <data name="TbRemoteDNS" xml:space="preserve">
+    <value>远程 DNS</value>
+  </data>
+  <data name="TbDomesticDNS" xml:space="preserve">
+    <value>直连 DNS</value>
+  </data>
+  <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
+    <value>出站 DNS 解析（sing-box）</value>
+  </data>
+  <data name="TbSBOutboundDomainResolve" xml:space="preserve">
+    <value>解析出站域名</value>
+  </data>
+  <data name="TbSBDoHResolverServer" xml:space="preserve">
+    <value>sing-box DoH 解析服务器</value>
+  </data>
+  <data name="TbSBFallbackDNSResolve" xml:space="preserve">
+    <value>兜底解析其他 DNS 域名，建议设为 ip</value>
+  </data>
+  <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
+    <value>xray freedom 解析策略</value>
+  </data>
+  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
+    <value>sing-box 直连解析策略</value>
+  </data>
+  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
+    <value>sing-box 远程解析策略</value>
+  </data>
+  <data name="TbAddCommonDNSHosts" xml:space="preserve">
+    <value>添加常用 DNS Hosts</value>
+  </data>
+  <data name="TbSBDoHOverride" xml:space="preserve">
+    <value>开启后可覆盖 sing-box DoH 解析服务器</value>
+  </data>
+  <data name="TbFakeIP" xml:space="preserve">
+    <value>FakeIP</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
+    <value>阻止 SVCB 和 HTTPS 查询</value>
+  </data>
+  <data name="TbPreventDNSLeaks" xml:space="preserve">
+    <value>避免 DNS 泄漏</value>
+  </data>
+  <data name="TbDNSHostsConfig" xml:space="preserve">
+    <value>DNS Hosts：（“域名1 ip1 ip2” 一行一个）</value>
+  </data>
+  <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
+    <value>仅对代理域名生效</value>
+  </data>
+  <data name="ThBasicDNSSettings" xml:space="preserve">
+    <value>DNS 基础设置</value>
+  </data>
+  <data name="ThAdvancedDNSSettings" xml:space="preserve">
+    <value>DNS 进阶设置</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
+    <value>校验相应地区域名 IP</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
+    <value>配置后，会对相应地区域名（如 geosite:cn）的返回 IP 进行校验，仅返回期望 IP</value>
+  </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>启用自定义 DNS</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>自定义 DNS 已启用，此页面配置将无效</value>
+  </data>
 </root>

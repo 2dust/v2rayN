@@ -112,6 +112,11 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
+        if (config.SimpleDNSItem == null)
+        {
+            InitBuiltinSimpleDNS(config);
+        }
+
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
         {
@@ -2094,18 +2099,38 @@ public class ConfigHandler
     /// <summary>
     /// Initialize built-in DNS configurations
     /// Creates default DNS items for V2Ray and sing-box
+    /// Also checks existing DNS items and disables those with empty NormalDNS
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinDNS(Config config)
     {
         var items = await AppHandler.Instance.DNSItems();
+        
+        // Check existing DNS items and disable those with empty NormalDNS
+        var needsUpdate = false;
+        foreach (var existingItem in items)
+        {
+            if (existingItem.NormalDNS.IsNullOrEmpty() && existingItem.Enabled)
+            {
+                existingItem.Enabled = false;
+                needsUpdate = true;
+            }
+        }
+        
+        // Update items if any changes were made
+        if (needsUpdate)
+        {
+            await SQLiteHelper.Instance.UpdateAllAsync(items);
+        }
+        
         if (items.Count <= 0)
         {
             var item = new DNSItem()
             {
                 Remarks = "V2ray",
                 CoreType = ECoreType.Xray,
+                Enabled = false,
             };
             await SaveDNSItems(config, item);
 
@@ -2113,6 +2138,7 @@ public class ConfigHandler
             {
                 Remarks = "sing-box",
                 CoreType = ECoreType.sing_box,
+                Enabled = false,
             };
             await SaveDNSItems(config, item2);
         }
@@ -2184,6 +2210,38 @@ public class ConfigHandler
 
     #endregion DNS
 
+    #region Simple DNS
+
+    public static int InitBuiltinSimpleDNS(Config config)
+    {
+        config.SimpleDNSItem = new SimpleDNSItem()
+        {
+            UseSystemHosts = false,
+            AddCommonHosts = true,
+            FakeIP = false,
+            BlockBindingQuery = true,
+            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
+            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
+        };
+        return 0;
+    }
+
+    public static async Task<SimpleDNSItem> GetExternalSimpleDNSItem(string url)
+    {
+        var downloadHandle = new DownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
+        if (templateContent.IsNullOrEmpty())
+            return null;
+        var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
+        if (template == null)
+            return null;
+        return template;
+    }
+
+    #endregion Simple DNS
+
     #region Regional Presets
 
     /// <summary>
@@ -2205,6 +2263,8 @@ public class ConfigHandler
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                 await InitBuiltinDNS(config);
 
+                InitBuiltinSimpleDNS(config);
+
                 return true;
 
             case EPresetType.Russia:
@@ -2215,6 +2275,8 @@ public class ConfigHandler
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
 
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
+
                 return true;
 
             case EPresetType.Iran:
@@ -2224,6 +2286,8 @@ public class ConfigHandler
 
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
                 await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
+
+                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
 
                 return true;
         }

@@ -36,6 +36,7 @@ public class Dns4Sbox
 
 public class Route4Sbox
 {
+    public Rule4Sbox? default_domain_resolver { get; set; } // or string
     public bool? auto_detect_interface { get; set; }
     public List<Rule4Sbox> rules { get; set; }
     public List<Ruleset4Sbox>? rule_set { get; set; }
@@ -75,7 +76,7 @@ public class Rule4Sbox
     public string? strategy { get; set; }
     public List<string>? sniffer { get; set; }
     public string? rcode { get; set; }
-    public List<object>? query_type { get; set; }
+    public List<int>? query_type { get; set; }
     public List<string>? answer { get; set; }
     public List<string>? ns { get; set; }
     public List<string>? extra { get; set; }
@@ -237,7 +238,7 @@ public class Server4Sbox : BaseServer4Sbox
     public string? path { get; set; }
     public Headers4Sbox? headers { get; set; }
     // public List<string>? path { get; set; } // hosts
-    public Dictionary<string, object>? predefined { get; set; }
+    public Dictionary<string, List<string>>? predefined { get; set; }
     // Deprecated
     public string? address { get; set; }
     public string? address_resolver { get; set; }

@@ -2221,6 +2221,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add Common DNS Hosts 的本地化字符串。
+        /// </summary>
+        public static string TbAddCommonDNSHosts {
+            get {
+                return ResourceManager.GetString("TbAddCommonDNSHosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address 的本地化字符串。
         /// </summary>
         public static string TbAddress {
@@ -2257,6 +2266,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Apply to Proxy Domains Only 的本地化字符串。
+        /// </summary>
+        public static string TbApplyProxyDomainsOnly {
+            get {
+                return ResourceManager.GetString("TbApplyProxyDomainsOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Auto refresh 的本地化字符串。
         /// </summary>
         public static string TbAutoRefresh {
@@ -2280,6 +2298,15 @@ namespace ServiceLib.Resx {
         public static string TbAutoSort {
             get {
                 return ResourceManager.GetString("TbAutoSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Block SVCB and HTTPS Queries 的本地化字符串。
+        /// </summary>
+        public static string TbBlockSVCBHTTPSQueries {
+            get {
+                return ResourceManager.GetString("TbBlockSVCBHTTPSQueries", resourceCulture);
             }
         }
         
@@ -2338,6 +2365,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Custom DNS 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnable {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom DNS Enabled, This Page&apos;s Settings Invalid 的本地化字符串。
+        /// </summary>
+        public static string TbCustomDNSEnabledPageInvalid {
+            get {
+                return ResourceManager.GetString("TbCustomDNSEnabledPageInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {
@@ -2352,6 +2397,15 @@ namespace ServiceLib.Resx {
         public static string TbDisplayLog {
             get {
                 return ResourceManager.GetString("TbDisplayLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DNS Hosts: (&quot;domain1 ip1 ip2&quot; per line) 的本地化字符串。
+        /// </summary>
+        public static string TbDNSHostsConfig {
+            get {
+                return ResourceManager.GetString("TbDNSHostsConfig", resourceCulture);
             }
         }
         
@@ -2401,6 +2455,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Domestic DNS 的本地化字符串。
+        /// </summary>
+        public static string TbDomesticDNS {
+            get {
+                return ResourceManager.GetString("TbDomesticDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit 的本地化字符串。
         /// </summary>
         public static string TbEdit {
@@ -2415,6 +2478,15 @@ namespace ServiceLib.Resx {
         public static string TbEnableTunAs {
             get {
                 return ResourceManager.GetString("TbEnableTunAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 FakeIP 的本地化字符串。
+        /// </summary>
+        public static string TbFakeIP {
+            get {
+                return ResourceManager.GetString("TbFakeIP", resourceCulture);
             }
         }
         
@@ -2617,6 +2689,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Prevent DNS Leaks 的本地化字符串。
+        /// </summary>
+        public static string TbPreventDNSLeaks {
+            get {
+                return ResourceManager.GetString("TbPreventDNSLeaks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Private Key 的本地化字符串。
         /// </summary>
         public static string TbPrivateKey {
@@ -2649,6 +2730,15 @@ namespace ServiceLib.Resx {
         public static string TbRemarks {
             get {
                 return ResourceManager.GetString("TbRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remote DNS 的本地化字符串。
+        /// </summary>
+        public static string TbRemoteDNS {
+            get {
+                return ResourceManager.GetString("TbRemoteDNS", resourceCulture);
             }
         }
         
@@ -2757,6 +2847,69 @@ namespace ServiceLib.Resx {
         public static string TbRuleOutboundTagTip {
             get {
                 return ResourceManager.GetString("TbRuleOutboundTagTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbSBDirectResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbSBDirectResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The sing-box DoH resolution server can be overwritten 的本地化字符串。
+        /// </summary>
+        public static string TbSBDoHOverride {
+            get {
+                return ResourceManager.GetString("TbSBDoHOverride", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box DoH Resolver Server 的本地化字符串。
+        /// </summary>
+        public static string TbSBDoHResolverServer {
+            get {
+                return ResourceManager.GetString("TbSBDoHResolverServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fallback DNS Resolution, Suggest IP 的本地化字符串。
+        /// </summary>
+        public static string TbSBFallbackDNSResolve {
+            get {
+                return ResourceManager.GetString("TbSBFallbackDNSResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Resolve Outbound Domains 的本地化字符串。
+        /// </summary>
+        public static string TbSBOutboundDomainResolve {
+            get {
+                return ResourceManager.GetString("TbSBOutboundDomainResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Outbound DNS Resolution (sing-box) 的本地化字符串。
+        /// </summary>
+        public static string TbSBOutboundsResolverDNS {
+            get {
+                return ResourceManager.GetString("TbSBOutboundsResolverDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box Remote Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbSBRemoteResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbSBRemoteResolveStrategy", resourceCulture);
             }
         }
         
@@ -3706,11 +3859,56 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Validate Regional Domain IPs 的本地化字符串。
+        /// </summary>
+        public static string TbValidateDirectExpectedIPs {
+            get {
+                return ResourceManager.GetString("TbValidateDirectExpectedIPs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs 的本地化字符串。
+        /// </summary>
+        public static string TbValidateDirectExpectedIPsDesc {
+            get {
+                return ResourceManager.GetString("TbValidateDirectExpectedIPsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 xray Freedom Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbXrayFreedomResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbXrayFreedomResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The delay: {0} ms, {1} 的本地化字符串。
         /// </summary>
         public static string TestMeOutput {
             get {
                 return ResourceManager.GetString("TestMeOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Advanced DNS Settings 的本地化字符串。
+        /// </summary>
+        public static string ThAdvancedDNSSettings {
+            get {
+                return ResourceManager.GetString("ThAdvancedDNSSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Basic DNS Settings 的本地化字符串。
+        /// </summary>
+        public static string ThBasicDNSSettings {
+            get {
+                return ResourceManager.GetString("ThBasicDNSSettings", resourceCulture);
             }
         }
         
