@@ -1690,6 +1690,22 @@ public class CoreConfigSingboxService
             }
         }
 
+        if (simpleDNSItem.UseSystemHosts == true)
+        {
+            var systemHosts = Utils.GetSystemHosts();
+            if (systemHosts.Count > 0)
+            {
+                foreach (var host in systemHosts)
+                {
+                    if (userHostsMap[host.Key] != null)
+                    {
+                        continue;
+                    }
+                    userHostsMap[host.Key] = new List<string> { host.Value };
+                }
+            }
+        }
+
         foreach (var host in hostsDns.predefined)
         {
             if (finalDns.server == host.Key)

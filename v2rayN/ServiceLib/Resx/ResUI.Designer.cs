@@ -2338,6 +2338,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Prevent domain-based routing rules from failing 的本地化字符串。
+        /// </summary>
+        public static string TbBlockSVCBHTTPSQueriesTips {
+            get {
+                return ResourceManager.GetString("TbBlockSVCBHTTPSQueriesTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Browse 的本地化字符串。
         /// </summary>
         public static string TbBrowse {
@@ -2730,15 +2739,6 @@ namespace ServiceLib.Resx {
         public static string TbPreSocksPort4Sub {
             get {
                 return ResourceManager.GetString("TbPreSocksPort4Sub", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Prevent DNS Leaks 的本地化字符串。
-        /// </summary>
-        public static string TbPreventDNSLeaks {
-            get {
-                return ResourceManager.GetString("TbPreventDNSLeaks", resourceCulture);
             }
         }
         

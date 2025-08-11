@@ -97,7 +97,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBOutboundDomainResolve}" />
+                            Text="{x:Static resx:ResUI.TbSBOutboundDomainResolve}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -117,7 +118,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBFallbackDNSResolve}" />
+                            Text="{x:Static resx:ResUI.TbSBFallbackDNSResolve}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="5"
@@ -178,7 +180,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBDoHOverride}" />
+                            Text="{x:Static resx:ResUI.TbSBDoHOverride}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -228,7 +231,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbApplyProxyDomainsOnly}" />
+                            Text="{x:Static resx:ResUI.TbApplyProxyDomainsOnly}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -247,7 +251,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbPreventDNSLeaks}" />
+                            Text="{x:Static resx:ResUI.TbBlockSVCBHTTPSQueriesTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -267,7 +272,8 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPsDesc}" />
+                            Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPsDesc}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="5"

@@ -1440,9 +1440,6 @@
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
     <value>Block SVCB and HTTPS Queries</value>
   </data>
-  <data name="TbPreventDNSLeaks" xml:space="preserve">
-    <value>Prevent DNS Leaks</value>
-  </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
     <value>DNS Hosts: ("domain1 ip1 ip2" per line)</value>
   </data>
@@ -1466,6 +1463,9 @@
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
     <value>Custom DNS Enabled, This Page's Settings Invalid</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>Prevent domain-based routing rules from failing</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Please fill in the correct config template</value>
