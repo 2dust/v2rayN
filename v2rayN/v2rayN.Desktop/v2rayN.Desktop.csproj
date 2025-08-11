@@ -39,6 +39,9 @@
 		<EmbeddedResource Include="Assets\v2rayN.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<Compile Update="Views\FullConfigTemplateWindow.axaml.cs">
+		  <DependentUpon>FullConfigTemplateWindow.axaml</DependentUpon>
+		</Compile>
 		<None Update="v2rayN.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

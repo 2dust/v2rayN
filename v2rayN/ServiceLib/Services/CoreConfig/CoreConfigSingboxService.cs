@@ -1,6 +1,7 @@
 using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text.Json.Nodes;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -78,7 +79,9 @@ public class CoreConfigSingboxService
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(singboxConfig);
+
+            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -430,7 +433,9 @@ public class CoreConfigSingboxService
             await ConvertGeo2Ruleset(singboxConfig);
 
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(singboxConfig);
+
+            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, singboxConfig);
             return ret;
         }
         catch (Exception ex)
@@ -2195,6 +2200,62 @@ public class CoreConfigSingboxService
         }
 
         return 0;
+    }
+
+    private async Task<string> ApplyFullConfigTemplate(FullConfigTemplateItem fullConfigTemplate, SingboxConfig singboxConfig)
+    {
+        var fullConfigTemplateItem = fullConfigTemplate.Config;
+        if (_config.TunModeItem.EnableTun)
+        {
+            fullConfigTemplateItem = fullConfigTemplate.TunConfig;
+        }
+
+        if (!fullConfigTemplate.Enabled || fullConfigTemplateItem.IsNullOrEmpty())
+        {
+            return JsonUtils.Serialize(singboxConfig);
+        }
+
+        var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
+        if (fullConfigTemplateNode == null)
+        {
+            return JsonUtils.Serialize(singboxConfig);
+        }
+
+        // Process outbounds
+        var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
+        foreach (var outbound in singboxConfig.outbounds)
+        {
+            if (outbound.type.ToLower() is "direct" or "block")
+            {
+                if (fullConfigTemplate.AddProxyOnly == true)
+                {
+                    continue;
+                }
+            }
+            else if (outbound.detour.IsNullOrEmpty() && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()) && !Utils.IsPrivateNetwork(outbound.server ?? string.Empty))
+            {
+                outbound.detour = fullConfigTemplate.ProxyDetour;
+            }
+            customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
+        }
+        fullConfigTemplateNode["outbounds"] = customOutboundsNode;
+
+        // Process endpoints
+        if (singboxConfig.endpoints != null && singboxConfig.endpoints.Count > 0)
+        {
+            var customEndpointsNode = fullConfigTemplateNode["endpoints"] is JsonArray endpoints ? endpoints : new JsonArray();
+            foreach (var endpoint in singboxConfig.endpoints)
+            {
+                if (endpoint.detour.IsNullOrEmpty() && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()))
+                {
+                    endpoint.detour = fullConfigTemplate.ProxyDetour;
+                }
+                customEndpointsNode.Add(JsonUtils.DeepCopy(endpoint));
+            }
+            fullConfigTemplateNode["endpoints"] = customEndpointsNode;
+        }
+
+        return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));
     }
 
     #endregion private gen function

@@ -1,0 +1,198 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.FullConfigTemplateWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuFullConfigTemplate}"
+    Width="900"
+    Height="600"
+    x:DataType="vms:FullConfigTemplateViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                Cursor="Hand"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                Cursor="Hand"
+                IsCancel="True" />
+        </StackPanel>
+
+        <TabControl HorizontalContentAlignment="Stretch">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbRayFullConfigTemplate}">
+                <DockPanel Margin="{StaticResource Margin4}">
+                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto,Auto">
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center">
+                            <HyperlinkButton Classes="WithIcon" Click="linkFullConfigTemplateDoc_Click">
+                                <TextBlock Text="{x:Static resx:ResUI.TbRayFullConfigTemplateDesc}" />
+                            </HyperlinkButton>
+                        </TextBlock>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
+                            <ToggleSwitch
+                                x:Name="rayFullConfigTemplateEnable"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Grid>
+
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
+                            <ToggleSwitch
+                                x:Name="togAddProxyProtocolOutboundOnly4Ray"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
+                            <TextBox
+                                x:Name="txtProxyDetour4Ray"
+                                Width="200"
+                                Margin="{StaticResource Margin4}" />
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <HeaderedContentControl
+                        Margin="{StaticResource Margin4}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Header="xray config template json">
+                        <TextBox
+                            x:Name="rayFullConfigTemplate"
+                            VerticalAlignment="Stretch"
+                            Classes="TextArea"
+                            MinLines="10"
+                            TextWrapping="Wrap" />
+                    </HeaderedContentControl>
+                </DockPanel>
+            </TabItem>
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbSBFullConfigTemplate}">
+                <DockPanel Margin="{StaticResource Margin4}">
+                    <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto,Auto">
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFullConfigTemplateDesc}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center">
+                            <HyperlinkButton Classes="WithIcon" Click="linkFullConfigTemplateDoc_Click">
+                                <TextBlock Text="{x:Static resx:ResUI.TbSBFullConfigTemplateDesc}" />
+                            </HyperlinkButton>
+                        </TextBlock>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
+                            <ToggleSwitch
+                                x:Name="sbFullConfigTemplateEnable"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Grid>
+
+                    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
+                            <ToggleSwitch
+                                x:Name="togAddProxyProtocolOutboundOnly4Singbox"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
+                            <TextBox
+                                x:Name="txtProxyDetour4Singbox"
+                                Width="200"
+                                Margin="{StaticResource Margin4}" />
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="*,10,*">
+
+                        <HeaderedContentControl
+                            Grid.Column="0"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Header="sing-box config template json">
+                            <TextBox
+                                x:Name="sbFullConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                Classes="TextArea"
+                                MinLines="10"
+                                TextWrapping="Wrap" />
+                        </HeaderedContentControl>
+
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                        <HeaderedContentControl
+                            Grid.Column="2"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Header="sing-box tun config template json">
+                            <TextBox
+                                x:Name="sbFullTunConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                Classes="TextArea"
+                                MinLines="10"
+                                TextWrapping="Wrap" />
+                        </HeaderedContentControl>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

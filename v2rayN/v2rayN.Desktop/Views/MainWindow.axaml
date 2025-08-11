@@ -72,6 +72,7 @@
                         <MenuItem x:Name="menuOptionSetting" Header="{x:Static resx:ResUI.menuOptionSetting}" />
                         <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
                         <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
+                        <MenuItem x:Name="menuFullConfigTemplate" Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
                         <MenuItem x:Name="menuGlobalHotkeySetting" Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
                         <Separator />
                         <MenuItem x:Name="menuRebootAsAdmin" Header="{x:Static resx:ResUI.menuRebootAsAdmin}" />

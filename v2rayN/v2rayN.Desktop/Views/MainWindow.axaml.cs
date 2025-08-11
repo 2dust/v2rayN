@@ -100,6 +100,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
@@ -189,6 +190,9 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             case EViewAction.DNSSettingWindow:
                 return await new DNSSettingWindow().ShowDialog<bool>(this);
+
+            case EViewAction.FullConfigTemplateWindow:
+                return await new FullConfigTemplateWindow().ShowDialog<bool>(this);
 
             case EViewAction.RoutingSettingWindow:
                 return await new RoutingSettingWindow().ShowDialog<bool>(this);

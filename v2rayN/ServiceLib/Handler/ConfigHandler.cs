@@ -2238,6 +2238,54 @@ public class ConfigHandler
 
     #endregion Simple DNS
 
+    #region Custom Config
+
+    public static async Task<int> InitBuiltinFullConfigTemplate(Config config)
+    {
+        var items = await AppHandler.Instance.FullConfigTemplateItem();
+        if (items.Count <= 0)
+        {
+            var item = new FullConfigTemplateItem()
+            {
+                Remarks = "V2ray",
+                CoreType = ECoreType.Xray,
+            };
+            await SaveFullConfigTemplate(config, item);
+
+            var item2 = new FullConfigTemplateItem()
+            {
+                Remarks = "sing-box",
+                CoreType = ECoreType.sing_box,
+            };
+            await SaveFullConfigTemplate(config, item2);
+        }
+
+        return 0;
+    }
+    public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
+    {
+        if (item == null)
+        {
+            return -1;
+        }
+
+        if (item.Id.IsNullOrEmpty())
+        {
+            item.Id = Utils.GetGuid(false);
+        }
+
+        if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    #endregion Custom Config
+
     #region Regional Presets
 
     /// <summary>
