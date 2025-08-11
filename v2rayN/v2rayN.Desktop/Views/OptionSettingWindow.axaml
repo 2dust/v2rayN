@@ -729,71 +729,84 @@
                     Margin="{StaticResource Margin4}"
                     ColumnDefinitions="Auto,Auto,Auto"
                     DockPanel.Dock="Top"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="Auto Route" />
+                    <ToggleSwitch
+                        x:Name="togAutoRoute"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="3"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="Strict Route" />
                     <ToggleSwitch
                         x:Name="togStrictRoute"
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
                     <TextBlock
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="Stack" />
                     <ComboBox
                         x:Name="cmbStack"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
                     <TextBlock
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="Mtu" />
                     <ComboBox
                         x:Name="cmbMtu"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbSettingsEnableExInbound}" />
                     <ToggleSwitch
                         x:Name="togEnableExInbound"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
                     <TextBlock
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
                     <ToggleSwitch
                         x:Name="togEnableIPv6Address"
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
