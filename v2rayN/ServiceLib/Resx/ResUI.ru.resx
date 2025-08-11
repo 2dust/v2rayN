@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -1099,13 +1099,13 @@
     <value>Отмена тестирования...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*gRPC Authority</value>
+    <value>* gRPC Authority (HTTP/2 псевдозаголовок :authority)</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>Добавить сервер [HTTP]</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>which conflicts with the group previous proxy</value>
+    <value>что конфликтует с предыдущим прокси группы</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Включить фрагментацию (Fragment)</value>
@@ -1318,13 +1318,13 @@
     <value>Пароль sudo системы</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
+    <value>Пароль sudo будет проверен в терминале. Если из-за ошибки проверки приложение начнёт работать некорректно, перезапустите его. Пароль не сохраняется — его нужно вводить после каждого перезапуска.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*XHTTP-режим</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>Дополнительный XHTTP сырой JSON, формат: { XHTTPObject }</value>
+    <value>Дополнительный „сырой“ JSON для XHTTP, формат: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Скрыть в трее при закрытии окна</value>
@@ -1393,10 +1393,10 @@
     <value>URL для тестирования текущего соединения</value>
   </data>
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
-    <value>Can fill in the configuration remarks, please make sure it exist and are unique</value>
+    <value>Можно указать название (Remarks) из конфигурации, убедитесь, что оно существует и уникально</value>
   </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
-    <value>Incorrect password, please try again.</value>
+    <value>Неверный пароль, попробуйте ещё раз.</value>
   </data>
   <data name="TbMldsa65Verify" xml:space="preserve">
     <value>Mldsa65Verify</value>
@@ -1405,99 +1405,99 @@
     <value>Добавить сервер [Anytls]</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
-    <value>Remote DNS</value>
+    <value>Удалённый DNS</value>
   </data>
   <data name="TbDomesticDNS" xml:space="preserve">
-    <value>Domestic DNS</value>
+    <value>Внутренний DNS</value>
   </data>
   <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
-    <value>Outbound DNS Resolution (sing-box)</value>
+    <value>Резолвер DNS для исходящих (sing-box)</value>
   </data>
   <data name="TbSBOutboundDomainResolve" xml:space="preserve">
-    <value>Resolve Outbound Domains</value>
+    <value>Разрешать домены для исходящих соединений</value>
   </data>
   <data name="TbSBDoHResolverServer" xml:space="preserve">
-    <value>sing-box DoH Resolver Server</value>
+    <value>Сервер DoH-резолвера (sing-box)</value>
   </data>
   <data name="TbSBFallbackDNSResolve" xml:space="preserve">
-    <value>Fallback DNS Resolution, Suggest IP</value>
+    <value>Резервное DNS-разрешение (рекомендуется указывать IP)</value>
   </data>
   <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
-    <value>xray Freedom Resolution Strategy</value>
+    <value>Стратегия резолвинга Freedom (Xray)</value>
   </data>
   <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box Direct Resolution Strategy</value>
+    <value>Стратегия прямого резолвинга (sing-box)</value>
   </data>
   <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box Remote Resolution Strategy</value>
+    <value>Стратегия удалённого резолвинга (sing-box)</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
-    <value>Add Common DNS Hosts</value>
+    <value>Добавить стандартные записи hosts (DNS)</value>
   </data>
   <data name="TbSBDoHOverride" xml:space="preserve">
-    <value>The sing-box DoH resolution server can be overwritten</value>
+    <value>Сервер DoH-резолвера sing-box можно переопределить</value>
   </data>
   <data name="TbFakeIP" xml:space="preserve">
     <value>FakeIP</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
-    <value>Block SVCB and HTTPS Queries</value>
+    <value>Блокировать DNS-запросы SVCB и HTTPS</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS Hosts: ("domain1 ip1 ip2" per line)</value>
+    <value>DNS hosts: (каждая строка в формате "domain1 ip1 ip2")</value>
   </data>
   <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
-    <value>Apply to Proxy Domains Only</value>
+    <value>Применять только к доменам через прокси</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
-    <value>Basic DNS Settings</value>
+    <value>Базовые настройки DNS</value>
   </data>
   <data name="ThAdvancedDNSSettings" xml:space="preserve">
-    <value>Advanced DNS Settings</value>
+    <value>Расширенные настройки DNS</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>Validate Regional Domain IPs</value>
+    <value>Проверять IP-адреса региональных доменов</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs</value>
+    <value>При включении проверяет IP-адреса, возвращаемые для региональных доменов (например, geosite:cn), и оставляет только ожидаемые IP-адреса</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
-    <value>Enable Custom DNS</value>
+    <value>Включить пользовательский DNS</value>
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
-    <value>Custom DNS Enabled, This Page's Settings Invalid</value>
+    <value>Включён пользовательский DNS — настройки на этой странице не применяются</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Prevent domain-based routing rules from failing</value>
+    <value>Предотвращает сбои доменных правил маршрутизации</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
-    <value>Please fill in the correct config template</value>
+    <value>Пожалуйста, заполните корректный шаблон конфигурации</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>Full Config Template Setting</value>
+    <value>Настройка полного шаблона конфигурации</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>Enable Full Config Template</value>
+    <value>Включить полный шаблон конфигурации</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
-    <value>v2ray Full Config Template</value>
+    <value>Полный шаблон конфигурации v2ray</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag, Click to view the document</value>
+    <value>Добавляет только конфигурацию исходящих (outbound), а также routing.balancers и routing.rules.outboundTag. Нажмите, чтобы открыть документ</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>Do Not Add Non-Proxy Protocol Outbound</value>
+    <value>Не добавлять исходящие для непрокси-протоколов</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>Set Upstream Proxy Tag</value>
+    <value>Задать тег верхнего прокси (upstream)</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
-    <value>sing-box Full Config Template</value>
+    <value>Полный шаблон конфигурации sing-box</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound and Endpoint Config Only, Click to view the document</value>
+    <value>Добавляет только конфигурацию Outbound и Endpoint. Нажмите, чтобы открыть документ</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core's basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you.</value>
+    <value>Эта функция предназначена для продвинутых пользователей и особых случаев. После включения игнорируются базовые настройки ядра, DNS и маршрутизации. Вы должны самостоятельно корректно задать порт системного прокси, учёт трафика и другие связанные параметры — всё настраивается вручную.</value>
   </data>
 </root>
