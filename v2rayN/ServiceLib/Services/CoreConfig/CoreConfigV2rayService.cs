@@ -3,7 +3,6 @@ using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using ServiceLib.Models;
 
 namespace ServiceLib.Services.CoreConfig;
 
@@ -69,9 +68,7 @@ public class CoreConfigV2rayService
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-
-            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
-            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, v2rayConfig);
+            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
             return ret;
         }
         catch (Exception ex)
@@ -201,8 +198,7 @@ public class CoreConfigV2rayService
 
             ret.Success = true;
 
-            var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
-            ret.Data = await ApplyFullConfigTemplate(fullConfigTemplate, v2rayConfig, true);
+            ret.Data = await ApplyFullConfigTemplate(v2rayConfig, true);
             return ret;
         }
         catch (Exception ex)
@@ -1844,9 +1840,10 @@ public class CoreConfigV2rayService
         return await Task.FromResult(0);
     }
 
-    private async Task<string> ApplyFullConfigTemplate(FullConfigTemplateItem fullConfigTemplate, V2rayConfig v2rayConfig, bool handleBalancerAndRules = false)
+    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig, bool handleBalancerAndRules = false)
     {
-        if (!fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
+        var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
         {
             return JsonUtils.Serialize(v2rayConfig);
         }
@@ -1918,6 +1915,7 @@ public class CoreConfigV2rayService
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
+        fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));
     }
