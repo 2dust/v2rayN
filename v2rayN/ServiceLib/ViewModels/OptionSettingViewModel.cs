@@ -84,6 +84,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
     #region Tun mode
 
+    [Reactive] public bool TunAutoRoute { get; set; }
     [Reactive] public bool TunStrictRoute { get; set; }
     [Reactive] public string TunStack { get; set; }
     [Reactive] public int TunMtu { get; set; }
@@ -201,6 +202,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
         #region Tun mode
 
+        TunAutoRoute = _config.TunModeItem.AutoRoute;
         TunStrictRoute = _config.TunModeItem.StrictRoute;
         TunStack = _config.TunModeItem.Stack;
         TunMtu = _config.TunModeItem.Mtu;
@@ -354,6 +356,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
 
         //tun mode
+        _config.TunModeItem.AutoRoute = TunAutoRoute;
         _config.TunModeItem.StrictRoute = TunStrictRoute;
         _config.TunModeItem.Stack = TunStack;
         _config.TunModeItem.Mtu = TunMtu;
