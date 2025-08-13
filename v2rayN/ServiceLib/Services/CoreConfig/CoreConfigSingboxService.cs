@@ -1865,8 +1865,7 @@ public class CoreConfigSingboxService
             else if (item.OutboundTag == Global.BlockTag)
             {
                 rule.action = "predefined";
-                rule.rcode = "NOERROR";
-                rule.answer = new List<string> { "A" };
+                rule.rcode = "NXDOMAIN";
             }
             else
             {
