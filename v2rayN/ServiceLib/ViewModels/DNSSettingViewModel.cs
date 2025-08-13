@@ -150,7 +150,7 @@ public class DNSSettingViewModel : MyReactiveObject
         await ConfigHandler.SaveDNSItems(_config, item1);
 
         var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
-        item2.Enabled = RayCustomDNSEnableCompatible;
+        item2.Enabled = SBCustomDNSEnableCompatible;
         item2.DomainStrategy4Freedom = DomainStrategy4Freedom2Compatible;
         item2.DomainDNSAddress = DomainDNSAddress2Compatible;
         item2.NormalDNS = JsonUtils.Serialize(JsonUtils.ParseJson(NormalDNS2Compatible));
