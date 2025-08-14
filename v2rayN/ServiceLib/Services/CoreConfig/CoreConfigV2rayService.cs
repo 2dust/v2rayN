@@ -1263,7 +1263,7 @@ public class CoreConfigV2rayService
                             directDomainList.Add(normalizedDomain);
                         }
                     }
-                    else if (item.OutboundTag == Global.ProxyTag)
+                    else if (item.OutboundTag != Global.BlockTag)
                     {
                         if (normalizedDomain.StartsWith("geosite:"))
                         {
