@@ -2262,6 +2262,7 @@ public class ConfigHandler
 
         return 0;
     }
+
     public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
     {
         if (item == null)

@@ -57,6 +57,9 @@ public class Global
     public const string HttpsProtocol = "https://";
     public const string SocksProtocol = "socks://";
     public const string Socks5Protocol = "socks5://";
+    public const string AsIs = "AsIs";
+    public const string IPIfNonMatch = "IPIfNonMatch";
+    public const string IPOnDemand = "IPOnDemand";
 
     public const string UserEMail = "t@t.tt";
     public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -288,9 +291,9 @@ public class Global
 
     public static readonly List<string> DomainStrategies =
     [
-        "AsIs",
-            "IPIfNonMatch",
-            "IPOnDemand"
+        AsIs,
+        IPIfNonMatch,
+        IPOnDemand
     ];
 
     public static readonly List<string> DomainStrategies4Singbox =

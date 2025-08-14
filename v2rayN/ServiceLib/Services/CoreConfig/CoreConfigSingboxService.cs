@@ -1329,7 +1329,7 @@ public class CoreConfigSingboxService
                 action = "resolve",
                 strategy = domainStrategy
             };
-            if (_config.RoutingBasicItem.DomainStrategy == "IPOnDemand")
+            if (_config.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
             {
                 singboxConfig.route.rules.Add(resolveRule);
             }
@@ -1351,7 +1351,7 @@ public class CoreConfigSingboxService
                     }
                 }
             }
-            if (_config.RoutingBasicItem.DomainStrategy == "IPIfNonMatch")
+            if (_config.RoutingBasicItem.DomainStrategy == Global.IPIfNonMatch)
             {
                 singboxConfig.route.rules.Add(resolveRule);
                 foreach (var item2 in ipRules)

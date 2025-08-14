@@ -177,7 +177,7 @@ public class CoreConfigV2rayService
                     rule.balancerTag = balancer.tag;
                 }
             }
-            if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
+            if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
             {
                 v2rayConfig.routing.rules.Add(new()
                 {
@@ -1145,7 +1145,7 @@ public class CoreConfigV2rayService
             {
                 var result = await GenDnsCompatible(node, v2rayConfig);
 
-                if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
+                if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
                 {
                     // DNS routing
                     v2rayConfig.dns.tag = Global.DnsTag;
@@ -1179,7 +1179,7 @@ public class CoreConfigV2rayService
             await GenDnsServers(node, v2rayConfig, simpleDNSItem);
             await GenDnsHosts(v2rayConfig, simpleDNSItem);
 
-            if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
+            if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
             {
                 // DNS routing
                 v2rayConfig.dns.tag = Global.DnsTag;

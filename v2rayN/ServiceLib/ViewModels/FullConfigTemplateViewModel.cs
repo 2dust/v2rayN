@@ -1,12 +1,13 @@
 using System.Reactive;
-using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace ServiceLib.ViewModels;
+
 public class FullConfigTemplateViewModel : MyReactiveObject
 {
     #region Reactive
+
     [Reactive]
     public bool EnableFullConfigTemplate4Ray { get; set; }
 
@@ -35,6 +36,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
     public string ProxyDetour4Singbox { get; set; }
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+
     #endregion Reactive
 
     public FullConfigTemplateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -48,6 +50,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
 
         _ = Init();
     }
+
     private async Task Init()
     {
         var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
