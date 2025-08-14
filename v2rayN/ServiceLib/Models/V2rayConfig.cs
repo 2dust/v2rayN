@@ -203,8 +203,15 @@ public class Response4Ray
 
 public class Dns4Ray
 {
-    public Dictionary<string, List<string>>? hosts { get; set; }
+    public Dictionary<string, object>? hosts { get; set; }
     public List<object> servers { get; set; }
+    public string? clientIp { get; set; }
+    public string? queryStrategy { get; set; }
+    public bool? disableCache { get; set; }
+    public bool? disableFallback { get; set; }
+    public bool? disableFallbackIfMatch { get; set; }
+    public bool? useSystemHosts { get; set; }
+    public string? tag { get; set; }
 }
 
 public class DnsServer4Ray
@@ -214,6 +221,12 @@ public class DnsServer4Ray
     public bool? skipFallback { get; set; }
     public List<string>? expectedIPs { get; set; }
     public List<string>? unexpectedIPs { get; set; }
+    public string? clientIp { get; set; }
+    public string? queryStrategy { get; set; }
+    public int? timeoutMs { get; set; }
+    public bool? disableCache { get; set; }
+    public bool? finalQuery { get; set; }
+    public string? tag { get; set; }
 }
 
 public class Routing4Ray

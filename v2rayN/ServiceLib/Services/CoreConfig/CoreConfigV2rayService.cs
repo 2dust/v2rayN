@@ -1340,10 +1340,13 @@ public class CoreConfigV2rayService
             return await Task.FromResult(0);
         }
         v2rayConfig.dns ??= new Dns4Ray();
-        v2rayConfig.dns.hosts ??= new Dictionary<string, List<string>>();
+        v2rayConfig.dns.hosts ??= new Dictionary<string, object>();
         if (simpleDNSItem.AddCommonHosts == true)
         {
-            v2rayConfig.dns.hosts = Global.PredefinedHosts;
+            v2rayConfig.dns.hosts = Global.PredefinedHosts.ToDictionary(
+                kvp => kvp.Key,
+                kvp => (object)kvp.Value
+            );
         }
 
         if (simpleDNSItem.UseSystemHosts == true)
