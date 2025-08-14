@@ -1143,7 +1143,21 @@ public class CoreConfigV2rayService
             var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
             if (item != null && item.Enabled == true)
             {
-                return await GenDnsCompatible(node, v2rayConfig);
+                var result = await GenDnsCompatible(node, v2rayConfig);
+
+                if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
+                {
+                    // DNS routing
+                    v2rayConfig.dns.tag = Global.DnsTag;
+                    v2rayConfig.routing.rules.Add(new RulesItem4Ray
+                    {
+                        type = "field",
+                        inboundTag = new List<string> { Global.DnsTag },
+                        outboundTag = Global.ProxyTag,
+                    });
+                }
+
+                return result;
             }
             var simpleDNSItem = _config.SimpleDNSItem;
             var domainStrategy4Freedom = simpleDNSItem?.RayStrategy4Freedom;
@@ -1164,6 +1178,18 @@ public class CoreConfigV2rayService
 
             await GenDnsServers(node, v2rayConfig, simpleDNSItem);
             await GenDnsHosts(v2rayConfig, simpleDNSItem);
+
+            if (v2rayConfig.routing.domainStrategy == "IPIfNonMatch")
+            {
+                // DNS routing
+                v2rayConfig.dns.tag = Global.DnsTag;
+                v2rayConfig.routing.rules.Add(new RulesItem4Ray
+                {
+                    type = "field",
+                    inboundTag = new List<string> { Global.DnsTag },
+                    outboundTag = Global.ProxyTag,
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -1340,10 +1366,13 @@ public class CoreConfigV2rayService
             return await Task.FromResult(0);
         }
         v2rayConfig.dns ??= new Dns4Ray();
-        v2rayConfig.dns.hosts ??= new Dictionary<string, List<string>>();
+        v2rayConfig.dns.hosts ??= new Dictionary<string, object>();
         if (simpleDNSItem.AddCommonHosts == true)
         {
-            v2rayConfig.dns.hosts = Global.PredefinedHosts;
+            v2rayConfig.dns.hosts = Global.PredefinedHosts.ToDictionary(
+                kvp => kvp.Key,
+                kvp => (object)kvp.Value
+            );
         }
 
         if (simpleDNSItem.UseSystemHosts == true)
