@@ -477,7 +477,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        await (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
+        await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler);
     }
 
     #endregion Subscription

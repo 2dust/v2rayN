@@ -63,11 +63,10 @@ public class TaskHandler
         }
 
         Logging.SaveLog("Execute update subscription");
-        var updateHandle = new UpdateService();
 
         foreach (var item in lstSubs)
         {
-            await updateHandle.UpdateSubscriptionProcess(config, item.Id, true, (bool success, string msg) =>
+            await SubscriptionHandler.UpdateProcess(config, item.Id, true, (bool success, string msg) =>
             {
                 updateFunc?.Invoke(success, msg);
                 if (success)
