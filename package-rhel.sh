@@ -1,210 +1,229 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===================== 参数 =====================
-V2RAYN_VER="latest"
-XRAY_VER="latest"
-SING_VER="latest"
-ARCH_AUTO=""            # auto detect
-RID=""                  # linux-x64 / linux-arm64
-FD=0                    # 0=self-contained, 1=framework-dependent
-AUTOSTART=0
+# ===== 配置 & 解析参数 =========================================================
+VERSION_ARG="${1:-}"     # 传 7.13.8 或不传
+WITH_CORE="both"         # 默认：同时捆绑 xray+sing-box（你之前要的默认）
+AUTOSTART=0              # 1=系统级自启（/etc/xdg/autostart）
 
-# 兼容：位置参数传 v2rayN 版本（老用法）
-if [[ "${1:-}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then V2RAYN_VER="$1"; shift || true; fi
+# 如果第一个参数是以 -- 开头，就不当版本号
+if [[ "${VERSION_ARG:-}" == --* ]]; then
+  VERSION_ARG=""
+fi
+# 把第一个非 --* 的参数作为版本号，用过就丢弃
+if [[ -n "${VERSION_ARG:-}" ]]; then shift || true; fi
 
+# 解析剩余可选参数
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --v2rayn) V2RAYN_VER="${2:-latest}"; shift 2;;
-    --xray)   XRAY_VER="${2:-latest}"; shift 2;;
-    --sing|--sing-box) SING_VER="${2:-latest}"; shift 2;;
-    --arch)   ARCH_AUTO="${2:-}"; shift 2;;       # x64 | arm64
-    --framework-dependent|--fd) FD=1; shift;;
-    --autostart) AUTOSTART=1; shift;;
-    *) echo "未知参数: $1"; exit 2;;
+    --with-core)     WITH_CORE="${2:-both}"; shift 2;;
+    --autostart)     AUTOSTART=1; shift;;
+    --xray-ver)      XRAY_VER="${2:-}"; shift 2;;        # 指定 xray 版本（可选）
+    --singbox-ver)   SING_VER="${2:-}"; shift 2;;        # 指定 sing-box 版本（可选）
+    *)
+      if [[ -z "${VERSION_ARG:-}" ]]; then VERSION_ARG="$1"; fi
+      shift;;
   esac
 done
 
-# ===================== 环境准备 =====================
-case "${ARCH_AUTO:-auto}" in
-  x64)   RID="linux-x64"   ;;
-  arm64) RID="linux-arm64" ;;
-  auto|*) 
-    case "$(uname -m)" in
-      x86_64) RID="linux-x64" ;;
-      aarch64) RID="linux-arm64" ;;
-      *) echo "不支持的架构: $(uname -m)"; exit 1;;
-    esac
-    ;;
-esac
-echo "[i] RID = ${RID}"
+# ===== 环境检测 ===============================================================
+arch="$(uname -m)"
+[[ "$arch" == "aarch64" || "$arch" == "x86_64" ]] || { echo "只支持 aarch64 / x86_64"; exit 1; }
 
+# 依赖（打包不要用 root 执行，但这行需要 sudo）
 sudo dnf -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar || sudo dnf -y install dotnet-sdk
 command -v curl >/dev/null
 
+# 根目录=脚本所在
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# 子模块
+# 子模块（容错）
 if [[ -f .gitmodules ]]; then
   git submodule sync --recursive || true
   git submodule update --init --recursive || true
 fi
 
-# ===================== v2rayN 版本确认（标签） =====================
-git fetch --tags -q || true
-if [[ "$V2RAYN_VER" == "latest" ]]; then
-  if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-    V2RAYN_VER="$(git describe --tags --abbrev=0)"
-  else
-    V2RAYN_VER="0.0.0+git"  # 没有 tag 就带 git 尾巴
-  fi
-fi
-V2RAYN_VER="${V2RAYN_VER#v}"
-echo "[i] v2rayN version = ${V2RAYN_VER}"
-
-# ===================== .NET 发布 =====================
+# ===== 定位项目 ================================================================
 PROJECT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 if [[ ! -f "$PROJECT" ]]; then
   PROJECT="$(find . -maxdepth 3 -name 'v2rayN.Desktop.csproj' | head -n1 || true)"
 fi
 [[ -f "$PROJECT" ]] || { echo "找不到 v2rayN.Desktop.csproj"; exit 1; }
 
-dotnet clean "$PROJECT" -c Release >/dev/null
-PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID}/publish"
-rm -rf "$PUBDIR" || true
-
-PUBLISH_ARGS=(
-  -c Release
-  -r "$RID"
-  -p:PublishSingleFile=false
-  -p:IncludeNativeLibrariesForSelfExtract=true
-)
-if (( FD == 0 )); then
-  PUBLISH_ARGS+=( -p:SelfContained=true )
-else
-  PUBLISH_ARGS+=( -p:SelfContained=false )
+# 版本
+VERSION="${VERSION_ARG:-}"
+if [[ -z "$VERSION" ]]; then
+  if git describe --tags --abbrev=0 >/dev/null 2>&1; then
+    VERSION="$(git describe --tags --abbrev=0)"
+  else
+    VERSION="0.0.0+git"
+  fi
 fi
+VERSION="${VERSION#v}"   # 去掉前缀 v
+
+# ===== .NET 发布（非单文件，自包含） ===========================================
+dotnet clean "$PROJECT" -c Release
+rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
 
 dotnet restore "$PROJECT"
-dotnet publish "$PROJECT" "${PUBLISH_ARGS[@]}"
+dotnet publish "$PROJECT" \
+  -c Release -r "$( [[ "$arch" == "aarch64" ]] && echo linux-arm64 || echo linux-x64 )" \
+  -p:PublishSingleFile=false \
+  -p:SelfContained=true \
+  -p:IncludeNativeLibrariesForSelfExtract=true
 
-[[ -d "$PUBDIR" ]] || { echo "发布目录不存在：$PUBDIR"; exit 1; }
+RID_DIR="$( [[ "$arch" == "aarch64" ]] && echo linux-arm64 || echo linux-x64 )"
+PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
+[[ -d "$PUBDIR" ]]
 
-# ===================== GitHub 资产解析（最新/指定版本） =====================
-gh_latest_tag() { # $1=owner/repo
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" \
-    | grep -Eo '"tag_name":\s*"v[^"]+"' | head -n1 | sed -E 's/.*"v([^"]+)".*/\1/'
-}
-
-# 返回匹配到的 asset 下载 URL
-gh_asset_url() { # $1=owner/repo  $2=version(without v or 'latest')  $3=grep-regex
-  local repo="$1" ver="$2" pat="$3" tag url
-  if [[ "$ver" == "latest" ]]; then
-    tag="latest"
-    url="$(curl -fsSL "https://api.github.com/repos/${repo}/releases/latest" \
-      | grep -Eo "https://[^\"]+${pat}" | head -n1 || true)"
-  else
-    tag="v${ver}"
-    url="$(curl -fsSL "https://api.github.com/repos/${repo}/releases/tags/${tag}" \
-      | grep -Eo "https://[^\"]+${pat}" | head -n1 || true)"
-  fi
-  [[ -n "$url" ]] && echo "$url" || return 1
-}
-
-# xray 资产名：
-#   linux-x64  -> Xray-linux-64.zip
-#   linux-arm64-> Xray-linux-arm64-v8a.zip
-case "$RID" in
-  linux-x64)   XRAY_PAT='Xray-linux-64\.zip' ;;
-  linux-arm64) XRAY_PAT='Xray-linux-arm64-v8a\.zip' ;;
-esac
-# sing-box 资产名：
-#   linux-x64  -> sing-box-<ver>-linux-amd64.tar.gz
-#   linux-arm64-> sing-box-<ver>-linux-arm64.tar.gz
-case "$RID" in
-  linux-x64)   SING_PAT='sing-box-[0-9.]+-linux-amd64\.tar\.gz' ;;
-  linux-arm64) SING_PAT='sing-box-[0-9.]+-linux-arm64\.tar\.gz' ;;
-esac
-
-# ===================== 下载核心到 bin/{xray,sing_box} =====================
+# ===== 下载核心（可选） ========================================================
 download_xray() {
-  local outroot="$1" url tmp; tmp="$(mktemp -d)"
-  echo "[+] 解析 xray 版本: ${XRAY_VER}"
-  url="$(gh_asset_url "XTLS/Xray-core" "${XRAY_VER}" "${XRAY_PAT}")" || {
-    echo "[!] 未找到 xray 资产（ver=${XRAY_VER}, rid=${RID})"; rm -rf "$tmp"; return 1; }
+  local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
+  mkdir -p "$outdir"
+  if [[ -z "$ver" ]]; then
+    # 最新版
+    ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
+        | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
+  fi
+  [[ -n "$ver" ]] || { echo "[xray] 未获取到版本"; return 1; }
+
+  if [[ "$arch" == "aarch64" ]]; then
+    url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
+  else
+    url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
+  fi
   echo "[+] 下载 xray: $url"
-  curl -fL "$url" -o "$tmp/xray.zip"
-  unzip -q "$tmp/xray.zip" -d "$tmp"
-  install -Dm0755 "$tmp/xray" "$outroot/bin/xray/xray"
-  rm -rf "$tmp"
+  tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
+  curl -fL "$url" -o "$tmp/$zipname"
+  unzip -q "$tmp/$zipname" -d "$tmp"
+  install -Dm755 "$tmp/xray" "$outdir/xray"
 }
-download_sing() {
-  local outroot="$1" url tmp bin; tmp="$(mktemp -d)"
-  local pat="$SING_PAT"
-  if [[ "$SING_VER" != "latest" ]]; then pat="${pat//[0-9.]+/${SING_VER}}"; fi
-  echo "[+] 解析 sing-box 版本: ${SING_VER}"
-  url="$(gh_asset_url "SagerNet/sing-box" "${SING_VER}" "${pat}")" || {
-    echo "[!] 未找到 sing-box 资产（ver=${SING_VER}, rid=${RID})"; rm -rf "$tmp"; return 1; }
+
+download_singbox() {
+  local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
+  mkdir -p "$outdir"
+  if [[ -z "$ver" ]]; then
+    ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
+        | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
+  fi
+  [[ -n "$ver" ]] || { echo "[sing-box] 未获取到版本"; return 1; }
+
+  if [[ "$arch" == "aarch64" ]]; then
+    url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
+  else
+    url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
+  fi
   echo "[+] 下载 sing-box: $url"
-  curl -fL "$url" -o "$tmp/sing.tar.gz"
-  tar -C "$tmp" -xzf "$tmp/sing.tar.gz"
+  tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
+  curl -fL "$url" -o "$tmp/$tarname"
+  tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
-  [[ -n "$bin" ]] || { echo "[!] sing-box 解包后未找到二进制"; rm -rf "$tmp"; return 1; }
-  install -Dm0755 "$bin" "$outroot/bin/sing_box/sing-box"
-  rm -rf "$tmp"
+  [[ -n "$bin" ]] || { echo "[!] sing-box 解包后未找到可执行"; return 1; }
+  install -Dm755 "$bin" "$outdir/sing-box"
 }
 
-WORKROOT="$(mktemp -d)"
-trap 'rm -rf "$WORKROOT"' EXIT
-PKGROOT="${WORKROOT}/v2rayN-publish"
-mkdir -p "$PKGROOT"
-cp -a "$PUBDIR/." "$PKGROOT/"
+# === Geo 规则下载（新增，仅此处为新增逻辑） ===================================
+download_geo_assets() {
+  local outroot="$1"
+  local xray_dir="$outroot/bin/xray"
+  local sbox_dir="$outroot/bin/sing_box"
+  mkdir -p "$xray_dir" "$sbox_dir/rule-sets"
 
-echo "[+] 捆绑核心到 /opt/v2rayN/bin/{xray,sing_box}/"
-mkdir -p "$PKGROOT/bin/xray" "$PKGROOT/bin/sing_box"
-download_xray "$PKGROOT" || echo "[!] xray 下载失败（继续打包）"
-download_sing "$PKGROOT" || echo "[!] sing-box 下载失败（继续打包）"
+  echo "[+] 下载 Xray Geo（geosite/geoip/...）"
+  curl -fsSL -o "$xray_dir/geosite.dat" \
+    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
+  curl -fsSL -o "$xray_dir/geoip.dat" \
+    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
+  curl -fsSL -o "$xray_dir/geoip-only-cn-private.dat" \
+    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
+  curl -fsSL -o "$xray_dir/Country.mmdb" \
+    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
-# 兼容图标
-ICON="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
-[[ -f "$ICON" ]] && cp "$ICON" "$PKGROOT/v2rayn.png" || true
+  echo "[+] 下载 sing-box 规则 & DB"
+  # 数据库（最新版 meta rules 可选）
+  curl -fsSL -o "$sbox_dir/geoip.metadb" \
+    "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
 
-# 打源码包
+  # 官方 2dust srs rule-sets（常用子集）
+  for f in \
+    geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
+    geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
+    curl -fsSL -o "$sbox_dir/rule-sets/$f" \
+      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
+  done
+
+  for f in \
+    geosite-cn.srs geosite-gfw.srs geosite-greatfire.srs \
+    geosite-geolocation-cn.srs geosite-category-ads-all.srs; do
+    curl -fsSL -o "$sbox_dir/rule-sets/$f" \
+      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
+  done
+}
+
+# ===== 复制发布物到打包工作区 ==================================================
 rpmdev-setuptree
 TOPDIR="${HOME}/rpmbuild"
 SPECDIR="${TOPDIR}/SPECS"
 SOURCEDIR="${TOPDIR}/SOURCES"
-tar -C "$WORKROOT" -czf "${SOURCEDIR}/v2rayN-publish.tar.gz" "v2rayN-publish"
 
-# ===================== SPEC =====================
-SPECFILE="${SPECDIR}/v2rayN.spec"
+PKGROOT="v2rayN-publish"
+WORKDIR="$(mktemp -d)"
+trap 'rm -rf "$WORKDIR"' EXIT
+
+mkdir -p "$WORKDIR/$PKGROOT"
+cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
+
+# 图标（可选）
+ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
+[[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
+
+# bin 目录结构（你之前的要求）
+mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
+
+# 核心
+if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+  download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray 下载失败（略过）"
+fi
+if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+  download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box 下载失败（略过）"
+fi
+
+# Geo / rule-sets（新增）
+download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo 规则下载失败（略过）"
+
+tar -C "$WORKDIR" -czf "$SOURCEDIR/$PKGROOT.tar.gz" "$PKGROOT"
+
+# ===== 生成 SPEC（单引号 heredoc + 占位符） ===================================
+SPECFILE="$SPECDIR/v2rayN.spec"
 cat > "$SPECFILE" <<'SPEC'
 %global debug_package %{nil}
 %undefine _debuginfo_subpackages
 %undefine _debugsource_packages
+# 避免因 .NET 运行时带出的 LTTng 旧 SONAME 造成安装失败
 %global __requires_exclude ^liblttng-ust\.so\..*$
 
 Name:           v2rayN
-Version:        __V2RAYN_VER__
+Version:        __VERSION__
 Release:        1%{?dist}
-Summary:        v2rayN (Avalonia) GUI client
+Summary:        v2rayN (Avalonia) GUI client for Linux (x86_64/aarch64)
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 ExclusiveArch:  aarch64 x86_64
-Source0:        v2rayN-publish.tar.gz
+Source0:        __PKGROOT__.tar.gz
 
+# 运行期依赖（Avalonia/X11/字体/GL）
 Requires:       libX11, libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
 Requires:       fontconfig, freetype, cairo, pango, mesa-libEGL, mesa-libGL
 
 %description
-v2rayN GUI client built with Avalonia (.NET 8).
-Installs files under /opt/v2rayN and a launcher 'v2rayn'.
-Cores are placed at /opt/v2rayN/bin/xray/ and /opt/v2rayN/bin/sing_box/.
-Compatibility symlinks /opt/v2rayN/xray and /opt/v2rayN/sing-box are provided.
+v2rayN GUI client built with Avalonia.
+Installs self-contained publish under /opt/v2rayN and a launcher 'v2rayn'.
+Cores (if bundled): /opt/v2rayN/bin/xray, /opt/v2rayN/bin/sing_box.
+Geo files for Xray are placed at /opt/v2rayN/bin/xray; launcher will symlink them into user's XDG data dir on first run.
 
 %prep
-%setup -q -n v2rayN-publish
+%setup -q -n __PKGROOT__
 
 %build
 # no build
@@ -213,27 +232,40 @@ Compatibility symlinks /opt/v2rayN/xray and /opt/v2rayN/sing-box are provided.
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
-# 兼容软链
-ln -sf bin/xray/xray         %{buildroot}/opt/v2rayN/xray
-ln -sf bin/sing_box/sing-box %{buildroot}/opt/v2rayN/sing-box
-
-# 启动器
+# 启动器（先 ELF，再 DLL 兜底；并为用户补齐 Geo 软链）
 install -dm0755 %{buildroot}%{_bindir}
 cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
 DIR="/opt/v2rayN"
+
+# --- SYMLINK GEO into user's XDG dir (new) ---
+XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+USR_GEO_DIR="$XDG_DATA_HOME/v2rayN/bin"
+SYS_XRAY_DIR="$DIR/bin/xray"
+mkdir -p "$USR_GEO_DIR"
+for f in geosite.dat geoip.dat geoip-only-cn-private.dat Country.mmdb; do
+  if [[ -f "$SYS_XRAY_DIR/$f" && ! -e "$USR_GEO_DIR/$f" ]]; then
+    ln -s "$SYS_XRAY_DIR/$f" "$USR_GEO_DIR/$f" || true
+  fi
+done
+# --- end GEO ---
+
+# 优先原生 ELF（apphost）
 if [[ -x "$DIR/v2rayN" ]]; then exec "$DIR/v2rayN" "$@"; fi
+
+# DLL 兜底（framework-dependent 发布时）
 for dll in v2rayN.Desktop.dll v2rayN.dll; do
   if [[ -f "$DIR/$dll" ]]; then exec /usr/bin/dotnet "$DIR/$dll" "$@"; fi
 done
+
 echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
 chmod 0755 %{buildroot}%{_bindir}/v2rayn
 
-# 桌面文件与图标
+# 桌面文件
 install -dm0755 %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
@@ -245,36 +277,54 @@ Icon=v2rayn
 Terminal=false
 Categories=Network;
 EOF
-if [ -f "%{_builddir}/v2rayN-publish/v2rayn.png" ]; then
+
+# 图标
+if [ -f "%{_builddir}/__PKGROOT__/v2rayn.png" ]; then
   install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
-  install -m0644 %{_builddir}/v2rayN-publish/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
+  install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 fi
 
 %post
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
+/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2&> /dev/null || true
+/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2&> /dev/null || true
 
 %postun
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
+/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2&> /dev/null || true
+/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2&> /dev/null || true
 
 %files
 %{_bindir}/v2rayn
 /opt/v2rayN
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-
-%changelog
-* Fri Aug 15 2025 Pack Script <builder@example.com> - __V2RAYN_VER__-1
-- Auto-detect arch and fetch latest (or specific) xray/sing-box assets via GitHub API
-- Place cores under /opt/v2rayN/bin/{xray,sing_box} with compatibility symlinks
-- Self-contained by default; optional framework-dependent build
 SPEC
 
-sed -i "s/__V2RAYN_VER__/${V2RAYN_VER}/g" "$SPECFILE"
+# 可选：系统级自启（追加块，原逻辑不变）
+if [[ "$AUTOSTART" -eq 1 ]]; then
+cat >> "$SPECFILE" <<'SPEC'
+# 系统级自启入口
+%install
+install -dm0755 %{buildroot}/etc/xdg/autostart
+cat > %{buildroot}/etc/xdg/autostart/v2rayn.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=v2rayN (Autostart)
+Exec=v2rayn
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+EOF
 
-# ===================== 构建 RPM =====================
+%files
+%config(noreplace) /etc/xdg/autostart/v2rayn.desktop
+SPEC
+fi
+
+# 版本/包根名占位符注入
+sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
+sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
+
+# ===== 构建 RPM ================================================================
 rpmbuild -ba "$SPECFILE"
 
 echo "Build done. RPM at:"
-ls -1 "${HOME}/rpmbuild/RPMS/"*/"v2rayN-${V2RAYN_VER}-1"*.rpm
+ls -1 "${TOPDIR}/RPMS/$( [[ "$arch" == "aarch64" ]] && echo aarch64 || echo x86_64 )/v2rayN-${VERSION}-1"*.rpm
