@@ -825,9 +825,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Beállítás aktív szabályként (Enter)</value>
   </data>
-  <data name="TbdomainMatcher" xml:space="preserve">
-    <value>Tartomány illesztő</value>
-  </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Tartomány stratégia</value>
   </data>

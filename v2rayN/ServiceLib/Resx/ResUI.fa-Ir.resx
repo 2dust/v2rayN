@@ -825,9 +825,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>تنظیم کردن به عنوان قانون فعال</value>
   </data>
-  <data name="TbdomainMatcher" xml:space="preserve">
-    <value>تطبیق دامنه</value>
-  </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>استراتژی دامنه</value>
   </data>

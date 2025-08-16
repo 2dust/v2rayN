@@ -523,7 +523,6 @@ public class CoreConfigV2rayService
             if (v2rayConfig.routing?.rules != null)
             {
                 v2rayConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
-                v2rayConfig.routing.domainMatcher = _config.RoutingBasicItem.DomainMatcher.IsNullOrEmpty() ? null : _config.RoutingBasicItem.DomainMatcher;
 
                 var routing = await ConfigHandler.GetDefaultRouting(_config);
                 if (routing != null)

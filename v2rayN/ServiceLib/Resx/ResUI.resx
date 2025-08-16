@@ -825,9 +825,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Set as active rule (Enter)</value>
   </data>
-  <data name="TbdomainMatcher" xml:space="preserve">
-    <value>Domain Matcher</value>
-  </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain strategy</value>
   </data>

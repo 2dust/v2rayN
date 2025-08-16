@@ -21,9 +21,6 @@ public class RoutingSettingViewModel : MyReactiveObject
     public string DomainStrategy { get; set; }
 
     [Reactive]
-    public string DomainMatcher { get; set; }
-
-    [Reactive]
     public string DomainStrategy4Singbox { get; set; }
 
     public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
@@ -75,7 +72,6 @@ public class RoutingSettingViewModel : MyReactiveObject
         SelectedSource = new();
 
         DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
-        DomainMatcher = _config.RoutingBasicItem.DomainMatcher;
         DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
         await ConfigHandler.InitBuiltinRouting(_config);
@@ -109,7 +105,6 @@ public class RoutingSettingViewModel : MyReactiveObject
     private async Task SaveRoutingAsync()
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
-        _config.RoutingBasicItem.DomainMatcher = DomainMatcher;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
