@@ -220,14 +220,7 @@ public class BaseFmt
 
     protected static bool Contains(string str, params string[] s)
     {
-        foreach (var item in s)
-        {
-            if (str.Contains(item, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-        return false;
+        return s.All(item => str.Contains(item, StringComparison.OrdinalIgnoreCase));
     }
 
     protected static string WriteAllText(string strData, string ext = "json")

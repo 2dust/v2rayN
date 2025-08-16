@@ -1412,6 +1412,11 @@ public class ConfigHandler
         {
             profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
         }
+        //Is Html Page
+        if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
+        {
+            return -1;
+        }
         //Is Clash configuration
         if (profileItem is null)
         {
