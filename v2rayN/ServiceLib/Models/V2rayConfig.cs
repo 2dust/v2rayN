@@ -233,8 +233,6 @@ public class Routing4Ray
 {
     public string domainStrategy { get; set; }
 
-    public string? domainMatcher { get; set; }
-
     public List<RulesItem4Ray> rules { get; set; }
 
     public List<BalancersItem4Ray>? balancers { get; set; }

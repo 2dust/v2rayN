@@ -27,7 +27,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainMatcher.ItemsSource = Global.DomainMatchers;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
@@ -36,7 +35,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource, v => v.lstRoutings.SelectedItem).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.DomainStrategy, v => v.cmbdomainStrategy.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainMatcher, v => v.cmbdomainMatcher.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedAddCmd, v => v.menuRoutingAdvancedAdd).DisposeWith(disposables);

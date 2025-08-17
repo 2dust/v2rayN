@@ -825,9 +825,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>設為活動規則 (Enter)</value>
   </data>
-  <data name="TbdomainMatcher" xml:space="preserve">
-    <value>域名匹配演算法</value>
-  </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
   </data>

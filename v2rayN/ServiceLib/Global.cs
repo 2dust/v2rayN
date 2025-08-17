@@ -305,13 +305,6 @@ public class Global
             ""
     ];
 
-    public static readonly List<string> DomainMatchers =
-    [
-        "linear",
-            "mph",
-            ""
-    ];
-
     public static readonly List<string> Fingerprints =
     [
         "chrome",

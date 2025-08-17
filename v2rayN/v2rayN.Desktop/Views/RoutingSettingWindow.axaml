@@ -50,7 +50,7 @@
             Margin="{StaticResource Margin4}"
             ColumnDefinitions="Auto,Auto"
             DockPanel.Dock="Top"
-            RowDefinitions="Auto,Auto,Auto">
+            RowDefinitions="Auto,Auto">
 
             <TextBlock
                 Grid.Row="0"
@@ -74,19 +74,6 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbdomainMatcher}" />
-            <ComboBox
-                x:Name="cmbdomainMatcher"
-                Grid.Row="1"
-                Grid.Column="1"
-                Width="300"
-                Margin="{StaticResource Margin4}" />
-
-            <TextBlock
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center">
                 <HyperlinkButton Classes="WithIcon" Click="linkdomainStrategy4Singbox_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
@@ -94,7 +81,7 @@
             </TextBlock>
             <ComboBox
                 x:Name="cmbdomainStrategy4Singbox"
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"

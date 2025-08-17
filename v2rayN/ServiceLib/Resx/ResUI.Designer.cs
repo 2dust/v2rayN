@@ -2464,15 +2464,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Domain Matcher 的本地化字符串。
-        /// </summary>
-        public static string TbdomainMatcher {
-            get {
-                return ResourceManager.GetString("TbdomainMatcher", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Domain strategy 的本地化字符串。
         /// </summary>
         public static string TbdomainStrategy {
