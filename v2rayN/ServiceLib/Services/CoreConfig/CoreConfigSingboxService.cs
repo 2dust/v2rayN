@@ -1658,6 +1658,7 @@ public class CoreConfigSingboxService
         {
             tag = Global.SingboxHostsDNSTag,
             type = "hosts",
+            predefined = new(),
         };
         if (simpleDNSItem.AddCommonHosts == true)
         {
