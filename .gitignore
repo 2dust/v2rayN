@@ -397,4 +397,8 @@ FodyWeavers.xsd
 *.msp
 
 # JetBrains Rider
-*.sln.iml
+*.sln.iml.idea/
+main.py
+pyproject.toml
+uv.lock
+.python-version
