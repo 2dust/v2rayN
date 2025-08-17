@@ -963,7 +963,7 @@ public class ConfigHandler
         {
             return -1;
         }
-        if (profileItem.Security.IsNotEmpty() && profileItem.Security != Global.None)
+        if (profileItem.Security.IsNullOrEmpty())
         {
             profileItem.Security = Global.None;
         }
