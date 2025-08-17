@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
@@ -201,5 +203,36 @@ public class HttpClientHelper
                 }
             }
         } while (isMoreToRead);
+    }
+
+    public async Task<int> GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout)
+    {
+        var responseTime = -1;
+        try
+        {
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(downloadTimeout));
+            using var client = new HttpClient(new SocketsHttpHandler()
+            {
+                Proxy = webProxy,
+                UseProxy = webProxy != null
+            });
+
+            List<int> oneTime = new();
+            for (var i = 0; i < 2; i++)
+            {
+                var timer = Stopwatch.StartNew();
+                await client.GetAsync(url, cts.Token).ConfigureAwait(false);
+                timer.Stop();
+                oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
+                await Task.Delay(100);
+            }
+            responseTime = oneTime.Where(x => x > 0).OrderBy(x => x).FirstOrDefault();
+        }
+        catch //(Exception ex)
+        {
+            //Utile.SaveLog(ex.Message, ex);
+        }
+        return responseTime;
     }
 }

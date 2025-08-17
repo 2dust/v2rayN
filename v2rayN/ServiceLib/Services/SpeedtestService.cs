@@ -198,8 +198,6 @@ public class SpeedtestService
             }
             await Task.Delay(1000);
 
-            var downloadHandle = new DownloadService();
-
             List<Task> tasks = new();
             foreach (var it in selecteds)
             {
@@ -213,7 +211,7 @@ public class SpeedtestService
                 }
                 tasks.Add(Task.Run(async () =>
                 {
-                    await DoRealPing(downloadHandle, it);
+                    await DoRealPing(it);
                 }));
             }
             await Task.WhenAll(tasks);
@@ -263,7 +261,7 @@ public class SpeedtestService
                     else
                     {
                         await Task.Delay(1000);
-                        var delay = await DoRealPing(downloadHandle, it);
+                        var delay = await DoRealPing(it);
                         if (blSpeedTest)
                         {
                             if (delay > 0)
@@ -294,10 +292,10 @@ public class SpeedtestService
         await Task.WhenAll(tasks);
     }
 
-    private async Task<int> DoRealPing(DownloadService downloadHandle, ServerTestItem it)
+    private async Task<int> DoRealPing(ServerTestItem it)
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await downloadHandle.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
+        var responseTime = await HttpClientHelper.Instance.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         UpdateFunc(it.IndexId, responseTime.ToString());
