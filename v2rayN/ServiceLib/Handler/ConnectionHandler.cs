@@ -13,7 +13,7 @@ public static class ConnectionHandler
 
     private static async Task<string?> GetIPInfo(DownloadService downloadHandle)
     {
-        var url = AppHandler.Instance.Config.SpeedTestItem.IPAPIUrl;
+        var url = AppManager.Instance.Config.SpeedTestItem.IPAPIUrl;
         if (url.IsNullOrEmpty())
         {
             return null;

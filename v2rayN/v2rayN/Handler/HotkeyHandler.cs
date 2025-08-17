@@ -30,7 +30,7 @@ public sealed class HotkeyHandler
     private void Init()
     {
         _hotkeyTriggerDic.Clear();
-        foreach (var item in AppHandler.Instance.Config.GlobalHotkeys)
+        foreach (var item in AppManager.Instance.Config.GlobalHotkeys)
         {
             if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
             {

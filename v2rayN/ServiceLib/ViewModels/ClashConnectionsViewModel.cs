@@ -26,7 +26,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
 
     public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
         AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
 
@@ -58,7 +58,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
 
     private async Task GetClashConnections()
     {
-        var ret = await ClashApiHandler.Instance.GetClashConnectionsAsync();
+        var ret = await ClashApiManager.Instance.GetClashConnectionsAsync();
         if (ret == null)
         {
             return;
@@ -118,7 +118,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
         {
             _connectionItems.Clear();
         }
-        await ClashApiHandler.Instance.ClashConnectionClose(id);
+        await ClashApiManager.Instance.ClashConnectionClose(id);
         await GetClashConnections();
     }
 

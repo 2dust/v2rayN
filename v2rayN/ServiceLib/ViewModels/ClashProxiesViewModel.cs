@@ -43,7 +43,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -152,13 +152,13 @@ public class ClashProxiesViewModel : MyReactiveObject
                 {
                     { "mode", mode.ToString().ToLower() }
                 };
-            await ClashApiHandler.Instance.ClashConfigUpdate(headers);
+            await ClashApiManager.Instance.ClashConfigUpdate(headers);
         }
     }
 
     private async Task GetClashProxies(bool refreshUI)
     {
-        var ret = await ClashApiHandler.Instance.GetClashProxiesAsync();
+        var ret = await ClashApiManager.Instance.GetClashProxiesAsync();
         if (ret?.Item1 == null || ret.Item2 == null)
         {
             return;
@@ -182,7 +182,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         var selectedName = SelectedGroup?.Name;
         _proxyGroups.Clear();
 
-        var proxyGroups = ClashApiHandler.Instance.GetClashProxyGroups();
+        var proxyGroups = ClashApiManager.Instance.GetClashProxyGroups();
         if (proxyGroups != null && proxyGroups.Count > 0)
         {
             foreach (var it in proxyGroups)
@@ -352,11 +352,11 @@ public class ClashProxiesViewModel : MyReactiveObject
         var selectedProxy = TryGetProxy(name);
         if (selectedProxy == null || selectedProxy.type != "Selector")
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
         }
 
-        await ClashApiHandler.Instance.ClashSetActiveProxy(name, nameNode);
+        await ClashApiManager.Instance.ClashSetActiveProxy(name, nameNode);
 
         selectedProxy.now = nameNode;
         var group = _proxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
@@ -368,12 +368,12 @@ public class ClashProxiesViewModel : MyReactiveObject
 
             SelectedGroup = group2;
         }
-        NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+        NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
     }
 
     private async Task ProxiesDelayTest(bool blAll = true)
     {
-        ClashApiHandler.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), (item, result) =>
+        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), (item, result) =>
         {
             if (item == null || result.IsNullOrEmpty())
             {

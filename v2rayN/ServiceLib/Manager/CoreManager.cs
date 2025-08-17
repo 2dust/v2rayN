@@ -6,10 +6,10 @@ namespace ServiceLib.Manager;
 /// <summary>
 /// Core process processing class
 /// </summary>
-public class CoreHandler
+public class CoreManager
 {
-    private static readonly Lazy<CoreHandler> _instance = new(() => new());
-    public static CoreHandler Instance => _instance.Value;
+    private static readonly Lazy<CoreManager> _instance = new(() => new());
+    public static CoreManager Instance => _instance.Value;
     private Config _config;
     private Process? _process;
     private Process? _processPre;
@@ -39,7 +39,7 @@ public class CoreHandler
 
         if (Utils.IsNonWindows())
         {
-            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
             foreach (var it in coreInfo)
             {
                 if (it.CoreType == ECoreType.v2rayN)
@@ -114,7 +114,7 @@ public class CoreHandler
         UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
         UpdateFunc(false, configPath);
 
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
         var proc = await RunProcess(coreInfo, fileName, true, false);
         if (proc is null)
         {
@@ -126,7 +126,7 @@ public class CoreHandler
 
     public async Task<int> LoadCoreConfigSpeedtest(ServerTestItem testItem)
     {
-        var node = await AppHandler.Instance.GetProfileItem(testItem.IndexId);
+        var node = await AppManager.Instance.GetProfileItem(testItem.IndexId);
         if (node is null)
         {
             return -1;
@@ -140,8 +140,8 @@ public class CoreHandler
             return -1;
         }
 
-        var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
+        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
         var proc = await RunProcess(coreInfo, fileName, true, false);
         if (proc is null)
         {
@@ -157,7 +157,7 @@ public class CoreHandler
         {
             if (_linuxSudo)
             {
-                await CoreAdminHandler.Instance.KillProcessAsLinuxSudo();
+                await CoreAdminManager.Instance.KillProcessAsLinuxSudo();
                 _linuxSudo = false;
             }
 
@@ -183,8 +183,8 @@ public class CoreHandler
 
     private async Task CoreStart(ProfileItem node)
     {
-        var coreType = _config.RunningCoreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(coreType);
+        var coreType = _config.RunningCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
         var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true);
@@ -199,7 +199,7 @@ public class CoreHandler
     {
         if (_process != null && !_process.HasExited)
         {
-            var coreType = AppHandler.Instance.GetCoreType(node, node.ConfigType);
+            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
             var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
             if (itemSocks != null)
             {
@@ -208,7 +208,7 @@ public class CoreHandler
                 var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
                 if (result.Success)
                 {
-                    var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(preCoreType);
+                    var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
                     var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
                     if (proc is null)
                     {
@@ -231,7 +231,7 @@ public class CoreHandler
 
     private async Task<Process?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
     {
-        var fileName = CoreInfoHandler.Instance.GetCoreExecFile(coreInfo, out var msg);
+        var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
         {
             UpdateFunc(false, msg);
@@ -246,8 +246,8 @@ public class CoreHandler
                 && Utils.IsNonWindows())
             {
                 _linuxSudo = true;
-                await CoreAdminHandler.Instance.Init(_config, _updateFunc);
-                return await CoreAdminHandler.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
+                await CoreAdminManager.Instance.Init(_config, _updateFunc);
+                return await CoreAdminManager.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
             }
 
             return await RunProcessNormal(fileName, coreInfo, configPath, displayLog);
@@ -299,7 +299,7 @@ public class CoreHandler
         }
 
         await Task.Delay(100);
-        AppHandler.Instance.AddProcess(proc.Handle);
+        AppManager.Instance.AddProcess(proc.Handle);
         if (proc is null or { HasExited: true })
         {
             throw new Exception(ResUI.FailedToRunCore);

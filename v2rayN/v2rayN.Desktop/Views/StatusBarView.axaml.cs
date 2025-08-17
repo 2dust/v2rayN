@@ -20,7 +20,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         //ViewModel = new StatusBarViewModel(UpdateViewHandler);
         //Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
         ViewModel = Locator.Current.GetService<StatusBarViewModel>();
@@ -113,7 +113,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             return false;
         }
 
-        AppHandler.Instance.LinuxSudoPwd = password;
+        AppManager.Instance.LinuxSudoPwd = password;
         return true;
     }
 

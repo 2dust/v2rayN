@@ -29,7 +29,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         this.KeyDown += MainWindow_KeyDown;
@@ -352,7 +352,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         //ShowHideWindow(false);
 
-        NoticeHandler.Instance.SendMessageAndEnqueue("Not yet implemented.(还未实现)");
+        NoticeManager.Instance.SendMessageAndEnqueue("Not yet implemented.(还未实现)");
         await Task.CompletedTask;
         //if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         //{
@@ -478,7 +478,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void AddHelpMenuItem()
     {
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
             .Where(t => t.CoreType != ECoreType.v2fly
                         && t.CoreType != ECoreType.hysteria))

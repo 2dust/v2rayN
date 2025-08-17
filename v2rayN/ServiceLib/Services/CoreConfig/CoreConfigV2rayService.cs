@@ -130,7 +130,7 @@ public class CoreConfigV2rayService
                 {
                     continue;
                 }
-                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
                 if (item is null)
                 {
                     continue;
@@ -254,7 +254,7 @@ public class CoreConfigV2rayService
             v2rayConfig.outbounds.Clear();
             v2rayConfig.routing.rules.Clear();
 
-            var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+            var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
             foreach (var it in selecteds)
             {
@@ -266,7 +266,7 @@ public class CoreConfigV2rayService
                 {
                     continue;
                 }
-                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
                 if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                 {
                     if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
@@ -638,7 +638,7 @@ public class CoreConfigV2rayService
             return outboundTag;
         }
 
-        var node = await AppHandler.Instance.GetProfileItemViaRemarks(outboundTag);
+        var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
         if (node == null
             || node.ConfigType == EConfigType.Custom
             || node.ConfigType == EConfigType.Hysteria2
@@ -722,7 +722,7 @@ public class CoreConfigV2rayService
                         serversItem.address = node.Address;
                         serversItem.port = node.Port;
                         serversItem.password = node.Id;
-                        serversItem.method = AppHandler.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : "none";
+                        serversItem.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : "none";
 
                         serversItem.ota = false;
                         serversItem.level = 1;
@@ -1139,7 +1139,7 @@ public class CoreConfigV2rayService
     {
         try
         {
-            var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+            var item = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
             if (item != null && item.Enabled == true)
             {
                 var result = await GenDnsCompatible(node, v2rayConfig);
@@ -1310,12 +1310,12 @@ public class CoreConfigV2rayService
 
         if (node?.Subid is not null)
         {
-            var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
             if (subItem is not null)
             {
                 foreach (var profile in new[] { subItem.PrevProfile, subItem.NextProfile })
                 {
-                    var profileNode = await AppHandler.Instance.GetProfileItemViaRemarks(profile);
+                    var profileNode = await AppManager.Instance.GetProfileItemViaRemarks(profile);
                     if (profileNode is not null &&
                         profileNode.ConfigType is not (EConfigType.Custom or EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls) &&
                         Utils.IsDomain(profileNode.Address))
@@ -1426,7 +1426,7 @@ public class CoreConfigV2rayService
     {
         try
         {
-            var item = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+            var item = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
             var normalDNS = item?.NormalDNS;
             var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
             if (normalDNS.IsNullOrEmpty())
@@ -1514,11 +1514,11 @@ public class CoreConfigV2rayService
             {
                 domainList.Add(node.Address);
             }
-            var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
             if (subItem is not null)
             {
                 // Previous proxy
-                var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                 if (prevNode is not null
                     && prevNode.ConfigType != EConfigType.Custom
                     && prevNode.ConfigType != EConfigType.Hysteria2
@@ -1529,7 +1529,7 @@ public class CoreConfigV2rayService
                 }
 
                 // Next proxy
-                var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+                var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
                 if (nextNode is not null
                     && nextNode.ConfigType != EConfigType.Custom
                     && nextNode.ConfigType != EConfigType.Hysteria2
@@ -1578,7 +1578,7 @@ public class CoreConfigV2rayService
                 Inboundsettings4Ray apiInboundSettings = new();
                 apiInbound.tag = tag;
                 apiInbound.listen = Global.Loopback;
-                apiInbound.port = AppHandler.Instance.StatePort;
+                apiInbound.port = AppManager.Instance.StatePort;
                 apiInbound.protocol = Global.InboundAPIProtocol;
                 apiInboundSettings.address = Global.Loopback;
                 apiInbound.settings = apiInboundSettings;
@@ -1635,7 +1635,7 @@ public class CoreConfigV2rayService
         }
         try
         {
-            var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
             if (subItem is null)
             {
                 return 0;
@@ -1646,7 +1646,7 @@ public class CoreConfigV2rayService
             var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
 
             //Previous proxy
-            var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom
@@ -1709,7 +1709,7 @@ public class CoreConfigV2rayService
                     nextOutbound = JsonUtils.DeepCopy(nextOutbound);
                 }
 
-                var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+                var subItem = await AppManager.Instance.GetSubItem(node.Subid);
 
                 // current proxy
                 await GenOutbound(node, currentOutbound);
@@ -1723,7 +1723,7 @@ public class CoreConfigV2rayService
                     }
                     else
                     {
-                        var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
                             && prevNode.ConfigType != EConfigType.Custom
                             && prevNode.ConfigType != EConfigType.Hysteria2
@@ -1793,7 +1793,7 @@ public class CoreConfigV2rayService
             }
 
             // Next proxy
-            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
                 && nextNode.ConfigType != EConfigType.Custom
                 && nextNode.ConfigType != EConfigType.Hysteria2
@@ -1829,7 +1829,7 @@ public class CoreConfigV2rayService
             var observatory = new Observatory4Ray
             {
                 subjectSelector = [Global.ProxyTag],
-                probeUrl = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                probeUrl = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
                 probeInterval = "3m",
                 enableConcurrency = true,
             };
@@ -1842,7 +1842,7 @@ public class CoreConfigV2rayService
                 subjectSelector = [Global.ProxyTag],
                 pingConfig = new()
                 {
-                    destination = AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                    destination = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
                     interval = "5m",
                     timeout = "30s",
                     sampling = 2,
@@ -1870,7 +1870,7 @@ public class CoreConfigV2rayService
 
     private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig, bool handleBalancerAndRules = false)
     {
-        var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
         if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
         {
             return JsonUtils.Serialize(v2rayConfig);

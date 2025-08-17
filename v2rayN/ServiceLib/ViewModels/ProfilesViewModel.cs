@@ -100,7 +100,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public ProfilesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         #region WhenAnyValue && ReactiveCommand
@@ -284,8 +284,8 @@ public class ProfilesViewModel : MyReactiveObject
     {
         if (result.IndexId.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.SendMessageEx(result.Delay);
-            NoticeHandler.Instance.Enqueue(result.Delay);
+            NoticeManager.Instance.SendMessageEx(result.Delay);
+            NoticeManager.Instance.Enqueue(result.Delay);
             return;
         }
         var item = _profileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
@@ -403,7 +403,7 @@ public class ProfilesViewModel : MyReactiveObject
 
         _subItems.Add(new SubItem { Remarks = ResUI.AllGroupServers });
 
-        foreach (var item in await AppHandler.Instance.SubItems())
+        foreach (var item in await AppManager.Instance.SubItems())
         {
             _subItems.Add(item);
         }
@@ -419,12 +419,12 @@ public class ProfilesViewModel : MyReactiveObject
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
-        var lstModel = await AppHandler.Instance.ProfileItems(_config.SubIndexId, filter);
+        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, filter);
 
         await ConfigHandler.SetDefaultServer(_config, lstModel);
 
-        var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
-        var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
+        var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         lstModel = (from t in lstModel
                     join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
                     from t22 in t2b.DefaultIfEmpty()
@@ -474,7 +474,7 @@ public class ProfilesViewModel : MyReactiveObject
         {
             foreach (var profile in orderProfiles)
             {
-                var item = await AppHandler.Instance.GetProfileItem(profile.IndexId);
+                var item = await AppManager.Instance.GetProfileItem(profile.IndexId);
                 if (item is not null)
                 {
                     lstSelected.Add(item);
@@ -495,10 +495,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(SelectedProfile.IndexId);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
         eConfigType = item.ConfigType;
@@ -536,7 +536,7 @@ public class ProfilesViewModel : MyReactiveObject
         var exists = lstSelected.Exists(t => t.IndexId == _config.IndexId);
 
         await ConfigHandler.RemoveServers(_config, lstSelected);
-        NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+        NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         if (lstSelected.Count == _profileItems.Count)
         {
             _profileItems.Clear();
@@ -556,7 +556,7 @@ public class ProfilesViewModel : MyReactiveObject
             RefreshServers();
             Reload();
         }
-        NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
+        NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
     }
 
     private async Task CopyServer()
@@ -569,7 +569,7 @@ public class ProfilesViewModel : MyReactiveObject
         if (await ConfigHandler.CopyServer(_config, lstSelected) == 0)
         {
             RefreshServers();
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         }
     }
 
@@ -592,10 +592,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        var item = await AppHandler.Instance.GetProfileItem(indexId);
+        var item = await AppManager.Instance.GetProfileItem(indexId);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
 
@@ -621,10 +621,10 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task ShareServerAsync()
     {
-        var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(SelectedProfile.IndexId);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
         var url = FmtHandler.GetShareUri(item);
@@ -647,7 +647,7 @@ public class ProfilesViewModel : MyReactiveObject
         var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType, multipleLoad);
         if (ret.Success != true)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
         }
         if (ret?.Data?.ToString() == _config.IndexId)
@@ -682,7 +682,7 @@ public class ProfilesViewModel : MyReactiveObject
     {
         var count = await ConfigHandler.RemoveInvalidServerResult(_config, _config.SubIndexId);
         RefreshServers();
-        NoticeHandler.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
+        NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
     }
 
     //move server
@@ -700,7 +700,7 @@ public class ProfilesViewModel : MyReactiveObject
         }
 
         await ConfigHandler.MoveToGroup(_config, lstSelected, SelectedMoveToGroup.Id);
-        NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+        NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
 
         RefreshServers();
         SelectedMoveToGroup = null;
@@ -712,7 +712,7 @@ public class ProfilesViewModel : MyReactiveObject
         var item = _lstProfile.FirstOrDefault(t => t.IndexId == SelectedProfile.IndexId);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
 
@@ -762,10 +762,10 @@ public class ProfilesViewModel : MyReactiveObject
 
     private async Task Export2ClientConfigAsync(bool blClipboard)
     {
-        var item = await AppHandler.Instance.GetProfileItem(SelectedProfile.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(SelectedProfile.IndexId);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectServer);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
         if (blClipboard)
@@ -773,12 +773,12 @@ public class ProfilesViewModel : MyReactiveObject
             var result = await CoreConfigHandler.GenerateClientConfig(item, null);
             if (result.Success != true)
             {
-                NoticeHandler.Instance.Enqueue(result.Msg);
+                NoticeManager.Instance.Enqueue(result.Msg);
             }
             else
             {
                 await _updateView?.Invoke(EViewAction.SetClipboardData, result.Data);
-                NoticeHandler.Instance.SendMessage(ResUI.OperationSuccess);
+                NoticeManager.Instance.SendMessage(ResUI.OperationSuccess);
             }
         }
         else
@@ -796,11 +796,11 @@ public class ProfilesViewModel : MyReactiveObject
         var result = await CoreConfigHandler.GenerateClientConfig(item, fileName);
         if (result.Success != true)
         {
-            NoticeHandler.Instance.Enqueue(result.Msg);
+            NoticeManager.Instance.Enqueue(result.Msg);
         }
         else
         {
-            NoticeHandler.Instance.SendMessageAndEnqueue(string.Format(ResUI.SaveClientConfigurationIn, fileName));
+            NoticeManager.Instance.SendMessageAndEnqueue(string.Format(ResUI.SaveClientConfigurationIn, fileName));
         }
     }
 
@@ -833,7 +833,7 @@ public class ProfilesViewModel : MyReactiveObject
             {
                 await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
             }
-            NoticeHandler.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
+            NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
         }
     }
 
@@ -850,7 +850,7 @@ public class ProfilesViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppHandler.Instance.GetSubItem(_config.SubIndexId);
+            item = await AppManager.Instance.GetSubItem(_config.SubIndexId);
             if (item is null)
             {
                 return;

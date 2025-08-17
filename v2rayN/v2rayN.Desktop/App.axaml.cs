@@ -26,7 +26,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AppHandler.Instance.InitComponents();
+            AppManager.Instance.InitComponents();
 
             desktop.Exit += OnExit;
             desktop.MainWindow = new MainWindow();

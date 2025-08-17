@@ -35,7 +35,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
@@ -84,7 +84,7 @@ public class RoutingSettingViewModel : MyReactiveObject
     {
         _routingItems.Clear();
 
-        var routings = await AppHandler.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
         {
             var it = new RoutingItemModel()
@@ -109,12 +109,12 @@ public class RoutingSettingViewModel : MyReactiveObject
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 
@@ -129,7 +129,7 @@ public class RoutingSettingViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+            item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
             if (item is null)
             {
                 return;
@@ -146,7 +146,7 @@ public class RoutingSettingViewModel : MyReactiveObject
     {
         if (SelectedSource is null || SelectedSource.Remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
         if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
@@ -155,7 +155,7 @@ public class RoutingSettingViewModel : MyReactiveObject
         }
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            var item = await AppHandler.Instance.GetRoutingItem(it?.Id);
+            var item = await AppManager.Instance.GetRoutingItem(it?.Id);
             if (item != null)
             {
                 await ConfigHandler.RemoveRoutingItem(item);
@@ -168,10 +168,10 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RoutingAdvancedSetDefault()
     {
-        var item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+        var item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
 

@@ -2,10 +2,10 @@ using ReactiveUI;
 
 namespace ServiceLib.Manager;
 
-public class NoticeHandler
+public class NoticeManager
 {
-    private static readonly Lazy<NoticeHandler> _instance = new(() => new());
-    public static NoticeHandler Instance => _instance.Value;
+    private static readonly Lazy<NoticeManager> _instance = new(() => new());
+    public static NoticeManager Instance => _instance.Value;
 
     public void Enqueue(string? content)
     {

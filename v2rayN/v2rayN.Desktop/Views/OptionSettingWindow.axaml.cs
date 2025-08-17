@@ -15,7 +15,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         InitializeComponent();
 
         btnCancel.Click += (s, e) => this.Close();
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 

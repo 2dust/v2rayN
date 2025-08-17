@@ -23,7 +23,7 @@ public class SpeedtestService
         Task.Run(async () =>
         {
             await RunAsync(actionType, selecteds);
-            await ProfileExHandler.Instance.SaveTo();
+            await ProfileExManager.Instance.SaveTo();
             UpdateFunc("", ResUI.SpeedtestingCompleted);
         });
     }
@@ -98,18 +98,18 @@ public class SpeedtestService
                 case ESpeedActionType.Tcping:
                 case ESpeedActionType.Realping:
                     UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
-                    ProfileExHandler.Instance.SetTestDelay(it.IndexId, 0);
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, 0);
                     break;
 
                 case ESpeedActionType.Speedtest:
                     UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
-                    ProfileExHandler.Instance.SetTestSpeed(it.IndexId, 0);
+                    ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     break;
 
                 case ESpeedActionType.Mixedtest:
                     UpdateFunc(it.IndexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
-                    ProfileExHandler.Instance.SetTestDelay(it.IndexId, 0);
-                    ProfileExHandler.Instance.SetTestSpeed(it.IndexId, 0);
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, 0);
+                    ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     break;
             }
         }
@@ -132,7 +132,7 @@ public class SpeedtestService
                 {
                     var responseTime = await GetTcpingTime(it.Address, it.Port);
 
-                    ProfileExHandler.Instance.SetTestDelay(it.IndexId, responseTime);
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
                     UpdateFunc(it.IndexId, responseTime.ToString());
                 }
                 catch (Exception ex)
@@ -191,7 +191,7 @@ public class SpeedtestService
         var pid = -1;
         try
         {
-            pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(selecteds);
+            pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (pid < 0)
             {
                 return false;
@@ -255,7 +255,7 @@ public class SpeedtestService
                 var pid = -1;
                 try
                 {
-                    pid = await CoreHandler.Instance.LoadCoreConfigSpeedtest(it);
+                    pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
                     if (pid < 0)
                     {
                         UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
@@ -299,7 +299,7 @@ public class SpeedtestService
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
         var responseTime = await downloadHandle.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
-        ProfileExHandler.Instance.SetTestDelay(it.IndexId, responseTime);
+        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         UpdateFunc(it.IndexId, responseTime.ToString());
         return responseTime;
     }
@@ -316,7 +316,7 @@ public class SpeedtestService
             decimal.TryParse(msg, out var dec);
             if (dec > 0)
             {
-                ProfileExHandler.Instance.SetTestSpeed(it.IndexId, dec);
+                ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
             }
             UpdateFunc(it.IndexId, "", msg);
         });
@@ -378,7 +378,7 @@ public class SpeedtestService
         _updateFunc?.Invoke(new() { IndexId = indexId, Delay = delay, Speed = speed });
         if (indexId.IsNotEmpty() && speed.IsNotEmpty())
         {
-            ProfileExHandler.Instance.SetTestMessage(indexId, speed);
+            ProfileExManager.Instance.SetTestMessage(indexId, speed);
         }
     }
 }

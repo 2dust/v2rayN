@@ -24,7 +24,7 @@ public partial class MainWindow
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
         App.Current.SessionEnding += Current_SessionEnding;
@@ -439,7 +439,7 @@ public partial class MainWindow
 
     private void AddHelpMenuItem()
     {
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
             .Where(t => t.CoreType != ECoreType.v2fly
                         && t.CoreType != ECoreType.hysteria))

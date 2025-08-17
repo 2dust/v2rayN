@@ -73,12 +73,12 @@ public class CoreConfigClashService
             }
 
             //mixed-port
-            fileContent["mixed-port"] = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+            fileContent["mixed-port"] = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
             //log-level
             fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
 
             //external-controller
-            fileContent["external-controller"] = $"{Global.Loopback}:{AppHandler.Instance.StatePort2}";
+            fileContent["external-controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}";
             //allow-lan
             if (_config.Inbound.First().AllowLANConn)
             {
@@ -139,7 +139,7 @@ public class CoreConfigClashService
                 return ret;
             }
 
-            ClashApiHandler.Instance.ProfileContent = fileContent;
+            ClashApiManager.Instance.ProfileContent = fileContent;
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
             ret.Success = true;

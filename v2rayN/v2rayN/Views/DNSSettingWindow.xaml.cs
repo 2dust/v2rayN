@@ -14,7 +14,7 @@ public partial class DNSSettingWindow
         InitializeComponent();
 
         this.Owner = Application.Current.MainWindow;
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
@@ -79,7 +79,7 @@ public partial class DNSSettingWindow
                 .BindTo(this, x => x.txtAdvancedDNSSettingsInvalid.Visibility)
                 .DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

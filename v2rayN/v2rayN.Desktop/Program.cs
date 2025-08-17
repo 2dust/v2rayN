@@ -47,7 +47,7 @@ internal class Program
             }
         }
 
-        if (!AppHandler.Instance.InitApp())
+        if (!AppManager.Instance.InitApp())
         {
             return false;
         }
@@ -63,6 +63,6 @@ internal class Program
             .WithFontByDefault()
             .LogToTrace()
             .UseReactiveUI()
-            .With(new MacOSPlatformOptions { ShowInDock = AppHandler.Instance.Config.UiItem.MacOSShowInDock });
+            .With(new MacOSPlatformOptions { ShowInDock = AppManager.Instance.Config.UiItem.MacOSShowInDock });
     }
 }

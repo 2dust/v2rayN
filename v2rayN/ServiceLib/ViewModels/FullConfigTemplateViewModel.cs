@@ -41,7 +41,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
 
     public FullConfigTemplateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -53,13 +53,13 @@ public class FullConfigTemplateViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
         EnableFullConfigTemplate4Ray = item?.Enabled ?? false;
         FullConfigTemplate4Ray = item?.Config ?? string.Empty;
         AddProxyOnly4Ray = item?.AddProxyOnly ?? false;
         ProxyDetour4Ray = item?.ProxyDetour ?? string.Empty;
 
-        var item2 = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        var item2 = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
         EnableFullConfigTemplate4Singbox = item2?.Enabled ?? false;
         FullConfigTemplate4Singbox = item2?.Config ?? string.Empty;
         FullTunConfigTemplate4Singbox = item2?.TunConfig ?? string.Empty;
@@ -75,13 +75,13 @@ public class FullConfigTemplateViewModel : MyReactiveObject
         if (!await SaveSingboxConfigAsync())
             return;
 
-        NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+        NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         _ = _updateView?.Invoke(EViewAction.CloseWindow, null);
     }
 
     private async Task<bool> SaveXrayConfigAsync()
     {
-        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
         item.Enabled = EnableFullConfigTemplate4Ray;
         item.Config = null;
 
@@ -96,7 +96,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
 
     private async Task<bool> SaveSingboxConfigAsync()
     {
-        var item = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
         item.Enabled = EnableFullConfigTemplate4Singbox;
         item.Config = null;
         item.TunConfig = null;

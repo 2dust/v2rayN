@@ -3,10 +3,10 @@ using WebDav;
 
 namespace ServiceLib.Manager;
 
-public sealed class WebDavHandler
+public sealed class WebDavManager
 {
-    private static readonly Lazy<WebDavHandler> _instance = new(() => new());
-    public static WebDavHandler Instance => _instance.Value;
+    private static readonly Lazy<WebDavManager> _instance = new(() => new());
+    public static WebDavManager Instance => _instance.Value;
 
     private readonly Config? _config;
     private WebDavClient? _client;
@@ -15,9 +15,9 @@ public sealed class WebDavHandler
     private readonly string _webFileName = "backup.zip";
     private readonly string _tag = "WebDav--";
 
-    public WebDavHandler()
+    public WebDavManager()
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
     }
 
     private async Task<bool> GetClient()

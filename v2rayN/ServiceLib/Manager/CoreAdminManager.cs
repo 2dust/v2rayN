@@ -5,10 +5,10 @@ using CliWrap.Buffered;
 
 namespace ServiceLib.Manager;
 
-public class CoreAdminHandler
+public class CoreAdminManager
 {
-    private static readonly Lazy<CoreAdminHandler> _instance = new(() => new());
-    public static CoreAdminHandler Instance => _instance.Value;
+    private static readonly Lazy<CoreAdminManager> _instance = new(() => new());
+    public static CoreAdminManager Instance => _instance.Value;
     private Config _config;
     private Action<bool, string>? _updateFunc;
     private int _linuxSudoPid = -1;
@@ -72,7 +72,7 @@ public class CoreAdminHandler
         proc.BeginErrorReadLine();
 
         await Task.Delay(10);
-        await proc.StandardInput.WriteLineAsync(AppHandler.Instance.LinuxSudoPwd);
+        await proc.StandardInput.WriteLineAsync(AppManager.Instance.LinuxSudoPwd);
 
         await Task.Delay(100);
         if (proc is null or { HasExited: true })
@@ -103,7 +103,7 @@ public class CoreAdminHandler
             var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
             var result = await Cli.Wrap(Global.LinuxBash)
                 .WithArguments(arg)
-                .WithStandardInputPipe(PipeSource.FromString(AppHandler.Instance.LinuxSudoPwd))
+                .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
                 .ExecuteBufferedAsync();
 
             UpdateFunc(false, result.StandardOutput.ToString());

@@ -22,7 +22,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
 
     public BackupAndRestoreViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         WebDavCheckCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -52,14 +52,14 @@ public class BackupAndRestoreViewModel : MyReactiveObject
         _config.WebDavItem = SelectedSource;
         _ = await ConfigHandler.SaveConfig(_config);
 
-        var result = await WebDavHandler.Instance.CheckConnection();
+        var result = await WebDavManager.Instance.CheckConnection();
         if (result)
         {
             DisplayOperationMsg(ResUI.OperationSuccess);
         }
         else
         {
-            DisplayOperationMsg(WebDavHandler.Instance.GetLastError());
+            DisplayOperationMsg(WebDavManager.Instance.GetLastError());
         }
     }
 
@@ -70,7 +70,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
         var result = await CreateZipFileFromDirectory(fileName);
         if (result)
         {
-            var result2 = await WebDavHandler.Instance.PutFile(fileName);
+            var result2 = await WebDavManager.Instance.PutFile(fileName);
             if (result2)
             {
                 DisplayOperationMsg(ResUI.OperationSuccess);
@@ -78,21 +78,21 @@ public class BackupAndRestoreViewModel : MyReactiveObject
             }
         }
 
-        DisplayOperationMsg(WebDavHandler.Instance.GetLastError());
+        DisplayOperationMsg(WebDavManager.Instance.GetLastError());
     }
 
     private async Task RemoteRestore()
     {
         DisplayOperationMsg();
         var fileName = Utils.GetTempPath(Utils.GetGuid());
-        var result = await WebDavHandler.Instance.GetRawFile(fileName);
+        var result = await WebDavManager.Instance.GetRawFile(fileName);
         if (result)
         {
             await LocalRestore(fileName);
             return;
         }
 
-        DisplayOperationMsg(WebDavHandler.Instance.GetLastError());
+        DisplayOperationMsg(WebDavManager.Instance.GetLastError());
     }
 
     public async Task<bool> LocalBackup(string fileName)
@@ -105,7 +105,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
         }
         else
         {
-            DisplayOperationMsg(WebDavHandler.Instance.GetLastError());
+            DisplayOperationMsg(WebDavManager.Instance.GetLastError());
         }
 
         return result;
@@ -158,7 +158,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
         }
         else
         {
-            DisplayOperationMsg(WebDavHandler.Instance.GetLastError());
+            DisplayOperationMsg(WebDavManager.Instance.GetLastError());
         }
     }
 

@@ -136,7 +136,7 @@ public class CoreConfigSingboxService
             singboxConfig.inbounds.Clear();
             singboxConfig.outbounds.RemoveAt(0);
 
-            var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+            var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
             foreach (var it in selecteds)
             {
@@ -148,7 +148,7 @@ public class CoreConfigSingboxService
                 {
                     continue;
                 }
-                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
                 if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
                 {
                     if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
@@ -242,7 +242,7 @@ public class CoreConfigSingboxService
                 singboxConfig.route.rules.Add(rule);
             }
 
-            var rawDNSItem = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem != null && rawDNSItem.Enabled == true)
             {
                 await GenDnsDomainsCompatible(singboxConfig, rawDNSItem);
@@ -314,7 +314,7 @@ public class CoreConfigSingboxService
                 await GenOutbound(node, singboxConfig.outbounds.First());
             }
             await GenMoreOutbounds(node, singboxConfig);
-            var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            var item = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (item != null && item.Enabled == true)
             {
                 await GenDnsDomainsCompatible(singboxConfig, item);
@@ -396,7 +396,7 @@ public class CoreConfigSingboxService
                 {
                     continue;
                 }
-                var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
+                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
                 if (item is null)
                 {
                     continue;
@@ -583,7 +583,7 @@ public class CoreConfigSingboxService
                 };
                 singboxConfig.inbounds.Add(inbound);
 
-                inbound.listen_port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+                inbound.listen_port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
 
                 if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
@@ -681,7 +681,7 @@ public class CoreConfigSingboxService
                     }
                 case EConfigType.Shadowsocks:
                     {
-                        outbound.method = AppHandler.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : Global.None;
+                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : Global.None;
                         outbound.password = node.Id;
 
                         await GenOutboundMux(node, outbound);
@@ -1007,7 +1007,7 @@ public class CoreConfigSingboxService
         }
         try
         {
-            var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
             if (subItem is null)
             {
                 return 0;
@@ -1020,7 +1020,7 @@ public class CoreConfigSingboxService
             var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
 
             //Previous proxy
-            var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
                 && prevNode.ConfigType != EConfigType.Custom)
@@ -1098,7 +1098,7 @@ public class CoreConfigSingboxService
                     nextServer = JsonUtils.DeepCopy(nextServer);
                 }
 
-                var subItem = await AppHandler.Instance.GetSubItem(node.Subid);
+                var subItem = await AppManager.Instance.GetSubItem(node.Subid);
 
                 // current proxy
                 currentServer.tag = $"{Global.ProxyTag}-{index}";
@@ -1112,7 +1112,7 @@ public class CoreConfigSingboxService
                     }
                     else
                     {
-                        var prevNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+                        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
                             && prevNode.ConfigType != EConfigType.Custom)
                         {
@@ -1219,7 +1219,7 @@ public class CoreConfigSingboxService
             }
 
             // Next proxy
-            var nextNode = await AppHandler.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
                 && nextNode.ConfigType != EConfigType.Custom)
             {
@@ -1248,7 +1248,7 @@ public class CoreConfigSingboxService
             var defaultDomainResolverTag = Global.SingboxOutboundResolverTag;
             var directDNSStrategy = item.SingboxStrategy4Direct.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : item.SingboxStrategy4Direct;
 
-            var rawDNSItem = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem != null && rawDNSItem.Enabled == true)
             {
                 defaultDomainResolverTag = Global.SingboxFinalResolverTag;
@@ -1372,7 +1372,7 @@ public class CoreConfigSingboxService
         var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        var coreInfoResult = CoreInfoHandler.Instance.GetCoreInfo();
+        var coreInfoResult = CoreInfoManager.Instance.GetCoreInfo();
 
         foreach (var coreConfig in coreInfoResult)
         {
@@ -1572,7 +1572,7 @@ public class CoreConfigSingboxService
             return outboundTag;
         }
 
-        var node = await AppHandler.Instance.GetProfileItemViaRemarks(outboundTag);
+        var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
         if (node == null
             || node.ConfigType == EConfigType.Custom)
         {
@@ -1603,7 +1603,7 @@ public class CoreConfigSingboxService
     {
         try
         {
-            var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            var item = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (item != null && item.Enabled == true)
             {
                 return await GenDnsCompatible(singboxConfig);
@@ -1890,7 +1890,7 @@ public class CoreConfigSingboxService
     {
         try
         {
-            var item = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+            var item = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             var strDNS = string.Empty;
             if (_config.TunModeItem.EnableTun)
             {
@@ -2084,7 +2084,7 @@ public class CoreConfigSingboxService
             singboxConfig.experimental ??= new Experimental4Sbox();
             singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
             {
-                external_controller = $"{Global.Loopback}:{AppHandler.Instance.StatePort2}",
+                external_controller = $"{Global.Loopback}:{AppManager.Instance.StatePort2}",
             };
         }
 
@@ -2219,7 +2219,7 @@ public class CoreConfigSingboxService
 
     private async Task<string> ApplyFullConfigTemplate(SingboxConfig singboxConfig)
     {
-        var fullConfigTemplate = await AppHandler.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
         if (fullConfigTemplate == null || !fullConfigTemplate.Enabled)
         {
             return JsonUtils.Serialize(singboxConfig);

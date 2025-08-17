@@ -11,7 +11,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
     public GlobalHotkeySettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
@@ -58,7 +58,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 }

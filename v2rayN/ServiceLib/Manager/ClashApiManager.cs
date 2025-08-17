@@ -2,10 +2,10 @@ using static ServiceLib.Models.ClashProxies;
 
 namespace ServiceLib.Manager;
 
-public sealed class ClashApiHandler
+public sealed class ClashApiManager
 {
-    private static readonly Lazy<ClashApiHandler> instance = new(() => new());
-    public static ClashApiHandler Instance => instance.Value;
+    private static readonly Lazy<ClashApiManager> instance = new(() => new());
+    public static ClashApiManager Instance => instance.Value;
 
     private static readonly string _tag = "ClashApiHandler";
     private Dictionary<string, ProxiesItem>? _proxies;
@@ -65,7 +65,7 @@ public sealed class ClashApiHandler
                 return;
             }
             var urlBase = $"{GetApiUrl()}/proxies";
-            urlBase += @"/{0}/delay?timeout=10000&url=" + AppHandler.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
+            urlBase += @"/{0}/delay?timeout=10000&url=" + AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
 
             var tasks = new List<Task>();
             foreach (var it in lstProxy)
@@ -182,6 +182,6 @@ public sealed class ClashApiHandler
 
     private string GetApiUrl()
     {
-        return $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort2}";
+        return $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort2}";
     }
 }

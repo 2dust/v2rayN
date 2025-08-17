@@ -3,10 +3,10 @@ using System.Text;
 
 namespace ServiceLib.Manager;
 
-public class PacHandler
+public class PacManager
 {
-    private static readonly Lazy<PacHandler> _instance = new(() => new PacHandler());
-    public static PacHandler Instance => _instance.Value;
+    private static readonly Lazy<PacManager> _instance = new(() => new PacManager());
+    public static PacManager Instance => _instance.Value;
 
     private string _configPath;
     private int _httpPort;

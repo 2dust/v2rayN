@@ -19,7 +19,7 @@ public class AddServer2ViewModel : MyReactiveObject
 
     public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -45,25 +45,25 @@ public class AddServer2ViewModel : MyReactiveObject
         var remarks = SelectedSource.Remarks;
         if (remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
 
         if (SelectedSource.Address.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FillServerAddressCustom);
+            NoticeManager.Instance.Enqueue(ResUI.FillServerAddressCustom);
             return;
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
         if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 
@@ -74,12 +74,12 @@ public class AddServer2ViewModel : MyReactiveObject
             return;
         }
 
-        var item = await AppHandler.Instance.GetProfileItem(SelectedSource.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(SelectedSource.IndexId);
         item ??= SelectedSource;
         item.Address = fileName;
         if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
+            NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
             if (item.IndexId.IsNotEmpty())
             {
                 SelectedSource = JsonUtils.DeepCopy(item);
@@ -88,7 +88,7 @@ public class AddServer2ViewModel : MyReactiveObject
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FailedImportedCustomServer);
+            NoticeManager.Instance.Enqueue(ResUI.FailedImportedCustomServer);
         }
     }
 
@@ -97,7 +97,7 @@ public class AddServer2ViewModel : MyReactiveObject
         var address = SelectedSource.Address;
         if (address.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FillServerAddressCustom);
+            NoticeManager.Instance.Enqueue(ResUI.FillServerAddressCustom);
             return;
         }
 
@@ -108,7 +108,7 @@ public class AddServer2ViewModel : MyReactiveObject
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FailedReadConfiguration);
+            NoticeManager.Instance.Enqueue(ResUI.FailedReadConfiguration);
         }
         await Task.CompletedTask;
     }

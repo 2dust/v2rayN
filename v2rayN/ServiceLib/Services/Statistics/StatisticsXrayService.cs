@@ -7,7 +7,7 @@ public class StatisticsXrayService
     private readonly Config _config;
     private bool _exitFlag;
     private Action<ServerSpeedItem>? _updateFunc;
-    private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort}/debug/vars";
+    private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort}/debug/vars";
 
     public StatisticsXrayService(Config config, Action<ServerSpeedItem> updateFunc)
     {

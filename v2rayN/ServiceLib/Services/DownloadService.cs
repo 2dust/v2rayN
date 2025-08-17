@@ -20,7 +20,7 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
 
             var progress = new Progress<string>();
             progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
@@ -45,7 +45,7 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
             var progress = new Progress<double>();
@@ -72,7 +72,7 @@ public class DownloadService
 
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
-        SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+        SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
         var webRequestHandler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
@@ -142,7 +142,7 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             var webProxy = await GetWebProxy(blProxy);
             var client = new HttpClient(new SocketsHttpHandler()
             {
@@ -187,7 +187,7 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppHandler.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
 
             var webProxy = await GetWebProxy(blProxy);
 
@@ -216,7 +216,7 @@ public class DownloadService
         try
         {
             webProxy ??= await GetWebProxy(true);
-            var config = AppHandler.Instance.Config;
+            var config = AppManager.Instance.Config;
 
             for (var i = 0; i < 2; i++)
             {
@@ -273,7 +273,7 @@ public class DownloadService
         {
             return null;
         }
-        var port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks);
+        var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
         if (await SocketCheck(Global.Loopback, port) == false)
         {
             return null;

@@ -1,12 +1,12 @@
 namespace ServiceLib.Manager;
 
-public sealed class CoreInfoHandler
+public sealed class CoreInfoManager
 {
-    private static readonly Lazy<CoreInfoHandler> _instance = new(() => new());
+    private static readonly Lazy<CoreInfoManager> _instance = new(() => new());
     private List<CoreInfo>? _coreInfo;
-    public static CoreInfoHandler Instance => _instance.Value;
+    public static CoreInfoManager Instance => _instance.Value;
 
-    public CoreInfoHandler()
+    public CoreInfoManager()
     {
         InitCoreInfo();
     }

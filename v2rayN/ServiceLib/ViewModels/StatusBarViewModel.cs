@@ -100,7 +100,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = "-";
@@ -228,7 +228,7 @@ public class StatusBarViewModel : MyReactiveObject
     private async Task CopyProxyCmdToClipboard()
     {
         var cmd = Utils.IsWindows() ? "set" : "export";
-        var address = $"{Global.Loopback}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}";
+        var address = $"{Global.Loopback}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}";
 
         var sb = new StringBuilder();
         sb.AppendLine($"{cmd} http_proxy={Global.HttpProtocol}{address}");
@@ -283,7 +283,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppHandler.Instance.ProfileItems(_config.SubIndexId, "");
+        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, "");
 
         _servers.Clear();
         if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
@@ -336,7 +336,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
 
-        NoticeHandler.Instance.SendMessageEx(msg);
+        NoticeManager.Instance.SendMessageEx(msg);
         _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
     }
 
@@ -355,7 +355,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
-        NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
+        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
@@ -381,7 +381,7 @@ public class StatusBarViewModel : MyReactiveObject
         _routingItems.Clear();
 
         BlRouting = true;
-        var routings = await AppHandler.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
         {
             _routingItems.Add(item);
@@ -404,7 +404,7 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.Id);
+        var item = await AppManager.Instance.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
         {
             return;
@@ -412,7 +412,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
         {
-            NoticeHandler.Instance.SendMessageEx(ResUI.TipChangeRouting);
+            NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             Locator.Current.GetService<MainWindowViewModel>()?.Reload();
             _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
         }
@@ -471,11 +471,11 @@ public class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
+            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         else if (Utils.IsOSX())
         {
-            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
+            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         return false;
     }
@@ -487,10 +487,10 @@ public class StatusBarViewModel : MyReactiveObject
     public async Task InboundDisplayStatus()
     {
         StringBuilder sb = new();
-        sb.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}");
+        sb.Append($"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}");
         if (_config.Inbound.First().SecondLocalPortEnabled)
         {
-            sb.Append($",{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}");
+            sb.Append($",{AppManager.Instance.GetLocalPort(EInboundProtocol.socks2)}");
         }
         sb.Append(']');
         InboundDisplay = $"{ResUI.LabLocal}:{sb}";
@@ -498,8 +498,8 @@ public class StatusBarViewModel : MyReactiveObject
         if (_config.Inbound.First().AllowLANConn)
         {
             var lan = _config.Inbound.First().NewPort4LAN
-                ? $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
-                : $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]";
+                ? $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
+                : $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}]";
             InboundLanDisplay = $"{ResUI.LabLAN}:{lan}";
         }
         else

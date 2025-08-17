@@ -1,9 +1,9 @@
 namespace ServiceLib.Manager;
 
-public class StatisticsHandler
+public class StatisticsManager
 {
-    private static readonly Lazy<StatisticsHandler> instance = new(() => new());
-    public static StatisticsHandler Instance => instance.Value;
+    private static readonly Lazy<StatisticsManager> instance = new(() => new());
+    public static StatisticsManager Instance => instance.Value;
 
     private Config _config;
     private ServerStatItem? _serverStatItem;

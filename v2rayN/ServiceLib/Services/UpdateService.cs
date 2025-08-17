@@ -135,7 +135,7 @@ public class UpdateService
 
     private async Task<RetResult> GetRemoteVersion(DownloadService downloadHandle, ECoreType type, bool preRelease)
     {
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
         var tagName = string.Empty;
         if (preRelease)
         {
@@ -169,7 +169,7 @@ public class UpdateService
     {
         try
         {
-            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
             string filePath = string.Empty;
             foreach (var name in coreInfo.CoreExes)
             {
@@ -221,7 +221,7 @@ public class UpdateService
     {
         try
         {
-            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
             var coreUrl = await GetUrlFromCore(coreInfo) ?? string.Empty;
             SemanticVersion curVersion;
             string message;
@@ -379,7 +379,7 @@ public class UpdateService
         var geoSiteFiles = new List<string>();
 
         //Collect used files list
-        var routingItems = await AppHandler.Instance.RoutingItems();
+        var routingItems = await AppManager.Instance.RoutingItems();
         foreach (var routing in routingItems)
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);

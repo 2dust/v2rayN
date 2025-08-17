@@ -27,7 +27,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _window = window;
 
         menuSelectAll.Click += menuSelectAll_Click;

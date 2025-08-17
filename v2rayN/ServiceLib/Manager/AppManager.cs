@@ -1,15 +1,15 @@
 namespace ServiceLib.Manager;
 
-public sealed class AppHandler
+public sealed class AppManager
 {
     #region Property
 
-    private static readonly Lazy<AppHandler> _instance = new(() => new());
+    private static readonly Lazy<AppManager> _instance = new(() => new());
     private Config _config;
     private int? _statePort;
     private int? _statePort2;
     private Job? _processJob;
-    public static AppHandler Instance => _instance.Value;
+    public static AppManager Instance => _instance.Value;
     public Config Config => _config;
 
     public int StatePort

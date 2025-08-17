@@ -38,7 +38,7 @@ public class DNSSettingViewModel : MyReactiveObject
 
     public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
         SaveCmd = ReactiveCommand.CreateFromTask(SaveSettingAsync);
 
@@ -60,7 +60,7 @@ public class DNSSettingViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         var item = _config.SimpleDNSItem;
         UseSystemHosts = item.UseSystemHosts;
         AddCommonHosts = item.AddCommonHosts;
@@ -76,14 +76,14 @@ public class DNSSettingViewModel : MyReactiveObject
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
 
-        var item1 = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+        var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         RayCustomDNSEnableCompatible = item1.Enabled;
         UseSystemHostsCompatible = item1.UseSystemHosts;
         DomainStrategy4FreedomCompatible = item1?.DomainStrategy4Freedom ?? string.Empty;
         DomainDNSAddressCompatible = item1?.DomainDNSAddress ?? string.Empty;
         NormalDNSCompatible = item1?.NormalDNS ?? string.Empty;
 
-        var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+        var item2 = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
         SBCustomDNSEnableCompatible = item2.Enabled;
         DomainStrategy4Freedom2Compatible = item2?.DomainStrategy4Freedom ?? string.Empty;
         DomainDNSAddress2Compatible = item2?.DomainDNSAddress ?? string.Empty;
@@ -117,7 +117,7 @@ public class DNSSettingViewModel : MyReactiveObject
             {
                 if (NormalDNSCompatible.Contains('{') || NormalDNSCompatible.Contains('}'))
                 {
-                    NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                    NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
                     return;
                 }
             }
@@ -127,7 +127,7 @@ public class DNSSettingViewModel : MyReactiveObject
             var obj2 = JsonUtils.Deserialize<Dns4Sbox>(NormalDNS2Compatible);
             if (obj2 == null)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
                 return;
             }
         }
@@ -136,12 +136,12 @@ public class DNSSettingViewModel : MyReactiveObject
             var obj2 = JsonUtils.Deserialize<Dns4Sbox>(TunDNS2Compatible);
             if (obj2 == null)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
                 return;
             }
         }
 
-        var item1 = await AppHandler.Instance.GetDNSItem(ECoreType.Xray);
+        var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         item1.Enabled = RayCustomDNSEnableCompatible;
         item1.DomainStrategy4Freedom = DomainStrategy4FreedomCompatible;
         item1.DomainDNSAddress = DomainDNSAddressCompatible;
@@ -149,7 +149,7 @@ public class DNSSettingViewModel : MyReactiveObject
         item1.NormalDNS = NormalDNSCompatible;
         await ConfigHandler.SaveDNSItems(_config, item1);
 
-        var item2 = await AppHandler.Instance.GetDNSItem(ECoreType.sing_box);
+        var item2 = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
         item2.Enabled = SBCustomDNSEnableCompatible;
         item2.DomainStrategy4Freedom = DomainStrategy4Freedom2Compatible;
         item2.DomainDNSAddress = DomainDNSAddress2Compatible;

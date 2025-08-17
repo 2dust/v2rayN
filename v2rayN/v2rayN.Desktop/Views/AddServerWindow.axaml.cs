@@ -51,7 +51,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Shadowsocks:
                 gridSs.IsVisible = true;
-                cmbSecurity3.ItemsSource = AppHandler.Instance.GetShadowsocksSecurities(profileItem);
+                cmbSecurity3.ItemsSource = AppManager.Instance.GetShadowsocksSecurities(profileItem);
                 break;
 
             case EConfigType.SOCKS:

@@ -2,17 +2,17 @@ using System.Collections.Concurrent;
 
 //using System.Reactive.Linq;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
-public class ProfileExHandler
+public class ProfileExManager
 {
-    private static readonly Lazy<ProfileExHandler> _instance = new(() => new());
+    private static readonly Lazy<ProfileExManager> _instance = new(() => new());
     private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
     private readonly Queue<string> _queIndexIds = new();
-    public static ProfileExHandler Instance => _instance.Value;
+    public static ProfileExManager Instance => _instance.Value;
     private static readonly string _tag = "ProfileExHandler";
 
-    public ProfileExHandler()
+    public ProfileExManager()
     {
         //Init();
     }

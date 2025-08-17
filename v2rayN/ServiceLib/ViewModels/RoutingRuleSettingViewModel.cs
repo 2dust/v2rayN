@@ -37,7 +37,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     public RoutingRuleSettingViewModel(RoutingItem routingItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
@@ -151,7 +151,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     {
         if (SelectedSource is null || SelectedSource.OutboundTag.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
         if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
@@ -174,7 +174,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     {
         if (SelectedSource is null || SelectedSource.OutboundTag.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
 
@@ -205,7 +205,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     {
         if (SelectedSource is null || SelectedSource.OutboundTag.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
 
@@ -226,7 +226,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         string remarks = SelectedRouting.Remarks;
         if (remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
         var item = SelectedRouting;
@@ -239,12 +239,12 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
         if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 
@@ -266,7 +266,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         if (ret == 0)
         {
             RefreshRulesItems();
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         }
     }
 
@@ -281,7 +281,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         if (ret == 0)
         {
             RefreshRulesItems();
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         }
     }
 
@@ -290,7 +290,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         var url = SelectedRouting.Url;
         if (url.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.MsgNeedUrl);
+            NoticeManager.Instance.Enqueue(ResUI.MsgNeedUrl);
             return;
         }
 
@@ -300,7 +300,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         if (ret == 0)
         {
             RefreshRulesItems();
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         }
     }
 

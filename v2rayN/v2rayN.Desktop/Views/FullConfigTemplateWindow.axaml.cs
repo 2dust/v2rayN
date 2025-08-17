@@ -14,7 +14,7 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         btnCancel.Click += (s, e) => this.Close();
         ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
 

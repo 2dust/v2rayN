@@ -9,7 +9,7 @@ public class StatisticsSingboxService
     private bool _exitFlag;
     private ClientWebSocket? webSocket;
     private Action<ServerSpeedItem>? _updateFunc;
-    private string Url => $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
+    private string Url => $"ws://{Global.Loopback}:{AppManager.Instance.StatePort2}/traffic";
     private static readonly string _tag = "StatisticsSingboxService";
 
     public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)

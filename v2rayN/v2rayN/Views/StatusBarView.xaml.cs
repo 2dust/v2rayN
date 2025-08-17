@@ -16,7 +16,7 @@ public partial class StatusBarView
     public StatusBarView()
     {
         InitializeComponent();
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         ViewModel = new StatusBarViewModel(UpdateViewHandler);
         Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
 
