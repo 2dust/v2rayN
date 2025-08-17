@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f89ade16-c430-455b-aacb-487cfbc6c751" name="Changes" comment="feat(i18n,ui): externalize TUN settings labels, add translations&#10;&#10;- Replace hard-coded labels &quot;Auto Route&quot;, &quot;Strict Route&quot;, &quot;Stack&quot;,&#10;  and &quot;Mtu/mtu&quot; with resource keys in both Avalonia and WPF views:&#10;  - v2rayN/v2rayN.Desktop/Views/AddServerWindow.axaml&#10;  - v2rayN/v2rayN.Desktop/Views/OptionSettingWindow.axaml&#10;  - v2rayN/v2rayN/Views/AddServerWindow.xaml&#10;  - v2rayN/v2rayN/Views/OptionSettingWindow.xaml&#10;- Add new resource keys in ResUI:&#10;  TbSettingsTunAutoRoute, TbSettingsTunStrictRoute,&#10;  TbSettingsTunStack, TbSettingsTunMtu (unified casing as &quot;MTU&quot;).&#10;  Files:&#10;  - v2rayN/ServiceLib/Resx/ResUI.resx&#10;- Provide translations in:&#10;  - v2rayN/ServiceLib/Resx/ResUI.ru.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hans.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hant.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.fa-Ir.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.hu.resx&#10;- Normalize XML comments/whitespace in .resx files.&#10;- Update submodule v2rayN/GlobalHotKeys to 5201dd5.&#10;&#10;No breaking changes.">
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys" beforeDir="false" afterPath="$PROJECT_DIR$/v2rayN/GlobalHotKeys" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/.github/workflows/dotnet.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Directory.Packages.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/App.axaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/App.axaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/AvaloniaApp.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/MainViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/MainWindow.axaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/MainWindow.axaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Avalonia/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Console/Console.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Console/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/WinForms/Form1.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/WinForms/Form1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/WinForms/Form1.resx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/WinForms/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/WinForms/WinForms.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/App.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/App.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/MainViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/MainWindow.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/MainWindow.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/Examples/Wpf/Wpf.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys.Test/GlobalHotKeys.Test.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys.Test/HotKeyManagerTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/GlobalHotKeys.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/HotKey.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/HotKeyManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/IRegistration.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/NativeFunctions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/v2rayN/GlobalHotKeys/src/GlobalHotKeys/NativeTypes.cs" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EditorConfigPreviewManager">
+    <editorConfig file="$PROJECT_DIR$/.editorconfig" previewFile="$PROJECT_DIR$/v2rayN/ServiceLib/Resx/ResUI.zh-Hans.resx" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_COMMON_BRANCH" value="master" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDOOvrS1c6jHvJw",
+        "number": 1
+      },
+      "lastSeen": 1754941601061
+    },
+    {
+      "id": {
+        "id": "PR_kwDOC-Uyl86jH8yS",
+        "number": 7740
+      },
+      "lastSeen": 1755421267299
+    }
+  ]
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/2dust/v2rayN.git",
+    "accountId": "59811760-724d-4902-91b6-3c3e667dcce0"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "aleksandr-miheichev",
+    "repository": "v2rayN"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="317ozTelMPhC4K4yyjXH4yepCNJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "git-widget-placeholder": "i18n-ru-tun-labels",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PY-252.23892.515" />
+        <option value="bundled-python-sdk-7e47963ff851-f0eec537fc84-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.23892.515" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f89ade16-c430-455b-aacb-487cfbc6c751" name="Changes" comment="" />
+      <created>1754884734136</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1754884734136</updated>
+      <workItem from="1754884735403" duration="1849000" />
+      <workItem from="1754887891715" duration="252000" />
+      <workItem from="1754936083222" duration="754000" />
+      <workItem from="1754937191504" duration="5700000" />
+      <workItem from="1755020427186" duration="53000" />
+      <workItem from="1755020514853" duration="302000" />
+      <workItem from="1755199989180" duration="124000" />
+      <workItem from="1755200131398" duration="287000" />
+      <workItem from="1755204032455" duration="47000" />
+      <workItem from="1755204103861" duration="59000" />
+      <workItem from="1755418711880" duration="42000" />
+      <workItem from="1755418777299" duration="7907000" />
+    </task>
+    <task id="LOCAL-00001" summary="refactor: improve Russian localization, fix placeholders and typos">
+      <option name="closed" value="true" />
+      <created>1754941044449</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1754941044449</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat(i18n,ui): externalize TUN settings labels, add translations&#10;&#10;- Replace hard-coded labels &quot;Auto Route&quot;, &quot;Strict Route&quot;, &quot;Stack&quot;,&#10;  and &quot;Mtu/mtu&quot; with resource keys in both Avalonia and WPF views:&#10;  - v2rayN/v2rayN.Desktop/Views/AddServerWindow.axaml&#10;  - v2rayN/v2rayN.Desktop/Views/OptionSettingWindow.axaml&#10;  - v2rayN/v2rayN/Views/AddServerWindow.xaml&#10;  - v2rayN/v2rayN/Views/OptionSettingWindow.xaml&#10;- Add new resource keys in ResUI:&#10;  TbSettingsTunAutoRoute, TbSettingsTunStrictRoute,&#10;  TbSettingsTunStack, TbSettingsTunMtu (unified casing as &quot;MTU&quot;).&#10;  Files:&#10;  - v2rayN/ServiceLib/Resx/ResUI.resx&#10;- Provide translations in:&#10;  - v2rayN/ServiceLib/Resx/ResUI.ru.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hans.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hant.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.fa-Ir.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.hu.resx&#10;- Normalize XML comments/whitespace in .resx files.&#10;- Update submodule v2rayN/GlobalHotKeys to 5201dd5.&#10;&#10;No breaking changes.">
+      <option name="closed" value="true" />
+      <created>1755425014409</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1755425014409</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="i18n-ru-tun-labels" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor: improve Russian localization, fix placeholders and typos" />
+    <MESSAGE value="feat(i18n,ui): externalize TUN settings labels, add translations&#10;&#10;- Replace hard-coded labels &quot;Auto Route&quot;, &quot;Strict Route&quot;, &quot;Stack&quot;,&#10;  and &quot;Mtu/mtu&quot; with resource keys in both Avalonia and WPF views:&#10;  - v2rayN/v2rayN.Desktop/Views/AddServerWindow.axaml&#10;  - v2rayN/v2rayN.Desktop/Views/OptionSettingWindow.axaml&#10;  - v2rayN/v2rayN/Views/AddServerWindow.xaml&#10;  - v2rayN/v2rayN/Views/OptionSettingWindow.xaml&#10;- Add new resource keys in ResUI:&#10;  TbSettingsTunAutoRoute, TbSettingsTunStrictRoute,&#10;  TbSettingsTunStack, TbSettingsTunMtu (unified casing as &quot;MTU&quot;).&#10;  Files:&#10;  - v2rayN/ServiceLib/Resx/ResUI.resx&#10;- Provide translations in:&#10;  - v2rayN/ServiceLib/Resx/ResUI.ru.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hans.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hant.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.fa-Ir.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.hu.resx&#10;- Normalize XML comments/whitespace in .resx files.&#10;- Update submodule v2rayN/GlobalHotKeys to 5201dd5.&#10;&#10;No breaking changes." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(i18n,ui): externalize TUN settings labels, add translations&#10;&#10;- Replace hard-coded labels &quot;Auto Route&quot;, &quot;Strict Route&quot;, &quot;Stack&quot;,&#10;  and &quot;Mtu/mtu&quot; with resource keys in both Avalonia and WPF views:&#10;  - v2rayN/v2rayN.Desktop/Views/AddServerWindow.axaml&#10;  - v2rayN/v2rayN.Desktop/Views/OptionSettingWindow.axaml&#10;  - v2rayN/v2rayN/Views/AddServerWindow.xaml&#10;  - v2rayN/v2rayN/Views/OptionSettingWindow.xaml&#10;- Add new resource keys in ResUI:&#10;  TbSettingsTunAutoRoute, TbSettingsTunStrictRoute,&#10;  TbSettingsTunStack, TbSettingsTunMtu (unified casing as &quot;MTU&quot;).&#10;  Files:&#10;  - v2rayN/ServiceLib/Resx/ResUI.resx&#10;- Provide translations in:&#10;  - v2rayN/ServiceLib/Resx/ResUI.ru.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hans.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.zh-Hant.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.fa-Ir.resx&#10;  - v2rayN/ServiceLib/Resx/ResUI.hu.resx&#10;- Normalize XML comments/whitespace in .resx files.&#10;- Update submodule v2rayN/GlobalHotKeys to 5201dd5.&#10;&#10;No breaking changes." />
+  </component>
+</project>
