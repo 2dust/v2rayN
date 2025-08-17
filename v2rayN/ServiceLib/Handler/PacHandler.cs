@@ -5,15 +5,18 @@ namespace ServiceLib.Handler;
 
 public class PacHandler
 {
-    private static string _configPath;
-    private static int _httpPort;
-    private static int _pacPort;
-    private static TcpListener? _tcpListener;
-    private static byte[] _writeContent;
-    private static bool _isRunning;
-    private static bool _needRestart = true;
+    private static readonly Lazy<PacHandler> _instance = new(() => new PacHandler());
+    public static PacHandler Instance => _instance.Value;
 
-    public static async Task Start(string configPath, int httpPort, int pacPort)
+    private string _configPath;
+    private int _httpPort;
+    private int _pacPort;
+    private TcpListener? _tcpListener;
+    private byte[] _writeContent;
+    private bool _isRunning;
+    private bool _needRestart = true;
+
+    public async Task StartAsync(string configPath, int httpPort, int pacPort)
     {
         _needRestart = configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
 
@@ -30,7 +33,7 @@ public class PacHandler
         }
     }
 
-    private static async Task InitText()
+    private async Task InitText()
     {
         var path = Path.Combine(_configPath, "pac.txt");
 
@@ -59,7 +62,7 @@ public class PacHandler
         _writeContent = Encoding.UTF8.GetBytes(sb.ToString());
     }
 
-    private static void RunListener()
+    private void RunListener()
     {
         _tcpListener = TcpListener.Create(_pacPort);
         _isRunning = true;
@@ -87,14 +90,14 @@ public class PacHandler
         }, TaskCreationOptions.LongRunning);
     }
 
-    private static void WriteContent(TcpClient client)
+    private void WriteContent(TcpClient client)
     {
         var stream = client.GetStream();
         stream.Write(_writeContent, 0, _writeContent.Length);
         stream.Flush();
     }
 
-    public static void Stop()
+    public void Stop()
     {
         if (_tcpListener == null)
         {

@@ -56,7 +56,7 @@ public static class SysProxyHandler
 
             if (type != ESysProxyType.Pac && Utils.IsWindows())
             {
-                PacHandler.Stop();
+                PacHandler.Instance.Stop();
             }
         }
         catch (Exception ex)
@@ -91,7 +91,7 @@ public static class SysProxyHandler
     private static async Task SetWindowsProxyPac(int port)
     {
         var portPac = AppHandler.Instance.GetLocalPort(EInboundProtocol.pac);
-        await PacHandler.Start(Utils.GetConfigPath(), port, portPac);
+        await PacHandler.Instance.StartAsync(Utils.GetConfigPath(), port, portPac);
         var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
         ProxySettingWindows.SetProxy(strProxy, "", 4);
     }

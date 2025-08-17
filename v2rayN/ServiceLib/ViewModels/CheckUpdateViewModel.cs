@@ -75,10 +75,7 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdate()
     {
-        await Task.Run(async () =>
-        {
-            await CheckUpdateTask();
-        });
+        await Task.Run(CheckUpdateTask);
     }
 
     private async Task CheckUpdateTask()
