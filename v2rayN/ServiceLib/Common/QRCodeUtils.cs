@@ -4,7 +4,7 @@ using ZXing.SkiaSharp;
 
 namespace ServiceLib.Common;
 
-public class QRCodeHelper
+public class QRCodeUtils
 {
     public static byte[]? GenQRCode(string? url)
     {

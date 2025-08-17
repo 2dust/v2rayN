@@ -1,7 +1,7 @@
 using System.Collections;
 using SQLite;
 
-namespace ServiceLib.Common;
+namespace ServiceLib.Helper;
 
 public sealed class SQLiteHelper
 {

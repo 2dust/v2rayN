@@ -2,7 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 
-namespace ServiceLib.Common;
+namespace ServiceLib.Helper;
 
 /// <summary>
 /// </summary>

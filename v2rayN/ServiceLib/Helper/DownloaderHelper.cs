@@ -1,7 +1,7 @@
 using System.Net;
 using Downloader;
 
-namespace ServiceLib.Common;
+namespace ServiceLib.Helper;
 
 public class DownloaderHelper
 {

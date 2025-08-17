@@ -17,7 +17,7 @@ public class QRCodeHelper
         }
         try
         {
-            var qrCodeImage = ServiceLib.Common.QRCodeHelper.GenQRCode(strContent);
+            var qrCodeImage = QRCodeUtils.GenQRCode(strContent);
             return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
         }
         catch

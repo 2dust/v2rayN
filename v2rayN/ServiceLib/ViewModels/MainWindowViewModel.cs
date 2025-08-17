@@ -420,7 +420,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task ScanScreenResult(byte[]? bytes)
     {
-        var result = QRCodeHelper.ParseBarcode(bytes);
+        var result = QRCodeUtils.ParseBarcode(bytes);
         await AddScanResultAsync(result);
     }
 
@@ -437,7 +437,7 @@ public class MainWindowViewModel : MyReactiveObject
             return;
         }
 
-        var result = QRCodeHelper.ParseBarcode(fileName);
+        var result = QRCodeUtils.ParseBarcode(fileName);
         await AddScanResultAsync(result);
     }
 
