@@ -1,7 +1,7 @@
 using System.Net;
 using WebDav;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public sealed class WebDavHandler
 {

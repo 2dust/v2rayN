@@ -1,7 +1,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public class PacHandler
 {

@@ -1,6 +1,6 @@
 using static ServiceLib.Models.ClashProxies;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public sealed class ClashApiHandler
 {

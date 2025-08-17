@@ -3,6 +3,7 @@ global using ServiceLib.Common;
 global using ServiceLib.Enums;
 global using ServiceLib.Handler;
 global using ServiceLib.Helper;
+global using ServiceLib.Manager;
 global using ServiceLib.Handler.Fmt;
 global using ServiceLib.Services;
 global using ServiceLib.Services.Statistics;

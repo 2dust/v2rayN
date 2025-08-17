@@ -1,11 +1,8 @@
 namespace ServiceLib.Handler;
 
-public class ConnectionHandler
+public static class ConnectionHandler
 {
-    private static readonly Lazy<ConnectionHandler> _instance = new(() => new());
-    public static ConnectionHandler Instance => _instance.Value;
-
-    public async Task<string> RunAvailabilityCheck()
+    public static async Task<string> RunAvailabilityCheck()
     {
         var downloadHandle = new DownloadService();
         var time = await downloadHandle.RunAvailabilityCheck(null);
@@ -14,7 +11,7 @@ public class ConnectionHandler
         return string.Format(ResUI.TestMeOutput, time, ip);
     }
 
-    private async Task<string?> GetIPInfo(DownloadService downloadHandle)
+    private static async Task<string?> GetIPInfo(DownloadService downloadHandle)
     {
         var url = AppHandler.Instance.Config.SpeedTestItem.IPAPIUrl;
         if (url.IsNullOrEmpty())

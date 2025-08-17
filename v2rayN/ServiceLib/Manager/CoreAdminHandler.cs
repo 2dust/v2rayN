@@ -3,7 +3,7 @@ using System.Text;
 using CliWrap;
 using CliWrap.Buffered;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public class CoreAdminHandler
 {

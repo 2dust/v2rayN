@@ -1,4 +1,4 @@
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public sealed class CoreInfoHandler
 {

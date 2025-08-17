@@ -9,6 +9,7 @@ using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Manager;
 
 namespace v2rayN.ViewModels;
 

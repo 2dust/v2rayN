@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using CliWrap.Buffered;
 using DialogHostAvalonia;
+using ServiceLib.Manager;
 
 namespace v2rayN.Desktop.Views;
 

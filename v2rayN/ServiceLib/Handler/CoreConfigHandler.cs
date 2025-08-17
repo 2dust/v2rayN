@@ -3,7 +3,7 @@ namespace ServiceLib.Handler;
 /// <summary>
 /// Core configuration file processing class
 /// </summary>
-public class CoreConfigHandler
+public static class CoreConfigHandler
 {
     private static readonly string _tag = "CoreConfigHandler";
 

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Handler;
 

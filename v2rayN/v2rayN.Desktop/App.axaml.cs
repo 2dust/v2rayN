@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Views;

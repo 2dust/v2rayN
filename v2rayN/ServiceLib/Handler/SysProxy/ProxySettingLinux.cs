@@ -1,6 +1,6 @@
 namespace ServiceLib.Handler.SysProxy;
 
-public class ProxySettingLinux
+public static class ProxySettingLinux
 {
     private static readonly string _proxySetFileName = $"{Global.ProxySetLinuxShellFileName.Replace(Global.NamespaceSample, "")}.sh";
 

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
+using ServiceLib.Manager;
 
 namespace v2rayN.Desktop.Base;
 

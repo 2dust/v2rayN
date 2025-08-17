@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
-public class ConfigHandler
+public static class ConfigHandler
 {
     private static readonly string _configRes = Global.ConfigFileName;
     private static readonly string _tag = "ConfigHandler";

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Base;
 using Point = System.Windows.Point;

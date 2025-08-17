@@ -1,4 +1,4 @@
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public sealed class AppHandler
 {
@@ -97,7 +97,7 @@ public sealed class AppHandler
         return localPort + (int)protocol;
     }
 
-    public void AddProcess(IntPtr processHandle)
+    public void AddProcess(nint processHandle)
     {
         if (Utils.IsWindows())
         {

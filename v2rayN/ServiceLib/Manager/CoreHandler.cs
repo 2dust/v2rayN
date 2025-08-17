@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 /// <summary>
 /// Core process processing class

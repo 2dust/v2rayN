@@ -1,6 +1,6 @@
 namespace ServiceLib.Handler;
 
-public class SubscriptionHandler
+public static class SubscriptionHandler
 {
     public static async Task UpdateProcess(Config config, string subId, bool blProxy, Action<bool, string> updateFunc)
     {

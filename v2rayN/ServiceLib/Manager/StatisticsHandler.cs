@@ -1,4 +1,4 @@
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public class StatisticsHandler
 {
@@ -91,7 +91,7 @@ public class StatisticsHandler
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
 
-        long ticks = DateTime.Now.Date.Ticks;
+        var ticks = DateTime.Now.Date.Ticks;
         await SQLiteHelper.Instance.ExecuteAsync($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
         _lstServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
@@ -128,7 +128,7 @@ public class StatisticsHandler
 
     private async Task GetServerStatItem(string indexId)
     {
-        long ticks = DateTime.Now.Date.Ticks;
+        var ticks = DateTime.Now.Date.Ticks;
         if (_serverStatItem != null && _serverStatItem.IndexId != indexId)
         {
             _serverStatItem = null;

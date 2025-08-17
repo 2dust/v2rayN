@@ -1,4 +1,4 @@
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public class TaskHandler
 {
@@ -66,7 +66,7 @@ public class TaskHandler
 
         foreach (var item in lstSubs)
         {
-            await SubscriptionHandler.UpdateProcess(config, item.Id, true, (bool success, string msg) =>
+            await SubscriptionHandler.UpdateProcess(config, item.Id, true, (success, msg) =>
             {
                 updateFunc?.Invoke(success, msg);
                 if (success)
@@ -87,7 +87,7 @@ public class TaskHandler
             Logging.SaveLog("Execute update geo files");
 
             var updateHandle = new UpdateService();
-            await updateHandle.UpdateGeoFileAll(config, (bool success, string msg) =>
+            await updateHandle.UpdateGeoFileAll(config, (success, msg) =>
             {
                 updateFunc?.Invoke(false, msg);
             });

@@ -1,6 +1,6 @@
 using ReactiveUI;
 
-namespace ServiceLib.Handler;
+namespace ServiceLib.Manager;
 
 public class NoticeHandler
 {

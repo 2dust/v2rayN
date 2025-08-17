@@ -6,6 +6,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Common;
 
