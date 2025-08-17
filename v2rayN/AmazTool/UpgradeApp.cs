@@ -79,15 +79,7 @@ internal class UpgradeApp
                         continue;
                     }
 
-                    try
-                    {
-                        entry.ExtractToFile(entryOutputPath, true);
-                    }
-                    catch
-                    {
-                        Thread.Sleep(1000);
-                        entry.ExtractToFile(entryOutputPath, true);
-                    }
+                    TryExtractToFile(entry, entryOutputPath);
 
                     Console.WriteLine(entryOutputPath);
                 }
@@ -112,5 +104,25 @@ internal class UpgradeApp
         Utils.Waiting(2);
 
         Utils.StartV2RayN();
+    }
+
+    private static bool TryExtractToFile(ZipArchiveEntry entry, string outputPath)
+    {
+        var retryCount = 5;
+        var delayMs = 1000;
+
+        for (var i = 1; i <= retryCount; i++)
+        {
+            try
+            {
+                entry.ExtractToFile(outputPath, true);
+                return true;
+            }
+            catch
+            {
+                Thread.Sleep(delayMs * i);
+            }
+        }
+        return false;
     }
 }
