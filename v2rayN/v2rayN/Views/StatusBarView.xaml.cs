@@ -5,7 +5,7 @@ using System.Windows.Threading;
 using ReactiveUI;
 using ServiceLib.Manager;
 using Splat;
-using v2rayN.Handler;
+using v2rayN.Manager;
 
 namespace v2rayN.Views;
 
@@ -96,8 +96,8 @@ public partial class StatusBarView
             case EViewAction.DispatcherRefreshIcon:
                 Application.Current?.Dispatcher.Invoke((async () =>
                 {
-                    tbNotify.Icon = await WindowsHandler.Instance.GetNotifyIcon(_config);
-                    Application.Current.MainWindow.Icon = WindowsHandler.Instance.GetAppIcon(_config);
+                    tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
+                    Application.Current.MainWindow.Icon = WindowsManager.Instance.GetAppIcon(_config);
                 }), DispatcherPriority.Normal);
                 break;
 

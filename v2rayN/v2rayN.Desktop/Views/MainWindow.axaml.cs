@@ -13,7 +13,7 @@ using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
-using v2rayN.Desktop.Handler;
+using v2rayN.Desktop.Manager;
 
 namespace v2rayN.Desktop.Views;
 
@@ -143,7 +143,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
-            HotkeyHandler.Instance.Init(_config, OnHotkeyHandler);
+            HotkeyManager.Instance.Init(_config, OnHotkeyHandler);
         }
         else
         {
@@ -235,7 +235,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 StorageUI();
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
-                    HotkeyHandler.Instance.Dispose();
+                    HotkeyManager.Instance.Dispose();
                     desktop.Shutdown();
                 }
                 break;

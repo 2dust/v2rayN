@@ -70,7 +70,7 @@ public partial class SubSettingWindow
         {
             return;
         }
-        var img = QRCodeHelper.GetQRCode(url);
+        var img = QRCodeUtils.GetQRCode(url);
         var dialog = new QrcodeView()
         {
             imgQrcode = { Source = img },

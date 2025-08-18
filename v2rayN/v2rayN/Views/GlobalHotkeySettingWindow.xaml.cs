@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ReactiveUI;
 using ServiceLib.Manager;
-using v2rayN.Handler;
+using v2rayN.Manager;
 
 namespace v2rayN.Views;
 
@@ -23,8 +23,8 @@ public partial class GlobalHotkeySettingWindow
 
         btnReset.Click += btnReset_Click;
 
-        HotkeyHandler.Instance.IsPause = true;
-        this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
+        HotkeyManager.Instance.IsPause = true;
+        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
 
         this.WhenActivated(disposables =>
         {

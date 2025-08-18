@@ -180,7 +180,7 @@ public partial class ProfilesView
 
     public async void ShareServer(string url)
     {
-        var img = QRCodeHelper.GetQRCode(url);
+        var img = QRCodeUtils.GetQRCode(url);
         var dialog = new QrcodeView()
         {
             imgQrcode = { Source = img },

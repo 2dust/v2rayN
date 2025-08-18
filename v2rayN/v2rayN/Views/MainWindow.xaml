@@ -15,6 +15,7 @@
     Height="700"
     MinWidth="900"
     x:TypeArguments="vms:MainWindowViewModel"
+    Icon="/Resources/v2rayN.ico"
     ResizeMode="CanResizeWithGrip"
     ShowInTaskbar="True"
     Style="{StaticResource WindowGlobal}"

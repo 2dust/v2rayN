@@ -6,12 +6,12 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using ServiceLib.Manager;
 
-namespace v2rayN.Handler;
+namespace v2rayN.Manager;
 
-public sealed class HotkeyHandler
+public sealed class HotkeyManager
 {
-    private static readonly Lazy<HotkeyHandler> _instance = new(() => new());
-    public static HotkeyHandler Instance = _instance.Value;
+    private static readonly Lazy<HotkeyManager> _instance = new(() => new());
+    public static HotkeyManager Instance = _instance.Value;
     private const int WmHotkey = 0x0312;
     private readonly Dictionary<int, List<EGlobalHotkey>> _hotkeyTriggerDic = new();
 
@@ -21,7 +21,7 @@ public sealed class HotkeyHandler
 
     public event Action<EGlobalHotkey>? HotkeyTriggerEvent;
 
-    public HotkeyHandler()
+    public HotkeyManager()
     {
         ComponentDispatcher.ThreadPreprocessMessage += OnThreadPreProcessMessage;
         Init();
@@ -51,7 +51,7 @@ public sealed class HotkeyHandler
                     modifiers |= KeyModifiers.Alt;
                 }
 
-                key = (key << 16) | (int)modifiers;
+                key = key << 16 | (int)modifiers;
                 if (!_hotkeyTriggerDic.ContainsKey(key))
                 {
                     _hotkeyTriggerDic.Add(key, new() { item.EGlobalHotkey });
@@ -77,7 +77,7 @@ public sealed class HotkeyHandler
 
             Application.Current?.Dispatcher.Invoke(() =>
             {
-                isSuccess = RegisterHotKey(IntPtr.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey);
+                isSuccess = RegisterHotKey(nint.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey);
             });
             foreach (var name in hotkeyInfo.Names)
             {
@@ -101,7 +101,7 @@ public sealed class HotkeyHandler
         {
             Application.Current?.Dispatcher.Invoke(() =>
             {
-                UnregisterHotKey(IntPtr.Zero, hotkey);
+                UnregisterHotKey(nint.Zero, hotkey);
             });
         }
         Init();
@@ -111,7 +111,7 @@ public sealed class HotkeyHandler
     private (int fsModifiers, int vKey, string hotkeyStr, List<string> Names) GetHotkeyInfo(int hotkeyCode)
     {
         var fsModifiers = hotkeyCode & 0xffff;
-        var vKey = (hotkeyCode >> 16) & 0xffff;
+        var vKey = hotkeyCode >> 16 & 0xffff;
         var hotkeyStr = new StringBuilder();
         var names = new List<string>();
 
@@ -174,10 +174,10 @@ public sealed class HotkeyHandler
     }
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+    private static extern bool RegisterHotKey(nint hWnd, int id, int fsModifiers, int vlc);
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+    private static extern bool UnregisterHotKey(nint hWnd, int id);
 
     [Flags]
     private enum KeyModifiers

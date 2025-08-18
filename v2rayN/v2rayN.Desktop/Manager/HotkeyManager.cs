@@ -4,12 +4,12 @@ using Avalonia.ReactiveUI;
 using Avalonia.Win32.Input;
 using GlobalHotKeys;
 
-namespace v2rayN.Desktop.Handler;
+namespace v2rayN.Desktop.Manager;
 
-public sealed class HotkeyHandler
+public sealed class HotkeyManager
 {
-    private static readonly Lazy<HotkeyHandler> _instance = new(() => new());
-    public static HotkeyHandler Instance = _instance.Value;
+    private static readonly Lazy<HotkeyManager> _instance = new(() => new());
+    public static HotkeyManager Instance = _instance.Value;
     private readonly Dictionary<int, EGlobalHotkey> _hotkeyTriggerDic = new();
     private HotKeyManager? _hotKeyManager;
 

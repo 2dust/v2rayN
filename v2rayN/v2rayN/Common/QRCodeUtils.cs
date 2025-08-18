@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace v2rayN;
 
-public class QRCodeHelper
+public class QRCodeUtils
 {
     public static ImageSource? GetQRCode(string? strContent)
     {
@@ -17,7 +17,7 @@ public class QRCodeHelper
         }
         try
         {
-            var qrCodeImage = QRCodeUtils.GenQRCode(strContent);
+            var qrCodeImage = ServiceLib.Common.QRCodeUtils.GenQRCode(strContent);
             return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
         }
         catch

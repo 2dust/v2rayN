@@ -1,13 +1,14 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
+using v2rayN.Manager;
 
-namespace v2rayN.Handler;
+namespace v2rayN.Manager;
 
-public sealed class WindowsHandler
+public sealed class WindowsManager
 {
-    private static readonly Lazy<WindowsHandler> instance = new(() => new());
-    public static WindowsHandler Instance => instance.Value;
+    private static readonly Lazy<WindowsManager> instance = new(() => new());
+    public static WindowsManager Instance => instance.Value;
     private static readonly string _tag = "WindowsHandler";
 
     public async Task<Icon> GetNotifyIcon(Config config)
@@ -97,8 +98,8 @@ public sealed class WindowsHandler
 
     public void RegisterGlobalHotkey(Config config, Action<EGlobalHotkey> handler, Action<bool, string>? update)
     {
-        HotkeyHandler.Instance.UpdateViewEvent += update;
-        HotkeyHandler.Instance.HotkeyTriggerEvent += handler;
-        HotkeyHandler.Instance.Load();
+        HotkeyManager.Instance.UpdateViewEvent += update;
+        HotkeyManager.Instance.HotkeyTriggerEvent += handler;
+        HotkeyManager.Instance.Load();
     }
 }

@@ -10,7 +10,7 @@ using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using ServiceLib.Manager;
 using Splat;
-using v2rayN.Handler;
+using v2rayN.Manager;
 
 namespace v2rayN.Views;
 
@@ -143,7 +143,7 @@ public partial class MainWindow
         }
 
         AddHelpMenuItem();
-        WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
+        WindowsManager.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
         MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
 
@@ -344,7 +344,7 @@ public partial class MainWindow
 
         if (Application.Current?.MainWindow is Window window)
         {
-            var bytes = QRCodeHelper.CaptureScreen(window);
+            var bytes = QRCodeUtils.CaptureScreen(window);
             await ViewModel?.ScanScreenResult(bytes);
         }
 

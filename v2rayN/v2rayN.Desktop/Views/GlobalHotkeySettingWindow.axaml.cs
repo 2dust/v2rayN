@@ -5,7 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ReactiveUI;
 using v2rayN.Desktop.Base;
-using v2rayN.Desktop.Handler;
+using v2rayN.Desktop.Manager;
 
 namespace v2rayN.Desktop.Views;
 
@@ -21,8 +21,8 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         btnReset.Click += btnReset_Click;
 
-        HotkeyHandler.Instance.IsPause = true;
-        this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
+        HotkeyManager.Instance.IsPause = true;
+        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
         btnCancel.Click += (s, e) => this.Close();
 
         this.WhenActivated(disposables =>
