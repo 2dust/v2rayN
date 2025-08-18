@@ -5,12 +5,12 @@ set -euo pipefail
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
-    rhel|rocky|almalinux)
+    rhel|rocky|almalinux|centos)
       echo "[OK] Detected supported system: $NAME $VERSION_ID"
       ;;
     *)
       echo "[ERROR] Unsupported system: $NAME ($ID)."
-      echo "This script only supports Red Hat Enterprise Linux / Rocky Linux / AlmaLinux."
+      echo "This script only supports Red Hat Enterprise Linux / Rocky Linux / AlmaLinux / CentOS Stream."
       exit 1
       ;;
   esac
