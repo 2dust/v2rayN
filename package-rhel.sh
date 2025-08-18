@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux
 # ===== Config & Parse arguments =========================================================
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
