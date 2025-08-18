@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux ======================
+# ===== Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux / CentOS Stream =======
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
