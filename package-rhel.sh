@@ -73,24 +73,32 @@ fi
 
 # ===== Resolve GUI version & auto checkout ============================================
 # Rules:
-# - If VERSION_ARG provided: try to checkout that tag (vX.Y.Z or X.Y.Z). If not found, ask which channel (Latest vs Pre-release),
-#   default to Latest, then fetch the chosen channel's latest tag and checkout.
-# - If VERSION_ARG not provided: ask the channel first (default Latest), then checkout to that tag.
+# - If VERSION_ARG provided: try to checkout that tag (vX.Y.Z or X.Y.Z). If not found, ask which channel (Latest vs Pre-release vs Keep current),
+#   default to Latest, then fetch the chosen channel's latest tag and checkout. If Keep current, do nothing.
+# - If VERSION_ARG not provided: ask the channel first (default Latest). If Keep current, do nothing; otherwise checkout latest tag of chosen channel.
 # - If not a git repo, warn and continue without switching (keep current branch).
 VERSION=""  # final GUI version string without 'v' prefix
 
 choose_channel() {
-  # Print menu to stderr first, then read from stdin; only echo the chosen token to stdout.
+  # Print menu to stderr and read from /dev/tty so that stdout only carries the token.
+  # Return via stdout one of: latest | prerelease | keep
   local ch="latest" sel=""
   if [[ -t 0 ]]; then
-    >&2 echo "[?] Choose v2rayN release channel:"
-    >&2 echo "    1) Latest (stable)  [default]"
-    >&2 echo "    2) Pre-release (preview)"
-    read -r -p "Enter 1 or 2 (default 1): " sel
-    case "${sel:-}" in
-      2) ch="prerelease" ;;
-      *) ch="latest" ;;
-    esac
+    echo "[?] Choose v2rayN release channel:" >&2
+    echo "    1) Latest (stable)  [default]" >&2
+    echo "    2) Pre-release (preview)" >&2
+    echo "    3) Keep current (do nothing)" >&2
+    printf "Enter 1, 2 or 3 [default 1]: " >&2
+    # Read explicitly from /dev/tty to avoid being swallowed in command substitution
+    if read -r sel </dev/tty; then
+      case "${sel:-}" in
+        2) ch="prerelease" ;;
+        3) ch="keep" ;;
+        *) ch="latest" ;;
+      esac
+    else
+      ch="latest"
+    fi
   else
     ch="latest"
   fi
@@ -147,6 +155,40 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
     else
       echo "[WARN] Tag '${VERSION_ARG}' not found."
       ch="$(choose_channel)"
+      if [[ "$ch" == "keep" ]]; then
+        echo "[*] Keep current repository state (no checkout)."
+        if git describe --tags --abbrev=0 >/dev/null 2>&1; then
+          VERSION="$(git describe --tags --abbrev=0)"
+        else
+          VERSION="0.0.0+git"
+        fi
+        VERSION="${VERSION#v}"
+      else
+        echo "[*] Resolving ${ch} tag from GitHub releases..."
+        tag=""
+        if [[ "$ch" == "prerelease" ]]; then
+          tag="$(get_latest_tag_prerelease || true)"
+        else
+          tag="$(get_latest_tag_latest || true)"
+        fi
+        [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+        echo "[*] Latest tag for '${ch}': ${tag}"
+        git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
+        VERSION="${tag#v}"
+      fi
+    fi
+  else
+    # No explicit GUI version passed: ask channel first
+    ch="$(choose_channel)"
+    if [[ "$ch" == "keep" ]]; then
+      echo "[*] Keep current repository state (no checkout)."
+      if git describe --tags --abbrev=0 >/dev/null 2>&1; then
+        VERSION="$(git describe --tags --abbrev=0)"
+      else
+        VERSION="0.0.0+git"
+      fi
+      VERSION="${VERSION#v}"
+    else
       echo "[*] Resolving ${ch} tag from GitHub releases..."
       tag=""
       if [[ "$ch" == "prerelease" ]]; then
@@ -159,23 +201,10 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
       git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
       VERSION="${tag#v}"
     fi
-  else
-    # No explicit GUI version passed: ask channel first
-    ch="$(choose_channel)"
-    echo "[*] Resolving ${ch} tag from GitHub releases..."
-    tag=""
-    if [[ "$ch" == "prerelease" ]]; then
-      tag="$(get_latest_tag_prerelease || true)"
-    else
-      tag="$(get_latest_tag_latest || true)"
-    fi
-    [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
-    echo "[*] Latest tag for '${ch}': ${tag}"
-    git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
-    VERSION="${tag#v}"
   fi
 else
   echo "[WARN] Current directory is not a git repo; cannot checkout version. Proceeding on current tree."
+  # Fallback: derive version from nearest tag or use VERSION_ARG/raw default below
   VERSION="${VERSION_ARG:-}"
   if [[ -z "$VERSION" ]]; then
     if git describe --tags --abbrev=0 >/dev/null 2>&1; then
@@ -271,9 +300,11 @@ download_geo_assets() {
     "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
   echo "[+] Download sing-box rule DB & rule-sets to ZIP-like paths"
+  # meta-rules DB into bin/
   curl -fsSL -o "$bin_dir/geoip.metadb" \
     "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
 
+  # 2dust rule-sets into bin/srss/
   for f in \
     geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
     geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
