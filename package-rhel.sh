@@ -196,14 +196,34 @@ download_v2rayn_bundle() {
   curl -fL "$url" -o "$zipname" || { echo "[!] Bundle download failed"; return 1; }
   unzip -q "$zipname" -d "$tmp" || { echo "[!] Bundle unzip failed"; return 1; }
 
-  # The archive contains a top-level bin/, copy it if present
+  # Normalize layout: copy 'bin/' if present; otherwise copy all
   if [[ -d "$tmp/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$tmp/bin/" "$outroot/bin/"
   else
-    # Fallback: copy all to outroot (in case upstream changes layout)
     rsync -a "$tmp/" "$outroot/"
   fi
+
+  # --- CLEANUPS (added) ------------------------------------------------------
+  # 1) Delete the bundle zip if it was copied alongside files (safety)
+  #    (Normally zip stays in $tmp, but if rsync-all copied it, remove it.)
+  rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
+
+  # 2) Remove any 'mihomo' directories brought by the bundle
+  #    (both common locations are handled: bin/mihomo and nested paths)
+  find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
+
+  # 3) If upstream layout was nested like 'v2rayN-linux-*/bin', flatten it
+  #    by moving its 'bin/' contents into $outroot/bin then remove the wrapper.
+  local nested_dir
+  nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
+  if [[ -n "${nested_dir:-}" && -d "$nested_dir/bin" ]]; then
+    mkdir -p "$outroot/bin"
+    rsync -a "$nested_dir/bin/" "$outroot/bin/"
+    rm -rf "$nested_dir"
+  fi
+  # ---------------------------------------------------------------------------
+
   echo "[+] Bundle extracted to $outroot"
 }
 
