@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Require RHEL/Rocky/Alma/CentOS OR Ubuntu/Debian =========================
+# ===== Require Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS OR Ubuntu/Debian ====
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
@@ -10,7 +10,7 @@ if [[ -r /etc/os-release ]]; then
       ;;
     *)
       echo "[ERROR] Unsupported system: $NAME ($ID)."
-      echo "This script only supports RHEL/Rocky/Alma/CentOS or Ubuntu/Debian."
+      echo "This script only supports Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS or Ubuntu/Debian."
       exit 1
       ;;
   esac
