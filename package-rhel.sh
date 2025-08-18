@@ -23,6 +23,7 @@ fi
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
 AUTOSTART=0              # 1 = enable system-wide autostart (/etc/xdg/autostart)
+FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
 
 # If the first argument starts with --, don’t treat it as version number
 if [[ "${VERSION_ARG:-}" == --* ]]; then
@@ -38,6 +39,7 @@ while [[ $# -gt 0 ]]; do
     --autostart)     AUTOSTART=1; shift;;
     --xray-ver)      XRAY_VER="${2:-}"; shift 2;;        # Specify xray version (optional)
     --singbox-ver)   SING_VER="${2:-}"; shift 2;;        # Specify sing-box version (optional)
+    --netcore)       FORCE_NETCORE=1; shift;;            # NEW: force old mode (no bundle zip)
     *)
       if [[ -z "${VERSION_ARG:-}" ]]; then VERSION_ARG="$1"; fi
       shift;;
@@ -179,6 +181,32 @@ download_geo_assets() {
   done
 }
 
+# === NEW: Prefer the all-in-one v2rayN bundle zip first =======================
+download_v2rayn_bundle() {
+  local outroot="$1"
+  local url=""
+  if [[ "$arch" == "aarch64" ]]; then
+    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
+  else
+    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
+  fi
+  echo "[+] Try v2rayN bundle archive: $url"
+  local tmp zipname
+  tmp="$(mktemp -d)"; zipname="$tmp/v2rayn.zip"
+  curl -fL "$url" -o "$zipname" || { echo "[!] Bundle download failed"; return 1; }
+  unzip -q "$zipname" -d "$tmp" || { echo "[!] Bundle unzip failed"; return 1; }
+
+  # The archive contains a top-level bin/, copy it if present
+  if [[ -d "$tmp/bin" ]]; then
+    mkdir -p "$outroot/bin"
+    rsync -a "$tmp/bin/" "$outroot/bin/"
+  else
+    # Fallback: copy all to outroot (in case upstream changes layout)
+    rsync -a "$tmp/" "$outroot/"
+  fi
+  echo "[+] Bundle extracted to $outroot"
+}
+
 # ===== Copy publish files to RPM build root ==================================================
 rpmdev-setuptree
 TOPDIR="${HOME}/rpmbuild"
@@ -199,16 +227,30 @@ ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
 # bin directory structure
 mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
 
-# Core
-if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-  download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)）"
+# ====== NEW decision: prefer bundle zip unless --netcore, else fall back ======
+if [[ "$FORCE_NETCORE" -eq 0 ]]; then
+  if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
+    echo "[*] Using v2rayN bundle archive."
+  else
+    echo "[*] Bundle failed, fallback to separate core + rules."
+    if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+      download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
+    fi
+    if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+      download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+    fi
+    download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
+  fi
+else
+  echo "[*] --netcore specified: use separate core + rules."
+  if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+    download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
+  fi
+  if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+    download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+  fi
+  download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
 fi
-if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-  download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
-fi
-
-# Geo / rule-sets
-download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
 
 tar -C "$WORKDIR" -czf "$SOURCEDIR/$PKGROOT.tar.gz" "$PKGROOT"
 
@@ -303,12 +345,12 @@ if [ -f "%{_builddir}/__PKGROOT__/v2rayn.png" ]; then
 fi
 
 %post
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2&> /dev/null || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2&> /dev/null || true
+/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
+/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
 
 %postun
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2&> /dev/null || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2&> /dev/null || true
+/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
+/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
 
 %files
 %{_bindir}/v2rayn
