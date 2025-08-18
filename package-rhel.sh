@@ -143,40 +143,44 @@ download_singbox() {
   install -Dm755 "$bin" "$outdir/sing-box"
 }
 
-# === Geo rule download (new logic) ===================================
+# === Geo rule download (ZIP-LIKE LAYOUT for netcore mode) =====================
+# Make netcore output match the ZIP bundle structure:
+# - All geo databases at    outroot/bin/ (geosite.dat, geoip.dat, Country.mmdb, geoip-only-cn-private.dat, geoip.metadb)
+# - All *.srs rule-sets at  outroot/bin/srss/
+# (Binaries stay under outroot/bin/xray and outroot/bin/sing_box as before.)
 download_geo_assets() {
   local outroot="$1"
-  local xray_dir="$outroot/bin/xray"
-  local sbox_dir="$outroot/bin/sing_box"
-  mkdir -p "$xray_dir" "$sbox_dir/rule-sets"
+  local bin_dir="$outroot/bin"
+  local srss_dir="$bin_dir/srss"
+  mkdir -p "$bin_dir" "$srss_dir"
 
-  echo "[+] Download Xray Geo（geosite/geoip/...）"
-  curl -fsSL -o "$xray_dir/geosite.dat" \
+  echo "[+] Download Xray Geo (geosite/geoip/...) to ${bin_dir}"
+  curl -fsSL -o "$bin_dir/geosite.dat" \
     "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
-  curl -fsSL -o "$xray_dir/geoip.dat" \
+  curl -fsSL -o "$bin_dir/geoip.dat" \
     "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
-  curl -fsSL -o "$xray_dir/geoip-only-cn-private.dat" \
+  curl -fsSL -o "$bin_dir/geoip-only-cn-private.dat" \
     "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
-  curl -fsSL -o "$xray_dir/Country.mmdb" \
+  curl -fsSL -o "$bin_dir/Country.mmdb" \
     "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
-  echo "[+] Download sing-box rules & DB"
-  # database (optional meta rules)
-  curl -fsSL -o "$sbox_dir/geoip.metadb" \
+  echo "[+] Download sing-box rule DB & rule-sets to ZIP-like paths"
+  # meta-rules DB into bin/
+  curl -fsSL -o "$bin_dir/geoip.metadb" \
     "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
 
-  # Official 2dust srs rule-sets (common subsets)
+  # 2dust rule-sets into bin/srss/
   for f in \
     geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
     geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
-    curl -fsSL -o "$sbox_dir/rule-sets/$f" \
+    curl -fsSL -o "$srss_dir/$f" \
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
   done
 
   for f in \
     geosite-cn.srs geosite-gfw.srs geosite-greatfire.srs \
-    geosite-geolocation-cn.srs geosite-category-ads-all.srs; do
-    curl -fsSL -o "$sbox_dir/rule-sets/$f" \
+    geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
+    curl -fsSL -o "$srss_dir/$f" \
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
   done
 }
@@ -204,17 +208,10 @@ download_v2rayn_bundle() {
     rsync -a "$tmp/" "$outroot/"
   fi
 
-  # --- CLEANUPS (added) ------------------------------------------------------
-  # 1) Delete the bundle zip if it was copied alongside files (safety)
-  #    (Normally zip stays in $tmp, but if rsync-all copied it, remove it.)
+  # --- CLEANUPS (keep bundle-only adjustments) -------------------------------
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
-
-  # 2) Remove any 'mihomo' directories brought by the bundle
-  #    (both common locations are handled: bin/mihomo and nested paths)
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
-  # 3) If upstream layout was nested like 'v2rayN-linux-*/bin', flatten it
-  #    by moving its 'bin/' contents into $outroot/bin then remove the wrapper.
   local nested_dir
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
   if [[ -n "${nested_dir:-}" && -d "$nested_dir/bin" ]]; then
