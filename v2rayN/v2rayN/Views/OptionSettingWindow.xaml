@@ -430,7 +430,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="mtu" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
                     <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpmtu"
                         Grid.Row="1"
@@ -1037,7 +1037,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Auto Route" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunAutoRoute}" />
                     <ToggleButton
                         x:Name="togAutoRoute"
                         Grid.Row="2"
@@ -1051,7 +1051,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Strict Route" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunStrictRoute}" />
                     <ToggleButton
                         x:Name="togStrictRoute"
                         Grid.Row="3"
@@ -1065,7 +1065,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Stack" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunStack}" />
                     <ComboBox
                         x:Name="cmbStack"
                         Grid.Row="4"
@@ -1081,7 +1081,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Mtu" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
                     <ComboBox
                         x:Name="cmbMtu"
                         Grid.Row="5"

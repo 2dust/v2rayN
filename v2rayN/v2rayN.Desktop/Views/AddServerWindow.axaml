@@ -523,7 +523,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Mtu" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
                     <TextBox
                         x:Name="txtShortId9"
                         Grid.Row="5"

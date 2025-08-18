@@ -736,7 +736,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Auto Route" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunAutoRoute}" />
                     <ToggleSwitch
                         x:Name="togAutoRoute"
                         Grid.Row="2"
@@ -749,7 +749,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Strict Route" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunStrictRoute}" />
                     <ToggleSwitch
                         x:Name="togStrictRoute"
                         Grid.Row="3"
@@ -762,7 +762,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Stack" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunStack}" />
                     <ComboBox
                         x:Name="cmbStack"
                         Grid.Row="4"
@@ -776,7 +776,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Mtu" />
+                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
                     <ComboBox
                         x:Name="cmbMtu"
                         Grid.Row="5"
