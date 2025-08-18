@@ -25,7 +25,7 @@ WITH_CORE="both"         # Default: bundle both xray+sing-box
 AUTOSTART=0              # 1 = enable system-wide autostart (/etc/xdg/autostart)
 FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
 
-# If the first argument starts with --, don’t treat it as version number
+# If the first argument starts with --, do not treat it as a version number
 if [[ "${VERSION_ARG:-}" == --* ]]; then
   VERSION_ARG=""
 fi
@@ -52,6 +52,7 @@ arch="$(uname -m)"
 
 install_ok=0
 case "$ID" in
+  # ------------------------------ RHEL family (UNCHANGED) ------------------------------
   rhel|rocky|almalinux|centos)
     if command -v dnf >/dev/null 2>&1; then
       sudo dnf -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar rsync || \
@@ -63,8 +64,10 @@ case "$ID" in
       install_ok=1
     fi
     ;;
+  # ------------------------------ Ubuntu/Debian ---------------------------------------
   ubuntu|debian)
     sudo apt-get update
+    # Ensure 'universe' (Ubuntu) to get 'rpm'
     if [[ "${ID:-}" == "ubuntu" ]]; then
       if ! apt-cache policy | grep -q '^500 .*ubuntu.com/ubuntu.* universe'; then
         sudo apt-get -y install software-properties-common || true
@@ -72,12 +75,15 @@ case "$ID" in
         sudo apt-get update
       fi
     fi
+    # Base tools + rpm (provides rpmbuild)
     sudo apt-get -y install curl unzip tar rsync rpm || true
+    # rpmbuild presence check
     if ! command -v rpmbuild >/dev/null 2>&1; then
       echo "[ERROR] 'rpmbuild' not found after installing 'rpm'."
       echo "        Please ensure the 'rpm' package is available from your repos (universe on Ubuntu)."
       exit 1
     fi
+    # .NET SDK 8 (best effort)
     if ! command -v dotnet >/dev/null 2>&1; then
       sudo apt-get -y install dotnet-sdk-8.0 || true
       sudo apt-get -y install dotnet-sdk-8 || true
@@ -98,7 +104,7 @@ command -v curl >/dev/null
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Git submodules (tolerant)
+# Git submodules (best effort)
 if [[ -f .gitmodules ]]; then
   git submodule sync --recursive || true
   git submodule update --init --recursive || true
@@ -115,6 +121,7 @@ fi
 VERSION=""
 
 choose_channel() {
+  # Print menu to stderr and read from /dev/tty so stdout only carries the token.
   local ch="latest" sel=""
   if [[ -t 0 ]]; then
     echo "[?] Choose v2rayN release channel:" >&2
@@ -138,6 +145,7 @@ choose_channel() {
 }
 
 get_latest_tag_latest() {
+  # Resolve /releases/latest → tag_name
   curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases/latest" \
     | grep -Eo '"tag_name":\s*"v?[^"]+"' \
     | head -n1 \
@@ -145,13 +153,34 @@ get_latest_tag_latest() {
 }
 
 get_latest_tag_prerelease() {
-  local json
+  # Resolve newest prerelease=true tag; prefer jq, fallback to sed/grep (no awk)
+  local json tag
   json="$(curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20")" || return 1
-  echo "$json" \
-    | awk -v RS='},' '/"prerelease":[[:space:]]*true/ { if (match($0, /"tag_name":[[:space:]]*"v?[^"]+"/, m)) { t=m[0]; sub(/.*"tag_name":[[:space:]]*"?v?/, "", t); sub(/".*/, "", t); print t; exit } }'
+
+  # 1) Use jq if present
+  if command -v jq >/dev/null 2>&1; then
+    tag="$(printf '%s' "$json" \
+      | jq -r '[.[] | select(.prerelease==true)][0].tag_name' 2>/dev/null \
+      | sed 's/^v//')" || true
+  fi
+
+  # 2) Fallback to sed/grep only
+  if [[ -z "${tag:-}" || "${tag:-}" == "null" ]]; then
+    tag="$(printf '%s' "$json" \
+      | tr '\n' ' ' \
+      | sed 's/},[[:space:]]*{/\n/g' \
+      | grep -m1 -E '"prerelease"[[:space:]]*:[[:space:]]*true' \
+      | grep -Eo '"tag_name"[[:space:]]*:[[:space:]]*"v?[^"]+"' \
+      | head -n1 \
+      | sed -E 's/.*"tag_name"[[:space:]]*:[[:space:]]*"v?([^"]+)".*/\1/')" || true
+  fi
+
+  [[ -n "${tag:-}" && "${tag:-}" != "null" ]] || return 1
+  printf '%s\n' "$tag"
 }
 
 git_try_checkout() {
+  # Try a series of refs and checkout when found.
   local want="$1" ref=""
   if git rev-parse --git-dir >/dev/null 2>&1; then
     git fetch --tags --force --prune --depth=1 || true
@@ -196,6 +225,10 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
         tag=""
         if [[ "$ch" == "prerelease" ]]; then
           tag="$(get_latest_tag_prerelease || true)"
+          if [[ -z "$tag" ]]; then
+            echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
+            tag="$(get_latest_tag_latest || true)"
+          fi
         else
           tag="$(get_latest_tag_latest || true)"
         fi
@@ -220,6 +253,10 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
       tag=""
       if [[ "$ch" == "prerelease" ]]; then
         tag="$(get_latest_tag_prerelease || true)"
+        if [[ -z "$tag" ]]; then
+          echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
+          tag="$(get_latest_tag_latest || true)"
+        fi
       else
         tag="$(get_latest_tag_latest || true)"
       fi
@@ -260,6 +297,7 @@ PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
 
 # ===== Helpers for core/rules download =======================================
 download_xray() {
+  # Download Xray core and install to outdir/xray
   local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
@@ -280,6 +318,7 @@ download_xray() {
 }
 
 download_singbox() {
+  # Download sing-box core and install to outdir/sing-box
   local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
@@ -301,7 +340,7 @@ download_singbox() {
   install -Dm755 "$bin" "$outdir/sing-box"
 }
 
-# 统一 geo 文件布局到 bin/xray/
+# Move geo files to a unified path: outroot/bin/xray/
 unify_geo_layout() {
   local outroot="$1"
   mkdir -p "$outroot/bin/xray"
@@ -319,7 +358,7 @@ unify_geo_layout() {
   done
 }
 
-# Geo 规则（先按 ZIP-like 下载到 bin/，随后统一到 bin/xray/）
+# Download geo/rule assets; then unify to bin/xray/
 download_geo_assets() {
   local outroot="$1"
   local bin_dir="$outroot/bin"
@@ -353,11 +392,11 @@ download_geo_assets() {
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
   done
 
-  # 关键：统一到 bin/xray/
+  # Unify to bin/xray/
   unify_geo_layout "$outroot"
 }
 
-# 优先使用 v2rayN 打包好的 bundle
+# Prefer the prebuilt v2rayN core bundle; then unify geo layout
 download_v2rayn_bundle() {
   local outroot="$1"
   local url=""
@@ -390,7 +429,7 @@ download_v2rayn_bundle() {
     rm -rf "$nested_dir"
   fi
 
-  # 关键：统一到 bin/xray/
+  # Unify to bin/xray/
   unify_geo_layout "$outroot"
 
   echo "[+] Bundle extracted to $outroot"
@@ -402,7 +441,7 @@ WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
 if [[ "$ID" =~ ^(rhel|rocky|almalinux|centos)$ ]]; then
-  # --- RHEL path (unchanged) ---
+  # --- RHEL path (UNCHANGED) ---
   rpmdev-setuptree
   TOPDIR="${HOME}/rpmbuild"
   SPECDIR="${TOPDIR}/SPECS"
@@ -420,14 +459,14 @@ fi
 mkdir -p "$WORKDIR/$PKGROOT"
 cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
 
-# icon (Optional)
+# Optional icon
 ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
 [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
 
-# bin directory structure
+# Prepare bin structure
 mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
 
-# ====== Prefer bundle zip unless --netcore, else fall back =====================
+# Prefer the bundle; fallback to separate core + rules
 if [[ "$FORCE_NETCORE" -eq 0 ]]; then
   if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
     echo "[*] Using v2rayN bundle archive."
@@ -492,14 +531,14 @@ Geo files for Xray are placed at /opt/v2rayN/bin/xray; launcher will symlink the
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
-# Launcher (prioritize ELF first, then fall back to DLL; also create Geo symlinks for the user)
+# Launcher (prefer native ELF first, then DLL fallback; also create Geo symlinks for the user)
 install -dm0755 %{buildroot}%{_bindir}
 cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
 DIR="/opt/v2rayN"
 
-# --- SYMLINK GEO into user's XDG dir (new) ---
+# --- Symlink GEO files into user's XDG dir (first-run convenience) ---
 XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 USR_GEO_DIR="$XDG_DATA_HOME/v2rayN/bin"
 SYS_XRAY_DIR="$DIR/bin/xray"
@@ -511,10 +550,10 @@ for f in geosite.dat geoip.dat geoip-only-cn-private.dat Country.mmdb; do
 done
 # --- end GEO ---
 
-# Prefer native ELF（apphost）
+# Prefer native apphost
 if [[ -x "$DIR/v2rayN" ]]; then exec "$DIR/v2rayN" "$@"; fi
 
-# DLL fallback (for framework-dependent publish)
+# DLL fallback
 for dll in v2rayN.Desktop.dll v2rayN.dll; do
   if [[ -f "$DIR/$dll" ]]; then exec /usr/bin/dotnet "$DIR/$dll" "$@"; fi
 done
@@ -525,7 +564,7 @@ exit 1
 EOF
 chmod 0755 %{buildroot}%{_bindir}/v2rayn
 
-# Desktop File
+# Desktop file
 install -dm0755 %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
@@ -538,7 +577,7 @@ Terminal=false
 Categories=Network;
 EOF
 
-# icon
+# Icon
 if [ -f "%{_builddir}/__PKGROOT__/v2rayn.png" ]; then
   install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
   install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
@@ -559,7 +598,7 @@ fi
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 SPEC
 
-# Optional: system-wide autostart (append block, keep original logic unchanged)
+# Optional: system-wide autostart (append block)
 if [[ "$AUTOSTART" -eq 1 ]]; then
 cat >> "$SPECFILE" <<'SPEC'
 # System-wide autostart entry
@@ -579,7 +618,7 @@ EOF
 SPEC
 fi
 
-# Injecting version/package root placeholders
+# Inject placeholders
 sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
 sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
 
