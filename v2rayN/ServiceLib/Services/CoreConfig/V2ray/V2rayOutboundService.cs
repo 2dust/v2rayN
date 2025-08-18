@@ -529,10 +529,7 @@ public partial class CoreConfigV2rayService
             var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
-                && prevNode.ConfigType != EConfigType.Custom
-                && prevNode.ConfigType != EConfigType.Hysteria2
-                && prevNode.ConfigType != EConfigType.TUIC
-                && prevNode.ConfigType != EConfigType.Anytls)
+                && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
             {
                 var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(prevNode, prevOutbound);
@@ -605,10 +602,7 @@ public partial class CoreConfigV2rayService
                     {
                         var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
-                            && prevNode.ConfigType != EConfigType.Custom
-                            && prevNode.ConfigType != EConfigType.Hysteria2
-                            && prevNode.ConfigType != EConfigType.TUIC
-                            && prevNode.ConfigType != EConfigType.Anytls)
+                            && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
@@ -675,10 +669,7 @@ public partial class CoreConfigV2rayService
             // Next proxy
             var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
-                && nextNode.ConfigType != EConfigType.Custom
-                && nextNode.ConfigType != EConfigType.Hysteria2
-                && nextNode.ConfigType != EConfigType.TUIC
-                && nextNode.ConfigType != EConfigType.Anytls)
+                && Global.XraySupportConfigType.Contains(nextNode.ConfigType))
             {
                 if (nextOutbound == null)
                 {

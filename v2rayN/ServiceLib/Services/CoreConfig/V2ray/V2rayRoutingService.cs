@@ -126,10 +126,7 @@ public partial class CoreConfigV2rayService
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
         if (node == null
-            || node.ConfigType == EConfigType.Custom
-            || node.ConfigType == EConfigType.Hysteria2
-            || node.ConfigType == EConfigType.TUIC
-            || node.ConfigType == EConfigType.Anytls)
+            || !Global.XraySupportConfigType.Contains(node.ConfigType))
         {
             return Global.ProxyTag;
         }

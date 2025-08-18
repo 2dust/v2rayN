@@ -338,7 +338,7 @@ public partial class CoreConfigSingboxService
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
         if (node == null
-            || node.ConfigType == EConfigType.Custom)
+            || !Global.SingboxSupportConfigType.Contains(node.ConfigType))
         {
             return Global.ProxyTag;
         }

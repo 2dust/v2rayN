@@ -289,6 +289,31 @@ public class Global
             "sing_box"
     ];
 
+    public static readonly HashSet<EConfigType> XraySupportConfigType =
+    [
+        EConfigType.VMess,
+            EConfigType.VLESS,
+            EConfigType.Shadowsocks,
+            EConfigType.Trojan,
+            EConfigType.WireGuard,
+            EConfigType.SOCKS,
+            EConfigType.HTTP,
+    ];
+
+    public static readonly HashSet<EConfigType> SingboxSupportConfigType =
+    [
+        EConfigType.VMess,
+            EConfigType.VLESS,
+            EConfigType.Shadowsocks,
+            EConfigType.Trojan,
+            EConfigType.Hysteria2,
+            EConfigType.TUIC,
+            EConfigType.Anytls,
+            EConfigType.WireGuard,
+            EConfigType.SOCKS,
+            EConfigType.HTTP,
+    ];
+
     public static readonly List<string> DomainStrategies =
     [
         AsIs,

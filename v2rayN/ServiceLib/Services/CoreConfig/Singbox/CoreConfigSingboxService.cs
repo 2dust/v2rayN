@@ -133,7 +133,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             foreach (var it in selecteds)
             {
-                if (it.ConfigType == EConfigType.Custom)
+                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }
@@ -381,7 +381,7 @@ public partial class CoreConfigSingboxService(Config config)
             var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
-                if (it.ConfigType == EConfigType.Custom)
+                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }

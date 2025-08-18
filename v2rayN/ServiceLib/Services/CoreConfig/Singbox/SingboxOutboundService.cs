@@ -372,7 +372,7 @@ public partial class CoreConfigSingboxService
             var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
-                && prevNode.ConfigType != EConfigType.Custom)
+                && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
             {
                 prevOutboundTag = $"prev-{Global.ProxyTag}";
                 var prevServer = await GenServer(prevNode);
@@ -463,7 +463,7 @@ public partial class CoreConfigSingboxService
                     {
                         var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
-                            && prevNode.ConfigType != EConfigType.Custom)
+                            && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
@@ -558,7 +558,7 @@ public partial class CoreConfigSingboxService
             // Next proxy
             var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
-                && nextNode.ConfigType != EConfigType.Custom)
+                && Global.SingboxSupportConfigType.Contains(nextNode.ConfigType))
             {
                 nextOutbound ??= await GenServer(nextNode);
                 nextOutbound.tag = outbound.tag;
