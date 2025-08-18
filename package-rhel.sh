@@ -71,16 +71,122 @@ if [[ ! -f "$PROJECT" ]]; then
 fi
 [[ -f "$PROJECT" ]] || { echo "v2rayN.Desktop.csproj not found"; exit 1; }
 
-# Version
-VERSION="${VERSION_ARG:-}"
-if [[ -z "$VERSION" ]]; then
-  if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-    VERSION="$(git describe --tags --abbrev=0)"
+# ===== Resolve GUI version & auto checkout ============================================
+# Rules:
+# - If VERSION_ARG provided: try to checkout that tag (vX.Y.Z or X.Y.Z). If not found, ask which channel (Latest vs Pre-release),
+#   default to Latest, then fetch the chosen channel's latest tag and checkout.
+# - If VERSION_ARG not provided: ask the channel first (default Latest), then checkout to that tag.
+# - If not a git repo, warn and continue without switching (keep current branch).
+VERSION=""  # final GUI version string without 'v' prefix
+
+choose_channel() {
+  # Print menu to stderr first, then read from stdin; only echo the chosen token to stdout.
+  local ch="latest" sel=""
+  if [[ -t 0 ]]; then
+    >&2 echo "[?] Choose v2rayN release channel:"
+    >&2 echo "    1) Latest (stable)  [default]"
+    >&2 echo "    2) Pre-release (preview)"
+    read -r -p "Enter 1 or 2 (default 1): " sel
+    case "${sel:-}" in
+      2) ch="prerelease" ;;
+      *) ch="latest" ;;
+    esac
   else
-    VERSION="0.0.0+git"
+    ch="latest"
   fi
+  echo "$ch"
+}
+
+get_latest_tag_latest() {
+  # Use GitHub API: /releases/latest → tag_name
+  curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases/latest" \
+    | grep -Eo '"tag_name":\s*"v?[^"]+"' \
+    | head -n1 \
+    | sed -E 's/.*"tag_name":\s*"v?([^"]+)".*/\1/'
+}
+
+get_latest_tag_prerelease() {
+  # Use GitHub API: /releases?per_page=20 and pick the newest prerelease=true's tag_name
+  local json
+  json="$(curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20")" || return 1
+  echo "$json" \
+    | awk -v RS='},' '/"prerelease":[[:space:]]*true/ { if (match($0, /"tag_name":[[:space:]]*"v?[^"]+"/, m)) { t=m[0]; sub(/.*"tag_name":[[:space:]]*"?v?/, "", t); sub(/".*/, "", t); print t; exit } }'
+}
+
+git_try_checkout() {
+  # Try a series of refs and checkout when found.
+  # Args: version-like string (may contain leading 'v')
+  local want="$1" ref=""
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    git fetch --tags --force --prune --depth=1 || true
+    if git rev-parse "refs/tags/v${want}" >/dev/null 2>&1; then
+      ref="v${want}"
+    elif git rev-parse "refs/tags/${want}" >/dev/null 2>&1; then
+      ref="${want}"
+    elif git rev-parse --verify "${want}" >/dev/null 2>&1; then
+      ref="${want}"
+    fi
+    if [[ -n "$ref" ]]; then
+      echo "[OK] Found ref '${ref}', checking out..."
+      git checkout -f "${ref}"
+      if [[ -f .gitmodules ]]; then
+        git submodule sync --recursive || true
+        git submodule update --init --recursive || true
+      fi
+      return 0
+    fi
+  fi
+  return 1
+}
+
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  if [[ -n "${VERSION_ARG:-}" ]]; then
+    echo "[*] Trying to switch v2rayN repo to version: ${VERSION_ARG}"
+    if git_try_checkout "${VERSION_ARG#v}"; then
+      VERSION="${VERSION_ARG#v}"
+    else
+      echo "[WARN] Tag '${VERSION_ARG}' not found."
+      ch="$(choose_channel)"
+      echo "[*] Resolving ${ch} tag from GitHub releases..."
+      tag=""
+      if [[ "$ch" == "prerelease" ]]; then
+        tag="$(get_latest_tag_prerelease || true)"
+      else
+        tag="$(get_latest_tag_latest || true)"
+      fi
+      [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+      echo "[*] Latest tag for '${ch}': ${tag}"
+      git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
+      VERSION="${tag#v}"
+    fi
+  else
+    # No explicit GUI version passed: ask channel first
+    ch="$(choose_channel)"
+    echo "[*] Resolving ${ch} tag from GitHub releases..."
+    tag=""
+    if [[ "$ch" == "prerelease" ]]; then
+      tag="$(get_latest_tag_prerelease || true)"
+    else
+      tag="$(get_latest_tag_latest || true)"
+    fi
+    [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+    echo "[*] Latest tag for '${ch}': ${tag}"
+    git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
+    VERSION="${tag#v}"
+  fi
+else
+  echo "[WARN] Current directory is not a git repo; cannot checkout version. Proceeding on current tree."
+  VERSION="${VERSION_ARG:-}"
+  if [[ -z "$VERSION" ]]; then
+    if git describe --tags --abbrev=0 >/dev/null 2>&1; then
+      VERSION="$(git describe --tags --abbrev=0)"
+    else
+      VERSION="0.0.0+git"
+    fi
+  fi
+  VERSION="${VERSION#v}"
 fi
-VERSION="${VERSION#v}"   # Remove the prefix "v"
+echo "[*] GUI version resolved as: ${VERSION}"
 
 # ===== .NET publish (non-single file, self-contained) ===========================================
 dotnet clean "$PROJECT" -c Release
@@ -165,11 +271,9 @@ download_geo_assets() {
     "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
   echo "[+] Download sing-box rule DB & rule-sets to ZIP-like paths"
-  # meta-rules DB into bin/
   curl -fsSL -o "$bin_dir/geoip.metadb" \
     "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
 
-  # 2dust rule-sets into bin/srss/
   for f in \
     geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
     geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
