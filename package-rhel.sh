@@ -1,7 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux
+# ===== Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux ======================
+if [[ -r /etc/os-release ]]; then
+  . /etc/os-release
+  case "$ID" in
+    rhel|rocky|almalinux)
+      echo "[OK] Detected supported system: $NAME $VERSION_ID"
+      ;;
+    *)
+      echo "[ERROR] Unsupported system: $NAME ($ID)."
+      echo "This script only supports Red Hat Enterprise Linux / Rocky Linux / AlmaLinux."
+      exit 1
+      ;;
+  esac
+else
+  echo "[ERROR] Cannot detect system (missing /etc/os-release)."
+  exit 1
+fi
+
 # ===== Config & Parse arguments =========================================================
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
