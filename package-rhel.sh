@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Require Red Hat Enterprise Linux / Rocky Linux / AlmaLinux / CentOS Stream =======
+# ===== Require RHEL/Rocky/Alma/CentOS OR Ubuntu/Debian =========================
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
-    rhel|rocky|almalinux|centos)
+    rhel|rocky|almalinux|centos|ubuntu|debian)
       echo "[OK] Detected supported system: $NAME $VERSION_ID"
       ;;
     *)
       echo "[ERROR] Unsupported system: $NAME ($ID)."
-      echo "This script only supports Red Hat Enterprise Linux / Rocky Linux / AlmaLinux / CentOS Stream."
+      echo "This script only supports RHEL/Rocky/Alma/CentOS or Ubuntu/Debian."
       exit 1
       ;;
   esac
@@ -37,21 +37,61 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --with-core)     WITH_CORE="${2:-both}"; shift 2;;
     --autostart)     AUTOSTART=1; shift;;
-    --xray-ver)      XRAY_VER="${2:-}"; shift 2;;        # Specify xray version (optional)
-    --singbox-ver)   SING_VER="${2:-}"; shift 2;;        # Specify sing-box version (optional)
-    --netcore)       FORCE_NETCORE=1; shift;;            # NEW: force old mode (no bundle zip)
+    --xray-ver)      XRAY_VER="${2:-}"; shift 2;;
+    --singbox-ver)   SING_VER="${2:-}"; shift 2;;
+    --netcore)       FORCE_NETCORE=1; shift;;
     *)
       if [[ -z "${VERSION_ARG:-}" ]]; then VERSION_ARG="$1"; fi
       shift;;
   esac
 done
 
-# ===== Environment check ===============================================================
+# ===== Environment check + Dependencies ========================================
 arch="$(uname -m)"
 [[ "$arch" == "aarch64" || "$arch" == "x86_64" ]] || { echo "Only supports aarch64 / x86_64"; exit 1; }
 
-# Dependencies (packaging shouldn’t be run as root, but this line needs sudo)
-sudo dnf -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar || sudo dnf -y install dotnet-sdk
+install_ok=0
+case "$ID" in
+  rhel|rocky|almalinux|centos)
+    if command -v dnf >/dev/null 2>&1; then
+      sudo dnf -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar rsync || \
+      sudo dnf -y install dotnet-sdk rpm-build rpmdevtools curl unzip tar rsync
+      install_ok=1
+    elif command -v yum >/dev/null 2>&1; then
+      sudo yum -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar rsync || \
+      sudo yum -y install dotnet-sdk rpm-build rpmdevtools curl unzip tar rsync
+      install_ok=1
+    fi
+    ;;
+  ubuntu|debian)
+    sudo apt-get update
+    if [[ "${ID:-}" == "ubuntu" ]]; then
+      if ! apt-cache policy | grep -q '^500 .*ubuntu.com/ubuntu.* universe'; then
+        sudo apt-get -y install software-properties-common || true
+        sudo add-apt-repository -y universe || true
+        sudo apt-get update
+      fi
+    fi
+    sudo apt-get -y install curl unzip tar rsync rpm || true
+    if ! command -v rpmbuild >/dev/null 2>&1; then
+      echo "[ERROR] 'rpmbuild' not found after installing 'rpm'."
+      echo "        Please ensure the 'rpm' package is available from your repos (universe on Ubuntu)."
+      exit 1
+    fi
+    if ! command -v dotnet >/dev/null 2>&1; then
+      sudo apt-get -y install dotnet-sdk-8.0 || true
+      sudo apt-get -y install dotnet-sdk-8 || true
+      sudo apt-get -y install dotnet-sdk || true
+    fi
+    install_ok=1
+    ;;
+esac
+
+if [[ "$install_ok" -ne 1 ]]; then
+  echo "[WARN] Could not auto-install dependencies for '$ID'. Make sure these are available:"
+  echo "       dotnet-sdk 8.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on RPM-based distros)"
+fi
+
 command -v curl >/dev/null
 
 # Root directory = the script's location
@@ -72,16 +112,9 @@ fi
 [[ -f "$PROJECT" ]] || { echo "v2rayN.Desktop.csproj not found"; exit 1; }
 
 # ===== Resolve GUI version & auto checkout ============================================
-# Rules:
-# - If VERSION_ARG provided: try to checkout that tag (vX.Y.Z or X.Y.Z). If not found, ask which channel (Latest vs Pre-release vs Keep current),
-#   default to Latest, then fetch the chosen channel's latest tag and checkout. If Keep current, do nothing.
-# - If VERSION_ARG not provided: ask the channel first (default Latest). If Keep current, do nothing; otherwise checkout latest tag of chosen channel.
-# - If not a git repo, warn and continue without switching (keep current branch).
-VERSION=""  # final GUI version string without 'v' prefix
+VERSION=""
 
 choose_channel() {
-  # Print menu to stderr and read from /dev/tty so that stdout only carries the token.
-  # Return via stdout one of: latest | prerelease | keep
   local ch="latest" sel=""
   if [[ -t 0 ]]; then
     echo "[?] Choose v2rayN release channel:" >&2
@@ -89,7 +122,6 @@ choose_channel() {
     echo "    2) Pre-release (preview)" >&2
     echo "    3) Keep current (do nothing)" >&2
     printf "Enter 1, 2 or 3 [default 1]: " >&2
-    # Read explicitly from /dev/tty to avoid being swallowed in command substitution
     if read -r sel </dev/tty; then
       case "${sel:-}" in
         2) ch="prerelease" ;;
@@ -106,7 +138,6 @@ choose_channel() {
 }
 
 get_latest_tag_latest() {
-  # Use GitHub API: /releases/latest → tag_name
   curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases/latest" \
     | grep -Eo '"tag_name":\s*"v?[^"]+"' \
     | head -n1 \
@@ -114,7 +145,6 @@ get_latest_tag_latest() {
 }
 
 get_latest_tag_prerelease() {
-  # Use GitHub API: /releases?per_page=20 and pick the newest prerelease=true's tag_name
   local json
   json="$(curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20")" || return 1
   echo "$json" \
@@ -122,8 +152,6 @@ get_latest_tag_prerelease() {
 }
 
 git_try_checkout() {
-  # Try a series of refs and checkout when found.
-  # Args: version-like string (may contain leading 'v')
   local want="$1" ref=""
   if git rev-parse --git-dir >/dev/null 2>&1; then
     git fetch --tags --force --prune --depth=1 || true
@@ -178,7 +206,6 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
       fi
     fi
   else
-    # No explicit GUI version passed: ask channel first
     ch="$(choose_channel)"
     if [[ "$ch" == "keep" ]]; then
       echo "[*] Keep current repository state (no checkout)."
@@ -204,7 +231,6 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   fi
 else
   echo "[WARN] Current directory is not a git repo; cannot checkout version. Proceeding on current tree."
-  # Fallback: derive version from nearest tag or use VERSION_ARG/raw default below
   VERSION="${VERSION_ARG:-}"
   if [[ -z "$VERSION" ]]; then
     if git describe --tags --abbrev=0 >/dev/null 2>&1; then
@@ -217,7 +243,7 @@ else
 fi
 echo "[*] GUI version resolved as: ${VERSION}"
 
-# ===== .NET publish (non-single file, self-contained) ===========================================
+# ===== .NET publish ===========================================================
 dotnet clean "$PROJECT" -c Release
 rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
 
@@ -232,17 +258,15 @@ RID_DIR="$( [[ "$arch" == "aarch64" ]] && echo linux-arm64 || echo linux-x64 )"
 PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
 [[ -d "$PUBDIR" ]]
 
-# ===== Download Core（Optional） ========================================================
+# ===== Helpers for core/rules download =======================================
 download_xray() {
   local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
-    # Latest version
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-
   if [[ "$arch" == "aarch64" ]]; then
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
   else
@@ -263,7 +287,6 @@ download_singbox() {
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-
   if [[ "$arch" == "aarch64" ]]; then
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
   else
@@ -278,18 +301,32 @@ download_singbox() {
   install -Dm755 "$bin" "$outdir/sing-box"
 }
 
-# === Geo rule download (ZIP-LIKE LAYOUT for netcore mode) =====================
-# Make netcore output match the ZIP bundle structure:
-# - All geo databases at    outroot/bin/ (geosite.dat, geoip.dat, Country.mmdb, geoip-only-cn-private.dat, geoip.metadb)
-# - All *.srs rule-sets at  outroot/bin/srss/
-# (Binaries stay under outroot/bin/xray and outroot/bin/sing_box as before.)
+# 统一 geo 文件布局到 bin/xray/
+unify_geo_layout() {
+  local outroot="$1"
+  mkdir -p "$outroot/bin/xray"
+  local srcs=( \
+    "$outroot/bin/geosite.dat" \
+    "$outroot/bin/geoip.dat" \
+    "$outroot/bin/geoip-only-cn-private.dat" \
+    "$outroot/bin/Country.mmdb" \
+    "$outroot/bin/geoip.metadb" \
+  )
+  for s in "${srcs[@]}"; do
+    if [[ -f "$s" ]]; then
+      mv -f "$s" "$outroot/bin/xray/$(basename "$s")"
+    fi
+  done
+}
+
+# Geo 规则（先按 ZIP-like 下载到 bin/，随后统一到 bin/xray/）
 download_geo_assets() {
   local outroot="$1"
   local bin_dir="$outroot/bin"
   local srss_dir="$bin_dir/srss"
   mkdir -p "$bin_dir" "$srss_dir"
 
-  echo "[+] Download Xray Geo (geosite/geoip/...) to ${bin_dir}"
+  echo "[+] Download Xray Geo to ${bin_dir}"
   curl -fsSL -o "$bin_dir/geosite.dat" \
     "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
   curl -fsSL -o "$bin_dir/geoip.dat" \
@@ -299,28 +336,28 @@ download_geo_assets() {
   curl -fsSL -o "$bin_dir/Country.mmdb" \
     "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
-  echo "[+] Download sing-box rule DB & rule-sets to ZIP-like paths"
-  # meta-rules DB into bin/
+  echo "[+] Download sing-box rule DB & rule-sets"
   curl -fsSL -o "$bin_dir/geoip.metadb" \
     "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
 
-  # 2dust rule-sets into bin/srss/
   for f in \
     geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
     geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
     curl -fsSL -o "$srss_dir/$f" \
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
   done
-
   for f in \
     geosite-cn.srs geosite-gfw.srs geosite-greatfire.srs \
     geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
     curl -fsSL -o "$srss_dir/$f" \
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
   done
+
+  # 关键：统一到 bin/xray/
+  unify_geo_layout "$outroot"
 }
 
-# === NEW: Prefer the all-in-one v2rayN bundle zip first =======================
+# 优先使用 v2rayN 打包好的 bundle
 download_v2rayn_bundle() {
   local outroot="$1"
   local url=""
@@ -335,7 +372,6 @@ download_v2rayn_bundle() {
   curl -fL "$url" -o "$zipname" || { echo "[!] Bundle download failed"; return 1; }
   unzip -q "$zipname" -d "$tmp" || { echo "[!] Bundle unzip failed"; return 1; }
 
-  # Normalize layout: copy 'bin/' if present; otherwise copy all
   if [[ -d "$tmp/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$tmp/bin/" "$outroot/bin/"
@@ -343,7 +379,6 @@ download_v2rayn_bundle() {
     rsync -a "$tmp/" "$outroot/"
   fi
 
-  # --- CLEANUPS (keep bundle-only adjustments) -------------------------------
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
@@ -354,32 +389,45 @@ download_v2rayn_bundle() {
     rsync -a "$nested_dir/bin/" "$outroot/bin/"
     rm -rf "$nested_dir"
   fi
-  # ---------------------------------------------------------------------------
+
+  # 关键：统一到 bin/xray/
+  unify_geo_layout "$outroot"
 
   echo "[+] Bundle extracted to $outroot"
 }
 
-# ===== Copy publish files to RPM build root ==================================================
-rpmdev-setuptree
-TOPDIR="${HOME}/rpmbuild"
-SPECDIR="${TOPDIR}/SPECS"
-SOURCEDIR="${TOPDIR}/SOURCES"
-
+# ===== Copy publish files to RPM build root ====================================
 PKGROOT="v2rayN-publish"
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
+if [[ "$ID" =~ ^(rhel|rocky|almalinux|centos)$ ]]; then
+  # --- RHEL path (unchanged) ---
+  rpmdev-setuptree
+  TOPDIR="${HOME}/rpmbuild"
+  SPECDIR="${TOPDIR}/SPECS"
+  SOURCEDIR="${TOPDIR}/SOURCES"
+  USE_TOPDIR_DEFINE=0
+else
+  # --- Ubuntu/Debian path (temporary _topdir) ---
+  TOPDIR="${WORKDIR}/rpmbuild"
+  SPECDIR="${TOPDIR}/SPECS"
+  SOURCEDIR="${TOPDIR}/SOURCES"
+  mkdir -p "${SPECDIR}" "${SOURCEDIR}" "${TOPDIR}/BUILD" "${TOPDIR}/RPMS" "${TOPDIR}/SRPMS"
+  USE_TOPDIR_DEFINE=1
+fi
+
 mkdir -p "$WORKDIR/$PKGROOT"
 cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
 
-# icon（Optional）
+# icon (Optional)
 ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
 [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
 
 # bin directory structure
 mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
 
-# ====== NEW decision: prefer bundle zip unless --netcore, else fall back ======
+# ====== Prefer bundle zip unless --netcore, else fall back =====================
 if [[ "$FORCE_NETCORE" -eq 0 ]]; then
   if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
     echo "[*] Using v2rayN bundle archive."
@@ -536,7 +584,19 @@ sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
 sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
 
 # ===== Build RPM ================================================================
-rpmbuild -ba "$SPECFILE"
+if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
+  rpmbuild -ba "$SPECFILE" --define "_topdir $TOPDIR"
+else
+  rpmbuild -ba "$SPECFILE"
+fi
+
+# ===== Ubuntu/Debian: move temporary rpmbuild to ~/rpmbuild ====================
+if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
+  mkdir -p "$HOME/rpmbuild"
+  rsync -a "$TOPDIR"/ "$HOME/rpmbuild"/
+  TOPDIR="$HOME/rpmbuild"
+fi
 
 echo "Build done. RPM at:"
-ls -1 "${TOPDIR}/RPMS/$( [[ "$arch" == "aarch64" ]] && echo aarch64 || echo x86_64 )/v2rayN-${VERSION}-1"*.rpm
+archdir="$( [[ "$arch" == "aarch64" ]] && echo aarch64 || echo x86_64 )"
+ls -1 "${TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm
