@@ -24,7 +24,8 @@ VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
 AUTOSTART=0              # 1 = enable system-wide autostart (/etc/xdg/autostart)
 FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
-ARCH_OVERRIDE=""         # --arch x64|arm64 (optional override for RID)
+ARCH_OVERRIDE=""         # --arch x64|arm64|all (optional compile target)
+BUILD_FROM=""            # --buildfrom 1|2|3 to select channel non-interactively
 
 # If the first argument starts with --, do not treat it as a version number
 if [[ "${VERSION_ARG:-}" == --* ]]; then
@@ -42,15 +43,23 @@ while [[ $# -gt 0 ]]; do
     --singbox-ver)   SING_VER="${2:-}"; shift 2;;
     --netcore)       FORCE_NETCORE=1; shift;;
     --arch)          ARCH_OVERRIDE="${2:-}"; shift 2;;
+    --buildfrom)     BUILD_FROM="${2:-}"; shift 2;;
     *)
       if [[ -z "${VERSION_ARG:-}" ]]; then VERSION_ARG="$1"; fi
       shift;;
   esac
 done
 
+# Conflict: version number AND --buildfrom cannot be used together
+if [[ -n "${VERSION_ARG:-}" && -n "${BUILD_FROM:-}" ]]; then
+  echo "[ERROR] You cannot specify both an explicit version and --buildfrom at the same time."
+  echo "        Provide either a version (e.g. 7.14.0) OR --buildfrom 1|2|3."
+  exit 1
+fi
+
 # ===== Environment check + Dependencies ========================================
-arch="$(uname -m)"
-[[ "$arch" == "aarch64" || "$arch" == "x86_64" ]] || { echo "Only supports aarch64 / x86_64"; exit 1; }
+host_arch="$(uname -m)"
+[[ "$host_arch" == "aarch64" || "$host_arch" == "x86_64" ]] || { echo "Only supports aarch64 / x86_64"; exit 1; }
 
 install_ok=0
 case "$ID" in
@@ -66,7 +75,7 @@ case "$ID" in
       install_ok=1
     fi
     ;;
-  # ------------------------------ Ubuntu (KEEP AS-IS) ---------------------------------
+  # ------------------------------ Ubuntu ----------------------------------------------
   ubuntu)
     sudo apt-get update
     # Ensure 'universe' (Ubuntu) to get 'rpm'
@@ -77,6 +86,8 @@ case "$ID" in
     fi
     # Base tools + rpm (provides rpmbuild)
     sudo apt-get -y install curl unzip tar rsync rpm || true
+    # Cross-arch binutils so strip matches target arch + objdump for brp scripts
+    sudo apt-get -y install binutils binutils-x86-64-linux-gnu binutils-aarch64-linux-gnu || true
     # rpmbuild presence check
     if ! command -v rpmbuild >/dev/null 2>&1; then
       echo "[ERROR] 'rpmbuild' not found after installing 'rpm'."
@@ -94,8 +105,8 @@ case "$ID" in
   # ------------------------------ Debian (KEEP, with local dotnet install) ------------
   debian)
     sudo apt-get update
-    # Base tools + rpm (provides rpmbuild on Debian)
-    sudo apt-get -y install curl unzip tar rsync rpm || true
+    # Base tools + rpm (provides rpmbuild on Debian) + objdump/strip
+    sudo apt-get -y install curl unzip tar rsync rpm binutils || true
     # rpmbuild presence check
     if ! command -v rpmbuild >/dev/null 2>&1; then
       echo "[ERROR] 'rpmbuild' not found after installing 'rpm'."
@@ -105,7 +116,7 @@ case "$ID" in
     # Try apt for dotnet; fallback to official installer into $HOME/.dotnet
     if ! command -v dotnet >/dev/null 2>&1; then
       echo "[INFO] 'dotnet' not found. Installing .NET 8 SDK locally to \$HOME/.dotnet ..."
-      tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
+      tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
       curl -fsSL https://dot.net/v1/dotnet-install.sh -o "$tmp/dotnet-install.sh"
       bash "$tmp/dotnet-install.sh" --channel 8.0 --install-dir "$HOME/.dotnet"
       export PATH="$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"
@@ -147,6 +158,16 @@ fi
 VERSION=""
 
 choose_channel() {
+  # If --buildfrom provided, map it directly and skip interaction.
+  if [[ -n "${BUILD_FROM:-}" ]]; then
+    case "$BUILD_FROM" in
+      1) echo "latest"; return 0;;
+      2) echo "prerelease"; return 0;;
+      3) echo "keep"; return 0;;
+      *) echo "[ERROR] Invalid --buildfrom value: ${BUILD_FROM}. Use 1|2|3." >&2; exit 1;;
+    esac
+  fi
+
   # Print menu to stderr and read from /dev/tty so stdout only carries the token.
   local ch="latest" sel=""
   if [[ -t 0 ]]; then
@@ -306,34 +327,7 @@ else
 fi
 echo "[*] GUI version resolved as: ${VERSION}"
 
-# ===== .NET publish ===========================================================
-# RID resolve: allow --arch override (x64|arm64)
-rid=""
-if [[ -n "$ARCH_OVERRIDE" ]]; then
-  case "$ARCH_OVERRIDE" in
-    x64|amd64)  rid="linux-x64" ;;
-    arm64|aarch64) rid="linux-arm64" ;;
-    *) echo "[ERROR] Unknown --arch '$ARCH_OVERRIDE' (use x64|arm64)"; exit 1;;
-  esac
-else
-  rid="$( [[ "$arch" == "aarch64" ]] && echo linux-arm64 || echo linux-x64 )"
-fi
-
-dotnet clean "$PROJECT" -c Release
-rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
-
-dotnet restore "$PROJECT"
-dotnet publish "$PROJECT" \
-  -c Release -r "$rid" \
-  -p:PublishSingleFile=false \
-  -p:SelfContained=true \
-  -p:IncludeNativeLibrariesForSelfExtract=true
-
-RID_DIR="$rid"
-PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
-[[ -d "$PUBDIR" ]]
-
-# ===== Helpers for core/rules download =======================================
+# ===== Helpers for core/rules download (use RID_DIR for arch sync) =====================
 download_xray() {
   # Download Xray core and install to outdir/xray
   local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
@@ -349,7 +343,7 @@ download_xray() {
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
   fi
   echo "[+] Download xray: $url"
-  tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
   curl -fL "$url" -o "$tmp/$zipname"
   unzip -q "$tmp/$zipname" -d "$tmp"
   install -Dm755 "$tmp/xray" "$outdir/xray"
@@ -370,7 +364,7 @@ download_singbox() {
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
   fi
   echo "[+] Download sing-box: $url"
-  tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
   curl -fL "$url" -o "$tmp/$tarname"
   tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
@@ -473,43 +467,93 @@ download_v2rayn_bundle() {
   echo "[+] Bundle extracted to $outroot"
 }
 
-# ===== Copy publish files to RPM build root ====================================
-PKGROOT="v2rayN-publish"
-WORKDIR="$(mktemp -d)"
-trap 'rm -rf "$WORKDIR"' EXIT
+# ===== Build results collection for --arch all ========================================
+BUILT_RPMS=()     # Will collect absolute paths of built RPMs
+BUILT_ALL=0       # Flag to know if we should print the final summary
 
-if [[ "$ID" =~ ^(rhel|rocky|almalinux|centos)$ ]]; then
-  # --- RHEL path (UNCHANGED) ---
-  rpmdev-setuptree
-  TOPDIR="${HOME}/rpmbuild"
-  SPECDIR="${TOPDIR}/SPECS"
-  SOURCEDIR="${TOPDIR}/SOURCES"
-  USE_TOPDIR_DEFINE=0
-else
-  # --- Ubuntu/Debian path (temporary _topdir) ---
-  TOPDIR="${WORKDIR}/rpmbuild"
-  SPECDIR="${TOPDIR}/SPECS"
-  SOURCEDIR="${TOPDIR}/SOURCES"
-  mkdir -p "${SPECDIR}" "${SOURCEDIR}" "${TOPDIR}/BUILD" "${TOPDIR}/RPMS" "${TOPDIR}/SRPMS"
-  USE_TOPDIR_DEFINE=1
-fi
+# ===== Build (single-arch) function ====================================================
+build_for_arch() {
+  # $1: target short arch: x64 | arm64
+  local short="$1"
+  local rid rpm_target archdir
+  case "$short" in
+    x64)   rid="linux-x64";   rpm_target="x86_64"; archdir="x86_64" ;;
+    arm64) rid="linux-arm64"; rpm_target="aarch64"; archdir="aarch64" ;;
+    *) echo "[ERROR] Unknown arch '$short' (use x64|arm64)"; return 1;;
+  esac
 
-mkdir -p "$WORKDIR/$PKGROOT"
-cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
+  echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
 
-# Optional icon
-ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
-[[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
+  # .NET publish (self-contained) for this RID
+  dotnet clean "$PROJECT" -c Release
+  rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
 
-# Prepare bin structure
-mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
+  dotnet restore "$PROJECT"
+  dotnet publish "$PROJECT" \
+    -c Release -r "$rid" \
+    -p:PublishSingleFile=false \
+    -p:SelfContained=true \
+    -p:IncludeNativeLibrariesForSelfExtract=true
 
-# Prefer the bundle; fallback to separate core + rules
-if [[ "$FORCE_NETCORE" -eq 0 ]]; then
-  if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
-    echo "[*] Using v2rayN bundle archive."
+  # Per-arch variables (scoped)
+  local RID_DIR="$rid"
+  local PUBDIR
+  PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
+  [[ -d "$PUBDIR" ]]
+
+  # Make RID_DIR visible to download helpers (they read this var)
+  export RID_DIR
+
+  # Per-arch working area
+  local PKGROOT="v2rayN-publish"
+  local WORKDIR
+  WORKDIR="$(mktemp -d)"
+  trap '[[ -n "${WORKDIR:-}" ]] && rm -rf "$WORKDIR"' RETURN
+
+  # rpmbuild topdir selection
+  local TOPDIR SPECDIR SOURCEDIR USE_TOPDIR_DEFINE
+  if [[ "$ID" =~ ^(rhel|rocky|almalinux|centos)$ ]]; then
+    rpmdev-setuptree
+    TOPDIR="${HOME}/rpmbuild"
+    SPECDIR="${TOPDIR}/SPECS"
+    SOURCEDIR="${TOPDIR}/SOURCES"
+    USE_TOPDIR_DEFINE=0
   else
-    echo "[*] Bundle failed, fallback to separate core + rules."
+    TOPDIR="${WORKDIR}/rpmbuild"
+    SPECDIR="${TOPDIR}/SPECS}"
+    SOURCEDIR="${TOPDIR}/SOURCES"
+    mkdir -p "${SPECDIR}" "${SOURCEDIR}" "${TOPDIR}/BUILD" "${TOPDIR}/RPMS" "${TOPDIR}/SRPMS"
+    USE_TOPDIR_DEFINE=1
+  fi
+
+  # Stage publish content
+  mkdir -p "$WORKDIR/$PKGROOT"
+  cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
+
+  # Optional icon
+  local ICON_CANDIDATE
+  ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
+  [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
+
+  # Prepare bin structure
+  mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
+
+  # Bundle / cores per-arch
+  if [[ "$FORCE_NETCORE" -eq 0 ]]; then
+    if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
+      echo "[*] Using v2rayN bundle archive."
+    else
+      echo "[*] Bundle failed, fallback to separate core + rules."
+      if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+        download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
+      fi
+      if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+        download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+      fi
+      download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
+    fi
+  else
+    echo "[*] --netcore specified: use separate core + rules."
     if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
       download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
     fi
@@ -518,22 +562,15 @@ if [[ "$FORCE_NETCORE" -eq 0 ]]; then
     fi
     download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
   fi
-else
-  echo "[*] --netcore specified: use separate core + rules."
-  if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-    download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
-  fi
-  if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-    download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
-  fi
-  download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
-fi
 
-tar -C "$WORKDIR" -czf "$SOURCEDIR/$PKGROOT.tar.gz" "$PKGROOT"
+  # Tarball
+  mkdir -p "$SOURCEDIR"
+  tar -C "$WORKDIR" -czf "$SOURCEDIR/$PKGROOT.tar.gz" "$PKGROOT"
 
-# ===== Generate SPEC (heredoc with placeholders) ===================================
-SPECFILE="$SPECDIR/v2rayN.spec"
-cat > "$SPECFILE" <<'SPEC'
+  # SPEC
+  local SPECFILE="$SPECDIR/v2rayN.spec"
+  mkdir -p "$SPECDIR"
+  cat > "$SPECFILE" <<'SPEC'
 %global debug_package %{nil}
 %undefine _debuginfo_subpackages
 %undefine _debugsource_packages
@@ -636,48 +673,120 @@ fi
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 SPEC
 
-# ===== FIX: inline autostart into existing sections (avoid second %install/%files) ====
-if [[ "$AUTOSTART" -eq 1 ]]; then
-  # Insert autostart creation commands into the existing %install section,
-  # right before %post (so still inside %install).
-  sed -i '/^%post/i \
-# --- Autostart (.desktop) ---\n\
-install -dm0755 %{buildroot}/etc/xdg/autostart\n\
-cat > %{buildroot}/etc/xdg/autostart/v2rayn.desktop << '"'"'EOF'"'"'\n\
-[Desktop Entry]\n\
-Type=Application\n\
-Name=v2rayN (Autostart)\n\
-Exec=v2rayn\n\
-X-GNOME-Autostart-enabled=true\n\
-NoDisplay=false\n\
-EOF\n' "$SPECFILE"
+  # Autostart injection (inside %install) and %files entry
+  if [[ "$AUTOSTART" -eq 1 ]]; then
+    awk '
+      BEGIN{ins=0}
+      /^%post$/ && !ins {
+        print "# --- Autostart (.desktop) ---"
+        print "install -dm0755 %{buildroot}/etc/xdg/autostart"
+        print "cat > %{buildroot}/etc/xdg/autostart/v2rayn.desktop << '\''EOF'\''"
+        print "[Desktop Entry]"
+        print "Type=Application"
+        print "Name=v2rayN (Autostart)"
+        print "Exec=v2rayn"
+        print "X-GNOME-Autostart-enabled=true"
+        print "NoDisplay=false"
+        print "EOF"
+        ins=1
+      }
+      {print}
+    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
 
-  # Append the autostart file to the existing %files list.
-  # We insert after the icon line to keep ordering tidy.
-  sed -i '0,|%{_datadir}/icons/hicolor/256x256/apps/v2rayn\.png|{
-    s|%{_datadir}/icons/hicolor/256x256/apps/v2rayn\.png|%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png\
-%config(noreplace) /etc/xdg/autostart/v2rayn.desktop|
-  }' "$SPECFILE"
+    awk '
+      BEGIN{infiles=0; done=0}
+      /^%files$/        {infiles=1}
+      infiles && done==0 && $0 ~ /%{_datadir}\/icons\/hicolor\/256x256\/apps\/v2rayn\.png/ {
+        print
+        print "%config(noreplace) /etc/xdg/autostart/v2rayn.desktop"
+        done=1
+        next
+      }
+      {print}
+    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
+  fi
+
+  # Replace placeholders
+  sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
+  sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
+
+  # ----- Select proper 'strip' per target arch on Ubuntu only (cross-binutils) -----
+  # NOTE: We define only __strip to point to the target-arch strip.
+  #       DO NOT override __brp_strip (it must stay the brp script path).
+  local STRIP_ARGS=()
+  if [[ "$ID" == "ubuntu" ]]; then
+    local STRIP_BIN=""
+    if [[ "$short" == "x64" ]]; then
+      STRIP_BIN="/usr/bin/x86_64-linux-gnu-strip"
+    else
+      STRIP_BIN="/usr/bin/aarch64-linux-gnu-strip"
+    fi
+    if [[ -x "$STRIP_BIN" ]]; then
+      STRIP_ARGS=( --define "__strip $STRIP_BIN" )
+    fi
+  fi
+
+  # Build RPM for this arch (force rpm --target to match compile arch)
+  if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
+    rpmbuild -ba "$SPECFILE" --define "_topdir $TOPDIR" --target "$rpm_target" "${STRIP_ARGS[@]}"
+  else
+    rpmbuild -ba "$SPECFILE" --target "$rpm_target" "${STRIP_ARGS[@]}"
+  fi
+
+  # Copy temporary rpmbuild to ~/rpmbuild on Debian/Ubuntu path
+  if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
+    mkdir -p "$HOME/rpmbuild"
+    rsync -a "$TOPDIR"/ "$HOME/rpmbuild"/
+    TOPDIR="$HOME/rpmbuild"
+  fi
+
+  echo "Build done for $short. RPM at:"
+  local f
+  for f in "${TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
+    [[ -e "$f" ]] || continue
+    echo "  $f"
+    BUILT_RPMS+=("$f")
+  done
+}
+
+# ===== Arch selection and build orchestration =========================================
+case "${ARCH_OVERRIDE:-}" in
+  "")
+    # No --arch: use host architecture
+    if [[ "$host_arch" == "aarch64" ]]; then
+      build_for_arch arm64
+    else
+      build_for_arch x64
+    fi
+    ;;
+  x64|amd64)
+    build_for_arch x64
+    ;;
+  arm64|aarch64)
+    build_for_arch arm64
+    ;;
+  all)
+    BUILT_ALL=1
+    # Build x64 and arm64 separately; each package contains its own arch-only binaries.
+    build_for_arch x64
+    build_for_arch arm64
+    ;;
+  *)
+    echo "[ERROR] Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all."
+    exit 1
+    ;;
+esac
+
+# ===== Final summary if building both arches ==========================================
+if [[ "$BUILT_ALL" -eq 1 ]]; then
+  echo ""
+  echo "================ Build Summary (both architectures) ================"
+  if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
+    for rp in "${BUILT_RPMS[@]}"; do
+      echo "$rp"
+    done
+  else
+    echo "[WARN] No RPMs detected in summary (check build logs above)."
+  fi
+  echo "==================================================================="
 fi
-
-# Inject placeholders
-sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
-sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
-
-# ===== Build RPM ================================================================
-if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
-  rpmbuild -ba "$SPECFILE" --define "_topdir $TOPDIR"
-else
-  rpmbuild -ba "$SPECFILE"
-fi
-
-# ===== Ubuntu/Debian: move temporary rpmbuild to ~/rpmbuild ====================
-if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
-  mkdir -p "$HOME/rpmbuild"
-  rsync -a "$TOPDIR"/ "$HOME/rpmbuild"/
-  TOPDIR="$HOME/rpmbuild"
-fi
-
-echo "Build done. RPM at:"
-archdir="$( [[ "$RID_DIR" == "linux-arm64" ]] && echo aarch64 || echo x86_64 )"
-ls -1 "${TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm
