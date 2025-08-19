@@ -64,7 +64,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             await GenRouting(singboxConfig);
 
-            await GenDns(singboxConfig);
+            await GenDns(node, singboxConfig);
 
             await GenExperimental(singboxConfig);
 
@@ -421,7 +421,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             await GenOutboundsList(proxyProfiles, singboxConfig);
 
-            await GenDns(singboxConfig);
+            await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 
             ret.Success = true;
