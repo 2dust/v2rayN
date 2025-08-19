@@ -434,7 +434,7 @@ public class UpdateService
 
         var fileName = $"{type}-{srsName}.srs";
         var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);
-        var url = string.Format(srsUrl, type, $"{type}-{srsName}");
+        var url = string.Format(srsUrl, type, $"{type}-{srsName}", srsName);
 
         await DownloadGeoFile(url, fileName, targetPath, updateFunc);
     }
