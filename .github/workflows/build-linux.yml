@@ -100,7 +100,7 @@ jobs:
         file_glob: true
         prerelease: true
 
-    # release RHEL package
+        # release RHEL package
     - name: Package RPM (RHEL-family)
       if: github.event.inputs.release_tag != ''
       run: |
@@ -108,22 +108,25 @@ jobs:
         # Build for both x86_64 and aarch64 in one go (explicit version passed; no --buildfrom)
         ./package-rhel.sh "${{ github.event.inputs.release_tag }}" --arch all
 
+    - name: Collect RPMs into workspace
+      if: github.event.inputs.release_tag != ''
+      run: |
+        mkdir -p "${{ github.workspace }}/dist/rpm"
+        rsync -av "$HOME/rpmbuild/RPMS/" "${{ github.workspace }}/dist/rpm/"
+
     - name: Upload RPM artifacts
       if: github.event.inputs.release_tag != ''
       uses: actions/upload-artifact@v4.6.2
       with:
         name: v2rayN-rpm
         path: |
-          /home/runner/rpmbuild/RPMS/x86_64/*.rpm
-          /home/runner/rpmbuild/RPMS/aarch64/*.rpm
+          ${{ github.workspace }}/dist/rpm/**/*.rpm
 
     - name: Upload RPMs to release
       uses: svenstaro/upload-release-action@v2
       if: github.event.inputs.release_tag != ''
       with:
-        file: |
-          /home/runner/rpmbuild/RPMS/x86_64/*.rpm
-          /home/runner/rpmbuild/RPMS/aarch64/*.rpm
+        file: ${{ github.workspace }}/dist/rpm/**/*.rpm
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
         prerelease: true
