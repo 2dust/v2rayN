@@ -332,6 +332,7 @@ download_xray() {
   # Download Xray core and install to outdir/xray
   local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
+  if [[ -n "${XRAY_VER:-}" ]]; then ver="${XRAY_VER}"; fi
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
@@ -353,6 +354,7 @@ download_singbox() {
   # Download sing-box core and install to outdir/sing-box
   local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
+  if [[ -n "${SING_VER:-}" ]]; then ver="${SING_VER}"; fi
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
@@ -370,6 +372,22 @@ download_singbox() {
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
   [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; return 1; }
   install -Dm755 "$bin" "$outdir/sing-box"
+}
+
+# ---- NEW: download_mihomo (REQUIRED in --netcore mode) ----
+download_mihomo() {
+  # Download mihomo into outroot/bin/mihomo/mihomo
+  local outroot="$1"
+  local url=""
+  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64/bin/mihomo/mihomo"
+  else
+    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64/bin/mihomo/mihomo"
+  fi
+  echo "[+] Download mihomo: $url"
+  mkdir -p "$outroot/bin/mihomo"
+  curl -fL "$url" -o "$outroot/bin/mihomo/mihomo"
+  chmod +x "$outroot/bin/mihomo/mihomo" || true
 }
 
 # Move geo files to a unified path: outroot/bin/xray/
@@ -451,7 +469,8 @@ download_v2rayn_bundle() {
   fi
 
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
-  find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
+  # keep mihomo
+  # find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
   local nested_dir
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
@@ -561,6 +580,8 @@ build_for_arch() {
       download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
+    # ---- REQUIRED: always fetch mihomo in netcore mode, per-arch ----
+    download_mihomo "$WORKDIR/$PKGROOT" || echo "[!] mihomo download failed (skipped)"
   fi
 
   # Tarball
