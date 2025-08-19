@@ -114,13 +114,16 @@ jobs:
       with:
         name: v2rayN-rpm
         path: |
-          ${{ env.HOME }}/rpmbuild/RPMS/**/*.rpm
+          /home/runner/rpmbuild/RPMS/x86_64/*.rpm
+          /home/runner/rpmbuild/RPMS/aarch64/*.rpm
 
     - name: Upload RPMs to release
       uses: svenstaro/upload-release-action@v2
       if: github.event.inputs.release_tag != ''
       with:
-        file: ${{ env.HOME }}/rpmbuild/RPMS/**/*.rpm
+        file: |
+          /home/runner/rpmbuild/RPMS/x86_64/*.rpm
+          /home/runner/rpmbuild/RPMS/aarch64/*.rpm
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
         prerelease: true
