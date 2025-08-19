@@ -67,26 +67,27 @@ public partial class CoreConfigSingboxService
         {
             hostsDns.predefined = Global.PredefinedHosts;
         }
-        var userHostsMap = simpleDNSItem.Hosts?
-            .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-            .Where(line => !string.IsNullOrWhiteSpace(line))
-            .Where(line => line.Contains(' '))
-            .ToDictionary(
-                line =>
-                {
-                    var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    return parts[0];
-                },
-                line =>
-                {
-                    var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    var values = parts.Skip(1).ToList();
-                    return values;
-                }
-            );
 
-        if (userHostsMap != null)
+        if (!simpleDNSItem.Hosts.IsNullOrEmpty())
         {
+            var userHostsMap = simpleDNSItem.Hosts?
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Where(line => line.Contains(' '))
+                .ToDictionary(
+                    line =>
+                    {
+                        var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        return parts[0];
+                    },
+                    line =>
+                    {
+                        var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        var values = parts.Skip(1).ToList();
+                        return values;
+                    }
+                ) ?? new Dictionary<string, List<string>>();
+
             foreach (var kvp in userHostsMap)
             {
                 hostsDns.predefined[kvp.Key] = kvp.Value;
@@ -100,11 +101,11 @@ public partial class CoreConfigSingboxService
             {
                 foreach (var host in systemHosts)
                 {
-                    if (userHostsMap[host.Key] != null)
+                    if (hostsDns.predefined[host.Key] != null)
                     {
                         continue;
                     }
-                    userHostsMap[host.Key] = new List<string> { host.Value };
+                    hostsDns.predefined[host.Key] = new List<string> { host.Value };
                 }
             }
         }
