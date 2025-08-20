@@ -604,6 +604,7 @@ Release:        1%{?dist}
 Summary:        v2rayN (Avalonia) GUI client for Linux (x86_64/aarch64)
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
+BugURL:         https://github.com/2dust/v2rayN/issues
 ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
