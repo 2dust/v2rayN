@@ -612,10 +612,11 @@ Requires:       libX11, libXrandr, libXcursor, libXi, libXext, libxcb, libXrende
 Requires:       fontconfig, freetype, cairo, pango, mesa-libEGL, mesa-libGL
 
 %description
-v2rayN GUI client built with Avalonia.
-Installs self-contained publish under /opt/v2rayN and a launcher 'v2rayn'.
-Cores (if bundled): /opt/v2rayN/bin/xray, /opt/v2rayN/bin/sing_box.
-Geo files for Xray are placed at /opt/v2rayN/bin/xray; launcher will symlink them into user's XDG data dir on first run.
+v2rayN Linux for Red Hat Enterprise Linux
+Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
+Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
+For more information, Please visit our website
+https://github.com/2dust/v2rayN
 
 %prep
 %setup -q -n __PKGROOT__
@@ -666,7 +667,7 @@ cat > %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
-Comment=GUI client for Xray / sing-box
+Comment=v2rayN for Red Hat Enterprise Linux
 Exec=v2rayn
 Icon=v2rayn
 Terminal=false
