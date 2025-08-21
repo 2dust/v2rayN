@@ -10,6 +10,7 @@
 
     <x:Double x:Key="IconButtonWidth">32</x:Double>
     <x:Double x:Key="IconButtonHeight">32</x:Double>
+    <x:Double x:Key="MenuFlyoutMaxHeight">1000</x:Double>
 
     <Thickness x:Key="Margin2">2</Thickness>
     <Thickness x:Key="MarginLr4">4,0</Thickness>
