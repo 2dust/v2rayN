@@ -20,6 +20,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
         InitializeComponent();
 
         menuClose.Click += menuClose_Click;
+        Loaded += Window_Loaded;
         this.Closing += SubSettingWindow_Closing;
         this.KeyDown += SubSettingWindow_KeyDown;
         ViewModel = new SubSettingViewModel(UpdateViewHandler);
@@ -115,5 +116,9 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
         {
             menuClose_Click(null, null);
         }
+    }
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        lstSubscription.Focus();
     }
 }
