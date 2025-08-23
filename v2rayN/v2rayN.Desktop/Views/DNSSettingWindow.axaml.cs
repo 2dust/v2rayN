@@ -16,6 +16,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         InitializeComponent();
 
         _config = AppManager.Instance.Config;
+        Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => this.Close();
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
@@ -99,5 +100,10 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
     private void linkDnsSingboxObjectDoc_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/dns/");
+    }
+
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }

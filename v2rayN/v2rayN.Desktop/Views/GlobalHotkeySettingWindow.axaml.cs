@@ -22,6 +22,7 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         btnReset.Click += btnReset_Click;
 
         HotkeyManager.Instance.IsPause = true;
+        Loaded += Window_Loaded;
         this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
         btnCancel.Click += (s, e) => this.Close();
 
@@ -133,5 +134,9 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         }
 
         return res.ToString();
+    }
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }

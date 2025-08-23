@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using DialogHostAvalonia;
 using DynamicData;
@@ -20,6 +21,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
 
         menuClose.Click += menuClose_Click;
         this.Closing += SubSettingWindow_Closing;
+        this.KeyDown += SubSettingWindow_KeyDown;
         ViewModel = new SubSettingViewModel(UpdateViewHandler);
         lstSubscription.DoubleTapped += LstSubscription_DoubleTapped;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
@@ -104,6 +106,14 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
             {
                 menuClose_Click(null, null);
             }
+        }
+    }
+
+    private void SubSettingWindow_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape)
+        {
+            menuClose_Click(null, null);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using ReactiveUI;
 using ServiceLib.Manager;
 using v2rayN.Desktop.Base;
@@ -14,6 +15,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
     {
         InitializeComponent();
 
+        Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => this.Close();
         _config = AppManager.Instance.Config;
 
@@ -208,5 +210,9 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }

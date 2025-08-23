@@ -17,6 +17,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
     {
         InitializeComponent();
 
+        Loaded += Window_Loaded;
         this.Closing += RoutingSettingWindow_Closing;
         btnCancel.Click += (s, e) => this.Close();
         this.KeyDown += RoutingSettingWindow_KeyDown;
@@ -133,5 +134,9 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
                 btnCancel_Click(null, null);
             }
         }
+    }
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }
