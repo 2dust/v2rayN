@@ -80,6 +80,10 @@ public sealed class CoreInfoManager
                     Url = GetCoreUrl(ECoreType.v2fly),
                     Match = "V2Ray",
                     VersionArg = "-version",
+                    Environment = new Dictionary<string, string?>()
+                    {
+                        { Global.V2RayLocalAsset, Utils.GetBinPath("") },
+                    },
                 },
 
                 new CoreInfo
@@ -90,6 +94,10 @@ public sealed class CoreInfoManager
                     Url = GetCoreUrl(ECoreType.v2fly_v5),
                     Match = "V2Ray",
                     VersionArg = "version",
+                    Environment = new Dictionary<string, string?>()
+                    {
+                        { Global.V2RayLocalAsset, Utils.GetBinPath("") },
+                    },
                 },
 
                 new CoreInfo
@@ -107,6 +115,11 @@ public sealed class CoreInfoManager
                     DownloadUrlOSXArm64 = urlXray + "/download/{0}/Xray-macos-arm64-v8a.zip",
                     Match = "Xray",
                     VersionArg = "-version",
+                    Environment = new Dictionary<string, string?>()
+                    {
+                        { Global.XrayLocalAsset, Utils.GetBinPath("") },
+                        { Global.XrayLocalCert, Utils.GetBinPath("") },
+                    },
                 },
 
                 new CoreInfo
@@ -205,12 +218,24 @@ public sealed class CoreInfoManager
                 new CoreInfo
                 {
                     CoreType = ECoreType.shadowquic,
-                    CoreExes = [ "shadowquic", "shadowquic"],
+                    CoreExes = [ "shadowquic" ],
                     Arguments = "-c {0}",
                     Url =  GetCoreUrl(ECoreType.shadowquic),
                     AbsolutePath = false,
-                }
+                },
 
+                new CoreInfo
+                {
+                    CoreType = ECoreType.mieru,
+                    CoreExes = [ "mieru" ],
+                    Arguments = "run",
+                    Url =  GetCoreUrl(ECoreType.mieru),
+                    AbsolutePath = false,
+                    Environment = new Dictionary<string, string?>()
+                    {
+                        { "MIERU_CONFIG_JSON_FILE", "{0}" },
+                    },
+                },
         ];
     }
 

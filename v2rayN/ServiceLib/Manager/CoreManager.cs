@@ -22,10 +22,6 @@ public class CoreManager
         _config = config;
         _updateFunc = updateFunc;
 
-        Environment.SetEnvironmentVariable(Global.V2RayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
-        Environment.SetEnvironmentVariable(Global.XrayLocalAsset, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
-        Environment.SetEnvironmentVariable(Global.XrayLocalCert, Utils.GetBinPath(""), EnvironmentVariableTarget.Process);
-
         //Copy the bin folder to the storage location (for init)
         if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
         {
@@ -277,6 +273,10 @@ public class CoreManager
                 StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
             }
         };
+        foreach (var kv in coreInfo.Environment)
+        {
+            proc.StartInfo.Environment[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
+        }
 
         if (displayLog)
         {
