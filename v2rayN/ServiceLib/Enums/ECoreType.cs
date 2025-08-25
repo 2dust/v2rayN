@@ -15,5 +15,6 @@ public enum ECoreType
     brook = 27,
     overtls = 28,
     shadowquic = 29,
+    mieru = 30,
     v2rayN = 99
 }
