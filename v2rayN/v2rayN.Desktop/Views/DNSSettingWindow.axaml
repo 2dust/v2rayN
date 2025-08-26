@@ -24,14 +24,12 @@
                 x:Name="btnSave"
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
-                Cursor="Hand"
                 IsDefault="True" />
             <Button
                 x:Name="btnCancel"
                 Width="100"
                 Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
-                Cursor="Hand"
                 IsCancel="True" />
         </StackPanel>
 
@@ -331,8 +329,7 @@
                             <Button
                                 x:Name="btnImportDefConfig4V2rayCompatible"
                                 Margin="{StaticResource Margin4}"
-                                Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
-                                Cursor="Hand" />
+                                Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}" />
                         </StackPanel>
                     </Grid>
 
@@ -415,8 +412,7 @@
                             <Button
                                 x:Name="btnImportDefConfig4SingboxCompatible"
                                 Margin="{StaticResource Margin4}"
-                                Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}"
-                                Cursor="Hand" />
+                                Content="{x:Static resx:ResUI.TbSettingDnsImportDefConfig}" />
                         </StackPanel>
                     </Grid>
 

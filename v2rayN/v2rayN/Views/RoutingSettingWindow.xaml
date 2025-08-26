@@ -61,7 +61,6 @@
                 x:Name="btnSave"
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
-                Cursor="Hand"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
@@ -69,7 +68,6 @@
                 Width="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
-                Cursor="Hand"
                 IsCancel="true"
                 Style="{StaticResource DefButton}" />
         </StackPanel>
