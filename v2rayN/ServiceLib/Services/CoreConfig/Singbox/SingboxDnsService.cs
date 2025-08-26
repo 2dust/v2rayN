@@ -80,45 +80,35 @@ public partial class CoreConfigSingboxService
             hostsDns.predefined = Global.PredefinedHosts;
         }
 
+        if (simpleDNSItem.UseSystemHosts == true)
+        {
+            var systemHosts = Utils.GetSystemHosts();
+            if (systemHosts != null && systemHosts.Count > 0)
+            {
+                foreach (var host in systemHosts)
+                {
+                    hostsDns.predefined.TryAdd(host.Key, new List<string> { host.Value });
+                }
+            }
+        }
+
         if (!simpleDNSItem.Hosts.IsNullOrEmpty())
         {
-            var userHostsMap = simpleDNSItem.Hosts?
+            var userHostsMap = simpleDNSItem.Hosts
                 .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(line => !string.IsNullOrWhiteSpace(line))
-                .Where(line => line.Contains(' '))
+                .Select(line => line.Trim())
+                .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
+                .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                .Where(parts => parts.Length >= 2)
+                .GroupBy(parts => parts[0])
                 .ToDictionary(
-                    line =>
-                    {
-                        var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                        return parts[0];
-                    },
-                    line =>
-                    {
-                        var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                        var values = parts.Skip(1).ToList();
-                        return values;
-                    }
-                ) ?? new Dictionary<string, List<string>>();
+                    group => group.Key,
+                    group => group.SelectMany(parts => parts.Skip(1)).ToList()
+                );
 
             foreach (var kvp in userHostsMap)
             {
                 hostsDns.predefined[kvp.Key] = kvp.Value;
-            }
-        }
-
-        if (simpleDNSItem.UseSystemHosts == true)
-        {
-            var systemHosts = Utils.GetSystemHosts();
-            if (systemHosts.Count > 0)
-            {
-                foreach (var host in systemHosts)
-                {
-                    if (hostsDns.predefined[host.Key] != null)
-                    {
-                        continue;
-                    }
-                    hostsDns.predefined[host.Key] = new List<string> { host.Value };
-                }
             }
         }
 
