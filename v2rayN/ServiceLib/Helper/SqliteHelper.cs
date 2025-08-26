@@ -26,7 +26,7 @@ public sealed class SQLiteHelper
 
     public async Task<int> InsertAllAsync(IEnumerable models)
     {
-        return await _dbAsync.InsertAllAsync(models);
+        return await _dbAsync.InsertAllAsync(models, runInTransaction: true).ConfigureAwait(false);
     }
 
     public async Task<int> InsertAsync(object model)
@@ -46,7 +46,7 @@ public sealed class SQLiteHelper
 
     public async Task<int> UpdateAllAsync(IEnumerable models)
     {
-        return await _dbAsync.UpdateAllAsync(models);
+        return await _dbAsync.UpdateAllAsync(models, runInTransaction: true).ConfigureAwait(false);
     }
 
     public async Task<int> DeleteAsync(object model)
