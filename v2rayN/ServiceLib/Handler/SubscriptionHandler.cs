@@ -197,6 +197,8 @@ public static class SubscriptionHandler
             updateFunc?.Invoke(false, $"{hashCode}{result}");
         }
 
+        updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
+
         // Add servers to configuration
         var ret = await ConfigHandler.AddBatchServers(config, result, id, true);
         if (ret <= 0)

@@ -1506,4 +1506,7 @@
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
     <value>This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core's basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you.</value>
   </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>開始解析和處理訂閱內容</value>
+  </data>
 </root>

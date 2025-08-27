@@ -1506,4 +1506,7 @@
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
     <value>此功能供高级用户和有特殊需求的用户使用。 启用此功能后，将忽略 Core 的基础设置，DNS 设置 ，路由设置。你需要保证系统代理的端口和流量统计等功能的配置正确，一切都由你来设置。</value>
   </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>开始解析和处理订阅内容</value>
+  </data>
 </root>

@@ -1509,4 +1509,7 @@
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
     <value>Эта функция предназначена для продвинутых пользователей и особых случаев. После включения игнорируются базовые настройки ядра, DNS и маршрутизации. Вы должны самостоятельно корректно задать порт системного прокси, учёт трафика и другие связанные параметры — всё настраивается вручную.</value>
   </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>Start parsing and processing subscription content</value>
+  </data>
 </root>
