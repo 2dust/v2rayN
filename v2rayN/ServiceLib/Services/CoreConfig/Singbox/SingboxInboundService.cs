@@ -10,7 +10,7 @@ public partial class CoreConfigSingboxService
             singboxConfig.inbounds = [];
 
             if (!_config.TunModeItem.EnableTun
-                || _config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box)
+                || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box))
             {
                 var inbound = new Inbound4Sbox()
                 {
@@ -78,7 +78,7 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
+        return await Task.FromResult(0);
     }
 
     private Inbound4Sbox GetInbound(Inbound4Sbox inItem, EInboundProtocol protocol, bool bSocks)
