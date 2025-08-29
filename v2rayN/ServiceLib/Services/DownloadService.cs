@@ -15,7 +15,7 @@ public class DownloadService
 
     private static readonly string _tag = "DownloadService";
 
-    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Action<bool, string> updateFunc)
+    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
     {
         try
         {
@@ -31,10 +31,10 @@ public class DownloadService
         }
         catch (Exception ex)
         {
-            updateFunc?.Invoke(false, ex.Message);
+            await updateFunc?.Invoke(false, ex.Message);
             if (ex.InnerException != null)
             {
-                updateFunc?.Invoke(false, ex.InnerException.Message);
+                await updateFunc?.Invoke(false, ex.InnerException.Message);
             }
         }
         return 0;

@@ -5,18 +5,12 @@ using System.Net.Sockets;
 
 namespace ServiceLib.Services;
 
-public class SpeedtestService
+public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateFunc)
 {
     private static readonly string _tag = "SpeedtestService";
-    private Config? _config;
-    private Action<SpeedTestResult>? _updateFunc;
+    private readonly Config? _config = config;
+    private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = new();
-
-    public SpeedtestService(Config config, Action<SpeedTestResult> updateFunc)
-    {
-        _config = config;
-        _updateFunc = updateFunc;
-    }
 
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
@@ -24,7 +18,7 @@ public class SpeedtestService
         {
             await RunAsync(actionType, selecteds);
             await ProfileExManager.Instance.SaveTo();
-            UpdateFunc("", ResUI.SpeedtestingCompleted);
+            await UpdateFunc("", ResUI.SpeedtestingCompleted);
         });
     }
 
@@ -43,7 +37,7 @@ public class SpeedtestService
         var exitLoopKey = Utils.GetGuid(false);
         _lstExitLoop.Add(exitLoopKey);
 
-        var lstSelected = GetClearItem(actionType, selecteds);
+        var lstSelected = await GetClearItem(actionType, selecteds);
 
         switch (actionType)
         {
@@ -65,7 +59,7 @@ public class SpeedtestService
         }
     }
 
-    private List<ServerTestItem> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
+    private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         var lstSelected = new List<ServerTestItem>();
         foreach (var it in selecteds)
@@ -97,17 +91,17 @@ public class SpeedtestService
             {
                 case ESpeedActionType.Tcping:
                 case ESpeedActionType.Realping:
-                    UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
+                    await UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
                     ProfileExManager.Instance.SetTestDelay(it.IndexId, 0);
                     break;
 
                 case ESpeedActionType.Speedtest:
-                    UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
+                    await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
                     ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     break;
 
                 case ESpeedActionType.Mixedtest:
-                    UpdateFunc(it.IndexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
+                    await UpdateFunc(it.IndexId, ResUI.Speedtesting, ResUI.SpeedtestingWait);
                     ProfileExManager.Instance.SetTestDelay(it.IndexId, 0);
                     ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     break;
@@ -133,7 +127,7 @@ public class SpeedtestService
                     var responseTime = await GetTcpingTime(it.Address, it.Port);
 
                     ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-                    UpdateFunc(it.IndexId, responseTime.ToString());
+                    await UpdateFunc(it.IndexId, responseTime.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -169,11 +163,11 @@ public class SpeedtestService
         {
             if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
             {
-                UpdateFunc("", ResUI.SpeedtestingSkip);
+                await UpdateFunc("", ResUI.SpeedtestingSkip);
                 return;
             }
 
-            UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
+            await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
 
             if (pageSizeNext > _config.SpeedTestItem.MixedConcurrencyCount)
             {
@@ -239,7 +233,7 @@ public class SpeedtestService
         {
             if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
             {
-                UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
+                await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                 continue;
             }
             if (it.ConfigType == EConfigType.Custom)
@@ -256,7 +250,7 @@ public class SpeedtestService
                     pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
                     if (pid < 0)
                     {
-                        UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                        await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
                     }
                     else
                     {
@@ -270,7 +264,7 @@ public class SpeedtestService
                             }
                             else
                             {
-                                UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
+                                await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                             }
                         }
                     }
@@ -298,25 +292,25 @@ public class SpeedtestService
         var responseTime = await HttpClientHelper.Instance.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-        UpdateFunc(it.IndexId, responseTime.ToString());
+        await UpdateFunc(it.IndexId, responseTime.ToString());
         return responseTime;
     }
 
     private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it)
     {
-        UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
+        await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
-        await downloadHandle.DownloadDataAsync(url, webProxy, timeout, (success, msg) =>
+        await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (success, msg) =>
         {
             decimal.TryParse(msg, out var dec);
             if (dec > 0)
             {
                 ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
             }
-            UpdateFunc(it.IndexId, "", msg);
+            await UpdateFunc(it.IndexId, "", msg);
         });
     }
 
@@ -371,9 +365,9 @@ public class SpeedtestService
         return lstTest;
     }
 
-    private void UpdateFunc(string indexId, string delay, string speed = "")
+    private async Task UpdateFunc(string indexId, string delay, string speed = "")
     {
-        _updateFunc?.Invoke(new() { IndexId = indexId, Delay = delay, Speed = speed });
+        await _updateFunc?.Invoke(new() { IndexId = indexId, Delay = delay, Speed = speed });
         if (indexId.IsNotEmpty() && speed.IsNotEmpty())
         {
             ProfileExManager.Instance.SetTestMessage(indexId, speed);
