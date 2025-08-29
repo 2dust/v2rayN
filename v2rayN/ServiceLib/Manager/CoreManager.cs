@@ -14,10 +14,10 @@ public class CoreManager
     private Process? _process;
     private Process? _processPre;
     private bool _linuxSudo = false;
-    private Action<bool, string>? _updateFunc;
+    private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
 
-    public async Task Init(Config config, Action<bool, string> updateFunc)
+    public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
@@ -63,7 +63,7 @@ public class CoreManager
     {
         if (node == null)
         {
-            UpdateFunc(false, ResUI.CheckServerSettings);
+            await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
@@ -71,13 +71,13 @@ public class CoreManager
         var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
         if (result.Success != true)
         {
-            UpdateFunc(true, result.Msg);
+            await UpdateFunc(true, result.Msg);
             return;
         }
 
-        UpdateFunc(false, $"{node.GetSummary()}");
-        UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
-        UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+        await UpdateFunc(false, $"{node.GetSummary()}");
+        await UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
+        await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
         await CoreStop();
         await Task.Delay(100);
 
@@ -91,7 +91,7 @@ public class CoreManager
         await CoreStartPreService(node);
         if (_process != null)
         {
-            UpdateFunc(true, $"{node.GetSummary()}");
+            await UpdateFunc(true, $"{node.GetSummary()}");
         }
     }
 
@@ -101,14 +101,14 @@ public class CoreManager
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
-        UpdateFunc(false, result.Msg);
+        await UpdateFunc(false, result.Msg);
         if (result.Success != true)
         {
             return -1;
         }
 
-        UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-        UpdateFunc(false, configPath);
+        await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+        await UpdateFunc(false, configPath);
 
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
         var proc = await RunProcess(coreInfo, fileName, true, false);
@@ -216,9 +216,9 @@ public class CoreManager
         }
     }
 
-    private void UpdateFunc(bool notify, string msg)
+    private async Task UpdateFunc(bool notify, string msg)
     {
-        _updateFunc?.Invoke(notify, msg);
+        await _updateFunc?.Invoke(notify, msg);
     }
 
     #endregion Private
@@ -230,7 +230,7 @@ public class CoreManager
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
         {
-            UpdateFunc(false, msg);
+            await UpdateFunc(false, msg);
             return null;
         }
 
@@ -251,7 +251,7 @@ public class CoreManager
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            UpdateFunc(mayNeedSudo, ex.Message);
+            await UpdateFunc(mayNeedSudo, ex.Message);
             return null;
         }
     }
@@ -284,7 +284,7 @@ public class CoreManager
             {
                 if (e.Data.IsNotEmpty())
                 {
-                    UpdateFunc(false, e.Data + Environment.NewLine);
+                    _ = UpdateFunc(false, e.Data + Environment.NewLine);
                 }
             }
             proc.OutputDataReceived += dataHandler;

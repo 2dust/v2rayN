@@ -245,7 +245,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     #region Actions
 
-    private void UpdateHandler(bool notify, string msg)
+    private async Task UpdateHandler(bool notify, string msg)
     {
         NoticeManager.Instance.SendMessage(msg);
         if (notify)
@@ -631,7 +631,7 @@ public class MainWindowViewModel : MyReactiveObject
         Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
         await ConfigHandler.SaveConfig(_config);
-        await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
+        await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
         await Reload();
     }
 
