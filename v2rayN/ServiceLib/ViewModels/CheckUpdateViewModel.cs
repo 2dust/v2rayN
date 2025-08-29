@@ -89,9 +89,11 @@ public class CheckUpdateViewModel : MyReactiveObject
         {
             var item = _checkUpdateModel[k];
             if (item.IsSelected != true)
+            {
                 continue;
+            }
 
-            UpdateView(item.CoreType, "...");
+            await UpdateView(item.CoreType, "...");
             if (item.CoreType == _geo)
             {
                 await CheckUpdateGeo();
@@ -129,9 +131,9 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateGeo()
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(_geo, msg);
+            await UpdateView(_geo, msg);
             if (success)
             {
                 UpdatedPlusPlus(_geo, "");
@@ -146,12 +148,12 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateN(bool preRelease)
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(_v2rayN, msg);
+            await UpdateView(_v2rayN, msg);
             if (success)
             {
-                UpdateView(_v2rayN, ResUI.OperationSuccess);
+                await UpdateView(_v2rayN, ResUI.OperationSuccess);
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
@@ -164,12 +166,12 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateCore(CheckUpdateModel model, bool preRelease)
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(model.CoreType, msg);
+            await UpdateView(model.CoreType, msg);
             if (success)
             {
-                UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
+                await UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
                 UpdatedPlusPlus(model.CoreType, msg);
             }
@@ -193,7 +195,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             if (_lstUpdated.Any(x => x.CoreType == _v2rayN && x.IsFinished == true))
             {
                 await Task.Delay(1000);
-                UpgradeN();
+                await UpgradeN();
             }
             await Task.Delay(1000);
             _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, true);
@@ -212,7 +214,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private void UpgradeN()
+    private async Task UpgradeN()
     {
         try
         {
@@ -223,14 +225,14 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             if (!Utils.UpgradeAppExists(out _))
             {
-                UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                await UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
                 return;
             }
             Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
         }
         catch (Exception ex)
         {
-            UpdateView(_v2rayN, ex.Message);
+            await UpdateView(_v2rayN, ex.Message);
         }
     }
 
@@ -281,7 +283,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 }
             }
 
-            UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
+            await UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
 
             if (File.Exists(fileName))
             {
@@ -290,21 +292,24 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private void UpdateView(string coreType, string msg)
+    private async Task UpdateView(string coreType, string msg)
     {
         var item = new CheckUpdateModel()
         {
             CoreType = coreType,
             Remarks = msg,
         };
-        _updateView?.Invoke(EViewAction.DispatcherCheckUpdate, item);
+        await _updateView?.Invoke(EViewAction.DispatcherCheckUpdate, item);
     }
 
     public void UpdateViewResult(CheckUpdateModel model)
     {
         var found = _checkUpdateModel.FirstOrDefault(t => t.CoreType == model.CoreType);
         if (found == null)
+        {
             return;
+        }
+
         var itemCopy = JsonUtils.DeepCopy(found);
         itemCopy.Remarks = model.Remarks;
         _checkUpdateModel.Replace(found, itemCopy);

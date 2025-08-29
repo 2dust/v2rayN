@@ -92,9 +92,9 @@ public class TaskManager
             Logging.SaveLog("Execute update geo files");
 
             var updateHandle = new UpdateService();
-            await updateHandle.UpdateGeoFileAll(_config, (success, msg) =>
+            await updateHandle.UpdateGeoFileAll(_config, async (success, msg) =>
             {
-                _updateFunc?.Invoke(false, msg);
+                await _updateFunc?.Invoke(false, msg);
             });
         }
     }

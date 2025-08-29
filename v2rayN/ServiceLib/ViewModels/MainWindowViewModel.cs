@@ -633,7 +633,7 @@ public class MainWindowViewModel : MyReactiveObject
         Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
         await ConfigHandler.SaveConfig(_config);
-       //TODO await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
+        await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
         await Reload();
     }
 
