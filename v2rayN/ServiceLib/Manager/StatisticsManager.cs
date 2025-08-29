@@ -8,14 +8,14 @@ public class StatisticsManager
     private Config _config;
     private ServerStatItem? _serverStatItem;
     private List<ServerStatItem> _lstServerStat;
-    private Action<ServerSpeedItem>? _updateFunc;
+    private Func<ServerSpeedItem, Task>? _updateFunc;
 
     private StatisticsXrayService? _statisticsXray;
     private StatisticsSingboxService? _statisticsSingbox;
     private static readonly string _tag = "StatisticsHandler";
     public List<ServerStatItem> ServerStat => _lstServerStat;
 
-    public async Task Init(Config config, Action<ServerSpeedItem> updateFunc)
+    public async Task Init(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
@@ -97,9 +97,9 @@ public class StatisticsManager
         _lstServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
     }
 
-    private void UpdateServerStatHandler(ServerSpeedItem server)
+    private async Task UpdateServerStatHandler(ServerSpeedItem server)
     {
-        _ = UpdateServerStat(server);
+        await UpdateServerStat(server);
     }
 
     private async Task UpdateServerStat(ServerSpeedItem server)
@@ -123,7 +123,7 @@ public class StatisticsManager
         server.TodayDown = _serverStatItem.TodayDown;
         server.TotalUp = _serverStatItem.TotalUp;
         server.TotalDown = _serverStatItem.TotalDown;
-        _updateFunc?.Invoke(server);
+        await _updateFunc?.Invoke(server);
     }
 
     private async Task GetServerStatItem(string indexId)

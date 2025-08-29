@@ -272,13 +272,13 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    private void UpdateStatisticsHandler(ServerSpeedItem update)
+    private async Task UpdateStatisticsHandler(ServerSpeedItem update)
     {
         if (!_config.UiItem.ShowInTaskbar)
         {
             return;
         }
-        _updateView?.Invoke(EViewAction.DispatcherStatistics, update);
+        await _updateView?.Invoke(EViewAction.DispatcherStatistics, update);
     }
 
     public void SetStatisticsResult(ServerSpeedItem update)

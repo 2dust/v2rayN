@@ -35,7 +35,7 @@ public sealed class ClashApiManager
         return null;
     }
 
-    public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Action<ClashProxyModel?, string> updateFunc)
+    public void ClashProxiesDelayTest(bool blAll, List<ClashProxyModel> lstProxy, Func<ClashProxyModel?, string, Task> updateFunc)
     {
         Task.Run(async () =>
         {
@@ -79,12 +79,12 @@ public sealed class ClashApiManager
                 tasks.Add(Task.Run(async () =>
                 {
                     var result = await HttpClientHelper.Instance.TryGetAsync(url);
-                    updateFunc?.Invoke(it, result);
+                    await updateFunc?.Invoke(it, result);
                 }));
             }
             await Task.WhenAll(tasks);
             await Task.Delay(1000);
-            updateFunc?.Invoke(null, "");
+            await updateFunc?.Invoke(null, "");
         });
     }
 

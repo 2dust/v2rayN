@@ -373,14 +373,14 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private async Task ProxiesDelayTest(bool blAll = true)
     {
-        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), (item, result) =>
+        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
         {
             if (item == null || result.IsNullOrEmpty())
             {
                 return;
             }
 
-            _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.Name, Delay = result });
+            await _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.Name, Delay = result });
         });
         await Task.CompletedTask;
     }
