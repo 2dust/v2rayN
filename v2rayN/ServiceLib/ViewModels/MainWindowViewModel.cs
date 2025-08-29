@@ -254,7 +254,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    private void UpdateTaskHandler(bool success, string msg)
+    private async Task UpdateTaskHandler(bool success, string msg)
     {
         NoticeManager.Instance.SendMessageEx(msg);
         if (success)
@@ -263,7 +263,7 @@ public class MainWindowViewModel : MyReactiveObject
             RefreshServers();
             if (indexIdOld != _config.IndexId)
             {
-                _ = Reload();
+                await Reload();
             }
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
@@ -596,7 +596,9 @@ public class MainWindowViewModel : MyReactiveObject
             Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
         }
         else
-        { TabMainSelectedIndex = 0; }
+        {
+            TabMainSelectedIndex = 0;
+        }
     }
 
     private async Task LoadCore()
@@ -631,7 +633,7 @@ public class MainWindowViewModel : MyReactiveObject
         Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
         await ConfigHandler.SaveConfig(_config);
-        await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
+       //TODO await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
         await Reload();
     }
 

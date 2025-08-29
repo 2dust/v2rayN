@@ -4,13 +4,18 @@ public class TaskManager
 {
     private static readonly Lazy<TaskManager> _instance = new(() => new());
     public static TaskManager Instance => _instance.Value;
+    private Config _config;
+    private Func<bool, string, Task>? _updateFunc;
 
-    public void RegUpdateTask(Config config, Action<bool, string> updateFunc)
+    public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc)
     {
-        Task.Run(() => ScheduledTasks(config, updateFunc));
+        _config = config;
+        _updateFunc = updateFunc;
+
+        Task.Run(ScheduledTasks);
     }
 
-    private async Task ScheduledTasks(Config config, Action<bool, string> updateFunc)
+    private async Task ScheduledTasks()
     {
         Logging.SaveLog("Setup Scheduled Tasks");
 
@@ -21,14 +26,14 @@ public class TaskManager
             await Task.Delay(1000 * 60);
 
             //Execute once 1 minute
-            await UpdateTaskRunSubscription(config, updateFunc);
+            await UpdateTaskRunSubscription();
 
             //Execute once 20 minute
             if (numOfExecuted % 20 == 0)
             {
                 //Logging.SaveLog("Execute save config");
 
-                await ConfigHandler.SaveConfig(config);
+                await ConfigHandler.SaveConfig(_config);
                 await ProfileExManager.Instance.SaveTo();
             }
 
@@ -42,14 +47,14 @@ public class TaskManager
                 FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
 
                 //Check once 1 hour
-                await UpdateTaskRunGeo(config, numOfExecuted / 60, updateFunc);
+                await UpdateTaskRunGeo(numOfExecuted / 60);
             }
 
             numOfExecuted++;
         }
     }
 
-    private async Task UpdateTaskRunSubscription(Config config, Action<bool, string> updateFunc)
+    private async Task UpdateTaskRunSubscription()
     {
         var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
         var lstSubs = (await AppManager.Instance.SubItems())?
@@ -66,30 +71,30 @@ public class TaskManager
 
         foreach (var item in lstSubs)
         {
-            await SubscriptionHandler.UpdateProcess(config, item.Id, true, (success, msg) =>
+            await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
             {
-                updateFunc?.Invoke(success, msg);
+                await _updateFunc?.Invoke(success, msg);
                 if (success)
                 {
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
             item.UpdateTime = updateTime;
-            await ConfigHandler.AddSubItem(config, item);
+            await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
     }
 
-    private async Task UpdateTaskRunGeo(Config config, int hours, Action<bool, string> updateFunc)
+    private async Task UpdateTaskRunGeo(int hours)
     {
-        if (config.GuiItem.AutoUpdateInterval > 0 && hours > 0 && hours % config.GuiItem.AutoUpdateInterval == 0)
+        if (_config.GuiItem.AutoUpdateInterval > 0 && hours > 0 && hours % _config.GuiItem.AutoUpdateInterval == 0)
         {
             Logging.SaveLog("Execute update geo files");
 
             var updateHandle = new UpdateService();
-            await updateHandle.UpdateGeoFileAll(config, (success, msg) =>
+            await updateHandle.UpdateGeoFileAll(_config, (success, msg) =>
             {
-                updateFunc?.Invoke(false, msg);
+                _updateFunc?.Invoke(false, msg);
             });
         }
     }

@@ -2,17 +2,18 @@ namespace ServiceLib.Handler;
 
 public static class SubscriptionHandler
 {
-    public static async Task UpdateProcess(Config config, string subId, bool blProxy, Action<bool, string> updateFunc)
+    public static async Task UpdateProcess(Config config, string subId, bool blProxy, Func<bool, string, Task> updateFunc)
     {
-        updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
+        await updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
         var subItem = await AppManager.Instance.SubItems();
 
         if (subItem is not { Count: > 0 })
         {
-            updateFunc?.Invoke(false, ResUI.MsgNoValidSubscription);
+            await updateFunc?.Invoke(false, ResUI.MsgNoValidSubscription);
             return;
         }
 
+        var successCount = 0;
         foreach (var item in subItem)
         {
             try
@@ -25,32 +26,35 @@ public static class SubscriptionHandler
                 var hashCode = $"{item.Remarks}->";
                 if (item.Enabled == false)
                 {
-                    updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
+                    await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
                     continue;
                 }
 
                 // Create download handler
                 var downloadHandle = CreateDownloadHandler(hashCode, updateFunc);
-                updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
+                await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                 // Get all subscription content (main subscription + additional subscriptions)
                 var result = await DownloadAllSubscriptions(config, item, blProxy, downloadHandle);
 
                 // Process download result
-                await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc);
+                if (await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc))
+                {
+                    successCount++;
+                }
 
-                updateFunc?.Invoke(false, "-------------------------------------------------------");
+                await updateFunc?.Invoke(false, "-------------------------------------------------------");
             }
             catch (Exception ex)
             {
                 var hashCode = $"{item.Remarks}->";
                 Logging.SaveLog("UpdateSubscription", ex);
-                updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgFailedImportSubscription}: {ex.Message}");
-                updateFunc?.Invoke(false, "-------------------------------------------------------");
+                await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgFailedImportSubscription}: {ex.Message}");
+                await updateFunc?.Invoke(false, "-------------------------------------------------------");
             }
         }
 
-        updateFunc?.Invoke(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
+        await updateFunc?.Invoke(successCount > 0, $"{ResUI.MsgUpdateSubscriptionEnd}");
     }
 
     private static bool IsValidSubscription(SubItem item, string subId)
@@ -76,7 +80,7 @@ public static class SubscriptionHandler
         return true;
     }
 
-    private static DownloadService CreateDownloadHandler(string hashCode, Action<bool, string> updateFunc)
+    private static DownloadService CreateDownloadHandler(string hashCode, Func<bool, string, Task> updateFunc)
     {
         var downloadHandle = new DownloadService();
         downloadHandle.Error += (sender2, args) =>
@@ -181,23 +185,23 @@ public static class SubscriptionHandler
         return result;
     }
 
-    private static async Task ProcessDownloadResult(Config config, string id, string result, string hashCode, Action<bool, string> updateFunc)
+    private static async Task<bool> ProcessDownloadResult(Config config, string id, string result, string hashCode, Func<bool, string, Task> updateFunc)
     {
         if (result.IsNullOrEmpty())
         {
-            updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
-            return;
+            await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
+            return false;
         }
 
-        updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
+        await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
 
         // If result is too short, display content directly
         if (result.Length < 99)
         {
-            updateFunc?.Invoke(false, $"{hashCode}{result}");
+            await updateFunc?.Invoke(false, $"{hashCode}{result}");
         }
 
-        updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
+        await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
 
         // Add servers to configuration
         var ret = await ConfigHandler.AddBatchServers(config, result, id, true);
@@ -208,9 +212,10 @@ public static class SubscriptionHandler
         }
 
         // Update completion message
-        updateFunc?.Invoke(false,
-            ret > 0
+        await updateFunc?.Invoke(false, ret > 0
                 ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
                 : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
+
+        return ret > 0;
     }
 }
