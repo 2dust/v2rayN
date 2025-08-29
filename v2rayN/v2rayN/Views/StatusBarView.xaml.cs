@@ -86,12 +86,7 @@ public partial class StatusBarView
                 }), DispatcherPriority.Normal);
                 break;
 
-            case EViewAction.DispatcherRefreshServersBiz:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.RefreshServersBiz();
-                }), DispatcherPriority.Normal);
-                break;
+        
 
             case EViewAction.DispatcherRefreshIcon:
                 Application.Current?.Dispatcher.Invoke((async () =>

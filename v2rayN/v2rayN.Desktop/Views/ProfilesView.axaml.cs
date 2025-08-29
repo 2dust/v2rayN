@@ -187,11 +187,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 break;
 
             case EViewAction.DispatcherRefreshServersBiz:
-                Dispatcher.UIThread.Post(() =>
-                {
-                    _ = RefreshServersBiz();
-                },
-                DispatcherPriority.Default);
+                Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
                 break;
         }
 
@@ -209,13 +205,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         await DialogHost.Show(dialog);
     }
 
-    public async Task RefreshServersBiz()
+    public void RefreshServersBiz()
     {
-        if (ViewModel != null)
-        {
-            await ViewModel.RefreshServersBiz();
-        }
-
         if (lstProfiles.SelectedIndex >= 0)
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);

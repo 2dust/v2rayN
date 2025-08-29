@@ -168,10 +168,7 @@ public partial class ProfilesView
                 break;
 
             case EViewAction.DispatcherRefreshServersBiz:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    _ = RefreshServersBiz();
-                }), DispatcherPriority.Normal);
+                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
                 break;
         }
 
@@ -190,13 +187,8 @@ public partial class ProfilesView
         await DialogHost.Show(dialog, "RootDialog");
     }
 
-    public async Task RefreshServersBiz()
+    public void RefreshServersBiz()
     {
-        if (ViewModel != null)
-        {
-            await ViewModel.RefreshServersBiz();
-        }
-
         if (lstProfiles.SelectedIndex > 0)
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);

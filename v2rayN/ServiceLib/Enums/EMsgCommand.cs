@@ -5,6 +5,5 @@ public enum EMsgCommand
     ClearMsg,
     SendMsgView,
     SendSnackMsg,
-    RefreshProfiles,
     AppExit
 }

@@ -63,12 +63,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
                     ViewModel?.TestServerAvailabilityResult((string)obj),
                 DispatcherPriority.Default);
                 break;
-
-            case EViewAction.DispatcherRefreshServersBiz:
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.RefreshServersBiz(),
-                DispatcherPriority.Default);
-                break;
+                 
 
             case EViewAction.DispatcherRefreshIcon:
                 Dispatcher.UIThread.Post(() =>

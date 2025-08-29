@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -216,13 +217,11 @@ public class StatusBarViewModel : MyReactiveObject
         _updateView = updateView;
         if (_updateView != null)
         {
-            MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(OnNext);
+            AppEvents.ProfilesRefreshRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
         }
-    }
-
-    private async void OnNext(string x)
-    {
-        await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
     }
 
     private async Task CopyProxyCmdToClipboard()
@@ -263,7 +262,7 @@ public class StatusBarViewModel : MyReactiveObject
             await service.UpdateSubscriptionProcess("", blProxy);
     }
 
-    public async Task RefreshServersBiz()
+    private async Task RefreshServersBiz()
     {
         await RefreshServersMenu();
 
