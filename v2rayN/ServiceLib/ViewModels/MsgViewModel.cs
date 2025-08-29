@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -34,12 +35,10 @@ public class MsgViewModel : MyReactiveObject
           y => y == true)
               .Subscribe(c => { _config.MsgUIItem.AutoRefresh = AutoRefresh; });
 
-        MessageBus.Current.Listen<string>(EMsgCommand.SendMsgView.ToString()).Subscribe(OnNext);
-    }
-
-    private async void OnNext(string x)
-    {
-        await AppendQueueMsg(x);
+        AppEvents.SendMsgViewRequested
+         .AsObservable()
+         //.ObserveOn(RxApp.MainThreadScheduler)
+         .Subscribe(async content => await AppendQueueMsg(content));
     }
 
     private async Task AppendQueueMsg(string msg)

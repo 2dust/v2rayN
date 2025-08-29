@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -36,7 +37,6 @@ public partial class MainWindow
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-        MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(DelegateSnackMsg);
         ViewModel = new MainWindowViewModel(UpdateViewHandler);
         Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
@@ -133,6 +133,18 @@ public partial class MainWindow
                     this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
                     break;
             }
+
+            AppEvents.SendSnackMsgRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(async content => await DelegateSnackMsg(content))
+              .DisposeWith(disposables);
+
+            AppEvents.AppExitRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(_ => StorageUI())
+              .DisposeWith(disposables);
         });
 
         this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
@@ -144,7 +156,6 @@ public partial class MainWindow
 
         AddHelpMenuItem();
         WindowsManager.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
-        MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
 
     #region Event
@@ -157,12 +168,9 @@ public partial class MainWindow
         }));
     }
 
-    private void DelegateSnackMsg(string content)
+    private async Task DelegateSnackMsg(string content)
     {
-        Application.Current?.Dispatcher.Invoke((() =>
-        {
-            MainSnackbar.MessageQueue?.Enqueue(content);
-        }), DispatcherPriority.Normal);
+        MainSnackbar.MessageQueue?.Enqueue(content);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -423,7 +431,7 @@ public partial class MainWindow
         }
     }
 
-    private void StorageUI(string? n = null)
+    private void StorageUI()
     {
         ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
 

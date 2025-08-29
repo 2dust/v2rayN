@@ -300,7 +300,7 @@ public class MainWindowViewModel : MyReactiveObject
             Logging.SaveLog("MyAppExitAsync Begin");
 
             await SysProxyHandler.UpdateSysProxy(_config, true);
-            MessageBus.Current.SendMessage("", EMsgCommand.AppExit.ToString());
+            AppEvents.AppExitRequested.OnNext(Unit.Default);
 
             await ConfigHandler.SaveConfig(_config);
             await ProfileExManager.Instance.SaveTo();

@@ -1,5 +1,3 @@
-using ReactiveUI;
-
 namespace ServiceLib.Manager;
 
 public class NoticeManager
@@ -13,7 +11,7 @@ public class NoticeManager
         {
             return;
         }
-        MessageBus.Current.SendMessage(content, EMsgCommand.SendSnackMsg.ToString());
+        AppEvents.SendSnackMsgRequested.OnNext(content);
     }
 
     public void SendMessage(string? content)
@@ -22,7 +20,7 @@ public class NoticeManager
         {
             return;
         }
-        MessageBus.Current.SendMessage(content, EMsgCommand.SendMsgView.ToString());
+        AppEvents.SendMsgViewRequested.OnNext(content);
     }
 
     public void SendMessageEx(string? content)
