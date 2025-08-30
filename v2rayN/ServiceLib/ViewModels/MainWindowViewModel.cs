@@ -268,7 +268,7 @@ public class MainWindowViewModel : MyReactiveObject
             }
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
-                _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
+                AppEvents.AdjustMainLvColWidthRequested.OnNext(Unit.Default);
             }
         }
     }

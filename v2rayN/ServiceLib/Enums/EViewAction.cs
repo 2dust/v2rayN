@@ -6,7 +6,6 @@ public enum EViewAction
     ShowYesNo,
     SaveFileDialog,
     AddBatchRoutingRulesYesNo,
-    AdjustMainLvColWidth,
     SetClipboardData,
     AddServerViaClipboard,
     ImportRulesFromClipboard,

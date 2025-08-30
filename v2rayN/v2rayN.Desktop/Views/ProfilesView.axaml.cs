@@ -103,6 +103,12 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
+
+            AppEvents.AdjustMainLvColWidthRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => AutofitColumnWidth())
+                .DisposeWith(disposables);
         });
 
         RestoreUI();
@@ -131,13 +137,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 if (obj is null)
                     return false;
                 await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
-
-            case EViewAction.AdjustMainLvColWidth:
-                Dispatcher.UIThread.Post(() =>
-                     AutofitColumnWidth(),
-               DispatcherPriority.Default);
-
                 break;
 
             case EViewAction.ProfilesFocus:

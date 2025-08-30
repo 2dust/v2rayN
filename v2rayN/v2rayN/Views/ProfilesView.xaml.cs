@@ -97,6 +97,12 @@ public partial class ProfilesView
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
+
+            AppEvents.AdjustMainLvColWidthRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => AutofitColumnWidth())
+                .DisposeWith(disposables);
         });
 
         RestoreUI();
@@ -113,14 +119,7 @@ public partial class ProfilesView
                 if (obj is null)
                     return false;
                 WindowsUtils.SetClipboardData((string)obj);
-                break;
-
-            case EViewAction.AdjustMainLvColWidth:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    AutofitColumnWidth();
-                }), DispatcherPriority.Normal);
-                break;
+                break;          
 
             case EViewAction.ProfilesFocus:
                 lstProfiles.Focus();

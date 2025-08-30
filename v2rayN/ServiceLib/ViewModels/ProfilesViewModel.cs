@@ -348,11 +348,6 @@ public class ProfilesViewModel : MyReactiveObject
         }
     }
 
-    public async Task AutofitColumnWidthAsync()
-    {
-        await _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
-    }
-
     #endregion Actions
 
     #region Servers && Groups
