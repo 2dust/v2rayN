@@ -222,20 +222,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 DispatcherPriority.Default);
                 break;
 
-            case EViewAction.DispatcherStatistics:
-                if (obj is null)
-                    return false;
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.SetStatisticsResult((ServerSpeedItem)obj),
-                DispatcherPriority.Default);
-                break;
-
-            case EViewAction.DispatcherReload:
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.ReloadResult(),
-                DispatcherPriority.Default);
-                break;
-
             case EViewAction.Shutdown:
                 if (obj != null && _blCloseByUser == false)
                 {

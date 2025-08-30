@@ -135,6 +135,7 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         return res.ToString();
     }
+
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         btnCancel.Focus();

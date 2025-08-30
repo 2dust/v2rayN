@@ -1,4 +1,6 @@
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using DynamicData;
 using DynamicData.Binding;
@@ -188,7 +190,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (_lstUpdated.Count > 0 && _lstUpdated.Count(x => x.IsFinished == true) == _lstUpdated.Count)
         {
-            _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, false);
+            await UpdateFinishedSub(false);
             await Task.Delay(2000);
             await UpgradeCore();
 
@@ -198,11 +200,20 @@ public class CheckUpdateViewModel : MyReactiveObject
                 await UpgradeN();
             }
             await Task.Delay(1000);
-            _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, true);
+            await UpdateFinishedSub(true);
         }
     }
 
-    public void UpdateFinishedResult(bool blReload)
+    private async Task UpdateFinishedSub(bool blReload)
+    {
+        RxApp.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        {
+            _ = UpdateFinishedResult(blReload);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task UpdateFinishedResult(bool blReload)
     {
         if (blReload)
         {
@@ -299,10 +310,15 @@ public class CheckUpdateViewModel : MyReactiveObject
             CoreType = coreType,
             Remarks = msg,
         };
-        await _updateView?.Invoke(EViewAction.DispatcherCheckUpdate, item);
+
+        RxApp.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        {
+            _ = UpdateViewResult(model);
+            return Disposable.Empty;
+        });
     }
 
-    public void UpdateViewResult(CheckUpdateModel model)
+    public async Task UpdateViewResult(CheckUpdateModel model)
     {
         var found = _checkUpdateModel.FirstOrDefault(t => t.CoreType == model.CoreType);
         if (found == null)

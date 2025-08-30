@@ -1,4 +1,6 @@
 using System.Reactive;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
@@ -168,11 +170,11 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         if (refreshUI)
         {
-            _updateView?.Invoke(EViewAction.DispatcherRefreshProxyGroups, null);
+            RxApp.MainThreadScheduler.Schedule(() => _ = RefreshProxyGroups());
         }
     }
 
-    public void RefreshProxyGroups()
+    public async Task RefreshProxyGroups()
     {
         if (_proxies == null)
         {
@@ -380,12 +382,17 @@ public class ClashProxiesViewModel : MyReactiveObject
                 return;
             }
 
-            await _updateView?.Invoke(EViewAction.DispatcherProxiesDelayTest, new SpeedTestResult() { IndexId = item.Name, Delay = result });
+            var model = new SpeedTestResult() { IndexId = item.Name, Delay = result };
+            RxApp.MainThreadScheduler.Schedule(model, (scheduler, model) =>
+            {
+                _ = ProxiesDelayTestResult(model);
+                return Disposable.Empty;
+            });
         });
         await Task.CompletedTask;
     }
 
-    public void ProxiesDelayTestResult(SpeedTestResult result)
+    public async Task ProxiesDelayTestResult(SpeedTestResult result)
     {
         //UpdateHandler(false, $"{item.name}={result}");
         var detail = _proxyDetails.FirstOrDefault(it => it.Name == result.IndexId);

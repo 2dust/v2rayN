@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Concurrency;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -278,19 +279,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             return;
         }
-        await _updateView?.Invoke(EViewAction.DispatcherStatistics, update);
-    }
-
-    public void SetStatisticsResult(ServerSpeedItem update)
-    {
-        if (_config.GuiItem.DisplayRealTimeSpeed)
-        {
-            Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-        }
-        if (_config.GuiItem.EnableStatistics && (update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
-        {
-            Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
-        }
+        AppEvents.DispatcherStatisticsRequested.OnNext(update);
     }
 
     public async Task MyAppExitAsync(bool blWindowsShutDown)
@@ -578,7 +567,7 @@ public class MainWindowViewModel : MyReactiveObject
         });
         Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
-        _updateView?.Invoke(EViewAction.DispatcherReload, null);
+        RxApp.MainThreadScheduler.Schedule(() => _ = ReloadResult());
 
         BlReloadEnabled = true;
         if (_hasNextReloadJob)
@@ -588,7 +577,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    public void ReloadResult()
+    public async Task ReloadResult()
     {
         // BlReloadEnabled = true;
         //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);

@@ -117,6 +117,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
             menuClose_Click(null, null);
         }
     }
+
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         lstSubscription.Focus();

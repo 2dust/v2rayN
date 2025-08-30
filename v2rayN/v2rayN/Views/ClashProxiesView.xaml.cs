@@ -1,7 +1,5 @@
 using System.Reactive.Disposables;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using ReactiveUI;
 using Splat;
 
@@ -41,26 +39,6 @@ public partial class ClashProxiesView
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshProxyGroups:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.RefreshProxyGroups();
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.DispatcherProxiesDelayTest:
-
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.ProxiesDelayTestResult((SpeedTestResult)obj);
-                }), DispatcherPriority.Normal);
-                break;
-        }
-
         return await Task.FromResult(true);
     }
 

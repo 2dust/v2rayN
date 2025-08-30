@@ -135,6 +135,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             }
         }
     }
+
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         btnCancel.Focus();

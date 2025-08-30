@@ -183,15 +183,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     return false;
                 return await new SubEditWindow((SubItem)obj).ShowDialog<bool>(_window);
 
-            case EViewAction.DispatcherSpeedTest:
-                if (obj is null)
-                    return false;
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.SetSpeedTestResult((SpeedTestResult)obj),
-                DispatcherPriority.Default);
-
-                break;
-
             case EViewAction.DispatcherRefreshServersBiz:
                 Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
                 break;

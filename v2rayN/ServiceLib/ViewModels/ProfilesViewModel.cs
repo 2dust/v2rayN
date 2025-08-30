@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using DynamicData;
@@ -247,13 +248,19 @@ public class ProfilesViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
-        if (_updateView != null)
-        {
-            AppEvents.ProfilesRefreshRequested
+        #region AppEvents
+
+        AppEvents.ProfilesRefreshRequested
             .AsObservable()
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshServersBiz());//.DisposeWith(_disposables);
-        }
+            .Subscribe(async _ => await RefreshServersBiz());
+
+        AppEvents.DispatcherStatisticsRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async result => await UpdateStatistics(result));
+
+        #endregion AppEvents
 
         _ = Init();
     }
@@ -278,7 +285,7 @@ public class ProfilesViewModel : MyReactiveObject
         Locator.Current.GetService<MainWindowViewModel>()?.Reload();
     }
 
-    public void SetSpeedTestResult(SpeedTestResult result)
+    public async Task SetSpeedTestResult(SpeedTestResult result)
     {
         if (result.IndexId.IsNullOrEmpty())
         {
@@ -305,8 +312,15 @@ public class ProfilesViewModel : MyReactiveObject
         //_profileItems.Replace(item, JsonUtils.DeepCopy(item));
     }
 
-    public void UpdateStatistics(ServerSpeedItem update)
+    public async Task UpdateStatistics(ServerSpeedItem update)
     {
+        if (!_config.GuiItem.EnableStatistics
+            || (update.ProxyUp + update.ProxyDown) <= 0
+            || DateTime.Now.Second % 3 != 0)
+        {
+            return;
+        }
+
         try
         {
             var item = _profileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
@@ -753,7 +767,14 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        _speedtestService ??= new SpeedtestService(_config, (SpeedTestResult result) => _updateView?.Invoke(EViewAction.DispatcherSpeedTest, result));
+        _speedtestService ??= new SpeedtestService(_config, async (SpeedTestResult result) =>
+        {
+            RxApp.MainThreadScheduler.Schedule(result, (scheduler, result) =>
+            {
+                _ = SetSpeedTestResult(result);
+                return Disposable.Empty;
+            });
+        });
         _speedtestService?.RunLoop(actionType, lstSelected);
     }
 

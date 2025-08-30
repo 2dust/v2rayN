@@ -77,17 +77,6 @@ public partial class StatusBarView
     {
         switch (action)
         {
-            case EViewAction.DispatcherServerAvailability:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.TestServerAvailabilityResult((string)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
-        
-
             case EViewAction.DispatcherRefreshIcon:
                 Application.Current?.Dispatcher.Invoke((async () =>
                 {

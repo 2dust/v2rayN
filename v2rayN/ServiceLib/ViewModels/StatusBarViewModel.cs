@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using DynamicData.Binding;
@@ -198,10 +199,20 @@ public class StatusBarViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
+        #region AppEvents
+
         if (updateView != null)
         {
             InitUpdateView(updateView);
         }
+
+        AppEvents.DispatcherStatisticsRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async result => await UpdateStatistics(result));
+
+        #endregion AppEvents
+
         _ = Init();
     }
 
@@ -331,15 +342,24 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        _updateView?.Invoke(EViewAction.DispatcherServerAvailability, ResUI.Speedtesting);
+        await TestServerAvailabilitySub(ResUI.Speedtesting);
 
         var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
 
         NoticeManager.Instance.SendMessageEx(msg);
-        _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
+        await TestServerAvailabilitySub(msg);
     }
 
-    public void TestServerAvailabilityResult(string msg)
+    private async Task TestServerAvailabilitySub(string msg)
+    {
+        RxApp.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        {
+            _ = TestServerAvailabilityResult(msg);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task TestServerAvailabilityResult(string msg)
     {
         RunningInfoDisplay = msg;
     }
@@ -508,8 +528,13 @@ public class StatusBarViewModel : MyReactiveObject
         await Task.CompletedTask;
     }
 
-    public void UpdateStatistics(ServerSpeedItem update)
+    public async Task UpdateStatistics(ServerSpeedItem update)
     {
+        if (!_config.GuiItem.DisplayRealTimeSpeed)
+        {
+            return;
+        }
+
         try
         {
             if (_config.IsRunningCore(ECoreType.sing_box))

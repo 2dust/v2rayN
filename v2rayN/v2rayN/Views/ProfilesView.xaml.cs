@@ -164,15 +164,6 @@ public partial class ProfilesView
                     return false;
                 return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
 
-            case EViewAction.DispatcherSpeedTest:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.SetSpeedTestResult((SpeedTestResult)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
             case EViewAction.DispatcherRefreshServersBiz:
                 Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
                 break;

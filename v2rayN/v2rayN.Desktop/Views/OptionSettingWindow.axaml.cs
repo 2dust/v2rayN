@@ -211,6 +211,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
     }
+
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         btnCancel.Focus();

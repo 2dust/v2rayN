@@ -212,22 +212,6 @@ public partial class MainWindow
                 }), DispatcherPriority.Normal);
                 break;
 
-            case EViewAction.DispatcherStatistics:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.SetStatisticsResult((ServerSpeedItem)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.DispatcherReload:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.ReloadResult();
-                }), DispatcherPriority.Normal);
-                break;
-
             case EViewAction.Shutdown:
                 Application.Current?.Dispatcher.Invoke((() =>
                 {

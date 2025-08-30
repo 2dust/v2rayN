@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
@@ -64,10 +65,14 @@ public class ClashConnectionsViewModel : MyReactiveObject
             return;
         }
 
-        _ = _updateView?.Invoke(EViewAction.DispatcherRefreshConnections, ret?.connections);
+        RxApp.MainThreadScheduler.Schedule(ret?.connections, (scheduler, model) =>
+        {
+            _ = RefreshConnections(model);
+            return Disposable.Empty;
+        });
     }
 
-    public void RefreshConnections(List<ConnectionItem>? connections)
+    public async Task RefreshConnections(List<ConnectionItem>? connections)
     {
         _connectionItems.Clear();
 
