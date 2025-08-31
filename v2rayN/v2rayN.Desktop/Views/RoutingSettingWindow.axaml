@@ -130,10 +130,6 @@
                             Width="*"
                             Binding="{Binding Url}"
                             Header="{x:Static resx:ResUI.LvUrl}" />
-                        <DataGridTextColumn
-                            Width="300"
-                            Binding="{Binding CustomIcon}"
-                            Header="{x:Static resx:ResUI.LvCustomIcon}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

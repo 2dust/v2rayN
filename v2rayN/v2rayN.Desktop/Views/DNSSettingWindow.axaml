@@ -59,7 +59,7 @@
                             x:Name="cmbDirectDNS"
                             Grid.Row="1"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin4}"
                             Text="{Binding DirectDNS, Mode=TwoWay}" />
 
@@ -73,7 +73,7 @@
                             x:Name="cmbRemoteDNS"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin4}"
                             Text="{Binding RemoteDNS, Mode=TwoWay}" />
 
@@ -87,7 +87,7 @@
                             x:Name="cmbSBResolverDNS"
                             Grid.Row="3"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin4}"
                             Text="{Binding SingboxOutboundsResolveDNS, Mode=TwoWay}" />
                         <TextBlock
@@ -108,7 +108,7 @@
                             x:Name="cmbSBFinalResolverDNS"
                             Grid.Row="4"
                             Grid.Column="1"
-                            Width="200"
+                            Width="300"
                             Margin="{StaticResource Margin4}"
                             Text="{Binding SingboxFinalResolveDNS, Mode=TwoWay}" />
                         <TextBlock

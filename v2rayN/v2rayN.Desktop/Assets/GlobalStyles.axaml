@@ -22,4 +22,8 @@
     <Style Selector="ScrollViewer">
         <Setter Property="AllowAutoHide" Value="False" />
     </Style>
+
+    <Style Selector="TabControl">
+        <Setter Property="Theme" Value="{StaticResource LineTabControl}" />
+    </Style>
 </Styles>
