@@ -8,8 +8,7 @@ namespace ServiceLib.ViewModels;
 
 public class SubSettingViewModel : MyReactiveObject
 {
-    private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
-    public IObservableCollection<SubItem> SubItems => _subItems;
+    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
     public SubItem SelectedSource { get; set; }
@@ -60,8 +59,8 @@ public class SubSettingViewModel : MyReactiveObject
 
     public async Task RefreshSubItems()
     {
-        _subItems.Clear();
-        _subItems.AddRange(await AppManager.Instance.SubItems());
+        SubItems.Clear();
+        SubItems.AddRange(await AppManager.Instance.SubItems());
     }
 
     public async Task EditSubAsync(bool blNew)

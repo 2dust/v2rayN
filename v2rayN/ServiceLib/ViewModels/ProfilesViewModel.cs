@@ -23,13 +23,9 @@ public class ProfilesViewModel : MyReactiveObject
 
     #region ObservableCollection
 
-    private IObservableCollection<ProfileItemModel> _profileItems = new ObservableCollectionExtended<ProfileItemModel>();
-    public IObservableCollection<ProfileItemModel> ProfileItems => _profileItems;
+    public IObservableCollection<ProfileItemModel> ProfileItems { get; } = new ObservableCollectionExtended<ProfileItemModel>();
 
-    private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
-    public IObservableCollection<SubItem> SubItems => _subItems;
-
-    private IObservableCollection<ComboItem> _servers = new ObservableCollectionExtended<ComboItem>();
+    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
     public ProfileItemModel SelectedProfile { get; set; }
@@ -293,7 +289,7 @@ public class ProfilesViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(result.Delay);
             return;
         }
-        var item = _profileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
+        var item = ProfileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
         if (item == null)
         {
             return;
@@ -323,7 +319,7 @@ public class ProfilesViewModel : MyReactiveObject
 
         try
         {
-            var item = _profileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
+            var item = ProfileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
             if (item != null)
             {
                 item.TodayDown = Utils.HumanFy(update.TodayDown);
@@ -390,8 +386,8 @@ public class ProfilesViewModel : MyReactiveObject
         var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
         _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
-        _profileItems.Clear();
-        _profileItems.AddRange(lstModel);
+        ProfileItems.Clear();
+        ProfileItems.AddRange(lstModel);
         if (lstModel.Count > 0)
         {
             var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
@@ -410,21 +406,21 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task RefreshSubscriptions()
     {
-        _subItems.Clear();
+        SubItems.Clear();
 
-        _subItems.Add(new SubItem { Remarks = ResUI.AllGroupServers });
+        SubItems.Add(new SubItem { Remarks = ResUI.AllGroupServers });
 
         foreach (var item in await AppManager.Instance.SubItems())
         {
-            _subItems.Add(item);
+            SubItems.Add(item);
         }
-        if (_config.SubIndexId != null && _subItems.FirstOrDefault(t => t.Id == _config.SubIndexId) != null)
+        if (_config.SubIndexId != null && SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId) != null)
         {
-            SelectedSub = _subItems.FirstOrDefault(t => t.Id == _config.SubIndexId);
+            SelectedSub = SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId);
         }
         else
         {
-            SelectedSub = _subItems.First();
+            SelectedSub = SubItems.First();
         }
     }
 
@@ -548,9 +544,9 @@ public class ProfilesViewModel : MyReactiveObject
 
         await ConfigHandler.RemoveServers(_config, lstSelected);
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-        if (lstSelected.Count == _profileItems.Count)
+        if (lstSelected.Count == ProfileItems.Count)
         {
-            _profileItems.Clear();
+            ProfileItems.Clear();
         }
         await RefreshServers();
         if (exists)
@@ -740,7 +736,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task MoveServerTo(int startIndex, ProfileItemModel targetItem)
     {
-        var targetIndex = _profileItems.IndexOf(targetItem);
+        var targetIndex = ProfileItems.IndexOf(targetItem);
         if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
         {
             if (await ConfigHandler.MoveServer(_config, _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
@@ -754,7 +750,7 @@ public class ProfilesViewModel : MyReactiveObject
     {
         if (actionType == ESpeedActionType.Mixedtest)
         {
-            SelectedProfiles = _profileItems;
+            SelectedProfiles = ProfileItems;
         }
         var lstSelected = await GetProfileItems(false);
         if (lstSelected == null)

@@ -10,8 +10,7 @@ namespace ServiceLib.ViewModels;
 
 public class ClashConnectionsViewModel : MyReactiveObject
 {
-    private IObservableCollection<ClashConnectionModel> _connectionItems = new ObservableCollectionExtended<ClashConnectionModel>();
-    public IObservableCollection<ClashConnectionModel> ConnectionItems => _connectionItems;
+    public IObservableCollection<ClashConnectionModel> ConnectionItems { get; } = new ObservableCollectionExtended<ClashConnectionModel>();
 
     [Reactive]
     public ClashConnectionModel SelectedSource { get; set; }
@@ -74,7 +73,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
 
     public async Task RefreshConnections(List<ConnectionItem>? connections)
     {
-        _connectionItems.Clear();
+        ConnectionItems.Clear();
 
         var dtNow = DateTime.Now;
         var lstModel = new List<ClashConnectionModel>();
@@ -104,7 +103,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
             return;
         }
 
-        _connectionItems.AddRange(lstModel);
+        ConnectionItems.AddRange(lstModel);
     }
 
     public async Task ClashConnectionClose(bool all)
@@ -121,7 +120,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
         }
         else
         {
-            _connectionItems.Clear();
+            ConnectionItems.Clear();
         }
         await ClashApiManager.Instance.ClashConnectionClose(id);
         await GetClashConnections();

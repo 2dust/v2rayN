@@ -13,9 +13,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     [Reactive]
     public RoutingItem SelectedRouting { get; set; }
-
-    private IObservableCollection<RulesItemModel> _rulesItems = new ObservableCollectionExtended<RulesItemModel>();
-    public IObservableCollection<RulesItemModel> RulesItems => _rulesItems;
+    public IObservableCollection<RulesItemModel> RulesItems { get; } = new ObservableCollectionExtended<RulesItemModel>();
 
     [Reactive]
     public RulesItemModel SelectedSource { get; set; }
@@ -101,7 +99,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     public void RefreshRulesItems()
     {
-        _rulesItems.Clear();
+        RulesItems.Clear();
 
         foreach (var item in _rules)
         {
@@ -118,7 +116,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
                 Enabled = item.Enabled,
                 Remarks = item.Remarks,
             };
-            _rulesItems.Add(it);
+            RulesItems.Add(it);
         }
     }
 

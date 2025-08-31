@@ -9,8 +9,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 {
     #region Reactive
 
-    private IObservableCollection<RoutingItemModel> _routingItems = new ObservableCollectionExtended<RoutingItemModel>();
-    public IObservableCollection<RoutingItemModel> RoutingItems => _routingItems;
+    public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
 
     [Reactive]
     public RoutingItemModel SelectedSource { get; set; }
@@ -82,7 +81,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RefreshRoutingItems()
     {
-        _routingItems.Clear();
+        RoutingItems.Clear();
 
         var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
@@ -98,7 +97,7 @@ public class RoutingSettingViewModel : MyReactiveObject
                 CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
                 Sort = item.Sort,
             };
-            _routingItems.Add(it);
+            RoutingItems.Add(it);
         }
     }
 

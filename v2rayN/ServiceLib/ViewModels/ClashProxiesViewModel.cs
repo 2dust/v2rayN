@@ -17,11 +17,8 @@ public class ClashProxiesViewModel : MyReactiveObject
     private Dictionary<string, ProvidersItem>? _providers;
     private readonly int _delayTimeout = 99999999;
 
-    private IObservableCollection<ClashProxyModel> _proxyGroups = new ObservableCollectionExtended<ClashProxyModel>();
-    private IObservableCollection<ClashProxyModel> _proxyDetails = new ObservableCollectionExtended<ClashProxyModel>();
-
-    public IObservableCollection<ClashProxyModel> ProxyGroups => _proxyGroups;
-    public IObservableCollection<ClashProxyModel> ProxyDetails => _proxyDetails;
+    public IObservableCollection<ClashProxyModel> ProxyGroups { get; } = new ObservableCollectionExtended<ClashProxyModel>();
+    public IObservableCollection<ClashProxyModel> ProxyDetails { get; } = new ObservableCollectionExtended<ClashProxyModel>();
 
     [Reactive]
     public ClashProxyModel SelectedGroup { get; set; }
@@ -182,7 +179,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         }
 
         var selectedName = SelectedGroup?.Name;
-        _proxyGroups.Clear();
+        ProxyGroups.Clear();
 
         var proxyGroups = ClashApiManager.Instance.GetClashProxyGroups();
         if (proxyGroups != null && proxyGroups.Count > 0)
@@ -198,7 +195,7 @@ public class ClashProxiesViewModel : MyReactiveObject
                 {
                     continue;
                 }
-                _proxyGroups.Add(new ClashProxyModel()
+                ProxyGroups.Add(new ClashProxyModel()
                 {
                     Now = item.now,
                     Name = item.name,
@@ -214,12 +211,12 @@ public class ClashProxiesViewModel : MyReactiveObject
             {
                 continue;
             }
-            var item = _proxyGroups.FirstOrDefault(t => t.Name == kv.Key);
+            var item = ProxyGroups.FirstOrDefault(t => t.Name == kv.Key);
             if (item != null && item.Name.IsNotEmpty())
             {
                 continue;
             }
-            _proxyGroups.Add(new ClashProxyModel()
+            ProxyGroups.Add(new ClashProxyModel()
             {
                 Now = kv.Value.now,
                 Name = kv.Key,
@@ -227,15 +224,15 @@ public class ClashProxiesViewModel : MyReactiveObject
             });
         }
 
-        if (_proxyGroups != null && _proxyGroups.Count > 0)
+        if (ProxyGroups != null && ProxyGroups.Count > 0)
         {
-            if (selectedName != null && _proxyGroups.Any(t => t.Name == selectedName))
+            if (selectedName != null && ProxyGroups.Any(t => t.Name == selectedName))
             {
-                SelectedGroup = _proxyGroups.FirstOrDefault(t => t.Name == selectedName);
+                SelectedGroup = ProxyGroups.FirstOrDefault(t => t.Name == selectedName);
             }
             else
             {
-                SelectedGroup = _proxyGroups.First();
+                SelectedGroup = ProxyGroups.First();
             }
         }
         else
@@ -246,7 +243,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private void RefreshProxyDetails(bool c)
     {
-        _proxyDetails.Clear();
+        ProxyDetails.Clear();
         if (!c)
         {
             return;
@@ -299,7 +296,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             default:
                 break;
         }
-        _proxyDetails.AddRange(lstDetails);
+        ProxyDetails.AddRange(lstDetails);
     }
 
     private ProxiesItem? TryGetProxy(string name)
@@ -361,12 +358,12 @@ public class ClashProxiesViewModel : MyReactiveObject
         await ClashApiManager.Instance.ClashSetActiveProxy(name, nameNode);
 
         selectedProxy.now = nameNode;
-        var group = _proxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
+        var group = ProxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
         if (group != null)
         {
             group.Now = nameNode;
             var group2 = JsonUtils.DeepCopy(group);
-            _proxyGroups.Replace(group, group2);
+            ProxyGroups.Replace(group, group2);
 
             SelectedGroup = group2;
         }
@@ -375,7 +372,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private async Task ProxiesDelayTest(bool blAll = true)
     {
-        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, _proxyDetails.ToList(), async (item, result) =>
+        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, ProxyDetails.ToList(), async (item, result) =>
         {
             if (item == null || result.IsNullOrEmpty())
             {
@@ -395,7 +392,7 @@ public class ClashProxiesViewModel : MyReactiveObject
     public async Task ProxiesDelayTestResult(SpeedTestResult result)
     {
         //UpdateHandler(false, $"{item.name}={result}");
-        var detail = _proxyDetails.FirstOrDefault(it => it.Name == result.IndexId);
+        var detail = ProxyDetails.FirstOrDefault(it => it.Name == result.IndexId);
         if (detail == null)
         {
             return;
@@ -417,7 +414,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             detail.Delay = _delayTimeout;
             detail.DelayName = string.Empty;
         }
-        _proxyDetails.Replace(detail, JsonUtils.DeepCopy(detail));
+        ProxyDetails.Replace(detail, JsonUtils.DeepCopy(detail));
     }
 
     #endregion proxy function

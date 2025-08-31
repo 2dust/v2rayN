@@ -13,11 +13,9 @@ public class StatusBarViewModel : MyReactiveObject
 {
     #region ObservableCollection
 
-    private IObservableCollection<RoutingItem> _routingItems = new ObservableCollectionExtended<RoutingItem>();
-    public IObservableCollection<RoutingItem> RoutingItems => _routingItems;
+    public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
 
-    private IObservableCollection<ComboItem> _servers = new ObservableCollectionExtended<ComboItem>();
-    public IObservableCollection<ComboItem> Servers => _servers;
+    public IObservableCollection<ComboItem> Servers { get; } = new ObservableCollectionExtended<ComboItem>();
 
     [Reactive]
     public RoutingItem SelectedRouting { get; set; }
@@ -295,7 +293,7 @@ public class StatusBarViewModel : MyReactiveObject
     {
         var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, "");
 
-        _servers.Clear();
+        Servers.Clear();
         if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
         {
             BlServers = false;
@@ -309,7 +307,7 @@ public class StatusBarViewModel : MyReactiveObject
             string name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
-            _servers.Add(item);
+            Servers.Add(item);
             if (_config.IndexId == it.IndexId)
             {
                 SelectedServer = item;
@@ -397,13 +395,13 @@ public class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshRoutingsMenu()
     {
-        _routingItems.Clear();
+        RoutingItems.Clear();
 
         BlRouting = true;
         var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
         {
-            _routingItems.Add(item);
+            RoutingItems.Add(item);
             if (item.IsActive)
             {
                 SelectedRouting = item;
