@@ -148,6 +148,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
+
+            AppEvents.ShutdownRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(content => Shutdown(content))
+              .DisposeWith(disposables);
         });
 
         if (Utils.IsWindows())
@@ -222,19 +228,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 DispatcherPriority.Default);
                 break;
 
-            case EViewAction.Shutdown:
-                if (obj != null && _blCloseByUser == false)
-                {
-                    _blCloseByUser = (bool)obj;
-                }
-                StorageUI();
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    HotkeyManager.Instance.Dispose();
-                    desktop.Shutdown();
-                }
-                break;
-
             case EViewAction.ScanScreenTask:
                 await ScanScreenTaskAsync();
                 break;
@@ -289,10 +282,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 break;
 
             case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
-                if (ViewModel != null)
-                {
-                    await ViewModel.MyAppExitAsync(true);
-                }
+                await AppManager.Instance.AppExitAsync(false);
                 break;
         }
 
@@ -387,9 +377,21 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
         _blCloseByUser = true;
         StorageUI();
-        if (ViewModel != null)
+
+        await AppManager.Instance.AppExitAsync(true);
+    }
+
+    private void Shutdown(bool obj)
+    {
+        if (obj is bool b && _blCloseByUser == false)
         {
-            await ViewModel.MyAppExitAsync(false);
+            _blCloseByUser = b;
+        }
+        StorageUI();
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            HotkeyManager.Instance.Dispose();
+            desktop.Shutdown();
         }
     }
 

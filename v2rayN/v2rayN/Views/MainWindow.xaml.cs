@@ -145,6 +145,12 @@ public partial class MainWindow
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
+
+            AppEvents.ShutdownRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(content => Shutdown(content))
+            .DisposeWith(disposables);
         });
 
         this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
@@ -212,13 +218,6 @@ public partial class MainWindow
                 }), DispatcherPriority.Normal);
                 break;
 
-            case EViewAction.Shutdown:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    Application.Current.Shutdown();
-                }), DispatcherPriority.Normal);
-                break;
-
             case EViewAction.ScanScreenTask:
                 await ScanScreenTaskAsync();
                 break;
@@ -266,7 +265,12 @@ public partial class MainWindow
     {
         Logging.SaveLog("Current_SessionEnding");
         StorageUI();
-        await ViewModel?.MyAppExitAsync(true);
+        await AppManager.Instance.AppExitAsync(false);
+    }
+
+    private void Shutdown(bool obj)
+    {
+        Application.Current.Shutdown();
     }
 
     private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)

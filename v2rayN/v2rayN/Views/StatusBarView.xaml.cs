@@ -97,9 +97,7 @@ public partial class StatusBarView
     private async void menuExit_Click(object sender, RoutedEventArgs e)
     {
         tbNotify.Dispose();
-        var service = Locator.Current.GetService<MainWindowViewModel>();
-        if (service != null)
-            await service.MyAppExitAsync(false);
+        await AppManager.Instance.AppExitAsync(true);
     }
 
     private void txtRunningInfoDisplay_MouseDoubleClick(object sender, MouseButtonEventArgs e)

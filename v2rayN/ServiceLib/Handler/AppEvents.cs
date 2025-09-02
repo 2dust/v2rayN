@@ -13,6 +13,8 @@ public static class AppEvents
 
     public static readonly Subject<Unit> AppExitRequested = new();
 
+    public static readonly Subject<bool> ShutdownRequested = new();
+
     public static readonly Subject<Unit> AdjustMainLvColWidthRequested = new();
 
     public static readonly Subject<ServerSpeedItem> DispatcherStatisticsRequested = new();

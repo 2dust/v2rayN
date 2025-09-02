@@ -15,7 +15,6 @@ public enum EViewAction
     ShowHideWindow,
     ScanScreenTask,
     ScanImageTask,
-    Shutdown,
     BrowseServer,
     ImportRulesFromFile,
     InitSettingFont,

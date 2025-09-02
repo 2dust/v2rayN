@@ -282,57 +282,9 @@ public class MainWindowViewModel : MyReactiveObject
         AppEvents.DispatcherStatisticsRequested.OnNext(update);
     }
 
-    public async Task MyAppExitAsync(bool blWindowsShutDown)
-    {
-        try
-        {
-            Logging.SaveLog("MyAppExitAsync Begin");
-
-            await SysProxyHandler.UpdateSysProxy(_config, true);
-            AppEvents.AppExitRequested.OnNext(Unit.Default);
-
-            await ConfigHandler.SaveConfig(_config);
-            await ProfileExManager.Instance.SaveTo();
-            await StatisticsManager.Instance.SaveTo();
-            await CoreManager.Instance.CoreStop();
-            StatisticsManager.Instance.Close();
-
-            Logging.SaveLog("MyAppExitAsync End");
-        }
-        catch { }
-        finally
-        {
-            if (!blWindowsShutDown)
-            {
-                _updateView?.Invoke(EViewAction.Shutdown, false);
-            }
-        }
-    }
-
-    public async Task UpgradeApp(string arg)
-    {
-        if (!Utils.UpgradeAppExists(out var upgradeFileName))
-        {
-            NoticeManager.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
-            Logging.SaveLog("UpgradeApp does not exist");
-            return;
-        }
-
-        var id = ProcUtils.ProcessStart(upgradeFileName, arg, Utils.StartupPath());
-        if (id > 0)
-        {
-            await MyAppExitAsync(false);
-        }
-    }
-
     public void ShowHideWindow(bool? blShow)
     {
         _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
-    }
-
-    public void Shutdown(bool byUser)
-    {
-        _updateView?.Invoke(EViewAction.Shutdown, byUser);
     }
 
     #endregion Actions
@@ -517,7 +469,7 @@ public class MainWindowViewModel : MyReactiveObject
     public async Task RebootAsAdmin()
     {
         ProcUtils.RebootAsAdmin();
-        await MyAppExitAsync(false);
+        await AppManager.Instance.AppExitAsync(true);
     }
 
     private async Task ClearServerStatistics()

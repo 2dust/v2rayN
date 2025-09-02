@@ -1,3 +1,5 @@
+using System.Reactive;
+
 namespace ServiceLib.Manager;
 
 public sealed class AppManager
@@ -34,7 +36,7 @@ public sealed class AppManager
 
     #endregion Property
 
-    #region Init
+    #region App
 
     public bool InitApp()
     {
@@ -87,7 +89,40 @@ public sealed class AppManager
         return true;
     }
 
-    #endregion Init
+    public async Task AppExitAsync(bool needShutdown)
+    {
+        try
+        {
+            Logging.SaveLog("AppExitAsync Begin");
+
+            await SysProxyHandler.UpdateSysProxy(_config, true);
+            AppEvents.AppExitRequested.OnNext(Unit.Default);
+            await Task.Delay(50); //Wait for AppExitRequested to be processed
+
+            await ConfigHandler.SaveConfig(_config);
+            await ProfileExManager.Instance.SaveTo();
+            await StatisticsManager.Instance.SaveTo();
+            await CoreManager.Instance.CoreStop();
+            StatisticsManager.Instance.Close();
+
+            Logging.SaveLog("AppExitAsync End");
+        }
+        catch { }
+        finally
+        {
+            if (needShutdown)
+            {
+                Shutdown(false);
+            }
+        }
+    }
+
+    public void Shutdown(bool byUser)
+    {
+        AppEvents.ShutdownRequested.OnNext(byUser);
+    }
+
+    #endregion App
 
     #region Config
 

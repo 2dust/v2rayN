@@ -236,12 +236,19 @@ public class CheckUpdateViewModel : MyReactiveObject
             {
                 return;
             }
-            if (!Utils.UpgradeAppExists(out _))
+            if (!Utils.UpgradeAppExists(out var upgradeFileName))
             {
                 await UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                NoticeManager.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
+                Logging.SaveLog("UpgradeApp does not exist");
                 return;
             }
-            Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
+
+            var id = ProcUtils.ProcessStart(upgradeFileName, fileName, Utils.StartupPath());
+            if (id > 0)
+            {
+                await AppManager.Instance.AppExitAsync(true);
+            }
         }
         catch (Exception ex)
         {
