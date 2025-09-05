@@ -2321,10 +2321,22 @@ public static class ConfigHandler
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
+                var xrayDnsRussia = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json");
+                var singboxDnsRussia = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json");
+                var simpleDnsRussia = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
 
-                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json") ?? InitBuiltinSimpleDNS();
+                if (simpleDnsRussia == null)
+                {
+                    xrayDnsRussia.Enabled = true;
+                    singboxDnsRussia.Enabled = true;
+                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                }
+                else
+                {
+                    config.SimpleDNSItem = simpleDnsRussia;
+                }
+                await SaveDNSItems(config, xrayDnsRussia);
+                await SaveDNSItems(config, singboxDnsRussia);
                 break;
 
             case EPresetType.Iran:
@@ -2332,10 +2344,22 @@ public static class ConfigHandler
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
+                var xrayDnsIran = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json");
+                var singboxDnsIran = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json");
+                var simpleDnsIran = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
 
-                config.SimpleDNSItem = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json") ?? InitBuiltinSimpleDNS();
+                if (simpleDnsIran == null)
+                {
+                    xrayDnsIran.Enabled = true;
+                    singboxDnsIran.Enabled = true;
+                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                }
+                else
+                {
+                    config.SimpleDNSItem = simpleDnsIran;
+                }
+                await SaveDNSItems(config, xrayDnsIran);
+                await SaveDNSItems(config, singboxDnsIran);
                 break;
         }
 
