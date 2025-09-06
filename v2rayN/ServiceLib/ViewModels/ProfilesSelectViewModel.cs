@@ -277,21 +277,59 @@ public class ProfilesSelectViewModel : MyReactiveObject
         return item;
     }
 
-    public async Task SortServer(string colName)
+    public void SortServer(string colName)
     {
-        //if (colName.IsNullOrEmpty())
-        //{
-        //    return;
-        //}
+        if (colName.IsNullOrEmpty())
+        {
+            return;
+        }
 
-        //_dicHeaderSort.TryAdd(colName, true);
-        //_dicHeaderSort.TryGetValue(colName, out bool asc);
-        //if (await ConfigHandler.SortServers(_config, _config.SubIndexId, colName, asc) != 0)
-        //{
-        //    return;
-        //}
-        //_dicHeaderSort[colName] = !asc;
-        //await RefreshServers();
+        var prop = typeof(ProfileItemModel).GetProperty(colName);
+        if (prop == null)
+        {
+            return;
+        }
+
+        _dicHeaderSort.TryAdd(colName, true);
+        var asc = _dicHeaderSort[colName];
+
+        var comparer = Comparer<object?>.Create((a, b) =>
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return 0;
+            }
+            if (a is null)
+            {
+                return -1;
+            }
+            if (b is null)
+            {
+                return 1;
+            }
+            if (a.GetType() == b.GetType() && a is IComparable ca)
+            {
+                return ca.CompareTo(b);
+            }
+            return string.Compare(a.ToString(), b.ToString(), StringComparison.OrdinalIgnoreCase);
+        });
+
+        object? KeySelector(ProfileItemModel x)
+        {
+            return prop.GetValue(x);
+        }
+
+        IEnumerable<ProfileItemModel> sorted = asc
+            ? ProfileItems.OrderBy(KeySelector, comparer)
+            : ProfileItems.OrderByDescending(KeySelector, comparer);
+
+        var list = sorted.ToList();
+        ProfileItems.Clear();
+        ProfileItems.AddRange(list);
+
+        _dicHeaderSort[colName] = !asc;
+
+        return;
     }
 
     #endregion Servers && Groups
