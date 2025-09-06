@@ -10,7 +10,7 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="ProfilesSelectWindow"
+    Title="{x:Static resx:ResUI.TbSelectProfile}"
     Width="800"
     Height="450"
     x:TypeArguments="vms:ProfilesSelectViewModel"

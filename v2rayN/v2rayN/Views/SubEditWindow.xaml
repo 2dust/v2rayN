@@ -265,7 +265,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Click="BtnSelectPrevProfile_Click"
-                    Content="btnSelectPrevProfile"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}"
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
@@ -290,7 +290,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Click="BtnSelectNextProfile_Click"
-                    Content="btnNextPrevProfile"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}"
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock

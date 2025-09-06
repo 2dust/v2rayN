@@ -1509,4 +1509,7 @@
   <data name="MsgStartParsingSubscription" xml:space="preserve">
     <value>開始解析和處理訂閱內容</value>
   </data>
+  <data name="TbSelectProfile" xml:space="preserve">
+    <value>Select Profile</value>
+  </data>
 </root>
