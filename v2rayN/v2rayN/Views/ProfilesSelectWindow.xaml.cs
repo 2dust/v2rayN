@@ -15,7 +15,9 @@ public partial class ProfilesSelectWindow
 {
     private static Config _config;
 
-    public Task<ProfileItem?> ProfileItem => GetFirstProfileItemAsync();
+    public Task<ProfileItem?> ProfileItem => GetProfileItem();
+    public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
+    private bool _allowMultiSelect = false;
 
     public ProfilesSelectWindow()
     {
@@ -46,6 +48,7 @@ public partial class ProfilesSelectWindow
 
     public void AllowMultiSelect(bool allow)
     {
+        _allowMultiSelect = allow;
         if (allow)
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
@@ -108,6 +111,10 @@ public partial class ProfilesSelectWindow
 
     private void menuSelectAll_Click(object sender, RoutedEventArgs e)
     {
+        if (!_allowMultiSelect)
+        {
+            return;
+        }
         lstProfiles.SelectAll();
     }
 
@@ -119,6 +126,7 @@ public partial class ProfilesSelectWindow
             {
                 case Key.A:
                     menuSelectAll_Click(null, null);
+                    e.Handled = true;
                     break;
             }
         }
@@ -127,6 +135,7 @@ public partial class ProfilesSelectWindow
             if (e.Key is Key.Enter or Key.Return)
             {
                 ViewModel?.SelectFinish();
+                e.Handled = true;
             }
         }
     }
@@ -156,13 +165,26 @@ public partial class ProfilesSelectWindow
         if (e.Key is Key.Enter or Key.Return)
         {
             ViewModel?.RefreshServers();
+            e.Handled = true;
         }
     }
 
-    public async Task<ProfileItem?> GetFirstProfileItemAsync()
+    public async Task<ProfileItem?> GetProfileItem()
     {
         var item = await ViewModel?.GetProfileItem();
         return item;
+    }
+
+    public async Task<List<ProfileItem>?> GetProfileItems()
+    {
+        var item = await ViewModel?.GetProfileItems();
+        return item;
+    }
+
+    private void BtnSave_Click(object sender, RoutedEventArgs e)
+    {
+        // Trigger selection finalize when Confirm is clicked
+        ViewModel?.SelectFinish();
     }
     #endregion Event
 }

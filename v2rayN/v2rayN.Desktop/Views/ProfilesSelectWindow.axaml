@@ -11,6 +11,7 @@
     Width="800"
     Height="450"
     x:DataType="vms:ProfilesSelectViewModel"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -27,6 +28,7 @@
             <Button
                 x:Name="btnSave"
                 Width="100"
+                Click="BtnSave_Click"
                 Content="{x:Static resx:ResUI.TbConfirm}" />
             <Button
                 x:Name="btnCancel"
@@ -83,6 +85,9 @@
                     IsReadOnly="True"
                     ItemsSource="{Binding ProfileItems}"
                     SelectionMode="Single">
+                    <DataGrid.KeyBindings>
+                        <KeyBinding Command="{Binding SelectFinish}" Gesture="Enter" />
+                    </DataGrid.KeyBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="80"
@@ -90,7 +95,7 @@
                             Header="{x:Static resx:ResUI.LvServiceType}"
                             Tag="ConfigType" />
 
-                        <DataGridTemplateColumn Tag="Remarks">
+                        <DataGridTemplateColumn Tag="Remarks" SortMemberPath="Remarks">
                             <DataGridTemplateColumn.Header>
                                 <TextBlock Text="{x:Static resx:ResUI.LvRemarks}" />
                             </DataGridTemplateColumn.Header>

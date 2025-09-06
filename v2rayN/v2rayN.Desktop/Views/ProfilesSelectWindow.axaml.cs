@@ -3,9 +3,11 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using ServiceLib.Manager;
@@ -17,7 +19,9 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
 {
     private static Config _config;
 
-    public Task<ProfileItem?> ProfileItem => GetFirstProfileItemAsync();
+    public Task<ProfileItem?> ProfileItem => GetProfileItem();
+    public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
+    private bool _allowMultiSelect = false;
 
     public ProfilesSelectWindow()
     {
@@ -45,12 +49,12 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
         });
 
-        btnSave.Click += (s, e) => ViewModel?.SelectFinish();
         btnCancel.Click += (s, e) => Close(false);
     }
 
     public void AllowMultiSelect(bool allow)
     {
+        _allowMultiSelect = allow;
         if (allow)
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
@@ -94,17 +98,32 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
 
     private void LstProfiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        ViewModel?.SelectFinish();
+        // 忽略表头区域的双击
+        if (e.Source is Control src)
+        {
+            if (src.FindAncestorOfType<DataGridColumnHeader>() != null)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // 仅当在数据行或其子元素上双击时才触发选择
+            if (src.FindAncestorOfType<DataGridRow>() != null)
+            {
+                ViewModel?.SelectFinish();
+                e.Handled = true;
+            }
+        }
     }
 
-    private async void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
+    private void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
     {
+        // 自定义排序，防止默认行为导致误触发
         e.Handled = true;
         if (ViewModel != null && e.Column?.Tag?.ToString() != null)
         {
-            await ViewModel.SortServer(e.Column.Tag.ToString());
+            ViewModel.SortServer(e.Column.Tag.ToString());
         }
-        e.Handled = false;
     }
 
     private void LstProfiles_KeyDown(object? sender, KeyEventArgs e)
@@ -113,7 +132,11 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
         {
             if (e.Key == Key.A)
             {
-                lstProfiles.SelectAll();
+                if (_allowMultiSelect)
+                {
+                    lstProfiles.SelectAll();
+                }
+                e.Handled = true;
             }
         }
         else
@@ -121,6 +144,7 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
             if (e.Key is Key.Enter or Key.Return)
             {
                 ViewModel?.SelectFinish();
+                e.Handled = true;
             }
         }
     }
@@ -152,9 +176,21 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
         }
     }
 
-    public async Task<ProfileItem?> GetFirstProfileItemAsync()
+    public async Task<ProfileItem?> GetProfileItem()
     {
         var item = await ViewModel?.GetProfileItem();
         return item;
+    }
+
+    public async Task<List<ProfileItem>?> GetProfileItems()
+    {
+        var item = await ViewModel?.GetProfileItems();
+        return item;
+    }
+
+    private void BtnSave_Click(object sender, RoutedEventArgs e)
+    {
+        // Trigger selection finalize when Confirm is clicked
+        ViewModel?.SelectFinish();
     }
 }

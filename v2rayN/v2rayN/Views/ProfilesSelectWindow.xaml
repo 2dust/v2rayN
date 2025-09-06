@@ -15,6 +15,7 @@
     Height="450"
     x:TypeArguments="vms:ProfilesSelectViewModel"
     Style="{StaticResource WindowGlobal}"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -33,6 +34,7 @@
             <Button
                 x:Name="btnSave"
                 Width="100"
+                Click="BtnSave_Click"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />

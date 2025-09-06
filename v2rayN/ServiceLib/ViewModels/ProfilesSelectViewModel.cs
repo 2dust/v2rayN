@@ -277,6 +277,33 @@ public class ProfilesSelectViewModel : MyReactiveObject
         return item;
     }
 
+    public async Task<List<ProfileItem>?> GetProfileItems()
+    {
+        if (SelectedProfiles == null || SelectedProfiles.Count == 0)
+        {
+            return null;
+        }
+        var lst = new List<ProfileItem>();
+        foreach (var sp in SelectedProfiles)
+        {
+            if (string.IsNullOrEmpty(sp?.IndexId))
+            {
+                continue;
+            }
+            var item = await AppManager.Instance.GetProfileItem(sp.IndexId);
+            if (item != null)
+            {
+                lst.Add(item);
+            }
+        }
+        if (lst.Count == 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
+            return null;
+        }
+        return lst;
+    }
+
     public void SortServer(string colName)
     {
         if (colName.IsNullOrEmpty())
