@@ -357,6 +357,11 @@ public static class ConfigHandler
                 {
                 }
             }
+            else if (profileItem.ConfigType > EConfigType.Group)
+            {
+                var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
+                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
+            }
             else
             {
                 await AddServerCommon(config, profileItem, true);
@@ -1074,6 +1079,35 @@ public static class ConfigHandler
         return 0;
     }
 
+    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
+    {
+        var maxSort = -1;
+        if (profileItem.IndexId.IsNullOrEmpty())
+        {
+            profileItem.IndexId = Utils.GetGuid(false);
+            maxSort = ProfileExManager.Instance.GetMaxSort();
+        }
+        if (maxSort > 0)
+        {
+            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
+        }
+        if (toFile)
+        {
+            await SQLiteHelper.Instance.ReplaceAsync(profileItem);
+            if (profileGroupItem != null)
+            {
+                profileGroupItem.ParentIndexId = profileItem.IndexId;
+                await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
+            }
+            else
+            {
+                ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(profileItem.IndexId);
+                await ProfileGroupItemManager.Instance.SaveTo();
+            }
+        }
+        return 0;
+    }
+
     /// <summary>
     /// Compare two profile items to determine if they represent the same server
     /// Used for deduplication and server matching
@@ -1207,7 +1241,7 @@ public static class ConfigHandler
     public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
         ProfileItem? itemSocks = null;
-        if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
+        if (node.ConfigType != EConfigType.Custom && node.ConfigType < EConfigType.Group && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
             itemSocks = new ProfileItem()
             {
@@ -1218,7 +1252,7 @@ public static class ConfigHandler
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
-        else if (node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0)
+        else if (node.ConfigType == EConfigType.Custom && node.ConfigType < EConfigType.Group && node.PreSocksPort > 0)
         {
             var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
             itemSocks = new ProfileItem()

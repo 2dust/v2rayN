@@ -35,6 +35,7 @@ public class TaskManager
 
                 await ConfigHandler.SaveConfig(_config);
                 await ProfileExManager.Instance.SaveTo();
+                await ProfileGroupItemManager.Instance.SaveTo();
             }
 
             //Execute once 1 hour

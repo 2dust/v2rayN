@@ -39,11 +39,14 @@ public class ProfileItem : ReactiveObject
             > 1 => $"***{arrAddr.Last()}",
             _ => Address
         };
-        summary += ConfigType switch
+        if (ConfigType is EConfigType.Custom or > EConfigType.Group)
         {
-            EConfigType.Custom => $"[{CoreType.ToString()}]{Remarks}",
-            _ => $"{Remarks}({addr}:{Port})"
-        };
+            summary += $"[{CoreType.ToString()}]{Remarks}";
+        }
+        else
+        {
+            summary += $"{Remarks}({addr}:{Port})";
+        }
         return summary;
     }
 
