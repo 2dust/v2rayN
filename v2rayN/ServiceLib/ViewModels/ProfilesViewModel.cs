@@ -39,13 +39,7 @@ public class ProfilesViewModel : MyReactiveObject
     public SubItem SelectedMoveToGroup { get; set; }
 
     [Reactive]
-    public ComboItem SelectedServer { get; set; }
-
-    [Reactive]
     public string ServerFilter { get; set; }
-
-    [Reactive]
-    public bool BlServers { get; set; }
 
     #endregion ObservableCollection
 
@@ -114,11 +108,6 @@ public class ProfilesViewModel : MyReactiveObject
              x => x.SelectedMoveToGroup,
              y => y != null && !y.Remarks.IsNullOrEmpty())
                  .Subscribe(async c => await MoveToGroup(c));
-
-        this.WhenAnyValue(
-          x => x.SelectedServer,
-          y => y != null && !y.Text.IsNullOrEmpty())
-              .Subscribe(async c => await ServerSelectedChanged(c));
 
         this.WhenAnyValue(
           x => x.ServerFilter,
@@ -266,7 +255,6 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedProfile = new();
         SelectedSub = new();
         SelectedMoveToGroup = new();
-        SelectedServer = new();
 
         await RefreshSubscriptions();
         await RefreshServers();
@@ -611,19 +599,6 @@ public class ProfilesViewModel : MyReactiveObject
             await RefreshServers();
             Reload();
         }
-    }
-
-    private async Task ServerSelectedChanged(bool c)
-    {
-        if (!c)
-        {
-            return;
-        }
-        if (SelectedServer == null || SelectedServer.ID.IsNullOrEmpty())
-        {
-            return;
-        }
-        await SetDefaultServer(SelectedServer.ID);
     }
 
     public async Task ShareServerAsync()

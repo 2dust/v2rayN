@@ -259,6 +259,14 @@
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
+                <Button
+                    Grid.Row="9"
+                    Grid.Column="2"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Click="BtnSelectPrevProfile_Click"
+                    Content="btnSelectPrevProfile"
+                    Style="{StaticResource DefButton}" />
 
                 <TextBlock
                     Grid.Row="10"
@@ -276,6 +284,14 @@
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
+                <Button
+                    Grid.Row="10"
+                    Grid.Column="2"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Click="BtnSelectNextProfile_Click"
+                    Content="btnNextPrevProfile"
+                    Style="{StaticResource DefButton}" />
 
                 <TextBlock
                     Grid.Row="11"
