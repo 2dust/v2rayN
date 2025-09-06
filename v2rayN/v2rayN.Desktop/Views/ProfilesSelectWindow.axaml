@@ -2,15 +2,15 @@
     x:Class="v2rayN.Desktop.Views.ProfilesSelectWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    xmlns:conv="using:v2rayN.Desktop.Converters"
-    x:DataType="vms:ProfilesSelectViewModel"
+    Title="{x:Static resx:ResUI.TbSelectProfile}"
     Width="800"
     Height="450"
-    Title="{x:Static resx:ResUI.TbSelectProfile}"
+    x:DataType="vms:ProfilesSelectViewModel"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -18,16 +18,27 @@
     </Window.Resources>
 
     <DockPanel Margin="8">
-        <!-- Bottom buttons -->
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
-            <Button x:Name="btnSave" Width="100" Content="{x:Static resx:ResUI.TbConfirm}" />
-            <Button x:Name="btnCancel" Width="100" Margin="8,0" Content="{x:Static resx:ResUI.TbCancel}" />
+        <!--  Bottom buttons  -->
+        <StackPanel
+            Margin="4"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}" />
         </StackPanel>
 
         <Grid>
             <DockPanel>
-                <!-- Top tools -->
-                <WrapPanel DockPanel.Dock="Top" Margin="4">
+                <!--  Top tools  -->
+                <WrapPanel Margin="4" DockPanel.Dock="Top">
                     <ListBox
                         x:Name="lstGroup"
                         Margin="4,0"
@@ -56,11 +67,11 @@
                         Width="200"
                         Margin="8,0"
                         VerticalContentAlignment="Center"
-                        Watermark="{x:Static resx:ResUI.MsgServerTitle}"
-                        Text="{Binding ServerFilter, Mode=TwoWay}" />
+                        Text="{Binding ServerFilter, Mode=TwoWay}"
+                        Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
                 </WrapPanel>
 
-                <!-- Profiles grid -->
+                <!--  Profiles grid  -->
                 <DataGrid
                     x:Name="lstProfiles"
                     AutoGenerateColumns="False"
@@ -70,9 +81,14 @@
                     GridLinesVisibility="All"
                     HeadersVisibility="All"
                     IsReadOnly="True"
-                    ItemsSource="{Binding ProfileItems}">
+                    ItemsSource="{Binding ProfileItems}"
+                    SelectionMode="Single">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="80" Binding="{Binding ConfigType}" Header="{x:Static resx:ResUI.LvServiceType}" Tag="ConfigType" />
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding ConfigType}"
+                            Header="{x:Static resx:ResUI.LvServiceType}"
+                            Tag="ConfigType" />
 
                         <DataGridTemplateColumn Tag="Remarks">
                             <DataGridTemplateColumn.Header>
@@ -80,18 +96,38 @@
                             </DataGridTemplateColumn.Header>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="8,0">
+                                    <StackPanel Margin="8,0" Orientation="Horizontal">
                                         <TextBlock Text="{Binding Remarks}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Width="120" Binding="{Binding Address}" Header="{x:Static resx:ResUI.LvAddress}" Tag="Address" />
-                        <DataGridTextColumn Width="60" Binding="{Binding Port}" Header="{x:Static resx:ResUI.LvPort}" Tag="Port" />
-                        <DataGridTextColumn Width="100" Binding="{Binding Network}" Header="{x:Static resx:ResUI.LvTransportProtocol}" Tag="Network" />
-                        <DataGridTextColumn Width="100" Binding="{Binding StreamSecurity}" Header="{x:Static resx:ResUI.LvTLS}" Tag="StreamSecurity" />
-                        <DataGridTextColumn Width="100" Binding="{Binding SubRemarks}" Header="{x:Static resx:ResUI.LvSubscription}" Tag="SubRemarks" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Address}"
+                            Header="{x:Static resx:ResUI.LvAddress}"
+                            Tag="Address" />
+                        <DataGridTextColumn
+                            Width="60"
+                            Binding="{Binding Port}"
+                            Header="{x:Static resx:ResUI.LvPort}"
+                            Tag="Port" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Network}"
+                            Header="{x:Static resx:ResUI.LvTransportProtocol}"
+                            Tag="Network" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding StreamSecurity}"
+                            Header="{x:Static resx:ResUI.LvTLS}"
+                            Tag="StreamSecurity" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SubRemarks}"
+                            Header="{x:Static resx:ResUI.LvSubscription}"
+                            Tag="SubRemarks" />
 
                         <DataGridTemplateColumn SortMemberPath="Delay" Tag="DelayVal">
                             <DataGridTemplateColumn.Header>
@@ -99,17 +135,42 @@
                             </DataGridTemplateColumn.Header>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Margin="8,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}" Text="{Binding DelayVal}" />
+                                    <TextBlock
+                                        Margin="8,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
+                                        Text="{Binding DelayVal}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Width="100" Binding="{Binding SpeedVal}" Header="{x:Static resx:ResUI.LvTestSpeed}" Tag="SpeedVal" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}"
+                            Tag="SpeedVal" />
 
-                        <DataGridTextColumn Width="100" Binding="{Binding TodayUp}" Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" Tag="TodayUp" />
-                        <DataGridTextColumn Width="100" Binding="{Binding TodayDown}" Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" Tag="TodayDown" />
-                        <DataGridTextColumn Width="100" Binding="{Binding TotalUp}" Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" Tag="TotalUp" />
-                        <DataGridTextColumn Width="100" Binding="{Binding TotalDown}" Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" Tag="TotalDown" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding TodayUp}"
+                            Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
+                            Tag="TodayUp" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding TodayDown}"
+                            Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}"
+                            Tag="TodayDown" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding TotalUp}"
+                            Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}"
+                            Tag="TotalUp" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding TotalDown}"
+                            Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}"
+                            Tag="TotalDown" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

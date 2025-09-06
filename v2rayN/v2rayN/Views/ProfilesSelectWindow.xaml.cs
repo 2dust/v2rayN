@@ -42,7 +42,25 @@ public partial class ProfilesSelectWindow
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
         });
+    }
 
+    public void AllowMultiSelect(bool allow)
+    {
+        if (allow)
+        {
+            lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
+            lstProfiles.SelectedItems.Clear();
+        }
+        else
+        {
+            lstProfiles.SelectionMode = DataGridSelectionMode.Single;
+            if (lstProfiles.SelectedItems.Count > 0)
+            {
+                var first = lstProfiles.SelectedItems[0];
+                lstProfiles.SelectedItems.Clear();
+                lstProfiles.SelectedItem = first;
+            }
+        }
     }
 
     #region Event

@@ -49,6 +49,25 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
         btnCancel.Click += (s, e) => Close(false);
     }
 
+    public void AllowMultiSelect(bool allow)
+    {
+        if (allow)
+        {
+            lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
+            lstProfiles.SelectedItems.Clear();
+        }
+        else
+        {
+            lstProfiles.SelectionMode = DataGridSelectionMode.Single;
+            if (lstProfiles.SelectedItems.Count > 0)
+            {
+                var first = lstProfiles.SelectedItems[0];
+                lstProfiles.SelectedItems.Clear();
+                lstProfiles.SelectedItem = first;
+            }
+        }
+    }
+
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
         switch (action)

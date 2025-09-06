@@ -95,6 +95,7 @@
                     HeadersVisibility="All"
                     IsReadOnly="True"
                     RowHeaderWidth="40"
+                    SelectionMode="Single"
                     Style="{StaticResource DefDataGrid}">
                     <DataGrid.InputBindings>
                         <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Enter" />
