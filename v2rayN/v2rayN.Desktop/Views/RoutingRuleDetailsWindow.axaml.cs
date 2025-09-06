@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ReactiveUI;
 using v2rayN.Desktop.Base;
+using System.Threading.Tasks;
 
 namespace v2rayN.Desktop.Views;
 
@@ -92,5 +93,19 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
     private void linkRuleobjectDoc_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
+    }
+
+    private async void BtnSelectProfile_Click(object? sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        var result = await selectWindow.ShowDialog<bool?>(this);
+        if (result == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                cmbOutboundTag.Text = profile.Remarks;
+            }
+        }
     }
 }
