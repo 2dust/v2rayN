@@ -20,7 +20,7 @@
     <PackageVersion Include="ReactiveUI.WPF" Version="20.4.1" />
     <PackageVersion Include="Semi.Avalonia" Version="11.2.1.9" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.9" />
-    <PackageVersion Include="Splat.NLog" Version="16.1.1" />
+    <PackageVersion Include="Splat.NLog" Version="16.2.1" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
