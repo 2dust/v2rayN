@@ -28,6 +28,7 @@ Package: v2rayN
 Version: $Version
 Architecture: $Arch2
 Maintainer: https://github.com/2dust/v2rayN
+Depends: desktop-file-utils
 Description: A GUI client for Windows and Linux, support Xray core and sing-box-core and others
 EOF
 
