@@ -54,13 +54,22 @@
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 Text="{Binding SelectedSource.OutboundTag, Mode=TwoWay}" />
-            <TextBlock
+            <StackPanel
                 Grid.Row="1"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
+                Orientation="Horizontal"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+                VerticalAlignment="Center">
+                <Button
+                    x:Name="btnSelectProfile"
+                    Margin="0,0,8,0"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}"
+                    Click="BtnSelectProfile_Click" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="2"

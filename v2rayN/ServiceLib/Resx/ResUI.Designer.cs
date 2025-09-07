@@ -3031,6 +3031,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Select Profile 的本地化字符串。
+        /// </summary>
+        public static string TbSelectProfile {
+            get {
+                return ResourceManager.GetString("TbSelectProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set system proxy 的本地化字符串。
         /// </summary>
         public static string TbSetSystemProxy {

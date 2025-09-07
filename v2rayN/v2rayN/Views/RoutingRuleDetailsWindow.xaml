@@ -72,14 +72,24 @@
                 IsEditable="True"
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
-            <TextBlock
+            <StackPanel
                 Grid.Row="1"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+                Orientation="Horizontal">
+                <Button
+                    Margin="{StaticResource Margin4}"
+                    Click="BtnSelectProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}"
+                    Style="{StaticResource DefButton}" />
+                <TextBlock
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="2"

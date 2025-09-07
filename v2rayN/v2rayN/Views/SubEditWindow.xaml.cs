@@ -54,4 +54,32 @@ public partial class SubEditWindow
     {
         txtRemarks.Focus();
     }
+
+    private async void BtnSelectPrevProfile_Click(object sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        if (selectWindow.ShowDialog() == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                txtPrevProfile.Text = profile.Remarks;
+            }
+        }
+    }
+
+    private async void BtnSelectNextProfile_Click(object sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        if (selectWindow.ShowDialog() == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                txtNextProfile.Text = profile.Remarks;
+            }
+        }
+    }
 }
