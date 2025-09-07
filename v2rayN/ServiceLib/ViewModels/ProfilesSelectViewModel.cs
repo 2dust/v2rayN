@@ -89,20 +89,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
-        #region AppEvents
-
-        AppEvents.ProfilesRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshServersBiz());
-
-        AppEvents.DispatcherStatisticsRequested
-            .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(UpdateStatistics);
-
-        #endregion AppEvents
-
         _ = Init();
     }
 
@@ -129,42 +115,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
     #endregion Init
 
     #region Actions
-
-    public void UpdateStatistics(ServerSpeedItem update)
-    {
-        if (!_config.GuiItem.EnableStatistics
-            || (update.ProxyUp + update.ProxyDown) <= 0
-            || DateTime.Now.Second % 3 != 0)
-        {
-            return;
-        }
-
-        try
-        {
-            var item = ProfileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
-            if (item != null)
-            {
-                item.TodayDown = Utils.HumanFy(update.TodayDown);
-                item.TodayUp = Utils.HumanFy(update.TodayUp);
-                item.TotalDown = Utils.HumanFy(update.TotalDown);
-                item.TotalUp = Utils.HumanFy(update.TotalUp);
-
-                //if (SelectedProfile?.IndexId == item.IndexId)
-                //{
-                //    var temp = JsonUtils.DeepCopy(item);
-                //    _profileItems.Replace(item, temp);
-                //    SelectedProfile = temp;
-                //}
-                //else
-                //{
-                //    _profileItems.Replace(item, JsonUtils.DeepCopy(item));
-                //}
-            }
-        }
-        catch
-        {
-        }
-    }
 
     public bool CanOk()
     {
@@ -264,13 +214,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         //await ConfigHandler.SetDefaultServer(_config, lstModel);
 
-        var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
-        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         lstModel = (from t in lstModel
-                    join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
-                    from t22 in t2b.DefaultIfEmpty()
-                    join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
-                    from t33 in t3b.DefaultIfEmpty()
                     select new ProfileItemModel
                     {
                         IndexId = t.IndexId,
@@ -284,15 +228,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
                         Subid = t.Subid,
                         SubRemarks = t.SubRemarks,
                         IsActive = t.IndexId == _config.IndexId,
-                        Sort = t33?.Sort ?? 0,
-                        Delay = t33?.Delay ?? 0,
-                        Speed = t33?.Speed ?? 0,
-                        DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
-                        SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
-                        TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
-                        TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
-                        TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
-                        TotalUp = t22 == null ? "" : Utils.HumanFy(t22.TotalUp)
                     }).OrderBy(t => t.Sort).ToList();
 
         // Apply ConfigType filter (include or exclude)

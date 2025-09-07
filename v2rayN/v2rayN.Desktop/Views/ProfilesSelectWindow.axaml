@@ -2,7 +2,6 @@
     x:Class="v2rayN.Desktop.Views.ProfilesSelectWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -13,10 +12,6 @@
     x:DataType="vms:ProfilesSelectViewModel"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
-    <Window.Resources>
-        <conv:DelayColorConverter x:Key="DelayColorConverter" />
-    </Window.Resources>
 
     <DockPanel Margin="8">
         <!--  Bottom buttons  -->
@@ -95,7 +90,7 @@
                             Header="{x:Static resx:ResUI.LvServiceType}"
                             Tag="ConfigType" />
 
-                        <DataGridTemplateColumn Tag="Remarks" SortMemberPath="Remarks">
+                        <DataGridTemplateColumn SortMemberPath="Remarks" Tag="Remarks">
                             <DataGridTemplateColumn.Header>
                                 <TextBlock Text="{x:Static resx:ResUI.LvRemarks}" />
                             </DataGridTemplateColumn.Header>
@@ -133,49 +128,6 @@
                             Binding="{Binding SubRemarks}"
                             Header="{x:Static resx:ResUI.LvSubscription}"
                             Tag="SubRemarks" />
-
-                        <DataGridTemplateColumn SortMemberPath="Delay" Tag="DelayVal">
-                            <DataGridTemplateColumn.Header>
-                                <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
-                            </DataGridTemplateColumn.Header>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        Margin="8,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
-                                        Text="{Binding DelayVal}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding SpeedVal}"
-                            Header="{x:Static resx:ResUI.LvTestSpeed}"
-                            Tag="SpeedVal" />
-
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding TodayUp}"
-                            Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
-                            Tag="TodayUp" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding TodayDown}"
-                            Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}"
-                            Tag="TodayDown" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding TotalUp}"
-                            Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}"
-                            Tag="TotalUp" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding TotalDown}"
-                            Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}"
-                            Tag="TotalDown" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

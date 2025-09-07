@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:v2rayN.Base"
-    xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,13 +16,6 @@
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
-            <conv:DelayColorConverter x:Key="DelayColorConverter" />
-        </ResourceDictionary>
-    </Window.Resources>
 
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
@@ -156,55 +148,6 @@
                             Binding="{Binding SubRemarks}"
                             ExName="SubRemarks"
                             Header="{x:Static resx:ResUI.LvSubscription}" />
-                        <base:MyDGTextColumn
-                            Width="100"
-                            Binding="{Binding DelayVal}"
-                            ExName="DelayVal"
-                            Header="{x:Static resx:ResUI.LvTestDelay}"
-                            SortMemberPath="Delay">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                    <Setter Property="Foreground" Value="{Binding Delay, Converter={StaticResource DelayColorConverter}}" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </base:MyDGTextColumn>
-                        <base:MyDGTextColumn
-                            Width="100"
-                            Binding="{Binding SpeedVal}"
-                            ExName="SpeedVal"
-                            Header="{x:Static resx:ResUI.LvTestSpeed}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </base:MyDGTextColumn>
-
-                        <base:MyDGTextColumn
-                            x:Name="colTodayUp"
-                            Width="100"
-                            Binding="{Binding TodayUp}"
-                            ExName="TodayUp"
-                            Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
-                        <base:MyDGTextColumn
-                            x:Name="colTodayDown"
-                            Width="100"
-                            Binding="{Binding TodayDown}"
-                            ExName="TodayDown"
-                            Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}" />
-                        <base:MyDGTextColumn
-                            x:Name="colTotalUp"
-                            Width="100"
-                            Binding="{Binding TotalUp}"
-                            ExName="TotalUp"
-                            Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}" />
-                        <base:MyDGTextColumn
-                            x:Name="colTotalDown"
-                            Width="100"
-                            Binding="{Binding TotalDown}"
-                            ExName="TotalDown"
-                            Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>
