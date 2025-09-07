@@ -72,6 +72,10 @@ public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewMod
         }
     }
 
+    // Expose ConfigType filter controls to callers
+    public void SetConfigTypeFilter(IEnumerable<EConfigType> types, bool exclude = false)
+        => ViewModel?.SetConfigTypeFilter(types, exclude);
+
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
         switch (action)

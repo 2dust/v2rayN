@@ -93,6 +93,7 @@ public partial class RoutingRuleDetailsWindow
     private async void BtnSelectProfile_Click(object sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
         if (selectWindow.ShowDialog() == true)
         {
             var profile = await selectWindow.ProfileItem;

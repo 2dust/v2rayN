@@ -64,6 +64,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     private async void BtnSelectPrevProfile_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {
@@ -78,6 +79,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     private async void BtnSelectNextProfile_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {

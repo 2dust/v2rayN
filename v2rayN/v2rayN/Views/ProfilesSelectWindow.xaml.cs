@@ -66,6 +66,10 @@ public partial class ProfilesSelectWindow
         }
     }
 
+    // Expose ConfigType filter controls to callers
+    public void SetConfigTypeFilter(IEnumerable<EConfigType> types, bool exclude = false)
+        => ViewModel?.SetConfigTypeFilter(types, exclude);
+
     #region Event
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

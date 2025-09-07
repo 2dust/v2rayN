@@ -20,6 +20,9 @@ public class ProfilesSelectViewModel : MyReactiveObject
     private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private string _subIndexId = string.Empty;
+    // ConfigType filter state: default include-mode with all types selected
+    private List<EConfigType> _filterConfigTypes = new();
+    private bool _filterExclude = false;
 
     #endregion private prop
 
@@ -39,6 +42,20 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     [Reactive]
     public string ServerFilter { get; set; }
+
+    // Include/Exclude filter for ConfigType
+    public List<EConfigType> FilterConfigTypes
+    {
+        get => _filterConfigTypes;
+        set => this.RaiseAndSetIfChanged(ref _filterConfigTypes, value);
+    }
+
+    [Reactive]
+    public bool FilterExclude
+    {
+        get => _filterExclude;
+        set => this.RaiseAndSetIfChanged(ref _filterExclude, value);
+    }
 
     #endregion ObservableCollection
 
@@ -60,6 +77,15 @@ public class ProfilesSelectViewModel : MyReactiveObject
           x => x.ServerFilter,
           y => y != null && _serverFilter != y)
               .Subscribe(async c => await ServerFilterChanged(c));
+
+        // React to ConfigType filter changes
+        this.WhenAnyValue(x => x.FilterExclude)
+            .Skip(1)
+            .Subscribe(async _ => await RefreshServersBiz());
+
+        this.WhenAnyValue(x => x.FilterConfigTypes)
+            .Skip(1)
+            .Subscribe(async _ => await RefreshServersBiz());
 
         #endregion WhenAnyValue && ReactiveCommand
 
@@ -84,6 +110,17 @@ public class ProfilesSelectViewModel : MyReactiveObject
     {
         SelectedProfile = new();
         SelectedSub = new();
+
+        // Default: include mode with all ConfigTypes selected
+        try
+        {
+            FilterExclude = false;
+            FilterConfigTypes = Enum.GetValues(typeof(EConfigType)).Cast<EConfigType>().ToList();
+        }
+        catch
+        {
+            FilterConfigTypes = new();
+        }
 
         await RefreshSubscriptions();
         await RefreshServers();
@@ -258,6 +295,19 @@ public class ProfilesSelectViewModel : MyReactiveObject
                         TotalUp = t22 == null ? "" : Utils.HumanFy(t22.TotalUp)
                     }).OrderBy(t => t.Sort).ToList();
 
+        // Apply ConfigType filter (include or exclude)
+        if (FilterConfigTypes != null && FilterConfigTypes.Count > 0)
+        {
+            if (FilterExclude)
+            {
+                lstModel = lstModel.Where(t => !FilterConfigTypes.Contains(t.ConfigType)).ToList();
+            }
+            else
+            {
+                lstModel = lstModel.Where(t => FilterConfigTypes.Contains(t.ConfigType)).ToList();
+            }
+        }
+
         return lstModel;
     }
 
@@ -360,4 +410,15 @@ public class ProfilesSelectViewModel : MyReactiveObject
     }
 
     #endregion Servers && Groups
+
+    #region Public API
+
+    // External setter for ConfigType filter
+    public void SetConfigTypeFilter(IEnumerable<EConfigType> types, bool exclude = false)
+    {
+        FilterConfigTypes = types?.Distinct().ToList() ?? new List<EConfigType>();
+        FilterExclude = exclude;
+    }
+
+    #endregion Public API
 }
