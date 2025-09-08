@@ -119,7 +119,7 @@ public partial class ProfilesView
                 if (obj is null)
                     return false;
                 WindowsUtils.SetClipboardData((string)obj);
-                break;          
+                break;
 
             case EViewAction.ProfilesFocus:
                 lstProfiles.Focus();

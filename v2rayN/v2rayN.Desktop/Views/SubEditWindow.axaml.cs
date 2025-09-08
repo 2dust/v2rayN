@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Interactivity;
 using ReactiveUI;
 using v2rayN.Desktop.Base;
-using System.Threading.Tasks;
 
 namespace v2rayN.Desktop.Views;
 

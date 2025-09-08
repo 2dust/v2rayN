@@ -13,6 +13,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     [Reactive]
     public RoutingItem SelectedRouting { get; set; }
+
     public IObservableCollection<RulesItemModel> RulesItems { get; } = new ObservableCollectionExtended<RulesItemModel>();
 
     [Reactive]

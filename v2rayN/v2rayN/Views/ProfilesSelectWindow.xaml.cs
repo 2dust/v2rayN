@@ -3,10 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Threading;
 using ReactiveUI;
 using ServiceLib.Manager;
-using Splat;
 using v2rayN.Base;
 
 namespace v2rayN.Views;
@@ -34,7 +32,6 @@ public partial class ProfilesSelectWindow
 
         ViewModel = new ProfilesSelectViewModel(UpdateViewHandler);
 
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -44,6 +41,8 @@ public partial class ProfilesSelectWindow
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
         });
+
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     public void AllowMultiSelect(bool allow)
@@ -190,5 +189,6 @@ public partial class ProfilesSelectWindow
         // Trigger selection finalize when Confirm is clicked
         ViewModel?.SelectFinish();
     }
+
     #endregion Event
 }

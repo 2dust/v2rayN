@@ -1,6 +1,5 @@
 using System.Reactive.Disposables;
 using System.Windows;
-using System.Windows.Threading;
 using ReactiveUI;
 using ServiceLib.Manager;
 

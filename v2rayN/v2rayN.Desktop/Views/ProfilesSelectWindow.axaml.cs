@@ -1,17 +1,12 @@
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
 using Avalonia.ReactiveUI;
+using Avalonia.VisualTree;
 using ReactiveUI;
 using ServiceLib.Manager;
-using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 

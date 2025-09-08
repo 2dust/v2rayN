@@ -1,27 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 
 namespace ServiceLib.ViewModels;
+
 public class ProfilesSelectViewModel : MyReactiveObject
 {
     #region private prop
 
-    private List<ProfileItem> _lstProfile;
     private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private string _subIndexId = string.Empty;
+
     // ConfigType filter state: default include-mode with all types selected
     private List<EConfigType> _filterConfigTypes = new();
+
     private bool _filterExclude = false;
 
     #endregion private prop
@@ -66,6 +61,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         _config = AppManager.Instance.Config;
         _updateView = updateView;
         _subIndexId = _config.SubIndexId ?? string.Empty;
+
         #region WhenAnyValue && ReactiveCommand
 
         this.WhenAnyValue(
@@ -130,6 +126,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         _updateView?.Invoke(EViewAction.CloseWindow, null);
         return true;
     }
+
     #endregion Actions
 
     #region Servers && Groups
@@ -168,7 +165,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
     private async Task RefreshServersBiz()
     {
         var lstModel = await GetProfileItemsEx(_subIndexId, _serverFilter);
-        _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
         ProfileItems.Clear();
         ProfileItems.AddRange(lstModel);
@@ -211,9 +207,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
         var lstModel = await AppManager.Instance.ProfileItems(_subIndexId, filter);
-
-        //await ConfigHandler.SetDefaultServer(_config, lstModel);
-
         lstModel = (from t in lstModel
                     select new ProfileItemModel
                     {
