@@ -390,7 +390,7 @@ download_mihomo() {
   chmod +x "$outroot/bin/mihomo/mihomo" || true
 }
 
-# Move geo files to a unified path: outroot/bin/ (NOT bin/xray/)
+# Move geo files to a unified path: outroot/bin
 unify_geo_layout() {
   local outroot="$1"
   mkdir -p "$outroot/bin"
