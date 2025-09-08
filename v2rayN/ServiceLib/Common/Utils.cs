@@ -582,9 +582,9 @@ public class Utils
                     if (host.StartsWith("#"))
                         continue;
                     var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (hostItem.Length != 2)
+                    if (hostItem.Length < 2)
                         continue;
-                    systemHosts.Add(hostItem.Last(), hostItem.First());
+                    systemHosts.Add(hostItem[1], hostItem[0]);
                 }
             }
         }
