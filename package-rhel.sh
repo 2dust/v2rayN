@@ -615,7 +615,7 @@ Source0:        __PKGROOT__.tar.gz
 
 # Runtime dependencies (Avalonia / X11 / Fonts / GL)
 Requires:       libX11, libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
-Requires:       fontconfig, freetype, cairo, pango, mesa-libEGL, mesa-libGL
+Requires:       fontconfig, freetype, cairo, pango, mesa-libEGL, mesa-libGL, xdg-utils
 
 %description
 v2rayN Linux for Red Hat Enterprise Linux
