@@ -235,6 +235,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             await StatisticsManager.Instance.Init(_config, UpdateStatisticsHandler);
         }
+        await RefreshServers();
 
         BlReloadEnabled = true;
         await Reload();

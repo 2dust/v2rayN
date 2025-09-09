@@ -257,7 +257,7 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedMoveToGroup = new();
 
         await RefreshSubscriptions();
-        await RefreshServers();
+        //await RefreshServers();
     }
 
     #endregion Init
