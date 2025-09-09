@@ -106,7 +106,6 @@ public partial class ProfilesView
         });
 
         RestoreUI();
-        ViewModel?.RefreshServers();
     }
 
     #region Event

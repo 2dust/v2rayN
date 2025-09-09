@@ -112,7 +112,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         });
 
         RestoreUI();
-        ViewModel?.RefreshServers();
     }
 
     private async void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
