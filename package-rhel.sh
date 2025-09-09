@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== Require Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS OR Ubuntu/Debian ====
+# == Require Red Hat Enterprise Linux/Fedora Linux/RockyLinux/AlmaLinux/CentOS OR Ubuntu/Debian ==
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
-    rhel|rocky|almalinux|centos|ubuntu|debian)
+    rhel|rocky|almalinux|fedora|centos|ubuntu|debian)
       echo "[OK] Detected supported system: $NAME $VERSION_ID"
       ;;
     *)
