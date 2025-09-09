@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.5" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.5" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.5" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.5" />
+    <PackageVersion Include="CliWrap" Version="3.9.0" />
+    <PackageVersion Include="Downloader" Version="4.0.3" />
+    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.0" />
+    <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
+    <PackageVersion Include="QRCoder" Version="1.6.0" />
+    <PackageVersion Include="ReactiveUI" Version="20.4.1" />
+    <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageVersion Include="ReactiveUI.WPF" Version="20.4.1" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.9" />
+    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.9" />
+    <PackageVersion Include="Splat.NLog" Version="16.2.1" />
+    <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageVersion Include="TaskScheduler" Version="2.12.2" />
+    <PackageVersion Include="WebDav.Client" Version="2.9.0" />
+    <PackageVersion Include="YamlDotNet" Version="16.3.0" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+  </ItemGroup>
+</Project>

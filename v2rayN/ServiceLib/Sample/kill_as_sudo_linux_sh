@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Process Terminator Script for Linux
+# This script forcibly terminates a process and all its child processes
+#
+
+# Check if PID argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <PID>"
+    exit 1
+fi
+
+PID=$1
+
+# Validate that input is a valid PID (numeric)
+if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
+    echo "Error: The PID must be a numeric value"
+    exit 1
+fi
+
+# Check if the process exists
+if ! ps -p $PID > /dev/null; then
+    echo "Warning: No process found with PID $PID"
+    exit 0
+fi
+
+# Recursive function to find and kill all child processes
+kill_children() {
+    local parent=$1
+    local children=$(ps -o pid --no-headers --ppid "$parent")
+    
+    # Output information about processes being terminated
+    echo "Processing children of PID: $parent..."
+    
+    # Process each child
+    for child in $children; do
+        # Recursively find and kill child's children first
+        kill_children "$child"
+        
+        # Force kill the child process
+        echo "Terminating child process: $child"
+        kill -9 "$child" 2>/dev/null || true
+    done
+}
+
+echo "============================================"
+echo "Starting termination of process $PID and all its children"
+echo "============================================"
+
+# Find and kill all child processes
+kill_children "$PID"
+
+# Finally kill the main process
+echo "Terminating main process: $PID"
+kill -9 "$PID" 2>/dev/null || true
+
+echo "============================================"
+echo "Process $PID and all its children have been terminated"
+echo "============================================"
+
+exit 0

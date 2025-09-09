@@ -1,0 +1,103 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.ClashConnectionsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vms:ClashConnectionsViewModel"
+    mc:Ignorable="d">
+
+    <DockPanel Margin="2">
+        <WrapPanel
+            VerticalAlignment="Center"
+            Margin="{StaticResource Margin4}"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <TextBox
+                x:Name="txtHostFilter"
+                Width="200"
+                VerticalContentAlignment="Center"
+                Margin="{StaticResource MarginLr8}"
+                Watermark="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
+
+            <Button
+                x:Name="btnConnectionCloseAll"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Classes="Success"
+                Margin="{StaticResource MarginLr8}"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
+                <Button.Content>
+                    <PathIcon Data="{StaticResource building_delete}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+
+            <Button
+                x:Name="btnAutofitColumnWidth"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Classes="Success"
+                Margin="{StaticResource MarginLr8}"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                <Button.Content>
+                    <PathIcon Data="{StaticResource building_fit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+
+            <TextBlock
+                VerticalAlignment="Center"
+                Margin="{StaticResource MarginLr8}"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleSwitch
+                x:Name="togAutoRefresh"
+                HorizontalAlignment="Left"
+                Margin="{StaticResource MarginLr8}" />
+        </WrapPanel>
+
+        <DataGrid
+            x:Name="lstConnections"
+            AutoGenerateColumns="False"
+            BorderThickness="1"
+            CanUserResizeColumns="True"
+            GridLinesVisibility="All"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            ItemsSource="{Binding ConnectionItems}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="menuConnectionClose" Header="{x:Static resx:ResUI.menuConnectionClose}" />
+                    <MenuItem x:Name="menuConnectionCloseAll" Header="{x:Static resx:ResUI.menuConnectionCloseAll}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="300"
+                    Binding="{Binding Host}"
+                    Header="{x:Static resx:ResUI.TbSortingHost}" />
+                <DataGridTextColumn
+                    Width="500"
+                    Binding="{Binding Chain}"
+                    Header="{x:Static resx:ResUI.TbSortingChain}" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding Network}"
+                    Header="{x:Static resx:ResUI.TbSortingNetwork}" />
+                <DataGridTextColumn
+                    Width="160"
+                    Binding="{Binding Type}"
+                    Header="{x:Static resx:ResUI.TbSortingType}" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding Elapsed}"
+                    Header="{x:Static resx:ResUI.TbSortingTime}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

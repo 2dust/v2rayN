@@ -1,41 +1,70 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2050
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "v2rayN", "v2rayN\v2rayN.csproj", "{0A9785E6-D256-4B73-9757-4EF59955FD1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayN", "v2rayN\v2rayN.csproj", "{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "v2rayUpgrade", "v2rayUpgrade\v2rayUpgrade.csproj", "{F82BE52A-155C-492C-9E0A-1E917EC62C78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLib", "ServiceLib\ServiceLib.csproj", "{1B6456C4-FFAA-4298-80F6-7B689A6E9243}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayN.Desktop", "v2rayN.Desktop\v2rayN.Desktop.csproj", "{5D16541A-F971-4C17-9315-BB8955E3F984}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazTool", "AmazTool\AmazTool.csproj", "{47D68B1C-601C-4C69-873B-FFF0DC13EC97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHotKeys", "GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj", "{CB3DE54F-3A26-AE02-1299-311132C32156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Action", "GitHub Action", "{1EACFDC8-ADD8-4F29-AF60-92AA55D59908}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build-all.yml = ..\.github\workflows\build-all.yml
+		..\.github\workflows\build-linux.yml = ..\.github\workflows\build-linux.yml
+		..\.github\workflows\build-osx.yml = ..\.github\workflows\build-osx.yml
+		..\.github\workflows\build-windows-desktop.yml = ..\.github\workflows\build-windows-desktop.yml
+		..\.github\workflows\build-windows.yml = ..\.github\workflows\build-windows.yml
+		..\package-appimage.sh = ..\package-appimage.sh
+		..\package-debian.sh = ..\package-debian.sh
+		..\package-osx.sh = ..\package-osx.sh
+		..\package-release-zip.sh = ..\package-release-zip.sh
+		..\pkg2appimage.yml = ..\pkg2appimage.yml
+		..\.github\workflows\winget-publish.yml = ..\.github\workflows\winget-publish.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Debug|x86.Build.0 = Debug|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A9785E6-D256-4B73-9757-4EF59955FD1E}.Release|x86.ActiveCfg = Release|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Debug|x86.Build.0 = Debug|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|x86.ActiveCfg = Release|Any CPU
-		{F82BE52A-155C-492C-9E0A-1E917EC62C78}.Release|x86.Build.0 = Release|Any CPU
+		{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6456C4-FFAA-4298-80F6-7B689A6E9243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D16541A-F971-4C17-9315-BB8955E3F984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D16541A-F971-4C17-9315-BB8955E3F984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D16541A-F971-4C17-9315-BB8955E3F984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D16541A-F971-4C17-9315-BB8955E3F984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D68B1C-601C-4C69-873B-FFF0DC13EC97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3DE54F-3A26-AE02-1299-311132C32156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_SortFileContentOnSave = True
-		SolutionGuid = {56B88873-C9CC-4069-A1E5-DABD6C6E865E}
+		SolutionGuid = {43E06CBD-3DA9-40A3-8E4D-F0943CB0DD32}
 	EndGlobalSection
 EndGlobal

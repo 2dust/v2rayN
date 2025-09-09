@@ -1,0 +1,157 @@
+#!/bin/bash
+
+# Function to set proxy for GNOME
+set_gnome_proxy() {
+    local MODE=$1
+    local PROXY_IP=$2
+    local PROXY_PORT=$3
+    local IGNORE_HOSTS=$4
+
+    # Set the proxy mode
+    gsettings set org.gnome.system.proxy mode "$MODE"
+
+    if [ "$MODE" == "manual" ]; then
+        # List of protocols
+        local PROTOCOLS=("http" "https" "ftp" "socks")
+
+        # Loop through protocols to set the proxy
+        for PROTOCOL in "${PROTOCOLS[@]}"; do
+            gsettings set org.gnome.system.proxy.$PROTOCOL host "$PROXY_IP"
+            gsettings set org.gnome.system.proxy.$PROTOCOL port "$PROXY_PORT"
+        done
+
+        # Set ignored hosts
+        gsettings set org.gnome.system.proxy ignore-hosts "['$IGNORE_HOSTS']"
+
+        echo "GNOME: Manual proxy settings applied."
+        echo "Proxy IP: $PROXY_IP"
+        echo "Proxy Port: $PROXY_PORT"
+        echo "Ignored Hosts: $IGNORE_HOSTS"
+    elif [ "$MODE" == "none" ]; then
+        echo "GNOME: Proxy disabled."
+    fi
+}
+
+# Function to set proxy for KDE
+set_kde_proxy() {
+    local MODE=$1
+    local PROXY_IP=$2
+    local PROXY_PORT=$3
+    local IGNORE_HOSTS=$4
+
+    # Determine the correct kwriteconfig command based on KDE_SESSION_VERSION
+    if [ "$KDE_SESSION_VERSION" == "6" ]; then
+        KWRITECONFIG="kwriteconfig6"
+    else
+        KWRITECONFIG="kwriteconfig5"
+    fi
+
+    # KDE uses kwriteconfig to modify proxy settings
+    if [ "$MODE" == "manual" ]; then
+        # Set proxy for all protocols
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 1
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpsProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ftpProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key socksProxy "http://$PROXY_IP:$PROXY_PORT"
+
+        # Set ignored hosts
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key NoProxyFor "$IGNORE_HOSTS"
+
+        echo "KDE: Manual proxy settings applied."
+        echo "Proxy IP: $PROXY_IP"
+        echo "Proxy Port: $PROXY_PORT"
+        echo "Ignored Hosts: $IGNORE_HOSTS"
+    elif [ "$MODE" == "none" ]; then
+        # Disable proxy
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 0
+        echo "KDE: Proxy disabled."
+    fi
+
+    # Apply changes by restarting KDE's network settings
+    dbus-send --type=signal /KIO/Scheduler org.kde.KIO.Scheduler.reparseSlaveConfiguration string:""
+}
+
+# Detect the current desktop environment
+detect_desktop_environment() {
+    if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"GNOME"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"XFCE"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"X-Cinnamon"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"cinnamon"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"UKUI"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"ukui"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"DDE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"dde"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    if [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]] || [[ "$XDG_SESSION_DESKTOP" == *"mate"* ]]; then
+        echo "gnome"
+        return
+    fi
+
+    local KDE_ENVIRONMENTS=("KDE" "plasma")
+    for ENV in "${KDE_ENVIRONMENTS[@]}"; do
+        if [ "$XDG_CURRENT_DESKTOP" == "$ENV" ] || [ "$XDG_SESSION_DESKTOP" == "$ENV" ]; then
+            echo "kde"
+            return
+        fi
+    done
+
+    # Fallback to GNOME method if CLI utility is available. This solves the
+    # proxy configuration issues on minimal installation systems, like setups
+    # with only window managers, that borrow some parts from big DEs.
+    if command -v gsettings >/dev/null 2>&1; then
+        echo "gnome"
+        return
+    fi
+
+    echo "unsupported"
+}
+
+# Main script logic
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <mode> [proxy_ip proxy_port ignore_hosts]"
+    echo "  mode: 'none' or 'manual'"
+    echo "  If mode is 'manual', provide proxy IP, port, and ignore hosts."
+    exit 1
+fi
+
+# Get the mode
+MODE=$1
+PROXY_IP=$2
+PROXY_PORT=$3
+IGNORE_HOSTS=$4
+
+if ! [[ "$MODE" =~ ^(manual|none)$ ]]; then
+    echo "Invalid mode. Use 'none' or 'manual'." >&2
+    exit 1
+fi
+
+# Detect desktop environment
+DE=$(detect_desktop_environment)
+
+# Apply settings based on the desktop environment
+if [ "$DE" == "gnome" ]; then
+    set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+elif [ "$DE" == "kde" ]; then
+    set_gnome_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+    set_kde_proxy "$MODE" "$PROXY_IP" "$PROXY_PORT" "$IGNORE_HOSTS"
+else
+    echo "Unsupported desktop environment: $DE" >&2
+    exit 1
+fi

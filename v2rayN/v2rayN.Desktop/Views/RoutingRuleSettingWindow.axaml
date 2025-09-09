@@ -1,0 +1,243 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.RoutingRuleSettingWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuRoutingRuleSetting}"
+    Width="900"
+    Height="600"
+    x:DataType="vms:RoutingRuleSettingViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel>
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <Menu>
+                <MenuItem x:Name="menuRuleAdd" Header="{x:Static resx:ResUI.menuRuleAdd}" />
+                <MenuItem x:Name="menuImportRulesFromFile" Header="{x:Static resx:ResUI.menuImportRulesFromFile}" />
+                <MenuItem x:Name="menuImportRulesFromClipboard" Header="{x:Static resx:ResUI.menuImportRulesFromClipboard}" />
+                <MenuItem x:Name="menuImportRulesFromUrl" Header="{x:Static resx:ResUI.menuImportRulesFromUrl}" />
+            </Menu>
+        </StackPanel>
+
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Right"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
+        </StackPanel>
+
+        <Grid
+            Margin="{StaticResource Margin4}"
+            ColumnDefinitions="Auto,Auto,Auto"
+            DockPanel.Dock="Top"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.LvRemarks}" />
+            <StackPanel
+                Grid.Row="0"
+                Grid.Column="1"
+                Orientation="Horizontal">
+
+                <TextBox
+                    x:Name="txtRemarks"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="300"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvSort}" />
+                <TextBox
+                    x:Name="txtSort"
+                    Width="100"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbdomainStrategy}" />
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                Orientation="Horizontal">
+                <ComboBox
+                    x:Name="cmbdomainStrategy"
+                    Width="200"
+                    Margin="{StaticResource Margin4}" />
+                <TextBlock
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
+                <ComboBox
+                    x:Name="cmbdomainStrategy4Singbox"
+                    Width="200"
+                    Margin="{StaticResource Margin4}" />
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.LvUrl}" />
+            <TextBox
+                x:Name="txtUrl"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="600"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                TextWrapping="Wrap" />
+
+            <!--
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Margin="{StaticResource Margin4}"
+                Text="{x:Static resx:ResUI.LvCustomIcon}" />
+            <TextBox
+                x:Name="txtCustomIcon"
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="600"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Margin="{StaticResource Margin4}"
+                TextWrapping="Wrap" />
+            <Button
+                x:Name="btnBrowseCustomIcon"
+                Grid.Row="3"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                Content="{x:Static resx:ResUI.TbBrowse}" />
+            -->
+
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center">
+                <HyperlinkButton Classes="WithIcon" Click="linkCustomRulesetPath4Singbox">
+                    <TextBlock Text="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}" />
+                </HyperlinkButton>
+            </TextBlock>
+            <TextBox
+                x:Name="txtCustomRulesetPath4Singbox"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="600"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                TextWrapping="Wrap" />
+            <Button
+                x:Name="btnBrowseCustomRulesetPath4Singbox"
+                Grid.Row="4"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                Content="{x:Static resx:ResUI.TbBrowse}" />
+        </Grid>
+
+        <TabControl x:Name="tabAdvanced">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuRuleList}">
+                <DataGrid
+                    x:Name="lstRules"
+                    AutoGenerateColumns="False"
+                    BorderThickness="1"
+                    CanUserResizeColumns="True"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding RulesItems}">
+                    <DataGrid.KeyBindings>
+                        <KeyBinding Command="{Binding RuleExportSelectedCmd}" Gesture="Ctrl+C" />
+                    </DataGrid.KeyBindings>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="menuRuleAdd2" Header="{x:Static resx:ResUI.menuRuleAdd}" />
+                            <MenuItem x:Name="menuRuleRemove" Header="{x:Static resx:ResUI.menuRuleRemove}" />
+                            <MenuItem x:Name="menuRuleSelectAll" Header="{x:Static resx:ResUI.menuSelectAll}" />
+                            <MenuItem x:Name="menuRuleExportSelected" Header="{x:Static resx:ResUI.menuRuleExportSelected}" />
+                            <Separator />
+                            <MenuItem x:Name="menuMoveTop" Header="{x:Static resx:ResUI.menuMoveTop}" />
+                            <MenuItem x:Name="menuMoveUp" Header="{x:Static resx:ResUI.menuMoveUp}" />
+                            <MenuItem x:Name="menuMoveDown" Header="{x:Static resx:ResUI.menuMoveDown}" />
+                            <MenuItem x:Name="menuMoveBottom" Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn
+                            Width="60"
+                            Binding="{Binding Enabled}"
+                            Header="" />
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding OutboundTag}"
+                            Header="outboundTag" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Port}"
+                            Header="port" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Protocols}"
+                            Header="protocol" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding InboundTags}"
+                            Header="inboundTag" />
+                        <DataGridTextColumn
+                            Width="90"
+                            Binding="{Binding Network}"
+                            Header="network" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Domains}"
+                            Header="domain" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Ips}"
+                            Header="ip" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

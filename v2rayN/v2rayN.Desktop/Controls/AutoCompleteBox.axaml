@@ -1,0 +1,48 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:v2rayN.Desktop.Controls">
+    <!--  Add Resources Here  -->
+    <ControlTheme x:Key="{x:Type controls:AutoCompleteBox}" TargetType="controls:AutoCompleteBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="{DynamicResource AutoCompleteBoxDefaultHeight}" />
+        <Setter Property="MaxDropDownHeight" Value="{DynamicResource AutoCompleteMaxDropdownHeight}" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="AutoCompleteBox">
+                <Panel>
+                    <TextBox
+                        Name="PART_TextBox"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        VerticalAlignment="Stretch"
+                        DataValidationErrors.Errors="{TemplateBinding (DataValidationErrors.Errors)}"
+                        InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                        InnerRightContent="{TemplateBinding InnerRightContent}"
+                        Watermark="{TemplateBinding Watermark}" />
+                    <Popup
+                        Name="PART_Popup"
+                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                        IsLightDismissEnabled="True"
+                        PlacementTarget="{TemplateBinding}">
+                        <Border
+                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                            Margin="{DynamicResource AutoCompleteBoxPopupMargin}"
+                            Padding="{DynamicResource AutoCompleteBoxPopupPadding}"
+                            HorizontalAlignment="Stretch"
+                            Background="{DynamicResource AutoCompleteBoxPopupBackground}"
+                            BorderBrush="{DynamicResource AutoCompleteBoxPopupBorderBrush}"
+                            BorderThickness="{DynamicResource AutoCompleteBoxPopupBorderThickness}"
+                            BoxShadow="{DynamicResource AutoCompleteBoxPopupBoxShadow}"
+                            CornerRadius="{DynamicResource AutoCompleteBoxPopupCornerRadius}">
+                            <ListBox
+                                Name="PART_SelectingItemsControl"
+                                Foreground="{TemplateBinding Foreground}"
+                                ItemTemplate="{TemplateBinding ItemTemplate}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </Border>
+                    </Popup>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

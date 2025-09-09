@@ -1,0 +1,149 @@
+[
+  {
+    "remarks": "绕过bittorrent",
+    "outboundTag": "direct",
+    "protocol": [
+      "bittorrent"
+    ]
+  },
+  {
+    "remarks": "api.ip.sb",
+    "outboundTag": "proxy",
+    "domain": [
+      "api.ip.sb"
+    ]
+  },
+  {
+    "remarks": "Google cn",
+    "outboundTag": "proxy",
+    "domain": [
+      "domain:googleapis.cn",
+      "domain:gstatic.com"
+    ]
+  },
+  {
+    "remarks": "阻断udp443",
+    "outboundTag": "block",
+    "port": "443",
+    "network": "udp"
+  },
+  {
+    "remarks": "绕过局域网IP",
+    "outboundTag": "direct",
+    "ip": [
+      "geoip:private"
+    ]
+  },
+  {
+    "remarks": "绕过局域网域名",
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:private"
+    ]
+  },
+  {
+    "remarks": "代理海外公共DNSIP",
+    "outboundTag": "proxy",
+    "ip": [
+      "1.1.1.1",
+      "1.0.0.1",
+      "2606:4700:4700::1111",
+      "2606:4700:4700::1001",
+      "1.1.1.2",
+      "1.0.0.2",
+      "2606:4700:4700::1112",
+      "2606:4700:4700::1002",
+      "1.1.1.3",
+      "1.0.0.3",
+      "2606:4700:4700::1113",
+      "2606:4700:4700::1003",
+      "8.8.8.8",
+      "8.8.4.4",
+      "2001:4860:4860::8888",
+      "2001:4860:4860::8844",
+      "94.140.14.14",
+      "94.140.15.15",
+      "2a10:50c0::ad1:ff",
+      "2a10:50c0::ad2:ff",
+      "94.140.14.15",
+      "94.140.15.16",
+      "2a10:50c0::bad1:ff",
+      "2a10:50c0::bad2:ff",
+      "94.140.14.140",
+      "94.140.14.141",
+      "2a10:50c0::1:ff",
+      "2a10:50c0::2:ff",
+      "208.67.222.222",
+      "208.67.220.220",
+      "2620:119:35::35",
+      "2620:119:53::53",
+      "208.67.222.123",
+      "208.67.220.123",
+      "2620:119:35::123",
+      "2620:119:53::123",
+      "9.9.9.9",
+      "149.112.112.112",
+      "2620:fe::9",
+      "2620:fe::fe",
+      "9.9.9.11",
+      "149.112.112.11",
+      "2620:fe::11",
+      "2620:fe::fe:11",
+      "9.9.9.10",
+      "149.112.112.10",
+      "2620:fe::10",
+      "2620:fe::fe:10",
+      "77.88.8.8",
+      "77.88.8.1",
+      "2a02:6b8::feed:0ff",
+      "2a02:6b8:0:1::feed:0ff",
+      "77.88.8.88",
+      "77.88.8.2",
+      "2a02:6b8::feed:bad",
+      "2a02:6b8:0:1::feed:bad",
+      "77.88.8.7",
+      "77.88.8.3",
+      "2a02:6b8::feed:a11",
+      "2a02:6b8:0:1::feed:a11"
+    ]
+  },
+  {
+    "remarks": "代理海外公共DNS域名",
+    "outboundTag": "proxy",
+    "domain": [
+      "domain:cloudflare-dns.com",
+      "domain:one.one.one.one",
+      "domain:dns.google",
+      "domain:adguard-dns.com",
+      "domain:opendns.com",
+      "domain:umbrella.com",
+      "domain:quad9.net",
+      "domain:yandex.net"
+    ]
+  },
+  {
+    "remarks": "代理IP",
+    "outboundTag": "proxy",
+    "ip": [
+      "geoip:facebook",
+      "geoip:fastly",
+      "geoip:google",
+      "geoip:netflix",
+      "geoip:telegram",
+      "geoip:twitter"
+    ]
+  },
+  {
+    "remarks": "代理GFW",
+    "outboundTag": "proxy",
+    "domain": [
+      "geosite:gfw",
+      "geosite:greatfire"
+    ]
+  },
+  {
+    "remarks": "最终直连",
+    "port": "0-65535",
+    "outboundTag": "direct"
+  }
+]

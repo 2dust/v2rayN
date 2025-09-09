@@ -1,0 +1,128 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.ProfilesSelectWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.TbSelectProfile}"
+    Width="800"
+    Height="450"
+    x:DataType="vms:ProfilesSelectViewModel"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <DockPanel Margin="8">
+        <!--  Bottom buttons  -->
+        <StackPanel
+            Margin="4"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Click="BtnSave_Click"
+                Content="{x:Static resx:ResUI.TbConfirm}" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="8,0"
+                Content="{x:Static resx:ResUI.TbCancel}" />
+        </StackPanel>
+
+        <Grid>
+            <DockPanel>
+                <!--  Top tools  -->
+                <WrapPanel Margin="4" DockPanel.Dock="Top">
+                    <ListBox
+                        x:Name="lstGroup"
+                        Margin="{StaticResource MarginLr4}"
+                        DisplayMemberBinding="{Binding Remarks}"
+                        ItemsSource="{Binding SubItems}"
+                        Theme="{DynamicResource ButtonRadioGroupListBox}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+
+                    <Button
+                        x:Name="btnAutofitColumnWidth"
+                        Width="32"
+                        Height="32"
+                        Margin="8,0"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource building_fit}" />
+                        </Button.Content>
+                    </Button>
+
+                    <TextBox
+                        x:Name="txtServerFilter"
+                        Width="200"
+                        Margin="8,0"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding ServerFilter, Mode=TwoWay}"
+                        Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+                </WrapPanel>
+
+                <!--  Profiles grid  -->
+                <DataGrid
+                    x:Name="lstProfiles"
+                    AutoGenerateColumns="False"
+                    BorderThickness="1"
+                    CanUserReorderColumns="True"
+                    CanUserResizeColumns="True"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="All"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding ProfileItems}"
+                    SelectionMode="Single">
+                    <DataGrid.KeyBindings>
+                        <KeyBinding Command="{Binding SelectFinish}" Gesture="Enter" />
+                    </DataGrid.KeyBindings>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding ConfigType}"
+                            Header="{x:Static resx:ResUI.LvServiceType}"
+                            Tag="ConfigType" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}"
+                            Tag="Remarks" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Address}"
+                            Header="{x:Static resx:ResUI.LvAddress}"
+                            Tag="Address" />
+                        <DataGridTextColumn
+                            Width="60"
+                            Binding="{Binding Port}"
+                            Header="{x:Static resx:ResUI.LvPort}"
+                            Tag="Port" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Network}"
+                            Header="{x:Static resx:ResUI.LvTransportProtocol}"
+                            Tag="Network" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding StreamSecurity}"
+                            Header="{x:Static resx:ResUI.LvTLS}"
+                            Tag="StreamSecurity" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SubRemarks}"
+                            Header="{x:Static resx:ResUI.LvSubscription}"
+                            Tag="SubRemarks" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,1 @@
+﻿{"version":"1.1","method":"GET","path":[$requestPath$],"headers":{"Host":[$requestHost$],"User-Agent":[$requestUserAgent$],"Accept-Encoding":["gzip, deflate"],"Connection":["keep-alive"],"Pragma":"no-cache"}}

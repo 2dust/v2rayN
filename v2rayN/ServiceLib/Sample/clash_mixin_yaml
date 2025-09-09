@@ -1,0 +1,39 @@
+#
+# 配置文件内容不会被修改，混合行为只会发生在内存中
+#
+# 注意下面缩进，请用支持yaml显示的编辑器打开
+#
+# 使用clash配置文件关键字则覆盖原配置
+#
+# removed-rules    循环匹配rules数组每行,符合则移除当前行 (此规则请放最前面)
+#
+# append-rules    数组合并至原配置rules数组后
+# prepend-rules   数组合并至原配置rules数组前
+# append-proxies      数组合并至原配置proxies数组后
+# prepend-proxies     数组合并至原配置proxies数组前
+# append-proxy-groups     数组合并至原配置proxy-groups数组后
+# prepend-proxy-groups    数组合并至原配置proxy-groups数组前
+# append-rule-providers     数组合并至原配置rule-providers数组后
+# prepend-rule-providers    数组合并至原配置rule-providers数组前
+#
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  nameserver:
+    - 114.114.114.114
+    - 223.5.5.5
+    - 8.8.8.8
+  fallback: []
+  fake-ip-filter:
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - "*.n.n.srv.nintendo.net"
+    - +.stun.playstation.net
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    - WORKGROUP

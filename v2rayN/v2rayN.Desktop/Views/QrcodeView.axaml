@@ -1,0 +1,27 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.QrcodeView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="480"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+    <Grid Margin="32" RowDefinitions="Auto,Auto">
+        <Image
+            Name="imgQrcode"
+            Width="300"
+            Height="300" />
+
+        <TextBox
+            x:Name="txtContent"
+            Grid.Row="1"
+            Width="300"
+            MaxHeight="100"
+            Margin="{StaticResource MarginTb8}"
+            VerticalAlignment="Center"
+            IsReadOnly="True"
+            TextWrapping="WrapWithOverflow" />
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,111 @@
+<reactiveui:ReactiveUserControl
+    x:Class="v2rayN.Views.MsgView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveui="http://reactiveui.net"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="vms:MsgViewModel"
+    Style="{StaticResource ViewGlobal}"
+    mc:Ignorable="d">
+    <DockPanel Margin="{StaticResource Margin4}">
+        <WrapPanel
+            Margin="{StaticResource Margin8}"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <ComboBox
+                x:Name="cmbMsgFilter"
+                Width="200"
+                Margin="{StaticResource MarginLeftRight8}"
+                materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgFilterTitle}"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                AutomationProperties.Name="{x:Static resx:ResUI.MsgFilterTitle}"
+                IsEditable="True"
+                Style="{StaticResource DefComboBox}" />
+            <Button
+                x:Name="btnCopy"
+                Width="24"
+                Height="24"
+                Margin="{StaticResource MarginLeftRight8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}"
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
+                <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
+            </Button>
+            <Button
+                x:Name="btnClear"
+                Width="24"
+                Height="24"
+                Margin="{StaticResource MarginLeftRight8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}"
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
+                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
+            </Button>
+            <TextBlock
+                Margin="{StaticResource MarginLeftRight8}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleButton
+                x:Name="togAutoRefresh"
+                Margin="{StaticResource MarginLeftRight8}"
+                HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}"
+                IsChecked="True" />
+            <TextBlock
+                Margin="{StaticResource MarginLeftRight8}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+            <ToggleButton
+                x:Name="togScrollToEnd"
+                Margin="{StaticResource MarginLeftRight8}"
+                HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoScrollToEnd}"
+                IsChecked="True" />
+        </WrapPanel>
+        <TextBox
+            Name="txtMsg"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            BorderThickness="0"
+            FontSize="{DynamicResource StdFontSize-1}"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            IsReadOnlyCaretVisible="True"
+            IsUndoEnabled="False"
+            TextAlignment="Left"
+            TextWrapping="Wrap"
+            UndoLimit="0"
+            VerticalScrollBarVisibility="Visible">
+            <TextBox.ContextMenu>
+                <ContextMenu Style="{StaticResource DefContextMenu}">
+                    <MenuItem
+                        x:Name="menuMsgViewSelectAll"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                    <MenuItem
+                        x:Name="menuMsgViewCopy"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                    <MenuItem
+                        x:Name="menuMsgViewCopyAll"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
+                    <MenuItem
+                        x:Name="menuMsgViewClear"
+                        Height="{StaticResource MenuItemHeight}"
+                        Header="{x:Static resx:ResUI.menuMsgViewClear}" />
+                </ContextMenu>
+            </TextBox.ContextMenu>
+        </TextBox>
+    </DockPanel>
+</reactiveui:ReactiveUserControl>

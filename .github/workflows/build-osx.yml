@@ -1,0 +1,87 @@
+name: release macOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+  push:
+    branches:
+      - master
+
+env:
+  OutputArch: "macos-64"
+  OutputArchArm: "macos-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/macos-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/macos-arm64"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5.0.0
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Setup
+      uses: actions/setup-dotnet@v5.0.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build
+      run: |
+        cd v2rayN 
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-x64   --self-contained=true -o $OutputPath64
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-arm64 --self-contained=true -o $OutputPathArm64
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-x64   --self-contained=true -p:PublishTrimmed=true -o $OutputPath64
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-arm64 --self-contained=true -p:PublishTrimmed=true -o $OutputPathArm64
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: v2rayN-macos
+        path: |
+          ${{ github.workspace }}/v2rayN/Release/macos*
+    
+    # release osx package
+    - name: Package osx
+      if: github.event.inputs.release_tag != ''
+      run: |
+        brew install create-dmg
+        chmod 755 package-osx.sh
+        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
+        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+    
+    - name: Upload dmg to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.dmg
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
+
+    # release zip archive
+    - name: Package release zip archive
+      if: github.event.inputs.release_tag != ''
+      run: |
+        chmod 755 package-release-zip.sh
+        ./package-release-zip.sh $OutputArch $OutputPath64
+        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+    
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true

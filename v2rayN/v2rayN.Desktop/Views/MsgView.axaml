@@ -1,0 +1,104 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.MsgView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="2">
+        <WrapPanel
+            Margin="{StaticResource Margin4}"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <TextBox
+                x:Name="cmbMsgFilter"
+                Width="200"
+                Margin="{StaticResource MarginLr8}"
+                VerticalContentAlignment="Center"
+                Watermark="{x:Static resx:ResUI.MsgFilterTitle}" />
+
+            <Button
+                x:Name="btnCopy"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Margin="{StaticResource MarginLr8}"
+                Classes="Success"
+                Click="menuMsgViewCopyAll_Click"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
+                <Button.Content>
+                    <PathIcon Data="{StaticResource building_copy}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+            <Button
+                x:Name="btnClear"
+                Width="{StaticResource IconButtonWidth}"
+                Height="{StaticResource IconButtonHeight}"
+                Margin="{StaticResource MarginLr8}"
+                Classes="Success"
+                Click="menuMsgViewClear_Click"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewClear}">
+                <Button.Content>
+                    <PathIcon Data="{StaticResource building_delete}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                </Button.Content>
+            </Button>
+            <TextBlock
+                Margin="{StaticResource MarginLr8}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+            <ToggleSwitch
+                x:Name="togAutoRefresh"
+                Margin="{StaticResource MarginLr8}"
+                HorizontalAlignment="Left"
+                IsChecked="True"
+                Theme="{DynamicResource SimpleToggleSwitch}" />
+            <TextBlock
+                Margin="{StaticResource MarginLr8}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+            <ToggleSwitch
+                x:Name="togScrollToEnd"
+                Margin="{StaticResource MarginLr8}"
+                HorizontalAlignment="Left"
+                IsChecked="True"
+                Theme="{DynamicResource SimpleToggleSwitch}" />
+        </WrapPanel>
+
+        <ScrollViewer x:Name="msgScrollViewer" VerticalScrollBarVisibility="Auto">
+            <SelectableTextBlock
+                Name="txtMsg"
+                Margin="{StaticResource Margin8}"
+                VerticalAlignment="Stretch"
+                Classes="TextArea"
+                TextAlignment="Left"
+                TextWrapping="Wrap">
+                <SelectableTextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem
+                            x:Name="menuMsgViewSelectAll"
+                            Click="menuMsgViewSelectAll_Click"
+                            Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                        <MenuItem
+                            x:Name="menuMsgViewCopy"
+                            Click="menuMsgViewCopy_Click"
+                            Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                        <MenuItem
+                            x:Name="menuMsgViewCopyAll"
+                            Click="menuMsgViewCopyAll_Click"
+                            Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
+                        <MenuItem
+                            x:Name="menuMsgViewClear"
+                            Click="menuMsgViewClear_Click"
+                            Header="{x:Static resx:ResUI.menuMsgViewClear}" />
+                    </ContextMenu>
+                </SelectableTextBlock.ContextMenu>
+            </SelectableTextBlock>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
