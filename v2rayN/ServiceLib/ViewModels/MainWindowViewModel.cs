@@ -488,7 +488,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            ProcUtils.ProcessStart("nautilus", path);
+            ProcUtils.ProcessStart("xdg-open", path);
         }
         else if (Utils.IsOSX())
         {
