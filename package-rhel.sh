@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# == Require Red Hat Enterprise Linux/Fedora Linux/RockyLinux/AlmaLinux/CentOS OR Ubuntu/Debian ==
+# == Require Red Hat Enterprise Linux/FedoraLinux/RockyLinux/AlmaLinux/CentOS OR Ubuntu/Debian ==
 if [[ -r /etc/os-release ]]; then
   . /etc/os-release
   case "$ID" in
