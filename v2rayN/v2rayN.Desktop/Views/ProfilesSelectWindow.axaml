@@ -38,9 +38,10 @@
                 <WrapPanel Margin="4" DockPanel.Dock="Top">
                     <ListBox
                         x:Name="lstGroup"
-                        Margin="4,0"
+                        Margin="{StaticResource MarginLr4}"
                         DisplayMemberBinding="{Binding Remarks}"
-                        ItemsSource="{Binding SubItems}">
+                        ItemsSource="{Binding SubItems}"
+                        Theme="{DynamicResource ButtonRadioGroupListBox}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
@@ -89,20 +90,11 @@
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}"
                             Tag="ConfigType" />
-
-                        <DataGridTemplateColumn SortMemberPath="Remarks" Tag="Remarks">
-                            <DataGridTemplateColumn.Header>
-                                <TextBlock Text="{x:Static resx:ResUI.LvRemarks}" />
-                            </DataGridTemplateColumn.Header>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="8,0" Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Remarks}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}"
+                            Tag="Remarks" />
                         <DataGridTextColumn
                             Width="120"
                             Binding="{Binding Address}"
