@@ -500,6 +500,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
         }
+        else if (eConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        {
+            ret = await _updateView?.Invoke(EViewAction.AddGroupServerWindow, item);
+        }
         else
         {
             ret = await _updateView?.Invoke(EViewAction.AddServerWindow, item);

@@ -1509,4 +1509,40 @@
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
   </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>Please Add At Least One Configuration</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>Policy Group</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>Proxy Chain</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>Lowest Latency</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>Round Robin</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>Most Stable</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>Policy Group Type</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>Add Policy Group Configuration</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>Add Proxy Chain Configuration</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>Add Child Configuration</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>Remove Child Configuration</value>
+  </data>
 </root>

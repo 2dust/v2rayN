@@ -148,6 +148,11 @@ public partial class ProfilesView
                     return false;
                 return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
 
+            case EViewAction.AddGroupServerWindow:
+                if (obj is null)
+                    return false;
+                return (new AddGroupServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+
             case EViewAction.ShareServer:
                 if (obj is null)
                     return false;

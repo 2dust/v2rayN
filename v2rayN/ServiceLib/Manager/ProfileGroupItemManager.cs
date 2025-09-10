@@ -19,10 +19,21 @@ public class ProfileGroupItemManager
         await InitData();
     }
 
-    public Task<ConcurrentBag<ProfileGroupItem>> GetProfileGroupItemList()
+    // Read-only getters: do not create or mark dirty
+    public bool TryGet(string indexId, out ProfileGroupItem? item)
     {
-        var bag = new ConcurrentBag<ProfileGroupItem>(_items.Values);
-        return Task.FromResult(bag);
+        item = null;
+        if (string.IsNullOrWhiteSpace(indexId))
+        {
+            return false;
+        }
+
+        return _items.TryGetValue(indexId, out item);
+    }
+
+    public ProfileGroupItem? GetOrDefault(string indexId)
+    {
+        return string.IsNullOrWhiteSpace(indexId) ? null : (_items.TryGetValue(indexId, out var v) ? v : null);
     }
 
     private async Task InitData()
@@ -50,7 +61,7 @@ public class ProfileGroupItemManager
     {
         if (string.IsNullOrEmpty(indexId))
         {
-            throw new ArgumentNullException(nameof(indexId));
+            indexId = Utils.GetGuid(false);
         }
 
         return _items.GetOrAdd(indexId, AddProfileGroupItem);

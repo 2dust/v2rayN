@@ -23,6 +23,7 @@ public enum EViewAction
     RoutingRuleDetailsWindow,
     AddServerWindow,
     AddServer2Window,
+    AddGroupServerWindow,
     DNSSettingWindow,
     RoutingSettingWindow,
     OptionSettingWindow,
