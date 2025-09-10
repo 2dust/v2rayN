@@ -2302,15 +2302,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Apply to Proxy Domains Only 的本地化字符串。
-        /// </summary>
-        public static string TbApplyProxyDomainsOnly {
-            get {
-                return ResourceManager.GetString("TbApplyProxyDomainsOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Auto refresh 的本地化字符串。
         /// </summary>
         public static string TbAutoRefresh {
@@ -2523,6 +2514,15 @@ namespace ServiceLib.Resx {
         public static string TbFakeIP {
             get {
                 return ResourceManager.GetString("TbFakeIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Applies globally by default, with built-in FakeIP filtering (sing-box only). 的本地化字符串。
+        /// </summary>
+        public static string TbFakeIPTips {
+            get {
+                return ResourceManager.GetString("TbFakeIPTips", resourceCulture);
             }
         }
         

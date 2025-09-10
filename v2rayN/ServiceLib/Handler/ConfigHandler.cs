@@ -113,6 +113,10 @@ public static class ConfigHandler
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
+        if (config.SimpleDNSItem.GlobalFakeIp is null)
+        {
+            config.SimpleDNSItem.GlobalFakeIp = true;
+        }
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -2221,6 +2225,7 @@ public static class ConfigHandler
             UseSystemHosts = false,
             AddCommonHosts = true,
             FakeIP = false,
+            GlobalFakeIp = true,
             BlockBindingQuery = true,
             DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
             RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
