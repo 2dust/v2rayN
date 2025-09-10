@@ -334,9 +334,6 @@ public class CheckUpdateViewModel : MyReactiveObject
         {
             return;
         }
-
-        var itemCopy = JsonUtils.DeepCopy(found);
-        itemCopy.Remarks = model.Remarks;
-        CheckUpdateModels.Replace(found, itemCopy);
+        found.Remarks = model.Remarks; 
     }
 }

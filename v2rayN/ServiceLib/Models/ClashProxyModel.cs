@@ -1,7 +1,10 @@
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ClashProxyModel
+public class ClashProxyModel : ReactiveObject
 {
     public string? Name { get; set; }
 
@@ -9,9 +12,9 @@ public class ClashProxyModel
 
     public string? Now { get; set; }
 
-    public int Delay { get; set; }
+    [Reactive] public int Delay { get; set; }
 
-    public string? DelayName { get; set; }
+    [Reactive] public string? DelayName { get; set; }
 
     public bool IsActive { get; set; }
 }

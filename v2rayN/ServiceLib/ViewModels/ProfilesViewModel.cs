@@ -293,7 +293,6 @@ public class ProfilesViewModel : MyReactiveObject
         {
             item.SpeedVal = result.Speed ?? string.Empty;
         }
-        //_profileItems.Replace(item, JsonUtils.DeepCopy(item));
     }
 
     public async Task UpdateStatistics(ServerSpeedItem update)
@@ -314,17 +313,6 @@ public class ProfilesViewModel : MyReactiveObject
                 item.TodayUp = Utils.HumanFy(update.TodayUp);
                 item.TotalDown = Utils.HumanFy(update.TotalDown);
                 item.TotalUp = Utils.HumanFy(update.TotalUp);
-
-                //if (SelectedProfile?.IndexId == item.IndexId)
-                //{
-                //    var temp = JsonUtils.DeepCopy(item);
-                //    _profileItems.Replace(item, temp);
-                //    SelectedProfile = temp;
-                //}
-                //else
-                //{
-                //    _profileItems.Replace(item, JsonUtils.DeepCopy(item));
-                //}
             }
         }
         catch
