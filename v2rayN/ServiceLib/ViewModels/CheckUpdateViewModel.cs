@@ -1,3 +1,6 @@
+using System;                    // +++
+using System.IO;                 // +++
+using System.Linq;               // +++
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -61,8 +64,46 @@ public class CheckUpdateViewModel : MyReactiveObject
         CheckUpdateModels.Add(GetCheckUpdateModel(_geo));
     }
 
+    // +++ 新增：在打包环境(AppImage/DEB/RPM)下返回 true；其他返回 false
+    private static bool IsPackagedInstall()
+    {
+        try
+        {
+            if (Utils.IsWindows())
+                return false;
+
+            // AppImage: 环境变量 APPIMAGE 存在
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
+                return true;
+
+            // 安装到 /opt/v2rayN 视为打包安装（deb/rpm）
+            var sp = Utils.StartupPath()?.Replace('\\', '/');
+            if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (Directory.Exists("/opt/v2rayN"))
+                return true;
+        }
+        catch
+        {
+            // ignore
+        }
+        return false;
+    }
+
     private CheckUpdateModel GetCheckUpdateModel(string coreType)
     {
+        // +++ 打包环境下禁用 v2rayN 自更新，默认关并标注 Not Support
+        if (coreType == _v2rayN && IsPackagedInstall())
+        {
+            return new()
+            {
+                IsSelected = false,
+                CoreType = coreType,
+                Remarks = ResUI.menuCheckUpdate + " (Not Support)",
+            };
+        }
+
         return new()
         {
             IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
@@ -73,7 +114,13 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task SaveSelectedCoreTypes()
     {
-        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
+        // +++ 打包环境下，不保存 v2rayN 的选择状态
+        var list = CheckUpdateModels
+            .Where(t => t.IsSelected == true && !(IsPackagedInstall() && t.CoreType == _v2rayN))
+            .Select(t => t.CoreType ?? "")
+            .ToList();
+
+        _config.CheckUpdateItem.SelectedCoreTypes = list;
         await ConfigHandler.SaveConfig(_config);
     }
 
@@ -104,6 +151,12 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             else if (item.CoreType == _v2rayN)
             {
+                // +++ 打包环境下，直接跳过 v2rayN 自更新
+                if (IsPackagedInstall())
+                {
+                    await UpdateView(_v2rayN, "Not Support");
+                    continue;
+                }
                 await CheckUpdateN(EnableCheckPreReleaseUpdate);
             }
             else if (item.CoreType == ECoreType.Xray.ToString())
