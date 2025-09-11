@@ -138,7 +138,14 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
+        if (ViewModel?.SelectedSource?.ConfigType == EConfigType.PolicyGroup)
+        {
+            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        }
+        else
+        {
+            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
+        }
         selectWindow.AllowMultiSelect(true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)

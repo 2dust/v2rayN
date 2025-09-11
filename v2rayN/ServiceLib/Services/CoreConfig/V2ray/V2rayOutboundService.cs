@@ -552,7 +552,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig)
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
     {
         try
         {
@@ -577,6 +577,34 @@ public partial class CoreConfigV2rayService
             {
                 index++;
 
+                if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                {
+                    ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+                    if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
+                    var childProfiles = (await Task.WhenAll(
+                            Utils.String2List(profileGroupItem.ChildItems)
+                            .Where(p => !p.IsNullOrEmpty())
+                            .Select(AppManager.Instance.GetProfileItem)
+                        )).Where(p => p != null).ToList();
+                    if (childProfiles.Count <= 0)
+                    {
+                        continue;
+                    }
+                    var childBaseTagName = $"{baseTagName}-{index}";
+                    var ret = node.ConfigType switch
+                    {
+                        EConfigType.PolicyGroup =>
+                            await GenOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                        EConfigType.ProxyChain =>
+                            await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                        _ => throw new NotImplementedException()
+                    };
+                    continue;
+                }
+
                 // Handle proxy chain
                 string? prevTag = null;
                 var currentOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
@@ -590,7 +618,7 @@ public partial class CoreConfigV2rayService
 
                 // current proxy
                 await GenOutbound(node, currentOutbound);
-                currentOutbound.tag = $"{Global.ProxyTag}-{index}";
+                currentOutbound.tag = $"{baseTagName}-{index}";
 
                 if (!node.Subid.IsNullOrEmpty())
                 {
@@ -606,7 +634,7 @@ public partial class CoreConfigV2rayService
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
-                            prevTag = $"prev-{Global.ProxyTag}-{++prevIndex}";
+                            prevTag = $"prev-{baseTagName}-{++prevIndex}";
                             prevOutbound.tag = prevTag;
                             prevOutbounds.Add(prevOutbound);
                         }
@@ -693,7 +721,7 @@ public partial class CoreConfigV2rayService
         return null;
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig)
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig, string baseTagName = Global.ProxyTag)
     {
         var resultOutbounds = new List<Outbounds4Ray>();
         for (var i = 0; i < nodes.Count; i++)
@@ -714,18 +742,18 @@ public partial class CoreConfigV2rayService
 
             if (i == 0)
             {
-                outbound.tag = Global.ProxyTag;
+                outbound.tag = baseTagName;
             }
             else
             {
-                outbound.tag = Global.ProxyTag + i.ToString();
+                outbound.tag = baseTagName + i.ToString();
             }
 
             if (i != nodes.Count - 1)
             {
                 outbound.streamSettings.sockopt = new()
                 {
-                    dialerProxy = Global.ProxyTag + (i + 1).ToString()
+                    dialerProxy = baseTagName + (i + 1).ToString()
                 };
             }
 

@@ -410,7 +410,7 @@ public partial class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad)
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
     {
         try
         {
@@ -438,6 +438,38 @@ public partial class CoreConfigSingboxService
             {
                 index++;
 
+                if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                {
+                    ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+                    if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
+                    var childProfiles = (await Task.WhenAll(
+                            Utils.String2List(profileGroupItem.ChildItems)
+                            .Where(p => !p.IsNullOrEmpty())
+                            .Select(AppManager.Instance.GetProfileItem)
+                        )).Where(p => p != null).ToList();
+                    if (childProfiles.Count <= 0)
+                    {
+                        continue;
+                    }
+                    var childBaseTagName = $"{baseTagName}-{index}";
+                    var ret = node.ConfigType switch
+                    {
+                        EConfigType.PolicyGroup =>
+                            await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
+                        EConfigType.ProxyChain =>
+                            await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
+                        _ => throw new NotImplementedException()
+                    };
+                    if (ret == 0)
+                    {
+                        proxyTags.Add(childBaseTagName);
+                    }
+                    continue;
+                }
+
                 // Handle proxy chain
                 string? prevTag = null;
                 var currentServer = await GenServer(node);
@@ -450,7 +482,7 @@ public partial class CoreConfigSingboxService
                 var subItem = await AppManager.Instance.GetSubItem(node.Subid);
 
                 // current proxy
-                currentServer.tag = $"{Global.ProxyTag}-{index}";
+                currentServer.tag = $"{baseTagName}-{index}";
                 proxyTags.Add(currentServer.tag);
 
                 if (!node.Subid.IsNullOrEmpty())
@@ -467,7 +499,7 @@ public partial class CoreConfigSingboxService
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
-                            prevTag = $"prev-{Global.ProxyTag}-{++prevIndex}";
+                            prevTag = $"prev-{baseTagName}-{++prevIndex}";
                             prevOutbound.tag = prevTag;
                             prevOutbounds.Add(prevOutbound);
                         }
@@ -508,7 +540,7 @@ public partial class CoreConfigSingboxService
                 var outUrltest = new Outbound4Sbox
                 {
                     type = "urltest",
-                    tag = $"{Global.ProxyTag}-auto",
+                    tag = $"{baseTagName}-auto",
                     outbounds = proxyTags,
                     interrupt_exist_connections = false,
                 };
@@ -522,7 +554,7 @@ public partial class CoreConfigSingboxService
                 var outSelector = new Outbound4Sbox
                 {
                     type = "selector",
-                    tag = Global.ProxyTag,
+                    tag = baseTagName,
                     outbounds = JsonUtils.DeepCopy(proxyTags),
                     interrupt_exist_connections = false,
                 };
@@ -580,7 +612,7 @@ public partial class CoreConfigSingboxService
         return null;
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig)
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
     {
         var resultOutbounds = new List<Outbound4Sbox>();
         var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
@@ -596,16 +628,16 @@ public partial class CoreConfigSingboxService
 
             if (i == 0)
             {
-                server.tag = Global.ProxyTag;
+                server.tag = baseTagName;
             }
             else
             {
-                server.tag = Global.ProxyTag + i.ToString();
+                server.tag = baseTagName + i.ToString();
             }
 
             if (i != nodes.Count - 1)
             {
-                server.detour = Global.ProxyTag + (i + 1).ToString();
+                server.detour = baseTagName + (i + 1).ToString();
             }
 
             if (server is Endpoints4Sbox endpoint)

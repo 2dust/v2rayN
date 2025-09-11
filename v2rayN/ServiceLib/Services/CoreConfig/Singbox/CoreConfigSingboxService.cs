@@ -408,6 +408,11 @@ public partial class CoreConfigSingboxService(Config config)
             var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
             {
+                if (it.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                {
+                    var itemGroup = await AppManager.Instance.GetProfileItem(it.IndexId);
+                    proxyProfiles.Add(itemGroup);
+                }
                 if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
