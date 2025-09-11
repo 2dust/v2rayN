@@ -15,6 +15,26 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
+            if (node?.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            {
+                ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+                if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                {
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
+                }
+                if (node.ConfigType is EConfigType.PolicyGroup)
+                {
+                    var childProfiles = (await Task.WhenAll(
+                            Utils.String2List(profileGroupItem.ChildItems)
+                            .Where(p => !p.IsNullOrEmpty())
+                            .Select(AppManager.Instance.GetProfileItem)
+                        )).Where(p => p != null).ToList();
+                    return await GenerateClientMultipleLoadConfig(childProfiles, profileGroupItem.MultipleLoad);
+                }
+                // TODO proxy chain
+            }
+
             if (node == null
                 || node.Port <= 0)
             {
