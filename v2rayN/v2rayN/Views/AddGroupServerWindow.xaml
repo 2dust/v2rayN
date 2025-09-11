@@ -73,7 +73,6 @@
                     Style="{StaticResource ModuleTitle}"
                     Text="{x:Static resx:ResUI.menuServers}" />
 
-
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"

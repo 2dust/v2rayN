@@ -1,3 +1,4 @@
+using System.Data;
 using System.Reactive;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -38,26 +39,30 @@ public class AddGroupServerViewModel : MyReactiveObject
         _config = AppManager.Instance.Config;
         _updateView = updateView;
 
+        var canEditRemove = this.WhenAnyValue(
+            x => x.SelectedChild,
+            SelectedChild => SelectedChild != null && !SelectedChild.Remarks.IsNullOrEmpty());
+
         RemoveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ChildRemoveAsync();
-        });
+        }, canEditRemove);
         MoveTopCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await MoveServer(EMove.Top);
-        });
+        }, canEditRemove);
         MoveUpCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await MoveServer(EMove.Up);
-        });
+        }, canEditRemove);
         MoveDownCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await MoveServer(EMove.Down);
-        });
+        }, canEditRemove);
         MoveBottomCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await MoveServer(EMove.Bottom);
-        });
+        }, canEditRemove);
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveServerAsync();
@@ -105,7 +110,13 @@ public class AddGroupServerViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
-        ChildItemsObs.Remove(SelectedChild);
+        foreach (var it in SelectedChildren ?? [SelectedChild])
+        {
+            if (it != null)
+            {
+                ChildItemsObs.Remove(it);
+            }
+        }
         await Task.CompletedTask;
     }
 
@@ -121,6 +132,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         {
             return;
         }
+        var selectedChild = JsonUtils.DeepCopy(SelectedChild);
         switch (eMove)
         {
             case EMove.Top:
@@ -129,7 +141,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                     return;
                 }
                 ChildItemsObs.RemoveAt(index);
-                ChildItemsObs.Insert(0, SelectedChild);
+                ChildItemsObs.Insert(0, selectedChild);
                 break;
             case EMove.Up:
                 if (index == 0)
@@ -137,7 +149,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                     return;
                 }
                 ChildItemsObs.RemoveAt(index);
-                ChildItemsObs.Insert(index - 1, SelectedChild);
+                ChildItemsObs.Insert(index - 1, selectedChild);
                 break;
             case EMove.Down:
                 if (index == ChildItemsObs.Count - 1)
@@ -145,7 +157,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                     return;
                 }
                 ChildItemsObs.RemoveAt(index);
-                ChildItemsObs.Insert(index + 1, SelectedChild);
+                ChildItemsObs.Insert(index + 1, selectedChild);
                 break;
             case EMove.Bottom:
                 if (index == ChildItemsObs.Count - 1)
@@ -153,7 +165,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                     return;
                 }
                 ChildItemsObs.RemoveAt(index);
-                ChildItemsObs.Add(SelectedChild);
+                ChildItemsObs.Add(selectedChild);
                 break;
             default:
                 break;
@@ -183,7 +195,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         var childIndexIds = new List<string>();
         foreach (var item in ChildItemsObs)
         {
-            if (item.IndexId.IsNotEmpty())
+            if (!item.IndexId.IsNullOrEmpty())
             {
                 childIndexIds.Add(item.IndexId);
             }

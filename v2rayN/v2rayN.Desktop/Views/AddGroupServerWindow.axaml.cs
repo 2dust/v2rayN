@@ -21,6 +21,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
         this.Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => this.Close();
+        lstChild.SelectionChanged += LstChild_SelectionChanged;
 
         ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
 
@@ -145,4 +146,13 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
+
+    private void LstChild_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
+        }
+    }
+
 }
