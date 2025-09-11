@@ -50,6 +50,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
         {
             CheckUpdateModels.Add(GetCheckUpdateModel(_v2rayN));
+            //Not Windows and under Win10
             if (!(Utils.IsWindows() && Environment.OSVersion.Version.Major < 10))
             {
                 CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
