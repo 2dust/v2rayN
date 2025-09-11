@@ -98,7 +98,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
     private async void BtnSelectProfile_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {

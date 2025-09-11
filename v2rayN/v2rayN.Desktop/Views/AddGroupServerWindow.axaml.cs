@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using DynamicData;
 using ReactiveUI;
 using v2rayN.Desktop.Base;
 
@@ -135,15 +136,13 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
+        selectWindow.AllowMultiSelect(true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {
-            var profile = await selectWindow.ProfileItem;
-            if (profile != null && ViewModel != null)
-            {
-                ViewModel.ChildItemsObs.Add(profile);
-            }
+            var profiles = await selectWindow.ProfileItems;
+            ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
 }

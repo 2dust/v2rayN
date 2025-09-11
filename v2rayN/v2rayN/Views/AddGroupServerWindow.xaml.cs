@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Input;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using DynamicData;
 
 namespace v2rayN.Views;
 
@@ -111,16 +112,12 @@ public partial class AddGroupServerWindow
     private async void MenuAddChild_Click(object sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
+        selectWindow.AllowMultiSelect(true);
         if (selectWindow.ShowDialog() == true)
         {
-            var profile = await selectWindow.ProfileItem;
-            if (profile != null)
-            {
-                if (ViewModel != null)
-                {
-                    ViewModel.ChildItemsObs.Add(profile);
-                }
-            }
+            var profiles = await selectWindow.ProfileItems;
+            ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
 }
