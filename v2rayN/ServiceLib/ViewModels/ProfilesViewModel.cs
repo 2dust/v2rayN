@@ -627,7 +627,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var ret = await ConfigHandler.AddCustomServer4Multiple(_config, lstSelected, coreType, multipleLoad);
+        var ret = await ConfigHandler.AddGroupServer4Multiple(_config, lstSelected, coreType, multipleLoad, SelectedSub?.Id);
         if (ret.Success != true)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);

@@ -1179,7 +1179,7 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Create a custom server that combines multiple servers for load balancing
+    /// Create a group server that combines multiple servers for load balancing
     /// Generates a configuration file that references multiple servers
     /// </summary>
     /// <param name="config">Current configuration</param>
@@ -1187,27 +1187,17 @@ public static class ConfigHandler
     /// <param name="coreType">Core type to use (Xray or sing_box)</param>
     /// <param name="multipleLoad">Load balancing algorithm</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
+    public static async Task<RetResult> AddGroupServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
     {
-        var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
-        var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
+        var result = new RetResult();
 
-        var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, multipleLoad);
-        if (result.Success != true)
-        {
-            return result;
-        }
+        var indexId = Utils.GetGuid(false);
+        var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        if (!File.Exists(configPath))
-        {
-            return result;
-        }
-
-        var profileItem = await AppManager.Instance.GetProfileItem(indexId) ?? new();
-        profileItem.IndexId = indexId;
+        var remark = string.Empty;
         if (coreType == ECoreType.Xray)
         {
-            profileItem.Remarks = multipleLoad switch
+            remark = multipleLoad switch
             {
                 EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
                 EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
@@ -1218,14 +1208,28 @@ public static class ConfigHandler
         }
         else if (coreType == ECoreType.sing_box)
         {
-            profileItem.Remarks = ResUI.menuGenGroupMultipleServerSingBoxLeastPing;
+            remark = ResUI.menuGenGroupMultipleServerSingBoxLeastPing;
         }
-        profileItem.Address = Global.CoreMultipleLoadConfigFileName;
-        profileItem.ConfigType = EConfigType.Custom;
-        profileItem.CoreType = coreType;
-
-        await AddServerCommon(config, profileItem, true);
-
+        var profile = new ProfileItem
+        {
+            IndexId = indexId,
+            CoreType = coreType,
+            ConfigType = EConfigType.PolicyGroup,
+            Remarks = remark,
+            Address = childProfileIndexId,
+        };
+        if (!subId.IsNullOrEmpty())
+        {
+            profile.Subid = subId;
+        }
+        var profileGroup = new ProfileGroupItem
+        {
+            ChildItems = childProfileIndexId,
+            MultipleLoad = multipleLoad,
+            ParentIndexId = indexId,
+        };
+        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        result.Success = ret == 0;
         result.Data = indexId;
         return result;
     }
