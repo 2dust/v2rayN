@@ -167,6 +167,11 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     return false;
                 return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(_window);
 
+            case EViewAction.AddGroupServerWindow:
+                if (obj is null)
+                    return false;
+                return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
+
             case EViewAction.ShareServer:
                 if (obj is null)
                     return false;
