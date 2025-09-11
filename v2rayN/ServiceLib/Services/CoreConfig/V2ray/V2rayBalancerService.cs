@@ -2,7 +2,7 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
+    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
     {
         if (multipleLoad == EMultipleLoad.LeastPing)
         {
@@ -30,6 +30,11 @@ public partial class CoreConfigV2rayService
             };
             v2rayConfig.burstObservatory = burstObservatory;
         }
+        return await Task.FromResult(0);
+    }
+
+    private async Task<string> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string selector = Global.ProxyTag)
+    {
         var strategyType = multipleLoad switch
         {
             EMultipleLoad.Random => "random",
@@ -38,9 +43,10 @@ public partial class CoreConfigV2rayService
             EMultipleLoad.LeastLoad => "leastLoad",
             _ => "roundRobin",
         };
+        var balancerTag = $"{selector}{Global.BalancerTagSuffix}";
         var balancer = new BalancersItem4Ray
         {
-            selector = [Global.ProxyTag],
+            selector = [selector],
             strategy = new()
             {
                 type = strategyType,
@@ -49,9 +55,10 @@ public partial class CoreConfigV2rayService
                     expected = 1,
                 },
             },
-            tag = $"{Global.ProxyTag}-round",
+            tag = balancerTag,
         };
-        v2rayConfig.routing.balancers = [balancer];
-        return await Task.FromResult(0);
+        v2rayConfig.routing.balancers ??= new();
+        v2rayConfig.routing.balancers.Add(balancer);
+        return await Task.FromResult(balancerTag);
     }
 }

@@ -746,14 +746,15 @@ public partial class CoreConfigV2rayService
             }
             else
             {
-                outbound.tag = baseTagName + i.ToString();
+                // avoid v2ray observe
+                outbound.tag = "chain-" + baseTagName + i.ToString();
             }
 
             if (i != nodes.Count - 1)
             {
                 outbound.streamSettings.sockopt = new()
                 {
-                    dialerProxy = baseTagName + (i + 1).ToString()
+                    dialerProxy = "chain-" + baseTagName + (i + 1).ToString()
                 };
             }
 

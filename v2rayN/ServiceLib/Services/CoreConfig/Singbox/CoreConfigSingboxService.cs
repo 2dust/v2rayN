@@ -398,12 +398,12 @@ public partial class CoreConfigSingboxService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            singboxConfig.outbounds.RemoveAt(0);
 
             await GenLog(singboxConfig);
             await GenInbounds(singboxConfig);
             await GenRouting(singboxConfig);
             await GenExperimental(singboxConfig);
-            singboxConfig.outbounds.RemoveAt(0);
 
             var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)

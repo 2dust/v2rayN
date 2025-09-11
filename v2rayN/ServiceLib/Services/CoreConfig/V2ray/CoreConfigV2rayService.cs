@@ -126,13 +126,13 @@ public partial class CoreConfigV2rayService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            v2rayConfig.outbounds.RemoveAt(0);
 
             await GenLog(v2rayConfig);
             await GenInbounds(v2rayConfig);
             await GenRouting(v2rayConfig);
             await GenDns(null, v2rayConfig);
             await GenStatistic(v2rayConfig);
-            v2rayConfig.outbounds.RemoveAt(0);
 
             var proxyProfiles = new List<ProfileItem>();
             foreach (var it in selecteds)
@@ -183,18 +183,37 @@ public partial class CoreConfigV2rayService(Config config)
             await GenOutboundsList(proxyProfiles, v2rayConfig);
 
             //add balancers
+            await GenObservatory(v2rayConfig, multipleLoad);
             await GenBalancer(v2rayConfig, multipleLoad);
 
-            var balancer = v2rayConfig.routing.balancers.First();
+            var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
 
             //add rule
-            var rules = v2rayConfig.routing.rules.Where(t => t.outboundTag == Global.ProxyTag).ToList();
+            var rules = v2rayConfig.routing.rules;
             if (rules?.Count > 0)
             {
+                var balancerTagSet = v2rayConfig.routing.balancers
+                    .Select(b => b.tag)
+                    .ToHashSet();
+
                 foreach (var rule in rules)
                 {
-                    rule.outboundTag = null;
-                    rule.balancerTag = balancer.tag;
+                    if (rule.outboundTag == null)
+                        continue;
+
+                    if (balancerTagSet.Contains(rule.outboundTag))
+                    {
+                        rule.balancerTag = rule.outboundTag;
+                        rule.outboundTag = null;
+                        continue;
+                    }
+
+                    var outboundWithSuffix = rule.outboundTag + Global.BalancerTagSuffix;
+                    if (balancerTagSet.Contains(outboundWithSuffix))
+                    {
+                        rule.balancerTag = outboundWithSuffix;
+                        rule.outboundTag = null;
+                    }
                 }
             }
             if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
@@ -202,7 +221,7 @@ public partial class CoreConfigV2rayService(Config config)
                 v2rayConfig.routing.rules.Add(new()
                 {
                     ip = ["0.0.0.0/0", "::/0"],
-                    balancerTag = balancer.tag,
+                    balancerTag = defaultBalancerTag,
                     type = "field"
                 });
             }
@@ -211,7 +230,7 @@ public partial class CoreConfigV2rayService(Config config)
                 v2rayConfig.routing.rules.Add(new()
                 {
                     network = "tcp,udp",
-                    balancerTag = balancer.tag,
+                    balancerTag = defaultBalancerTag,
                     type = "field"
                 });
             }
