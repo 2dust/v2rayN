@@ -692,4 +692,49 @@ public partial class CoreConfigV2rayService
         }
         return null;
     }
+
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig)
+    {
+        var resultOutbounds = new List<Outbounds4Ray>();
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                break;
+            }
+            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+            var result = await GenOutbound(node, outbound);
+
+            if (result != 0)
+            {
+                break;
+            }
+
+            if (i == 0)
+            {
+                outbound.tag = Global.ProxyTag;
+            }
+            else
+            {
+                outbound.tag = Global.ProxyTag + i.ToString();
+            }
+
+            if (i != nodes.Count - 1)
+            {
+                outbound.streamSettings.sockopt = new()
+                {
+                    dialerProxy = Global.ProxyTag + (i + 1).ToString()
+                };
+            }
+
+            resultOutbounds.Add(outbound);
+        }
+        v2RayConfig.outbounds ??= new();
+        resultOutbounds.AddRange(v2RayConfig.outbounds);
+        v2RayConfig.outbounds = resultOutbounds;
+
+        return await Task.FromResult(0);
+    }
 }

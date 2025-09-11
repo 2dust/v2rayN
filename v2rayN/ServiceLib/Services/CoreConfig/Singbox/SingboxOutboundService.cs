@@ -574,4 +574,52 @@ public partial class CoreConfigSingboxService
         }
         return null;
     }
+
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig)
+    {
+        var resultOutbounds = new List<Outbound4Sbox>();
+        var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            var server = await GenServer(node);
+
+            if (server is null)
+            {
+                break;
+            }
+
+            if (i == 0)
+            {
+                server.tag = Global.ProxyTag;
+            }
+            else
+            {
+                server.tag = Global.ProxyTag + i.ToString();
+            }
+
+            if (i != nodes.Count - 1)
+            {
+                server.detour = Global.ProxyTag + (i + 1).ToString();
+            }
+
+            if (server is Endpoints4Sbox endpoint)
+            {
+                resultEndpoints.Add(endpoint);
+            }
+            else if (server is Outbound4Sbox outbound)
+            {
+                resultOutbounds.Add(outbound);
+            }
+        }
+        singboxConfig.outbounds ??= new();
+        resultOutbounds.AddRange(singboxConfig.outbounds);
+        singboxConfig.outbounds = resultOutbounds;
+
+        singboxConfig.endpoints ??= new();
+        resultEndpoints.AddRange(singboxConfig.endpoints);
+        singboxConfig.endpoints = resultEndpoints;
+
+        return await Task.FromResult(0);
+    }
 }

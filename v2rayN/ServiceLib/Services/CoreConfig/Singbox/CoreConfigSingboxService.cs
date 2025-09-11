@@ -23,16 +23,23 @@ public partial class CoreConfigSingboxService(Config config)
                     ret.Msg = ResUI.CheckServerSettings;
                     return ret;
                 }
-                if (node.ConfigType is EConfigType.PolicyGroup)
+                var childProfiles = (await Task.WhenAll(
+                        Utils.String2List(profileGroupItem.ChildItems)
+                        .Where(p => !p.IsNullOrEmpty())
+                        .Select(AppManager.Instance.GetProfileItem)
+                    )).Where(p => p != null).ToList();
+                if (childProfiles.Count <= 0)
                 {
-                    var childProfiles = (await Task.WhenAll(
-                            Utils.String2List(profileGroupItem.ChildItems)
-                            .Where(p => !p.IsNullOrEmpty())
-                            .Select(AppManager.Instance.GetProfileItem)
-                        )).Where(p => p != null).ToList();
-                    return await GenerateClientMultipleLoadConfig(childProfiles);
+                    ret.Msg = ResUI.CheckServerSettings;
+                    return ret;
                 }
-                // TODO proxy chain
+                switch (node.ConfigType)
+                {
+                    case EConfigType.PolicyGroup:
+                        return await GenerateClientMultipleLoadConfig(childProfiles);
+                    case EConfigType.ProxyChain:
+                        return await GenerateClientChainConfig(childProfiles);
+                }
             }
 
             if (node == null
@@ -440,6 +447,99 @@ public partial class CoreConfigSingboxService(Config config)
                 return ret;
             }
             await GenOutboundsList(proxyProfiles, singboxConfig);
+
+            await GenDns(null, singboxConfig);
+            await ConvertGeo2Ruleset(singboxConfig);
+
+            ret.Success = true;
+
+            ret.Data = await ApplyFullConfigTemplate(singboxConfig);
+            return ret;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            ret.Msg = ResUI.FailedGenDefaultConfiguration;
+            return ret;
+        }
+    }
+
+    public async Task<RetResult> GenerateClientChainConfig(List<ProfileItem> selecteds)
+    {
+        var ret = new RetResult();
+        try
+        {
+            if (_config == null)
+            {
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
+            }
+
+            ret.Msg = ResUI.InitialConfiguration;
+
+            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
+            {
+                ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                return ret;
+            }
+
+            var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
+            if (singboxConfig == null)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+
+            await GenLog(singboxConfig);
+            await GenInbounds(singboxConfig);
+            await GenRouting(singboxConfig);
+            await GenExperimental(singboxConfig);
+            singboxConfig.outbounds.RemoveAt(0);
+
+            var proxyProfiles = new List<ProfileItem>();
+            foreach (var it in selecteds)
+            {
+                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
+                {
+                    continue;
+                }
+                if (it.Port <= 0)
+                {
+                    continue;
+                }
+                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
+                if (item is null)
+                {
+                    continue;
+                }
+                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
+                {
+                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
+                    {
+                        continue;
+                    }
+                }
+                if (item.ConfigType == EConfigType.Shadowsocks
+                  && !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                {
+                    continue;
+                }
+                if (item.ConfigType == EConfigType.VLESS && !Global.Flows.Contains(item.Flow))
+                {
+                    continue;
+                }
+
+                //outbound
+                proxyProfiles.Add(item);
+            }
+            if (proxyProfiles.Count <= 0)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+            await GenChainOutboundsList(proxyProfiles, singboxConfig);
 
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
