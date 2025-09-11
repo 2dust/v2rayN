@@ -56,7 +56,9 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayRoundRobinCmd { get; }
     public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastPingCmd { get; }
     public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastLoadCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayFallbackCmd { get; }
     public ReactiveCommand<Unit, Unit> GenGroupMultipleServerSingBoxLeastPingCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerSingBoxFallbackCmd { get; }
 
     //servers move
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -154,9 +156,17 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.LeastLoad);
         }, canEditRemove);
+        GenGroupMultipleServerXrayFallbackCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.Fallback);
+        }, canEditRemove);
         GenGroupMultipleServerSingBoxLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await GenGroupMultipleServer(ECoreType.sing_box, EMultipleLoad.LeastPing);
+        }, canEditRemove);
+        GenGroupMultipleServerSingBoxFallbackCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await GenGroupMultipleServer(ECoreType.sing_box, EMultipleLoad.Fallback);
         }, canEditRemove);
 
         //servers move

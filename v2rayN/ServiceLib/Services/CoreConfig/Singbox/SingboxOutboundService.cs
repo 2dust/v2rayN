@@ -410,7 +410,7 @@ public partial class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig)
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad)
     {
         try
         {
@@ -512,6 +512,11 @@ public partial class CoreConfigSingboxService
                     outbounds = proxyTags,
                     interrupt_exist_connections = false,
                 };
+
+                if (multipleLoad == EMultipleLoad.Fallback)
+                {
+                    outUrltest.tolerance = 5000;
+                }
 
                 // Add selector outbound (manual selection)
                 var outSelector = new Outbound4Sbox

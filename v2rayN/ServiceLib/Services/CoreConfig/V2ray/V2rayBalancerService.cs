@@ -15,7 +15,7 @@ public partial class CoreConfigV2rayService
             };
             v2rayConfig.observatory = observatory;
         }
-        else if (multipleLoad == EMultipleLoad.LeastLoad)
+        else if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
         {
             var burstObservatory = new BurstObservatory4Ray
             {
@@ -41,7 +41,14 @@ public partial class CoreConfigV2rayService
         var balancer = new BalancersItem4Ray
         {
             selector = [Global.ProxyTag],
-            strategy = new() { type = strategyType },
+            strategy = new()
+            {
+                type = strategyType,
+                settings = new()
+                {
+                    expected = 1,
+                },
+            },
             tag = $"{Global.ProxyTag}-round",
         };
         v2rayConfig.routing.balancers = [balancer];

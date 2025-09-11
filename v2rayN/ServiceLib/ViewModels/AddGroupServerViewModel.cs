@@ -76,6 +76,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         PolicyGroupType = (profileGroup?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
         {
             EMultipleLoad.LeastPing => ResUI.TbLeastPing,
+            EMultipleLoad.Fallback => ResUI.TbFallback,
             EMultipleLoad.Random => ResUI.TbRandom,
             EMultipleLoad.RoundRobin => ResUI.TbRoundRobin,
             EMultipleLoad.LeastLoad => ResUI.TbLeastLoad,
@@ -206,6 +207,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         profileGroup.MultipleLoad = PolicyGroupType switch
         {
             var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
+            var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
             var s when s == ResUI.TbRandom => EMultipleLoad.Random,
             var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
             var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,

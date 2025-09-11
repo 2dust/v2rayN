@@ -36,7 +36,7 @@ public partial class CoreConfigSingboxService(Config config)
                 switch (node.ConfigType)
                 {
                     case EConfigType.PolicyGroup:
-                        return await GenerateClientMultipleLoadConfig(childProfiles);
+                        return await GenerateClientMultipleLoadConfig(childProfiles, profileGroupItem.MultipleLoad);
                     case EConfigType.ProxyChain:
                         return await GenerateClientChainConfig(childProfiles);
                 }
@@ -371,7 +371,7 @@ public partial class CoreConfigSingboxService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
+    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
     {
         var ret = new RetResult();
         try
@@ -446,7 +446,7 @@ public partial class CoreConfigSingboxService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsList(proxyProfiles, singboxConfig);
+            await GenOutboundsList(proxyProfiles, singboxConfig, multipleLoad);
 
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);

@@ -147,6 +147,10 @@
                                 x:Name="menuGenGroupMultipleServerSingBoxLeastPing"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerSingBoxFallback"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem

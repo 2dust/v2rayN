@@ -1199,16 +1199,22 @@ public static class ConfigHandler
         {
             remark = multipleLoad switch
             {
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerXrayFallback,
                 EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
                 EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
-                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
                 EMultipleLoad.LeastLoad => ResUI.menuGenGroupMultipleServerXrayLeastLoad,
                 _ => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
             };
         }
         else if (coreType == ECoreType.sing_box)
         {
-            remark = ResUI.menuGenGroupMultipleServerSingBoxLeastPing;
+            remark = multipleLoad switch
+            {
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerSingBoxFallback,
+                _ => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+            };
         }
         var profile = new ProfileItem
         {

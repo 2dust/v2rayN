@@ -106,6 +106,7 @@
                             <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
                             <Separator />
                             <MenuItem x:Name="menuGenGroupMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
+                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxFallback" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />

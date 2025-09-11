@@ -1551,4 +1551,13 @@
   <data name="menuServerList" xml:space="preserve">
     <value>Server List</value>
   </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>Fallback</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
+    <value>Multi-Configuration Fallback by sing-box</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
+    <value>Multi-Configuration Fallback by Xray</value>
+  </data>
 </root>

@@ -29,6 +29,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         cmbPolicyGroupType.ItemsSource = new List<string>
         {
             ResUI.TbLeastPing,
+            ResUI.TbFallback,
             ResUI.TbRandom,
             ResUI.TbRoundRobin,
             ResUI.TbLeastLoad,

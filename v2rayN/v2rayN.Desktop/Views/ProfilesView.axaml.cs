@@ -71,6 +71,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayLeastPingCmd, v => v.menuGenGroupMultipleServerXrayLeastPing).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayLeastLoadCmd, v => v.menuGenGroupMultipleServerXrayLeastLoad).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerSingBoxLeastPingCmd, v => v.menuGenGroupMultipleServerSingBoxLeastPing).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerSingBoxFallbackCmd, v => v.menuGenGroupMultipleServerSingBoxFallback).DisposeWith(disposables);
 
             //servers move
             //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbMoveToGroup.ItemsSource).DisposeWith(disposables);

@@ -988,11 +988,29 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Multi-Configuration Fallback by sing-box 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerSingBoxFallback {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Multi-Configuration LeastPing by sing-box 的本地化字符串。
         /// </summary>
         public static string menuGenGroupMultipleServerSingBoxLeastPing {
             get {
                 return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration Fallback by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayFallback {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayFallback", resourceCulture);
             }
         }
         
@@ -2595,6 +2613,15 @@ namespace ServiceLib.Resx {
         public static string TbFakeIPTips {
             get {
                 return ResourceManager.GetString("TbFakeIPTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fallback 的本地化字符串。
+        /// </summary>
+        public static string TbFallback {
+            get {
+                return ResourceManager.GetString("TbFallback", resourceCulture);
             }
         }
         

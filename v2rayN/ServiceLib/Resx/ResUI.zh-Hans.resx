@@ -1548,4 +1548,13 @@
   <data name="menuServerList" xml:space="preserve">
     <value>服务器列表</value>
   </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>故障转移</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
+    <value>多配置文件故障转移 sing-box</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
+    <value>多配置文件故障转移 Xray</value>
+  </data>
 </root>
