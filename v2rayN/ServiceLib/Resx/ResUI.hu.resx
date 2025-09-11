@@ -1377,22 +1377,22 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>A portot lefedi, vesszővel (,) elválasztva</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Több konfiguráció egyéni konfigurációra</value>
+  <data name="menuGenGroupMultipleServer" xml:space="preserve">
+    <value>Generate Policy Group from Multiple Profiles</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
     <value>Több konfiguráció véletlenszerűen Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
     <value>Több konfiguráció RoundRobin Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
     <value>Több konfiguráció legkisebb pinggel Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
     <value>Több konfiguráció legkisebb terheléssel Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>Több konfiguráció legkisebb pinggel sing-box szerint</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">

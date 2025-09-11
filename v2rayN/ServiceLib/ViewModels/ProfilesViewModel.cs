@@ -52,11 +52,11 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
     public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
     public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayRandomCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayRoundRobinCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastPingCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerXrayLeastLoadCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultMultipleServerSingBoxLeastPingCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayRandomCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayRoundRobinCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastPingCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastLoadCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerSingBoxLeastPingCmd { get; }
 
     //servers move
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -138,25 +138,25 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await ShareServerAsync();
         }, canEditRemove);
-        SetDefaultMultipleServerXrayRandomCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupMultipleServerXrayRandomCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.Random);
+            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.Random);
         }, canEditRemove);
-        SetDefaultMultipleServerXrayRoundRobinCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupMultipleServerXrayRoundRobinCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.RoundRobin);
+            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.RoundRobin);
         }, canEditRemove);
-        SetDefaultMultipleServerXrayLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupMultipleServerXrayLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.LeastPing);
+            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.LeastPing);
         }, canEditRemove);
-        SetDefaultMultipleServerXrayLeastLoadCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupMultipleServerXrayLeastLoadCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SetDefaultMultipleServer(ECoreType.Xray, EMultipleLoad.LeastLoad);
+            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.LeastLoad);
         }, canEditRemove);
-        SetDefaultMultipleServerSingBoxLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupMultipleServerSingBoxLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SetDefaultMultipleServer(ECoreType.sing_box, EMultipleLoad.LeastPing);
+            await GenGroupMultipleServer(ECoreType.sing_box, EMultipleLoad.LeastPing);
         }, canEditRemove);
 
         //servers move
@@ -619,7 +619,7 @@ public class ProfilesViewModel : MyReactiveObject
         await _updateView?.Invoke(EViewAction.ShareServer, url);
     }
 
-    private async Task SetDefaultMultipleServer(ECoreType coreType, EMultipleLoad multipleLoad)
+    private async Task GenGroupMultipleServer(ECoreType coreType, EMultipleLoad multipleLoad)
     {
         var lstSelected = await GetProfileItems(true);
         if (lstSelected == null)

@@ -1377,22 +1377,22 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Will cover the port, separate with commas (,)</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Multi-Configuration to custom configuration</value>
+  <data name="menuGenGroupMultipleServer" xml:space="preserve">
+    <value>Generate Policy Group from Multiple Profiles</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
     <value>Multi-Configuration Random by Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
     <value>Multi-Configuration RoundRobin by Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
     <value>Multi-Configuration LeastPing by Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
     <value>Multi-Configuration LeastLoad by Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>Multi-Configuration LeastPing by sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">

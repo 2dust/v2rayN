@@ -1209,16 +1209,16 @@ public static class ConfigHandler
         {
             profileItem.Remarks = multipleLoad switch
             {
-                EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
-                EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
-                EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
-                EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
-                _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+                EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
+                EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
+                EMultipleLoad.LeastLoad => ResUI.menuGenGroupMultipleServerXrayLeastLoad,
+                _ => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
             };
         }
         else if (coreType == ECoreType.sing_box)
         {
-            profileItem.Remarks = ResUI.menuSetDefaultMultipleServerSingBoxLeastPing;
+            profileItem.Remarks = ResUI.menuGenGroupMultipleServerSingBoxLeastPing;
         }
         profileItem.Address = Global.CoreMultipleLoadConfigFileName;
         profileItem.ConfigType = EConfigType.Custom;

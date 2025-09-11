@@ -979,6 +979,60 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Generate Policy Group from Multiple Profiles 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServer {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastPing by sing-box 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerSingBoxLeastPing {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastLoad by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayLeastLoad {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastPing by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayLeastPing {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration Random by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayRandom {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration RoundRobin by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayRoundRobin {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRoundRobin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Global Hotkey Setting 的本地化字符串。
         /// </summary>
         public static string menuGlobalHotkeySetting {
@@ -1515,60 +1569,6 @@ namespace ServiceLib.Resx {
         public static string menuServers {
             get {
                 return ResourceManager.GetString("menuServers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration to custom configuration 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServer {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastPing by sing-box 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerSingBoxLeastPing {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerSingBoxLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastLoad by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayLeastLoad {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastLoad", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastPing by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayLeastPing {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration Random by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayRandom {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRandom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration RoundRobin by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayRoundRobin {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRoundRobin", resourceCulture);
             }
         }
         
