@@ -1545,4 +1545,7 @@
   <data name="menuRemoveChildServer" xml:space="preserve">
     <value>Remove Child Configuration</value>
   </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>Server List</value>
+  </data>
 </root>

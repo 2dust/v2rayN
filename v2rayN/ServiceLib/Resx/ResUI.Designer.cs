@@ -1564,6 +1564,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server List 的本地化字符串。
+        /// </summary>
+        public static string menuServerList {
+            get {
+                return ResourceManager.GetString("menuServerList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Configurations 的本地化字符串。
         /// </summary>
         public static string menuServers {

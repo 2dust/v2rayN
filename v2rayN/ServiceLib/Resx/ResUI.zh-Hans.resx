@@ -1545,4 +1545,7 @@
   <data name="menuRemoveChildServer" xml:space="preserve">
     <value>删除子配置文件</value>
   </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>服务器列表</value>
+  </data>
 </root>
