@@ -95,6 +95,7 @@
                     x:Name="lstChild"
                     Grid.Row="1"
                     AutoGenerateColumns="False"
+                    Background="Transparent"
                     BorderThickness="1"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
