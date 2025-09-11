@@ -71,8 +71,6 @@ public class CheckUpdateViewModel : MyReactiveObject
             var sp = Utils.StartupPath()?.Replace('\\', '/');
             if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (System.IO.Directory.Exists("/opt/v2rayN"))
-                return true;
         }
         catch
         {
