@@ -1,8 +1,3 @@
-using System;                    // +++
-using System.IO;                 // +++
-using System.Linq;               // +++
-using System.Threading.Tasks;    // +++
-using System.Collections.Generic;// +++
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -55,7 +50,6 @@ public class CheckUpdateViewModel : MyReactiveObject
         if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
         {
             CheckUpdateModels.Add(GetCheckUpdateModel(_v2rayN));
-            //Not Windows and under Win10
             if (!(Utils.IsWindows() && Environment.OSVersion.Version.Major < 10))
             {
                 CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
@@ -66,29 +60,19 @@ public class CheckUpdateViewModel : MyReactiveObject
         CheckUpdateModels.Add(GetCheckUpdateModel(_geo));
     }
 
-    // ---- packaged env detection: AppImage or runs from /opt/v2rayN ----
     private static bool IsPackagedInstall()
     {
         try
         {
             if (Utils.IsWindows())
                 return false;
-
-            // AppImage: APPIMAGE var exists
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
                 return true;
-
-            // deb/rpm: current startup path is under /opt/v2rayN
-            var sp = Utils.StartupPath();
-            if (!string.IsNullOrEmpty(sp))
-            {
-                sp = sp.Replace('\\', '/');
-                if (sp.Equals("/opt/v2rayN", StringComparison.OrdinalIgnoreCase) ||
-                    sp.StartsWith("/opt/v2rayN/", StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
+            var sp = Utils.StartupPath()?.Replace('\\', '/');
+            if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (System.IO.Directory.Exists("/opt/v2rayN"))
+                return true;
         }
         catch
         {
@@ -98,7 +82,6 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private CheckUpdateModel GetCheckUpdateModel(string coreType)
     {
-        // packaged env: disable v2rayN self-update
         if (coreType == _v2rayN && IsPackagedInstall())
         {
             return new()
@@ -119,13 +102,9 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task SaveSelectedCoreTypes()
     {
-        // packaged env: do not persist v2rayN toggle
-        var list = CheckUpdateModels
+        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels
             .Where(t => t.IsSelected == true && !(IsPackagedInstall() && t.CoreType == _v2rayN))
-            .Select(t => t.CoreType ?? "")
-            .ToList();
-
-        _config.CheckUpdateItem.SelectedCoreTypes = list;
+            .Select(t => t.CoreType ?? "").ToList();
         await ConfigHandler.SaveConfig(_config);
     }
 
@@ -197,4 +176,200 @@ public class CheckUpdateViewModel : MyReactiveObject
             await UpdateView(_geo, msg);
             if (success)
             {
-                Updated
+                UpdatedPlusPlus(_geo, "");
+            }
+        }
+        await (new UpdateService()).UpdateGeoFileAll(_config, _updateUI)
+            .ContinueWith(t =>
+            {
+                UpdatedPlusPlus(_geo, "");
+            });
+    }
+
+    private async Task CheckUpdateN(bool preRelease)
+    {
+        async Task _updateUI(bool success, string msg)
+        {
+            await UpdateView(_v2rayN, msg);
+            if (success)
+            {
+                await UpdateView(_v2rayN, ResUI.OperationSuccess);
+                UpdatedPlusPlus(_v2rayN, msg);
+            }
+        }
+        await (new UpdateService()).CheckUpdateGuiN(_config, _updateUI, preRelease)
+            .ContinueWith(t =>
+            {
+                UpdatedPlusPlus(_v2rayN, "");
+            });
+    }
+
+    private async Task CheckUpdateCore(CheckUpdateModel model, bool preRelease)
+    {
+        async Task _updateUI(bool success, string msg)
+        {
+            await UpdateView(model.CoreType, msg);
+            if (success)
+            {
+                await UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
+
+                UpdatedPlusPlus(model.CoreType, msg);
+            }
+        }
+        var type = (ECoreType)Enum.Parse(typeof(ECoreType), model.CoreType);
+        await (new UpdateService()).CheckUpdateCore(type, _config, _updateUI, preRelease)
+            .ContinueWith(t =>
+            {
+                UpdatedPlusPlus(model.CoreType, "");
+            });
+    }
+
+    private async Task UpdateFinished()
+    {
+        if (_lstUpdated.Count > 0 && _lstUpdated.Count(x => x.IsFinished == true) == _lstUpdated.Count)
+        {
+            await UpdateFinishedSub(false);
+            await Task.Delay(2000);
+            await UpgradeCore();
+
+            if (_lstUpdated.Any(x => x.CoreType == _v2rayN && x.IsFinished == true))
+            {
+                await Task.Delay(1000);
+                await UpgradeN();
+            }
+            await Task.Delay(1000);
+            await UpdateFinishedSub(true);
+        }
+    }
+
+    private async Task UpdateFinishedSub(bool blReload)
+    {
+        RxApp.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        {
+            _ = UpdateFinishedResult(blReload);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task UpdateFinishedResult(bool blReload)
+    {
+        if (blReload)
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.Reload();
+        }
+        else
+        {
+            Locator.Current.GetService<MainWindowViewModel>()?.CloseCore();
+        }
+    }
+
+    private async Task UpgradeN()
+    {
+        try
+        {
+            var fileName = _lstUpdated.FirstOrDefault(x => x.CoreType == _v2rayN)?.FileName;
+            if (fileName.IsNullOrEmpty())
+            {
+                return;
+            }
+            if (!Utils.UpgradeAppExists(out var upgradeFileName))
+            {
+                await UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                NoticeManager.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
+                Logging.SaveLog("UpgradeApp does not exist");
+                return;
+            }
+
+            var id = ProcUtils.ProcessStart(upgradeFileName, fileName, Utils.StartupPath());
+            if (id > 0)
+            {
+                await AppManager.Instance.AppExitAsync(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            await UpdateView(_v2rayN, ex.Message);
+        }
+    }
+
+    private async Task UpgradeCore()
+    {
+        foreach (var item in _lstUpdated)
+        {
+            if (item.FileName.IsNullOrEmpty())
+            {
+                continue;
+            }
+
+            var fileName = item.FileName;
+            if (!File.Exists(fileName))
+            {
+                continue;
+            }
+            var toPath = Utils.GetBinPath("", item.CoreType);
+
+            if (fileName.Contains(".tar.gz"))
+            {
+                FileManager.DecompressTarFile(fileName, toPath);
+                var dir = new DirectoryInfo(toPath);
+                if (dir.Exists)
+                {
+                    foreach (var subDir in dir.GetDirectories())
+                    {
+                        FileManager.CopyDirectory(subDir.FullName, toPath, false, true);
+                        subDir.Delete(true);
+                    }
+                }
+            }
+            else if (fileName.Contains(".gz"))
+            {
+                FileManager.DecompressFile(fileName, toPath, item.CoreType);
+            }
+            else
+            {
+                FileManager.ZipExtractToFile(fileName, toPath, "geo");
+            }
+
+            if (Utils.IsNonWindows())
+            {
+                var filesList = (new DirectoryInfo(toPath)).GetFiles().Select(u => u.FullName).ToList();
+                foreach (var file in filesList)
+                {
+                    await Utils.SetLinuxChmod(Path.Combine(toPath, item.CoreType.ToLower()));
+                }
+            }
+
+            await UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
+
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+        }
+    }
+
+    private async Task UpdateView(string coreType, string msg)
+    {
+        var item = new CheckUpdateModel()
+        {
+            CoreType = coreType,
+            Remarks = msg,
+        };
+
+        RxApp.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        {
+            _ = UpdateViewResult(model);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task UpdateViewResult(CheckUpdateModel model)
+    {
+        var found = CheckUpdateModels.FirstOrDefault(t => t.CoreType == model.CoreType);
+        if (found == null)
+        {
+            return;
+        }
+        found.Remarks = model.Remarks; 
+    }
+}
