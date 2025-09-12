@@ -1557,4 +1557,34 @@
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
     <value>多配置文件故障转移 Xray</value>
   </data>
+  <data name="CoreNotSupportNetwork" xml:space="preserve">
+    <value>核心 '{0}' 不支持网络类型 '{1}'。</value>
+  </data>
+  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>核心 '{0}' 在使用传输方式 '{2}' 时不支持协议 '{1}'。</value>
+  </data>
+  <data name="CoreNotSupportProtocol" xml:space="preserve">
+    <value>核心 '{0}' 不支持协议 '{1}'。</value>
+  </data>
+  <data name="ProxyChainedPrefix" xml:space="preserve">
+    <value>代理链： </value>
+  </data>
+  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
+    <value>路由规则出站： </value>
+  </data>
+  <data name="PolicyGroupPrefix" xml:space="preserve">
+    <value>策略组： </value>
+  </data>
+  <data name="NodeTagNotExist" xml:space="preserve">
+    <value>节点别名 '{0}' 不存在。</value>
+  </data>
+  <data name="GroupEmpty" xml:space="preserve">
+    <value>组“{0}”为空。请至少添加一个节点。</value>
+  </data>
+  <data name="InvalidProperty" xml:space="preserve">
+    <value>{0}属性无效，请检查</value>
+  </data>
+  <data name="GroupSelfReference" xml:space="preserve">
+    <value>{0} 分组不能引用自身</value>
+  </data>
 </root>

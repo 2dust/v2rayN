@@ -1557,4 +1557,34 @@
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
     <value>Multi-Configuration Fallback by Xray</value>
   </data>
+  <data name="CoreNotSupportNetwork" xml:space="preserve">
+    <value>Core '{0}' does not support network type '{1}'.</value>
+  </data>
+  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'.</value>
+  </data>
+  <data name="CoreNotSupportProtocol" xml:space="preserve">
+    <value>Core '{0}' does not support protocol '{1}'.</value>
+  </data>
+  <data name="ProxyChainedPrefix" xml:space="preserve">
+    <value>Proxy chained: </value>
+  </data>
+  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
+    <value>Routing rule outbound: </value>
+  </data>
+  <data name="PolicyGroupPrefix" xml:space="preserve">
+    <value>Policy group: </value>
+  </data>
+  <data name="NodeTagNotExist" xml:space="preserve">
+    <value>Node alias '{0}' does not exist.</value>
+  </data>
+  <data name="GroupEmpty" xml:space="preserve">
+    <value>Group '{0}' is empty. Please add at least one node.</value>
+  </data>
+  <data name="InvalidProperty" xml:space="preserve">
+    <value>The {0} property is invalid, please check.</value>
+  </data>
+  <data name="GroupSelfReference" xml:space="preserve">
+    <value>The group "{0}" cannot reference itself.</value>
+  </data>
 </root>
