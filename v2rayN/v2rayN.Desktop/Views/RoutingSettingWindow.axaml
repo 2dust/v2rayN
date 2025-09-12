@@ -92,6 +92,7 @@
                 <DataGrid
                     x:Name="lstRoutings"
                     AutoGenerateColumns="False"
+                    Background="Transparent"
                     BorderThickness="1"
                     CanUserResizeColumns="True"
                     GridLinesVisibility="All"

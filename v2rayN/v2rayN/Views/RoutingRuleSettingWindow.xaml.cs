@@ -122,6 +122,8 @@ public partial class RoutingRuleSettingWindow
 
     private void RoutingRuleSettingWindow_PreviewKeyDown(object sender, KeyEventArgs e)
     {
+        if (!lstRules.IsKeyboardFocusWithin)
+            return;
         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
         {
             if (e.Key == Key.A)
