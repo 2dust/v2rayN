@@ -390,14 +390,12 @@ public class Utils
     {
         if (IPAddress.TryParse(ip, out var address))
         {
-            // Loopback address check (127.0.0.1 for IPv4, ::1 for IPv6)
             if (IPAddress.IsLoopback(address))
                 return true;
 
             var ipBytes = address.GetAddressBytes();
             if (address.AddressFamily == AddressFamily.InterNetwork)
             {
-                // IPv4 private address check
                 if (ipBytes[0] == 10)
                     return true;
                 if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31)
@@ -407,16 +405,12 @@ public class Utils
             }
             else if (address.AddressFamily == AddressFamily.InterNetworkV6)
             {
-                // IPv6 private address check
-                // Link-local address fe80::/10
                 if (ipBytes[0] == 0xfe && (ipBytes[1] & 0xc0) == 0x80)
                     return true;
 
-                // Unique local address fc00::/7 (typically fd00::/8)
                 if ((ipBytes[0] & 0xfe) == 0xfc)
                     return true;
 
-                // Private portion in IPv4-mapped addresses ::ffff:0:0/96
                 if (address.IsIPv4MappedToIPv6)
                 {
                     var ipv4Bytes = ipBytes.Skip(12).ToArray();
@@ -643,13 +637,11 @@ public class Utils
         try
         {
             var basePath = GetBaseDirectory();
-            //When this file exists, it is equivalent to having no permission to read and write
             if (File.Exists(Path.Combine(basePath, "NotStoreConfigHere.txt")))
             {
                 return false;
             }
 
-            //Check if it is installed by Windows WinGet
             if (IsWindows() && basePath.Contains("Users") && basePath.Contains("WinGet"))
             {
                 return false;
@@ -857,6 +849,29 @@ public class Utils
         return false;
     }
 
+    public static bool IsPackagedInstall()
+    {
+        try
+        {
+            if (IsWindows() || IsOSX())
+                return false;
+
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
+                return true;
+
+            var sp = StartupPath()?.Replace('\\', '/');
+            if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (Directory.Exists("/opt/v2rayN"))
+                return true;
+        }
+        catch
+        {
+        }
+        return false;
+    }
+
     private static async Task<string?> GetLinuxUserId()
     {
         var arg = new List<string>() { "-c", "id -u" };
@@ -908,7 +923,6 @@ public class Utils
 
     public static async Task<string?> GetLinuxFontFamily(string lang)
     {
-        // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
         var arg = new List<string>() { "-c", $"fc-list : family" };
         return await GetCliWrapOutput(Global.LinuxBash, arg);
     }
