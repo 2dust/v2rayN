@@ -369,6 +369,20 @@ public partial class CoreConfigSingboxService
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
 
+        if (node == null
+            || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
+            && node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain)))
+        {
+            return Global.ProxyTag;
+        }
+
+        var tag = Global.ProxyTag + node.IndexId.ToString();
+        if (singboxConfig.outbounds.Any(o => o.tag == tag)
+            || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
+        {
+            return tag;
+        }
+
         if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
         {
             ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
@@ -401,26 +415,13 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
-        if (node == null
-            || !Global.SingboxSupportConfigType.Contains(node.ConfigType))
-        {
-            return Global.ProxyTag;
-        }
-
-        var tag = Global.ProxyTag + node.IndexId.ToString();
-        if (singboxConfig.outbounds.Any(o => o.tag == tag)
-            || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
-        {
-            return tag;
-        }
-
         var server = await GenServer(node);
         if (server is null)
         {
             return Global.ProxyTag;
         }
 
-        server.tag = Global.ProxyTag + node.IndexId.ToString();
+        server.tag = tag;
         if (server is Endpoints4Sbox endpoint)
         {
             singboxConfig.endpoints ??= new();
