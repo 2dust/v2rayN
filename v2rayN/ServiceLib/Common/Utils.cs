@@ -857,6 +857,37 @@ public class Utils
         return false;
     }
 
+    public static bool IsPackagedInstall()
+    {
+        try
+        {
+            if (IsWindows() || IsOSX())
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
+            {
+                return true;
+            }
+
+            var sp = StartupPath()?.Replace('\\', '/');
+            if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (Directory.Exists("/opt/v2rayN"))
+            {
+                return true;
+            }
+        }
+        catch
+        {
+        }
+        return false;
+    }
+
     private static async Task<string?> GetLinuxUserId()
     {
         var arg = new List<string>() { "-c", "id -u" };
