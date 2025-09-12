@@ -63,6 +63,16 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private CheckUpdateModel GetCheckUpdateModel(string coreType)
     {
+        if (coreType == _v2rayN && Utils.IsPackagedInstall())
+        {
+            return new()
+            {
+                IsSelected = false,
+                CoreType = coreType,
+                Remarks = ResUI.menuCheckUpdate + " (Not Support)",
+            };
+        }
+
         return new()
         {
             IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
@@ -104,6 +114,11 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             else if (item.CoreType == _v2rayN)
             {
+                if (Utils.IsPackagedInstall())
+                {
+                    await UpdateView(_v2rayN, "Not Support");
+                    continue;
+                }
                 await CheckUpdateN(EnableCheckPreReleaseUpdate);
             }
             else if (item.CoreType == ECoreType.Xray.ToString())

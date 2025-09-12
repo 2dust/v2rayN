@@ -857,6 +857,55 @@ public class Utils
         return false;
     }
 
+    public static bool IsPackagedInstall()
+    {
+        try
+        {
+            if (IsWindows() || IsOSX())
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
+            {
+                return true;
+            }
+
+            var exePath = GetExePath();
+            var baseDir = string.IsNullOrEmpty(exePath) ? StartupPath() : Path.GetDirectoryName(exePath) ?? "";
+            var p = baseDir.Replace('\\', '/');
+
+            if (string.IsNullOrEmpty(p))
+            {
+                return false;
+            }
+
+            if (p.Contains("/.mount_", StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            if (p.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (p.StartsWith("/usr/lib/v2rayN", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (p.StartsWith("/usr/share/v2rayN", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        catch
+        {
+        }
+        return false;
+    }
+
     private static async Task<string?> GetLinuxUserId()
     {
         var arg = new List<string>() { "-c", "id -u" };
