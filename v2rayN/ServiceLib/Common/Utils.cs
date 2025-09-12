@@ -331,6 +331,32 @@ public class Utils
             .ToList();
     }
 
+    public static Dictionary<string, List<string>> ParseHostsToDictionary(string hostsContent)
+    {
+        var userHostsMap = hostsContent
+            .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => line.Trim())
+            // skip full-line comments
+            .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
+            // strip inline comments (truncate at '#')
+            .Select(line =>
+            {
+                var index = line.IndexOf('#');
+                return index >= 0 ? line.Substring(0, index).Trim() : line;
+            })
+            // ensure line still contains valid parts
+            .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
+            .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+            .Where(parts => parts.Length >= 2)
+            .GroupBy(parts => parts[0])
+            .ToDictionary(
+                group => group.Key,
+                group => group.SelectMany(parts => parts.Skip(1)).ToList()
+            );
+
+        return userHostsMap;
+    }
+
     #endregion 转换函数
 
     #region 数据检查
