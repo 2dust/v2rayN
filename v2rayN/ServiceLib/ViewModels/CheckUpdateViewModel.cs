@@ -61,29 +61,9 @@ public class CheckUpdateViewModel : MyReactiveObject
         CheckUpdateModels.Add(GetCheckUpdateModel(_geo));
     }
 
-    private static bool IsPackagedInstall()
-    {
-        try
-        {
-            if (Utils.IsWindows())
-                return false;
-            if (!string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("APPIMAGE")))
-                return true;
-            var sp = Utils.StartupPath()?.Replace('\\', '/');
-            if (!string.IsNullOrEmpty(sp) && sp.StartsWith("/opt/v2rayN", StringComparison.Ordinal))
-                return true;
-            var procPath = System.Environment.ProcessPath;
-            var procDir = string.IsNullOrEmpty(procPath) ? "" : System.IO.Path.GetDirectoryName(procPath)?.Replace('\\', '/');
-            if (!string.IsNullOrEmpty(procDir) && procDir.StartsWith("/opt/v2rayN", StringComparison.Ordinal))
-                return true;
-        }
-        catch { }
-        return false;
-    }
-
     private CheckUpdateModel GetCheckUpdateModel(string coreType)
     {
-        if (coreType == _v2rayN && IsPackagedInstall())
+        if (coreType == _v2rayN && Utils.IsPackagedInstall())
         {
             return new()
             {
@@ -134,7 +114,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             else if (item.CoreType == _v2rayN)
             {
-                if (IsPackagedInstall())
+                if (Utils.IsPackagedInstall())
                 {
                     await UpdateView(_v2rayN, "Not Support");
                     continue;
