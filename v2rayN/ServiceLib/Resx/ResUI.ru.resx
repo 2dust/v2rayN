@@ -1452,9 +1452,6 @@
   <data name="TbDNSHostsConfig" xml:space="preserve">
     <value>DNS hosts: (каждая строка в формате "domain1 ip1 ip2")</value>
   </data>
-  <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
-    <value>Применять только к доменам через прокси</value>
-  </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>Базовые настройки DNS</value>
   </data>
@@ -1511,5 +1508,8 @@
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
     <value>Select Profile</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
   </data>
 </root>

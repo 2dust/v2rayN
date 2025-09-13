@@ -1449,9 +1449,6 @@
   <data name="TbDNSHostsConfig" xml:space="preserve">
     <value>DNS Hosts：（“域名1 ip1 ip2” 一行一个）</value>
   </data>
-  <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
-    <value>仅对代理域名生效</value>
-  </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>DNS 基础设置</value>
   </data>
@@ -1508,5 +1505,8 @@
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
     <value>选择配置文件</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>默认全局生效，内置 FakeIP 过滤，仅在 sing-box 中生效</value>
   </data>
 </root>

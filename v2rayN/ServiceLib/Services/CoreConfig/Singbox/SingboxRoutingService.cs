@@ -71,6 +71,37 @@ public partial class CoreConfigSingboxService
                 });
             }
 
+            var hostsDomains = new List<string>();
+            var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
+            if (dnsItem == null || dnsItem.Enabled == false)
+            {
+                var simpleDNSItem = _config.SimpleDNSItem;
+                if (!simpleDNSItem.Hosts.IsNullOrEmpty())
+                {
+                    var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
+                    foreach (var kvp in userHostsMap)
+                    {
+                        hostsDomains.Add(kvp.Key);
+                    }
+                }
+                if (simpleDNSItem.UseSystemHosts == true)
+                {
+                    var systemHostsMap = Utils.GetSystemHosts();
+                    foreach (var kvp in systemHostsMap)
+                    {
+                        hostsDomains.Add(kvp.Key);
+                    }
+                }
+            }
+            if (hostsDomains.Count > 0)
+            {
+                singboxConfig.route.rules.Add(new()
+                {
+                    action = "resolve",
+                    domain = hostsDomains,
+                });
+            }
+
             singboxConfig.route.rules.Add(new()
             {
                 outbound = Global.DirectTag,
@@ -341,6 +372,13 @@ public partial class CoreConfigSingboxService
             || !Global.SingboxSupportConfigType.Contains(node.ConfigType))
         {
             return Global.ProxyTag;
+        }
+
+        var tag = Global.ProxyTag + node.IndexId.ToString();
+        if (singboxConfig.outbounds.Any(o => o.tag == tag)
+            || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
+        {
+            return tag;
         }
 
         var server = await GenServer(node);

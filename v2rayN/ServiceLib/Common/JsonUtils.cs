@@ -9,6 +9,31 @@ public class JsonUtils
 {
     private static readonly string _tag = "JsonUtils";
 
+    private static readonly JsonSerializerOptions _defaultDeserializeOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        ReadCommentHandling = JsonCommentHandling.Skip
+    };
+
+    private static readonly JsonSerializerOptions _defaultSerializeOptions = new()
+    {
+        WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
+    private static readonly JsonSerializerOptions _nullValueSerializeOptions = new()
+    {
+        WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
+    private static readonly JsonDocumentOptions _defaultDocumentOptions = new()
+    {
+        CommentHandling = JsonCommentHandling.Skip
+    };
+
     /// <summary>
     /// DeepCopy
     /// </summary>
@@ -34,11 +59,7 @@ public class JsonUtils
             {
                 return default;
             }
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            return JsonSerializer.Deserialize<T>(strJson, options);
+            return JsonSerializer.Deserialize<T>(strJson, _defaultDeserializeOptions);
         }
         catch
         {
@@ -59,7 +80,7 @@ public class JsonUtils
             {
                 return null;
             }
-            return JsonNode.Parse(strJson);
+            return JsonNode.Parse(strJson, nodeOptions: null, _defaultDocumentOptions);
         }
         catch
         {
@@ -84,12 +105,7 @@ public class JsonUtils
             {
                 return result;
             }
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = indented,
-                DefaultIgnoreCondition = nullValue ? JsonIgnoreCondition.Never : JsonIgnoreCondition.WhenWritingNull,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
+            var options = nullValue ? _nullValueSerializeOptions : _defaultSerializeOptions;
             result = JsonSerializer.Serialize(obj, options);
         }
         catch (Exception ex)

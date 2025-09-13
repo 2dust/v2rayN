@@ -6,7 +6,6 @@ using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.VisualTree;
 using ReactiveUI;
-using ServiceLib.Manager;
 
 namespace v2rayN.Desktop.Views;
 

@@ -131,10 +131,16 @@ public partial class CoreConfigV2rayService
             return Global.ProxyTag;
         }
 
+        var tag = Global.ProxyTag + node.IndexId.ToString();
+        if (v2rayConfig.outbounds.Any(p => p.tag == tag))
+        {
+            return tag;
+        }
+
         var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
         var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
         await GenOutbound(node, outbound);
-        outbound.tag = Global.ProxyTag + node.IndexId.ToString();
+        outbound.tag = tag;
         v2rayConfig.outbounds.Add(outbound);
 
         return outbound.tag;

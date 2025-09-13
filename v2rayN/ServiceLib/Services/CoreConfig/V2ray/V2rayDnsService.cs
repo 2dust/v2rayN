@@ -261,17 +261,7 @@ public partial class CoreConfigV2rayService
 
         if (!simpleDNSItem.Hosts.IsNullOrEmpty())
         {
-            var userHostsMap = simpleDNSItem.Hosts
-                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(line => line.Trim())
-                .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
-                .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
-                .Where(parts => parts.Length >= 2)
-                .GroupBy(parts => parts[0])
-                .ToDictionary(
-                    group => group.Key,
-                    group => group.SelectMany(parts => parts.Skip(1)).ToList()
-                );
+            var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
 
             foreach (var kvp in userHostsMap)
             {

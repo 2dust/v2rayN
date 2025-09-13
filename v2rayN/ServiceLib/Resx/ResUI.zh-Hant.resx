@@ -1449,9 +1449,6 @@
   <data name="TbDNSHostsConfig" xml:space="preserve">
     <value>DNS Hosts: ("domain1 ip1 ip2" per line)</value>
   </data>
-  <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
-    <value>Apply to Proxy Domains Only</value>
-  </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>Basic DNS Settings</value>
   </data>
@@ -1508,5 +1505,8 @@
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
     <value>Select Profile</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
   </data>
 </root>

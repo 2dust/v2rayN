@@ -4,7 +4,7 @@ public class ClashFmt : BaseFmt
 {
     public static ProfileItem? ResolveFull(string strData, string? subRemarks)
     {
-        if (Contains(strData, "port", "socks-port", "proxies"))
+        if (Contains(strData, "external-controller", "-port", "proxies"))
         {
             var fileName = WriteAllText(strData, "yaml");
 

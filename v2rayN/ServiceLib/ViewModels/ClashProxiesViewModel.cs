@@ -391,7 +391,6 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public async Task ProxiesDelayTestResult(SpeedTestResult result)
     {
-        //UpdateHandler(false, $"{item.name}={result}");
         var detail = ProxyDetails.FirstOrDefault(it => it.Name == result.IndexId);
         if (detail == null)
         {
@@ -414,7 +413,6 @@ public class ClashProxiesViewModel : MyReactiveObject
             detail.Delay = _delayTimeout;
             detail.DelayName = string.Empty;
         }
-        ProxyDetails.Replace(detail, JsonUtils.DeepCopy(detail));
     }
 
     #endregion proxy function

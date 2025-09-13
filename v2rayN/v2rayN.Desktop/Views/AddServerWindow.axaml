@@ -400,7 +400,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="1000:2000,3000:4000" />
+                        Watermark="1000-2000,3000,4000" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"

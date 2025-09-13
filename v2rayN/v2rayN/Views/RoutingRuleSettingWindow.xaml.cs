@@ -2,7 +2,6 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
 using ReactiveUI;
-using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
@@ -122,6 +121,8 @@ public partial class RoutingRuleSettingWindow
 
     private void RoutingRuleSettingWindow_PreviewKeyDown(object sender, KeyEventArgs e)
     {
+        if (!lstRules.IsKeyboardFocusWithin)
+            return;
         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
         {
             if (e.Key == Key.A)

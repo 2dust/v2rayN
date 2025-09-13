@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ReactiveUI;
-using ServiceLib.Manager;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;

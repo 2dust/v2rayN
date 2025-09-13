@@ -229,7 +229,7 @@
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbApplyProxyDomainsOnly}"
+                            Text="{x:Static resx:ResUI.TbFakeIPTips}"
                             TextWrapping="Wrap" />
 
                         <TextBlock

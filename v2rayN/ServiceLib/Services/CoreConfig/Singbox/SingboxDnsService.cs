@@ -33,6 +33,15 @@ public partial class CoreConfigSingboxService
                                    lastRule.Ip?.Contains("0.0.0.0/0") == true);
             }
             singboxConfig.dns.final = useDirectDns ? Global.SingboxDirectDNSTag : Global.SingboxRemoteDNSTag;
+            if ((!useDirectDns) && simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == false)
+            {
+                singboxConfig.dns.rules.Add(new()
+                {
+                    server = Global.SingboxFakeDNSTag,
+                    query_type = new List<int> { 1, 28 }, // A and AAAA
+                    rewrite_ttl = 1,
+                });
+            }
 
             // Tun2SocksAddress
             if (node != null && Utils.IsDomain(node.Address))
@@ -94,17 +103,7 @@ public partial class CoreConfigSingboxService
 
         if (!simpleDNSItem.Hosts.IsNullOrEmpty())
         {
-            var userHostsMap = simpleDNSItem.Hosts
-                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(line => line.Trim())
-                .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
-                .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
-                .Where(parts => parts.Length >= 2)
-                .GroupBy(parts => parts[0])
-                .ToDictionary(
-                    group => group.Key,
-                    group => group.SelectMany(parts => parts.Skip(1)).ToList()
-                );
+            var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
 
             foreach (var kvp in userHostsMap)
             {
@@ -197,6 +196,28 @@ public partial class CoreConfigSingboxService
             });
         }
 
+        if (simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == true)
+        {
+            var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName));
+            fakeipFilterRule.invert = true;
+            var rule4Fake = new Rule4Sbox
+            {
+                server = Global.SingboxFakeDNSTag,
+                type = "logical",
+                mode = "and",
+                rewrite_ttl = 1,
+                rules = new List<Rule4Sbox>
+                {
+                    new() {
+                        query_type = new List<int> { 1, 28 }, // A and AAAA
+                    },
+                    fakeipFilterRule,
+                }
+            };
+
+            singboxConfig.dns.rules.Add(rule4Fake);
+        }
+
         var routing = await ConfigHandler.GetDefaultRouting(_config);
         if (routing == null)
             return 0;
@@ -276,10 +297,12 @@ public partial class CoreConfigSingboxService
             }
             else
             {
-                if (simpleDNSItem.FakeIP == true)
+                if (simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == false)
                 {
                     var rule4Fake = JsonUtils.DeepCopy(rule);
                     rule4Fake.server = Global.SingboxFakeDNSTag;
+                    rule4Fake.query_type = new List<int> { 1, 28 }; // A and AAAA
+                    rule4Fake.rewrite_ttl = 1;
                     singboxConfig.dns.rules.Add(rule4Fake);
                 }
                 rule.server = Global.SingboxRemoteDNSTag;

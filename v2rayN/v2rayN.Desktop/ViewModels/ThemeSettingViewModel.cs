@@ -8,7 +8,6 @@ using Avalonia.Styling;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Semi.Avalonia;
-using ServiceLib.Manager;
 
 namespace v2rayN.Desktop.ViewModels;
 

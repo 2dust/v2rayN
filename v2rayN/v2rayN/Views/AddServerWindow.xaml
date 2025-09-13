@@ -538,7 +538,7 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        materialDesign:HintAssist.Hint="1000:2000,3000:4000"
+                        materialDesign:HintAssist.Hint="1000-2000,3000,4000"
                         Style="{StaticResource DefTextBox}" />
                     <TextBlock
                         Grid.Row="3"
