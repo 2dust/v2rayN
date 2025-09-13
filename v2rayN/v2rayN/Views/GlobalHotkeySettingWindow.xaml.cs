@@ -4,7 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ReactiveUI;
-using v2rayN.Handler;
+using ServiceLib.Manager;
+using v2rayN.Manager;
 
 namespace v2rayN.Views;
 
@@ -22,14 +23,14 @@ public partial class GlobalHotkeySettingWindow
 
         btnReset.Click += btnReset_Click;
 
-        HotkeyHandler.Instance.IsPause = true;
-        this.Closing += (s, e) => HotkeyHandler.Instance.IsPause = false;
+        HotkeyManager.Instance.IsPause = true;
+        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
 
         this.WhenActivated(disposables =>
         {
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
 
         Init();
         BindingData();

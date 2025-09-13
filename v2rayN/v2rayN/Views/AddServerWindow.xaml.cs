@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using ReactiveUI;
+using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
@@ -44,7 +45,7 @@ public partial class AddServerWindow
 
             case EConfigType.Shadowsocks:
                 gridSs.Visibility = Visibility.Visible;
-                cmbSecurity3.ItemsSource = AppHandler.Instance.GetShadowsocksSecurities(profileItem);
+                cmbSecurity3.ItemsSource = AppManager.Instance.GetShadowsocksSecurities(profileItem);
                 break;
 
             case EConfigType.SOCKS:
@@ -95,6 +96,12 @@ public partial class AddServerWindow
                 gridTransport.Visibility = Visibility.Collapsed;
                 gridTls.Visibility = Visibility.Collapsed;
 
+                break;
+
+            case EConfigType.Anytls:
+                gridAnytls.Visibility = Visibility.Visible;
+                cmbCoreType.IsEnabled = false;
+                lstStreamSecurity.Add(Global.StreamSecurityReality);
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -161,6 +168,10 @@ public partial class AddServerWindow
                     this.Bind(ViewModel, vm => vm.SelectedSource.RequestHost, v => v.txtRequestHost9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId9.Text).DisposeWith(disposables);
                     break;
+
+                case EConfigType.Anytls:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId10.Text).DisposeWith(disposables);
+                    break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.HeaderType, v => v.cmbHeaderType.Text).DisposeWith(disposables);
@@ -179,12 +190,13 @@ public partial class AddServerWindow
             this.Bind(ViewModel, vm => vm.SelectedSource.PublicKey, v => v.txtPublicKey.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.SpiderX, v => v.txtSpiderX.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.Mldsa65Verify, v => v.txtMldsa65Verify.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
 
         this.Title = $"{profileItem.ConfigType}";
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

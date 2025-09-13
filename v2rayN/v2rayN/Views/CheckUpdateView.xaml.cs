@@ -1,6 +1,4 @@
 using System.Reactive.Disposables;
-using System.Windows;
-using System.Windows.Threading;
 using ReactiveUI;
 
 namespace v2rayN.Views;
@@ -24,27 +22,6 @@ public partial class CheckUpdateView
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherCheckUpdate:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.UpdateViewResult((CheckUpdateModel)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.DispatcherCheckUpdateFinished:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.UpdateFinishedResult((bool)obj);
-                }), DispatcherPriority.Normal);
-                break;
-        }
-
         return await Task.FromResult(true);
     }
 }

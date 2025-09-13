@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
 using ReactiveUI;
+using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
@@ -22,7 +23,6 @@ public partial class RoutingSettingWindow
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainMatcher.ItemsSource = Global.DomainMatchers;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
@@ -31,7 +31,6 @@ public partial class RoutingSettingWindow
             this.Bind(ViewModel, vm => vm.SelectedSource, v => v.lstRoutings.SelectedItem).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.DomainStrategy, v => v.cmbdomainStrategy.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainMatcher, v => v.cmbdomainMatcher.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedAddCmd, v => v.menuRoutingAdvancedAdd).DisposeWith(disposables);
@@ -43,7 +42,7 @@ public partial class RoutingSettingWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -122,7 +121,7 @@ public partial class RoutingSettingWindow
 
     private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
     {
-        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
+        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
     }
 
     private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)

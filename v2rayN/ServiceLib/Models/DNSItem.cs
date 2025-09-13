@@ -9,7 +9,7 @@ public class DNSItem
     public string Id { get; set; }
 
     public string Remarks { get; set; }
-    public bool Enabled { get; set; } = true;
+    public bool Enabled { get; set; } = false;
     public ECoreType CoreType { get; set; }
     public bool UseSystemHosts { get; set; }
     public string? NormalDNS { get; set; }

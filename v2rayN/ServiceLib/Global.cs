@@ -38,6 +38,8 @@ public class Global
     public const string PacFileName = NamespaceSample + "pac";
     public const string ProxySetOSXShellFileName = NamespaceSample + "proxy_set_osx_sh";
     public const string ProxySetLinuxShellFileName = NamespaceSample + "proxy_set_linux_sh";
+    public const string KillAsSudoOSXShellFileName = NamespaceSample + "kill_as_sudo_osx_sh";
+    public const string KillAsSudoLinuxShellFileName = NamespaceSample + "kill_as_sudo_linux_sh";
 
     public const string DefaultSecurity = "auto";
     public const string DefaultNetwork = "tcp";
@@ -46,6 +48,7 @@ public class Global
     public const string ProxyTag = "proxy";
     public const string DirectTag = "direct";
     public const string BlockTag = "block";
+    public const string DnsTag = "dns-module";
     public const string StreamSecurity = "tls";
     public const string StreamSecurityReality = "reality";
     public const string Loopback = "127.0.0.1";
@@ -54,6 +57,9 @@ public class Global
     public const string HttpsProtocol = "https://";
     public const string SocksProtocol = "socks://";
     public const string Socks5Protocol = "socks5://";
+    public const string AsIs = "AsIs";
+    public const string IPIfNonMatch = "IPIfNonMatch";
+    public const string IPOnDemand = "IPOnDemand";
 
     public const string UserEMail = "t@t.tt";
     public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -73,6 +79,13 @@ public class Global
     public const string XrayLocalCert = "XRAY_LOCATION_CERT";
     public const int SpeedTestPageSize = 1000;
     public const string LinuxBash = "/bin/bash";
+
+    public const string SingboxDirectDNSTag = "direct_dns";
+    public const string SingboxRemoteDNSTag = "remote_dns";
+    public const string SingboxOutboundResolverTag = "outbound_resolver";
+    public const string SingboxFinalResolverTag = "final_resolver";
+    public const string SingboxHostsDNSTag = "hosts_dns";
+    public const string SingboxFakeDNSTag = "fake_dns";
 
     public static readonly List<string> IEProxyProtocols =
     [
@@ -127,24 +140,24 @@ public class Global
     ];
 
     public static readonly List<string> SingboxRulesetSources =
-    [
-        "",
-            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-rules-dat@release/sing-box/rule-set-{0}/{1}.srs",
-            @"https://cdn.jsdelivr.net/gh/chocolate4u/Iran-sing-box-rules@rule-set/{1}.srs"
-    ];
+[
+    "",
+    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/release/sing-box/rule-set-{0}/{1}.srs",
+    @"https://raw.githubusercontent.com/chocolate4u/Iran-sing-box-rules/rule-set/{1}.srs"
+];
 
     public static readonly List<string> RoutingRulesSources =
     [
         "",
-            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/v2rayN/template.json",
-            @"https://cdn.jsdelivr.net/gh/Chocolate4U/Iran-v2ray-rules@main/v2rayN/template.json"
+    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/template.json",
+    @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/template.json"
     ];
 
     public static readonly List<string> DNSTemplateSources =
     [
         "",
-            @"https://cdn.jsdelivr.net/gh/runetfreedom/russia-v2ray-custom-routing-list@main/v2rayN/",
-            @"https://cdn.jsdelivr.net/gh/Chocolate4U/Iran-v2ray-rules@main/v2rayN/"
+    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/",
+    @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
     ];
 
     public static readonly Dictionary<string, string> UserAgentTexts = new()
@@ -167,7 +180,8 @@ public class Global
             { EConfigType.Trojan, "trojan://" },
             { EConfigType.Hysteria2, "hysteria2://" },
             { EConfigType.TUIC, "tuic://" },
-            { EConfigType.WireGuard, "wireguard://" }
+            { EConfigType.WireGuard, "wireguard://" },
+            { EConfigType.Anytls, "anytls://" }
         };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -180,7 +194,8 @@ public class Global
             { EConfigType.Trojan, "trojan" },
             { EConfigType.Hysteria2, "hysteria2" },
             { EConfigType.TUIC, "tuic" },
-            { EConfigType.WireGuard, "wireguard" }
+            { EConfigType.WireGuard, "wireguard" },
+            { EConfigType.Anytls, "anytls" }
         };
 
     public static readonly List<string> VmessSecurities =
@@ -274,11 +289,36 @@ public class Global
             "sing_box"
     ];
 
+    public static readonly HashSet<EConfigType> XraySupportConfigType =
+    [
+        EConfigType.VMess,
+            EConfigType.VLESS,
+            EConfigType.Shadowsocks,
+            EConfigType.Trojan,
+            EConfigType.WireGuard,
+            EConfigType.SOCKS,
+            EConfigType.HTTP,
+    ];
+
+    public static readonly HashSet<EConfigType> SingboxSupportConfigType =
+    [
+        EConfigType.VMess,
+            EConfigType.VLESS,
+            EConfigType.Shadowsocks,
+            EConfigType.Trojan,
+            EConfigType.Hysteria2,
+            EConfigType.TUIC,
+            EConfigType.Anytls,
+            EConfigType.WireGuard,
+            EConfigType.SOCKS,
+            EConfigType.HTTP,
+    ];
+
     public static readonly List<string> DomainStrategies =
     [
-        "AsIs",
-            "IPIfNonMatch",
-            "IPOnDemand"
+        AsIs,
+        IPIfNonMatch,
+        IPOnDemand
     ];
 
     public static readonly List<string> DomainStrategies4Singbox =
@@ -287,13 +327,6 @@ public class Global
             "ipv6_only",
             "prefer_ipv4",
             "prefer_ipv6",
-            ""
-    ];
-
-    public static readonly List<string> DomainMatchers =
-    [
-        "linear",
-            "mph",
             ""
     ];
 
@@ -347,25 +380,42 @@ public class Global
 
     public static readonly List<string> SingboxDomainStrategy4Out =
     [
-        "ipv4_only",
+        "",
+            "ipv4_only",
             "prefer_ipv4",
             "prefer_ipv6",
-            "ipv6_only",
-            ""
+            "ipv6_only"
     ];
 
-    public static readonly List<string> DomainDNSAddress =
+    public static readonly List<string> DomainDirectDNSAddress =
     [
-        "223.5.5.5",
-            "223.6.6.6",
+        "https://dns.alidns.com/dns-query",
+            "https://doh.pub/dns-query",
+            "223.5.5.5",
+            "119.29.29.29",
             "localhost"
     ];
 
-    public static readonly List<string> SingboxDomainDNSAddress =
+    public static readonly List<string> DomainRemoteDNSAddress =
+    [
+        "https://cloudflare-dns.com/dns-query",
+            "https://dns.cloudflare.com/dns-query",
+            "https://dns.google/dns-query",
+            "https://doh.dns.sb/dns-query",
+            "https://doh.opendns.com/dns-query",
+            "https://common.dot.dns.yandex.net",
+            "8.8.8.8",
+            "1.1.1.1",
+            "185.222.222.222",
+            "208.67.222.222",
+            "77.88.8.8"
+    ];
+
+    public static readonly List<string> DomainPureIPDNSAddress =
     [
         "223.5.5.5",
-            "223.6.6.6",
-            "dhcp://auto"
+            "119.29.29.29",
+            "localhost"
     ];
 
     public static readonly List<string> Languages =
@@ -432,9 +482,11 @@ public class Global
     public static readonly List<int> TunMtus =
     [
         1280,
-            1408,
-            1500,
-            9000
+        1408,
+        1500,
+        4064,
+        9000,
+        65535
     ];
 
     public static readonly List<string> TunStacks =
@@ -508,6 +560,7 @@ public class Global
             { ECoreType.brook, "txthinking/brook" },
             { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
             { ECoreType.shadowquic, "spongebob888/shadowquic" },
+            { ECoreType.mieru, "enfein/mieru" },
             { ECoreType.v2rayN, "cg3s/v2rayN" },
         };
 
@@ -533,6 +586,31 @@ public class Global
         ProxyTag,
         DirectTag,
         BlockTag
+    ];
+
+    public static readonly Dictionary<string, List<string>> PredefinedHosts = new()
+        {
+            { "dns.google", new List<string> { "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844" } },
+            { "dns.alidns.com", new List<string> { "223.5.5.5", "223.6.6.6", "2400:3200::1", "2400:3200:baba::1" } },
+            { "one.one.one.one", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
+            { "1dot1dot1dot1.cloudflare-dns.com", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
+            { "cloudflare-dns.com", new List<string> { "104.16.249.249", "104.16.248.249", "2606:4700::6810:f8f9", "2606:4700::6810:f9f9" } },
+            { "dns.cloudflare.com", new List<string> { "104.16.132.229", "104.16.133.229", "2606:4700::6810:84e5", "2606:4700::6810:85e5" } },
+            { "dot.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
+            { "dns.quad9.net", new List<string> { "9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9" } },
+            { "dns.yandex.net", new List<string> { "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff" } },
+            { "dns.sb", new List<string> { "185.222.222.222", "2a09::" } },
+            { "dns.umbrella.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
+            { "dns.sse.cisco.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
+            { "engage.cloudflareclient.com", new List<string> { "162.159.192.1", "2606:4700:d0::a29f:c001" } }
+        };
+
+    public static readonly List<string> ExpectedIPs =
+    [
+        "geoip:cn",
+            "geoip:ir",
+            "geoip:ru",
+            ""
     ];
 
     #endregion const

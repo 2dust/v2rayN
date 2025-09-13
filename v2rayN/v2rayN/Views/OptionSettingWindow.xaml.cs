@@ -4,6 +4,7 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Media;
 using ReactiveUI;
+using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
@@ -16,7 +17,7 @@ public partial class OptionSettingWindow
         InitializeComponent();
 
         this.Owner = Application.Current.MainWindow;
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
@@ -117,6 +118,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
 
+            this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.Text).DisposeWith(disposables);
@@ -133,7 +135,7 @@ public partial class OptionSettingWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

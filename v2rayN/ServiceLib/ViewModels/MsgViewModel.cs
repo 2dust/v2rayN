@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -7,8 +8,8 @@ namespace ServiceLib.ViewModels;
 
 public class MsgViewModel : MyReactiveObject
 {
-    private ConcurrentQueue<string> _queueMsg = new();
-    private int _numMaxMsg = 500;
+    private readonly ConcurrentQueue<string> _queueMsg = new();
+    private readonly int _numMaxMsg = 500;
     private bool _lastMsgFilterNotAvailable;
     private bool _blLockShow = false;
 
@@ -20,7 +21,7 @@ public class MsgViewModel : MyReactiveObject
 
     public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
@@ -34,12 +35,10 @@ public class MsgViewModel : MyReactiveObject
           y => y == true)
               .Subscribe(c => { _config.MsgUIItem.AutoRefresh = AutoRefresh; });
 
-        MessageBus.Current.Listen<string>(EMsgCommand.SendMsgView.ToString()).Subscribe(OnNext);
-    }
-
-    private async void OnNext(string x)
-    {
-        await AppendQueueMsg(x);
+        AppEvents.SendMsgViewRequested
+         .AsObservable()
+         //.ObserveOn(RxApp.MainThreadScheduler)
+         .Subscribe(async content => await AppendQueueMsg(content));
     }
 
     private async Task AppendQueueMsg(string msg)

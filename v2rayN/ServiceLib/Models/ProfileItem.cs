@@ -32,7 +32,7 @@ public class ProfileItem : ReactiveObject
     public string GetSummary()
     {
         var summary = $"[{(ConfigType).ToString()}] ";
-        var arrAddr = Address.Split('.');
+        var arrAddr = Address.Contains(':') ? Address.Split(':') : Address.Split('.');
         var addr = arrAddr.Length switch
         {
             > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
@@ -93,6 +93,7 @@ public class ProfileItem : ReactiveObject
     public string PublicKey { get; set; }
     public string ShortId { get; set; }
     public string SpiderX { get; set; }
+    public string Mldsa65Verify { get; set; }
     public string Extra { get; set; }
     public bool? MuxEnabled { get; set; }
 }

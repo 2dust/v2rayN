@@ -8,6 +8,7 @@ using Avalonia.Styling;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Semi.Avalonia;
+using ServiceLib.Manager;
 
 namespace v2rayN.Desktop.ViewModels;
 
@@ -21,7 +22,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     public ThemeSettingViewModel()
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         BindingUI();
         RestoreUI();
@@ -74,7 +75,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                     ConfigHandler.SaveConfig(_config);
-                    NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
+                    NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });
     }
@@ -107,6 +108,7 @@ public class ThemeSettingViewModel : MyReactiveObject
             x.OfType<Button>(),
             x.OfType<TextBox>(),
             x.OfType<TextBlock>(),
+            x.OfType<SelectableTextBlock>(),
             x.OfType<Menu>(),
             x.OfType<ContextMenu>(),
             x.OfType<DataGridRow>(),
@@ -146,6 +148,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                 x.OfType<Button>(),
                 x.OfType<TextBox>(),
                 x.OfType<TextBlock>(),
+                x.OfType<SelectableTextBlock>(),
                 x.OfType<Menu>(),
                 x.OfType<ContextMenu>(),
                 x.OfType<DataGridRow>(),

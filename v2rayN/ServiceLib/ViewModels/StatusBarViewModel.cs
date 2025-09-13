@@ -1,4 +1,6 @@
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -11,11 +13,9 @@ public class StatusBarViewModel : MyReactiveObject
 {
     #region ObservableCollection
 
-    private IObservableCollection<RoutingItem> _routingItems = new ObservableCollectionExtended<RoutingItem>();
-    public IObservableCollection<RoutingItem> RoutingItems => _routingItems;
+    public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
 
-    private IObservableCollection<ComboItem> _servers = new ObservableCollectionExtended<ComboItem>();
-    public IObservableCollection<ComboItem> Servers => _servers;
+    public IObservableCollection<ComboItem> Servers { get; } = new ObservableCollectionExtended<ComboItem>();
 
     [Reactive]
     public RoutingItem SelectedRouting { get; set; }
@@ -100,7 +100,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = "-";
@@ -197,10 +197,20 @@ public class StatusBarViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
+        #region AppEvents
+
         if (updateView != null)
         {
             InitUpdateView(updateView);
         }
+
+        AppEvents.DispatcherStatisticsRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async result => await UpdateStatistics(result));
+
+        #endregion AppEvents
+
         _ = Init();
     }
 
@@ -216,19 +226,17 @@ public class StatusBarViewModel : MyReactiveObject
         _updateView = updateView;
         if (_updateView != null)
         {
-            MessageBus.Current.Listen<string>(EMsgCommand.RefreshProfiles.ToString()).Subscribe(OnNext);
+            AppEvents.ProfilesRefreshRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
         }
-    }
-
-    private async void OnNext(string x)
-    {
-        await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
     }
 
     private async Task CopyProxyCmdToClipboard()
     {
         var cmd = Utils.IsWindows() ? "set" : "export";
-        var address = $"{Global.Loopback}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}";
+        var address = $"{Global.Loopback}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}";
 
         var sb = new StringBuilder();
         sb.AppendLine($"{cmd} http_proxy={Global.HttpProtocol}{address}");
@@ -263,7 +271,7 @@ public class StatusBarViewModel : MyReactiveObject
             await service.UpdateSubscriptionProcess("", blProxy);
     }
 
-    public async Task RefreshServersBiz()
+    private async Task RefreshServersBiz()
     {
         await RefreshServersMenu();
 
@@ -283,9 +291,9 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppHandler.Instance.ProfileItems(_config.SubIndexId, "");
+        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, "");
 
-        _servers.Clear();
+        Servers.Clear();
         if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
         {
             BlServers = false;
@@ -299,7 +307,7 @@ public class StatusBarViewModel : MyReactiveObject
             string name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
-            _servers.Add(item);
+            Servers.Add(item);
             if (_config.IndexId == it.IndexId)
             {
                 SelectedServer = item;
@@ -332,18 +340,24 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        _updateView?.Invoke(EViewAction.DispatcherServerAvailability, ResUI.Speedtesting);
+        await TestServerAvailabilitySub(ResUI.Speedtesting);
 
-        var msg = await Task.Run(async () =>
-        {
-            return await ConnectionHandler.Instance.RunAvailabilityCheck();
-        });
+        var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
 
-        NoticeHandler.Instance.SendMessageEx(msg);
-        _updateView?.Invoke(EViewAction.DispatcherServerAvailability, msg);
+        NoticeManager.Instance.SendMessageEx(msg);
+        await TestServerAvailabilitySub(msg);
     }
 
-    public void TestServerAvailabilityResult(string msg)
+    private async Task TestServerAvailabilitySub(string msg)
+    {
+        RxApp.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        {
+            _ = TestServerAvailabilityResult(msg);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task TestServerAvailabilityResult(string msg)
     {
         RunningInfoDisplay = msg;
     }
@@ -358,7 +372,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
-        NoticeHandler.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
+        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
@@ -381,13 +395,13 @@ public class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshRoutingsMenu()
     {
-        _routingItems.Clear();
+        RoutingItems.Clear();
 
         BlRouting = true;
-        var routings = await AppHandler.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
         {
-            _routingItems.Add(item);
+            RoutingItems.Add(item);
             if (item.IsActive)
             {
                 SelectedRouting = item;
@@ -407,7 +421,7 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var item = await AppHandler.Instance.GetRoutingItem(SelectedRouting?.Id);
+        var item = await AppManager.Instance.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
         {
             return;
@@ -415,7 +429,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
         {
-            NoticeHandler.Instance.SendMessageEx(ResUI.TipChangeRouting);
+            NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             Locator.Current.GetService<MainWindowViewModel>()?.Reload();
             _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
         }
@@ -474,11 +488,11 @@ public class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
+            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         else if (Utils.IsOSX())
         {
-            return AppHandler.Instance.LinuxSudoPwd.IsNotEmpty();
+            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         return false;
     }
@@ -490,10 +504,10 @@ public class StatusBarViewModel : MyReactiveObject
     public async Task InboundDisplayStatus()
     {
         StringBuilder sb = new();
-        sb.Append($"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}");
+        sb.Append($"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}");
         if (_config.Inbound.First().SecondLocalPortEnabled)
         {
-            sb.Append($",{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks2)}");
+            sb.Append($",{AppManager.Instance.GetLocalPort(EInboundProtocol.socks2)}");
         }
         sb.Append(']');
         InboundDisplay = $"{ResUI.LabLocal}:{sb}";
@@ -501,8 +515,8 @@ public class StatusBarViewModel : MyReactiveObject
         if (_config.Inbound.First().AllowLANConn)
         {
             var lan = _config.Inbound.First().NewPort4LAN
-                ? $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
-                : $"[{EInboundProtocol.mixed}:{AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)}]";
+                ? $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
+                : $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}]";
             InboundLanDisplay = $"{ResUI.LabLAN}:{lan}";
         }
         else
@@ -512,8 +526,13 @@ public class StatusBarViewModel : MyReactiveObject
         await Task.CompletedTask;
     }
 
-    public void UpdateStatistics(ServerSpeedItem update)
+    public async Task UpdateStatistics(ServerSpeedItem update)
     {
+        if (!_config.GuiItem.DisplayRealTimeSpeed)
+        {
+            return;
+        }
+
         try
         {
             if (_config.IsRunningCore(ECoreType.sing_box))

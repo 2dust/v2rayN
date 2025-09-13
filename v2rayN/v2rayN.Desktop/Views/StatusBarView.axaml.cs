@@ -6,6 +6,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Common;
 
@@ -19,7 +20,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         //ViewModel = new StatusBarViewModel(UpdateViewHandler);
         //Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
         ViewModel = Locator.Current.GetService<StatusBarViewModel>();
@@ -55,20 +56,6 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
     {
         switch (action)
         {
-            case EViewAction.DispatcherServerAvailability:
-                if (obj is null)
-                    return false;
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.TestServerAvailabilityResult((string)obj),
-                DispatcherPriority.Default);
-                break;
-
-            case EViewAction.DispatcherRefreshServersBiz:
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.RefreshServersBiz(),
-                DispatcherPriority.Default);
-                break;
-
             case EViewAction.DispatcherRefreshIcon:
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -112,7 +99,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             return false;
         }
 
-        AppHandler.Instance.LinuxSudoPwd = password;
+        AppManager.Instance.LinuxSudoPwd = password;
         return true;
     }
 

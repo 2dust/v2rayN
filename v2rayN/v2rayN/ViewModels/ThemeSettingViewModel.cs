@@ -9,6 +9,7 @@ using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Manager;
 
 namespace v2rayN.ViewModels;
 
@@ -30,7 +31,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     public ThemeSettingViewModel()
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         RegisterSystemColorSet(_config, Application.Current.MainWindow, ModifyTheme);
 
@@ -121,7 +122,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
                     ConfigHandler.SaveConfig(_config);
-                    NoticeHandler.Instance.Enqueue(ResUI.NeedRebootTips);
+                    NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });
     }

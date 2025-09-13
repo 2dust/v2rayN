@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -822,9 +822,6 @@
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>设为活动规则 (Enter)</value>
   </data>
-  <data name="TbdomainMatcher" xml:space="preserve">
-    <value>域名匹配算法</value>
-  </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
   </data>
@@ -1056,6 +1053,18 @@
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>请确保配置文件别名存在并唯一</value>
   </data>
+  <data name="TbSettingsTunAutoRoute" xml:space="preserve">
+    <value>自动路由</value>
+  </data>
+  <data name="TbSettingsTunStrictRoute" xml:space="preserve">
+    <value>严格路由</value>
+  </data>
+  <data name="TbSettingsTunStack" xml:space="preserve">
+    <value>协议栈</value>
+  </data>
+  <data name="TbSettingsTunMtu" xml:space="preserve">
+    <value>MTU</value>
+  </data>
   <data name="TbSettingsEnableExInbound" xml:space="preserve">
     <value>启用额外监听端口</value>
   </data>
@@ -1099,7 +1108,7 @@
     <value>添加 [HTTP] 配置文件</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>使用 Xray 且非 Tun 模式启用，和分组前置代理冲突</value>
+    <value>和分组前置代理冲突</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>启用分片 (Fragment)</value>
@@ -1389,10 +1398,115 @@
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
     <value>可以填写配置文件别名，请确保存在并唯一</value>
   </data>
-  <data name="SudoPwdVerfiedSuccessTip" xml:space="preserve">
-    <value>sudo 密码已经验证成功，请忽略错误密码提示！</value>
-  </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
     <value>密码错误，请重试。</value>
+  </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>添加 [Anytls] 配置文件</value>
+  </data>
+  <data name="TbRemoteDNS" xml:space="preserve">
+    <value>远程 DNS</value>
+  </data>
+  <data name="TbDomesticDNS" xml:space="preserve">
+    <value>直连 DNS</value>
+  </data>
+  <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
+    <value>出站 DNS 解析（sing-box）</value>
+  </data>
+  <data name="TbSBOutboundDomainResolve" xml:space="preserve">
+    <value>解析出站域名</value>
+  </data>
+  <data name="TbSBDoHResolverServer" xml:space="preserve">
+    <value>sing-box DoH 解析服务器</value>
+  </data>
+  <data name="TbSBFallbackDNSResolve" xml:space="preserve">
+    <value>兜底解析其他 DNS 域名，建议设为 ip</value>
+  </data>
+  <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
+    <value>xray freedom 解析策略</value>
+  </data>
+  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
+    <value>sing-box 直连解析策略</value>
+  </data>
+  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
+    <value>sing-box 远程解析策略</value>
+  </data>
+  <data name="TbAddCommonDNSHosts" xml:space="preserve">
+    <value>添加常用 DNS Hosts</value>
+  </data>
+  <data name="TbSBDoHOverride" xml:space="preserve">
+    <value>开启后可覆盖 sing-box DoH 解析服务器</value>
+  </data>
+  <data name="TbFakeIP" xml:space="preserve">
+    <value>FakeIP</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
+    <value>阻止 SVCB 和 HTTPS 查询</value>
+  </data>
+  <data name="TbDNSHostsConfig" xml:space="preserve">
+    <value>DNS Hosts：（“域名1 ip1 ip2” 一行一个）</value>
+  </data>
+  <data name="TbApplyProxyDomainsOnly" xml:space="preserve">
+    <value>仅对代理域名生效</value>
+  </data>
+  <data name="ThBasicDNSSettings" xml:space="preserve">
+    <value>DNS 基础设置</value>
+  </data>
+  <data name="ThAdvancedDNSSettings" xml:space="preserve">
+    <value>DNS 进阶设置</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
+    <value>校验相应地区域名 IP</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
+    <value>配置后，会对相应地区域名（如 geosite:cn）的返回 IP 进行校验，仅返回期望 IP</value>
+  </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>启用自定义 DNS</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>自定义 DNS 已启用，此页面配置将无效</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>避免域名分流规则失效</value>
+  </data>
+  <data name="FillCorrectConfigTemplateText" xml:space="preserve">
+    <value>请填写正确的配置模板</value>
+  </data>
+  <data name="menuFullConfigTemplate" xml:space="preserve">
+    <value>完整配置模板设置</value>
+  </data>
+  <data name="TbFullConfigTemplateEnable" xml:space="preserve">
+    <value>启用完整配置模板</value>
+  </data>
+  <data name="TbRayFullConfigTemplate" xml:space="preserve">
+    <value>v2ray 完整配置模板</value>
+  </data>
+  <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
+    <value>仅添加出站配置，routing.balancers 和 routing.rules.outboundTag，点击查看文档</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>不添加非代理协议出站</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>设置上游代理 tag</value>
+  </data>
+  <data name="TbSBFullConfigTemplate" xml:space="preserve">
+    <value>sing-box 完整配置模板</value>
+  </data>
+  <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
+    <value>仅添加出站和端点配置，点击查看文档</value>
+  </data>
+  <data name="TbFullConfigTemplateDesc" xml:space="preserve">
+    <value>此功能供高级用户和有特殊需求的用户使用。 启用此功能后，将忽略 Core 的基础设置，DNS 设置 ，路由设置。你需要保证系统代理的端口和流量统计等功能的配置正确，一切都由你来设置。</value>
+  </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>开始解析和处理订阅内容</value>
+  </data>
+  <data name="TbSelectProfile" xml:space="preserve">
+    <value>选择配置文件</value>
   </data>
 </root>

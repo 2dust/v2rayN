@@ -1,4 +1,6 @@
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using DynamicData;
 using DynamicData.Binding;
@@ -11,22 +13,24 @@ namespace ServiceLib.ViewModels;
 public class CheckUpdateViewModel : MyReactiveObject
 {
     private const string _geo = "GeoFiles";
-    private string _v2rayN = ECoreType.v2rayN.ToString();
+    private readonly string _v2rayN = ECoreType.v2rayN.ToString();
     private List<CheckUpdateModel> _lstUpdated = [];
+    private static readonly string _tag = "CheckUpdateViewModel";
 
-    private IObservableCollection<CheckUpdateModel> _checkUpdateModel = new ObservableCollectionExtended<CheckUpdateModel>();
-    public IObservableCollection<CheckUpdateModel> CheckUpdateModels => _checkUpdateModel;
+    public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
     public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
     [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
 
     public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
-        CheckUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
+        CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
+        CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
         {
-            await CheckUpdate();
+            Logging.SaveLog(_tag, ex);
+            _ = UpdateView(_v2rayN, ex.Message);
         });
 
         EnableCheckPreReleaseUpdate = _config.CheckUpdateItem.CheckPreReleaseUpdate;
@@ -41,20 +45,20 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private void RefreshCheckUpdateItems()
     {
-        _checkUpdateModel.Clear();
+        CheckUpdateModels.Clear();
 
         if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
         {
-            _checkUpdateModel.Add(GetCheckUpdateModel(_v2rayN));
+            CheckUpdateModels.Add(GetCheckUpdateModel(_v2rayN));
             //Not Windows and under Win10
             if (!(Utils.IsWindows() && Environment.OSVersion.Version.Major < 10))
             {
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
-                _checkUpdateModel.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
+                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
+                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
+                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
             }
         }
-        _checkUpdateModel.Add(GetCheckUpdateModel(_geo));
+        CheckUpdateModels.Add(GetCheckUpdateModel(_geo));
     }
 
     private CheckUpdateModel GetCheckUpdateModel(string coreType)
@@ -69,32 +73,31 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task SaveSelectedCoreTypes()
     {
-        _config.CheckUpdateItem.SelectedCoreTypes = _checkUpdateModel.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
+        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
         await ConfigHandler.SaveConfig(_config);
     }
 
     private async Task CheckUpdate()
     {
-        await Task.Run(async () =>
-        {
-            await CheckUpdateTask();
-        });
+        await Task.Run(CheckUpdateTask);
     }
 
     private async Task CheckUpdateTask()
     {
         _lstUpdated.Clear();
-        _lstUpdated = _checkUpdateModel.Where(x => x.IsSelected == true)
+        _lstUpdated = CheckUpdateModels.Where(x => x.IsSelected == true)
                 .Select(x => new CheckUpdateModel() { CoreType = x.CoreType }).ToList();
         await SaveSelectedCoreTypes();
 
-        for (var k = _checkUpdateModel.Count - 1; k >= 0; k--)
+        for (var k = CheckUpdateModels.Count - 1; k >= 0; k--)
         {
-            var item = _checkUpdateModel[k];
+            var item = CheckUpdateModels[k];
             if (item.IsSelected != true)
+            {
                 continue;
+            }
 
-            UpdateView(item.CoreType, "...");
+            await UpdateView(item.CoreType, "...");
             if (item.CoreType == _geo)
             {
                 await CheckUpdateGeo();
@@ -132,9 +135,9 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateGeo()
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(_geo, msg);
+            await UpdateView(_geo, msg);
             if (success)
             {
                 UpdatedPlusPlus(_geo, "");
@@ -149,12 +152,12 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateN(bool preRelease)
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(_v2rayN, msg);
+            await UpdateView(_v2rayN, msg);
             if (success)
             {
-                UpdateView(_v2rayN, ResUI.OperationSuccess);
+                await UpdateView(_v2rayN, ResUI.OperationSuccess);
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
@@ -167,12 +170,12 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task CheckUpdateCore(CheckUpdateModel model, bool preRelease)
     {
-        void _updateUI(bool success, string msg)
+        async Task _updateUI(bool success, string msg)
         {
-            UpdateView(model.CoreType, msg);
+            await UpdateView(model.CoreType, msg);
             if (success)
             {
-                UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
+                await UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
                 UpdatedPlusPlus(model.CoreType, msg);
             }
@@ -189,21 +192,30 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (_lstUpdated.Count > 0 && _lstUpdated.Count(x => x.IsFinished == true) == _lstUpdated.Count)
         {
-            _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, false);
+            await UpdateFinishedSub(false);
             await Task.Delay(2000);
             await UpgradeCore();
 
             if (_lstUpdated.Any(x => x.CoreType == _v2rayN && x.IsFinished == true))
             {
                 await Task.Delay(1000);
-                UpgradeN();
+                await UpgradeN();
             }
             await Task.Delay(1000);
-            _updateView?.Invoke(EViewAction.DispatcherCheckUpdateFinished, true);
+            await UpdateFinishedSub(true);
         }
     }
 
-    public void UpdateFinishedResult(bool blReload)
+    private async Task UpdateFinishedSub(bool blReload)
+    {
+        RxApp.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        {
+            _ = UpdateFinishedResult(blReload);
+            return Disposable.Empty;
+        });
+    }
+
+    public async Task UpdateFinishedResult(bool blReload)
     {
         if (blReload)
         {
@@ -215,7 +227,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private void UpgradeN()
+    private async Task UpgradeN()
     {
         try
         {
@@ -224,16 +236,23 @@ public class CheckUpdateViewModel : MyReactiveObject
             {
                 return;
             }
-            if (!Utils.UpgradeAppExists(out _))
+            if (!Utils.UpgradeAppExists(out var upgradeFileName))
             {
-                UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                await UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                NoticeManager.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
+                Logging.SaveLog("UpgradeApp does not exist");
                 return;
             }
-            Locator.Current.GetService<MainWindowViewModel>()?.UpgradeApp(fileName);
+
+            var id = ProcUtils.ProcessStart(upgradeFileName, fileName, Utils.StartupPath());
+            if (id > 0)
+            {
+                await AppManager.Instance.AppExitAsync(true);
+            }
         }
         catch (Exception ex)
         {
-            UpdateView(_v2rayN, ex.Message);
+            await UpdateView(_v2rayN, ex.Message);
         }
     }
 
@@ -284,7 +303,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 }
             }
 
-            UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
+            await UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
 
             if (File.Exists(fileName))
             {
@@ -293,23 +312,31 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private void UpdateView(string coreType, string msg)
+    private async Task UpdateView(string coreType, string msg)
     {
         var item = new CheckUpdateModel()
         {
             CoreType = coreType,
             Remarks = msg,
         };
-        _updateView?.Invoke(EViewAction.DispatcherCheckUpdate, item);
+
+        RxApp.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        {
+            _ = UpdateViewResult(model);
+            return Disposable.Empty;
+        });
     }
 
-    public void UpdateViewResult(CheckUpdateModel model)
+    public async Task UpdateViewResult(CheckUpdateModel model)
     {
-        var found = _checkUpdateModel.FirstOrDefault(t => t.CoreType == model.CoreType);
+        var found = CheckUpdateModels.FirstOrDefault(t => t.CoreType == model.CoreType);
         if (found == null)
+        {
             return;
+        }
+
         var itemCopy = JsonUtils.DeepCopy(found);
         itemCopy.Remarks = model.Remarks;
-        _checkUpdateModel.Replace(found, itemCopy);
+        CheckUpdateModels.Replace(found, itemCopy);
     }
 }

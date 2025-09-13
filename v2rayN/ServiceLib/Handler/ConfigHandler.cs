@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
-public class ConfigHandler
+public static class ConfigHandler
 {
     private static readonly string _configRes = Global.ConfigFileName;
     private static readonly string _tag = "ConfigHandler";
@@ -112,6 +112,8 @@ public class ConfigHandler
 
         config.ConstItem ??= new ConstItem();
 
+        config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
+
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
         {
@@ -218,7 +220,7 @@ public class ConfigHandler
     /// <returns>Result of the operation (0 if successful, -1 if failed)</returns>
     public static async Task<int> AddServer(Config config, ProfileItem profileItem)
     {
-        var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(profileItem.IndexId);
         if (item is null)
         {
             item = profileItem;
@@ -250,6 +252,7 @@ public class ConfigHandler
             item.PublicKey = profileItem.PublicKey;
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
+            item.Mldsa65Verify = profileItem.Mldsa65Verify;
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
         }
@@ -265,6 +268,7 @@ public class ConfigHandler
             EConfigType.Hysteria2 => await AddHysteria2Server(config, item),
             EConfigType.TUIC => await AddTuicServer(config, item),
             EConfigType.WireGuard => await AddWireguardServer(config, item),
+            EConfigType.Anytls => await AddAnytlsServer(config, item),
             _ => -1,
         };
         return ret;
@@ -336,7 +340,7 @@ public class ConfigHandler
     {
         foreach (var it in indexes)
         {
-            var item = await AppHandler.Instance.GetProfileItem(it.IndexId);
+            var item = await AppManager.Instance.GetProfileItem(it.IndexId);
             if (item is null)
             {
                 continue;
@@ -418,7 +422,7 @@ public class ConfigHandler
     /// <returns>The default profile item or null if none exists</returns>
     public static async Task<ProfileItem?> GetDefaultServer(Config config)
     {
-        var item = await AppHandler.Instance.GetProfileItem(config.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(config.IndexId);
         if (item is null)
         {
             var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
@@ -449,7 +453,7 @@ public class ConfigHandler
 
         for (int i = 0; i < lstProfile.Count; i++)
         {
-            ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
+            ProfileExManager.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
         }
 
         var sort = 0;
@@ -461,7 +465,7 @@ public class ConfigHandler
                     {
                         return 0;
                     }
-                    sort = ProfileExHandler.Instance.GetSort(lstProfile.First().IndexId) - 1;
+                    sort = ProfileExManager.Instance.GetSort(lstProfile.First().IndexId) - 1;
 
                     break;
                 }
@@ -471,7 +475,7 @@ public class ConfigHandler
                     {
                         return 0;
                     }
-                    sort = ProfileExHandler.Instance.GetSort(lstProfile[index - 1].IndexId) - 1;
+                    sort = ProfileExManager.Instance.GetSort(lstProfile[index - 1].IndexId) - 1;
 
                     break;
                 }
@@ -482,7 +486,7 @@ public class ConfigHandler
                     {
                         return 0;
                     }
-                    sort = ProfileExHandler.Instance.GetSort(lstProfile[index + 1].IndexId) + 1;
+                    sort = ProfileExManager.Instance.GetSort(lstProfile[index + 1].IndexId) + 1;
 
                     break;
                 }
@@ -492,7 +496,7 @@ public class ConfigHandler
                     {
                         return 0;
                     }
-                    sort = ProfileExHandler.Instance.GetSort(lstProfile[^1].IndexId) + 1;
+                    sort = ProfileExManager.Instance.GetSort(lstProfile[^1].IndexId) + 1;
 
                     break;
                 }
@@ -501,7 +505,7 @@ public class ConfigHandler
                 break;
         }
 
-        ProfileExHandler.Instance.SetSort(lstProfile[index].IndexId, sort);
+        ProfileExManager.Instance.SetSort(lstProfile[index].IndexId, sort);
         return await Task.FromResult(0);
     }
 
@@ -559,7 +563,7 @@ public class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
     {
-        var item = await AppHandler.Instance.GetProfileItem(profileItem.IndexId);
+        var item = await AppManager.Instance.GetProfileItem(profileItem.IndexId);
         if (item is null)
         {
             item = profileItem;
@@ -601,7 +605,7 @@ public class ConfigHandler
         profileItem.Id = profileItem.Id.TrimEx();
         profileItem.Security = profileItem.Security.TrimEx();
 
-        if (!AppHandler.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
+        if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
         {
             return -1;
         }
@@ -790,6 +794,35 @@ public class ConfigHandler
     }
 
     /// <summary>
+    /// Add or edit a Anytls server
+    /// Validates and processes Anytls-specific settings
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Anytls profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddAnytlsServer(Config config, ProfileItem profileItem, bool toFile = true)
+    {
+        profileItem.ConfigType = EConfigType.Anytls;
+        profileItem.CoreType = ECoreType.sing_box;
+
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Network = string.Empty;
+        if (profileItem.StreamSecurity.IsNullOrEmpty())
+        {
+            profileItem.StreamSecurity = Global.StreamSecurity;
+        }
+        if (profileItem.Id.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        await AddServerCommon(config, profileItem, toFile);
+        return 0;
+    }
+
+    /// <summary>
     /// Sort the server list by the specified column
     /// Updates the sort order in the profile extension data
     /// </summary>
@@ -800,13 +833,13 @@ public class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SortServers(Config config, string subId, string colName, bool asc)
     {
-        var lstModel = await AppHandler.Instance.ProfileItems(subId, "");
+        var lstModel = await AppManager.Instance.ProfileItems(subId, "");
         if (lstModel.Count <= 0)
         {
             return -1;
         }
-        var lstServerStat = (config.GuiItem.EnableStatistics ? StatisticsHandler.Instance.ServerStat : null) ?? [];
-        var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
+        var lstServerStat = (config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         var lstProfile = (from t in lstModel
                           join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
                           from t22 in t2b.DefaultIfEmpty()
@@ -876,7 +909,7 @@ public class ConfigHandler
 
         for (var i = 0; i < lstProfile.Count; i++)
         {
-            ProfileExHandler.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
+            ProfileExManager.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
         }
         switch (name)
         {
@@ -885,7 +918,7 @@ public class ConfigHandler
                     var maxSort = lstProfile.Max(t => t.Sort) + 10;
                     foreach (var item in lstProfile.Where(item => item.Delay <= 0))
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        ProfileExManager.Instance.SetSort(item.IndexId, maxSort);
                     }
 
                     break;
@@ -895,7 +928,7 @@ public class ConfigHandler
                     var maxSort = lstProfile.Max(t => t.Sort) + 10;
                     foreach (var item in lstProfile.Where(item => item.Speed <= 0))
                     {
-                        ProfileExHandler.Instance.SetSort(item.IndexId, maxSort);
+                        ProfileExManager.Instance.SetSort(item.IndexId, maxSort);
                     }
 
                     break;
@@ -934,7 +967,7 @@ public class ConfigHandler
         {
             return -1;
         }
-        if (profileItem.Security.IsNotEmpty() && profileItem.Security != Global.None)
+        if (profileItem.Security.IsNullOrEmpty())
         {
             profileItem.Security = Global.None;
         }
@@ -953,7 +986,7 @@ public class ConfigHandler
     /// <returns>Tuple with total count and remaining count after deduplication</returns>
     public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
     {
-        var lstProfile = await AppHandler.Instance.ProfileItems(subId);
+        var lstProfile = await AppManager.Instance.ProfileItems(subId);
         if (lstProfile == null)
         {
             return new Tuple<int, int>(0, 0);
@@ -1023,15 +1056,15 @@ public class ConfigHandler
         if (profileItem.IndexId.IsNullOrEmpty())
         {
             profileItem.IndexId = Utils.GetGuid(false);
-            maxSort = ProfileExHandler.Instance.GetMaxSort();
+            maxSort = ProfileExManager.Instance.GetMaxSort();
         }
         if (!toFile && maxSort < 0)
         {
-            maxSort = ProfileExHandler.Instance.GetMaxSort();
+            maxSort = ProfileExManager.Instance.GetMaxSort();
         }
         if (maxSort > 0)
         {
-            ProfileExHandler.Instance.SetSort(profileItem.IndexId, maxSort + 1);
+            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
         }
 
         if (toFile)
@@ -1091,7 +1124,7 @@ public class ConfigHandler
     {
         try
         {
-            var item = await AppHandler.Instance.GetProfileItem(indexId);
+            var item = await AppManager.Instance.GetProfileItem(indexId);
             if (item == null)
             {
                 return 0;
@@ -1136,7 +1169,7 @@ public class ConfigHandler
             return result;
         }
 
-        var profileItem = await AppHandler.Instance.GetProfileItem(indexId) ?? new();
+        var profileItem = await AppManager.Instance.GetProfileItem(indexId) ?? new();
         profileItem.IndexId = indexId;
         if (coreType == ECoreType.Xray)
         {
@@ -1182,7 +1215,7 @@ public class ConfigHandler
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
                 Sni = node.Address, //Tun2SocksAddress
-                Port = AppHandler.Instance.GetLocalPort(EInboundProtocol.socks)
+                Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
         else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
@@ -1209,12 +1242,12 @@ public class ConfigHandler
     /// <returns>Number of removed servers or -1 if failed</returns>
     public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
     {
-        var lstModel = await AppHandler.Instance.ProfileItems(subid, "");
+        var lstModel = await AppManager.Instance.ProfileItems(subid, "");
         if (lstModel is { Count: <= 0 })
         {
             return -1;
         }
-        var lstProfileExs = await ProfileExHandler.Instance.GetProfileExs();
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         var lstProfile = (from t in lstModel
                           join t2 in lstProfileExs on t.IndexId equals t2.IndexId
                           where t2.Delay == -1
@@ -1250,7 +1283,7 @@ public class ConfigHandler
         if (isSub && subid.IsNotEmpty())
         {
             await RemoveServersViaSubid(config, subid, isSub);
-            subFilter = (await AppHandler.Instance.GetSubItem(subid))?.Filter ?? "";
+            subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
         }
 
         var countServers = 0;
@@ -1298,6 +1331,7 @@ public class ConfigHandler
                 EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
                 EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
                 EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
+                EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
                 _ => -1,
             };
 
@@ -1333,7 +1367,7 @@ public class ConfigHandler
             return -1;
         }
 
-        var subItem = await AppHandler.Instance.GetSubItem(subid);
+        var subItem = await AppManager.Instance.GetSubItem(subid);
         var subRemarks = subItem?.Remarks;
         var preSocksPort = subItem?.PreSocksPort;
 
@@ -1381,6 +1415,11 @@ public class ConfigHandler
         if (profileItem is null)
         {
             profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
+        }
+        //Is Html Page
+        if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
+        {
+            return -1;
         }
         //Is Clash configuration
         if (profileItem is null)
@@ -1484,7 +1523,7 @@ public class ConfigHandler
         ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
-            lstOriSub = await AppHandler.Instance.ProfileItems(subid);
+            lstOriSub = await AppManager.Instance.ProfileItems(subid);
             activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
         }
 
@@ -1516,7 +1555,7 @@ public class ConfigHandler
         //Select active node
         if (activeProfile != null)
         {
-            var lstSub = await AppHandler.Instance.ProfileItems(subid);
+            var lstSub = await AppManager.Instance.ProfileItems(subid);
             var existItem = lstSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == activeProfile.Remarks : CompareProfileItem(t, activeProfile, true));
             if (existItem != null)
             {
@@ -1527,13 +1566,13 @@ public class ConfigHandler
         //Keep the last traffic statistics
         if (lstOriSub != null)
         {
-            var lstSub = await AppHandler.Instance.ProfileItems(subid);
+            var lstSub = await AppManager.Instance.ProfileItems(subid);
             foreach (var item in lstSub)
             {
                 var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
                 if (existItem != null)
                 {
-                    await StatisticsHandler.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
+                    await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
                 }
             }
         }
@@ -1573,7 +1612,7 @@ public class ConfigHandler
         if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
         {
             //TODO Temporary reminder to be removed later
-            NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
+            NoticeManager.Instance.Enqueue(ResUI.InsecureUrlProtocol);
             //return -1;
         }
 
@@ -1591,7 +1630,7 @@ public class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> AddSubItem(Config config, SubItem subItem)
     {
-        var item = await AppHandler.Instance.GetSubItem(subItem.Id);
+        var item = await AppManager.Instance.GetSubItem(subItem.Id);
         if (item is null)
         {
             item = subItem;
@@ -1623,7 +1662,7 @@ public class ConfigHandler
                 var maxSort = 0;
                 if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                 {
-                    var lstSubs = (await AppHandler.Instance.SubItems());
+                    var lstSubs = (await AppManager.Instance.SubItems());
                     maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
                 }
                 item.Sort = maxSort + 1;
@@ -1677,7 +1716,7 @@ public class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> DeleteSubItem(Config config, string id)
     {
-        var item = await AppHandler.Instance.GetSubItem(id);
+        var item = await AppManager.Instance.GetSubItem(id);
         if (item is null)
         {
             return 0;
@@ -1861,7 +1900,7 @@ public class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
     {
-        var items = await AppHandler.Instance.RoutingItems();
+        var items = await AppManager.Instance.RoutingItems();
         if (items.Any(t => t.Id == routingItem.Id && t.IsActive == true))
         {
             return -1;
@@ -1941,7 +1980,7 @@ public class ConfigHandler
         if (template == null)
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
 
-        var items = await AppHandler.Instance.RoutingItems();
+        var items = await AppManager.Instance.RoutingItems();
         var maxSort = items.Count;
         if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.Version)).ToList().Count > 0)
         {
@@ -1988,19 +2027,19 @@ public class ConfigHandler
     public static async Task<int> InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
     {
         var ver = "V3-";
-        var items = await AppHandler.Instance.RoutingItems();
+        var items = await AppManager.Instance.RoutingItems();
 
         //TODO Temporary code to be removed later
         var lockItem = items?.FirstOrDefault(t => t.Locked == true);
         if (lockItem != null)
         {
             await ConfigHandler.RemoveRoutingItem(lockItem);
-            items = await AppHandler.Instance.RoutingItems();
+            items = await AppManager.Instance.RoutingItems();
         }
 
         if (!blImportAdvancedRules && items.Count > 0)
         {
-            //migrate 
+            //migrate
             //TODO Temporary code to be removed later
             if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
             {
@@ -2066,18 +2105,38 @@ public class ConfigHandler
     /// <summary>
     /// Initialize built-in DNS configurations
     /// Creates default DNS items for V2Ray and sing-box
+    /// Also checks existing DNS items and disables those with empty NormalDNS
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinDNS(Config config)
     {
-        var items = await AppHandler.Instance.DNSItems();
+        var items = await AppManager.Instance.DNSItems();
+
+        // Check existing DNS items and disable those with empty NormalDNS
+        var needsUpdate = false;
+        foreach (var existingItem in items)
+        {
+            if (existingItem.NormalDNS.IsNullOrEmpty() && existingItem.Enabled)
+            {
+                existingItem.Enabled = false;
+                needsUpdate = true;
+            }
+        }
+
+        // Update items if any changes were made
+        if (needsUpdate)
+        {
+            await SQLiteHelper.Instance.UpdateAllAsync(items);
+        }
+
         if (items.Count <= 0)
         {
             var item = new DNSItem()
             {
                 Remarks = "V2ray",
                 CoreType = ECoreType.Xray,
+                Enabled = false,
             };
             await SaveDNSItems(config, item);
 
@@ -2085,6 +2144,7 @@ public class ConfigHandler
             {
                 Remarks = "sing-box",
                 CoreType = ECoreType.sing_box,
+                Enabled = false,
             };
             await SaveDNSItems(config, item2);
         }
@@ -2129,7 +2189,7 @@ public class ConfigHandler
     /// <returns>DNS item with configuration from the URL</returns>
     public static async Task<DNSItem> GetExternalDNSItem(ECoreType type, string url)
     {
-        var currentItem = await AppHandler.Instance.GetDNSItem(type);
+        var currentItem = await AppManager.Instance.GetDNSItem(type);
 
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(url, true, "");
@@ -2156,6 +2216,86 @@ public class ConfigHandler
 
     #endregion DNS
 
+    #region Simple DNS
+
+    public static SimpleDNSItem InitBuiltinSimpleDNS()
+    {
+        return new SimpleDNSItem()
+        {
+            UseSystemHosts = false,
+            AddCommonHosts = true,
+            FakeIP = false,
+            BlockBindingQuery = true,
+            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
+            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
+            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
+        };
+    }
+
+    public static async Task<SimpleDNSItem> GetExternalSimpleDNSItem(string url)
+    {
+        var downloadHandle = new DownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
+        if (templateContent.IsNullOrEmpty())
+            return null;
+        var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
+        if (template == null)
+            return null;
+        return template;
+    }
+
+    #endregion Simple DNS
+
+    #region Custom Config
+
+    public static async Task<int> InitBuiltinFullConfigTemplate(Config config)
+    {
+        var items = await AppManager.Instance.FullConfigTemplateItem();
+        if (items.Count <= 0)
+        {
+            var item = new FullConfigTemplateItem()
+            {
+                Remarks = "V2ray",
+                CoreType = ECoreType.Xray,
+            };
+            await SaveFullConfigTemplate(config, item);
+
+            var item2 = new FullConfigTemplateItem()
+            {
+                Remarks = "sing-box",
+                CoreType = ECoreType.sing_box,
+            };
+            await SaveFullConfigTemplate(config, item2);
+        }
+
+        return 0;
+    }
+
+    public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
+    {
+        if (item == null)
+        {
+            return -1;
+        }
+
+        if (item.Id.IsNullOrEmpty())
+        {
+            item.Id = Utils.GetGuid(false);
+        }
+
+        if (await SQLiteHelper.Instance.ReplaceAsync(item) > 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    #endregion Custom Config
+
     #region Regional Presets
 
     /// <summary>
@@ -2177,30 +2317,57 @@ public class ConfigHandler
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                 await InitBuiltinDNS(config);
 
-                return true;
+                config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                break;
 
             case EPresetType.Russia:
                 config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json"));
+                var xrayDnsRussia = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json");
+                var singboxDnsRussia = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json");
+                var simpleDnsRussia = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
 
-                return true;
+                if (simpleDnsRussia == null)
+                {
+                    xrayDnsRussia.Enabled = true;
+                    singboxDnsRussia.Enabled = true;
+                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                }
+                else
+                {
+                    config.SimpleDNSItem = simpleDnsRussia;
+                }
+                await SaveDNSItems(config, xrayDnsRussia);
+                await SaveDNSItems(config, singboxDnsRussia);
+                break;
 
             case EPresetType.Iran:
                 config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
                 config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
                 config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
 
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json"));
-                await SaveDNSItems(config, await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json"));
+                var xrayDnsIran = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json");
+                var singboxDnsIran = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json");
+                var simpleDnsIran = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
 
-                return true;
+                if (simpleDnsIran == null)
+                {
+                    xrayDnsIran.Enabled = true;
+                    singboxDnsIran.Enabled = true;
+                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                }
+                else
+                {
+                    config.SimpleDNSItem = simpleDnsIran;
+                }
+                await SaveDNSItems(config, xrayDnsIran);
+                await SaveDNSItems(config, singboxDnsIran);
+                break;
         }
 
-        return false;
+        return true;
     }
 
     #endregion Regional Presets

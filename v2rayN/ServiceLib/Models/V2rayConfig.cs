@@ -5,7 +5,7 @@ namespace ServiceLib.Models;
 public class V2rayConfig
 {
     public Log4Ray log { get; set; }
-    public object dns { get; set; }
+    public Dns4Ray dns { get; set; }
     public List<Inbounds4Ray> inbounds { get; set; }
     public List<Outbounds4Ray> outbounds { get; set; }
     public Routing4Ray routing { get; set; }
@@ -203,7 +203,15 @@ public class Response4Ray
 
 public class Dns4Ray
 {
-    public List<string> servers { get; set; }
+    public Dictionary<string, object>? hosts { get; set; }
+    public List<object> servers { get; set; }
+    public string? clientIp { get; set; }
+    public string? queryStrategy { get; set; }
+    public bool? disableCache { get; set; }
+    public bool? disableFallback { get; set; }
+    public bool? disableFallbackIfMatch { get; set; }
+    public bool? useSystemHosts { get; set; }
+    public string? tag { get; set; }
 }
 
 public class DnsServer4Ray
@@ -211,13 +219,19 @@ public class DnsServer4Ray
     public string? address { get; set; }
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
+    public List<string>? expectedIPs { get; set; }
+    public List<string>? unexpectedIPs { get; set; }
+    public string? clientIp { get; set; }
+    public string? queryStrategy { get; set; }
+    public int? timeoutMs { get; set; }
+    public bool? disableCache { get; set; }
+    public bool? finalQuery { get; set; }
+    public string? tag { get; set; }
 }
 
 public class Routing4Ray
 {
     public string domainStrategy { get; set; }
-
-    public string? domainMatcher { get; set; }
 
     public List<RulesItem4Ray> rules { get; set; }
 
@@ -340,6 +354,7 @@ public class TlsSettings4Ray
     public string? publicKey { get; set; }
     public string? shortId { get; set; }
     public string? spiderX { get; set; }
+    public string? mldsa65Verify { get; set; }
 }
 
 public class TcpSettings4Ray

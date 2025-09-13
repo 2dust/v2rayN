@@ -28,7 +28,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -83,7 +83,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
 
         if (!hasRule)
         {
-            NoticeHandler.Instance.Enqueue(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Network/Port/Protocol/Domain/IP/Process"));
+            NoticeManager.Instance.Enqueue(string.Format(ResUI.RoutingRuleDetailRequiredTips, "Network/Port/Protocol/Domain/IP/Process"));
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);

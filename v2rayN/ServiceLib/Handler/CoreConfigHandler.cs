@@ -3,13 +3,13 @@ namespace ServiceLib.Handler;
 /// <summary>
 /// Core configuration file processing class
 /// </summary>
-public class CoreConfigHandler
+public static class CoreConfigHandler
 {
     private static readonly string _tag = "CoreConfigHandler";
 
     public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
     {
-        var config = AppHandler.Instance.Config;
+        var config = AppManager.Instance.Config;
         var result = new RetResult();
 
         if (node.ConfigType == EConfigType.Custom)
@@ -21,7 +21,7 @@ public class CoreConfigHandler
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
-        else if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
+        else if (AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
         {
             result = await new CoreConfigSingboxService(config).GenerateClientConfigContent(node);
         }
@@ -112,11 +112,11 @@ public class CoreConfigHandler
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, ProfileItem node, ServerTestItem testItem, string fileName)
     {
         var result = new RetResult();
-        var initPort = AppHandler.Instance.GetLocalPort(EInboundProtocol.speedtest);
+        var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
         var port = Utils.GetFreePort(initPort + testItem.QueueNum);
         testItem.Port = port;
 
-        if (AppHandler.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
+        if (AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
         {
             result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(node, port);
         }

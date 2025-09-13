@@ -13,7 +13,7 @@ public class SubEditViewModel : MyReactiveObject
 
     public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -29,7 +29,7 @@ public class SubEditViewModel : MyReactiveObject
         var remarks = SelectedSource.Remarks;
         if (remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
 
@@ -39,25 +39,25 @@ public class SubEditViewModel : MyReactiveObject
             var uri = Utils.TryUri(url);
             if (uri == null)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.InvalidUrlTip);
+                NoticeManager.Instance.Enqueue(ResUI.InvalidUrlTip);
                 return;
             }
             //Do not allow http protocol
             if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
             {
-                NoticeHandler.Instance.Enqueue(ResUI.InsecureUrlProtocol);
+                NoticeManager.Instance.Enqueue(ResUI.InsecureUrlProtocol);
                 //return;
             }
         }
 
         if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 }

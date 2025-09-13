@@ -25,7 +25,7 @@ public partial class MsgView
         menuMsgViewCopy.Click += menuMsgViewCopy_Click;
         menuMsgViewCopyAll.Click += menuMsgViewCopyAll_Click;
         menuMsgViewClear.Click += menuMsgViewClear_Click;
-                
+
         cmbMsgFilter.ItemsSource = Global.PresetMsgFilters;
     }
 

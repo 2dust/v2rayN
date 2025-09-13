@@ -128,5 +128,8 @@ public class JsonUtils
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static JsonNode? SerializeToNode(object? obj) => JsonSerializer.SerializeToNode(obj);
+    public static JsonNode? SerializeToNode(object? obj, JsonSerializerOptions? options = null)
+    {
+        return JsonSerializer.SerializeToNode(obj, options);
+    }
 }

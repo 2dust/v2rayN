@@ -142,6 +142,7 @@ public class CoreTypeItem
 public class TunModeItem
 {
     public bool EnableTun { get; set; }
+    public bool AutoRoute { get; set; } = true;
     public bool StrictRoute { get; set; } = true;
     public string Stack { get; set; }
     public int Mtu { get; set; }
@@ -164,7 +165,6 @@ public class RoutingBasicItem
 {
     public string DomainStrategy { get; set; }
     public string DomainStrategy4Singbox { get; set; }
-    public string DomainMatcher { get; set; }
     public string RoutingIndexId { get; set; }
 }
 
@@ -252,4 +252,22 @@ public class WindowSizeItem
     public string TypeName { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
+}
+
+[Serializable]
+public class SimpleDNSItem
+{
+    public bool? UseSystemHosts { get; set; }
+    public bool? AddCommonHosts { get; set; }
+    public bool? FakeIP { get; set; }
+    public bool? BlockBindingQuery { get; set; }
+    public string? DirectDNS { get; set; }
+    public string? RemoteDNS { get; set; }
+    public string? SingboxOutboundsResolveDNS { get; set; }
+    public string? SingboxFinalResolveDNS { get; set; }
+    public string? RayStrategy4Freedom { get; set; }
+    public string? SingboxStrategy4Direct { get; set; }
+    public string? SingboxStrategy4Proxy { get; set; }
+    public string? Hosts { get; set; }
+    public string? DirectExpectedIPs { get; set; }
 }

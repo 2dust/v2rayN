@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -7,6 +8,7 @@ using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Common;
 
@@ -26,7 +28,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _window = window;
 
         menuSelectAll.Click += menuSelectAll_Click;
@@ -95,11 +97,21 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
+
+            AppEvents.AppExitRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(_ => StorageUI())
+              .DisposeWith(disposables);
+
+            AppEvents.AdjustMainLvColWidthRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => AutofitColumnWidth())
+                .DisposeWith(disposables);
         });
 
         RestoreUI();
-        ViewModel?.RefreshServers();
-        MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
 
     private async void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
@@ -124,13 +136,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 if (obj is null)
                     return false;
                 await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
-
-            case EViewAction.AdjustMainLvColWidth:
-                Dispatcher.UIThread.Post(() =>
-                     AutofitColumnWidth(),
-               DispatcherPriority.Default);
-
                 break;
 
             case EViewAction.ProfilesFocus:
@@ -176,21 +181,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     return false;
                 return await new SubEditWindow((SubItem)obj).ShowDialog<bool>(_window);
 
-            case EViewAction.DispatcherSpeedTest:
-                if (obj is null)
-                    return false;
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.SetSpeedTestResult((SpeedTestResult)obj),
-                DispatcherPriority.Default);
-
-                break;
-
             case EViewAction.DispatcherRefreshServersBiz:
-                Dispatcher.UIThread.Post(() =>
-                {
-                    _ = RefreshServersBiz();
-                },
-                DispatcherPriority.Default);
+                Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
                 break;
         }
 
@@ -208,13 +200,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         await DialogHost.Show(dialog);
     }
 
-    public async Task RefreshServersBiz()
+    public void RefreshServersBiz()
     {
-        if (ViewModel != null)
-        {
-            await ViewModel.RefreshServersBiz();
-        }
-
         if (lstProfiles.SelectedIndex >= 0)
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
@@ -420,7 +407,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
-    private void StorageUI(string? n = null)
+    private void StorageUI()
     {
         List<ColumnItem> lvColumnItem = new();
         foreach (var item2 in lstProfiles.Columns)

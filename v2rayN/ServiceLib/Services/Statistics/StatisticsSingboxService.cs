@@ -8,11 +8,11 @@ public class StatisticsSingboxService
     private readonly Config _config;
     private bool _exitFlag;
     private ClientWebSocket? webSocket;
-    private Action<ServerSpeedItem>? _updateFunc;
-    private string Url => $"ws://{Global.Loopback}:{AppHandler.Instance.StatePort2}/traffic";
+    private readonly Func<ServerSpeedItem, Task>? _updateFunc;
+    private string Url => $"ws://{Global.Loopback}:{AppManager.Instance.StatePort2}/traffic";
     private static readonly string _tag = "StatisticsSingboxService";
 
-    public StatisticsSingboxService(Config config, Action<ServerSpeedItem> updateFunc)
+    public StatisticsSingboxService(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
@@ -90,7 +90,7 @@ public class StatisticsSingboxService
                         {
                             ParseOutput(result, out var up, out var down);
 
-                            _updateFunc?.Invoke(new ServerSpeedItem()
+                            await _updateFunc?.Invoke(new ServerSpeedItem()
                             {
                                 ProxyUp = (long)(up / 1000),
                                 ProxyDown = (long)(down / 1000)

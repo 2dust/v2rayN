@@ -1,7 +1,6 @@
 using System.Reactive.Disposables;
 using Avalonia.Input;
 using Avalonia.ReactiveUI;
-using Avalonia.Threading;
 using DynamicData;
 using ReactiveUI;
 using Splat;
@@ -40,23 +39,6 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshProxyGroups:
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.RefreshProxyGroups(),
-                    DispatcherPriority.Default);
-                break;
-
-            case EViewAction.DispatcherProxiesDelayTest:
-                if (obj is null)
-                    return false;
-                Dispatcher.UIThread.Post(() =>
-                    ViewModel?.ProxiesDelayTestResult((SpeedTestResult)obj),
-                    DispatcherPriority.Default);
-                break;
-        }
-
         return await Task.FromResult(true);
     }
 

@@ -93,4 +93,19 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
     {
         ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
     }
+
+    private async void BtnSelectProfile_Click(object? sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        var result = await selectWindow.ShowDialog<bool?>(this);
+        if (result == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                cmbOutboundTag.Text = profile.Remarks;
+            }
+        }
+    }
 }

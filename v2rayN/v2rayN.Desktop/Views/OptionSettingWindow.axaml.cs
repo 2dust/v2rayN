@@ -1,6 +1,8 @@
 using System.Reactive.Disposables;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using ReactiveUI;
+using ServiceLib.Manager;
 using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
@@ -13,8 +15,9 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
     {
         InitializeComponent();
 
+        Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => this.Close();
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
@@ -105,6 +108,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
 
+            this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.SelectedValue).DisposeWith(disposables);
@@ -206,5 +210,10 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }

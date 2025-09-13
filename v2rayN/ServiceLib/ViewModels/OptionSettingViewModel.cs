@@ -84,6 +84,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
     #region Tun mode
 
+    [Reactive] public bool TunAutoRoute { get; set; }
     [Reactive] public bool TunStrictRoute { get; set; }
     [Reactive] public string TunStack { get; set; }
     [Reactive] public int TunMtu { get; set; }
@@ -108,7 +109,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
     public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -201,6 +202,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
         #region Tun mode
 
+        TunAutoRoute = _config.TunModeItem.AutoRoute;
         TunStrictRoute = _config.TunModeItem.StrictRoute;
         TunStack = _config.TunModeItem.Stack;
         TunMtu = _config.TunModeItem.Mtu;
@@ -274,7 +276,7 @@ public class OptionSettingViewModel : MyReactiveObject
         if (localPort.ToString().IsNullOrEmpty() || !Utils.IsNumeric(localPort.ToString())
            || localPort <= 0 || localPort >= Global.MaxPort)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FillLocalListeningPort);
+            NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
         var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
@@ -354,6 +356,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
 
         //tun mode
+        _config.TunModeItem.AutoRoute = TunAutoRoute;
         _config.TunModeItem.StrictRoute = TunStrictRoute;
         _config.TunModeItem.Stack = TunStack;
         _config.TunModeItem.Mtu = TunMtu;
@@ -366,14 +369,14 @@ public class OptionSettingViewModel : MyReactiveObject
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
             await AutoStartupHandler.UpdateTask(_config);
-            AppHandler.Instance.Reset();
+            AppManager.Instance.Reset();
 
-            NoticeHandler.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 

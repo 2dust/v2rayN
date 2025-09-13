@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ReactiveUI;
+using ServiceLib.Manager;
 using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
@@ -50,7 +51,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Shadowsocks:
                 gridSs.IsVisible = true;
-                cmbSecurity3.ItemsSource = AppHandler.Instance.GetShadowsocksSecurities(profileItem);
+                cmbSecurity3.ItemsSource = AppManager.Instance.GetShadowsocksSecurities(profileItem);
                 break;
 
             case EConfigType.SOCKS:
@@ -101,6 +102,12 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransport.IsVisible = false;
                 gridTls.IsVisible = false;
 
+                break;
+
+            case EConfigType.Anytls:
+                gridAnytls.IsVisible = true;
+                lstStreamSecurity.Add(Global.StreamSecurityReality);
+                cmbCoreType.IsEnabled = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -167,6 +174,10 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.SelectedSource.RequestHost, v => v.txtRequestHost9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId9.Text).DisposeWith(disposables);
                     break;
+
+                case EConfigType.Anytls:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Id, v => v.txtId10.Text).DisposeWith(disposables);
+                    break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.HeaderType, v => v.cmbHeaderType.SelectedValue).DisposeWith(disposables);
@@ -185,6 +196,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource.PublicKey, v => v.txtPublicKey.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.SpiderX, v => v.txtSpiderX.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.Mldsa65Verify, v => v.txtMldsa65Verify.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });

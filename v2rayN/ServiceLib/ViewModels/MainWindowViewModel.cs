@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Concurrency;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -20,6 +21,7 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddTuicServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddWireguardServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddAnytlsServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
@@ -38,6 +40,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
     public ReactiveCommand<Unit, Unit> DNSSettingCmd { get; }
+    public ReactiveCommand<Unit, Unit> FullConfigTemplateCmd { get; }
     public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
     public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
     public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
@@ -69,7 +72,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         #region WhenAnyValue && ReactiveCommand
@@ -110,6 +113,10 @@ public class MainWindowViewModel : MyReactiveObject
         AddWireguardServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(true, EConfigType.WireGuard);
+        });
+        AddAnytlsServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.Anytls);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -164,11 +171,15 @@ public class MainWindowViewModel : MyReactiveObject
         {
             await DNSSettingAsync();
         });
+        FullConfigTemplateCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await FullConfigTemplateAsync();
+        });
         GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             if (await _updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
             {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+                NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             }
         });
         RebootAsAdminCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -215,14 +226,16 @@ public class MainWindowViewModel : MyReactiveObject
 
         await ConfigHandler.InitBuiltinRouting(_config);
         await ConfigHandler.InitBuiltinDNS(_config);
-        await ProfileExHandler.Instance.Init();
-        await CoreHandler.Instance.Init(_config, UpdateHandler);
-        TaskHandler.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        await ConfigHandler.InitBuiltinFullConfigTemplate(_config);
+        await ProfileExManager.Instance.Init();
+        await CoreManager.Instance.Init(_config, UpdateHandler);
+        TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {
-            await StatisticsHandler.Instance.Init(_config, UpdateStatisticsHandler);
+            await StatisticsManager.Instance.Init(_config, UpdateStatisticsHandler);
         }
+        await RefreshServers();
 
         BlReloadEnabled = true;
         await Reload();
@@ -234,95 +247,40 @@ public class MainWindowViewModel : MyReactiveObject
 
     #region Actions
 
-    private void UpdateHandler(bool notify, string msg)
+    private async Task UpdateHandler(bool notify, string msg)
     {
-        NoticeHandler.Instance.SendMessage(msg);
+        NoticeManager.Instance.SendMessage(msg);
         if (notify)
         {
-            NoticeHandler.Instance.Enqueue(msg);
+            NoticeManager.Instance.Enqueue(msg);
         }
     }
 
-    private void UpdateTaskHandler(bool success, string msg)
+    private async Task UpdateTaskHandler(bool success, string msg)
     {
-        NoticeHandler.Instance.SendMessageEx(msg);
+        NoticeManager.Instance.SendMessageEx(msg);
         if (success)
         {
             var indexIdOld = _config.IndexId;
-            RefreshServers();
+            await RefreshServers();
             if (indexIdOld != _config.IndexId)
             {
-                _ = Reload();
+                await Reload();
             }
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
-                _updateView?.Invoke(EViewAction.AdjustMainLvColWidth, null);
+                AppEvents.AdjustMainLvColWidthRequested.OnNext(Unit.Default);
             }
         }
     }
 
-    private void UpdateStatisticsHandler(ServerSpeedItem update)
+    private async Task UpdateStatisticsHandler(ServerSpeedItem update)
     {
         if (!_config.UiItem.ShowInTaskbar)
         {
             return;
         }
-        _updateView?.Invoke(EViewAction.DispatcherStatistics, update);
-    }
-
-    public void SetStatisticsResult(ServerSpeedItem update)
-    {
-        if (_config.GuiItem.DisplayRealTimeSpeed)
-        {
-            Locator.Current.GetService<StatusBarViewModel>()?.UpdateStatistics(update);
-        }
-        if (_config.GuiItem.EnableStatistics && (update.ProxyUp + update.ProxyDown) > 0 && DateTime.Now.Second % 9 == 0)
-        {
-            Locator.Current.GetService<ProfilesViewModel>()?.UpdateStatistics(update);
-        }
-    }
-
-    public async Task MyAppExitAsync(bool blWindowsShutDown)
-    {
-        try
-        {
-            Logging.SaveLog("MyAppExitAsync Begin");
-
-            await SysProxyHandler.UpdateSysProxy(_config, true);
-            MessageBus.Current.SendMessage("", EMsgCommand.AppExit.ToString());
-
-            await ConfigHandler.SaveConfig(_config);
-            await ProfileExHandler.Instance.SaveTo();
-            await StatisticsHandler.Instance.SaveTo();
-            await CoreHandler.Instance.CoreStop();
-            StatisticsHandler.Instance.Close();
-
-            Logging.SaveLog("MyAppExitAsync End");
-        }
-        catch { }
-        finally
-        {
-            if (!blWindowsShutDown)
-            {
-                _updateView?.Invoke(EViewAction.Shutdown, false);
-            }
-        }
-    }
-
-    public async Task UpgradeApp(string arg)
-    {
-        if (!Utils.UpgradeAppExists(out var upgradeFileName))
-        {
-            NoticeHandler.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
-            Logging.SaveLog("UpgradeApp does not exist");
-            return;
-        }
-
-        var id = ProcUtils.ProcessStart(upgradeFileName, arg, Utils.StartupPath());
-        if (id > 0)
-        {
-            await MyAppExitAsync(false);
-        }
+        AppEvents.DispatcherStatisticsRequested.OnNext(update);
     }
 
     public void ShowHideWindow(bool? blShow)
@@ -330,18 +288,15 @@ public class MainWindowViewModel : MyReactiveObject
         _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
     }
 
-    public void Shutdown(bool byUser)
-    {
-        _updateView?.Invoke(EViewAction.Shutdown, byUser);
-    }
-
     #endregion Actions
 
     #region Servers && Groups
 
-    private void RefreshServers()
+    private async Task RefreshServers()
     {
-        MessageBus.Current.SendMessage("", EMsgCommand.RefreshProfiles.ToString());
+        AppEvents.ProfilesRefreshRequested.OnNext(Unit.Default);
+
+        await Task.Delay(200);
     }
 
     private void RefreshSubscriptions()
@@ -373,7 +328,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         if (ret == true)
         {
-            RefreshServers();
+            await RefreshServers();
             if (item.IndexId == _config.IndexId)
             {
                 await Reload();
@@ -388,16 +343,16 @@ public class MainWindowViewModel : MyReactiveObject
             await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
             return;
         }
-        int ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.SubIndexId, false);
+        var ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.SubIndexId, false);
         if (ret > 0)
         {
             RefreshSubscriptions();
-            RefreshServers();
-            NoticeHandler.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
+            await RefreshServers();
+            NoticeManager.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 
@@ -409,7 +364,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task ScanScreenResult(byte[]? bytes)
     {
-        var result = QRCodeHelper.ParseBarcode(bytes);
+        var result = QRCodeUtils.ParseBarcode(bytes);
         await AddScanResultAsync(result);
     }
 
@@ -426,7 +381,7 @@ public class MainWindowViewModel : MyReactiveObject
             return;
         }
 
-        var result = QRCodeHelper.ParseBarcode(fileName);
+        var result = QRCodeUtils.ParseBarcode(fileName);
         await AddScanResultAsync(result);
     }
 
@@ -434,20 +389,20 @@ public class MainWindowViewModel : MyReactiveObject
     {
         if (result.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.NoValidQRcodeFound);
+            NoticeManager.Instance.Enqueue(ResUI.NoValidQRcodeFound);
         }
         else
         {
-            int ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
+            var ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
             if (ret > 0)
             {
                 RefreshSubscriptions();
-                RefreshServers();
-                NoticeHandler.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
+                await RefreshServers();
+                NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
             }
             else
             {
-                NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+                NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             }
         }
     }
@@ -466,7 +421,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        await (new UpdateService()).UpdateSubscriptionProcess(_config, subId, blProxy, UpdateTaskHandler);
+        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler));
     }
 
     #endregion Subscription
@@ -503,16 +458,25 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
+    private async Task FullConfigTemplateAsync()
+    {
+        var ret = await _updateView?.Invoke(EViewAction.FullConfigTemplateWindow, null);
+        if (ret == true)
+        {
+            await Reload();
+        }
+    }
+
     public async Task RebootAsAdmin()
     {
         ProcUtils.RebootAsAdmin();
-        await MyAppExitAsync(false);
+        await AppManager.Instance.AppExitAsync(true);
     }
 
     private async Task ClearServerStatistics()
     {
-        await StatisticsHandler.Instance.ClearAllServerStatistics();
-        RefreshServers();
+        await StatisticsManager.Instance.ClearAllServerStatistics();
+        await RefreshServers();
     }
 
     private async Task OpenTheFileLocation()
@@ -524,7 +488,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            ProcUtils.ProcessStart("nautilus", path);
+            ProcUtils.ProcessStart("xdg-open", path);
         }
         else if (Utils.IsOSX())
         {
@@ -556,7 +520,7 @@ public class MainWindowViewModel : MyReactiveObject
         });
         Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
-        _updateView?.Invoke(EViewAction.DispatcherReload, null);
+        RxApp.MainThreadScheduler.Schedule(() => _ = ReloadResult());
 
         BlReloadEnabled = true;
         if (_hasNextReloadJob)
@@ -566,7 +530,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    public void ReloadResult()
+    public async Task ReloadResult()
     {
         // BlReloadEnabled = true;
         //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);
@@ -576,19 +540,21 @@ public class MainWindowViewModel : MyReactiveObject
             Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
         }
         else
-        { TabMainSelectedIndex = 0; }
+        {
+            TabMainSelectedIndex = 0;
+        }
     }
 
     private async Task LoadCore()
     {
         var node = await ConfigHandler.GetDefaultServer(_config);
-        await CoreHandler.Instance.LoadCore(node);
+        await CoreManager.Instance.LoadCore(node);
     }
 
     public async Task CloseCore()
     {
         await ConfigHandler.SaveConfig(_config);
-        await CoreHandler.Instance.CoreStop();
+        await CoreManager.Instance.CoreStop();
     }
 
     private async Task AutoHideStartup()
@@ -611,7 +577,7 @@ public class MainWindowViewModel : MyReactiveObject
         Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
 
         await ConfigHandler.SaveConfig(_config);
-        await new UpdateService().UpdateGeoFileAll(_config, UpdateHandler);
+        await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
         await Reload();
     }
 

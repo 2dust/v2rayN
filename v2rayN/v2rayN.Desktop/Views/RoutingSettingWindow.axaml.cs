@@ -17,6 +17,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
     {
         InitializeComponent();
 
+        Loaded += Window_Loaded;
         this.Closing += RoutingSettingWindow_Closing;
         btnCancel.Click += (s, e) => this.Close();
         this.KeyDown += RoutingSettingWindow_KeyDown;
@@ -27,7 +28,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainMatcher.ItemsSource = Global.DomainMatchers;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
@@ -36,7 +36,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource, v => v.lstRoutings.SelectedItem).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.DomainStrategy, v => v.cmbdomainStrategy.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DomainMatcher, v => v.cmbdomainMatcher.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DomainStrategy4Singbox, v => v.cmbdomainStrategy4Singbox.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedAddCmd, v => v.menuRoutingAdvancedAdd).DisposeWith(disposables);
@@ -117,7 +116,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 
     private void linkdomainStrategy4Singbox_Click(object? sender, RoutedEventArgs e)
     {
-        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/shared/listen/#domain_strategy");
+        ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
     }
 
     private void btnCancel_Click(object? sender, RoutedEventArgs e)
@@ -135,5 +134,10 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
                 btnCancel_Click(null, null);
             }
         }
+    }
+
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
+    {
+        btnCancel.Focus();
     }
 }

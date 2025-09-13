@@ -6,10 +6,10 @@ public class StatisticsXrayService
     private ServerSpeedItem _serverSpeedItem = new();
     private readonly Config _config;
     private bool _exitFlag;
-    private Action<ServerSpeedItem>? _updateFunc;
-    private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppHandler.Instance.StatePort}/debug/vars";
+    private readonly Func<ServerSpeedItem, Task>? _updateFunc;
+    private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort}/debug/vars";
 
-    public StatisticsXrayService(Config config, Action<ServerSpeedItem> updateFunc)
+    public StatisticsXrayService(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
@@ -39,7 +39,7 @@ public class StatisticsXrayService
                 if (result != null)
                 {
                     var server = ParseOutput(result) ?? new ServerSpeedItem();
-                    _updateFunc?.Invoke(server);
+                    await _updateFunc?.Invoke(server);
                 }
             }
             catch

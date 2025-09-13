@@ -16,7 +16,7 @@ cp -rf $OutputPath "${PackagePath}/opt/v2rayN"
 echo "When this file exists, app will not store configs under this folder" > "${PackagePath}/opt/v2rayN/NotStoreConfigHere.txt"
 
 if [ $Arch = "linux-64" ]; then
-    Arch2="amd64" 
+    Arch2="amd64"
 else
     Arch2="arm64"
 fi
@@ -52,7 +52,17 @@ sudo chmod 0755 "${PackagePath}/DEBIAN/postinst"
 sudo chmod 0755 "${PackagePath}/opt/v2rayN/v2rayN"
 sudo chmod 0755 "${PackagePath}/opt/v2rayN/AmazTool"
 
-# desktop && PATH
+# Patch
+# set owner to root:root
+sudo chown -R root:root "${PackagePath}"
+# set all directories to 755 (readable & traversable by all users)
+sudo find "${PackagePath}/opt/v2rayN" -type d -exec chmod 755 {} +
+# set all regular files to 644 (readable by all users)
+sudo find "${PackagePath}/opt/v2rayN" -type f -exec chmod 644 {} +
+# ensure main binaries are 755 (executable by all users)
+sudo chmod 755 "${PackagePath}/opt/v2rayN/v2rayN" 2>/dev/null || true
+sudo chmod 755 "${PackagePath}/opt/v2rayN/AmazTool" 2>/dev/null || true
 
+# build deb package
 sudo dpkg-deb -Zxz --build $PackagePath
 sudo mv "${PackagePath}.deb" "v2rayN-${Arch}.deb"

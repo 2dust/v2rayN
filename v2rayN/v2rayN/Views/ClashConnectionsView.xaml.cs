@@ -1,7 +1,6 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using ReactiveUI;
 
 namespace v2rayN.Views;
@@ -33,18 +32,6 @@ public partial class ClashConnectionsView
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshConnections:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.RefreshConnections((List<ConnectionItem>?)obj);
-                }), DispatcherPriority.Normal);
-                break;
-        }
-
         return await Task.FromResult(true);
     }
 

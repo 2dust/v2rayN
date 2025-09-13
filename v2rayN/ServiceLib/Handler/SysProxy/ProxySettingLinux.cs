@@ -1,6 +1,6 @@
 namespace ServiceLib.Handler.SysProxy;
 
-public class ProxySettingLinux
+public static class ProxySettingLinux
 {
     private static readonly string _proxySetFileName = $"{Global.ProxySetLinuxShellFileName.Replace(Global.NamespaceSample, "")}.sh";
 
@@ -18,14 +18,7 @@ public class ProxySettingLinux
 
     private static async Task ExecCmd(List<string> args)
     {
-        var fileName = Utils.GetBinConfigPath(_proxySetFileName);
-        if (!File.Exists(fileName))
-        {
-            var contents = EmbedUtils.GetEmbedText(Global.ProxySetLinuxShellFileName);
-            await File.AppendAllTextAsync(fileName, contents);
-
-            await Utils.SetLinuxChmod(fileName);
-        }
+        var fileName = await FileManager.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetLinuxShellFileName), false);
 
         await Utils.GetCliWrapOutput(fileName, args);
     }

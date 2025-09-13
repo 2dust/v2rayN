@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,8 +9,9 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
-using v2rayN.Handler;
+using v2rayN.Manager;
 
 namespace v2rayN.Views;
 
@@ -23,7 +25,7 @@ public partial class MainWindow
     {
         InitializeComponent();
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
         App.Current.SessionEnding += Current_SessionEnding;
@@ -35,7 +37,6 @@ public partial class MainWindow
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-        MessageBus.Current.Listen<string>(EMsgCommand.SendSnackMsg.ToString()).Subscribe(DelegateSnackMsg);
         ViewModel = new MainWindowViewModel(UpdateViewHandler);
         Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
@@ -80,6 +81,7 @@ public partial class MainWindow
             this.BindCommand(ViewModel, vm => vm.AddHysteria2ServerCmd, v => v.menuAddHysteria2Server).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddTuicServerCmd, v => v.menuAddTuicServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddWireguardServerCmd, v => v.menuAddWireguardServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddAnytlsServerCmd, v => v.menuAddAnytlsServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan).DisposeWith(disposables);
@@ -96,6 +98,7 @@ public partial class MainWindow
             this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RebootAsAdminCmd, v => v.menuRebootAsAdmin).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ClearServerStatisticsCmd, v => v.menuClearServerStatistics).DisposeWith(disposables);
@@ -130,6 +133,24 @@ public partial class MainWindow
                     this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
                     break;
             }
+
+            AppEvents.SendSnackMsgRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(async content => await DelegateSnackMsg(content))
+              .DisposeWith(disposables);
+
+            AppEvents.AppExitRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(_ => StorageUI())
+              .DisposeWith(disposables);
+
+            AppEvents.ShutdownRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(content => Shutdown(content))
+            .DisposeWith(disposables);
         });
 
         this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
@@ -140,8 +161,7 @@ public partial class MainWindow
         }
 
         AddHelpMenuItem();
-        WindowsHandler.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
-        MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
+        WindowsManager.Instance.RegisterGlobalHotkey(_config, OnHotkeyHandler, null);
     }
 
     #region Event
@@ -154,12 +174,9 @@ public partial class MainWindow
         }));
     }
 
-    private void DelegateSnackMsg(string content)
+    private async Task DelegateSnackMsg(string content)
     {
-        Application.Current?.Dispatcher.Invoke((() =>
-        {
-            MainSnackbar.MessageQueue?.Enqueue(content);
-        }), DispatcherPriority.Normal);
+        MainSnackbar.MessageQueue?.Enqueue(content);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -185,6 +202,9 @@ public partial class MainWindow
             case EViewAction.OptionSettingWindow:
                 return (new OptionSettingWindow().ShowDialog() ?? false);
 
+            case EViewAction.FullConfigTemplateWindow:
+                return (new FullConfigTemplateWindow().ShowDialog() ?? false);
+
             case EViewAction.GlobalHotkeySettingWindow:
                 return (new GlobalHotkeySettingWindow().ShowDialog() ?? false);
 
@@ -195,29 +215,6 @@ public partial class MainWindow
                 Application.Current?.Dispatcher.Invoke((() =>
                 {
                     ShowHideWindow((bool?)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.DispatcherStatistics:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.SetStatisticsResult((ServerSpeedItem)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.DispatcherReload:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.ReloadResult();
-                }), DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.Shutdown:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    Application.Current.Shutdown();
                 }), DispatcherPriority.Normal);
                 break;
 
@@ -235,13 +232,6 @@ public partial class MainWindow
                 {
                     ViewModel?.AddServerViaClipboardAsync(clipboardData);
                 }
-                break;
-
-            case EViewAction.AdjustMainLvColWidth:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    Locator.Current.GetService<ProfilesViewModel>()?.AutofitColumnWidthAsync();
-                }), DispatcherPriority.Normal);
                 break;
         }
 
@@ -275,7 +265,12 @@ public partial class MainWindow
     {
         Logging.SaveLog("Current_SessionEnding");
         StorageUI();
-        await ViewModel?.MyAppExitAsync(true);
+        await AppManager.Instance.AppExitAsync(false);
+    }
+
+    private void Shutdown(bool obj)
+    {
+        Application.Current.Shutdown();
     }
 
     private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -338,7 +333,7 @@ public partial class MainWindow
 
         if (Application.Current?.MainWindow is Window window)
         {
-            var bytes = QRCodeHelper.CaptureScreen(window);
+            var bytes = QRCodeUtils.CaptureScreen(window);
             await ViewModel?.ScanScreenResult(bytes);
         }
 
@@ -417,7 +412,7 @@ public partial class MainWindow
         }
     }
 
-    private void StorageUI(string? n = null)
+    private void StorageUI()
     {
         ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
 
@@ -433,7 +428,7 @@ public partial class MainWindow
 
     private void AddHelpMenuItem()
     {
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo();
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
             .Where(t => t.CoreType != ECoreType.v2fly
                         && t.CoreType != ECoreType.hysteria))

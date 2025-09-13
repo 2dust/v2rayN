@@ -16,7 +16,7 @@ public class AddServerViewModel : MyReactiveObject
 
     public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -43,32 +43,32 @@ public class AddServerViewModel : MyReactiveObject
     {
         if (SelectedSource.Remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseFillRemarks);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
 
         if (SelectedSource.Address.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FillServerAddress);
+            NoticeManager.Instance.Enqueue(ResUI.FillServerAddress);
             return;
         }
         var port = SelectedSource.Port.ToString();
         if (port.IsNullOrEmpty() || !Utils.IsNumeric(port)
             || SelectedSource.Port <= 0 || SelectedSource.Port >= Global.MaxPort)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.FillCorrectServerPort);
+            NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
             return;
         }
         if (SelectedSource.ConfigType == EConfigType.Shadowsocks)
         {
             if (SelectedSource.Id.IsNullOrEmpty())
             {
-                NoticeHandler.Instance.Enqueue(ResUI.FillPassword);
+                NoticeManager.Instance.Enqueue(ResUI.FillPassword);
                 return;
             }
             if (SelectedSource.Security.IsNullOrEmpty())
             {
-                NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectEncryption);
+                NoticeManager.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                 return;
             }
         }
@@ -76,7 +76,7 @@ public class AddServerViewModel : MyReactiveObject
         {
             if (SelectedSource.Id.IsNullOrEmpty())
             {
-                NoticeHandler.Instance.Enqueue(ResUI.FillUUID);
+                NoticeManager.Instance.Enqueue(ResUI.FillUUID);
                 return;
             }
         }
@@ -84,12 +84,12 @@ public class AddServerViewModel : MyReactiveObject
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 }

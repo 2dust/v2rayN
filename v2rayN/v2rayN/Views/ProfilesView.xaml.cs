@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -7,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
+using ServiceLib.Manager;
 using Splat;
 using v2rayN.Base;
 using Point = System.Windows.Point;
@@ -22,12 +24,12 @@ public partial class ProfilesView
         InitializeComponent();
         lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
 
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
 
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;
         lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
-        lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
+        lstProfiles.SelectionChanged += LstProfiles_SelectionChanged;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         menuSelectAll.Click += menuSelectAll_Click;
 
@@ -89,11 +91,21 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
+
+            AppEvents.AppExitRequested
+              .AsObservable()
+              .ObserveOn(RxApp.MainThreadScheduler)
+              .Subscribe(_ => StorageUI())
+              .DisposeWith(disposables);
+
+            AppEvents.AdjustMainLvColWidthRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => AutofitColumnWidth())
+                .DisposeWith(disposables);
         });
 
         RestoreUI();
-        ViewModel?.RefreshServers();
-        MessageBus.Current.Listen<string>(EMsgCommand.AppExit.ToString()).Subscribe(StorageUI);
     }
 
     #region Event
@@ -106,13 +118,6 @@ public partial class ProfilesView
                 if (obj is null)
                     return false;
                 WindowsUtils.SetClipboardData((string)obj);
-                break;
-
-            case EViewAction.AdjustMainLvColWidth:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    AutofitColumnWidth();
-                }), DispatcherPriority.Normal);
                 break;
 
             case EViewAction.ProfilesFocus:
@@ -157,20 +162,8 @@ public partial class ProfilesView
                     return false;
                 return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
 
-            case EViewAction.DispatcherSpeedTest:
-                if (obj is null)
-                    return false;
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    ViewModel?.SetSpeedTestResult((SpeedTestResult)obj);
-                }), DispatcherPriority.Normal);
-                break;
-
             case EViewAction.DispatcherRefreshServersBiz:
-                Application.Current?.Dispatcher.Invoke((() =>
-                {
-                    _ = RefreshServersBiz();
-                }), DispatcherPriority.Normal);
+                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
                 break;
         }
 
@@ -179,7 +172,7 @@ public partial class ProfilesView
 
     public async void ShareServer(string url)
     {
-        var img = QRCodeHelper.GetQRCode(url);
+        var img = QRCodeUtils.GetQRCode(url);
         var dialog = new QrcodeView()
         {
             imgQrcode = { Source = img },
@@ -189,20 +182,15 @@ public partial class ProfilesView
         await DialogHost.Show(dialog, "RootDialog");
     }
 
-    public async Task RefreshServersBiz()
+    public void RefreshServersBiz()
     {
-        if (ViewModel != null)
-        {
-            await ViewModel.RefreshServersBiz();
-        }
-
         if (lstProfiles.SelectedIndex > 0)
         {
             lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
         }
     }
 
-    private void lstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void LstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         if (ViewModel != null)
         {
@@ -376,7 +364,7 @@ public partial class ProfilesView
         }
     }
 
-    private void StorageUI(string? n = null)
+    private void StorageUI()
     {
         List<ColumnItem> lvColumnItem = new();
         foreach (var t in lstProfiles.Columns)

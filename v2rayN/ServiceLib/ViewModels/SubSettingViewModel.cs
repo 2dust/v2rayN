@@ -8,8 +8,7 @@ namespace ServiceLib.ViewModels;
 
 public class SubSettingViewModel : MyReactiveObject
 {
-    private IObservableCollection<SubItem> _subItems = new ObservableCollectionExtended<SubItem>();
-    public IObservableCollection<SubItem> SubItems => _subItems;
+    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
     public SubItem SelectedSource { get; set; }
@@ -24,7 +23,7 @@ public class SubSettingViewModel : MyReactiveObject
 
     public SubSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
@@ -60,8 +59,8 @@ public class SubSettingViewModel : MyReactiveObject
 
     public async Task RefreshSubItems()
     {
-        _subItems.Clear();
-        _subItems.AddRange(await AppHandler.Instance.SubItems());
+        SubItems.Clear();
+        SubItems.AddRange(await AppManager.Instance.SubItems());
     }
 
     public async Task EditSubAsync(bool blNew)
@@ -73,7 +72,7 @@ public class SubSettingViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppHandler.Instance.GetSubItem(SelectedSource?.Id);
+            item = await AppManager.Instance.GetSubItem(SelectedSource?.Id);
             if (item is null)
             {
                 return;
@@ -98,7 +97,7 @@ public class SubSettingViewModel : MyReactiveObject
             await ConfigHandler.DeleteSubItem(_config, it.Id);
         }
         await RefreshSubItems();
-        NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+        NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         IsModified = true;
     }
 }

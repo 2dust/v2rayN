@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ServiceLib.Models;
 
 public class SingboxConfig
@@ -6,6 +8,7 @@ public class SingboxConfig
     public Dns4Sbox? dns { get; set; }
     public List<Inbound4Sbox> inbounds { get; set; }
     public List<Outbound4Sbox> outbounds { get; set; }
+    public List<Endpoints4Sbox>? endpoints { get; set; }
     public Route4Sbox route { get; set; }
     public Experimental4Sbox? experimental { get; set; }
 }
@@ -29,14 +32,15 @@ public class Dns4Sbox
     public bool? independent_cache { get; set; }
     public bool? reverse_mapping { get; set; }
     public string? client_subnet { get; set; }
-    public Fakeip4Sbox? fakeip { get; set; }
 }
 
 public class Route4Sbox
 {
+    public Rule4Sbox? default_domain_resolver { get; set; } // or string
     public bool? auto_detect_interface { get; set; }
     public List<Rule4Sbox> rules { get; set; }
     public List<Ruleset4Sbox>? rule_set { get; set; }
+    public string? final { get; set; }
 }
 
 [Serializable]
@@ -49,6 +53,7 @@ public class Rule4Sbox
     public string? mode { get; set; }
     public bool? ip_is_private { get; set; }
     public string? client_subnet { get; set; }
+    public int? rewrite_ttl { get; set; }
     public bool? invert { get; set; }
     public string? clash_mode { get; set; }
     public List<string>? inbound { get; set; }
@@ -67,6 +72,27 @@ public class Rule4Sbox
     public List<string>? process_name { get; set; }
     public List<string>? rule_set { get; set; }
     public List<Rule4Sbox>? rules { get; set; }
+    public string? action { get; set; }
+    public string? strategy { get; set; }
+    public List<string>? sniffer { get; set; }
+    public string? rcode { get; set; }
+    public List<int>? query_type { get; set; }
+    public List<string>? answer { get; set; }
+    public List<string>? ns { get; set; }
+    public List<string>? extra { get; set; }
+    public string? method { get; set; }
+    public bool? no_drop { get; set; }
+    public bool? source_ip_is_private { get; set; }
+    public bool? ip_accept_any { get; set; }
+    public int? source_port { get; set; }
+    public List<string>? source_port_range { get; set; }
+    public List<string>? network_type { get; set; }
+    public bool? network_is_expensive { get; set; }
+    public bool? network_is_constrained { get; set; }
+    public List<string>? wifi_ssid { get; set; }
+    public List<string>? wifi_bssid { get; set; }
+    public bool? rule_set_ip_cidr_match_source { get; set; }
+    public bool? rule_set_ip_cidr_accept_empty { get; set; }
 }
 
 [Serializable]
@@ -76,7 +102,6 @@ public class Inbound4Sbox
     public string tag { get; set; }
     public string listen { get; set; }
     public int? listen_port { get; set; }
-    public string? domain_strategy { get; set; }
     public string interface_name { get; set; }
     public List<string>? address { get; set; }
     public int? mtu { get; set; }
@@ -84,8 +109,6 @@ public class Inbound4Sbox
     public bool? strict_route { get; set; }
     public bool? endpoint_independent_nat { get; set; }
     public string? stack { get; set; }
-    public bool? sniff { get; set; }
-    public bool? sniff_override_destination { get; set; }
     public List<User4Sbox> users { get; set; }
 }
 
@@ -95,10 +118,8 @@ public class User4Sbox
     public string password { get; set; }
 }
 
-public class Outbound4Sbox
+public class Outbound4Sbox : BaseServer4Sbox
 {
-    public string type { get; set; }
-    public string tag { get; set; }
     public string? server { get; set; }
     public int? server_port { get; set; }
     public List<string>? server_ports { get; set; }
@@ -113,7 +134,6 @@ public class Outbound4Sbox
     public int? recv_window_conn { get; set; }
     public int? recv_window { get; set; }
     public bool? disable_mtu_discovery { get; set; }
-    public string? detour { get; set; }
     public string? method { get; set; }
     public string? username { get; set; }
     public string? password { get; set; }
@@ -121,19 +141,34 @@ public class Outbound4Sbox
     public string? version { get; set; }
     public string? network { get; set; }
     public string? packet_encoding { get; set; }
-    public List<string>? local_address { get; set; }
-    public string? private_key { get; set; }
-    public string? peer_public_key { get; set; }
-    public List<int>? reserved { get; set; }
-    public int? mtu { get; set; }
     public string? plugin { get; set; }
     public string? plugin_opts { get; set; }
-    public Tls4Sbox? tls { get; set; }
-    public Multiplex4Sbox? multiplex { get; set; }
-    public Transport4Sbox? transport { get; set; }
-    public HyObfs4Sbox? obfs { get; set; }
     public List<string>? outbounds { get; set; }
     public bool? interrupt_exist_connections { get; set; }
+}
+
+public class Endpoints4Sbox : BaseServer4Sbox
+{
+    public bool? system { get; set; }
+    public string? name { get; set; }
+    public int? mtu { get; set; }
+    public List<string> address { get; set; }
+    public string private_key { get; set; }
+    public int? listen_port { get; set; }
+    public string? udp_timeout { get; set; }
+    public int? workers { get; set; }
+    public List<Peer4Sbox> peers { get; set; }
+}
+
+public class Peer4Sbox
+{
+    public string address { get; set; }
+    public int port { get; set; }
+    public string public_key { get; set; }
+    public string? pre_shared_key { get; set; }
+    public List<string> allowed_ips { get; set; }
+    public int? persistent_keepalive_interval { get; set; }
+    public List<int> reserved { get; set; }
 }
 
 public class Tls4Sbox
@@ -144,6 +179,9 @@ public class Tls4Sbox
     public List<string>? alpn { get; set; }
     public Utls4Sbox? utls { get; set; }
     public Reality4Sbox? reality { get; set; }
+    public bool? fragment { get; set; }
+    public string? fragment_fallback_delay { get; set; }
+    public bool? record_fragment { get; set; }
 }
 
 public class Multiplex4Sbox
@@ -191,15 +229,28 @@ public class HyObfs4Sbox
     public string? password { get; set; }
 }
 
-public class Server4Sbox
+public class Server4Sbox : BaseServer4Sbox
 {
-    public string? tag { get; set; }
+    public string? inet4_range { get; set; }
+    public string? inet6_range { get; set; }
+    public string? client_subnet { get; set; }
+    public string? server { get; set; }
+    public new string? domain_resolver { get; set; }
+    [JsonPropertyName("interface")] public string? Interface { get; set; }
+    public int? server_port { get; set; }
+    public string? path { get; set; }
+    public Headers4Sbox? headers { get; set; }
+
+    // public List<string>? path { get; set; } // hosts
+    public Dictionary<string, List<string>>? predefined { get; set; }
+
+    // Deprecated
     public string? address { get; set; }
+
     public string? address_resolver { get; set; }
     public string? address_strategy { get; set; }
     public string? strategy { get; set; }
-    public string? detour { get; set; }
-    public string? client_subnet { get; set; }
+    // Deprecated End
 }
 
 public class Experimental4Sbox
@@ -229,13 +280,6 @@ public class Stats4Sbox
     public List<string>? users { get; set; }
 }
 
-public class Fakeip4Sbox
-{
-    public bool enabled { get; set; }
-    public string inet4_range { get; set; }
-    public string inet6_range { get; set; }
-}
-
 public class CacheFile4Sbox
 {
     public bool enabled { get; set; }
@@ -253,4 +297,34 @@ public class Ruleset4Sbox
     public string? url { get; set; }
     public string? download_detour { get; set; }
     public string? update_interval { get; set; }
+}
+
+public abstract class DialFields4Sbox
+{
+    public string? detour { get; set; }
+    public string? bind_interface { get; set; }
+    public string? inet4_bind_address { get; set; }
+    public string? inet6_bind_address { get; set; }
+    public int? routing_mark { get; set; }
+    public bool? reuse_addr { get; set; }
+    public string? netns { get; set; }
+    public string? connect_timeout { get; set; }
+    public bool? tcp_fast_open { get; set; }
+    public bool? tcp_multi_path { get; set; }
+    public bool? udp_fragment { get; set; }
+    public Rule4Sbox? domain_resolver { get; set; } // or string
+    public string? network_strategy { get; set; }
+    public List<string>? network_type { get; set; }
+    public List<string>? fallback_network_type { get; set; }
+    public string? fallback_delay { get; set; }
+    public Tls4Sbox? tls { get; set; }
+    public Multiplex4Sbox? multiplex { get; set; }
+    public Transport4Sbox? transport { get; set; }
+    public HyObfs4Sbox? obfs { get; set; }
+}
+
+public abstract class BaseServer4Sbox : DialFields4Sbox
+{
+    public string type { get; set; }
+    public string tag { get; set; }
 }

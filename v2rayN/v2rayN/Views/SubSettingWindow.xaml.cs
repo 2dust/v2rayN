@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
+using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
@@ -31,7 +32,7 @@ public partial class SubSettingWindow
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppHandler.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -69,7 +70,7 @@ public partial class SubSettingWindow
         {
             return;
         }
-        var img = QRCodeHelper.GetQRCode(url);
+        var img = QRCodeUtils.GetQRCode(url);
         var dialog = new QrcodeView()
         {
             imgQrcode = { Source = img },

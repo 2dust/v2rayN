@@ -26,13 +26,13 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4.2.2
+      uses: actions/checkout@v5.0.0
       with:
         submodules: 'recursive'
         fetch-depth: '0'
 
     - name: Setup
-      uses: actions/setup-dotnet@v4.3.1
+      uses: actions/setup-dotnet@v5.0.0
       with:
         dotnet-version: '8.0.x'
 
@@ -96,6 +96,40 @@ jobs:
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
+
+    # release RHEL package
+    - name: Package RPM (RHEL-family)
+      if: github.event.inputs.release_tag != ''
+      run: |
+        chmod 755 package-rhel.sh
+        # Build for both x86_64 and aarch64 in one go (explicit version passed; no --buildfrom)
+        ./package-rhel.sh "${{ github.event.inputs.release_tag }}" --arch all
+
+    - name: Collect RPMs into workspace
+      if: github.event.inputs.release_tag != ''
+      run: |
+        mkdir -p "${{ github.workspace }}/dist/rpm"
+        rsync -av "$HOME/rpmbuild/RPMS/" "${{ github.workspace }}/dist/rpm/"
+        # Rename to requested filenames
+        find "${{ github.workspace }}/dist/rpm" -name "v2rayN-*-1.x86_64.rpm" -exec mv {} "${{ github.workspace }}/dist/rpm/v2rayN-linux-rhel-x64.rpm" \; || true
+        find "${{ github.workspace }}/dist/rpm" -name "v2rayN-*-1.aarch64.rpm" -exec mv {} "${{ github.workspace }}/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
+
+    - name: Upload RPM artifacts
+      if: github.event.inputs.release_tag != ''
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: v2rayN-rpm
+        path: |
+          ${{ github.workspace }}/dist/rpm/**/*.rpm
+
+    - name: Upload RPMs to release
+      uses: svenstaro/upload-release-action@v2
+      if: github.event.inputs.release_tag != ''
+      with:
+        file: ${{ github.workspace }}/dist/rpm/**/*.rpm
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
         prerelease: true

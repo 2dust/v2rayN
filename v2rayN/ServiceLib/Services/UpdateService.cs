@@ -5,11 +5,11 @@ namespace ServiceLib.Services;
 
 public class UpdateService
 {
-    private Action<bool, string>? _updateFunc;
-    private int _timeout = 30;
+    private Func<bool, string, Task>? _updateFunc;
+    private readonly int _timeout = 30;
     private static readonly string _tag = "UpdateService";
 
-    public async Task CheckUpdateGuiN(Config config, Action<bool, string> updateFunc, bool preRelease)
+    public async Task CheckUpdateGuiN(Config config, Func<bool, string, Task> updateFunc, bool preRelease)
     {
         _updateFunc = updateFunc;
         var url = string.Empty;
@@ -20,25 +20,25 @@ public class UpdateService
         {
             if (args.Success)
             {
-                _updateFunc?.Invoke(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
-                _updateFunc?.Invoke(true, Utils.UrlEncode(fileName));
+                UpdateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
+                UpdateFunc(true, Utils.UrlEncode(fileName));
             }
             else
             {
-                _updateFunc?.Invoke(false, args.Msg);
+                UpdateFunc(false, args.Msg);
             }
         };
         downloadHandle.Error += (sender2, args) =>
         {
-            _updateFunc?.Invoke(false, args.GetException().Message);
+            UpdateFunc(false, args.GetException().Message);
         };
 
-        _updateFunc?.Invoke(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
+        await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
         var result = await CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease);
         if (result.Success)
         {
-            _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
-            _updateFunc?.Invoke(false, result.Msg);
+            await UpdateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
+            await UpdateFunc(false, result.Msg);
 
             url = result.Data?.ToString();
             fileName = Utils.GetTempPath(Utils.GetGuid());
@@ -46,11 +46,11 @@ public class UpdateService
         }
         else
         {
-            _updateFunc?.Invoke(false, result.Msg);
+            await UpdateFunc(false, result.Msg);
         }
     }
 
-    public async Task CheckUpdateCore(ECoreType type, Config config, Action<bool, string> updateFunc, bool preRelease)
+    public async Task CheckUpdateCore(ECoreType type, Config config, Func<bool, string, Task> updateFunc, bool preRelease)
     {
         _updateFunc = updateFunc;
         var url = string.Empty;
@@ -61,34 +61,34 @@ public class UpdateService
         {
             if (args.Success)
             {
-                _updateFunc?.Invoke(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
-                _updateFunc?.Invoke(false, ResUI.MsgUnpacking);
+                UpdateFunc(false, ResUI.MsgDownloadV2rayCoreSuccessfully);
+                UpdateFunc(false, ResUI.MsgUnpacking);
 
                 try
                 {
-                    _updateFunc?.Invoke(true, fileName);
+                    UpdateFunc(true, fileName);
                 }
                 catch (Exception ex)
                 {
-                    _updateFunc?.Invoke(false, ex.Message);
+                    UpdateFunc(false, ex.Message);
                 }
             }
             else
             {
-                _updateFunc?.Invoke(false, args.Msg);
+                UpdateFunc(false, args.Msg);
             }
         };
         downloadHandle.Error += (sender2, args) =>
         {
-            _updateFunc?.Invoke(false, args.GetException().Message);
+            UpdateFunc(false, args.GetException().Message);
         };
 
-        _updateFunc?.Invoke(false, string.Format(ResUI.MsgStartUpdating, type));
+        await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
         var result = await CheckUpdateAsync(downloadHandle, type, preRelease);
         if (result.Success)
         {
-            _updateFunc?.Invoke(false, string.Format(ResUI.MsgParsingSuccessfully, type));
-            _updateFunc?.Invoke(false, result.Msg);
+            await UpdateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, type));
+            await UpdateFunc(false, result.Msg);
 
             url = result.Data?.ToString();
             var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
@@ -99,148 +99,17 @@ public class UpdateService
         {
             if (!result.Msg.IsNullOrEmpty())
             {
-                _updateFunc?.Invoke(false, result.Msg);
+                await UpdateFunc(false, result.Msg);
             }
         }
     }
 
-    public async Task UpdateSubscriptionProcess(Config config, string subId, bool blProxy, Action<bool, string> updateFunc)
-    {
-        _updateFunc = updateFunc;
-
-        _updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
-        var subItem = await AppHandler.Instance.SubItems();
-
-        if (subItem is not { Count: > 0 })
-        {
-            _updateFunc?.Invoke(false, ResUI.MsgNoValidSubscription);
-            return;
-        }
-
-        foreach (var item in subItem)
-        {
-            var id = item.Id.TrimEx();
-            var url = item.Url.TrimEx();
-            var userAgent = item.UserAgent.TrimEx();
-            var hashCode = $"{item.Remarks}->";
-            if (id.IsNullOrEmpty() || url.IsNullOrEmpty() || (subId.IsNotEmpty() && item.Id != subId))
-            {
-                //_updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgNoValidSubscription}");
-                continue;
-            }
-            if (!url.StartsWith(Global.HttpsProtocol) && !url.StartsWith(Global.HttpProtocol))
-            {
-                continue;
-            }
-            if (item.Enabled == false)
-            {
-                _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
-                continue;
-            }
-
-            var downloadHandle = new DownloadService();
-            downloadHandle.Error += (sender2, args) =>
-            {
-                _updateFunc?.Invoke(false, $"{hashCode}{args.GetException().Message}");
-            };
-
-            _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
-
-            //one url
-            url = Utils.GetPunycode(url);
-            //convert
-            if (item.ConvertTarget.IsNotEmpty())
-            {
-                var subConvertUrl = config.ConstItem.SubConvertUrl.IsNullOrEmpty() ? Global.SubConvertUrls.FirstOrDefault() : config.ConstItem.SubConvertUrl;
-                url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
-                if (!url.Contains("target="))
-                {
-                    url += string.Format("&target={0}", item.ConvertTarget);
-                }
-                if (!url.Contains("config="))
-                {
-                    url += string.Format("&config={0}", Global.SubConvertConfig.FirstOrDefault());
-                }
-            }
-            var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
-            if (blProxy && result.IsNullOrEmpty())
-            {
-                result = await downloadHandle.TryDownloadString(url, false, userAgent);
-            }
-
-            //more url
-            if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimEx().IsNotEmpty())
-            {
-                if (result.IsNotEmpty() && Utils.IsBase64String(result))
-                {
-                    result = Utils.Base64Decode(result);
-                }
-
-                var lstUrl = item.MoreUrl.TrimEx().Split(",") ?? [];
-                foreach (var it in lstUrl)
-                {
-                    var url2 = Utils.GetPunycode(it);
-                    if (url2.IsNullOrEmpty())
-                    {
-                        continue;
-                    }
-
-                    var result2 = await downloadHandle.TryDownloadString(url2, blProxy, userAgent);
-                    if (blProxy && result2.IsNullOrEmpty())
-                    {
-                        result2 = await downloadHandle.TryDownloadString(url2, false, userAgent);
-                    }
-                    if (result2.IsNotEmpty())
-                    {
-                        if (Utils.IsBase64String(result2))
-                        {
-                            result += Environment.NewLine + Utils.Base64Decode(result2);
-                        }
-                        else
-                        {
-                            result += Environment.NewLine + result2;
-                        }
-                    }
-                }
-            }
-
-            if (result.IsNullOrEmpty())
-            {
-                _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSubscriptionDecodingFailed}");
-            }
-            else
-            {
-                _updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgGetSubscriptionSuccessfully}");
-                if (result?.Length < 99)
-                {
-                    _updateFunc?.Invoke(false, $"{hashCode}{result}");
-                }
-
-                var ret = await ConfigHandler.AddBatchServers(config, result, id, true);
-                if (ret <= 0)
-                {
-                    Logging.SaveLog("FailedImportSubscription");
-                    Logging.SaveLog(result);
-                }
-                _updateFunc?.Invoke(false,
-                    ret > 0
-                        ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
-                        : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
-            }
-            _updateFunc?.Invoke(false, "-------------------------------------------------------");
-
-            //await ConfigHandler.DedupServerList(config, id);
-        }
-
-        _updateFunc?.Invoke(true, $"{ResUI.MsgUpdateSubscriptionEnd}");
-    }
-
-    public async Task UpdateGeoFileAll(Config config, Action<bool, string> updateFunc)
+    public async Task UpdateGeoFileAll(Config config, Func<bool, string, Task> updateFunc)
     {
         await UpdateGeoFiles(config, updateFunc);
         await UpdateOtherFiles(config, updateFunc);
         await UpdateSrsFileAll(config, updateFunc);
-        _updateFunc?.Invoke(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
+        await UpdateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
     }
 
     #region CheckUpdate private
@@ -259,14 +128,14 @@ public class UpdateService
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            _updateFunc?.Invoke(false, ex.Message);
+            await UpdateFunc(false, ex.Message);
             return new RetResult(false, ex.Message);
         }
     }
 
     private async Task<RetResult> GetRemoteVersion(DownloadService downloadHandle, ECoreType type, bool preRelease)
     {
-        var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
         var tagName = string.Empty;
         if (preRelease)
         {
@@ -300,7 +169,7 @@ public class UpdateService
     {
         try
         {
-            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
             string filePath = string.Empty;
             foreach (var name in coreInfo.CoreExes)
             {
@@ -343,7 +212,7 @@ public class UpdateService
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            _updateFunc?.Invoke(false, ex.Message);
+            await UpdateFunc(false, ex.Message);
             return new SemanticVersion("");
         }
     }
@@ -352,7 +221,7 @@ public class UpdateService
     {
         try
         {
-            var coreInfo = CoreInfoHandler.Instance.GetCoreInfo(type);
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
             var coreUrl = await GetUrlFromCore(coreInfo) ?? string.Empty;
             SemanticVersion curVersion;
             string message;
@@ -403,7 +272,7 @@ public class UpdateService
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            _updateFunc?.Invoke(false, ex.Message);
+            await UpdateFunc(false, ex.Message);
             return new RetResult(false, ex.Message);
         }
     }
@@ -464,7 +333,7 @@ public class UpdateService
 
     #region Geo private
 
-    private async Task UpdateGeoFiles(Config config, Action<bool, string> updateFunc)
+    private async Task UpdateGeoFiles(Config config, Func<bool, string, Task> updateFunc)
     {
         _updateFunc = updateFunc;
 
@@ -483,7 +352,7 @@ public class UpdateService
         }
     }
 
-    private async Task UpdateOtherFiles(Config config, Action<bool, string> updateFunc)
+    private async Task UpdateOtherFiles(Config config, Func<bool, string, Task> updateFunc)
     {
         //If it is not in China area, no update is required
         if (config.ConstItem.GeoSourceUrl.IsNotEmpty())
@@ -502,7 +371,7 @@ public class UpdateService
         }
     }
 
-    private async Task UpdateSrsFileAll(Config config, Action<bool, string> updateFunc)
+    private async Task UpdateSrsFileAll(Config config, Func<bool, string, Task> updateFunc)
     {
         _updateFunc = updateFunc;
 
@@ -510,7 +379,7 @@ public class UpdateService
         var geoSiteFiles = new List<string>();
 
         //Collect used files list
-        var routingItems = await AppHandler.Instance.RoutingItems();
+        var routingItems = await AppManager.Instance.RoutingItems();
         foreach (var routing in routingItems)
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
@@ -557,7 +426,7 @@ public class UpdateService
         }
     }
 
-    private async Task UpdateSrsFile(string type, string srsName, Config config, Action<bool, string> updateFunc)
+    private async Task UpdateSrsFile(string type, string srsName, Config config, Func<bool, string, Task> updateFunc)
     {
         var srsUrl = string.IsNullOrEmpty(config.ConstItem.SrsSourceUrl)
                         ? Global.SingboxRulesetUrl
@@ -565,12 +434,12 @@ public class UpdateService
 
         var fileName = $"{type}-{srsName}.srs";
         var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);
-        var url = string.Format(srsUrl, type, $"{type}-{srsName}");
+        var url = string.Format(srsUrl, type, $"{type}-{srsName}", srsName);
 
         await DownloadGeoFile(url, fileName, targetPath, updateFunc);
     }
 
-    private async Task DownloadGeoFile(string url, string fileName, string targetPath, Action<bool, string> updateFunc)
+    private async Task DownloadGeoFile(string url, string fileName, string targetPath, Func<bool, string, Task> updateFunc)
     {
         var tmpFileName = Utils.GetTempPath(Utils.GetGuid());
 
@@ -579,7 +448,7 @@ public class UpdateService
         {
             if (args.Success)
             {
-                _updateFunc?.Invoke(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, fileName));
+                UpdateFunc(false, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, fileName));
 
                 try
                 {
@@ -588,26 +457,31 @@ public class UpdateService
                         File.Copy(tmpFileName, targetPath, true);
 
                         File.Delete(tmpFileName);
-                        //_updateFunc?.Invoke(true, "");
+                        //await    UpdateFunc(true, "");
                     }
                 }
                 catch (Exception ex)
                 {
-                    _updateFunc?.Invoke(false, ex.Message);
+                    UpdateFunc(false, ex.Message);
                 }
             }
             else
             {
-                _updateFunc?.Invoke(false, args.Msg);
+                UpdateFunc(false, args.Msg);
             }
         };
         downloadHandle.Error += (sender2, args) =>
         {
-            _updateFunc?.Invoke(false, args.GetException().Message);
+            UpdateFunc(false, args.GetException().Message);
         };
 
         await downloadHandle.DownloadFileAsync(url, tmpFileName, true, _timeout);
     }
 
     #endregion Geo private
+
+    private async Task UpdateFunc(bool notify, string msg)
+    {
+        await _updateFunc?.Invoke(notify, msg);
+    }
 }

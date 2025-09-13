@@ -390,13 +390,44 @@ public class Utils
     {
         if (IPAddress.TryParse(ip, out var address))
         {
+            // Loopback address check (127.0.0.1 for IPv4, ::1 for IPv6)
+            if (IPAddress.IsLoopback(address))
+                return true;
+
             var ipBytes = address.GetAddressBytes();
-            if (ipBytes[0] == 10)
-                return true;
-            if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31)
-                return true;
-            if (ipBytes[0] == 192 && ipBytes[1] == 168)
-                return true;
+            if (address.AddressFamily == AddressFamily.InterNetwork)
+            {
+                // IPv4 private address check
+                if (ipBytes[0] == 10)
+                    return true;
+                if (ipBytes[0] == 172 && ipBytes[1] >= 16 && ipBytes[1] <= 31)
+                    return true;
+                if (ipBytes[0] == 192 && ipBytes[1] == 168)
+                    return true;
+            }
+            else if (address.AddressFamily == AddressFamily.InterNetworkV6)
+            {
+                // IPv6 private address check
+                // Link-local address fe80::/10
+                if (ipBytes[0] == 0xfe && (ipBytes[1] & 0xc0) == 0x80)
+                    return true;
+
+                // Unique local address fc00::/7 (typically fd00::/8)
+                if ((ipBytes[0] & 0xfe) == 0xfc)
+                    return true;
+
+                // Private portion in IPv4-mapped addresses ::ffff:0:0/96
+                if (address.IsIPv4MappedToIPv6)
+                {
+                    var ipv4Bytes = ipBytes.Skip(12).ToArray();
+                    if (ipv4Bytes[0] == 10)
+                        return true;
+                    if (ipv4Bytes[0] == 172 && ipv4Bytes[1] >= 16 && ipv4Bytes[1] <= 31)
+                        return true;
+                    if (ipv4Bytes[0] == 192 && ipv4Bytes[1] == 168)
+                        return true;
+                }
+            }
         }
 
         return false;
@@ -435,11 +466,11 @@ public class Utils
         return false;
     }
 
-    public static int GetFreePort(int defaultPort = 9090)
+    public static int GetFreePort(int defaultPort = 0)
     {
         try
         {
-            if (!Utils.PortInUse(defaultPort))
+            if (!(defaultPort == 0 || Utils.PortInUse(defaultPort)))
             {
                 return defaultPort;
             }
@@ -551,9 +582,9 @@ public class Utils
                     if (host.StartsWith("#"))
                         continue;
                     var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (hostItem.Length != 2)
+                    if (hostItem.Length < 2)
                         continue;
-                    systemHosts.Add(hostItem.Last(), hostItem.First());
+                    systemHosts.Add(hostItem[1], hostItem[0]);
                 }
             }
         }

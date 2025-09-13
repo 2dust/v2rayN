@@ -59,4 +59,34 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     {
         txtRemarks.Focus();
     }
+
+    private async void BtnSelectPrevProfile_Click(object? sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        var result = await selectWindow.ShowDialog<bool?>(this);
+        if (result == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                txtPrevProfile.Text = profile.Remarks;
+            }
+        }
+    }
+
+    private async void BtnSelectNextProfile_Click(object? sender, RoutedEventArgs e)
+    {
+        var selectWindow = new ProfilesSelectWindow();
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        var result = await selectWindow.ShowDialog<bool?>(this);
+        if (result == true)
+        {
+            var profile = await selectWindow.ProfileItem;
+            if (profile != null)
+            {
+                txtNextProfile.Text = profile.Remarks;
+            }
+        }
+    }
 }

@@ -9,8 +9,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 {
     #region Reactive
 
-    private IObservableCollection<RoutingItemModel> _routingItems = new ObservableCollectionExtended<RoutingItemModel>();
-    public IObservableCollection<RoutingItemModel> RoutingItems => _routingItems;
+    public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
 
     [Reactive]
     public RoutingItemModel SelectedSource { get; set; }
@@ -19,9 +18,6 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     [Reactive]
     public string DomainStrategy { get; set; }
-
-    [Reactive]
-    public string DomainMatcher { get; set; }
 
     [Reactive]
     public string DomainStrategy4Singbox { get; set; }
@@ -38,7 +34,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppHandler.Instance.Config;
+        _config = AppManager.Instance.Config;
         _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
@@ -75,7 +71,6 @@ public class RoutingSettingViewModel : MyReactiveObject
         SelectedSource = new();
 
         DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
-        DomainMatcher = _config.RoutingBasicItem.DomainMatcher;
         DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
         await ConfigHandler.InitBuiltinRouting(_config);
@@ -86,9 +81,9 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RefreshRoutingItems()
     {
-        _routingItems.Clear();
+        RoutingItems.Clear();
 
-        var routings = await AppHandler.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
         {
             var it = new RoutingItemModel()
@@ -102,24 +97,23 @@ public class RoutingSettingViewModel : MyReactiveObject
                 CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
                 Sort = item.Sort,
             };
-            _routingItems.Add(it);
+            RoutingItems.Add(it);
         }
     }
 
     private async Task SaveRoutingAsync()
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
-        _config.RoutingBasicItem.DomainMatcher = DomainMatcher;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
-            NoticeHandler.Instance.Enqueue(ResUI.OperationFailed);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 
@@ -134,7 +128,7 @@ public class RoutingSettingViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+            item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
             if (item is null)
             {
                 return;
@@ -151,7 +145,7 @@ public class RoutingSettingViewModel : MyReactiveObject
     {
         if (SelectedSource is null || SelectedSource.Remarks.IsNullOrEmpty())
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
         if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
@@ -160,7 +154,7 @@ public class RoutingSettingViewModel : MyReactiveObject
         }
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            var item = await AppHandler.Instance.GetRoutingItem(it?.Id);
+            var item = await AppManager.Instance.GetRoutingItem(it?.Id);
             if (item != null)
             {
                 await ConfigHandler.RemoveRoutingItem(item);
@@ -173,10 +167,10 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RoutingAdvancedSetDefault()
     {
-        var item = await AppHandler.Instance.GetRoutingItem(SelectedSource?.Id);
+        var item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
         if (item is null)
         {
-            NoticeHandler.Instance.Enqueue(ResUI.PleaseSelectRules);
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
 

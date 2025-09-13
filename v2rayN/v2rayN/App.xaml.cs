@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
+using ServiceLib.Manager;
 
 namespace v2rayN;
 
@@ -35,14 +36,14 @@ public partial class App : Application
             return;
         }
 
-        if (!AppHandler.Instance.InitApp())
+        if (!AppManager.Instance.InitApp())
         {
             UI.Show($"Loading GUI configuration file is abnormal,please restart the application{Environment.NewLine}加载GUI配置文件异常,请重启应用");
             Environment.Exit(0);
             return;
         }
 
-        AppHandler.Instance.InitComponents();
+        AppManager.Instance.InitComponents();
         base.OnStartup(e);
     }
 

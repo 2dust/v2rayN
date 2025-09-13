@@ -23,7 +23,7 @@ public partial class QrcodeView : UserControl
 
     private Bitmap? GetQRCode(string? url)
     {
-        var bytes = QRCodeHelper.GenQRCode(url);
+        var bytes = QRCodeUtils.GenQRCode(url);
         return ByteToBitmap(bytes);
     }
 

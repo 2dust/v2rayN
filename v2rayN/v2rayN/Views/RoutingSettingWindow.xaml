@@ -61,7 +61,6 @@
                 x:Name="btnSave"
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
-                Cursor="Hand"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
@@ -69,14 +68,12 @@
                 Width="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
-                Cursor="Hand"
                 IsCancel="true"
                 Style="{StaticResource DefButton}" />
         </StackPanel>
 
         <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -109,21 +106,6 @@
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbdomainMatcher}" />
-            <ComboBox
-                x:Name="cmbdomainMatcher"
-                Grid.Row="1"
-                Grid.Column="1"
-                Width="300"
-                Margin="{StaticResource Margin4}"
-                Style="{StaticResource DefComboBox}" />
-
-            <TextBlock
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="{StaticResource Margin4}"
-                VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}">
                 <Hyperlink Click="linkdomainStrategy4Singbox_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
@@ -132,7 +114,7 @@
             </TextBlock>
             <ComboBox
                 x:Name="cmbdomainStrategy4Singbox"
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"

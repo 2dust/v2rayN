@@ -1,4 +1,5 @@
 using System.Windows.Media;
+using ServiceLib.Manager;
 
 namespace v2rayN.Converters;
 
@@ -10,7 +11,7 @@ public class MaterialDesignFonts
     {
         try
         {
-            var fontFamily = AppHandler.Instance.Config.UiItem.CurrentFontFamily;
+            var fontFamily = AppManager.Instance.Config.UiItem.CurrentFontFamily;
             if (fontFamily.IsNotEmpty())
             {
                 var fontPath = Utils.GetFontsPath();
