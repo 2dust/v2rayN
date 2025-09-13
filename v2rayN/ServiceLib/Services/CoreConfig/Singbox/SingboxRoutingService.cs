@@ -72,11 +72,6 @@ public partial class CoreConfigSingboxService
             }
 
             var hostsDomains = new List<string>();
-            var systemHostsMap = Utils.GetSystemHosts();
-            foreach (var kvp in systemHostsMap)
-            {
-                hostsDomains.Add(kvp.Key);
-            }
             var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (dnsItem == null || dnsItem.Enabled == false)
             {
@@ -89,12 +84,23 @@ public partial class CoreConfigSingboxService
                         hostsDomains.Add(kvp.Key);
                     }
                 }
+                if (simpleDNSItem.UseSystemHosts == true)
+                {
+                    var systemHostsMap = Utils.GetSystemHosts();
+                    foreach (var kvp in systemHostsMap)
+                    {
+                        hostsDomains.Add(kvp.Key);
+                    }
+                }
             }
-            singboxConfig.route.rules.Add(new()
+            if (hostsDomains.Count > 0)
             {
-                action = "resolve",
-                domain = hostsDomains,
-            });
+                singboxConfig.route.rules.Add(new()
+                {
+                    action = "resolve",
+                    domain = hostsDomains,
+                });
+            }
 
             singboxConfig.route.rules.Add(new()
             {
