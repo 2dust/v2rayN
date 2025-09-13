@@ -552,7 +552,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
     {
         try
         {
@@ -597,7 +597,7 @@ public partial class CoreConfigV2rayService
                     var ret = node.ConfigType switch
                     {
                         EConfigType.PolicyGroup =>
-                            await GenOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                            await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
                         EConfigType.ProxyChain =>
                             await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
                         _ => throw new NotImplementedException()
@@ -719,6 +719,32 @@ public partial class CoreConfigV2rayService
             Logging.SaveLog(_tag, ex);
         }
         return null;
+    }
+
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    {
+        var resultOutbounds = new List<Outbounds4Ray>();
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                break;
+            }
+            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+            var result = await GenOutbound(node, outbound);
+            if (result != 0)
+            {
+                break;
+            }
+            outbound.tag = baseTagName + (i + 1).ToString();
+            resultOutbounds.Add(outbound);
+        }
+        v2rayConfig.outbounds ??= new();
+        resultOutbounds.AddRange(v2rayConfig.outbounds);
+        v2rayConfig.outbounds = resultOutbounds;
+        return await Task.FromResult(0);
     }
 
     private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig, string baseTagName = Global.ProxyTag)

@@ -159,7 +159,7 @@ public partial class CoreConfigV2rayService
             var ret = node.ConfigType switch
             {
                 EConfigType.PolicyGroup =>
-                    await GenOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                    await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
                 EConfigType.ProxyChain =>
                     await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
                 _ => throw new NotImplementedException()

@@ -2,13 +2,13 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad)
+    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
     {
         if (multipleLoad == EMultipleLoad.LeastPing)
         {
             var observatory = new Observatory4Ray
             {
-                subjectSelector = [Global.ProxyTag],
+                subjectSelector = [baseTagName],
                 probeUrl = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
                 probeInterval = "3m",
                 enableConcurrency = true,
@@ -19,7 +19,7 @@ public partial class CoreConfigV2rayService
         {
             var burstObservatory = new BurstObservatory4Ray
             {
-                subjectSelector = [Global.ProxyTag],
+                subjectSelector = [baseTagName],
                 pingConfig = new()
                 {
                     destination = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,

@@ -403,7 +403,7 @@ public partial class CoreConfigSingboxService
             var ret = node.ConfigType switch
             {
                 EConfigType.PolicyGroup =>
-                    await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
+                    await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
                 EConfigType.ProxyChain =>
                     await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
                 _ => throw new NotImplementedException()

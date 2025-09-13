@@ -1,4 +1,3 @@
-using System.Data;
 using System.Reactive;
 using DynamicData.Binding;
 using ReactiveUI;

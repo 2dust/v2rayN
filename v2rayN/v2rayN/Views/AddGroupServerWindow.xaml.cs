@@ -1,8 +1,8 @@
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Input;
-using ReactiveUI;
-using System.Reactive.Disposables;
 using DynamicData;
+using ReactiveUI;
 
 namespace v2rayN.Views;
 

@@ -451,7 +451,7 @@ public partial class CoreConfigSingboxService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsList(proxyProfiles, singboxConfig, multipleLoad);
+            await GenOutboundsListWithChain(proxyProfiles, singboxConfig, multipleLoad);
 
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);

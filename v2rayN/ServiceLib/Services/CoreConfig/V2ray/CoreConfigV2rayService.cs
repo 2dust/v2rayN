@@ -180,7 +180,7 @@ public partial class CoreConfigV2rayService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsList(proxyProfiles, v2rayConfig);
+            await GenOutboundsListWithChain(proxyProfiles, v2rayConfig);
 
             //add balancers
             await GenObservatory(v2rayConfig, multipleLoad);
