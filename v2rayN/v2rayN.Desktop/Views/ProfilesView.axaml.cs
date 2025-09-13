@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
-using ServiceLib.Manager;
 using Splat;
 using v2rayN.Desktop.Common;
 

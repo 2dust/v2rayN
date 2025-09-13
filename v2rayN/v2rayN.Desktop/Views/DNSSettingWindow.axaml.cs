@@ -2,7 +2,6 @@ using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ReactiveUI;
-using ServiceLib.Manager;
 using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;

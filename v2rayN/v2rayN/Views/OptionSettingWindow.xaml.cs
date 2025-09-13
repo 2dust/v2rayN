@@ -4,7 +4,6 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Media;
 using ReactiveUI;
-using ServiceLib.Manager;
 
 namespace v2rayN.Views;
 
