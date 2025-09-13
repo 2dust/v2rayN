@@ -31,7 +31,6 @@ public partial class MainWindow
         this.Closing += MainWindow_Closing;
         this.PreviewKeyDown += MainWindow_PreviewKeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
-        //menuPromotion.Click += menuPromotion_Click;
         menuClose.Click += menuClose_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;

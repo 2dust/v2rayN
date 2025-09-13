@@ -11,34 +11,7 @@ and [others](https://github.com/cg3s/v2rayN/wiki/List-of-supported-cores)
 
 ## How to use
 
-Check [Release files introduction](https://github.com/cg3s/v2rayN/wiki/Release-files-introduction) and select the version you need to download
-
-### Windows
-
-- Run `v2rayN.exe`
-
-### Linux
-
-- `chmod +x v2rayN` Run `./v2rayN` under user permissions
-
-```
-Debian 9+
-Ubuntu 16.04+
-Fedora 30+
-```
-
-### macOS
-
-- `chmod +x v2rayN` Run `./v2rayN` under user permissions
-
-```
-macOS 11+
-```
-
-## Requirements
-
-- [Microsoft .NET 8.0 Desktop Runtime ](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-- [Supported cores](https://github.com/cg3s/v2rayN/wiki/List-of-supported-cores)
+Read the [Wiki](https://github.com/2dust/v2rayN/wiki) for details.
 
 ## Telegram Channel
 

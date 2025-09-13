@@ -135,10 +135,6 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.MixedConcurrencyCount = 5;
         }
-        if (config.SpeedTestItem.IPAPIUrl.IsNullOrEmpty())
-        {
-            config.SpeedTestItem.IPAPIUrl = Global.IPAPIUrls.First();
-        }
 
         config.Mux4RayItem ??= new()
         {
