@@ -44,6 +44,7 @@
 		<EmbeddedResource Include="Sample\tun_singbox_inbound" />
 		<EmbeddedResource Include="Sample\tun_singbox_rules" />
 		<EmbeddedResource Include="Sample\linux_autostart_config" />
+        <EmbeddedResource Include="Sample\singbox_fakeip_filter" />
 	</ItemGroup>
 
 	<ItemGroup>
