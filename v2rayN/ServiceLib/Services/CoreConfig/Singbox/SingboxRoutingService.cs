@@ -368,6 +368,13 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
+        var tag = Global.ProxyTag + node.IndexId.ToString();
+        if (singboxConfig.outbounds.Any(o => o.tag == tag)
+            || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
+        {
+            return tag;
+        }
+
         var server = await GenServer(node);
         if (server is null)
         {
