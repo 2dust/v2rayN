@@ -749,10 +749,12 @@ public partial class CoreConfigV2rayService
 
     private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig, string baseTagName = Global.ProxyTag)
     {
+        // Based on actual network flow instead of data packets
+        var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
         var resultOutbounds = new List<Outbounds4Ray>();
-        for (var i = 0; i < nodes.Count; i++)
+        for (var i = 0; i < nodesReverse.Count; i++)
         {
-            var node = nodes[i];
+            var node = nodesReverse[i];
             var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {
@@ -776,7 +778,7 @@ public partial class CoreConfigV2rayService
                 outbound.tag = "chain-" + baseTagName + i.ToString();
             }
 
-            if (i != nodes.Count - 1)
+            if (i != nodesReverse.Count - 1)
             {
                 outbound.streamSettings.sockopt = new()
                 {

@@ -682,11 +682,13 @@ public partial class CoreConfigSingboxService
 
     private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
     {
+        // Based on actual network flow instead of data packets
+        var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
         var resultOutbounds = new List<Outbound4Sbox>();
         var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
-        for (var i = 0; i < nodes.Count; i++)
+        for (var i = 0; i < nodesReverse.Count; i++)
         {
-            var node = nodes[i];
+            var node = nodesReverse[i];
             var server = await GenServer(node);
 
             if (server is null)
@@ -703,7 +705,7 @@ public partial class CoreConfigSingboxService
                 server.tag = baseTagName + i.ToString();
             }
 
-            if (i != nodes.Count - 1)
+            if (i != nodesReverse.Count - 1)
             {
                 server.detour = baseTagName + (i + 1).ToString();
             }
