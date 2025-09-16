@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/GitHub Action/">
+    <File Path="../.github/workflows/build-all.yml" />
+    <File Path="../.github/workflows/build-linux.yml" />
+    <File Path="../.github/workflows/build-osx.yml" />
+    <File Path="../.github/workflows/build-windows-desktop.yml" />
+    <File Path="../.github/workflows/build-windows.yml" />
+    <File Path="../.github/workflows/winget-publish.yml" />
+    <File Path="../package-appimage.sh" />
+    <File Path="../package-debian.sh" />
+    <File Path="../package-osx.sh" />
+    <File Path="../package-release-zip.sh" />
+    <File Path="../pkg2appimage.yml" />
+  </Folder>
+  <Folder Name="/Solution Files/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="AmazTool/AmazTool.csproj" />
+  <Project Path="GlobalHotKeys/src/GlobalHotKeys/GlobalHotKeys.csproj" />
+  <Project Path="ServiceLib/ServiceLib.csproj" />
+  <Project Path="v2rayN.Desktop/v2rayN.Desktop.csproj" />
+  <Project Path="v2rayN/v2rayN.csproj" />
+</Solution>
