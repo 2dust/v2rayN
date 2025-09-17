@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
