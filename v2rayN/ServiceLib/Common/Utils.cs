@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using CliWrap;
 using CliWrap.Buffered;
 
@@ -355,6 +356,14 @@ public class Utils
             );
 
         return userHostsMap;
+    }
+
+    public static List<string> ParseCertSha256ToList(string certSha256Content)
+    {
+        return String2List(certSha256Content)
+                .Select(s => s.Replace(":", "").Replace(" ", ""))
+                .Where(s => s.Length == 64 && Regex.IsMatch(s, @"\A\b[0-9a-fA-F]+\b\Z"))
+                .ToList();
     }
 
     #endregion 转换函数

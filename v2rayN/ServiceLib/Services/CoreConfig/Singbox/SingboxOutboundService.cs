@@ -256,9 +256,7 @@ public partial class CoreConfigSingboxService
                 if (node.CertSha256.IsNotEmpty())
                 {
                     // hex to raw to base64
-                    var certSha256List = Utils.String2List(node.CertSha256)
-                        .Select(s => s.Replace(":", "").Replace(" ", ""))
-                        .Where(s => s.Length == 64 && Regex.IsMatch(s, @"\A[0-9a-fA-F]{64}\Z"))
+                    var certSha256List = Utils.ParseCertSha256ToList(node.CertSha256)
                         .Select(s => Convert.ToBase64String(
                             Enumerable.Range(0, 32)
                                       .Select(i => Convert.ToByte(s.Substring(i * 2, 2), 16))
