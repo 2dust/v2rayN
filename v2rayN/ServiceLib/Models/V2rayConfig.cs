@@ -355,6 +355,7 @@ public class TlsSettings4Ray
     public string? shortId { get; set; }
     public string? spiderX { get; set; }
     public string? mldsa65Verify { get; set; }
+    public List<string>? pinnedPeerCertificateSha256 { get; set; }
 }
 
 public class TcpSettings4Ray

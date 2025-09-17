@@ -94,6 +94,7 @@ public class ProfileItem : ReactiveObject
     public string ShortId { get; set; }
     public string SpiderX { get; set; }
     public string Mldsa65Verify { get; set; }
+    public string CertSha256 { get; set; }
     public string Extra { get; set; }
     public bool? MuxEnabled { get; set; }
 }

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
@@ -250,6 +252,22 @@ public partial class CoreConfigSingboxService
                         enabled = true,
                         fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
                     };
+                }
+                if (node.CertSha256.IsNotEmpty())
+                {
+                    // hex to raw to base64
+                    var certSha256List = Utils.String2List(node.CertSha256)
+                        .Select(s => s.Replace(":", "").Replace(" ", ""))
+                        .Where(s => s.Length == 64 && Regex.IsMatch(s, @"\A[0-9a-fA-F]{64}\Z"))
+                        .Select(s => Convert.ToBase64String(
+                            Enumerable.Range(0, 32)
+                                      .Select(i => Convert.ToByte(s.Substring(i * 2, 2), 16))
+                                      .ToArray()))
+                        .ToList();
+                    if (certSha256List.Count > 0)
+                    {
+                        tls.certificate_sha256 = certSha256List;
+                    }
                 }
                 if (node.StreamSecurity == Global.StreamSecurityReality)
                 {

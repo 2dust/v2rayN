@@ -182,6 +182,7 @@ public class Tls4Sbox
     public bool? fragment { get; set; }
     public string? fragment_fallback_delay { get; set; }
     public bool? record_fragment { get; set; }
+    public List<string>? certificate_sha256 { get; set; }
 }
 
 public class Multiplex4Sbox

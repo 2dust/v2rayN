@@ -253,6 +253,7 @@ public static class ConfigHandler
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
             item.Mldsa65Verify = profileItem.Mldsa65Verify;
+            item.CertSha256 = profileItem.CertSha256;
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
         }

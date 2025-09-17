@@ -2365,6 +2365,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server Certificate Fingerprint (SHA-256) 的本地化字符串。
+        /// </summary>
+        public static string TbCertSha256 {
+            get {
+                return ResourceManager.GetString("TbCertSha256", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hex SHA-256, comma-separated for certificate chain 的本地化字符串。
+        /// </summary>
+        public static string TbCertSha256Tips {
+            get {
+                return ResourceManager.GetString("TbCertSha256Tips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clear system proxy 的本地化字符串。
         /// </summary>
         public static string TbClearSystemProxy {

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
@@ -276,6 +278,17 @@ public partial class CoreConfigV2rayService
                 else if (host.IsNotEmpty())
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
+                }
+                if (node.CertSha256.IsNotEmpty())
+                {
+                    var certSha256List = Utils.String2List(node.CertSha256)
+                        .Select(s => s.Replace(":", "").Replace(" ", ""))
+                        .Where(s => s.Length == 64 && Regex.IsMatch(s, @"\A\b[0-9a-fA-F]+\b\Z"))
+                        .ToList();
+                    if (certSha256List.Count > 0)
+                    {
+                        tlsSettings.pinnedPeerCertificateSha256 = certSha256List;
+                    }
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }

@@ -1512,4 +1512,10 @@
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>默认全局生效，内置 FakeIP 过滤，仅在 sing-box 中生效</value>
   </data>
+  <data name="TbCertSha256" xml:space="preserve">
+    <value>服务器证书指纹 (SHA-256)</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>十六进制 SHA-256，证书链用逗号分隔</value>
+  </data>
 </root>

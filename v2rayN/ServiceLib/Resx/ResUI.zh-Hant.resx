@@ -1512,4 +1512,10 @@
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
   </data>
+  <data name="TbCertSha256" xml:space="preserve">
+    <value>Server Certificate Fingerprint (SHA-256)</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Hex SHA-256, comma-separated for certificate chain</value>
+  </data>
 </root>
