@@ -44,14 +44,28 @@ public partial class CoreConfigSingboxService
             }
 
             // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
+            if (node != null)
             {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+                string? domainToAdd = null;
+
+                if (Utils.IsDomain(node.Address))
                 {
-                    server = Global.SingboxOutboundResolverTag,
-                    domain = [node.Address],
-                });
+                    domainToAdd = node.Address;
+                }
+                else if (node.Sni != null && Utils.IsDomain(node.Sni))
+                {
+                    domainToAdd = node.Sni;
+                }
+
+                if (domainToAdd != null)
+                {
+                    singboxConfig.dns.rules ??= new List<Rule4Sbox>();
+                    singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+                    {
+                        server = Global.SingboxDirectDNSTag,
+                        domain = [domainToAdd],
+                    });
+                }
             }
         }
         catch (Exception ex)
@@ -347,14 +361,28 @@ public partial class CoreConfigSingboxService
             }
 
             // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
+            if (node != null)
             {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+                string? domainToAdd = null;
+
+                if (Utils.IsDomain(node.Address))
                 {
-                    server = Global.SingboxFinalResolverTag,
-                    domain = [node.Address],
-                });
+                    domainToAdd = node.Address;
+                }
+                else if (node.Sni != null && Utils.IsDomain(node.Sni))
+                {
+                    domainToAdd = node.Sni;
+                }
+
+                if (domainToAdd != null)
+                {
+                    singboxConfig.dns.rules ??= new List<Rule4Sbox>();
+                    singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+                    {
+                        server = Global.SingboxDirectDNSTag,
+                        domain = [domainToAdd],
+                    });
+                }
             }
         }
         catch (Exception ex)
