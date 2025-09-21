@@ -20,8 +20,9 @@ public class QRCodeUtils
             var qrCodeImage = ServiceLib.Common.QRCodeUtils.GenQRCode(strContent);
             return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog("GetQRCode", ex);
             return null;
         }
     }
