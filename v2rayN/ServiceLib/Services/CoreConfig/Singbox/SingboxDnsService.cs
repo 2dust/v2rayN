@@ -46,16 +46,7 @@ public partial class CoreConfigSingboxService
             // Tun2SocksAddress
             if (node != null)
             {
-                string? domainToAdd = null;
-
-                if (Utils.IsDomain(node.Address))
-                {
-                    domainToAdd = node.Address;
-                }
-                else if (node.Sni != null && Utils.IsDomain(node.Sni))
-                {
-                    domainToAdd = node.Sni;
-                }
+                string? domainToAdd = Utils.GetDomainFromProfile(node);
 
                 if (domainToAdd != null)
                 {
@@ -363,16 +354,7 @@ public partial class CoreConfigSingboxService
             // Tun2SocksAddress
             if (node != null)
             {
-                string? domainToAdd = null;
-
-                if (Utils.IsDomain(node.Address))
-                {
-                    domainToAdd = node.Address;
-                }
-                else if (node.Sni != null && Utils.IsDomain(node.Sni))
-                {
-                    domainToAdd = node.Sni;
-                }
+                string? domainToAdd = Utils.GetDomainFromProfile(node);
 
                 if (domainToAdd != null)
                 {

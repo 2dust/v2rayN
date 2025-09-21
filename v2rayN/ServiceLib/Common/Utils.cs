@@ -459,6 +459,19 @@ public class Utils
         return false;
     }
 
+    public static string? GetDomainFromProfile(ProfileItem node)
+    {
+        if (IsDomain(node.Address))
+        {
+            return node.Address;
+        }
+        else if (node.Sni != null && IsDomain(node.Sni))
+        {
+            return node.Sni;
+        }
+        return null;
+    }
+
     #endregion 数据检查
 
     #region 测速
