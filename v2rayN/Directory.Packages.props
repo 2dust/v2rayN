@@ -18,8 +18,8 @@
     <PackageVersion Include="ReactiveUI" Version="20.4.1" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageVersion Include="ReactiveUI.WPF" Version="20.4.1" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.9" />
-    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.9" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.10" />
+    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.2.1.10" />
     <PackageVersion Include="Splat.NLog" Version="16.2.1" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
