@@ -43,16 +43,7 @@ public partial class CoreConfigSingboxService
                 });
             }
 
-            // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
-            {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
-                {
-                    server = Global.SingboxOutboundResolverTag,
-                    domain = [node.Address],
-                });
-            }
+            await GenOutboundDnsRule(node, singboxConfig, Global.SingboxOutboundResolverTag);
         }
         catch (Exception ex)
         {
@@ -346,16 +337,7 @@ public partial class CoreConfigSingboxService
                 await GenDnsDomainsLegacyCompatible(singboxConfig, item);
             }
 
-            // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
-            {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
-                {
-                    server = Global.SingboxFinalResolverTag,
-                    domain = [node.Address],
-                });
-            }
+            await GenOutboundDnsRule(node, singboxConfig, Global.SingboxFinalResolverTag);
         }
         catch (Exception ex)
         {
@@ -422,6 +404,37 @@ public partial class CoreConfigSingboxService
         }
 
         singboxConfig.dns = dns4Sbox;
+        return await Task.FromResult(0);
+    }
+
+    private async Task<int> GenOutboundDnsRule(ProfileItem? node, SingboxConfig singboxConfig, string? server)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+
+        var domain = string.Empty;
+        if (Utils.IsDomain(node.Address)) // normal outbound
+        {
+            domain = node.Address;
+        }
+        else if (node.Address == Global.Loopback && node.SpiderX.IsNotEmpty() && Utils.IsDomain(node.SpiderX)) // Tun2SocksAddress
+        {
+            domain = node.SpiderX;
+        }
+        if (domain.IsNullOrEmpty())
+        {
+            return 0;
+        }
+
+        singboxConfig.dns.rules ??= new List<Rule4Sbox>();
+        singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+        {
+            server = server,
+            domain = [domain],
+        });
+
         return await Task.FromResult(0);
     }
 

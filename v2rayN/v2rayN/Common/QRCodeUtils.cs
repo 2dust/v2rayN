@@ -32,8 +32,8 @@ public class QRCodeUtils
         {
             GetDpi(window, out var dpiX, out var dpiY);
 
-            var left = (int)(SystemParameters.WorkArea.Left);
-            var top = (int)(SystemParameters.WorkArea.Top);
+            var left = (int)SystemParameters.WorkArea.Left;
+            var top = (int)SystemParameters.WorkArea.Top;
             var width = (int)(SystemParameters.WorkArea.Width / dpiX);
             var height = (int)(SystemParameters.WorkArea.Height / dpiY);
 

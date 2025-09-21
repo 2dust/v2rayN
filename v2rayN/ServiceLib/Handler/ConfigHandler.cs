@@ -1214,11 +1214,11 @@ public static class ConfigHandler
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                Sni = node.Address, //Tun2SocksAddress
+                SpiderX = node.Address, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
-        else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
+        else if (node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0)
         {
             var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
             itemSocks = new ProfileItem()

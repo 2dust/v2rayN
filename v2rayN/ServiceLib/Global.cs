@@ -598,6 +598,7 @@ public class Global
             { "cloudflare-dns.com", new List<string> { "104.16.249.249", "104.16.248.249", "2606:4700::6810:f8f9", "2606:4700::6810:f9f9" } },
             { "dns.cloudflare.com", new List<string> { "104.16.132.229", "104.16.133.229", "2606:4700::6810:84e5", "2606:4700::6810:85e5" } },
             { "dot.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
+            { "doh.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
             { "dns.quad9.net", new List<string> { "9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9" } },
             { "dns.yandex.net", new List<string> { "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff" } },
             { "dns.sb", new List<string> { "185.222.222.222", "2a09::" } },
