@@ -204,6 +204,47 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult<BaseServer4Sbox?>(null);
     }
 
+    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
+    {
+        try
+        {
+            if (node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain))
+            {
+                return -1;
+            }
+            ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+            if (profileGroupItem is null || profileGroupItem.ChildItems.IsNullOrEmpty())
+            {
+                return -1;
+            }
+            var childProfiles = (await Task.WhenAll(
+                    Utils.String2List(profileGroupItem.ChildItems)
+                    .Where(p => !p.IsNullOrEmpty())
+                    .Select(AppManager.Instance.GetProfileItem)
+                )).Where(p => p != null && p.IsValid()).ToList();
+            if (childProfiles.Count <= 0)
+            {
+                return -1;
+            }
+            switch (node.ConfigType)
+            {
+                case EConfigType.PolicyGroup:
+                    await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    break;
+                case EConfigType.ProxyChain:
+                    await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return await Task.FromResult(0);
+    }
+
     private async Task<int> GenOutboundMux(ProfileItem node, Outbound4Sbox outbound)
     {
         try
