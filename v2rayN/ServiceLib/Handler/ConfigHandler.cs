@@ -1251,7 +1251,7 @@ public static class ConfigHandler
     public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
         ProfileItem? itemSocks = null;
-        if (node.ConfigType != EConfigType.Custom && node.ConfigType < EConfigType.Group && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
+        if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
             itemSocks = new ProfileItem()
             {
@@ -1262,7 +1262,7 @@ public static class ConfigHandler
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
-        else if (node.ConfigType == EConfigType.Custom && node.ConfigType < EConfigType.Group && node.PreSocksPort > 0)
+        else if (node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0)
         {
             var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
             itemSocks = new ProfileItem()
