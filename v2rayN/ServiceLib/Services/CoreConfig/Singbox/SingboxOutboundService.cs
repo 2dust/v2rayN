@@ -204,7 +204,7 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult<BaseServer4Sbox?>(null);
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
     {
         try
         {
@@ -239,7 +239,15 @@ public partial class CoreConfigSingboxService
             switch (node.ConfigType)
             {
                 case EConfigType.PolicyGroup:
-                    await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    if (ignoreOriginChain)
+                    {
+                        await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    }
+                    else
+                    {
+                        await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    }
+
                     break;
                 case EConfigType.ProxyChain:
                     await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);

@@ -480,7 +480,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
     {
         try
         {
@@ -515,7 +515,14 @@ public partial class CoreConfigV2rayService
             switch (node.ConfigType)
             {
                 case EConfigType.PolicyGroup:
-                    await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
+                    if (ignoreOriginChain)
+                    {
+                        await GenOutboundsList(childProfiles, v2rayConfig, baseTagName);
+                    }
+                    else
+                    {
+                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
+                    }
                     break;
                 case EConfigType.ProxyChain:
                     await GenChainOutboundsList(childProfiles, v2rayConfig, baseTagName);
