@@ -480,6 +480,62 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
+    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    {
+        try
+        {
+            if (node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain))
+            {
+                return -1;
+            }
+            ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+            if (profileGroupItem is null || profileGroupItem.ChildItems.IsNullOrEmpty())
+            {
+                return -1;
+            }
+            // remove custom nodes
+            // remove group nodes for proxy chain
+            var childProfiles = (await Task.WhenAll(
+                    Utils.String2List(profileGroupItem.ChildItems)
+                        .Where(p => !p.IsNullOrEmpty())
+                        .Select(AppManager.Instance.GetProfileItem)
+                ))
+                .Where(p =>
+                    p != null &&
+                    p.IsValid() &&
+                    p.ConfigType != EConfigType.Custom &&
+                    (node.ConfigType == EConfigType.PolicyGroup || p.ConfigType < EConfigType.Group)
+                )
+                .ToList();
+
+            if (childProfiles.Count <= 0)
+            {
+                return -1;
+            }
+            switch (node.ConfigType)
+            {
+                case EConfigType.PolicyGroup:
+                    await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
+                    break;
+                case EConfigType.ProxyChain:
+                    await GenChainOutboundsList(childProfiles, v2rayConfig, baseTagName);
+                    break;
+                default:
+                    break;
+            }
+
+            //add balancers
+            await GenObservatory(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+            await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return await Task.FromResult(0);
+    }
+
     private async Task<int> GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
     {
         //fragment proxy

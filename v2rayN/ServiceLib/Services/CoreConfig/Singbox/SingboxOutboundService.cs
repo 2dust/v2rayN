@@ -217,11 +217,21 @@ public partial class CoreConfigSingboxService
             {
                 return -1;
             }
+            // remove custom nodes
+            // remove group nodes for proxy chain
             var childProfiles = (await Task.WhenAll(
                     Utils.String2List(profileGroupItem.ChildItems)
-                    .Where(p => !p.IsNullOrEmpty())
-                    .Select(AppManager.Instance.GetProfileItem)
-                )).Where(p => p != null && p.IsValid()).ToList();
+                        .Where(p => !p.IsNullOrEmpty())
+                        .Select(AppManager.Instance.GetProfileItem)
+                ))
+                .Where(p =>
+                    p != null &&
+                    p.IsValid() &&
+                    p.ConfigType != EConfigType.Custom &&
+                    (node.ConfigType == EConfigType.PolicyGroup || p.ConfigType < EConfigType.Group)
+                )
+                .ToList();
+
             if (childProfiles.Count <= 0)
             {
                 return -1;

@@ -32,19 +32,19 @@ public class ProfileItem : ReactiveObject
     public string GetSummary()
     {
         var summary = $"[{(ConfigType).ToString()}] ";
-        var arrAddr = Address.Contains(':') ? Address.Split(':') : Address.Split('.');
-        var addr = arrAddr.Length switch
-        {
-            > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
-            > 1 => $"***{arrAddr.Last()}",
-            _ => Address
-        };
-        if (ConfigType is EConfigType.Custom or > EConfigType.Group)
+        if (IsComplex())
         {
             summary += $"[{CoreType.ToString()}]{Remarks}";
         }
         else
         {
+            var arrAddr = Address.Contains(':') ? Address.Split(':') : Address.Split('.');
+            var addr = arrAddr.Length switch
+            {
+                > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
+                > 1 => $"***{arrAddr.Last()}",
+                _ => Address
+            };
             summary += $"{Remarks}({addr}:{Port})";
         }
         return summary;

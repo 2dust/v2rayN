@@ -385,29 +385,8 @@ public partial class CoreConfigSingboxService
 
         if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
         {
-            ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-            if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
-            {
-                return Global.ProxyTag;
-            }
-            var childProfiles = (await Task.WhenAll(
-                    Utils.String2List(profileGroupItem.ChildItems)
-                    .Where(p => !p.IsNullOrEmpty())
-                    .Select(AppManager.Instance.GetProfileItem)
-                )).Where(p => p != null).ToList();
-            if (childProfiles.Count <= 0)
-            {
-                return Global.ProxyTag;
-            }
             var childBaseTagName = $"{Global.ProxyTag}-{node.IndexId}";
-            var ret = node.ConfigType switch
-            {
-                EConfigType.PolicyGroup =>
-                    await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
-                EConfigType.ProxyChain =>
-                    await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
-                _ => throw new NotImplementedException()
-            };
+            var ret = await GenGroupOutbound(node, singboxConfig, childBaseTagName);
             if (ret == 0)
             {
                 return childBaseTagName;

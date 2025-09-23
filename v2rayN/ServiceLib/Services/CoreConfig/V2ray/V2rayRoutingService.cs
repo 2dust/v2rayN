@@ -141,33 +141,8 @@ public partial class CoreConfigV2rayService
 
         if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
         {
-            ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-            if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
-            {
-                return Global.ProxyTag;
-            }
-            var childProfiles = (await Task.WhenAll(
-                    Utils.String2List(profileGroupItem.ChildItems)
-                    .Where(p => !p.IsNullOrEmpty())
-                    .Select(AppManager.Instance.GetProfileItem)
-                )).Where(p => p != null).ToList();
-            if (childProfiles.Count <= 0)
-            {
-                return Global.ProxyTag;
-            }
             var childBaseTagName = $"{Global.ProxyTag}-{node.IndexId}";
-            var ret = node.ConfigType switch
-            {
-                EConfigType.PolicyGroup =>
-                    await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
-                EConfigType.ProxyChain =>
-                    await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
-                _ => throw new NotImplementedException()
-            };
-            if (node.ConfigType == EConfigType.PolicyGroup)
-            {
-                await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, childBaseTagName);
-            }
+            var ret = await GenGroupOutbound(node, v2rayConfig, childBaseTagName);
             if (ret == 0)
             {
                 return childBaseTagName;

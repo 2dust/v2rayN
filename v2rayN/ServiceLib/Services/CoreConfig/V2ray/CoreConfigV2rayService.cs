@@ -15,35 +15,8 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node?.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
-            {
-                ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-                if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
-                {
-                    ret.Msg = ResUI.CheckServerSettings;
-                    return ret;
-                }
-                var childProfiles = (await Task.WhenAll(
-                        Utils.String2List(profileGroupItem.ChildItems)
-                        .Where(p => !p.IsNullOrEmpty())
-                        .Select(AppManager.Instance.GetProfileItem)
-                    )).Where(p => p != null).ToList();
-                if (childProfiles.Count <= 0)
-                {
-                    ret.Msg = ResUI.CheckServerSettings;
-                    return ret;
-                }
-                switch (node.ConfigType)
-                {
-                    case EConfigType.PolicyGroup:
-                        return await GenerateClientMultipleLoadConfig(childProfiles, profileGroupItem.MultipleLoad);
-                    case EConfigType.ProxyChain:
-                        return await GenerateClientChainConfig(childProfiles);
-                }
-            }
-
             if (node == null
-                || node.Port <= 0)
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -56,6 +29,17 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             ret.Msg = ResUI.InitialConfiguration;
+
+            if (node?.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            {
+                switch (node.ConfigType)
+                {
+                    case EConfigType.PolicyGroup:
+                        return await GenerateClientMultipleLoadConfig(node);
+                    case EConfigType.ProxyChain:
+                        return await GenerateClientChainConfig(node);
+                }
+            }
 
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
             if (result.IsNullOrEmpty())
@@ -98,7 +82,7 @@ public partial class CoreConfigV2rayService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
+    public async Task<RetResult> GenerateClientMultipleLoadConfig(ProfileItem parentNode)
     {
         var ret = new RetResult();
 
@@ -134,57 +118,12 @@ public partial class CoreConfigV2rayService(Config config)
             await GenDns(null, v2rayConfig);
             await GenStatistic(v2rayConfig);
 
-            var proxyProfiles = new List<ProfileItem>();
-            foreach (var it in selecteds)
-            {
-                if (it.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
-                {
-                    var itemGroup = await AppManager.Instance.GetProfileItem(it.IndexId);
-                    proxyProfiles.Add(itemGroup);
-                }
-                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
-                {
-                    continue;
-                }
-                if (it.Port <= 0)
-                {
-                    continue;
-                }
-                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (item is null)
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
-                {
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                  && !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-
-                //outbound
-                proxyProfiles.Add(item);
-            }
-            if (proxyProfiles.Count <= 0)
+            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
+            if (groupRet != 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsListWithChain(proxyProfiles, v2rayConfig);
-
-            //add balancers
-            await GenObservatory(v2rayConfig, multipleLoad);
-            await GenBalancer(v2rayConfig, multipleLoad);
 
             var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
 
@@ -248,7 +187,7 @@ public partial class CoreConfigV2rayService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientChainConfig(List<ProfileItem> selecteds)
+    public async Task<RetResult> GenerateClientChainConfig(ProfileItem parentNode)
     {
         var ret = new RetResult();
 
@@ -284,48 +223,12 @@ public partial class CoreConfigV2rayService(Config config)
             await GenStatistic(v2rayConfig);
             v2rayConfig.outbounds.RemoveAt(0);
 
-            var proxyProfiles = new List<ProfileItem>();
-            foreach (var it in selecteds)
-            {
-                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
-                {
-                    continue;
-                }
-                if (it.Port <= 0)
-                {
-                    continue;
-                }
-                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (item is null)
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
-                {
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                  && !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-
-                //outbound
-                proxyProfiles.Add(item);
-            }
-            if (proxyProfiles.Count <= 0)
+            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
+            if (groupRet != 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenChainOutboundsList(proxyProfiles, v2rayConfig);
 
             ret.Success = true;
 
@@ -398,12 +301,9 @@ public partial class CoreConfigV2rayService(Config config)
                     continue;
                 }
                 var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
+                if (item is null || item.IsComplex() || !item.IsValid())
                 {
-                    if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 //find unused port
@@ -432,28 +332,6 @@ public partial class CoreConfigV2rayService(Config config)
                 it.Port = port;
                 it.AllowTest = true;
 
-                //outbound
-                if (item is null)
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                    && !Global.SsSecuritiesInXray.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS
-                 && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VLESS or EConfigType.Trojan
-                    && item.StreamSecurity == Global.StreamSecurityReality
-                    && item.PublicKey.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
                 //inbound
                 Inbounds4Ray inbound = new()
                 {
@@ -464,6 +342,7 @@ public partial class CoreConfigV2rayService(Config config)
                 inbound.tag = inbound.protocol + inbound.port.ToString();
                 v2rayConfig.inbounds.Add(inbound);
 
+                //outbound
                 var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(item, outbound);
                 outbound.tag = Global.ProxyTag + inbound.port.ToString();
@@ -497,7 +376,8 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node is not { Port: > 0 })
+            if (node == null
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
