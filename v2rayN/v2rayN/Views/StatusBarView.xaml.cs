@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ReactiveUI;
-using Splat;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;
@@ -17,7 +16,6 @@ public partial class StatusBarView
         InitializeComponent();
         _config = AppManager.Instance.Config;
         ViewModel = new StatusBarViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
 
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;

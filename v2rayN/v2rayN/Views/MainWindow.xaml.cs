@@ -249,7 +249,7 @@ public partial class MainWindow
             case EGlobalHotkey.SystemProxySet:
             case EGlobalHotkey.SystemProxyUnchanged:
             case EGlobalHotkey.SystemProxyPac:
-                Locator.Current.GetService<StatusBarViewModel>()?.SetListenerType((ESysProxyType)((int)e - 1));
+                AppEvents.SysProxyChangeRequested.OnNext((ESysProxyType)((int)e - 1));
                 break;
         }
     }
@@ -287,11 +287,7 @@ public partial class MainWindow
                     var clipboardData = WindowsUtils.GetClipboardData();
                     if (clipboardData.IsNotEmpty())
                     {
-                        var service = Locator.Current.GetService<MainWindowViewModel>();
-                        if (service != null)
-                        {
-                            _ = service.AddServerViaClipboardAsync(clipboardData);
-                        }
+                        ViewModel?.AddServerViaClipboardAsync(clipboardData);
                     }
 
                     break;

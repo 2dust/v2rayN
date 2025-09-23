@@ -2,7 +2,6 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 
 namespace ServiceLib.ViewModels;
 
@@ -240,7 +239,6 @@ public class MainWindowViewModel : MyReactiveObject
         BlReloadEnabled = true;
         await Reload();
         await AutoHideStartup();
-        Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
     }
 
     #endregion Init
@@ -433,7 +431,7 @@ public class MainWindowViewModel : MyReactiveObject
         var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
         if (ret == true)
         {
-            Locator.Current.GetService<StatusBarViewModel>()?.InboundDisplayStatus();
+            AppEvents.InboundDisplayRequested.OnNext(Unit.Default);
             await Reload();
         }
     }
@@ -444,7 +442,7 @@ public class MainWindowViewModel : MyReactiveObject
         if (ret == true)
         {
             await ConfigHandler.InitBuiltinRouting(_config);
-            Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
+            AppEvents.RoutingsMenuRefreshRequested.OnNext(Unit.Default);
             await Reload();
         }
     }
@@ -518,7 +516,7 @@ public class MainWindowViewModel : MyReactiveObject
             await SysProxyHandler.UpdateSysProxy(_config, false);
             await Task.Delay(1000);
         });
-        Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
+        AppEvents.TestServerRequested.OnNext(Unit.Default);
 
         var showClashUI = _config.IsRunningCore(ECoreType.sing_box);
         if (showClashUI)
@@ -572,7 +570,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         await ConfigHandler.ApplyRegionalPreset(_config, type);
         await ConfigHandler.InitRouting(_config);
-        Locator.Current.GetService<StatusBarViewModel>()?.RefreshRoutingsMenu();
+        AppEvents.RoutingsMenuRefreshRequested.OnNext(Unit.Default);
 
         await ConfigHandler.SaveConfig(_config);
         await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
