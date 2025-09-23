@@ -6,7 +6,6 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using DialogHostAvalonia;
 using ReactiveUI;
-using Splat;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -20,9 +19,8 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        //ViewModel = new StatusBarViewModel(UpdateViewHandler);
-        //Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
-        ViewModel = Locator.Current.GetService<StatusBarViewModel>();
+        
+        ViewModel = StatusBarViewModel.Instance;
         ViewModel?.InitUpdateView(UpdateViewHandler);
 
         txtRunningServerDisplay.Tapped += TxtRunningServerDisplay_Tapped;

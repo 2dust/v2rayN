@@ -20,7 +20,7 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private WindowNotificationManager? _manager;
+    private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;

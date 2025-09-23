@@ -16,9 +16,7 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
-        var ViewModel = new StatusBarViewModel(null);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(StatusBarViewModel));
-        DataContext = ViewModel;
+        DataContext = StatusBarViewModel.Instance;
     }
 
     public override void OnFrameworkInitializationCompleted()
