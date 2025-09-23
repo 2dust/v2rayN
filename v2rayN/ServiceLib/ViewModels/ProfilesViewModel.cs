@@ -240,10 +240,20 @@ public class ProfilesViewModel : MyReactiveObject
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async _ => await RefreshServersBiz());
 
+        AppEvents.SubscriptionsRefreshRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await RefreshSubscriptions());
+
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
+
+        AppEvents.SetDefaultServerRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async indexId => await SetDefaultServer(indexId));
 
         #endregion AppEvents
 
@@ -380,7 +390,7 @@ public class ProfilesViewModel : MyReactiveObject
         await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
     }
 
-    public async Task RefreshSubscriptions()
+    private async Task RefreshSubscriptions()
     {
         SubItems.Clear();
 
@@ -565,7 +575,7 @@ public class ProfilesViewModel : MyReactiveObject
         await SetDefaultServer(SelectedProfile.IndexId);
     }
 
-    public async Task SetDefaultServer(string? indexId)
+    private async Task SetDefaultServer(string? indexId)
     {
         if (indexId.IsNullOrEmpty())
         {

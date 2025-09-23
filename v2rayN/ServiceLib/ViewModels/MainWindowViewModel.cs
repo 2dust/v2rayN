@@ -301,7 +301,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private void RefreshSubscriptions()
     {
-        Locator.Current.GetService<ProfilesViewModel>()?.RefreshSubscriptions();
+        AppEvents.SubscriptionsRefreshRequested.OnNext(Unit.Default);
     }
 
     #endregion Servers && Groups

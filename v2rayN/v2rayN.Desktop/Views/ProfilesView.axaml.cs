@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
-using Splat;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -48,7 +47,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         //}
 
         ViewModel = new ProfilesViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(ProfilesViewModel));
 
         this.WhenActivated(disposables =>
         {

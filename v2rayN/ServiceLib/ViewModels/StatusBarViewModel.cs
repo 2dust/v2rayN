@@ -329,7 +329,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        Locator.Current.GetService<ProfilesViewModel>()?.SetDefaultServer(SelectedServer.ID);
+        AppEvents.SetDefaultServerRequested.OnNext(SelectedServer.ID);        
     }
 
     public async Task TestServerAvailability()

@@ -8,7 +8,6 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using ReactiveUI;
-using Splat;
 using v2rayN.Base;
 using Point = System.Windows.Point;
 
@@ -42,7 +41,6 @@ public partial class ProfilesView
         }
 
         ViewModel = new ProfilesViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(ProfilesViewModel));
 
         this.WhenActivated(disposables =>
         {
