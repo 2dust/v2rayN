@@ -1,7 +1,6 @@
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using ReactiveUI;
-using Splat;
 
 namespace v2rayN.Views;
 
@@ -14,7 +13,6 @@ public partial class ClashProxiesView
     {
         InitializeComponent();
         ViewModel = new ClashProxiesViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(ClashProxiesViewModel));
         lstProxyDetails.PreviewMouseDoubleClick += lstProxyDetails_PreviewMouseDoubleClick;
 
         this.WhenActivated(disposables =>

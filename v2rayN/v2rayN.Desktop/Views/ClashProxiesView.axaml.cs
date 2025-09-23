@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using DynamicData;
 using ReactiveUI;
-using Splat;
 
 namespace v2rayN.Desktop.Views;
 
@@ -13,7 +12,6 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
     {
         InitializeComponent();
         ViewModel = new ClashProxiesViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(ClashProxiesViewModel));
         lstProxyDetails.DoubleTapped += LstProxyDetails_DoubleTapped;
         this.KeyDown += ClashProxiesView_KeyDown;
 

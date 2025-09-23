@@ -520,7 +520,13 @@ public class MainWindowViewModel : MyReactiveObject
         });
         Locator.Current.GetService<StatusBarViewModel>()?.TestServerAvailability();
 
-        RxApp.MainThreadScheduler.Schedule(() => _ = ReloadResult());
+        var showClashUI = _config.IsRunningCore(ECoreType.sing_box);
+        if (showClashUI)
+        {
+            AppEvents.ProxiesReloadRequested.OnNext(Unit.Default);
+        }
+
+        RxApp.MainThreadScheduler.Schedule(() => ReloadResult(showClashUI));
 
         BlReloadEnabled = true;
         if (_hasNextReloadJob)
@@ -530,19 +536,11 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    public async Task ReloadResult()
+    private void ReloadResult(bool showClashUI)
     {
         // BlReloadEnabled = true;
-        //Locator.Current.GetService<StatusBarViewModel>()?.ChangeSystemProxyAsync(_config.systemProxyItem.sysProxyType, false);
-        ShowClashUI = _config.IsRunningCore(ECoreType.sing_box);
-        if (ShowClashUI)
-        {
-            Locator.Current.GetService<ClashProxiesViewModel>()?.ProxiesReload();
-        }
-        else
-        {
-            TabMainSelectedIndex = 0;
-        }
+        ShowClashUI = showClashUI;
+        TabMainSelectedIndex = showClashUI ? TabMainSelectedIndex : 0;
     }
 
     private async Task LoadCore()

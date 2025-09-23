@@ -69,6 +69,8 @@ public class ClashProxiesViewModel : MyReactiveObject
         SortingSelected = _config.ClashUIItem.ProxiesSorting;
         RuleModeSelected = (int)_config.ClashUIItem.RuleMode;
 
+        #region WhenAnyValue && ReactiveCommand
+
         this.WhenAnyValue(
            x => x.SelectedGroup,
            y => y != null && y.Name.IsNotEmpty())
@@ -88,6 +90,17 @@ public class ClashProxiesViewModel : MyReactiveObject
         x => x.AutoRefresh,
         y => y == true)
             .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
+
+        #endregion WhenAnyValue && ReactiveCommand
+
+        #region AppEvents
+
+        AppEvents.ProxiesReloadRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await ProxiesReload());
+
+        #endregion AppEvents
 
         _ = Init();
     }
