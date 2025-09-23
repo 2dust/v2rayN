@@ -21,6 +21,8 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
     [Reactive]
     public string Process { get; set; }
 
+    public IList<string> Types { get; set; }
+
     [Reactive]
     public bool AutoSort { get; set; }
 
@@ -51,6 +53,11 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         Domain = Utils.List2String(SelectedSource.Domain, true);
         IP = Utils.List2String(SelectedSource.Ip, true);
         Process = Utils.List2String(SelectedSource.Process, true);
+        Types = SelectedSource.RuleTypes?.ToList();
+        if (Types == null || Types.Count == 0)
+        {
+            Types = Global.RuleTypes;
+        }
     }
 
     private async Task SaveRulesAsync()
@@ -73,6 +80,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         }
         SelectedSource.Protocol = ProtocolItems?.ToList();
         SelectedSource.InboundTag = InboundTagItems?.ToList();
+        SelectedSource.RuleTypes = Types?.ToList();
 
         var hasRule = SelectedSource.Domain?.Count > 0
           || SelectedSource.Ip?.Count > 0

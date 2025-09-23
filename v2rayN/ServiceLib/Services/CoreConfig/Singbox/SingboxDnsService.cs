@@ -253,6 +253,11 @@ public partial class CoreConfigSingboxService
                 continue;
             }
 
+            if ((item.RuleTypes?.Count ?? 0) > 0 && !item.RuleTypes.Contains(Global.DNSRuleType))
+            {
+                continue;
+            }
+
             var rule = new Rule4Sbox();
             var validDomains = item.Domain.Count(it => ParseV2Domain(it, rule));
             if (validDomains <= 0)

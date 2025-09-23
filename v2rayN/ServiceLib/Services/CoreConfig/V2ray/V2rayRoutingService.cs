@@ -20,11 +20,18 @@ public partial class CoreConfigV2rayService
                     var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                     foreach (var item in rules)
                     {
-                        if (item.Enabled)
+                        if (!item.Enabled)
                         {
-                            var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                            await GenRoutingUserRule(item2, v2rayConfig);
+                            continue;
                         }
+
+                        if ((item.RuleTypes?.Count ?? 0) > 0 && !item.RuleTypes.Contains(Global.RoutingRuleType))
+                        {
+                            continue;
+                        }
+
+                        var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                        await GenRoutingUserRule(item2, v2rayConfig);
                     }
                 }
             }

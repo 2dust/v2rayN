@@ -142,6 +142,11 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
 
+                if ((item.RuleTypes?.Count ?? 0) > 0 && !item.RuleTypes.Contains(Global.DNSRuleType))
+                {
+                    continue;
+                }
+
                 foreach (var domain in item.Domain)
                 {
                     if (domain.StartsWith('#'))

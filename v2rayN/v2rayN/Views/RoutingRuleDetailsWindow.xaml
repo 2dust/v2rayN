@@ -48,13 +48,25 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
-            <ToggleButton
-                x:Name="togEnabled"
+            <StackPanel
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleButton
+                    x:Name="togEnabled"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+                <ListBox
+                    x:Name="clbRuleTypes"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    FontSize="{DynamicResource StdFontSize}"
+                    Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="1"

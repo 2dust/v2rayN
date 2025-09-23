@@ -29,6 +29,16 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         clbInboundTag.ItemsSource = Global.InboundTags;
         cmbNetwork.ItemsSource = Global.RuleNetworks;
 
+        clbRuleTypes.SelectionChanged += ClbRuleTypes_SelectionChanged;
+        clbRuleTypes.ItemsSource = Global.RuleTypes;
+        if (ViewModel.Types != null)
+        {
+            foreach (var it in ViewModel.Types)
+            {
+                clbRuleTypes.SelectedItems.Add(it);
+            }
+        }
+
         if (!rulesItem.Id.IsNullOrEmpty())
         {
             rulesItem.Protocol?.ForEach(it =>
@@ -106,6 +116,14 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
             {
                 cmbOutboundTag.Text = profile.Remarks;
             }
+        }
+    }
+
+    private void ClbRuleTypes_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.Types = clbRuleTypes.SelectedItems.Cast<string>().ToList();
         }
     }
 }
