@@ -1,156 +1,97 @@
-using System.Collections.Concurrent;
-using System.Reactive.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Reactive.Disposables;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using v2rayN.Desktop.Common;
 
-namespace ServiceLib.ViewModels;
+namespace v2rayN.Desktop.Views;
 
-public class MsgViewModel : MyReactiveObject
+public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    private readonly ConcurrentQueue<string> _queueMsg = new();
-    private readonly int _numMaxMsg = 500;
-    private bool _lastMsgFilterNotAvailable;
-    private bool _blLockShow = false;
+    private readonly ScrollViewer _scrollViewer;
+    private int _lastShownLength = 0;
 
-    private readonly Queue<string> _window = new();
-    private readonly int _maxLines = 350;
-
-    [Reactive]
-    public string MsgFilter { get; set; }
-
-    [Reactive]
-    public bool AutoRefresh { get; set; }
-
-    public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public MsgView()
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
-        MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
-        AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
+        InitializeComponent();
+        _scrollViewer = this.FindControl<ScrollViewer>("msgScrollViewer");
 
-        this.WhenAnyValue(x => x.MsgFilter)
-            .Subscribe(_ => DoMsgFilter());
+        ViewModel = new MsgViewModel(UpdateViewHandler);
 
-        this.WhenAnyValue(x => x.AutoRefresh, y => y == true)
-            .Subscribe(_ => { _config.MsgUIItem.AutoRefresh = AutoRefresh; });
-
-        AppEvents.SendMsgViewRequested
-            .AsObservable()
-            //.ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(async content => await AppendQueueMsg(content));
+        this.WhenActivated(disposables =>
+        {
+            this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+        });
     }
 
-    private async Task AppendQueueMsg(string msg)
+    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
     {
-        //if (msg == Global.CommandClearMsg)
-        //{
-        //    ClearMsg();
-        //    return;
-        //}
-        if (AutoRefresh == false)
+        switch (action)
         {
-            return;
+            case EViewAction.DispatcherShowMsg:
+                if (obj is null)
+                    return false;
+
+                Dispatcher.UIThread.Post(() =>
+                    ShowMsg(obj),
+                   DispatcherPriority.ApplicationIdle);
+                break;
         }
+        return await Task.FromResult(true);
+    }
 
-        _ = EnqueueQueueMsg(msg);
+    private void ShowMsg(object msg)
+    {
+        var newText = msg?.ToString() ?? string.Empty;
 
-        if (_blLockShow)
+        if (txtMsg.Text is { } old && newText.Length >= _lastShownLength && newText.AsSpan(0, _lastShownLength).SequenceEqual(old))
         {
-            return;
-        }
-        if (!_config.UiItem.ShowInTaskbar)
-        {
-            return;
-        }
-
-        _blLockShow = true;
-
-        await Task.Delay(500);
-
-        var sb = new StringBuilder();
-        var needRebuild = false;
-
-        while (_queueMsg.TryDequeue(out var line))
-        {
-            _window.Enqueue(line);
-            if (_window.Count > _maxLines)
-            {
-                _window.Dequeue();
-                needRebuild = true;
-            }
-            if (!needRebuild)
-            {
-                sb.Append(line);
-            }
-        }
-
-        if (needRebuild)
-        {
-            var sbAll = new StringBuilder();
-            foreach (var s in _window)
-            {
-                sbAll.Append(s);
-            }
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sbAll.ToString());
+            var delta = newText.AsSpan(_lastShownLength);
+            if (!delta.IsEmpty)
+                txtMsg.Text += delta.ToString();
         }
         else
         {
-            if (sb.Length > 0)
-            {
-                await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
-            }
+            txtMsg.Text = newText;
         }
 
-        _blLockShow = false;
-    }
+        _lastShownLength = txtMsg.Text.Length;
 
-    private async Task EnqueueQueueMsg(string msg)
-    {
-        //filter msg
-        if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
-        {
-            try
-            {
-                if (!Regex.IsMatch(msg, MsgFilter))
-                {
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                _queueMsg.Enqueue(ex.Message);
-                _lastMsgFilterNotAvailable = true;
-            }
-        }
-
-        // 限制待处理队列规模，避免短时洪峰占用
-        if (_queueMsg.Count > _numMaxMsg)
-        {
-            for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
-            {
-                _queueMsg.TryDequeue(out _);
-            }
-        }
-
-        _queueMsg.Enqueue(msg);
-        if (!msg.EndsWith(Environment.NewLine))
-        {
-            _queueMsg.Enqueue(Environment.NewLine);
-        }
-        await Task.CompletedTask;
+        if (togScrollToEnd.IsChecked ?? true)
+            Avalonia.Threading.Dispatcher.UIThread.Post(
+                () => _scrollViewer?.ScrollToEnd(),
+                Avalonia.Threading.DispatcherPriority.Render);
     }
 
     public void ClearMsg()
     {
-        _queueMsg.Clear();
-        _window.Clear();
+        ViewModel?.ClearMsg();
+        txtMsg.Text = "";
     }
 
-    private void DoMsgFilter()
+    private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
     {
-        _config.MsgUIItem.MainMsgFilter = MsgFilter;
-        _lastMsgFilterNotAvailable = false;
+        txtMsg.Focus();
+        txtMsg.SelectAll();
+    }
+
+    private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)
+    {
+        var data = txtMsg.SelectedText.TrimEx();
+        await AvaUtils.SetClipboardData(this, data);
+    }
+
+    private async void menuMsgViewCopyAll_Click(object? sender, RoutedEventArgs e)
+    {
+        var data = txtMsg.Text.TrimEx();
+        await AvaUtils.SetClipboardData(this, data);
+    }
+
+    private void menuMsgViewClear_Click(object? sender, RoutedEventArgs e)
+    {
+        ClearMsg();
     }
 }
