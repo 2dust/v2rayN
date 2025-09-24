@@ -79,6 +79,7 @@ public class CoreConfigClashService
 
             //external-controller
             fileContent["external-controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}";
+            fileContent.Remove("secret");
             //allow-lan
             if (_config.Inbound.First().AllowLANConn)
             {
