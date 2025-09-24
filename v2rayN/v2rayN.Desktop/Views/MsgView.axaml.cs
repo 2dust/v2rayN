@@ -47,7 +47,9 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
         var newText = msg?.ToString() ?? string.Empty;
 
-        if (txtMsg.Text is { } old && newText.Length >= _lastShownLength && newText.AsSpan(0, _lastShownLength).SequenceEqual(old))
+        if (txtMsg.Text is { } old &&
+            newText.Length >= _lastShownLength &&
+            newText.AsSpan(0, _lastShownLength).SequenceEqual(old))
         {
             var delta = newText.AsSpan(_lastShownLength);
             if (!delta.IsEmpty)
@@ -61,15 +63,18 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         _lastShownLength = txtMsg.Text.Length;
 
         if (togScrollToEnd.IsChecked ?? true)
+        {
             Avalonia.Threading.Dispatcher.UIThread.Post(
                 () => _scrollViewer?.ScrollToEnd(),
                 Avalonia.Threading.DispatcherPriority.Render);
+        }
     }
 
     public void ClearMsg()
     {
         ViewModel?.ClearMsg();
         txtMsg.Text = "";
+        _lastShownLength = 0;
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
