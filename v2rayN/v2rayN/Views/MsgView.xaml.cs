@@ -74,7 +74,6 @@ public partial class MsgView
             }
         }
 
-        // 行数超过阈值才裁剪到 _maxLines
         var lines = txtMsg.Text.Split(Environment.NewLine);
         if (lines.Length > _trimLines)
         {
