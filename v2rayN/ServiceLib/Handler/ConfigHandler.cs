@@ -1253,12 +1253,49 @@ public static class ConfigHandler
         ProfileItem? itemSocks = null;
         if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
+            var tun2SocksAddress = node.Address;
+            if (node.ConfigType > EConfigType.Group)
+            {
+                static async Task<List<string>> GetChildNodeAddressesAsync(string parentIndexId)
+                {
+                    var childAddresses = new List<string>();
+                    if (!ProfileGroupItemManager.Instance.TryGet(parentIndexId, out var groupItem) || groupItem.ChildItems.IsNullOrEmpty())
+                        return childAddresses;
+
+                    var childIds = Utils.String2List(groupItem.ChildItems);
+
+                    foreach (var childId in childIds)
+                    {
+                        var childNode = await AppManager.Instance.GetProfileItem(childId);
+                        if (childNode == null)
+                            continue;
+
+                        if (!childNode.IsComplex())
+                        {
+                            childAddresses.Add(childNode.Address);
+                        }
+                        else if (childNode.ConfigType > EConfigType.Group)
+                        {
+                            var subAddresses = await GetChildNodeAddressesAsync(childNode.IndexId);
+                            childAddresses.AddRange(subAddresses);
+                        }
+                    }
+
+                    return childAddresses;
+                }
+
+                var lstAddresses = await GetChildNodeAddressesAsync(node.IndexId);
+                if (lstAddresses.Count > 0)
+                {
+                    tun2SocksAddress = Utils.List2String(lstAddresses);
+                }
+            }
             itemSocks = new ProfileItem()
             {
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                SpiderX = node.Address, // Tun2SocksAddress
+                SpiderX = tun2SocksAddress, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }

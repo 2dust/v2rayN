@@ -414,16 +414,19 @@ public partial class CoreConfigSingboxService
             return 0;
         }
 
-        var domain = string.Empty;
+        List<string> domain = new();
         if (Utils.IsDomain(node.Address)) // normal outbound
         {
-            domain = node.Address;
+            domain.Add(node.Address);
         }
-        else if (node.Address == Global.Loopback && node.SpiderX.IsNotEmpty() && Utils.IsDomain(node.SpiderX)) // Tun2SocksAddress
+        if (node.Address == Global.Loopback && node.SpiderX.IsNotEmpty()) // Tun2SocksAddress
         {
-            domain = node.SpiderX;
+            domain.AddRange(Utils.String2List(node.SpiderX)
+                .Where(Utils.IsDomain)
+                .Distinct()
+                .ToList());
         }
-        if (domain.IsNullOrEmpty())
+        if (domain.Count == 0)
         {
             return 0;
         }
@@ -432,7 +435,7 @@ public partial class CoreConfigSingboxService
         singboxConfig.dns.rules.Insert(0, new Rule4Sbox
         {
             server = server,
-            domain = [domain],
+            domain = domain,
         });
 
         return await Task.FromResult(0);
