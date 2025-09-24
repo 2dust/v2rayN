@@ -11,7 +11,7 @@
 		</PackageReference>
 		<PackageReference Include="ReactiveUI.Fody" />
 		<PackageReference Include="sqlite-net-pcl" />
-		<PackageReference Include="Splat.NLog" />
+		<PackageReference Include="NLog" />
 		<PackageReference Include="WebDav.Client" />
 		<PackageReference Include="YamlDotNet" />
 		<PackageReference Include="QRCoder" />
