@@ -5,12 +5,15 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
 using v2rayN.Desktop.Common;
+using System.Text;
 
 namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
     private readonly ScrollViewer _scrollViewer;
+    private const int _maxLines = 320;   // 实际保留的行数
+    private const int _trimLines = 350;  // 超过此阈值时裁剪
     private int _lastShownLength = 0;
 
     public MsgView()
@@ -32,8 +35,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         switch (action)
         {
             case EViewAction.DispatcherShowMsg:
-                if (obj is null)
-                    return false;
+                if (obj is null) return false;
 
                 Dispatcher.UIThread.Post(() =>
                     ShowMsg(obj),
@@ -46,16 +48,20 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     private void ShowMsg(object msg)
     {
         var newText = msg?.ToString() ?? string.Empty;
+        txtMsg.Text += newText;
 
-        if (txtMsg.Text is { } old && newText.Length >= _lastShownLength && newText.AsSpan(0, _lastShownLength).SequenceEqual(old))
+        var lines = txtMsg.Text.Split(Environment.NewLine);
+        if (lines.Length > _trimLines)
         {
-            var delta = newText.AsSpan(_lastShownLength);
-            if (!delta.IsEmpty)
-                txtMsg.Text += delta.ToString();
-        }
-        else
-        {
-            txtMsg.Text = newText;
+            var sb = new StringBuilder();
+            int start = lines.Length - _maxLines;
+            for (int i = start; i < lines.Length; i++)
+            {
+                sb.Append(lines[i]);
+                if (i < lines.Length - 1)
+                    sb.Append(Environment.NewLine);
+            }
+            txtMsg.Text = sb.ToString();
         }
 
         _lastShownLength = txtMsg.Text.Length;
@@ -70,6 +76,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
         ViewModel?.ClearMsg();
         txtMsg.Text = "";
+        _lastShownLength = 0;
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
