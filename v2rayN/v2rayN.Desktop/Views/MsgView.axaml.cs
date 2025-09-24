@@ -11,6 +11,7 @@ namespace v2rayN.Desktop.Views;
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
     private readonly ScrollViewer _scrollViewer;
+    private int _lastShownLength = 0;
 
     public MsgView()
     {
@@ -44,11 +45,25 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.Text = msg.ToString();
-        if (togScrollToEnd.IsChecked ?? true)
+        var newText = msg?.ToString() ?? string.Empty;
+
+        if (txtMsg.Text is { } old && newText.Length >= _lastShownLength && newText.AsSpan(0, _lastShownLength).SequenceEqual(old))
         {
-            _scrollViewer?.ScrollToEnd();
+            var delta = newText.AsSpan(_lastShownLength);
+            if (!delta.IsEmpty)
+                txtMsg.Text += delta.ToString();
         }
+        else
+        {
+            txtMsg.Text = newText;
+        }
+
+        _lastShownLength = txtMsg.Text.Length;
+
+        if (togScrollToEnd.IsChecked ?? true)
+            Avalonia.Threading.Dispatcher.UIThread.Post(
+                () => _scrollViewer?.ScrollToEnd(),
+                Avalonia.Threading.DispatcherPriority.Render);
     }
 
     public void ClearMsg()
