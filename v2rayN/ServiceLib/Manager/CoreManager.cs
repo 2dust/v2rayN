@@ -17,6 +17,13 @@ public class CoreManager
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
 
+    private sealed class ProcBindings
+    {
+        public DataReceivedEventHandler? DataHandler;
+        public EventHandler? ExitHandler;
+    }
+    private readonly Dictionary<int, ProcBindings> _procBindings = new();
+
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
         _config = config;
@@ -161,6 +168,23 @@ public class CoreManager
             {
                 try { _process.CancelOutputRead(); } catch { }
                 try { _process.CancelErrorRead(); } catch { }
+
+                ProcBindings? b = null;
+                lock (_procBindings)
+                {
+                    if (_process is not null)
+                    {
+                        _procBindings.TryGetValue(_process.Id, out b);
+                        _procBindings.Remove(_process.Id);
+                    }
+                }
+                if (b is not null)
+                {
+                    try { _process.OutputDataReceived -= b.DataHandler; } catch { }
+                    try { _process.ErrorDataReceived  -= b.DataHandler; } catch { }
+                    try { _process.Exited            -= b.ExitHandler; }  catch { }
+                }
+
                 await ProcUtils.ProcessKill(_process, Utils.IsWindows());
                 try { _process.Dispose(); } catch { }
                 _process = null;
@@ -170,6 +194,23 @@ public class CoreManager
             {
                 try { _processPre.CancelOutputRead(); } catch { }
                 try { _processPre.CancelErrorRead(); } catch { }
+
+                ProcBindings? b2 = null;
+                lock (_procBindings)
+                {
+                    if (_processPre is not null)
+                    {
+                        _procBindings.TryGetValue(_processPre.Id, out b2);
+                        _procBindings.Remove(_processPre.Id);
+                    }
+                }
+                if (b2 is not null)
+                {
+                    try { _processPre.OutputDataReceived -= b2.DataHandler; } catch { }
+                    try { _processPre.ErrorDataReceived  -= b2.DataHandler; } catch { }
+                    try { _processPre.Exited            -= b2.ExitHandler; }  catch { }
+                }
+
                 await ProcUtils.ProcessKill(_processPre, Utils.IsWindows());
                 try { _processPre.Dispose(); } catch { }
                 _processPre = null;
@@ -285,42 +326,48 @@ public class CoreManager
             proc.StartInfo.Environment[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
         }
 
-        DataReceivedEventHandler? dataHandler = null;
-        EventHandler? exitedHandler = null;
+        ProcBindings? bindings = null;
 
         if (displayLog)
         {
-            dataHandler = (sender, e) =>
+            bindings = new ProcBindings();
+
+            bindings.DataHandler = (sender, e) =>
             {
                 if (e.Data.IsNotEmpty())
                 {
                     _ = UpdateFunc(false, e.Data + Environment.NewLine);
                 }
             };
-            proc.OutputDataReceived += dataHandler;
-            proc.ErrorDataReceived += dataHandler;
+            proc.OutputDataReceived += bindings.DataHandler;
+            proc.ErrorDataReceived += bindings.DataHandler;
 
-            exitedHandler = (s, e) =>
+            bindings.ExitHandler = (s, e) =>
             {
                 try { proc.CancelOutputRead(); } catch { }
                 try { proc.CancelErrorRead(); } catch { }
-                if (dataHandler is not null)
+                if (bindings.DataHandler is not null)
                 {
-                    try { proc.OutputDataReceived -= dataHandler; } catch { }
-                    try { proc.ErrorDataReceived -= dataHandler; } catch { }
+                    try { proc.OutputDataReceived -= bindings.DataHandler; } catch { }
+                    try { proc.ErrorDataReceived  -= bindings.DataHandler; }  catch { }
                 }
-                if (exitedHandler is not null)
+                if (bindings.ExitHandler is not null)
                 {
-                    try { proc.Exited -= exitedHandler; } catch { }
+                    try { proc.Exited -= bindings.ExitHandler; } catch { }
                 }
+                lock (_procBindings) { _procBindings.Remove(proc.Id); }
             };
-            proc.Exited += exitedHandler;
+            proc.Exited += bindings.ExitHandler;
         }
 
         proc.Start();
 
         if (displayLog)
         {
+            lock (_procBindings)
+            {
+                _procBindings[proc.Id] = bindings!;
+            }
             proc.BeginOutputReadLine();
             proc.BeginErrorReadLine();
         }
@@ -329,13 +376,14 @@ public class CoreManager
         AppManager.Instance.AddProcess(proc.Handle);
         if (proc is null or { HasExited: true })
         {
-            if (displayLog && dataHandler is not null)
+            if (displayLog && bindings is not null)
             {
                 try { proc.CancelOutputRead(); } catch { }
                 try { proc.CancelErrorRead(); } catch { }
-                try { proc.OutputDataReceived -= dataHandler; } catch { }
-                try { proc.ErrorDataReceived -= dataHandler; } catch { }
-                if (exitedHandler is not null) { try { proc.Exited -= exitedHandler; } catch { } }
+                try { proc.OutputDataReceived -= bindings.DataHandler; } catch { }
+                try { proc.ErrorDataReceived  -= bindings.DataHandler; }  catch { }
+                try { proc.Exited            -= bindings.ExitHandler; }   catch { }
+                lock (_procBindings) { _procBindings.Remove(proc.Id); }
             }
             throw new Exception(ResUI.FailedToRunCore);
         }
