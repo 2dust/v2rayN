@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Reactive.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -9,7 +10,7 @@ namespace ServiceLib.ViewModels;
 public class MsgViewModel : MyReactiveObject
 {
     private readonly ConcurrentQueue<string> _queueMsg = new();
-    private readonly int _numMaxMsg = 500;
+    private readonly int _numMaxMsg = 500; // 仅用于限制队列，不做显示裁剪
     private bool _lastMsgFilterNotAvailable;
     private bool _blLockShow = false;
 
@@ -26,63 +27,45 @@ public class MsgViewModel : MyReactiveObject
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
 
-        this.WhenAnyValue(
-           x => x.MsgFilter)
-               .Subscribe(c => DoMsgFilter());
-
-        this.WhenAnyValue(
-          x => x.AutoRefresh,
-          y => y == true)
-              .Subscribe(c => { _config.MsgUIItem.AutoRefresh = AutoRefresh; });
+        this.WhenAnyValue(x => x.MsgFilter).Subscribe(c => DoMsgFilter());
+        this.WhenAnyValue(x => x.AutoRefresh, y => y == true)
+            .Subscribe(c => { _config.MsgUIItem.AutoRefresh = AutoRefresh; });
 
         AppEvents.SendMsgViewRequested
-         .AsObservable()
-         //.ObserveOn(RxApp.MainThreadScheduler)
-         .Subscribe(async content => await AppendQueueMsg(content));
+            .AsObservable()
+            .Subscribe(async content => await AppendQueueMsg(content));
     }
 
     private async Task AppendQueueMsg(string msg)
     {
-        //if (msg == Global.CommandClearMsg)
-        //{
-        //    ClearMsg();
-        //    return;
-        //}
-        if (AutoRefresh == false)
-        {
-            return;
-        }
-        _ = EnqueueQueueMsg(msg);
+        if (AutoRefresh == false) return;
+        await EnqueueQueueMsg(msg);
 
-        if (_blLockShow)
-        {
-            return;
-        }
-        if (!_config.UiItem.ShowInTaskbar)
-        {
-            return;
-        }
-
+        if (_blLockShow || !_config.UiItem.ShowInTaskbar) return;
         _blLockShow = true;
 
         await Task.Delay(500);
-        var txt = string.Join("", _queueMsg.ToArray());
-        await _updateView?.Invoke(EViewAction.DispatcherShowMsg, txt);
+
+        var sbDelta = new StringBuilder();
+        while (_queueMsg.TryDequeue(out var line))
+        {
+            sbDelta.Append(line);
+        }
+
+        var delta = sbDelta.ToString();
+        if (delta.Length > 0)
+            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, delta);
 
         _blLockShow = false;
     }
 
     private async Task EnqueueQueueMsg(string msg)
     {
-        //filter msg
         if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
         {
             try
             {
-                if (!Regex.IsMatch(msg, MsgFilter))
-                {
-                    return;
-                }
+                if (!Regex.IsMatch(msg, MsgFilter)) return;
             }
             catch (Exception ex)
             {
@@ -91,26 +74,17 @@ public class MsgViewModel : MyReactiveObject
             }
         }
 
-        //Enqueue
-        if (_queueMsg.Count > _numMaxMsg)
-        {
-            for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
-            {
-                _queueMsg.TryDequeue(out _);
-            }
-        }
+        while (_queueMsg.Count > _numMaxMsg)
+            _queueMsg.TryDequeue(out _);
+
         _queueMsg.Enqueue(msg);
         if (!msg.EndsWith(Environment.NewLine))
-        {
             _queueMsg.Enqueue(Environment.NewLine);
-        }
+
         await Task.CompletedTask;
     }
 
-    public void ClearMsg()
-    {
-        _queueMsg.Clear();
-    }
+    public void ClearMsg() => _queueMsg.Clear();
 
     private void DoMsgFilter()
     {
