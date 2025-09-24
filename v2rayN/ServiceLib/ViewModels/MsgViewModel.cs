@@ -10,7 +10,7 @@ namespace ServiceLib.ViewModels;
 public class MsgViewModel : MyReactiveObject
 {
     private readonly ConcurrentQueue<string> _queueMsg = new();
-    private readonly int _numMaxMsg = 500; // 仅用于限制队列，不做显示裁剪
+    private readonly int _numMaxMsg = 500; 
     private bool _lastMsgFilterNotAvailable;
     private bool _blLockShow = false;
 
