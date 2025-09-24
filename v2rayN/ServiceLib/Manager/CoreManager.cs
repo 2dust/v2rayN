@@ -159,13 +159,19 @@ public class CoreManager
 
             if (_process != null)
             {
+                try { _process.CancelOutputRead(); } catch { }
+                try { _process.CancelErrorRead(); } catch { }
                 await ProcUtils.ProcessKill(_process, Utils.IsWindows());
+                try { _process.Dispose(); } catch { }
                 _process = null;
             }
 
             if (_processPre != null)
             {
+                try { _processPre.CancelOutputRead(); } catch { }
+                try { _processPre.CancelErrorRead(); } catch { }
                 await ProcUtils.ProcessKill(_processPre, Utils.IsWindows());
+                try { _processPre.Dispose(); } catch { }
                 _processPre = null;
             }
         }
@@ -271,25 +277,46 @@ public class CoreManager
                 CreateNoWindow = true,
                 StandardOutputEncoding = displayLog ? Encoding.UTF8 : null,
                 StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
-            }
+            },
+            EnableRaisingEvents = true
         };
         foreach (var kv in coreInfo.Environment)
         {
             proc.StartInfo.Environment[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
         }
 
+        DataReceivedEventHandler? dataHandler = null;
+        EventHandler? exitedHandler = null;
+
         if (displayLog)
         {
-            void dataHandler(object sender, DataReceivedEventArgs e)
+            dataHandler = (sender, e) =>
             {
                 if (e.Data.IsNotEmpty())
                 {
                     _ = UpdateFunc(false, e.Data + Environment.NewLine);
                 }
-            }
+            };
             proc.OutputDataReceived += dataHandler;
             proc.ErrorDataReceived += dataHandler;
+
+            exitedHandler = (s, e) =>
+            {
+                try { proc.CancelOutputRead(); } catch { }
+                try { proc.CancelErrorRead(); } catch { }
+                if (dataHandler is not null)
+                {
+                    try { proc.OutputDataReceived -= dataHandler; } catch { }
+                    try { proc.ErrorDataReceived -= dataHandler; } catch { }
+                }
+                if (exitedHandler is not null)
+                {
+                    try { proc.Exited -= exitedHandler; } catch { }
+                }
+            };
+            proc.Exited += exitedHandler;
         }
+
         proc.Start();
 
         if (displayLog)
@@ -302,6 +329,14 @@ public class CoreManager
         AppManager.Instance.AddProcess(proc.Handle);
         if (proc is null or { HasExited: true })
         {
+            if (displayLog && dataHandler is not null)
+            {
+                try { proc.CancelOutputRead(); } catch { }
+                try { proc.CancelErrorRead(); } catch { }
+                try { proc.OutputDataReceived -= dataHandler; } catch { }
+                try { proc.ErrorDataReceived -= dataHandler; } catch { }
+                if (exitedHandler is not null) { try { proc.Exited -= exitedHandler; } catch { } }
+            }
             throw new Exception(ResUI.FailedToRunCore);
         }
         return proc;
