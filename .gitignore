@@ -399,3 +399,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Add IFLOW.md to gitignore
+IFLOW.md
