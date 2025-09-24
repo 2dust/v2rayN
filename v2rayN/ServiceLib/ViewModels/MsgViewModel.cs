@@ -10,12 +10,15 @@ namespace ServiceLib.ViewModels;
 public class MsgViewModel : MyReactiveObject
 {
     private readonly ConcurrentQueue<string> _queueMsg = new();
-    private readonly int _numMaxMsg = 500;
+    private readonly int _numMaxMsg = 500; // 仅用于限制队列，不做显示裁剪
     private bool _lastMsgFilterNotAvailable;
     private bool _blLockShow = false;
 
-    [Reactive] public string MsgFilter { get; set; }
-    [Reactive] public bool AutoRefresh { get; set; }
+    [Reactive]
+    public string MsgFilter { get; set; }
+
+    [Reactive]
+    public bool AutoRefresh { get; set; }
 
     public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
@@ -35,7 +38,7 @@ public class MsgViewModel : MyReactiveObject
 
     private async Task AppendQueueMsg(string msg)
     {
-        if (!AutoRefresh) return;
+        if (AutoRefresh == false) return;
         await EnqueueQueueMsg(msg);
 
         if (_blLockShow || !_config.UiItem.ShowInTaskbar) return;
@@ -43,13 +46,15 @@ public class MsgViewModel : MyReactiveObject
 
         await Task.Delay(500);
 
-        var sb = new StringBuilder();
+        var sbDelta = new StringBuilder();
         while (_queueMsg.TryDequeue(out var line))
         {
-            sb.Append(line);
+            sbDelta.Append(line);
         }
-        if (sb.Length > 0)
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
+
+        var delta = sbDelta.ToString();
+        if (delta.Length > 0)
+            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, delta);
 
         _blLockShow = false;
     }
@@ -69,11 +74,8 @@ public class MsgViewModel : MyReactiveObject
             }
         }
 
-        if (_queueMsg.Count > _numMaxMsg)
-        {
-            for (int k = 0; k < _queueMsg.Count - _numMaxMsg; k++)
-                _queueMsg.TryDequeue(out _);
-        }
+        while (_queueMsg.Count > _numMaxMsg)
+            _queueMsg.TryDequeue(out _);
 
         _queueMsg.Enqueue(msg);
         if (!msg.EndsWith(Environment.NewLine))
