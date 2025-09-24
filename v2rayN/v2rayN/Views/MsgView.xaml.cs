@@ -63,8 +63,7 @@ public partial class MsgView
                 txtMsg.AppendText(delta.ToString());
         }
         else
-        {
-            // 兼容增量：如果不是全量覆盖场景，直接把 incoming 当作增量追加
+        {        
             if (old.Length == 0)
             {
                 txtMsg.Text = incoming;
