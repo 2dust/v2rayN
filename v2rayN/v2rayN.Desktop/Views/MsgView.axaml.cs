@@ -12,8 +12,8 @@ namespace v2rayN.Desktop.Views;
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
     private readonly ScrollViewer _scrollViewer;
-    private const int _maxLines = 320;   // 实际保留的行数
-    private const int _trimLines = 350;  // 超过此阈值时裁剪
+    private const int _maxLines = 320; 
+    private const int _trimLines = 350;  
     private int _lastShownLength = 0;
 
     public MsgView()
