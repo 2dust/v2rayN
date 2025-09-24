@@ -122,6 +122,12 @@ public sealed class AppManager
         AppEvents.ShutdownRequested.OnNext(byUser);
     }
 
+    public async Task RebootAsAdmin()
+    {
+        ProcUtils.RebootAsAdmin();
+        await AppManager.Instance.AppExitAsync(true);
+    }
+
     #endregion App
 
     #region Config

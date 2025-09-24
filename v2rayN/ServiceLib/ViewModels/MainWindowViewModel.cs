@@ -1,5 +1,6 @@
 using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -183,7 +184,7 @@ public class MainWindowViewModel : MyReactiveObject
         });
         RebootAsAdminCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await RebootAsAdmin();
+            await AppManager.Instance.RebootAsAdmin();
         });
         ClearServerStatisticsCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -215,6 +216,30 @@ public class MainWindowViewModel : MyReactiveObject
         });
 
         #endregion WhenAnyValue && ReactiveCommand
+
+        #region AppEvents
+
+        AppEvents.ReloadRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await Reload());
+
+        AppEvents.AddServerViaScanRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await AddServerViaScanAsync());
+
+        AppEvents.AddServerViaClipboardRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await AddServerViaClipboardAsync(null));
+
+        AppEvents.SubscriptionsUpdateRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async blProxy => await UpdateSubscriptionProcess("", blProxy));
+
+        #endregion AppEvents
 
         _ = Init();
     }
@@ -279,11 +304,6 @@ public class MainWindowViewModel : MyReactiveObject
             return;
         }
         AppEvents.DispatcherStatisticsRequested.OnNext(update);
-    }
-
-    public void ShowHideWindow(bool? blShow)
-    {
-        _updateView?.Invoke(EViewAction.ShowHideWindow, blShow);
     }
 
     #endregion Actions
@@ -465,12 +485,6 @@ public class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    public async Task RebootAsAdmin()
-    {
-        ProcUtils.RebootAsAdmin();
-        await AppManager.Instance.AppExitAsync(true);
-    }
-
     private async Task ClearServerStatistics()
     {
         await StatisticsManager.Instance.ClearAllServerStatistics();
@@ -547,17 +561,11 @@ public class MainWindowViewModel : MyReactiveObject
         await CoreManager.Instance.LoadCore(node);
     }
 
-    public async Task CloseCore()
-    {
-        await ConfigHandler.SaveConfig(_config);
-        await CoreManager.Instance.CoreStop();
-    }
-
     private async Task AutoHideStartup()
     {
         if (_config.UiItem.AutoHideStartup)
         {
-            ShowHideWindow(false);
+            AppEvents.ShowHideWindowRequested.OnNext(false);
         }
         await Task.CompletedTask;
     }

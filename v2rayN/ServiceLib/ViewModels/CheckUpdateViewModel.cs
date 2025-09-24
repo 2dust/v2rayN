@@ -2,11 +2,9 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
-using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 
 namespace ServiceLib.ViewModels;
 
@@ -225,11 +223,11 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (blReload)
         {
-            Locator.Current.GetService<MainWindowViewModel>()?.Reload();
+            AppEvents.ReloadRequested.OnNext(Unit.Default);
         }
         else
         {
-            Locator.Current.GetService<MainWindowViewModel>()?.CloseCore();
+            await CoreManager.Instance.CoreStop();
         }
     }
 

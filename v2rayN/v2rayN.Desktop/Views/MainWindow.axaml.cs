@@ -10,7 +10,6 @@ using Avalonia.Threading;
 using DialogHostAvalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
-using Splat;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Manager;
@@ -40,7 +39,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         menuClose.Click += MenuClose_Click;
 
         ViewModel = new MainWindowViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
         switch (_config.UiItem.MainGirdOrientation)
         {
@@ -153,6 +151,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(content => Shutdown(content))
               .DisposeWith(disposables);
+
+            AppEvents.ShowHideWindowRequested
+             .AsObservable()
+             .ObserveOn(RxApp.MainThreadScheduler)
+             .Subscribe(blShow => ShowHideWindow(blShow))
+             .DisposeWith(disposables);
         });
 
         if (Utils.IsWindows())
@@ -221,12 +225,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             case EViewAction.SubSettingWindow:
                 return await new SubSettingWindow().ShowDialog<bool>(this);
 
-            case EViewAction.ShowHideWindow:
-                Dispatcher.UIThread.Post(() =>
-                    ShowHideWindow((bool?)obj),
-                DispatcherPriority.Default);
-                break;
-
             case EViewAction.ScanScreenTask:
                 await ScanScreenTaskAsync();
                 break;
@@ -236,11 +234,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 break;
 
             case EViewAction.AddServerViaClipboard:
-                var clipboardData = await AvaUtils.GetClipboardData(this);
-                if (clipboardData.IsNotEmpty() && ViewModel != null)
-                {
-                    await ViewModel.AddServerViaClipboardAsync(clipboardData);
-                }
+                await AddServerViaClipboardAsync();
                 break;
         }
 
@@ -295,11 +289,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             switch (e.Key)
             {
                 case Key.V:
-                    var clipboardData = await AvaUtils.GetClipboardData(this);
-                    if (clipboardData.IsNotEmpty() && ViewModel != null)
-                    {
-                        await ViewModel.AddServerViaClipboardAsync(clipboardData);
-                    }
+                    await AddServerViaClipboardAsync();
                     break;
 
                 case Key.S:
@@ -324,6 +314,15 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private void menuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
+    }
+
+    public async Task AddServerViaClipboardAsync()
+    {
+        var clipboardData = await AvaUtils.GetClipboardData(this);
+        if (clipboardData.IsNotEmpty() && ViewModel != null)
+        {
+            await ViewModel.AddServerViaClipboardAsync(clipboardData);
+        }
     }
 
     public async Task ScanScreenTaskAsync()

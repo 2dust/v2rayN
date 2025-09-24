@@ -12,7 +12,6 @@ public enum EViewAction
     ProfilesFocus,
     ShareSub,
     ShareServer,
-    ShowHideWindow,
     ScanScreenTask,
     ScanImageTask,
     BrowseServer,

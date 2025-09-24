@@ -5,6 +5,12 @@ namespace ServiceLib.Handler;
 
 public static class AppEvents
 {
+    public static readonly Subject<Unit> ReloadRequested = new();
+    public static readonly Subject<bool?> ShowHideWindowRequested = new();
+    public static readonly Subject<Unit> AddServerViaScanRequested = new();
+    public static readonly Subject<Unit> AddServerViaClipboardRequested = new();
+    public static readonly Subject<bool> SubscriptionsUpdateRequested = new();
+
     public static readonly Subject<Unit> ProfilesRefreshRequested = new();
     public static readonly Subject<Unit> SubscriptionsRefreshRequested = new();
     public static readonly Subject<Unit> ProxiesReloadRequested = new();

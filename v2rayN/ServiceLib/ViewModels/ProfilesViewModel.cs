@@ -6,7 +6,6 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 
 namespace ServiceLib.ViewModels;
 
@@ -276,7 +275,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private void Reload()
     {
-        Locator.Current.GetService<MainWindowViewModel>()?.Reload();
+        AppEvents.ReloadRequested.OnNext(Unit.Default);
     }
 
     public async Task SetSpeedTestResult(SpeedTestResult result)
