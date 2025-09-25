@@ -275,7 +275,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private void Reload()
     {
-        AppEvents.ReloadRequested.OnNext(Unit.Default);
+        AppEvents.ReloadRequested.Publish();
     }
 
     public async Task SetSpeedTestResult(SpeedTestResult result)
@@ -361,7 +361,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task RefreshServers()
     {
-        AppEvents.ProfilesRefreshRequested.OnNext(Unit.Default);
+        AppEvents.ProfilesRefreshRequested.Publish();
 
         await Task.Delay(200);
     }

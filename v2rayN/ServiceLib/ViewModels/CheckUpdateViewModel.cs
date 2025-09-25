@@ -223,7 +223,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (blReload)
         {
-            AppEvents.ReloadRequested.OnNext(Unit.Default);
+            AppEvents.ReloadRequested.Publish();
         }
         else
         {

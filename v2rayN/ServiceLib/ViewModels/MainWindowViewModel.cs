@@ -292,7 +292,7 @@ public class MainWindowViewModel : MyReactiveObject
             }
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
-                AppEvents.AdjustMainLvColWidthRequested.OnNext(Unit.Default);
+                AppEvents.AdjustMainLvColWidthRequested.Publish();
             }
         }
     }
@@ -303,7 +303,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             return;
         }
-        AppEvents.DispatcherStatisticsRequested.OnNext(update);
+        AppEvents.DispatcherStatisticsRequested.Publish(update);
     }
 
     #endregion Actions
@@ -312,14 +312,14 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RefreshServers()
     {
-        AppEvents.ProfilesRefreshRequested.OnNext(Unit.Default);
+        AppEvents.ProfilesRefreshRequested.Publish();
 
         await Task.Delay(200);
     }
 
     private void RefreshSubscriptions()
     {
-        AppEvents.SubscriptionsRefreshRequested.OnNext(Unit.Default);
+        AppEvents.SubscriptionsRefreshRequested.Publish();
     }
 
     #endregion Servers && Groups
@@ -451,7 +451,7 @@ public class MainWindowViewModel : MyReactiveObject
         var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
         if (ret == true)
         {
-            AppEvents.InboundDisplayRequested.OnNext(Unit.Default);
+            AppEvents.InboundDisplayRequested.Publish();
             await Reload();
         }
     }
@@ -462,7 +462,7 @@ public class MainWindowViewModel : MyReactiveObject
         if (ret == true)
         {
             await ConfigHandler.InitBuiltinRouting(_config);
-            AppEvents.RoutingsMenuRefreshRequested.OnNext(Unit.Default);
+            AppEvents.RoutingsMenuRefreshRequested.Publish();
             await Reload();
         }
     }
@@ -530,12 +530,12 @@ public class MainWindowViewModel : MyReactiveObject
             await SysProxyHandler.UpdateSysProxy(_config, false);
             await Task.Delay(1000);
         });
-        AppEvents.TestServerRequested.OnNext(Unit.Default);
+        AppEvents.TestServerRequested.Publish();
 
         var showClashUI = _config.IsRunningCore(ECoreType.sing_box);
         if (showClashUI)
         {
-            AppEvents.ProxiesReloadRequested.OnNext(Unit.Default);
+            AppEvents.ProxiesReloadRequested.Publish();
         }
 
         RxApp.MainThreadScheduler.Schedule(() => ReloadResult(showClashUI));
@@ -565,7 +565,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         if (_config.UiItem.AutoHideStartup)
         {
-            AppEvents.ShowHideWindowRequested.OnNext(false);
+            AppEvents.ShowHideWindowRequested.Publish(false);
         }
         await Task.CompletedTask;
     }
@@ -578,7 +578,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         await ConfigHandler.ApplyRegionalPreset(_config, type);
         await ConfigHandler.InitRouting(_config);
-        AppEvents.RoutingsMenuRefreshRequested.OnNext(Unit.Default);
+        AppEvents.RoutingsMenuRefreshRequested.Publish();
 
         await ConfigHandler.SaveConfig(_config);
         await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);

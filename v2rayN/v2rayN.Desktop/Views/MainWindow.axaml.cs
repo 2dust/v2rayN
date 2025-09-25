@@ -253,7 +253,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             case EGlobalHotkey.SystemProxySet:
             case EGlobalHotkey.SystemProxyUnchanged:
             case EGlobalHotkey.SystemProxyPac:
-                AppEvents.SysProxyChangeRequested.OnNext((ESysProxyType)((int)e - 1));
+                AppEvents.SysProxyChangeRequested.Publish((ESysProxyType)((int)e - 1));
                 break;
         }
     }

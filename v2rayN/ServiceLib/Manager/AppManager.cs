@@ -96,7 +96,7 @@ public sealed class AppManager
             Logging.SaveLog("AppExitAsync Begin");
 
             await SysProxyHandler.UpdateSysProxy(_config, true);
-            AppEvents.AppExitRequested.OnNext(Unit.Default);
+            AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
             await ConfigHandler.SaveConfig(_config);
@@ -119,7 +119,7 @@ public sealed class AppManager
 
     public void Shutdown(bool byUser)
     {
-        AppEvents.ShutdownRequested.OnNext(byUser);
+        AppEvents.ShutdownRequested.Publish(byUser);
     }
 
     public async Task RebootAsAdmin()
