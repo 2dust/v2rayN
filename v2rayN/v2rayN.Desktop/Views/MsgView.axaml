@@ -71,13 +71,28 @@
                 Theme="{DynamicResource SimpleToggleSwitch}" />
         </WrapPanel>
 
-        <ScrollViewer x:Name="msgScrollViewer" VerticalScrollBarVisibility="Auto">
-            <avaloniaEdit:TextEditor
-                Name="txtMsg"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Auto" />
-        </ScrollViewer>
+        <avaloniaEdit:TextEditor
+            Name="txtMsg"
+            Margin="{StaticResource Margin8}"
+            IsReadOnly="True"
+            VerticalScrollBarVisibility="Auto">
+            <avaloniaEdit:TextEditor.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem
+                        x:Name="menuMsgViewCopy"
+                        Click="menuMsgViewCopy_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                    <MenuItem
+                        x:Name="menuMsgViewCopyAll"
+                        Click="menuMsgViewCopyAll_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
+                    <MenuItem
+                        x:Name="menuMsgViewClear"
+                        Click="menuMsgViewClear_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewClear}" />
+                </MenuFlyout>
+            </avaloniaEdit:TextEditor.ContextFlyout>
+        </avaloniaEdit:TextEditor>
+
     </DockPanel>
 </UserControl>

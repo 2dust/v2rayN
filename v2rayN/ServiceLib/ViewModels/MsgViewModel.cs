@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Reactive.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -9,6 +10,7 @@ namespace ServiceLib.ViewModels;
 public class MsgViewModel : MyReactiveObject
 {
     private readonly ConcurrentQueue<string> _queueMsg = new();
+    private readonly StringBuilder _msgBuilder = new();
     private readonly int _numMaxMsg = 500;
     private bool _lastMsgFilterNotAvailable;
     private bool _blLockShow = false;
@@ -42,12 +44,7 @@ public class MsgViewModel : MyReactiveObject
     }
 
     private async Task AppendQueueMsg(string msg)
-    {
-        //if (msg == Global.CommandClearMsg)
-        //{
-        //    ClearMsg();
-        //    return;
-        //}
+    {        
         if (AutoRefresh == false)
         {
             return;
@@ -65,9 +62,18 @@ public class MsgViewModel : MyReactiveObject
 
         _blLockShow = true;
 
-        await Task.Delay(500);
-        var txt = string.Join("", _queueMsg.ToArray());
-        await _updateView?.Invoke(EViewAction.DispatcherShowMsg, txt);
+        _msgBuilder.Clear();
+        //foreach (var it in _queueMsg)
+        //{
+        //    _msgBuilder.Append(it);
+        //}
+        while (_queueMsg.TryDequeue(out var line))
+        {
+            _msgBuilder.Append(line);
+        }
+
+
+        await _updateView?.Invoke(EViewAction.DispatcherShowMsg, _msgBuilder.ToString());
 
         _blLockShow = false;
     }

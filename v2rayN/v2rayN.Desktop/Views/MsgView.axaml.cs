@@ -44,9 +44,11 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.Text = msg.ToString();
+        // txtMsg.Text = msg.ToString();
+        txtMsg.AppendText(msg.ToString());
         if (togScrollToEnd.IsChecked ?? true)
         {
+            txtMsg.ScrollToEnd();
             _scrollViewer?.ScrollToEnd();
         }
     }

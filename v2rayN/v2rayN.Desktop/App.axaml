@@ -11,9 +11,9 @@
     RequestedThemeVariant="Default">
     <Application.Styles>
         <semi:SemiTheme />
+        <semi:AvaloniaEditSemiTheme />
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
-        <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml" />
         <dialogHost:DialogHostStyles />
     </Application.Styles>
     <Application.Resources>

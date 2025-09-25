@@ -18,6 +18,7 @@
 		<PackageReference Include="Avalonia.ReactiveUI" />
 		<PackageReference Include="MessageBox.Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
+		<PackageReference Include="Semi.Avalonia.AvaloniaEdit" />
 		<PackageReference Include="Semi.Avalonia.DataGrid">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
