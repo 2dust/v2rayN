@@ -10,12 +10,13 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    private readonly ScrollViewer _scrollViewer;
+    private const int MaxLines = 500;
 
     public MsgView()
     {
         InitializeComponent();
-        _scrollViewer = this.FindControl<ScrollViewer>("msgScrollViewer");
+
+        txtMsg.Options.AllowScrollBelowDocument = false;
 
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
@@ -44,12 +45,20 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        // txtMsg.Text = msg.ToString();
         txtMsg.AppendText(msg.ToString());
+
+        var doc = txtMsg.Document;
+        if (doc.LineCount > MaxLines)
+        {
+            int removeCount = doc.LineCount - MaxLines;
+            var line = doc.GetLineByNumber(removeCount);
+            int removeUpTo = line.EndOffset;
+            doc.Remove(0, removeUpTo);
+        }
+
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
-            _scrollViewer?.ScrollToEnd();
         }
     }
 
