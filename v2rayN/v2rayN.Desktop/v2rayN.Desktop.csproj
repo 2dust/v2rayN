@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Avalonia.AvaloniaEdit" />
 		<PackageReference Include="Avalonia.Controls.DataGrid">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

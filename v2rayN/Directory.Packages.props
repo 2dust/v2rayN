@@ -5,6 +5,7 @@
     <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.6" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.6" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.6" />
