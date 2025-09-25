@@ -54,7 +54,7 @@ public partial class App : Application
         {
             if (desktop.MainWindow != null)
             {
-                AppEvents.AddServerViaClipboardRequested.OnNext(Unit.Default);
+                AppEvents.AddServerViaClipboardRequested.Publish();
                 await Task.Delay(1000);
             }
         }
