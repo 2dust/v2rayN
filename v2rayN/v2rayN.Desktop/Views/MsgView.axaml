@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+    xmlns:avaloniaEditEditing="clr-namespace:AvaloniaEdit.Editing;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -36,6 +37,7 @@
                     <PathIcon Data="{StaticResource building_copy}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
+
             <Button
                 x:Name="btnClear"
                 Width="{StaticResource IconButtonWidth}"
@@ -49,20 +51,24 @@
                     <PathIcon Data="{StaticResource building_delete}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
                 </Button.Content>
             </Button>
+
             <TextBlock
                 Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
+
             <ToggleSwitch
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
+
             <TextBlock
                 Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoScrollToEnd}" />
+
             <ToggleSwitch
                 x:Name="togScrollToEnd"
                 Margin="{StaticResource MarginLr8}"
@@ -76,6 +82,12 @@
             Margin="{StaticResource Margin8}"
             IsReadOnly="True"
             VerticalScrollBarVisibility="Auto">
+            <avaloniaEdit:TextEditor.Styles>
+                <Style Selector="avaloniaEdit|TextEditor /template/ avaloniaEditEditing|TextArea">
+                    <Setter Property="SelectionBrush" Value="#400000FF"/>
+                    <Setter Property="SelectionForeground" Value="Black"/>
+                </Style>
+            </avaloniaEdit:TextEditor.Styles>
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem
@@ -86,13 +98,8 @@
                         x:Name="menuMsgViewCopyAll"
                         Click="menuMsgViewCopyAll_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewCopyAll}" />
-                    <MenuItem
-                        x:Name="menuMsgViewClear"
-                        Click="menuMsgViewClear_Click"
-                        Header="{x:Static resx:ResUI.menuMsgViewClear}" />
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
         </avaloniaEdit:TextEditor>
-
     </DockPanel>
 </UserControl>
