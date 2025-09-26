@@ -47,8 +47,6 @@ public partial class MsgView
 
     private void ShowMsg(object msg)
     {
-        txtMsg.BeginChange();
-
         if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
         {
             ClearMsg();
@@ -59,8 +57,6 @@ public partial class MsgView
         {
             txtMsg.ScrollToEnd();
         }
-
-        txtMsg.EndChange();
     }
 
     public void ClearMsg()

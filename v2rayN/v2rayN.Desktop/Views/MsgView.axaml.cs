@@ -46,8 +46,6 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.BeginChange();
-
         //var lineCount = txtMsg.LineCount;
         //if (lineCount > ViewModel?.NumMaxMsg)
         //{
@@ -64,13 +62,11 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         {
             txtMsg.ScrollToEnd();
         }
-
-        txtMsg.EndChange();
     }
 
     public void ClearMsg()
     {
-        txtMsg.Text = string.Empty;
+        txtMsg.Clear();
         txtMsg.AppendText("----- Message cleared -----\n");
     }
 
