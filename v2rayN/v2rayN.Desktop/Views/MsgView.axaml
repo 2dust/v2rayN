@@ -75,7 +75,8 @@
             Name="txtMsg"
             Margin="{StaticResource Margin8}"
             IsReadOnly="True"
-            VerticalScrollBarVisibility="Auto">
+            VerticalScrollBarVisibility="Auto"
+            WordWrap="True">
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem
