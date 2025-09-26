@@ -9,10 +9,12 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
+    private const int MaxLines = 350;
+    private const int KeepLines = 320;
+
     public MsgView()
     {
         InitializeComponent();
-
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
@@ -30,9 +32,8 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                 if (obj is null)
                     return false;
 
-                Dispatcher.UIThread.Post(() =>
-                    ShowMsg(obj),
-                   DispatcherPriority.ApplicationIdle);
+                Dispatcher.UIThread.Post(() => ShowMsg(obj),
+                    DispatcherPriority.ApplicationIdle);
                 break;
         }
         return await Task.FromResult(true);
@@ -40,29 +41,35 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        if (txtMsg.Document.LineCount > ViewModel?.NumMaxMsg)
+        txtMsg.AppendText(msg.ToString());
+
+        if (txtMsg.Document.LineCount > MaxLines)
         {
-            ClearMsg();
+            var lc = txtMsg.Document.LineCount;
+            var cutLineNumber = lc - KeepLines;
+            var cutLine = txtMsg.Document.GetLineByNumber(cutLineNumber);
+            txtMsg.Document.Remove(0, cutLine.Offset);
         }
 
         if (togScrollToEnd.IsChecked ?? true)
         {
-            //txtMsg.ScrollToLine(txtMsg.Document.LineCount);
             txtMsg.ScrollToEnd();
         }
-        txtMsg.AppendText(msg.ToString());
     }
 
     public void ClearMsg()
     {
-        txtMsg.Clear();
+        txtMsg.Text = string.Empty;
         txtMsg.AppendText("----- Message cleared -----\n");
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
     {
-        txtMsg.Focus();
-        txtMsg.SelectAll();
+        Dispatcher.UIThread.Post(() =>
+        {
+            txtMsg.TextArea.Focus();
+            txtMsg.SelectAll();
+        }, DispatcherPriority.Render);
     }
 
     private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)
