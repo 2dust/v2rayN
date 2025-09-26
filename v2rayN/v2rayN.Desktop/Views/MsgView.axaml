@@ -77,8 +77,15 @@
             IsReadOnly="True"
             VerticalScrollBarVisibility="Auto"
             WordWrap="True">
+            <avaloniaEdit:TextEditor.Options>
+                <avaloniaEdit:TextEditorOptions AllowScrollBelowDocument="False"/>
+            </avaloniaEdit:TextEditor.Options>
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
+                    <MenuItem
+                        x:Name="menuMsgViewSelectAll"
+                        Click="menuMsgViewSelectAll_Click"
+                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
                     <MenuItem
                         x:Name="menuMsgViewCopy"
                         Click="menuMsgViewCopy_Click"
