@@ -12,7 +12,7 @@ public class MsgViewModel : MyReactiveObject
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
     private int _showLock = 0; // 0 = unlocked, 1 = locked
-    public int NumMaxMsg { get; } = 50;
+    public int NumMaxMsg { get; } = 500;
 
     [Reactive]
     public string MsgFilter { get; set; }

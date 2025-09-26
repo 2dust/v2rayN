@@ -9,8 +9,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    private const int MaxLines = 350;
-    private const int KeepLines = 320;
+    //private const int KeepLines = 30;
 
     public MsgView()
     {
@@ -41,20 +40,26 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.AppendText(msg.ToString());
+        txtMsg.BeginChange();
 
-        if (txtMsg.Document.LineCount > MaxLines)
+        //var lineCount = txtMsg.LineCount;
+        //if (lineCount > ViewModel?.NumMaxMsg)
+        //{
+        //    var cutLine = txtMsg.Document.GetLineByNumber(lineCount - KeepLines);
+        //    txtMsg.Document.Remove(0, cutLine.Offset);
+        //}
+        if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
         {
-            var lc = txtMsg.Document.LineCount;
-            var cutLineNumber = lc - KeepLines;
-            var cutLine = txtMsg.Document.GetLineByNumber(cutLineNumber);
-            txtMsg.Document.Remove(0, cutLine.Offset);
+            ClearMsg();
         }
 
+        txtMsg.AppendText(msg.ToString());
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
         }
+
+        txtMsg.EndChange();
     }
 
     public void ClearMsg()
