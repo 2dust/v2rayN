@@ -1,5 +1,4 @@
 using System.Reactive.Disposables;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
@@ -10,13 +9,12 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    private readonly ScrollViewer _scrollViewer;
+    private const int MaxLines = 350;
+    private const int KeepLines = 320;
 
     public MsgView()
     {
         InitializeComponent();
-        _scrollViewer = this.FindControl<ScrollViewer>("msgScrollViewer");
-
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
@@ -34,9 +32,8 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                 if (obj is null)
                     return false;
 
-                Dispatcher.UIThread.Post(() =>
-                    ShowMsg(obj),
-                   DispatcherPriority.ApplicationIdle);
+                Dispatcher.UIThread.Post(() => ShowMsg(obj),
+                    DispatcherPriority.ApplicationIdle);
                 break;
         }
         return await Task.FromResult(true);
@@ -44,23 +41,35 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.Text = msg.ToString();
+        txtMsg.AppendText(msg.ToString());
+
+        if (txtMsg.Document.LineCount > MaxLines)
+        {
+            var lc = txtMsg.Document.LineCount;
+            var cutLineNumber = lc - KeepLines;
+            var cutLine = txtMsg.Document.GetLineByNumber(cutLineNumber);
+            txtMsg.Document.Remove(0, cutLine.Offset);
+        }
+
         if (togScrollToEnd.IsChecked ?? true)
         {
-            _scrollViewer?.ScrollToEnd();
+            txtMsg.ScrollToEnd();
         }
     }
 
     public void ClearMsg()
     {
-        ViewModel?.ClearMsg();
-        txtMsg.Text = "";
+        txtMsg.Text = string.Empty;
+        txtMsg.AppendText("----- Message cleared -----\n");
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
     {
-        txtMsg.Focus();
-        txtMsg.SelectAll();
+        Dispatcher.UIThread.Post(() =>
+        {
+            txtMsg.TextArea.Focus();
+            txtMsg.SelectAll();
+        }, DispatcherPriority.Render);
     }
 
     private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)

@@ -5,6 +5,7 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Styling;
+using AvaloniaEdit;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Semi.Avalonia;
@@ -112,7 +113,8 @@ public class ThemeSettingViewModel : MyReactiveObject
             x.OfType<ContextMenu>(),
             x.OfType<DataGridRow>(),
             x.OfType<ListBoxItem>(),
-            x.OfType<HeaderedContentControl>()
+            x.OfType<HeaderedContentControl>(),
+            x.OfType<TextEditor>()
         ));
         style.Add(new Setter()
         {
@@ -153,7 +155,8 @@ public class ThemeSettingViewModel : MyReactiveObject
                 x.OfType<DataGridRow>(),
                 x.OfType<ListBoxItem>(),
                 x.OfType<HeaderedContentControl>(),
-                x.OfType<WindowNotificationManager>()
+                x.OfType<WindowNotificationManager>(),
+                x.OfType<TextEditor>()
             ));
             style.Add(new Setter()
             {
