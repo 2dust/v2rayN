@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <sys:Double x:Key="QrcodeWidth">500</sys:Double>
+        <sys:Double x:Key="QrcodeWidth">400</sys:Double>
     </UserControl.Resources>
 
     <Grid Margin="32" RowDefinitions="Auto,Auto">
