@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
@@ -21,6 +22,11 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
         });
+
+        TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
+                kv => kv.Key,
+                kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
+            ));
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

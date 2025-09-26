@@ -449,6 +449,14 @@ public class Global
             "none"
     ];
 
+    public static readonly Dictionary<string, string> LogLevelColors = new()
+    {
+        { "debug",   "#6C757D" },
+        { "info",    "#2ECC71" },
+        { "warning", "#FFA500" },
+        { "error",   "#E74C3C" },
+    };
+
     public static readonly List<string> InboundTags =
     [
         "socks",
