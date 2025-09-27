@@ -15,6 +15,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     public MsgView()
     {
         InitializeComponent();
+        txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
