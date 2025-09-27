@@ -3,13 +3,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
 using Avalonia.VisualTree;
 using ReactiveUI;
+using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
 
-public partial class ProfilesSelectWindow : ReactiveWindow<ProfilesSelectViewModel>
+public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 {
     private static Config _config;
 
