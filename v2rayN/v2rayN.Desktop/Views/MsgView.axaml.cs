@@ -58,7 +58,15 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
             ClearMsg();
         }
 
-        txtMsg.AppendText(msg.ToString());
+        var s = msg?.ToString() ?? string.Empty;
+        s = s.TrimEnd('\r', '\n');
+        if (txtMsg.Document.TextLength > 0)
+        {
+            var last = txtMsg.Document.GetText(txtMsg.Document.TextLength - 1, 1);
+            if (last != "\n")
+                txtMsg.AppendText("\n");
+        }
+        txtMsg.AppendText(s);
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
@@ -68,7 +76,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     public void ClearMsg()
     {
         txtMsg.Clear();
-        txtMsg.AppendText("----- Message cleared -----\n");
+        txtMsg.AppendText("----- Message cleared -----");
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
