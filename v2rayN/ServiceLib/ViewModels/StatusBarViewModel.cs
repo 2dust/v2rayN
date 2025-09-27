@@ -238,6 +238,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task Init()
     {
+        await ConfigHandler.InitBuiltinRouting(_config);
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
