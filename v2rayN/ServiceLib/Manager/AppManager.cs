@@ -1,5 +1,3 @@
-using System.Reactive;
-
 namespace ServiceLib.Manager;
 
 public sealed class AppManager

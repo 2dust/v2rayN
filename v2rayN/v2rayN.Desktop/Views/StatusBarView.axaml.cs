@@ -19,7 +19,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        
+
         ViewModel = StatusBarViewModel.Instance;
         ViewModel?.InitUpdateView(UpdateViewHandler);
 

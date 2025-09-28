@@ -338,6 +338,6 @@ public class CheckUpdateViewModel : MyReactiveObject
         {
             return;
         }
-        found.Remarks = model.Remarks; 
+        found.Remarks = model.Remarks;
     }
 }
