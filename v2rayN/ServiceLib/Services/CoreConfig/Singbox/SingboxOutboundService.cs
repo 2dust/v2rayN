@@ -217,9 +217,15 @@ public partial class CoreConfigSingboxService
             {
                 return -1;
             }
+
+            var hasCycle = await node.HasCycle(new HashSet<string>(), new HashSet<string>());
+            if (hasCycle)
+            {
+                return -1;
+            }
+
             // remove custom nodes
             // remove group nodes for proxy chain
-            // avoid self-reference
             var childProfiles = (await Task.WhenAll(
                     Utils.String2List(profileGroupItem.ChildItems)
                         .Where(p => !p.IsNullOrEmpty())
@@ -230,7 +236,6 @@ public partial class CoreConfigSingboxService
                     && p.IsValid()
                     && p.ConfigType != EConfigType.Custom
                     && (node.ConfigType == EConfigType.PolicyGroup || p.ConfigType < EConfigType.Group)
-                    && p.IndexId != node.IndexId
                 )
                 .ToList();
 

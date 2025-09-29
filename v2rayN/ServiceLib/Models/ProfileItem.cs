@@ -109,6 +109,42 @@ public class ProfileItem : ReactiveObject
         return true;
     }
 
+    public async Task<bool> HasCycle(HashSet<string> visited, HashSet<string> stack)
+    {
+        if (ConfigType < EConfigType.Group)
+            return false;
+
+        if (stack.Contains(IndexId))
+            return true;
+
+        if (visited.Contains(IndexId))
+            return false;
+
+        visited.Add(IndexId);
+        stack.Add(IndexId);
+
+        if (ProfileGroupItemManager.Instance.TryGet(IndexId, out var group)
+            && !group.ChildItems.IsNullOrEmpty())
+        {
+            var childProfiles = (await Task.WhenAll(
+                    Utils.String2List(group.ChildItems)
+                        .Where(p => !p.IsNullOrEmpty())
+                        .Select(AppManager.Instance.GetProfileItem)
+                ))
+                .Where(p => p != null)
+                .ToList();
+
+            foreach (var child in childProfiles)
+            {
+                if (await child.HasCycle(visited, stack))
+                    return true;
+            }
+        }
+
+        stack.Remove(IndexId);
+        return false;
+    }
+
     #endregion function
 
     [PrimaryKey]
