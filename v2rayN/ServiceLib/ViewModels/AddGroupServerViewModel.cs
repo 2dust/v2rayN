@@ -195,12 +195,12 @@ public class AddGroupServerViewModel : MyReactiveObject
         var childIndexIds = new List<string>();
         foreach (var item in ChildItemsObs)
         {
-            if (!item.IndexId.IsNullOrEmpty())
+            if (item.IndexId.IsNullOrEmpty())
             {
-                childIndexIds.Add(item.IndexId);
+                continue;
             }
+            childIndexIds.Add(item.IndexId);
         }
-        SelectedSource.Address = Utils.List2String(childIndexIds);
         var profileGroup = ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(SelectedSource.IndexId);
         profileGroup.ChildItems = Utils.List2String(childIndexIds);
         profileGroup.MultipleLoad = PolicyGroupType switch

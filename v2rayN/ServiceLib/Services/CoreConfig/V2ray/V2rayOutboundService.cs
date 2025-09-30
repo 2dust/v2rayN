@@ -539,9 +539,11 @@ public partial class CoreConfigV2rayService
             }
 
             //add balancers
-            await GenObservatory(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
-            await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
-
+            if (node.ConfigType == EConfigType.PolicyGroup)
+            {
+                await GenObservatory(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+                await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+            }
         }
         catch (Exception ex)
         {
@@ -797,6 +799,35 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
+            if (node == null)
+                continue;
+            if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            {
+                ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
+                if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                {
+                    continue;
+                }
+                var childProfiles = (await Task.WhenAll(
+                        Utils.String2List(profileGroupItem.ChildItems)
+                        .Where(p => !p.IsNullOrEmpty())
+                        .Select(AppManager.Instance.GetProfileItem)
+                    )).Where(p => p != null).ToList();
+                if (childProfiles.Count <= 0)
+                {
+                    continue;
+                }
+                var childBaseTagName = $"{baseTagName}-{i + 1}";
+                var ret = node.ConfigType switch
+                {
+                    EConfigType.PolicyGroup =>
+                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
+                    EConfigType.ProxyChain =>
+                        await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                    _ => throw new NotImplementedException()
+                };
+                continue;
+            }
             var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {

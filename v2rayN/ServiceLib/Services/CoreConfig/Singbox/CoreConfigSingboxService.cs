@@ -363,8 +363,6 @@ public partial class CoreConfigSingboxService(Config config)
 
             await GenLog(singboxConfig);
             await GenInbounds(singboxConfig);
-            await GenRouting(singboxConfig);
-            await GenExperimental(singboxConfig);
 
             var groupRet = await GenGroupOutbound(parentNode, singboxConfig);
             if (groupRet != 0)
@@ -373,6 +371,8 @@ public partial class CoreConfigSingboxService(Config config)
                 return ret;
             }
 
+            await GenRouting(singboxConfig);
+            await GenExperimental(singboxConfig);
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 
@@ -416,12 +416,10 @@ public partial class CoreConfigSingboxService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            singboxConfig.outbounds.RemoveAt(0);
 
             await GenLog(singboxConfig);
             await GenInbounds(singboxConfig);
-            await GenRouting(singboxConfig);
-            await GenExperimental(singboxConfig);
-            singboxConfig.outbounds.RemoveAt(0);
 
             var groupRet = await GenGroupOutbound(parentNode, singboxConfig);
             if (groupRet != 0)
@@ -430,6 +428,8 @@ public partial class CoreConfigSingboxService(Config config)
                 return ret;
             }
 
+            await GenRouting(singboxConfig);
+            await GenExperimental(singboxConfig);
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 

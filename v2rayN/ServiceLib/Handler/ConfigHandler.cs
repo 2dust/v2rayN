@@ -1087,6 +1087,8 @@ public static class ConfigHandler
             profileItem.IndexId = Utils.GetGuid(false);
             maxSort = ProfileExManager.Instance.GetMaxSort();
         }
+        var groupType = profileItem.ConfigType == EConfigType.ProxyChain ? EConfigType.ProxyChain.ToString() : profileGroupItem.MultipleLoad.ToString();
+        profileItem.Address = $"{profileItem.CoreType}-{groupType}";
         if (maxSort > 0)
         {
             ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
@@ -1194,10 +1196,10 @@ public static class ConfigHandler
         var indexId = Utils.GetGuid(false);
         var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        var remark = string.Empty;
+        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId)).Remarks} ";
         if (coreType == ECoreType.Xray)
         {
-            remark = multipleLoad switch
+            remark += multipleLoad switch
             {
                 EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
                 EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerXrayFallback,
@@ -1209,7 +1211,7 @@ public static class ConfigHandler
         }
         else if (coreType == ECoreType.sing_box)
         {
-            remark = multipleLoad switch
+            remark += multipleLoad switch
             {
                 EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
                 EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerSingBoxFallback,
@@ -1222,7 +1224,6 @@ public static class ConfigHandler
             CoreType = coreType,
             ConfigType = EConfigType.PolicyGroup,
             Remarks = remark,
-            Address = childProfileIndexId,
         };
         if (!subId.IsNullOrEmpty())
         {

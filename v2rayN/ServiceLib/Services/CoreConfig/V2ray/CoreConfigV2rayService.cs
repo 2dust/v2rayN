@@ -114,9 +114,6 @@ public partial class CoreConfigV2rayService(Config config)
 
             await GenLog(v2rayConfig);
             await GenInbounds(v2rayConfig);
-            await GenRouting(v2rayConfig);
-            await GenDns(null, v2rayConfig);
-            await GenStatistic(v2rayConfig);
 
             var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
             if (groupRet != 0)
@@ -125,11 +122,15 @@ public partial class CoreConfigV2rayService(Config config)
                 return ret;
             }
 
+            await GenRouting(v2rayConfig);
+            await GenDns(null, v2rayConfig);
+            await GenStatistic(v2rayConfig);
+
             var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
 
             //add rule
             var rules = v2rayConfig.routing.rules;
-            if (rules?.Count > 0)
+            if (rules?.Count > 0 && ((v2rayConfig.routing.balancers?.Count ?? 0) > 0))
             {
                 var balancerTagSet = v2rayConfig.routing.balancers
                     .Select(b => b.tag)
@@ -215,13 +216,10 @@ public partial class CoreConfigV2rayService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            v2rayConfig.outbounds.RemoveAt(0);
 
             await GenLog(v2rayConfig);
             await GenInbounds(v2rayConfig);
-            await GenRouting(v2rayConfig);
-            await GenDns(null, v2rayConfig);
-            await GenStatistic(v2rayConfig);
-            v2rayConfig.outbounds.RemoveAt(0);
 
             var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
             if (groupRet != 0)
@@ -229,6 +227,10 @@ public partial class CoreConfigV2rayService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+
+            await GenRouting(v2rayConfig);
+            await GenDns(null, v2rayConfig);
+            await GenStatistic(v2rayConfig);
 
             ret.Success = true;
 

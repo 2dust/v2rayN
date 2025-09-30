@@ -4,32 +4,80 @@ public partial class CoreConfigV2rayService
 {
     private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
     {
-        if (multipleLoad == EMultipleLoad.LeastPing)
+        // Collect all existing subject selectors from both observatories
+        var subjectSelectors = new List<string>();
+        subjectSelectors.AddRange(v2rayConfig.burstObservatory?.subjectSelector ?? []);
+        subjectSelectors.AddRange(v2rayConfig.observatory?.subjectSelector ?? []);
+
+        // Case 1: exact match already exists -> nothing to do
+        if (subjectSelectors.Any(baseTagName.StartsWith))
+            return await Task.FromResult(0);
+
+        // Case 2: prefix match exists -> reuse it and move to the first position
+        var matched = subjectSelectors.FirstOrDefault(s => s.StartsWith(baseTagName));
+        if (matched is not null)
         {
-            var observatory = new Observatory4Ray
+            baseTagName = matched;
+
+            if (v2rayConfig.burstObservatory?.subjectSelector?.Contains(baseTagName) == true)
             {
-                subjectSelector = [baseTagName],
-                probeUrl = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
-                probeInterval = "3m",
-                enableConcurrency = true,
-            };
-            v2rayConfig.observatory = observatory;
+                v2rayConfig.burstObservatory.subjectSelector.Remove(baseTagName);
+                v2rayConfig.burstObservatory.subjectSelector.Insert(0, baseTagName);
+            }
+
+            if (v2rayConfig.observatory?.subjectSelector?.Contains(baseTagName) == true)
+            {
+                v2rayConfig.observatory.subjectSelector.Remove(baseTagName);
+                v2rayConfig.observatory.subjectSelector.Insert(0, baseTagName);
+            }
+
+            return await Task.FromResult(0);
         }
-        else if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
+
+        // Case 3: need to create or insert based on multipleLoad type
+        if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
         {
-            var burstObservatory = new BurstObservatory4Ray
+            if (v2rayConfig.burstObservatory is null)
             {
-                subjectSelector = [baseTagName],
-                pingConfig = new()
+                // Create new burst observatory with default ping config
+                v2rayConfig.burstObservatory = new BurstObservatory4Ray
                 {
-                    destination = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
-                    interval = "5m",
-                    timeout = "30s",
-                    sampling = 2,
-                }
-            };
-            v2rayConfig.burstObservatory = burstObservatory;
+                    subjectSelector = [baseTagName],
+                    pingConfig = new()
+                    {
+                        destination = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                        interval = "5m",
+                        timeout = "30s",
+                        sampling = 2,
+                    }
+                };
+            }
+            else
+            {
+                v2rayConfig.burstObservatory.subjectSelector ??= new();
+                v2rayConfig.burstObservatory.subjectSelector.Add(baseTagName);
+            }
         }
+        else if (multipleLoad is EMultipleLoad.LeastPing)
+        {
+            if (v2rayConfig.observatory is null)
+            {
+                // Create new observatory with default probe config
+                v2rayConfig.observatory = new Observatory4Ray
+                {
+                    subjectSelector = [baseTagName],
+                    probeUrl = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
+                    probeInterval = "3m",
+                    enableConcurrency = true,
+                };
+            }
+            else
+            {
+                v2rayConfig.observatory.subjectSelector ??= new();
+                v2rayConfig.observatory.subjectSelector.Add(baseTagName);
+            }
+        }
+
         return await Task.FromResult(0);
     }
 
