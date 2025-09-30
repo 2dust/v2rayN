@@ -1425,11 +1425,11 @@
   <data name="TbSBOutboundDomainResolve" xml:space="preserve">
     <value>Разрешать домены для исходящих соединений</value>
   </data>
-  <data name="TbSBDoHResolverServer" xml:space="preserve">
-    <value>Сервер DoH-резолвера (sing-box)</value>
+  <data name="TbSBBootstrapDNS" xml:space="preserve">
+    <value>Bootstrap DNS (sing-box)</value>
   </data>
   <data name="TbSBFallbackDNSResolve" xml:space="preserve">
-    <value>Резервное DNS-разрешение (рекомендуется указывать IP)</value>
+    <value>Fallback DNS Resolution, Require IP</value>
   </data>
   <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
     <value>Стратегия резолвинга Freedom (Xray)</value>

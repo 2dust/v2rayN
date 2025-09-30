@@ -2914,6 +2914,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Bootstrap DNS (sing-box) 的本地化字符串。
+        /// </summary>
+        public static string TbSBBootstrapDNS {
+            get {
+                return ResourceManager.GetString("TbSBBootstrapDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
         /// </summary>
         public static string TbSBDirectResolveStrategy {
@@ -2932,16 +2941,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 sing-box DoH Resolver Server 的本地化字符串。
-        /// </summary>
-        public static string TbSBDoHResolverServer {
-            get {
-                return ResourceManager.GetString("TbSBDoHResolverServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Fallback DNS Resolution, Suggest IP 的本地化字符串。
+        ///   查找类似 Fallback DNS Resolution, Require IP 的本地化字符串。
         /// </summary>
         public static string TbSBFallbackDNSResolve {
             get {

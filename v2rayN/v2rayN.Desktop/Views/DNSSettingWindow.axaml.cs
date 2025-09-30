@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ReactiveUI;
@@ -67,16 +68,14 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb
-                ).BindTo(this.FindControl<TextBlock>("txtBasicDNSSettingsInvalid"), t => t.IsVisible);
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb
-                ).BindTo(this.FindControl<TextBlock>("txtAdvancedDNSSettingsInvalid"), t => t.IsVisible);
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => !b)
+                .BindTo(this.FindControl<TextBlock>("txtBasicDNSSettingsInvalid"), t => t.IsVisible);
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => !b)
+                .BindTo(this.FindControl<TextBlock>("txtAdvancedDNSSettingsInvalid"), t => t.IsVisible);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
     }
 

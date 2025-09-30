@@ -41,7 +41,7 @@
         <TabControl HorizontalContentAlignment="Left">
             <TabItem Header="{x:Static resx:ResUI.ThBasicDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Margin="{StaticResource Margin8}">
+                    <Grid x:Name="gridBasicDNSSettings" Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -131,7 +131,7 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBDoHResolverServer}" />
+                            Text="{x:Static resx:ResUI.TbSBBootstrapDNS}" />
                         <ComboBox
                             x:Name="cmbSBFinalResolverDNS"
                             Grid.Row="4"
@@ -222,7 +222,7 @@
             </TabItem>
             <TabItem Header="{x:Static resx:ResUI.ThAdvancedDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Margin="{StaticResource Margin8}">
+                    <Grid x:Name="gridAdvancedDNSSettings" Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />

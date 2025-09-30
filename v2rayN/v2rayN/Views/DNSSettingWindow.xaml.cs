@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using ReactiveUI;
 
@@ -65,18 +66,16 @@ public partial class DNSSettingWindow
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb ? Visibility.Visible : Visibility.Collapsed)
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => b ? Visibility.Collapsed : Visibility.Visible)
                 .BindTo(this, x => x.txtBasicDNSSettingsInvalid.Visibility)
                 .DisposeWith(disposables);
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb ? Visibility.Visible : Visibility.Collapsed)
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => b ? Visibility.Collapsed : Visibility.Visible)
                 .BindTo(this, x => x.txtAdvancedDNSSettingsInvalid.Visibility)
                 .DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
