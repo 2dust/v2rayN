@@ -88,18 +88,12 @@ public class ProcessService : IDisposable
                 {
                     _process.CancelOutputRead();
                 }
-                catch
-                {
-                    throw;
-                }
+                catch { }
                 try
                 {
                     _process.CancelErrorRead();
                 }
-                catch
-                {
-                    throw;
-                }
+                catch { }
             }
 
             try
@@ -109,19 +103,13 @@ public class ProcessService : IDisposable
                     _process.Kill(true);
                 }
             }
-            catch
-            {
-                throw;
-            }
+            catch { }
 
             try
             {
                 _process.Kill();
             }
-            catch
-            {
-                throw;
-            }
+            catch { }
 
             await Task.Delay(100);
         }
