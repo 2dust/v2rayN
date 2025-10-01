@@ -182,11 +182,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        var pid = -1;
+        ProcessService processService = null;
         try
         {
-            pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
-            if (pid < 0)
+            processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
+            if (processService is null)
             {
                 return false;
             }
@@ -216,10 +216,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            if (pid > 0)
-            {
-                await ProcUtils.ProcessKill(pid);
-            }
+            await processService?.StopAsync();
         }
         return true;
     }
@@ -244,11 +241,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             tasks.Add(Task.Run(async () =>
             {
-                var pid = -1;
+                ProcessService processService = null;
                 try
                 {
-                    pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
-                    if (pid < 0)
+                    processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                    if (processService is null)
                     {
                         await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
                     }
@@ -275,10 +272,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 }
                 finally
                 {
-                    if (pid > 0)
-                    {
-                        await ProcUtils.ProcessKill(pid);
-                    }
+                    await processService?.StopAsync();
                     concurrencySemaphore.Release();
                 }
             }));
