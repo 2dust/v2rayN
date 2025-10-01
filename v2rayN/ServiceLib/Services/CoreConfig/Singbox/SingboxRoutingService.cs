@@ -376,7 +376,7 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
-        var tag = Global.ProxyTag + node.IndexId.ToString();
+        var tag = $"{node.IndexId}-{Global.ProxyTag}";
         if (singboxConfig.outbounds.Any(o => o.tag == tag)
             || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
         {
@@ -385,11 +385,10 @@ public partial class CoreConfigSingboxService
 
         if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
         {
-            var childBaseTagName = $"{Global.ProxyTag}-{node.IndexId}";
-            var ret = await GenGroupOutbound(node, singboxConfig, childBaseTagName);
+            var ret = await GenGroupOutbound(node, singboxConfig, tag);
             if (ret == 0)
             {
-                return childBaseTagName;
+                return tag;
             }
             return Global.ProxyTag;
         }

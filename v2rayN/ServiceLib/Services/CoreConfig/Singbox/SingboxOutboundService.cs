@@ -640,12 +640,12 @@ public partial class CoreConfigSingboxService
             }
 
             // Merge results: first the selector/urltest/proxies, then other outbounds, and finally prev outbounds
-            resultOutbounds.AddRange(prevOutbounds);
-            resultOutbounds.AddRange(singboxConfig.outbounds);
-            singboxConfig.outbounds = resultOutbounds;
-            singboxConfig.endpoints ??= new List<Endpoints4Sbox>();
-            resultEndpoints.AddRange(singboxConfig.endpoints);
-            singboxConfig.endpoints = resultEndpoints;
+            var serverList = new List<BaseServer4Sbox>();
+            serverList = serverList.Concat(prevOutbounds)
+                .Concat(resultOutbounds)
+                .Concat(resultEndpoints)
+                .ToList();
+            await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
         }
         catch (Exception ex)
         {
@@ -770,12 +770,11 @@ public partial class CoreConfigSingboxService
             resultOutbounds.Insert(0, outUrltest);
             resultOutbounds.Insert(0, outSelector);
         }
-        singboxConfig.outbounds ??= new();
-        resultOutbounds.AddRange(singboxConfig.outbounds);
-        singboxConfig.outbounds = resultOutbounds;
-        singboxConfig.endpoints ??= new();
-        resultEndpoints.AddRange(singboxConfig.endpoints);
-        singboxConfig.endpoints = resultEndpoints;
+        var serverList = new List<BaseServer4Sbox>();
+        serverList = serverList.Concat(resultOutbounds)
+            .Concat(resultEndpoints)
+            .ToList();
+        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
         return await Task.FromResult(0);
     }
 
@@ -818,14 +817,40 @@ public partial class CoreConfigSingboxService
                 resultOutbounds.Add(outbound);
             }
         }
-        singboxConfig.outbounds ??= new();
-        resultOutbounds.AddRange(singboxConfig.outbounds);
-        singboxConfig.outbounds = resultOutbounds;
+        var serverList = new List<BaseServer4Sbox>();
+        serverList = serverList.Concat(resultOutbounds)
+            .Concat(resultEndpoints)
+            .ToList();
+        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
+        return await Task.FromResult(0);
+    }
 
-        singboxConfig.endpoints ??= new();
-        resultEndpoints.AddRange(singboxConfig.endpoints);
-        singboxConfig.endpoints = resultEndpoints;
-
+    private async Task<int> AddRangeOutbounds(List<BaseServer4Sbox> servers, SingboxConfig singboxConfig, bool prepend = true)
+    {
+        try
+        {
+            if (servers is null || servers.Count <= 0)
+            {
+                return 0;
+            }
+            var outbounds = servers.Where(s => s is Outbound4Sbox).Cast<Outbound4Sbox>().ToList();
+            var endpoints = servers.Where(s => s is Endpoints4Sbox).Cast<Endpoints4Sbox>().ToList();
+            singboxConfig.endpoints ??= new();
+            if (prepend)
+            {
+                singboxConfig.outbounds.InsertRange(0, outbounds);
+                singboxConfig.endpoints.InsertRange(0, endpoints);
+            }
+            else
+            {
+                singboxConfig.outbounds.AddRange(outbounds);
+                singboxConfig.endpoints.AddRange(endpoints);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
         return await Task.FromResult(0);
     }
 }

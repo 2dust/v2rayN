@@ -1,3 +1,5 @@
+using ServiceLib.Models;
+
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
@@ -728,9 +730,17 @@ public partial class CoreConfigV2rayService
             }
 
             // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
-            resultOutbounds.AddRange(prevOutbounds);
-            resultOutbounds.AddRange(v2rayConfig.outbounds);
-            v2rayConfig.outbounds = resultOutbounds;
+            if (baseTagName == Global.ProxyTag)
+            {
+                resultOutbounds.AddRange(prevOutbounds);
+                resultOutbounds.AddRange(v2rayConfig.outbounds);
+                v2rayConfig.outbounds = resultOutbounds;
+            }
+            else
+            {
+                v2rayConfig.outbounds.AddRange(prevOutbounds);
+                v2rayConfig.outbounds.AddRange(resultOutbounds);
+            }
         }
         catch (Exception ex)
         {
@@ -842,13 +852,19 @@ public partial class CoreConfigV2rayService
             outbound.tag = baseTagName + (i + 1).ToString();
             resultOutbounds.Add(outbound);
         }
-        v2rayConfig.outbounds ??= new();
-        resultOutbounds.AddRange(v2rayConfig.outbounds);
-        v2rayConfig.outbounds = resultOutbounds;
+        if (baseTagName == Global.ProxyTag)
+        {
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
+        }
+        else
+        {
+            v2rayConfig.outbounds.AddRange(resultOutbounds);
+        }
         return await Task.FromResult(0);
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2RayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
     {
         // Based on actual network flow instead of data packets
         var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
@@ -889,9 +905,15 @@ public partial class CoreConfigV2rayService
 
             resultOutbounds.Add(outbound);
         }
-        v2RayConfig.outbounds ??= new();
-        resultOutbounds.AddRange(v2RayConfig.outbounds);
-        v2RayConfig.outbounds = resultOutbounds;
+        if (baseTagName == Global.ProxyTag)
+        {
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
+        }
+        else
+        {
+            v2rayConfig.outbounds.AddRange(resultOutbounds);
+        }
 
         return await Task.FromResult(0);
     }

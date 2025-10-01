@@ -133,7 +133,7 @@ public partial class CoreConfigV2rayService
             return Global.ProxyTag;
         }
 
-        var tag = Global.ProxyTag + node.IndexId.ToString();
+        var tag = $"{node.IndexId}-{Global.ProxyTag}";
         if (v2rayConfig.outbounds.Any(p => p.tag == tag))
         {
             return tag;
@@ -141,11 +141,10 @@ public partial class CoreConfigV2rayService
 
         if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
         {
-            var childBaseTagName = $"{Global.ProxyTag}-{node.IndexId}";
-            var ret = await GenGroupOutbound(node, v2rayConfig, childBaseTagName);
+            var ret = await GenGroupOutbound(node, v2rayConfig, tag);
             if (ret == 0)
             {
-                return childBaseTagName;
+                return tag;
             }
             return Global.ProxyTag;
         }
