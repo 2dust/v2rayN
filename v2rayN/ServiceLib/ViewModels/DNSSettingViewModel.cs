@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -32,6 +33,8 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public bool RayCustomDNSEnableCompatible { get; set; }
     [Reactive] public bool SBCustomDNSEnableCompatible { get; set; }
 
+    [ObservableAsProperty] public bool IsSimpleDNSEnabled { get; }
+
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCompatibleCmd { get; }
@@ -54,6 +57,10 @@ public class DNSSettingViewModel : MyReactiveObject
             TunDNS2Compatible = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
             await Task.CompletedTask;
         });
+
+        this.WhenAnyValue(x => x.RayCustomDNSEnableCompatible, x => x.SBCustomDNSEnableCompatible)
+            .Select(x => !(x.Item1 && x.Item2))
+            .ToPropertyEx(this, x => x.IsSimpleDNSEnabled);
 
         _ = Init();
     }

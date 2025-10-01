@@ -75,6 +75,7 @@
                     Width="{StaticResource IconButtonWidth}"
                     Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr8}"
+                    HorizontalAlignment="Left"
                     Theme="{DynamicResource BorderlessButton}">
                     <Button.Content>
                         <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
@@ -208,8 +209,8 @@
                     Grid.Row="9"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Content="{x:Static resx:ResUI.TbSelectProfile}"
-                    Click="BtnSelectPrevProfile_Click" />
+                    Click="BtnSelectPrevProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
                     Grid.Row="10"
@@ -228,8 +229,8 @@
                     Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Content="{x:Static resx:ResUI.TbSelectProfile}"
-                    Click="BtnSelectNextProfile_Click" />
+                    Click="BtnSelectNextProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
                     Grid.Row="11"

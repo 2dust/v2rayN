@@ -37,6 +37,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThBasicDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
+                        x:Name="gridBasicDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -103,7 +104,7 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBDoHResolverServer}" />
+                            Text="{x:Static resx:ResUI.TbSBBootstrapDNS}" />
                         <ctrls:AutoCompleteBox
                             x:Name="cmbSBFinalResolverDNS"
                             Grid.Row="4"
@@ -187,6 +188,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThAdvancedDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
+                        x:Name="gridAdvancedDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">

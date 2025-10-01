@@ -1422,11 +1422,11 @@
   <data name="TbSBOutboundDomainResolve" xml:space="preserve">
     <value>解析出站域名</value>
   </data>
-  <data name="TbSBDoHResolverServer" xml:space="preserve">
-    <value>sing-box DoH 解析服务器</value>
+  <data name="TbSBBootstrapDNS" xml:space="preserve">
+    <value>Bootstrap DNS (sing-box)</value>
   </data>
   <data name="TbSBFallbackDNSResolve" xml:space="preserve">
-    <value>兜底解析其他 DNS 域名，建议设为 ip</value>
+    <value>回退 DNS 解析，需指定为 IP</value>
   </data>
   <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
     <value>xray freedom 解析策略</value>
