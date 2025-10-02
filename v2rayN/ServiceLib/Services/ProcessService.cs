@@ -178,5 +178,6 @@ public class ProcessService : IDisposable
         }
 
         _isDisposed = true;
+        GC.SuppressFinalize(this);
     }
 }

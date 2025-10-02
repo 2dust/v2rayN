@@ -8,7 +8,7 @@ public sealed class AppManager
     private Config _config;
     private int? _statePort;
     private int? _statePort2;
-    private Job? _processJob;
+    private WindowsJob? _processJob;
     public static AppManager Instance => _instance.Value;
     public Config Config => _config;
 
