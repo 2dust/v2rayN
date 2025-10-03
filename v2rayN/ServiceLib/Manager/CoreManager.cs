@@ -8,6 +8,7 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
+    private WindowsJob? _processJob;
     private ProcessService? _processService;
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
@@ -264,13 +265,27 @@ public class CoreManager
         await procService.StartAsync();
 
         await Task.Delay(100);
-        AppManager.Instance.AddProcess(procService.Handle);
+
         if (procService is null or { HasExited: true })
         {
             throw new Exception(ResUI.FailedToRunCore);
         }
+        AddProcessJob(procService.Handle);
 
         return procService;
+    }
+
+    private void AddProcessJob(nint processHandle)
+    {
+        if (Utils.IsWindows())
+        {
+            _processJob ??= new();
+            try
+            {
+                _processJob?.AddProcess(processHandle);
+            }
+            catch { }
+        }
     }
 
     #endregion Process

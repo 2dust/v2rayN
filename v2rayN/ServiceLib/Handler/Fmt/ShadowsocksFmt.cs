@@ -42,7 +42,7 @@ public class ShadowsocksFmt : BaseFmt
         //    item.port);
         //url = Utile.Base64Encode(url);
         //new Sip002
-        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}");
+        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
         return ToUri(EConfigType.Shadowsocks, item.Address, item.Port, pw, null, remark);
     }
 

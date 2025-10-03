@@ -33,7 +33,7 @@ public class SocksFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         //new
-        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}");
+        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
         return ToUri(EConfigType.SOCKS, item.Address, item.Port, pw, null, remark);
     }
 

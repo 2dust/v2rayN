@@ -27,7 +27,7 @@ public class FmtHandler
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            return "";
+            return string.Empty;
         }
     }
 

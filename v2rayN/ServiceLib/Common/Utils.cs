@@ -85,13 +85,19 @@ public class Utils
     /// Base64 Encode
     /// </summary>
     /// <param name="plainText"></param>
+    /// <param name="removePadding"></param>
     /// <returns></returns>
-    public static string Base64Encode(string plainText)
+    public static string Base64Encode(string plainText, bool removePadding = false)
     {
         try
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            return Convert.ToBase64String(plainTextBytes);
+            var base64 = Convert.ToBase64String(plainTextBytes);
+            if (removePadding)
+            {
+                base64 = base64.TrimEnd('=');
+            }
+            return base64;
         }
         catch (Exception ex)
         {
@@ -112,7 +118,7 @@ public class Utils
         {
             if (plainText.IsNullOrEmpty())
             {
-                return "";
+                return string.Empty;
             }
 
             plainText = plainText.Trim()
@@ -947,7 +953,7 @@ public class Utils
         if (SetUnixFileMode(fileName))
         {
             Logging.SaveLog($"Successfully set the file execution permission, {fileName}");
-            return "";
+            return string.Empty;
         }
 
         if (fileName.Contains(' '))
