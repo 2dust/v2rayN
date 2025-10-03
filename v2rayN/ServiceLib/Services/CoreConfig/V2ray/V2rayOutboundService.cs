@@ -496,7 +496,8 @@ public partial class CoreConfigV2rayService
                 return -1;
             }
 
-            var hasCycle = await node.HasCycle(new HashSet<string>(), new HashSet<string>());
+            var hasCycle = profileGroupItem.HasCycle();
+            //var hasCycle = await node.HasCycle(new HashSet<string>(), new HashSet<string>());
             if (hasCycle)
             {
                 return -1;
