@@ -4,7 +4,7 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig, bool handleBalancerAndRules = false)
+    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig)
     {
         var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
         if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
@@ -19,7 +19,7 @@ public partial class CoreConfigV2rayService
         }
 
         // Handle balancer and rules modifications (for multiple load scenarios)
-        if (handleBalancerAndRules && v2rayConfig.routing?.balancers?.Count > 0)
+        if (v2rayConfig.routing?.balancers?.Count > 0)
         {
             var balancer = v2rayConfig.routing.balancers.First();
 
@@ -57,6 +57,34 @@ public partial class CoreConfigV2rayService
             else
             {
                 fullConfigTemplateNode["routing"]["balancers"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.routing.balancers));
+            }
+        }
+
+        if (v2rayConfig.observatory != null)
+        {
+            if (fullConfigTemplateNode["observatory"] == null)
+            {
+                fullConfigTemplateNode["observatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.observatory));
+            }
+            else
+            {
+                var subjectSelector = v2rayConfig.observatory.subjectSelector;
+                subjectSelector.AddRange(fullConfigTemplateNode["observatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["observatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
+            }
+        }
+
+        if (v2rayConfig.burstObservatory != null)
+        {
+            if (fullConfigTemplateNode["burstObservatory"] == null)
+            {
+                fullConfigTemplateNode["burstObservatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.burstObservatory));
+            }
+            else
+            {
+                var subjectSelector = v2rayConfig.burstObservatory.subjectSelector;
+                subjectSelector.AddRange(fullConfigTemplateNode["burstObservatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["burstObservatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
             }
         }
 

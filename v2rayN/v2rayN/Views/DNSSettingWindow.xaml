@@ -210,13 +210,6 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="3"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBDoHOverride}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

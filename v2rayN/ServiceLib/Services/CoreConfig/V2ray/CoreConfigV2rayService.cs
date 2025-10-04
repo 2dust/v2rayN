@@ -186,7 +186,7 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Success = true;
 
-            ret.Data = await ApplyFullConfigTemplate(v2rayConfig, true);
+            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
             return ret;
         }
         catch (Exception ex)
