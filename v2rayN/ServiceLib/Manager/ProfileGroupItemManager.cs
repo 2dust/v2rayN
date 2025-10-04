@@ -164,4 +164,113 @@ public class ProfileGroupItemManager
             Logging.SaveLog(_tag, ex);
         }
     }
+
+    #region Helper
+
+    public static bool HasCycle(string? indexId)
+    {
+        return HasCycle(indexId, new HashSet<string>(), new HashSet<string>());
+    }
+
+    public static bool HasCycle(string? indexId, HashSet<string> visited, HashSet<string> stack)
+    {
+        if (indexId.IsNullOrEmpty())
+            return false;
+
+        if (stack.Contains(indexId))
+            return true;
+
+        if (visited.Contains(indexId))
+            return false;
+
+        visited.Add(indexId);
+        stack.Add(indexId);
+
+        Instance.TryGet(indexId, out var groupItem);
+
+        if (groupItem == null || groupItem.ChildItems.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        var childIds = Utils.String2List(groupItem.ChildItems)
+            .Where(p => !string.IsNullOrEmpty(p))
+            .ToList();
+
+        foreach (var child in childIds)
+        {
+            if (HasCycle(child, visited, stack))
+            {
+                return true;
+            }
+        }
+
+        stack.Remove(indexId);
+        return false;
+    }
+
+    public static async Task<(List<ProfileItem> Items, ProfileGroupItem? Group)> GetChildProfileItems(string? indexId)
+    {
+        Instance.TryGet(indexId, out var profileGroupItem);
+        if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+        {
+            return (new List<ProfileItem>(), profileGroupItem);
+        }
+        var items = await GetChildProfileItems(profileGroupItem);
+        return (items, profileGroupItem);
+    }
+
+    public static async Task<List<ProfileItem>> GetChildProfileItems(ProfileGroupItem? group)
+    {
+        if (group == null || group.ChildItems.IsNullOrEmpty())
+        {
+            return new();
+        }
+        var childProfiles = (await Task.WhenAll(
+                Utils.String2List(group.ChildItems)
+                    .Where(p => !p.IsNullOrEmpty())
+                    .Select(AppManager.Instance.GetProfileItem)
+            ))
+            .Where(p =>
+                p != null &&
+                p.IsValid() &&
+                p.ConfigType != EConfigType.Custom
+            )
+            .ToList();
+        return childProfiles;
+    }
+
+    public static async Task<HashSet<string>> GetAllChildDomainAddresses(string parentIndexId)
+    {
+        // include grand children
+        var childAddresses = new HashSet<string>();
+        if (!Instance.TryGet(parentIndexId, out var groupItem) || groupItem.ChildItems.IsNullOrEmpty())
+            return childAddresses;
+
+        var childIds = Utils.String2List(groupItem.ChildItems);
+
+        foreach (var childId in childIds)
+        {
+            var childNode = await AppManager.Instance.GetProfileItem(childId);
+            if (childNode == null)
+                continue;
+
+            if (!childNode.IsComplex())
+            {
+                childAddresses.Add(childNode.Address);
+            }
+            else if (childNode.ConfigType > EConfigType.Group)
+            {
+                var subAddresses = await GetAllChildDomainAddresses(childNode.IndexId);
+                foreach (var addr in subAddresses)
+                {
+                    childAddresses.Add(addr);
+                }
+            }
+        }
+
+        return childAddresses;
+    }
+
+    #endregion Helper
 }

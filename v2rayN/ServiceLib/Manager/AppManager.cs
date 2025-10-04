@@ -99,7 +99,6 @@ public sealed class AppManager
 
             await ConfigHandler.SaveConfig(_config);
             await ProfileExManager.Instance.SaveTo();
-            await ProfileGroupItemManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
             await CoreManager.Instance.CoreStop();
             StatisticsManager.Instance.Close();

@@ -212,33 +212,13 @@ public partial class CoreConfigSingboxService
             {
                 return -1;
             }
-            ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-            if (profileGroupItem is null || profileGroupItem.ChildItems.IsNullOrEmpty())
-            {
-                return -1;
-            }
-
-            var hasCycle = await node.HasCycle(new HashSet<string>(), new HashSet<string>());
+            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
             if (hasCycle)
             {
                 return -1;
             }
 
-            // remove custom nodes
-            // remove group nodes for proxy chain
-            var childProfiles = (await Task.WhenAll(
-                    Utils.String2List(profileGroupItem.ChildItems)
-                        .Where(p => !p.IsNullOrEmpty())
-                        .Select(AppManager.Instance.GetProfileItem)
-                ))
-                .Where(p =>
-                    p != null
-                    && p.IsValid()
-                    && p.ConfigType != EConfigType.Custom
-                    && (node.ConfigType == EConfigType.PolicyGroup || p.ConfigType < EConfigType.Group)
-                )
-                .ToList();
-
+            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
             if (childProfiles.Count <= 0)
             {
                 return -1;
@@ -514,16 +494,13 @@ public partial class CoreConfigSingboxService
 
                 if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
-                    ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-                    if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                    var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+                    if (hasCycle)
                     {
-                        continue;
+                        return -1;
                     }
-                    var childProfiles = (await Task.WhenAll(
-                            Utils.String2List(profileGroupItem.ChildItems)
-                            .Where(p => !p.IsNullOrEmpty())
-                            .Select(AppManager.Instance.GetProfileItem)
-                        )).Where(p => p != null).ToList();
+
+                    var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                     if (childProfiles.Count <= 0)
                     {
                         continue;
@@ -698,16 +675,13 @@ public partial class CoreConfigSingboxService
                 continue;
             if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
             {
-                ProfileGroupItemManager.Instance.TryGet(node.IndexId, out var profileGroupItem);
-                if (profileGroupItem == null || profileGroupItem.ChildItems.IsNullOrEmpty())
+                var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+                if (hasCycle)
                 {
-                    continue;
+                    return -1;
                 }
-                var childProfiles = (await Task.WhenAll(
-                        Utils.String2List(profileGroupItem.ChildItems)
-                        .Where(p => !p.IsNullOrEmpty())
-                        .Select(AppManager.Instance.GetProfileItem)
-                    )).Where(p => p != null).ToList();
+
+                var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                 if (childProfiles.Count <= 0)
                 {
                     continue;
