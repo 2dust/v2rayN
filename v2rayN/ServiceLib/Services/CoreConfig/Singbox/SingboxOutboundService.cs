@@ -494,12 +494,6 @@ public partial class CoreConfigSingboxService
 
                 if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
-                    var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
-                    if (hasCycle)
-                    {
-                        return -1;
-                    }
-
                     var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                     if (childProfiles.Count <= 0)
                     {
@@ -675,12 +669,6 @@ public partial class CoreConfigSingboxService
                 continue;
             if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
             {
-                var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
-                if (hasCycle)
-                {
-                    return -1;
-                }
-
                 var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                 if (childProfiles.Count <= 0)
                 {

@@ -631,12 +631,6 @@ public partial class CoreConfigV2rayService
 
                 if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
-                    var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
-                    if (hasCycle)
-                    {
-                        return -1;
-                    }
-
                     var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                     if (childProfiles.Count <= 0)
                     {
@@ -788,12 +782,6 @@ public partial class CoreConfigV2rayService
                 continue;
             if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
             {
-                var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
-                if (hasCycle)
-                {
-                    return -1;
-                }
-
                 var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                 if (childProfiles.Count <= 0)
                 {
