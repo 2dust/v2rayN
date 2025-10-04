@@ -47,28 +47,26 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Text="outboundTag" />
-            <ctrls:AutoCompleteBox
+            <ComboBox
                 Name="cmbOutboundTag"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
-                Text="{Binding SelectedSource.OutboundTag, Mode=TwoWay}" />
+                IsEditable="True" />
             <StackPanel
                 Grid.Row="1"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
-                Orientation="Horizontal"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <Button
                     x:Name="btnSelectProfile"
                     Margin="0,0,8,0"
-                    Content="{x:Static resx:ResUI.TbSelectProfile}"
-                    Click="BtnSelectProfile_Click" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+                    Click="BtnSelectProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}" />
+                <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
             </StackPanel>
 
             <TextBlock

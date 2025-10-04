@@ -502,12 +502,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="2"
@@ -548,12 +549,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             Name="cmbSpeedTestUrl"
                             Grid.Row="18"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="19"
@@ -561,12 +563,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbSpeedPingTestUrl"
                             Grid.Row="19"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="20"
@@ -587,12 +590,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbSubConvertUrl"
                             Grid.Row="21"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="22"
