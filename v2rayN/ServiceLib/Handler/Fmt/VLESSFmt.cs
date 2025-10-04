@@ -24,8 +24,8 @@ public class VLESSFmt : BaseFmt
         item.Id = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        item.Security = query["encryption"] ?? Global.None;
-        item.StreamSecurity = query["security"] ?? "";
+        item.Security = GetQueryValue(query, "encryption", Global.None);
+        item.StreamSecurity = GetQueryValue(query, "security");
         _ = ResolveStdTransport(query, ref item);
 
         return item;

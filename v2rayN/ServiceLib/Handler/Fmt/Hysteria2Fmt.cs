@@ -21,10 +21,10 @@ public class Hysteria2Fmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveStdTransport(query, ref item);
-        item.Path = Utils.UrlDecode(query["obfs-password"] ?? "");
-        item.AllowInsecure = (query["insecure"] ?? "") == "1" ? "true" : "false";
+        item.Path = GetQueryDecoded(query, "obfs-password");
+        item.AllowInsecure = GetQueryValue(query, "insecure") == "1" ? "true" : "false";
 
-        item.Ports = Utils.UrlDecode(query["mport"] ?? "");
+        item.Ports = GetQueryDecoded(query, "mport");
 
         return item;
     }

@@ -24,10 +24,10 @@ public class WireguardFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
 
-        item.PublicKey = Utils.UrlDecode(query["publickey"] ?? "");
-        item.Path = Utils.UrlDecode(query["reserved"] ?? "");
-        item.RequestHost = Utils.UrlDecode(query["address"] ?? "");
-        item.ShortId = Utils.UrlDecode(query["mtu"] ?? "");
+        item.PublicKey = GetQueryDecoded(query, "publickey");
+        item.Path = GetQueryDecoded(query, "reserved");
+        item.RequestHost = GetQueryDecoded(query, "address");
+        item.ShortId = GetQueryDecoded(query, "mtu");
 
         return item;
     }

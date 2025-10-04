@@ -30,7 +30,7 @@ public class TuicFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveStdTransport(query, ref item);
-        item.HeaderType = query["congestion_control"] ?? "";
+        item.HeaderType = GetQueryValue(query, "congestion_control");
 
         return item;
     }
