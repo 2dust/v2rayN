@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
@@ -18,7 +19,7 @@ internal class AvaUtils
                 return null;
             }
 
-            return await clipboard.GetTextAsync();
+            return await clipboard.TryGetTextAsync();
         }
         catch
         {
@@ -33,9 +34,7 @@ internal class AvaUtils
             var clipboard = TopLevel.GetTopLevel(visual)?.Clipboard;
             if (clipboard == null)
                 return;
-            var dataObject = new DataObject();
-            dataObject.Set(DataFormats.Text, strData);
-            await clipboard.SetDataObjectAsync(dataObject);
+            await clipboard.SetTextAsync(strData);
         }
         catch
         {
