@@ -186,27 +186,37 @@ public class ProfileGroupItemManager
         visited.Add(indexId);
         stack.Add(indexId);
 
-        Instance.TryGet(indexId, out var groupItem);
-
-        if (groupItem == null || groupItem.ChildItems.IsNullOrEmpty())
+        try
         {
+            Instance.TryGet(indexId, out var groupItem);
+
+            if (groupItem == null || groupItem.ChildItems.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            var childIds = Utils.String2List(groupItem.ChildItems)
+                .Where(p => !string.IsNullOrEmpty(p))
+                .ToList();
+            if (childIds == null)
+            {
+                return false;
+            }
+
+            foreach (var child in childIds)
+            {
+                if (HasCycle(child, visited, stack))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
-
-        var childIds = Utils.String2List(groupItem.ChildItems)
-            .Where(p => !string.IsNullOrEmpty(p))
-            .ToList();
-
-        foreach (var child in childIds)
+        finally
         {
-            if (HasCycle(child, visited, stack))
-            {
-                return true;
-            }
+            stack.Remove(indexId);
         }
-
-        stack.Remove(indexId);
-        return false;
     }
 
     public static async Task<(List<ProfileItem> Items, ProfileGroupItem? Group)> GetChildProfileItems(string? indexId)
