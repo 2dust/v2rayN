@@ -578,7 +578,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task AutoHideStartup()
     {
-        if (_config.UiItem.AutoHideStartup)
+        if (_config.UiItem.AutoHideStartup && !_config.UiItem.SilentStartup)
         {
             AppEvents.ShowHideWindowRequested.Publish(false);
         }

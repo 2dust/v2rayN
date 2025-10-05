@@ -31,6 +31,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _config = AppManager.Instance.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
+        if (_config.UiItem.SilentStartup)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
         this.KeyDown += MainWindow_KeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
         menuPromotion.Click += menuPromotion_Click;
@@ -438,6 +443,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
     {
         base.OnLoaded(sender, e);
+        if (_config.UiItem.SilentStartup)
+        {
+            this.Hide();
+        }
         RestoreUI();
     }
 

@@ -3751,6 +3751,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Silent Startup 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSilentStartup {
+            get {
+                return ResourceManager.GetString("TbSettingsSilentStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Turn on Sniffing 的本地化字符串。
         /// </summary>
         public static string TbSettingsSniffingEnabled {

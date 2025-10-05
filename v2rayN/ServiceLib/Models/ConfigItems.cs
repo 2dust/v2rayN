@@ -100,6 +100,7 @@ public class UIItem
     public bool EnableDragDropSort { get; set; }
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
+    public bool SilentStartup { get; set; }
     public bool Hide2TrayWhenClose { get; set; }
     public bool ShowInTaskbar { get; set; }
     public bool MacOSShowInDock { get; set; }
