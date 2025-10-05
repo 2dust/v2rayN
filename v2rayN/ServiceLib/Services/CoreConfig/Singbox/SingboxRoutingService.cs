@@ -368,17 +368,29 @@ public partial class CoreConfigSingboxService
         }
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
+
         if (node == null
-            || !Global.SingboxSupportConfigType.Contains(node.ConfigType))
+            || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
+            && node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain)))
         {
             return Global.ProxyTag;
         }
 
-        var tag = Global.ProxyTag + node.IndexId.ToString();
+        var tag = $"{node.IndexId}-{Global.ProxyTag}";
         if (singboxConfig.outbounds.Any(o => o.tag == tag)
             || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
         {
             return tag;
+        }
+
+        if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        {
+            var ret = await GenGroupOutbound(node, singboxConfig, tag);
+            if (ret == 0)
+            {
+                return tag;
+            }
+            return Global.ProxyTag;
         }
 
         var server = await GenServer(node);
@@ -387,7 +399,7 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
-        server.tag = Global.ProxyTag + node.IndexId.ToString();
+        server.tag = tag;
         if (server is Endpoints4Sbox endpoint)
         {
             singboxConfig.endpoints ??= new();

@@ -71,6 +71,14 @@
                                     x:Name="menuAddCustomServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddCustomServer}" />
+                                <MenuItem
+                                    x:Name="menuAddPolicyGroupServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
+                                <MenuItem
+                                    x:Name="menuAddProxyChainServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddProxyChainServer}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuAddVmessServer"

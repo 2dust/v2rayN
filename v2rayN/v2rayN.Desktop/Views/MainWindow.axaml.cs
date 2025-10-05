@@ -83,6 +83,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.BindCommand(ViewModel, vm => vm.AddWireguardServerCmd, v => v.menuAddWireguardServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddAnytlsServerCmd, v => v.menuAddAnytlsServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddPolicyGroupServerCmd, v => v.menuAddPolicyGroupServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddProxyChainServerCmd, v => v.menuAddProxyChainServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaImageCmd, v => v.menuAddServerViaImage).DisposeWith(disposables);
@@ -206,6 +208,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 if (obj is null)
                     return false;
                 return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(this);
+
+            case EViewAction.AddGroupServerWindow:
+                if (obj is null)
+                    return false;
+                return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.DNSSettingWindow:
                 return await new DNSSettingWindow().ShowDialog<bool>(this);

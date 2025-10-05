@@ -64,6 +64,7 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+        SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
         return true;
     }
 
@@ -205,6 +206,15 @@ public sealed class AppManager
             return null;
         }
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
+    }
+
+    public async Task<ProfileGroupItem?> GetProfileGroupItem(string parentIndexId)
+    {
+        if (parentIndexId.IsNullOrEmpty())
+        {
+            return null;
+        }
+        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.ParentIndexId == parentIndexId);
     }
 
     public async Task<List<RoutingItem>?> RoutingItems()

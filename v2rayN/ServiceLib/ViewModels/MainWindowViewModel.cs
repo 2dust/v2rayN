@@ -23,6 +23,8 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> AddWireguardServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddAnytlsServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddPolicyGroupServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddProxyChainServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
     public ReactiveCommand<Unit, Unit> AddServerViaImageCmd { get; }
@@ -121,6 +123,14 @@ public class MainWindowViewModel : MyReactiveObject
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(true, EConfigType.Custom);
+        });
+        AddPolicyGroupServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.PolicyGroup);
+        });
+        AddProxyChainServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(true, EConfigType.ProxyChain);
         });
         AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -252,6 +262,7 @@ public class MainWindowViewModel : MyReactiveObject
         await ConfigHandler.InitBuiltinDNS(_config);
         await ConfigHandler.InitBuiltinFullConfigTemplate(_config);
         await ProfileExManager.Instance.Init();
+        await ProfileGroupItemManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
@@ -339,6 +350,10 @@ public class MainWindowViewModel : MyReactiveObject
         if (eConfigType == EConfigType.Custom)
         {
             ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
+        }
+        else if (eConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        {
+            ret = await _updateView?.Invoke(EViewAction.AddGroupServerWindow, item);
         }
         else
         {

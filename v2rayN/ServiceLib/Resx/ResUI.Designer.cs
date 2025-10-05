@@ -673,6 +673,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add Child Configuration 的本地化字符串。
+        /// </summary>
+        public static string menuAddChildServer {
+            get {
+                return ResourceManager.GetString("menuAddChildServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add a custom configuration Configuration 的本地化字符串。
         /// </summary>
         public static string menuAddCustomServer {
@@ -696,6 +705,24 @@ namespace ServiceLib.Resx {
         public static string menuAddHysteria2Server {
             get {
                 return ResourceManager.GetString("menuAddHysteria2Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Policy Group Configuration 的本地化字符串。
+        /// </summary>
+        public static string menuAddPolicyGroupServer {
+            get {
+                return ResourceManager.GetString("menuAddPolicyGroupServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Proxy Chain Configuration 的本地化字符串。
+        /// </summary>
+        public static string menuAddProxyChainServer {
+            get {
+                return ResourceManager.GetString("menuAddProxyChainServer", resourceCulture);
             }
         }
         
@@ -948,6 +975,78 @@ namespace ServiceLib.Resx {
         public static string menuFullConfigTemplate {
             get {
                 return ResourceManager.GetString("menuFullConfigTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Generate Policy Group from Multiple Profiles 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServer {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration Fallback by sing-box 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerSingBoxFallback {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastPing by sing-box 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerSingBoxLeastPing {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration Fallback by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayFallback {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastLoad by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayLeastLoad {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration LeastPing by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayLeastPing {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration Random by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayRandom {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Multi-Configuration RoundRobin by Xray 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupMultipleServerXrayRoundRobin {
+            get {
+                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRoundRobin", resourceCulture);
             }
         }
         
@@ -1321,6 +1420,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remove Child Configuration 的本地化字符串。
+        /// </summary>
+        public static string menuRemoveChildServer {
+            get {
+                return ResourceManager.GetString("menuRemoveChildServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Remove duplicate Configurations 的本地化字符串。
         /// </summary>
         public static string menuRemoveDuplicateServer {
@@ -1474,65 +1582,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server List 的本地化字符串。
+        /// </summary>
+        public static string menuServerList {
+            get {
+                return ResourceManager.GetString("menuServerList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Configurations 的本地化字符串。
         /// </summary>
         public static string menuServers {
             get {
                 return ResourceManager.GetString("menuServers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration to custom configuration 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServer {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastPing by sing-box 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerSingBoxLeastPing {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerSingBoxLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastLoad by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayLeastLoad {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastLoad", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration LeastPing by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayLeastPing {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration Random by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayRandom {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRandom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Multi-Configuration RoundRobin by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuSetDefaultMultipleServerXrayRoundRobin {
-            get {
-                return ResourceManager.GetString("menuSetDefaultMultipleServerXrayRoundRobin", resourceCulture);
             }
         }
         
@@ -1996,6 +2059,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please Add At Least One Configuration 的本地化字符串。
+        /// </summary>
+        public static string PleaseAddAtLeastOneServer {
+            get {
+                return ResourceManager.GetString("PleaseAddAtLeastOneServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill Remarks 的本地化字符串。
         /// </summary>
         public static string PleaseFillRemarks {
@@ -2374,6 +2446,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Policy Group 的本地化字符串。
+        /// </summary>
+        public static string TbConfigTypePolicyGroup {
+            get {
+                return ResourceManager.GetString("TbConfigTypePolicyGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy Chain 的本地化字符串。
+        /// </summary>
+        public static string TbConfigTypeProxyChain {
+            get {
+                return ResourceManager.GetString("TbConfigTypeProxyChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Confirm 的本地化字符串。
         /// </summary>
         public static string TbConfirm {
@@ -2527,6 +2617,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fallback 的本地化字符串。
+        /// </summary>
+        public static string TbFallback {
+            get {
+                return ResourceManager.GetString("TbFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fingerprint 的本地化字符串。
         /// </summary>
         public static string TbFingerprint {
@@ -2644,6 +2743,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Most Stable 的本地化字符串。
+        /// </summary>
+        public static string TbLeastLoad {
+            get {
+                return ResourceManager.GetString("TbLeastLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Lowest Latency 的本地化字符串。
+        /// </summary>
+        public static string TbLeastPing {
+            get {
+                return ResourceManager.GetString("TbLeastPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address (IPv4, IPv6) 的本地化字符串。
         /// </summary>
         public static string TbLocalAddress {
@@ -2694,6 +2811,15 @@ namespace ServiceLib.Resx {
         public static string TbPath7 {
             get {
                 return ResourceManager.GetString("TbPath7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Policy Group Type 的本地化字符串。
+        /// </summary>
+        public static string TbPolicyGroupType {
+            get {
+                return ResourceManager.GetString("TbPolicyGroupType", resourceCulture);
             }
         }
         
@@ -2770,6 +2896,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Random 的本地化字符串。
+        /// </summary>
+        public static string TbRandom {
+            get {
+                return ResourceManager.GetString("TbRandom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 v2ray Full Config Template 的本地化字符串。
         /// </summary>
         public static string TbRayFullConfigTemplate {
@@ -2829,6 +2964,15 @@ namespace ServiceLib.Resx {
         public static string TbReset {
             get {
                 return ResourceManager.GetString("TbReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Round Robin 的本地化字符串。
+        /// </summary>
+        public static string TbRoundRobin {
+            get {
+                return ResourceManager.GetString("TbRoundRobin", resourceCulture);
             }
         }
         

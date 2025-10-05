@@ -1374,22 +1374,22 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>会覆盖端口，多组时用逗号 (,) 隔开</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>多配置文件产生自定义配置 (多选)</value>
+  <data name="menuGenGroupMultipleServer" xml:space="preserve">
+    <value>多配置文件生成策略组</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
     <value>多配置文件随机 Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
     <value>多配置文件负载均衡 Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
     <value>多配置文件最低延迟 Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
     <value>多配置文件最稳定 Xray</value>
   </data>
-  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>多配置文件最低延迟 sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
@@ -1508,5 +1508,53 @@
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>默认全局生效，内置 FakeIP 过滤，仅在 sing-box 中生效</value>
+  </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>请至少添加一个配置文件</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>策略组</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>链式代理</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>最低延迟</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>随机</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>负载均衡</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>最稳定</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>策略组类型</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>添加策略组配置文件</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>添加链式代理配置文件</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>添加子配置文件</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>删除子配置文件</value>
+  </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>服务器列表</value>
+  </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>故障转移</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
+    <value>多配置文件故障转移 sing-box</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
+    <value>多配置文件故障转移 Xray</value>
   </data>
 </root>

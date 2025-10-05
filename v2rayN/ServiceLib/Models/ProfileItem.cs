@@ -32,18 +32,21 @@ public class ProfileItem : ReactiveObject
     public string GetSummary()
     {
         var summary = $"[{(ConfigType).ToString()}] ";
-        var arrAddr = Address.Contains(':') ? Address.Split(':') : Address.Split('.');
-        var addr = arrAddr.Length switch
+        if (IsComplex())
         {
-            > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
-            > 1 => $"***{arrAddr.Last()}",
-            _ => Address
-        };
-        summary += ConfigType switch
+            summary += $"[{CoreType.ToString()}]{Remarks}";
+        }
+        else
         {
-            EConfigType.Custom => $"[{CoreType.ToString()}]{Remarks}",
-            _ => $"{Remarks}({addr}:{Port})"
-        };
+            var arrAddr = Address.Contains(':') ? Address.Split(':') : Address.Split('.');
+            var addr = arrAddr.Length switch
+            {
+                > 2 => $"{arrAddr.First()}***{arrAddr.Last()}",
+                > 1 => $"***{arrAddr.Last()}",
+                _ => Address
+            };
+            summary += $"{Remarks}({addr}:{Port})";
+        }
         return summary;
     }
 
@@ -59,6 +62,51 @@ public class ProfileItem : ReactiveObject
             return Global.DefaultNetwork;
         }
         return Network.TrimEx();
+    }
+
+    public bool IsComplex()
+    {
+        return ConfigType is EConfigType.Custom or > EConfigType.Group;
+    }
+
+    public bool IsValid()
+    {
+        if (IsComplex())
+            return true;
+
+        if (Address.IsNullOrEmpty() || Port is <= 0 or >= 65536)
+            return false;
+
+        switch (ConfigType)
+        {
+            case EConfigType.VMess:
+                if (Id.IsNullOrEmpty() || !Utils.IsGuidByParse(Id))
+                    return false;
+                break;
+
+            case EConfigType.VLESS:
+                if (Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(Id) && Id.Length > 30))
+                    return false;
+                if (!Global.Flows.Contains(Flow))
+                    return false;
+                break;
+
+            case EConfigType.Shadowsocks:
+                if (Id.IsNullOrEmpty())
+                    return false;
+                if (string.IsNullOrEmpty(Security) || !Global.SsSecuritiesInSingbox.Contains(Security))
+                    return false;
+                break;
+        }
+
+        if ((ConfigType is EConfigType.VLESS or EConfigType.Trojan)
+            && StreamSecurity == Global.StreamSecurityReality
+            && PublicKey.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        return true;
     }
 
     #endregion function

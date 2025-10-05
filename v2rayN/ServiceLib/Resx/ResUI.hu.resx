@@ -1377,22 +1377,22 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>A portot lefedi, vesszővel (,) elválasztva</value>
   </data>
-  <data name="menuSetDefaultMultipleServer" xml:space="preserve">
-    <value>Több konfiguráció egyéni konfigurációra</value>
+  <data name="menuGenGroupMultipleServer" xml:space="preserve">
+    <value>Generate Policy Group from Multiple Profiles</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRandom" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
     <value>Több konfiguráció véletlenszerűen Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayRoundRobin" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
     <value>Több konfiguráció RoundRobin Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
     <value>Több konfiguráció legkisebb pinggel Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerXrayLeastLoad" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
     <value>Több konfiguráció legkisebb terheléssel Xray szerint</value>
   </data>
-  <data name="menuSetDefaultMultipleServerSingBoxLeastPing" xml:space="preserve">
+  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
     <value>Több konfiguráció legkisebb pinggel sing-box szerint</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
@@ -1511,5 +1511,53 @@
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
+  </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>Please Add At Least One Configuration</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>Policy Group</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>Proxy Chain</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>Lowest Latency</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>Round Robin</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>Most Stable</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>Policy Group Type</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>Add Policy Group Configuration</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>Add Proxy Chain Configuration</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>Add Child Configuration</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>Remove Child Configuration</value>
+  </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>Server List</value>
+  </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>Fallback</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
+    <value>Multi-Configuration Fallback by sing-box</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
+    <value>Multi-Configuration Fallback by Xray</value>
   </data>
 </root>

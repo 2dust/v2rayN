@@ -125,28 +125,32 @@
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuShareServer}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
                             <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayRandom"
+                                x:Name="menuGenGroupMultipleServerXrayRandom"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRandom}" />
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
                             <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayRoundRobin"
+                                x:Name="menuGenGroupMultipleServerXrayRoundRobin"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRoundRobin}" />
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
                             <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayLeastPing"
+                                x:Name="menuGenGroupMultipleServerXrayLeastPing"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastPing}" />
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
                             <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayLeastLoad"
+                                x:Name="menuGenGroupMultipleServerXrayLeastLoad"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
                             <Separator />
                             <MenuItem
-                                x:Name="menuSetDefaultMultipleServerSingBoxLeastPing"
+                                x:Name="menuGenGroupMultipleServerSingBoxLeastPing"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerSingBoxFallback"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem

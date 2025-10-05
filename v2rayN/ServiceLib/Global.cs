@@ -50,6 +50,7 @@ public class Global
     public const string DirectTag = "direct";
     public const string BlockTag = "block";
     public const string DnsTag = "dns-module";
+    public const string BalancerTagSuffix = "-round";
     public const string StreamSecurity = "tls";
     public const string StreamSecurityReality = "reality";
     public const string Loopback = "127.0.0.1";

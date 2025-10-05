@@ -357,6 +357,11 @@ public static class ConfigHandler
                 {
                 }
             }
+            else if (profileItem.ConfigType > EConfigType.Group)
+            {
+                var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
+                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
+            }
             else
             {
                 await AddServerCommon(config, profileItem, true);
@@ -1074,6 +1079,37 @@ public static class ConfigHandler
         return 0;
     }
 
+    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
+    {
+        var maxSort = -1;
+        if (profileItem.IndexId.IsNullOrEmpty())
+        {
+            profileItem.IndexId = Utils.GetGuid(false);
+            maxSort = ProfileExManager.Instance.GetMaxSort();
+        }
+        var groupType = profileItem.ConfigType == EConfigType.ProxyChain ? EConfigType.ProxyChain.ToString() : profileGroupItem.MultipleLoad.ToString();
+        profileItem.Address = $"{profileItem.CoreType}-{groupType}";
+        if (maxSort > 0)
+        {
+            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
+        }
+        if (toFile)
+        {
+            await SQLiteHelper.Instance.ReplaceAsync(profileItem);
+            if (profileGroupItem != null)
+            {
+                profileGroupItem.ParentIndexId = profileItem.IndexId;
+                await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
+            }
+            else
+            {
+                ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(profileItem.IndexId);
+                await ProfileGroupItemManager.Instance.SaveTo();
+            }
+        }
+        return 0;
+    }
+
     /// <summary>
     /// Compare two profile items to determine if they represent the same server
     /// Used for deduplication and server matching
@@ -1145,7 +1181,7 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Create a custom server that combines multiple servers for load balancing
+    /// Create a group server that combines multiple servers for load balancing
     /// Generates a configuration file that references multiple servers
     /// </summary>
     /// <param name="config">Current configuration</param>
@@ -1153,45 +1189,54 @@ public static class ConfigHandler
     /// <param name="coreType">Core type to use (Xray or sing_box)</param>
     /// <param name="multipleLoad">Load balancing algorithm</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
+    public static async Task<RetResult> AddGroupServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
     {
-        var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
-        var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
+        var result = new RetResult();
 
-        var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, multipleLoad);
-        if (result.Success != true)
-        {
-            return result;
-        }
+        var indexId = Utils.GetGuid(false);
+        var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        if (!File.Exists(configPath))
-        {
-            return result;
-        }
-
-        var profileItem = await AppManager.Instance.GetProfileItem(indexId) ?? new();
-        profileItem.IndexId = indexId;
+        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId)).Remarks} ";
         if (coreType == ECoreType.Xray)
         {
-            profileItem.Remarks = multipleLoad switch
+            remark += multipleLoad switch
             {
-                EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
-                EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
-                EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
-                EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
-                _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerXrayFallback,
+                EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
+                EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastLoad => ResUI.menuGenGroupMultipleServerXrayLeastLoad,
+                _ => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
             };
         }
         else if (coreType == ECoreType.sing_box)
         {
-            profileItem.Remarks = ResUI.menuSetDefaultMultipleServerSingBoxLeastPing;
+            remark += multipleLoad switch
+            {
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerSingBoxFallback,
+                _ => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+            };
         }
-        profileItem.Address = Global.CoreMultipleLoadConfigFileName;
-        profileItem.ConfigType = EConfigType.Custom;
-        profileItem.CoreType = coreType;
-
-        await AddServerCommon(config, profileItem, true);
-
+        var profile = new ProfileItem
+        {
+            IndexId = indexId,
+            CoreType = coreType,
+            ConfigType = EConfigType.PolicyGroup,
+            Remarks = remark,
+        };
+        if (!subId.IsNullOrEmpty())
+        {
+            profile.Subid = subId;
+        }
+        var profileGroup = new ProfileGroupItem
+        {
+            ChildItems = childProfileIndexId,
+            MultipleLoad = multipleLoad,
+            ParentIndexId = indexId,
+        };
+        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        result.Success = ret == 0;
         result.Data = indexId;
         return result;
     }
@@ -1209,12 +1254,21 @@ public static class ConfigHandler
         ProfileItem? itemSocks = null;
         if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
+            var tun2SocksAddress = node.Address;
+            if (node.ConfigType > EConfigType.Group)
+            {
+                var lstAddresses = (await ProfileGroupItemManager.GetAllChildDomainAddresses(node.IndexId)).ToList();
+                if (lstAddresses.Count > 0)
+                {
+                    tun2SocksAddress = Utils.List2String(lstAddresses);
+                }
+            }
             itemSocks = new ProfileItem()
             {
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                SpiderX = node.Address, // Tun2SocksAddress
+                SpiderX = tun2SocksAddress, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }

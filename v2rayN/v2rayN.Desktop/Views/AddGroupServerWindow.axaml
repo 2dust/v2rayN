@@ -1,0 +1,151 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.AddGroupServerWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuServers}"
+    Width="900"
+    Height="700"
+    x:DataType="vms:AddGroupServerViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
+        </StackPanel>
+
+        <Grid DockPanel.Dock="Top" RowDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="180,Auto,Auto"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    Text="{x:Static resx:ResUI.menuServers}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbRemarks}" />
+                <TextBox
+                    x:Name="txtRemarks"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource Margin4}" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbCoreType}" />
+                <ComboBox
+                    x:Name="cmbCoreType"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource Margin4}" />
+
+                <Grid
+                    x:Name="gridPolicyGroup"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    ColumnDefinitions="180,Auto,Auto">
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbPolicyGroupType}" />
+                    <ComboBox
+                        x:Name="cmbPolicyGroupType"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+                </Grid>
+            </Grid>
+        </Grid>
+        <TabControl>
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
+                <DataGrid
+                    x:Name="lstChild"
+                    Grid.Row="1"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    BorderThickness="1"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding ChildItemsObs}"
+                    SelectionMode="Extended">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="menuAddChildServer" Header="{x:Static resx:ResUI.menuAddChildServer}" />
+                            <MenuItem x:Name="menuRemoveChildServer" Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
+                            <MenuItem x:Name="menuSelectAllChild" Header="{x:Static resx:ResUI.menuSelectAll}" />
+                            <Separator />
+                            <MenuItem x:Name="menuMoveTop" Header="{x:Static resx:ResUI.menuMoveTop}" />
+                            <MenuItem x:Name="menuMoveUp" Header="{x:Static resx:ResUI.menuMoveUp}" />
+                            <MenuItem x:Name="menuMoveDown" Header="{x:Static resx:ResUI.menuMoveDown}" />
+                            <MenuItem x:Name="menuMoveBottom" Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding ConfigType}"
+                            Header="{x:Static resx:ResUI.LvServiceType}" />
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Address}"
+                            Header="{x:Static resx:ResUI.LvAddress}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Port}"
+                            Header="{x:Static resx:ResUI.LvPort}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Network}"
+                            Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding StreamSecurity}"
+                            Header="{x:Static resx:ResUI.LvTLS}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

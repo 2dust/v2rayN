@@ -57,7 +57,7 @@ public partial class SubEditWindow
     private async void BtnSelectPrevProfile_Click(object sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
         if (selectWindow.ShowDialog() == true)
         {
             var profile = await selectWindow.ProfileItem;
@@ -71,7 +71,7 @@ public partial class SubEditWindow
     private async void BtnSelectNextProfile_Click(object sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
         if (selectWindow.ShowDialog() == true)
         {
             var profile = await selectWindow.ProfileItem;
