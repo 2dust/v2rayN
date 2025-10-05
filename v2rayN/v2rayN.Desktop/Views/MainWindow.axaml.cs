@@ -445,7 +445,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         base.OnLoaded(sender, e);
         if (_config.UiItem.SilentStartup)
         {
-            this.Hide();
+            ShowHideWindow(false);
+            _config.UiItem.ShowInTaskbar = true;
         }
         RestoreUI();
     }

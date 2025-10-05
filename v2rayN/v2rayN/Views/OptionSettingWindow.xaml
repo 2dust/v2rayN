@@ -680,6 +680,20 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSilentStartup}" />
+                        <ToggleButton
+                            x:Name="togSilentStartup"
+                            Grid.Row="9"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
                             Grid.Row="10"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
