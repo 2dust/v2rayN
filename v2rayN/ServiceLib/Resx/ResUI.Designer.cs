@@ -2095,6 +2095,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Not support protocol &apos;{0}&apos;. 的本地化字符串。
+        /// </summary>
+        public static string NotSupportProtocol {
+            get {
+                return ResourceManager.GetString("NotSupportProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan completed, no valid QR code found 的本地化字符串。
         /// </summary>
         public static string NoValidQRcodeFound {

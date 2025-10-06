@@ -1587,4 +1587,7 @@
   <data name="GroupSelfReference" xml:space="preserve">
     <value>{0} 分组不能引用自身</value>
   </data>
+  <data name="NotSupportProtocol" xml:space="preserve">
+    <value>不支持协议 '{0}'。</value>
+  </data>
 </root>

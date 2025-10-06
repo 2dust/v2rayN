@@ -57,13 +57,11 @@ public class ActionPrecheckService(Config config)
     {
         var errors = new List<string>();
         
-        // sing-box does not support xhttp / kcp
-        // sing-box does not support transports like ws/http/httpupgrade/etc. when the node is not vmess/trojan/vless
         coreType ??= AppManager.Instance.GetCoreType(item, item.ConfigType);
 
         if (item.ConfigType is EConfigType.Custom)
         {
-            errors.Add(string.Format(ResUI.CoreNotSupportProtocol, coreType.ToString(), item.ConfigType.ToString()));
+            errors.Add(string.Format(ResUI.NotSupportProtocol, item.ConfigType.ToString()));
             return errors;
         }
 
@@ -164,6 +162,8 @@ public class ActionPrecheckService(Config config)
 
         if (coreType == ECoreType.sing_box)
         {
+            // sing-box does not support xhttp / kcp
+            // sing-box does not support transports like ws/http/httpupgrade/etc. when the node is not vmess/trojan/vless
             if (net is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
             {
                 errors.Add(string.Format(ResUI.CoreNotSupportNetwork, nameof(ECoreType.sing_box), net));
@@ -182,14 +182,15 @@ public class ActionPrecheckService(Config config)
         else if (coreType is ECoreType.Xray)
         {
             // Xray core does not support these protocols
-            if (item.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls)
+            if (!Global.XraySupportConfigType.Contains(item.ConfigType)
+                && !item.IsComplex())
             {
                 errors.Add(string.Format(ResUI.CoreNotSupportProtocol, nameof(ECoreType.Xray), item.ConfigType.ToString()));
                 return errors;
             }
         }
 
-        return errors.Select(s => $"{item.Remarks}: {s}").ToList();
+        return errors;
     }
 
     private async Task<List<string>> ValidateRelatedNodesExistAndValid(ProfileItem? item)

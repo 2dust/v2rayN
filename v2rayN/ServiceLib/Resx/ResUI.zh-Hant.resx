@@ -1587,4 +1587,7 @@
   <data name="GroupSelfReference" xml:space="preserve">
     <value>The group "{0}" cannot reference itself.</value>
   </data>
+  <data name="NotSupportProtocol" xml:space="preserve">
+    <value>Not support protocol '{0}'.</value>
+  </data>
 </root>
