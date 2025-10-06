@@ -25,6 +25,12 @@ public partial class MainWindow
         _config = AppManager.Instance.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
+        if (_config.UiItem.AutoHideStartup)
+        {
+            this.ShowActivated = false;
+            this.WindowState = WindowState.Minimized;
+        }
+
         App.Current.SessionEnding += Current_SessionEnding;
         this.Closing += MainWindow_Closing;
         this.PreviewKeyDown += MainWindow_PreviewKeyDown;
@@ -390,6 +396,10 @@ public partial class MainWindow
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
     {
         base.OnLoaded(sender, e);
+        if (_config.UiItem.AutoHideStartup)
+        {
+            ShowHideWindow(false);
+        }
         RestoreUI();
     }
 
