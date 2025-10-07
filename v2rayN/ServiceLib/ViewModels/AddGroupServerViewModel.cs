@@ -26,6 +26,7 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     //public ReactiveCommand<Unit, Unit> AddCmd { get; }
     public ReactiveCommand<Unit, Unit> RemoveCmd { get; }
+
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
     public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
     public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
@@ -143,6 +144,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                 ChildItemsObs.RemoveAt(index);
                 ChildItemsObs.Insert(0, selectedChild);
                 break;
+
             case EMove.Up:
                 if (index == 0)
                 {
@@ -151,6 +153,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                 ChildItemsObs.RemoveAt(index);
                 ChildItemsObs.Insert(index - 1, selectedChild);
                 break;
+
             case EMove.Down:
                 if (index == ChildItemsObs.Count - 1)
                 {
@@ -159,6 +162,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                 ChildItemsObs.RemoveAt(index);
                 ChildItemsObs.Insert(index + 1, selectedChild);
                 break;
+
             case EMove.Bottom:
                 if (index == ChildItemsObs.Count - 1)
                 {
@@ -167,6 +171,7 @@ public class AddGroupServerViewModel : MyReactiveObject
                 ChildItemsObs.RemoveAt(index);
                 ChildItemsObs.Add(selectedChild);
                 break;
+
             default:
                 break;
         }
@@ -212,6 +217,14 @@ public class AddGroupServerViewModel : MyReactiveObject
             var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
             _ => EMultipleLoad.LeastPing,
         };
+
+        var hasCycle = ProfileGroupItemManager.HasCycle(profileGroup.ParentIndexId);
+        if (hasCycle)
+        {
+            NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));
+            return;
+        }
+
         if (await ConfigHandler.AddGroupServerCommon(_config, SelectedSource, profileGroup, true) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
