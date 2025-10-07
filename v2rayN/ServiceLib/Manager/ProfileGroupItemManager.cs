@@ -38,17 +38,17 @@ public class ProfileGroupItemManager
 
     private async Task InitData()
     {
-        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileGroupItem where parentIndexId not in ( select indexId from ProfileItem )");
+        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileGroupItem where IndexId not in ( select indexId from ProfileItem )");
 
         var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
-        _items = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.ParentIndexId)).ToDictionary(t => t.ParentIndexId!));
+        _items = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
     }
 
     private ProfileGroupItem AddProfileGroupItem(string indexId)
     {
         var profileGroupItem = new ProfileGroupItem()
         {
-            ParentIndexId = indexId,
+            IndexId = indexId,
             ChildItems = string.Empty,
             MultipleLoad = EMultipleLoad.LeastPing
         };
@@ -78,19 +78,19 @@ public class ProfileGroupItemManager
         try
         {
             var lstExists = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
-            var existsMap = lstExists.Where(t => !string.IsNullOrEmpty(t.ParentIndexId)).ToDictionary(t => t.ParentIndexId!);
+            var existsMap = lstExists.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!);
 
             var lstInserts = new List<ProfileGroupItem>();
             var lstUpdates = new List<ProfileGroupItem>();
 
             foreach (var item in _items.Values)
             {
-                if (string.IsNullOrEmpty(item.ParentIndexId))
+                if (string.IsNullOrEmpty(item.IndexId))
                 {
                     continue;
                 }
 
-                if (existsMap.ContainsKey(item.ParentIndexId))
+                if (existsMap.ContainsKey(item.IndexId))
                 {
                     lstUpdates.Add(item);
                 }
@@ -140,16 +140,16 @@ public class ProfileGroupItemManager
             throw new ArgumentNullException(nameof(item));
         }
 
-        if (string.IsNullOrWhiteSpace(item.ParentIndexId))
+        if (string.IsNullOrWhiteSpace(item.IndexId))
         {
-            throw new ArgumentException("ParentIndexId required", nameof(item));
+            throw new ArgumentException("IndexId required", nameof(item));
         }
 
-        _items[item.ParentIndexId] = item;
+        _items[item.IndexId] = item;
 
         try
         {
-            var lst = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().Where(t => t.ParentIndexId == item.ParentIndexId).ToListAsync();
+            var lst = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().Where(t => t.IndexId == item.IndexId).ToListAsync();
             if (lst != null && lst.Count > 0)
             {
                 await SQLiteHelper.Instance.UpdateAllAsync(new List<ProfileGroupItem> { item });
@@ -250,11 +250,11 @@ public class ProfileGroupItemManager
         return childProfiles;
     }
 
-    public static async Task<HashSet<string>> GetAllChildDomainAddresses(string parentIndexId)
+    public static async Task<HashSet<string>> GetAllChildDomainAddresses(string indexId)
     {
         // include grand children
         var childAddresses = new HashSet<string>();
-        if (!Instance.TryGet(parentIndexId, out var groupItem) || groupItem.ChildItems.IsNullOrEmpty())
+        if (!Instance.TryGet(indexId, out var groupItem) || groupItem.ChildItems.IsNullOrEmpty())
             return childAddresses;
 
         var childIds = Utils.String2List(groupItem.ChildItems);

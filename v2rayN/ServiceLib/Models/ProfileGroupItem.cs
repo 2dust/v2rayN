@@ -6,7 +6,7 @@ namespace ServiceLib.Models;
 public class ProfileGroupItem
 {
     [PrimaryKey]
-    public string ParentIndexId { get; set; }
+    public string IndexId { get; set; }
 
     public string ChildItems { get; set; }
 

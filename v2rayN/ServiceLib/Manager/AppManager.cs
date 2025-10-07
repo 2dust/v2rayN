@@ -208,13 +208,13 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
     }
 
-    public async Task<ProfileGroupItem?> GetProfileGroupItem(string parentIndexId)
+    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
     {
-        if (parentIndexId.IsNullOrEmpty())
+        if (indexId.IsNullOrEmpty())
         {
             return null;
         }
-        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.ParentIndexId == parentIndexId);
+        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
     }
 
     public async Task<List<RoutingItem>?> RoutingItems()

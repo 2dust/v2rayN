@@ -218,7 +218,7 @@ public class AddGroupServerViewModel : MyReactiveObject
             _ => EMultipleLoad.LeastPing,
         };
 
-        var hasCycle = ProfileGroupItemManager.HasCycle(profileGroup.ParentIndexId);
+        var hasCycle = ProfileGroupItemManager.HasCycle(profileGroup.IndexId);
         if (hasCycle)
         {
             NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));

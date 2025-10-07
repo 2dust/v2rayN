@@ -1098,7 +1098,7 @@ public static class ConfigHandler
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
             if (profileGroupItem != null)
             {
-                profileGroupItem.ParentIndexId = profileItem.IndexId;
+                profileGroupItem.IndexId = profileItem.IndexId;
                 await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
             }
             else
@@ -1233,7 +1233,7 @@ public static class ConfigHandler
         {
             ChildItems = childProfileIndexId,
             MultipleLoad = multipleLoad,
-            ParentIndexId = indexId,
+            IndexId = indexId,
         };
         var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
         result.Success = ret == 0;
