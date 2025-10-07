@@ -45,12 +45,12 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />
-                <ListBox
-                    x:Name="clbRuleTypes"
+                <ComboBox
+                    x:Name="cmbRuleType"
+                    Width="300"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left"
-                    SelectionMode="Multiple,Toggle"
-                    Theme="{DynamicResource CardCheckGroupListBox}" />
+                    MaxDropDownHeight="1000" />
+
             </StackPanel>
 
             <TextBlock

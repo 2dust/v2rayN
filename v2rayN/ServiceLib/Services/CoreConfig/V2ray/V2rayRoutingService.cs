@@ -25,7 +25,7 @@ public partial class CoreConfigV2rayService
                             continue;
                         }
 
-                        if ((item.RuleTypes?.Count ?? 0) > 0 && !item.RuleTypes.Contains(Global.RoutingRuleType))
+                        if (item.RuleType == ERuleType.DNS)
                         {
                             continue;
                         }

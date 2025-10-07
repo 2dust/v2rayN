@@ -141,7 +141,7 @@ public partial class CoreConfigSingboxService
                         continue;
                     }
 
-                    if ((item1.RuleTypes?.Count ?? 0) > 0 && !item1.RuleTypes.Contains(Global.RoutingRuleType))
+                    if (item1.RuleType == ERuleType.DNS)
                     {
                         continue;
                     }

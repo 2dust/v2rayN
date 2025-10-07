@@ -60,12 +60,12 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />
-                <ListBox
-                    x:Name="clbRuleTypes"
+                <ComboBox
+                    x:Name="cmbRuleType"
+                    Width="200"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left"
-                    FontSize="{DynamicResource StdFontSize}"
-                    Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
+                    MaxDropDownHeight="1000"
+                    Style="{StaticResource DefComboBox}" />
             </StackPanel>
 
             <TextBlock

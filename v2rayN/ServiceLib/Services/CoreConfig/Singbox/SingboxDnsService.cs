@@ -253,7 +253,7 @@ public partial class CoreConfigSingboxService
                 continue;
             }
 
-            if ((item.RuleTypes?.Count ?? 0) > 0 && !item.RuleTypes.Contains(Global.DNSRuleType))
+            if (item.RuleType == ERuleType.Routing)
             {
                 continue;
             }

@@ -87,8 +87,6 @@ public class Global
     public const string SingboxFinalResolverTag = "final_resolver";
     public const string SingboxHostsDNSTag = "hosts_dns";
     public const string SingboxFakeDNSTag = "fake_dns";
-    public const string RoutingRuleType = "Routing";
-    public const string DNSRuleType = "DNS";
 
     public static readonly List<string> IEProxyProtocols =
     [
@@ -471,12 +469,6 @@ public class Global
             "tcp",
             "udp",
             "tcp,udp"
-    ];
-
-    public static readonly List<string> RuleTypes =
-    [
-        RoutingRuleType,
-            DNSRuleType
     ];
 
     public static readonly List<string> destOverrideProtocols =
