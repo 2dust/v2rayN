@@ -1588,7 +1588,7 @@
     <value>The {0} property is invalid, please check.</value>
   </data>
   <data name="GroupSelfReference" xml:space="preserve">
-    <value>The group "{0}" cannot reference itself.</value>
+    <value>{0} Group cannot reference itself or have a circular reference</value>
   </data>
   <data name="NotSupportProtocol" xml:space="preserve">
     <value>Not support protocol '{0}'.</value>

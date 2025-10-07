@@ -605,7 +605,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var msgs = await ActionPrecheckService.Instance.CheckBeforeSetActive(indexId);
+        var msgs = await ActionPrecheckManager.Instance.CheckBeforeSetActive(indexId);
         foreach (var msg in msgs)
         {
             NoticeManager.Instance.SendMessage(msg);
@@ -779,7 +779,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var msgs = await ActionPrecheckService.Instance.CheckBeforeGenerateConfig(item);
+        var msgs = await ActionPrecheckManager.Instance.CheckBeforeGenerateConfig(item);
         foreach (var msg in msgs)
         {
             NoticeManager.Instance.SendMessage(msg);

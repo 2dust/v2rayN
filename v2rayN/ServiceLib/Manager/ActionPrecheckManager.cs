@@ -1,14 +1,12 @@
-using DynamicData;
-
-namespace ServiceLib.Services;
+namespace ServiceLib.Manager;
 
 /// <summary>
 /// Centralized pre-checks before sensitive actions (set active profile, generate config, etc.).
 /// </summary>
-public class ActionPrecheckService(Config config)
+public class ActionPrecheckManager(Config config)
 {
-    private static readonly Lazy<ActionPrecheckService> _instance = new(() => new ActionPrecheckService(AppManager.Instance.Config));
-    public static ActionPrecheckService Instance => _instance.Value;
+    private static readonly Lazy<ActionPrecheckManager> _instance = new(() => new ActionPrecheckManager(AppManager.Instance.Config));
+    public static ActionPrecheckManager Instance => _instance.Value;
 
     private readonly Config _config = config;
 
@@ -88,7 +86,7 @@ public class ActionPrecheckService(Config config)
                     break;
 
                 case EConfigType.VLESS:
-                    if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
+                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id) && item.Id.Length > 30)
                         errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                     if (!Global.Flows.Contains(item.Flow))
                         errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
@@ -102,7 +100,7 @@ public class ActionPrecheckService(Config config)
                     break;
             }
 
-            if ((item.ConfigType is EConfigType.VLESS or EConfigType.Trojan)
+            if (item.ConfigType is EConfigType.VLESS or EConfigType.Trojan
                 && item.StreamSecurity == Global.StreamSecurityReality
                 && item.PublicKey.IsNullOrEmpty())
             {

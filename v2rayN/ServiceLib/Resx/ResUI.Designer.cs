@@ -304,7 +304,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 The group &quot;{0}&quot; cannot reference itself. 的本地化字符串。
+        ///   查找类似 {0} Group cannot reference itself or have a circular reference 的本地化字符串。
         /// </summary>
         public static string GroupSelfReference {
             get {
