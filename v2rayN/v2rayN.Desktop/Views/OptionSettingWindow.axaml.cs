@@ -131,19 +131,25 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
             labHide2TrayWhenClose.IsVisible = false;
             togHide2TrayWhenClose.IsVisible = false;
+            labHide2TrayWhenCloseTip.IsVisible = false;
         }
         else if (Utils.IsLinux())
         {
             txbSettingsExceptionTip.IsVisible = false;
             panSystemProxyAdvanced.IsVisible = false;
+
+            tbAutoRunTip.IsVisible = false;
         }
         else if (Utils.IsOSX())
         {
             txbSettingsExceptionTip.IsVisible = false;
             panSystemProxyAdvanced.IsVisible = false;
 
+            tbAutoRunTip.IsVisible = false;
+
             labHide2TrayWhenClose.IsVisible = false;
             togHide2TrayWhenClose.IsVisible = false;
+            labHide2TrayWhenCloseTip.IsVisible = false;
         }
     }
 

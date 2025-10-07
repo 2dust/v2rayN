@@ -1590,4 +1590,7 @@
   <data name="NotSupportProtocol" xml:space="preserve">
     <value>Not support protocol '{0}'.</value>
   </data>
+  <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
+    <value>如果系統沒有托盤功能，請不要開啟</value>
+  </data>
 </root>

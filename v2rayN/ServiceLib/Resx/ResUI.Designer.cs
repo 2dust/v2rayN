@@ -3652,6 +3652,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 If the system does not have a tray function, please do not enable it 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsHide2TrayWhenCloseTip {
+            get {
+                return ResourceManager.GetString("TbSettingsHide2TrayWhenCloseTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Hysteria Max bandwidth (Up/Down) 的本地化字符串。
         /// </summary>
         public static string TbSettingsHysteriaBandwidth {

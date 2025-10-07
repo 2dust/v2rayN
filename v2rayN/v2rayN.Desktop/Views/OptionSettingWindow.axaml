@@ -355,14 +355,15 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
-                        <!--
-						<TextBlock
+                        <TextBlock
+                            x:Name="tbAutoRunTip"
                             Grid.Row="1"
                             Grid.Column="2"
-                            VerticalAlignment="Center"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
-                            TextWrapping="Wrap" />-->
+                            TextWrapping="Wrap" />
+
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
@@ -467,6 +468,13 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
+                        <TextBlock
+                            x:Name="labHide2TrayWhenCloseTip"
+                            Grid.Row="9"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
 
                         <TextBlock
                             Grid.Row="11"

@@ -412,7 +412,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     public void ShowHideWindow(bool? blShow)
     {
-        var bl = blShow ?? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized));
+        var bl = blShow ??
+                    Utils.IsLinux()
+                    ? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized))
+                    : !_config.UiItem.ShowInTaskbar;
         if (bl)
         {
             this.Show();
@@ -446,8 +449,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         base.OnLoaded(sender, e);
         if (_config.UiItem.AutoHideStartup)
         {
-            this.ShowHideWindow(false);
-            _config.UiItem.ShowInTaskbar = true;
+            ShowHideWindow(false);
         }
         RestoreUI();
     }
