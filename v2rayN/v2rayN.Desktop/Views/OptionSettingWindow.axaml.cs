@@ -136,6 +136,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             txbSettingsExceptionTip.IsVisible = false;
             panSystemProxyAdvanced.IsVisible = false;
+            labAutoHideStartup.IsVisible = false;
+            togAutoHideStartup.IsVisible = false;
         }
         else if (Utils.IsOSX())
         {
