@@ -442,7 +442,6 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            x:Name="labAutoHideStartup"
                             Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
