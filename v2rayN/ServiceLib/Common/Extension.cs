@@ -84,4 +84,14 @@ public static class Extension
     {
         return source.Concat(new[] { string.Empty }).ToList();
     }
+
+    public static bool IsGroupType(this EConfigType configType)
+    {
+        return configType is EConfigType.PolicyGroup or EConfigType.ProxyChain;
+    }
+
+    public static bool IsComplexType(this EConfigType configType)
+    {
+        return configType is EConfigType.Custom or EConfigType.PolicyGroup or EConfigType.ProxyChain;
+    }
 }

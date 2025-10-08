@@ -112,7 +112,7 @@ public class ActionPrecheckManager(Config config)
             }
         }
 
-        if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        if (item.ConfigType.IsGroupType())
         {
             ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
             if (group is null || group.ChildItems.IsNullOrEmpty())

@@ -64,7 +64,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var lstSelected = new List<ServerTestItem>();
         foreach (var it in selecteds)
         {
-            if (it.ConfigType is EConfigType.Custom or EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            if (it.ConfigType.IsComplexType())
             {
                 continue;
             }
@@ -339,7 +339,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         List<List<ServerTestItem>> lstTest = new();
         var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
-        var lst2 = lstSelected.Where(t => Global.SingboxSupportConfigType.Contains(t.ConfigType) && !Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
+        var lst2 = lstSelected.Where(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {

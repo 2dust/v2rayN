@@ -269,7 +269,7 @@ public class ProfileGroupItemManager
             {
                 childAddresses.Add(childNode.Address);
             }
-            else if (childNode.ConfigType > EConfigType.Group)
+            else if (childNode.ConfigType.IsGroupType())
             {
                 var subAddresses = await GetAllChildDomainAddresses(childNode.IndexId);
                 foreach (var addr in subAddresses)
