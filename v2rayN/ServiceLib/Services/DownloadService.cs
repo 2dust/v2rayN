@@ -15,7 +15,8 @@ public class DownloadService
 
     private static readonly string _tag = "DownloadService";
 
-    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout,
+        Func<bool, string, Task> updateFunc)
     {
         try
         {
@@ -25,9 +26,9 @@ public class DownloadService
             progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
 
             await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
-                  url,
-                  progress,
-                  downloadTimeout);
+                url,
+                progress,
+                downloadTimeout);
         }
         catch (Exception ex)
         {
@@ -37,6 +38,7 @@ public class DownloadService
                 await updateFunc?.Invoke(false, ex.InnerException.Message);
             }
         }
+
         return 0;
     }
 
@@ -48,7 +50,8 @@ public class DownloadService
             UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
             var progress = new Progress<double>();
-            progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
+            progress.ProgressChanged += (sender, value) =>
+                UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
 
             var webProxy = await GetWebProxy(blProxy);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
@@ -74,8 +77,7 @@ public class DownloadService
         SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
         var webRequestHandler = new SocketsHttpHandler
         {
-            AllowAutoRedirect = false,
-            Proxy = await GetWebProxy(blProxy)
+            AllowAutoRedirect = false, Proxy = await GetWebProxy(blProxy)
         };
         HttpClient client = new(webRequestHandler);
 
@@ -96,7 +98,7 @@ public class DownloadService
     {
         try
         {
-            var result1 = await DownloadStringAsync(url, blProxy, userAgent, 15);
+            var result1 = await DownloadStringAsync(url, blProxy, userAgent, 5);
             if (result1.IsNotEmpty())
             {
                 return result1;
@@ -141,30 +143,90 @@ public class DownloadService
     {
         try
         {
+            Uri uri = new(url);
             SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             var webProxy = await GetWebProxy(blProxy);
-            var client = new HttpClient(new SocketsHttpHandler()
-            {
-                Proxy = webProxy,
-                UseProxy = webProxy != null
-            });
+            using var cts = new CancellationTokenSource();
 
             if (userAgent.IsNullOrEmpty())
             {
                 userAgent = Utils.GetVersion(false);
             }
-            client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
 
-            Uri uri = new(url);
-            //Authorization Header
-            if (uri.UserInfo.IsNotEmpty())
+            try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
-            }
+                // 轮询解析 DNS
+                var addresses = await Dns.GetHostAddressesAsync(uri.Host);
+                foreach (var addr in addresses)
+                {
+                    NoticeManager.Instance.SendMessage($"{uri.Host} find Resolved: {addr}");
+                }
 
-            using var cts = new CancellationTokenSource();
-            var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
-            return result;
+                NoticeManager.Instance.SendMessage($"Start download [{uri.Host}] sub...");
+
+                Exception? lastEx = null;
+                foreach (var addr in addresses)
+                {
+                    NoticeManager.Instance.SendMessage($"Download sub domain Resolved: {addr}");
+                    try
+                    {
+                        using var handler = new SocketsHttpHandler
+                        {
+                            Proxy = webProxy,
+                            UseProxy = webProxy != null,
+                            ConnectCallback = async (context, cancellationToken) =>
+                            {
+                                var socket = new Socket(
+                                    addr.AddressFamily,
+                                    SocketType.Stream,
+                                    ProtocolType.Tcp
+                                );
+
+                                using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                                cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+                                await socket.ConnectAsync(addr, uri.Port, cts.Token).AsTask();
+
+                                return new NetworkStream(socket, ownsSocket: true);
+                            }
+                        };
+
+                        var client = new HttpClient(handler);
+
+                        client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
+
+                        //Authorization Header
+                        if (uri.UserInfo.IsNotEmpty())
+                        {
+                            client.DefaultRequestHeaders.Authorization =
+                                new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
+                        }
+
+                        // 这里仍然使用原始 URL，Host 保留
+                        var response = await client.GetAsync(uri, cts.Token)
+                            .WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+                        response.EnsureSuccessStatusCode();
+
+                        var content = await response.Content.ReadAsStringAsync(cts.Token);
+                        NoticeManager.Instance.SendMessage($"Request succeeded via {addr}");
+                        return content;
+                    }
+                    catch (Exception ex)
+                    {
+                        lastEx = ex;
+                        NoticeManager.Instance.SendMessage($"Request via {addr} failed: {ex.Message}");
+                    }
+                }
+
+                NoticeManager.Instance.SendMessage("[HttpClientHelper] All IP attempts failed");
+                if (lastEx != null) throw lastEx;
+                return null;
+            }
+            catch (Exception ex)
+            {
+                NoticeManager.Instance.SendMessage($"[HttpClientHelper] {ex.GetType().Name}: {ex.Message}");
+                return null;
+            }
         }
         catch (Exception ex)
         {
@@ -175,6 +237,7 @@ public class DownloadService
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
         }
+
         return null;
     }
 
@@ -194,6 +257,7 @@ public class DownloadService
             {
                 userAgent = Utils.GetVersion(false);
             }
+
             var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, timeout);
             return result;
         }
@@ -206,6 +270,7 @@ public class DownloadService
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
         }
+
         return null;
     }
 
@@ -215,6 +280,7 @@ public class DownloadService
         {
             return null;
         }
+
         var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
         if (await SocketCheck(Global.Loopback, port) == false)
         {
@@ -249,6 +315,7 @@ public class DownloadService
         {
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
         }
+
         ServicePointManager.DefaultConnectionLimit = 256;
     }
 }
