@@ -25,12 +25,6 @@ public partial class MainWindow
         _config = AppManager.Instance.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
-        if (_config.UiItem.AutoHideStartup)
-        {
-            this.ShowActivated = false;
-            this.WindowState = WindowState.Minimized;
-        }
-
         App.Current.SessionEnding += Current_SessionEnding;
         this.Closing += MainWindow_Closing;
         this.PreviewKeyDown += MainWindow_PreviewKeyDown;
@@ -164,6 +158,10 @@ public partial class MainWindow
         });
 
         this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+        if (_config.UiItem.AutoHideStartup)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
 
         if (!_config.GuiItem.EnableHWA)
         {

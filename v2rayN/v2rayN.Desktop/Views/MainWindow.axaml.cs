@@ -31,12 +31,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _config = AppManager.Instance.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
-        if (_config.UiItem.AutoHideStartup)
-        {
-            this.ShowActivated = false;
-            this.WindowState = WindowState.Minimized;
-        }
-
         this.KeyDown += MainWindow_KeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
         menuPromotion.Click += menuPromotion_Click;
@@ -183,6 +177,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             menuGlobalHotkeySetting.IsVisible = false;
         }
         menuAddServerViaScan.IsVisible = false;
+
+        if (_config.UiItem.AutoHideStartup)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
 
         AddHelpMenuItem();
     }
