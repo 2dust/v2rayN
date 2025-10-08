@@ -28,7 +28,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         clbProtocol.ItemsSource = Global.RuleProtocols;
         clbInboundTag.ItemsSource = Global.InboundTags;
         cmbNetwork.ItemsSource = Global.RuleNetworks;
-        cmbRuleType.ItemsSource = Utils.GetEnumNames<ERuleType>();
+        cmbRuleType.ItemsSource = Utils.GetEnumNames<ERuleType>().AppendEmpty();
 
         if (!rulesItem.Id.IsNullOrEmpty())
         {

@@ -64,7 +64,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var lstSelected = new List<ServerTestItem>();
         foreach (var it in selecteds)
         {
-            if (it.ConfigType == EConfigType.Custom)
+            if (it.ConfigType is EConfigType.Custom or EConfigType.PolicyGroup or EConfigType.ProxyChain)
             {
                 continue;
             }
@@ -116,10 +116,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<Task> tasks = [];
         foreach (var it in selecteds)
         {
-            if (it.ConfigType == EConfigType.Custom)
-            {
-                continue;
-            }
             tasks.Add(Task.Run(async () =>
             {
                 try
@@ -199,10 +195,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 {
                     continue;
                 }
-                if (it.ConfigType == EConfigType.Custom)
-                {
-                    continue;
-                }
                 tasks.Add(Task.Run(async () =>
                 {
                     await DoRealPing(it);
@@ -216,7 +208,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            await processService?.StopAsync();
+            if (processService != null)
+            {
+                await processService?.StopAsync();
+            }
         }
         return true;
     }
@@ -231,10 +226,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
             {
                 await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                continue;
-            }
-            if (it.ConfigType == EConfigType.Custom)
-            {
                 continue;
             }
             await concurrencySemaphore.WaitAsync();
@@ -272,7 +263,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 }
                 finally
                 {
-                    await processService?.StopAsync();
+                    if (processService != null)
+                    {
+                        await processService?.StopAsync();
+                    }
                     concurrencySemaphore.Release();
                 }
             }));
