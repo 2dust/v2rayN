@@ -48,13 +48,25 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
-            <ToggleButton
-                x:Name="togEnabled"
+            <StackPanel
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleButton
+                    x:Name="togEnabled"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+                <ComboBox
+                    x:Name="cmbRuleType"
+                    Width="200"
+                    Margin="{StaticResource Margin4}"
+                    MaxDropDownHeight="1000"
+                    Style="{StaticResource DefComboBox}" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="1"

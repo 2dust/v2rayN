@@ -15,4 +15,5 @@ public class RulesItem
     public List<string>? Process { get; set; }
     public bool Enabled { get; set; } = true;
     public string? Remarks { get; set; }
+    public ERuleType? RuleType { get; set; }
 }

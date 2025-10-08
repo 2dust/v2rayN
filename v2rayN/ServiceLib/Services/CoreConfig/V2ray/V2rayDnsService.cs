@@ -142,6 +142,11 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
 
+                if (item.RuleType == ERuleType.Routing)
+                {
+                    continue;
+                }
+
                 foreach (var domain in item.Domain)
                 {
                     if (domain.StartsWith('#'))

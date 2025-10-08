@@ -253,6 +253,11 @@ public partial class CoreConfigSingboxService
                 continue;
             }
 
+            if (item.RuleType == ERuleType.Routing)
+            {
+                continue;
+            }
+
             var rule = new Rule4Sbox();
             var validDomains = item.Domain.Count(it => ParseV2Domain(it, rule));
             if (validDomains <= 0)

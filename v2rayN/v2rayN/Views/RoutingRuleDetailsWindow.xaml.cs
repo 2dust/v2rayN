@@ -21,6 +21,7 @@ public partial class RoutingRuleDetailsWindow
         clbProtocol.ItemsSource = Global.RuleProtocols;
         clbInboundTag.ItemsSource = Global.InboundTags;
         cmbNetwork.ItemsSource = Global.RuleNetworks;
+        cmbRuleType.ItemsSource = Utils.GetEnumNames<ERuleType>();
 
         if (!rulesItem.Id.IsNullOrEmpty())
         {
@@ -45,6 +46,7 @@ public partial class RoutingRuleDetailsWindow
             this.Bind(ViewModel, vm => vm.IP, v => v.txtIP.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Process, v => v.txtProcess.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoSort, v => v.chkAutoSort.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RuleType, v => v.cmbRuleType.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
