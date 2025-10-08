@@ -40,6 +40,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             case EConfigType.PolicyGroup:
                 this.Title = ResUI.TbConfigTypePolicyGroup;
                 break;
+
             case EConfigType.ProxyChain:
                 this.Title = ResUI.TbConfigTypeProxyChain;
                 gridPolicyGroup.IsVisible = false;
@@ -115,18 +116,22 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                     ViewModel?.MoveServer(EMove.Top);
                     e.Handled = true;
                     break;
+
                 case Key.U:
                     ViewModel?.MoveServer(EMove.Up);
                     e.Handled = true;
                     break;
+
                 case Key.D:
                     ViewModel?.MoveServer(EMove.Down);
                     e.Handled = true;
                     break;
+
                 case Key.B:
                     ViewModel?.MoveServer(EMove.Bottom);
                     e.Handled = true;
                     break;
+
                 case Key.Delete:
                     ViewModel?.ChildRemoveAsync();
                     e.Handled = true;
@@ -162,5 +167,4 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
         }
     }
-
 }

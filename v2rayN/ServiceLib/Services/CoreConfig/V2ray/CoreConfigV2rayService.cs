@@ -36,6 +36,7 @@ public partial class CoreConfigV2rayService(Config config)
                 {
                     case EConfigType.PolicyGroup:
                         return await GenerateClientMultipleLoadConfig(node);
+
                     case EConfigType.ProxyChain:
                         return await GenerateClientChainConfig(node);
                 }

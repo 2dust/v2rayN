@@ -54,7 +54,7 @@ public class ActionPrecheckManager(Config config)
     private async Task<List<string>> ValidateNodeAndCoreSupport(ProfileItem item, ECoreType? coreType = null)
     {
         var errors = new List<string>();
-        
+
         coreType ??= AppManager.Instance.GetCoreType(item, item.ConfigType);
 
         if (item.ConfigType is EConfigType.Custom)
@@ -76,7 +76,6 @@ public class ActionPrecheckManager(Config config)
                 errors.Add(string.Format(ResUI.InvalidProperty, "Port"));
                 return errors;
             }
-
 
             switch (item.ConfigType)
             {
@@ -136,7 +135,7 @@ public class ActionPrecheckManager(Config config)
                 {
                     continue;
                 }
-                
+
                 var childItem = await AppManager.Instance.GetProfileItem(child);
                 if (childItem is null)
                 {

@@ -511,9 +511,11 @@ public partial class CoreConfigV2rayService
                         await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
                     }
                     break;
+
                 case EConfigType.ProxyChain:
                     await GenChainOutboundsList(childProfiles, v2rayConfig, baseTagName);
                     break;
+
                 default:
                     break;
             }

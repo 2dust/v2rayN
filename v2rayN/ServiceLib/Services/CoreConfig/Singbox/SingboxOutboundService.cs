@@ -236,9 +236,11 @@ public partial class CoreConfigSingboxService
                     }
 
                     break;
+
                 case EConfigType.ProxyChain:
                     await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);
                     break;
+
                 default:
                     break;
             }
