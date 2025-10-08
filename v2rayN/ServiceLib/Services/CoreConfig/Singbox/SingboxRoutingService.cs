@@ -379,7 +379,7 @@ public partial class CoreConfigSingboxService
 
         if (node == null
             || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
-            && node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain)))
+            && !node.ConfigType.IsGroupType()))
         {
             return Global.ProxyTag;
         }
@@ -391,7 +391,7 @@ public partial class CoreConfigSingboxService
             return tag;
         }
 
-        if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        if (node.ConfigType.IsGroupType())
         {
             var ret = await GenGroupOutbound(node, singboxConfig, tag);
             if (ret == 0)

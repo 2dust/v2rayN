@@ -357,7 +357,7 @@ public static class ConfigHandler
                 {
                 }
             }
-            else if (profileItem.ConfigType > EConfigType.Group)
+            else if (profileItem.ConfigType.IsGroupType())
             {
                 var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
                 await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
@@ -1255,7 +1255,7 @@ public static class ConfigHandler
         if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
             var tun2SocksAddress = node.Address;
-            if (node.ConfigType > EConfigType.Group)
+            if (node.ConfigType.IsGroupType())
             {
                 var lstAddresses = (await ProfileGroupItemManager.GetAllChildDomainAddresses(node.IndexId)).ToList();
                 if (lstAddresses.Count > 0)

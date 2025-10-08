@@ -66,7 +66,7 @@ public class ProfileItem : ReactiveObject
 
     public bool IsComplex()
     {
-        return ConfigType is EConfigType.Custom or > EConfigType.Group;
+        return ConfigType.IsComplexType();
     }
 
     public bool IsValid()

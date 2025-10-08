@@ -484,7 +484,7 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            if (node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain))
+            if (!node.ConfigType.IsGroupType())
             {
                 return -1;
             }
@@ -631,7 +631,7 @@ public partial class CoreConfigV2rayService
             {
                 index++;
 
-                if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                if (node.ConfigType.IsGroupType())
                 {
                     var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                     if (childProfiles.Count <= 0)
@@ -782,7 +782,7 @@ public partial class CoreConfigV2rayService
             var node = nodes[i];
             if (node == null)
                 continue;
-            if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            if (node.ConfigType.IsGroupType())
             {
                 var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
                 if (childProfiles.Count <= 0)

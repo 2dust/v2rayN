@@ -135,7 +135,7 @@ public partial class CoreConfigV2rayService
 
         if (node == null
             || (!Global.XraySupportConfigType.Contains(node.ConfigType)
-            && node.ConfigType is not (EConfigType.PolicyGroup or EConfigType.ProxyChain)))
+            && !node.ConfigType.IsGroupType()))
         {
             return Global.ProxyTag;
         }
@@ -146,7 +146,7 @@ public partial class CoreConfigV2rayService
             return tag;
         }
 
-        if (node.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        if (node.ConfigType.IsGroupType())
         {
             var ret = await GenGroupOutbound(node, v2rayConfig, tag);
             if (ret == 0)

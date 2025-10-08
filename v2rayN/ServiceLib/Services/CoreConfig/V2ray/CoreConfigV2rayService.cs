@@ -30,7 +30,7 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            if (node?.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            if (node.ConfigType.IsGroupType())
             {
                 switch (node.ConfigType)
                 {

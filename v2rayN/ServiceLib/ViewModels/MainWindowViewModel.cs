@@ -350,7 +350,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
         }
-        else if (eConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+        else if (eConfigType.IsGroupType())
         {
             ret = await _updateView?.Invoke(EViewAction.AddGroupServerWindow, item);
         }
