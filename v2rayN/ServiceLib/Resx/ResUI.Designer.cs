@@ -3157,6 +3157,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Rule Type 的本地化字符串。
+        /// </summary>
+        public static string TbRuleType {
+            get {
+                return ResourceManager.GetString("TbRuleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 You can set separate rules for Routing and DNS, or select &quot;ALL&quot; to apply to both 的本地化字符串。
+        /// </summary>
+        public static string TbRuleTypeTips {
+            get {
+                return ResourceManager.GetString("TbRuleTypeTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Bootstrap DNS (sing-box) 的本地化字符串。
         /// </summary>
         public static string TbSBBootstrapDNS {

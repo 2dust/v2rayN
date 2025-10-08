@@ -1593,4 +1593,10 @@
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>如果系统没有托盘功能，请不要开启</value>
   </data>
+  <data name="TbRuleType" xml:space="preserve">
+    <value>规则类型</value>
+  </data>
+  <data name="TbRuleTypeTips" xml:space="preserve">
+    <value>可对 Routing 和 DNS 单独设定规则，ALL 则都生效</value>
+  </data>
 </root>

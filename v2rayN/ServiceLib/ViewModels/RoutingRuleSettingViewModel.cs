@@ -107,13 +107,13 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             var it = new RulesItemModel()
             {
                 Id = item.Id,
+                RuleTypeName = item.RuleType?.ToString(),
                 OutboundTag = item.OutboundTag,
                 Port = item.Port,
                 Network = item.Network,
                 Protocols = Utils.List2String(item.Protocol),
                 InboundTags = Utils.List2String(item.InboundTag),
-                Domains = Utils.List2String(item.Domain),
-                Ips = Utils.List2String(item.Ip),
+                Domains = Utils.List2String((item.Domain ?? []).Concat(item.Ip ?? []).ToList()),
                 Enabled = item.Enabled,
                 Remarks = item.Remarks,
             };

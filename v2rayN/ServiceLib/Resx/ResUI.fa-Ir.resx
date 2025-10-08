@@ -1596,4 +1596,10 @@
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>If the system does not have a tray function, please do not enable it</value>
   </data>
+  <data name="TbRuleType" xml:space="preserve">
+    <value>Rule Type</value>
+  </data>
+  <data name="TbRuleTypeTips" xml:space="preserve">
+    <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>
+  </data>
 </root>
