@@ -545,7 +545,7 @@ public class MainWindowViewModel : MyReactiveObject
             {
                 NoticeManager.Instance.SendMessage(msg);
             }
-            NoticeManager.Instance.Enqueue(Utils.List2String(msgs));
+            NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
             BlReloadEnabled = true;
             return;
         }
