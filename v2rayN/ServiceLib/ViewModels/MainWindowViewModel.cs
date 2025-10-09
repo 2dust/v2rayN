@@ -538,6 +538,18 @@ public class MainWindowViewModel : MyReactiveObject
 
         BlReloadEnabled = false;
 
+        var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
+        if (msgs.Count > 0)
+        {
+            foreach (var msg in msgs)
+            {
+                NoticeManager.Instance.SendMessage(msg);
+            }
+            NoticeManager.Instance.Enqueue(Utils.List2String(msgs));
+            BlReloadEnabled = true;
+            return;
+        }
+
         await Task.Run(async () =>
         {
             await LoadCore();

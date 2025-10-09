@@ -10,7 +10,7 @@ public class ActionPrecheckManager(Config config)
 
     private readonly Config _config = config;
 
-    public async Task<List<string>> CheckBeforeSetActive(string? indexId)
+    public async Task<List<string>> Check(string? indexId)
     {
         if (indexId.IsNullOrEmpty())
         {
@@ -23,10 +23,10 @@ public class ActionPrecheckManager(Config config)
             return [ResUI.PleaseSelectServer];
         }
 
-        return await CheckBeforeGenerateConfig(item);
+        return await Check(item);
     }
 
-    public async Task<List<string>> CheckBeforeGenerateConfig(ProfileItem? item)
+    public async Task<List<string>> Check(ProfileItem? item)
     {
         if (item is null)
         {

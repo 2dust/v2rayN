@@ -605,16 +605,6 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var msgs = await ActionPrecheckManager.Instance.CheckBeforeSetActive(indexId);
-        foreach (var msg in msgs)
-        {
-            NoticeManager.Instance.SendMessage(msg);
-        }
-        if (msgs.Count > 0)
-        {
-            NoticeManager.Instance.Enqueue(msgs.First());
-        }
-
         if (await ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
         {
             await RefreshServers();
@@ -779,15 +769,17 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var msgs = await ActionPrecheckManager.Instance.CheckBeforeGenerateConfig(item);
-        foreach (var msg in msgs)
-        {
-            NoticeManager.Instance.SendMessage(msg);
-        }
+        var msgs = await ActionPrecheckManager.Instance.Check(item);
         if (msgs.Count > 0)
         {
-            NoticeManager.Instance.Enqueue(msgs.First());
+            foreach (var msg in msgs)
+            {
+                NoticeManager.Instance.SendMessage(msg);
+            }
+            NoticeManager.Instance.Enqueue(Utils.List2String(msgs));
+            return;
         }
+
         if (blClipboard)
         {
             var result = await CoreConfigHandler.GenerateClientConfig(item, null);
