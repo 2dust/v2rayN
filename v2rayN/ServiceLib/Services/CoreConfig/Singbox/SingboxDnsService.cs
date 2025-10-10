@@ -43,6 +43,16 @@ public partial class CoreConfigSingboxService
                 });
             }
 
+            //Outbound Freedom Resolver
+            var freedomOutbound = singboxConfig.outbounds?.FirstOrDefault(t => t is { type: "direct", tag: Global.DirectTag });
+            if (freedomOutbound != null)
+            {
+                freedomOutbound.domain_resolver = new()
+                {
+                    server = Global.SingboxDirectDNSTag,
+                };
+            }
+
             await GenOutboundDnsRule(node, singboxConfig, Global.SingboxOutboundResolverTag);
         }
         catch (Exception ex)
