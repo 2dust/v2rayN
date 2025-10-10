@@ -2274,8 +2274,6 @@ public static class ConfigHandler
             BlockBindingQuery = true,
             DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
             RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
-            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
-            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
         };
     }
 

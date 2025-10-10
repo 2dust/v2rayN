@@ -9,13 +9,13 @@ public partial class CoreConfigSingboxService
             singboxConfig.route.final = Global.ProxyTag;
             var item = _config.SimpleDNSItem;
 
-            var defaultDomainResolverTag = Global.SingboxOutboundResolverTag;
+            var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
             var directDNSStrategy = item.SingboxStrategy4Direct.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : item.SingboxStrategy4Direct;
 
             var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem != null && rawDNSItem.Enabled == true)
             {
-                defaultDomainResolverTag = Global.SingboxFinalResolverTag;
+                defaultDomainResolverTag = Global.SingboxLocalDNSTag;
                 directDNSStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : rawDNSItem.DomainStrategy4Freedom;
             }
             singboxConfig.route.default_domain_resolver = new()

@@ -675,8 +675,8 @@
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: basic settings</value>
   </data>
-  <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>V2ray DNS settings</value>
+  <data name="TbCustomDnsRay" xml:space="preserve">
+    <value>V2ray Custom DNS</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP settings</value>
@@ -1011,8 +1011,8 @@
   <data name="menuDNSSetting" xml:space="preserve">
     <value>DNS Settings</value>
   </data>
-  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>sing-box DNS settings</value>
+  <data name="TbCustomDnsSingbox" xml:space="preserve">
+    <value>sing-box Custom DNS</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Please fill in DNS Structure, Click to view the document</value>
@@ -1419,19 +1419,10 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>Domestic DNS</value>
   </data>
-  <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
-    <value>Outbound DNS Resolution (sing-box)</value>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>Via proxy — please ensure remote availability</value>
   </data>
-  <data name="TbSBOutboundDomainResolve" xml:space="preserve">
-    <value>Resolve Outbound Domains</value>
-  </data>
-  <data name="TbSBBootstrapDNS" xml:space="preserve">
-    <value>Bootstrap DNS (sing-box)</value>
-  </data>
-  <data name="TbSBFallbackDNSResolve" xml:space="preserve">
-    <value>Resolve DNS server domains, requires IP</value>
-  </data>
-  <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
+  <data name="TbXrayFreedomStrategy" xml:space="preserve">
     <value>xray Freedom Resolution Strategy</value>
   </data>
   <data name="TbSBDirectResolveStrategy" xml:space="preserve">
@@ -1471,7 +1462,7 @@
     <value>Custom DNS Enabled, This Page's Settings Invalid</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Prevent domain-based routing rules from failing</value>
+    <value>Block ECH and HTTP/3 availability checks when enabled</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Please fill in the correct config template</value>

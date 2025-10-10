@@ -84,8 +84,7 @@ public class Global
 
     public const string SingboxDirectDNSTag = "direct_dns";
     public const string SingboxRemoteDNSTag = "remote_dns";
-    public const string SingboxOutboundResolverTag = "outbound_resolver";
-    public const string SingboxFinalResolverTag = "final_resolver";
+    public const string SingboxLocalDNSTag = "local_local";
     public const string SingboxHostsDNSTag = "hosts_dns";
     public const string SingboxFakeDNSTag = "fake_dns";
 

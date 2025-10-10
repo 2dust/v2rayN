@@ -235,7 +235,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxFinalResolverTag
+                server = Global.SingboxLocalDNSTag,
             };
 
             ret.Success = true;
@@ -308,7 +308,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxFinalResolverTag
+                server = Global.SingboxLocalDNSTag,
             };
 
             singboxConfig.route.rules.Clear();
