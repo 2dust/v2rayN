@@ -1484,16 +1484,7 @@ public static class ConfigHandler
         if (profileItem is null)
         {
             profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        }
-        if (profileItem is null)
-        {
-            profileItem = Hysteria2Fmt.ResolveFull(strData, subRemarks);
-        }
-        //Is naiveproxy configuration
-        if (profileItem is null)
-        {
-            profileItem = NaiveproxyFmt.ResolveFull(strData, subRemarks);
-        }
+        }  
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
             return -1;

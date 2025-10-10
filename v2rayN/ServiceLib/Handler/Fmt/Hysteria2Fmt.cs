@@ -63,24 +63,6 @@ public class Hysteria2Fmt : BaseFmt
         return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
     }
 
-    public static ProfileItem? ResolveFull(string strData, string? subRemarks)
-    {
-        if (Contains(strData, "server", "up", "down", "listen", "<html>", "<body>"))
-        {
-            var fileName = WriteAllText(strData);
-
-            var profileItem = new ProfileItem
-            {
-                CoreType = ECoreType.hysteria,
-                Address = fileName,
-                Remarks = subRemarks ?? "hysteria_custom"
-            };
-            return profileItem;
-        }
-
-        return null;
-    }
-
     public static ProfileItem? ResolveFull2(string strData, string? subRemarks)
     {
         if (Contains(strData, "server", "auth", "up", "down", "listen"))
