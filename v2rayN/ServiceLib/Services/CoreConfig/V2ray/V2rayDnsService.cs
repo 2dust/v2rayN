@@ -354,7 +354,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenDnsDomainsCompatible(ProfileItem? node, JsonNode dns, DNSItem? dNSItem)
+    private async Task<int> GenDnsDomainsCompatible(ProfileItem? node, JsonNode dns, DNSItem? dnsItem)
     {
         if (node == null)
         {
@@ -393,7 +393,7 @@ public partial class CoreConfigV2rayService
             {
                 var dnsServer = new DnsServer4Ray()
                 {
-                    address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+                    address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
                     skipFallback = true,
                     domains = domainList
                 };

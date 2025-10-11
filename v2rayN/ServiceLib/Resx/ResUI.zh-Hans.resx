@@ -675,8 +675,8 @@
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core: 基础设置</value>
   </data>
-  <data name="TbSettingsCoreDns" xml:space="preserve">
-    <value>v2ray DNS 设置</value>
+  <data name="TbCustomDnsRay" xml:space="preserve">
+    <value>v2ray 自定义 DNS</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP 设置</value>
@@ -1008,8 +1008,8 @@
   <data name="menuDNSSetting" xml:space="preserve">
     <value>DNS 设置</value>
   </data>
-  <data name="TbSettingsCoreDnsSingbox" xml:space="preserve">
-    <value>sing-box DNS 设置</value>
+  <data name="TbCustomDnsSingbox" xml:space="preserve">
+    <value>sing-box 自定义 DNS</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>请填写 DNS JSON 结构，点击查看文档</value>
@@ -1416,19 +1416,10 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>直连 DNS</value>
   </data>
-  <data name="TbSBOutboundsResolverDNS" xml:space="preserve">
-    <value>出站 DNS 解析（sing-box）</value>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>通过代理，请确保远程可用</value>
   </data>
-  <data name="TbSBOutboundDomainResolve" xml:space="preserve">
-    <value>解析出站域名</value>
-  </data>
-  <data name="TbSBBootstrapDNS" xml:space="preserve">
-    <value>Bootstrap DNS (sing-box)</value>
-  </data>
-  <data name="TbSBFallbackDNSResolve" xml:space="preserve">
-    <value>解析 DNS 服务器域名，需指定为 IP</value>
-  </data>
-  <data name="TbXrayFreedomResolveStrategy" xml:space="preserve">
+  <data name="TbXrayFreedomStrategy" xml:space="preserve">
     <value>xray freedom 解析策略</value>
   </data>
   <data name="TbSBDirectResolveStrategy" xml:space="preserve">
@@ -1468,7 +1459,7 @@
     <value>自定义 DNS 已启用，此页面配置将无效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>避免域名分流规则失效</value>
+    <value>开启后将阻止 ECH 和 HTTP/3 可用性查询</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>请填写正确的配置模板</value>

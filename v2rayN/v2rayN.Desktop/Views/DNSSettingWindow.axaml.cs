@@ -24,9 +24,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         cmbSBDirectDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
-        cmbSBResolverDNS.ItemsSource = Global.DomainDirectDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
         cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
-        cmbSBFinalResolverDNS.ItemsSource = Global.DomainPureIPDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
         cmbDirectExpectedIPs.ItemsSource = Global.ExpectedIPs;
 
         cmbdomainStrategy4FreedomCompatible.ItemsSource = Global.DomainStrategy4Freedoms;
@@ -42,8 +40,6 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.Bind(ViewModel, vm => vm.BlockBindingQuery, v => v.togBlockBindingQuery.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DirectDNS, v => v.cmbDirectDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RemoteDNS, v => v.cmbRemoteDNS.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SingboxOutboundsResolveDNS, v => v.cmbSBResolverDNS.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SingboxFinalResolveDNS, v => v.cmbSBFinalResolverDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RayStrategy4Freedom, v => v.cmbRayFreedomDNSStrategy.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Direct, v => v.cmbSBDirectDNSStrategy.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Proxy, v => v.cmbSBRemoteDNSStrategy.SelectedItem).DisposeWith(disposables);

@@ -264,8 +264,6 @@ public class SimpleDNSItem
     public bool? BlockBindingQuery { get; set; }
     public string? DirectDNS { get; set; }
     public string? RemoteDNS { get; set; }
-    public string? SingboxOutboundsResolveDNS { get; set; }
-    public string? SingboxFinalResolveDNS { get; set; }
     public string? RayStrategy4Freedom { get; set; }
     public string? SingboxStrategy4Direct { get; set; }
     public string? SingboxStrategy4Proxy { get; set; }
