@@ -4,6 +4,7 @@ public enum ESpeedActionType
 {
     Tcping,
     Realping,
+    UdpTest,
     Speedtest,
     Mixedtest
 }

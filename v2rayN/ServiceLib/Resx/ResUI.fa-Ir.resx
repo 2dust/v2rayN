@@ -1602,4 +1602,13 @@
   <data name="TbRuleTypeTips" xml:space="preserve">
     <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>
   </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestType" xml:space="preserve">
+    <value>UDP Test Type</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
 </root>

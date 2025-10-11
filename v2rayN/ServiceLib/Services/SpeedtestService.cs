@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using ServiceLib.Services.Udp;
 
 namespace ServiceLib.Services;
 
@@ -49,6 +50,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 await RunRealPingBatchAsync(lstSelected, exitLoopKey);
                 break;
 
+            case ESpeedActionType.UdpTest:
+                await RunUdpTestBatchAsync(lstSelected, exitLoopKey);
+                break;
+
             case ESpeedActionType.Speedtest:
                 await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey);
                 break;
@@ -91,6 +96,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 case ESpeedActionType.Tcping:
                 case ESpeedActionType.Realping:
+                case ESpeedActionType.UdpTest:
                     await UpdateFunc(it.IndexId, ResUI.Speedtesting, "");
                     ProfileExManager.Instance.SetTestDelay(it.IndexId, 0);
                     break;
@@ -216,6 +222,81 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
+    private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
+    {
+        if (pageSize <= 0)
+        {
+            pageSize = lstSelected.Count < Global.SpeedTestPageSize ? lstSelected.Count : Global.SpeedTestPageSize;
+        }
+        var lstTest = GetTestBatchItem(lstSelected, pageSize);
+
+        List<ServerTestItem> lstFailed = new();
+        foreach (var lst in lstTest)
+        {
+            var ret = await RunUdpTestAsync(lst, exitLoopKey);
+            if (ret == false)
+            {
+                lstFailed.AddRange(lst);
+            }
+            await Task.Delay(100);
+        }
+
+        //Retest the failed part
+        var pageSizeNext = pageSize / 2;
+        if (lstFailed.Count > 0 && pageSizeNext > 0)
+        {
+            if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
+            {
+                await UpdateFunc("", ResUI.SpeedtestingSkip);
+                return;
+            }
+
+            await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
+
+            await RunUdpTestBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
+        }
+    }
+
+    private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    {
+        ProcessService processService = null;
+        try
+        {
+            processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
+            if (processService is null)
+            {
+                return false;
+            }
+            await Task.Delay(1000);
+
+            List<Task> tasks = new();
+            foreach (var it in selecteds)
+            {
+                if (!it.AllowTest)
+                {
+                    continue;
+                }
+                tasks.Add(Task.Run(async () =>
+                {
+                    await DoUdpTest(it);
+                }));
+            }
+            await Task.WhenAll(tasks);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        finally
+        {
+            if (processService != null)
+            {
+                await processService?.StopAsync();
+            }
+        }
+        return true;
+    }
+
     private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
     {
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
@@ -300,6 +381,27 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             await UpdateFunc(it.IndexId, "", msg);
         });
+    }
+
+    private async Task<int> DoUdpTest(ServerTestItem it)
+    {
+        UdpService udpService = _config.SpeedTestItem.UdpTestType switch
+        {
+            EUdpTest.NTP => new NtpService(),
+            EUdpTest.DNS => new DnsService(),
+            EUdpTest.STUN => new StunService(),
+            _ => new NtpService(),
+        };
+        var responseTime = -1;
+        try
+        {
+            responseTime = (int)(await udpService.SendUdpRequestAsync(_config.SpeedTestItem.UdpTestUrl, it.Port, TimeSpan.FromSeconds(5))).TotalMilliseconds;
+        }
+        catch
+        { }
+        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
+        await UpdateFunc(it.IndexId, responseTime.ToString());
+        return responseTime;
     }
 
     private async Task<int> GetTcpingTime(string url, int port)

@@ -1599,4 +1599,13 @@
   <data name="TbRuleTypeTips" xml:space="preserve">
     <value>可对 Routing 和 DNS 单独设定规则，ALL 则都生效</value>
   </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>测试配置文件 UDP 延迟 (多选)</value>
+  </data>
+  <data name="TbSettingsUdpTestType" xml:space="preserve">
+    <value>UDP 测试类型</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP 测试地址</value>
+  </data>
 </root>
