@@ -395,7 +395,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var responseTime = -1;
         try
         {
-            responseTime = (int)(await udpService.SendUdpRequestAsync(_config.SpeedTestItem.UdpTestUrl, it.Port, TimeSpan.FromSeconds(5))).TotalMilliseconds;
+            responseTime = (int)(await udpService.SendUdpRequestAsync(_config.SpeedTestItem.UdpTestUrl, it.Port, TimeSpan.FromSeconds(10))).TotalMilliseconds;
         }
         catch
         { }
