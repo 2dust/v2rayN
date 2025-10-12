@@ -242,8 +242,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
 
         //Retest the failed part
-        var pageSizeNext = pageSize / 2;
-        if (lstFailed.Count > 0 && pageSizeNext > 0)
+        if (lstFailed.Count > 0)
         {
             if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
             {
@@ -253,7 +252,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
 
-            await RunUdpTestBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
+            await RunUdpTestAsync(lstFailed, exitLoopKey);
         }
     }
 
