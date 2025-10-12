@@ -94,7 +94,7 @@ public abstract class UdpService
                 }
                 catch
                 {
-                    if (attempt == 1)
+                    if (attempt == 1 && roundTripTime == TimeSpan.MaxValue)
                     {
                         throw;
                     }
