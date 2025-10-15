@@ -892,7 +892,7 @@
     <value>Delay (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Speed (M/s)</value>
+    <value>Speed (MB/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>Failed to run Core, please check the prompt information</value>

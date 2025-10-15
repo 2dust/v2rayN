@@ -892,7 +892,7 @@
     <value>延迟 (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>速度 (M/s)</value>
+    <value>速度 (MB/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>运行 Core 失败，请查看提示信息</value>

@@ -892,7 +892,7 @@
     <value>Késleltetés (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Sebesség (M/s)</value>
+    <value>Sebesség (MB/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
     <value>Nem sikerült futtatni a Core-t, kérjük, ellenőrizze a prompt információt</value>
