@@ -76,6 +76,50 @@
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                     Style="{StaticResource DefTextBox}" />
+
+                <!-- Subscription usage and expiry -->
+                <StackPanel
+                    Margin="{StaticResource MarginLeftRight8}"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Visibility="{Binding BlSubInfoVisible, Converter={StaticResource BoolToVisConverter}}">
+                    <Grid Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Width="120" VerticalAlignment="Center" Text="流量" />
+                        <ProgressBar
+                            Grid.Column="1"
+                            Height="16"
+                            Minimum="0"
+                            Maximum="100"
+                            Value="{Binding SubUsagePercent}"
+                            Style="{StaticResource MaterialDesignProgressBar}"
+                            Margin="4,0,4,0"
+                            Width="240" />
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding SubUsageText}" Margin="0,0,0,0" />
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Width="120" VerticalAlignment="Center" Text="到期" />
+                        <ProgressBar
+                            Grid.Column="1"
+                            Height="16"
+                            Minimum="0"
+                            Maximum="100"
+                            Value="{Binding SubExpirePercent}"
+                            Style="{StaticResource MaterialDesignProgressBar}"
+                            Margin="4,0,4,0"
+                            Width="240" />
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding SubExpireText}" Margin="0,0,0,0" />
+                    </Grid>
+                </StackPanel>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"

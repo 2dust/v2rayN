@@ -1,4 +1,5 @@
 using System.Reactive;
+using ServiceLib.Models;
 
 namespace ServiceLib.Events;
 
@@ -29,4 +30,7 @@ public static class AppEvents
     public static readonly EventChannel<Unit> TestServerRequested = new();
     public static readonly EventChannel<Unit> InboundDisplayRequested = new();
     public static readonly EventChannel<ESysProxyType> SysProxyChangeRequested = new();
+
+    // Fired when subscription usage/expiry info updates
+    public static readonly EventChannel<SubscriptionUsageInfo> SubscriptionInfoUpdated = new();
 }

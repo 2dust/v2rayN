@@ -171,22 +171,22 @@ public class Utils
 
     public static string HumanFy(long amount)
     {
-        if (amount <= 0)
-        {
-            return $"{amount:f1} B";
-        }
-
-        string[] units = ["KB", "MB", "GB", "TB", "PB"];
+        // Bytes → KB → MB → GB → TB → PB
+        string[] units = ["B", "KB", "MB", "GB", "TB", "PB"];
         var unitIndex = 0;
-        double size = amount;
+        double size = amount < 0 ? 0 : (double)amount;
 
-        // Loop and divide by 1024 until a suitable unit is found
         while (size >= 1024 && unitIndex < units.Length - 1)
         {
             size /= 1024;
             unitIndex++;
         }
 
+        // For bytes, show integer without decimal; for others keep 1 decimal
+        if (unitIndex == 0)
+        {
+            return $"{(long)size} {units[unitIndex]}";
+        }
         return $"{size:f1} {units[unitIndex]}";
     }
 

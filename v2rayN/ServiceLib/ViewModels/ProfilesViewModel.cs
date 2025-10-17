@@ -6,6 +6,9 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Manager;
+using ServiceLib.Models;
+// using ServiceLib.Services; // covered by GlobalUsings
 
 namespace ServiceLib.ViewModels;
 
@@ -33,6 +36,22 @@ public class ProfilesViewModel : MyReactiveObject
 
     [Reactive]
     public SubItem SelectedSub { get; set; }
+
+    // Subscription usage/expiry display
+    [Reactive]
+    public bool BlSubInfoVisible { get; set; }
+
+    [Reactive]
+    public int SubUsagePercent { get; set; }
+
+    [Reactive]
+    public string SubUsageText { get; set; }
+
+    [Reactive]
+    public int SubExpirePercent { get; set; }
+
+    [Reactive]
+    public string SubExpireText { get; set; }
 
     [Reactive]
     public SubItem SelectedMoveToGroup { get; set; }
@@ -254,6 +273,17 @@ public class ProfilesViewModel : MyReactiveObject
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async _ => await RefreshSubscriptions());
 
+        AppEvents.SubscriptionInfoUpdated
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async info => await UpdateSubInfoDisplay(info));
+
+        // 核心Reload后，再尝试抓一次头，避免启动时代理未就绪导致不显示
+        AppEvents.ReloadRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await TryFetchSubInfoHeaderForSelected());
+
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxApp.MainThreadScheduler)
@@ -274,6 +304,12 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedProfile = new();
         SelectedSub = new();
         SelectedMoveToGroup = new();
+
+        BlSubInfoVisible = true;
+        SubUsagePercent = -1;
+        SubExpirePercent = -1;
+        SubUsageText = string.Empty;
+        SubExpireText = string.Empty;
 
         await RefreshSubscriptions();
         //await RefreshServers();
@@ -354,6 +390,97 @@ public class ProfilesViewModel : MyReactiveObject
         await RefreshServers();
 
         await _updateView?.Invoke(EViewAction.ProfilesFocus, null);
+
+        // Update subscription info area for selected sub
+        await UpdateSubInfoDisplay(null);
+    }
+
+    private async Task UpdateSubInfoDisplay(SubscriptionUsageInfo? pushed)
+    {
+        try
+        {
+            var subId = SelectedSub?.Id;
+            if (subId.IsNullOrEmpty())
+            {
+                // 保持显示，但用占位
+                SubUsagePercent = 0;
+                SubExpirePercent = 0;
+                SubUsageText = "—";
+                SubExpireText = "—";
+                return;
+            }
+
+            var info = pushed != null && pushed.SubId == subId
+                ? pushed
+                : SubscriptionInfoManager.Instance.Get(subId);
+
+            if (info == null)
+            {
+                // 先用占位显示
+                SubUsagePercent = 0;
+                SubExpirePercent = 0;
+                SubUsageText = "—";
+                SubExpireText = "—";
+                // 尝试即时抓取一次响应头，避免必须“更新订阅”才显示
+                try { await SubscriptionInfoManager.Instance.FetchHeaderForSub(_config, SelectedSub); } catch { }
+                info = SubscriptionInfoManager.Instance.Get(subId);
+                if (info == null)
+                {
+                    return;
+                }
+            }
+
+            // Usage
+            if (info.Total > 0)
+            {
+                SubUsagePercent = info.UsagePercent;
+                SubUsageText = string.Format("{0} / {1} ({2}%)", Utils.HumanFy(info.UsedBytes), Utils.HumanFy(info.Total), SubUsagePercent);
+            }
+            else
+            {
+                SubUsagePercent = -1;
+                SubUsageText = string.Format("{0}", Utils.HumanFy(info.UsedBytes));
+            }
+
+            // Expire
+            if (info.ExpireAt != null)
+            {
+                var daysLeft = info.DaysLeft;
+                SubExpireText = daysLeft >= 0
+                    ? $"{daysLeft}d — {info.ExpireAt:yyyy-MM-dd}"
+                    : $"{info.ExpireAt:yyyy-MM-dd}";
+
+                // 可视化“剩余时间百分比”，基准按天自适应：<=31天用月基准、<=92天用季度、否则按365天
+                if (daysLeft >= 0)
+                {
+                    int baseDays = daysLeft <= 31 ? 31 : (daysLeft <= 92 ? 92 : 365);
+                    var percentRemain = (int)Math.Round(Math.Min(daysLeft, baseDays) * 100.0 / baseDays);
+                    SubExpirePercent = Math.Clamp(percentRemain, 0, 100);
+                }
+                else
+                {
+                    SubExpirePercent = -1;
+                }
+            }
+            else
+            {
+                SubExpireText = string.Empty;
+                SubExpirePercent = -1;
+            }
+
+            BlSubInfoVisible = true;
+        }
+        catch
+        {
+            // 出错也别隐藏
+            BlSubInfoVisible = true;
+        }
+        await Task.CompletedTask;
+    }
+
+    private async Task TryFetchSubInfoHeaderForSelected()
+    {
+        try { await SubscriptionInfoManager.Instance.FetchHeaderForSub(_config, SelectedSub); } catch { }
     }
 
     private async Task ServerFilterChanged(bool c)

@@ -79,6 +79,8 @@ public class TaskManager
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
+            // 同步刷新该订阅的用量/到期信息
+            try { await SubscriptionInfoManager.Instance.FetchHeaderForSub(_config, item); } catch { }
             item.UpdateTime = updateTime;
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);

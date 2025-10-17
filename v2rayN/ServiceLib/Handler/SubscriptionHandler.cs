@@ -1,3 +1,5 @@
+using ServiceLib.Manager;
+
 namespace ServiceLib.Handler;
 
 public static class SubscriptionHandler
@@ -119,8 +121,9 @@ public static class SubscriptionHandler
 
     private static async Task<string> DownloadMainSubscription(Config config, SubItem item, bool blProxy, DownloadService downloadHandle)
     {
-        // Prepare subscription URL and download directly
-        var url = Utils.GetPunycode(item.Url.TrimEx());
+        // Prepare URLs
+        var originalUrl = Utils.GetPunycode(item.Url.TrimEx());
+        var url = originalUrl;
 
         // If conversion is needed
         if (item.ConvertTarget.IsNotEmpty())
@@ -129,7 +132,7 @@ public static class SubscriptionHandler
                 ? Global.SubConvertUrls.FirstOrDefault()
                 : config.ConstItem.SubConvertUrl;
 
-            url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
+            url = string.Format(subConvertUrl!, Utils.UrlEncode(originalUrl));
 
             if (!url.Contains("target="))
             {
@@ -142,7 +145,36 @@ public static class SubscriptionHandler
             }
         }
 
-        // Download and return result directly
+        // 1) Fetch final URL with headers (content + header if any)
+        var (userHeader, content) = await downloadHandle.TryGetWithHeaders(url, blProxy, item.UserAgent);
+        var hadHeader = false;
+        if (userHeader.IsNotEmpty())
+        {
+            SubscriptionInfoManager.Instance.UpdateFromHeader(item.Id, new[] { userHeader });
+            hadHeader = true;
+        }
+
+        // 2) If no header captured and using converter, try original URL only for header
+        if (!hadHeader && item.ConvertTarget.IsNotEmpty())
+        {
+            try
+            {
+                var (userHeader2, _) = await downloadHandle.TryGetWithHeaders(originalUrl, blProxy, item.UserAgent, timeoutSeconds: 10);
+                if (userHeader2.IsNotEmpty())
+                {
+                    SubscriptionInfoManager.Instance.UpdateFromHeader(item.Id, new[] { userHeader2 });
+                    hadHeader = true;
+                }
+            }
+            catch { }
+        }
+
+        if (content.IsNotEmpty())
+        {
+            return content!;
+        }
+
+        // 3) Fallback: plain download string
         return await DownloadSubscriptionContent(downloadHandle, url, blProxy, item.UserAgent);
     }
 
