@@ -17,6 +17,8 @@
 mono_crash.*
 
 # Build results
+build-area/
+debian/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -399,6 +401,3 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
-
-# AI Tools
-AGENTS.md

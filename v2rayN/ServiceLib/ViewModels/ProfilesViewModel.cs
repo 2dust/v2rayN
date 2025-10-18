@@ -55,9 +55,6 @@ public class ProfilesViewModel : MyReactiveObject
     public bool SubUsageIndeterminate { get; set; }
 
     [Reactive]
-    public bool SubUsageIndeterminate { get; set; }
-
-    [Reactive]
     public int SubExpirePercent { get; set; }
 
     [Reactive]
@@ -67,9 +64,6 @@ public class ProfilesViewModel : MyReactiveObject
     ///     在未能计算到期日或仍在加载时，让到期进度条保持“不确定”马灯动画，提示用户等待最新数据。
     ///     该值直接绑定到视图层进度条的 <c>IsIndeterminate</c> 属性。
     /// </summary>
-    [Reactive]
-    public bool SubExpireIndeterminate { get; set; }
-
     [Reactive]
     public bool SubExpireIndeterminate { get; set; }
 
