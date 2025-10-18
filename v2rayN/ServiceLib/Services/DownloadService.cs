@@ -133,6 +133,68 @@ public class DownloadService
         return null;
     }
 
+    // Best-effort: get specific header (Subscription-Userinfo) and content in one request.
+    // Returns: (userinfoHeaderValue, content)
+    public async Task<(string? userInfoHeader, string? content)> TryGetWithHeaders(string url, bool blProxy, string userAgent, int timeoutSeconds = 15)
+    {
+        try
+        {
+            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
+            var webProxy = await GetWebProxy(blProxy);
+            var handler = new SocketsHttpHandler()
+            {
+                Proxy = webProxy,
+                UseProxy = webProxy != null,
+                AllowAutoRedirect = true
+            };
+            using var client = new HttpClient(handler);
+
+            if (userAgent.IsNullOrEmpty())
+            {
+                userAgent = Utils.GetVersion(false);
+            }
+            client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
+
+            Uri uri = new(url);
+            if (uri.UserInfo.IsNotEmpty())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
+            }
+
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds));
+            using var resp = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+
+            // Try read target header regardless of status code
+            string? userHeader = null;
+            if (resp.Headers != null)
+            {
+                if (resp.Headers.TryGetValues("Subscription-Userinfo", out var vals) ||
+                    resp.Headers.TryGetValues("subscription-userinfo", out vals))
+                {
+                    userHeader = vals?.FirstOrDefault();
+                }
+            }
+
+            // Read content only on success; otherwise empty to trigger fallback
+            string? content = null;
+            if (resp.IsSuccessStatusCode)
+            {
+                content = await resp.Content.ReadAsStringAsync(cts.Token);
+            }
+            return (userHeader, content);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            Error?.Invoke(this, new ErrorEventArgs(ex));
+            if (ex.InnerException != null)
+            {
+                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+            }
+        }
+        return (null, null);
+    }
+
     /// <summary>
     /// DownloadString
     /// </summary>

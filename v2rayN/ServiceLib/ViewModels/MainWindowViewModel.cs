@@ -3,6 +3,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ServiceLib.Manager;
 
 namespace ServiceLib.ViewModels;
 
@@ -274,7 +275,15 @@ public class MainWindowViewModel : MyReactiveObject
 
         BlReloadEnabled = true;
         await Reload();
+
+        // 开机自动爬取所有订阅的用量/到期头信息（后台执行）
+        _ = Task.Run(async () =>
+        {
+            try { await SubscriptionInfoManager.Instance.FetchHeadersForAll(_config); } catch { }
+        });
+
     }
+
 
     #endregion Init
 

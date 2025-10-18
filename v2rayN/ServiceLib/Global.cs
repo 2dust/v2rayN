@@ -8,7 +8,7 @@ public class Global
     public const string GithubUrl = "https://github.com";
     public const string GithubApiUrl = "https://api.github.com/repos";
     public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-    public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-{0}/{1}.srs";
+    public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/FlowerRealm/sing-box-rules/rule-set-{0}/{1}.srs";
 
     public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
     public const string ConfigFileName = "guiNConfig.json";
@@ -316,7 +316,7 @@ public class Global
     ];
 
     public static readonly HashSet<EConfigType> SingboxOnlyConfigType = SingboxSupportConfigType.Except(XraySupportConfigType).ToHashSet();
-    
+
     public static readonly List<string> DomainStrategies =
     [
         AsIs,
@@ -572,7 +572,7 @@ public class Global
             { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
             { ECoreType.shadowquic, "spongebob888/shadowquic" },
             { ECoreType.mieru, "enfein/mieru" },
-            { ECoreType.v2rayN, "2dust/v2rayN" },
+            { ECoreType.v2rayN, "FlowerRealm/v2rayN" },
         };
 
     public static readonly List<string> OtherGeoUrls =

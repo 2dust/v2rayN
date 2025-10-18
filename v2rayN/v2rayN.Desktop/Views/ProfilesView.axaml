@@ -74,6 +74,20 @@
                     Margin="{StaticResource MarginLr4}"
                     VerticalContentAlignment="Center"
                     Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+
+                <!-- Subscription usage and expiry -->
+                <StackPanel Margin="{StaticResource MarginLr8}" IsVisible="{Binding BlSubInfoVisible}">
+                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Left" Margin="0,0,0,2">
+                        <TextBlock Width="56" VerticalAlignment="Center" Text="流量" />
+                        <ProgressBar Height="16" Minimum="0" Maximum="100" Value="{Binding SubUsagePercent}" Width="240" IsIndeterminate="{Binding SubUsageIndeterminate}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding SubUsageText}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Left">
+                        <TextBlock Width="56" VerticalAlignment="Center" Text="到期" />
+                        <ProgressBar Height="16" Minimum="0" Maximum="100" Value="{Binding SubExpirePercent}" Width="240" IsIndeterminate="{Binding SubExpireIndeterminate}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding SubExpireText}" />
+                    </StackPanel>
+                </StackPanel>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"

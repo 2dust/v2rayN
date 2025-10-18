@@ -1,0 +1,14 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: v2rayN
+Source: https://github.com/FlowerRealm/v2rayN
+
+Files: *
+Copyright: 2017-2025 FlowerRealm
+License: GPL-3.0
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.
+ .
+ On Debian systems, the complete text of the GNU General Public
+ License version 3 can be found in 
+ /usr/share/common-licenses/GPL-3.
+
