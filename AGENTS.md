@@ -9,12 +9,16 @@
 - Packaging scripts (root): `package-*.sh`
 
 ## Build, Test, and Development
-- Build all: `dotnet build v2rayN/v2rayN.sln -c Release`
-- Run (Linux/macOS): `dotnet run --project v2rayN/v2rayN.Desktop -c Debug`
-- Run (Windows): `dotnet run --project v2rayN/v2rayN -c Debug`
+- Prerequisites:
+  - .NET 8 SDK on all platforms.
+  - Building the WPF app (`v2rayN/v2rayN`) requires the Windows Desktop targeting pack. Install via `dotnet workload install windowsdesktop` or use a Windows machine with Visual Studio build tools.
+- Build all projects (no publish artifacts): `dotnet build v2rayN/v2rayN.sln -c Release`
+- Run Avalonia app (Linux/macOS/Windows): `dotnet run --project v2rayN/v2rayN.Desktop -c Debug`
+- Run WPF app (Windows only): `dotnet run --project v2rayN/v2rayN -c Debug`
 - Publish (examples):
-  - Linux x64: `dotnet publish v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-x64 --self-contained true -o v2rayN/Release/linux-64`
-  - Windows x64: `dotnet publish v2rayN/v2rayN/v2rayN.csproj -c Release -r win-x64 -p:EnableWindowsTargeting=true -o v2rayN/Release/windows-64`
+  - Avalonia Linux x64 self-contained: `dotnet publish v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-x64 --self-contained true -o v2rayN/Release/linux-64`
+  - WPF Windows x64 self-contained: `dotnet publish v2rayN/v2rayN/v2rayN.csproj -c Release -r win-x64 -p:EnableWindowsTargeting=true --self-contained true -o v2rayN/Release/windows-64`
+  - Use other runtime identifiers (`win-arm64`, `osx-x64`, etc.) similarly.
 - Tests (NUnit): `dotnet test v2rayN/GlobalHotKeys/src/GlobalHotKeys.Test -c Release --collect:"XPlat Code Coverage"`
 
 ## Coding Style & Naming
