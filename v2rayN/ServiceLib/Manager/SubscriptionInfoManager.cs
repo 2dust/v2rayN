@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using ServiceLib.Common;
 using ServiceLib.Models;
@@ -124,25 +125,62 @@ public sealed class SubscriptionInfoManager
             {
                 snapshot = new(_map);
             }
+
             var txt = JsonUtils.Serialize(snapshot, true, true);
             var tmp = _storeFile + ".tmp";
+
             lock (_saveLock)
             {
                 File.WriteAllText(tmp, txt);
-                if (File.Exists(_storeFile))
+
+                try
                 {
-                    if (OperatingSystem.IsWindows())
+                    if (File.Exists(_storeFile))
                     {
-                        File.Replace(tmp, _storeFile, null);
+                        if (OperatingSystem.IsWindows())
+                        {
+                            try
+                            {
+                                File.Replace(tmp, _storeFile, null);
+                                return;
+                            }
+                            catch (IOException)
+                            {
+                                // Fallback to cross-platform strategy below.
+                            }
+                            catch (PlatformNotSupportedException)
+                            {
+                                // Fallback to cross-platform strategy below.
+                            }
+                        }
+
+                        try
+                        {
+                            File.Move(tmp, _storeFile, true);
+                            return;
+                        }
+                        catch (IOException)
+                        {
+                            File.Copy(tmp, _storeFile, true);
+                            return;
+                        }
                     }
                     else
                     {
-                        File.Move(tmp, _storeFile, true);
+                        File.Move(tmp, _storeFile);
+                        return;
                     }
                 }
-                else
+                finally
                 {
-                    File.Move(tmp, _storeFile);
+                    if (File.Exists(tmp))
+                    {
+                        try
+                        {
+                            File.Delete(tmp);
+                        }
+                        catch { }
+                    }
                 }
             }
         }
