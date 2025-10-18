@@ -47,6 +47,13 @@ public class ProfilesViewModel : MyReactiveObject
     [Reactive]
     public string SubUsageText { get; set; }
 
+    /// <summary>
+    ///     当订阅用量仍在请求、或远端未提供总流量时保持进度条在“未知/占位”马灯状态，避免显示 0% 等误导性的数值。
+    ///     该值直接绑定到视图层进度条的 <c>IsIndeterminate</c> 属性。
+    /// </summary>
+    [Reactive]
+    public bool SubUsageIndeterminate { get; set; }
+
     [Reactive]
     public bool SubUsageIndeterminate { get; set; }
 
@@ -55,6 +62,13 @@ public class ProfilesViewModel : MyReactiveObject
 
     [Reactive]
     public string SubExpireText { get; set; }
+
+    /// <summary>
+    ///     在未能计算到期日或仍在加载时，让到期进度条保持“不确定”马灯动画，提示用户等待最新数据。
+    ///     该值直接绑定到视图层进度条的 <c>IsIndeterminate</c> 属性。
+    /// </summary>
+    [Reactive]
+    public bool SubExpireIndeterminate { get; set; }
 
     [Reactive]
     public bool SubExpireIndeterminate { get; set; }

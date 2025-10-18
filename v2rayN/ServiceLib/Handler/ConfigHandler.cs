@@ -20,20 +20,23 @@ public static class ConfigHandler
     public static Config? LoadConfig()
     {
         Config? config = null;
-        var result = EmbedUtils.LoadResource(Utils.GetConfigPath(_configRes));
+        var configPath = Utils.GetConfigPath(_configRes);
+        var configFileExists = File.Exists(configPath);
+        var result = EmbedUtils.LoadResource(configPath);
         if (result.IsNotEmpty())
         {
             config = JsonUtils.Deserialize<Config>(result);
         }
         else
         {
-            if (File.Exists(Utils.GetConfigPath(_configRes)))
+            if (configFileExists)
             {
                 Logging.SaveLog("LoadConfig Exception");
                 return null;
             }
         }
 
+        var isNewConfig = config == null;
         config ??= new Config();
 
         config.CoreBasicItem ??= new()
@@ -169,6 +172,22 @@ public static class ConfigHandler
         if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
         {
             config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
+        }
+
+        if (isNewConfig && !configFileExists)
+        {
+            try
+            {
+                var ret = SaveConfig(config).GetAwaiter().GetResult();
+                if (ret != 0)
+                {
+                    Logging.SaveLog($"{_tag}: Failed to create default config file.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"{_tag}: Failed to create default config file", ex);
+            }
         }
 
         return config;
