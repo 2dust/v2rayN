@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -16,6 +17,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
     private Window? _window;
+    // 防止列宽被保存/恢复为 0 导致界面错位
+    private const int MinColumnWidthPx = 30;
 
     public ProfilesView()
     {
@@ -106,6 +109,14 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 .AsObservable()
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ => AutofitColumnWidth())
+                .DisposeWith(disposables);
+
+            // 监听可视区域尺寸变化，动态按可用宽度等比缩放列宽，确保始终从左到右铺满
+            lstProfiles
+                .GetObservable(Visual.BoundsProperty)
+                .Throttle(TimeSpan.FromMilliseconds(80))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => ScaleColumnsToFit())
                 .DisposeWith(disposables);
         });
 
@@ -359,6 +370,86 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             {
                 it.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
             }
+
+            // 列设置为 Auto 后再按可视宽度进行等比缩放，避免“全部很小”但不为 0 的情况
+            Dispatcher.UIThread.Post(ScaleColumnsToFit, DispatcherPriority.Background);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("ProfilesView", ex);
+        }
+    }
+
+    /// <summary>
+    /// 将当前列的 Auto 实际宽度按可用宽度等比缩放，保证整体正好铺满且不出现极小列。
+    /// </summary>
+    private void ScaleColumnsToFit()
+    {
+        try
+        {
+            var visibleColumns = lstProfiles.Columns.Where(c => c.IsVisible != false).ToList();
+            if (visibleColumns.Count == 0)
+            {
+                return;
+            }
+
+            double viewportWidth = lstProfiles.Bounds.Width;
+            if (viewportWidth <= 0)
+            {
+                return;
+            }
+
+            // 预留一点滚动条空间，避免刚好出现水平滚动条
+            const double scrollbarReserve = 18;
+            double available = Math.Max(0, viewportWidth - scrollbarReserve);
+
+            // 计算 Auto 测量下的期望总宽
+            double desired = 0;
+            foreach (var col in visibleColumns)
+            {
+                desired += Math.Max(1, col.ActualWidth);
+            }
+
+            if (desired <= 0 || available <= 0)
+            {
+                return;
+            }
+
+            // 等比缩放（可放大也可缩小）
+            double ratio = available / desired;
+
+            double remaining = available;
+            int remainingCols = visibleColumns.Count;
+            for (int i = 0; i < visibleColumns.Count; i++)
+            {
+                var col = visibleColumns[i];
+                // 基于 Auto 宽度的目标值
+                double proposed = Math.Floor(Math.Max(1, col.ActualWidth) * ratio);
+
+                // 为后续列预留最小宽度（若总宽不足，也可能为 0）
+                int colsLeft = remainingCols - 1;
+                double maxThis = colsLeft > 0 ? Math.Max(0, remaining - colsLeft * MinColumnWidthPx) : remaining;
+                double target = Math.Min(proposed, maxThis);
+
+                // 最后一列严格吃掉余量，避免溢出
+                if (i == visibleColumns.Count - 1)
+                {
+                    target = Math.Max(0, remaining);
+                }
+
+                if (target < 0)
+                {
+                    target = 0;
+                }
+
+                col.Width = new DataGridLength(target, DataGridLengthUnitType.Pixel);
+                remaining -= target;
+                remainingCols--;
+                if (remaining <= 0)
+                {
+                    remaining = 0;
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -382,6 +473,9 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
         var displayIndex = 0;
+        int visibleCount = 0;
+        double widthSum = 0;
+
         foreach (var item in lvColumnItem)
         {
             foreach (var item2 in lstProfiles.Columns)
@@ -398,8 +492,15 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     }
                     else
                     {
-                        item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
+                        // 对恢复的宽度做下限保护，避免 0/极小宽度挤瘪
+                        var w = item.Width < MinColumnWidthPx ? MinColumnWidthPx : item.Width;
+                        item2.Width = new DataGridLength(w, DataGridLengthUnitType.Pixel);
                         item2.DisplayIndex = displayIndex++;
+                        if (item2.IsVisible != false)
+                        {
+                            visibleCount++;
+                            widthSum += w;
+                        }
                     }
                     if (item.Name.ToLower().StartsWith("to"))
                     {
@@ -407,6 +508,16 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     }
                 }
             }
+        }
+
+        // 如果恢复后几乎没有可见宽度，直接切换为 Auto 宽度并按可用宽度缩放
+        if (visibleCount == 0 || widthSum < MinColumnWidthPx)
+        {
+            foreach (var col in lstProfiles.Columns)
+            {
+                col.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+            }
+            Dispatcher.UIThread.Post(ScaleColumnsToFit, DispatcherPriority.Background);
         }
     }
 
@@ -419,10 +530,23 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             {
                 continue;
             }
+
+            // 读取实际宽度并加下限保护，避免保存 0/极小值
+            int widthToSave = -1;
+            if (item2.IsVisible == true)
+            {
+                var actual = (int)(item2.ActualWidth + 0.5);
+                if (actual < MinColumnWidthPx)
+                {
+                    actual = MinColumnWidthPx;
+                }
+                widthToSave = actual;
+            }
+
             lvColumnItem.Add(new()
             {
                 Name = (string)item2.Tag,
-                Width = (int)(item2.IsVisible == true ? item2.ActualWidth : -1),
+                Width = widthToSave,
                 Index = item2.DisplayIndex
             });
         }

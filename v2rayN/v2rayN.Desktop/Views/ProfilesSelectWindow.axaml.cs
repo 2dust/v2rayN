@@ -1,9 +1,11 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
+using Avalonia.Threading;
 using ReactiveUI;
 using v2rayN.Desktop.Base;
 
@@ -12,6 +14,7 @@ namespace v2rayN.Desktop.Views;
 public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 {
     private static Config _config;
+    private const int MinColumnWidthPx = 30;
 
     public Task<ProfileItem?> ProfileItem => GetProfileItem();
     public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
@@ -41,6 +44,14 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+
+            // 监听可视区域变化，始终铺满
+            lstProfiles
+                .GetObservable(Visual.BoundsProperty)
+                .Throttle(TimeSpan.FromMilliseconds(80))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => ScaleColumnsToFit())
+                .DisposeWith(disposables);
         });
 
         btnCancel.Click += (s, e) => Close(false);
@@ -160,6 +171,8 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
             {
                 col.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
             }
+            // Auto 量测后按可视宽度等比缩放，保证铺满
+            Dispatcher.UIThread.Post(ScaleColumnsToFit, DispatcherPriority.Background);
         }
         catch
         {
@@ -190,5 +203,74 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
     {
         // Trigger selection finalize when Confirm is clicked
         ViewModel?.SelectFinish();
+    }
+
+    private void ScaleColumnsToFit()
+    {
+        try
+        {
+            var visibleColumns = lstProfiles.Columns.Where(c => c.IsVisible != false).ToList();
+            if (visibleColumns.Count == 0)
+            {
+                return;
+            }
+
+            double viewportWidth = lstProfiles.Bounds.Width;
+            if (viewportWidth <= 0)
+            {
+                return;
+            }
+
+            const double scrollbarReserve = 18;
+            double available = Math.Max(0, viewportWidth - scrollbarReserve);
+
+            double desired = 0;
+            foreach (var col in visibleColumns)
+            {
+                desired += Math.Max(1, col.ActualWidth);
+            }
+
+            if (desired <= 0 || available <= 0)
+            {
+                return;
+            }
+
+            double ratio = available / desired; // 可放大也可缩小
+
+            double remaining = available;
+            int remainingCols = visibleColumns.Count;
+            for (int i = 0; i < visibleColumns.Count; i++)
+            {
+                var col = visibleColumns[i];
+                double proposed = Math.Floor(Math.Max(1, col.ActualWidth) * ratio);
+
+                // 为后续列预留最小宽度（若总宽不足，也可能为 0）
+                int colsLeft = remainingCols - 1;
+                double maxThis = colsLeft > 0 ? Math.Max(0, remaining - colsLeft * MinColumnWidthPx) : remaining;
+                double target = Math.Min(proposed, maxThis);
+
+                if (i == visibleColumns.Count - 1)
+                {
+                    // 最后一列严格使用剩余空间，避免溢出
+                    target = Math.Max(0, remaining);
+                }
+
+                if (target < 0)
+                {
+                    target = 0;
+                }
+
+                col.Width = new DataGridLength(target, DataGridLengthUnitType.Pixel);
+                remaining -= target;
+                remainingCols--;
+                if (remaining <= 0)
+                {
+                    remaining = 0;
+                }
+            }
+        }
+        catch
+        {
+        }
     }
 }
