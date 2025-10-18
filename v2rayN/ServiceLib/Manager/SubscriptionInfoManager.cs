@@ -131,7 +131,14 @@ public sealed class SubscriptionInfoManager
                 File.WriteAllText(tmp, txt);
                 if (File.Exists(_storeFile))
                 {
-                    File.Replace(tmp, _storeFile, null);
+                    if (OperatingSystem.IsWindows())
+                    {
+                        File.Replace(tmp, _storeFile, null);
+                    }
+                    else
+                    {
+                        File.Move(tmp, _storeFile, true);
+                    }
                 }
                 else
                 {
