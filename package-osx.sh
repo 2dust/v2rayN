@@ -5,7 +5,7 @@ OutputPath="$2"
 Version="$3"
 
 FileName="v2rayN-${Arch}.zip"
-wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/$FileName"
+wget -nv -O $FileName "https://github.com/FlowerRealm/v2rayN-core-bin/raw/refs/heads/master/$FileName"
 7z x $FileName
 cp -rf v2rayN-${Arch}/* $OutputPath
 
@@ -32,7 +32,7 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
   <key>CFBundleIconName</key>
   <string>AppIcon</string>
   <key>CFBundleIdentifier</key>
-  <string>2dust.v2rayN</string>
+  <string>FlowerRealm.v2rayN</string>
   <key>CFBundleName</key>
   <string>v2rayN</string>
   <key>CFBundlePackageType</key>

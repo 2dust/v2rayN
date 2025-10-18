@@ -193,7 +193,7 @@ choose_channel() {
 
 get_latest_tag_latest() {
   # Resolve /releases/latest → tag_name
-  curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases/latest" \
+  curl -fsSL "https://api.github.com/repos/FlowerRealm/v2rayN/releases/latest" \
     | grep -Eo '"tag_name":\s*"v?[^"]+"' \
     | head -n1 \
     | sed -E 's/.*"tag_name":\s*"v?([^"]+)".*/\1/'
@@ -202,7 +202,7 @@ get_latest_tag_latest() {
 get_latest_tag_prerelease() {
   # Resolve newest prerelease=true tag; prefer jq, fallback to sed/grep (no awk)
   local json tag
-  json="$(curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20")" || return 1
+  json="$(curl -fsSL "https://api.github.com/repos/FlowerRealm/v2rayN/releases?per_page=20")" || return 1
 
   # 1) Use jq if present
   if command -v jq >/dev/null 2>&1; then
@@ -380,9 +380,9 @@ download_mihomo() {
   local outroot="$1"
   local url=""
   if [[ "$RID_DIR" == "linux-arm64" ]]; then
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64/bin/mihomo/mihomo"
+    url="https://raw.githubusercontent.com/FlowerRealm/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64/bin/mihomo/mihomo"
   else
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64/bin/mihomo/mihomo"
+    url="https://raw.githubusercontent.com/FlowerRealm/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64/bin/mihomo/mihomo"
   fi
   echo "[+] Download mihomo: $url"
   mkdir -p "$outroot/bin/mihomo"
@@ -438,13 +438,13 @@ download_geo_assets() {
     geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
     geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
     curl -fsSL -o "$srss_dir/$f" \
-      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
+      "https://raw.githubusercontent.com/FlowerRealm/sing-box-rules/rule-set-geoip/$f" || true
   done
   for f in \
     geosite-cn.srs geosite-gfw.srs geosite-greatfire.srs \
     geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
     curl -fsSL -o "$srss_dir/$f" \
-      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
+      "https://raw.githubusercontent.com/FlowerRealm/sing-box-rules/rule-set-geosite/$f" || true
   done
 
   # Unify to bin/
@@ -456,9 +456,9 @@ download_v2rayn_bundle() {
   local outroot="$1"
   local url=""
   if [[ "$RID_DIR" == "linux-arm64" ]]; then
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
+    url="https://raw.githubusercontent.com/FlowerRealm/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
   else
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
+    url="https://raw.githubusercontent.com/FlowerRealm/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
   fi
   echo "[+] Try v2rayN bundle archive: $url"
   local tmp zipname
@@ -608,8 +608,8 @@ Version:        __VERSION__
 Release:        1%{?dist}
 Summary:        v2rayN (Avalonia) GUI client for Linux (x86_64/aarch64)
 License:        GPL-3.0-only
-URL:            https://github.com/2dust/v2rayN
-BugURL:         https://github.com/2dust/v2rayN/issues
+URL:            https://github.com/FlowerRealm/v2rayN
+BugURL:         https://github.com/FlowerRealm/v2rayN/issues
 ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
@@ -622,7 +622,7 @@ v2rayN Linux for Red Hat Enterprise Linux
 Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
 Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
 For more information, Please visit our website
-https://github.com/2dust/v2rayN
+https://github.com/FlowerRealm/v2rayN
 
 %prep
 %setup -q -n __PKGROOT__

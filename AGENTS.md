@@ -21,6 +21,18 @@
   - Use other runtime identifiers (`win-arm64`, `osx-x64`, etc.) similarly.
 - Tests (NUnit): `dotnet test v2rayN/GlobalHotKeys/src/GlobalHotKeys.Test -c Release --collect:"XPlat Code Coverage"`
 
+### Quick Linux x64 build (single executable)
+
+Minimal commands to produce a self-contained Linux x64 executable (with normal output):
+
+```
+git submodule update --init --recursive
+dotnet publish v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj \
+  -c Release -r linux-x64 --self-contained true \
+  -o v2rayN/Release/linux-64
+echo ./v2rayN/Release/linux-64/v2rayN
+```
+
 ## Coding Style & Naming
 - Formatting from `.editorconfig`: UTF-8, CRLF, spaces=4.
 - C#: file‑scoped namespaces; System usings first; braces required; prefer `var` when type is apparent; PascalCase for types/members; fields/private locals use camelCase.

@@ -17,8 +17,6 @@
 mono_crash.*
 
 # Build results
-build-area/
-debian/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -141,7 +139,7 @@ _TeamCity*
 
 # DotCover is a Code Coverage Tool
 *.dotCover
-
+修改 README 移除那段安装脚本说明
 # AxoCover is a Code Coverage Tool
 .axoCover/*
 !.axoCover/settings.json

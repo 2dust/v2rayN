@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace ServiceLib.Models;
 
 /// <summary>
-/// https://github.com/2dust/v2rayN/wiki/
+/// https://github.com/FlowerRealm/v2rayN/wiki/
 /// </summary>
 [Serializable]
 public class VmessQRCode
