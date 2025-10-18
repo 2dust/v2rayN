@@ -96,6 +96,7 @@
                             Minimum="0"
                             Maximum="100"
                             Value="{Binding SubUsagePercent}"
+                            IsIndeterminate="{Binding SubUsageIndeterminate}"
                             Style="{StaticResource MaterialDesignProgressBar}"
                             Margin="4,0,4,0"
                             Width="240" />
@@ -114,6 +115,7 @@
                             Minimum="0"
                             Maximum="100"
                             Value="{Binding SubExpirePercent}"
+                            IsIndeterminate="{Binding SubExpireIndeterminate}"
                             Style="{StaticResource MaterialDesignProgressBar}"
                             Margin="4,0,4,0"
                             Width="240" />

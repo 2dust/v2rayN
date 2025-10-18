@@ -47,11 +47,25 @@ public class ProfilesViewModel : MyReactiveObject
     [Reactive]
     public string SubUsageText { get; set; }
 
+    /// <summary>
+    ///     当订阅用量仍在请求、或远端未提供总流量时保持进度条在“未知/占位”马灯状态，避免显示 0% 等误导性的数值。
+    ///     该值直接绑定到视图层进度条的 <c>IsIndeterminate</c> 属性。
+    /// </summary>
+    [Reactive]
+    public bool SubUsageIndeterminate { get; set; }
+
     [Reactive]
     public int SubExpirePercent { get; set; }
 
     [Reactive]
     public string SubExpireText { get; set; }
+
+    /// <summary>
+    ///     在未能计算到期日或仍在加载时，让到期进度条保持“不确定”马灯动画，提示用户等待最新数据。
+    ///     该值直接绑定到视图层进度条的 <c>IsIndeterminate</c> 属性。
+    /// </summary>
+    [Reactive]
+    public bool SubExpireIndeterminate { get; set; }
 
     [Reactive]
     public SubItem SelectedMoveToGroup { get; set; }
@@ -306,10 +320,12 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedMoveToGroup = new();
 
         BlSubInfoVisible = true;
-        SubUsagePercent = -1;
-        SubExpirePercent = -1;
+        SubUsagePercent = 0;
+        SubExpirePercent = 0;
         SubUsageText = string.Empty;
         SubExpireText = string.Empty;
+        SubUsageIndeterminate = true;
+        SubExpireIndeterminate = true;
 
         await RefreshSubscriptions();
         //await RefreshServers();
@@ -383,6 +399,13 @@ public class ProfilesViewModel : MyReactiveObject
     {
         if (!c)
         {
+            SubUsageIndeterminate = true;
+            SubExpireIndeterminate = true;
+            SubUsagePercent = 0;
+            SubExpirePercent = 0;
+            SubUsageText = "—";
+            SubExpireText = "—";
+            BlSubInfoVisible = true;
             return;
         }
         _config.SubIndexId = SelectedSub?.Id;
@@ -407,6 +430,9 @@ public class ProfilesViewModel : MyReactiveObject
                 SubExpirePercent = 0;
                 SubUsageText = "—";
                 SubExpireText = "—";
+                SubUsageIndeterminate = true;
+                SubExpireIndeterminate = true;
+                BlSubInfoVisible = true;
                 return;
             }
 
@@ -421,11 +447,14 @@ public class ProfilesViewModel : MyReactiveObject
                 SubExpirePercent = 0;
                 SubUsageText = "—";
                 SubExpireText = "—";
+                SubUsageIndeterminate = true;
+                SubExpireIndeterminate = true;
                 // 尝试即时抓取一次响应头，避免必须“更新订阅”才显示
                 try { await SubscriptionInfoManager.Instance.FetchHeaderForSub(_config, SelectedSub); } catch { }
                 info = SubscriptionInfoManager.Instance.Get(subId);
                 if (info == null)
                 {
+                    BlSubInfoVisible = true;
                     return;
                 }
             }
@@ -435,11 +464,13 @@ public class ProfilesViewModel : MyReactiveObject
             {
                 SubUsagePercent = info.UsagePercent;
                 SubUsageText = string.Format("{0} / {1} ({2}%)", Utils.HumanFy(info.UsedBytes), Utils.HumanFy(info.Total), SubUsagePercent);
+                SubUsageIndeterminate = false;
             }
             else
             {
-                SubUsagePercent = -1;
+                SubUsagePercent = 0;
                 SubUsageText = string.Format("{0}", Utils.HumanFy(info.UsedBytes));
+                SubUsageIndeterminate = true;
             }
 
             // Expire
@@ -456,16 +487,19 @@ public class ProfilesViewModel : MyReactiveObject
                     int baseDays = daysLeft <= 31 ? 31 : (daysLeft <= 92 ? 92 : 365);
                     var percentRemain = (int)Math.Round(Math.Min(daysLeft, baseDays) * 100.0 / baseDays);
                     SubExpirePercent = Math.Clamp(percentRemain, 0, 100);
+                    SubExpireIndeterminate = false;
                 }
                 else
                 {
-                    SubExpirePercent = -1;
+                    SubExpirePercent = 0;
+                    SubExpireIndeterminate = true;
                 }
             }
             else
             {
                 SubExpireText = string.Empty;
-                SubExpirePercent = -1;
+                SubExpirePercent = 0;
+                SubExpireIndeterminate = true;
             }
 
             BlSubInfoVisible = true;
@@ -474,6 +508,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             // 出错也别隐藏
             BlSubInfoVisible = true;
+            SubUsageIndeterminate = true;
+            SubExpireIndeterminate = true;
+            SubUsagePercent = 0;
+            SubExpirePercent = 0;
         }
         await Task.CompletedTask;
     }
