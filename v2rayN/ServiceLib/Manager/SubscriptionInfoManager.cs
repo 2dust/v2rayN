@@ -146,6 +146,10 @@ public sealed class SubscriptionInfoManager
     {
         try
         {
+            if (config == null)
+            {
+                return;
+            }
             var subs = await AppManager.Instance.SubItems();
             if (subs is not { Count: > 0 }) return;
             foreach (var s in subs)
@@ -160,6 +164,10 @@ public sealed class SubscriptionInfoManager
     {
         try
         {
+            if (config == null || s == null)
+            {
+                return;
+            }
             var originalUrl = Utils.GetPunycode(s.Url.TrimEx());
             if (originalUrl.IsNullOrEmpty()) return;
 
