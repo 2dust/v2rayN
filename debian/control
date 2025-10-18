@@ -1,0 +1,15 @@
+Source: v2rayn
+Section: net
+Priority: optional
+Maintainer: FlowerRealm <flower_realm@outlook.com>
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13)
+
+Package: v2rayn
+Architecture: amd64 arm64
+Depends: ${misc:Depends}, ${shlibs:Depends}, desktop-file-utils, xdg-utils
+Description: v2rayN (Avalonia) — Linux 桌面客户端
+ v2rayN 是一个支持多核心的跨平台 GUI 客户端（Avalonia），
+ 支持 Xray-core、sing-box 等核心。该包以预编译二进制重打包
+ 的方式发布，便于在 Launchpad PPA 无网络环境构建。

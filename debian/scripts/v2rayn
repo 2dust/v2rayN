@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec /usr/lib/v2rayn/v2rayN "$@"
+

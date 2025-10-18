@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=v2rayN
+Comment=A GUI client for Xray-core/sing-box (Avalonia)
+Exec=v2rayn
+Icon=v2rayN
+Terminal=false
+Type=Application
+Categories=Network;Application;
+

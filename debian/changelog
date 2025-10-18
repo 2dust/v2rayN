@@ -1,0 +1,5 @@
+v2rayn (7.15.3-0ppa1) noble; urgency=medium
+
+  * Initial PPA packaging (binary repackaging, no network at build time).
+
+ -- FlowerRealm <flower_realm@outlook.com>  Fri, 18 Oct 2024 20:30:00 +0000

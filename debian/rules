@@ -1,0 +1,50 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# 推断目标 RID（按构建机架构）
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+ifeq ($(DEB_HOST_ARCH),amd64)
+  RID := linux-x64
+else ifeq ($(DEB_HOST_ARCH),arm64)
+  RID := linux-arm64
+else
+  $(error Unsupported architecture $(DEB_HOST_ARCH))
+endif
+
+# 预编译产物期望位置（随源包一起上传）
+PREBUILT_DIR := packaging/prebuilt/$(RID)
+OUT_DIR := build/out
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	@echo "[info] 使用预编译产物重打包: $(PREBUILT_DIR)"
+	test -d "$(PREBUILT_DIR)" || { \
+	  echo "[error] 未找到预编译目录 $(PREBUILT_DIR)"; \
+	  echo "请在打包前将 dotnet publish 的输出放入该目录 (参考 README)"; \
+	  exit 1; \
+	}
+	rm -rf "$(OUT_DIR)" && mkdir -p "$(OUT_DIR)"
+	cp -a "$(PREBUILT_DIR)/"* "$(OUT_DIR)/"
+
+override_dh_auto_install:
+	# 安装主体到 /usr/lib/v2rayn
+	mkdir -p debian/v2rayn/usr/lib/v2rayn
+	cp -a "$(OUT_DIR)/"* debian/v2rayn/usr/lib/v2rayn/
+
+	# 包装启动器到 /usr/bin
+	install -Dm0755 debian/scripts/v2rayn debian/v2rayn/usr/bin/v2rayn
+
+	# 安装 desktop 条目与图标
+	install -Dm0644 debian/v2rayn.desktop debian/v2rayn/usr/share/applications/v2rayN.desktop
+	# 优先使用构建输出中的图标
+	if [ -f "$(OUT_DIR)/v2rayN.png" ]; then \
+	  install -Dm0644 "$(OUT_DIR)/v2rayN.png" debian/v2rayn/usr/share/icons/hicolor/256x256/apps/v2rayN.png; \
+	fi
+
+override_dh_auto_clean:
+	rm -rf "$(OUT_DIR)"
+

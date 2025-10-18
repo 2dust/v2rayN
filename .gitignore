@@ -399,3 +399,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Debian packaging build outputs
+debian/files
