@@ -1,11 +1,3 @@
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Text;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject

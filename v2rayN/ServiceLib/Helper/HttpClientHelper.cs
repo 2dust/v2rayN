@@ -1,8 +1,5 @@
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
-using System.Text;
 
 namespace ServiceLib.Helper;
 

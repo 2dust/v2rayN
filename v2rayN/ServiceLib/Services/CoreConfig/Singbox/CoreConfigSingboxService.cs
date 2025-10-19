@@ -1,7 +1,3 @@
-using System.Net;
-using System.Net.NetworkInformation;
-using ServiceLib.Common;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService(Config config)

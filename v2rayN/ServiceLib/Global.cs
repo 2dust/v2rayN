@@ -316,7 +316,7 @@ public class Global
     ];
 
     public static readonly HashSet<EConfigType> SingboxOnlyConfigType = SingboxSupportConfigType.Except(XraySupportConfigType).ToHashSet();
-    
+
     public static readonly List<string> DomainStrategies =
     [
         AsIs,

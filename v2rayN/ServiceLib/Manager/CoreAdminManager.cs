@@ -1,4 +1,3 @@
-using System.Text;
 using CliWrap;
 using CliWrap.Buffered;
 

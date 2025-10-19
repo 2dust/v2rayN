@@ -1,8 +1,3 @@
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
-
 namespace ServiceLib.Services;
 
 public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateFunc)

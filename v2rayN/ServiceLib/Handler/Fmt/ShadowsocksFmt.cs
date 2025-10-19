@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace ServiceLib.Handler.Fmt;
 
 public class ShadowsocksFmt : BaseFmt
