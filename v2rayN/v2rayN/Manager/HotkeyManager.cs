@@ -1,10 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interop;
-
 namespace v2rayN.Manager;
 
 public sealed class HotkeyManager

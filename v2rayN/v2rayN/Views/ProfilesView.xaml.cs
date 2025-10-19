@@ -1,13 +1,7 @@
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
-using ReactiveUI;
 using v2rayN.Base;
 using Point = System.Windows.Point;
 

@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace v2rayN.Manager;

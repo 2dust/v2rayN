@@ -1,9 +1,5 @@
-using System.Reactive.Disposables;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using ReactiveUI;
 using v2rayN.Base;
 
 namespace v2rayN.Views;

@@ -1,6 +1,3 @@
-using System.Reactive.Disposables;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 public partial class CheckUpdateView

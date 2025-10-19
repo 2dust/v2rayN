@@ -1,9 +1,4 @@
-using System.Globalization;
-using System.IO;
-using System.Reactive.Disposables;
-using System.Windows;
 using System.Windows.Media;
-using ReactiveUI;
 
 namespace v2rayN.Views;
 
