@@ -1,4 +1,3 @@
-using System.Windows.Data;
 using System.Windows.Media;
 
 namespace v2rayN.Converters;

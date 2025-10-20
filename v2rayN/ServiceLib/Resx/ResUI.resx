@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>System proxy settings</value>
   </data>
-  <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>Enable Security Protocol TLS v1.3 (subscription/update)</value>
-  </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>Tray right-click menu Configurations display limit</value>
   </data>

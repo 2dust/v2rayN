@@ -1,5 +1,3 @@
-using Avalonia.Controls;
-using Avalonia.Threading;
 using CliWrap.Buffered;
 using DialogHostAvalonia;
 

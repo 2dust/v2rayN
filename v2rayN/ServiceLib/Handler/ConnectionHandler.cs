@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace ServiceLib.Handler;
 
 public static class ConnectionHandler

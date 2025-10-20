@@ -1,10 +1,3 @@
-using System.Reactive;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class RoutingRuleSettingViewModel : MyReactiveObject

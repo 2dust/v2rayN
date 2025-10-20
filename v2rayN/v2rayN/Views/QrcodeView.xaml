@@ -15,40 +15,41 @@
         <sys:Double x:Key="QrcodeWidth">400</sys:Double>
     </UserControl.Resources>
 
-    <Grid Margin="32">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="80" />
-        </Grid.RowDefinitions>
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Bottom">
+            <Button
+                Width="100"
+                HorizontalAlignment="Right"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="{x:Static resx:ResUI.menuClose}"
+                IsCancel="True"
+                IsDefault="True"
+                Style="{StaticResource DefButton}" />
+        </StackPanel>
 
-        <Image
-            x:Name="imgQrcode"
-            Grid.Row="0"
-            Width="{StaticResource QrcodeWidth}"
-            Height="{StaticResource QrcodeWidth}"
-            Stretch="UniformToFill" />
+        <Grid Margin="{StaticResource Margin8}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <TextBox
-            x:Name="txtContent"
-            Grid.Row="1"
-            Width="{StaticResource QrcodeWidth}"
-            Margin="0,8"
-            VerticalAlignment="Center"
-            IsReadOnly="True"
-            MaxLines="3"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Auto" />
+            <Image
+                x:Name="imgQrcode"
+                Grid.Row="0"
+                Width="{StaticResource QrcodeWidth}"
+                Height="{StaticResource QrcodeWidth}"
+                Stretch="UniformToFill" />
 
-        <Button
-            Grid.Row="2"
-            Width="100"
-            Margin="{StaticResource Margin8}"
-            HorizontalAlignment="Right"
-            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-            Content="{x:Static resx:ResUI.menuClose}"
-            IsCancel="True"
-            IsDefault="True"
-            Style="{StaticResource DefButton}" />
-    </Grid>
+            <TextBox
+                x:Name="txtContent"
+                Grid.Row="1"
+                Width="{StaticResource QrcodeWidth}"
+                Margin="0,8"
+                VerticalAlignment="Center"
+                IsReadOnly="True"
+                MaxLines="3"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+        </Grid>
+    </DockPanel>
 </UserControl>

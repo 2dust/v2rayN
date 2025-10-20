@@ -1,6 +1,4 @@
-using System.Globalization;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 
 namespace v2rayN.Desktop.Converters;
 

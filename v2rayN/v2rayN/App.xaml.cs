@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Threading;
-
 namespace v2rayN;
 
 /// <summary>

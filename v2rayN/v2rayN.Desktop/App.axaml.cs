@@ -1,6 +1,3 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop;

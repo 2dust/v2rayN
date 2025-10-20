@@ -13,7 +13,7 @@
         <sys:Double x:Key="QrcodeWidth">400</sys:Double>
     </UserControl.Resources>
 
-    <Grid Margin="32" RowDefinitions="Auto,Auto">
+    <Grid Margin="{StaticResource Margin8}" RowDefinitions="Auto,Auto">
         <Image
             Name="imgQrcode"
             Width="{StaticResource QrcodeWidth}"

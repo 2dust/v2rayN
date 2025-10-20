@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Windows.Data;
-
 namespace v2rayN.Converters;
 
 [ValueConversion(typeof(bool), typeof(bool))]

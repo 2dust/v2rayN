@@ -1,7 +1,3 @@
-using System.Reactive.Disposables;
-using System.Windows.Input;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 /// <summary>

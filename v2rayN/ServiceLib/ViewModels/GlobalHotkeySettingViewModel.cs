@@ -1,6 +1,3 @@
-using System.Reactive;
-using ReactiveUI;
-
 namespace ServiceLib.ViewModels;
 
 public class GlobalHotkeySettingViewModel : MyReactiveObject

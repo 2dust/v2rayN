@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>Rendszerproxy beállítások</value>
   </data>
-  <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>Biztonsági protokoll TLS v1.3 engedélyezése (előfizetés/frissítés)</value>
-  </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>Tálca jobb egérgombos menü konfigurációk megjelenítési limitje</value>
   </data>

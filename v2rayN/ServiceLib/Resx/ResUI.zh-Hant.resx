@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>系統代理設定</value>
   </data>
-  <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>啟用安全協定 TLS v1.3 (訂閱/檢查更新)</value>
-  </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>工具列右鍵選單設定檔展示數量限制</value>
   </data>

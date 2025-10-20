@@ -26,15 +26,29 @@ public class TaskManager
             await Task.Delay(1000 * 60);
 
             //Execute once 1 minute
-            await UpdateTaskRunSubscription();
+            try
+            {
+                await UpdateTaskRunSubscription();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("ScheduledTasks - UpdateTaskRunSubscription", ex);
+            }
 
             //Execute once 20 minute
             if (numOfExecuted % 20 == 0)
             {
                 //Logging.SaveLog("Execute save config");
 
-                await ConfigHandler.SaveConfig(_config);
-                await ProfileExManager.Instance.SaveTo();
+                try
+                {
+                    await ConfigHandler.SaveConfig(_config);
+                    await ProfileExManager.Instance.SaveTo();
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog("ScheduledTasks - SaveConfig", ex);
+                }
             }
 
             //Execute once 1 hour
@@ -46,8 +60,14 @@ public class TaskManager
                 FileManager.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
                 FileManager.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
 
-                //Check once 1 hour
-                await UpdateTaskRunGeo(numOfExecuted / 60);
+                try
+                {
+                    await UpdateTaskRunGeo(numOfExecuted / 60);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog("ScheduledTasks - UpdateTaskRunGeo", ex);
+                }
             }
 
             numOfExecuted++;

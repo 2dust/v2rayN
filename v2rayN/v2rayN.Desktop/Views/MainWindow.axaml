@@ -25,7 +25,7 @@
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
                 <Menu Margin="0,1">
-                    <MenuItem Padding="8,0">
+                    <MenuItem Padding="{StaticResource MarginLr8}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
@@ -51,7 +51,7 @@
                         <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
                     </MenuItem>
 
-                    <MenuItem Padding="8,0">
+                    <MenuItem Padding="{StaticResource MarginLr8}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
@@ -65,7 +65,7 @@
                         <MenuItem x:Name="menuSubGroupUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
                     </MenuItem>
 
-                    <MenuItem Padding="8,0">
+                    <MenuItem Padding="{StaticResource MarginLr8}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
@@ -90,39 +90,15 @@
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
                     </MenuItem>
 
-                    <MenuItem x:Name="menuReload" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
+                    <MenuItem x:Name="menuReload" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuReload}" />
 
                     <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
 
-                    <MenuItem x:Name="menuHelp" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuHelp}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
+                    <MenuItem x:Name="menuHelp" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuHelp}" />
 
-                    <MenuItem x:Name="menuPromotion" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuPromotion}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
+                    <MenuItem x:Name="menuPromotion" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuPromotion}" />
 
-                    <MenuItem x:Name="menuClose" Padding="8,0">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuExit}" />
-                            </StackPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
+                    <MenuItem x:Name="menuClose" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuExit}" />
                 </Menu>
             </DockPanel>
 

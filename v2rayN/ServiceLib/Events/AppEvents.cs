@@ -1,5 +1,3 @@
-using System.Reactive;
-
 namespace ServiceLib.Events;
 
 public static class AppEvents

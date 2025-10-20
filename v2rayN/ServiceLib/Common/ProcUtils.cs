@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace ServiceLib.Common;
 
 public static class ProcUtils

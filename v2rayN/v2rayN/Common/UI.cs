@@ -1,4 +1,3 @@
-using System.Windows;
 using Microsoft.Win32;
 
 namespace v2rayN;

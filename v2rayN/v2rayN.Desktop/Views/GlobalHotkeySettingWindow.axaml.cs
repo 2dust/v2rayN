@@ -1,9 +1,3 @@
-using System.Reactive.Disposables;
-using System.Text;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Manager;
 

@@ -1,8 +1,3 @@
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Windows;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 public partial class DNSSettingWindow

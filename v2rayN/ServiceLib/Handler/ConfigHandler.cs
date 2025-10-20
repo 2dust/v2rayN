@@ -1,5 +1,4 @@
 using System.Data;
-using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
@@ -1484,7 +1483,7 @@ public static class ConfigHandler
         if (profileItem is null)
         {
             profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        }  
+        }
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
             return -1;
