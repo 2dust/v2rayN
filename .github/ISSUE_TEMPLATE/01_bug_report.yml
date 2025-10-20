@@ -53,7 +53,7 @@ body:
     attributes:
       label: "软件日志"
       description: "位置在软件当前目录下的guiLogs"
-      placeholder: "在日志开始和结束位置粘贴冒号后的内容：```"
+      placeholder: "在日志开始和结束位置粘贴冒号后的内容到这："
     validations:
       required: true
 
