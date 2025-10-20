@@ -62,7 +62,7 @@ body:
     attributes:
       label: "内核日志"
       description: "位置在软件主界面的信息框内"
-      placeholder: "在信息框内鼠标右键复制全部信息粘贴在这：```"
+      placeholder: "在信息框内鼠标右键复制全部信息粘贴在这："
     validations:
       required: true
 
