@@ -3967,15 +3967,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable Security Protocol TLS v1.3 (subscription/update) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTLS13 {
-            get {
-                return ResourceManager.GetString("TbSettingsTLS13", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Tray right-click menu Configurations display limit 的本地化字符串。
         /// </summary>
         public static string TbSettingsTrayMenuServersLimit {

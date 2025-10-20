@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>تنظیمات پراکسی سیستم</value>
   </data>
-  <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>فعال کردن پروتکل امنیتی TLS نسخه 1.3 (اشتراک/به‌روزرسانی)</value>
-  </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>محدودیت نمایش سرورهای منوی سینی کلیک راست</value>
   </data>

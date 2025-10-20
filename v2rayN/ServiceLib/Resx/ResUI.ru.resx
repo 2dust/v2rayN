@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>Настройки системного прокси</value>
   </data>
-  <data name="TbSettingsTLS13" xml:space="preserve">
-    <value>Включить протокол безопасности TLS v1.3 (обновление подписки)</value>
-  </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
     <value>Лимит серверов в меню трея</value>
   </data>

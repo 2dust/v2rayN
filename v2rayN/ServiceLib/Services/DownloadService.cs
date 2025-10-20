@@ -17,8 +17,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
-
             var progress = new Progress<string>();
             progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
 
@@ -42,7 +40,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
             var progress = new Progress<double>();
@@ -69,7 +66,6 @@ public class DownloadService
 
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
-        SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
         var webRequestHandler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
@@ -139,7 +135,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             var webProxy = await GetWebProxy(blProxy);
             var client = new HttpClient(new SocketsHttpHandler()
             {
@@ -184,8 +179,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
-
             var webProxy = await GetWebProxy(blProxy);
 
             if (userAgent.IsNullOrEmpty())
@@ -235,18 +228,5 @@ public class DownloadService
         {
             return false;
         }
-    }
-
-    private static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
-    {
-        if (enableSecurityProtocolTls13)
-        {
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
-        }
-        else
-        {
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
-        }
-        ServicePointManager.DefaultConnectionLimit = 256;
     }
 }
