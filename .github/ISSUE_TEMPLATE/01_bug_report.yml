@@ -64,10 +64,10 @@ body:
         - label: 是
           required: true
   - type: checkboxes
-    id: "issues"
+    id: "system-version"
     attributes:
       label: "我确认系统版本是受支持的"
-      description: "否则请查询后提出"
+      description: "否则请切换后尝试"
       options:
         - label: 是
           required: true
