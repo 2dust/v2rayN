@@ -63,3 +63,11 @@ body:
       options:
         - label: 是
           required: true
+    - type: checkboxes
+    id: "issues"
+    attributes:
+      label: "我确认系统版本是受支持的"
+      description: "否则请查询后提出"
+      options:
+        - label: 是
+          required: true
