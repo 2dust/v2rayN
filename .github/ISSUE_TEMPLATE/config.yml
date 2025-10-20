@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 💬 讨论区 / Discussions
+    url: https://github.com/2dust/v2rayN/discussions
+    about: 一般问题或使用建议请前往 Discussions。
+  - name: 📖 使用说明 / Wiki
+    url: https://github.com/2dust/v2rayN/wiki
+    about: 查看常见问题和使用文档。
