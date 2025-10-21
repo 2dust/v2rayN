@@ -427,6 +427,7 @@ public class Global
             "zh-Hant",
             "en",
             "fa-Ir",
+            "fr",
             "ru",
             "hu"
     ];
