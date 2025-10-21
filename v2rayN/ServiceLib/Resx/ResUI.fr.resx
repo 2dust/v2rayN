@@ -400,7 +400,7 @@
     <value>Filtre, appuyez sur Entrée pour exécuter</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
-    <value>Rechercher des mises à jour</value>
+    <value>Rechercher mises à jour</value>
   </data>
   <data name="menuClose" xml:space="preserve">
     <value>Fermer</value>
