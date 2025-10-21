@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:view="clr-namespace:v2rayN.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="v2rayN"
+    Title="v2rayN FFSCloud定制版V2"
     Width="900"
     Height="700"
     MinWidth="900"
