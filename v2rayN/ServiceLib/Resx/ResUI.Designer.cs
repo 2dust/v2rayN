@@ -2518,6 +2518,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Bootstrap DNS 的本地化字符串。
+        /// </summary>
+        public static string TbBootstrapDNS {
+            get {
+                return ResourceManager.GetString("TbBootstrapDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Resolve DNS server domains, requires IP 的本地化字符串。
+        /// </summary>
+        public static string TbBootstrapDNSTips {
+            get {
+                return ResourceManager.GetString("TbBootstrapDNSTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Browse 的本地化字符串。
         /// </summary>
         public static string TbBrowse {

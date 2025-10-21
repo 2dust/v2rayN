@@ -112,10 +112,8 @@ public static class ConfigHandler
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
-        if (config.SimpleDNSItem.GlobalFakeIp is null)
-        {
-            config.SimpleDNSItem.GlobalFakeIp = true;
-        }
+        config.SimpleDNSItem.GlobalFakeIp ??= true;
+        config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -2273,6 +2271,7 @@ public static class ConfigHandler
             BlockBindingQuery = true,
             DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
             RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
+            BootstrapDNS = Global.DomainPureIPDNSAddress.FirstOrDefault(),
         };
     }
 

@@ -1587,4 +1587,10 @@
   <data name="TbRuleTypeTips" xml:space="preserve">
     <value>可对 Routing 和 DNS 单独设定规则，ALL 则都生效</value>
   </data>
+  <data name="TbBootstrapDNS" xml:space="preserve">
+    <value>Bootstrap DNS</value>
+  </data>
+  <data name="TbBootstrapDNSTips" xml:space="preserve">
+    <value>解析 DNS 服务器域名，需指定为 IP</value>
+  </data>
 </root>

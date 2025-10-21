@@ -83,58 +83,79 @@
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbRemoteDNSTips}"
                             TextWrapping="Wrap" />
-
+                        
                         <TextBlock
                             Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbBootstrapDNS}" />
+                        <ComboBox
+                            x:Name="cmbBootstrapDNS"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbBootstrapDNSTips}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="4"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbXrayFreedomStrategy}" />
                         <ComboBox
                             x:Name="cmbRayFreedomDNSStrategy"
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             PlaceholderText="Default" />
 
                         <TextBlock
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSBDirectResolveStrategy}" />
                         <ComboBox
                             x:Name="cmbSBDirectDNSStrategy"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             PlaceholderText="Default" />
 
                         <TextBlock
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
                         <ComboBox
                             x:Name="cmbSBRemoteDNSStrategy"
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             PlaceholderText="Default" />
 
                         <TextBlock
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbAddCommonDNSHosts}" />
                         <ToggleSwitch
                             x:Name="togAddCommonHosts"
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
