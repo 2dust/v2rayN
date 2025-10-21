@@ -421,7 +421,7 @@
     <value>Promotion</value>
   </data>
   <data name="menuReload" xml:space="preserve">
-    <value>Redémarrer le service</value>
+    <value>Redémarrer</value>
   </data>
   <data name="menuRoutingSetting" xml:space="preserve">
     <value>Paramètres de routage</value>
