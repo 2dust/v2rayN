@@ -4,8 +4,61 @@
     Microsoft ResX Schema 
     
     Version 2.0
-    (Structure identique à la version d'origine)
-  -->
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -65,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Restartv2rayN" xml:space="preserve">
-    <value>Démarrage de v2rayN, veuillez patienter...</value>
+    <value>Redémarrage de v2rayN, veuillez patienter...</value>
   </data>
   <data name="Guidelines" xml:space="preserve">
     <value>Veuillez l’exécuter depuis l’application principale.</value>
   </data>
   <data name="UpgradeFileNotFound" xml:space="preserve">
-    <value>Échec de la mise à niveau : fichier introuvable.</value>
+    <value>Échec de la mise à jour, fichier introuvable.</value>
   </data>
   <data name="InProgress" xml:space="preserve">
     <value>En cours, veuillez patienter...</value>
@@ -80,7 +133,7 @@
     <value>Tentative d’arrêt du processus v2rayN...</value>
   </data>
   <data name="FailedTerminateProcess" xml:space="preserve">
-    <value>Impossible d’arrêter v2rayN. Fermez-le manuellement, sinon la mise à niveau peut échouer.</value>
+    <value>Veuillez fermer manuellement v2rayN en cours d’exécution, sinon la mise à jour peut échouer.</value>
   </data>
   <data name="StartUnzipping" xml:space="preserve">
     <value>Début de l’extraction du paquet de mise à jour...</value>
@@ -92,10 +145,10 @@
     <value>Échec de l’extraction du paquet de mise à jour.</value>
   </data>
   <data name="FailedUpgrade" xml:space="preserve">
-    <value>Échec de la mise à niveau.</value>
+    <value>Échec de la mise à jour.</value>
   </data>
   <data name="SuccessUpgrade" xml:space="preserve">
-    <value>Mise à niveau réussie.</value>
+    <value>Mise à jour réussie.</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
