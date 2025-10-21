@@ -1090,7 +1090,7 @@
     <value>(Domaine ou IP ou nom de processus) avec Port et Protocole et InboundTag =&gt; OutboundTag</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Défilement automatique jusqu’à la fin</value>
+    <value>Défilement automatique vers la fin</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Adresse de test de connexion réelle</value>
