@@ -355,6 +355,110 @@ public class Utils
         return userHostsMap;
     }
 
+    /// <summary>
+    /// Parse a possibly non-standard URL into scheme, domain, port, and path.
+    /// If parsing fails, the entire input is returned as domain, and others are empty or zero.
+    /// </summary>
+    /// <param name="url">Input URL or string</param>
+    /// <returns>(domain, scheme, port, path)</returns>
+    public static (string domain, string scheme, int port, string path) ParseUrl(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return ("", "", 0, "");
+        }
+
+        // 1. First, try to parse using the standard Uri class.
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && !string.IsNullOrEmpty(uri.Host))
+        {
+            var scheme = uri.Scheme;
+            var domain = uri.Host;
+            var port = uri.IsDefaultPort ? 0 : uri.Port;
+            var path = uri.PathAndQuery;
+            return (domain, scheme, port, path);
+        }
+
+        // 2. Try to handle more general cases with a regular expression, including non-standard schemes.
+        // This regex captures the scheme (optional), authority (host+port), and path (optional).
+        var match = Regex.Match(url, @"^(?:([a-zA-Z][a-zA-Z0-9+.-]*):/{2,})?([^/?#]+)([^?#]*)?.*$");
+
+        if (match.Success)
+        {
+            var scheme = match.Groups[1].Value;
+            var authority = match.Groups[2].Value;
+            var path = match.Groups[3].Value;
+
+            // Remove userinfo from the authority part.
+            var atIndex = authority.LastIndexOf('@');
+            if (atIndex > 0)
+            {
+                authority = authority.Substring(atIndex + 1);
+            }
+
+            var (domain, port) = ParseAuthority(authority);
+
+            // If the parsed domain is empty, it means the authority part is malformed, so trigger the fallback.
+            if (!string.IsNullOrEmpty(domain))
+            {
+                return (domain, scheme, port, path);
+            }
+        }
+
+        // 3. If all of the above fails, execute the final fallback strategy.
+        return (url, "", 0, "");
+    }
+
+    /// <summary>
+    /// Helper function to parse domain and port from the authority part, with correct handling for IPv6.
+    /// </summary>
+    private static (string domain, int port) ParseAuthority(string authority)
+    {
+        if (string.IsNullOrEmpty(authority))
+        {
+            return ("", 0);
+        }
+
+        var port = 0;
+        var domain = authority;
+
+        // Handle IPv6 addresses, e.g., "[2001:db8::1]:443"
+        if (authority.StartsWith("[") && authority.Contains("]"))
+        {
+            int closingBracketIndex = authority.LastIndexOf(']');
+            if (closingBracketIndex < authority.Length - 1 && authority[closingBracketIndex + 1] == ':')
+            {
+                // Port exists
+                var portStr = authority.Substring(closingBracketIndex + 2);
+                if (int.TryParse(portStr, out var portNum))
+                {
+                    port = portNum;
+                }
+                domain = authority.Substring(0, closingBracketIndex + 1);
+            }
+            else
+            {
+                // No port
+                domain = authority;
+            }
+        }
+        else // Handle IPv4 or domain names
+        {
+            var lastColonIndex = authority.LastIndexOf(':');
+            // Ensure there are digits after the colon and that this colon is not part of an IPv6 address.
+            if (lastColonIndex > 0 && lastColonIndex < authority.Length - 1 && authority.Substring(lastColonIndex + 1).All(char.IsDigit))
+            {
+                var portStr = authority.Substring(lastColonIndex + 1);
+                if (int.TryParse(portStr, out var portNum))
+                {
+                    port = portNum;
+                    domain = authority.Substring(0, lastColonIndex);
+                }
+            }
+        }
+
+        return (domain, port);
+    }
+
     #endregion 转换函数
 
     #region 数据检查

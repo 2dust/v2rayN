@@ -103,6 +103,35 @@ public partial class CoreConfigV2rayService
         var expectedIPs = new List<string>();
         var regionNames = new HashSet<string>();
 
+        var bootstrapDNSAddress = ParseDnsAddresses(simpleDNSItem?.BootstrapDNS, Global.DomainPureIPDNSAddress.FirstOrDefault());
+        var dnsServerDomains = new List<string>();
+
+        foreach (var dns in directDNSAddress)
+        {
+            var (domain, _, _, _) = Utils.ParseUrl(dns);
+            if (domain == "localhost")
+            {
+                continue;
+            }
+            if (Utils.IsDomain(domain))
+            {
+                dnsServerDomains.Add($"full:{domain}");
+            }
+        }
+        foreach (var dns in remoteDNSAddress)
+        {
+            var (domain, _, _, _) = Utils.ParseUrl(dns);
+            if (domain == "localhost")
+            {
+                continue;
+            }
+            if (Utils.IsDomain(domain))
+            {
+                dnsServerDomains.Add($"full:{domain}");
+            }
+        }
+        dnsServerDomains = dnsServerDomains.Distinct().ToList();
+
         if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
             expectedIPs = simpleDNSItem.DirectExpectedIPs
@@ -217,6 +246,10 @@ public partial class CoreConfigV2rayService
         AddDnsServers(remoteDNSAddress, proxyGeositeList);
         AddDnsServers(directDNSAddress, directGeositeList);
         AddDnsServers(directDNSAddress, expectedDomainList, expectedIPs);
+        if (dnsServerDomains.Count > 0)
+        {
+            AddDnsServers(bootstrapDNSAddress, dnsServerDomains);
+        }
 
         var useDirectDns = rules?.LastOrDefault() is { } lastRule
             && lastRule.OutboundTag == Global.DirectTag

@@ -138,12 +138,7 @@ public partial class CoreConfigSingboxService
 
     private async Task<Server4Sbox> GenDnsDomains(SingboxConfig singboxConfig, SimpleDNSItem? simpleDNSItem)
     {
-        var finalDnsAddress = "local";
-        if (_config.TunModeItem.EnableTun)
-        {
-            finalDnsAddress = "dhcp://auto";
-        }
-        var finalDns = ParseDnsAddress(finalDnsAddress);
+        var finalDns = ParseDnsAddress(simpleDNSItem.BootstrapDNS);
         finalDns.tag = Global.SingboxLocalDNSTag;
         singboxConfig.dns ??= new Dns4Sbox();
         singboxConfig.dns.servers ??= new List<Server4Sbox>();
@@ -459,15 +454,19 @@ public partial class CoreConfigSingboxService
             return server;
         }
 
-        if (addressFirst.StartsWith("dhcp://", StringComparison.OrdinalIgnoreCase))
+        var (domain, scheme, port, path) = Utils.ParseUrl(addressFirst);
+
+        if (scheme.Equals("dhcp", StringComparison.OrdinalIgnoreCase))
         {
-            var interface_name = addressFirst.Substring(7);
             server.type = "dhcp";
-            server.Interface = interface_name == "auto" ? null : interface_name;
+            if ((!domain.IsNullOrEmpty()) && domain != "auto")
+            {
+                server.server = domain;
+            }
             return server;
         }
 
-        if (!addressFirst.Contains("://"))
+        if (scheme.IsNullOrEmpty())
         {
             // udp dns
             server.type = "udp";
@@ -475,63 +474,19 @@ public partial class CoreConfigSingboxService
             return server;
         }
 
-        try
+        //server.type = scheme.ToLower();
+        // remove "+local" suffix
+        // TODO: "+local" suffix decide server.detour = "direct" ?
+        server.type = scheme.Replace("+local", "", StringComparison.OrdinalIgnoreCase).ToLower();
+        server.server = domain;
+        if (port != 0)
         {
-            var protocolEndIndex = addressFirst.IndexOf("://", StringComparison.Ordinal);
-            server.type = addressFirst.Substring(0, protocolEndIndex).ToLower();
-
-            var uri = new Uri(addressFirst);
-            server.server = uri.Host;
-
-            if (!uri.IsDefaultPort)
-            {
-                server.server_port = uri.Port;
-            }
-
-            if ((server.type == "https" || server.type == "h3") && !string.IsNullOrEmpty(uri.AbsolutePath) && uri.AbsolutePath != "/")
-            {
-                server.path = uri.AbsolutePath;
-            }
+            server.server_port = port;
         }
-        catch (UriFormatException)
+        if ((server.type == "https" || server.type == "h3") && !string.IsNullOrEmpty(path) && path != "/")
         {
-            var protocolEndIndex = addressFirst.IndexOf("://", StringComparison.Ordinal);
-            if (protocolEndIndex > 0)
-            {
-                server.type = addressFirst.Substring(0, protocolEndIndex).ToLower();
-                var remaining = addressFirst.Substring(protocolEndIndex + 3);
-
-                var portIndex = remaining.IndexOf(':');
-                var pathIndex = remaining.IndexOf('/');
-
-                if (portIndex > 0)
-                {
-                    server.server = remaining.Substring(0, portIndex);
-                    var portPart = pathIndex > portIndex
-                        ? remaining.Substring(portIndex + 1, pathIndex - portIndex - 1)
-                        : remaining.Substring(portIndex + 1);
-
-                    if (int.TryParse(portPart, out var parsedPort))
-                    {
-                        server.server_port = parsedPort;
-                    }
-                }
-                else if (pathIndex > 0)
-                {
-                    server.server = remaining.Substring(0, pathIndex);
-                }
-                else
-                {
-                    server.server = remaining;
-                }
-
-                if (pathIndex > 0 && (server.type == "https" || server.type == "h3"))
-                {
-                    server.path = remaining.Substring(pathIndex);
-                }
-            }
+            server.path = path;
         }
-
         return server;
     }
 }

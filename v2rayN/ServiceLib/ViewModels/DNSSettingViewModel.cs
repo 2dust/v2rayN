@@ -8,6 +8,7 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public bool? BlockBindingQuery { get; set; }
     [Reactive] public string? DirectDNS { get; set; }
     [Reactive] public string? RemoteDNS { get; set; }
+    [Reactive] public string? BootstrapDNS { get; set; }
     [Reactive] public string? RayStrategy4Freedom { get; set; }
     [Reactive] public string? SingboxStrategy4Direct { get; set; }
     [Reactive] public string? SingboxStrategy4Proxy { get; set; }
@@ -68,6 +69,7 @@ public class DNSSettingViewModel : MyReactiveObject
         BlockBindingQuery = item.BlockBindingQuery;
         DirectDNS = item.DirectDNS;
         RemoteDNS = item.RemoteDNS;
+        BootstrapDNS = item.BootstrapDNS;
         RayStrategy4Freedom = item.RayStrategy4Freedom;
         SingboxStrategy4Direct = item.SingboxStrategy4Direct;
         SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
@@ -97,6 +99,7 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
         _config.SimpleDNSItem.DirectDNS = DirectDNS;
         _config.SimpleDNSItem.RemoteDNS = RemoteDNS;
+        _config.SimpleDNSItem.BootstrapDNS = BootstrapDNS;
         _config.SimpleDNSItem.RayStrategy4Freedom = RayStrategy4Freedom;
         _config.SimpleDNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
         _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;

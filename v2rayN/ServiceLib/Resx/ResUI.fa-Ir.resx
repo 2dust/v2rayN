@@ -1590,4 +1590,10 @@
   <data name="TbRuleTypeTips" xml:space="preserve">
     <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>
   </data>
+  <data name="TbBootstrapDNS" xml:space="preserve">
+    <value>Bootstrap DNS</value>
+  </data>
+  <data name="TbBootstrapDNSTips" xml:space="preserve">
+    <value>Resolve DNS server domains, requires IP</value>
+  </data>
 </root>

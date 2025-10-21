@@ -18,6 +18,7 @@ public partial class DNSSettingWindow
         cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
         cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
+        cmbBootstrapDNS.ItemsSource = Global.DomainPureIPDNSAddress;
         cmbDirectExpectedIPs.ItemsSource = Global.ExpectedIPs;
 
         cmbdomainStrategy4FreedomCompatible.ItemsSource = Global.DomainStrategy4Freedoms;
@@ -33,6 +34,7 @@ public partial class DNSSettingWindow
             this.Bind(ViewModel, vm => vm.BlockBindingQuery, v => v.togBlockBindingQuery.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DirectDNS, v => v.cmbDirectDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RemoteDNS, v => v.cmbRemoteDNS.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.BootstrapDNS, v => v.cmbBootstrapDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RayStrategy4Freedom, v => v.cmbRayFreedomDNSStrategy.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Direct, v => v.cmbSBDirectDNSStrategy.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Proxy, v => v.cmbSBRemoteDNSStrategy.Text).DisposeWith(disposables);
