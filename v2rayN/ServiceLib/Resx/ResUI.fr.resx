@@ -427,7 +427,7 @@
     <value>Paramètres de routage</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>Fichiers de configuration</value>
+    <value>Fichiers de config</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>Paramètres</value>
@@ -472,7 +472,7 @@
     <value>Langue (redémarrage requis)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Importer un lien de partage depuis le presse-papiers (Ctrl+V)</value>
+    <value>Importer des liens depuis le presse-papiers (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>Scanner le QR code à l’écran (Ctrl+S)</value>
