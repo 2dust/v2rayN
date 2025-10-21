@@ -3,6 +3,18 @@ description: 在提出问题前请先自行排除服务器端问题和升级到�
 title: "[Bug]: "
 labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 报告 Bug 前请务必确认以下事项：
+        > ** **
+        > **✓ 已自行排除服务器端问题。**
+        > **✓ 已升级到最新客户端版本。**
+        > **✓ 已通过搜索确认没有人提出过相同问题。**
+        > **✓ 已确认自己的电脑系统环境是受支持的。**
+
+        ---
+
   - type: input
     id: "os-version"
     attributes:
@@ -10,6 +22,7 @@ body:
       description: "操作系统和版本"
     validations:
       required: true
+
   - type: input
     id: "expectation"
     attributes:
@@ -17,6 +30,7 @@ body:
       description: "描述你认为应该发生什么"
     validations:
       required: true
+
   - type: textarea
     id: "describe-the-bug"
     attributes:
@@ -24,22 +38,34 @@ body:
       description: "描述实际发生了什么"
     validations:
       required: true
+
   - type: textarea
     id: "reproduction-method"
     attributes:
       label: "复现方法"
       description: "在BUG出现前执行了哪些操作"
-      placeholder: 标序号
+      placeholder: "标序号"
     validations:
       required: true
+
   - type: textarea
-    id: "log"
+    id: "gui-log"
     attributes:
-      label: "日志信息"
+      label: "软件日志"
       description: "位置在软件当前目录下的guiLogs"
-      placeholder: 在日志开始和结束位置粘贴冒号后的内容：```
+      placeholder: "在日志开始和结束位置粘贴冒号后的内容到这："
     validations:
       required: true
+
+  - type: textarea
+    id: "core-log"
+    attributes:
+      label: "内核日志"
+      description: "位置在软件主界面的信息框内"
+      placeholder: "在信息框内鼠标右键复制全部信息粘贴在这："
+    validations:
+      required: true
+
   - type: textarea
     id: "more"
     attributes:
@@ -47,6 +73,7 @@ body:
       description: "可选"
     validations:
       required: false
+
   - type: checkboxes
     id: "latest-version"
     attributes:
@@ -55,11 +82,21 @@ body:
       options:
         - label: 是
           required: true
+
   - type: checkboxes
     id: "issues"
     attributes:
       label: "我确认已查询历史issues"
       description: "否则请查询后提出"
+      options:
+        - label: 是
+          required: true
+
+  - type: checkboxes
+    id: "system-version"
+    attributes:
+      label: "我确认系统版本是受支持的"
+      description: "否则请切换后尝试"
       options:
         - label: 是
           required: true
