@@ -32,39 +32,30 @@
 
                 <Button
                     x:Name="btnEditSub"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
+                    Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource building_edit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource SemiIconEdit}" />
                     </Button.Content>
                 </Button>
                 <Button
                     x:Name="btnAddSub"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
+                    Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource building_add}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource SemiIconPlus}" />
                     </Button.Content>
                 </Button>
 
                 <Button
                     x:Name="btnAutofitColumnWidth"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
+                    Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource building_fit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource SemiIconExpand}" />
                     </Button.Content>
                 </Button>
 

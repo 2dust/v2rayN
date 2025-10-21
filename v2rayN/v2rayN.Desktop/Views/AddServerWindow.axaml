@@ -607,12 +607,14 @@
 
                         <Button
                             x:Name="btnExtra"
-                            Width="{StaticResource IconButtonWidth}"
-                            Height="{StaticResource IconButtonHeight}"
-                            Margin="{StaticResource MarginLr8}"
-                            Theme="{DynamicResource BorderlessButton}">
+                            Classes="IconButton"
+                            Margin="{StaticResource MarginLr8}">
                             <Button.Content>
-                                <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                                <PathIcon Data="{StaticResource SemiIconMore}" >
+                                    <PathIcon.RenderTransform>
+                                        <RotateTransform Angle="90" />
+                                    </PathIcon.RenderTransform>
+                                </PathIcon>
                             </Button.Content>
                             <Button.Flyout>
                                 <Flyout>

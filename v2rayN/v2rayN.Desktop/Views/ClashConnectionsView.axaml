@@ -27,27 +27,21 @@
 
             <Button
                 x:Name="btnConnectionCloseAll"
-                Width="{StaticResource IconButtonWidth}"
-                Height="{StaticResource IconButtonHeight}"
-                Classes="Success"
+                Classes="IconButton Success"
                 Margin="{StaticResource MarginLr8}"
-                Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <Button.Content>
-                    <PathIcon Data="{StaticResource building_delete}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource SemiIconClose}" />
                 </Button.Content>
             </Button>
 
             <Button
                 x:Name="btnAutofitColumnWidth"
-                Width="{StaticResource IconButtonWidth}"
-                Height="{StaticResource IconButtonHeight}"
-                Classes="Success"
+                Classes="IconButton Success"
                 Margin="{StaticResource MarginLr8}"
-                Theme="{DynamicResource BorderlessButton}"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                 <Button.Content>
-                    <PathIcon Data="{StaticResource building_fit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource SemiIconExpand}" />
                 </Button.Content>
             </Button>
 

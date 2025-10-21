@@ -8,14 +8,7 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Name="v2rayN"
     x:DataType="vms:StatusBarViewModel"
-    RequestedThemeVariant="Default">
-    <Application.Styles>
-        <semi:SemiTheme />
-        <semi:AvaloniaEditSemiTheme />
-        <StyleInclude Source="Assets/GlobalStyles.axaml" />
-        <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
-        <dialogHost:DialogHostStyles />
-    </Application.Styles>
+    RequestedThemeVariant="Default">    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,6 +16,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
+    <Application.Styles>
+        <semi:SemiTheme />
+        <semi:AvaloniaEditSemiTheme />
+        <StyleInclude Source="Assets/GlobalStyles.axaml" />
+        <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
+        <dialogHost:DialogHostStyles />
+    </Application.Styles>
 
     <TrayIcon.Icons>
         <TrayIcons>
