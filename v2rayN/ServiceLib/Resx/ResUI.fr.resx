@@ -835,7 +835,7 @@
     <value>Importer règles du presse-papiers</value>
   </data>
   <data name="menuImportRulesFromFile" xml:space="preserve">
-    <value>Importer des règles depuis un fichier</value>
+    <value>Importer règles depuis fichier</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
     <value>Importer des règles depuis l’URL d’abonnement</value>
