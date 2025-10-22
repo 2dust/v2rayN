@@ -617,7 +617,6 @@ Source0:        __PKGROOT__.tar.gz
 Requires:       libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
 Requires:       freetype, cairo, pango, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.34
-Requires:       kernel >= 5.14
 Requires:       fontconfig >= 2.14
 Requires:       xdg-utils >= 1.1.3
 Requires:       libX11 >= 1.7
