@@ -1096,7 +1096,7 @@
     <value>Adresse de test de connexion réelle</value>
   </data>
   <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Lors de la mise à jour des abonnements, ne vérifier que l’existence de l’alias</value>
+    <value>Ne veˊrifier que l’existence de l’alias lors de la maj. des abonnements</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Arrêt du test en cours...</value>
