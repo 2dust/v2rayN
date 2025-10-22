@@ -614,8 +614,14 @@ ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
 # Runtime dependencies (Avalonia / X11 / Fonts / GL)
-Requires:       libX11, libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
-Requires:       fontconfig, freetype, cairo, pango, mesa-libEGL, mesa-libGL, xdg-utils
+Requires:       libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
+Requires:       freetype, cairo, pango, mesa-libEGL, mesa-libGL
+Requires:       glibc >= 2.34
+Requires:       fontconfig >= 2.14
+Requires:       xdg-utils >= 1.1.3
+Requires:       libX11 >= 1.7
+Requires:       openssl >= 1:3.0
+Requires:       desktop-file-utils >= 0.26
 
 %description
 v2rayN Linux for Red Hat Enterprise Linux
