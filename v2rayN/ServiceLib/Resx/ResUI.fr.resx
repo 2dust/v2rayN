@@ -1462,7 +1462,7 @@
     <value>Veuillez saisir un modèle de configuration valide</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>Paramètres du modèle de config complète</value>
+    <value>Paramètres du modèle de config complet</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
     <value>Activer le modèle de configuration complet</value>
