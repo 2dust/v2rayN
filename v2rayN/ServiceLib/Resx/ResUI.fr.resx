@@ -1213,7 +1213,7 @@
     <value>Adresse de résolution de domaine pour sortants</value>
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
-    <value>Ajuster automatiquement la largeur des colonnes</value>
+    <value>Ajuster auto. la largeur des colonnes</value>
   </data>
   <data name="menuExport2ShareUrlBase64" xml:space="preserve">
     <value>Exporter les liens de partage en Base64 vers le presse-papiers (multi-sélection)</value>
