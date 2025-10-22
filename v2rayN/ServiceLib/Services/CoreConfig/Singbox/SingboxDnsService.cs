@@ -470,14 +470,16 @@ public partial class CoreConfigSingboxService
         {
             // udp dns
             server.type = "udp";
-            server.server = addressFirst;
-            return server;
+        }
+        else
+        {
+            // server.type = scheme.ToLower();
+
+            // remove "+local" suffix
+            // TODO: "+local" suffix decide server.detour = "direct" ?
+            server.type = scheme.Replace("+local", "", StringComparison.OrdinalIgnoreCase).ToLower();
         }
 
-        //server.type = scheme.ToLower();
-        // remove "+local" suffix
-        // TODO: "+local" suffix decide server.detour = "direct" ?
-        server.type = scheme.Replace("+local", "", StringComparison.OrdinalIgnoreCase).ToLower();
         server.server = domain;
         if (port != 0)
         {
