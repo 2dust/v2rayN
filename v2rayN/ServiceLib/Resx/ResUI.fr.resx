@@ -838,7 +838,7 @@
     <value>Importer règles depuis fichier</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>Importer des règles depuis l’URL d’abonnement</value>
+    <value>Importer depuis URL d’abonnement</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
     <value>Paramètres du jeu de règles</value>
