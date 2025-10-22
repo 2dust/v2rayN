@@ -1015,7 +1015,7 @@
     <value>Cliquez pour importer la configuration DNS par défaut</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>Stratégie de résolution de domaine (sing-box)</value>
+    <value>Stratégie résolution domaine (sing-box)</value>
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>Protocole de multiplexage Mux (sing-box)</value>
