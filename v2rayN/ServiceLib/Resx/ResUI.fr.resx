@@ -685,7 +685,7 @@
     <value>Paramètres du type de Core</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>Ignorer la vérification du certificat par défaut (allowInsecure)</value>
+    <value>Ignorer la vérif. du certificat (Dangereux)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
     <value>domainStrategy de Freedom (sortant)</value>
