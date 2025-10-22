@@ -615,7 +615,7 @@ Source0:        __PKGROOT__.tar.gz
 
 # Runtime dependencies (Avalonia / X11 / Fonts / GL)
 Requires:       libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
-Requires:       freetype, cairo, pango, mesa-libEGL, mesa-libGL
+Requires:       freetype, cairo, pango, mesa-libEGL, mesa-libGL, xdg-utils
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
 Requires:       libX11 >= 1.7
