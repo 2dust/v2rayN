@@ -1,3 +1,6 @@
+using System.Reactive.Disposables;
+using Avalonia.Interactivity;
+using ReactiveUI;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 

@@ -1,3 +1,9 @@
+using System.Reactive.Disposables;
+using Avalonia.Input;
+using Avalonia.ReactiveUI;
+using DynamicData;
+using ReactiveUI;
+
 namespace v2rayN.Desktop.Views;
 
 public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewModel>

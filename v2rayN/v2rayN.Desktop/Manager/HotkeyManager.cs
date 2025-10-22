@@ -1,3 +1,6 @@
+using System.Reactive.Linq;
+using Avalonia.Input;
+using Avalonia.ReactiveUI;
 using Avalonia.Win32.Input;
 using GlobalHotKeys;
 
@@ -8,7 +11,7 @@ public sealed class HotkeyManager
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
     public static HotkeyManager Instance = _instance.Value;
     private readonly Dictionary<int, EGlobalHotkey> _hotkeyTriggerDic = new();
-    private GlobalHotKeys.HotKeyManager? _hotKeyManager;
+    private HotKeyManager? _hotKeyManager;
 
     private Config? _config;
 

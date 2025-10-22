@@ -1,3 +1,9 @@
+using System.Reactive.Disposables;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.ReactiveUI;
+using Avalonia.Threading;
+using ReactiveUI;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
