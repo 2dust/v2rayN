@@ -1593,4 +1593,7 @@
   <data name="TbBootstrapDNSTips" xml:space="preserve">
     <value>解析 DNS 服务器域名，需指定为 IP</value>
   </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>一键测试真连接延迟</value>
+  </data>
 </root>

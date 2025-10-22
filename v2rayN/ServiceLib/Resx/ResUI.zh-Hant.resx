@@ -121,7 +121,7 @@
     <value>匯出分享連結至剪貼簿成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>請先檢查設定檔設定</value>
+    <value>請先檢查設定</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>設定格式不正確</value>
@@ -133,7 +133,7 @@
     <value>下載開始...</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
-    <value>轉換設定檔失敗</value>
+    <value>轉換設定失敗</value>
   </data>
   <data name="FailedGenDefaultConfiguration" xml:space="preserve">
     <value>生成預設設定檔失敗</value>
@@ -142,10 +142,10 @@
     <value>獲取預設設定失敗</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>匯入自訂設定設定檔失敗</value>
+    <value>匯入自訂設定失敗</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
-    <value>讀取設定檔失敗</value>
+    <value>讀取設定失敗</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>請填寫正確格式的埠</value>
@@ -265,13 +265,13 @@
     <value>請選擇協定</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>請先選擇設定檔</value>
+    <value>請先選擇設定</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>設定檔去重完成。原數量: {0}，現數量: {1}。</value>
+    <value>去重完成。原數量: {0}，現數量: {1}。</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>是否確定移除設定檔？</value>
+    <value>是否確定移除？</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>用戶端設定檔儲存在：{0}</value>
@@ -283,10 +283,10 @@
     <value>設定成功。{0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>成功匯入自訂設定設定檔</value>
+    <value>成功匯入自訂節點</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>成功從剪貼簿匯入 {0} 個設定檔</value>
+    <value>成功從剪貼簿匯入 {0} 個節點</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
     <value>掃描匯入分享連結成功</value>
@@ -385,7 +385,7 @@
     <value>所有</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>請瀏覽匯入設定檔設定</value>
+    <value>請瀏覽匯入設定</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>測試中...</value>
@@ -397,7 +397,7 @@
     <value>本機</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>設定檔過濾，按 Enter 執行</value>
+    <value>過濾器，按 Enter 執行</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>檢查更新</value>
@@ -478,55 +478,55 @@
     <value>掃描螢幕上的二維碼 (Ctrl+S)</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>複製所選設定檔</value>
+    <value>複製所選</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>移除重複的設定檔</value>
+    <value>移除重複</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>移除所選設定檔 (多選) (Delete)</value>
+    <value>移除所選 (多選) (Delete)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>設為活動設定檔 (Enter)</value>
+    <value>設為活動 (Enter)</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服務統計資料</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>測試設定檔真連線延遲 (多選) (Ctrl+R)</value>
+    <value>測試真連線延遲 (多選) (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按測試結果排序</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>測試設定檔速度 (多選) (Ctrl+T)</value>
+    <value>測試速度 (多選) (Ctrl+T)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>測試設定檔延遲 Tcping (多選) (Ctrl+O)</value>
+    <value>測試延遲 Tcping (多選) (Ctrl+O)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>匯出所選設定檔完整設定</value>
+    <value>匯出所選完整設定</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>匯出分享連結至剪貼簿 (多選) (Ctrl+C)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>新增自訂設定設定檔</value>
+    <value>新增自訂節點</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>新增 [Shadowsocks] 設定檔</value>
+    <value>新增 [Shadowsocks] 節點</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>新增 [SOCKS] 設定檔</value>
+    <value>新增 [SOCKS] 節點</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>新增 [Trojan] 設定檔</value>
+    <value>新增 [Trojan] 節點</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>新增 [VLESS] 設定檔</value>
+    <value>新增 [VLESS] 節點</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>新增 [VMess] 設定檔</value>
+    <value>新增 [VMess] 節點</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>全選 (Ctrl+A)</value>
@@ -676,7 +676,7 @@
     <value>Core: 基礎設定</value>
   </data>
   <data name="TbCustomDnsRay" xml:space="preserve">
-    <value>V2ray Custom DNS</value>
+    <value>v2ray 自訂 DNS</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Core: KCP 設定</value>
@@ -691,7 +691,7 @@
     <value>Outbound Freedom domainStrategy</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>在更新訂閱後自動調整設定檔列寬</value>
+    <value>在更新訂閱後自動調整列寬</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>檢查 Pre-Release 更新 (請謹慎啟用)</value>
@@ -700,7 +700,7 @@
     <value>例外</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>例外：對於下列字元開頭的位址，不使用代理設定檔。使用分號 (;) 分隔。</value>
+    <value>例外：對於下列字元開頭的位址，不使用代理。使用分號 (;) 分隔。</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
     <value>顯示即時速度（需重啟）</value>
@@ -748,7 +748,7 @@
     <value>系統代理設定</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>工具列右鍵選單設定檔展示數量限制</value>
+    <value>工具列右鍵選單設定展示數量限制</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>開啟 UDP</value>
@@ -781,7 +781,7 @@
     <value>PAC 模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>分享設定檔 (Ctrl+F)</value>
+    <value>分享 (Ctrl+F)</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>路由</value>
@@ -883,7 +883,7 @@
     <value>請勿將代理伺服器用於本機（Intranet）位址</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>一鍵多執行緒測試延遲和速度 (Ctrl+E)</value>
+    <value>一鍵延遲與速度測試 (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>延遲 (ms)</value>
@@ -913,7 +913,7 @@
     <value>移至訂閱分組</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>啟動設定檔拖放排序 (需重啟)</value>
+    <value>啟用拖放排序 (需重啟)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自動重新整理</value>
@@ -922,10 +922,10 @@
     <value>跳過測試</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>編輯設定檔 (Ctrl+D)</value>
+    <value>編輯 (Ctrl+D)</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>主介面輕按兩下設為活動設定檔</value>
+    <value>主介面輕按兩下設為活動</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>測試完成</value>
@@ -943,7 +943,7 @@
     <value>目前字型 (需重啟)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>複製字型 TTF/TTC 檔案到目錄 guiFonts，重啟設定</value>
+    <value>複製字型 TTF/TTC 檔案到目錄 guiFonts，重新啟動後生效</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
     <value>Pac 連接埠 = +3；Xray API 連接埠 = +4；mihomo API 連接埠 = +5；</value>
@@ -1003,10 +1003,10 @@
     <value>不需要轉換時請留空</value>
   </data>
   <data name="menuDNSSetting" xml:space="preserve">
-    <value>DNS 設定</value>
+    <value>DNS設定</value>
   </data>
   <data name="TbCustomDnsSingbox" xml:space="preserve">
-    <value>sing-box Custom DNS</value>
+    <value>sing-box 自訂 DNS</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>請填寫 DNS JSON 結構，點擊查看檔案</value>
@@ -1030,7 +1030,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>添加 [Hysteria2] 設定檔</value>
+    <value>新增 [Hysteria2] 節點</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria 最大頻寬 (Up/Dw)</value>
@@ -1039,19 +1039,19 @@
     <value>使用系統 hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>新增 [TUIC] 設定檔</value>
+    <value>新增 [TUIC] 節點</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>擁塞控制算法</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>前置代理設定檔別名</value>
+    <value>前置代理節點別名</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>落地代理設定檔別名</value>
+    <value>落地代理節點別名</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>請確保設定檔別名存在並且唯一</value>
+    <value>請確保節點別名存在並且唯一</value>
   </data>
   <data name="TbSettingsTunAutoRoute" xml:space="preserve">
     <value>自動路由</value>
@@ -1072,7 +1072,7 @@
     <value>啟用 IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加 [WireGuard] 設定檔</value>
+    <value>新增 [WireGuard] 節點</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1105,7 +1105,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>新增 [HTTP] 設定檔</value>
+    <value>新增 [HTTP] 節點</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>和分組前置代理衝突</value>
@@ -1219,13 +1219,13 @@
     <value>匯出分享連結至剪貼簿 (多選) Base64 編碼</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>匯出所選設定檔完整設定至剪貼簿</value>
+    <value>匯出所選完整設定至剪貼簿</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>顯示或隱藏主介面</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>自訂設定的 Socks 連接埠</value>
+    <value>自訂 Socks 連接埠</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>備份和還原</value>
@@ -1309,7 +1309,7 @@
     <value>請不要使用不安全的 HTTP 協定訂閱位址</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>安裝字體到系統中，選擇或填入字體名稱，重新啟動設定</value>
+    <value>安裝字體到系統中，選擇或填入字體名稱，重新啟動後生效</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>是否確定退出？</value>
@@ -1336,7 +1336,7 @@
     <value>多執行緒測試時的並發數量</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>例外：對於下列位址不使用代理設定檔，使用逗號 (,) 分隔。</value>
+    <value>例外：對於下列位址不使用代理，使用逗號 (,) 分隔。</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>流量探測類型</value>
@@ -1372,31 +1372,31 @@
     <value>會覆蓋埠，多組時用逗號 (,) 隔開</value>
   </data>
   <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>Generate Policy Group from Multiple Profiles</value>
+    <value>多選生成策略組</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>多設定檔隨機 Xray</value>
+    <value>多選隨機 Xray</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多設定檔負載平衡 Xray</value>
+    <value>多選負載平衡 Xray</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多設定檔最低延遲 Xray</value>
+    <value>多選最低延遲 Xray</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多設定檔最穩定 Xray</value>
+    <value>多選最穩定 Xray</value>
   </data>
   <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>多設定檔最低延遲 sing-box</value>
+    <value>多選最低延遲 sing-box</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>匯出設定檔</value>
+    <value>匯出</value>
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>目前連接資訊測試地址</value>
   </data>
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
-    <value>可以填寫設定檔別名，請確保存在並唯一</value>
+    <value>可以填寫節點別名，請確保存在並唯一</value>
   </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
     <value>密碼錯誤，請重試。</value>
@@ -1405,192 +1405,195 @@
     <value>Mldsa65Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
-    <value>新增 [Anytls] 設定檔</value>
+    <value>新增 [Anytls] 節點</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
-    <value>Remote DNS</value>
+    <value>遠程 DNS</value>
   </data>
   <data name="TbDomesticDNS" xml:space="preserve">
-    <value>Domestic DNS</value>
+    <value>直連 DNS</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>Via proxy — please ensure remote availability</value>
+   <value>通过代理，请确保远程可用</value>
   </data>
   <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray Freedom Resolution Strategy</value>
+    <value>xray freedom 解析策略</value>
   </data>
   <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box Direct Resolution Strategy</value>
+    <value>sing-box 直連解析策略</value>
   </data>
   <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box Remote Resolution Strategy</value>
+    <value>sing-box 遠程解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
-    <value>Add Common DNS Hosts</value>
+    <value>新增常用 DNS Hosts</value>
   </data>
   <data name="TbFakeIP" xml:space="preserve">
     <value>FakeIP</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
-    <value>Block SVCB and HTTPS Queries</value>
+    <value>阻止 SVCB 和 HTTPS 查詢</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS Hosts: ("domain1 ip1 ip2" per line)</value>
+    <value>DNS Hosts：（“網域名稱1 ip1 ip2” 一行一個）</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
-    <value>Basic DNS Settings</value>
+    <value>DNS 基礎設定</value>
   </data>
   <data name="ThAdvancedDNSSettings" xml:space="preserve">
-    <value>Advanced DNS Settings</value>
+    <value>DNS 進階設定</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>Validate Regional Domain IPs</value>
+    <value>校驗相應地區域名 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs</value>
+    <value>配置後，會對相應地區域名（如 geosite:cn）的返回 IP 進行校驗，僅返回期望 IP</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
-    <value>Enable Custom DNS</value>
+    <value>啟用自訂 DNS</value>
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
-    <value>Custom DNS Enabled, This Page's Settings Invalid</value>
+    <value>自訂 DNS 已啟用，此頁面配置將無效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Block ECH and HTTP/3 availability checks when enabled</value>
+    <value>開啟後將阻止 ECH 和 HTTP/3 可用性查詢</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
-    <value>Please fill in the correct config template</value>
+    <value>請填寫正確的配置範本</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>Full Config Template Setting</value>
+    <value>完整配置範本設定</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>Enable Full Config Template</value>
+    <value>啟用完整配置範本</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
-    <value>v2ray Full Config Template</value>
+    <value>v2ray 完整配置範本</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag, Click to view the document</value>
+    <value>僅添加出站配置，routing.balancers 和 routing.rules.outboundTag，點擊查看文檔</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>Do Not Add Non-Proxy Protocol Outbound</value>
+    <value>不添加非代理協定出站</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>Set Upstream Proxy Tag</value>
+    <value>設定上游代理 tag</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
-    <value>sing-box Full Config Template</value>
+    <value>sing-box 完整配置範本</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound and Endpoint Config Only, Click to view the document</value>
+    <value>僅添加出站和端點配置，點擊查看文檔</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core's basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you.</value>
+    <value>此功能供高級用戶和有特殊需求的用戶使用。 啟用此功能後，將忽略 Core 的基礎設定，DNS 設定 ，路由設定。你需要保證系統代理的埠和流量統計等功能的配置正確，一切都由你來設定。</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
     <value>開始解析和處理訂閱內容</value>
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
-    <value>Select Profile</value>
+    <value>選擇節點</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
+    <value>默認全域生效，內置 FakeIP 過濾，僅在 sing-box 中生效</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
-    <value>Please Add At Least One Configuration</value>
+    <value>請至少添加一個節點</value>
   </data>
   <data name="TbConfigTypePolicyGroup" xml:space="preserve">
-    <value>Policy Group</value>
+    <value>策略組</value>
   </data>
   <data name="TbConfigTypeProxyChain" xml:space="preserve">
-    <value>Proxy Chain</value>
+    <value>鏈式代理</value>
   </data>
   <data name="TbLeastPing" xml:space="preserve">
-    <value>Lowest Latency</value>
+    <value>最低延遲</value>
   </data>
   <data name="TbRandom" xml:space="preserve">
-    <value>Random</value>
+    <value>隨機</value>
   </data>
   <data name="TbRoundRobin" xml:space="preserve">
-    <value>Round Robin</value>
+    <value>負載均衡</value>
   </data>
   <data name="TbLeastLoad" xml:space="preserve">
-    <value>Most Stable</value>
+    <value>最穩定</value>
   </data>
   <data name="TbPolicyGroupType" xml:space="preserve">
-    <value>Policy Group Type</value>
+    <value>策略組類型</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>Add Policy Group Configuration</value>
+    <value>添加策略組</value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>Add Proxy Chain Configuration</value>
+    <value>添加鏈式代理</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>Add Child Configuration</value>
+    <value>添加子項</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>Remove Child Configuration</value>
+    <value>刪除子項</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Server List</value>
+    <value>子項清單</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
-    <value>Fallback</value>
+    <value>容錯移轉</value>
   </data>
   <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by sing-box</value>
+    <value>多選容錯移轉 sing-box</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by Xray</value>
+    <value>多選容錯移轉 Xray</value>
   </data>
   <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>Core '{0}' does not support network type '{1}'.</value>
+    <value>核心 '{0}' 不支援網路類型 '{1}'.</value>
   </data>
   <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'.</value>
+    <value>核心 '{0}' 在使用傳輸方式 '{2}' 時不支援協定 '{1}'.</value>
   </data>
   <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}'.</value>
+    <value>核心 '{0}' 不支援協定 '{1}'.</value>
   </data>
   <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>Proxy chained: </value>
+    <value>代理鏈： </value>
   </data>
   <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>Routing rule outbound: </value>
+    <value>路由規則出站： </value>
   </data>
   <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>Policy group: </value>
+    <value>策略組： </value>
   </data>
   <data name="NodeTagNotExist" xml:space="preserve">
-    <value>Node alias '{0}' does not exist.</value>
+    <value>別名 '{0}' 不存在。</value>
   </data>
   <data name="GroupEmpty" xml:space="preserve">
-    <value>Group '{0}' is empty. Please add at least one node.</value>
+    <value>組“{0}”為空.請至少添加一個配置。</value>
   </data>
   <data name="InvalidProperty" xml:space="preserve">
-    <value>The {0} property is invalid, please check.</value>
+    <value>{0}屬性無效，請檢查</value>
   </data>
   <data name="GroupSelfReference" xml:space="preserve">
     <value>{0} 分組不能引用自身或循環引用</value>
   </data>
   <data name="NotSupportProtocol" xml:space="preserve">
-    <value>Not support protocol '{0}'.</value>
+    <value>不支援協定 '{0}'.</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>如果系統沒有托盤功能，請不要開啟</value>
+    <value>如果系統沒有託盤功能，請不要開啟</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
-    <value>规则类型</value>
+    <value>規則類型</value>
   </data>
   <data name="TbRuleTypeTips" xml:space="preserve">
-    <value>可对 Routing 和 DNS 单独设定规则，ALL 则都生效</value>
+    <value>可對 Routing 和 DNS 單獨設定規則，ALL 則都生效</value>
   </data>
   <data name="TbBootstrapDNS" xml:space="preserve">
     <value>Bootstrap DNS</value>
   </data>
   <data name="TbBootstrapDNSTips" xml:space="preserve">
-    <value>Resolve DNS server domains, requires IP</value>
+    <value>解析 DNS 伺服器網域名稱,需指定為 IP</value>
+  </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>一鍵測試真連線延遲</value>
   </data>
 </root>

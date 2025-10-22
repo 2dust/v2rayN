@@ -66,6 +66,7 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
     public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
     public ReactiveCommand<Unit, Unit> RemoveInvalidServerResultCmd { get; }
+    public ReactiveCommand<Unit, Unit> FastRealPingCmd { get; }
 
     //servers export
     public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
@@ -179,6 +180,10 @@ public class ProfilesViewModel : MyReactiveObject
         }, canEditRemove);
 
         //servers ping
+        FastRealPingCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await ServerSpeedtest(ESpeedActionType.FastRealping);
+        });
         MixedTestServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ServerSpeedtest(ESpeedActionType.Mixedtest);
@@ -729,6 +734,12 @@ public class ProfilesViewModel : MyReactiveObject
         {
             SelectedProfiles = ProfileItems;
         }
+        else if (actionType == ESpeedActionType.FastRealping)
+        {
+            SelectedProfiles = ProfileItems;
+            actionType = ESpeedActionType.Realping;
+        }
+
         var lstSelected = await GetProfileItems(false);
         if (lstSelected == null)
         {

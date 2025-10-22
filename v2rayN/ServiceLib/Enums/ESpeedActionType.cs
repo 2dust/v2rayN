@@ -5,5 +5,6 @@ public enum ESpeedActionType
     Tcping,
     Realping,
     Speedtest,
-    Mixedtest
+    Mixedtest,
+    FastRealping
 }

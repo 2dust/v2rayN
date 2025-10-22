@@ -1596,4 +1596,7 @@
   <data name="TbBootstrapDNSTips" xml:space="preserve">
     <value>Resolve DNS server domains, requires IP</value>
   </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>Test real delay</value>
+  </data>
 </root>

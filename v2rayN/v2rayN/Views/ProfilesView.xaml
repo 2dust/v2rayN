@@ -57,16 +57,6 @@
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                 </Button>
 
-                <Button
-                    x:Name="btnAutofitColumnWidth"
-                    Width="30"
-                    Height="30"
-                    Margin="{StaticResource MarginLeftRight8}"
-                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
-                </Button>
                 <TextBox
                     x:Name="txtServerFilter"
                     Width="200"
@@ -76,6 +66,27 @@
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                     Style="{StaticResource DefTextBox}" />
+
+                <Button
+                    x:Name="btnAutofitColumnWidth"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
+                </Button>
+
+                <Button
+                    x:Name="btnFastRealPing"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
+                </Button>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
