@@ -618,7 +618,6 @@ Requires:       libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXf
 Requires:       freetype, cairo, pango, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
-Requires:       xdg-utils >= 1.1.3
 Requires:       libX11 >= 1.7
 Requires:       openssl >= 1:3.0
 Requires:       desktop-file-utils >= 0.26
