@@ -1033,7 +1033,7 @@
     <value>Ajouter [Hysteria2]</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Bande passante maximale Hysteria (montant/descendant)</value>
+    <value>Bande passante maximale Hysteria (Up/Down)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>Utiliser les hosts du système</value>
