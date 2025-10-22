@@ -187,7 +187,7 @@
     <value>Type</value>
   </data>
   <data name="LvSubscription" xml:space="preserve">
-    <value>Groupe d’abonnement</value>
+    <value>Grp. abonnements</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
     <value>Téléchargement du jour</value>
