@@ -1372,7 +1372,7 @@
     <value>Écrase le port ; pour plusieurs groupes, séparez par des virgules (,)</value>
   </data>
   <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>Générer un groupe de stratégie à partir d’une multi-sélection</value>
+    <value>Générer un groupe de stratégie depuis plusieurs profils</value>
   </data>
   <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
     <value>Xray aléatoire (multi-sélection)</value>
