@@ -121,7 +121,7 @@
     <value>Lien de partage exporté vers le presse-papiers avec succès</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Veuillez vérifier les paramètres d’abord</value>
+    <value>Veuillez vérifier d’abord la config</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>Format de configuration incorrect</value>
