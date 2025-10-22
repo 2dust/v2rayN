@@ -691,7 +691,7 @@
     <value>domainStrategy de Freedom (sortant)</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Ajuster automatiquement la largeur des colonnes après mise à jour des abonnements</value>
+    <value>Auto-ajuster la largeur des colonnes après maj. des abonnements</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>Vérifier les mises à jour pré-version (à activer avec prudence)</value>
