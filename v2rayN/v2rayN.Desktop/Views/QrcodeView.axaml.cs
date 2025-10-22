@@ -1,3 +1,7 @@
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+
 namespace v2rayN.Desktop.Views;
 
 public partial class QrcodeView : UserControl

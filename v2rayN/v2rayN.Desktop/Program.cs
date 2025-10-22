@@ -1,3 +1,5 @@
+using Avalonia;
+using Avalonia.ReactiveUI;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop;

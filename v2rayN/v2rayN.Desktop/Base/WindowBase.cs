@@ -1,3 +1,7 @@
+using Avalonia;
+using Avalonia.Interactivity;
+using Avalonia.ReactiveUI;
+
 namespace v2rayN.Desktop.Base;
 
 public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewModel : class

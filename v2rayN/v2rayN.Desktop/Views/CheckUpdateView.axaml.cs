@@ -1,3 +1,7 @@
+using System.Reactive.Disposables;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
+
 namespace v2rayN.Desktop.Views;
 
 public partial class CheckUpdateView : ReactiveUserControl<CheckUpdateViewModel>
