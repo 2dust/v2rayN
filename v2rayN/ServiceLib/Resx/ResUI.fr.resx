@@ -439,7 +439,7 @@
     <value>Mettre à jour l’abonnement actuel (via le proxy)</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
-    <value>Grp. abonnements</value>
+    <value>Groupe abonnements</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
     <value>Paramètres des groupes d’abonnement</value>
