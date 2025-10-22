@@ -265,7 +265,7 @@
     <value>Veuillez sélectionner un protocole</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>Veuillez d’abord sélectionner une configuration</value>
+    <value>Sélectionnez d’abord une configuration</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
     <value>Déduplication des configurations terminée. Quantité initiale : {0}, quantité actuelle : {1}.</value>
