@@ -415,7 +415,7 @@
     <value>Aide</value>
   </data>
   <data name="menuOptionSetting" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Paramètres config</value>
   </data>
   <data name="menuPromotion" xml:space="preserve">
     <value>Promotion</value>
