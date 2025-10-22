@@ -1117,7 +1117,7 @@
     <value>Activer le fichier de cache pour sing-box (fichiers de règles)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>Jeu de règles sing-box personnalisé</value>
+    <value>Set de règles sing-box perso</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
     <value>Opération réussie. Veuillez redémarrer l’application via le menu Paramètres.</value>
