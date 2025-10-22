@@ -1593,4 +1593,7 @@
   <data name="TbBootstrapDNSTips" xml:space="preserve">
     <value>Résoudre le nom du serveur DNS ; doit être spécifié en IP</value>
   </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>Test 1-clic de latence réelle</value>
+  </data>
 </root>
