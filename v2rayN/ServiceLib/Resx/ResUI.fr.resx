@@ -823,7 +823,7 @@
     <value>Définir comme règles actives (Entrée)</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
-    <value>Stratégie de résolution de domaine</value>
+    <value>Stratégie résolution domaine</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
     <value>Liste des jeux de règles prédéfinis</value>
