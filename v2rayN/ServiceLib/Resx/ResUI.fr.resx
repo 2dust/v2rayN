@@ -706,7 +706,7 @@
     <value>Afficher la vitesse en temps réel (redémarrage requis)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Lors de la déduplication, conserver l’élément au numéro le plus petit</value>
+    <value>À la déduplication, garder l’élément au plus petit numéro</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
     <value>Activer les journaux</value>
