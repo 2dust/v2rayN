@@ -49,6 +49,13 @@
                     </Button.Content>
                 </Button>
 
+                <TextBox
+                    x:Name="txtServerFilter"
+                    Width="200"
+                    Margin="{StaticResource MarginLr4}"
+                    VerticalContentAlignment="Center"
+                    Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+
                 <Button
                     x:Name="btnAutofitColumnWidth"
                     Margin="{StaticResource MarginLr4}"
@@ -59,12 +66,16 @@
                     </Button.Content>
                 </Button>
 
-                <TextBox
-                    x:Name="txtServerFilter"
-                    Width="200"
+                <Button
+                    x:Name="btnFastRealPing"
                     Margin="{StaticResource MarginLr4}"
-                    VerticalContentAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+                    Classes="IconButton Success"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
+                    <Button.Content>
+                        <PathIcon Data="{StaticResource SemiIconBolt}" />
+                    </Button.Content>
+                </Button>
+
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
@@ -127,7 +138,8 @@
                             <Separator />
                             <MenuItem x:Name="menuExport2ShareUrl" Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
-                        </MenuItem><Separator />
+                        </MenuItem>
+                        <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
                             <MenuItem x:Name="menuGenGroupMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
                             <MenuItem x:Name="menuGenGroupMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
