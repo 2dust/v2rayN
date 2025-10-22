@@ -1216,7 +1216,7 @@
     <value>Ajuster automatiquement la largeur des colonnes</value>
   </data>
   <data name="menuExport2ShareUrlBase64" xml:space="preserve">
-    <value>Exporter les liens de partage vers le presse-papiers (multi-sélection) encodés en Base64</value>
+    <value>Exporter les liens de partage en Base64 vers le presse-papiers (multi-sélection)</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
     <value>Exporter la configuration complète sélectionnée vers le presse-papiers</value>
