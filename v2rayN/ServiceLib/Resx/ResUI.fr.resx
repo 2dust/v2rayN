@@ -1234,13 +1234,13 @@
     <value>Sauvegarder localement</value>
   </data>
   <data name="menuLocalRestore" xml:space="preserve">
-    <value>Restaurer depuis le local</value>
+    <value>Restaurer localement</value>
   </data>
   <data name="menuRemoteBackup" xml:space="preserve">
-    <value>Sauvegarder vers distant (WebDAV)</value>
+    <value>Sauvegarder à distance (WebDAV)</value>
   </data>
   <data name="menuRemoteRestore" xml:space="preserve">
-    <value>Restaurer depuis distant (WebDAV)</value>
+    <value>Restaurer à distance (WebDAV)</value>
   </data>
   <data name="menuLocalBackupAndRestore" xml:space="preserve">
     <value>Local</value>
