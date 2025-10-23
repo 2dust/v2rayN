@@ -1120,7 +1120,7 @@
     <value>Set de règles sing-box perso</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
-    <value>Opération réussie. Veuillez redémarrer l’application via le menu Paramètres.</value>
+    <value>Opération réussie. Veuillez redémarrer l’app via le menu Paramètres.</value>
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>Ouvrir l’emplacement du fichier</value>
