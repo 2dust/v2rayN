@@ -1579,7 +1579,7 @@
     <value>Protocole « {0} » non pris en charge.</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>Si le système n’a pas de zone de notification, ne pas activer cette option</value>
+    <value>Si le système n’a pas de zone de notif., n’activez pas cette option</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
     <value>Type de règle</value>
