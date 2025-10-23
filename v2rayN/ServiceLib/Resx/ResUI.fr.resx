@@ -1051,7 +1051,7 @@
     <value>Alias de configuration du proxy aval</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Assurez-vous que l’alias de configuration existe et est unique</value>
+    <value>Assurez-vous que l’alias config existe et est unique</value>
   </data>
   <data name="TbSettingsTunAutoRoute" xml:space="preserve">
     <value>Routage automatique</value>
