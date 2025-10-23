@@ -715,7 +715,7 @@
     <value>Niveau de journalisation</value>
   </data>
   <data name="TbSettingsMuxEnabled" xml:space="preserve">
-    <value>Activer la multiplexion Mux</value>
+    <value>Activer Mux multiplex</value>
   </data>
   <data name="TbSettingsN" xml:space="preserve">
     <value>Paramètres v2rayN</value>
