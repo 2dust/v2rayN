@@ -82,9 +82,14 @@ public partial class CoreConfigV2rayService
             var (domain, scheme, port, path) = Utils.ParseUrl(dnsAddress);
             var domainFinal = dnsAddress;
             int? portFinal = null;
-            if (scheme.IsNullOrEmpty() || scheme.Contains("udp", StringComparison.OrdinalIgnoreCase) || scheme.Contains("tcp", StringComparison.OrdinalIgnoreCase))
+            if (scheme.IsNullOrEmpty() || scheme.StartsWith("udp", StringComparison.OrdinalIgnoreCase))
             {
                 domainFinal = domain;
+                portFinal = port > 0 ? port : null;
+            }
+            else if (scheme.StartsWith("tcp", StringComparison.OrdinalIgnoreCase))
+            {
+                domainFinal = scheme + "://" + domain;
                 portFinal = port > 0 ? port : null;
             }
             var dnsServer = new DnsServer4Ray
