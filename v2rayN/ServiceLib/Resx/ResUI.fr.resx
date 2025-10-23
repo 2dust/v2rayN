@@ -640,13 +640,13 @@
     <value>ID utilisateur (id)</value>
   </data>
   <data name="TbSecurity3" xml:space="preserve">
-    <value>Mode chiffrement (security)</value>
+    <value>Mode chiffrement (encryption)</value>
   </data>
   <data name="TbSecurity4" xml:space="preserve">
     <value>Nom d’utilisateur (optionnel)</value>
   </data>
   <data name="TbSecurity5" xml:space="preserve">
-    <value>Mode chiffrement (security)</value>
+    <value>Mode chiffrement (encryption)</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
     <value>Port Socks</value>
