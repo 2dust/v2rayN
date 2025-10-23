@@ -556,7 +556,7 @@
     <value>Partager</value>
   </data>
   <data name="LvEnabled" xml:space="preserve">
-    <value>Activer mises à j.</value>
+    <value>Activer MAJ</value>
   </data>
   <data name="LvSort" xml:space="preserve">
     <value>Tri</value>
