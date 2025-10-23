@@ -613,9 +613,8 @@ BugURL:         https://github.com/2dust/v2rayN/issues
 ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
-# Runtime dependencies (Avalonia / X11 / Fonts / GL)
-Requires:       libXrandr, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
-Requires:       cairo, pango, mesa-libEGL, mesa-libGL
+# Runtime dependencies
+Requires:       cairo, pango
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
 Requires:       libX11 >= 1.7
