@@ -1042,7 +1042,7 @@
     <value>Ajouter [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
-    <value>Algorithme de contrôle de congestion</value>
+    <value>Algo contrôle congestion</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Alias de configuration du proxy amont</value>
