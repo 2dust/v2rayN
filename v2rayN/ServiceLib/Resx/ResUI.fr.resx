@@ -1321,7 +1321,7 @@
     <value>Mot de passe sudo du système</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec entraînant un dysfonctionnement, redémarrez l’application. Le mot de passe n’est pas stocké et doit être saisi à chaque redémarrage.</value>
+    <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*Mode XHTTP</value>
