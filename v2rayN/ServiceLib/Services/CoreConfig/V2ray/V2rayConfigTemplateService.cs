@@ -86,8 +86,8 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        // Handle outbounds - append instead of override
-        var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
+        var customOutboundsNode = new JsonArray();
+        
         foreach (var outbound in v2rayConfig.outbounds)
         {
             if (outbound.protocol.ToLower() is "blackhole" or "dns" or "freedom")
@@ -97,14 +97,27 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() == true) && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()) && !(Utils.IsPrivateNetwork(outbound.settings?.servers?.FirstOrDefault()?.address ?? string.Empty) || Utils.IsPrivateNetwork(outbound.settings?.vnext?.FirstOrDefault()?.address ?? string.Empty)))
+            else if (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
             {
-                outbound.streamSettings ??= new StreamSettings4Ray();
-                outbound.streamSettings.sockopt ??= new Sockopt4Ray();
-                outbound.streamSettings.sockopt.dialerProxy = fullConfigTemplate.ProxyDetour;
+                var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address ?? outbound.settings?.vnext?.FirstOrDefault()?.address ?? string.Empty;
+                if (!Utils.IsPrivateNetwork(outboundAddress))
+                {
+                    outbound.streamSettings ??= new StreamSettings4Ray();
+                    outbound.streamSettings.sockopt ??= new Sockopt4Ray();
+                    outbound.streamSettings.sockopt.dialerProxy = fullConfigTemplate.ProxyDetour;
+                }
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
+        
+        if (fullConfigTemplateNode["outbounds"] is JsonArray templateOutbounds)
+        {
+            foreach (var outbound in templateOutbounds)
+            {
+                customOutboundsNode.Add(outbound?.DeepClone());
+            }
+        }
+        
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));
