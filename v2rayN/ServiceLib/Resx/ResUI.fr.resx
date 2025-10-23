@@ -997,7 +997,7 @@
     <value>Activer l’enregistrement des journaux dans un fichier</value>
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
-    <value>Type de cible de conversion d’abonnement</value>
+    <value>Type cible conv. d’abonnement</value>
   </data>
   <data name="LvConvertTargetTip" xml:space="preserve">
     <value>Laisser vide si aucune conversion n’est nécessaire</value>
