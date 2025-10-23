@@ -619,6 +619,7 @@ Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
 Requires:       desktop-file-utils >= 0.26
 Requires:       xdg-utils >= 1.1.3
+Requires:       coreutils >= 8.32
 
 %description
 v2rayN Linux for Red Hat Enterprise Linux
