@@ -294,7 +294,7 @@ public partial class CoreConfigSingboxService
                 var tls = new Tls4Sbox()
                 {
                     enabled = true,
-                    record_fragment = _config.CoreBasicItem.EnableFragment,
+                    record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                     server_name = server_name,
                     insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
                     alpn = node.GetAlpn(),

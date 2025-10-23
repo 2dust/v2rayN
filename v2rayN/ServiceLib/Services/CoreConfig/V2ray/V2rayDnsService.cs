@@ -79,9 +79,18 @@ public partial class CoreConfigV2rayService
 
         static object CreateDnsServer(string dnsAddress, List<string> domains, List<string>? expectedIPs = null)
         {
+            var (domain, scheme, port, path) = Utils.ParseUrl(dnsAddress);
+            var domainFinal = dnsAddress;
+            int? portFinal = null;
+            if (scheme.IsNullOrEmpty() || scheme.Contains("udp", StringComparison.OrdinalIgnoreCase) || scheme.Contains("tcp", StringComparison.OrdinalIgnoreCase))
+            {
+                domainFinal = domain;
+                portFinal = port > 0 ? port : null;
+            }
             var dnsServer = new DnsServer4Ray
             {
-                address = dnsAddress,
+                address = domainFinal,
+                port = portFinal,
                 skipFallback = true,
                 domains = domains.Count > 0 ? domains : null,
                 expectedIPs = expectedIPs?.Count > 0 ? expectedIPs : null
