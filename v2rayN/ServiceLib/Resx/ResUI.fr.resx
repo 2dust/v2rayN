@@ -1309,7 +1309,7 @@
     <value>N’utilisez pas d’adresse d’abonnement HTTP non sécurisée</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>Installez la police sur le système, choisissez ou saisissez son nom, effet après redémarrage</value>
+    <value>Installer la police sur le système, choisir ou saisir son nom, effet après redémarrage</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>Voulez-vous vraiment quitter ?</value>
