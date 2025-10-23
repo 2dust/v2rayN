@@ -1225,7 +1225,7 @@
     <value>Afficher ou masquer l’interface principale</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>Port Socks de la configuration personnalisée</value>
+    <value>Port Socks config personnalisée</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>Sauvegarder et restaurer</value>
