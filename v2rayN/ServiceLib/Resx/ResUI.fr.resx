@@ -541,7 +541,7 @@
     <value>Tout copier</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Tout sélectionner (Ctrl+A)</value>
+    <value>Tout sélect (Ctrl+A)</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>Ajouter</value>
