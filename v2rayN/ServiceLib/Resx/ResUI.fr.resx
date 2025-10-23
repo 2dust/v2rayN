@@ -826,7 +826,7 @@
     <value>Stratégie résolution domaine</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
-    <value>Liste des jeux de règles prédéfinis</value>
+    <value>Liste des jeux de règles prédef.</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
     <value>*Règles de routage définies, séparées par des virgules (,); remplacez la virgule dans les expressions régulières par &lt;COMMA&gt;</value>
