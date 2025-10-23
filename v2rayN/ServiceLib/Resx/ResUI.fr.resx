@@ -883,7 +883,7 @@
     <value>Ne pas utiliser le proxy pour les adresses locales (Intranet)</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>Tester latence et vitesse en multithread en un clic (Ctrl+E)</value>
+    <value>Tester latence et vitesse multithread en un clic (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
     <value>Latence (ms)</value>
