@@ -1336,7 +1336,7 @@
     <value>Niveau de concurrence lors des tests multithread</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Exceptions : ne pas utiliser le proxy pour les adresses suivantes. Séparez par des virgules (,).</value>
+    <value>Exceptions : ne pas utiliser le proxy pour ces adresses, séparées par des virgules (,).</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>Type de détection de trafic</value>
