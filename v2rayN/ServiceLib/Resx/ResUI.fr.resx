@@ -127,7 +127,7 @@
     <value>Format de configuration incorrect</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>Attention : une configuration personnalisée repose entièrement sur vos propres paramètres et ne permet pas d’utiliser toutes les fonctions. Pour utiliser le proxy système, modifiez manuellement le port d’écoute.</value>
+    <value>Attention : la configuration personnalisée dépend entièrement de vos paramètres et peut ne pas permettre toutes les fonctions. Pour utiliser le proxy système, changez le port d’écoute manuellement.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>Téléchargement commencé...</value>
