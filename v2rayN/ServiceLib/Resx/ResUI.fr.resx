@@ -1360,7 +1360,7 @@
     <value>Selon le résultat des tests</value>
   </data>
   <data name="menuRemoveInvalidServerResult" xml:space="preserve">
-    <value>Supprimer les éléments invalides selon le résultat des tests</value>
+    <value>Supprimer les éléments invalides selon résultats tests</value>
   </data>
   <data name="RemoveInvalidServerResultTip" xml:space="preserve">
     <value>{0} résultats de test invalides supprimés.</value>
