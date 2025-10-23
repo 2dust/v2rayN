@@ -1221,6 +1221,7 @@ public static class ConfigHandler
             CoreType = coreType,
             ConfigType = EConfigType.PolicyGroup,
             Remarks = remark,
+            IsSub = false
         };
         if (!subId.IsNullOrEmpty())
         {

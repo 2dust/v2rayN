@@ -97,9 +97,12 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
+            else if ((!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
+                && ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true) == true))
             {
-                var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address ?? outbound.settings?.vnext?.FirstOrDefault()?.address ?? string.Empty;
+                var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
+                    ?? outbound.settings?.vnext?.FirstOrDefault()?.address
+                    ?? string.Empty;
                 if (!Utils.IsPrivateNetwork(outboundAddress))
                 {
                     outbound.streamSettings ??= new StreamSettings4Ray();
