@@ -607,7 +607,7 @@
     <value>Alias (remarks)</value>
   </data>
   <data name="TbRequestHost" xml:space="preserve">
-    <value>Nom d’hôte de camouflage (host)</value>
+    <value>Domaine de camouflage (host)</value>
   </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>Méthode de chiffrement (security)</value>
