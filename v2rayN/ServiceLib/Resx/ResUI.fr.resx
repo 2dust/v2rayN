@@ -1297,7 +1297,7 @@
     <value>Iran</value>
   </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
-    <value>Les utilisateurs de la région Chine peuvent ignorer ceci</value>
+    <value>Les utilisateurs de Chine peuvent ignorer</value>
   </data>
   <data name="menuAddServerViaImage" xml:space="preserve">
     <value>Scanner le QR code dans l’image</value>
