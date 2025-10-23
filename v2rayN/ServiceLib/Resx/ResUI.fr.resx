@@ -817,7 +817,7 @@
     <value>Importer 1-clic du jeu de règles</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Supprimer les règles sélectionnées (Delete)</value>
+    <value>Suppr. règles sélectionnées (Delete)</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Définir comme règles actives (Entrée)</value>
