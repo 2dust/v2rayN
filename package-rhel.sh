@@ -614,7 +614,7 @@ ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
 # Runtime dependencies
-Requires:       cairo, pango，openssl
+Requires:       cairo, pango, openssl
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
 Requires:       desktop-file-utils >= 0.26
