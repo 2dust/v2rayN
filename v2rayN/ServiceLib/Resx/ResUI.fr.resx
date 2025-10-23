@@ -493,7 +493,7 @@
     <value>Effacer toutes les statistiques de service</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Tester la latence de connexion réelle (multi-sélection) (Ctrl+R)</value>
+    <value>Tester la latence de connexion réelle (multi-sélect) (Ctrl+R)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Trier selon les résultats de test</value>
