@@ -616,7 +616,7 @@
     <value>SNI</value>
   </data>
   <data name="TbStreamSecurity" xml:space="preserve">
-    <value>Sécurité de la couche de transport (TLS)</value>
+    <value>Sécurité couche transport (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
     <value>*tcp par défaut ; un mauvais choix empêchera la connexion</value>
