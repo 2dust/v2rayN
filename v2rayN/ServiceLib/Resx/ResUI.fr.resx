@@ -463,7 +463,7 @@
     <value>Mode PAC</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
-    <value>Configurer automatiquement le proxy système</value>
+    <value>Configuration auto proxy système</value>
   </data>
   <data name="TbSettingsColor" xml:space="preserve">
     <value>Couleur</value>
