@@ -202,7 +202,7 @@
     <value>Total téléversé</value>
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
-    <value>Protoc. Transport</value>
+    <value>Protoc. Transp.</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
     <value>Téléchargement du Core réussi</value>
