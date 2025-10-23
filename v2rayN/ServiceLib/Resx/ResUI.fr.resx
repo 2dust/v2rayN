@@ -397,7 +397,7 @@
     <value>Local</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Filtre, appuyez sur Entrée pour exécuter</value>
+    <value>Filtre : Entrée pour exécuter</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Rechercher mises à jour</value>
