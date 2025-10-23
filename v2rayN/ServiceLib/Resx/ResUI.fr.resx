@@ -988,7 +988,7 @@
     <value>Redémarrer en tant qu’administrateur</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>Adresses supplémentaires (URL), séparées par des virgules ; la conversion d’abonnement sera désactivée</value>
+    <value>Adresses suppl. (URL), séparées par des virgules ; la conversion d’abonnement sera désactivée</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
     <value>Intervalle maj. auto (min)</value>
