@@ -991,7 +991,7 @@
     <value>Adresses supplémentaires (URL), séparées par des virgules ; la conversion d’abonnement sera désactivée</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
-    <value>Intervalle de mise à jour automatique (minutes)</value>
+    <value>Intervalle maj. auto (min)</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
     <value>Activer l’enregistrement des journaux dans un fichier</value>
