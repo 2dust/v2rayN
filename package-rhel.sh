@@ -614,8 +614,7 @@ ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
 # Runtime dependencies (Avalonia / X11 / Fonts / GL)
-Requires:       libX11, libXrandr, libXcursor, libXi, libXext, libxcb, libXrender, libXfixes, libXinerama, libxkbcommon
-Requires:       fontconfig, freetype, cairo, pango, openssl, mesa-libEGL, mesa-libGL
+Requires:       freetype, cairo, pango, openssl, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.14
 Requires:       desktop-file-utils >= 0.26
