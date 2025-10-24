@@ -1477,7 +1477,7 @@
     <value>Ne pas ajouter de sortie non-proxy</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>Définir le tag du proxy amont</value>
+    <value>Définir le tag proxy amont</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
     <value>Modèle de configuration complet sing-box</value>
