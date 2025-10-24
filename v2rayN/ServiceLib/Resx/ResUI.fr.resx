@@ -1474,7 +1474,7 @@
     <value>Ajoute seulement la configuration sortante, routing.balancers et routing.rules.outboundTag. Voir la documentation.</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>Ne pas ajouter de sorties pour les protocoles non proxy</value>
+    <value>Ne pas ajouter de sortie non-proxy</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
     <value>Définir le tag du proxy amont</value>
