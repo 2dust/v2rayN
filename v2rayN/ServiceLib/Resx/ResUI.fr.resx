@@ -1,0 +1,1599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>Lien de partage exporté vers le presse-papiers avec succès</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Veuillez vérifier d’abord la config</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value>Format de configuration incorrect</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Attention : la configuration personnalisée dépend entièrement de vos paramètres et peut ne pas activer toutes les fonctions. Pour utiliser le proxy système, changez le port d’écoute manuellement.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Téléchargement commencé...</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Échec de la conversion de la configuration</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Échec de la génération du fichier de configuration par défaut</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value>Échec de l’obtention de la configuration par défaut</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Échec de l’importation de la configuration personnalisée</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Échec de la lecture de la configuration</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Veuillez saisir un port au format correct</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Veuillez saisir le port d’écoute local</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Veuillez saisir le mot de passe</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Veuillez saisir l’adresse</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>Veuillez saisir l’ID utilisateur</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value>Configuration incorrecte, veuillez vérifier</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>Initialiser la configuration</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} {1} est déjà à jour.</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} {1} est déjà à jour.</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Méthode de chiffrement</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Grp abonn.</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Téléchargement du jour</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Téléversement du jour</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total téléchargé</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total téléversé</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Protoc. Transp.</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Téléchargement du Core réussi</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Échec de l’importation du contenu d’abonnement</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Contenu d’abonnement récupéré avec succès</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>Aucun abonnement valide défini</value>
+  </data>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>Analyse de {0} réussie</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Début de la récupération du contenu d’abonnement</value>
+  </data>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Début de la mise à jour de {0}...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Contenu d’abonnement invalide</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>Décompression en cours......</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Fin de la mise à jour des abonnements</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Début de la mise à jour des abonnements</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Mise à jour du Core réussie</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>Mise à jour du Core réussie ! Redémarrage du service...</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Protocole non VMess ni SS</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>Fichier Core introuvable dans le dossier ({0}) (nom de fichier : {1}). Veuillez le télécharger puis le placer dans le dossier. Adresse de téléchargement : {2}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Analyse terminée, aucun QR code valide trouvé</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Échec de l’opération, veuillez vérifier et réessayer</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Veuillez saisir un alias</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Veuillez sélectionner une méthode de chiffrement</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Veuillez sélectionner un protocole</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Sélectionnez d’abord une configuration</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Déduplication des configurations terminée. Quantité initiale : {0}, quantité actuelle : {1}.</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Confirmer la suppression ?</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>Le fichier de configuration client est enregistré dans : {0}</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Démarrage du service ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Configuration réussie. {0}</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Configuration personnalisée importée avec succès</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>{0} configurations importées depuis le presse-papiers</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Lien de partage importé par analyse avec succès</value>
+  </data>
+  <data name="TestMeOutput" xml:space="preserve">
+    <value>Latence actuelle : {0} ms, {1}</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Opération réussie</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>Veuillez d’abord sélectionner une règle</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>Confirmer la suppression de la règle ?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0}, au moins un champ est obligatoire.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>Alias</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>Adresse optionnelle (URL)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>Veuillez saisir l’URL</value>
+  </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Ajouter les règles ? Choisir "Oui" pour ajouter, "Non" pour tout remplacer.</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>Téléchargement du fichier Geo : {0} réussi</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>Icône personnalisée</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>Veuillez saisir un DNS personnalisé valide</value>
+  </data>
+  <data name="TransportPathTip1" xml:space="preserve">
+    <value>*chemin ws/httpupgrade/xhttp</value>
+  </data>
+  <data name="TransportPathTip2" xml:space="preserve">
+    <value>*chemin h2</value>
+  </data>
+  <data name="TransportPathTip3" xml:space="preserve">
+    <value>*clé de chiffrement QUIC</value>
+  </data>
+  <data name="TransportPathTip4" xml:space="preserve">
+    <value>*nom de service gRPC</value>
+  </data>
+  <data name="TransportRequestHostTip1" xml:space="preserve">
+    <value>*hôte http, séparés par des virgules (,)</value>
+  </data>
+  <data name="TransportRequestHostTip2" xml:space="preserve">
+    <value>*hôte ws/httpupgrade/xhttp</value>
+  </data>
+  <data name="TransportRequestHostTip3" xml:space="preserve">
+    <value>*hôte h2, séparés par des virgules (,)</value>
+  </data>
+  <data name="TransportRequestHostTip4" xml:space="preserve">
+    <value>*méthode de chiffrement QUIC</value>
+  </data>
+  <data name="TransportHeaderTypeTip1" xml:space="preserve">
+    <value>*type de camouflage tcp</value>
+  </data>
+  <data name="TransportHeaderTypeTip2" xml:space="preserve">
+    <value>*type de camouflage kcp</value>
+  </data>
+  <data name="TransportHeaderTypeTip3" xml:space="preserve">
+    <value>*type de camouflage QUIC</value>
+  </data>
+  <data name="TransportHeaderTypeTip4" xml:space="preserve">
+    <value>*mode gRPC</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*graine Kcp</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>Échec de l’enregistrement du raccourci global {0}, raison : {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>Raccourci global {0} enregistré avec succès</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Parcourir pour importer la configuration</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Test en cours...</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>Réseau local</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Filtre : Entrée pour exécuter</value>
+  </data>
+  <data name="menuCheckUpdate" xml:space="preserve">
+    <value>Rechercher mises à jour</value>
+  </data>
+  <data name="menuClose" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="menuExit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="menuGlobalHotkeySetting" xml:space="preserve">
+    <value>Paramètres des raccourcis globaux</value>
+  </data>
+  <data name="menuHelp" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="menuOptionSetting" xml:space="preserve">
+    <value>Paramètres config</value>
+  </data>
+  <data name="menuPromotion" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+  <data name="menuReload" xml:space="preserve">
+    <value>Redémarrer</value>
+  </data>
+  <data name="menuRoutingSetting" xml:space="preserve">
+    <value>Paramètres de routage</value>
+  </data>
+  <data name="menuServers" xml:space="preserve">
+    <value>Fichiers de config</value>
+  </data>
+  <data name="menuSetting" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="menuSubGroupUpdate" xml:space="preserve">
+    <value>Mettre à jour l’abonnement actuel (sans proxy)</value>
+  </data>
+  <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
+    <value>Mettre à jour l’abonnement actuel (via le proxy)</value>
+  </data>
+  <data name="menuSubscription" xml:space="preserve">
+    <value>Groupe abonnements</value>
+  </data>
+  <data name="menuSubSetting" xml:space="preserve">
+    <value>Paramètres des groupes d’abonnement</value>
+  </data>
+  <data name="menuSubUpdate" xml:space="preserve">
+    <value>Mettre à jour tous les abonnements (sans proxy)</value>
+  </data>
+  <data name="menuSubUpdateViaProxy" xml:space="preserve">
+    <value>Mettre à jour tous les abonnements (via le proxy)</value>
+  </data>
+  <data name="menuSystemproxy" xml:space="preserve">
+    <value>Proxy système</value>
+  </data>
+  <data name="menuSystemProxyClear" xml:space="preserve">
+    <value>Effacer le proxy système</value>
+  </data>
+  <data name="menuSystemProxyNothing" xml:space="preserve">
+    <value>Ne pas modifier le proxy système</value>
+  </data>
+  <data name="menuSystemProxyPac" xml:space="preserve">
+    <value>Mode PAC</value>
+  </data>
+  <data name="menuSystemProxySet" xml:space="preserve">
+    <value>Configuration auto proxy système</value>
+  </data>
+  <data name="TbSettingsColor" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="TbSettingsLanguage" xml:space="preserve">
+    <value>Langue (redémarrage requis)</value>
+  </data>
+  <data name="menuAddServerViaClipboard" xml:space="preserve">
+    <value>Importer des liens depuis le presse-papiers (Ctrl+V)</value>
+  </data>
+  <data name="menuAddServerViaScan" xml:space="preserve">
+    <value>Scanner le QR code à l’écran (Ctrl+S)</value>
+  </data>
+  <data name="menuCopyServer" xml:space="preserve">
+    <value>Cloner la sélection</value>
+  </data>
+  <data name="menuRemoveDuplicateServer" xml:space="preserve">
+    <value>Supprimer les doublons</value>
+  </data>
+  <data name="menuRemoveServer" xml:space="preserve">
+    <value>Supprimer la sélection (multi-sélection) (Delete)</value>
+  </data>
+  <data name="menuSetDefaultServer" xml:space="preserve">
+    <value>Définir comme actif (Entrée)</value>
+  </data>
+  <data name="menuClearServerStatistics" xml:space="preserve">
+    <value>Effacer toutes les statistiques de service</value>
+  </data>
+  <data name="menuRealPingServer" xml:space="preserve">
+    <value>Tester la latence de connexion réelle (multi-sélect) (Ctrl+R)</value>
+  </data>
+  <data name="menuSortServerResult" xml:space="preserve">
+    <value>Trier selon les résultats de test</value>
+  </data>
+  <data name="menuSpeedServer" xml:space="preserve">
+    <value>Tester la vitesse (multi-sélection) (Ctrl+T)</value>
+  </data>
+  <data name="menuTcpingServer" xml:space="preserve">
+    <value>Tester la latence Tcping (multi-sélection) (Ctrl+O)</value>
+  </data>
+  <data name="menuExport2ClientConfig" xml:space="preserve">
+    <value>Exporter la configuration complète sélectionnée</value>
+  </data>
+  <data name="menuExport2ShareUrl" xml:space="preserve">
+    <value>Exporter les liens de partage vers le presse-papiers (multi-sélection) (Ctrl+C)</value>
+  </data>
+  <data name="menuAddCustomServer" xml:space="preserve">
+    <value>Ajouter une configuration personnalisée</value>
+  </data>
+  <data name="menuAddShadowsocksServer" xml:space="preserve">
+    <value>Ajouter [Shadowsocks]</value>
+  </data>
+  <data name="menuAddSocksServer" xml:space="preserve">
+    <value>Ajouter [SOCKS]</value>
+  </data>
+  <data name="menuAddTrojanServer" xml:space="preserve">
+    <value>Ajouter [Trojan]</value>
+  </data>
+  <data name="menuAddVlessServer" xml:space="preserve">
+    <value>Ajouter [VLESS]</value>
+  </data>
+  <data name="menuAddVmessServer" xml:space="preserve">
+    <value>Ajouter [VMess]</value>
+  </data>
+  <data name="menuSelectAll" xml:space="preserve">
+    <value>Tout sélectionner (Ctrl+A)</value>
+  </data>
+  <data name="menuMsgViewClear" xml:space="preserve">
+    <value>Tout effacer</value>
+  </data>
+  <data name="menuMsgViewCopy" xml:space="preserve">
+    <value>Copier (Ctrl+C)</value>
+  </data>
+  <data name="menuMsgViewCopyAll" xml:space="preserve">
+    <value>Tout copier</value>
+  </data>
+  <data name="menuMsgViewSelectAll" xml:space="preserve">
+    <value>Tout sélect (Ctrl+A)</value>
+  </data>
+  <data name="menuSubAdd" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="menuSubDelete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="menuSubEdit" xml:space="preserve">
+    <value>Éditer</value>
+  </data>
+  <data name="menuSubShare" xml:space="preserve">
+    <value>Partager</value>
+  </data>
+  <data name="LvEnabled" xml:space="preserve">
+    <value>Activer MAJ</value>
+  </data>
+  <data name="LvSort" xml:space="preserve">
+    <value>Tri</value>
+  </data>
+  <data name="LvUserAgent" xml:space="preserve">
+    <value>User-Agent (optionnel)</value>
+  </data>
+  <data name="TbCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="TbConfirm" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="GbTransport" xml:space="preserve">
+    <value>Méthode de transport sous-jacente (transport)</value>
+  </data>
+  <data name="TbAddress" xml:space="preserve">
+    <value>Adresse (address)</value>
+  </data>
+  <data name="TbAllowInsecure" xml:space="preserve">
+    <value>Ignorer la vérification du certificat (allowInsecure)</value>
+  </data>
+  <data name="TbAlpn" xml:space="preserve">
+    <value>ALPN</value>
+  </data>
+  <data name="TbAlterId" xml:space="preserve">
+    <value>ID supplémentaire (alterId)</value>
+  </data>
+  <data name="TbFingerprint" xml:space="preserve">
+    <value>Empreinte</value>
+  </data>
+  <data name="TbHeaderType" xml:space="preserve">
+    <value>Type de camouflage (type)</value>
+  </data>
+  <data name="TbId" xml:space="preserve">
+    <value>ID utilisateur (id)</value>
+  </data>
+  <data name="TbNetwork" xml:space="preserve">
+    <value>Protocole (network)</value>
+  </data>
+  <data name="TbPath" xml:space="preserve">
+    <value>Chemin (path)</value>
+  </data>
+  <data name="TbPort" xml:space="preserve">
+    <value>Port (port)</value>
+  </data>
+  <data name="TbRemarks" xml:space="preserve">
+    <value>Alias (remarks)</value>
+  </data>
+  <data name="TbRequestHost" xml:space="preserve">
+    <value>Domaine de camouflage (host)</value>
+  </data>
+  <data name="TbSecurity" xml:space="preserve">
+    <value>Méthode de chiffrement (security)</value>
+  </data>
+  <data name="TbSNI" xml:space="preserve">
+    <value>SNI</value>
+  </data>
+  <data name="TbStreamSecurity" xml:space="preserve">
+    <value>Sécurité couche transport (TLS)</value>
+  </data>
+  <data name="TipNetwork" xml:space="preserve">
+    <value>*tcp par défaut ; un mauvais choix empêchera la connexion</value>
+  </data>
+  <data name="TbCoreType" xml:space="preserve">
+    <value>Type de Core</value>
+  </data>
+  <data name="TbFlow5" xml:space="preserve">
+    <value>Contrôle de flux (flow)</value>
+  </data>
+  <data name="TbGUID" xml:space="preserve">
+    <value>Générer</value>
+  </data>
+  <data name="TbId3" xml:space="preserve">
+    <value>Mot de passe (password)</value>
+  </data>
+  <data name="TbId4" xml:space="preserve">
+    <value>Mot de passe (optionnel)</value>
+  </data>
+  <data name="TbId5" xml:space="preserve">
+    <value>ID utilisateur (id)</value>
+  </data>
+  <data name="TbSecurity3" xml:space="preserve">
+    <value>Mode chiffrement (encryption)</value>
+  </data>
+  <data name="TbSecurity4" xml:space="preserve">
+    <value>Nom d’utilisateur (optionnel)</value>
+  </data>
+  <data name="TbSecurity5" xml:space="preserve">
+    <value>Mode chiffrement (encryption)</value>
+  </data>
+  <data name="TbPreSocksPort" xml:space="preserve">
+    <value>Port Socks</value>
+  </data>
+  <data name="TipPreSocksPort" xml:space="preserve">
+    <value>*Valeur du port Socks pour la configuration personnalisée (facultatif). Si défini, Xray/sing-box (Tun) démarrera un service Socks en amont supplémentaire pour fournir le routage sélectif et l’affichage de la vitesse.</value>
+  </data>
+  <data name="TbBrowse" xml:space="preserve">
+    <value>Parcourir</value>
+  </data>
+  <data name="TbEdit" xml:space="preserve">
+    <value>Éditer</value>
+  </data>
+  <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
+    <value>Paramètres avancés du proxy, choix du protocole (optionnel)</value>
+  </data>
+  <data name="TbSettingsAllowLAN" xml:space="preserve">
+    <value>Autoriser les connexions depuis le LAN</value>
+  </data>
+  <data name="TbSettingsAutoHideStartup" xml:space="preserve">
+    <value>Masquer la fenêtre au démarrage</value>
+  </data>
+  <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
+    <value>Intervalle de mise à jour automatique des fichiers Geo (heures)</value>
+  </data>
+  <data name="TbSettingsCore" xml:space="preserve">
+    <value>Core : paramètres de base</value>
+  </data>
+  <data name="TbCustomDnsRay" xml:space="preserve">
+    <value>DNS personnalisé v2ray</value>
+  </data>
+  <data name="TbSettingsCoreKcp" xml:space="preserve">
+    <value>Core : paramètres KCP</value>
+  </data>
+  <data name="TbSettingsCoreType" xml:space="preserve">
+    <value>Paramètres du type de Core</value>
+  </data>
+  <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
+    <value>Ignorer la vérif. du certificat (Dangereux)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
+    <value>domainStrategy de Freedom (sortant)</value>
+  </data>
+  <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
+    <value>Auto-ajuster la largeur des colonnes après maj. des abonnements</value>
+  </data>
+  <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
+    <value>Vérifier les mises à jour pré-version (à activer avec prudence)</value>
+  </data>
+  <data name="TbSettingsException" xml:space="preserve">
+    <value>Exceptions</value>
+  </data>
+  <data name="TbSettingsExceptionTip" xml:space="preserve">
+    <value>Exceptions : pour les adresses commençant par les caractères ci-dessous, ne pas utiliser le proxy. Séparez par des points-virgules (;).</value>
+  </data>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Afficher la vitesse en temps réel (redémarrage requis)</value>
+  </data>
+  <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
+    <value>À la déduplication, garder l’élément au plus petit numéro</value>
+  </data>
+  <data name="TbSettingsLogEnabled" xml:space="preserve">
+    <value>Activer les journaux</value>
+  </data>
+  <data name="TbSettingsLogLevel" xml:space="preserve">
+    <value>Niveau de journalisation</value>
+  </data>
+  <data name="TbSettingsMuxEnabled" xml:space="preserve">
+    <value>Activer Mux multiplex</value>
+  </data>
+  <data name="TbSettingsN" xml:space="preserve">
+    <value>Paramètres v2rayN</value>
+  </data>
+  <data name="TbSettingsPass" xml:space="preserve">
+    <value>Mot de passe d’authentification</value>
+  </data>
+  <data name="TbSettingsRemoteDNS" xml:space="preserve">
+    <value>DNS personnalisés (plusieurs possibles, séparés par des virgules)</value>
+  </data>
+  <data name="TbSettingsSetUWP" xml:space="preserve">
+    <value>Lever la restriction de proxy en boucle locale pour les applications Win10 UWP</value>
+  </data>
+  <data name="TbSettingsSniffingEnabled" xml:space="preserve">
+    <value>Activer le sniffing de trafic</value>
+  </data>
+  <data name="TbSettingsSocksPort" xml:space="preserve">
+    <value>Port d’écoute mixte local</value>
+  </data>
+  <data name="TbSettingsStartBoot" xml:space="preserve">
+    <value>Lancer au démarrage (peut échouer)</value>
+  </data>
+  <data name="TbSettingsStatistics" xml:space="preserve">
+    <value>Activer les statistiques de trafic (redémarrage requis)</value>
+  </data>
+  <data name="TbSettingsSubConvert" xml:space="preserve">
+    <value>URL de conversion d’abonnement (optionnel)</value>
+  </data>
+  <data name="TbSettingsSystemproxy" xml:space="preserve">
+    <value>Paramètres du proxy système</value>
+  </data>
+  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
+    <value>Limite du nombre de configurations affichées dans le menu du plateau</value>
+  </data>
+  <data name="TbSettingsUdpEnabled" xml:space="preserve">
+    <value>Activer l’UDP</value>
+  </data>
+  <data name="TbSettingsUser" xml:space="preserve">
+    <value>Nom d’utilisateur d’authentification</value>
+  </data>
+  <data name="TbClearSystemProxy" xml:space="preserve">
+    <value>Effacer le proxy système</value>
+  </data>
+  <data name="TbDisplayGUI" xml:space="preserve">
+    <value>Afficher l’interface principale</value>
+  </data>
+  <data name="TbGlobalHotkeySetting" xml:space="preserve">
+    <value>Paramètres des raccourcis globaux</value>
+  </data>
+  <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
+    <value>Appuyez directement sur les touches pour définir ; prendra effet après redémarrage</value>
+  </data>
+  <data name="TbNotChangeSystemProxy" xml:space="preserve">
+    <value>Ne pas modifier le proxy système</value>
+  </data>
+  <data name="TbReset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="TbSetSystemProxy" xml:space="preserve">
+    <value>Configurer automatiquement le proxy système</value>
+  </data>
+  <data name="TbSystemProxyPac" xml:space="preserve">
+    <value>Mode PAC</value>
+  </data>
+  <data name="menuShareServer" xml:space="preserve">
+    <value>Partager (Ctrl+F)</value>
+  </data>
+  <data name="menuRouting" xml:space="preserve">
+    <value>Routage</value>
+  </data>
+  <data name="NotRunAsAdmin" xml:space="preserve">
+    <value>Exécuter sans droits administrateur</value>
+  </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>Exécuter en tant qu’administrateur</value>
+  </data>
+  <data name="menuMoveBottom" xml:space="preserve">
+    <value>Déplacer tout en bas (B)</value>
+  </data>
+  <data name="menuMoveDown" xml:space="preserve">
+    <value>Descendre (D)</value>
+  </data>
+  <data name="menuMoveTop" xml:space="preserve">
+    <value>Déplacer tout en haut (T)</value>
+  </data>
+  <data name="menuMoveUp" xml:space="preserve">
+    <value>Monter (U)</value>
+  </data>
+  <data name="MsgFilterTitle" xml:space="preserve">
+    <value>Filtre (regex pris en charge)</value>
+  </data>
+  <data name="menuWebsiteItem" xml:space="preserve">
+    <value>Site officiel de {0}</value>
+  </data>
+  <data name="menuRoutingAdvancedAdd" xml:space="preserve">
+    <value>Ajouter un jeu de règles</value>
+  </data>
+  <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
+    <value>Importer 1-clic du jeu de règles</value>
+  </data>
+  <data name="menuRoutingAdvancedRemove" xml:space="preserve">
+    <value>Suppr. règles sélectionnées (Delete)</value>
+  </data>
+  <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
+    <value>Définir comme règles actives (Entrée)</value>
+  </data>
+  <data name="TbdomainStrategy" xml:space="preserve">
+    <value>Stratégie résolution domaine</value>
+  </data>
+  <data name="TbRoutingTabRuleList" xml:space="preserve">
+    <value>Liste des jeux de règles prédef.</value>
+  </data>
+  <data name="TbRoutingTips" xml:space="preserve">
+    <value>*Règles de routage définies, séparées par des virgules (,); remplacez la virgule dans les expressions régulières par &lt;COMMA&gt;</value>
+  </data>
+  <data name="menuImportRulesFromClipboard" xml:space="preserve">
+    <value>Importer règles du presse-papiers</value>
+  </data>
+  <data name="menuImportRulesFromFile" xml:space="preserve">
+    <value>Importer règles depuis fichier</value>
+  </data>
+  <data name="menuImportRulesFromUrl" xml:space="preserve">
+    <value>Importer depuis URL d’abonnement</value>
+  </data>
+  <data name="menuRoutingRuleSetting" xml:space="preserve">
+    <value>Paramètres du jeu de règles</value>
+  </data>
+  <data name="menuRuleAdd" xml:space="preserve">
+    <value>Ajouter une règle</value>
+  </data>
+  <data name="menuRuleExportSelected" xml:space="preserve">
+    <value>Exporter les règles sélectionnées vers le presse-papiers</value>
+  </data>
+  <data name="menuRuleList" xml:space="preserve">
+    <value>Liste des règles</value>
+  </data>
+  <data name="menuRuleRemove" xml:space="preserve">
+    <value>Supprimer les règles sélectionnées (Delete)</value>
+  </data>
+  <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
+    <value>Paramètres détaillés des règles de routage</value>
+  </data>
+  <data name="TbAutoSort" xml:space="preserve">
+    <value>Tri automatique par domaine, IP et nom de processus lors de l’enregistrement</value>
+  </data>
+  <data name="TbRuleobjectDoc" xml:space="preserve">
+    <value>Documentation détaillée des règles</value>
+  </data>
+  <data name="TbDnsObjectDoc" xml:space="preserve">
+    <value>Saisie de DnsObject prise en charge (format JSON), cliquer pour voir la documentation</value>
+  </data>
+  <data name="SubUrlTips" xml:space="preserve">
+    <value>Laissez vide pour les groupes ordinaires</value>
+  </data>
+  <data name="TipChangeRouting" xml:space="preserve">
+    <value>Paramètres de routage modifiés</value>
+  </data>
+  <data name="TipChangeSystemProxy" xml:space="preserve">
+    <value>Paramètres du proxy système modifiés</value>
+  </data>
+  <data name="TbSettingsRouteOnly" xml:space="preserve">
+    <value>Routage uniquement (routeOnly)</value>
+  </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Ne pas utiliser le proxy pour les adresses locales (Intranet)</value>
+  </data>
+  <data name="menuMixedTestServer" xml:space="preserve">
+    <value>Tester latence et vitesse multithread en un clic (Ctrl+E)</value>
+  </data>
+  <data name="LvTestDelay" xml:space="preserve">
+    <value>Latence (ms)</value>
+  </data>
+  <data name="LvTestSpeed" xml:space="preserve">
+    <value>Vitesse (Mo/s)</value>
+  </data>
+  <data name="FailedToRunCore" xml:space="preserve">
+    <value>Échec d’exécution du Core, veuillez consulter les messages</value>
+  </data>
+  <data name="LvFilter" xml:space="preserve">
+    <value>Filtrage par alias (regex)</value>
+  </data>
+  <data name="TbDisplayLog" xml:space="preserve">
+    <value>Afficher les journaux</value>
+  </data>
+  <data name="TbEnableTunAs" xml:space="preserve">
+    <value>Activer Tun</value>
+  </data>
+  <data name="TbSettingsNewPort4LAN" xml:space="preserve">
+    <value>Ouvrir un nouveau port pour le LAN</value>
+  </data>
+  <data name="TbSettingsTunMode" xml:space="preserve">
+    <value>Paramètres du mode Tun</value>
+  </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>Déplacer vers un groupe d’abonnement</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>Activer le tri par glisser-déposer des configurations (redémarrage requis)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>Actualisation automatique</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>Ignorer le test</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>Éditer (Ctrl+D)</value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>Double-cliquer sur l’interface principale pour activer</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>Test terminé</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>Empreinte TLS par défaut (fingerprint)</value>
+  </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>Agent utilisateur (User-Agent)</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>Valable uniquement pour les protocoles tcp/http et ws</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>Police actuelle (redémarrage requis)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>Copiez les fichiers de police TTF/TTC dans le dossier guiFonts, effet après redémarrage</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>Port PAC = +3 ; port API Xray = +4 ; port API mihomo = +5 ;</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>Définir cette option avec des privilèges administrateur pour obtenir les droits admin au démarrage</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>Taille de police</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>Valeur délai d'expiration test vitesse unique</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>URL du fichier de test de vitesse</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Déplacer vers haut/bas</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>PublicKey</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>ShortId</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>SpiderX</value>
+  </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Activer l’accélération matérielle (redémarrage requis)</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>En attente du test (appuyer sur Échap pour arrêter)...</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Désactivez ceci en cas de coupures anormales</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Mise à jour désactivée, abonnement ignoré</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Redémarrer en tant qu’administrateur</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>Adresses suppl. (URL), séparées par des virgules ; la conversion d’abonnement sera désactivée</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Intervalle maj. auto (min)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Activer l’enregistrement des journaux dans un fichier</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Type cible conv. d’abonnement</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Laisser vide si aucune conversion n’est nécessaire</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>Paramètres DNS</value>
+  </data>
+  <data name="TbCustomDnsSingbox" xml:space="preserve">
+    <value>DNS personnalisé sing-box</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Veuillez renseigner la structure JSON DNS ; cliquer pour voir la documentation</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Cliquez pour importer la configuration DNS par défaut</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>Stratégie résolution domaine (sing-box)</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>Protocole de multiplexage Mux (sing-box)</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Nom complet du processus (mode Tun)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP ou IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domaine</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>Ajouter [Hysteria2]</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Bande passante maximale Hysteria (Up/Down)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Utiliser les hosts du système</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>Ajouter [TUIC]</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>Algo contrôle congestion</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Alias de configuration du proxy amont</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Alias de configuration du proxy aval</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Assurez-vous que l’alias config existe et est unique</value>
+  </data>
+  <data name="TbSettingsTunAutoRoute" xml:space="preserve">
+    <value>Routage automatique</value>
+  </data>
+  <data name="TbSettingsTunStrictRoute" xml:space="preserve">
+    <value>Routage strict</value>
+  </data>
+  <data name="TbSettingsTunStack" xml:space="preserve">
+    <value>Pile de protocoles</value>
+  </data>
+  <data name="TbSettingsTunMtu" xml:space="preserve">
+    <value>MTU</value>
+  </data>
+  <data name="TbSettingsEnableExInbound" xml:space="preserve">
+    <value>Activer un port d’écoute supplémentaire</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>Activer IPv6</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>Ajouter [WireGuard]</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>PrivateKey</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved (2,3,4)</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Address (IPv4,IPv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>Mot de passe d’obfuscation (obfs password)</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domaine ou IP ou nom de processus) avec Port et Protocole et InboundTag =&gt; OutboundTag</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Défilement automatique vers la fin</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Adresse de test de connexion réelle</value>
+  </data>
+  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
+    <value>Ne vérifier l’existence de l’alias qu’à la maj. des abonnements</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>Arrêt du test en cours...</value>
+  </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>*Autorité gRPC</value>
+  </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>Ajouter [HTTP]</value>
+  </data>
+  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
+    <value>En conflit avec le proxy amont de groupe</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>Activer le fragmentation (Fragment)</value>
+  </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>Activer le fichier de cache de sing-box (fichiers de reˋgles)</value>
+  </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>Set de règles sing-box perso</value>
+  </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>Opération réussie. Veuillez redémarrer l’app via le menu Paramètres.</value>
+  </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Ouvrir l’emplacement du fichier</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Tri</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Chaîne de routage</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Latence</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Vitesse de téléchargement</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>Trafic téléchargé</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>Hôte</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>Réseau</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>Heure</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>Vitesse d’envoi</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>Trafic envoyé</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>Connexions en cours</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>Fermer la connexion</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>Fermer toutes les connexions</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>Proxies actuels</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>Mode règle</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Direct</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>Suivre la configuration d’origine</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>Règle</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>Test de latence</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Test de latence partiel actuel</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Définir comme actif (Entrée)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Stratégie de résolution par défaut des sortants</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Orientation de la mise en page principale (redémarrage requis)</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Adresse de résolution de domaine pour sortants</value>
+  </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Ajuster auto. la largeur des colonnes</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Exporter les liens de partage en Base64 vers le presse-papiers (multi-sélection)</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Exporter la configuration complète sélectionnée vers le presse-papiers</value>
+  </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Afficher ou masquer l’interface principale</value>
+  </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>Port Socks config personnalisée</value>
+  </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Sauvegarder et restaurer</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Sauvegarder localement</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Restaurer localement</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Sauvegarder à distance (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Restaurer à distance (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Distant (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>Adresse du serveur WebDAV</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>Compte WebDAV</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>Mot de passe WebDAV</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>Vérification de disponibilité WebDAV</value>
+  </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Nom du dossier distant (optionnel)</value>
+  </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>Fichier de sauvegarde invalide</value>
+  </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>Filtre d’hôte</value>
+  </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Source des fichiers Geo (optionnel)</value>
+  </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>Source des fichiers de jeux de règles sing-box (optionnel)</value>
+  </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>L’application d’outil de mise à niveau est introuvable</value>
+  </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Source des jeux de règles de routage (optionnel)</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Réglages régionaux prédéfinis</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>Région par défaut</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Russie</value>
+  </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Iran</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Les utilisateurs de Chine peuvent ignorer</value>
+  </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>Scanner le QR code dans l’image</value>
+  </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>Adresse (URL) invalide</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>N’utilisez pas d’adresse d’abonnement HTTP non sécurisée</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
+    <value>Installer la police sur le système, choisir ou saisir son nom, effet après redémarrage</value>
+  </data>
+  <data name="menuExitTips" xml:space="preserve">
+    <value>Voulez-vous vraiment quitter ?</value>
+  </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Mémo</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Mot de passe sudo système</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
+  </data>
+  <data name="TransportHeaderTypeTip5" xml:space="preserve">
+    <value>*Mode XHTTP</value>
+  </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>JSON brut XHTTP Extra, format : { XHTTPObject }</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>Masquer dans la barre d’état lors de la fermeture de la fenêtre</value>
+  </data>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>Niveau de concurrence lors des tests multithread</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Exceptions : ne pas utiliser le proxy pour ces adresses, séparées par des virgules (,).</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Type de détection de trafic</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>Activer un second port d’écoute local</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>Socks : port local ; Socks2 : deuxième port local ; Socks3 : port LAN</value>
+  </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Copier la commande proxy terminal vers le presse-papiers</value>
+  </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Recommencer le test des éléments échoués, {0} restants. Appuyez sur Échap pour arrêter...</value>
+  </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>Selon le résultat des tests</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Supprimer les éléments invalides selon résultats tests</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>{0} résultats de test invalides supprimés.</value>
+  </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Plage de ports sautés</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Écrase le port ; pour plusieurs groupes, séparez par des virgules (,)</value>
+  </data>
+  <data name="menuGenGroupMultipleServer" xml:space="preserve">
+    <value>Générer un groupe de stratégie depuis plusieurs profils</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
+    <value>Xray aléatoire (multi-sélection)</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
+    <value>Xray équilibrage (tourniquet) multi-sélection</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
+    <value>Xray latence minimale (multi-sélection)</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
+    <value>Xray le plus stable (multi-sélection)</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
+    <value>sing-box latence minimale (multi-sélection)</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>Adresse de test d’informations de connexion actuelles</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Vous pouvez saisir un alias de configuration ; assurez-vous qu’il existe et qu’il est unique</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Mot de passe incorrect, veuillez réessayer.</value>
+  </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>Ajouter [Anytls]</value>
+  </data>
+  <data name="TbRemoteDNS" xml:space="preserve">
+    <value>DNS distant</value>
+  </data>
+  <data name="TbDomesticDNS" xml:space="preserve">
+    <value>DNS direct</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>Via le proxy ; assurez-vous que le serveur distant est disponible</value>
+  </data>
+  <data name="TbXrayFreedomStrategy" xml:space="preserve">
+    <value>Stratégie de résolution xray freedom</value>
+  </data>
+  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
+    <value>Stratégie de résolution directe sing-box</value>
+  </data>
+  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
+    <value>Stratégie de résolution distante sing-box</value>
+  </data>
+  <data name="TbAddCommonDNSHosts" xml:space="preserve">
+    <value>Ajouter des hôtes DNS courants</value>
+  </data>
+  <data name="TbFakeIP" xml:space="preserve">
+    <value>FakeIP</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
+    <value>Bloquer les requêtes SVCB et HTTPS</value>
+  </data>
+  <data name="TbDNSHostsConfig" xml:space="preserve">
+    <value>Hôtes DNS : (« domaine1 ip1 ip2 » une ligne par entrée)</value>
+  </data>
+  <data name="ThBasicDNSSettings" xml:space="preserve">
+    <value>Paramètres DNS de base</value>
+  </data>
+  <data name="ThAdvancedDNSSettings" xml:space="preserve">
+    <value>Paramètres DNS avancés</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
+    <value>Valider les IP des domaines de la région concernée</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
+    <value>Après configuration, les IP renvoyées pour les domaines régionaux (p. ex. geosite:cn) seront validées ; seules les IP attendues seront retournées</value>
+  </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>Activer le DNS personnalisé</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>DNS personnalisé activé ; la configuration de cette page sera ignorée</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>Une fois activé, bloque les requêtes ECH et de disponibilité HTTP/3</value>
+  </data>
+  <data name="FillCorrectConfigTemplateText" xml:space="preserve">
+    <value>Veuillez saisir un modèle de configuration valide</value>
+  </data>
+  <data name="menuFullConfigTemplate" xml:space="preserve">
+    <value>Paramètres du modèle de config complet</value>
+  </data>
+  <data name="TbFullConfigTemplateEnable" xml:space="preserve">
+    <value>Activer le modèle de config. complet</value>
+  </data>
+  <data name="TbRayFullConfigTemplate" xml:space="preserve">
+    <value>Modèle de configuration complet v2ray</value>
+  </data>
+  <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
+    <value>Ajoute seulement la configuration sortante, routing.balancers et routing.rules.outboundTag. Voir la documentation.</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>N’ajoutez pas de sorties pour protocoles non-proxy.</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>Définir le tag de proxy amont</value>
+  </data>
+  <data name="TbSBFullConfigTemplate" xml:space="preserve">
+    <value>Modèle de configuration complet sing-box</value>
+  </data>
+  <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
+    <value>Ajoute uniquement la configuration des sortants et des endpoints ; cliquer pour voir la documentation</value>
+  </data>
+  <data name="TbFullConfigTemplateDesc" xml:space="preserve">
+    <value>Cette fonction s’adresse aux utilisateurs avancés et aux besoins spécifiques. Une fois activée, les paramètres de base du Core, du DNS et du routage sont ignorés. Vous devez vous assurer que la configuration des ports du proxy système, des statistiques de trafic, etc., est correcte — tout est à votre charge.</value>
+  </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>Début de l’analyse et du traitement du contenu d’abonnement</value>
+  </data>
+  <data name="TbSelectProfile" xml:space="preserve">
+    <value>Sélectionner une configuration</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>Actif globalement par défaut, avec filtrage FakeIP intégré ; ne fonctionne que dans sing-box</value>
+  </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>Veuillez ajouter au moins une configuration</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>Groupe de stratégie</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>Chaîne de proxy</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>Latence minimale</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>Aléatoire</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>Round Robin</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>Le plus stable</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>Type de groupe de stratégie</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>Ajouter un groupe de stratégie</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>Ajouter une chaîne de proxy</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>Ajouter un enfant</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>Supprimer l’enfant</value>
+  </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>Liste des enfants</value>
+  </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>Basculement (failover)</value>
+  </data>
+  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
+    <value>sing-box basculement (multi-sélection)</value>
+  </data>
+  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
+    <value>Xray basculement (multi-sélection)</value>
+  </data>
+  <data name="CoreNotSupportNetwork" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} ».</value>
+  </data>
+  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} » avec le mode de transport « {2} ».</value>
+  </data>
+  <data name="CoreNotSupportProtocol" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} ».</value>
+  </data>
+  <data name="ProxyChainedPrefix" xml:space="preserve">
+    <value>Chaîne de proxy : </value>
+  </data>
+  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
+    <value>Règle de routage sortante : </value>
+  </data>
+  <data name="PolicyGroupPrefix" xml:space="preserve">
+    <value>Groupe de stratégie : </value>
+  </data>
+  <data name="NodeTagNotExist" xml:space="preserve">
+    <value>L’alias « {0} » n’existe pas.</value>
+  </data>
+  <data name="GroupEmpty" xml:space="preserve">
+    <value>Le groupe « {0} » est vide. Veuillez ajouter au moins une configuration.</value>
+  </data>
+  <data name="InvalidProperty" xml:space="preserve">
+    <value>La propriété {0} est invalide, veuillez vérifier</value>
+  </data>
+  <data name="GroupSelfReference" xml:space="preserve">
+    <value>Le groupe {0} ne peut pas se référencer lui-même ni créer de référence circulaire</value>
+  </data>
+  <data name="NotSupportProtocol" xml:space="preserve">
+    <value>Protocole « {0} » non pris en charge.</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
+    <value>Si le système n’a pas de zone de notif., n’activez pas cette option</value>
+  </data>
+  <data name="TbRuleType" xml:space="preserve">
+    <value>Type de règle</value>
+  </data>
+  <data name="TbRuleTypeTips" xml:space="preserve">
+    <value>Des règles peuvent être définies séparément pour Routing et DNS ; ALL les applique aux deux</value>
+  </data>
+  <data name="TbBootstrapDNS" xml:space="preserve">
+    <value>DNS d’amorçage</value>
+  </data>
+  <data name="TbBootstrapDNSTips" xml:space="preserve">
+    <value>Résoudre le nom du serveur DNS ; doit être spécifié en IP</value>
+  </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>Test 1-clic de latence réelle</value>
+  </data>
+</root>
