@@ -244,7 +244,7 @@
     <value>Mise à jour du Core réussie ! Redémarrage du service...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Protocole non VMess ni ss</value>
+    <value>Protocole non VMess ni SS</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>Fichier Core introuvable dans le dossier ({0}) (nom de fichier : {1}). Veuillez le télécharger puis le placer dans le dossier. Adresse de téléchargement : {2}</value>
