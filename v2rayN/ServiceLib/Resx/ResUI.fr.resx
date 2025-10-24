@@ -1513,7 +1513,7 @@
     <value>Aléatoire</value>
   </data>
   <data name="TbRoundRobin" xml:space="preserve">
-    <value>Tourniquet (round-robin)</value>
+    <value>Round Robin</value>
   </data>
   <data name="TbLeastLoad" xml:space="preserve">
     <value>Le plus stable</value>
