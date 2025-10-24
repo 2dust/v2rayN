@@ -6,13 +6,13 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.7" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.7" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.7" />
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.7" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.8" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.8" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.8" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.8" />
     <PackageVersion Include="CliWrap" Version="3.9.0" />
     <PackageVersion Include="Downloader" Version="4.0.3" />
-    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.1" />
+    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.2" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.0" />
     <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
     <PackageVersion Include="QRCoder" Version="1.7.0" />
