@@ -391,7 +391,7 @@
     <value>Test en cours...</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
-    <value>Réseau local (LAN)</value>
+    <value>Réseau local</value>
   </data>
   <data name="LabLocal" xml:space="preserve">
     <value>Local</value>
@@ -586,7 +586,7 @@
     <value>ID supplémentaire (alterId)</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
-    <value>Empreinte (fingerprint)</value>
+    <value>Empreinte</value>
   </data>
   <data name="TbHeaderType" xml:space="preserve">
     <value>Type de camouflage (type)</value>
@@ -955,7 +955,7 @@
     <value>Taille de police</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>Délai d’expiration du test de vitesse (unitaire)</value>
+    <value>Valeur délai d'expiration test vitesse unique</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>URL du fichier de test de vitesse</value>
@@ -1588,7 +1588,7 @@
     <value>Des règles peuvent être définies séparément pour Routing et DNS ; ALL les applique aux deux</value>
   </data>
   <data name="TbBootstrapDNS" xml:space="preserve">
-    <value>DNS de démarrage (Bootstrap DNS)</value>
+    <value>DNS d’amorçage</value>
   </data>
   <data name="TbBootstrapDNSTips" xml:space="preserve">
     <value>Résoudre le nom du serveur DNS ; doit être spécifié en IP</value>
