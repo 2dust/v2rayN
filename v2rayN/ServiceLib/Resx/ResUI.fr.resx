@@ -1465,7 +1465,7 @@
     <value>Paramètres du modèle de config complet</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>Activer le modèle de configuration complet</value>
+    <value>Activer le modèle de config. complet</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
     <value>Modèle de configuration complet v2ray</value>
