@@ -17,7 +17,21 @@ cp -rf "$OutputPath64"/* "$APPDIR_X64/usr/lib/v2rayN" || true
 [ -f "$APPDIR_X64/usr/lib/v2rayN/v2rayN.png" ] && cp "$APPDIR_X64/usr/lib/v2rayN/v2rayN.png" "$APPDIR_X64/usr/share/pixmaps/v2rayN.png" || true
 [ -f "$APPDIR_X64/usr/lib/v2rayN/v2rayN.png" ] && cp "$APPDIR_X64/usr/lib/v2rayN/v2rayN.png" "$APPDIR_X64/v2rayN.png" || true
 
-printf '%s\n' '#!/bin/sh' 'HERE="$(dirname "$(readlink -f "$0")")"' 'cd "$HERE/usr/lib/v2rayN"' 'exec "$HERE/usr/lib/v2rayN/v2rayN" "$@"' > "$APPDIR_X64/AppRun"
+cat > "$APPDIR_X64/AppRun" <<'APP_RUN'
+#!/bin/sh
+set -eu
+ver_ge() { [ "$1" = "$2" ] && return 0 || [ "$(printf '%s\n' "$1" "$2" | sort -V | tail -n1)" = "$1" ]; }
+ldd_out="$(ldd --version 2>&1 || true)"
+echo "$ldd_out" | grep -iq musl && { echo "System is too old"; exit 1; }
+glibc_ver="$(echo "$ldd_out" | head -n1 | grep -oE '[0-9]+(\.[0-9]+)+' | head -n1 || true)"
+[ -z "${glibc_ver:-}" ] && { echo "System is too old"; exit 1; }
+ver_ge "$glibc_ver" "2.13" || { echo "System is too old"; exit 1; }
+kernel_ver="$(uname -r | cut -d'-' -f1)"
+ver_ge "$kernel_ver" "5.14" || { echo "System is too old"; exit 1; }
+HERE="$(dirname "$(readlink -f "$0")")"
+cd "$HERE/usr/lib/v2rayN"
+exec "$HERE/usr/lib/v2rayN/v2rayN" "$@"
+APP_RUN
 chmod +x "$APPDIR_X64/AppRun"
 ln -sf usr/lib/v2rayN/v2rayN "$APPDIR_X64/usr/bin/v2rayN"
 cat > "$APPDIR_X64/v2rayN.desktop" <<EOF
@@ -43,7 +57,21 @@ cp -rf "$OutputPathArm64"/* "$APPDIR_ARM64/usr/lib/v2rayN" || true
 [ -f "$APPDIR_ARM64/usr/lib/v2rayN/v2rayN.png" ] && cp "$APPDIR_ARM64/usr/lib/v2rayN/v2rayN.png" "$APPDIR_ARM64/usr/share/pixmaps/v2rayN.png" || true
 [ -f "$APPDIR_ARM64/usr/lib/v2rayN/v2rayN.png" ] && cp "$APPDIR_ARM64/usr/lib/v2rayN/v2rayN.png" "$APPDIR_ARM64/v2rayN.png" || true
 
-printf '%s\n' '#!/bin/sh' 'HERE="$(dirname "$(readlink -f "$0")")"' 'cd "$HERE/usr/lib/v2rayN"' 'exec "$HERE/usr/lib/v2rayN/v2rayN" "$@"' > "$APPDIR_ARM64/AppRun"
+cat > "$APPDIR_ARM64/AppRun" <<'APP_RUN'
+#!/bin/sh
+set -eu
+ver_ge() { [ "$1" = "$2" ] && return 0 || [ "$(printf '%s\n' "$1" "$2" | sort -V | tail -n1)" = "$1" ]; }
+ldd_out="$(ldd --version 2>&1 || true)"
+echo "$ldd_out" | grep -iq musl && { echo "System is too old"; exit 1; }
+glibc_ver="$(echo "$ldd_out" | head -n1 | grep -oE '[0-9]+(\.[0-9]+)+' | head -n1 || true)"
+[ -z "${glibc_ver:-}" ] && { echo "System is too old"; exit 1; }
+ver_ge "$glibc_ver" "2.13" || { echo "System is too old"; exit 1; }
+kernel_ver="$(uname -r | cut -d'-' -f1)"
+ver_ge "$kernel_ver" "5.14" || { echo "System is too old"; exit 1; }
+HERE="$(dirname "$(readlink -f "$0")")"
+cd "$HERE/usr/lib/v2rayN"
+exec "$HERE/usr/lib/v2rayN/v2rayN" "$@"
+APP_RUN
 chmod +x "$APPDIR_ARM64/AppRun"
 ln -sf usr/lib/v2rayN/v2rayN "$APPDIR_ARM64/usr/bin/v2rayN"
 cat > "$APPDIR_ARM64/v2rayN.desktop" <<EOF
