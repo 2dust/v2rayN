@@ -427,7 +427,7 @@
     <value>路由设置</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>配置文件</value>
+    <value>配置项</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>设置</value>

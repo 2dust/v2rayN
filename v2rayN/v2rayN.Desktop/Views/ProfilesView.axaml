@@ -75,6 +75,15 @@
                         <PathIcon Data="{StaticResource SemiIconBolt}" />
                     </Button.Content>
                 </Button>
+                <Button
+                    x:Name="menuMixedTestServer"
+                    Margin="{StaticResource MarginLr4}"
+                    Classes="IconButton Success"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
+                    <Button.Content>
+                        <PathIcon Data="{StaticResource building_ping}" />
+                    </Button.Content>
+                </Button>
 
             </WrapPanel>
             <DataGrid
@@ -99,15 +108,12 @@
                         <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
                         <MenuItem x:Name="menuRemoveServer" Header="{x:Static resx:ResUI.menuRemoveServer}" />
                         <MenuItem x:Name="menuRemoveDuplicateServer" Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
+                        <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
                         <Separator />
-                        <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />
                         <MenuItem x:Name="menuRealPingServer" Header="{x:Static resx:ResUI.menuRealPingServer}" />
                         <MenuItem x:Name="menuSpeedServer" Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
-                            <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
-                            <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
-                        </MenuItem>
+                        <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
                         <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
                             <MenuItem>

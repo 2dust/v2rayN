@@ -87,6 +87,15 @@
                     ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
                 </Button>
+                <Button
+                    x:Name="menuMixedTestServer"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
+                </Button>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
@@ -131,11 +140,11 @@
                             x:Name="menuRemoveDuplicateServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
-                        <Separator />
                         <MenuItem
-                            x:Name="menuMixedTestServer"
+                            x:Name="menuRemoveInvalidServerResult"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuMixedTestServer}" />
+                            Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
+                        <Separator />
                         <MenuItem
                             x:Name="menuTcpingServer"
                             Height="{StaticResource MenuItemHeight}"
@@ -148,16 +157,10 @@
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
-                            <MenuItem
-                                x:Name="menuSortServerResult"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSortServerResult}" />
-                            <MenuItem
-                                x:Name="menuRemoveInvalidServerResult"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
-                        </MenuItem>
+                        <MenuItem
+                            x:Name="menuSortServerResult"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuMoveToGroup"
