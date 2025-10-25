@@ -28,7 +28,7 @@ Package: v2rayN
 Version: $Version
 Architecture: $Arch2
 Maintainer: https://github.com/2dust/v2rayN
-Depends: desktop-file-utils, xdg-utils
+Depends: fontconfig (>= 2.14), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 8.32), openssl
 Description: A GUI client for Windows and Linux, support Xray core and sing-box-core and others
 EOF
 
