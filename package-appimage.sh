@@ -67,7 +67,7 @@ glibc_ver="$(echo "$ldd_out" | head -n1 | grep -oE '[0-9]+(\.[0-9]+)+' | head -n
 [ -z "${glibc_ver:-}" ] && { echo "System is too old"; exit 1; }
 ver_ge "$glibc_ver" "2.13" || { echo "System is too old"; exit 1; }
 kernel_ver="$(uname -r | cut -d'-' -f1)"
-ver_ge "$kernel_ver" "6.13" || { echo "System is too old"; exit 1; }
+ver_ge "$kernel_ver" "5.14" || { echo "System is too old"; exit 1; }
 HERE="$(dirname "$(readlink -f "$0")")"
 cd "$HERE/usr/lib/v2rayN"
 exec "$HERE/usr/lib/v2rayN/v2rayN" "$@"
