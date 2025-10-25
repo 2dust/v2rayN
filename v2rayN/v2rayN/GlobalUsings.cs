@@ -6,7 +6,7 @@ global using System.Diagnostics;
 global using System.Globalization;
 global using System.IO;
 global using System.Linq;
-global using System.Reactive.Disposables;
+global using System.Reactive.Disposables.Fluent;
 global using System.Reactive.Linq;
 global using System.Runtime.InteropServices;
 global using System.Text;
