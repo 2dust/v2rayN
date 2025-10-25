@@ -4,21 +4,20 @@ using MaterialDesignThemes.Wpf;
 
 namespace v2rayN.ViewModels;
 
-public class ThemeSettingViewModel : MyReactiveObject
+public partial class ThemeSettingViewModel : MyReactiveObject
 {
     private readonly PaletteHelper _paletteHelper = new();
 
-    private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
-    public IObservableCollection<Swatch> Swatches => _swatches;
+    public IObservableCollection<Swatch> Swatches { get; } = new ObservableCollectionExtended<Swatch>();
 
     [Reactive]
-    public Swatch SelectedSwatch { get; set; }
+    private Swatch _selectedSwatch;
 
-    [Reactive] public string CurrentTheme { get; set; }
+    [Reactive] private string _currentTheme;
 
-    [Reactive] public int CurrentFontSize { get; set; }
+    [Reactive] private int _currentFontSize;
 
-    [Reactive] public string CurrentLanguage { get; set; }
+    [Reactive] private string _currentLanguage;
 
     public ThemeSettingViewModel()
     {
@@ -48,10 +47,10 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void BindingUI()
     {
-        _swatches.AddRange(new SwatchesProvider().Swatches);
+        Swatches.AddRange(new SwatchesProvider().Swatches);
         if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
-            SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
+            SelectedSwatch = Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
         }
         CurrentTheme = _config.UiItem.CurrentTheme;
         CurrentFontSize = _config.UiItem.CurrentFontSize;

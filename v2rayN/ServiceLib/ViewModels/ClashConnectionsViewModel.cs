@@ -1,20 +1,20 @@
 namespace ServiceLib.ViewModels;
 
-public class ClashConnectionsViewModel : MyReactiveObject
+public partial class ClashConnectionsViewModel : MyReactiveObject
 {
     public IObservableCollection<ClashConnectionModel> ConnectionItems { get; } = new ObservableCollectionExtended<ClashConnectionModel>();
 
     [Reactive]
-    public ClashConnectionModel SelectedSource { get; set; }
+    private ClashConnectionModel _selectedSource;
 
     public ReactiveCommand<Unit, Unit> ConnectionCloseCmd { get; }
     public ReactiveCommand<Unit, Unit> ConnectionCloseAllCmd { get; }
 
     [Reactive]
-    public string HostFilter { get; set; }
+    private string _hostFilter;
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    private bool _autoRefresh;
 
     public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {

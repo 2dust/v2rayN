@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class CheckUpdateViewModel : MyReactiveObject
+public partial class CheckUpdateViewModel : MyReactiveObject
 {
     private const string _geo = "GeoFiles";
     private readonly string _v2rayN = ECoreType.v2rayN.ToString();
@@ -9,7 +9,7 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
     public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
-    [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
+    [Reactive] private bool _enableCheckPreReleaseUpdate;
 
     public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {

@@ -2,7 +2,7 @@ using System.Reactive.Concurrency;
 
 namespace ServiceLib.ViewModels;
 
-public class MainWindowViewModel : MyReactiveObject
+public partial class MainWindowViewModel : MyReactiveObject
 {
     #region Menu
 
@@ -54,13 +54,13 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
     [Reactive]
-    public bool BlReloadEnabled { get; set; }
+    private bool _blReloadEnabled;
 
     [Reactive]
-    public bool ShowClashUI { get; set; }
+    private bool _showClashUI;
 
     [Reactive]
-    public int TabMainSelectedIndex { get; set; }
+    private int _tabMainSelectedIndex;
 
     #endregion Menu
 

@@ -1,21 +1,21 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingSettingViewModel : MyReactiveObject
+public partial class RoutingSettingViewModel : MyReactiveObject
 {
     #region Reactive
 
     public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
 
     [Reactive]
-    public RoutingItemModel SelectedSource { get; set; }
+    private RoutingItemModel _selectedSource;
 
     public IList<RoutingItemModel> SelectedSources { get; set; }
 
     [Reactive]
-    public string DomainStrategy { get; set; }
+    private string _domainStrategy;
 
     [Reactive]
-    public string DomainStrategy4Singbox { get; set; }
+    private string _domainStrategy4Singbox;
 
     public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
     public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }

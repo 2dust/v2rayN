@@ -1,11 +1,11 @@
 namespace ServiceLib.ViewModels;
 
-public class SubSettingViewModel : MyReactiveObject
+public partial class SubSettingViewModel : MyReactiveObject
 {
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
-    public SubItem SelectedSource { get; set; }
+    private SubItem _selectedSource;
 
     public IList<SubItem> SelectedSources { get; set; }
 

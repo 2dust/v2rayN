@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class MsgViewModel : MyReactiveObject
+public partial class MsgViewModel : MyReactiveObject
 {
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
@@ -8,10 +8,10 @@ public class MsgViewModel : MyReactiveObject
     public int NumMaxMsg { get; } = 500;
 
     [Reactive]
-    public string MsgFilter { get; set; }
+    private string _msgFilter;
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    private bool _autoRefresh;
 
     public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {

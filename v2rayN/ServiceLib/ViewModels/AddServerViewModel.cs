@@ -1,12 +1,12 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServerViewModel : MyReactiveObject
+public partial class AddServerViewModel : MyReactiveObject
 {
     [Reactive]
-    public ProfileItem SelectedSource { get; set; }
+    private ProfileItem _selectedSource;
 
     [Reactive]
-    public string? CoreType { get; set; }
+    private string? _coreType;
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 

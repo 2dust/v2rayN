@@ -1,102 +1,102 @@
 namespace ServiceLib.ViewModels;
 
-public class OptionSettingViewModel : MyReactiveObject
+public partial class OptionSettingViewModel : MyReactiveObject
 {
     #region Core
 
-    [Reactive] public int localPort { get; set; }
-    [Reactive] public bool SecondLocalPortEnabled { get; set; }
-    [Reactive] public bool udpEnabled { get; set; }
-    [Reactive] public bool sniffingEnabled { get; set; }
-    public IList<string> destOverride { get; set; }
-    [Reactive] public bool routeOnly { get; set; }
-    [Reactive] public bool allowLANConn { get; set; }
-    [Reactive] public bool newPort4LAN { get; set; }
-    [Reactive] public string user { get; set; }
-    [Reactive] public string pass { get; set; }
-    [Reactive] public bool muxEnabled { get; set; }
-    [Reactive] public bool logEnabled { get; set; }
-    [Reactive] public string loglevel { get; set; }
-    [Reactive] public bool defAllowInsecure { get; set; }
-    [Reactive] public string defFingerprint { get; set; }
-    [Reactive] public string defUserAgent { get; set; }
-    [Reactive] public string mux4SboxProtocol { get; set; }
-    [Reactive] public bool enableCacheFile4Sbox { get; set; }
-    [Reactive] public int hyUpMbps { get; set; }
-    [Reactive] public int hyDownMbps { get; set; }
-    [Reactive] public bool enableFragment { get; set; }
+    [Reactive] private int _localPort;
+    [Reactive] private bool _secondLocalPortEnabled;
+    [Reactive] private bool _udpEnabled;
+    [Reactive] private bool _sniffingEnabled;
+    public IList<string> DestOverride { get; set; }
+    [Reactive] private bool _routeOnly;
+    [Reactive] private bool _allowLANConn;
+    [Reactive] private bool _newPort4LAN;
+    [Reactive] private string _user;
+    [Reactive] private string _pass;
+    [Reactive] private bool _muxEnabled;
+    [Reactive] private bool _logEnabled;
+    [Reactive] private string _logLevel;
+    [Reactive] private bool _defAllowInsecure;
+    [Reactive] private string _defFingerprint;
+    [Reactive] private string _defUserAgent;
+    [Reactive] private string _mux4SboxProtocol;
+    [Reactive] private bool _enableCacheFile4Sbox;
+    [Reactive] private int _hyUpMbps;
+    [Reactive] private int _hyDownMbps;
+    [Reactive] private bool _enableFragment;
 
     #endregion Core
 
     #region Core KCP
 
-    //[Reactive] public int Kcpmtu { get; set; }
-    //[Reactive] public int Kcptti { get; set; }
-    //[Reactive] public int KcpuplinkCapacity { get; set; }
-    //[Reactive] public int KcpdownlinkCapacity { get; set; }
-    //[Reactive] public int KcpreadBufferSize { get; set; }
-    //[Reactive] public int KcpwriteBufferSize { get; set; }
-    //[Reactive] public bool Kcpcongestion { get; set; }
+    //[Reactive] private int _kcpmtu;
+    //[Reactive] private int _kcptti;
+    //[Reactive] private int _kcpuplinkCapacity;
+    //[Reactive] private int _kcpdownlinkCapacity;
+    //[Reactive] private int _kcpreadBufferSize;
+    //[Reactive] private int _kcpwriteBufferSize;
+    //[Reactive] private bool _kcpcongestion;
 
     #endregion Core KCP
 
     #region UI
 
-    [Reactive] public bool AutoRun { get; set; }
-    [Reactive] public bool EnableStatistics { get; set; }
-    [Reactive] public bool KeepOlderDedupl { get; set; }
-    [Reactive] public bool DisplayRealTimeSpeed { get; set; }
-    [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
-    [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
-    [Reactive] public bool AutoHideStartup { get; set; }
-    [Reactive] public bool Hide2TrayWhenClose { get; set; }
-    [Reactive] public bool EnableDragDropSort { get; set; }
-    [Reactive] public bool DoubleClick2Activate { get; set; }
-    [Reactive] public int AutoUpdateInterval { get; set; }
-    [Reactive] public int TrayMenuServersLimit { get; set; }
-    [Reactive] public string CurrentFontFamily { get; set; }
-    [Reactive] public int SpeedTestTimeout { get; set; }
-    [Reactive] public string SpeedTestUrl { get; set; }
-    [Reactive] public string SpeedPingTestUrl { get; set; }
-    [Reactive] public int MixedConcurrencyCount { get; set; }
-    [Reactive] public bool EnableHWA { get; set; }
-    [Reactive] public string SubConvertUrl { get; set; }
-    [Reactive] public int MainGirdOrientation { get; set; }
-    [Reactive] public string GeoFileSourceUrl { get; set; }
-    [Reactive] public string SrsFileSourceUrl { get; set; }
-    [Reactive] public string RoutingRulesSourceUrl { get; set; }
-    [Reactive] public string IPAPIUrl { get; set; }
+    [Reactive] private bool _autoRun;
+    [Reactive] private bool _enableStatistics;
+    [Reactive] private bool _keepOlderDedupl;
+    [Reactive] private bool _displayRealTimeSpeed;
+    [Reactive] private bool _enableAutoAdjustMainLvColWidth;
+    [Reactive] private bool _enableUpdateSubOnlyRemarksExist;
+    [Reactive] private bool _autoHideStartup;
+    [Reactive] private bool _hide2TrayWhenClose;
+    [Reactive] private bool _enableDragDropSort;
+    [Reactive] private bool _doubleClick2Activate;
+    [Reactive] private int _autoUpdateInterval;
+    [Reactive] private int _trayMenuServersLimit;
+    [Reactive] private string _currentFontFamily;
+    [Reactive] private int _speedTestTimeout;
+    [Reactive] private string _speedTestUrl;
+    [Reactive] private string _speedPingTestUrl;
+    [Reactive] private int _mixedConcurrencyCount;
+    [Reactive] private bool _enableHWA;
+    [Reactive] private string _subConvertUrl;
+    [Reactive] private int _mainGirdOrientation;
+    [Reactive] private string _geoFileSourceUrl;
+    [Reactive] private string _srsFileSourceUrl;
+    [Reactive] private string _routingRulesSourceUrl;
+    [Reactive] private string _ipAPIUrl;
 
     #endregion UI
 
     #region System proxy
 
-    [Reactive] public bool notProxyLocalAddress { get; set; }
-    [Reactive] public string systemProxyAdvancedProtocol { get; set; }
-    [Reactive] public string systemProxyExceptions { get; set; }
+    [Reactive] private bool _notProxyLocalAddress;
+    [Reactive] private string _systemProxyAdvancedProtocol;
+    [Reactive] private string _systemProxyExceptions;
 
     #endregion System proxy
 
     #region Tun mode
 
-    [Reactive] public bool TunAutoRoute { get; set; }
-    [Reactive] public bool TunStrictRoute { get; set; }
-    [Reactive] public string TunStack { get; set; }
-    [Reactive] public int TunMtu { get; set; }
-    [Reactive] public bool TunEnableExInbound { get; set; }
-    [Reactive] public bool TunEnableIPv6Address { get; set; }
+    [Reactive] private bool _tunAutoRoute;
+    [Reactive] private bool _tunStrictRoute;
+    [Reactive] private string _tunStack;
+    [Reactive] private int _tunMtu;
+    [Reactive] private bool _tunEnableExInbound;
+    [Reactive] private bool _tunEnableIPv6Address;
 
     #endregion Tun mode
 
     #region CoreType
 
-    [Reactive] public string CoreType1 { get; set; }
-    [Reactive] public string CoreType2 { get; set; }
-    [Reactive] public string CoreType3 { get; set; }
-    [Reactive] public string CoreType4 { get; set; }
-    [Reactive] public string CoreType5 { get; set; }
-    [Reactive] public string CoreType6 { get; set; }
-    [Reactive] public string CoreType9 { get; set; }
+    [Reactive] private string _coreType1;
+    [Reactive] private string _coreType2;
+    [Reactive] private string _coreType3;
+    [Reactive] private string _coreType4;
+    [Reactive] private string _coreType5;
+    [Reactive] private string _coreType6;
+    [Reactive] private string _coreType9;
 
     #endregion CoreType
 
@@ -122,26 +122,26 @@ public class OptionSettingViewModel : MyReactiveObject
         #region Core
 
         var inbound = _config.Inbound.First();
-        localPort = inbound.LocalPort;
+        LocalPort = inbound.LocalPort;
         SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
-        udpEnabled = inbound.UdpEnabled;
-        sniffingEnabled = inbound.SniffingEnabled;
-        routeOnly = inbound.RouteOnly;
-        allowLANConn = inbound.AllowLANConn;
-        newPort4LAN = inbound.NewPort4LAN;
-        user = inbound.User;
-        pass = inbound.Pass;
-        muxEnabled = _config.CoreBasicItem.MuxEnabled;
-        logEnabled = _config.CoreBasicItem.LogEnabled;
-        loglevel = _config.CoreBasicItem.Loglevel;
-        defAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
-        defFingerprint = _config.CoreBasicItem.DefFingerprint;
-        defUserAgent = _config.CoreBasicItem.DefUserAgent;
-        mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
-        enableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
-        hyUpMbps = _config.HysteriaItem.UpMbps;
-        hyDownMbps = _config.HysteriaItem.DownMbps;
-        enableFragment = _config.CoreBasicItem.EnableFragment;
+        UdpEnabled = inbound.UdpEnabled;
+        SniffingEnabled = inbound.SniffingEnabled;
+        RouteOnly = inbound.RouteOnly;
+        AllowLANConn = inbound.AllowLANConn;
+        NewPort4LAN = inbound.NewPort4LAN;
+        User = inbound.User;
+        Pass = inbound.Pass;
+        MuxEnabled = _config.CoreBasicItem.MuxEnabled;
+        LogEnabled = _config.CoreBasicItem.LogEnabled;
+        LogLevel = _config.CoreBasicItem.Loglevel;
+        DefAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
+        DefFingerprint = _config.CoreBasicItem.DefFingerprint;
+        DefUserAgent = _config.CoreBasicItem.DefUserAgent;
+        Mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
+        EnableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
+        HyUpMbps = _config.HysteriaItem.UpMbps;
+        HyDownMbps = _config.HysteriaItem.DownMbps;
+        EnableFragment = _config.CoreBasicItem.EnableFragment;
 
         #endregion Core
 
@@ -182,15 +182,15 @@ public class OptionSettingViewModel : MyReactiveObject
         GeoFileSourceUrl = _config.ConstItem.GeoSourceUrl;
         SrsFileSourceUrl = _config.ConstItem.SrsSourceUrl;
         RoutingRulesSourceUrl = _config.ConstItem.RouteRulesTemplateSourceUrl;
-        IPAPIUrl = _config.SpeedTestItem.IPAPIUrl;
+        IpAPIUrl = _config.SpeedTestItem.IPAPIUrl;
 
         #endregion UI
 
         #region System proxy
 
-        notProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
-        systemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
-        systemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
+        NotProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
+        SystemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
+        SystemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
 
         #endregion System proxy
 
@@ -267,8 +267,8 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task SaveSettingAsync()
     {
-        if (localPort.ToString().IsNullOrEmpty() || !Utils.IsNumeric(localPort.ToString())
-           || localPort <= 0 || localPort >= Global.MaxPort)
+        if (LocalPort.ToString().IsNullOrEmpty() || !Utils.IsNumeric(LocalPort.ToString())
+           || LocalPort <= 0 || LocalPort >= Global.MaxPort)
         {
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
@@ -292,31 +292,31 @@ public class OptionSettingViewModel : MyReactiveObject
         //}
 
         //Core
-        _config.Inbound.First().LocalPort = localPort;
+        _config.Inbound.First().LocalPort = LocalPort;
         _config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
-        _config.Inbound.First().UdpEnabled = udpEnabled;
-        _config.Inbound.First().SniffingEnabled = sniffingEnabled;
-        _config.Inbound.First().DestOverride = destOverride?.ToList();
-        _config.Inbound.First().RouteOnly = routeOnly;
-        _config.Inbound.First().AllowLANConn = allowLANConn;
-        _config.Inbound.First().NewPort4LAN = newPort4LAN;
-        _config.Inbound.First().User = user;
-        _config.Inbound.First().Pass = pass;
+        _config.Inbound.First().UdpEnabled = UdpEnabled;
+        _config.Inbound.First().SniffingEnabled = SniffingEnabled;
+        _config.Inbound.First().DestOverride = DestOverride?.ToList();
+        _config.Inbound.First().RouteOnly = RouteOnly;
+        _config.Inbound.First().AllowLANConn = AllowLANConn;
+        _config.Inbound.First().NewPort4LAN = NewPort4LAN;
+        _config.Inbound.First().User = User;
+        _config.Inbound.First().Pass = Pass;
         if (_config.Inbound.Count > 1)
         {
             _config.Inbound.RemoveAt(1);
         }
-        _config.CoreBasicItem.LogEnabled = logEnabled;
-        _config.CoreBasicItem.Loglevel = loglevel;
-        _config.CoreBasicItem.MuxEnabled = muxEnabled;
-        _config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
-        _config.CoreBasicItem.DefFingerprint = defFingerprint;
-        _config.CoreBasicItem.DefUserAgent = defUserAgent;
-        _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
-        _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
-        _config.HysteriaItem.UpMbps = hyUpMbps;
-        _config.HysteriaItem.DownMbps = hyDownMbps;
-        _config.CoreBasicItem.EnableFragment = enableFragment;
+        _config.CoreBasicItem.LogEnabled = LogEnabled;
+        _config.CoreBasicItem.Loglevel = LogLevel;
+        _config.CoreBasicItem.MuxEnabled = MuxEnabled;
+        _config.CoreBasicItem.DefAllowInsecure = DefAllowInsecure;
+        _config.CoreBasicItem.DefFingerprint = DefFingerprint;
+        _config.CoreBasicItem.DefUserAgent = DefUserAgent;
+        _config.Mux4SboxItem.Protocol = Mux4SboxProtocol;
+        _config.CoreBasicItem.EnableCacheFile4Sbox = EnableCacheFile4Sbox;
+        _config.HysteriaItem.UpMbps = HyUpMbps;
+        _config.HysteriaItem.DownMbps = HyDownMbps;
+        _config.CoreBasicItem.EnableFragment = EnableFragment;
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;
@@ -341,12 +341,12 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
         _config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
         _config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
-        _config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
+        _config.SpeedTestItem.IPAPIUrl = IpAPIUrl;
 
         //systemProxy
-        _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
-        _config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
-        _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
+        _config.SystemProxyItem.SystemProxyExceptions = SystemProxyExceptions;
+        _config.SystemProxyItem.NotProxyLocalAddress = NotProxyLocalAddress;
+        _config.SystemProxyItem.SystemProxyAdvancedProtocol = SystemProxyAdvancedProtocol;
 
         //tun mode
         _config.TunModeItem.AutoRoute = TunAutoRoute;

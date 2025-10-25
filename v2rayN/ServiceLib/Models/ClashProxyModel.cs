@@ -1,7 +1,7 @@
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ClashProxyModel : ReactiveObject
+public partial class ClashProxyModel : ReactiveObject
 {
     public string? Name { get; set; }
 
@@ -9,9 +9,9 @@ public class ClashProxyModel : ReactiveObject
 
     public string? Now { get; set; }
 
-    [Reactive] public int Delay { get; set; }
+    [Reactive] private int _delay;
 
-    [Reactive] public string? DelayName { get; set; }
+    [Reactive] private string? _delayName;
 
     public bool IsActive { get; set; }
 }

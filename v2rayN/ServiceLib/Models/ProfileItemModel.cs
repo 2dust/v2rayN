@@ -1,32 +1,32 @@
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ProfileItemModel : ProfileItem
+public partial class ProfileItemModel : ProfileItem
 {
     public bool IsActive { get; set; }
     public string SubRemarks { get; set; }
 
     [Reactive]
-    public int Delay { get; set; }
+    private int _delay;
 
     public decimal Speed { get; set; }
     public int Sort { get; set; }
 
     [Reactive]
-    public string DelayVal { get; set; }
+    private string _delayVal;
 
     [Reactive]
-    public string SpeedVal { get; set; }
+    private string _speedVal;
 
     [Reactive]
-    public string TodayUp { get; set; }
+    private string _todayUp;
 
     [Reactive]
-    public string TodayDown { get; set; }
+    private string _todayDown;
 
     [Reactive]
-    public string TotalUp { get; set; }
+    private string _totalUp;
 
     [Reactive]
-    public string TotalDown { get; set; }
+    private string _totalDown;
 }

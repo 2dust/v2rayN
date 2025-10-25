@@ -1,10 +1,10 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesSelectViewModel : MyReactiveObject
+public partial class ProfilesSelectViewModel : MyReactiveObject
 {
     #region private prop
 
-    private string _serverFilter = string.Empty;
+    [Reactive] private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private string _subIndexId = string.Empty;
 
@@ -22,15 +22,12 @@ public class ProfilesSelectViewModel : MyReactiveObject
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
-    public ProfileItemModel SelectedProfile { get; set; }
+    private ProfileItemModel _selectedProfile;
 
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
-    public SubItem SelectedSub { get; set; }
-
-    [Reactive]
-    public string ServerFilter { get; set; }
+    private SubItem _selectedSub;
 
     // Include/Exclude filter for ConfigType
     public List<EConfigType> FilterConfigTypes
@@ -39,7 +36,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
         set => this.RaiseAndSetIfChanged(ref _filterConfigTypes, value);
     }
 
-    [Reactive]
     public bool FilterExclude
     {
         get => _filterExclude;

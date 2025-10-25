@@ -1,27 +1,27 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleDetailsViewModel : MyReactiveObject
+public partial class RoutingRuleDetailsViewModel : MyReactiveObject
 {
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
 
     [Reactive]
-    public RulesItem SelectedSource { get; set; }
+    private RulesItem _selectedSource;
 
     [Reactive]
-    public string Domain { get; set; }
+    private string _domain;
 
     [Reactive]
-    public string IP { get; set; }
+    private string _ip;
 
     [Reactive]
-    public string Process { get; set; }
+    private string _process;
 
     [Reactive]
-    public string? RuleType { get; set; }
+    private string? _ruleType;
 
     [Reactive]
-    public bool AutoSort { get; set; }
+    private bool _autoSort;
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
@@ -48,7 +48,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         }
 
         Domain = Utils.List2String(SelectedSource.Domain, true);
-        IP = Utils.List2String(SelectedSource.Ip, true);
+        Ip = Utils.List2String(SelectedSource.Ip, true);
         Process = Utils.List2String(SelectedSource.Process, true);
         RuleType = SelectedSource.RuleType?.ToString();
     }
@@ -56,19 +56,19 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
     private async Task SaveRulesAsync()
     {
         Domain = Utils.Convert2Comma(Domain);
-        IP = Utils.Convert2Comma(IP);
+        Ip = Utils.Convert2Comma(Ip);
         Process = Utils.Convert2Comma(Process);
 
         if (AutoSort)
         {
             SelectedSource.Domain = Utils.String2ListSorted(Domain);
-            SelectedSource.Ip = Utils.String2ListSorted(IP);
+            SelectedSource.Ip = Utils.String2ListSorted(Ip);
             SelectedSource.Process = Utils.String2ListSorted(Process);
         }
         else
         {
             SelectedSource.Domain = Utils.String2List(Domain);
-            SelectedSource.Ip = Utils.String2List(IP);
+            SelectedSource.Ip = Utils.String2List(Ip);
             SelectedSource.Process = Utils.String2List(Process);
         }
         SelectedSource.Protocol = ProtocolItems?.ToList();

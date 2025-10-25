@@ -1,16 +1,16 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleSettingViewModel : MyReactiveObject
+public partial class RoutingRuleSettingViewModel : MyReactiveObject
 {
     private List<RulesItem> _rules;
 
     [Reactive]
-    public RoutingItem SelectedRouting { get; set; }
+    private RoutingItem _selectedRouting;
 
     public IObservableCollection<RulesItemModel> RulesItems { get; } = new ObservableCollectionExtended<RulesItemModel>();
 
     [Reactive]
-    public RulesItemModel SelectedSource { get; set; }
+    private RulesItemModel _selectedSource;
 
     public IList<RulesItemModel> SelectedSources { get; set; }
 

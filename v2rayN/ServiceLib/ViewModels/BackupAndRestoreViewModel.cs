@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class BackupAndRestoreViewModel : MyReactiveObject
+public partial class BackupAndRestoreViewModel : MyReactiveObject
 {
     private readonly string _guiConfigs = "guiConfigs";
     private static string BackupFileName => $"backup_{DateTime.Now:yyyyMMddHHmmss}.zip";
@@ -10,10 +10,10 @@ public class BackupAndRestoreViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> WebDavCheckCmd { get; }
 
     [Reactive]
-    public WebDavItem SelectedSource { get; set; }
+    private WebDavItem _selectedSource;
 
     [Reactive]
-    public string OperationMsg { get; set; }
+    private string _operationMsg;
 
     public BackupAndRestoreViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {

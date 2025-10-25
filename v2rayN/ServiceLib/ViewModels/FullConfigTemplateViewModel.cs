@@ -1,35 +1,35 @@
 namespace ServiceLib.ViewModels;
 
-public class FullConfigTemplateViewModel : MyReactiveObject
+public partial class FullConfigTemplateViewModel : MyReactiveObject
 {
     #region Reactive
 
     [Reactive]
-    public bool EnableFullConfigTemplate4Ray { get; set; }
+    private bool _enableFullConfigTemplate4Ray;
 
     [Reactive]
-    public bool EnableFullConfigTemplate4Singbox { get; set; }
+    private bool _enableFullConfigTemplate4Singbox;
 
     [Reactive]
-    public string FullConfigTemplate4Ray { get; set; }
+    private string _fullConfigTemplate4Ray;
 
     [Reactive]
-    public string FullConfigTemplate4Singbox { get; set; }
+    private string _fullConfigTemplate4Singbox;
 
     [Reactive]
-    public string FullTunConfigTemplate4Singbox { get; set; }
+    private string _fullTunConfigTemplate4Singbox;
 
     [Reactive]
-    public bool AddProxyOnly4Ray { get; set; }
+    private bool _addProxyOnly4Ray;
 
     [Reactive]
-    public bool AddProxyOnly4Singbox { get; set; }
+    private bool _addProxyOnly4Singbox;
 
     [Reactive]
-    public string ProxyDetour4Ray { get; set; }
+    private string _proxyDetour4Ray;
 
     [Reactive]
-    public string ProxyDetour4Singbox { get; set; }
+    private string _proxyDetour4Singbox;
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 

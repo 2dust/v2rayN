@@ -1,11 +1,11 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesViewModel : MyReactiveObject
+public partial class ProfilesViewModel : MyReactiveObject
 {
     #region private prop
 
     private List<ProfileItem> _lstProfile;
-    private string _serverFilter = string.Empty;
+    [Reactive] private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
 
@@ -18,18 +18,15 @@ public class ProfilesViewModel : MyReactiveObject
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
-    public ProfileItemModel SelectedProfile { get; set; }
+    private ProfileItemModel _selectedProfile;
 
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
-    public SubItem SelectedSub { get; set; }
+    private SubItem _selectedSub;
 
     [Reactive]
-    public SubItem SelectedMoveToGroup { get; set; }
-
-    [Reactive]
-    public string ServerFilter { get; set; }
+    private SubItem _selectedMoveToGroup;
 
     #endregion ObservableCollection
 
