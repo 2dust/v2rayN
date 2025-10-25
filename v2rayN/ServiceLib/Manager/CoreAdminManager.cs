@@ -34,7 +34,7 @@ public class CoreAdminManager
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        sb.AppendLine($"sudo -S {cmdLine}");
+        sb.AppendLine($"exec sudo -S -- {cmdLine}");
         var shFilePath = await FileManager.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
         var procService = new ProcessService(
