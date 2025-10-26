@@ -1331,7 +1331,7 @@
     <value>JSON brut XHTTP Extra, format : { XHTTPObject }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>Masquer dans la barre d’état lors de la fermeture de la fenêtre</value>
+    <value>Masquer dans la barre d’état à la fermeture de la fenêtre</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
     <value>Niveau de concurrence lors des tests multithread</value>
