@@ -652,7 +652,7 @@
     <value>Port Socks</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>*Valeur du port Socks (config perso, optionnelle). Si définie, Xray/sing-box (Tun) démarre un service Socks en amont supplémentaire pour fournir le routage sélectif et l’affichage de la vitesse.</value>
+    <value>*Valeur du port Socks (config perso, optionnelle). Si défini, Xray/sing-box (Tun) démarre un service Socks en amont supplémentaire pour fournir le routage sélectif et l’affichage de la vitesse.</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Parcourir</value>
