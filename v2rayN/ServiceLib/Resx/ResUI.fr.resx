@@ -691,7 +691,7 @@
     <value>domainStrategy de Freedom (sortant)</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Auto-ajuster la largeur des colonnes après maj. des abonnements</value>
+    <value>Auto-ajuster la largeur des colonnes après maj. abonnements</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>Vérifier les mises à jour pré-version (à activer avec prudence)</value>
@@ -1114,7 +1114,7 @@
     <value>Activer le fragmentation (Fragment)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>Activer le fichier de cache de sing-box (fichiers de reˋgles)</value>
+    <value>Activer le fichier de cache de sing-box (fichiers règles)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>Set de règles sing-box perso</value>
