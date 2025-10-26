@@ -724,7 +724,8 @@
     <value>Mot de passe d’authentification</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>DNS personnalisés (plusieurs possibles, séparés par des virgules)</value>
+    <value>DNS perso (plusieurs configurables, séparés par virgules)
+</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Lever la restriction de proxy en boucle locale pour les applications Win10 UWP</value>
