@@ -898,7 +898,7 @@
     <value>Filtrage par alias (regex)</value>
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
-    <value>Afficher les journaux</value>
+    <value>Afficher les logs</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Activer Tun</value>
@@ -979,7 +979,7 @@
     <value>En attente du test (appuyer sur Échap pour arrêter)...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
-    <value>Désactivez ceci en cas de coupures anormales</value>
+    <value>Désactiver cette option si coupure anormale</value>
   </data>
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
     <value>Mise à jour désactivée, abonnement ignoré</value>
