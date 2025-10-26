@@ -42,6 +42,20 @@ echo "============================================"
 echo "Starting termination of process $PID and all its descendants"
 echo "============================================"
 
+# Try graceful termination first
+echo "Attempting graceful termination (SIGTERM) of PID: $PID"
+kill -15 "$PID" 2>/dev/null || true
+sleep 1
+
+# If still running, fall back to kill_descendants
+# Use the macOS-native 'kill -0' check
+if kill -0 $PID 2>/dev/null; then
+    echo "Process $PID did not exit after SIGTERM; proceeding with forced termination of its descendants and itself"
+else
+    echo "Process $PID exited cleanly after SIGTERM"
+    exit 0
+fi
+
 # Find and kill all descendant processes
 kill_descendants "$PID"
 
