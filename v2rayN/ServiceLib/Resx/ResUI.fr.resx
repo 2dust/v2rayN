@@ -1013,7 +1013,7 @@
     <value>Veuillez renseigner la structure JSON DNS ; cliquer pour voir la documentation</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>Cliquez pour importer la configuration DNS par défaut</value>
+    <value>Cliquez pour importer la config DNS par défaut</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
     <value>Stratégie résolution domaine (sing-box)</value>
