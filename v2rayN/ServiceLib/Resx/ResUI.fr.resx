@@ -1045,10 +1045,10 @@
     <value>Algo contrôle congestion</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Alias de configuration du proxy amont</value>
+    <value>Alias de config du proxy amont</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Alias de configuration du proxy aval</value>
+    <value>Alias de config du proxy aval</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>Assurez-vous que l’alias config existe et est unique</value>
