@@ -1207,7 +1207,7 @@
     <value>Stratégie de résolution par défaut des sortants</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Orientation de la mise en page principale (redémarrage requis)</value>
+    <value>Orientation mise en page principale (redémarrage requis)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Adresse de résolution de domaine pour sortants</value>
