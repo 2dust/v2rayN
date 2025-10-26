@@ -1370,7 +1370,7 @@
     <value>Plage de ports sautés</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>Écrase le port ; pour plusieurs groupes, séparez par des virgules (,)</value>
+    <value>Écrase le port ; pour plusieurs groupes, séparer par virgules (,)</value>
   </data>
   <data name="menuGenGroupMultipleServer" xml:space="preserve">
     <value>Générer un groupe de stratégie depuis plusieurs profils</value>
