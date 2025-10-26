@@ -670,7 +670,7 @@
     <value>Masquer la fenêtre au démarrage</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Intervalle de mise à jour automatique des fichiers Geo (heures)</value>
+    <value>Intervalle de mise à jour auto des fichiers Geo (heures)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core : paramètres de base</value>
