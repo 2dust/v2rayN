@@ -472,7 +472,7 @@
     <value>Langue (redémarrage requis)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Importer des liens depuis le presse-papiers (Ctrl+V)</value>
+    <value>Importer liens depuis le presse-papiers (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>Scanner le QR code à l’écran (Ctrl+S)</value>
