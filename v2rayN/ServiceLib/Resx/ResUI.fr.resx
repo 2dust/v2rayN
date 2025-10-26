@@ -619,7 +619,7 @@
     <value>Sécurité couche transport (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*tcp par défaut ; un mauvais choix empêchera la connexion</value>
+    <value>*tcp par défaut ; un mauvais choix bloque la connexion</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Type de Core</value>
