@@ -6,11 +6,9 @@
     <File Path="../.github/workflows/build-windows-desktop.yml" />
     <File Path="../.github/workflows/build-windows.yml" />
     <File Path="../.github/workflows/winget-publish.yml" />
-    <File Path="../package-appimage.sh" />
     <File Path="../package-debian.sh" />
     <File Path="../package-osx.sh" />
     <File Path="../package-release-zip.sh" />
-    <File Path="../pkg2appimage.yml" />
   </Folder>
   <Folder Name="/Solution Files/">
     <File Path="Directory.Build.props" />

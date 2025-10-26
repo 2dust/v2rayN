@@ -994,11 +994,6 @@ public class Utils
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPIMAGE")))
-            {
-                return true;
-            }
-
             var exePath = GetExePath();
             var baseDir = string.IsNullOrEmpty(exePath) ? StartupPath() : Path.GetDirectoryName(exePath) ?? "";
             var p = baseDir.Replace('\\', '/');
@@ -1006,11 +1001,6 @@ public class Utils
             if (string.IsNullOrEmpty(p))
             {
                 return false;
-            }
-
-            if (p.Contains("/.mount_", StringComparison.Ordinal))
-            {
-                return true;
             }
 
             if (p.StartsWith("/opt/v2rayN", StringComparison.OrdinalIgnoreCase))
