@@ -866,7 +866,7 @@
     <value>Documentation détaillée des règles</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Saisie de DnsObject prise en charge (format JSON), cliquer pour voir la documentation</value>
+    <value>Saisie DnsObject prise en charge (format JSON), cliquer pour doc</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>Laissez vide pour les groupes ordinaires</value>
