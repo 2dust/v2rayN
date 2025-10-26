@@ -1493,7 +1493,7 @@
     <value>Début de l’analyse et du traitement du contenu d’abonnement</value>
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
-    <value>Sélectionner une configuration</value>
+    <value>Choisir une config.</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
     <value>Actif globalement par défaut, avec filtrage FakeIP intégré ; ne fonctionne que dans sing-box</value>
