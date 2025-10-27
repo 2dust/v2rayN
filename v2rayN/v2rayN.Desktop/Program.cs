@@ -12,13 +12,6 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if (OperatingSystem.IsWindows() &&
-            System.Runtime.InteropServices.RuntimeInformation.OSArchitecture ==
-            System.Runtime.InteropServices.Architecture.Arm64)
-        {
-            Environment.SetEnvironmentVariable("AVALONIA_AUTOMATION", "0");
-        }
-
         if (OnStartup(args) == false)
         {
             Environment.Exit(0);
