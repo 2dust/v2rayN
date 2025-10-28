@@ -1471,7 +1471,7 @@
     <value>Modèle de configuration complet v2ray</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Ajoute seulement la configuration sortante, routing.balancers et routing.rules.outboundTag. Voir la documentation.</value>
+    <value>Ajoute seulement la config sortante, routing.balancers et routing.rules.outboundTag. Voir la doc.</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
     <value>N’ajoutez pas de sorties pour protocoles non-proxy.</value>
