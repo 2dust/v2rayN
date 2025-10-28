@@ -9,6 +9,12 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
+      - 'V*'
+
+permissions:
+  contents: write
 
 env:
   OutputArch: "linux-64"
@@ -21,7 +27,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
-
     runs-on: ubuntu-24.04
 
     steps:
@@ -31,18 +36,18 @@ jobs:
         submodules: 'recursive'
         fetch-depth: '0'
 
-    - name: Setup
+    - name: Setup .NET
       uses: actions/setup-dotnet@v5.0.0
       with:
         dotnet-version: '8.0.x'
 
     - name: Build
       run: |
-        cd v2rayN 
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-x64   --self-contained=true -o $OutputPath64
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-arm64 --self-contained=true -o $OutputPathArm64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-x64   --self-contained=true -p:PublishTrimmed=true -o $OutputPath64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-arm64 --self-contained=true -p:PublishTrimmed=true -o $OutputPathArm64
+        cd v2rayN
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-x64   --self-contained=true -o "$OutputPath64"
+        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-arm64 --self-contained=true -o "$OutputPathArm64"
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-x64   --self-contained=true -p:PublishTrimmed=true -o "$OutputPath64"
+        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-arm64 --self-contained=true -p:PublishTrimmed=true -o "$OutputPathArm64"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v5.0.0
@@ -56,8 +61,8 @@ jobs:
       if: github.event.inputs.release_tag != ''
       run: |
         chmod 755 package-debian.sh
-        ./package-debian.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
-        ./package-debian.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+        ./package-debian.sh "$OutputArch" "$OutputPath64" "${{ github.event.inputs.release_tag }}"
+        ./package-debian.sh "$OutputArchArm" "$OutputPathArm64" "${{ github.event.inputs.release_tag }}"
 
     - name: Upload deb to release
       uses: svenstaro/upload-release-action@v2
@@ -73,8 +78,8 @@ jobs:
       if: github.event.inputs.release_tag != ''
       run: |
         chmod 755 package-release-zip.sh
-        ./package-release-zip.sh $OutputArch $OutputPath64
-        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
+        ./package-release-zip.sh "$OutputArch" "$OutputPath64"
+        ./package-release-zip.sh "$OutputArchArm" "$OutputPathArm64"
     
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
@@ -85,36 +90,62 @@ jobs:
         file_glob: true
         prerelease: true
 
-    # release RHEL package
-    - name: Package RPM (RHEL-family)
-      if: github.event.inputs.release_tag != ''
+  rpm:
+    needs: build
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '') ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-24.04
+    container:
+      image: quay.io/almalinuxorg/10-base:latest
+      options: --platform=linux/amd64/v2
+    env:
+      RELEASE_TAG: ${{ github.event.inputs.release_tag != '' && github.event.inputs.release_tag || github.ref_name }}
+
+    steps:
+    - name: Prepare tools (Red Hat)
       run: |
-        chmod 755 package-rhel.sh
-        # Build for both x86_64 and aarch64 in one go (explicit version passed; no --buildfrom)
-        ./package-rhel.sh "${{ github.event.inputs.release_tag }}" --arch all
+        dnf -y makecache
+        dnf -y install epel-release
+        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
+
+    - name: Checkout repo (for scripts)
+      uses: actions/checkout@v5.0.0
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Restore build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: v2rayN-linux
+        path: ${{ github.workspace }}/v2rayN/Release
+
+    - name: Ensure script permissions
+      run: chmod 755 package-rhel.sh
+
+    - name: Package RPM (RHEL-family)
+      run: ./package-rhel.sh "${RELEASE_TAG}" --arch all
 
     - name: Collect RPMs into workspace
-      if: github.event.inputs.release_tag != ''
       run: |
-        mkdir -p "${{ github.workspace }}/dist/rpm"
-        rsync -av "$HOME/rpmbuild/RPMS/" "${{ github.workspace }}/dist/rpm/"
-        # Rename to requested filenames
-        find "${{ github.workspace }}/dist/rpm" -name "v2rayN-*-1.x86_64.rpm" -exec mv {} "${{ github.workspace }}/dist/rpm/v2rayN-linux-rhel-x64.rpm" \; || true
-        find "${{ github.workspace }}/dist/rpm" -name "v2rayN-*-1.aarch64.rpm" -exec mv {} "${{ github.workspace }}/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
+        mkdir -p "$GITHUB_WORKSPACE/dist/rpm"
+        rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm/" || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.x86_64.rpm"  -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-x64.rpm" \;  || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
+        echo "==== Dist tree ===="
+        ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
 
     - name: Upload RPM artifacts
-      if: github.event.inputs.release_tag != ''
       uses: actions/upload-artifact@v5.0.0
       with:
         name: v2rayN-rpm
-        path: |
-          ${{ github.workspace }}/dist/rpm/**/*.rpm
+        path: dist/rpm/**/*.rpm
 
     - name: Upload RPMs to release
       uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
       with:
-        file: ${{ github.workspace }}/dist/rpm/**/*.rpm
-        tag: ${{ github.event.inputs.release_tag }}
+        file: dist/rpm/**/*.rpm
+        tag: ${{ env.RELEASE_TAG }}
         file_glob: true
         prerelease: true
