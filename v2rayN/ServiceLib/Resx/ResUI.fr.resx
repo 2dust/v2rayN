@@ -1447,7 +1447,7 @@
     <value>Valider les IP des domaines de la région concernée</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>Après config, les IP renvoyées des domaines régionaux (ex. geosite:cn) seront vérifiées; seules les IP attendues seront retournées.</value>
+    <value>Après config, les IP renvoyées des domaines régionaux (ex. geosite:cn) seront vérifiées ; seules les IP attendues seront retournées.</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>Activer le DNS personnalisé</value>
@@ -1495,7 +1495,7 @@
     <value>Choisir une config.</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Actif globalement par défaut, avec filtre FakeIP intégré  ; ne fonctionne que dans sing-box</value>
+    <value>Actif globalement par défaut, avec filtre FakeIP intégré ; ne fonctionne que dans sing-box</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Veuillez ajouter au moins une configuration</value>
