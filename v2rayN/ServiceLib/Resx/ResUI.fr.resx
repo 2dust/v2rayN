@@ -1009,7 +1009,7 @@
     <value>DNS personnalisé sing-box</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>Veuillez renseigner la structure JSON DNS ; cliquer pour voir la documentation</value>
+    <value>Saisissez la structure JSON DNS ; cliquez pour voir la doc.</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
     <value>Cliquez pour importer la config DNS par défaut</value>
