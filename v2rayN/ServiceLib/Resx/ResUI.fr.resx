@@ -1351,7 +1351,7 @@
     <value>Thème</value>
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
-    <value>Copier la cmd proxy terminal vers presse-papiers</value>
+    <value>Copier la commande proxy terminal</value>
   </data>
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
     <value>Recommencer le test des éléments échoués, {0} restants. Appuyez sur Échap pour arrêter...</value>
