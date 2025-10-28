@@ -1495,7 +1495,7 @@
     <value>Choisir une config.</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Actif globalement par défaut, avec filtrage FakeIP intégré ; ne fonctionne que dans sing-box</value>
+    <value>Actif globalement par défaut, avec filtre FakeIP intégré  ; ne fonctionne que dans sing-box</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Veuillez ajouter au moins une configuration</value>
