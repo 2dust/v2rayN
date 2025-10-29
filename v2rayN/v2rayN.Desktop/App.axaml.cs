@@ -10,15 +10,17 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-
-        DataContext = StatusBarViewModel.Instance;
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AppManager.Instance.InitComponents();
+            if (!Design.IsDesignMode)
+            {
+                AppManager.Instance.InitComponents();
+                DataContext = StatusBarViewModel.Instance;
+            }
 
             desktop.Exit += OnExit;
             desktop.MainWindow = new MainWindow();

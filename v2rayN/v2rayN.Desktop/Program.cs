@@ -54,12 +54,19 @@ internal class Program
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
     {
-        return AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            //.WithInterFont()
-            .WithFontByDefault()
-            .LogToTrace()
-            .UseReactiveUI()
-            .With(new MacOSPlatformOptions { ShowInDock = AppManager.Instance.Config.UiItem.MacOSShowInDock });
+        var builder = AppBuilder.Configure<App>()
+           .UsePlatformDetect()
+           //.WithInterFont()
+           .WithFontByDefault()
+           .LogToTrace()
+           .UseReactiveUI();
+
+        if (OperatingSystem.IsMacOS())
+        {
+            var showInDock = Design.IsDesignMode || AppManager.Instance.Config.UiItem.MacOSShowInDock;
+            builder = builder.With(new MacOSPlatformOptions { ShowInDock = showInDock });
+        }
+
+        return builder;
     }
 }
