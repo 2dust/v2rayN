@@ -472,7 +472,7 @@
     <value>Langue (redémarrage requis)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Importer des liens depuis le presse-papiers (Ctrl+V)</value>
+    <value>Importer liens depuis le presse-papiers (Ctrl+V)</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>Scanner le QR code à l’écran (Ctrl+S)</value>
@@ -619,7 +619,7 @@
     <value>Sécurité couche transport (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*tcp par défaut ; un mauvais choix empêchera la connexion</value>
+    <value>*tcp par défaut ; un mauvais choix bloque la connexion</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Type de Core</value>
@@ -652,7 +652,7 @@
     <value>Port Socks</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>*Valeur du port Socks pour la configuration personnalisée (facultatif). Si défini, Xray/sing-box (Tun) démarrera un service Socks en amont supplémentaire pour fournir le routage sélectif et l’affichage de la vitesse.</value>
+    <value>*Valeur du port Socks (config perso, optionnelle). Si défini, Xray/sing-box (Tun) démarre un service Socks en amont supplémentaire pour fournir le routage sélectif et l’affichage de la vitesse.</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>Parcourir</value>
@@ -670,7 +670,7 @@
     <value>Masquer la fenêtre au démarrage</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Intervalle de mise à jour automatique des fichiers Geo (heures)</value>
+    <value>Intervalle de mise à jour auto des fichiers Geo (heures)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
     <value>Core : paramètres de base</value>
@@ -691,7 +691,7 @@
     <value>domainStrategy de Freedom (sortant)</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Auto-ajuster la largeur des colonnes après maj. des abonnements</value>
+    <value>Auto-ajuster la largeur des colonnes après maj. abonnements</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
     <value>Vérifier les mises à jour pré-version (à activer avec prudence)</value>
@@ -724,7 +724,7 @@
     <value>Mot de passe d’authentification</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>DNS personnalisés (plusieurs possibles, séparés par des virgules)</value>
+    <value>DNS perso (plusieurs configurables, séparés par virgules)</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Lever la restriction de proxy en boucle locale pour les applications Win10 UWP</value>
@@ -865,7 +865,7 @@
     <value>Documentation détaillée des règles</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Saisie de DnsObject prise en charge (format JSON), cliquer pour voir la documentation</value>
+    <value>Saisie DnsObject prise en charge (format JSON), cliquer pour doc</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>Laissez vide pour les groupes ordinaires</value>
@@ -898,7 +898,7 @@
     <value>Filtrage par alias (regex)</value>
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
-    <value>Afficher les journaux</value>
+    <value>Afficher les logs</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
     <value>Activer Tun</value>
@@ -979,7 +979,7 @@
     <value>En attente du test (appuyer sur Échap pour arrêter)...</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
-    <value>Désactivez ceci en cas de coupures anormales</value>
+    <value>Désactiver cette option si coupure anormale</value>
   </data>
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
     <value>Mise à jour désactivée, abonnement ignoré</value>
@@ -1009,10 +1009,10 @@
     <value>DNS personnalisé sing-box</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>Veuillez renseigner la structure JSON DNS ; cliquer pour voir la documentation</value>
+    <value>Saisissez la structure JSON DNS ; cliquez pour voir la doc.</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>Cliquez pour importer la configuration DNS par défaut</value>
+    <value>Cliquez pour importer la config DNS par défaut</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
     <value>Stratégie résolution domaine (sing-box)</value>
@@ -1045,10 +1045,10 @@
     <value>Algo contrôle congestion</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Alias de configuration du proxy amont</value>
+    <value>Alias de config du proxy amont</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Alias de configuration du proxy aval</value>
+    <value>Alias de config du proxy aval</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>Assurez-vous que l’alias config existe et est unique</value>
@@ -1114,7 +1114,7 @@
     <value>Activer le fragmentation (Fragment)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>Activer le fichier de cache de sing-box (fichiers de reˋgles)</value>
+    <value>Activer le fichier de cache de sing-box (fichiers règles)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
     <value>Set de règles sing-box perso</value>
@@ -1207,7 +1207,7 @@
     <value>Stratégie de résolution par défaut des sortants</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Orientation de la mise en page principale (redémarrage requis)</value>
+    <value>Orientation mise en page principale (redémarrage requis)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Adresse de résolution de domaine pour sortants</value>
@@ -1330,7 +1330,7 @@
     <value>JSON brut XHTTP Extra, format : { XHTTPObject }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>Masquer dans la barre d’état lors de la fermeture de la fenêtre</value>
+    <value>Masquer dans la barre d’état à la fermeture de la fenêtre</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
     <value>Niveau de concurrence lors des tests multithread</value>
@@ -1351,7 +1351,7 @@
     <value>Thème</value>
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
-    <value>Copier la commande proxy terminal vers le presse-papiers</value>
+    <value>Copier la cmd proxy terminal dans le presse-papiers</value>
   </data>
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
     <value>Recommencer le test des éléments échoués, {0} restants. Appuyez sur Échap pour arrêter...</value>
@@ -1369,7 +1369,7 @@
     <value>Plage de ports sautés</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>Écrase le port ; pour plusieurs groupes, séparez par des virgules (,)</value>
+    <value>Écrase le port ; pour plusieurs groupes, séparer par virgules (,)</value>
   </data>
   <data name="menuGenGroupMultipleServer" xml:space="preserve">
     <value>Générer un groupe de stratégie depuis plusieurs profils</value>
@@ -1447,7 +1447,7 @@
     <value>Valider les IP des domaines de la région concernée</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>Après configuration, les IP renvoyées pour les domaines régionaux (p. ex. geosite:cn) seront validées ; seules les IP attendues seront retournées</value>
+    <value>Après config, les IP renvoyées des domaines régionaux (ex. geosite:cn) seront vérifiées ; seules les IP attendues seront retournées.</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>Activer le DNS personnalisé</value>
@@ -1471,7 +1471,7 @@
     <value>Modèle de configuration complet v2ray</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Ajoute seulement la configuration sortante, routing.balancers et routing.rules.outboundTag. Voir la documentation.</value>
+    <value>Ajoute seulement la config sortante, routing.balancers et routing.rules.outboundTag. Voir la doc.</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
     <value>N’ajoutez pas de sorties pour protocoles non-proxy.</value>
@@ -1492,10 +1492,10 @@
     <value>Début de l’analyse et du traitement du contenu d’abonnement</value>
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
-    <value>Sélectionner une configuration</value>
+    <value>Choisir une config.</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Actif globalement par défaut, avec filtrage FakeIP intégré ; ne fonctionne que dans sing-box</value>
+    <value>Actif globalement par défaut, avec filtre FakeIP intégré ; ne fonctionne que dans sing-box</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Veuillez ajouter au moins une configuration</value>

@@ -19,6 +19,23 @@ else
   exit 1
 fi
 
+# ======================== Kernel version check (require >= 6.11) =======================
+MIN_KERNEL_MAJOR=6
+MIN_KERNEL_MINOR=11
+KERNEL_FULL=$(uname -r)
+KERNEL_MAJOR=$(echo "$KERNEL_FULL" | cut -d. -f1)
+KERNEL_MINOR=$(echo "$KERNEL_FULL" | cut -d. -f2)
+
+echo "[INFO] Detected kernel version: $KERNEL_FULL"
+
+if (( KERNEL_MAJOR < MIN_KERNEL_MAJOR )) || { (( KERNEL_MAJOR == MIN_KERNEL_MAJOR )) && (( KERNEL_MINOR < MIN_KERNEL_MINOR )); }; then
+  echo "[ERROR] Kernel $KERNEL_FULL is too old. Requires Linux >= ${MIN_KERNEL_MAJOR}.${MIN_KERNEL_MINOR}."
+  echo "Please upgrade your system or use a newer container (e.g. Fedora 42+, RHEL 10+, Debian 13+)."
+  exit 1
+fi
+
+echo "[OK] Kernel version >= ${MIN_KERNEL_MAJOR}.${MIN_KERNEL_MINOR}."
+
 # ===== Config & Parse arguments =========================================================
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
