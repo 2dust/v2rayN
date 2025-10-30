@@ -402,9 +402,9 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     public void ShowHideWindow(bool? blShow)
     {
         var bl = blShow ??
-                    Utils.IsLinux()
+                    (Utils.IsLinux()
                     ? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized))
-                    : !_config.UiItem.ShowInTaskbar;
+                    : !_config.UiItem.ShowInTaskbar);
         if (bl)
         {
             this.Show();
