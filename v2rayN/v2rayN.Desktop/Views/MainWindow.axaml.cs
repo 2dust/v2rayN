@@ -168,7 +168,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         menuAddServerViaScan.IsVisible = false;
 
-        if (_config.UiItem.AutoHideStartup)
+        if (_config.UiItem.AutoHideStartup && Utils.IsWindows())
         {
             this.WindowState = WindowState.Minimized;
         }
