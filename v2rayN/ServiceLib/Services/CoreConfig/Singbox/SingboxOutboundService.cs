@@ -204,54 +204,6 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult<BaseServer4Sbox?>(null);
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
-    {
-        try
-        {
-            if (!node.ConfigType.IsGroupType())
-            {
-                return -1;
-            }
-            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
-            if (hasCycle)
-            {
-                return -1;
-            }
-
-            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
-            if (childProfiles.Count <= 0)
-            {
-                return -1;
-            }
-            switch (node.ConfigType)
-            {
-                case EConfigType.PolicyGroup:
-                    if (ignoreOriginChain)
-                    {
-                        await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
-                    }
-                    else
-                    {
-                        await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
-                    }
-
-                    break;
-
-                case EConfigType.ProxyChain:
-                    await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-        return await Task.FromResult(0);
-    }
-
     private async Task<int> GenOutboundMux(ProfileItem node, Outbound4Sbox outbound)
     {
         try
@@ -280,7 +232,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            if (node.StreamSecurity == Global.StreamSecurityReality || node.StreamSecurity == Global.StreamSecurity)
+            if (node.StreamSecurity is Global.StreamSecurityReality or Global.StreamSecurity)
             {
                 var server_name = string.Empty;
                 if (node.Sni.IsNotEmpty())
@@ -307,7 +259,18 @@ public partial class CoreConfigSingboxService
                         fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
                     };
                 }
-                if (node.StreamSecurity == Global.StreamSecurityReality)
+                if (node.StreamSecurity == Global.StreamSecurity)
+                {
+                    var certs = node.Cert
+                        ?.Split("-----END CERTIFICATE-----", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.TrimEx())
+                        .Where(s => !s.IsNullOrEmpty())
+                        .Select(s => s + "\n-----END CERTIFICATE-----")
+                        .Select(s => s.Replace("\r\n", "\n"))
+                        .ToList() ?? new();
+                    tls.certificate = certs.Count > 0 ? certs : null;
+                }
+                else
                 {
                     tls.reality = new Reality4Sbox()
                     {
@@ -395,6 +358,54 @@ public partial class CoreConfigSingboxService
             if (transport.type != null)
             {
                 outbound.transport = transport;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return await Task.FromResult(0);
+    }
+
+    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    {
+        try
+        {
+            if (!node.ConfigType.IsGroupType())
+            {
+                return -1;
+            }
+            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+            if (hasCycle)
+            {
+                return -1;
+            }
+
+            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+            if (childProfiles.Count <= 0)
+            {
+                return -1;
+            }
+            switch (node.ConfigType)
+            {
+                case EConfigType.PolicyGroup:
+                    if (ignoreOriginChain)
+                    {
+                        await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    }
+                    else
+                    {
+                        await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                    }
+
+                    break;
+
+                case EConfigType.ProxyChain:
+                    await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);
+                    break;
+
+                default:
+                    break;
             }
         }
         catch (Exception ex)

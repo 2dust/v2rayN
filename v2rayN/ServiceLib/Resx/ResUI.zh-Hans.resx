@@ -1599,4 +1599,14 @@
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>自动从订阅分组添加过滤后的配置</value>
   </data>
+  <data name="TbCertPinning" xml:space="preserve">
+    <value>固定证书</value>
+  </data>
+  <data name="TbCertPinningTips" xml:space="preserve">
+    <value>服务器证书（PEM 格式，可选）。填入后将固定该证书。
+启用“跳过证书验证”时，请勿使用 '获取证书'。</value>
+  </data>
+  <data name="TbFetchCert" xml:space="preserve">
+    <value>获取证书</value>
+  </data>
 </root>

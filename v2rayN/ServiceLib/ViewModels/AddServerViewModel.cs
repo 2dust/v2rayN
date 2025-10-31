@@ -8,6 +8,10 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string? CoreType { get; set; }
 
+    [Reactive]
+    public string Cert { get; set; }
+
+    public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
     public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
@@ -15,6 +19,10 @@ public class AddServerViewModel : MyReactiveObject
         _config = AppManager.Instance.Config;
         _updateView = updateView;
 
+        FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await FetchCert();
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveServerAsync();
@@ -33,6 +41,7 @@ public class AddServerViewModel : MyReactiveObject
             SelectedSource = JsonUtils.DeepCopy(profileItem);
         }
         CoreType = SelectedSource?.CoreType?.ToString();
+        Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
     }
 
     private async Task SaveServerAsync()
@@ -77,6 +86,7 @@ public class AddServerViewModel : MyReactiveObject
             }
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
+        SelectedSource.Cert = Cert.IsNullOrEmpty() ? null : Cert;
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
@@ -87,5 +97,24 @@ public class AddServerViewModel : MyReactiveObject
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
+
+    private async Task FetchCert()
+    {
+        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        {
+            return;
+        }
+        var domain = SelectedSource.Address;
+        var serverName = SelectedSource.Sni.IsNullOrEmpty() ? SelectedSource.Address : SelectedSource.Sni;
+        if (!Utils.IsDomain(serverName))
+        {
+            return;
+        }
+        if (SelectedSource.Port > 0)
+        {
+            domain += $":{SelectedSource.Port}";
+        }
+        Cert = await Utils.GetCertPem(domain, serverName);
     }
 }

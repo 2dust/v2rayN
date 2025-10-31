@@ -1599,4 +1599,14 @@
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>自動從訂閱分組新增過濾後的配置</value>
   </data>
+  <data name="TbCertPinning" xml:space="preserve">
+    <value>Certificate Pinning</value>
+  </data>
+  <data name="TbCertPinningTips" xml:space="preserve">
+    <value>Server certificate (PEM format, optional). Entering a certificate will pin it.
+Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</value>
+  </data>
+  <data name="TbFetchCert" xml:space="preserve">
+    <value>Fetch Certificate</value>
+  </data>
 </root>
