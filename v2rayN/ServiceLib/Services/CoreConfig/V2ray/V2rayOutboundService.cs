@@ -453,16 +453,16 @@ public partial class CoreConfigV2rayService
                         };
 
                         //request Host
-                        string request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
-                        string[] arrHost = host.Split(',');
-                        string host2 = string.Join(",".AppendQuotes(), arrHost);
+                        var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                        var arrHost = host.Split(',');
+                        var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
                         request = request.Replace("$requestUserAgent$", $"{useragent.AppendQuotes()}");
                         //Path
-                        string pathHttp = @"/";
+                        var pathHttp = @"/";
                         if (path.IsNotEmpty())
                         {
-                            string[] arrPath = path.Split(',');
+                            var arrPath = path.Split(',');
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
@@ -623,10 +623,10 @@ public partial class CoreConfigV2rayService
             // Cache for chain proxies to avoid duplicate generation
             var nextProxyCache = new Dictionary<string, Outbounds4Ray?>();
             var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
-            int prevIndex = 0; // Index for prev outbounds
+            var prevIndex = 0; // Index for prev outbounds
 
             // Process nodes
-            int index = 0;
+            var index = 0;
             foreach (var node in nodes)
             {
                 index++;

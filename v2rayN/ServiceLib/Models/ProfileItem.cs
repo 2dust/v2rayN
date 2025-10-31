@@ -28,7 +28,7 @@ public class ProfileItem : ReactiveObject
 
     public string GetSummary()
     {
-        var summary = $"[{(ConfigType).ToString()}] ";
+        var summary = $"[{ConfigType.ToString()}] ";
         if (IsComplex())
         {
             summary += $"[{CoreType.ToString()}]{Remarks}";

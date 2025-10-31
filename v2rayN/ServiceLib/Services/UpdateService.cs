@@ -167,7 +167,7 @@ public class UpdateService
         try
         {
             var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
-            string filePath = string.Empty;
+            var filePath = string.Empty;
             foreach (var name in coreInfo.CoreExes)
             {
                 var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
@@ -180,14 +180,14 @@ public class UpdateService
 
             if (!File.Exists(filePath))
             {
-                string msg = string.Format(ResUI.NotFoundCore, @"", "", "");
+                var msg = string.Format(ResUI.NotFoundCore, @"", "", "");
                 //ShowMsg(true, msg);
                 return new SemanticVersion("");
             }
 
             var result = await Utils.GetCliWrapOutput(filePath, coreInfo.VersionArg);
             var echo = result ?? "";
-            string version = string.Empty;
+            var version = string.Empty;
             switch (type)
             {
                 case ECoreType.v2fly:

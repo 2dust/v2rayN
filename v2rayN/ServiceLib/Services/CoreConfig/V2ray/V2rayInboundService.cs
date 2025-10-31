@@ -48,7 +48,7 @@ public partial class CoreConfigV2rayService
 
     private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
     {
-        string result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
+        var result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
         if (result.IsNullOrEmpty())
         {
             return new();

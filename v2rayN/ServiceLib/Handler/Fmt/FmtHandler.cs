@@ -37,7 +37,7 @@ public class FmtHandler
 
         try
         {
-            string str = config.TrimEx();
+            var str = config.TrimEx();
             if (str.IsNullOrEmpty())
             {
                 msg = ResUI.FailedReadConfiguration;

@@ -347,8 +347,8 @@ public partial class CoreConfigV2rayService
             if (obj is null)
             {
                 List<string> servers = [];
-                string[] arrDNS = normalDNS.Split(',');
-                foreach (string str in arrDNS)
+                var arrDNS = normalDNS.Split(',');
+                foreach (var str in arrDNS)
                 {
                     servers.Add(str);
                 }

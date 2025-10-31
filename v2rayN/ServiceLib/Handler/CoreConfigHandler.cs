@@ -58,7 +58,7 @@ public static class CoreConfigHandler
                 File.Delete(fileName);
             }
 
-            string addressFileName = node.Address;
+            var addressFileName = node.Address;
             if (!File.Exists(addressFileName))
             {
                 addressFileName = Utils.GetConfigPath(addressFileName);

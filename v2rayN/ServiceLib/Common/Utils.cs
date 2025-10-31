@@ -424,7 +424,7 @@ public class Utils
         // Handle IPv6 addresses, e.g., "[2001:db8::1]:443"
         if (authority.StartsWith("[") && authority.Contains("]"))
         {
-            int closingBracketIndex = authority.LastIndexOf(']');
+            var closingBracketIndex = authority.LastIndexOf(']');
             if (closingBracketIndex < authority.Length - 1 && authority[closingBracketIndex + 1] == ':')
             {
                 // Port exists

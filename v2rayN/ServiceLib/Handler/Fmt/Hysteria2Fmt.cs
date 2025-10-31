@@ -33,9 +33,9 @@ public class Hysteria2Fmt : BaseFmt
     {
         if (item == null)
             return null;
-        string url = string.Empty;
+        var url = string.Empty;
 
-        string remark = string.Empty;
+        var remark = string.Empty;
         if (item.Remarks.IsNotEmpty())
         {
             remark = "#" + Utils.UrlEncode(item.Remarks);

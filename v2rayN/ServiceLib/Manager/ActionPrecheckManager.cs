@@ -85,7 +85,7 @@ public class ActionPrecheckManager(Config config)
                     break;
 
                 case EConfigType.VLESS:
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id) && item.Id.Length > 30)
+                    if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
                         errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                     if (!Global.Flows.Contains(item.Flow))
                         errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));

@@ -273,12 +273,12 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
-        var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
+        var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
                         || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation);
+                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -375,7 +375,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task SaveCoreType()
     {
-        for (int k = 1; k <= _config.CoreTypeItem.Count; k++)
+        for (var k = 1; k <= _config.CoreTypeItem.Count; k++)
         {
             var item = _config.CoreTypeItem[k - 1];
             var type = string.Empty;

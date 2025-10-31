@@ -447,13 +447,13 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveServer(Config config, List<ProfileItem> lstProfile, int index, EMove eMove, int pos = -1)
     {
-        int count = lstProfile.Count;
+        var count = lstProfile.Count;
         if (index < 0 || index > lstProfile.Count - 1)
         {
             return -1;
         }
 
-        for (int i = 0; i < lstProfile.Count; i++)
+        for (var i = 0; i < lstProfile.Count; i++)
         {
             ProfileExManager.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
         }
@@ -527,7 +527,7 @@ public static class ConfigHandler
             return -1;
         }
         var ext = Path.GetExtension(fileName);
-        string newFileName = $"{Utils.GetGuid()}{ext}";
+        var newFileName = $"{Utils.GetGuid()}{ext}";
         //newFileName = Path.Combine(Utile.GetTempPath(), newFileName);
 
         try
@@ -1356,7 +1356,7 @@ public static class ConfigHandler
                 }
                 continue;
             }
-            var profileItem = FmtHandler.ResolveConfig(str, out string msg);
+            var profileItem = FmtHandler.ResolveConfig(str, out var msg);
             if (profileItem is null)
             {
                 continue;
@@ -1440,7 +1440,7 @@ public static class ConfigHandler
             {
                 await RemoveServersViaSubid(config, subid, isSub);
             }
-            int count = 0;
+            var count = 0;
             foreach (var it in lstProfiles)
             {
                 it.Subid = subid;
@@ -1530,7 +1530,7 @@ public static class ConfigHandler
         var lstSsServer = ShadowsocksFmt.ResolveSip008(strData);
         if (lstSsServer?.Count > 0)
         {
-            int counter = 0;
+            var counter = 0;
             foreach (var ssItem in lstSsServer)
             {
                 ssItem.Subid = subid;
@@ -1705,7 +1705,7 @@ public static class ConfigHandler
                 var maxSort = 0;
                 if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                 {
-                    var lstSubs = (await AppManager.Instance.SubItems());
+                    var lstSubs = await AppManager.Instance.SubItems();
                     maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
                 }
                 item.Sort = maxSort + 1;
@@ -1867,7 +1867,7 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveRoutingRule(List<RulesItem> rules, int index, EMove eMove, int pos = -1)
     {
-        int count = rules.Count;
+        var count = rules.Count;
         if (index < 0 || index > rules.Count - 1)
         {
             return -1;

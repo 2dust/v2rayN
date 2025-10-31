@@ -211,7 +211,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         }
 
         //from api
-        foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
+        foreach (var kv in _proxies)
         {
             if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
             {
@@ -319,7 +319,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         //from providers
         if (_providers != null)
         {
-            foreach (KeyValuePair<string, ProvidersItem> kv in _providers)
+            foreach (var kv in _providers)
             {
                 if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
                 {

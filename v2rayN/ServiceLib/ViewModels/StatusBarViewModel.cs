@@ -313,10 +313,10 @@ public class StatusBarViewModel : MyReactiveObject
         }
 
         BlServers = true;
-        for (int k = 0; k < lstModel.Count; k++)
+        for (var k = 0; k < lstModel.Count; k++)
         {
             ProfileItem it = lstModel[k];
-            string name = it.GetSummary();
+            var name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
             Servers.Add(item);
@@ -394,10 +394,10 @@ public class StatusBarViewModel : MyReactiveObject
     {
         await SysProxyHandler.UpdateSysProxy(_config, false);
 
-        BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
-        BlSystemProxySet = (type == ESysProxyType.ForcedChange);
-        BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
-        BlSystemProxyPac = (type == ESysProxyType.Pac);
+        BlSystemProxyClear = type == ESysProxyType.ForcedClear;
+        BlSystemProxySet = type == ESysProxyType.ForcedChange;
+        BlSystemProxyNothing = type == ESysProxyType.Unchanged;
+        BlSystemProxyPac = type == ESysProxyType.Pac;
 
         if (blChange)
         {

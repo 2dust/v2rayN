@@ -87,7 +87,7 @@ public partial class CoreConfigV2rayService
         }
 
         var customOutboundsNode = new JsonArray();
-        
+
         foreach (var outbound in v2rayConfig.outbounds)
         {
             if (outbound.protocol.ToLower() is "blackhole" or "dns" or "freedom")
@@ -112,7 +112,7 @@ public partial class CoreConfigV2rayService
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
-        
+
         if (fullConfigTemplateNode["outbounds"] is JsonArray templateOutbounds)
         {
             foreach (var outbound in templateOutbounds)
@@ -120,7 +120,7 @@ public partial class CoreConfigV2rayService
                 customOutboundsNode.Add(outbound?.DeepClone());
             }
         }
-        
+
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));

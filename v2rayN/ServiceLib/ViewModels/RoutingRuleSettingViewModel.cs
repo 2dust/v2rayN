@@ -215,7 +215,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     private async Task SaveRoutingAsync()
     {
-        string remarks = SelectedRouting.Remarks;
+        var remarks = SelectedRouting.Remarks;
         if (remarks.IsNullOrEmpty())
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
@@ -286,7 +286,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             return;
         }
 
-        DownloadService downloadHandle = new DownloadService();
+        var downloadHandle = new DownloadService();
         var result = await downloadHandle.TryDownloadString(url, true, "");
         var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
         if (ret == 0)
@@ -298,7 +298,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     private async Task<int> AddBatchRoutingRulesAsync(RoutingItem routingItem, string? clipboardData)
     {
-        bool blReplace = false;
+        var blReplace = false;
         if (await _updateView?.Invoke(EViewAction.AddBatchRoutingRulesYesNo, null) == false)
         {
             blReplace = true;

@@ -658,7 +658,7 @@ public class ProfilesViewModel : MyReactiveObject
         }
 
         _dicHeaderSort.TryAdd(colName, true);
-        _dicHeaderSort.TryGetValue(colName, out bool asc);
+        _dicHeaderSort.TryGetValue(colName, out var asc);
         if (await ConfigHandler.SortServers(_config, _config.SubIndexId, colName, asc) != 0)
         {
             return;
