@@ -12,9 +12,9 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         InitializeComponent();
 
         Loaded += Window_Loaded;
-        this.Closing += RoutingSettingWindow_Closing;
-        btnCancel.Click += (s, e) => this.Close();
-        this.KeyDown += RoutingSettingWindow_KeyDown;
+        Closing += RoutingSettingWindow_Closing;
+        btnCancel.Click += (s, e) => Close();
+        KeyDown += RoutingSettingWindow_KeyDown;
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.DoubleTapped += LstRoutings_DoubleTapped;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
@@ -48,7 +48,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
 
             case EViewAction.ShowYesNo:
@@ -116,7 +116,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
     private void btnCancel_Click(object? sender, RoutedEventArgs e)
     {
         _manualClose = true;
-        this.Close(ViewModel?.IsModified);
+        Close(ViewModel?.IsModified);
     }
 
     private void RoutingSettingWindow_Closing(object? sender, WindowClosingEventArgs e)

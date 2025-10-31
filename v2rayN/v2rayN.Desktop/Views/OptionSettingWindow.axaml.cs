@@ -11,7 +11,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         InitializeComponent();
 
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
         _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
@@ -153,7 +153,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
 
             case EViewAction.InitSettingFont:

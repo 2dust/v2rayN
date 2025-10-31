@@ -13,8 +13,8 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
     {
         InitializeComponent();
 
-        this.Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        Loaded += Window_Loaded;
+        btnCancel.Click += (s, e) => Close();
         clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
@@ -61,7 +61,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

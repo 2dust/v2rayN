@@ -12,7 +12,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
 
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
         cmbRayFreedomDNSStrategy.ItemsSource = Global.DomainStrategy4Freedoms;
@@ -77,7 +77,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

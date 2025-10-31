@@ -14,7 +14,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
         InitializeComponent();
 
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
 
         ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
@@ -45,7 +45,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

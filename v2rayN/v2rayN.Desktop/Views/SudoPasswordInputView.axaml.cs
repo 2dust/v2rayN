@@ -9,7 +9,7 @@ public partial class SudoPasswordInputView : UserControl
     {
         InitializeComponent();
 
-        this.Loaded += (s, e) => txtPassword.Focus();
+        Loaded += (s, e) => txtPassword.Focus();
 
         btnSave.Click += async (_, _) => await SavePasswordAsync();
 

@@ -17,8 +17,8 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         HotkeyManager.Instance.IsPause = true;
         Loaded += Window_Loaded;
-        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
-        btnCancel.Click += (s, e) => this.Close();
+        Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
+        btnCancel.Click += (s, e) => Close();
 
         this.WhenActivated(disposables =>
         {
@@ -34,7 +34,7 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

@@ -13,8 +13,8 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     {
         InitializeComponent();
 
-        this.Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        Loaded += Window_Loaded;
+        btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
 
         ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
@@ -32,11 +32,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         switch (profileItem.ConfigType)
         {
             case EConfigType.PolicyGroup:
-                this.Title = ResUI.TbConfigTypePolicyGroup;
+                Title = ResUI.TbConfigTypePolicyGroup;
                 break;
 
             case EConfigType.ProxyChain:
-                this.Title = ResUI.TbConfigTypeProxyChain;
+                Title = ResUI.TbConfigTypeProxyChain;
                 gridPolicyGroup.IsVisible = false;
                 break;
         }
@@ -64,7 +64,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
 
         // Keyboard shortcuts when focus is within grid
-        this.AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
+        AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
         lstChild.LoadingRow += LstChild_LoadingRow;
     }
 
@@ -78,7 +78,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);
