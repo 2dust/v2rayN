@@ -928,6 +928,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
@@ -995,6 +996,47 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbCertPinning}" />
+
+                    <materialDesign:PopupBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        StaysOpen="True"
+                        Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbCertPinningTips}"
+                                TextWrapping="Wrap" />
+                            <Button
+                                x:Name="btnFetchCert"
+                                Width="100"
+                                Margin="{StaticResource MarginLeftRight4}"
+                                HorizontalAlignment="Left"
+                                Content="{x:Static resx:ResUI.TbFetchCert}"
+                                Style="{StaticResource DefButton}" />
+                            <TextBox
+                                x:Name="txtCert"
+                                Width="400"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                AcceptsReturn="True"
+                                MinLines="6"
+                                Style="{StaticResource MyOutlinedTextBox}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"

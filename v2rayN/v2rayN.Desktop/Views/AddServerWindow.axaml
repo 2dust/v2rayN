@@ -713,7 +713,7 @@
                     Grid.Row="7"
                     ColumnDefinitions="180,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -767,6 +767,53 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />
+
+                    
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbCertPinning}" />
+                    <Button
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Classes="IconButton"
+                        HorizontalAlignment="Left"
+                        Margin="{StaticResource MarginLr8}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconMore}" >
+                                <PathIcon.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </PathIcon.RenderTransform>
+                            </PathIcon>
+                        </Button.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbCertPinningTips}" />
+                                    <Button
+                                        x:Name="btnFetchCert"
+                                        HorizontalAlignment="Left"
+                                        Margin="{StaticResource Margin4}"
+                                        Content="{x:Static resx:ResUI.TbFetchCert}" />
+                                    <TextBox
+                                        x:Name="txtCert"
+                                        Width="400"
+                                        MinHeight="100"
+                                        Margin="{StaticResource Margin4}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Classes="TextArea"
+                                        MinLines="6"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"
