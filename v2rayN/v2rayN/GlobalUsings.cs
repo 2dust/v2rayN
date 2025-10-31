@@ -31,3 +31,4 @@ global using ServiceLib.Manager;
 global using ServiceLib.Models;
 global using ServiceLib.Resx;
 global using ServiceLib.ViewModels;
+global using v2rayN.Common;

@@ -328,7 +328,7 @@ public partial class MainWindow
 
         if (Application.Current?.MainWindow is Window window)
         {
-            var bytes = QRCodeUtils.CaptureScreen(window);
+            var bytes = QRCodeWindowsUtils.CaptureScreen(window);
             await ViewModel?.ScanScreenResult(bytes);
         }
 

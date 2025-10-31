@@ -64,7 +64,7 @@ public partial class SubSettingWindow
         {
             return;
         }
-        var img = QRCodeUtils.GetQRCode(url);
+        var img = QRCodeWindowsUtils.GetQRCode(url);
         var dialog = new QrcodeView()
         {
             imgQrcode = { Source = img },

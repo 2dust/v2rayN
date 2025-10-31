@@ -2,9 +2,9 @@ using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace v2rayN;
+namespace v2rayN.Common;
 
-public class QRCodeUtils
+public class QRCodeWindowsUtils
 {
     public static ImageSource? GetQRCode(string? strContent)
     {
@@ -14,7 +14,7 @@ public class QRCodeUtils
         }
         try
         {
-            var qrCodeImage = ServiceLib.Common.QRCodeUtils.GenQRCode(strContent);
+            var qrCodeImage = QRCodeUtils.GenQRCode(strContent);
             return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
         }
         catch (Exception ex)
