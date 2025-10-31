@@ -8,8 +8,8 @@ public partial class AddServerWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
-        this.Loaded += Window_Loaded;
+        Owner = Application.Current.MainWindow;
+        Loaded += Window_Loaded;
         cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;
         cmbStreamSecurity.SelectionChanged += CmbStreamSecurity_SelectionChanged;
         btnGUID.Click += btnGUID_Click;
@@ -191,7 +191,7 @@ public partial class AddServerWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
 
-        this.Title = $"{profileItem.ConfigType}";
+        Title = $"{profileItem.ConfigType}";
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
@@ -200,7 +200,7 @@ public partial class AddServerWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

@@ -8,7 +8,7 @@ public partial class DNSSettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
+        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
@@ -78,7 +78,7 @@ public partial class DNSSettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

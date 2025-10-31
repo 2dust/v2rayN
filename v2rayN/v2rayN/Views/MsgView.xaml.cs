@@ -31,10 +31,10 @@ public partial class MsgView
             case EViewAction.DispatcherShowMsg:
                 if (obj is null)
                     return false;
-                Application.Current?.Dispatcher.Invoke((() =>
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
                     ShowMsg(obj);
-                }), DispatcherPriority.ApplicationIdle);
+                }, DispatcherPriority.ApplicationIdle);
                 break;
         }
         return await Task.FromResult(true);

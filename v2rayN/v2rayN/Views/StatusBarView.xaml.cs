@@ -71,11 +71,11 @@ public partial class StatusBarView
         switch (action)
         {
             case EViewAction.DispatcherRefreshIcon:
-                Application.Current?.Dispatcher.Invoke((async () =>
+                Application.Current?.Dispatcher.Invoke(async () =>
                 {
                     tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
                     Application.Current.MainWindow.Icon = WindowsManager.Instance.GetAppIcon(_config);
-                }), DispatcherPriority.Normal);
+                }, DispatcherPriority.Normal);
                 break;
 
             case EViewAction.SetClipboardData:

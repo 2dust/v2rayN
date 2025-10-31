@@ -6,9 +6,9 @@ public partial class RoutingRuleSettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
-        this.Loaded += Window_Loaded;
-        this.PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
+        Owner = Application.Current.MainWindow;
+        Loaded += Window_Loaded;
+        PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
         lstRules.SelectionChanged += lstRules_SelectionChanged;
         lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
@@ -57,7 +57,7 @@ public partial class RoutingRuleSettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
 
             case EViewAction.ShowYesNo:
@@ -80,11 +80,11 @@ public partial class RoutingRuleSettingWindow
 
                 if (obj is null)
                     return false;
-                return (new RoutingRuleDetailsWindow((RulesItem)obj)).ShowDialog() ?? false;
+                return new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog() ?? false;
 
             case EViewAction.ImportRulesFromFile:
 
-                if (UI.OpenFileDialog(out string fileName, "Rules|*.json|All|*.*") != true)
+                if (UI.OpenFileDialog(out var fileName, "Rules|*.json|All|*.*") != true)
                 {
                     return false;
                 }
@@ -174,7 +174,7 @@ public partial class RoutingRuleSettingWindow
 
     private void btnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (UI.OpenFileDialog(out string fileName,
+        if (UI.OpenFileDialog(out var fileName,
             "PNG,ICO|*.png;*.ico") != true)
         {
             return;
@@ -185,7 +185,7 @@ public partial class RoutingRuleSettingWindow
 
     private void btnBrowseCustomRulesetPath4Singbox_Click(object sender, RoutedEventArgs e)
     {
-        if (UI.OpenFileDialog(out string fileName,
+        if (UI.OpenFileDialog(out var fileName,
               "Config|*.json|All|*.*") != true)
         {
             return;

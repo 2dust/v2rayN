@@ -6,8 +6,8 @@ public partial class SubEditWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
-        this.Loaded += Window_Loaded;
+        Owner = Application.Current.MainWindow;
+        Loaded += Window_Loaded;
 
         ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
@@ -39,7 +39,7 @@ public partial class SubEditWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

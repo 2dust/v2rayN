@@ -19,8 +19,8 @@ public partial class MainWindow
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
         App.Current.SessionEnding += Current_SessionEnding;
-        this.Closing += MainWindow_Closing;
-        this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+        Closing += MainWindow_Closing;
+        PreviewKeyDown += MainWindow_PreviewKeyDown;
         menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
         menuPromotion.Click += menuPromotion_Click;
         menuClose.Click += menuClose_Click;
@@ -150,10 +150,10 @@ public partial class MainWindow
              .DisposeWith(disposables);
         });
 
-        this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+        Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
         if (_config.UiItem.AutoHideStartup)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         if (!_config.GuiItem.EnableHWA)
@@ -187,35 +187,35 @@ public partial class MainWindow
             case EViewAction.AddServerWindow:
                 if (obj is null)
                     return false;
-                return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
                     return false;
-                return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
                     return false;
-                return (new AddGroupServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.DNSSettingWindow:
-                return (new DNSSettingWindow().ShowDialog() ?? false);
+                return new DNSSettingWindow().ShowDialog() ?? false;
 
             case EViewAction.RoutingSettingWindow:
-                return (new RoutingSettingWindow().ShowDialog() ?? false);
+                return new RoutingSettingWindow().ShowDialog() ?? false;
 
             case EViewAction.OptionSettingWindow:
-                return (new OptionSettingWindow().ShowDialog() ?? false);
+                return new OptionSettingWindow().ShowDialog() ?? false;
 
             case EViewAction.FullConfigTemplateWindow:
-                return (new FullConfigTemplateWindow().ShowDialog() ?? false);
+                return new FullConfigTemplateWindow().ShowDialog() ?? false;
 
             case EViewAction.GlobalHotkeySettingWindow:
-                return (new GlobalHotkeySettingWindow().ShowDialog() ?? false);
+                return new GlobalHotkeySettingWindow().ShowDialog() ?? false;
 
             case EViewAction.SubSettingWindow:
-                return (new SubSettingWindow().ShowDialog() ?? false);
+                return new SubSettingWindow().ShowDialog() ?? false;
 
             case EViewAction.ScanScreenTask:
                 await ScanScreenTaskAsync();
@@ -372,7 +372,7 @@ public partial class MainWindow
             this?.Show();
             if (this?.WindowState == WindowState.Minimized)
             {
-                this.WindowState = WindowState.Normal;
+                WindowState = WindowState.Normal;
             }
             this?.Activate();
             this?.Focus();

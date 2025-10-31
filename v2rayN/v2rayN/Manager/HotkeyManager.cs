@@ -43,7 +43,7 @@ public sealed class HotkeyManager
                     modifiers |= KeyModifiers.Alt;
                 }
 
-                key = key << 16 | (int)modifiers;
+                key = (key << 16) | (int)modifiers;
                 if (!_hotkeyTriggerDic.ContainsKey(key))
                 {
                     _hotkeyTriggerDic.Add(key, new() { item.EGlobalHotkey });
@@ -103,7 +103,7 @@ public sealed class HotkeyManager
     private (int fsModifiers, int vKey, string hotkeyStr, List<string> Names) GetHotkeyInfo(int hotkeyCode)
     {
         var fsModifiers = hotkeyCode & 0xffff;
-        var vKey = hotkeyCode >> 16 & 0xffff;
+        var vKey = (hotkeyCode >> 16) & 0xffff;
         var hotkeyStr = new StringBuilder();
         var names = new List<string>();
 

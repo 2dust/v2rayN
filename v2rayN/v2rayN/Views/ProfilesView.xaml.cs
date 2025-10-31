@@ -127,7 +127,7 @@ public partial class ProfilesView
             case EViewAction.SaveFileDialog:
                 if (obj is null)
                     return false;
-                if (UI.SaveFileDialog(out string fileName, "Config|*.json") != true)
+                if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
                 {
                     return false;
                 }
@@ -137,17 +137,17 @@ public partial class ProfilesView
             case EViewAction.AddServerWindow:
                 if (obj is null)
                     return false;
-                return (new AddServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
                     return false;
-                return (new AddServer2Window((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
                     return false;
-                return (new AddGroupServerWindow((ProfileItem)obj)).ShowDialog() ?? false;
+                return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.ShareServer:
                 if (obj is null)
@@ -158,7 +158,7 @@ public partial class ProfilesView
             case EViewAction.SubEditWindow:
                 if (obj is null)
                     return false;
-                return (new SubEditWindow((SubItem)obj)).ShowDialog() ?? false;
+                return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
 
             case EViewAction.DispatcherRefreshServersBiz:
                 Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
@@ -415,8 +415,8 @@ public partial class ProfilesView
     private void LstProfiles_MouseMove(object sender, MouseEventArgs e)
     {
         // Get the current mouse position
-        Point mousePos = e.GetPosition(null);
-        Vector diff = startPoint - mousePos;
+        var mousePos = e.GetPosition(null);
+        var diff = startPoint - mousePos;
 
         if (e.LeftButton == MouseButtonState.Pressed &&
             (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
@@ -429,7 +429,7 @@ public partial class ProfilesView
             if (listViewItem == null)
                 return;           // Abort
                                   // Find the data behind the ListViewItem
-            ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+            var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
             if (item == null)
                 return;                   // Abort
                                           // Initialize the drag & drop operation
@@ -462,7 +462,7 @@ public partial class ProfilesView
                 return;
             }
             // Find the data behind the Item
-            ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+            var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
             if (item == null)
                 return;
             // Move item into observable collection

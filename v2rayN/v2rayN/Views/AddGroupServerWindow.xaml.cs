@@ -6,9 +6,9 @@ public partial class AddGroupServerWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
-        this.Loaded += Window_Loaded;
-        this.PreviewKeyDown += AddGroupServerWindow_PreviewKeyDown;
+        Owner = Application.Current.MainWindow;
+        Loaded += Window_Loaded;
+        PreviewKeyDown += AddGroupServerWindow_PreviewKeyDown;
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         menuSelectAllChild.Click += MenuSelectAllChild_Click;
 
@@ -27,11 +27,11 @@ public partial class AddGroupServerWindow
         switch (profileItem.ConfigType)
         {
             case EConfigType.PolicyGroup:
-                this.Title = ResUI.TbConfigTypePolicyGroup;
+                Title = ResUI.TbConfigTypePolicyGroup;
                 break;
 
             case EConfigType.ProxyChain:
-                this.Title = ResUI.TbConfigTypeProxyChain;
+                Title = ResUI.TbConfigTypeProxyChain;
                 gridPolicyGroup.Visibility = Visibility.Collapsed;
                 break;
         }
@@ -61,7 +61,7 @@ public partial class AddGroupServerWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

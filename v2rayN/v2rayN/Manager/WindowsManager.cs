@@ -60,18 +60,18 @@ public sealed class WindowsManager
                 return null;
             }
 
-            Color color = ColorTranslator.FromHtml("#3399CC");
-            int index = (int)config.SystemProxyItem.SysProxyType;
+            var color = ColorTranslator.FromHtml("#3399CC");
+            var index = (int)config.SystemProxyItem.SysProxyType;
             if (index > 0)
             {
                 color = (new[] { Color.Red, Color.Purple, Color.DarkGreen, Color.Orange, Color.DarkSlateBlue, Color.RoyalBlue })[index - 1];
             }
 
-            int width = 128;
-            int height = 128;
+            var width = 128;
+            var height = 128;
 
             Bitmap bitmap = new(width, height);
-            Graphics graphics = Graphics.FromImage(bitmap);
+            var graphics = Graphics.FromImage(bitmap);
             SolidBrush drawBrush = new(color);
 
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -79,7 +79,7 @@ public sealed class WindowsManager
             graphics.DrawImage(new Bitmap(item.CustomIcon), 0, 0, width, height);
             graphics.FillEllipse(drawBrush, width / 2, width / 2, width / 2, width / 2);
 
-            Icon createdIcon = Icon.FromHandle(bitmap.GetHicon());
+            var createdIcon = Icon.FromHandle(bitmap.GetHicon());
 
             drawBrush.Dispose();
             graphics.Dispose();

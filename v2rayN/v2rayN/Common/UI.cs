@@ -1,6 +1,6 @@
 using Microsoft.Win32;
 
-namespace v2rayN;
+namespace v2rayN.Common;
 
 internal class UI
 {

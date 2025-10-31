@@ -10,7 +10,7 @@ public partial class OptionSettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
+        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
@@ -136,7 +136,7 @@ public partial class OptionSettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
 
             case EViewAction.InitSettingFont:
@@ -168,12 +168,12 @@ public partial class OptionSettingWindow
             foreach (var ttf in files)
             {
                 var families = Fonts.GetFontFamilies(Utils.GetFontsPath(ttf));
-                foreach (FontFamily family in families)
+                foreach (var family in families)
                 {
                     var typefaces = family.GetTypefaces();
-                    foreach (Typeface typeface in typefaces)
+                    foreach (var typeface in typefaces)
                     {
-                        typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
+                        typeface.TryGetGlyphTypeface(out var glyph);
                         //var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
                         //if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
                         //{

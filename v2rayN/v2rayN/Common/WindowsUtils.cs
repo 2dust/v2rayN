@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
-namespace v2rayN;
+namespace v2rayN.Common;
 
 internal static class WindowsUtils
 {
@@ -40,13 +40,13 @@ internal static class WindowsUtils
     }
 
     [DllImport("dwmapi.dll")]
-    public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attribute, ref int attributeValue, uint attributeSize);
+    public static extern int DwmSetWindowAttribute(nint hwnd, DWMWINDOWATTRIBUTE attribute, ref int attributeValue, uint attributeSize);
 
     public static ImageSource IconToImageSource(Icon icon)
     {
         return Imaging.CreateBitmapSourceFromHIcon(
             icon.Handle,
-            new System.Windows.Int32Rect(0, 0, icon.Width, icon.Height),
+            new Int32Rect(0, 0, icon.Width, icon.Height),
             BitmapSizeOptions.FromEmptyOptions());
     }
 
@@ -65,9 +65,9 @@ internal static class WindowsUtils
     private static void SetDarkBorder(Window window, bool dark)
     {
         // Make sure the handle is created before the window is shown
-        IntPtr hWnd = new WindowInteropHelper(window).EnsureHandle();
-        int attribute = dark ? 1 : 0;
-        uint attributeSize = (uint)Marshal.SizeOf(attribute);
+        var hWnd = new WindowInteropHelper(window).EnsureHandle();
+        var attribute = dark ? 1 : 0;
+        var attributeSize = (uint)Marshal.SizeOf(attribute);
         DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
         DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
     }
