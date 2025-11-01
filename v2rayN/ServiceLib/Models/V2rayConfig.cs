@@ -354,6 +354,14 @@ public class TlsSettings4Ray
     public string? shortId { get; set; }
     public string? spiderX { get; set; }
     public string? mldsa65Verify { get; set; }
+    public List<CertificateSettings4Ray>? certificates { get; set; }
+    public bool? disableSystemRoot { get; set; }
+}
+
+public class CertificateSettings4Ray
+{
+    public List<string>? certificate { get; set; }
+    public string? usage { get; set; }
 }
 
 public class TcpSettings4Ray

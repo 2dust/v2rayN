@@ -252,6 +252,7 @@ public static class ConfigHandler
             item.Mldsa65Verify = profileItem.Mldsa65Verify;
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
+            item.Cert = profileItem.Cert;
         }
 
         var ret = item.ConfigType switch

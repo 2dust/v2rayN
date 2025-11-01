@@ -245,6 +245,13 @@ public partial class CoreConfigV2rayService
             var host = node.RequestHost.TrimEx();
             var path = node.Path.TrimEx();
             var sni = node.Sni.TrimEx();
+            var certs = node.Cert
+                ?.Split("-----END CERTIFICATE-----", StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.TrimEx())
+                .Where(s => !s.IsNullOrEmpty())
+                .Select(s => s + "\n-----END CERTIFICATE-----")
+                .Select(s => s.Replace("\r\n", "\n"))
+                .ToList() ?? new();
             var useragent = "";
             if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
             {
@@ -276,6 +283,21 @@ public partial class CoreConfigV2rayService
                 else if (host.IsNotEmpty())
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
+                }
+                if (certs.Count > 0)
+                {
+                    var certsettings = new List<CertificateSettings4Ray>();
+                    foreach (var cert in certs)
+                    {
+                        var certPerLine = cert.Split("\n").ToList();
+                        certsettings.Add(new CertificateSettings4Ray
+                        {
+                            certificate = certPerLine,
+                            usage = "verify",
+                        });
+                    }
+                    tlsSettings.certificates = certsettings;
+                    tlsSettings.disableSystemRoot = true;
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }
