@@ -12,6 +12,7 @@ public class AddServerViewModel : MyReactiveObject
     public string Cert { get; set; }
 
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
+    public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
     public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
@@ -22,6 +23,10 @@ public class AddServerViewModel : MyReactiveObject
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await FetchCert();
+        });
+        FetchCertChainCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await FetchCertChain();
         });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -116,5 +121,25 @@ public class AddServerViewModel : MyReactiveObject
             domain += $":{SelectedSource.Port}";
         }
         Cert = await Utils.GetCertPem(domain, serverName);
+    }
+
+    private async Task FetchCertChain()
+    {
+        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        {
+            return;
+        }
+        var domain = SelectedSource.Address;
+        var serverName = SelectedSource.Sni.IsNullOrEmpty() ? SelectedSource.Address : SelectedSource.Sni;
+        if (!Utils.IsDomain(serverName))
+        {
+            return;
+        }
+        if (SelectedSource.Port > 0)
+        {
+            domain += $":{SelectedSource.Port}";
+        }
+        var certs = await Utils.GetCertChainPem(domain, serverName);
+        Cert = string.Join("\n", certs);
     }
 }

@@ -1609,4 +1609,7 @@
   <data name="TbFetchCert" xml:space="preserve">
     <value>获取证书</value>
   </data>
+  <data name="TbFetchCertChain" xml:space="preserve">
+    <value>获取证书链</value>
+  </data>
 </root>

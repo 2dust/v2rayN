@@ -1018,13 +1018,20 @@
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbCertPinningTips}"
                                 TextWrapping="Wrap" />
-                            <Button
-                                x:Name="btnFetchCert"
-                                Width="100"
-                                Margin="{StaticResource MarginLeftRight4}"
-                                HorizontalAlignment="Left"
-                                Content="{x:Static resx:ResUI.TbFetchCert}"
-                                Style="{StaticResource DefButton}" />
+                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                <Button
+                                    x:Name="btnFetchCert"
+                                    Width="100"
+                                    Margin="{StaticResource MarginLeftRight4}"
+                                    Content="{x:Static resx:ResUI.TbFetchCert}"
+                                    Style="{StaticResource DefButton}" />
+                                <Button
+                                    x:Name="btnFetchCertChain"
+                                    Width="100"
+                                    Margin="{StaticResource MarginLeftRight4}"
+                                    Content="{x:Static resx:ResUI.TbFetchCertChain}"
+                                    Style="{StaticResource DefButton}" />
+                            </StackPanel>
                             <TextBox
                                 x:Name="txtCert"
                                 Width="400"

@@ -1612,4 +1612,7 @@ Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</val
   <data name="TbFetchCert" xml:space="preserve">
     <value>Fetch Certificate</value>
   </data>
+  <data name="TbFetchCertChain" xml:space="preserve">
+    <value>Fetch Certificate Chain</value>
+  </data>
 </root>
