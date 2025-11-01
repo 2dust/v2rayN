@@ -2798,6 +2798,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fetch Certificate Chain 的本地化字符串。
+        /// </summary>
+        public static string TbFetchCertChain {
+            get {
+                return ResourceManager.GetString("TbFetchCertChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fingerprint 的本地化字符串。
         /// </summary>
         public static string TbFingerprint {
