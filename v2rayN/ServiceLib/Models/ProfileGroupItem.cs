@@ -8,5 +8,14 @@ public class ProfileGroupItem
 
     public string ChildItems { get; set; }
 
+    public string? SubChildItems { get; set; }
+
+    public string? Filter { get; set; }
+
     public EMultipleLoad MultipleLoad { get; set; } = EMultipleLoad.LeastPing;
+
+    public bool NotHasChild()
+    {
+        return string.IsNullOrWhiteSpace(ChildItems) && string.IsNullOrWhiteSpace(SubChildItems);
+    }
 }

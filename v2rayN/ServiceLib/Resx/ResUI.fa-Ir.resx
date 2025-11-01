@@ -1599,4 +1599,7 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Test real delay</value>
   </data>
+  <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
+    <value>Auto add filtered configuration from subscription groups</value>
+  </data>
 </root>

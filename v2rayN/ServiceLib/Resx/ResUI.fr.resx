@@ -1596,4 +1596,7 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Test 1-clic de latence réelle</value>
   </data>
+  <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
+    <value>Auto add filtered configuration from subscription groups</value>
+  </data>
 </root>

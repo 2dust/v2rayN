@@ -1596,4 +1596,7 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>一鍵測試真連線延遲</value>
   </data>
+  <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
+    <value>自動從訂閱分組新增過濾後的配置</value>
+  </data>
 </root>

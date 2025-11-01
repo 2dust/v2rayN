@@ -59,6 +59,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="180" />
@@ -130,6 +132,45 @@
                         materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TbPolicyGroupType}"
                         Style="{StaticResource DefComboBox}" />
                 </Grid>
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.menuSubscription}" />
+                <ComboBox
+                    x:Name="cmbSubChildItems"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource Margin4}"
+                    DisplayMemberPath="Remarks"
+                    Style="{StaticResource DefComboBox}" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
+
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvFilter}" />
+                <TextBox
+                    x:Name="txtFilter"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    AcceptsReturn="True"
+                    Style="{StaticResource DefTextBox}" />
             </Grid>
         </Grid>
         <TabControl>

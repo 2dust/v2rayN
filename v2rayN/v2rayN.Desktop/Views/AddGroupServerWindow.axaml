@@ -38,7 +38,7 @@
             <Grid
                 Grid.Row="0"
                 ColumnDefinitions="180,Auto,Auto"
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
@@ -88,6 +88,40 @@
                         Width="200"
                         Margin="{StaticResource Margin4}" />
                 </Grid>
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.menuSubscription}" />
+                <ComboBox
+                    x:Name="cmbSubChildItems"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource Margin4}"
+                    DisplayMemberBinding="{Binding Remarks}"
+                    ItemsSource="{Binding SubItems}" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
+
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvFilter}" />
+                <TextBox
+                    x:Name="txtFilter"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center" />
             </Grid>
         </Grid>
         <TabControl>

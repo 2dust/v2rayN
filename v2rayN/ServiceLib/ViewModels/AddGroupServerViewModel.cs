@@ -17,6 +17,14 @@ public class AddGroupServerViewModel : MyReactiveObject
     [Reactive]
     public string? PolicyGroupType { get; set; }
 
+    [Reactive]
+    public SubItem? SelectedSubItem { get; set; }
+
+    [Reactive]
+    public string? Filter { get; set; }
+
+    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+
     public IObservableCollection<ProfileItem> ChildItemsObs { get; } = new ObservableCollectionExtended<ProfileItem>();
 
     //public ReactiveCommand<Unit, Unit> AddCmd { get; }
@@ -64,10 +72,14 @@ public class AddGroupServerViewModel : MyReactiveObject
         });
 
         SelectedSource = profileItem.IndexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
-
         CoreType = (SelectedSource?.CoreType ?? ECoreType.Xray).ToString();
 
-        ProfileGroupItemManager.Instance.TryGet(profileItem.IndexId, out var profileGroup);
+        _ = Init();
+    }
+
+    public async Task Init()
+    {
+        ProfileGroupItemManager.Instance.TryGet(SelectedSource.IndexId, out var profileGroup);
         PolicyGroupType = (profileGroup?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
         {
             EMultipleLoad.LeastPing => ResUI.TbLeastPing,
@@ -78,15 +90,16 @@ public class AddGroupServerViewModel : MyReactiveObject
             _ => ResUI.TbLeastPing,
         };
 
-        _ = Init();
-    }
+        var subs = await AppManager.Instance.SubItems();
+        subs.Add(new SubItem());
+        SubItems.AddRange(subs);
+        SelectedSubItem = SubItems.Where(s => s.Id == profileGroup?.SubChildItems).FirstOrDefault();
+        Filter = profileGroup?.Filter;
 
-    public async Task Init()
-    {
         var childItemMulti = ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(SelectedSource?.IndexId);
         if (childItemMulti != null)
         {
-            var childIndexIds = childItemMulti.ChildItems.IsNullOrEmpty() ? new List<string>() : Utils.String2List(childItemMulti.ChildItems);
+            var childIndexIds = Utils.String2List(childItemMulti.ChildItems) ?? [];
             foreach (var item in childIndexIds)
             {
                 var child = await AppManager.Instance.GetProfileItem(item);
@@ -181,7 +194,7 @@ public class AddGroupServerViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
-        if (ChildItemsObs.Count == 0)
+        if (ChildItemsObs.Count == 0 && SelectedSubItem?.Id.IsNullOrEmpty() == true)
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseAddAtLeastOneServer);
             return;
@@ -212,6 +225,9 @@ public class AddGroupServerViewModel : MyReactiveObject
             var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
             _ => EMultipleLoad.LeastPing,
         };
+
+        profileGroup.SubChildItems = SelectedSubItem?.Id;
+        profileGroup.Filter = Filter;
 
         var hasCycle = ProfileGroupItemManager.HasCycle(profileGroup.IndexId);
         if (hasCycle)

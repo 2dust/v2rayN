@@ -115,7 +115,7 @@ public class ActionPrecheckManager(Config config)
         if (item.ConfigType.IsGroupType())
         {
             ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
-            if (group is null || group.ChildItems.IsNullOrEmpty())
+            if (group is null || group.NotHasChild())
             {
                 errors.Add(string.Format(ResUI.GroupEmpty, item.Remarks));
                 return errors;
@@ -128,7 +128,11 @@ public class ActionPrecheckManager(Config config)
                 return errors;
             }
 
-            foreach (var child in Utils.String2List(group.ChildItems))
+            var childIds = Utils.String2List(group.ChildItems) ?? [];
+            var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
+            childIds.AddRange(subItems.Select(p => p.IndexId));
+
+            foreach (var child in childIds)
             {
                 var childErrors = new List<string>();
                 if (child.IsNullOrEmpty())
