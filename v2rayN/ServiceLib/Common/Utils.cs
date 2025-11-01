@@ -1,6 +1,4 @@
 using System.Collections.Specialized;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using CliWrap;
 using CliWrap.Buffered;
@@ -762,83 +760,6 @@ public class Utils
         }
 
         return null;
-    }
-
-    public static async Task<string?> GetCertPem(string target, string serverName)
-    {
-        try
-        {
-            var (domain, _, port, _) = ParseUrl(target);
-
-            using var client = new TcpClient();
-            await client.ConnectAsync(domain, port > 0 ? port : 443);
-
-            using var ssl = new SslStream(client.GetStream(), false,
-                (sender, cert, chain, errors) => true);
-
-            await ssl.AuthenticateAsClientAsync(serverName);
-
-            var remote = ssl.RemoteCertificate;
-            if (remote == null)
-            {
-                return null;
-            }
-
-            var leaf = new X509Certificate2(remote);
-            return ExportCertToPem(leaf);
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            return null;
-        }
-    }
-
-    public static async Task<List<string>> GetCertChainPem(string target, string serverName)
-    {
-        try
-        {
-            var pemList = new List<string>();
-            var (domain, _, port, _) = ParseUrl(target);
-
-            using var client = new TcpClient();
-            await client.ConnectAsync(domain, port > 0 ? port : 443);
-
-            using var ssl = new SslStream(client.GetStream(), false,
-                (sender, cert, chain, errors) => true);
-
-            await ssl.AuthenticateAsClientAsync(serverName);
-
-            // TODO: Pinning Trusted CA certificates to avoid MITM
-
-            if (ssl.RemoteCertificate is not X509Certificate2 certChain)
-            {
-                return pemList;
-            }
-
-            var chain = new X509Chain();
-            chain.Build(certChain);
-
-            foreach (var element in chain.ChainElements)
-            {
-                var pem = ExportCertToPem(element.Certificate);
-                pemList.Add(pem);
-            }
-
-            return pemList;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            return new List<string>();
-        }
-    }
-
-    public static string ExportCertToPem(X509Certificate2 cert)
-    {
-        var der = cert.Export(X509ContentType.Cert);
-        var b64 = Convert.ToBase64String(der, Base64FormattingOptions.InsertLineBreaks);
-        return $"-----BEGIN CERTIFICATE-----\n{b64}\n-----END CERTIFICATE-----\n";
     }
 
     #endregion 杂项
