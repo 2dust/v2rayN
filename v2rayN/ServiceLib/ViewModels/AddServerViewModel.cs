@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class AddServerViewModel : MyReactiveObject
 {
+    private string _certError = string.Empty;
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -10,6 +12,9 @@ public class AddServerViewModel : MyReactiveObject
 
     [Reactive]
     public string Cert { get; set; }
+
+    [Reactive]
+    public string CertTip { get; set; }
 
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
@@ -32,6 +37,9 @@ public class AddServerViewModel : MyReactiveObject
         {
             await SaveServerAsync();
         });
+
+        this.WhenAnyValue(x => x.Cert)
+            .Subscribe(_ => UpdateCertTip());
 
         if (profileItem.IndexId.IsNullOrEmpty())
         {
@@ -104,6 +112,13 @@ public class AddServerViewModel : MyReactiveObject
         }
     }
 
+    private void UpdateCertTip()
+    {
+        CertTip = _certError.IsNullOrEmpty()
+            ? (Cert.IsNullOrEmpty() ? ResUI.CertNotSet : ResUI.CertSet)
+            : _certError;
+    }
+
     private async Task FetchCert()
     {
         if (SelectedSource.StreamSecurity != Global.StreamSecurity)
@@ -122,7 +137,9 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (!Utils.IsDomain(serverName))
         {
-            NoticeManager.Instance.Enqueue(ResUI.ServerNameMustBeValidDomain);
+            _certError = ResUI.ServerNameMustBeValidDomain;
+            UpdateCertTip();
+            _certError = string.Empty;
             return;
         }
         if (SelectedSource.Port > 0)
@@ -150,7 +167,9 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (!Utils.IsDomain(serverName))
         {
-            NoticeManager.Instance.Enqueue(ResUI.ServerNameMustBeValidDomain);
+            _certError = ResUI.ServerNameMustBeValidDomain;
+            UpdateCertTip();
+            _certError = string.Empty;
             return;
         }
         if (SelectedSource.Port > 0)

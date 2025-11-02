@@ -1615,4 +1615,10 @@
   <data name="ServerNameMustBeValidDomain" xml:space="preserve">
     <value>请设置有效的域名</value>
   </data>
+  <data name="CertNotSet" xml:space="preserve">
+    <value>证书未设置</value>
+  </data>
+  <data name="CertSet" xml:space="preserve">
+    <value>证书已设置</value>
+  </data>
 </root>

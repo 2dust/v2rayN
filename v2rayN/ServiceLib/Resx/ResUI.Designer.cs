@@ -88,6 +88,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Certificate not set 的本地化字符串。
+        /// </summary>
+        public static string CertNotSet {
+            get {
+                return ResourceManager.GetString("CertNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Certificate set 的本地化字符串。
+        /// </summary>
+        public static string CertSet {
+            get {
+                return ResourceManager.GetString("CertSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please check the Configuration settings first. 的本地化字符串。
         /// </summary>
         public static string CheckServerSettings {

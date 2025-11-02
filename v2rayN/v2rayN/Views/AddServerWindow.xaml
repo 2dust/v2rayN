@@ -1004,45 +1004,54 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbCertPinning}" />
-
-                    <materialDesign:PopupBox
+                    <StackPanel
                         Grid.Row="5"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        StaysOpen="True"
-                        Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
-                        <StackPanel>
-                            <TextBlock
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource ToolbarTextBlock}"
-                                Text="{x:Static resx:ResUI.TbCertPinningTips}"
-                                TextWrapping="Wrap" />
-                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                <Button
-                                    x:Name="btnFetchCert"
-                                    Width="100"
-                                    Margin="{StaticResource MarginLeftRight4}"
-                                    Content="{x:Static resx:ResUI.TbFetchCert}"
-                                    Style="{StaticResource DefButton}" />
-                                <Button
-                                    x:Name="btnFetchCertChain"
-                                    Width="100"
-                                    Margin="{StaticResource MarginLeftRight4}"
-                                    Content="{x:Static resx:ResUI.TbFetchCertChain}"
-                                    Style="{StaticResource DefButton}" />
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            x:Name="labCertPinning"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}" />
+                        <materialDesign:PopupBox
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            StaysOpen="True"
+                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbCertPinningTips}"
+                                    TextWrapping="Wrap" />
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <Button
+                                        x:Name="btnFetchCert"
+                                        Width="100"
+                                        Margin="{StaticResource MarginLeftRight4}"
+                                        Content="{x:Static resx:ResUI.TbFetchCert}"
+                                        Style="{StaticResource DefButton}" />
+                                    <Button
+                                        x:Name="btnFetchCertChain"
+                                        Width="100"
+                                        Margin="{StaticResource MarginLeftRight4}"
+                                        Content="{x:Static resx:ResUI.TbFetchCertChain}"
+                                        Style="{StaticResource DefButton}" />
+                                </StackPanel>
+                                <TextBox
+                                    x:Name="txtCert"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    AcceptsReturn="True"
+                                    MinLines="6"
+                                    Style="{StaticResource MyOutlinedTextBox}"
+                                    TextWrapping="Wrap" />
                             </StackPanel>
-                            <TextBox
-                                x:Name="txtCert"
-                                Width="400"
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                AcceptsReturn="True"
-                                MinLines="6"
-                                Style="{StaticResource MyOutlinedTextBox}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </materialDesign:PopupBox>
+                        </materialDesign:PopupBox>
+                    </StackPanel>
 
                 </Grid>
                 <Grid
