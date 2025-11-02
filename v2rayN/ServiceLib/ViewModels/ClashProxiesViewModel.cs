@@ -245,6 +245,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         {
             SelectedGroup = new();
         }
+        await Task.CompletedTask;
     }
 
     private void RefreshProxyDetails(bool c)
@@ -391,6 +392,7 @@ public class ClashProxiesViewModel : MyReactiveObject
                 _ = ProxiesDelayTestResult(model);
                 return Disposable.Empty;
             });
+            await Task.CompletedTask;
         });
         await Task.CompletedTask;
     }
@@ -419,6 +421,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             detail.Delay = _delayTimeout;
             detail.DelayName = string.Empty;
         }
+        await Task.CompletedTask;
     }
 
     #endregion proxy function

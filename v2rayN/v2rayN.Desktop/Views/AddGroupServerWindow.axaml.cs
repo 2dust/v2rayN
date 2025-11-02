@@ -95,7 +95,9 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     private void AddGroupServerWindow_KeyDown(object? sender, KeyEventArgs e)
     {
         if (!lstChild.IsKeyboardFocusWithin)
+        {
             return;
+        }
 
         if ((e.KeyModifiers & (KeyModifiers.Control | KeyModifiers.Meta)) != 0)
         {

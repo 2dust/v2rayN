@@ -124,7 +124,10 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         {
             case EViewAction.SetClipboardData:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 await AvaUtils.SetClipboardData(this, (string)obj);
                 break;
 
@@ -141,7 +144,10 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
             case EViewAction.SaveFileDialog:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 var fileName = await UI.SaveFileDialog(_window, "");
                 if (fileName.IsNullOrEmpty())
                 {
@@ -152,28 +158,43 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
             case EViewAction.AddServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(_window);
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
 
             case EViewAction.ShareServer:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 await ShareServer((string)obj);
                 break;
 
             case EViewAction.SubEditWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new SubEditWindow((SubItem)obj).ShowDialog<bool>(_window);
 
             case EViewAction.DispatcherRefreshServersBiz:
@@ -215,14 +236,17 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         var source = e.Source as Border;
         if (source?.Name == "HeaderBackground")
+        {
             return;
+        }
+
         if (_config.UiItem.DoubleClick2Activate)
         {
             ViewModel?.SetDefaultServer();
         }
         else
         {
-            ViewModel?.EditServerAsync(EConfigType.Custom);
+            ViewModel?.EditServerAsync();
         }
     }
 
@@ -263,7 +287,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     break;
 
                 case Key.D:
-                    ViewModel?.EditServerAsync(EConfigType.Custom);
+                    ViewModel?.EditServerAsync();
                     break;
 
                 case Key.F:

@@ -6,14 +6,14 @@ public class DelayColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-        int.TryParse(value.ToString(), out var delay);
+        var delay = value.ToString().ToInt();
 
-        if (delay <= 0)
-            return new SolidColorBrush(Colors.Red);
-        if (delay <= 500)
-            return new SolidColorBrush(Colors.Green);
-        else
-            return new SolidColorBrush(Colors.IndianRed);
+        return delay switch
+        {
+            <= 0 => new SolidColorBrush(Colors.Red),
+            <= 500 => new SolidColorBrush(Colors.Green),
+            _ => new SolidColorBrush(Colors.IndianRed)
+        };
     }
 
     public object? ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

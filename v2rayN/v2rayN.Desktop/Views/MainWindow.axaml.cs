@@ -22,8 +22,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         KeyDown += MainWindow_KeyDown;
-        menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
-        menuPromotion.Click += menuPromotion_Click;
+        menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
+        menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
@@ -188,6 +188,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private async Task DelegateSnackMsg(string content)
     {
         _manager?.Show(new Notification(null, content, NotificationType.Information));
+        await Task.CompletedTask;
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -196,17 +197,26 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             case EViewAction.AddServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.DNSSettingWindow:
@@ -308,12 +318,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    private void menuPromotion_Click(object? sender, RoutedEventArgs e)
+    private void MenuPromotion_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
     }
 
-    private void menuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
+    private void MenuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
     }
@@ -478,8 +488,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
-            .Where(t => t.CoreType != ECoreType.v2fly
-                        && t.CoreType != ECoreType.hysteria))
+            .Where(t => t.CoreType is not ECoreType.v2fly
+                        and not ECoreType.hysteria))
         {
             var item = new MenuItem()
             {

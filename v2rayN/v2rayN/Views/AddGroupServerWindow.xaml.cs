@@ -78,7 +78,10 @@ public partial class AddGroupServerWindow
     private void AddGroupServerWindow_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (!lstChild.IsKeyboardFocusWithin)
+        {
             return;
+        }
+
         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
         {
             if (e.Key == Key.A)

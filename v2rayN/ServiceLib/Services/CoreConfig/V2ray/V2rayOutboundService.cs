@@ -803,7 +803,10 @@ public partial class CoreConfigV2rayService
         {
             var node = nodes[i];
             if (node == null)
+            {
                 continue;
+            }
+
             if (node.ConfigType.IsGroupType())
             {
                 var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);

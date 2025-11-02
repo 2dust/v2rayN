@@ -250,7 +250,9 @@ public partial class CoreConfigSingboxService
                 foreach (var it in item.Domain)
                 {
                     if (ParseV2Domain(it, rule1))
+                    {
                         countDomain++;
+                    }
                 }
                 if (countDomain > 0)
                 {
@@ -265,7 +267,9 @@ public partial class CoreConfigSingboxService
                 foreach (var it in item.Ip)
                 {
                     if (ParseV2Address(it, rule2))
+                    {
                         countIp++;
+                    }
                 }
                 if (countIp > 0)
                 {

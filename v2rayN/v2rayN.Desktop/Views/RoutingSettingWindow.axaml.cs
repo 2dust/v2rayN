@@ -60,7 +60,10 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 
             case EViewAction.RoutingRuleSettingWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog<bool>(this);
         }
         return await Task.FromResult(true);

@@ -56,7 +56,10 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
             case EViewAction.SetClipboardData:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 await AvaUtils.SetClipboardData(this, (string)obj);
                 break;
 

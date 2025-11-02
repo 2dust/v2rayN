@@ -202,7 +202,9 @@ public partial class CoreConfigSingboxService
 
         var routing = await ConfigHandler.GetDefaultRouting(_config);
         if (routing == null)
+        {
             return 0;
+        }
 
         var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
         var expectedIPCidr = new List<string>();

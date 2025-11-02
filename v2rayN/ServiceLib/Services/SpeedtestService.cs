@@ -21,7 +21,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (_lstExitLoop.Count > 0)
         {
-            UpdateFunc("", ResUI.SpeedtestingStop);
+            _ = UpdateFunc("", ResUI.SpeedtestingStop);
 
             _lstExitLoop.Clear();
         }

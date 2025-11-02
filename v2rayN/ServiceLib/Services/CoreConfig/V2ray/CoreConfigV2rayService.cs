@@ -137,7 +137,9 @@ public partial class CoreConfigV2rayService(Config config)
                 foreach (var rule in rules)
                 {
                     if (rule.outboundTag == null)
+                    {
                         continue;
+                    }
 
                     if (balancerTagSet.Contains(rule.outboundTag))
                     {

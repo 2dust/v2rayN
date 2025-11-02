@@ -120,7 +120,7 @@ public class StatusBarViewModel : MyReactiveObject
         this.WhenAnyValue(
                 x => x.SelectedServer,
                 y => y != null && !y.Text.IsNullOrEmpty())
-            .Subscribe(c => ServerSelectedChanged(c));
+            .Subscribe(ServerSelectedChanged);
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         this.WhenAnyValue(
@@ -367,11 +367,13 @@ public class StatusBarViewModel : MyReactiveObject
             _ = TestServerAvailabilityResult(msg);
             return Disposable.Empty;
         });
+        await Task.CompletedTask;
     }
 
     public async Task TestServerAvailabilityResult(string msg)
     {
         RunningInfoDisplay = msg;
+        await Task.CompletedTask;
     }
 
     #region System proxy and Routings
@@ -384,7 +386,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
-        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
+        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
@@ -561,6 +563,7 @@ public class StatusBarViewModel : MyReactiveObject
         catch
         {
         }
+        await Task.CompletedTask;
     }
 
     #endregion UI

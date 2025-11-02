@@ -49,14 +49,20 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
 
             case EViewAction.SubEditWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 var window = new SubEditWindow((SubItem)obj);
                 await window.ShowDialog(this);
                 break;
 
             case EViewAction.ShareSub:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 await ShareSub((string)obj);
                 break;
         }

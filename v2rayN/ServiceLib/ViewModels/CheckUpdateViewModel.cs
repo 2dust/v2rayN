@@ -209,6 +209,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             _ = UpdateFinishedResult(blReload);
             return Disposable.Empty;
         });
+        await Task.CompletedTask;
     }
 
     public async Task UpdateFinishedResult(bool blReload)
@@ -321,6 +322,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             _ = UpdateViewResult(model);
             return Disposable.Empty;
         });
+        await Task.CompletedTask;
     }
 
     public async Task UpdateViewResult(CheckUpdateModel model)
@@ -331,5 +333,6 @@ public class CheckUpdateViewModel : MyReactiveObject
             return;
         }
         found.Remarks = model.Remarks;
+        await Task.CompletedTask;
     }
 }

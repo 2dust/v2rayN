@@ -79,7 +79,10 @@ public partial class RoutingRuleSettingWindow
             case EViewAction.RoutingRuleDetailsWindow:
 
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog() ?? false;
 
             case EViewAction.ImportRulesFromFile:
@@ -93,7 +96,10 @@ public partial class RoutingRuleSettingWindow
 
             case EViewAction.SetClipboardData:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 WindowsUtils.SetClipboardData((string)obj);
                 break;
 
@@ -117,7 +123,10 @@ public partial class RoutingRuleSettingWindow
     private void RoutingRuleSettingWindow_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (!lstRules.IsKeyboardFocusWithin)
+        {
             return;
+        }
+
         if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
         {
             if (e.Key == Key.A)

@@ -83,7 +83,10 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
             case EViewAction.RoutingRuleDetailsWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.ImportRulesFromFile:

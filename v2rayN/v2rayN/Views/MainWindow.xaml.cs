@@ -21,9 +21,9 @@ public partial class MainWindow
         App.Current.SessionEnding += Current_SessionEnding;
         Closing += MainWindow_Closing;
         PreviewKeyDown += MainWindow_PreviewKeyDown;
-        menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
-        menuPromotion.Click += menuPromotion_Click;
-        menuClose.Click += menuClose_Click;
+        menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
+        menuPromotion.Click += MenuPromotion_Click;
+        menuClose.Click += MenuClose_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
@@ -178,6 +178,7 @@ public partial class MainWindow
     private async Task DelegateSnackMsg(string content)
     {
         MainSnackbar.MessageQueue?.Enqueue(content);
+        await Task.CompletedTask;
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -186,17 +187,26 @@ public partial class MainWindow
         {
             case EViewAction.AddServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.DNSSettingWindow:
@@ -297,18 +307,18 @@ public partial class MainWindow
         }
     }
 
-    private void menuClose_Click(object sender, RoutedEventArgs e)
+    private void MenuClose_Click(object sender, RoutedEventArgs e)
     {
         StorageUI();
         ShowHideWindow(false);
     }
 
-    private void menuPromotion_Click(object sender, RoutedEventArgs e)
+    private void MenuPromotion_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
     }
 
-    private void menuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
+    private void MenuSettingsSetUWP_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
     }
@@ -429,8 +439,8 @@ public partial class MainWindow
     {
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
-            .Where(t => t.CoreType != ECoreType.v2fly
-                        && t.CoreType != ECoreType.hysteria))
+            .Where(t => t.CoreType is not ECoreType.v2fly
+                        and not ECoreType.hysteria))
         {
             var item = new MenuItem()
             {

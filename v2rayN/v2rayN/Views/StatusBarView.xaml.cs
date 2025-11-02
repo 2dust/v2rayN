@@ -80,7 +80,10 @@ public partial class StatusBarView
 
             case EViewAction.SetClipboardData:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 WindowsUtils.SetClipboardData((string)obj);
                 break;
         }

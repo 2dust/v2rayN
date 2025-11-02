@@ -109,7 +109,10 @@ public partial class ProfilesView
         {
             case EViewAction.SetClipboardData:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 WindowsUtils.SetClipboardData((string)obj);
                 break;
 
@@ -126,7 +129,10 @@ public partial class ProfilesView
 
             case EViewAction.SaveFileDialog:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
                 {
                     return false;
@@ -136,28 +142,43 @@ public partial class ProfilesView
 
             case EViewAction.AddServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.AddGroupServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
 
             case EViewAction.ShareServer:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 ShareServer((string)obj);
                 break;
 
             case EViewAction.SubEditWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
 
             case EViewAction.DispatcherRefreshServersBiz:
@@ -209,7 +230,7 @@ public partial class ProfilesView
         }
         else
         {
-            ViewModel?.EditServerAsync(EConfigType.Custom);
+            ViewModel?.EditServerAsync();
         }
     }
 
@@ -245,7 +266,7 @@ public partial class ProfilesView
                     break;
 
                 case Key.D:
-                    ViewModel?.EditServerAsync(EConfigType.Custom);
+                    ViewModel?.EditServerAsync();
                     break;
 
                 case Key.F:
@@ -424,15 +445,22 @@ public partial class ProfilesView
         {
             // Get the dragged Item
             if (sender is not DataGrid listView)
+            {
                 return;
+            }
+
             var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
             if (listViewItem == null)
+            {
                 return;           // Abort
-                                  // Find the data behind the ListViewItem
+            }
+            // Find the data behind the ListViewItem
             var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
             if (item == null)
+            {
                 return;                   // Abort
-                                          // Initialize the drag & drop operation
+            }
+            // Initialize the drag & drop operation
             startIndex = lstProfiles.SelectedIndex;
             DataObject dragData = new(formatData, item);
             DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
@@ -453,7 +481,10 @@ public partial class ProfilesView
         {
             // Get the drop Item destination
             if (sender is not DataGrid listView)
+            {
                 return;
+            }
+
             var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
             if (listViewItem == null)
             {
@@ -464,7 +495,9 @@ public partial class ProfilesView
             // Find the data behind the Item
             var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
             if (item == null)
+            {
                 return;
+            }
             // Move item into observable collection
             // (this will be automatically reflected to lstView.ItemsSource)
             e.Effects = DragDropEffects.Move;

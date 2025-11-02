@@ -81,21 +81,36 @@ public class ActionPrecheckManager(Config config)
             {
                 case EConfigType.VMess:
                     if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
+                    {
                         errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    }
+
                     break;
 
                 case EConfigType.VLESS:
                     if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
+                    {
                         errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    }
+
                     if (!Global.Flows.Contains(item.Flow))
+                    {
                         errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
+                    }
+
                     break;
 
                 case EConfigType.Shadowsocks:
                     if (item.Id.IsNullOrEmpty())
+                    {
                         errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    }
+
                     if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                    {
                         errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
+                    }
+
                     break;
             }
 

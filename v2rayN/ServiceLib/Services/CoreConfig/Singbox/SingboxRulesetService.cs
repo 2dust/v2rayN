@@ -7,7 +7,9 @@ public partial class CoreConfigSingboxService
         static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
         {
             if (rule_set != null)
+            {
                 ruleSets.AddRange(rule_set);
+            }
         }
         var geosite = "geosite";
         var geoip = "geoip";

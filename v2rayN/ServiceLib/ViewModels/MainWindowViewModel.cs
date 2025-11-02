@@ -78,55 +78,55 @@ public class MainWindowViewModel : MyReactiveObject
         //servers
         AddVmessServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.VMess);
+            await AddServerAsync(EConfigType.VMess);
         });
         AddVlessServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.VLESS);
+            await AddServerAsync(EConfigType.VLESS);
         });
         AddShadowsocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.Shadowsocks);
+            await AddServerAsync(EConfigType.Shadowsocks);
         });
         AddSocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.SOCKS);
+            await AddServerAsync(EConfigType.SOCKS);
         });
         AddHttpServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.HTTP);
+            await AddServerAsync(EConfigType.HTTP);
         });
         AddTrojanServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.Trojan);
+            await AddServerAsync(EConfigType.Trojan);
         });
         AddHysteria2ServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.Hysteria2);
+            await AddServerAsync(EConfigType.Hysteria2);
         });
         AddTuicServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.TUIC);
+            await AddServerAsync(EConfigType.TUIC);
         });
         AddWireguardServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.WireGuard);
+            await AddServerAsync(EConfigType.WireGuard);
         });
         AddAnytlsServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.Anytls);
+            await AddServerAsync(EConfigType.Anytls);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.Custom);
+            await AddServerAsync(EConfigType.Custom);
         });
         AddPolicyGroupServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.PolicyGroup);
+            await AddServerAsync(EConfigType.PolicyGroup);
         });
         AddProxyChainServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await AddServerAsync(true, EConfigType.ProxyChain);
+            await AddServerAsync(EConfigType.ProxyChain);
         });
         AddServerViaClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -283,6 +283,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             NoticeManager.Instance.Enqueue(msg);
         }
+        await Task.CompletedTask;
     }
 
     private async Task UpdateTaskHandler(bool success, string msg)
@@ -310,6 +311,7 @@ public class MainWindowViewModel : MyReactiveObject
             return;
         }
         AppEvents.DispatcherStatisticsRequested.Publish(update);
+        await Task.CompletedTask;
     }
 
     #endregion Actions
@@ -332,7 +334,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     #region Add Servers
 
-    public async Task AddServerAsync(bool blNew, EConfigType eConfigType)
+    public async Task AddServerAsync(EConfigType eConfigType)
     {
         ProfileItem item = new()
         {

@@ -11,7 +11,9 @@ public partial class CoreConfigV2rayService
 
         // Case 1: exact match already exists -> nothing to do
         if (subjectSelectors.Any(baseTagName.StartsWith))
+        {
             return await Task.FromResult(0);
+        }
 
         // Case 2: prefix match exists -> reuse it and move to the first position
         var matched = subjectSelectors.FirstOrDefault(s => s.StartsWith(baseTagName));

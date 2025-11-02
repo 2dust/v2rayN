@@ -66,10 +66,14 @@ public class FullConfigTemplateViewModel : MyReactiveObject
     private async Task SaveSettingAsync()
     {
         if (!await SaveXrayConfigAsync())
+        {
             return;
+        }
 
         if (!await SaveSingboxConfigAsync())
+        {
             return;
+        }
 
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         _ = _updateView?.Invoke(EViewAction.CloseWindow, null);

@@ -679,7 +679,10 @@ public partial class CoreConfigSingboxService
         {
             var node = nodes[i];
             if (node == null)
+            {
                 continue;
+            }
+
             if (node.ConfigType.IsGroupType())
             {
                 var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);

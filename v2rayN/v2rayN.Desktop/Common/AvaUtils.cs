@@ -28,7 +28,10 @@ internal class AvaUtils
         {
             var clipboard = TopLevel.GetTopLevel(visual)?.Clipboard;
             if (clipboard == null)
+            {
                 return;
+            }
+
             await clipboard.SetTextAsync(strData);
         }
         catch

@@ -30,7 +30,9 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         {
             case EViewAction.DispatcherShowMsg:
                 if (obj is null)
+                {
                     return false;
+                }
 
                 Dispatcher.UIThread.Post(() => ShowMsg(obj),
                     DispatcherPriority.ApplicationIdle);

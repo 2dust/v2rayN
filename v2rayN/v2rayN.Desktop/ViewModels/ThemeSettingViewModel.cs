@@ -95,7 +95,9 @@ public class ThemeSettingViewModel : MyReactiveObject
     {
         double size = CurrentFontSize;
         if (size < Global.MinFontSize)
+        {
             return;
+        }
 
         Style style = new(x => Selectors.Or(
             x.OfType<Button>(),

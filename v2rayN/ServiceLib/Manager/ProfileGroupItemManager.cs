@@ -173,13 +173,19 @@ public class ProfileGroupItemManager
     public static bool HasCycle(string? indexId, HashSet<string> visited, HashSet<string> stack)
     {
         if (indexId.IsNullOrEmpty())
+        {
             return false;
+        }
 
         if (stack.Contains(indexId))
+        {
             return true;
+        }
 
         if (visited.Contains(indexId))
+        {
             return false;
+        }
 
         visited.Add(indexId);
         stack.Add(indexId);
@@ -289,7 +295,9 @@ public class ProfileGroupItemManager
         {
             var childNode = await AppManager.Instance.GetProfileItem(childId);
             if (childNode == null)
+            {
                 continue;
+            }
 
             if (!childNode.IsComplex())
             {

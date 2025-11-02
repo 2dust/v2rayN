@@ -1651,7 +1651,9 @@ public static class ConfigHandler
 
         var uri = Utils.TryUri(url);
         if (uri == null)
+        {
             return -1;
+        }
         //Do not allow http protocol
         if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
         {
@@ -2018,11 +2020,15 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+        }
 
         var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
         if (template == null)
+        {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+        }
 
         var items = await AppManager.Instance.RoutingItems();
         var maxSort = items.Count;
@@ -2035,14 +2041,18 @@ public static class ConfigHandler
             var item = template.RoutingItems[i];
 
             if (item.Url.IsNullOrEmpty() && item.RuleSet.IsNullOrEmpty())
+            {
                 continue;
+            }
 
             var ruleSetsString = !item.RuleSet.IsNullOrEmpty()
                 ? item.RuleSet
                 : await downloadHandle.TryDownloadString(item.Url, true, "");
 
             if (ruleSetsString.IsNullOrEmpty())
+            {
                 continue;
+            }
 
             item.Remarks = $"{template.Version}-{item.Remarks}";
             item.Enabled = true;
@@ -2238,17 +2248,25 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(url, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return currentItem;
+        }
 
         var template = JsonUtils.Deserialize<DNSItem>(templateContent);
         if (template == null)
+        {
             return currentItem;
+        }
 
         if (!template.NormalDNS.IsNullOrEmpty())
+        {
             template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
+        }
 
         if (!template.TunDNS.IsNullOrEmpty())
+        {
             template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
+        }
 
         template.Id = currentItem.Id;
         template.Enabled = currentItem.Enabled;
@@ -2282,10 +2300,16 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(url, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return null;
+        }
+
         var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
         if (template == null)
+        {
             return null;
+        }
+
         return template;
     }
 

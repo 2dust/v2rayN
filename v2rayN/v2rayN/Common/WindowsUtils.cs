@@ -76,7 +76,7 @@ internal static class WindowsUtils
     {
         using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
         var obj = key?.GetValue("AppsUseLightTheme");
-        int.TryParse(obj?.ToString(), out var value);
+        var value = obj?.ToString().ToInt();
         return value == 0;
     }
 

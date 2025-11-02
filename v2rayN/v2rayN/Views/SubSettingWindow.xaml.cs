@@ -46,12 +46,18 @@ public partial class SubSettingWindow
 
             case EViewAction.SubEditWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
 
             case EViewAction.ShareSub:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 ShareSub((string)obj);
                 break;
         }

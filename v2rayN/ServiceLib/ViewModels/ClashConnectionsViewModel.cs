@@ -96,6 +96,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
         }
 
         ConnectionItems.AddRange(lstModel);
+        await Task.CompletedTask;
     }
 
     public async Task ClashConnectionClose(bool all)
