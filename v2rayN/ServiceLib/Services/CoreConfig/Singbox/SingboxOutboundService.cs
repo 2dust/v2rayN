@@ -269,6 +269,7 @@ public partial class CoreConfigSingboxService
                         .Select(s => s.Replace("\r\n", "\n"))
                         .ToList() ?? new();
                     tls.certificate = certs.Count > 0 ? certs : null;
+                    tls.insecure = false;
                 }
                 else
                 {
