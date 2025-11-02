@@ -111,9 +111,18 @@ public class AddServerViewModel : MyReactiveObject
             return;
         }
         var domain = SelectedSource.Address;
-        var serverName = SelectedSource.Sni.IsNullOrEmpty() ? SelectedSource.Address : SelectedSource.Sni;
+        var serverName = SelectedSource.Sni;
+        if (serverName.IsNullOrEmpty())
+        {
+            serverName = SelectedSource.RequestHost;
+        }
+        if (serverName.IsNullOrEmpty())
+        {
+            serverName = SelectedSource.Address;
+        }
         if (!Utils.IsDomain(serverName))
         {
+            NoticeManager.Instance.Enqueue(ResUI.ServerNameMustBeValidDomain);
             return;
         }
         if (SelectedSource.Port > 0)
@@ -130,9 +139,18 @@ public class AddServerViewModel : MyReactiveObject
             return;
         }
         var domain = SelectedSource.Address;
-        var serverName = SelectedSource.Sni.IsNullOrEmpty() ? SelectedSource.Address : SelectedSource.Sni;
+        var serverName = SelectedSource.Sni;
+        if (serverName.IsNullOrEmpty())
+        {
+            serverName = SelectedSource.RequestHost;
+        }
+        if (serverName.IsNullOrEmpty())
+        {
+            serverName = SelectedSource.Address;
+        }
         if (!Utils.IsDomain(serverName))
         {
+            NoticeManager.Instance.Enqueue(ResUI.ServerNameMustBeValidDomain);
             return;
         }
         if (SelectedSource.Port > 0)

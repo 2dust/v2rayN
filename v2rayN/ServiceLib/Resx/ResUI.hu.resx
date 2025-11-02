@@ -1615,4 +1615,7 @@ Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</val
   <data name="TbFetchCertChain" xml:space="preserve">
     <value>Fetch Certificate Chain</value>
   </data>
+  <data name="ServerNameMustBeValidDomain" xml:space="preserve">
+    <value>Please set a valid domain</value>
+  </data>
 </root>
