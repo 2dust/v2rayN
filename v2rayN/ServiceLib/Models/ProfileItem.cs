@@ -141,4 +141,5 @@ public class ProfileItem : ReactiveObject
     public string Mldsa65Verify { get; set; }
     public string Extra { get; set; }
     public bool? MuxEnabled { get; set; }
+    public string Cert { get; set; }
 }
