@@ -596,7 +596,7 @@ public class MainWindowViewModel : MyReactiveObject
         AppEvents.RoutingsMenuRefreshRequested.Publish();
 
         await ConfigHandler.SaveConfig(_config);
-        await new UpdateService().UpdateGeoFileAll(_config, UpdateTaskHandler);
+        await new UpdateService(_config, UpdateTaskHandler).UpdateGeoFileAll();
         await Reload();
     }
 

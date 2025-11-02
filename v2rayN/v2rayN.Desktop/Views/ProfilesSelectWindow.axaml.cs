@@ -90,7 +90,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
     private void LstProfiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        // 忽略表头区域的双击
+        // Ignore double-taps on the column header area
         if (e.Source is Control src)
         {
             if (src.FindAncestorOfType<DataGridColumnHeader>() != null)
@@ -99,7 +99,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
                 return;
             }
 
-            // 仅当在数据行或其子元素上双击时才触发选择
+            // Only trigger selection when double-tapped on a data row or its child element
             if (src.FindAncestorOfType<DataGridRow>() != null)
             {
                 ViewModel?.SelectFinish();
@@ -110,7 +110,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
     private void LstProfiles_Sorting(object? sender, DataGridColumnEventArgs e)
     {
-        // 自定义排序，防止默认行为导致误触发
+        // Custom sort to prevent unintended default behavior
         e.Handled = true;
         if (ViewModel != null && e.Column?.Tag?.ToString() != null)
         {

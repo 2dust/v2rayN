@@ -148,7 +148,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 UpdatedPlusPlus(_geo, "");
             }
         }
-        await new UpdateService().UpdateGeoFileAll(_config, _updateUI)
+        await new UpdateService(_config, _updateUI).UpdateGeoFileAll()
             .ContinueWith(t => UpdatedPlusPlus(_geo, ""));
     }
 
@@ -163,7 +163,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
-        await new UpdateService().CheckUpdateGuiN(_config, _updateUI, preRelease)
+        await new UpdateService(_config, _updateUI).CheckUpdateGuiN(preRelease)
             .ContinueWith(t => UpdatedPlusPlus(_v2rayN, ""));
     }
 
@@ -180,7 +180,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
         }
         var type = (ECoreType)Enum.Parse(typeof(ECoreType), model.CoreType);
-        await new UpdateService().CheckUpdateCore(type, _config, _updateUI, preRelease)
+        await new UpdateService(_config, _updateUI).CheckUpdateCore(type, preRelease)
             .ContinueWith(t => UpdatedPlusPlus(model.CoreType, ""));
     }
 

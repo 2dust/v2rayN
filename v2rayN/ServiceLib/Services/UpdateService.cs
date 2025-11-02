@@ -2,13 +2,19 @@ namespace ServiceLib.Services;
 
 public class UpdateService
 {
-    private Func<bool, string, Task>? _updateFunc;
+    private readonly Config? _config;
+    private readonly Func<bool, string, Task>? _updateFunc;
     private readonly int _timeout = 30;
     private static readonly string _tag = "UpdateService";
 
-    public async Task CheckUpdateGuiN(Config config, Func<bool, string, Task> updateFunc, bool preRelease)
+    public UpdateService(Config config, Func<bool, string, Task> updateFunc)
     {
+        _config = config;
         _updateFunc = updateFunc;
+    }
+
+    public async Task CheckUpdateGuiN(bool preRelease)
+    {
         var url = string.Empty;
         var fileName = string.Empty;
 
@@ -47,9 +53,8 @@ public class UpdateService
         }
     }
 
-    public async Task CheckUpdateCore(ECoreType type, Config config, Func<bool, string, Task> updateFunc, bool preRelease)
+    public async Task CheckUpdateCore(ECoreType type, bool preRelease)
     {
-        _updateFunc = updateFunc;
         var url = string.Empty;
         var fileName = string.Empty;
 
@@ -101,11 +106,11 @@ public class UpdateService
         }
     }
 
-    public async Task UpdateGeoFileAll(Config config, Func<bool, string, Task> updateFunc)
+    public async Task UpdateGeoFileAll()
     {
-        await UpdateGeoFiles(config, updateFunc);
-        await UpdateOtherFiles(config, updateFunc);
-        await UpdateSrsFileAll(config, updateFunc);
+        await UpdateGeoFiles();
+        await UpdateOtherFiles();
+        await UpdateSrsFileAll();
         await UpdateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
     }
 
@@ -330,13 +335,11 @@ public class UpdateService
 
     #region Geo private
 
-    private async Task UpdateGeoFiles(Config config, Func<bool, string, Task> updateFunc)
+    private async Task UpdateGeoFiles()
     {
-        _updateFunc = updateFunc;
-
-        var geoUrl = string.IsNullOrEmpty(config?.ConstItem.GeoSourceUrl)
+        var geoUrl = string.IsNullOrEmpty(_config?.ConstItem.GeoSourceUrl)
             ? Global.GeoUrl
-            : config.ConstItem.GeoSourceUrl;
+            : _config.ConstItem.GeoSourceUrl;
 
         List<string> files = ["geosite", "geoip"];
         foreach (var geoName in files)
@@ -345,33 +348,29 @@ public class UpdateService
             var targetPath = Utils.GetBinPath($"{fileName}");
             var url = string.Format(geoUrl, geoName);
 
-            await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+            await DownloadGeoFile(url, fileName, targetPath);
         }
     }
 
-    private async Task UpdateOtherFiles(Config config, Func<bool, string, Task> updateFunc)
+    private async Task UpdateOtherFiles()
     {
         //If it is not in China area, no update is required
-        if (config.ConstItem.GeoSourceUrl.IsNotEmpty())
+        if (_config.ConstItem.GeoSourceUrl.IsNotEmpty())
         {
             return;
         }
-
-        _updateFunc = updateFunc;
 
         foreach (var url in Global.OtherGeoUrls)
         {
             var fileName = Path.GetFileName(url);
             var targetPath = Utils.GetBinPath($"{fileName}");
 
-            await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+            await DownloadGeoFile(url, fileName, targetPath);
         }
     }
 
-    private async Task UpdateSrsFileAll(Config config, Func<bool, string, Task> updateFunc)
+    private async Task UpdateSrsFileAll()
     {
-        _updateFunc = updateFunc;
-
         var geoipFiles = new List<string>();
         var geoSiteFiles = new List<string>();
 
@@ -414,29 +413,29 @@ public class UpdateService
         }
         foreach (var item in geoipFiles.Distinct())
         {
-            await UpdateSrsFile("geoip", item, config, updateFunc);
+            await UpdateSrsFile("geoip", item);
         }
 
         foreach (var item in geoSiteFiles.Distinct())
         {
-            await UpdateSrsFile("geosite", item, config, updateFunc);
+            await UpdateSrsFile("geosite", item);
         }
     }
 
-    private async Task UpdateSrsFile(string type, string srsName, Config config, Func<bool, string, Task> updateFunc)
+    private async Task UpdateSrsFile(string type, string srsName)
     {
-        var srsUrl = string.IsNullOrEmpty(config.ConstItem.SrsSourceUrl)
+        var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
                         ? Global.SingboxRulesetUrl
-                        : config.ConstItem.SrsSourceUrl;
+                        : _config.ConstItem.SrsSourceUrl;
 
         var fileName = $"{type}-{srsName}.srs";
         var targetPath = Path.Combine(Utils.GetBinPath("srss"), fileName);
         var url = string.Format(srsUrl, type, $"{type}-{srsName}", srsName);
 
-        await DownloadGeoFile(url, fileName, targetPath, updateFunc);
+        await DownloadGeoFile(url, fileName, targetPath);
     }
 
-    private async Task DownloadGeoFile(string url, string fileName, string targetPath, Func<bool, string, Task> updateFunc)
+    private async Task DownloadGeoFile(string url, string fileName, string targetPath)
     {
         var tmpFileName = Utils.GetTempPath(Utils.GetGuid());
 

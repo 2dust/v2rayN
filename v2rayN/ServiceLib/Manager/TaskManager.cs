@@ -111,11 +111,10 @@ public class TaskManager
         {
             Logging.SaveLog("Execute update geo files");
 
-            var updateHandle = new UpdateService();
-            await updateHandle.UpdateGeoFileAll(_config, async (success, msg) =>
+            await new UpdateService(_config, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(false, msg);
-            });
+            }).UpdateGeoFileAll();
         }
     }
 }

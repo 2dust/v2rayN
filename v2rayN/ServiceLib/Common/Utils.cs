@@ -9,7 +9,7 @@ public class Utils
 {
     private static readonly string _tag = "Utils";
 
-    #region 转换函数
+    #region Conversion Functions
 
     /// <summary>
     /// Convert to comma-separated string
@@ -462,9 +462,9 @@ public class Utils
         return (domain, port);
     }
 
-    #endregion 转换函数
+    #endregion Conversion Functions
 
-    #region 数据检查
+    #region Data Checks
 
     /// <summary>
     /// Determine if the input is a number
@@ -586,9 +586,9 @@ public class Utils
         return false;
     }
 
-    #endregion 数据检查
+    #endregion Data Checks
 
-    #region 测速
+    #region Speed Test
 
     private static bool PortInUse(int port)
     {
@@ -641,9 +641,9 @@ public class Utils
         return 59090;
     }
 
-    #endregion 测速
+    #endregion Speed Test
 
-    #region 杂项
+    #region Miscellaneous
 
     public static bool UpgradeAppExists(out string upgradeFileName)
     {
@@ -793,7 +793,7 @@ public class Utils
         return null;
     }
 
-    #endregion 杂项
+    #endregion Miscellaneous
 
     #region TempPath
 
