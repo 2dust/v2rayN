@@ -298,6 +298,7 @@ public partial class CoreConfigV2rayService
                     }
                     tlsSettings.certificates = certsettings;
                     tlsSettings.disableSystemRoot = true;
+                    tlsSettings.allowInsecure = false;
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }
