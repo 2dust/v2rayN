@@ -1597,28 +1597,28 @@
     <value>Test 1-clic de latence réelle</value>
   </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
-    <value>Auto add filtered configuration from subscription groups</value>
+    <value>Ajout auto des configs filtrées depuis les groupes d’abonnement</value>
   </data>
   <data name="TbCertPinning" xml:space="preserve">
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Server certificate (PEM format, optional). Entering a certificate will pin it.
-Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</value>
+    <value>Certificat serveur (PEM, optionnel). L’ajout d’un certificat le fixe.
+Ne pas utiliser « Obtenir le certificat » si « Autoriser non sécurisé » est activé.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
-    <value>Fetch Certificate</value>
+    <value>Obtenir le certificat</value>
   </data>
   <data name="TbFetchCertChain" xml:space="preserve">
-    <value>Fetch Certificate Chain</value>
+    <value>Obtenir la chaîne de certificats</value>
   </data>
   <data name="ServerNameMustBeValidDomain" xml:space="preserve">
-    <value>Please set a valid domain</value>
+    <value>Veuillez définir un domaine valide</value>
   </data>
   <data name="CertNotSet" xml:space="preserve">
-    <value>Certificate not set</value>
+    <value>Certificat non configuré</value>
   </data>
   <data name="CertSet" xml:space="preserve">
-    <value>Certificate set</value>
+    <value>Certificat configuré </value>
   </data>
 </root>
