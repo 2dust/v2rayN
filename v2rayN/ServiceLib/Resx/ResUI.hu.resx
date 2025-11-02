@@ -1537,7 +1537,7 @@
     <value>Remove Child Configuration</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Server List</value>
+    <value>Configuration List</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Fallback</value>

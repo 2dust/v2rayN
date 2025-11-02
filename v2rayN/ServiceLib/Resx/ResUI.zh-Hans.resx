@@ -1528,13 +1528,13 @@
     <value>添加链式代理</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>添加子项</value>
+    <value>添加子配置</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>删除子项</value>
+    <value>删除子配置</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>子项列表</value>
+    <value>子配置项</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>故障转移</value>

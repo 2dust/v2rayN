@@ -33,97 +33,106 @@
                 IsCancel="True" />
         </StackPanel>
 
-        <Grid DockPanel.Dock="Top" RowDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+        <Grid
+            Grid.Row="0"
+            ColumnDefinitions="180,Auto,Auto"
+            DockPanel.Dock="Top"
+            RowDefinitions="Auto,Auto,Auto,Auto">
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                Text="{x:Static resx:ResUI.menuServers}" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRemarks}" />
+            <TextBox
+                x:Name="txtRemarks"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="400"
+                Margin="{StaticResource Margin4}" />
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbCoreType}" />
+            <ComboBox
+                x:Name="cmbCoreType"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="200"
+                Margin="{StaticResource Margin4}" />
 
             <Grid
-                Grid.Row="0"
-                ColumnDefinitions="180,Auto,Auto"
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                x:Name="gridPolicyGroup"
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                ColumnDefinitions="180,Auto,Auto">
                 <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    Text="{x:Static resx:ResUI.menuServers}" />
-
-                <TextBlock
-                    Grid.Row="1"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbRemarks}" />
-                <TextBox
-                    x:Name="txtRemarks"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Width="400"
-                    Margin="{StaticResource Margin4}" />
-
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbCoreType}" />
+                    Text="{x:Static resx:ResUI.TbPolicyGroupType}" />
                 <ComboBox
-                    x:Name="cmbCoreType"
-                    Grid.Row="2"
+                    x:Name="cmbPolicyGroupType"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}" />
+            </Grid>
+        </Grid>
 
+        <TabControl DockPanel.Dock="Top">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid
-                    x:Name="gridPolicyGroup"
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    ColumnDefinitions="180,Auto,Auto">
+                    Margin="{StaticResource Margin8}"
+                    ColumnDefinitions="180,Auto,Auto"
+                    RowDefinitions="Auto,Auto,Auto">
+
                     <TextBlock
+                        Grid.Row="0"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbPolicyGroupType}" />
+                        Text="{x:Static resx:ResUI.menuSubscription}" />
                     <ComboBox
-                        x:Name="cmbPolicyGroupType"
+                        x:Name="cmbSubChildItems"
+                        Grid.Row="0"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        DisplayMemberBinding="{Binding Remarks}"
+                        ItemsSource="{Binding SubItems}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.LvFilter}" />
+                    <TextBox
+                        x:Name="txtFilter"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center" />
                 </Grid>
+            </TabItem>
+        </TabControl>
 
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.menuSubscription}" />
-                <ComboBox
-                    x:Name="cmbSubChildItems"
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Width="200"
-                    Margin="{StaticResource Margin4}"
-                    DisplayMemberBinding="{Binding Remarks}"
-                    ItemsSource="{Binding SubItems}" />
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
-
-                <TextBlock
-                    Grid.Row="5"
-                    Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.LvFilter}" />
-                <TextBox
-                    x:Name="txtFilter"
-                    Grid.Row="5"
-                    Grid.Column="1"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center" />
-            </Grid>
-        </Grid>
         <TabControl>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <DataGrid
