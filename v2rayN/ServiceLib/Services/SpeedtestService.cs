@@ -272,7 +272,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<int> DoRealPing(ServerTestItem it)
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await HttpClientHelper.Instance.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
+        var responseTime = await ConnectionHandler.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());

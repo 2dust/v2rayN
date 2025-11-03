@@ -71,7 +71,7 @@ public class DownloadService
             AllowAutoRedirect = false,
             Proxy = await GetWebProxy(blProxy)
         };
-        HttpClient client = new(webRequestHandler);
+        var client = new HttpClient(webRequestHandler);
 
         var response = await client.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
@@ -156,7 +156,7 @@ public class DownloadService
             }
 
             using var cts = new CancellationTokenSource();
-            var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            var result = await client.GetStringAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
             return result;
         }
         catch (Exception ex)

@@ -1,17 +1,11 @@
 namespace ServiceLib.Services;
 
-public class UpdateService
+public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
 {
-    private readonly Config? _config;
-    private readonly Func<bool, string, Task>? _updateFunc;
+    private readonly Config? _config = config;
+    private readonly Func<bool, string, Task>? _updateFunc = updateFunc;
     private readonly int _timeout = 30;
     private static readonly string _tag = "UpdateService";
-
-    public UpdateService(Config config, Func<bool, string, Task> updateFunc)
-    {
-        _config = config;
-        _updateFunc = updateFunc;
-    }
 
     public async Task CheckUpdateGuiN(bool preRelease)
     {
