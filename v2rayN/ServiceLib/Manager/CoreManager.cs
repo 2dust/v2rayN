@@ -8,7 +8,7 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
-    private WindowsJob? _processJob;
+    private WindowsJobService? _processJob;
     private ProcessService? _processService;
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
@@ -27,7 +27,7 @@ public class CoreManager
             var toPath = Utils.GetBinPath("");
             if (fromPath != toPath)
             {
-                FileManager.CopyDirectory(fromPath, toPath, true, false);
+                FileUtils.CopyDirectory(fromPath, toPath, true, false);
             }
         }
 

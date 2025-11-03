@@ -35,7 +35,7 @@ public class CoreAdminManager
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
         sb.AppendLine($"exec sudo -S -- {cmdLine}");
-        var shFilePath = await FileManager.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
+        var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
         var procService = new ProcessService(
             fileName: shFilePath,
@@ -68,7 +68,7 @@ public class CoreAdminManager
         try
         {
             var shellFileName = Utils.IsOSX() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
-            var shFilePath = await FileManager.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
+            var shFilePath = await FileUtils.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
             if (shFilePath.Contains(' '))
             {
                 shFilePath = shFilePath.AppendQuotes();

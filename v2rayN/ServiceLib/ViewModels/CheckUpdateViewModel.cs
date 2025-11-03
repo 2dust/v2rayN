@@ -271,24 +271,24 @@ public class CheckUpdateViewModel : MyReactiveObject
 
             if (fileName.Contains(".tar.gz"))
             {
-                FileManager.DecompressTarFile(fileName, toPath);
+                FileUtils.DecompressTarFile(fileName, toPath);
                 var dir = new DirectoryInfo(toPath);
                 if (dir.Exists)
                 {
                     foreach (var subDir in dir.GetDirectories())
                     {
-                        FileManager.CopyDirectory(subDir.FullName, toPath, false, true);
+                        FileUtils.CopyDirectory(subDir.FullName, toPath, false, true);
                         subDir.Delete(true);
                     }
                 }
             }
             else if (fileName.Contains(".gz"))
             {
-                FileManager.DecompressFile(fileName, toPath, item.CoreType);
+                FileUtils.DecompressFile(fileName, toPath, item.CoreType);
             }
             else
             {
-                FileManager.ZipExtractToFile(fileName, toPath, "geo");
+                FileUtils.ZipExtractToFile(fileName, toPath, "geo");
             }
 
             if (Utils.IsNonWindows())

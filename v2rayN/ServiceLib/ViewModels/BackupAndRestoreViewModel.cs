@@ -119,7 +119,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
             return;
         }
         //check
-        var lstFiles = FileManager.GetFilesFromZip(fileName);
+        var lstFiles = FileUtils.GetFilesFromZip(fileName);
         if (lstFiles is null || !lstFiles.Any(t => t.Contains(_guiConfigs)))
         {
             DisplayOperationMsg(ResUI.LocalRestoreInvalidZipTips);
@@ -135,7 +135,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
             await SQLiteHelper.Instance.DisposeDbConnectionAsync();
 
             var toPath = Utils.GetConfigPath();
-            FileManager.ZipExtractToFile(fileName, toPath, "");
+            FileUtils.ZipExtractToFile(fileName, toPath, "");
 
             if (Utils.IsWindows())
             {
@@ -167,8 +167,8 @@ public class BackupAndRestoreViewModel : MyReactiveObject
         var configDirZipTemp = Utils.GetTempPath($"v2rayN_{DateTime.Now:yyyyMMddHHmmss}");
         var configDirTemp = Path.Combine(configDirZipTemp, _guiConfigs);
 
-        FileManager.CopyDirectory(configDir, configDirTemp, false, true, "");
-        var ret = FileManager.CreateFromDirectory(configDirZipTemp, fileName);
+        FileUtils.CopyDirectory(configDir, configDirTemp, false, true, "");
+        var ret = FileUtils.CreateFromDirectory(configDirZipTemp, fileName);
         Directory.Delete(configDirZipTemp, true);
         return await Task.FromResult(ret);
     }

@@ -23,7 +23,7 @@ public static class ProxySettingOSX
 
     private static async Task ExecCmd(List<string> args)
     {
-        var fileName = await FileManager.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName), false);
+        var fileName = await FileUtils.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName), false);
 
         await Utils.GetCliWrapOutput(fileName, args);
     }

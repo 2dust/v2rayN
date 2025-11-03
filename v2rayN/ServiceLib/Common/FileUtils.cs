@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace ServiceLib.Common;
 
-public static class FileManager
+public static class FileUtils
 {
     private static readonly string _tag = "FileManager";
 
