@@ -268,10 +268,13 @@ public partial class CoreConfigSingboxService
                         .Select(s => s + "\n-----END CERTIFICATE-----")
                         .Select(s => s.Replace("\r\n", "\n"))
                         .ToList() ?? new();
-                    tls.certificate = certs.Count > 0 ? certs : null;
-                    tls.insecure = false;
+                    if (certs.Count > 0)
+                    {
+                        tls.certificate = certs;
+                        tls.insecure = false;
+                    }
                 }
-                else
+                else if (node.StreamSecurity == Global.StreamSecurityReality)
                 {
                     tls.reality = new Reality4Sbox()
                     {
