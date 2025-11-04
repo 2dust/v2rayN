@@ -50,10 +50,10 @@ set_kde_proxy() {
     if [ "$MODE" == "manual" ]; then
         # Set proxy for all protocols
         $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ProxyType 1
-        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpProxy "http://$PROXY_IP:$PROXY_PORT"
-        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpsProxy "http://$PROXY_IP:$PROXY_PORT"
-        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ftpProxy "http://$PROXY_IP:$PROXY_PORT"
-        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key socksProxy "http://$PROXY_IP:$PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpProxy "http://$PROXY_IP $PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key httpsProxy "http://$PROXY_IP $PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key ftpProxy "http://$PROXY_IP $PROXY_PORT"
+        $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key socksProxy "http://$PROXY_IP $PROXY_PORT"
 
         # Set ignored hosts
         $KWRITECONFIG --file kioslaverc --group "Proxy Settings" --key NoProxyFor "$IGNORE_HOSTS"
