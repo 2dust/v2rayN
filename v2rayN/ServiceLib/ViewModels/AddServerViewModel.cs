@@ -146,7 +146,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             domain += $":{SelectedSource.Port}";
         }
-        Cert = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+        (Cert, _certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+        UpdateCertTip();
     }
 
     private async Task FetchCertChain()
@@ -176,7 +177,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             domain += $":{SelectedSource.Port}";
         }
-        var certs = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+        (var certs, _certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+        UpdateCertTip();
         Cert = string.Join("\n", certs);
     }
 }

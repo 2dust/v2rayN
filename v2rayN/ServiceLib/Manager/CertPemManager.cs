@@ -45,7 +45,7 @@ public class CertPemManager
         "2530CC8E98321502BAD96F9B1FBA1B099E2D299E0F4548BB914F363BC0D4531F", // Izenpe.com
         "45140B3247EB9CC8C5B4F0D7B53091F73292089E6E5A63E2749DD3ACA9198EDA", // Go Daddy Root Certificate Authority - G2
         "2CE1CB0BF9D2F9E102993FBE215152C3B2DD0CABDE1C68E5319B839154DBB7F5", // Starfield Root Certificate Authority - G2
-        "568D6905A2C88708A4B3025190EDCFEDB1974A606A13C6E5290FCB2AE63EDAB5", // Starfield Services Root Certificate Authority - G2  
+        "568D6905A2C88708A4B3025190EDCFEDB1974A606A13C6E5290FCB2AE63EDAB5", // Starfield Services Root Certificate Authority - G2
         "0376AB1D54C5F9803CE4B2E201A0EE7EEF7B57B636E8A93C9B8D4860C96F5FA7", // AffirmTrust Commercial
         "0A81EC5A929777F145904AF38D5D509F66B5E2C58FCDB531058B0E17F3F0B41B", // AffirmTrust Networking
         "70A73F7F376B60074248904534B11482D5BF0E698ECC498DF52577EBF2E93B9A", // AffirmTrust Premium
@@ -95,11 +95,11 @@ public class CertPemManager
         "18CE6CFE7BF14E60B2E347B8DFE868CB31D02EBB3ADA271569F50343B46DB3A4", // Amazon Root CA 3
         "E35D28419ED02025CFA69038CD623962458DA5C695FBDEA3C22B0BFB25897092", // Amazon Root CA 4
         "A1A86D04121EB87F027C66F53303C28E5739F943FC84B38AD6AF009035DD9457", // D-TRUST Root CA 3 2013
-        "46EDC3689046D53A453FB3104AB80DCAEC658B2660EA1629DD7E867990648716", // TUBITAK Kamu SM SSL Kok Sertifikasi - Surum 1       
+        "46EDC3689046D53A453FB3104AB80DCAEC658B2660EA1629DD7E867990648716", // TUBITAK Kamu SM SSL Kok Sertifikasi - Surum 1
         "BFFF8FD04433487D6A8AA60C1A29767A9FC2BBB05E420F713A13B992891D3893", // GDCA TrustAUTH R5 ROOT
         "85666A562EE0BE5CE925C1D8890A6F76A87EC16D4D7D5F29EA7419CF20123B69", // SSL.com Root Certification Authority RSA
         "3417BB06CC6007DA1B961C920B8AB4CE3FAD820E4AA30B9ACBC4A74EBDCEBC65", // SSL.com Root Certification Authority ECC
-        "2E7BF16CC22485A7BBE2AA8696750761B0AE39BE3B2FE9D0CC6D4EF73491425C", // SSL.com EV Root Certification Authority RSA R2      
+        "2E7BF16CC22485A7BBE2AA8696750761B0AE39BE3B2FE9D0CC6D4EF73491425C", // SSL.com EV Root Certification Authority RSA R2
         "22A2C1F7BDED704CC1E701B5F408C310880FE956B5DE2A4A44F99C873A25A7C8", // SSL.com EV Root Certification Authority ECC
         "2CABEAFE37D06CA22ABA7391C0033D25982952C453647349763A3AB5AD6CCF69", // GlobalSign Root CA - R6
         "8560F91C3624DABA9570B5FEA0DBE36FF11A8323BE9486854FB3F34A5571198D", // OISTE WISeKey Global Root GC CA
@@ -112,13 +112,13 @@ public class CertPemManager
         "BC4D809B15189D78DB3E1D8CF4F9726A795DA1643CA5F1358E1DDB0EDC0D7EB3", // emSign ECC Root CA - C3
         "5A2FC03F0C83B090BBFA40604B0988446C7636183DF9846E17101A447FB8EFD6", // Hongkong Post Root CA 3
         "DB3517D1F6732A2D5AB97C533EC70779EE3270A62FB4AC4238372460E6F01E88", // Entrust Root Certification Authority - G4
-        "358DF39D764AF9E1B766E9C972DF352EE15CFAC227AF6AD1D70E8E4A6EDCBA02", // Microsoft ECC Root Certificate Authority 2017       
-        "C741F70F4B2A8D88BF2E71C14122EF53EF10EBA0CFA5E64CFA20F418853073E0", // Microsoft RSA Root Certificate Authority 2017       
+        "358DF39D764AF9E1B766E9C972DF352EE15CFAC227AF6AD1D70E8E4A6EDCBA02", // Microsoft ECC Root Certificate Authority 2017
+        "C741F70F4B2A8D88BF2E71C14122EF53EF10EBA0CFA5E64CFA20F418853073E0", // Microsoft RSA Root Certificate Authority 2017
         "BEB00B30839B9BC32C32E4447905950641F26421B15ED089198B518AE2EA1B99", // e-Szigno Root CA 2017
         "657CFE2FA73FAA38462571F332A2363A46FCE7020951710702CDFBB6EEDA3305", // certSIGN Root CA G2
         "97552015F5DDFC3C8788C006944555408894450084F100867086BC1A2BB58DC8", // Trustwave Global Certification Authority
-        "945BBC825EA554F489D1FD51A73DDF2EA624AC7019A05205225C22A78CCFA8B4", // Trustwave Global ECC P256 Certification Authority   
-        "55903859C8C0C3EBB8759ECE4E2557225FF5758BBD38EBD48276601E1BD58097", // Trustwave Global ECC P384 Certification Authority   
+        "945BBC825EA554F489D1FD51A73DDF2EA624AC7019A05205225C22A78CCFA8B4", // Trustwave Global ECC P256 Certification Authority
+        "55903859C8C0C3EBB8759ECE4E2557225FF5758BBD38EBD48276601E1BD58097", // Trustwave Global ECC P384 Certification Authority
         "88F438DCF8FFD1FA8F429115FFE5F82AE1E06E0C70C375FAAD717B34A49E7265", // NAVER Global Root Certification Authority
         "554153B13D2CF9DDB753BFBE1A4E0AE08D0AA4187058FE60A2B862B2E4B87BCB", // AC RAIZ FNMT-RCM SERVIDORES SEGUROS
         "319AF0A7729E6F89269C131EA6A3A16FCD86389FDCAB3C47A4A675C161A3F974", // GlobalSign Secure Mail Root R45
@@ -161,8 +161,8 @@ public class CertPemManager
         "48E1CF9E43B688A51044160F46D773B8277FE45BEAAD0E4DF90D1974382FEA99", // LAWtrust Root CA2 (4096)
         "22D9599234D60F1D4BC7C7E96F43FA555B07301FD475175089DAFB8C25E477B3", // Sectigo Public Email Protection Root E46
         "D5917A7791EB7CF20A2E57EB98284A67B28A57E89182DA53D546678C9FDE2B4F", // Sectigo Public Email Protection Root R46
-        "C90F26F0FB1B4018B22227519B5CA2B53E2CA5B3BE5CF18EFE1BEF47380C5383", // Sectigo Public Server Authentication Root E46       
-        "7BB647A62AEEAC88BF257AA522D01FFEA395E0AB45C73F93F65654EC38F25A06", // Sectigo Public Server Authentication Root R46       
+        "C90F26F0FB1B4018B22227519B5CA2B53E2CA5B3BE5CF18EFE1BEF47380C5383", // Sectigo Public Server Authentication Root E46
+        "7BB647A62AEEAC88BF257AA522D01FFEA395E0AB45C73F93F65654EC38F25A06", // Sectigo Public Server Authentication Root R46
         "8FAF7D2E2CB4709BB8E0B33666BF75A5DD45B5DE480F8EA8D4BFE6BEBC17F2ED", // SSL.com TLS RSA Root CA 2022
         "C32FFD9F46F936D16C3673990959434B9AD60AAFBB9E7CF33654F144CC1BA143", // SSL.com TLS ECC Root CA 2022
         "AD7DD58D03AEDB22A30B5084394920CE12230C2D8017AD9B81AB04079BDD026B", // SSL.com Client ECC Root CA 2022
@@ -202,14 +202,17 @@ public class CertPemManager
     /// <summary>
     /// Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<string?> GetCertPemAsync(string target, string serverName)
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 10)
     {
         try
         {
             var (domain, _, port, _) = Utils.ParseUrl(target);
 
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
             using var client = new TcpClient();
-            await client.ConnectAsync(domain, port > 0 ? port : 443);
+            await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
@@ -218,31 +221,39 @@ public class CertPemManager
             var remote = ssl.RemoteCertificate;
             if (remote == null)
             {
-                return null;
+                return (null, null);
             }
 
             var leaf = new X509Certificate2(remote);
-            return ExportCertToPem(leaf);
+            return (ExportCertToPem(leaf), null);
+        }
+        catch (OperationCanceledException)
+        {
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
+            return (null, $"Connection timeout after {timeout} seconds");
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            return null;
+            return (null, ex.Message);
         }
     }
 
     /// <summary>
     /// Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<List<string>> GetCertChainPemAsync(string target, string serverName)
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 10)
     {
+        var pemList = new List<string>();
         try
         {
-            var pemList = new List<string>();
             var (domain, _, port, _) = Utils.ParseUrl(target);
 
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
             using var client = new TcpClient();
-            await client.ConnectAsync(domain, port > 0 ? port : 443);
+            await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
@@ -250,7 +261,7 @@ public class CertPemManager
 
             if (ssl.RemoteCertificate is not X509Certificate2 certChain)
             {
-                return pemList;
+                return (pemList, null);
             }
 
             var chain = new X509Chain();
@@ -262,12 +273,17 @@ public class CertPemManager
                 pemList.Add(pem);
             }
 
-            return pemList;
+            return (pemList, null);
+        }
+        catch (OperationCanceledException)
+        {
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
+            return (pemList, $"Connection timeout after {timeout} seconds");
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            return new List<string>();
+            return (pemList, ex.Message);
         }
     }
 
