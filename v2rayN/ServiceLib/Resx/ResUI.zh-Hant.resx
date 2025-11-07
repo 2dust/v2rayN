@@ -1621,4 +1621,10 @@ Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</val
   <data name="CertSet" xml:space="preserve">
     <value>Certificate set</value>
   </data>
+  <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
+    <value>自訂 PAC 檔案路徑</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
+    <value>自訂系統代理程式腳本檔案路徑</value>
+  </data>
 </root>

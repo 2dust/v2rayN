@@ -5,7 +5,6 @@ public class PacManager
     private static readonly Lazy<PacManager> _instance = new(() => new PacManager());
     public static PacManager Instance => _instance.Value;
 
-    private string _configPath;
     private int _httpPort;
     private int _pacPort;
     private TcpListener? _tcpListener;
@@ -13,11 +12,10 @@ public class PacManager
     private bool _isRunning;
     private bool _needRestart = true;
 
-    public async Task StartAsync(string configPath, int httpPort, int pacPort)
+    public async Task StartAsync(int httpPort, int pacPort)
     {
-        _needRestart = configPath != _configPath || httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
+        _needRestart = httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
 
-        _configPath = configPath;
         _httpPort = httpPort;
         _pacPort = pacPort;
 
@@ -32,22 +30,22 @@ public class PacManager
 
     private async Task InitText()
     {
-        var path = Path.Combine(_configPath, "pac.txt");
+        var customSystemProxyPacPath = AppManager.Instance.Config.SystemProxyItem?.CustomSystemProxyPacPath;
+        var fileName = (customSystemProxyPacPath.IsNotEmpty() && File.Exists(customSystemProxyPacPath))
+            ? customSystemProxyPacPath
+            : Path.Combine(Utils.GetConfigPath(), "pac.txt");
 
-        // Delete the old pac file
-        if (File.Exists(path) && Utils.GetFileHash(path).Equals("b590c07280f058ef05d5394aa2f927fe"))
-        {
-            File.Delete(path);
-        }
+        // TODO: temporarily notify which script is being used
+        NoticeManager.Instance.SendMessage(fileName);
 
-        if (!File.Exists(path))
+        if (!File.Exists(fileName))
         {
             var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
-            await File.AppendAllTextAsync(path, pac);
+            await File.AppendAllTextAsync(fileName, pac);
         }
 
-        var pacText =
-            (await File.ReadAllTextAsync(path)).Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
+        var pacText = await File.ReadAllTextAsync(fileName);
+        pacText = pacText.Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
 
         var sb = new StringBuilder();
         sb.AppendLine("HTTP/1.0 200 OK");

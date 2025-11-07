@@ -3509,6 +3509,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Custom PAC file path 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCustomSystemProxyPacPath {
+            get {
+                return ResourceManager.GetString("TbSettingsCustomSystemProxyPacPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom system proxy script file path 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsCustomSystemProxyScriptPath {
+            get {
+                return ResourceManager.GetString("TbSettingsCustomSystemProxyScriptPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Allow Insecure 的本地化字符串。
         /// </summary>
         public static string TbSettingsDefAllowInsecure {

@@ -74,6 +74,8 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool notProxyLocalAddress { get; set; }
     [Reactive] public string systemProxyAdvancedProtocol { get; set; }
     [Reactive] public string systemProxyExceptions { get; set; }
+    [Reactive] public string CustomSystemProxyPacPath { get; set; }
+    [Reactive] public string CustomSystemProxyScriptPath { get; set; }
 
     #endregion System proxy
 
@@ -191,6 +193,8 @@ public class OptionSettingViewModel : MyReactiveObject
         notProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
         systemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
         systemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
+        CustomSystemProxyPacPath = _config.SystemProxyItem.CustomSystemProxyPacPath;
+        CustomSystemProxyScriptPath = _config.SystemProxyItem.CustomSystemProxyScriptPath;
 
         #endregion System proxy
 
@@ -347,6 +351,8 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
         _config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
         _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
+        _config.SystemProxyItem.CustomSystemProxyPacPath = CustomSystemProxyPacPath;
+        _config.SystemProxyItem.CustomSystemProxyScriptPath = CustomSystemProxyScriptPath;
 
         //tun mode
         _config.TunModeItem.AutoRoute = TunAutoRoute;

@@ -1621,4 +1621,10 @@
   <data name="CertSet" xml:space="preserve">
     <value>证书已设置</value>
   </data>
+  <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
+    <value>自定义 PAC 文件路径</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
+    <value>自定义系统代理脚本文件路径</value>
+  </data>
 </root>

@@ -219,6 +219,8 @@ public class SystemProxyItem
     public string SystemProxyExceptions { get; set; }
     public bool NotProxyLocalAddress { get; set; } = true;
     public string SystemProxyAdvancedProtocol { get; set; }
+    public string? CustomSystemProxyPacPath { get; set; }
+    public string? CustomSystemProxyScriptPath { get; set; }
 }
 
 [Serializable]

@@ -1,4 +1,5 @@
 using v2rayN.Desktop.Base;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
@@ -17,6 +18,9 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
+        btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
+        btnBrowseCustomSystemProxyScriptPath.Click += BtnBrowseCustomSystemProxyScriptPath_Click;
+
         clbdestOverride.ItemsSource = Global.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
@@ -101,6 +105,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyPacPath, v => v.txtCustomSystemProxyPacPath.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyScriptPath, v => v.txtCustomSystemProxyScriptPath.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
@@ -127,6 +133,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             labHide2TrayWhenClose.IsVisible = false;
             togHide2TrayWhenClose.IsVisible = false;
             labHide2TrayWhenCloseTip.IsVisible = false;
+            panSystemProxyUnix.IsVisible = false;
         }
         else if (Utils.IsLinux())
         {
@@ -210,6 +217,28 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+
+    private async void BtnBrowseCustomSystemProxyPacPath_Click(object? sender, RoutedEventArgs e)
+    {
+        var fileName = await UI.OpenFileDialog(this, null);
+        if (fileName.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        txtCustomSystemProxyPacPath.Text = fileName;
+    }
+
+    private async void BtnBrowseCustomSystemProxyScriptPath_Click(object? sender, RoutedEventArgs e)
+    {
+        var fileName = await UI.OpenFileDialog(this, null);
+        if (fileName.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        txtCustomSystemProxyScriptPath.Text = fileName;
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

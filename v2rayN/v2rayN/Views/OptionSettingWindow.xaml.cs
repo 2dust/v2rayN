@@ -16,6 +16,8 @@ public partial class OptionSettingWindow
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
+        btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
+
         clbdestOverride.ItemsSource = Global.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
@@ -110,6 +112,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyPacPath, v => v.txtCustomSystemProxyPacPath.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
@@ -209,5 +212,16 @@ public partial class OptionSettingWindow
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+
+    private void BtnBrowseCustomSystemProxyPacPath_Click(object sender, RoutedEventArgs e)
+    {
+        if (UI.OpenFileDialog(out var fileName,
+              "Txt|*.txt|All|*.*") != true)
+        {
+            return;
+        }
+
+        txtCustomSystemProxyPacPath.Text = fileName;
     }
 }

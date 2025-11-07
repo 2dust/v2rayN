@@ -976,6 +976,28 @@
                                 materialDesign:HintAssist.Hint="Protocol"
                                 Style="{StaticResource DefComboBox}" />
                         </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}" />
+
+                            <TextBox
+                                x:Name="txtCustomSystemProxyPacPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
+                                TextWrapping="Wrap" />
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyPacPath"
+                                Margin="{StaticResource MarginLeftRight4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}"
+                                Style="{StaticResource DefButton}" />
+                        </StackPanel>
                     </StackPanel>
 
                     <TextBlock

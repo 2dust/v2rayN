@@ -675,6 +675,29 @@
             <TabItem Name="tabSystemproxy" Header="{x:Static resx:ResUI.TbSettingsSystemproxy}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <StackPanel
+                        Name="panSystemProxyUnix"
+                        DockPanel.Dock="Bottom"
+                        Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyScriptPath}" />
+                            <TextBox
+                                x:Name="txtCustomSystemProxyScriptPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"
+                                Watermark="proxy_set.sh"/>
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyScriptPath"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel
                         Name="panSystemProxyAdvanced"
                         DockPanel.Dock="Bottom"
                         Orientation="Vertical">
@@ -698,6 +721,25 @@
                                 x:Name="cmbsystemProxyAdvancedProtocol"
                                 MinWidth="400"
                                 Margin="{StaticResource Margin4}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}" />
+                            <TextBox
+                                x:Name="txtCustomSystemProxyPacPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"
+                                Watermark="pac.txt"/>
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyPacPath"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}" />
                         </StackPanel>
                     </StackPanel>
 
