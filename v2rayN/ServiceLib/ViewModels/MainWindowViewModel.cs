@@ -268,7 +268,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         await RefreshServers();
 
-        BlReloadEnabled = true;
+        SetReloadEnabled(true);
         await Reload();
     }
 
@@ -534,7 +534,7 @@ public class MainWindowViewModel : MyReactiveObject
             return;
         }
 
-        BlReloadEnabled = false;
+        SetReloadEnabled(false);
 
         var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
         if (msgs.Count > 0)
@@ -544,7 +544,7 @@ public class MainWindowViewModel : MyReactiveObject
                 NoticeManager.Instance.SendMessage(msg);
             }
             NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-            BlReloadEnabled = true;
+            SetReloadEnabled(true);
             return;
         }
 
@@ -562,9 +562,8 @@ public class MainWindowViewModel : MyReactiveObject
             AppEvents.ProxiesReloadRequested.Publish();
         }
 
-        RxApp.MainThreadScheduler.Schedule(() => ReloadResult(showClashUI));
-
-        BlReloadEnabled = true;
+        ReloadResult(showClashUI);
+        SetReloadEnabled(true);
         if (_hasNextReloadJob)
         {
             _hasNextReloadJob = false;
@@ -574,9 +573,16 @@ public class MainWindowViewModel : MyReactiveObject
 
     private void ReloadResult(bool showClashUI)
     {
-        // BlReloadEnabled = true;
-        ShowClashUI = showClashUI;
-        TabMainSelectedIndex = showClashUI ? TabMainSelectedIndex : 0;
+        RxApp.MainThreadScheduler.Schedule(() =>
+        {
+            ShowClashUI = showClashUI;
+            TabMainSelectedIndex = showClashUI ? TabMainSelectedIndex : 0;
+        });
+    }
+
+    private void SetReloadEnabled(bool enabled)
+    {
+        RxApp.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
     }
 
     private async Task LoadCore()
