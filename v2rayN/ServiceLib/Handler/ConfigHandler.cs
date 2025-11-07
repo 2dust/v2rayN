@@ -97,7 +97,7 @@ public static class ConfigHandler
 
         config.UiItem ??= new UIItem()
         {
-            EnableAutoAdjustMainLvColWidth = true
+            EnableUpdateSubOnlyRemarksExist = true
         };
         config.UiItem.MainColumnItem ??= new();
         config.UiItem.WindowSizeItem ??= new();
