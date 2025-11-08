@@ -22,10 +22,8 @@ public class Hysteria2Fmt : BaseFmt
         item.Id = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        ResolveStdTransport(query, ref item);
+        ResolveUriQuery(query, ref item);
         item.Path = GetQueryDecoded(query, "obfs-password");
-        item.AllowInsecure = GetQueryValue(query, "insecure") == "1" ? "true" : "false";
-
         item.Ports = GetQueryDecoded(query, "mport");
 
         return item;
@@ -46,20 +44,13 @@ public class Hysteria2Fmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         var dicQuery = new Dictionary<string, string>();
-        if (item.Sni.IsNotEmpty())
-        {
-            dicQuery.Add("sni", item.Sni);
-        }
-        if (item.Alpn.IsNotEmpty())
-        {
-            dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
-        }
+        ToUriQueryLite(item, ref dicQuery);
+       
         if (item.Path.IsNotEmpty())
         {
             dicQuery.Add("obfs", "salamander");
             dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
         }
-        dicQuery.Add("insecure", item.AllowInsecure.ToLower() == "true" ? "1" : "0");
         if (item.Ports.IsNotEmpty())
         {
             dicQuery.Add("mport", Utils.UrlEncode(item.Ports.Replace(':', '-')));

@@ -23,7 +23,7 @@ public class TrojanFmt : BaseFmt
         item.Id = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        _ = ResolveStdTransport(query, ref item);
+        ResolveUriQuery(query, ref item);
 
         return item;
     }
@@ -40,7 +40,7 @@ public class TrojanFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         var dicQuery = new Dictionary<string, string>();
-        _ = GetStdTransport(item, null, ref dicQuery);
+        ToUriQuery(item, null, ref dicQuery);
 
         return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Id, dicQuery, remark);
     }

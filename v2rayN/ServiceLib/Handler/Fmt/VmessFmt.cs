@@ -39,7 +39,8 @@ public class VmessFmt : BaseFmt
             tls = item.StreamSecurity,
             sni = item.Sni,
             alpn = item.Alpn,
-            fp = item.Fingerprint
+            fp = item.Fingerprint,
+            insecure = item.AllowInsecure.Equals(Global.AllowInsecure.First()) ? "1" : "0"
         };
 
         var url = JsonUtils.Serialize(vmessQRCode);
@@ -94,6 +95,7 @@ public class VmessFmt : BaseFmt
         item.Sni = Utils.ToString(vmessQRCode.sni);
         item.Alpn = Utils.ToString(vmessQRCode.alpn);
         item.Fingerprint = Utils.ToString(vmessQRCode.fp);
+        item.AllowInsecure = vmessQRCode.insecure == "1" ? Global.AllowInsecure.First() : string.Empty;
 
         return item;
     }
@@ -118,7 +120,7 @@ public class VmessFmt : BaseFmt
         item.Id = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        ResolveStdTransport(query, ref item);
+        ResolveUriQuery(query, ref item);
 
         return item;
     }

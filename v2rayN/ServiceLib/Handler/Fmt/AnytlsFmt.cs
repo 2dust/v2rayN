@@ -23,7 +23,7 @@ public class AnytlsFmt : BaseFmt
         item.Id = rawUserInfo;
 
         var query = Utils.ParseQueryString(parsedUrl.Query);
-        _ = ResolveStdTransport(query, ref item);
+        ResolveUriQuery(query, ref item);
 
         return item;
     }
@@ -41,7 +41,7 @@ public class AnytlsFmt : BaseFmt
         }
         var pw = item.Id;
         var dicQuery = new Dictionary<string, string>();
-        _ = GetStdTransport(item, Global.None, ref dicQuery);
+        ToUriQuery(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.Anytls, item.Address, item.Port, pw, dicQuery, remark);
     }

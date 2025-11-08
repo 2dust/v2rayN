@@ -26,7 +26,7 @@ public class VLESSFmt : BaseFmt
         var query = Utils.ParseQueryString(url.Query);
         item.Security = GetQueryValue(query, "encryption", Global.None);
         item.StreamSecurity = GetQueryValue(query, "security");
-        _ = ResolveStdTransport(query, ref item);
+        ResolveUriQuery(query, ref item);
 
         return item;
     }
@@ -52,7 +52,7 @@ public class VLESSFmt : BaseFmt
         {
             dicQuery.Add("encryption", Global.None);
         }
-        _ = GetStdTransport(item, Global.None, ref dicQuery);
+        ToUriQuery(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.VLESS, item.Address, item.Port, item.Id, dicQuery, remark);
     }
