@@ -2,8 +2,6 @@ namespace ServiceLib.ViewModels;
 
 public class AddServerViewModel : MyReactiveObject
 {
-    private string _certError = string.Empty;
-
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -112,11 +110,11 @@ public class AddServerViewModel : MyReactiveObject
         }
     }
 
-    private void UpdateCertTip()
+    private void UpdateCertTip(string? errorMessage = null)
     {
-        CertTip = _certError.IsNullOrEmpty()
+        CertTip = errorMessage.IsNullOrEmpty()
             ? (Cert.IsNullOrEmpty() ? ResUI.CertNotSet : ResUI.CertSet)
-            : _certError;
+            : errorMessage;
     }
 
     private async Task FetchCert()
@@ -137,17 +135,16 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (!Utils.IsDomain(serverName))
         {
-            _certError = ResUI.ServerNameMustBeValidDomain;
-            UpdateCertTip();
-            _certError = string.Empty;
+            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
             return;
         }
         if (SelectedSource.Port > 0)
         {
             domain += $":{SelectedSource.Port}";
         }
-        (Cert, _certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
-        UpdateCertTip();
+        string certError;
+        (Cert, certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+        UpdateCertTip(certError);
     }
 
     private async Task FetchCertChain()
@@ -168,17 +165,16 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (!Utils.IsDomain(serverName))
         {
-            _certError = ResUI.ServerNameMustBeValidDomain;
-            UpdateCertTip();
-            _certError = string.Empty;
+            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
             return;
         }
         if (SelectedSource.Port > 0)
         {
             domain += $":{SelectedSource.Port}";
         }
-        (var certs, _certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
-        UpdateCertTip();
-        Cert = string.Join("\n", certs);
+        string certError;
+        (var certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+        Cert = CertPemManager.ConcatenatePemChain(certs);
+        UpdateCertTip(certError);
     }
 }

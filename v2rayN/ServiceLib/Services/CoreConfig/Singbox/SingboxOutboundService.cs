@@ -261,13 +261,7 @@ public partial class CoreConfigSingboxService
                 }
                 if (node.StreamSecurity == Global.StreamSecurity)
                 {
-                    var certs = node.Cert
-                        ?.Split("-----END CERTIFICATE-----", StringSplitOptions.RemoveEmptyEntries)
-                        .Select(s => s.TrimEx())
-                        .Where(s => !s.IsNullOrEmpty())
-                        .Select(s => s + "\n-----END CERTIFICATE-----")
-                        .Select(s => s.Replace("\r\n", "\n"))
-                        .ToList() ?? new();
+                    var certs = CertPemManager.ParsePemChain(node.Cert);
                     if (certs.Count > 0)
                     {
                         tls.certificate = certs;

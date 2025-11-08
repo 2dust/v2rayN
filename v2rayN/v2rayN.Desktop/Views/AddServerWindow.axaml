@@ -800,9 +800,11 @@
                                 <Flyout>
                                     <StackPanel>
                                         <TextBlock
+                                            Width="400"
                                             Margin="{StaticResource Margin4}"
                                             VerticalAlignment="Center"
-                                            Text="{x:Static resx:ResUI.TbCertPinningTips}" />
+                                            Text="{x:Static resx:ResUI.TbCertPinningTips}"
+                                            TextWrapping="Wrap" />
                                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                             <Button
                                                 x:Name="btnFetchCert"
@@ -816,13 +818,10 @@
                                         <TextBox
                                             x:Name="txtCert"
                                             Width="400"
-                                            MinHeight="100"
                                             Margin="{StaticResource Margin4}"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
+                                            AcceptsReturn="True"
                                             Classes="TextArea"
-                                            MinLines="6"
-                                            TextWrapping="Wrap" />
+                                            TextWrapping="NoWrap" />
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>

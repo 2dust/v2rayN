@@ -1603,8 +1603,10 @@
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Server certificate (PEM format, optional). Entering a certificate will pin it.
-Do not use the "Fetch Certificate" button when "Allow Insecure" is enabled.</value>
+    <value>Server Certificate (PEM format, optional)
+When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
+
+The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
     <value>Fetch Certificate</value>
