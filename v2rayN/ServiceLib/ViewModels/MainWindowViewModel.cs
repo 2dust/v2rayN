@@ -64,8 +64,6 @@ public class MainWindowViewModel : MyReactiveObject
 
     #endregion Menu
 
-    private bool _hasNextReloadJob = false;
-
     #region Init
 
     public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -268,7 +266,6 @@ public class MainWindowViewModel : MyReactiveObject
         }
         await RefreshServers();
 
-        BlReloadEnabled = true;
         await Reload();
     }
 
@@ -525,49 +522,59 @@ public class MainWindowViewModel : MyReactiveObject
 
     #region core job
 
+    private bool _hasNextReloadJob = false;
+    private readonly SemaphoreSlim _reloadSemaphore = new(1, 1);
+
     public async Task Reload()
     {
         //If there are unfinished reload job, marked with next job.
-        if (!BlReloadEnabled)
+        if (!await _reloadSemaphore.WaitAsync(0))
         {
             _hasNextReloadJob = true;
             return;
         }
 
-        SetReloadEnabled(false);
-
-        var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
-        if (msgs.Count > 0)
+        try
         {
-            foreach (var msg in msgs)
+            SetReloadEnabled(false);
+
+            var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
+            if (msgs.Count > 0)
             {
-                NoticeManager.Instance.SendMessage(msg);
+                foreach (var msg in msgs)
+                {
+                    NoticeManager.Instance.SendMessage(msg);
+                }
+                NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
+                return;
             }
-            NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
+
+            await Task.Run(async () =>
+            {
+                await LoadCore();
+                await SysProxyHandler.UpdateSysProxy(_config, false);
+                await Task.Delay(1000);
+            });
+            AppEvents.TestServerRequested.Publish();
+
+            var showClashUI = _config.IsRunningCore(ECoreType.sing_box);
+            if (showClashUI)
+            {
+                AppEvents.ProxiesReloadRequested.Publish();
+            }
+
+            ReloadResult(showClashUI);
+        }
+        finally
+        {
             SetReloadEnabled(true);
-            return;
-        }
-
-        await Task.Run(async () =>
-        {
-            await LoadCore();
-            await SysProxyHandler.UpdateSysProxy(_config, false);
-            await Task.Delay(1000);
-        });
-        AppEvents.TestServerRequested.Publish();
-
-        var showClashUI = _config.IsRunningCore(ECoreType.sing_box);
-        if (showClashUI)
-        {
-            AppEvents.ProxiesReloadRequested.Publish();
-        }
-
-        ReloadResult(showClashUI);
-        SetReloadEnabled(true);
-        if (_hasNextReloadJob)
-        {
-            _hasNextReloadJob = false;
-            await Reload();
+            _reloadSemaphore.Release();
+            //If there is a next reload job, execute it.
+            if (_hasNextReloadJob)
+            {
+                _hasNextReloadJob = false;
+                await Reload();
+            }
         }
     }
 
