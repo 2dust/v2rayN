@@ -268,7 +268,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         await RefreshServers();
 
-        SetReloadEnabled(true);
+        BlReloadEnabled = true;
         await Reload();
     }
 
