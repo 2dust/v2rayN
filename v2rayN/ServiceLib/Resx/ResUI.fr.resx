@@ -1622,9 +1622,9 @@ Ne pas utiliser « Obtenir le certificat » si « Autoriser non sécurisé » es
     <value>Certificat configuré </value>
   </data>
   <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
-    <value>Custom PAC file path</value>
+    <value>Chemin fichier PAC personnalisé</value>
   </data>
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
-    <value>Custom system proxy script file path</value>
+    <value>Chemin script proxy système personnalisé</value>
   </data>
 </root>
