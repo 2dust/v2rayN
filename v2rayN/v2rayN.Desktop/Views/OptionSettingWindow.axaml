@@ -463,6 +463,21 @@
                             VerticalAlignment="Center"
                             IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
+                        
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsIsMacOS}"
+                            Text="{x:Static resx:ResUI.TbSettingsMacOSShowInDock}" />
+                        <ToggleSwitch
+                            x:Name="togMacOSShowInDock"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding BlIsIsMacOS}"/>
 
                         <TextBlock
                             Grid.Row="11"

@@ -1629,4 +1629,7 @@
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
     <value>自定义系统代理脚本文件路径</value>
   </data>
+  <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
+    <value>macOS 在 Dock 栏中显示 (需重启)</value>
+  </data>
 </root>

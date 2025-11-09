@@ -1632,4 +1632,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
     <value>Custom system proxy script file path</value>
   </data>
+  <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
+    <value>macOS displays this in the Dock (requires restart)</value>
+  </data>
 </root>

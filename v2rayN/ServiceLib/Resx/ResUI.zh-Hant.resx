@@ -1629,4 +1629,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
     <value>自訂系統代理程式腳本檔案路徑</value>
   </data>
+  <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
+    <value>macOS 在 Dock 欄顯示 (需重啟)</value>
+  </data>
 </root>
