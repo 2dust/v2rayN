@@ -245,13 +245,6 @@ public partial class CoreConfigV2rayService
             var host = node.RequestHost.TrimEx();
             var path = node.Path.TrimEx();
             var sni = node.Sni.TrimEx();
-            var certs = node.Cert
-                ?.Split("-----END CERTIFICATE-----", StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.TrimEx())
-                .Where(s => !s.IsNullOrEmpty())
-                .Select(s => s + "\n-----END CERTIFICATE-----")
-                .Select(s => s.Replace("\r\n", "\n"))
-                .ToList() ?? new();
             var useragent = "";
             if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
             {
@@ -284,6 +277,7 @@ public partial class CoreConfigV2rayService
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
                 }
+                var certs = CertPemManager.ParsePemChain(node.Cert);
                 if (certs.Count > 0)
                 {
                     var certsettings = new List<CertificateSettings4Ray>();

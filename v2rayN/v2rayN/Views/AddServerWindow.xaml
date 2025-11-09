@@ -1021,6 +1021,7 @@
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                             <StackPanel>
                                 <TextBlock
+                                    Width="400"
                                     Margin="{StaticResource Margin4}"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource ToolbarTextBlock}"
@@ -1029,13 +1030,11 @@
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <Button
                                         x:Name="btnFetchCert"
-                                        Width="100"
                                         Margin="{StaticResource MarginLeftRight4}"
                                         Content="{x:Static resx:ResUI.TbFetchCert}"
                                         Style="{StaticResource DefButton}" />
                                     <Button
                                         x:Name="btnFetchCertChain"
-                                        Width="100"
                                         Margin="{StaticResource MarginLeftRight4}"
                                         Content="{x:Static resx:ResUI.TbFetchCertChain}"
                                         Style="{StaticResource DefButton}" />
@@ -1044,11 +1043,13 @@
                                     x:Name="txtCert"
                                     Width="400"
                                     Margin="{StaticResource Margin4}"
-                                    VerticalAlignment="Center"
                                     AcceptsReturn="True"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    MaxLines="18"
                                     MinLines="6"
                                     Style="{StaticResource MyOutlinedTextBox}"
-                                    TextWrapping="Wrap" />
+                                    TextWrapping="NoWrap"
+                                    VerticalScrollBarVisibility="Auto" />
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </StackPanel>

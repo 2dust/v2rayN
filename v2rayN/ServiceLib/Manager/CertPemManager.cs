@@ -202,7 +202,7 @@ public class CertPemManager
     /// <summary>
     /// Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 10)
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4)
     {
         try
         {
@@ -216,7 +216,13 @@ public class CertPemManager
 
             using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
-            await ssl.AuthenticateAsClientAsync(serverName);
+            var sslOptions = new SslClientAuthenticationOptions
+            {
+                TargetHost = serverName,
+                RemoteCertificateValidationCallback = ValidateServerCertificate
+            };
+
+            await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
 
             var remote = ssl.RemoteCertificate;
             if (remote == null)
@@ -242,7 +248,7 @@ public class CertPemManager
     /// <summary>
     /// Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 10)
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4)
     {
         var pemList = new List<string>();
         try
@@ -257,7 +263,13 @@ public class CertPemManager
 
             using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
-            await ssl.AuthenticateAsClientAsync(serverName);
+            var sslOptions = new SslClientAuthenticationOptions
+            {
+                TargetHost = serverName,
+                RemoteCertificateValidationCallback = ValidateServerCertificate
+            };
+
+            await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
 
             if (ssl.RemoteCertificate is not X509Certificate2 certChain)
             {
@@ -330,10 +342,74 @@ public class CertPemManager
         return TrustedCaThumbprints.Contains(rootThumbprint);
     }
 
-    public string ExportCertToPem(X509Certificate2 cert)
+    public static string ExportCertToPem(X509Certificate2 cert)
     {
         var der = cert.Export(X509ContentType.Cert);
-        var b64 = Convert.ToBase64String(der, Base64FormattingOptions.InsertLineBreaks);
+        var b64 = Convert.ToBase64String(der);
         return $"-----BEGIN CERTIFICATE-----\n{b64}\n-----END CERTIFICATE-----\n";
+    }
+
+    /// <summary>
+    /// Parse concatenated PEM certificates string into a list of individual certificates
+    /// Normalizes format: removes line breaks from base64 content for better compatibility
+    /// </summary>
+    /// <param name="pemChain">Concatenated PEM certificates string (supports both \r\n and \n line endings)</param>
+    /// <returns>List of individual PEM certificate strings with normalized format</returns>
+    public static List<string> ParsePemChain(string pemChain)
+    {
+        var certs = new List<string>();
+        if (string.IsNullOrWhiteSpace(pemChain))
+        {
+            return certs;
+        }
+
+        // Normalize line endings (CRLF -> LF) at the beginning
+        pemChain = pemChain.Replace("\r\n", "\n").Replace("\r", "\n");
+
+        const string beginMarker = "-----BEGIN CERTIFICATE-----";
+        const string endMarker = "-----END CERTIFICATE-----";
+
+        var index = 0;
+        while (index < pemChain.Length)
+        {
+            var beginIndex = pemChain.IndexOf(beginMarker, index, StringComparison.Ordinal);
+            if (beginIndex == -1)
+                break;
+
+            var endIndex = pemChain.IndexOf(endMarker, beginIndex, StringComparison.Ordinal);
+            if (endIndex == -1)
+                break;
+
+            // Extract certificate content
+            var base64Start = beginIndex + beginMarker.Length;
+            var base64Content = pemChain.Substring(base64Start, endIndex - base64Start);
+
+            // Remove all whitespace from base64 content
+            base64Content = new string(base64Content.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+            // Reconstruct with clean format: BEGIN marker + base64 (no line breaks) + END marker
+            var normalizedCert = $"{beginMarker}\n{base64Content}\n{endMarker}\n";
+            certs.Add(normalizedCert);
+
+            // Move to next certificate
+            index = endIndex + endMarker.Length;
+        }
+
+        return certs;
+    }
+
+    /// <summary>
+    /// Concatenate a list of PEM certificates into a single string
+    /// </summary>
+    /// <param name="pemList">List of individual PEM certificate strings</param>
+    /// <returns>Concatenated PEM certificates string</returns>
+    public static string ConcatenatePemChain(IEnumerable<string> pemList)
+    {
+        if (pemList == null)
+        {
+            return string.Empty;
+        }
+
+        return string.Concat(pemList);
     }
 }
