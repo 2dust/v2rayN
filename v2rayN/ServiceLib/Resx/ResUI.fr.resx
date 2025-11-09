@@ -1630,6 +1630,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Chemin script proxy système personnalisé</value>
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
-    <value>macOS displays this in the Dock (requires restart)</value>
+    <value>Afficher dans le Dock de macOS (redém. requis)</value>
   </data>
 </root>
