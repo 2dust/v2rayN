@@ -161,10 +161,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         else
         {
             Title = $"{Utils.GetVersion()}";
-
-            menuRebootAsAdmin.IsVisible = false;
-            menuSettingsSetUWP.IsVisible = false;
-            menuGlobalHotkeySetting.IsVisible = false;
         }
         menuAddServerViaScan.IsVisible = false;
 

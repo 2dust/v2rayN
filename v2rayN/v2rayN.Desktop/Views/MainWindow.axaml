@@ -75,10 +75,10 @@
                         <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
                         <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
                         <MenuItem x:Name="menuFullConfigTemplate" Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
-                        <MenuItem x:Name="menuGlobalHotkeySetting" Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" />
+                        <MenuItem x:Name="menuGlobalHotkeySetting" Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" IsVisible="{Binding BlIsWindows}" />
                         <Separator />
-                        <MenuItem x:Name="menuRebootAsAdmin" Header="{x:Static resx:ResUI.menuRebootAsAdmin}" />
-                        <MenuItem x:Name="menuSettingsSetUWP" Header="{x:Static resx:ResUI.TbSettingsSetUWP}" />
+                        <MenuItem x:Name="menuRebootAsAdmin" Header="{x:Static resx:ResUI.menuRebootAsAdmin}" IsVisible="{Binding BlIsWindows}" />
+                        <MenuItem x:Name="menuSettingsSetUWP" Header="{x:Static resx:ResUI.TbSettingsSetUWP}" IsVisible="{Binding BlIsWindows}" />
                         <MenuItem x:Name="menuClearServerStatistics" Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuRegionalPresets}">

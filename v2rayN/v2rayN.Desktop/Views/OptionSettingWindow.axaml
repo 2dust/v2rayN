@@ -356,11 +356,11 @@
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
                         <TextBlock
-                            x:Name="tbAutoRunTip"
                             Grid.Row="1"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsWindows}"
                             Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
                             TextWrapping="Wrap" />
 
@@ -443,24 +443,25 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            x:Name="labHide2TrayWhenClose"
                             Grid.Row="9"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenClose}" />
                         <ToggleSwitch
                             x:Name="togHide2TrayWhenClose"
                             Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding BlIsLinux}" />
                         <TextBlock
-                            x:Name="labHide2TrayWhenCloseTip"
                             Grid.Row="9"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
 
                         <TextBlock
@@ -675,8 +676,8 @@
             <TabItem Name="tabSystemproxy" Header="{x:Static resx:ResUI.TbSettingsSystemproxy}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <StackPanel
-                        Name="panSystemProxyUnix"
                         DockPanel.Dock="Bottom"
+                        IsVisible="{Binding BlIsNonWindows}"
                         Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
@@ -690,7 +691,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="proxy_set.sh"/>
+                                Watermark="proxy_set.sh" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyScriptPath"
                                 Margin="{StaticResource Margin4}"
@@ -698,8 +699,8 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel
-                        Name="panSystemProxyAdvanced"
                         DockPanel.Dock="Bottom"
+                        IsVisible="{Binding BlIsWindows}"
                         Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
@@ -735,7 +736,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="pac.txt"/>
+                                Watermark="pac.txt" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyPacPath"
                                 Margin="{StaticResource Margin4}"
@@ -744,16 +745,16 @@
                     </StackPanel>
 
                     <TextBlock
-                        Name="txbSettingsExceptionTip"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Top"
+                        IsVisible="{Binding BlIsWindows}"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip}" />
                     <TextBlock
-                        Name="txbSettingsExceptionTip2"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Top"
+                        IsVisible="{Binding BlIsNonWindows}"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip2}" />
                     <TextBox
                         x:Name="txtsystemProxyExceptions"

@@ -62,6 +62,8 @@ public class MainWindowViewModel : MyReactiveObject
     [Reactive]
     public int TabMainSelectedIndex { get; set; }
 
+    [Reactive] public bool BlIsWindows { get; set; }
+
     #endregion Menu
 
     #region Init
@@ -70,6 +72,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         _config = AppManager.Instance.Config;
         _updateView = updateView;
+        BlIsWindows = Utils.IsWindows();
 
         #region WhenAnyValue && ReactiveCommand
 

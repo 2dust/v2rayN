@@ -69,6 +69,15 @@ public class OptionSettingViewModel : MyReactiveObject
 
     #endregion UI
 
+    #region UI visibility
+
+    [Reactive] public bool BlIsWindows { get; set; }
+    [Reactive] public bool BlIsLinux { get; set; }
+    [Reactive] public bool BlIsIsMacOS { get; set; }
+    [Reactive] public bool BlIsNonWindows { get; set; }
+
+    #endregion UI visibility
+
     #region System proxy
 
     [Reactive] public bool notProxyLocalAddress { get; set; }
@@ -108,6 +117,10 @@ public class OptionSettingViewModel : MyReactiveObject
     {
         _config = AppManager.Instance.Config;
         _updateView = updateView;
+        BlIsWindows = Utils.IsWindows();
+        BlIsLinux = Utils.IsLinux();
+        BlIsIsMacOS = Utils.IsMacOS();
+        BlIsNonWindows = Utils.IsNonWindows();
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {

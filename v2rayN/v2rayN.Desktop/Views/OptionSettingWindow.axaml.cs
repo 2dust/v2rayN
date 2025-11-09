@@ -125,34 +125,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-
-        if (Utils.IsWindows())
-        {
-            txbSettingsExceptionTip2.IsVisible = false;
-
-            labHide2TrayWhenClose.IsVisible = false;
-            togHide2TrayWhenClose.IsVisible = false;
-            labHide2TrayWhenCloseTip.IsVisible = false;
-            panSystemProxyUnix.IsVisible = false;
-        }
-        else if (Utils.IsLinux())
-        {
-            txbSettingsExceptionTip.IsVisible = false;
-            panSystemProxyAdvanced.IsVisible = false;
-
-            tbAutoRunTip.IsVisible = false;
-        }
-        else if (Utils.IsMacOS())
-        {
-            txbSettingsExceptionTip.IsVisible = false;
-            panSystemProxyAdvanced.IsVisible = false;
-
-            tbAutoRunTip.IsVisible = false;
-
-            labHide2TrayWhenClose.IsVisible = false;
-            togHide2TrayWhenClose.IsVisible = false;
-            labHide2TrayWhenCloseTip.IsVisible = false;
-        }
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
