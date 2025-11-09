@@ -48,7 +48,6 @@ public class HttpClientHelper
         }
         return await httpClient.GetStringAsync(url);
     }
-     
 
     public async Task PutAsync(string url, Dictionary<string, string> headers)
     {
@@ -72,6 +71,4 @@ public class HttpClientHelper
     {
         await httpClient.DeleteAsync(url);
     }
-
-    
 }

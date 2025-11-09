@@ -45,7 +45,7 @@ public class Hysteria2Fmt : BaseFmt
         }
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
-       
+
         if (item.Path.IsNotEmpty())
         {
             dicQuery.Add("obfs", "salamander");

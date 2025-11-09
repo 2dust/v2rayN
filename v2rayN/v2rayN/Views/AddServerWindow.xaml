@@ -1053,7 +1053,6 @@
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </StackPanel>
-
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"
