@@ -142,7 +142,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
             tbAutoRunTip.IsVisible = false;
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             txbSettingsExceptionTip.IsVisible = false;
             panSystemProxyAdvanced.IsVisible = false;

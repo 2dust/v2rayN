@@ -67,7 +67,7 @@ public class CoreAdminManager
 
         try
         {
-            var shellFileName = Utils.IsOSX() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
+            var shellFileName = Utils.IsMacOS() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
             var shFilePath = await FileUtils.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
             if (shFilePath.Contains(' '))
             {

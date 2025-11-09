@@ -504,7 +504,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }

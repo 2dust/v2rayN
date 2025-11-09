@@ -511,7 +511,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             ProcUtils.ProcessStart("xdg-open", path);
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             ProcUtils.ProcessStart("open", path);
         }

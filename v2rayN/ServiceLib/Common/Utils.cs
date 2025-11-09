@@ -998,7 +998,7 @@ public class Utils
 
     public static bool IsLinux() => OperatingSystem.IsLinux();
 
-    public static bool IsOSX() => OperatingSystem.IsMacOS();
+    public static bool IsMacOS() => OperatingSystem.IsMacOS();
 
     public static bool IsNonWindows() => !OperatingSystem.IsWindows();
 
@@ -1020,7 +1020,7 @@ public class Utils
     {
         try
         {
-            if (IsWindows() || IsOSX())
+            if (IsWindows() || IsMacOS())
             {
                 return false;
             }

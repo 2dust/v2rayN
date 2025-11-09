@@ -313,7 +313,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
                 _ => null,
             };
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             return RuntimeInformation.ProcessArchitecture switch
             {
