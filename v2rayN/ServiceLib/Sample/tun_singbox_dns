@@ -15,7 +15,7 @@
   "rules": [
     {
       "rule_set": [
-        "geosite:google"
+        "geosite-google"
       ],
       "server": "remote",
       "strategy": "prefer_ipv4"
