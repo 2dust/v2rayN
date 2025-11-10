@@ -1603,10 +1603,10 @@
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Server Certificate (PEM format, optional)
-When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
+    <value>Certificat serveur (format PEM, facultatif)
+Si le certificat est défini, il est fixé et l’option « Ignorer la vérification » est désactivée.
 
-The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
+Si un certificat auto-signé est utilisé ou si le système contient une CA non fiable ou malveillante, l’action « Obtenir le certificat » peut échouer.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
     <value>Obtenir le certificat</value>
@@ -1630,6 +1630,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Chemin script proxy système personnalisé</value>
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
-    <value>macOS displays this in the Dock (requires restart)</value>
+    <value>Afficher dans le Dock de macOS (redém. requis)</value>
   </data>
 </root>
