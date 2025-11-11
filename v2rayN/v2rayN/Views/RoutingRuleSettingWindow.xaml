@@ -301,7 +301,11 @@
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="100"
+                            Binding="{Binding RuleTypeName}"
+                            Header="{x:Static resx:ResUI.TbRuleType}" />
+                        <DataGridTextColumn
+                            Width="130"
                             Binding="{Binding OutboundTag}"
                             Header="outboundTag" />
                         <DataGridTextColumn
@@ -317,17 +321,13 @@
                             Binding="{Binding InboundTags}"
                             Header="inboundTag" />
                         <DataGridTextColumn
-                            Width="90"
+                            Width="100"
                             Binding="{Binding Network}"
                             Header="network" />
                         <DataGridTextColumn
                             Width="*"
                             Binding="{Binding Domains}"
-                            Header="domain" />
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Ips}"
-                            Header="ip" />
+                            Header="domain / ip" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

@@ -1,6 +1,3 @@
-using System.Reactive.Disposables;
-using Avalonia.Interactivity;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
@@ -15,7 +12,7 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
 
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
         ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
@@ -39,7 +36,7 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

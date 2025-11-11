@@ -41,7 +41,7 @@
         <TabControl HorizontalContentAlignment="Left">
             <TabItem Header="{x:Static resx:ResUI.ThBasicDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Margin="{StaticResource Margin8}">
+                    <Grid x:Name="gridBasicDNSSettings" Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -100,6 +100,14 @@
                             Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRemoteDNSTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -107,9 +115,9 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBOutboundsResolverDNS}" />
+                            Text="{x:Static resx:ResUI.TbBootstrapDNS}" />
                         <ComboBox
-                            x:Name="cmbSBResolverDNS"
+                            x:Name="cmbBootstrapDNS"
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="300"
@@ -122,7 +130,7 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBOutboundDomainResolve}"
+                            Text="{x:Static resx:ResUI.TbBootstrapDNSTips}"
                             TextWrapping="Wrap" />
 
                         <TextBlock
@@ -131,34 +139,10 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBDoHResolverServer}" />
-                        <ComboBox
-                            x:Name="cmbSBFinalResolverDNS"
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Width="300"
-                            Margin="{StaticResource Margin8}"
-                            IsEditable="True"
-                            Style="{StaticResource DefComboBox}" />
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBFallbackDNSResolve}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbXrayFreedomResolveStrategy}" />
+                            Text="{x:Static resx:ResUI.TbXrayFreedomStrategy}" />
                         <ComboBox
                             x:Name="cmbRayFreedomDNSStrategy"
-                            Grid.Row="5"
+                            Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
@@ -166,7 +150,7 @@
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="6"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -174,6 +158,22 @@
                             Text="{x:Static resx:ResUI.TbSBDirectResolveStrategy}" />
                         <ComboBox
                             x:Name="cmbSBDirectDNSStrategy"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            materialDesign:HintAssist.Hint="Default"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
+                        <ComboBox
+                            x:Name="cmbSBRemoteDNSStrategy"
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="200"
@@ -187,42 +187,19 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
-                        <ComboBox
-                            x:Name="cmbSBRemoteDNSStrategy"
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Width="200"
-                            Margin="{StaticResource Margin8}"
-                            materialDesign:HintAssist.Hint="Default"
-                            Style="{StaticResource DefComboBox}" />
-
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbAddCommonDNSHosts}" />
                         <ToggleButton
                             x:Name="togAddCommonHosts"
-                            Grid.Row="8"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="3"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBDoHOverride}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{x:Static resx:ResUI.ThAdvancedDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <Grid Margin="{StaticResource Margin8}">
+                    <Grid x:Name="gridAdvancedDNSSettings" Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -355,7 +332,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
+            <TabItem Header="{x:Static resx:ResUI.TbCustomDnsRay}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">
                         <Grid.RowDefinitions>
@@ -452,7 +429,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDnsSingbox}">
+            <TabItem Header="{x:Static resx:ResUI.TbCustomDnsSingbox}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">
                         <Grid.RowDefinitions>

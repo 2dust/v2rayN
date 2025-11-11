@@ -1,4 +1,4 @@
-namespace ServiceLib.Common;
+namespace ServiceLib.Models;
 
 public class SemanticVersion
 {

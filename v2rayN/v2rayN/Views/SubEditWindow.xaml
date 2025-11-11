@@ -117,7 +117,7 @@
                 <materialDesign:PopupBox
                     Grid.Row="2"
                     Grid.Column="2"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     StaysOpen="True"
                     Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                     <StackPanel>

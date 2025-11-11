@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace ServiceLib.Models;
 
 public class V2rayConfig
@@ -217,6 +215,7 @@ public class Dns4Ray
 public class DnsServer4Ray
 {
     public string? address { get; set; }
+    public int? port { get; set; }
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
     public List<string>? expectedIPs { get; set; }
@@ -355,6 +354,14 @@ public class TlsSettings4Ray
     public string? shortId { get; set; }
     public string? spiderX { get; set; }
     public string? mldsa65Verify { get; set; }
+    public List<CertificateSettings4Ray>? certificates { get; set; }
+    public bool? disableSystemRoot { get; set; }
+}
+
+public class CertificateSettings4Ray
+{
+    public List<string>? certificate { get; set; }
+    public string? usage { get; set; }
 }
 
 public class TcpSettings4Ray

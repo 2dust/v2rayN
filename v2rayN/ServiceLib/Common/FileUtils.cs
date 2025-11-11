@@ -1,10 +1,9 @@
 using System.Formats.Tar;
 using System.IO.Compression;
-using System.Text;
 
 namespace ServiceLib.Common;
 
-public static class FileManager
+public static class FileUtils
 {
     private static readonly string _tag = "FileManager";
 

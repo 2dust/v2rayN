@@ -1,8 +1,5 @@
-using System.Reactive.Disposables;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
@@ -15,12 +12,15 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         InitializeComponent();
 
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
         _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
+        btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
+        btnBrowseCustomSystemProxyScriptPath.Click += BtnBrowseCustomSystemProxyScriptPath_Click;
+
         clbdestOverride.ItemsSource = Global.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
@@ -86,9 +86,9 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.KeepOlderDedupl, v => v.togKeepOlderDedupl.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableAutoAdjustMainLvColWidth, v => v.togEnableAutoAdjustMainLvColWidth.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableUpdateSubOnlyRemarksExist, v => v.togEnableUpdateSubOnlyRemarksExist.IsChecked).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.EnableSecurityProtocolTls13, v => v.togEnableSecurityProtocolTls13.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoHideStartup, v => v.togAutoHideStartup.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Hide2TrayWhenClose, v => v.togHide2TrayWhenClose.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MacOSShowInDock, v => v.togMacOSShowInDock.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
@@ -106,6 +106,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyPacPath, v => v.txtCustomSystemProxyPacPath.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyScriptPath, v => v.txtCustomSystemProxyScriptPath.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
@@ -124,27 +126,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-
-        if (Utils.IsWindows())
-        {
-            txbSettingsExceptionTip2.IsVisible = false;
-
-            labHide2TrayWhenClose.IsVisible = false;
-            togHide2TrayWhenClose.IsVisible = false;
-        }
-        else if (Utils.IsLinux())
-        {
-            txbSettingsExceptionTip.IsVisible = false;
-            panSystemProxyAdvanced.IsVisible = false;
-        }
-        else if (Utils.IsOSX())
-        {
-            txbSettingsExceptionTip.IsVisible = false;
-            panSystemProxyAdvanced.IsVisible = false;
-
-            labHide2TrayWhenClose.IsVisible = false;
-            togHide2TrayWhenClose.IsVisible = false;
-        }
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -152,7 +133,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
 
             case EViewAction.InitSettingFont:
@@ -209,6 +190,28 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+
+    private async void BtnBrowseCustomSystemProxyPacPath_Click(object? sender, RoutedEventArgs e)
+    {
+        var fileName = await UI.OpenFileDialog(this, null);
+        if (fileName.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        txtCustomSystemProxyPacPath.Text = fileName;
+    }
+
+    private async void BtnBrowseCustomSystemProxyScriptPath_Click(object? sender, RoutedEventArgs e)
+    {
+        var fileName = await UI.OpenFileDialog(this, null);
+        if (fileName.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        txtCustomSystemProxyScriptPath.Text = fileName;
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

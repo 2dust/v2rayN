@@ -1,8 +1,3 @@
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
-
 namespace ServiceLib.Services;
 
 public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateFunc)
@@ -26,7 +21,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (_lstExitLoop.Count > 0)
         {
-            UpdateFunc("", ResUI.SpeedtestingStop);
+            _ = UpdateFunc("", ResUI.SpeedtestingStop);
 
             _lstExitLoop.Clear();
         }
@@ -64,7 +59,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var lstSelected = new List<ServerTestItem>();
         foreach (var it in selecteds)
         {
-            if (it.ConfigType == EConfigType.Custom)
+            if (it.ConfigType.IsComplexType())
             {
                 continue;
             }
@@ -116,10 +111,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<Task> tasks = [];
         foreach (var it in selecteds)
         {
-            if (it.ConfigType == EConfigType.Custom)
-            {
-                continue;
-            }
             tasks.Add(Task.Run(async () =>
             {
                 try
@@ -182,11 +173,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        var pid = -1;
+        ProcessService processService = null;
         try
         {
-            pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
-            if (pid < 0)
+            processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
+            if (processService is null)
             {
                 return false;
             }
@@ -196,10 +187,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             foreach (var it in selecteds)
             {
                 if (!it.AllowTest)
-                {
-                    continue;
-                }
-                if (it.ConfigType == EConfigType.Custom)
                 {
                     continue;
                 }
@@ -216,9 +203,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            if (pid > 0)
+            if (processService != null)
             {
-                await ProcUtils.ProcessKill(pid);
+                await processService?.StopAsync();
             }
         }
         return true;
@@ -236,19 +223,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                 continue;
             }
-            if (it.ConfigType == EConfigType.Custom)
-            {
-                continue;
-            }
             await concurrencySemaphore.WaitAsync();
 
             tasks.Add(Task.Run(async () =>
             {
-                var pid = -1;
+                ProcessService processService = null;
                 try
                 {
-                    pid = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
-                    if (pid < 0)
+                    processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                    if (processService is null)
                     {
                         await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
                     }
@@ -275,9 +258,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 }
                 finally
                 {
-                    if (pid > 0)
+                    if (processService != null)
                     {
-                        await ProcUtils.ProcessKill(pid);
+                        await processService?.StopAsync();
                     }
                     concurrencySemaphore.Release();
                 }
@@ -289,7 +272,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<int> DoRealPing(ServerTestItem it)
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await HttpClientHelper.Instance.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
+        var responseTime = await ConnectionHandler.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());
@@ -351,7 +334,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         List<List<ServerTestItem>> lstTest = new();
         var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
-        var lst2 = lstSelected.Where(t => Global.SingboxSupportConfigType.Contains(t.ConfigType) && !Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
+        var lst2 = lstSelected.Where(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {

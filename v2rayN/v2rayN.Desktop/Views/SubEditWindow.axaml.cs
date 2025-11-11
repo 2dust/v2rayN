@@ -1,7 +1,3 @@
-using System.Reactive.Disposables;
-using Avalonia;
-using Avalonia.Interactivity;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
 
 namespace v2rayN.Desktop.Views;
@@ -18,7 +14,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
         InitializeComponent();
 
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
+        btnCancel.Click += (s, e) => Close();
 
         ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
@@ -49,7 +45,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);
@@ -63,7 +59,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     private async void BtnSelectPrevProfile_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {
@@ -78,7 +74,7 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     private async void BtnSelectNextProfile_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
+        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)
         {

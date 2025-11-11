@@ -11,7 +11,7 @@
 		</PackageReference>
 		<PackageReference Include="ReactiveUI.Fody" />
 		<PackageReference Include="sqlite-net-pcl" />
-		<PackageReference Include="Splat.NLog" />
+		<PackageReference Include="NLog" />
 		<PackageReference Include="WebDav.Client" />
 		<PackageReference Include="YamlDotNet" />
 		<PackageReference Include="QRCoder" />
@@ -55,6 +55,9 @@
 		</Compile>
 		<EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
 			<SubType>Designer</SubType>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+        <EmbeddedResource Update="Resx\ResUI.fr.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resx\ResUI.hu.resx">

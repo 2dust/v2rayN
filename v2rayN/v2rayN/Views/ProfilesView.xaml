@@ -57,16 +57,6 @@
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                 </Button>
 
-                <Button
-                    x:Name="btnAutofitColumnWidth"
-                    Width="30"
-                    Height="30"
-                    Margin="{StaticResource MarginLeftRight8}"
-                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
-                </Button>
                 <TextBox
                     x:Name="txtServerFilter"
                     Width="200"
@@ -76,6 +66,36 @@
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                     Style="{StaticResource DefTextBox}" />
+
+                <Button
+                    x:Name="btnAutofitColumnWidth"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
+                </Button>
+
+                <Button
+                    x:Name="btnFastRealPing"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
+                </Button>
+                <Button
+                    x:Name="menuMixedTestServer"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
+                </Button>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
@@ -101,13 +121,17 @@
                 <DataGrid.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
                         <MenuItem
+                            x:Name="menuSetDefaultServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                        <MenuItem
                             x:Name="menuEditServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuEditServer}" />
                         <MenuItem
-                            x:Name="menuSetDefaultServer"
+                            x:Name="menuCopyServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                            Header="{x:Static resx:ResUI.menuCopyServer}" />
                         <MenuItem
                             x:Name="menuRemoveServer"
                             Height="{StaticResource MenuItemHeight}"
@@ -117,42 +141,10 @@
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
                         <MenuItem
-                            x:Name="menuCopyServer"
+                            x:Name="menuRemoveInvalidServerResult"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuCopyServer}" />
-                        <MenuItem
-                            x:Name="menuShareServer"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuShareServer}" />
+                            Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}">
-                            <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayRandom"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRandom}" />
-                            <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayRoundRobin"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRoundRobin}" />
-                            <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastPing}" />
-                            <MenuItem
-                                x:Name="menuSetDefaultMultipleServerXrayLeastLoad"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem
-                                x:Name="menuSetDefaultMultipleServerSingBoxLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem
-                            x:Name="menuMixedTestServer"
-                            Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem
                             x:Name="menuTcpingServer"
                             Height="{StaticResource MenuItemHeight}"
@@ -165,16 +157,10 @@
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
-                            <MenuItem
-                                x:Name="menuSortServerResult"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSortServerResult}" />
-                            <MenuItem
-                                x:Name="menuRemoveInvalidServerResult"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
-                        </MenuItem>
+                        <MenuItem
+                            x:Name="menuSortServerResult"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuMoveToGroup"
@@ -217,6 +203,10 @@
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
+                        <MenuItem
+                            x:Name="menuShareServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuShareServer}" />
                         <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem
                                 x:Name="menuExport2ClientConfig"
@@ -235,6 +225,34 @@
                                 x:Name="menuExport2ShareUrlBase64"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerXrayRandom"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerXrayRoundRobin"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerXrayLeastPing"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerXrayLeastLoad"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
+                            <Separator />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerSingBoxLeastPing"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
+                            <MenuItem
+                                x:Name="menuGenGroupMultipleServerSingBoxFallback"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

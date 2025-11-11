@@ -1,7 +1,3 @@
-using System.Reactive;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class DNSSettingViewModel : MyReactiveObject
@@ -12,8 +8,7 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public bool? BlockBindingQuery { get; set; }
     [Reactive] public string? DirectDNS { get; set; }
     [Reactive] public string? RemoteDNS { get; set; }
-    [Reactive] public string? SingboxOutboundsResolveDNS { get; set; }
-    [Reactive] public string? SingboxFinalResolveDNS { get; set; }
+    [Reactive] public string? BootstrapDNS { get; set; }
     [Reactive] public string? RayStrategy4Freedom { get; set; }
     [Reactive] public string? SingboxStrategy4Direct { get; set; }
     [Reactive] public string? SingboxStrategy4Proxy { get; set; }
@@ -31,6 +26,8 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string TunDNS2Compatible { get; set; }
     [Reactive] public bool RayCustomDNSEnableCompatible { get; set; }
     [Reactive] public bool SBCustomDNSEnableCompatible { get; set; }
+
+    [ObservableAsProperty] public bool IsSimpleDNSEnabled { get; }
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
@@ -55,6 +52,10 @@ public class DNSSettingViewModel : MyReactiveObject
             await Task.CompletedTask;
         });
 
+        this.WhenAnyValue(x => x.RayCustomDNSEnableCompatible, x => x.SBCustomDNSEnableCompatible)
+            .Select(x => !(x.Item1 && x.Item2))
+            .ToPropertyEx(this, x => x.IsSimpleDNSEnabled);
+
         _ = Init();
     }
 
@@ -68,9 +69,8 @@ public class DNSSettingViewModel : MyReactiveObject
         BlockBindingQuery = item.BlockBindingQuery;
         DirectDNS = item.DirectDNS;
         RemoteDNS = item.RemoteDNS;
+        BootstrapDNS = item.BootstrapDNS;
         RayStrategy4Freedom = item.RayStrategy4Freedom;
-        SingboxOutboundsResolveDNS = item.SingboxOutboundsResolveDNS;
-        SingboxFinalResolveDNS = item.SingboxFinalResolveDNS;
         SingboxStrategy4Direct = item.SingboxStrategy4Direct;
         SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
         Hosts = item.Hosts;
@@ -99,9 +99,8 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
         _config.SimpleDNSItem.DirectDNS = DirectDNS;
         _config.SimpleDNSItem.RemoteDNS = RemoteDNS;
+        _config.SimpleDNSItem.BootstrapDNS = BootstrapDNS;
         _config.SimpleDNSItem.RayStrategy4Freedom = RayStrategy4Freedom;
-        _config.SimpleDNSItem.SingboxOutboundsResolveDNS = SingboxOutboundsResolveDNS;
-        _config.SimpleDNSItem.SingboxFinalResolveDNS = SingboxFinalResolveDNS;
         _config.SimpleDNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
         _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
         _config.SimpleDNSItem.Hosts = Hosts;

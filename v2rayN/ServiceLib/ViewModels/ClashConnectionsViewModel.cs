@@ -1,11 +1,3 @@
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class ClashConnectionsViewModel : MyReactiveObject
@@ -104,6 +96,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
         }
 
         ConnectionItems.AddRange(lstModel);
+        await Task.CompletedTask;
     }
 
     public async Task ClashConnectionClose(bool all)

@@ -1,7 +1,3 @@
-using System.Reactive.Disposables;
-using System.Windows;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 public partial class DNSSettingWindow
@@ -12,7 +8,7 @@ public partial class DNSSettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
+        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
@@ -21,9 +17,8 @@ public partial class DNSSettingWindow
         cmbSBDirectDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
         cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
-        cmbSBResolverDNS.ItemsSource = Global.DomainDirectDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
         cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
-        cmbSBFinalResolverDNS.ItemsSource = Global.DomainPureIPDNSAddress.Concat(new[] { "dhcp://auto,localhost" });
+        cmbBootstrapDNS.ItemsSource = Global.DomainPureIPDNSAddress;
         cmbDirectExpectedIPs.ItemsSource = Global.ExpectedIPs;
 
         cmbdomainStrategy4FreedomCompatible.ItemsSource = Global.DomainStrategy4Freedoms;
@@ -39,8 +34,7 @@ public partial class DNSSettingWindow
             this.Bind(ViewModel, vm => vm.BlockBindingQuery, v => v.togBlockBindingQuery.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DirectDNS, v => v.cmbDirectDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RemoteDNS, v => v.cmbRemoteDNS.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SingboxOutboundsResolveDNS, v => v.cmbSBResolverDNS.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SingboxFinalResolveDNS, v => v.cmbSBFinalResolverDNS.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.BootstrapDNS, v => v.cmbBootstrapDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RayStrategy4Freedom, v => v.cmbRayFreedomDNSStrategy.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Direct, v => v.cmbSBDirectDNSStrategy.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SingboxStrategy4Proxy, v => v.cmbSBRemoteDNSStrategy.Text).DisposeWith(disposables);
@@ -65,18 +59,16 @@ public partial class DNSSettingWindow
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb ? Visibility.Visible : Visibility.Collapsed)
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => b ? Visibility.Collapsed : Visibility.Visible)
                 .BindTo(this, x => x.txtBasicDNSSettingsInvalid.Visibility)
                 .DisposeWith(disposables);
-            this.WhenAnyValue(
-                    x => x.ViewModel.RayCustomDNSEnableCompatible,
-                    x => x.ViewModel.SBCustomDNSEnableCompatible,
-                    (ray, sb) => ray && sb ? Visibility.Visible : Visibility.Collapsed)
+            this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
+                .Select(b => b ? Visibility.Collapsed : Visibility.Visible)
                 .BindTo(this, x => x.txtAdvancedDNSSettingsInvalid.Visibility)
                 .DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
@@ -86,7 +78,7 @@ public partial class DNSSettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

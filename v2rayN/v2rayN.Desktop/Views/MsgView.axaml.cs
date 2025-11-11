@@ -1,22 +1,15 @@
-using System.Reactive.Disposables;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
-using Avalonia.Threading;
-using ReactiveUI;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    private readonly ScrollViewer _scrollViewer;
+    //private const int KeepLines = 30;
 
     public MsgView()
     {
         InitializeComponent();
-        _scrollViewer = this.FindControl<ScrollViewer>("msgScrollViewer");
-
+        txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
         ViewModel = new MsgViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
@@ -24,6 +17,11 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
         });
+
+        TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
+                kv => kv.Key,
+                kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
+            ));
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -32,11 +30,12 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         {
             case EViewAction.DispatcherShowMsg:
                 if (obj is null)
+                {
                     return false;
+                }
 
-                Dispatcher.UIThread.Post(() =>
-                    ShowMsg(obj),
-                   DispatcherPriority.ApplicationIdle);
+                Dispatcher.UIThread.Post(() => ShowMsg(obj),
+                    DispatcherPriority.ApplicationIdle);
                 break;
         }
         return await Task.FromResult(true);
@@ -44,23 +43,37 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        txtMsg.Text = msg.ToString();
+        //var lineCount = txtMsg.LineCount;
+        //if (lineCount > ViewModel?.NumMaxMsg)
+        //{
+        //    var cutLine = txtMsg.Document.GetLineByNumber(lineCount - KeepLines);
+        //    txtMsg.Document.Remove(0, cutLine.Offset);
+        //}
+        if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
+        {
+            ClearMsg();
+        }
+
+        txtMsg.AppendText(msg.ToString());
         if (togScrollToEnd.IsChecked ?? true)
         {
-            _scrollViewer?.ScrollToEnd();
+            txtMsg.ScrollToEnd();
         }
     }
 
     public void ClearMsg()
     {
-        ViewModel?.ClearMsg();
-        txtMsg.Text = "";
+        txtMsg.Clear();
+        txtMsg.AppendText("----- Message cleared -----\n");
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
     {
-        txtMsg.Focus();
-        txtMsg.SelectAll();
+        Dispatcher.UIThread.Post(() =>
+        {
+            txtMsg.TextArea.Focus();
+            txtMsg.SelectAll();
+        }, DispatcherPriority.Render);
     }
 
     private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)

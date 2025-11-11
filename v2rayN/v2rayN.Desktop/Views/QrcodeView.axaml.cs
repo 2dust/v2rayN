@@ -1,7 +1,3 @@
-using Avalonia.Controls;
-using Avalonia.Media.Imaging;
-using Avalonia.Threading;
-
 namespace v2rayN.Desktop.Views;
 
 public partial class QrcodeView : UserControl
@@ -23,8 +19,16 @@ public partial class QrcodeView : UserControl
 
     private Bitmap? GetQRCode(string? url)
     {
-        var bytes = QRCodeUtils.GenQRCode(url);
-        return ByteToBitmap(bytes);
+        try
+        {
+            var bytes = QRCodeUtils.GenQRCode(url);
+            return ByteToBitmap(bytes);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("GetQRCode", ex);
+            return null;
+        }
     }
 
     private Bitmap? ByteToBitmap(byte[]? bytes)

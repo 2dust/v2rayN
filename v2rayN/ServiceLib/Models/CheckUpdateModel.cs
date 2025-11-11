@@ -1,6 +1,3 @@
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.Models;
 
 public class CheckUpdateModel : ReactiveObject

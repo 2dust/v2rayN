@@ -277,6 +277,23 @@ public partial class CoreConfigV2rayService
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
                 }
+                var certs = CertPemManager.ParsePemChain(node.Cert);
+                if (certs.Count > 0)
+                {
+                    var certsettings = new List<CertificateSettings4Ray>();
+                    foreach (var cert in certs)
+                    {
+                        var certPerLine = cert.Split("\n").ToList();
+                        certsettings.Add(new CertificateSettings4Ray
+                        {
+                            certificate = certPerLine,
+                            usage = "verify",
+                        });
+                    }
+                    tlsSettings.certificates = certsettings;
+                    tlsSettings.disableSystemRoot = true;
+                    tlsSettings.allowInsecure = false;
+                }
                 streamSettings.tlsSettings = tlsSettings;
             }
 
@@ -453,16 +470,16 @@ public partial class CoreConfigV2rayService
                         };
 
                         //request Host
-                        string request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
-                        string[] arrHost = host.Split(',');
-                        string host2 = string.Join(",".AppendQuotes(), arrHost);
+                        var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                        var arrHost = host.Split(',');
+                        var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
                         request = request.Replace("$requestUserAgent$", $"{useragent.AppendQuotes()}");
                         //Path
-                        string pathHttp = @"/";
+                        var pathHttp = @"/";
                         if (path.IsNotEmpty())
                         {
-                            string[] arrPath = path.Split(',');
+                            var arrPath = path.Split(',');
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
@@ -478,6 +495,60 @@ public partial class CoreConfigV2rayService
             Logging.SaveLog(_tag, ex);
         }
         return 0;
+    }
+
+    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    {
+        try
+        {
+            if (!node.ConfigType.IsGroupType())
+            {
+                return -1;
+            }
+            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+            if (hasCycle)
+            {
+                return -1;
+            }
+
+            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+            if (childProfiles.Count <= 0)
+            {
+                return -1;
+            }
+            switch (node.ConfigType)
+            {
+                case EConfigType.PolicyGroup:
+                    if (ignoreOriginChain)
+                    {
+                        await GenOutboundsList(childProfiles, v2rayConfig, baseTagName);
+                    }
+                    else
+                    {
+                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
+                    }
+                    break;
+
+                case EConfigType.ProxyChain:
+                    await GenChainOutboundsList(childProfiles, v2rayConfig, baseTagName);
+                    break;
+
+                default:
+                    break;
+            }
+
+            //add balancers
+            if (node.ConfigType == EConfigType.PolicyGroup)
+            {
+                await GenObservatory(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+                await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return await Task.FromResult(0);
     }
 
     private async Task<int> GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
@@ -552,7 +623,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig)
+    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
     {
         try
         {
@@ -569,13 +640,32 @@ public partial class CoreConfigV2rayService
             // Cache for chain proxies to avoid duplicate generation
             var nextProxyCache = new Dictionary<string, Outbounds4Ray?>();
             var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
-            int prevIndex = 0; // Index for prev outbounds
+            var prevIndex = 0; // Index for prev outbounds
 
             // Process nodes
-            int index = 0;
+            var index = 0;
             foreach (var node in nodes)
             {
                 index++;
+
+                if (node.ConfigType.IsGroupType())
+                {
+                    var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                    if (childProfiles.Count <= 0)
+                    {
+                        continue;
+                    }
+                    var childBaseTagName = $"{baseTagName}-{index}";
+                    var ret = node.ConfigType switch
+                    {
+                        EConfigType.PolicyGroup =>
+                            await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
+                        EConfigType.ProxyChain =>
+                            await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                        _ => throw new NotImplementedException()
+                    };
+                    continue;
+                }
 
                 // Handle proxy chain
                 string? prevTag = null;
@@ -590,7 +680,7 @@ public partial class CoreConfigV2rayService
 
                 // current proxy
                 await GenOutbound(node, currentOutbound);
-                currentOutbound.tag = $"{Global.ProxyTag}-{index}";
+                currentOutbound.tag = $"{baseTagName}-{index}";
 
                 if (!node.Subid.IsNullOrEmpty())
                 {
@@ -606,7 +696,7 @@ public partial class CoreConfigV2rayService
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
-                            prevTag = $"prev-{Global.ProxyTag}-{++prevIndex}";
+                            prevTag = $"prev-{baseTagName}-{++prevIndex}";
                             prevOutbound.tag = prevTag;
                             prevOutbounds.Add(prevOutbound);
                         }
@@ -628,9 +718,17 @@ public partial class CoreConfigV2rayService
             }
 
             // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
-            resultOutbounds.AddRange(prevOutbounds);
-            resultOutbounds.AddRange(v2rayConfig.outbounds);
-            v2rayConfig.outbounds = resultOutbounds;
+            if (baseTagName == Global.ProxyTag)
+            {
+                resultOutbounds.AddRange(prevOutbounds);
+                resultOutbounds.AddRange(v2rayConfig.outbounds);
+                v2rayConfig.outbounds = resultOutbounds;
+            }
+            else
+            {
+                v2rayConfig.outbounds.AddRange(prevOutbounds);
+                v2rayConfig.outbounds.AddRange(resultOutbounds);
+            }
         }
         catch (Exception ex)
         {
@@ -691,5 +789,114 @@ public partial class CoreConfigV2rayService
             Logging.SaveLog(_tag, ex);
         }
         return null;
+    }
+
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    {
+        var resultOutbounds = new List<Outbounds4Ray>();
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            if (node == null)
+            {
+                continue;
+            }
+
+            if (node.ConfigType.IsGroupType())
+            {
+                var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                if (childProfiles.Count <= 0)
+                {
+                    continue;
+                }
+                var childBaseTagName = $"{baseTagName}-{i + 1}";
+                var ret = node.ConfigType switch
+                {
+                    EConfigType.PolicyGroup =>
+                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
+                    EConfigType.ProxyChain =>
+                        await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
+                    _ => throw new NotImplementedException()
+                };
+                continue;
+            }
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                break;
+            }
+            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+            var result = await GenOutbound(node, outbound);
+            if (result != 0)
+            {
+                break;
+            }
+            outbound.tag = baseTagName + (i + 1).ToString();
+            resultOutbounds.Add(outbound);
+        }
+        if (baseTagName == Global.ProxyTag)
+        {
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
+        }
+        else
+        {
+            v2rayConfig.outbounds.AddRange(resultOutbounds);
+        }
+        return await Task.FromResult(0);
+    }
+
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    {
+        // Based on actual network flow instead of data packets
+        var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
+        var resultOutbounds = new List<Outbounds4Ray>();
+        for (var i = 0; i < nodesReverse.Count; i++)
+        {
+            var node = nodesReverse[i];
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (txtOutbound.IsNullOrEmpty())
+            {
+                break;
+            }
+            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+            var result = await GenOutbound(node, outbound);
+
+            if (result != 0)
+            {
+                break;
+            }
+
+            if (i == 0)
+            {
+                outbound.tag = baseTagName;
+            }
+            else
+            {
+                // avoid v2ray observe
+                outbound.tag = "chain-" + baseTagName + i.ToString();
+            }
+
+            if (i != nodesReverse.Count - 1)
+            {
+                outbound.streamSettings.sockopt = new()
+                {
+                    dialerProxy = "chain-" + baseTagName + (i + 1).ToString()
+                };
+            }
+
+            resultOutbounds.Add(outbound);
+        }
+        if (baseTagName == Global.ProxyTag)
+        {
+            resultOutbounds.AddRange(v2rayConfig.outbounds);
+            v2rayConfig.outbounds = resultOutbounds;
+        }
+        else
+        {
+            v2rayConfig.outbounds.AddRange(resultOutbounds);
+        }
+
+        return await Task.FromResult(0);
     }
 }

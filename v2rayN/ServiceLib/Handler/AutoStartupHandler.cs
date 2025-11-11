@@ -1,5 +1,4 @@
 using System.Security.Principal;
-using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
@@ -27,7 +26,7 @@ public static class AutoStartupHandler
                 await SetTaskLinux();
             }
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             await ClearTaskOSX();
 

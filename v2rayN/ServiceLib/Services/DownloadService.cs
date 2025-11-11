@@ -1,6 +1,4 @@
-using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Sockets;
 
 namespace ServiceLib.Services;
 
@@ -19,8 +17,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
-
             var progress = new Progress<string>();
             progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
 
@@ -44,7 +40,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
 
             var progress = new Progress<double>();
@@ -71,13 +66,12 @@ public class DownloadService
 
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
-        SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
         var webRequestHandler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
             Proxy = await GetWebProxy(blProxy)
         };
-        HttpClient client = new(webRequestHandler);
+        var client = new HttpClient(webRequestHandler);
 
         var response = await client.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
@@ -141,7 +135,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
             var webProxy = await GetWebProxy(blProxy);
             var client = new HttpClient(new SocketsHttpHandler()
             {
@@ -163,7 +156,7 @@ public class DownloadService
             }
 
             using var cts = new CancellationTokenSource();
-            var result = await HttpClientHelper.Instance.GetAsync(client, url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            var result = await client.GetStringAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
             return result;
         }
         catch (Exception ex)
@@ -186,8 +179,6 @@ public class DownloadService
     {
         try
         {
-            SetSecurityProtocol(AppManager.Instance.Config.GuiItem.EnableSecurityProtocolTls13);
-
             var webProxy = await GetWebProxy(blProxy);
 
             if (userAgent.IsNullOrEmpty())
@@ -237,18 +228,5 @@ public class DownloadService
         {
             return false;
         }
-    }
-
-    private static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
-    {
-        if (enableSecurityProtocolTls13)
-        {
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
-        }
-        else
-        {
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
-        }
-        ServicePointManager.DefaultConnectionLimit = 256;
     }
 }

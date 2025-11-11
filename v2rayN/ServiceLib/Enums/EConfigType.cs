@@ -12,5 +12,7 @@ public enum EConfigType
     TUIC = 8,
     WireGuard = 9,
     HTTP = 10,
-    Anytls = 11
+    Anytls = 11,
+    PolicyGroup = 101,
+    ProxyChain = 102,
 }

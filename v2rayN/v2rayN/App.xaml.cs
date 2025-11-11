@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Threading;
-
 namespace v2rayN;
 
 /// <summary>
@@ -13,7 +9,7 @@ public partial class App : Application
 
     public App()
     {
-        this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
     }
@@ -27,7 +23,7 @@ public partial class App : Application
         var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
         var rebootas = (e.Args ?? Array.Empty<string>()).Any(t => t == Global.RebootAs);
-        ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out bool bCreatedNew);
+        ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out var bCreatedNew);
         if (!rebootas && !bCreatedNew)
         {
             ProgramStarted.Set();

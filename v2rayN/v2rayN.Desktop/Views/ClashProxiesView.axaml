@@ -50,27 +50,21 @@
 
             <Button
                 x:Name="menuProxiesReload"
-                Width="{StaticResource IconButtonWidth}"
-                Height="{StaticResource IconButtonHeight}"
                 Margin="{StaticResource MarginLr8}"
-                Classes="Success"
-                Theme="{DynamicResource BorderlessButton}"
+                Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProxiesReload}">
                 <Button.Content>
-                    <PathIcon Data="{StaticResource building_refresh}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource SemiIconRefresh}" />
                 </Button.Content>
             </Button>
 
             <Button
                 x:Name="menuProxiesDelaytest"
-                Width="{StaticResource IconButtonWidth}"
-                Height="{StaticResource IconButtonHeight}"
                 Margin="{StaticResource MarginLr8}"
-                Classes="Success"
-                Theme="{DynamicResource BorderlessButton}"
+                Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProxiesDelaytest}">
                 <Button.Content>
-                    <PathIcon Data="{StaticResource building_ping}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                    <PathIcon Data="{StaticResource SemiIconBolt}" />
                 </Button.Content>
             </Button>
 

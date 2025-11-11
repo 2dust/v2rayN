@@ -1,16 +1,10 @@
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Text;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-
 namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject
 {
+    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
+    public static StatusBarViewModel Instance => _instance.Value;
+
     #region ObservableCollection
 
     public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
@@ -126,7 +120,7 @@ public class StatusBarViewModel : MyReactiveObject
         this.WhenAnyValue(
                 x => x.SelectedServer,
                 y => y != null && !y.Text.IsNullOrEmpty())
-            .Subscribe(c => ServerSelectedChanged(c));
+            .Subscribe(ServerSelectedChanged);
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         this.WhenAnyValue(
@@ -146,17 +140,17 @@ public class StatusBarViewModel : MyReactiveObject
 
         NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(null);
+            AppEvents.ShowHideWindowRequested.Publish(null);
             await Task.CompletedTask;
         });
         ShowWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(true);
+            AppEvents.ShowHideWindowRequested.Publish(true);
             await Task.CompletedTask;
         });
         HideWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(false);
+            AppEvents.ShowHideWindowRequested.Publish(false);
             await Task.CompletedTask;
         });
 
@@ -209,6 +203,26 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
+        AppEvents.RoutingsMenuRefreshRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await RefreshRoutingsMenu());
+
+        AppEvents.TestServerRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await TestServerAvailability());
+
+        AppEvents.InboundDisplayRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await InboundDisplayStatus());
+
+        AppEvents.SysProxyChangeRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async result => await SetListenerType(result));
+
         #endregion AppEvents
 
         _ = Init();
@@ -216,6 +230,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task Init()
     {
+        await ConfigHandler.InitBuiltinRouting(_config);
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
@@ -252,23 +267,20 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task AddServerViaClipboard()
     {
-        var service = Locator.Current.GetService<MainWindowViewModel>();
-        if (service != null)
-            await service.AddServerViaClipboardAsync(null);
+        AppEvents.AddServerViaClipboardRequested.Publish();
+        await Task.Delay(1000);
     }
 
     private async Task AddServerViaScan()
     {
-        var service = Locator.Current.GetService<MainWindowViewModel>();
-        if (service != null)
-            await service.AddServerViaScanAsync();
+        AppEvents.AddServerViaScanRequested.Publish();
+        await Task.Delay(1000);
     }
 
     private async Task UpdateSubscriptionProcess(bool blProxy)
     {
-        var service = Locator.Current.GetService<MainWindowViewModel>();
-        if (service != null)
-            await service.UpdateSubscriptionProcess("", blProxy);
+        AppEvents.SubscriptionsUpdateRequested.Publish(blProxy);
+        await Task.Delay(1000);
     }
 
     private async Task RefreshServersBiz()
@@ -301,10 +313,10 @@ public class StatusBarViewModel : MyReactiveObject
         }
 
         BlServers = true;
-        for (int k = 0; k < lstModel.Count; k++)
+        for (var k = 0; k < lstModel.Count; k++)
         {
             ProfileItem it = lstModel[k];
-            string name = it.GetSummary();
+            var name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
             Servers.Add(item);
@@ -329,7 +341,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        Locator.Current.GetService<ProfilesViewModel>()?.SetDefaultServer(SelectedServer.ID);
+        AppEvents.SetDefaultServerRequested.Publish(SelectedServer.ID);
     }
 
     public async Task TestServerAvailability()
@@ -355,16 +367,18 @@ public class StatusBarViewModel : MyReactiveObject
             _ = TestServerAvailabilityResult(msg);
             return Disposable.Empty;
         });
+        await Task.CompletedTask;
     }
 
     public async Task TestServerAvailabilityResult(string msg)
     {
         RunningInfoDisplay = msg;
+        await Task.CompletedTask;
     }
 
     #region System proxy and Routings
 
-    public async Task SetListenerType(ESysProxyType type)
+    private async Task SetListenerType(ESysProxyType type)
     {
         if (_config.SystemProxyItem.SysProxyType == type)
         {
@@ -372,7 +386,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
-        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType.ToString()}");
+        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
@@ -382,10 +396,10 @@ public class StatusBarViewModel : MyReactiveObject
     {
         await SysProxyHandler.UpdateSysProxy(_config, false);
 
-        BlSystemProxyClear = (type == ESysProxyType.ForcedClear);
-        BlSystemProxySet = (type == ESysProxyType.ForcedChange);
-        BlSystemProxyNothing = (type == ESysProxyType.Unchanged);
-        BlSystemProxyPac = (type == ESysProxyType.Pac);
+        BlSystemProxyClear = type == ESysProxyType.ForcedClear;
+        BlSystemProxySet = type == ESysProxyType.ForcedChange;
+        BlSystemProxyNothing = type == ESysProxyType.Unchanged;
+        BlSystemProxyPac = type == ESysProxyType.Pac;
 
         if (blChange)
         {
@@ -393,7 +407,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
     }
 
-    public async Task RefreshRoutingsMenu()
+    private async Task RefreshRoutingsMenu()
     {
         RoutingItems.Clear();
 
@@ -430,7 +444,7 @@ public class StatusBarViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
-            Locator.Current.GetService<MainWindowViewModel>()?.Reload();
+            AppEvents.ReloadRequested.Publish();
             _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
         }
     }
@@ -463,7 +477,7 @@ public class StatusBarViewModel : MyReactiveObject
             if (Utils.IsWindows())
             {
                 _config.TunModeItem.EnableTun = false;
-                Locator.Current.GetService<MainWindowViewModel>()?.RebootAsAdmin();
+                await AppManager.Instance.RebootAsAdmin();
                 return;
             }
             else
@@ -477,7 +491,7 @@ public class StatusBarViewModel : MyReactiveObject
             }
         }
         await ConfigHandler.SaveConfig(_config);
-        Locator.Current.GetService<MainWindowViewModel>()?.Reload();
+        AppEvents.ReloadRequested.Publish();
     }
 
     private bool AllowEnableTun()
@@ -490,7 +504,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
-        else if (Utils.IsOSX())
+        else if (Utils.IsMacOS())
         {
             return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
@@ -501,7 +515,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     #region UI
 
-    public async Task InboundDisplayStatus()
+    private async Task InboundDisplayStatus()
     {
         StringBuilder sb = new();
         sb.Append($"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}");
@@ -549,6 +563,7 @@ public class StatusBarViewModel : MyReactiveObject
         catch
         {
         }
+        await Task.CompletedTask;
     }
 
     #endregion UI

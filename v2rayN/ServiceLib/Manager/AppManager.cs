@@ -1,5 +1,3 @@
-using System.Reactive;
-
 namespace ServiceLib.Manager;
 
 public sealed class AppManager
@@ -10,7 +8,6 @@ public sealed class AppManager
     private Config _config;
     private int? _statePort;
     private int? _statePort2;
-    private Job? _processJob;
     public static AppManager Instance => _instance.Value;
     public Config Config => _config;
 
@@ -67,6 +64,7 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+        SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
         return true;
     }
 
@@ -96,7 +94,7 @@ public sealed class AppManager
             Logging.SaveLog("AppExitAsync Begin");
 
             await SysProxyHandler.UpdateSysProxy(_config, true);
-            AppEvents.AppExitRequested.OnNext(Unit.Default);
+            AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
             await ConfigHandler.SaveConfig(_config);
@@ -119,7 +117,13 @@ public sealed class AppManager
 
     public void Shutdown(bool byUser)
     {
-        AppEvents.ShutdownRequested.OnNext(byUser);
+        AppEvents.ShutdownRequested.Publish(byUser);
+    }
+
+    public async Task RebootAsAdmin()
+    {
+        ProcUtils.RebootAsAdmin();
+        await AppManager.Instance.AppExitAsync(true);
     }
 
     #endregion App
@@ -130,21 +134,6 @@ public sealed class AppManager
     {
         var localPort = _config.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
         return localPort + (int)protocol;
-    }
-
-    public void AddProcess(nint processHandle)
-    {
-        if (Utils.IsWindows())
-        {
-            _processJob ??= new();
-            try
-            {
-                _processJob?.AddProcess(processHandle);
-            }
-            catch
-            {
-            }
-        }
     }
 
     #endregion Config
@@ -217,6 +206,15 @@ public sealed class AppManager
             return null;
         }
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
+    }
+
+    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
+    {
+        if (indexId.IsNullOrEmpty())
+        {
+            return null;
+        }
+        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
     }
 
     public async Task<List<RoutingItem>?> RoutingItems()

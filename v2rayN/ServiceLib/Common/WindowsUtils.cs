@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.Win32;
 
 namespace ServiceLib.Common;

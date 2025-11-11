@@ -43,16 +43,7 @@ public partial class CoreConfigSingboxService
                 });
             }
 
-            // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
-            {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
-                {
-                    server = Global.SingboxOutboundResolverTag,
-                    domain = [node.Address],
-                });
-            }
+            await GenOutboundDnsRule(node, singboxConfig);
         }
         catch (Exception ex)
         {
@@ -67,16 +58,12 @@ public partial class CoreConfigSingboxService
 
         var directDns = ParseDnsAddress(simpleDNSItem.DirectDNS);
         directDns.tag = Global.SingboxDirectDNSTag;
-        directDns.domain_resolver = Global.SingboxFinalResolverTag;
+        directDns.domain_resolver = Global.SingboxLocalDNSTag;
 
         var remoteDns = ParseDnsAddress(simpleDNSItem.RemoteDNS);
         remoteDns.tag = Global.SingboxRemoteDNSTag;
         remoteDns.detour = Global.ProxyTag;
-        remoteDns.domain_resolver = Global.SingboxFinalResolverTag;
-
-        var resolverDns = ParseDnsAddress(simpleDNSItem.SingboxOutboundsResolveDNS);
-        resolverDns.tag = Global.SingboxOutboundResolverTag;
-        resolverDns.domain_resolver = Global.SingboxFinalResolverTag;
+        remoteDns.domain_resolver = Global.SingboxLocalDNSTag;
 
         var hostsDns = new Server4Sbox
         {
@@ -121,10 +108,6 @@ public partial class CoreConfigSingboxService
             {
                 remoteDns.domain_resolver = Global.SingboxHostsDNSTag;
             }
-            if (resolverDns.server == host.Key)
-            {
-                resolverDns.domain_resolver = Global.SingboxHostsDNSTag;
-            }
             if (directDns.server == host.Key)
             {
                 directDns.domain_resolver = Global.SingboxHostsDNSTag;
@@ -135,7 +118,6 @@ public partial class CoreConfigSingboxService
         singboxConfig.dns.servers ??= new List<Server4Sbox>();
         singboxConfig.dns.servers.Add(remoteDns);
         singboxConfig.dns.servers.Add(directDns);
-        singboxConfig.dns.servers.Add(resolverDns);
         singboxConfig.dns.servers.Add(hostsDns);
 
         // fake ip
@@ -156,8 +138,8 @@ public partial class CoreConfigSingboxService
 
     private async Task<Server4Sbox> GenDnsDomains(SingboxConfig singboxConfig, SimpleDNSItem? simpleDNSItem)
     {
-        var finalDns = ParseDnsAddress(simpleDNSItem.SingboxFinalResolveDNS);
-        finalDns.tag = Global.SingboxFinalResolverTag;
+        var finalDns = ParseDnsAddress(simpleDNSItem.BootstrapDNS);
+        finalDns.tag = Global.SingboxLocalDNSTag;
         singboxConfig.dns ??= new Dns4Sbox();
         singboxConfig.dns.servers ??= new List<Server4Sbox>();
         singboxConfig.dns.servers.Add(finalDns);
@@ -220,7 +202,9 @@ public partial class CoreConfigSingboxService
 
         var routing = await ConfigHandler.GetDefaultRouting(_config);
         if (routing == null)
+        {
             return 0;
+        }
 
         var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
         var expectedIPCidr = new List<string>();
@@ -258,6 +242,11 @@ public partial class CoreConfigSingboxService
         foreach (var item in rules)
         {
             if (!item.Enabled || item.Domain is null || item.Domain.Count == 0)
+            {
+                continue;
+            }
+
+            if (item.RuleType == ERuleType.Routing)
             {
                 continue;
             }
@@ -346,16 +335,7 @@ public partial class CoreConfigSingboxService
                 await GenDnsDomainsLegacyCompatible(singboxConfig, item);
             }
 
-            // Tun2SocksAddress
-            if (node != null && Utils.IsDomain(node.Address))
-            {
-                singboxConfig.dns.rules ??= new List<Rule4Sbox>();
-                singboxConfig.dns.rules.Insert(0, new Rule4Sbox
-                {
-                    server = Global.SingboxFinalResolverTag,
-                    domain = [node.Address],
-                });
-            }
+            await GenOutboundDnsRule(node, singboxConfig);
         }
         catch (Exception ex)
         {
@@ -364,16 +344,17 @@ public partial class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<int> GenDnsDomainsCompatible(SingboxConfig singboxConfig, DNSItem? dNSItem)
+    private async Task<int> GenDnsDomainsCompatible(SingboxConfig singboxConfig, DNSItem? dnsItem)
     {
         var dns4Sbox = singboxConfig.dns ?? new();
         dns4Sbox.servers ??= [];
         dns4Sbox.rules ??= [];
 
-        var tag = Global.SingboxFinalResolverTag;
-        var localDnsAddress = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress;
+        var tag = Global.SingboxLocalDNSTag;
 
-        var localDnsServer = ParseDnsAddress(localDnsAddress);
+        var finalDnsAddress = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
+
+        var localDnsServer = ParseDnsAddress(finalDnsAddress);
         localDnsServer.tag = tag;
 
         dns4Sbox.servers.Add(localDnsServer);
@@ -382,19 +363,19 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult(0);
     }
 
-    private async Task<int> GenDnsDomainsLegacyCompatible(SingboxConfig singboxConfig, DNSItem? dNSItem)
+    private async Task<int> GenDnsDomainsLegacyCompatible(SingboxConfig singboxConfig, DNSItem? dnsItem)
     {
         var dns4Sbox = singboxConfig.dns ?? new();
         dns4Sbox.servers ??= [];
         dns4Sbox.rules ??= [];
 
-        var tag = Global.SingboxFinalResolverTag;
+        var tag = Global.SingboxLocalDNSTag;
         dns4Sbox.servers.Add(new()
         {
             tag = tag,
-            address = string.IsNullOrEmpty(dNSItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dNSItem?.DomainDNSAddress,
+            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
             detour = Global.DirectTag,
-            strategy = string.IsNullOrEmpty(dNSItem?.DomainStrategy4Freedom) ? null : dNSItem?.DomainStrategy4Freedom,
+            strategy = string.IsNullOrEmpty(dnsItem?.DomainStrategy4Freedom) ? null : dnsItem?.DomainStrategy4Freedom,
         });
         dns4Sbox.rules.Insert(0, new()
         {
@@ -425,6 +406,40 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult(0);
     }
 
+    private async Task<int> GenOutboundDnsRule(ProfileItem? node, SingboxConfig singboxConfig)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+
+        List<string> domain = new();
+        if (Utils.IsDomain(node.Address)) // normal outbound
+        {
+            domain.Add(node.Address);
+        }
+        if (node.Address == Global.Loopback && node.SpiderX.IsNotEmpty()) // Tun2SocksAddress
+        {
+            domain.AddRange(Utils.String2List(node.SpiderX)
+                .Where(Utils.IsDomain)
+                .Distinct()
+                .ToList());
+        }
+        if (domain.Count == 0)
+        {
+            return 0;
+        }
+
+        singboxConfig.dns.rules ??= new List<Rule4Sbox>();
+        singboxConfig.dns.rules.Insert(0, new Rule4Sbox
+        {
+            server = Global.SingboxLocalDNSTag,
+            domain = domain,
+        });
+
+        return await Task.FromResult(0);
+    }
+
     private static Server4Sbox? ParseDnsAddress(string address)
     {
         var addressFirst = address?.Split(address.Contains(',') ? ',' : ';').FirstOrDefault()?.Trim();
@@ -441,79 +456,41 @@ public partial class CoreConfigSingboxService
             return server;
         }
 
-        if (addressFirst.StartsWith("dhcp://", StringComparison.OrdinalIgnoreCase))
+        var (domain, scheme, port, path) = Utils.ParseUrl(addressFirst);
+
+        if (scheme.Equals("dhcp", StringComparison.OrdinalIgnoreCase))
         {
-            var interface_name = addressFirst.Substring(7);
             server.type = "dhcp";
-            server.Interface = interface_name == "auto" ? null : interface_name;
+            if ((!domain.IsNullOrEmpty()) && domain != "auto")
+            {
+                server.server = domain;
+            }
             return server;
         }
 
-        if (!addressFirst.Contains("://"))
+        if (scheme.IsNullOrEmpty())
         {
             // udp dns
             server.type = "udp";
-            server.server = addressFirst;
-            return server;
         }
-
-        try
+        else
         {
-            var protocolEndIndex = addressFirst.IndexOf("://", StringComparison.Ordinal);
-            server.type = addressFirst.Substring(0, protocolEndIndex).ToLower();
+            // server.type = scheme.ToLower();
 
-            var uri = new Uri(addressFirst);
-            server.server = uri.Host;
-
-            if (!uri.IsDefaultPort)
-            {
-                server.server_port = uri.Port;
-            }
-
-            if ((server.type == "https" || server.type == "h3") && !string.IsNullOrEmpty(uri.AbsolutePath) && uri.AbsolutePath != "/")
-            {
-                server.path = uri.AbsolutePath;
-            }
+            // remove "+local" suffix
+            // TODO: "+local" suffix decide server.detour = "direct" ?
+            server.type = scheme.Replace("+local", "", StringComparison.OrdinalIgnoreCase).ToLower();
         }
-        catch (UriFormatException)
+
+        server.server = domain;
+        if (port != 0)
         {
-            var protocolEndIndex = addressFirst.IndexOf("://", StringComparison.Ordinal);
-            if (protocolEndIndex > 0)
-            {
-                server.type = addressFirst.Substring(0, protocolEndIndex).ToLower();
-                var remaining = addressFirst.Substring(protocolEndIndex + 3);
-
-                var portIndex = remaining.IndexOf(':');
-                var pathIndex = remaining.IndexOf('/');
-
-                if (portIndex > 0)
-                {
-                    server.server = remaining.Substring(0, portIndex);
-                    var portPart = pathIndex > portIndex
-                        ? remaining.Substring(portIndex + 1, pathIndex - portIndex - 1)
-                        : remaining.Substring(portIndex + 1);
-
-                    if (int.TryParse(portPart, out var parsedPort))
-                    {
-                        server.server_port = parsedPort;
-                    }
-                }
-                else if (pathIndex > 0)
-                {
-                    server.server = remaining.Substring(0, pathIndex);
-                }
-                else
-                {
-                    server.server = remaining;
-                }
-
-                if (pathIndex > 0 && (server.type == "https" || server.type == "h3"))
-                {
-                    server.path = remaining.Substring(pathIndex);
-                }
-            }
+            server.server_port = port;
         }
-
+        if ((server.type == "https" || server.type == "h3") && !string.IsNullOrEmpty(path) && path != "/")
+        {
+            server.path = path;
+        }
         return server;
     }
 }

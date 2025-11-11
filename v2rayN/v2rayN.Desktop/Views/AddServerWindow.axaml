@@ -607,12 +607,14 @@
 
                         <Button
                             x:Name="btnExtra"
-                            Width="{StaticResource IconButtonWidth}"
-                            Height="{StaticResource IconButtonHeight}"
                             Margin="{StaticResource MarginLr8}"
-                            Theme="{DynamicResource BorderlessButton}">
+                            Classes="IconButton">
                             <Button.Content>
-                                <PathIcon Data="{StaticResource building_more}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                                <PathIcon Data="{StaticResource SemiIconMore}">
+                                    <PathIcon.RenderTransform>
+                                        <RotateTransform Angle="90" />
+                                    </PathIcon.RenderTransform>
+                                </PathIcon>
                             </Button.Content>
                             <Button.Flyout>
                                 <Flyout>
@@ -711,7 +713,7 @@
                     Grid.Row="7"
                     ColumnDefinitions="180,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -765,6 +767,66 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />
+
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbCertPinning}" />
+                    <StackPanel
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            x:Name="labCertPinning"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center" />
+                        <Button
+                            Margin="{StaticResource MarginLr4}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Classes="IconButton">
+                            <Button.Content>
+                                <PathIcon Data="{StaticResource SemiIconMore}">
+                                    <PathIcon.RenderTransform>
+                                        <RotateTransform Angle="90" />
+                                    </PathIcon.RenderTransform>
+                                </PathIcon>
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Width="400"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Text="{x:Static resx:ResUI.TbCertPinningTips}"
+                                            TextWrapping="Wrap" />
+                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <Button
+                                                x:Name="btnFetchCert"
+                                                Margin="{StaticResource Margin4}"
+                                                Content="{x:Static resx:ResUI.TbFetchCert}" />
+                                            <Button
+                                                x:Name="btnFetchCertChain"
+                                                Margin="{StaticResource Margin4}"
+                                                Content="{x:Static resx:ResUI.TbFetchCertChain}" />
+                                        </StackPanel>
+                                        <TextBox
+                                            x:Name="txtCert"
+                                            Width="400"
+                                            Margin="{StaticResource Margin4}"
+                                            AcceptsReturn="True"
+                                            Classes="TextArea"
+                                            TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"

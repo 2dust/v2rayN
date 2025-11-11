@@ -1,5 +1,4 @@
 using System.Data;
-using System.Text.RegularExpressions;
 
 namespace ServiceLib.Handler;
 
@@ -98,7 +97,7 @@ public static class ConfigHandler
 
         config.UiItem ??= new UIItem()
         {
-            EnableAutoAdjustMainLvColWidth = true
+            EnableUpdateSubOnlyRemarksExist = true
         };
         config.UiItem.MainColumnItem ??= new();
         config.UiItem.WindowSizeItem ??= new();
@@ -113,10 +112,8 @@ public static class ConfigHandler
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
-        if (config.SimpleDNSItem.GlobalFakeIp is null)
-        {
-            config.SimpleDNSItem.GlobalFakeIp = true;
-        }
+        config.SimpleDNSItem.GlobalFakeIp ??= true;
+        config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -255,6 +252,7 @@ public static class ConfigHandler
             item.Mldsa65Verify = profileItem.Mldsa65Verify;
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
+            item.Cert = profileItem.Cert;
         }
 
         var ret = item.ConfigType switch
@@ -357,6 +355,11 @@ public static class ConfigHandler
                 {
                 }
             }
+            else if (profileItem.ConfigType.IsGroupType())
+            {
+                var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
+                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
+            }
             else
             {
                 await AddServerCommon(config, profileItem, true);
@@ -445,13 +448,13 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveServer(Config config, List<ProfileItem> lstProfile, int index, EMove eMove, int pos = -1)
     {
-        int count = lstProfile.Count;
+        var count = lstProfile.Count;
         if (index < 0 || index > lstProfile.Count - 1)
         {
             return -1;
         }
 
-        for (int i = 0; i < lstProfile.Count; i++)
+        for (var i = 0; i < lstProfile.Count; i++)
         {
             ProfileExManager.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
         }
@@ -525,7 +528,7 @@ public static class ConfigHandler
             return -1;
         }
         var ext = Path.GetExtension(fileName);
-        string newFileName = $"{Utils.GetGuid()}{ext}";
+        var newFileName = $"{Utils.GetGuid()}{ext}";
         //newFileName = Path.Combine(Utile.GetTempPath(), newFileName);
 
         try
@@ -1074,6 +1077,37 @@ public static class ConfigHandler
         return 0;
     }
 
+    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
+    {
+        var maxSort = -1;
+        if (profileItem.IndexId.IsNullOrEmpty())
+        {
+            profileItem.IndexId = Utils.GetGuid(false);
+            maxSort = ProfileExManager.Instance.GetMaxSort();
+        }
+        var groupType = profileItem.ConfigType == EConfigType.ProxyChain ? EConfigType.ProxyChain.ToString() : profileGroupItem.MultipleLoad.ToString();
+        profileItem.Address = $"{profileItem.CoreType}-{groupType}";
+        if (maxSort > 0)
+        {
+            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
+        }
+        if (toFile)
+        {
+            await SQLiteHelper.Instance.ReplaceAsync(profileItem);
+            if (profileGroupItem != null)
+            {
+                profileGroupItem.IndexId = profileItem.IndexId;
+                await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
+            }
+            else
+            {
+                ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(profileItem.IndexId);
+                await ProfileGroupItemManager.Instance.SaveTo();
+            }
+        }
+        return 0;
+    }
+
     /// <summary>
     /// Compare two profile items to determine if they represent the same server
     /// Used for deduplication and server matching
@@ -1145,7 +1179,7 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Create a custom server that combines multiple servers for load balancing
+    /// Create a group server that combines multiple servers for load balancing
     /// Generates a configuration file that references multiple servers
     /// </summary>
     /// <param name="config">Current configuration</param>
@@ -1153,45 +1187,55 @@ public static class ConfigHandler
     /// <param name="coreType">Core type to use (Xray or sing_box)</param>
     /// <param name="multipleLoad">Load balancing algorithm</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddCustomServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
+    public static async Task<RetResult> AddGroupServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
     {
-        var indexId = Utils.GetMd5(Global.CoreMultipleLoadConfigFileName);
-        var configPath = Utils.GetConfigPath(Global.CoreMultipleLoadConfigFileName);
+        var result = new RetResult();
 
-        var result = await CoreConfigHandler.GenerateClientMultipleLoadConfig(config, configPath, selecteds, coreType, multipleLoad);
-        if (result.Success != true)
-        {
-            return result;
-        }
+        var indexId = Utils.GetGuid(false);
+        var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        if (!File.Exists(configPath))
-        {
-            return result;
-        }
-
-        var profileItem = await AppManager.Instance.GetProfileItem(indexId) ?? new();
-        profileItem.IndexId = indexId;
+        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId)).Remarks} ";
         if (coreType == ECoreType.Xray)
         {
-            profileItem.Remarks = multipleLoad switch
+            remark += multipleLoad switch
             {
-                EMultipleLoad.Random => ResUI.menuSetDefaultMultipleServerXrayRandom,
-                EMultipleLoad.RoundRobin => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
-                EMultipleLoad.LeastPing => ResUI.menuSetDefaultMultipleServerXrayLeastPing,
-                EMultipleLoad.LeastLoad => ResUI.menuSetDefaultMultipleServerXrayLeastLoad,
-                _ => ResUI.menuSetDefaultMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerXrayFallback,
+                EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
+                EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
+                EMultipleLoad.LeastLoad => ResUI.menuGenGroupMultipleServerXrayLeastLoad,
+                _ => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
             };
         }
         else if (coreType == ECoreType.sing_box)
         {
-            profileItem.Remarks = ResUI.menuSetDefaultMultipleServerSingBoxLeastPing;
+            remark += multipleLoad switch
+            {
+                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerSingBoxFallback,
+                _ => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
+            };
         }
-        profileItem.Address = Global.CoreMultipleLoadConfigFileName;
-        profileItem.ConfigType = EConfigType.Custom;
-        profileItem.CoreType = coreType;
-
-        await AddServerCommon(config, profileItem, true);
-
+        var profile = new ProfileItem
+        {
+            IndexId = indexId,
+            CoreType = coreType,
+            ConfigType = EConfigType.PolicyGroup,
+            Remarks = remark,
+            IsSub = false
+        };
+        if (!subId.IsNullOrEmpty())
+        {
+            profile.Subid = subId;
+        }
+        var profileGroup = new ProfileGroupItem
+        {
+            ChildItems = childProfileIndexId,
+            MultipleLoad = multipleLoad,
+            IndexId = indexId,
+        };
+        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        result.Success = ret == 0;
         result.Data = indexId;
         return result;
     }
@@ -1209,16 +1253,25 @@ public static class ConfigHandler
         ProfileItem? itemSocks = null;
         if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
+            var tun2SocksAddress = node.Address;
+            if (node.ConfigType.IsGroupType())
+            {
+                var lstAddresses = (await ProfileGroupItemManager.GetAllChildDomainAddresses(node.IndexId)).ToList();
+                if (lstAddresses.Count > 0)
+                {
+                    tun2SocksAddress = Utils.List2String(lstAddresses);
+                }
+            }
             itemSocks = new ProfileItem()
             {
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                Sni = node.Address, //Tun2SocksAddress
+                SpiderX = tun2SocksAddress, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
-        else if ((node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0))
+        else if (node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0)
         {
             var preCoreType = config.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
             itemSocks = new ProfileItem()
@@ -1304,7 +1357,7 @@ public static class ConfigHandler
                 }
                 continue;
             }
-            var profileItem = FmtHandler.ResolveConfig(str, out string msg);
+            var profileItem = FmtHandler.ResolveConfig(str, out var msg);
             if (profileItem is null)
             {
                 continue;
@@ -1388,7 +1441,7 @@ public static class ConfigHandler
             {
                 await RemoveServersViaSubid(config, subid, isSub);
             }
-            int count = 0;
+            var count = 0;
             foreach (var it in lstProfiles)
             {
                 it.Subid = subid;
@@ -1430,15 +1483,6 @@ public static class ConfigHandler
         if (profileItem is null)
         {
             profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        }
-        if (profileItem is null)
-        {
-            profileItem = Hysteria2Fmt.ResolveFull(strData, subRemarks);
-        }
-        //Is naiveproxy configuration
-        if (profileItem is null)
-        {
-            profileItem = NaiveproxyFmt.ResolveFull(strData, subRemarks);
         }
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
@@ -1487,7 +1531,7 @@ public static class ConfigHandler
         var lstSsServer = ShadowsocksFmt.ResolveSip008(strData);
         if (lstSsServer?.Count > 0)
         {
-            int counter = 0;
+            var counter = 0;
             foreach (var ssItem in lstSsServer)
             {
                 ssItem.Subid = subid;
@@ -1607,7 +1651,9 @@ public static class ConfigHandler
 
         var uri = Utils.TryUri(url);
         if (uri == null)
+        {
             return -1;
+        }
         //Do not allow http protocol
         if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
         {
@@ -1662,7 +1708,7 @@ public static class ConfigHandler
                 var maxSort = 0;
                 if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                 {
-                    var lstSubs = (await AppManager.Instance.SubItems());
+                    var lstSubs = await AppManager.Instance.SubItems();
                     maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
                 }
                 item.Sort = maxSort + 1;
@@ -1824,7 +1870,7 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> MoveRoutingRule(List<RulesItem> rules, int index, EMove eMove, int pos = -1)
     {
-        int count = rules.Count;
+        var count = rules.Count;
         if (index < 0 || index > rules.Count - 1)
         {
             return -1;
@@ -1974,11 +2020,15 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+        }
 
         var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
         if (template == null)
+        {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+        }
 
         var items = await AppManager.Instance.RoutingItems();
         var maxSort = items.Count;
@@ -1991,14 +2041,18 @@ public static class ConfigHandler
             var item = template.RoutingItems[i];
 
             if (item.Url.IsNullOrEmpty() && item.RuleSet.IsNullOrEmpty())
+            {
                 continue;
+            }
 
             var ruleSetsString = !item.RuleSet.IsNullOrEmpty()
                 ? item.RuleSet
                 : await downloadHandle.TryDownloadString(item.Url, true, "");
 
             if (ruleSetsString.IsNullOrEmpty())
+            {
                 continue;
+            }
 
             item.Remarks = $"{template.Version}-{item.Remarks}";
             item.Enabled = true;
@@ -2194,17 +2248,25 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(url, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return currentItem;
+        }
 
         var template = JsonUtils.Deserialize<DNSItem>(templateContent);
         if (template == null)
+        {
             return currentItem;
+        }
 
         if (!template.NormalDNS.IsNullOrEmpty())
+        {
             template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
+        }
 
         if (!template.TunDNS.IsNullOrEmpty())
+        {
             template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
+        }
 
         template.Id = currentItem.Id;
         template.Enabled = currentItem.Enabled;
@@ -2229,8 +2291,7 @@ public static class ConfigHandler
             BlockBindingQuery = true,
             DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
             RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
-            SingboxOutboundsResolveDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
-            SingboxFinalResolveDNS = Global.DomainPureIPDNSAddress.FirstOrDefault()
+            BootstrapDNS = Global.DomainPureIPDNSAddress.FirstOrDefault(),
         };
     }
 
@@ -2239,10 +2300,16 @@ public static class ConfigHandler
         var downloadHandle = new DownloadService();
         var templateContent = await downloadHandle.TryDownloadString(url, true, "");
         if (templateContent.IsNullOrEmpty())
+        {
             return null;
+        }
+
         var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
         if (template == null)
+        {
             return null;
+        }
+
         return template;
     }
 

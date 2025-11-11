@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Drawing;
-using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace v2rayN;
+namespace v2rayN.Common;
 
-public class QRCodeUtils
+public class QRCodeWindowsUtils
 {
     public static ImageSource? GetQRCode(string? strContent)
     {
@@ -17,11 +14,12 @@ public class QRCodeUtils
         }
         try
         {
-            var qrCodeImage = ServiceLib.Common.QRCodeUtils.GenQRCode(strContent);
+            var qrCodeImage = QRCodeUtils.GenQRCode(strContent);
             return qrCodeImage is null ? null : ByteToImage(qrCodeImage);
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog("GetQRCode", ex);
             return null;
         }
     }
@@ -32,8 +30,8 @@ public class QRCodeUtils
         {
             GetDpi(window, out var dpiX, out var dpiY);
 
-            var left = (int)(SystemParameters.WorkArea.Left);
-            var top = (int)(SystemParameters.WorkArea.Top);
+            var left = (int)SystemParameters.WorkArea.Left;
+            var top = (int)SystemParameters.WorkArea.Top;
             var width = (int)(SystemParameters.WorkArea.Width / dpiX);
             var height = (int)(SystemParameters.WorkArea.Height / dpiY);
 

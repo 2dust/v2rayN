@@ -43,6 +43,8 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
   <true/>
   <key>NSHighResolutionCapable</key>
   <true/>
+  <key>LSMinimumSystemVersion</key>
+  <string>12.7</string>
 </dict>
 </plist>
 EOF

@@ -1,6 +1,3 @@
-using System.Net;
-using System.Net.NetworkInformation;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService(Config config)
@@ -16,7 +13,7 @@ public partial class CoreConfigSingboxService(Config config)
         try
         {
             if (node == null
-                || node.Port <= 0)
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -28,6 +25,18 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             ret.Msg = ResUI.InitialConfiguration;
+
+            if (node.ConfigType.IsGroupType())
+            {
+                switch (node.ConfigType)
+                {
+                    case EConfigType.PolicyGroup:
+                        return await GenerateClientMultipleLoadConfig(node);
+
+                    case EConfigType.ProxyChain:
+                        return await GenerateClientChainConfig(node);
+                }
+            }
 
             var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
             if (result.IsNullOrEmpty())
@@ -142,12 +151,9 @@ public partial class CoreConfigSingboxService(Config config)
                     continue;
                 }
                 var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
+                if (item is null || item.IsComplex() || !item.IsValid())
                 {
-                    if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 //find unused port
@@ -187,27 +193,6 @@ public partial class CoreConfigSingboxService(Config config)
                 singboxConfig.inbounds.Add(inbound);
 
                 //outbound
-                if (item is null)
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                    && !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS
-                 && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VLESS or EConfigType.Trojan
-                    && item.StreamSecurity == Global.StreamSecurityReality
-                    && item.PublicKey.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
                 var server = await GenServer(item);
                 if (server is null)
                 {
@@ -246,7 +231,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxFinalResolverTag
+                server = Global.SingboxLocalDNSTag,
             };
 
             ret.Success = true;
@@ -266,7 +251,8 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node is not { Port: > 0 })
+            if (node == null
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -318,7 +304,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxFinalResolverTag
+                server = Global.SingboxLocalDNSTag,
             };
 
             singboxConfig.route.rules.Clear();
@@ -344,7 +330,7 @@ public partial class CoreConfigSingboxService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds)
+    public async Task<RetResult> GenerateClientMultipleLoadConfig(ProfileItem parentNode)
     {
         var ret = new RetResult();
         try
@@ -371,56 +357,77 @@ public partial class CoreConfigSingboxService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            singboxConfig.outbounds.RemoveAt(0);
 
             await GenLog(singboxConfig);
             await GenInbounds(singboxConfig);
-            await GenRouting(singboxConfig);
-            await GenExperimental(singboxConfig);
-            singboxConfig.outbounds.RemoveAt(0);
 
-            var proxyProfiles = new List<ProfileItem>();
-            foreach (var it in selecteds)
-            {
-                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
-                {
-                    continue;
-                }
-                if (it.Port <= 0)
-                {
-                    continue;
-                }
-                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (item is null)
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
-                {
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                  && !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-
-                //outbound
-                proxyProfiles.Add(item);
-            }
-            if (proxyProfiles.Count <= 0)
+            var groupRet = await GenGroupOutbound(parentNode, singboxConfig);
+            if (groupRet != 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsList(proxyProfiles, singboxConfig);
 
+            await GenRouting(singboxConfig);
+            await GenExperimental(singboxConfig);
+            await GenDns(null, singboxConfig);
+            await ConvertGeo2Ruleset(singboxConfig);
+
+            ret.Success = true;
+
+            ret.Data = await ApplyFullConfigTemplate(singboxConfig);
+            return ret;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            ret.Msg = ResUI.FailedGenDefaultConfiguration;
+            return ret;
+        }
+    }
+
+    public async Task<RetResult> GenerateClientChainConfig(ProfileItem parentNode)
+    {
+        var ret = new RetResult();
+        try
+        {
+            if (_config == null)
+            {
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
+            }
+
+            ret.Msg = ResUI.InitialConfiguration;
+
+            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
+            {
+                ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                return ret;
+            }
+
+            var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
+            if (singboxConfig == null)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+            singboxConfig.outbounds.RemoveAt(0);
+
+            await GenLog(singboxConfig);
+            await GenInbounds(singboxConfig);
+
+            var groupRet = await GenGroupOutbound(parentNode, singboxConfig);
+            if (groupRet != 0)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+
+            await GenRouting(singboxConfig);
+            await GenExperimental(singboxConfig);
             await GenDns(null, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 

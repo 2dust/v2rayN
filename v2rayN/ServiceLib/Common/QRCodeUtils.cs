@@ -1,4 +1,5 @@
 using QRCoder;
+using QRCoder.Exceptions;
 using SkiaSharp;
 using ZXing.SkiaSharp;
 
@@ -8,10 +9,45 @@ public class QRCodeUtils
 {
     public static byte[]? GenQRCode(string? url)
     {
+        if (url.IsNullOrEmpty())
+        {
+            return null;
+        }
         using QRCodeGenerator qrGenerator = new();
-        using var qrCodeData = qrGenerator.CreateQrCode(url ?? string.Empty, QRCodeGenerator.ECCLevel.Q);
-        using PngByteQRCode qrCode = new(qrCodeData);
-        return qrCode.GetGraphic(20);
+        DataTooLongException? lastDtle = null;
+
+        var levels = new[]
+        {
+            QRCodeGenerator.ECCLevel.H,
+            QRCodeGenerator.ECCLevel.Q,
+            QRCodeGenerator.ECCLevel.M,
+            QRCodeGenerator.ECCLevel.L
+        };
+        foreach (var level in levels)
+        {
+            try
+            {
+                using var qrCodeData = qrGenerator.CreateQrCode(url, level);
+                using PngByteQRCode qrCode = new(qrCodeData);
+                return qrCode.GetGraphic(20);
+            }
+            catch (DataTooLongException ex)
+            {
+                lastDtle = ex;
+                continue;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        if (lastDtle != null)
+        {
+            throw lastDtle;
+        }
+
+        return null;
     }
 
     public static string? ParseBarcode(string? fileName)

@@ -18,7 +18,13 @@ public static class ProxySettingLinux
 
     private static async Task ExecCmd(List<string> args)
     {
-        var fileName = await FileManager.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetLinuxShellFileName), false);
+        var customSystemProxyScriptPath = AppManager.Instance.Config.SystemProxyItem?.CustomSystemProxyScriptPath;
+        var fileName = (customSystemProxyScriptPath.IsNotEmpty() && File.Exists(customSystemProxyScriptPath))
+            ? customSystemProxyScriptPath
+            : await FileUtils.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetLinuxShellFileName), false);
+
+        // TODO: temporarily notify which script is being used
+        NoticeManager.Instance.SendMessage(fileName);
 
         await Utils.GetCliWrapOutput(fileName, args);
     }

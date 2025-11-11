@@ -58,7 +58,7 @@ public static class CoreConfigHandler
                 File.Delete(fileName);
             }
 
-            string addressFileName = node.Address;
+            var addressFileName = node.Address;
             if (!File.Exists(addressFileName))
             {
                 addressFileName = Utils.GetConfigPath(addressFileName);
@@ -129,26 +129,6 @@ public static class CoreConfigHandler
             return result;
         }
 
-        await File.WriteAllTextAsync(fileName, result.Data.ToString());
-        return result;
-    }
-
-    public static async Task<RetResult> GenerateClientMultipleLoadConfig(Config config, string fileName, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad)
-    {
-        var result = new RetResult();
-        if (coreType == ECoreType.sing_box)
-        {
-            result = await new CoreConfigSingboxService(config).GenerateClientMultipleLoadConfig(selecteds);
-        }
-        else
-        {
-            result = await new CoreConfigV2rayService(config).GenerateClientMultipleLoadConfig(selecteds, multipleLoad);
-        }
-
-        if (result.Success != true)
-        {
-            return result;
-        }
         await File.WriteAllTextAsync(fileName, result.Data.ToString());
         return result;
     }

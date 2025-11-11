@@ -1,6 +1,3 @@
-using Avalonia;
-using Avalonia.Media;
-
 namespace v2rayN.Desktop.Common;
 
 public static class AppBuilderExtension

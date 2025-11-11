@@ -1,8 +1,3 @@
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-
 namespace ServiceLib.Common;
 
 public class JsonUtils
@@ -40,9 +35,13 @@ public class JsonUtils
     /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static T DeepCopy<T>(T obj)
+    public static T? DeepCopy<T>(T? obj)
     {
-        return Deserialize<T>(Serialize(obj, false))!;
+        if (obj is null)
+        {
+            return default;
+        }
+        return Deserialize<T>(Serialize(obj, false));
     }
 
     /// <summary>
@@ -72,7 +71,7 @@ public class JsonUtils
     /// </summary>
     /// <param name="strJson"></param>
     /// <returns></returns>
-    public static JsonNode? ParseJson(string strJson)
+    public static JsonNode? ParseJson(string? strJson)
     {
         try
         {
@@ -121,7 +120,7 @@ public class JsonUtils
     /// <param name="obj"></param>
     /// <param name="options"></param>
     /// <returns></returns>
-    public static string Serialize(object? obj, JsonSerializerOptions options)
+    public static string Serialize(object? obj, JsonSerializerOptions? options)
     {
         var result = string.Empty;
         try
@@ -130,7 +129,7 @@ public class JsonUtils
             {
                 return result;
             }
-            result = JsonSerializer.Serialize(obj, options);
+            result = JsonSerializer.Serialize(obj, options ?? _defaultSerializeOptions);
         }
         catch (Exception ex)
         {

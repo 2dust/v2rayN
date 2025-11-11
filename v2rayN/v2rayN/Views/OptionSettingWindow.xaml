@@ -652,20 +652,6 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTLS13}" />
-                        <ToggleButton
-                            x:Name="togEnableSecurityProtocolTls13"
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
@@ -989,6 +975,28 @@
                                 Margin="{StaticResource Margin8}"
                                 materialDesign:HintAssist.Hint="Protocol"
                                 Style="{StaticResource DefComboBox}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin8}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}" />
+
+                            <TextBox
+                                x:Name="txtCustomSystemProxyPacPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                AcceptsReturn="True"
+                                Style="{StaticResource DefTextBox}"
+                                TextWrapping="Wrap" />
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyPacPath"
+                                Margin="{StaticResource MarginLeftRight4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}"
+                                Style="{StaticResource DefButton}" />
                         </StackPanel>
                     </StackPanel>
 

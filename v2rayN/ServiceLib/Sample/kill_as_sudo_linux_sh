@@ -28,15 +28,15 @@ fi
 kill_children() {
     local parent=$1
     local children=$(ps -o pid --no-headers --ppid "$parent")
-    
+
     # Output information about processes being terminated
     echo "Processing children of PID: $parent..."
-    
+
     # Process each child
     for child in $children; do
         # Recursively find and kill child's children first
         kill_children "$child"
-        
+
         # Force kill the child process
         echo "Terminating child process: $child"
         kill -9 "$child" 2>/dev/null || true
@@ -46,6 +46,18 @@ kill_children() {
 echo "============================================"
 echo "Starting termination of process $PID and all its children"
 echo "============================================"
+
+# Try graceful termination first
+echo "Attempting graceful termination (SIGTERM) of PID: $PID"
+kill -15 "$PID" 2>/dev/null || true
+sleep 1
+# If still running, fall back to kill_children
+if ps -p $PID > /dev/null; then
+    echo "Process $PID did not exit after SIGTERM; proceeding with forced termination of its children and itself"
+else
+    echo "Process $PID exited cleanly after SIGTERM"
+    exit 0
+fi
 
 # Find and kill all child processes
 kill_children "$PID"

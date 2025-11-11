@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Text;
 using CliWrap;
 using CliWrap.Buffered;
 
@@ -31,58 +29,33 @@ public class CoreAdminManager
         await _updateFunc?.Invoke(notify, msg);
     }
 
-    public async Task<Process?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
+    public async Task<ProcessService?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
     {
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        sb.AppendLine($"sudo -S {cmdLine}");
-        var shFilePath = await FileManager.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
+        sb.AppendLine($"exec sudo -S -- {cmdLine}");
+        var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
-        Process proc = new()
-        {
-            StartInfo = new()
-            {
-                FileName = shFilePath,
-                Arguments = "",
-                WorkingDirectory = Utils.GetBinConfigPath(),
-                UseShellExecute = false,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8,
-                StandardErrorEncoding = Encoding.UTF8,
-            }
-        };
+        var procService = new ProcessService(
+            fileName: shFilePath,
+            arguments: "",
+            workingDirectory: Utils.GetBinConfigPath(),
+            displayLog: true,
+            redirectInput: true,
+            environmentVars: null,
+            updateFunc: _updateFunc
+        );
 
-        void dataHandler(object sender, DataReceivedEventArgs e)
-        {
-            if (e.Data.IsNotEmpty())
-            {
-                _ = UpdateFunc(false, e.Data + Environment.NewLine);
-            }
-        }
+        await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
 
-        proc.OutputDataReceived += dataHandler;
-        proc.ErrorDataReceived += dataHandler;
-
-        proc.Start();
-        proc.BeginOutputReadLine();
-        proc.BeginErrorReadLine();
-
-        await Task.Delay(10);
-        await proc.StandardInput.WriteLineAsync(AppManager.Instance.LinuxSudoPwd);
-
-        await Task.Delay(100);
-        if (proc is null or { HasExited: true })
+        if (procService is null or { HasExited: true })
         {
             throw new Exception(ResUI.FailedToRunCore);
         }
+        _linuxSudoPid = procService.Id;
 
-        _linuxSudoPid = proc.Id;
-
-        return proc;
+        return procService;
     }
 
     public async Task KillProcessAsLinuxSudo()
@@ -94,8 +67,8 @@ public class CoreAdminManager
 
         try
         {
-            var shellFileName = Utils.IsOSX() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
-            var shFilePath = await FileManager.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
+            var shellFileName = Utils.IsMacOS() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
+            var shFilePath = await FileUtils.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
             if (shFilePath.Contains(' '))
             {
                 shFilePath = shFilePath.AppendQuotes();

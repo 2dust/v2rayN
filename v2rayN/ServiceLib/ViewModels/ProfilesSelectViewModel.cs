@@ -1,9 +1,3 @@
-using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class ProfilesSelectViewModel : MyReactiveObject

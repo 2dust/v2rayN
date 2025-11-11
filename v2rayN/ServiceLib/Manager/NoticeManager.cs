@@ -11,7 +11,7 @@ public class NoticeManager
         {
             return;
         }
-        AppEvents.SendSnackMsgRequested.OnNext(content);
+        AppEvents.SendSnackMsgRequested.Publish(content);
     }
 
     public void SendMessage(string? content)
@@ -20,7 +20,7 @@ public class NoticeManager
         {
             return;
         }
-        AppEvents.SendMsgViewRequested.OnNext(content);
+        AppEvents.SendMsgViewRequested.Publish(content);
     }
 
     public void SendMessageEx(string? content)

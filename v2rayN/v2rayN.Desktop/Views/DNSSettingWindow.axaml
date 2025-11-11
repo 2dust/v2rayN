@@ -2,7 +2,6 @@
     x:Class="v2rayN.Desktop.Views.DNSSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ctrls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -37,6 +36,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThBasicDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
+                        x:Name="gridBasicDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -55,13 +55,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbDomesticDNS}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbDirectDNS"
                             Grid.Row="1"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
-                            Text="{Binding DirectDNS, Mode=TwoWay}" />
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -69,33 +69,40 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbRemoteDNS}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbRemoteDNS"
                             Grid.Row="2"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
-                            Text="{Binding RemoteDNS, Mode=TwoWay}" />
-
+                            IsEditable="True" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbRemoteDNSTips}"
+                            TextWrapping="Wrap" />
+                        
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBOutboundsResolverDNS}" />
-                        <ctrls:AutoCompleteBox
-                            x:Name="cmbSBResolverDNS"
+                            Text="{x:Static resx:ResUI.TbBootstrapDNS}" />
+                        <ComboBox
+                            x:Name="cmbBootstrapDNS"
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
-                            Text="{Binding SingboxOutboundsResolveDNS, Mode=TwoWay}" />
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBOutboundDomainResolve}"
+                            Text="{x:Static resx:ResUI.TbBootstrapDNSTips}"
                             TextWrapping="Wrap" />
 
                         <TextBlock
@@ -103,44 +110,37 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBDoHResolverServer}" />
-                        <ctrls:AutoCompleteBox
-                            x:Name="cmbSBFinalResolverDNS"
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Width="300"
-                            Margin="{StaticResource Margin4}"
-                            Text="{Binding SingboxFinalResolveDNS, Mode=TwoWay}" />
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBFallbackDNSResolve}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbXrayFreedomResolveStrategy}" />
+                            Text="{x:Static resx:ResUI.TbXrayFreedomStrategy}" />
                         <ComboBox
                             x:Name="cmbRayFreedomDNSStrategy"
-                            Grid.Row="5"
+                            Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             PlaceholderText="Default" />
 
                         <TextBlock
-                            Grid.Row="6"
+                            Grid.Row="5"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSBDirectResolveStrategy}" />
                         <ComboBox
                             x:Name="cmbSBDirectDNSStrategy"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            PlaceholderText="Default" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
+                        <ComboBox
+                            x:Name="cmbSBRemoteDNSStrategy"
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="200"
@@ -152,34 +152,13 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
-                        <ComboBox
-                            x:Name="cmbSBRemoteDNSStrategy"
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Width="200"
-                            Margin="{StaticResource Margin4}"
-                            PlaceholderText="Default" />
-
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbAddCommonDNSHosts}" />
                         <ToggleSwitch
                             x:Name="togAddCommonHosts"
-                            Grid.Row="8"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSBDoHOverride}"
-                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -187,6 +166,7 @@
             <TabItem Header="{x:Static resx:ResUI.ThAdvancedDNSSettings}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid
+                        x:Name="gridAdvancedDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*">
@@ -258,13 +238,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPs}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbDirectExpectedIPs"
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            Text="{Binding DirectExpectedIPs, Mode=TwoWay}" />
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="2"
@@ -296,7 +276,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDns}">
+            <TabItem Header="{x:Static resx:ResUI.TbCustomDnsRay}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">
                         <Grid.RowDefinitions>
@@ -361,11 +341,11 @@
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
                                 Text="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}" />
-                            <ctrls:AutoCompleteBox
+                            <ComboBox
                                 x:Name="cmbdomainDNSAddressCompatible"
                                 Width="150"
                                 Margin="{StaticResource Margin4}"
-                                Text="{Binding DomainDNSAddressCompatible, Mode=TwoWay}" />
+                                IsEditable="True" />
                         </StackPanel>
                     </WrapPanel>
 
@@ -384,7 +364,7 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreDnsSingbox}">
+            <TabItem Header="{x:Static resx:ResUI.TbCustomDnsSingbox}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">
                         <Grid.RowDefinitions>
@@ -433,11 +413,11 @@
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
                                 Text="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}" />
-                            <ctrls:AutoCompleteBox
+                            <ComboBox
                                 x:Name="cmbdomainDNSAddress2Compatible"
                                 Width="150"
                                 Margin="{StaticResource Margin4}"
-                                Text="{Binding DomainDNSAddress2Compatible, Mode=TwoWay}" />
+                                IsEditable="True" />
                         </StackPanel>
                     </WrapPanel>
 

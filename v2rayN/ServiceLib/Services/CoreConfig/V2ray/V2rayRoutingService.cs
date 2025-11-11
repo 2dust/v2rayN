@@ -20,11 +20,18 @@ public partial class CoreConfigV2rayService
                     var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                     foreach (var item in rules)
                     {
-                        if (item.Enabled)
+                        if (!item.Enabled)
                         {
-                            var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                            await GenRoutingUserRule(item2, v2rayConfig);
+                            continue;
                         }
+
+                        if (item.RuleType == ERuleType.DNS)
+                        {
+                            continue;
+                        }
+
+                        var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
+                        await GenRoutingUserRule(item2, v2rayConfig);
                     }
                 }
             }
@@ -125,16 +132,28 @@ public partial class CoreConfigV2rayService
         }
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
+
         if (node == null
-            || !Global.XraySupportConfigType.Contains(node.ConfigType))
+            || (!Global.XraySupportConfigType.Contains(node.ConfigType)
+            && !node.ConfigType.IsGroupType()))
         {
             return Global.ProxyTag;
         }
 
-        var tag = Global.ProxyTag + node.IndexId.ToString();
+        var tag = $"{node.IndexId}-{Global.ProxyTag}";
         if (v2rayConfig.outbounds.Any(p => p.tag == tag))
         {
             return tag;
+        }
+
+        if (node.ConfigType.IsGroupType())
+        {
+            var ret = await GenGroupOutbound(node, v2rayConfig, tag);
+            if (ret == 0)
+            {
+                return tag;
+            }
+            return Global.ProxyTag;
         }
 
         var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);

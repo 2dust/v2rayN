@@ -1,7 +1,3 @@
-using System.Reactive;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class OptionSettingViewModel : MyReactiveObject
@@ -52,9 +48,9 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool DisplayRealTimeSpeed { get; set; }
     [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
     [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
-    [Reactive] public bool EnableSecurityProtocolTls13 { get; set; }
     [Reactive] public bool AutoHideStartup { get; set; }
     [Reactive] public bool Hide2TrayWhenClose { get; set; }
+    [Reactive] public bool MacOSShowInDock { get; set; }
     [Reactive] public bool EnableDragDropSort { get; set; }
     [Reactive] public bool DoubleClick2Activate { get; set; }
     [Reactive] public int AutoUpdateInterval { get; set; }
@@ -74,11 +70,22 @@ public class OptionSettingViewModel : MyReactiveObject
 
     #endregion UI
 
+    #region UI visibility
+
+    [Reactive] public bool BlIsWindows { get; set; }
+    [Reactive] public bool BlIsLinux { get; set; }
+    [Reactive] public bool BlIsIsMacOS { get; set; }
+    [Reactive] public bool BlIsNonWindows { get; set; }
+
+    #endregion UI visibility
+
     #region System proxy
 
     [Reactive] public bool notProxyLocalAddress { get; set; }
     [Reactive] public string systemProxyAdvancedProtocol { get; set; }
     [Reactive] public string systemProxyExceptions { get; set; }
+    [Reactive] public string CustomSystemProxyPacPath { get; set; }
+    [Reactive] public string CustomSystemProxyScriptPath { get; set; }
 
     #endregion System proxy
 
@@ -111,6 +118,10 @@ public class OptionSettingViewModel : MyReactiveObject
     {
         _config = AppManager.Instance.Config;
         _updateView = updateView;
+        BlIsWindows = Utils.IsWindows();
+        BlIsLinux = Utils.IsLinux();
+        BlIsIsMacOS = Utils.IsMacOS();
+        BlIsNonWindows = Utils.IsNonWindows();
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -170,9 +181,9 @@ public class OptionSettingViewModel : MyReactiveObject
         KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
         EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
         EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
-        EnableSecurityProtocolTls13 = _config.GuiItem.EnableSecurityProtocolTls13;
         AutoHideStartup = _config.UiItem.AutoHideStartup;
         Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
+        MacOSShowInDock = _config.UiItem.MacOSShowInDock;
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
         AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
@@ -197,6 +208,8 @@ public class OptionSettingViewModel : MyReactiveObject
         notProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
         systemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
         systemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
+        CustomSystemProxyPacPath = _config.SystemProxyItem.CustomSystemProxyPacPath;
+        CustomSystemProxyScriptPath = _config.SystemProxyItem.CustomSystemProxyScriptPath;
 
         #endregion System proxy
 
@@ -279,12 +292,12 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
-        var needReboot = (EnableStatistics != _config.GuiItem.EnableStatistics
+        var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
                         || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation);
+                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -330,9 +343,9 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
         _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
         _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
-        _config.GuiItem.EnableSecurityProtocolTls13 = EnableSecurityProtocolTls13;
         _config.UiItem.AutoHideStartup = AutoHideStartup;
         _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
+        _config.UiItem.MacOSShowInDock = MacOSShowInDock;
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;
         _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
@@ -354,6 +367,8 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
         _config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
         _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
+        _config.SystemProxyItem.CustomSystemProxyPacPath = CustomSystemProxyPacPath;
+        _config.SystemProxyItem.CustomSystemProxyScriptPath = CustomSystemProxyScriptPath;
 
         //tun mode
         _config.TunModeItem.AutoRoute = TunAutoRoute;
@@ -382,7 +397,7 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task SaveCoreType()
     {
-        for (int k = 1; k <= _config.CoreTypeItem.Count; k++)
+        for (var k = 1; k <= _config.CoreTypeItem.Count; k++)
         {
             var item = _config.CoreTypeItem[k - 1];
             var type = string.Empty;

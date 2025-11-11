@@ -1,10 +1,8 @@
-using System.Text.Json.Nodes;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig, bool handleBalancerAndRules = false)
+    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig)
     {
         var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
         if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
@@ -19,7 +17,7 @@ public partial class CoreConfigV2rayService
         }
 
         // Handle balancer and rules modifications (for multiple load scenarios)
-        if (handleBalancerAndRules && v2rayConfig.routing?.balancers?.Count > 0)
+        if (v2rayConfig.routing?.balancers?.Count > 0)
         {
             var balancer = v2rayConfig.routing.balancers.First();
 
@@ -60,8 +58,36 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        // Handle outbounds - append instead of override
-        var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
+        if (v2rayConfig.observatory != null)
+        {
+            if (fullConfigTemplateNode["observatory"] == null)
+            {
+                fullConfigTemplateNode["observatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.observatory));
+            }
+            else
+            {
+                var subjectSelector = v2rayConfig.observatory.subjectSelector;
+                subjectSelector.AddRange(fullConfigTemplateNode["observatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["observatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
+            }
+        }
+
+        if (v2rayConfig.burstObservatory != null)
+        {
+            if (fullConfigTemplateNode["burstObservatory"] == null)
+            {
+                fullConfigTemplateNode["burstObservatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.burstObservatory));
+            }
+            else
+            {
+                var subjectSelector = v2rayConfig.burstObservatory.subjectSelector;
+                subjectSelector.AddRange(fullConfigTemplateNode["burstObservatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["burstObservatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
+            }
+        }
+
+        var customOutboundsNode = new JsonArray();
+
         foreach (var outbound in v2rayConfig.outbounds)
         {
             if (outbound.protocol.ToLower() is "blackhole" or "dns" or "freedom")
@@ -71,14 +97,30 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() == true) && (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()) && !(Utils.IsPrivateNetwork(outbound.settings?.servers?.FirstOrDefault()?.address ?? string.Empty) || Utils.IsPrivateNetwork(outbound.settings?.vnext?.FirstOrDefault()?.address ?? string.Empty)))
+            else if ((!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
+                && ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true) == true))
             {
-                outbound.streamSettings ??= new StreamSettings4Ray();
-                outbound.streamSettings.sockopt ??= new Sockopt4Ray();
-                outbound.streamSettings.sockopt.dialerProxy = fullConfigTemplate.ProxyDetour;
+                var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
+                    ?? outbound.settings?.vnext?.FirstOrDefault()?.address
+                    ?? string.Empty;
+                if (!Utils.IsPrivateNetwork(outboundAddress))
+                {
+                    outbound.streamSettings ??= new StreamSettings4Ray();
+                    outbound.streamSettings.sockopt ??= new Sockopt4Ray();
+                    outbound.streamSettings.sockopt.dialerProxy = fullConfigTemplate.ProxyDetour;
+                }
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
+
+        if (fullConfigTemplateNode["outbounds"] is JsonArray templateOutbounds)
+        {
+            foreach (var outbound in templateOutbounds)
+            {
+                customOutboundsNode.Add(outbound?.DeepClone());
+            }
+        }
+
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));

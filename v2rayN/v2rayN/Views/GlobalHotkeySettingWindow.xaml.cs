@@ -1,9 +1,4 @@
-using System.Reactive.Disposables;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using ReactiveUI;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;
@@ -16,14 +11,14 @@ public partial class GlobalHotkeySettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
+        Owner = Application.Current.MainWindow;
 
         ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
 
         btnReset.Click += btnReset_Click;
 
         HotkeyManager.Instance.IsPause = true;
-        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
+        Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
 
         this.WhenActivated(disposables =>
         {
@@ -40,7 +35,7 @@ public partial class GlobalHotkeySettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
         }
         return await Task.FromResult(true);

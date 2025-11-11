@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace ServiceLib.Models;
 
 /// <summary>
@@ -40,4 +38,6 @@ public class VmessQRCode
     public string alpn { get; set; } = string.Empty;
 
     public string fp { get; set; } = string.Empty;
+
+    public string insecure { get; set; } = string.Empty;
 }

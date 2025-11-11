@@ -32,39 +32,20 @@
 
                 <Button
                     x:Name="btnEditSub"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
+                    Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource building_edit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource SemiIconEdit}" />
                     </Button.Content>
                 </Button>
                 <Button
                     x:Name="btnAddSub"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
                     Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
+                    Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource building_add}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
-                    </Button.Content>
-                </Button>
-
-                <Button
-                    x:Name="btnAutofitColumnWidth"
-                    Width="{StaticResource IconButtonWidth}"
-                    Height="{StaticResource IconButtonHeight}"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="Success"
-                    Theme="{DynamicResource BorderlessButton}"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource building_fit}" Foreground="{DynamicResource ButtonDefaultTertiaryForeground}" />
+                        <PathIcon Data="{StaticResource SemiIconPlus}" />
                     </Button.Content>
                 </Button>
 
@@ -74,6 +55,36 @@
                     Margin="{StaticResource MarginLr4}"
                     VerticalContentAlignment="Center"
                     Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+
+                <Button
+                    x:Name="btnAutofitColumnWidth"
+                    Margin="{StaticResource MarginLr4}"
+                    Classes="IconButton Success"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                    <Button.Content>
+                        <PathIcon Data="{StaticResource SemiIconExpand}" />
+                    </Button.Content>
+                </Button>
+
+                <Button
+                    x:Name="btnFastRealPing"
+                    Margin="{StaticResource MarginLr4}"
+                    Classes="IconButton Success"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
+                    <Button.Content>
+                        <PathIcon Data="{StaticResource SemiIconBolt}" />
+                    </Button.Content>
+                </Button>
+                <Button
+                    x:Name="menuMixedTestServer"
+                    Margin="{StaticResource MarginLr4}"
+                    Classes="IconButton Success"
+                    ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
+                    <Button.Content>
+                        <PathIcon Data="{StaticResource building_ping}" />
+                    </Button.Content>
+                </Button>
+
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
@@ -92,30 +103,17 @@
                 </DataGrid.KeyBindings>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem x:Name="menuEditServer" Header="{x:Static resx:ResUI.menuEditServer}" />
                         <MenuItem x:Name="menuSetDefaultServer" Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                        <MenuItem x:Name="menuEditServer" Header="{x:Static resx:ResUI.menuEditServer}" />
+                        <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
                         <MenuItem x:Name="menuRemoveServer" Header="{x:Static resx:ResUI.menuRemoveServer}" />
                         <MenuItem x:Name="menuRemoveDuplicateServer" Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
-                        <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
-                        <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
+                        <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuSetDefaultMultipleServer}">
-                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRandom}" />
-                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayRoundRobin}" />
-                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastPing}" />
-                            <MenuItem x:Name="menuSetDefaultMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem x:Name="menuSetDefaultMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuSetDefaultMultipleServerSingBoxLeastPing}" />
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem x:Name="menuMixedTestServer" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
                         <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />
                         <MenuItem x:Name="menuRealPingServer" Header="{x:Static resx:ResUI.menuRealPingServer}" />
                         <MenuItem x:Name="menuSpeedServer" Header="{x:Static resx:ResUI.menuSpeedServer}" />
-                        <MenuItem Header="{x:Static resx:ResUI.menuTestServerResult}">
-                            <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
-                            <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
-                        </MenuItem>
+                        <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
                         <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
                             <MenuItem>
@@ -139,12 +137,23 @@
                         </MenuItem>
                         <MenuItem x:Name="menuSelectAll" Header="{x:Static resx:ResUI.menuSelectAll}" />
                         <Separator />
+                        <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
                         <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem x:Name="menuExport2ClientConfig" Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
                             <MenuItem x:Name="menuExport2ClientConfigClipboard" Header="{x:Static resx:ResUI.menuExport2ClientConfigClipboard}" />
                             <Separator />
                             <MenuItem x:Name="menuExport2ShareUrl" Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
+                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
+                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
+                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
+                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
+                            <Separator />
+                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
+                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxFallback" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

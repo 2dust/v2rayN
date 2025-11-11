@@ -2,7 +2,6 @@
     x:Class="v2rayN.Desktop.Views.RoutingRuleDetailsWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ctrls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -19,7 +18,7 @@
             Margin="{StaticResource Margin4}"
             ColumnDefinitions="Auto,Auto,Auto"
             DockPanel.Dock="Top"
-            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -33,59 +32,85 @@
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left" />
-            <ToggleSwitch
-                x:Name="togEnabled"
+            <StackPanel
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleSwitch
+                    x:Name="togEnabled"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
-                Text="outboundTag" />
-            <ctrls:AutoCompleteBox
-                Name="cmbOutboundTag"
+                Text="{x:Static resx:ResUI.TbRuleType}" />
+            <ComboBox
+                x:Name="cmbRuleType"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
-                Text="{Binding SelectedSource.OutboundTag, Mode=TwoWay}" />
-            <StackPanel
+                MaxDropDownHeight="1000" />
+            <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
-                Orientation="Horizontal"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-                <Button
-                    x:Name="btnSelectProfile"
-                    Margin="0,0,8,0"
-                    Content="{x:Static resx:ResUI.TbSelectProfile}"
-                    Click="BtnSelectProfile_Click" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
-            </StackPanel>
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRuleTypeTips}" />
 
             <TextBlock
                 Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="outboundTag" />
+            <ComboBox
+                Name="cmbOutboundTag"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                IsEditable="True" />
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="btnSelectProfile"
+                    Margin="0,0,8,0"
+                    Click="BtnSelectProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}" />
+                <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="3"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Text="port" />
             <TextBox
                 x:Name="txtPort"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left" />
             <TextBlock
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
@@ -93,21 +118,21 @@
                 Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
 
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Text="protocol" />
             <ListBox
                 x:Name="clbProtocol"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center">
@@ -117,20 +142,20 @@
             </TextBlock>
 
             <TextBlock
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Text="inboundTag" />
             <ListBox
                 x:Name="clbInboundTag"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
@@ -138,20 +163,20 @@
                 Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
 
             <TextBlock
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Text="network" />
             <ComboBox
                 x:Name="cmbNetwork"
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 MaxDropDownHeight="1000" />
             <TextBlock
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"

@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace ServiceLib.Models;
 
 public class GitHubReleaseAsset

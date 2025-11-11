@@ -1,7 +1,3 @@
-using System.Reactive.Disposables;
-using System.Windows;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 public partial class BackupAndRestoreView
@@ -32,7 +28,7 @@ public partial class BackupAndRestoreView
 
     private void MenuLocalBackup_Click(object sender, RoutedEventArgs e)
     {
-        if (UI.SaveFileDialog(out string fileName, "Zip|*.zip") != true)
+        if (UI.SaveFileDialog(out var fileName, "Zip|*.zip") != true)
         {
             return;
         }
@@ -41,7 +37,7 @@ public partial class BackupAndRestoreView
 
     private void MenuLocalRestore_Click(object sender, RoutedEventArgs e)
     {
-        if (UI.OpenFileDialog(out string fileName, "Zip|*.zip|All|*.*") != true)
+        if (UI.OpenFileDialog(out var fileName, "Zip|*.zip|All|*.*") != true)
         {
             return;
         }

@@ -1,10 +1,3 @@
-using System.Reactive;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace ServiceLib.ViewModels;
 
 public class RoutingRuleSettingViewModel : MyReactiveObject
@@ -107,13 +100,13 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             var it = new RulesItemModel()
             {
                 Id = item.Id,
+                RuleTypeName = item.RuleType?.ToString(),
                 OutboundTag = item.OutboundTag,
                 Port = item.Port,
                 Network = item.Network,
                 Protocols = Utils.List2String(item.Protocol),
                 InboundTags = Utils.List2String(item.InboundTag),
-                Domains = Utils.List2String(item.Domain),
-                Ips = Utils.List2String(item.Ip),
+                Domains = Utils.List2String((item.Domain ?? []).Concat(item.Ip ?? []).ToList()),
                 Enabled = item.Enabled,
                 Remarks = item.Remarks,
             };
@@ -222,7 +215,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     private async Task SaveRoutingAsync()
     {
-        string remarks = SelectedRouting.Remarks;
+        var remarks = SelectedRouting.Remarks;
         if (remarks.IsNullOrEmpty())
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
@@ -293,7 +286,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             return;
         }
 
-        DownloadService downloadHandle = new DownloadService();
+        var downloadHandle = new DownloadService();
         var result = await downloadHandle.TryDownloadString(url, true, "");
         var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
         if (ret == 0)
@@ -305,7 +298,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     private async Task<int> AddBatchRoutingRulesAsync(RoutingItem routingItem, string? clipboardData)
     {
-        bool blReplace = false;
+        var blReplace = false;
         if (await _updateView?.Invoke(EViewAction.AddBatchRoutingRulesYesNo, null) == false)
         {
             blReplace = true;

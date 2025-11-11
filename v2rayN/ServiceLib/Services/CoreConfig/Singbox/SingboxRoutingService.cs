@@ -9,13 +9,13 @@ public partial class CoreConfigSingboxService
             singboxConfig.route.final = Global.ProxyTag;
             var item = _config.SimpleDNSItem;
 
-            var defaultDomainResolverTag = Global.SingboxOutboundResolverTag;
+            var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
             var directDNSStrategy = item.SingboxStrategy4Direct.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : item.SingboxStrategy4Direct;
 
             var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem != null && rawDNSItem.Enabled == true)
             {
-                defaultDomainResolverTag = Global.SingboxFinalResolverTag;
+                defaultDomainResolverTag = Global.SingboxLocalDNSTag;
                 directDNSStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : rawDNSItem.DomainStrategy4Freedom;
             }
             singboxConfig.route.default_domain_resolver = new()
@@ -136,13 +136,21 @@ public partial class CoreConfigSingboxService
                 var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                 foreach (var item1 in rules ?? [])
                 {
-                    if (item1.Enabled)
+                    if (!item1.Enabled)
                     {
-                        await GenRoutingUserRule(item1, singboxConfig);
-                        if (item1.Ip != null && item1.Ip.Count > 0)
-                        {
-                            ipRules.Add(item1);
-                        }
+                        continue;
+                    }
+
+                    if (item1.RuleType == ERuleType.DNS)
+                    {
+                        continue;
+                    }
+
+                    await GenRoutingUserRule(item1, singboxConfig);
+
+                    if (item1.Ip?.Count > 0)
+                    {
+                        ipRules.Add(item1);
                     }
                 }
             }
@@ -242,7 +250,9 @@ public partial class CoreConfigSingboxService
                 foreach (var it in item.Domain)
                 {
                     if (ParseV2Domain(it, rule1))
+                    {
                         countDomain++;
+                    }
                 }
                 if (countDomain > 0)
                 {
@@ -257,7 +267,9 @@ public partial class CoreConfigSingboxService
                 foreach (var it in item.Ip)
                 {
                     if (ParseV2Address(it, rule2))
+                    {
                         countIp++;
+                    }
                 }
                 if (countIp > 0)
                 {
@@ -368,17 +380,29 @@ public partial class CoreConfigSingboxService
         }
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
+
         if (node == null
-            || !Global.SingboxSupportConfigType.Contains(node.ConfigType))
+            || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
+            && !node.ConfigType.IsGroupType()))
         {
             return Global.ProxyTag;
         }
 
-        var tag = Global.ProxyTag + node.IndexId.ToString();
+        var tag = $"{node.IndexId}-{Global.ProxyTag}";
         if (singboxConfig.outbounds.Any(o => o.tag == tag)
             || (singboxConfig.endpoints != null && singboxConfig.endpoints.Any(e => e.tag == tag)))
         {
             return tag;
+        }
+
+        if (node.ConfigType.IsGroupType())
+        {
+            var ret = await GenGroupOutbound(node, singboxConfig, tag);
+            if (ret == 0)
+            {
+                return tag;
+            }
+            return Global.ProxyTag;
         }
 
         var server = await GenServer(node);
@@ -387,7 +411,7 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
-        server.tag = Global.ProxyTag + node.IndexId.ToString();
+        server.tag = tag;
         if (server is Endpoints4Sbox endpoint)
         {
             singboxConfig.endpoints ??= new();

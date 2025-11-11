@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Text;
-
 namespace ServiceLib.Manager;
 
 /// <summary>
@@ -11,8 +8,9 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
-    private Process? _process;
-    private Process? _processPre;
+    private WindowsJobService? _processJob;
+    private ProcessService? _processService;
+    private ProcessService? _processPreService;
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
@@ -29,7 +27,7 @@ public class CoreManager
             var toPath = Utils.GetBinPath("");
             if (fromPath != toPath)
             {
-                FileManager.CopyDirectory(fromPath, toPath, true, false);
+                FileUtils.CopyDirectory(fromPath, toPath, true, false);
             }
         }
 
@@ -89,43 +87,37 @@ public class CoreManager
 
         await CoreStart(node);
         await CoreStartPreService(node);
-        if (_process != null)
+        if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
     }
 
-    public async Task<int> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
+    public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.Exists(t => t.ConfigType is EConfigType.Hysteria2 or EConfigType.TUIC or EConfigType.Anytls) ? ECoreType.sing_box : ECoreType.Xray;
+        var coreType = selecteds.Any(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)) ? ECoreType.sing_box : ECoreType.Xray;
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
         await UpdateFunc(false, result.Msg);
         if (result.Success != true)
         {
-            return -1;
+            return null;
         }
 
         await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
         await UpdateFunc(false, configPath);
 
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        var proc = await RunProcess(coreInfo, fileName, true, false);
-        if (proc is null)
-        {
-            return -1;
-        }
-
-        return proc.Id;
+        return await RunProcess(coreInfo, fileName, true, false);
     }
 
-    public async Task<int> LoadCoreConfigSpeedtest(ServerTestItem testItem)
+    public async Task<ProcessService?> LoadCoreConfigSpeedtest(ServerTestItem testItem)
     {
         var node = await AppManager.Instance.GetProfileItem(testItem.IndexId);
         if (node is null)
         {
-            return -1;
+            return null;
         }
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
@@ -133,18 +125,12 @@ public class CoreManager
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
         if (result.Success != true)
         {
-            return -1;
+            return null;
         }
 
         var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        var proc = await RunProcess(coreInfo, fileName, true, false);
-        if (proc is null)
-        {
-            return -1;
-        }
-
-        return proc.Id;
+        return await RunProcess(coreInfo, fileName, true, false);
     }
 
     public async Task CoreStop()
@@ -157,16 +143,18 @@ public class CoreManager
                 _linuxSudo = false;
             }
 
-            if (_process != null)
+            if (_processService != null)
             {
-                await ProcUtils.ProcessKill(_process, Utils.IsWindows());
-                _process = null;
+                await _processService.StopAsync();
+                _processService.Dispose();
+                _processService = null;
             }
 
-            if (_processPre != null)
+            if (_processPreService != null)
             {
-                await ProcUtils.ProcessKill(_processPre, Utils.IsWindows());
-                _processPre = null;
+                await _processPreService.StopAsync();
+                _processPreService.Dispose();
+                _processPreService = null;
             }
         }
         catch (Exception ex)
@@ -188,12 +176,12 @@ public class CoreManager
         {
             return;
         }
-        _process = proc;
+        _processService = proc;
     }
 
     private async Task CoreStartPreService(ProfileItem node)
     {
-        if (_process != null && !_process.HasExited)
+        if (_processService != null && !_processService.HasExited)
         {
             var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
             var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
@@ -210,7 +198,7 @@ public class CoreManager
                     {
                         return;
                     }
-                    _processPre = proc;
+                    _processPreService = proc;
                 }
             }
         }
@@ -225,7 +213,7 @@ public class CoreManager
 
     #region Process
 
-    private async Task<Process?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
+    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
     {
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
@@ -256,55 +244,48 @@ public class CoreManager
         }
     }
 
-    private async Task<Process?> RunProcessNormal(string fileName, CoreInfo? coreInfo, string configPath, bool displayLog)
+    private async Task<ProcessService?> RunProcessNormal(string fileName, CoreInfo? coreInfo, string configPath, bool displayLog)
     {
-        Process proc = new()
-        {
-            StartInfo = new()
-            {
-                FileName = fileName,
-                Arguments = string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath),
-                WorkingDirectory = Utils.GetBinConfigPath(),
-                UseShellExecute = false,
-                RedirectStandardOutput = displayLog,
-                RedirectStandardError = displayLog,
-                CreateNoWindow = true,
-                StandardOutputEncoding = displayLog ? Encoding.UTF8 : null,
-                StandardErrorEncoding = displayLog ? Encoding.UTF8 : null,
-            }
-        };
+        var environmentVars = new Dictionary<string, string>();
         foreach (var kv in coreInfo.Environment)
         {
-            proc.StartInfo.Environment[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
+            environmentVars[kv.Key] = string.Format(kv.Value, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath);
         }
 
-        if (displayLog)
-        {
-            void dataHandler(object sender, DataReceivedEventArgs e)
-            {
-                if (e.Data.IsNotEmpty())
-                {
-                    _ = UpdateFunc(false, e.Data + Environment.NewLine);
-                }
-            }
-            proc.OutputDataReceived += dataHandler;
-            proc.ErrorDataReceived += dataHandler;
-        }
-        proc.Start();
+        var procService = new ProcessService(
+            fileName: fileName,
+            arguments: string.Format(coreInfo.Arguments, coreInfo.AbsolutePath ? Utils.GetBinConfigPath(configPath).AppendQuotes() : configPath),
+            workingDirectory: Utils.GetBinConfigPath(),
+            displayLog: displayLog,
+            redirectInput: false,
+            environmentVars: environmentVars,
+            updateFunc: _updateFunc
+        );
 
-        if (displayLog)
-        {
-            proc.BeginOutputReadLine();
-            proc.BeginErrorReadLine();
-        }
+        await procService.StartAsync();
 
         await Task.Delay(100);
-        AppManager.Instance.AddProcess(proc.Handle);
-        if (proc is null or { HasExited: true })
+
+        if (procService is null or { HasExited: true })
         {
             throw new Exception(ResUI.FailedToRunCore);
         }
-        return proc;
+        AddProcessJob(procService.Handle);
+
+        return procService;
+    }
+
+    private void AddProcessJob(nint processHandle)
+    {
+        if (Utils.IsWindows())
+        {
+            _processJob ??= new();
+            try
+            {
+                _processJob?.AddProcess(processHandle);
+            }
+            catch { }
+        }
     }
 
     #endregion Process

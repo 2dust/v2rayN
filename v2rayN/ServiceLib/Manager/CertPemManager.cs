@@ -1,0 +1,415 @@
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+
+namespace ServiceLib.Manager;
+
+/// <summary>
+/// Manager for certificate operations with CA pinning to prevent MITM attacks
+/// </summary>
+public class CertPemManager
+{
+    private static readonly string _tag = "CertPemManager";
+    private static readonly Lazy<CertPemManager> _instance = new(() => new());
+    public static CertPemManager Instance => _instance.Value;
+
+    /// <summary>
+    /// Trusted CA certificate thumbprints (SHA256) to prevent MITM attacks
+    /// </summary>
+    private static readonly HashSet<string> TrustedCaThumbprints = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "EBD41040E4BB3EC742C9E381D31EF2A41A48B6685C96E7CEF3C1DF6CD4331C99", // GlobalSign Root CA
+        "6DC47172E01CBCB0BF62580D895FE2B8AC9AD4F873801E0C10B9C837D21EB177", // Entrust.net Premium 2048 Secure Server CA
+        "73C176434F1BC6D5ADF45B0E76E727287C8DE57616C1E6E6141A2B2CBC7D8E4C", // Entrust Root Certification Authority
+        "D8E0FEBC1DB2E38D00940F37D27D41344D993E734B99D5656D9778D4D8143624", // Certum Root CA
+        "D7A7A0FB5D7E2731D771E9484EBCDEF71D5F0C3E0A2948782BC83EE0EA699EF4", // Comodo AAA Services root
+        "85A0DD7DD720ADB7FF05F83D542B209DC7FF4528F7D677B18389FEA5E5C49E86", // QuoVadis Root CA 2
+        "18F1FC7F205DF8ADDDEB7FE007DD57E3AF375A9C4D8D73546BF4F1FED1E18D35", // QuoVadis Root CA 3
+        "CECDDC905099D8DADFC5B1D209B737CBE2C18CFB2C10C0FF0BCF0D3286FC1AA2", // XRamp Global CA Root
+        "C3846BF24B9E93CA64274C0EC67C1ECC5E024FFCACD2D74019350E81FE546AE4", // Go Daddy Class 2 CA
+        "1465FA205397B876FAA6F0A9958E5590E40FCC7FAA4FB7C2C8677521FB5FB658", // Starfield Class 2 CA
+        "3E9099B5015E8F486C00BCEA9D111EE721FABA355A89BCF1DF69561E3DC6325C", // DigiCert Assured ID Root CA
+        "4348A0E9444C78CB265E058D5E8944B4D84F9662BD26DB257F8934A443C70161", // DigiCert Global Root CA
+        "7431E5F4C3C1CE4690774F0B61E05440883BA9A01ED00BA6ABD7806ED3B118CF", // DigiCert High Assurance EV Root CA
+        "62DD0BE9B9F50A163EA0F8E75C053B1ECA57EA55C8688F647C6881F2C8357B95", // SwissSign Gold CA - G2
+        "F1C1B50AE5A20DD8030EC9F6BC24823DD367B5255759B4E71B61FCE9F7375D73", // SecureTrust CA
+        "4200F5043AC8590EBB527D209ED1503029FBCBD41CA1B506EC27F15ADE7DAC69", // Secure Global CA
+        "0C2CD63DF7806FA399EDE809116B575BF87989F06518F9808C860503178BAF66", // COMODO Certification Authority
+        "1793927A0614549789ADCE2F8F34F7F0B66D0F3AE3A3B84D21EC15DBBA4FADC7", // COMODO ECC Certification Authority
+        "41C923866AB4CAD6B7AD578081582E020797A6CBDF4FFF78CE8396B38937D7F5", // OISTE WISeKey Global Root GA CA
+        "E3B6A2DB2ED7CE48842F7AC53241C7B71D54144BFB40C11F3F1D0B42F5EEA12D", // Certigna
+        "C0A6F4DC63A24BFDCF54EF2A6A082A0A72DE35803E2FF5FF527AE5D87206DFD5", // ePKI Root Certification Authority
+        "EAA962C4FA4A6BAFEBE415196D351CCD888D4F53F3FA8AE6D7C466A94E6042BB", // certSIGN ROOT CA
+        "6C61DAC3A2DEF031506BE036D2A6FE401994FBD13DF9C8D466599274C446EC98", // NetLock Arany (Class Gold) Főtanúsítvány
+        "3C5F81FEA5FAB82C64BFA2EAECAFCDE8E077FC8620A7CAE537163DF36EDBF378", // Microsec e-Szigno Root CA 2009
+        "CBB522D7B7F127AD6A0113865BDF1CD4102E7D0759AF635A7CF4720DC963C53B", // GlobalSign Root CA - R3
+        "2530CC8E98321502BAD96F9B1FBA1B099E2D299E0F4548BB914F363BC0D4531F", // Izenpe.com
+        "45140B3247EB9CC8C5B4F0D7B53091F73292089E6E5A63E2749DD3ACA9198EDA", // Go Daddy Root Certificate Authority - G2
+        "2CE1CB0BF9D2F9E102993FBE215152C3B2DD0CABDE1C68E5319B839154DBB7F5", // Starfield Root Certificate Authority - G2
+        "568D6905A2C88708A4B3025190EDCFEDB1974A606A13C6E5290FCB2AE63EDAB5", // Starfield Services Root Certificate Authority - G2
+        "0376AB1D54C5F9803CE4B2E201A0EE7EEF7B57B636E8A93C9B8D4860C96F5FA7", // AffirmTrust Commercial
+        "0A81EC5A929777F145904AF38D5D509F66B5E2C58FCDB531058B0E17F3F0B41B", // AffirmTrust Networking
+        "70A73F7F376B60074248904534B11482D5BF0E698ECC498DF52577EBF2E93B9A", // AffirmTrust Premium
+        "BD71FDF6DA97E4CF62D1647ADD2581B07D79ADF8397EB4ECBA9C5E8488821423", // AffirmTrust Premium ECC
+        "5C58468D55F58E497E743982D2B50010B6D165374ACF83A7D4A32DB768C4408E", // Certum Trusted Network CA
+        "BFD88FE1101C41AE3E801BF8BE56350EE9BAD1A6B9BD515EDC5C6D5B8711AC44", // TWCA Root Certification Authority
+        "513B2CECB810D4CDE5DD85391ADFC6C2DD60D87BB736D2B521484AA47A0EBEF6", // Security Communication RootCA2
+        "55926084EC963A64B96E2ABE01CE0BA86A64FBFEBCC7AAB5AFC155B37FD76066", // Actalis Authentication Root CA
+        "9A114025197C5BB95D94E63D55CD43790847B646B23CDF11ADA4A00EFF15FB48", // Buypass Class 2 Root CA
+        "EDF7EBBCA27A2A384D387B7D4010C666E2EDB4843E4C29B4AE1D5B9332E6B24D", // Buypass Class 3 Root CA
+        "FD73DAD31C644FF1B43BEF0CCDDA96710B9CD9875ECA7E31707AF3E96D522BBD", // T-TeleSec GlobalRoot Class 3
+        "49E7A442ACF0EA6287050054B52564B650E4F49E42E348D6AA38E039E957B1C1", // D-TRUST Root Class 3 CA 2 2009
+        "EEC5496B988CE98625B934092EEC2908BED0B0F316C2D4730C84EAF1F3D34881", // D-TRUST Root Class 3 CA 2 EV 2009
+        "E23D4A036D7B70E9F595B1422079D2B91EDFBB1FB651A0633EAA8A9DC5F80703", // CA Disig Root R2
+        "9A6EC012E1A7DA9DBE34194D478AD7C0DB1822FB071DF12981496ED104384113", // ACCVRAIZ1
+        "59769007F7685D0FCD50872F9F95D5755A5B2B457D81F3692B610A98672F0E1B", // TWCA Global Root CA
+        "DD6936FE21F8F077C123A1A521C12224F72255B73E03A7260693E8A24B0FA389", // TeliaSonera Root CA v1
+        "91E2F5788D5810EBA7BA58737DE1548A8ECACD014598BC0B143E041B17052552", // T-TeleSec GlobalRoot Class 2
+        "F356BEA244B7A91EB35D53CA9AD7864ACE018E2D35D5F8F96DDF68A6F41AA474", // Atos TrustedRoot 2011
+        "8A866FD1B276B57E578E921C65828A2BED58E9F2F288054134B7F1F4BFC9CC74", // QuoVadis Root CA 1 G3
+        "8FE4FB0AF93A4D0D67DB0BEBB23E37C71BF325DCBCDD240EA04DAF58B47E1840", // QuoVadis Root CA 2 G3
+        "88EF81DE202EB018452E43F864725CEA5FBD1FC2D9D205730709C5D8B8690F46", // QuoVadis Root CA 3 G3
+        "7D05EBB682339F8C9451EE094EEBFEFA7953A114EDB2F44949452FAB7D2FC185", // DigiCert Assured ID Root G2
+        "7E37CB8B4C47090CAB36551BA6F45DB840680FBA166A952DB100717F43053FC2", // DigiCert Assured ID Root G3
+        "CB3CCBB76031E5E0138F8DD39A23F9DE47FFC35E43C1144CEA27D46A5AB1CB5F", // DigiCert Global Root G2
+        "31AD6648F8104138C738F39EA4320133393E3A18CC02296EF97C2AC9EF6731D0", // DigiCert Global Root G3
+        "552F7BDCF1A7AF9E6CE672017F4F12ABF77240C78E761AC203D1D9D20AC89988", // DigiCert Trusted Root G4
+        "52F0E1C4E58EC629291B60317F074671B85D7EA80D5B07273463534B32B40234", // COMODO RSA Certification Authority
+        "E793C9B02FD8AA13E21C31228ACCB08119643B749C898964B1746D46C3D4CBD2", // USERTrust RSA Certification Authority
+        "4FF460D54B9C86DABFBCFC5712E0400D2BED3FBC4D4FBDAA86E06ADCD2A9AD7A", // USERTrust ECC Certification Authority
+        "179FBC148A3DD00FD24EA13458CC43BFA7F59C8182D783A513F6EBEC100C8924", // GlobalSign ECC Root CA - R5
+        "3C4FB0B95AB8B30032F432B86F535FE172C185D0FD39865837CF36187FA6F428", // Staat der Nederlanden Root CA - G3
+        "5D56499BE4D2E08BCFCAD08A3E38723D50503BDE706948E42F55603019E528AE", // IdenTrust Commercial Root CA 1
+        "30D0895A9A448A262091635522D1F52010B5867ACAE12C78EF958FD4F4389F2F", // IdenTrust Public Sector Root CA 1
+        "43DF5774B03E7FEF5FE40D931A7BEDF1BB2E6B42738C4E6D3841103D3AA7F339", // Entrust Root Certification Authority - G2
+        "02ED0EB28C14DA45165C566791700D6451D7FB56F0B2AB1D3B8EB070E56EDFF5", // Entrust Root Certification Authority - EC1
+        "5CC3D78E4E1D5E45547A04E6873E64F90CF9536D1CCC2EF800F355C4C5FD70FD", // CFCA EV ROOT
+        "6B9C08E86EB0F767CFAD65CD98B62149E5494A67F5845E7BD1ED019F27B86BD6", // OISTE WISeKey Global Root GB CA
+        "A1339D33281A0B56E557D3D32B1CE7F9367EB094BD5FA72A7E5004C8DED7CAFE", // SZAFIR ROOT CA2
+        "B676F2EDDAE8775CD36CB0F63CD1D4603961F49E6265BA013A2F0307B6D0B804", // Certum Trusted Network CA 2
+        "A040929A02CE53B4ACF4F2FFC6981CE4496F755E6D45FE0B2A692BCD52523F36", // Hellenic Academic and Research Institutions RootCA 2015
+        "44B545AA8A25E65A73CA15DC27FC36D24C1CB9953A066539B11582DC487B4833", // Hellenic Academic and Research Institutions ECC RootCA 2015
+        "96BCEC06264976F37460779ACF28C5A7CFE8A3C0AAE11A8FFCEE05C0BDDF08C6", // ISRG Root X1
+        "EBC5570C29018C4D67B1AA127BAF12F703B4611EBC17B7DAB5573894179B93FA", // AC RAIZ FNMT-RCM
+        "8ECDE6884F3D87B1125BA31AC3FCB13D7016DE7F57CC904FE1CB97C6AE98196E", // Amazon Root CA 1
+        "1BA5B2AA8C65401A82960118F80BEC4F62304D83CEC4713A19C39C011EA46DB4", // Amazon Root CA 2
+        "18CE6CFE7BF14E60B2E347B8DFE868CB31D02EBB3ADA271569F50343B46DB3A4", // Amazon Root CA 3
+        "E35D28419ED02025CFA69038CD623962458DA5C695FBDEA3C22B0BFB25897092", // Amazon Root CA 4
+        "A1A86D04121EB87F027C66F53303C28E5739F943FC84B38AD6AF009035DD9457", // D-TRUST Root CA 3 2013
+        "46EDC3689046D53A453FB3104AB80DCAEC658B2660EA1629DD7E867990648716", // TUBITAK Kamu SM SSL Kok Sertifikasi - Surum 1
+        "BFFF8FD04433487D6A8AA60C1A29767A9FC2BBB05E420F713A13B992891D3893", // GDCA TrustAUTH R5 ROOT
+        "85666A562EE0BE5CE925C1D8890A6F76A87EC16D4D7D5F29EA7419CF20123B69", // SSL.com Root Certification Authority RSA
+        "3417BB06CC6007DA1B961C920B8AB4CE3FAD820E4AA30B9ACBC4A74EBDCEBC65", // SSL.com Root Certification Authority ECC
+        "2E7BF16CC22485A7BBE2AA8696750761B0AE39BE3B2FE9D0CC6D4EF73491425C", // SSL.com EV Root Certification Authority RSA R2
+        "22A2C1F7BDED704CC1E701B5F408C310880FE956B5DE2A4A44F99C873A25A7C8", // SSL.com EV Root Certification Authority ECC
+        "2CABEAFE37D06CA22ABA7391C0033D25982952C453647349763A3AB5AD6CCF69", // GlobalSign Root CA - R6
+        "8560F91C3624DABA9570B5FEA0DBE36FF11A8323BE9486854FB3F34A5571198D", // OISTE WISeKey Global Root GC CA
+        "9BEA11C976FE014764C1BE56A6F914B5A560317ABD9988393382E5161AA0493C", // UCA Global G2 Root
+        "D43AF9B35473755C9684FC06D7D8CB70EE5C28E773FB294EB41EE71722924D24", // UCA Extended Validation Root
+        "D48D3D23EEDB50A459E55197601C27774B9D7B18C94D5A059511A10250B93168", // Certigna Root CA
+        "40F6AF0346A99AA1CD1D555A4E9CCE62C7F9634603EE406615833DC8C8D00367", // emSign Root CA - G1
+        "86A1ECBA089C4A8D3BBE2734C612BA341D813E043CF9E8A862CD5C57A36BBE6B", // emSign ECC Root CA - G3
+        "125609AA301DA0A249B97A8239CB6A34216F44DCAC9F3954B14292F2E8C8608F", // emSign Root CA - C1
+        "BC4D809B15189D78DB3E1D8CF4F9726A795DA1643CA5F1358E1DDB0EDC0D7EB3", // emSign ECC Root CA - C3
+        "5A2FC03F0C83B090BBFA40604B0988446C7636183DF9846E17101A447FB8EFD6", // Hongkong Post Root CA 3
+        "DB3517D1F6732A2D5AB97C533EC70779EE3270A62FB4AC4238372460E6F01E88", // Entrust Root Certification Authority - G4
+        "358DF39D764AF9E1B766E9C972DF352EE15CFAC227AF6AD1D70E8E4A6EDCBA02", // Microsoft ECC Root Certificate Authority 2017
+        "C741F70F4B2A8D88BF2E71C14122EF53EF10EBA0CFA5E64CFA20F418853073E0", // Microsoft RSA Root Certificate Authority 2017
+        "BEB00B30839B9BC32C32E4447905950641F26421B15ED089198B518AE2EA1B99", // e-Szigno Root CA 2017
+        "657CFE2FA73FAA38462571F332A2363A46FCE7020951710702CDFBB6EEDA3305", // certSIGN Root CA G2
+        "97552015F5DDFC3C8788C006944555408894450084F100867086BC1A2BB58DC8", // Trustwave Global Certification Authority
+        "945BBC825EA554F489D1FD51A73DDF2EA624AC7019A05205225C22A78CCFA8B4", // Trustwave Global ECC P256 Certification Authority
+        "55903859C8C0C3EBB8759ECE4E2557225FF5758BBD38EBD48276601E1BD58097", // Trustwave Global ECC P384 Certification Authority
+        "88F438DCF8FFD1FA8F429115FFE5F82AE1E06E0C70C375FAAD717B34A49E7265", // NAVER Global Root Certification Authority
+        "554153B13D2CF9DDB753BFBE1A4E0AE08D0AA4187058FE60A2B862B2E4B87BCB", // AC RAIZ FNMT-RCM SERVIDORES SEGUROS
+        "319AF0A7729E6F89269C131EA6A3A16FCD86389FDCAB3C47A4A675C161A3F974", // GlobalSign Secure Mail Root R45
+        "5CBF6FB81FD417EA4128CD6F8172A3C9402094F74AB2ED3A06B4405D04F30B19", // GlobalSign Secure Mail Root E45
+        "4FA3126D8D3A11D1C4855A4F807CBAD6CF919D3A5A88B03BEA2C6372D93C40C9", // GlobalSign Root R46
+        "CBB9C44D84B8043E1050EA31A69F514955D7BFD2E2C6B49301019AD61D9F5058", // GlobalSign Root E46
+        "9A296A5182D1D451A2E37F439B74DAAFA267523329F90F9A0D2007C334E23C9A", // GLOBALTRUST 2020
+        "FB8FEC759169B9106B1E511644C618C51304373F6C0643088D8BEFFD1B997599", // ANF Secure Server Root CA
+        "6B328085625318AA50D173C98D8BDA09D57E27413D114CF787A0F5D06C030CF6", // Certum EC-384 CA
+        "FE7696573855773E37A95E7AD4D9CC96C30157C15D31765BA9B15704E1AE78FD", // Certum Trusted Root CA
+        "2E44102AB58CB85419451C8E19D9ACF3662CAFBC614B6A53960A30F7D0E2EB41", // TunTrust Root CA
+        "D95D0E8EDA79525BF9BEB11B14D2100D3294985F0C62D9FABD9CD999ECCB7B1D", // HARICA TLS RSA Root CA 2021
+        "3F99CC474ACFCE4DFED58794665E478D1547739F2E780F1BB4CA9B133097D401", // HARICA TLS ECC Root CA 2021
+        "1BE7ABE30686B16348AFD1C61B6866A0EA7F4821E67D5E8AF937CF8011BC750D", // HARICA Client RSA Root CA 2021
+        "8DD4B5373CB0DE36769C12339280D82746B3AA6CD426E797A31BABE4279CF00B", // HARICA Client ECC Root CA 2021
+        "57DE0583EFD2B26E0361DA99DA9DF4648DEF7EE8441C3B728AFA9BCDE0F9B26A", // Autoridad de Certificacion Firmaprofesional CIF A62634068
+        "30FBBA2C32238E2A98547AF97931E550428B9B3F1C8EEB6633DCFA86C5B27DD3", // vTrus ECC Root CA
+        "8A71DE6559336F426C26E53880D00D88A18DA4C6A91F0DCB6194E206C5C96387", // vTrus Root CA
+        "69729B8E15A86EFC177A57AFB7171DFC64ADD28C2FCA8CF1507E34453CCB1470", // ISRG Root X2
+        "F015CE3CC239BFEF064BE9F1D2C417E1A0264A0A94BE1F0C8D121864EB6949CC", // HiPKI Root CA - G1
+        "B085D70B964F191A73E4AF0D54AE7A0E07AAFDAF9B71DD0862138AB7325A24A2", // GlobalSign ECC Root CA - R4
+        "D947432ABDE7B7FA90FC2E6B59101B1280E0E1C7E4E40FA3C6887FFF57A7F4CF", // GTS Root R1
+        "8D25CD97229DBF70356BDA4EB3CC734031E24CF00FAFCFD32DC76EB5841C7EA8", // GTS Root R2
+        "34D8A73EE208D9BCDB0D956520934B4E40E69482596E8B6F73C8426B010A6F48", // GTS Root R3
+        "349DFA4058C5E263123B398AE795573C4E1313C83FE68F93556CD5E8031B3C7D", // GTS Root R4
+        "242B69742FCB1E5B2ABF98898B94572187544E5B4D9911786573621F6A74B82C", // Telia Root CA v2
+        "E59AAA816009C22BFF5B25BAD37DF306F049797C1F81D85AB089E657BD8F0044", // D-TRUST BR Root CA 1 2020
+        "08170D1AA36453901A2F959245E347DB0C8D37ABAABC56B81AA100DC958970DB", // D-TRUST EV Root CA 1 2020
+        "018E13F0772532CF809BD1B17281867283FC48C6E13BE9C69812854A490C1B05", // DigiCert TLS ECC P384 Root G5
+        "371A00DC0533B3721A7EEB40E8419E70799D2B0A0F2C1D80693165F7CEC4AD75", // DigiCert TLS RSA4096 Root G5
+        "E8E8176536A60CC2C4E10187C3BEFCA20EF263497018F566D5BEA0F94D0C111B", // DigiCert SMIME ECC P384 Root G5
+        "90370D3EFA88BF58C30105BA25104A358460A7FA52DFC2011DF233A0F417912A", // DigiCert SMIME RSA4096 Root G5
+        "77B82CD8644C4305F7ACC5CB156B45675004033D51C60C6202A8E0C33467D3A0", // Certainly Root R1
+        "B4585F22E4AC756A4E8612A1361C5D9D031A93FD84FEBB778FA3068B0FC42DC2", // Certainly Root E1
+        "82BD5D851ACF7F6E1BA7BFCBC53030D0E7BC3C21DF772D858CAB41D199BDF595", // DIGITALSIGN GLOBAL ROOT RSA CA
+        "261D7114AE5F8FF2D8C7209A9DE4289E6AFC9D717023D85450909199F1857CFE", // DIGITALSIGN GLOBAL ROOT ECDSA CA
+        "E74FBDA55BD564C473A36B441AA799C8A68E077440E8288B9FA1E50E4BBACA11", // Security Communication ECC RootCA1
+        "F3896F88FE7C0A882766A7FA6AD2749FB57A7F3E98FB769C1FA7B09C2C44D5AE", // BJCA Global Root CA1
+        "574DF6931E278039667B720AFDC1600FC27EB66DD3092979FB73856487212882", // BJCA Global Root CA2
+        "48E1CF9E43B688A51044160F46D773B8277FE45BEAAD0E4DF90D1974382FEA99", // LAWtrust Root CA2 (4096)
+        "22D9599234D60F1D4BC7C7E96F43FA555B07301FD475175089DAFB8C25E477B3", // Sectigo Public Email Protection Root E46
+        "D5917A7791EB7CF20A2E57EB98284A67B28A57E89182DA53D546678C9FDE2B4F", // Sectigo Public Email Protection Root R46
+        "C90F26F0FB1B4018B22227519B5CA2B53E2CA5B3BE5CF18EFE1BEF47380C5383", // Sectigo Public Server Authentication Root E46
+        "7BB647A62AEEAC88BF257AA522D01FFEA395E0AB45C73F93F65654EC38F25A06", // Sectigo Public Server Authentication Root R46
+        "8FAF7D2E2CB4709BB8E0B33666BF75A5DD45B5DE480F8EA8D4BFE6BEBC17F2ED", // SSL.com TLS RSA Root CA 2022
+        "C32FFD9F46F936D16C3673990959434B9AD60AAFBB9E7CF33654F144CC1BA143", // SSL.com TLS ECC Root CA 2022
+        "AD7DD58D03AEDB22A30B5084394920CE12230C2D8017AD9B81AB04079BDD026B", // SSL.com Client ECC Root CA 2022
+        "1D4CA4A2AB21D0093659804FC0EB2175A617279B56A2475245C9517AFEB59153", // SSL.com Client RSA Root CA 2022
+        "E38655F4B0190C84D3B3893D840A687E190A256D98052F159E6D4A39F589A6EB", // Atos TrustedRoot Root CA ECC G2 2020
+        "78833A783BB2986C254B9370D3C20E5EBA8FA7840CBF63FE17297A0B0119685E", // Atos TrustedRoot Root CA RSA G2 2020
+        "B2FAE53E14CCD7AB9212064701AE279C1D8988FACB775FA8A008914E663988A8", // Atos TrustedRoot Root CA ECC TLS 2021
+        "81A9088EA59FB364C548A6F85559099B6F0405EFBF18E5324EC9F457BA00112F", // Atos TrustedRoot Root CA RSA TLS 2021
+        "E0D3226AEB1163C2E48FF9BE3B50B4C6431BE7BB1EACC5C36B5D5EC509039A08", // TrustAsia Global Root CA G3
+        "BE4B56CB5056C0136A526DF444508DAA36A0B54F42E4AC38F72AF470E479654C", // TrustAsia Global Root CA G4
+        "D92C171F5CF890BA428019292927FE22F3207FD2B54449CB6F675AF4922146E2", // D-Trust SBR Root CA 1 2022
+        "DBA84DD7EF622D485463A90137EA4D574DF8550928F6AFA03B4D8B1141E636CC", // D-Trust SBR Root CA 2 2022
+        "3AE6DF7E0D637A65A8C81612EC6F9A142F85A16834C10280D88E707028518755", // Telekom Security SMIME ECC Root 2021
+        "578AF4DED0853F4E5998DB4AEAF9CBEA8D945F60B620A38D1A3C13B2BC7BA8E1", // Telekom Security TLS ECC Root 2020
+        "78A656344F947E9CC0F734D9053D32F6742086B6B9CD2CAE4FAE1A2E4EFDE048", // Telekom Security SMIME RSA Root 2023
+        "EFC65CADBB59ADB6EFE84DA22311B35624B71B3B1EA0DA8B6655174EC8978646", // Telekom Security TLS RSA Root 2023
+        "BEF256DAF26E9C69BDEC1602359798F3CAF71821A03E018257C53C65617F3D4A", // FIRMAPROFESIONAL CA ROOT-A WEB
+        "3F63BB2814BE174EC8B6439CF08D6D56F0B7C405883A5648A334424D6B3EC558", // TWCA CYBER Root CA
+        "3A0072D49FFC04E996C59AEB75991D3C340F3615D6FD4DCE90AC0B3D88EAD4F4", // TWCA Global Root CA G2
+        "3F034BB5704D44B2D08545A02057DE93EBF3905FCE721ACBC730C06DDAEE904E", // SecureSign Root CA12
+        "4B009C1034494F9AB56BBA3BA1D62731FC4D20D8955ADCEC10A925607261E338", // SecureSign Root CA14
+        "E778F0F095FE843729CD1A0082179E5314A9C291442805E1FB1D8FB6B8886C3A", // SecureSign Root CA15
+        "0552E6F83FDF65E8FA9670E666DF28A4E21340B510CBE52566F97C4FB94B2BD1", // D-TRUST BR Root CA 2 2023
+        "436472C1009A325C54F1A5BBB5468A7BAEECCBE05DE5F099CB70D3FE41E13C16", // TrustAsia SMIME ECC Root CA
+        "C7796BEB62C101BB143D262A7C96A0C6168183223EF50D699632D86E03B8CC9B", // TrustAsia SMIME RSA Root CA
+        "C0076B9EF0531FB1A656D67C4EBE97CD5DBAA41EF44598ACC2489878C92D8711", // TrustAsia TLS ECC Root CA
+        "06C08D7DAFD876971EB1124FE67F847EC0C7A158D3EA53CBE940E2EA9791F4C3", // TrustAsia TLS RSA Root CA
+        "8E8221B2E7D4007836A1672F0DCC299C33BC07D316F132FA1A206D587150F1CE", // D-TRUST EV Root CA 2 2023
+        "9A12C392BFE57891A0C545309D4D9FD567E480CB613D6342278B195C79A7931F", // SwissSign RSA SMIME Root CA 2022 - 1
+        "193144F431E0FDDB740717D4DE926A571133884B4360D30E272913CBE660CE41", // SwissSign RSA TLS Root CA 2022 - 1
+        "D9A32485A8CCA85539CEF12FFFFF711378A17851D73DA2732AB4302D763BD62B", // OISTE Client Root ECC G1
+        "D02A0F994A868C66395F2E7A880DF509BD0C29C96DE16015A0FD501EDA4F96A9", // OISTE Client Root RSA G1
+        "EEC997C0C30F216F7E3B8B307D2BAE42412D753FC8219DAFD1520B2572850F49", // OISTE Server Root ECC G1
+        "9AE36232A5189FFDDB353DFD26520C015395D22777DAC59DB57B98C089A651E6", // OISTE Server Root RSA G1
+    };
+
+    /// <summary>
+    /// Get certificate in PEM format from a server with CA pinning validation
+    /// </summary>
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4)
+    {
+        try
+        {
+            var (domain, _, port, _) = Utils.ParseUrl(target);
+
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
+            using var client = new TcpClient();
+            await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
+
+            using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
+
+            var sslOptions = new SslClientAuthenticationOptions
+            {
+                TargetHost = serverName,
+                RemoteCertificateValidationCallback = ValidateServerCertificate
+            };
+
+            await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
+
+            var remote = ssl.RemoteCertificate;
+            if (remote == null)
+            {
+                return (null, null);
+            }
+
+            var leaf = new X509Certificate2(remote);
+            return (ExportCertToPem(leaf), null);
+        }
+        catch (OperationCanceledException)
+        {
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
+            return (null, $"Connection timeout after {timeout} seconds");
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return (null, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Get certificate chain in PEM format from a server with CA pinning validation
+    /// </summary>
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4)
+    {
+        var pemList = new List<string>();
+        try
+        {
+            var (domain, _, port, _) = Utils.ParseUrl(target);
+
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
+            using var client = new TcpClient();
+            await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
+
+            using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
+
+            var sslOptions = new SslClientAuthenticationOptions
+            {
+                TargetHost = serverName,
+                RemoteCertificateValidationCallback = ValidateServerCertificate
+            };
+
+            await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
+
+            if (ssl.RemoteCertificate is not X509Certificate2 certChain)
+            {
+                return (pemList, null);
+            }
+
+            var chain = new X509Chain();
+            chain.Build(certChain);
+
+            foreach (var element in chain.ChainElements)
+            {
+                var pem = ExportCertToPem(element.Certificate);
+                pemList.Add(pem);
+            }
+
+            return (pemList, null);
+        }
+        catch (OperationCanceledException)
+        {
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
+            return (pemList, $"Connection timeout after {timeout} seconds");
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return (pemList, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Validate server certificate with CA pinning
+    /// </summary>
+    private bool ValidateServerCertificate(
+        object sender,
+        X509Certificate? certificate,
+        X509Chain? chain,
+        SslPolicyErrors sslPolicyErrors)
+    {
+        if (certificate == null)
+        {
+            return false;
+        }
+
+        // Check certificate name mismatch
+        if (sslPolicyErrors.HasFlag(SslPolicyErrors.RemoteCertificateNameMismatch))
+        {
+            return false;
+        }
+
+        // Build certificate chain
+        var cert2 = certificate as X509Certificate2 ?? new X509Certificate2(certificate);
+        var certChain = chain ?? new X509Chain();
+
+        certChain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+        certChain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+        certChain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+        certChain.ChainPolicy.VerificationTime = DateTime.Now;
+
+        certChain.Build(cert2);
+
+        // Find root CA
+        if (certChain.ChainElements.Count == 0)
+        {
+            return false;
+        }
+
+        var rootCert = certChain.ChainElements[certChain.ChainElements.Count - 1].Certificate;
+        var rootThumbprint = rootCert.GetCertHashString(HashAlgorithmName.SHA256);
+
+        return TrustedCaThumbprints.Contains(rootThumbprint);
+    }
+
+    public static string ExportCertToPem(X509Certificate2 cert)
+    {
+        var der = cert.Export(X509ContentType.Cert);
+        var b64 = Convert.ToBase64String(der);
+        return $"-----BEGIN CERTIFICATE-----\n{b64}\n-----END CERTIFICATE-----\n";
+    }
+
+    /// <summary>
+    /// Parse concatenated PEM certificates string into a list of individual certificates
+    /// Normalizes format: removes line breaks from base64 content for better compatibility
+    /// </summary>
+    /// <param name="pemChain">Concatenated PEM certificates string (supports both \r\n and \n line endings)</param>
+    /// <returns>List of individual PEM certificate strings with normalized format</returns>
+    public static List<string> ParsePemChain(string pemChain)
+    {
+        var certs = new List<string>();
+        if (string.IsNullOrWhiteSpace(pemChain))
+        {
+            return certs;
+        }
+
+        // Normalize line endings (CRLF -> LF) at the beginning
+        pemChain = pemChain.Replace("\r\n", "\n").Replace("\r", "\n");
+
+        const string beginMarker = "-----BEGIN CERTIFICATE-----";
+        const string endMarker = "-----END CERTIFICATE-----";
+
+        var index = 0;
+        while (index < pemChain.Length)
+        {
+            var beginIndex = pemChain.IndexOf(beginMarker, index, StringComparison.Ordinal);
+            if (beginIndex == -1)
+                break;
+
+            var endIndex = pemChain.IndexOf(endMarker, beginIndex, StringComparison.Ordinal);
+            if (endIndex == -1)
+                break;
+
+            // Extract certificate content
+            var base64Start = beginIndex + beginMarker.Length;
+            var base64Content = pemChain.Substring(base64Start, endIndex - base64Start);
+
+            // Remove all whitespace from base64 content
+            base64Content = new string(base64Content.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+            // Reconstruct with clean format: BEGIN marker + base64 (no line breaks) + END marker
+            var normalizedCert = $"{beginMarker}\n{base64Content}\n{endMarker}\n";
+            certs.Add(normalizedCert);
+
+            // Move to next certificate
+            index = endIndex + endMarker.Length;
+        }
+
+        return certs;
+    }
+
+    /// <summary>
+    /// Concatenate a list of PEM certificates into a single string
+    /// </summary>
+    /// <param name="pemList">List of individual PEM certificate strings</param>
+    /// <returns>Concatenated PEM certificates string</returns>
+    public static string ConcatenatePemChain(IEnumerable<string> pemList)
+    {
+        if (pemList == null)
+        {
+            return string.Empty;
+        }
+
+        return string.Concat(pemList);
+    }
+}

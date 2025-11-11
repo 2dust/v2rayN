@@ -1,11 +1,4 @@
-using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using static ServiceLib.Models.ClashProviders;
 using static ServiceLib.Models.ClashProxies;
 
@@ -69,6 +62,8 @@ public class ClashProxiesViewModel : MyReactiveObject
         SortingSelected = _config.ClashUIItem.ProxiesSorting;
         RuleModeSelected = (int)_config.ClashUIItem.RuleMode;
 
+        #region WhenAnyValue && ReactiveCommand
+
         this.WhenAnyValue(
            x => x.SelectedGroup,
            y => y != null && y.Name.IsNotEmpty())
@@ -88,6 +83,17 @@ public class ClashProxiesViewModel : MyReactiveObject
         x => x.AutoRefresh,
         y => y == true)
             .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
+
+        #endregion WhenAnyValue && ReactiveCommand
+
+        #region AppEvents
+
+        AppEvents.ProxiesReloadRequested
+            .AsObservable()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async _ => await ProxiesReload());
+
+        #endregion AppEvents
 
         _ = Init();
     }
@@ -205,7 +211,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         }
 
         //from api
-        foreach (KeyValuePair<string, ProxiesItem> kv in _proxies)
+        foreach (var kv in _proxies)
         {
             if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
             {
@@ -239,6 +245,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         {
             SelectedGroup = new();
         }
+        await Task.CompletedTask;
     }
 
     private void RefreshProxyDetails(bool c)
@@ -313,7 +320,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         //from providers
         if (_providers != null)
         {
-            foreach (KeyValuePair<string, ProvidersItem> kv in _providers)
+            foreach (var kv in _providers)
             {
                 if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
                 {
@@ -385,6 +392,7 @@ public class ClashProxiesViewModel : MyReactiveObject
                 _ = ProxiesDelayTestResult(model);
                 return Disposable.Empty;
             });
+            await Task.CompletedTask;
         });
         await Task.CompletedTask;
     }
@@ -413,6 +421,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             detail.Delay = _delayTimeout;
             detail.DelayName = string.Empty;
         }
+        await Task.CompletedTask;
     }
 
     #endregion proxy function

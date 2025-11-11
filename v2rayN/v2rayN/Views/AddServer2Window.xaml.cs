@@ -1,7 +1,3 @@
-using System.Reactive.Disposables;
-using System.Windows;
-using ReactiveUI;
-
 namespace v2rayN.Views;
 
 public partial class AddServer2Window
@@ -10,8 +6,8 @@ public partial class AddServer2Window
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
-        this.Loaded += Window_Loaded;
+        Owner = Application.Current.MainWindow;
+        Loaded += Window_Loaded;
         ViewModel = new AddServer2ViewModel(profileItem, UpdateViewHandler);
 
         cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != ECoreType.v2rayN.ToString()).ToList().AppendEmpty();
@@ -36,11 +32,11 @@ public partial class AddServer2Window
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
 
             case EViewAction.BrowseServer:
-                if (UI.OpenFileDialog(out string fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
+                if (UI.OpenFileDialog(out var fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
                 {
                     return false;
                 }

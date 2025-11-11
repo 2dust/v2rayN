@@ -1,6 +1,3 @@
-using System.Net;
-using System.Net.NetworkInformation;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService(Config config)
@@ -16,7 +13,7 @@ public partial class CoreConfigV2rayService(Config config)
         try
         {
             if (node == null
-                || node.Port <= 0)
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -29,6 +26,18 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             ret.Msg = ResUI.InitialConfiguration;
+
+            if (node.ConfigType.IsGroupType())
+            {
+                switch (node.ConfigType)
+                {
+                    case EConfigType.PolicyGroup:
+                        return await GenerateClientMultipleLoadConfig(node);
+
+                    case EConfigType.ProxyChain:
+                        return await GenerateClientChainConfig(node);
+                }
+            }
 
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
             if (result.IsNullOrEmpty())
@@ -71,7 +80,7 @@ public partial class CoreConfigV2rayService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(List<ProfileItem> selecteds, EMultipleLoad multipleLoad)
+    public async Task<RetResult> GenerateClientMultipleLoadConfig(ProfileItem parentNode)
     {
         var ret = new RetResult();
 
@@ -85,8 +94,8 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            string result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            string txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -99,70 +108,52 @@ public partial class CoreConfigV2rayService(Config config)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
+            v2rayConfig.outbounds.RemoveAt(0);
 
             await GenLog(v2rayConfig);
             await GenInbounds(v2rayConfig);
-            await GenRouting(v2rayConfig);
-            await GenDns(null, v2rayConfig);
-            await GenStatistic(v2rayConfig);
-            v2rayConfig.outbounds.RemoveAt(0);
 
-            var proxyProfiles = new List<ProfileItem>();
-            foreach (var it in selecteds)
-            {
-                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
-                {
-                    continue;
-                }
-                if (it.Port <= 0)
-                {
-                    continue;
-                }
-                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (item is null)
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
-                {
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                  && !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-
-                //outbound
-                proxyProfiles.Add(item);
-            }
-            if (proxyProfiles.Count <= 0)
+            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
+            if (groupRet != 0)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            await GenOutboundsList(proxyProfiles, v2rayConfig);
 
-            //add balancers
-            await GenBalancer(v2rayConfig, multipleLoad);
+            await GenRouting(v2rayConfig);
+            await GenDns(null, v2rayConfig);
+            await GenStatistic(v2rayConfig);
 
-            var balancer = v2rayConfig.routing.balancers.First();
+            var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
 
             //add rule
-            var rules = v2rayConfig.routing.rules.Where(t => t.outboundTag == Global.ProxyTag).ToList();
-            if (rules?.Count > 0)
+            var rules = v2rayConfig.routing.rules;
+            if (rules?.Count > 0 && ((v2rayConfig.routing.balancers?.Count ?? 0) > 0))
             {
+                var balancerTagSet = v2rayConfig.routing.balancers
+                    .Select(b => b.tag)
+                    .ToHashSet();
+
                 foreach (var rule in rules)
                 {
-                    rule.outboundTag = null;
-                    rule.balancerTag = balancer.tag;
+                    if (rule.outboundTag == null)
+                    {
+                        continue;
+                    }
+
+                    if (balancerTagSet.Contains(rule.outboundTag))
+                    {
+                        rule.balancerTag = rule.outboundTag;
+                        rule.outboundTag = null;
+                        continue;
+                    }
+
+                    var outboundWithSuffix = rule.outboundTag + Global.BalancerTagSuffix;
+                    if (balancerTagSet.Contains(outboundWithSuffix))
+                    {
+                        rule.balancerTag = outboundWithSuffix;
+                        rule.outboundTag = null;
+                    }
                 }
             }
             if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
@@ -170,7 +161,7 @@ public partial class CoreConfigV2rayService(Config config)
                 v2rayConfig.routing.rules.Add(new()
                 {
                     ip = ["0.0.0.0/0", "::/0"],
-                    balancerTag = balancer.tag,
+                    balancerTag = defaultBalancerTag,
                     type = "field"
                 });
             }
@@ -179,14 +170,71 @@ public partial class CoreConfigV2rayService(Config config)
                 v2rayConfig.routing.rules.Add(new()
                 {
                     network = "tcp,udp",
-                    balancerTag = balancer.tag,
+                    balancerTag = defaultBalancerTag,
                     type = "field"
                 });
             }
 
             ret.Success = true;
 
-            ret.Data = await ApplyFullConfigTemplate(v2rayConfig, true);
+            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
+            return ret;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            ret.Msg = ResUI.FailedGenDefaultConfiguration;
+            return ret;
+        }
+    }
+
+    public async Task<RetResult> GenerateClientChainConfig(ProfileItem parentNode)
+    {
+        var ret = new RetResult();
+
+        try
+        {
+            if (_config == null)
+            {
+                ret.Msg = ResUI.CheckServerSettings;
+                return ret;
+            }
+
+            ret.Msg = ResUI.InitialConfiguration;
+
+            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
+            {
+                ret.Msg = ResUI.FailedGetDefaultConfiguration;
+                return ret;
+            }
+
+            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+            if (v2rayConfig == null)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+            v2rayConfig.outbounds.RemoveAt(0);
+
+            await GenLog(v2rayConfig);
+            await GenInbounds(v2rayConfig);
+
+            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
+            if (groupRet != 0)
+            {
+                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                return ret;
+            }
+
+            await GenRouting(v2rayConfig);
+            await GenDns(null, v2rayConfig);
+            await GenStatistic(v2rayConfig);
+
+            ret.Success = true;
+
+            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
             return ret;
         }
         catch (Exception ex)
@@ -255,12 +303,9 @@ public partial class CoreConfigV2rayService(Config config)
                     continue;
                 }
                 var item = await AppManager.Instance.GetProfileItem(it.IndexId);
-                if (it.ConfigType is EConfigType.VMess or EConfigType.VLESS)
+                if (item is null || item.IsComplex() || !item.IsValid())
                 {
-                    if (item is null || item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 //find unused port
@@ -289,28 +334,6 @@ public partial class CoreConfigV2rayService(Config config)
                 it.Port = port;
                 it.AllowTest = true;
 
-                //outbound
-                if (item is null)
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.Shadowsocks
-                    && !Global.SsSecuritiesInXray.Contains(item.Security))
-                {
-                    continue;
-                }
-                if (item.ConfigType == EConfigType.VLESS
-                 && !Global.Flows.Contains(item.Flow))
-                {
-                    continue;
-                }
-                if (it.ConfigType is EConfigType.VLESS or EConfigType.Trojan
-                    && item.StreamSecurity == Global.StreamSecurityReality
-                    && item.PublicKey.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
                 //inbound
                 Inbounds4Ray inbound = new()
                 {
@@ -321,6 +344,7 @@ public partial class CoreConfigV2rayService(Config config)
                 inbound.tag = inbound.protocol + inbound.port.ToString();
                 v2rayConfig.inbounds.Add(inbound);
 
+                //outbound
                 var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(item, outbound);
                 outbound.tag = Global.ProxyTag + inbound.port.ToString();
@@ -354,7 +378,8 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node is not { Port: > 0 })
+            if (node == null
+                || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;

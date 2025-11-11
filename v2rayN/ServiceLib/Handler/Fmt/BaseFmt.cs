@@ -4,6 +4,8 @@ namespace ServiceLib.Handler.Fmt;
 
 public class BaseFmt
 {
+    private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure", "verify" };
+
     protected static string GetIpv6(string address)
     {
         if (Utils.IsIpv6(address))
@@ -17,7 +19,7 @@ public class BaseFmt
         }
     }
 
-    protected static int GetStdTransport(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
+    protected static int ToUriQuery(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
     {
         if (item.Flow.IsNotEmpty())
         {
@@ -37,11 +39,7 @@ public class BaseFmt
         }
         if (item.Sni.IsNotEmpty())
         {
-            dicQuery.Add("sni", item.Sni);
-        }
-        if (item.Alpn.IsNotEmpty())
-        {
-            dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
+            dicQuery.Add("sni", Utils.UrlEncode(item.Sni));
         }
         if (item.Fingerprint.IsNotEmpty())
         {
@@ -63,9 +61,14 @@ public class BaseFmt
         {
             dicQuery.Add("pqv", Utils.UrlEncode(item.Mldsa65Verify));
         }
-        if (item.AllowInsecure.Equals("true"))
+
+        if (item.StreamSecurity.Equals(Global.StreamSecurity))
         {
-            dicQuery.Add("allowInsecure", "1");
+            if (item.Alpn.IsNotEmpty())
+            {
+                dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
+            }
+            ToUriQueryAllowInsecure(item, ref dicQuery);
         }
 
         dicQuery.Add("type", item.Network.IsNotEmpty() ? item.Network : nameof(ETransport.tcp));
@@ -153,63 +156,107 @@ public class BaseFmt
         return 0;
     }
 
-    protected static int ResolveStdTransport(NameValueCollection query, ref ProfileItem item)
+    protected static int ToUriQueryLite(ProfileItem item, ref Dictionary<string, string> dicQuery)
     {
-        item.Flow = query["flow"] ?? "";
-        item.StreamSecurity = query["security"] ?? "";
-        item.Sni = query["sni"] ?? "";
-        item.Alpn = Utils.UrlDecode(query["alpn"] ?? "");
-        item.Fingerprint = Utils.UrlDecode(query["fp"] ?? "");
-        item.PublicKey = Utils.UrlDecode(query["pbk"] ?? "");
-        item.ShortId = Utils.UrlDecode(query["sid"] ?? "");
-        item.SpiderX = Utils.UrlDecode(query["spx"] ?? "");
-        item.Mldsa65Verify = Utils.UrlDecode(query["pqv"] ?? "");
-        item.AllowInsecure = (query["allowInsecure"] ?? "") == "1" ? "true" : "";
+        if (item.Sni.IsNotEmpty())
+        {
+            dicQuery.Add("sni", Utils.UrlEncode(item.Sni));
+        }
+        if (item.Alpn.IsNotEmpty())
+        {
+            dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
+        }
 
-        item.Network = query["type"] ?? nameof(ETransport.tcp);
+        ToUriQueryAllowInsecure(item, ref dicQuery);
+
+        return 0;
+    }
+
+    private static int ToUriQueryAllowInsecure(ProfileItem item, ref Dictionary<string, string> dicQuery)
+    {
+        if (item.AllowInsecure.Equals(Global.AllowInsecure.First()))
+        {
+            // Add two for compatibility
+            dicQuery.Add("insecure", "1");
+            dicQuery.Add("allowInsecure", "1");
+        }
+        else
+        {
+            dicQuery.Add("insecure", "0");
+            dicQuery.Add("allowInsecure", "0");
+        }
+
+        return 0;
+    }
+
+    protected static int ResolveUriQuery(NameValueCollection query, ref ProfileItem item)
+    {
+        item.Flow = GetQueryValue(query, "flow");
+        item.StreamSecurity = GetQueryValue(query, "security");
+        item.Sni = GetQueryValue(query, "sni");
+        item.Alpn = GetQueryDecoded(query, "alpn");
+        item.Fingerprint = GetQueryDecoded(query, "fp");
+        item.PublicKey = GetQueryDecoded(query, "pbk");
+        item.ShortId = GetQueryDecoded(query, "sid");
+        item.SpiderX = GetQueryDecoded(query, "spx");
+        item.Mldsa65Verify = GetQueryDecoded(query, "pqv");
+
+        if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "1"))
+        {
+            item.AllowInsecure = Global.AllowInsecure.First();
+        }
+        else if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "0"))
+        {
+            item.AllowInsecure = Global.AllowInsecure.Skip(1).First();
+        }
+        else
+        {
+            item.AllowInsecure = string.Empty;
+        }
+
+        item.Network = GetQueryValue(query, "type", nameof(ETransport.tcp));
         switch (item.Network)
         {
             case nameof(ETransport.tcp):
-                item.HeaderType = query["headerType"] ?? Global.None;
-                item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
-
+                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
+                item.RequestHost = GetQueryDecoded(query, "host");
                 break;
 
             case nameof(ETransport.kcp):
-                item.HeaderType = query["headerType"] ?? Global.None;
-                item.Path = Utils.UrlDecode(query["seed"] ?? "");
+                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
+                item.Path = GetQueryDecoded(query, "seed");
                 break;
 
             case nameof(ETransport.ws):
             case nameof(ETransport.httpupgrade):
-                item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
-                item.Path = Utils.UrlDecode(query["path"] ?? "/");
+                item.RequestHost = GetQueryDecoded(query, "host");
+                item.Path = GetQueryDecoded(query, "path", "/");
                 break;
 
             case nameof(ETransport.xhttp):
-                item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
-                item.Path = Utils.UrlDecode(query["path"] ?? "/");
-                item.HeaderType = Utils.UrlDecode(query["mode"] ?? "");
-                item.Extra = Utils.UrlDecode(query["extra"] ?? "");
+                item.RequestHost = GetQueryDecoded(query, "host");
+                item.Path = GetQueryDecoded(query, "path", "/");
+                item.HeaderType = GetQueryDecoded(query, "mode");
+                item.Extra = GetQueryDecoded(query, "extra");
                 break;
 
             case nameof(ETransport.http):
             case nameof(ETransport.h2):
                 item.Network = nameof(ETransport.h2);
-                item.RequestHost = Utils.UrlDecode(query["host"] ?? "");
-                item.Path = Utils.UrlDecode(query["path"] ?? "/");
+                item.RequestHost = GetQueryDecoded(query, "host");
+                item.Path = GetQueryDecoded(query, "path", "/");
                 break;
 
             case nameof(ETransport.quic):
-                item.HeaderType = query["headerType"] ?? Global.None;
-                item.RequestHost = query["quicSecurity"] ?? Global.None;
-                item.Path = Utils.UrlDecode(query["key"] ?? "");
+                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
+                item.RequestHost = GetQueryValue(query, "quicSecurity", Global.None);
+                item.Path = GetQueryDecoded(query, "key");
                 break;
 
             case nameof(ETransport.grpc):
-                item.RequestHost = Utils.UrlDecode(query["authority"] ?? "");
-                item.Path = Utils.UrlDecode(query["serviceName"] ?? "");
-                item.HeaderType = Utils.UrlDecode(query["mode"] ?? Global.GrpcGunMode);
+                item.RequestHost = GetQueryDecoded(query, "authority");
+                item.Path = GetQueryDecoded(query, "serviceName");
+                item.HeaderType = GetQueryDecoded(query, "mode", Global.GrpcGunMode);
                 break;
 
             default:
@@ -238,5 +285,15 @@ public class BaseFmt
 
         var url = $"{Utils.UrlEncode(userInfo)}@{GetIpv6(address)}:{port}";
         return $"{Global.ProtocolShares[eConfigType]}{url}{query}{remark}";
+    }
+
+    protected static string GetQueryValue(NameValueCollection query, string key, string defaultValue = "")
+    {
+        return query[key] ?? defaultValue;
+    }
+
+    protected static string GetQueryDecoded(NameValueCollection query, string key, string defaultValue = "")
+    {
+        return Utils.UrlDecode(GetQueryValue(query, key, defaultValue));
     }
 }

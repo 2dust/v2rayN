@@ -26,6 +26,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -48,13 +49,19 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
-            <ToggleButton
-                x:Name="togEnabled"
+            <StackPanel
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleButton
+                    x:Name="togEnabled"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="1"
@@ -62,10 +69,34 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbRuleType}" />
+            <ComboBox
+                x:Name="cmbRuleType"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="200"
+                Margin="{StaticResource Margin4}"
+                MaxDropDownHeight="1000"
+                Style="{StaticResource DefComboBox}" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbRuleTypeTips}" />
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
                 Text="outboundTag" />
             <ComboBox
                 x:Name="cmbOutboundTag"
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="1"
                 Width="200"
                 Margin="{StaticResource Margin4}"
@@ -73,7 +104,7 @@
                 MaxDropDownHeight="1000"
                 Style="{StaticResource DefComboBox}" />
             <StackPanel
-                Grid.Row="1"
+                Grid.Row="2"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
@@ -92,7 +123,7 @@
             </StackPanel>
 
             <TextBlock
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -100,14 +131,14 @@
                 Text="port" />
             <TextBox
                 x:Name="txtPort"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="1"
                 Width="200"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 Style="{StaticResource DefTextBox}" />
             <TextBlock
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
@@ -116,7 +147,7 @@
                 Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
 
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -124,14 +155,14 @@
                 Text="protocol" />
             <ListBox
                 x:Name="clbProtocol"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -143,7 +174,7 @@
             </TextBlock>
 
             <TextBlock
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -151,13 +182,13 @@
                 Text="inboundTag" />
             <ListBox
                 x:Name="clbInboundTag"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 FontSize="{DynamicResource StdFontSize}"
                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}" />
             <TextBlock
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
@@ -166,7 +197,7 @@
                 Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
 
             <TextBlock
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -174,7 +205,7 @@
                 Text="network" />
             <ComboBox
                 x:Name="cmbNetwork"
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="1"
                 Width="200"
                 Margin="{StaticResource Margin4}"
@@ -182,7 +213,7 @@
                 Style="{StaticResource DefComboBox}" />
 
             <TextBlock
-                Grid.Row="5"
+                Grid.Row="6"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"

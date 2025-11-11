@@ -1,4 +1,4 @@
-﻿{
+{
   "domain": [
     "amobile.music.tc.qq.com",
     "api-jooxtt.sanook.com",
@@ -28,6 +28,7 @@
     "swdownload.apple.com",
     "swquery.apple.com",
     "swscan.apple.com",
+    "turn.cloudflare.com",
     "trackercdn.kugou.com",
     "xnotify.xboxlive.com"
   ],

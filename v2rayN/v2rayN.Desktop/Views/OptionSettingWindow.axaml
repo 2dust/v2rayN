@@ -2,7 +2,6 @@
     x:Class="v2rayN.Desktop.Views.OptionSettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ctrls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -356,14 +355,15 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
-                        <!--
-						<TextBlock
+                        <TextBlock
                             Grid.Row="1"
                             Grid.Column="2"
-                            VerticalAlignment="Center"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsWindows}"
                             Text="{x:Static resx:ResUI.TbSettingsStartBootTip}"
-                            TextWrapping="Wrap" />-->
+                            TextWrapping="Wrap" />
+
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
@@ -430,19 +430,6 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsTLS13}" />
-                        <ToggleSwitch
-                            x:Name="togEnableSecurityProtocolTls13"
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
@@ -456,18 +443,41 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            x:Name="labHide2TrayWhenClose"
                             Grid.Row="9"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenClose}" />
                         <ToggleSwitch
                             x:Name="togHide2TrayWhenClose"
                             Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding BlIsLinux}" />
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
+                            Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
+                        
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsIsMacOS}"
+                            Text="{x:Static resx:ResUI.TbSettingsMacOSShowInDock}" />
+                        <ToggleSwitch
+                            x:Name="togMacOSShowInDock"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding BlIsIsMacOS}"/>
 
                         <TextBlock
                             Grid.Row="11"
@@ -502,12 +512,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbcurrentFontFamily"
                             Grid.Row="15"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="15"
                             Grid.Column="2"
@@ -548,12 +559,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             Name="cmbSpeedTestUrl"
                             Grid.Row="18"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="19"
@@ -561,12 +573,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbSpeedPingTestUrl"
                             Grid.Row="19"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="20"
@@ -587,12 +600,13 @@
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
-                        <ctrls:AutoCompleteBox
+                        <ComboBox
                             x:Name="cmbSubConvertUrl"
                             Grid.Row="21"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="22"
@@ -618,7 +632,8 @@
                             Grid.Row="23"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="23"
                             Grid.Column="2"
@@ -638,7 +653,8 @@
                             Grid.Row="24"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="24"
                             Grid.Column="2"
@@ -658,7 +674,8 @@
                             Grid.Row="25"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
                         <TextBlock
                             Grid.Row="25"
                             Grid.Column="2"
@@ -674,8 +691,31 @@
             <TabItem Name="tabSystemproxy" Header="{x:Static resx:ResUI.TbSettingsSystemproxy}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <StackPanel
-                        Name="panSystemProxyAdvanced"
                         DockPanel.Dock="Bottom"
+                        IsVisible="{Binding BlIsNonWindows}"
+                        Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyScriptPath}" />
+                            <TextBox
+                                x:Name="txtCustomSystemProxyScriptPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"
+                                Watermark="proxy_set.sh" />
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyScriptPath"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel
+                        DockPanel.Dock="Bottom"
+                        IsVisible="{Binding BlIsWindows}"
                         Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
@@ -698,19 +738,38 @@
                                 MinWidth="400"
                                 Margin="{StaticResource Margin4}" />
                         </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}" />
+                            <TextBox
+                                x:Name="txtCustomSystemProxyPacPath"
+                                Width="600"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"
+                                Watermark="pac.txt" />
+                            <Button
+                                x:Name="btnBrowseCustomSystemProxyPacPath"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbBrowse}" />
+                        </StackPanel>
                     </StackPanel>
 
                     <TextBlock
-                        Name="txbSettingsExceptionTip"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Top"
+                        IsVisible="{Binding BlIsWindows}"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip}" />
                     <TextBlock
-                        Name="txbSettingsExceptionTip2"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Top"
+                        IsVisible="{Binding BlIsNonWindows}"
                         Text="{x:Static resx:ResUI.TbSettingsExceptionTip2}" />
                     <TextBox
                         x:Name="txtsystemProxyExceptions"

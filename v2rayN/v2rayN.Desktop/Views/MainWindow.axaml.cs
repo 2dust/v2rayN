@@ -1,16 +1,5 @@
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Threading;
 using DialogHostAvalonia;
-using MsBox.Avalonia.Enums;
-using ReactiveUI;
-using Splat;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 using v2rayN.Desktop.Manager;
@@ -20,7 +9,7 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private WindowNotificationManager? _manager;
+    private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
@@ -32,15 +21,14 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _config = AppManager.Instance.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
-        this.KeyDown += MainWindow_KeyDown;
-        menuSettingsSetUWP.Click += menuSettingsSetUWP_Click;
-        //menuPromotion.Click += menuPromotion_Click;
+        KeyDown += MainWindow_KeyDown;
+        menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
+        // menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
 
         ViewModel = new MainWindowViewModel(UpdateViewHandler);
-        Locator.CurrentMutable.RegisterLazySingleton(() => ViewModel, typeof(MainWindowViewModel));
 
         switch (_config.UiItem.MainGirdOrientation)
         {
@@ -85,6 +73,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.BindCommand(ViewModel, vm => vm.AddWireguardServerCmd, v => v.menuAddWireguardServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddAnytlsServerCmd, v => v.menuAddAnytlsServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddPolicyGroupServerCmd, v => v.menuAddPolicyGroupServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddProxyChainServerCmd, v => v.menuAddProxyChainServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaClipboardCmd, v => v.menuAddServerViaClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaScanCmd, v => v.menuAddServerViaScan).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddServerViaImageCmd, v => v.menuAddServerViaImage).DisposeWith(disposables);
@@ -153,24 +143,31 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
               .ObserveOn(RxApp.MainThreadScheduler)
               .Subscribe(content => Shutdown(content))
               .DisposeWith(disposables);
+
+            AppEvents.ShowHideWindowRequested
+             .AsObservable()
+             .ObserveOn(RxApp.MainThreadScheduler)
+             .Subscribe(blShow => ShowHideWindow(blShow))
+             .DisposeWith(disposables);
         });
 
         if (Utils.IsWindows())
         {
-            this.Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
+            Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
             ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
             HotkeyManager.Instance.Init(_config, OnHotkeyHandler);
         }
         else
         {
-            this.Title = $"{Utils.GetVersion()}";
-
-            menuRebootAsAdmin.IsVisible = false;
-            menuSettingsSetUWP.IsVisible = false;
-            menuGlobalHotkeySetting.IsVisible = false;
+            Title = $"{Utils.GetVersion()}";
         }
         menuAddServerViaScan.IsVisible = false;
+
+        if (_config.UiItem.AutoHideStartup && Utils.IsWindows())
+        {
+            WindowState = WindowState.Minimized;
+        }
 
         AddHelpMenuItem();
     }
@@ -187,6 +184,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private async Task DelegateSnackMsg(string content)
     {
         _manager?.Show(new Notification(null, content, NotificationType.Information));
+        await Task.CompletedTask;
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -195,13 +193,27 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             case EViewAction.AddServerWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.AddServer2Window:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(this);
+
+            case EViewAction.AddGroupServerWindow:
+                if (obj is null)
+                {
+                    return false;
+                }
+
+                return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.DNSSettingWindow:
                 return await new DNSSettingWindow().ShowDialog<bool>(this);
@@ -221,12 +233,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             case EViewAction.SubSettingWindow:
                 return await new SubSettingWindow().ShowDialog<bool>(this);
 
-            case EViewAction.ShowHideWindow:
-                Dispatcher.UIThread.Post(() =>
-                    ShowHideWindow((bool?)obj),
-                DispatcherPriority.Default);
-                break;
-
             case EViewAction.ScanScreenTask:
                 await ScanScreenTaskAsync();
                 break;
@@ -236,11 +242,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 break;
 
             case EViewAction.AddServerViaClipboard:
-                var clipboardData = await AvaUtils.GetClipboardData(this);
-                if (clipboardData.IsNotEmpty() && ViewModel != null)
-                {
-                    await ViewModel.AddServerViaClipboardAsync(clipboardData);
-                }
+                await AddServerViaClipboardAsync();
                 break;
         }
 
@@ -259,7 +261,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             case EGlobalHotkey.SystemProxySet:
             case EGlobalHotkey.SystemProxyUnchanged:
             case EGlobalHotkey.SystemProxyPac:
-                Locator.Current.GetService<StatusBarViewModel>()?.SetListenerType((ESysProxyType)((int)e - 1));
+                AppEvents.SysProxyChangeRequested.Publish((ESysProxyType)((int)e - 1));
                 break;
         }
     }
@@ -295,11 +297,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             switch (e.Key)
             {
                 case Key.V:
-                    var clipboardData = await AvaUtils.GetClipboardData(this);
-                    if (clipboardData.IsNotEmpty() && ViewModel != null)
-                    {
-                        await ViewModel.AddServerViaClipboardAsync(clipboardData);
-                    }
+                    await AddServerViaClipboardAsync();
                     break;
 
                 case Key.S:
@@ -316,14 +314,30 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
+<<<<<<< HEAD
     //private void menuPromotion_Click(object? sender, RoutedEventArgs e)
     //{
     //    ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
     //}
+=======
+    private void MenuPromotion_Click(object? sender, RoutedEventArgs e)
+    {
+        ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+    }
+>>>>>>> upstream/master
 
-    private void menuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
+    private void MenuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart(Utils.GetBinPath("EnableLoopback.exe"));
+    }
+
+    public async Task AddServerViaClipboardAsync()
+    {
+        var clipboardData = await AvaUtils.GetClipboardData(this);
+        if (clipboardData.IsNotEmpty() && ViewModel != null)
+        {
+            await ViewModel.AddServerViaClipboardAsync(clipboardData);
+        }
     }
 
     public async Task ScanScreenTaskAsync()
@@ -400,30 +414,33 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     public void ShowHideWindow(bool? blShow)
     {
-        var bl = blShow ?? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized));
+        var bl = blShow ??
+                    (Utils.IsLinux()
+                    ? (!_config.UiItem.ShowInTaskbar ^ (WindowState == WindowState.Minimized))
+                    : !_config.UiItem.ShowInTaskbar);
         if (bl)
         {
-            this.Show();
-            if (this.WindowState == WindowState.Minimized)
+            Show();
+            if (WindowState == WindowState.Minimized)
             {
-                this.WindowState = WindowState.Normal;
+                WindowState = WindowState.Normal;
             }
-            this.Activate();
-            this.Focus();
+            Activate();
+            Focus();
         }
         else
         {
             if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
             {
-                this.WindowState = WindowState.Minimized;
+                WindowState = WindowState.Minimized;
                 return;
             }
 
-            foreach (var ownedWindow in this.OwnedWindows)
+            foreach (var ownedWindow in OwnedWindows)
             {
                 ownedWindow.Close();
             }
-            this.Hide();
+            Hide();
         }
 
         _config.UiItem.ShowInTaskbar = bl;
@@ -432,6 +449,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
     {
         base.OnLoaded(sender, e);
+        if (_config.UiItem.AutoHideStartup)
+        {
+            ShowHideWindow(false);
+        }
         RestoreUI();
     }
 
@@ -470,8 +491,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo();
         foreach (var it in coreInfo
-            .Where(t => t.CoreType != ECoreType.v2fly
-                        && t.CoreType != ECoreType.hysteria))
+            .Where(t => t.CoreType is not ECoreType.v2fly
+                        and not ECoreType.hysteria))
         {
             var item = new MenuItem()
             {

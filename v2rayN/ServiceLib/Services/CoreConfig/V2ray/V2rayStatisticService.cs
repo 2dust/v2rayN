@@ -6,7 +6,7 @@ public partial class CoreConfigV2rayService
     {
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {
-            string tag = EInboundProtocol.api.ToString();
+            var tag = EInboundProtocol.api.ToString();
             Metrics4Ray apiObj = new();
             Policy4Ray policyObj = new();
             SystemPolicy4Ray policySystemSetting = new();

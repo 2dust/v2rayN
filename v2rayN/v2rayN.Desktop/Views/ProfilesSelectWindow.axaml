@@ -51,12 +51,11 @@
 
                     <Button
                         x:Name="btnAutofitColumnWidth"
-                        Width="32"
-                        Height="32"
-                        Margin="8,0"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                         <Button.Content>
-                            <PathIcon Data="{StaticResource building_fit}" />
+                            <PathIcon Data="{StaticResource SemiIconExpand}" />
                         </Button.Content>
                     </Button>
 

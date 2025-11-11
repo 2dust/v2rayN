@@ -26,11 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Action", "GitHub Act
 		..\.github\workflows\build-osx.yml = ..\.github\workflows\build-osx.yml
 		..\.github\workflows\build-windows-desktop.yml = ..\.github\workflows\build-windows-desktop.yml
 		..\.github\workflows\build-windows.yml = ..\.github\workflows\build-windows.yml
-		..\package-appimage.sh = ..\package-appimage.sh
 		..\package-debian.sh = ..\package-debian.sh
 		..\package-osx.sh = ..\package-osx.sh
 		..\package-release-zip.sh = ..\package-release-zip.sh
-		..\pkg2appimage.yml = ..\pkg2appimage.yml
 		..\.github\workflows\winget-publish.yml = ..\.github\workflows\winget-publish.yml
 	EndProjectSection
 EndProject

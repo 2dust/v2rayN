@@ -1,6 +1,4 @@
-using System.Globalization;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 
 namespace v2rayN.Desktop.Converters;
 
@@ -8,7 +6,7 @@ public class DelayColorConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        _ = int.TryParse(value?.ToString(), out var delay);
+        var delay = value.ToString().ToInt();
 
         return delay switch
         {

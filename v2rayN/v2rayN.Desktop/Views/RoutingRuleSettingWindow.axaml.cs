@@ -1,9 +1,3 @@
-using System.Reactive.Disposables;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using MsBox.Avalonia.Enums;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
@@ -20,9 +14,9 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
     {
         InitializeComponent();
 
-        this.Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => this.Close();
-        this.KeyDown += RoutingRuleSettingWindow_KeyDown;
+        Loaded += Window_Loaded;
+        btnCancel.Click += (s, e) => Close();
+        KeyDown += RoutingRuleSettingWindow_KeyDown;
         lstRules.SelectionChanged += lstRules_SelectionChanged;
         lstRules.DoubleTapped += LstRules_DoubleTapped;
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
@@ -70,7 +64,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
 
             case EViewAction.ShowYesNo:
@@ -89,7 +83,10 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
             case EViewAction.RoutingRuleDetailsWindow:
                 if (obj is null)
+                {
                     return false;
+                }
+
                 return await new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog<bool>(this);
 
             case EViewAction.ImportRulesFromFile:

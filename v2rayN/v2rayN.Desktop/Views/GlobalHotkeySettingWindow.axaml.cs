@@ -1,9 +1,3 @@
-using System.Reactive.Disposables;
-using System.Text;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using ReactiveUI;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Manager;
 
@@ -23,8 +17,8 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         HotkeyManager.Instance.IsPause = true;
         Loaded += Window_Loaded;
-        this.Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
-        btnCancel.Click += (s, e) => this.Close();
+        Closing += (s, e) => HotkeyManager.Instance.IsPause = false;
+        btnCancel.Click += (s, e) => Close();
 
         this.WhenActivated(disposables =>
         {
@@ -40,7 +34,7 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.Close(true);
+                Close(true);
                 break;
         }
         return await Task.FromResult(true);

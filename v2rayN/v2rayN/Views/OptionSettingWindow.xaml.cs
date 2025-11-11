@@ -1,9 +1,4 @@
-using System.Globalization;
-using System.IO;
-using System.Reactive.Disposables;
-using System.Windows;
 using System.Windows.Media;
-using ReactiveUI;
 
 namespace v2rayN.Views;
 
@@ -15,12 +10,14 @@ public partial class OptionSettingWindow
     {
         InitializeComponent();
 
-        this.Owner = Application.Current.MainWindow;
+        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
         ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
+        btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
+
         clbdestOverride.ItemsSource = Global.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
@@ -94,7 +91,6 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.KeepOlderDedupl, v => v.togKeepOlderDedupl.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableAutoAdjustMainLvColWidth, v => v.togEnableAutoAdjustMainLvColWidth.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableUpdateSubOnlyRemarksExist, v => v.togEnableUpdateSubOnlyRemarksExist.IsChecked).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.EnableSecurityProtocolTls13, v => v.togEnableSecurityProtocolTls13.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoHideStartup, v => v.togAutoHideStartup.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableDragDropSort, v => v.togEnableDragDropSort.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
@@ -116,6 +112,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.notProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.systemProxyExceptions, v => v.txtsystemProxyExceptions.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomSystemProxyPacPath, v => v.txtCustomSystemProxyPacPath.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.TunAutoRoute, v => v.togAutoRoute.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunStrictRoute, v => v.togStrictRoute.IsChecked).DisposeWith(disposables);
@@ -142,7 +139,7 @@ public partial class OptionSettingWindow
         switch (action)
         {
             case EViewAction.CloseWindow:
-                this.DialogResult = true;
+                DialogResult = true;
                 break;
 
             case EViewAction.InitSettingFont:
@@ -174,12 +171,12 @@ public partial class OptionSettingWindow
             foreach (var ttf in files)
             {
                 var families = Fonts.GetFontFamilies(Utils.GetFontsPath(ttf));
-                foreach (FontFamily family in families)
+                foreach (var family in families)
                 {
                     var typefaces = family.GetTypefaces();
-                    foreach (Typeface typeface in typefaces)
+                    foreach (var typeface in typefaces)
                     {
-                        typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
+                        typeface.TryGetGlyphTypeface(out var glyph);
                         //var fontFace = glyph.Win32FaceNames[new CultureInfo("en-us")];
                         //if (!fontFace.Equals("Regular") && !fontFace.Equals("Normal"))
                         //{
@@ -215,5 +212,16 @@ public partial class OptionSettingWindow
         {
             ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
         }
+    }
+
+    private void BtnBrowseCustomSystemProxyPacPath_Click(object sender, RoutedEventArgs e)
+    {
+        if (UI.OpenFileDialog(out var fileName,
+              "Txt|*.txt|All|*.*") != true)
+        {
+            return;
+        }
+
+        txtCustomSystemProxyPacPath.Text = fileName;
     }
 }

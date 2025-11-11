@@ -29,8 +29,8 @@ public class TuicFmt : BaseFmt
         }
 
         var query = Utils.ParseQueryString(url.Query);
-        ResolveStdTransport(query, ref item);
-        item.HeaderType = query["congestion_control"] ?? "";
+        ResolveUriQuery(query, ref item);
+        item.HeaderType = GetQueryValue(query, "congestion_control");
 
         return item;
     }
@@ -47,15 +47,10 @@ public class TuicFmt : BaseFmt
         {
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
+
         var dicQuery = new Dictionary<string, string>();
-        if (item.Sni.IsNotEmpty())
-        {
-            dicQuery.Add("sni", item.Sni);
-        }
-        if (item.Alpn.IsNotEmpty())
-        {
-            dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
-        }
+        ToUriQueryLite(item, ref dicQuery);
+
         dicQuery.Add("congestion_control", item.HeaderType);
 
         return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Id}:{item.Security}", dicQuery, remark);
