@@ -1600,28 +1600,28 @@
     <value>自動從訂閱分組新增過濾後的配置</value>
   </data>
   <data name="TbCertPinning" xml:space="preserve">
-    <value>Certificate Pinning</value>
+    <value>憑證綁定</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Server Certificate (PEM format, optional)
-When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
+    <value>伺服器憑證（PEM 格式，可選）
+若已指定，憑證將會被綁定，並且「跳過憑證驗證」將被停用。
 
-The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
+若使用自簽憑證，或系統中存在不受信任或惡意的 CA，「取得憑證」動作可能會失敗。</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
-    <value>Fetch Certificate</value>
+    <value>獲取憑證</value>
   </data>
   <data name="TbFetchCertChain" xml:space="preserve">
-    <value>Fetch Certificate Chain</value>
+    <value>獲取憑證鏈</value>
   </data>
   <data name="ServerNameMustBeValidDomain" xml:space="preserve">
-    <value>Please set a valid domain</value>
+    <value>請設定有效的網域名稱</value>
   </data>
   <data name="CertNotSet" xml:space="preserve">
-    <value>Certificate not set</value>
+    <value>尚未設定憑證</value>
   </data>
   <data name="CertSet" xml:space="preserve">
-    <value>Certificate set</value>
+    <value>已設定憑證</value>
   </data>
   <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
     <value>自訂 PAC 檔案路徑</value>
