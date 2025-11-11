@@ -316,10 +316,8 @@ public partial class CoreConfigSingboxService
         }
         else if (domain.StartsWith("domain:"))
         {
-            rule.domain ??= [];
             rule.domain_suffix ??= [];
-            rule.domain?.Add(domain.Substring(7));
-            rule.domain_suffix?.Add("." + domain.Substring(7));
+            rule.domain_suffix?.Add(domain.Substring(7));
         }
         else if (domain.StartsWith("full:"))
         {
