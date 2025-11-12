@@ -8,8 +8,7 @@
       "address": "1.1.1.1",
       "skipFallback": true,
       "domains": [
-        "domain:googleapis.cn",
-        "domain:gstatic.com"
+        "geosite:google"
       ]
     },
     {

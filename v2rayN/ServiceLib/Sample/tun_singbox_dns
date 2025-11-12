@@ -14,9 +14,8 @@
   ],
   "rules": [
     {
-      "domain_suffix": [
-        "googleapis.cn",
-        "gstatic.com"
+      "rule_set": [
+        "geosite-google"
       ],
       "server": "remote",
       "strategy": "prefer_ipv4"

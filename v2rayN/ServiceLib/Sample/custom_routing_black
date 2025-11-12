@@ -14,18 +14,17 @@
     ]
   },
   {
-    "remarks": "Google cn",
-    "outboundTag": "proxy",
-    "domain": [
-      "domain:googleapis.cn",
-      "domain:gstatic.com"
-    ]
-  },
-  {
     "remarks": "阻断udp443",
     "outboundTag": "block",
     "port": "443",
     "network": "udp"
+  },
+  {
+    "remarks": "代理Google",
+    "outboundTag": "proxy",
+    "domain": [
+      "geosite:google"
+    ]
   },
   {
     "remarks": "绕过局域网IP",

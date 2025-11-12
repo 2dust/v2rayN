@@ -458,7 +458,7 @@ download_geo_assets() {
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
   done
   for f in \
-    geosite-cn.srs geosite-gfw.srs geosite-greatfire.srs \
+    geosite-cn.srs geosite-gfw.srs geosite-google.srs geosite-greatfire.srs \
     geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
     curl -fsSL -o "$srss_dir/$f" \
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true

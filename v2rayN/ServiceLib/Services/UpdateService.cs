@@ -396,6 +396,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         }
 
         //append dns items TODO
+        geoSiteFiles.Add("google");
         geoSiteFiles.Add("cn");
         geoSiteFiles.Add("geolocation-cn");
         geoSiteFiles.Add("category-ads-all");
