@@ -2080,7 +2080,7 @@ public static class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
     {
-        var ver = "V3-";
+        var ver = "V4-";
         var items = await AppManager.Instance.RoutingItems();
 
         //TODO Temporary code to be removed later
@@ -2091,7 +2091,7 @@ public static class ConfigHandler
             items = await AppManager.Instance.RoutingItems();
         }
 
-        if (!blImportAdvancedRules && items.Count > 0)
+        if (!blImportAdvancedRules && items.Count(u => u.Remarks.StartsWith(ver)) > 0)
         {
             //migrate
             //TODO Temporary code to be removed later
