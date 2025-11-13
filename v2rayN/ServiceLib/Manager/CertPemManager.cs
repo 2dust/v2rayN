@@ -374,11 +374,15 @@ public class CertPemManager
         {
             var beginIndex = pemChain.IndexOf(beginMarker, index, StringComparison.Ordinal);
             if (beginIndex == -1)
+            {
                 break;
+            }
 
             var endIndex = pemChain.IndexOf(endMarker, beginIndex, StringComparison.Ordinal);
             if (endIndex == -1)
+            {
                 break;
+            }
 
             // Extract certificate content
             var base64Start = beginIndex + beginMarker.Length;
