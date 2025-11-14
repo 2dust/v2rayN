@@ -15,16 +15,10 @@
     mc:Ignorable="d">
 
     <DockPanel>
-        <StackPanel
-            Margin="{StaticResource Margin4}"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal"
-            Spacing="4">
-            <Menu>
-                <MenuItem x:Name="menuRoutingAdvancedAdd2" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
-                <MenuItem x:Name="menuRoutingAdvancedImportRules2" Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
-            </Menu>
-        </StackPanel>
+        <Menu Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
+            <MenuItem x:Name="menuRoutingAdvancedAdd2" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
+            <MenuItem x:Name="menuRoutingAdvancedImportRules2" Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
+        </Menu>
 
         <StackPanel
             Margin="{StaticResource Margin4}"

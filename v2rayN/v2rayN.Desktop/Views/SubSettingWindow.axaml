@@ -20,18 +20,13 @@
         DisableOpeningAnimation="True"
         Identifier="dialogHostSub">
         <DockPanel Margin="{StaticResource Margin8}">
-            <StackPanel
-                Margin="{StaticResource Margin4}"
-                DockPanel.Dock="Top"
-                Orientation="Horizontal">
-                <Menu>
-                    <MenuItem x:Name="menuSubAdd" Header="{x:Static resx:ResUI.menuSubAdd}" />
-                    <MenuItem x:Name="menuSubDelete" Header="{x:Static resx:ResUI.menuSubDelete}" />
-                    <MenuItem x:Name="menuSubEdit" Header="{x:Static resx:ResUI.menuSubEdit}" />
-                    <MenuItem x:Name="menuSubShare" Header="{x:Static resx:ResUI.menuSubShare}" />
-                    <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuClose}" />
-                </Menu>
-            </StackPanel>
+            <Menu Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
+                <MenuItem x:Name="menuSubAdd" Header="{x:Static resx:ResUI.menuSubAdd}" />
+                <MenuItem x:Name="menuSubDelete" Header="{x:Static resx:ResUI.menuSubDelete}" />
+                <MenuItem x:Name="menuSubEdit" Header="{x:Static resx:ResUI.menuSubEdit}" />
+                <MenuItem x:Name="menuSubShare" Header="{x:Static resx:ResUI.menuSubShare}" />
+                <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuClose}" />
+            </Menu>
 
             <DataGrid
                 x:Name="lstSubscription"

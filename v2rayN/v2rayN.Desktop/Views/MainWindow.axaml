@@ -24,13 +24,8 @@
         <DockPanel>
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
-                <Menu Margin="0,1">
-                    <MenuItem Padding="{StaticResource MarginLr8}">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuServers}" />
-                            </StackPanel>
-                        </MenuItem.Header>
+                <Menu Margin="{StaticResource Margin4}">
+                    <MenuItem Header="{x:Static resx:ResUI.menuServers}">
                         <MenuItem x:Name="menuAddServerViaClipboard" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <MenuItem x:Name="menuAddServerViaScan" Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
                         <MenuItem x:Name="menuAddServerViaImage" Header="{x:Static resx:ResUI.menuAddServerViaImage}" />
@@ -51,12 +46,7 @@
                         <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
                     </MenuItem>
 
-                    <MenuItem Padding="{StaticResource MarginLr8}">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuSubscription}" />
-                            </StackPanel>
-                        </MenuItem.Header>
+                    <MenuItem Header="{x:Static resx:ResUI.menuSubscription}">
                         <MenuItem x:Name="menuSubSetting" Header="{x:Static resx:ResUI.menuSubSetting}" />
                         <Separator />
                         <MenuItem x:Name="menuSubUpdate" Header="{x:Static resx:ResUI.menuSubUpdate}" />
@@ -65,20 +55,24 @@
                         <MenuItem x:Name="menuSubGroupUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
                     </MenuItem>
 
-                    <MenuItem Padding="{StaticResource MarginLr8}">
-                        <MenuItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static resx:ResUI.menuSetting}" />
-                            </StackPanel>
-                        </MenuItem.Header>
+                    <MenuItem Header="{x:Static resx:ResUI.menuSetting}">
                         <MenuItem x:Name="menuOptionSetting" Header="{x:Static resx:ResUI.menuOptionSetting}" />
                         <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
                         <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
                         <MenuItem x:Name="menuFullConfigTemplate" Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
-                        <MenuItem x:Name="menuGlobalHotkeySetting" Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}" IsVisible="{Binding BlIsWindows}" />
+                        <MenuItem
+                            x:Name="menuGlobalHotkeySetting"
+                            Header="{x:Static resx:ResUI.menuGlobalHotkeySetting}"
+                            IsVisible="{Binding BlIsWindows}" />
                         <Separator />
-                        <MenuItem x:Name="menuRebootAsAdmin" Header="{x:Static resx:ResUI.menuRebootAsAdmin}" IsVisible="{Binding BlIsWindows}" />
-                        <MenuItem x:Name="menuSettingsSetUWP" Header="{x:Static resx:ResUI.TbSettingsSetUWP}" IsVisible="{Binding BlIsWindows}" />
+                        <MenuItem
+                            x:Name="menuRebootAsAdmin"
+                            Header="{x:Static resx:ResUI.menuRebootAsAdmin}"
+                            IsVisible="{Binding BlIsWindows}" />
+                        <MenuItem
+                            x:Name="menuSettingsSetUWP"
+                            Header="{x:Static resx:ResUI.TbSettingsSetUWP}"
+                            IsVisible="{Binding BlIsWindows}" />
                         <MenuItem x:Name="menuClearServerStatistics" Header="{x:Static resx:ResUI.menuClearServerStatistics}" />
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuRegionalPresets}">
@@ -90,15 +84,16 @@
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
                     </MenuItem>
 
-                    <MenuItem x:Name="menuReload" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuReload}" />
+                    <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}" />
 
-                    <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
+                    <MenuItem x:Name="menuHelp" Header="{x:Static resx:ResUI.menuHelp}">
+                        <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
+                        <Separator />
+                    </MenuItem>
 
-                    <MenuItem x:Name="menuHelp" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuHelp}" />
+                    <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}" />
 
-                    <MenuItem x:Name="menuPromotion" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuPromotion}" />
-
-                    <MenuItem x:Name="menuClose" Padding="{StaticResource MarginLr8}" Header="{x:Static resx:ResUI.menuExit}" />
+                    <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}" />
                 </Menu>
             </DockPanel>
 
