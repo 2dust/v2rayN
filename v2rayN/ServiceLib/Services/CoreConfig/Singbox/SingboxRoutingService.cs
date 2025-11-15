@@ -300,7 +300,7 @@ public partial class CoreConfigSingboxService
 
     private bool ParseV2Domain(string domain, Rule4Sbox rule)
     {
-        if (domain.StartsWith("#") || domain.StartsWith("ext:") || domain.StartsWith("ext-domain:"))
+        if (domain.StartsWith('#') || domain.StartsWith("ext:") || domain.StartsWith("ext-domain:"))
         {
             return false;
         }

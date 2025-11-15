@@ -425,7 +425,7 @@ public class Utils
         var domain = authority;
 
         // Handle IPv6 addresses, e.g., "[2001:db8::1]:443"
-        if (authority.StartsWith("[") && authority.Contains("]"))
+        if (authority.StartsWith('[') && authority.Contains(']'))
         {
             var closingBracketIndex = authority.LastIndexOf(']');
             if (closingBracketIndex < authority.Length - 1 && authority[closingBracketIndex + 1] == ':')
