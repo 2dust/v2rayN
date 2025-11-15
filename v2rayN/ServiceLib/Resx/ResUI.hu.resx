@@ -976,7 +976,10 @@
     <value>Hardveres gyorsítás engedélyezése (újraindítást igényel)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Tesztelésre vár (ESC megnyomásával megszakítható)...</value>
+    <value>Tesztelésre vár...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>ESC megnyomásával megszakítható</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Kérjük, kapcsolja ki rendellenes megszakadás esetén</value>

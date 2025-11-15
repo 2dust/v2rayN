@@ -976,7 +976,10 @@
     <value>啟用硬體加速 (需重啟)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>等待測試中（按 ESC 終止）...</value>
+    <value>等待測試中...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>按 ECS 以終止測試</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>當有異常斷流時請關閉</value>

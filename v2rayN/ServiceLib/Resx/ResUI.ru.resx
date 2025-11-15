@@ -976,7 +976,10 @@
     <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Ожидание тестирования (нажмите ESC для отмены)…</value>
+    <value>Ожидание тестирования…</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>нажмите ESC для отмены</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Отключите при аномальном разрыве соединения</value>

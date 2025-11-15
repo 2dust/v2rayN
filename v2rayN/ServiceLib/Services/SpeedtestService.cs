@@ -103,6 +103,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
         }
 
+        if (lstSelected.Count > 1 && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.Mixedtest))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.SpeedtestingPressEscToExit);
+        }
+
         return lstSelected;
     }
 

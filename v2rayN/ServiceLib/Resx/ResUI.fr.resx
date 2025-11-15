@@ -976,7 +976,10 @@
     <value>Activer l’accélération matérielle (redémarrage requis)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>En attente du test (appuyer sur Échap pour arrêter)...</value>
+    <value>En attente du test...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>Appuyer sur Échap pour arrêter</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Désactiver cette option si coupure anormale</value>
