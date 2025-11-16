@@ -976,7 +976,10 @@
     <value>فعال‌ سازی شتاب‌ دهنده سخت‌ افزاری (نیاز به راه‌اندازی مجدد)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>در انتظار آزمایش (برای پایان دادن به ESC فشار دهید)...</value>
+    <value>در انتظار آزمایش...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>برای پایان دادن به ESC فشار دهید</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>لطفاً در صورت قطع غیرعادی آن را خاموش کنید</value>

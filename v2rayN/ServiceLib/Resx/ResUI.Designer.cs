@@ -2356,6 +2356,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Press ESC to terminate the test 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingPressEscToExit {
+            get {
+                return ResourceManager.GetString("SpeedtestingPressEscToExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Skip test 的本地化字符串。
         /// </summary>
         public static string SpeedtestingSkip {
@@ -2383,7 +2392,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Waiting for testing (press ESC to terminate)... 的本地化字符串。
+        ///   查找类似 Waiting... 的本地化字符串。
         /// </summary>
         public static string SpeedtestingWait {
             get {

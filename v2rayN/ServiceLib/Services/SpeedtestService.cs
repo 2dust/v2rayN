@@ -19,12 +19,17 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     public void ExitLoop()
     {
-        if (_lstExitLoop.Count > 0)
+        if (!_lstExitLoop.IsEmpty)
         {
             _ = UpdateFunc("", ResUI.SpeedtestingStop);
 
             _lstExitLoop.Clear();
         }
+    }
+
+    private static bool ShouldStopTest(string exitLoopKey)
+    {
+        return !_lstExitLoop.Any(p => p == exitLoopKey);
     }
 
     private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
@@ -103,6 +108,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
         }
 
+        if (lstSelected.Count > 1 && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.Mixedtest))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.SpeedtestingPressEscToExit);
+        }
+
         return lstSelected;
     }
 
@@ -152,7 +162,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var pageSizeNext = pageSize / 2;
         if (lstFailed.Count > 0 && pageSizeNext > 0)
         {
-            if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
+            if (ShouldStopTest(exitLoopKey))
             {
                 await UpdateFunc("", ResUI.SpeedtestingSkip);
                 return;
@@ -190,6 +200,12 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 {
                     continue;
                 }
+
+                if (ShouldStopTest(exitLoopKey))
+                {
+                    return false;
+                }
+
                 tasks.Add(Task.Run(async () =>
                 {
                     await DoRealPing(it);
@@ -218,7 +234,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<Task> tasks = new();
         foreach (var it in selecteds)
         {
-            if (_lstExitLoop.Any(p => p == exitLoopKey) == false)
+            if (ShouldStopTest(exitLoopKey))
             {
                 await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                 continue;
@@ -234,21 +250,27 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     if (processService is null)
                     {
                         await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                        return;
                     }
-                    else
+
+                    await Task.Delay(1000);
+
+                    var delay = await DoRealPing(it);
+                    if (blSpeedTest)
                     {
-                        await Task.Delay(1000);
-                        var delay = await DoRealPing(it);
-                        if (blSpeedTest)
+                        if (ShouldStopTest(exitLoopKey))
                         {
-                            if (delay > 0)
-                            {
-                                await DoSpeedTest(downloadHandle, it);
-                            }
-                            else
-                            {
-                                await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                            }
+                            await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
+                            return;
+                        }
+
+                        if (delay > 0)
+                        {
+                            await DoSpeedTest(downloadHandle, it);
+                        }
+                        else
+                        {
+                            await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                         }
                     }
                 }

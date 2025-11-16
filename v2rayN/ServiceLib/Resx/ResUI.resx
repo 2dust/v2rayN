@@ -976,7 +976,10 @@
     <value>Enable hardware acceleration (requires restart)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Waiting for testing (press ESC to terminate)...</value>
+    <value>Waiting...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>Press ESC to terminate the test</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
