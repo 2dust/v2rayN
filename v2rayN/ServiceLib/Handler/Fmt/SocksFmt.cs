@@ -45,18 +45,18 @@ public class SocksFmt : BaseFmt
         };
         result = result[Global.ProtocolShares[EConfigType.SOCKS].Length..];
         //remark
-        var indexRemark = result.IndexOf("#");
+        var indexRemark = result.IndexOf('#');
         if (indexRemark > 0)
         {
             try
             {
-                item.Remarks = Utils.UrlDecode(result.Substring(indexRemark + 1, result.Length - indexRemark - 1));
+                item.Remarks = Utils.UrlDecode(result.Substring(indexRemark + 1));
             }
             catch { }
             result = result[..indexRemark];
         }
         //part decode
-        var indexS = result.IndexOf("@");
+        var indexS = result.IndexOf('@');
         if (indexS > 0)
         {
         }
