@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Avalonia;
 using Avalonia.Media;
 
 namespace v2rayN.Desktop.Common;
@@ -24,7 +25,7 @@ public static class AppBuilderExtension
 
         var fallbacks = new List<FontFallback>();
 
-        string? zhFamily = RunFcMatchFamily("sans:lang=zh-cn");
+        var zhFamily = RunFcFamily("sans:lang=zh-cn");
         if (!string.IsNullOrWhiteSpace(zhFamily))
         {
             fallbacks.Add(new FontFallback
@@ -33,7 +34,7 @@ public static class AppBuilderExtension
             });
         }
 
-        string? emojiFamily = RunFcMatchFamily("emoji");
+        var emojiFamily = RunFcFamily("emoji");
         if (!string.IsNullOrWhiteSpace(emojiFamily))
         {
             fallbacks.Add(new FontFallback
@@ -54,20 +55,16 @@ public static class AppBuilderExtension
         });
     }
 
-    private static string? RunFcMatchFamily(string pattern)
+    private static string? RunFcFamily(string pattern)
     {
         try
         {
             var psi = new ProcessStartInfo
             {
                 FileName = "/bin/bash",
-                ArgumentList =
-                {
-                    "-c",
-                    $"fc-match -f \"%{{family[0]}}\\n\" \"{pattern}\" | head -n 1"
-                },
+                ArgumentList = { "-c", $"fc-match -f \"%{{family}}\\n\" \"{pattern}\" | head -n 1" },
                 RedirectStandardOutput = true,
-                RedirectStandardError = false,
+                RedirectStandardError = true,
                 UseShellExecute = false
             };
 
