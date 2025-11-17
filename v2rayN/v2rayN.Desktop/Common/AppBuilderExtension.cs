@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Avalonia;
 using Avalonia.Media;
 
 namespace v2rayN.Desktop.Common;
@@ -24,24 +25,30 @@ public static class AppBuilderExtension
 
         var fallbacks = new List<FontFallback>();
 
-        string? zhFont = RunFcMatch("sans:lang=zh-cn");
-
-        if (!string.IsNullOrWhiteSpace(zhFont))
+        string? zhPath = RunFcMatch("sans:lang=zh-cn");
+        if (zhPath != null)
         {
-            fallbacks.Add(new FontFallback
+            var (dir, family) = ConvertPathToFontFamily(zhPath);
+            if (dir != null && family != null)
             {
-                FontFamily = new FontFamily(zhFont)
-            });
+                fallbacks.Add(new FontFallback
+                {
+                    FontFamily = new FontFamily($"file://{dir}#{family}")
+                });
+            }
         }
 
-        string? emojiFont = RunFcMatch("emoji");
-
-        if (!string.IsNullOrWhiteSpace(emojiFont))
+        string? emojiPath = RunFcMatch("emoji");
+        if (emojiPath != null)
         {
-            fallbacks.Add(new FontFallback
+            var (dir, family) = ConvertPathToFontFamily(emojiPath);
+            if (dir != null && family != null)
             {
-                FontFamily = new FontFamily(emojiFont)
-            });
+                fallbacks.Add(new FontFallback
+                {
+                    FontFamily = new FontFamily($"file://{dir}#{family}")
+                });
+            }
         }
 
         var notoUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
@@ -65,19 +72,45 @@ public static class AppBuilderExtension
                 FileName = "/bin/bash",
                 ArgumentList = { "-c", $"fc-match -f \"%{{file}}\\n\" \"{pattern}\" | head -n 1" },
                 RedirectStandardOutput = true,
-                RedirectStandardError = true,
                 UseShellExecute = false
             };
 
             using var p = Process.Start(psi);
             if (p == null) return null;
 
-            string output = p.StandardOutput.ReadToEnd().Trim();
+            var output = p.StandardOutput.ReadToEnd().Trim();
             return string.IsNullOrWhiteSpace(output) ? null : output;
         }
         catch
         {
             return null;
+        }
+    }
+
+    private static (string? Dir, string? Family) ConvertPathToFontFamily(string filePath)
+    {
+        try
+        {
+            string dir = Path.GetDirectoryName(filePath)!;
+            string file = Path.GetFileNameWithoutExtension(filePath);
+
+            if (file.StartsWith("NotoColorEmoji", StringComparison.OrdinalIgnoreCase))
+                return (dir, "Noto Color Emoji");
+
+            if (file.StartsWith("NotoEmoji", StringComparison.OrdinalIgnoreCase))
+                return (dir, "Noto Emoji");
+
+            if (file.StartsWith("NotoSansCJK", StringComparison.OrdinalIgnoreCase))
+                return (dir, "Noto Sans CJK SC");
+
+            if (file.StartsWith("DroidSansFallbackFull", StringComparison.OrdinalIgnoreCase))
+                return (dir, "Droid Sans Fallback");
+
+            return (dir, file);
+        }
+        catch
+        {
+            return (null, null);
         }
     }
 }
