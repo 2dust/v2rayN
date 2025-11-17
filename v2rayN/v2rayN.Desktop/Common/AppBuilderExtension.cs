@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Avalonia;
+using System.Linq;
 using Avalonia.Media;
-using System.Collections.Generic;
 
 namespace v2rayN.Desktop.Common;
 
@@ -18,25 +18,20 @@ public static class AppBuilderExtension
             {
                 FontFallbacks = new[]
                 {
-                    new FontFallback { FontFamily = new FontFamily(uri) }
+                    new FontFallback
+                    {
+                        FontFamily = new FontFamily(uri)
+                    }
                 }
             });
         }
 
-        List<FontFallback> fallbacks = new();
+        var fallbacks = new List<FontFallback>();
 
-        string? zhFamily = RunFcMatchFamily("sans:lang=zh-cn");
-        string? emojiFamily = RunFcMatchFamily("emoji");
+        var emojiFamily = DetectFontFamily("emoji");
 
-        if (!string.IsNullOrWhiteSpace(zhFamily))
-        {
-            fallbacks.Add(new FontFallback
-            {
-                FontFamily = new FontFamily(zhFamily)
-            });
-        }
-
-        if (!string.IsNullOrWhiteSpace(emojiFamily))
+        if (!string.IsNullOrWhiteSpace(emojiFamily) &&
+            emojiFamily.Contains("Noto Color Emoji", StringComparison.OrdinalIgnoreCase))
         {
             fallbacks.Add(new FontFallback
             {
@@ -44,10 +39,10 @@ public static class AppBuilderExtension
             });
         }
 
-        var localFont = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+        var notoScUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
         fallbacks.Add(new FontFallback
         {
-            FontFamily = new FontFamily(localFont)
+            FontFamily = new FontFamily(notoScUri)
         });
 
         return appBuilder.With(new FontManagerOptions
@@ -56,23 +51,36 @@ public static class AppBuilderExtension
         });
     }
 
-    private static string? RunFcMatchFamily(string pattern)
+    private static string? DetectFontFamily(string pattern)
     {
         try
         {
             var psi = new ProcessStartInfo
             {
                 FileName = "/bin/bash",
-                ArgumentList = { "-c", $"fc-match -f \"%{{family}}\\n\" \"{pattern}\" | head -n 1" },
+                ArgumentList =
+                {
+                    "-c",
+                    $"fc-match -f \"%{{family}}\\n\" \"{pattern}\" | head -n 1"
+                },
                 RedirectStandardOutput = true,
-                UseShellExecute = false
+                RedirectStandardError  = true,
+                UseShellExecute        = false
             };
 
             using var p = Process.Start(psi);
-            if (p == null) return null;
+            if (p == null)
+                return null;
 
-            string output = p.StandardOutput.ReadToEnd().Trim();
-            return string.IsNullOrWhiteSpace(output) ? null : output;
+            p.WaitForExit(2000);
+
+            var output = p.StandardOutput.ReadToEnd();
+            var family = output
+                .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                .FirstOrDefault()
+                ?.Trim();
+
+            return string.IsNullOrWhiteSpace(family) ? null : family;
         }
         catch
         {
