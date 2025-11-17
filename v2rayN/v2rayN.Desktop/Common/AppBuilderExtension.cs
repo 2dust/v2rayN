@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Media;
+using System.Collections.Generic;
 
 namespace v2rayN.Desktop.Common;
 
@@ -23,9 +23,11 @@ public static class AppBuilderExtension
             });
         }
 
-        var fallbacks = new List<FontFallback>();
+        List<FontFallback> fallbacks = new();
 
-        var zhFamily = RunFcFamily("sans:lang=zh-cn");
+        string? zhFamily = RunFcMatchFamily("sans:lang=zh-cn");
+        string? emojiFamily = RunFcMatchFamily("emoji");
+
         if (!string.IsNullOrWhiteSpace(zhFamily))
         {
             fallbacks.Add(new FontFallback
@@ -34,7 +36,6 @@ public static class AppBuilderExtension
             });
         }
 
-        var emojiFamily = RunFcFamily("emoji");
         if (!string.IsNullOrWhiteSpace(emojiFamily))
         {
             fallbacks.Add(new FontFallback
@@ -43,10 +44,10 @@ public static class AppBuilderExtension
             });
         }
 
-        var notoUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+        var localFont = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
         fallbacks.Add(new FontFallback
         {
-            FontFamily = new FontFamily(notoUri)
+            FontFamily = new FontFamily(localFont)
         });
 
         return appBuilder.With(new FontManagerOptions
@@ -55,7 +56,7 @@ public static class AppBuilderExtension
         });
     }
 
-    private static string? RunFcFamily(string pattern)
+    private static string? RunFcMatchFamily(string pattern)
     {
         try
         {
@@ -64,15 +65,13 @@ public static class AppBuilderExtension
                 FileName = "/bin/bash",
                 ArgumentList = { "-c", $"fc-match -f \"%{{family}}\\n\" \"{pattern}\" | head -n 1" },
                 RedirectStandardOutput = true,
-                RedirectStandardError = true,
                 UseShellExecute = false
             };
 
             using var p = Process.Start(psi);
-            if (p == null)
-                return null;
+            if (p == null) return null;
 
-            var output = p.StandardOutput.ReadToEnd().Trim();
+            string output = p.StandardOutput.ReadToEnd().Trim();
             return string.IsNullOrWhiteSpace(output) ? null : output;
         }
         catch
