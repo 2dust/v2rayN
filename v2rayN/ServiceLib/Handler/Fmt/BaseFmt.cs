@@ -4,7 +4,7 @@ namespace ServiceLib.Handler.Fmt;
 
 public class BaseFmt
 {
-    private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure", "verify" };
+    private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
 
     protected static string GetIpv6(string address)
     {
