@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using Avalonia.Media;
 
 namespace v2rayN.Desktop.Common;
@@ -18,20 +17,24 @@ public static class AppBuilderExtension
             {
                 FontFallbacks = new[]
                 {
-                    new FontFallback
-                    {
-                        FontFamily = new FontFamily(uri)
-                    }
+                    new FontFallback { FontFamily = new FontFamily(uri) }
                 }
             });
         }
 
         var fallbacks = new List<FontFallback>();
 
-        var emojiFamily = DetectFontFamily("emoji");
+        string? zhFamily = RunFcMatchFamily("sans:lang=zh-cn");
+        if (!string.IsNullOrWhiteSpace(zhFamily))
+        {
+            fallbacks.Add(new FontFallback
+            {
+                FontFamily = new FontFamily(zhFamily)
+            });
+        }
 
-        if (!string.IsNullOrWhiteSpace(emojiFamily) &&
-            emojiFamily.Contains("Noto Color Emoji", StringComparison.OrdinalIgnoreCase))
+        string? emojiFamily = RunFcMatchFamily("emoji");
+        if (!string.IsNullOrWhiteSpace(emojiFamily))
         {
             fallbacks.Add(new FontFallback
             {
@@ -39,10 +42,10 @@ public static class AppBuilderExtension
             });
         }
 
-        var notoScUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
+        var notoUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
         fallbacks.Add(new FontFallback
         {
-            FontFamily = new FontFamily(notoScUri)
+            FontFamily = new FontFamily(notoUri)
         });
 
         return appBuilder.With(new FontManagerOptions
@@ -51,7 +54,7 @@ public static class AppBuilderExtension
         });
     }
 
-    private static string? DetectFontFamily(string pattern)
+    private static string? RunFcMatchFamily(string pattern)
     {
         try
         {
@@ -61,26 +64,19 @@ public static class AppBuilderExtension
                 ArgumentList =
                 {
                     "-c",
-                    $"fc-match -f \"%{{family}}\\n\" \"{pattern}\" | head -n 1"
+                    $"fc-match -f \"%{{family[0]}}\\n\" \"{pattern}\" | head -n 1"
                 },
                 RedirectStandardOutput = true,
-                RedirectStandardError  = true,
-                UseShellExecute        = false
+                RedirectStandardError = false,
+                UseShellExecute = false
             };
 
             using var p = Process.Start(psi);
             if (p == null)
                 return null;
 
-            p.WaitForExit(2000);
-
-            var output = p.StandardOutput.ReadToEnd();
-            var family = output
-                .Split('\n', StringSplitOptions.RemoveEmptyEntries)
-                .FirstOrDefault()
-                ?.Trim();
-
-            return string.IsNullOrWhiteSpace(family) ? null : family;
+            var output = p.StandardOutput.ReadToEnd().Trim();
+            return string.IsNullOrWhiteSpace(output) ? null : output;
         }
         catch
         {
