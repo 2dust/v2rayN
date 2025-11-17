@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Avalonia;
 using Avalonia.Media;
 
 namespace v2rayN.Desktop.Common;
@@ -25,30 +24,22 @@ public static class AppBuilderExtension
 
         var fallbacks = new List<FontFallback>();
 
-        string? zhPath = RunFcMatch("sans:lang=zh-cn");
-        if (zhPath != null)
+        string? zhFamily = RunFcMatchFamily("sans:lang=zh-cn");
+        if (!string.IsNullOrWhiteSpace(zhFamily))
         {
-            var (dir, family) = ConvertPathToFontFamily(zhPath);
-            if (dir != null && family != null)
+            fallbacks.Add(new FontFallback
             {
-                fallbacks.Add(new FontFallback
-                {
-                    FontFamily = new FontFamily($"file://{dir}#{family}")
-                });
-            }
+                FontFamily = new FontFamily(zhFamily)
+            });
         }
 
-        string? emojiPath = RunFcMatch("emoji");
-        if (emojiPath != null)
+        string? emojiFamily = RunFcMatchFamily("emoji");
+        if (!string.IsNullOrWhiteSpace(emojiFamily))
         {
-            var (dir, family) = ConvertPathToFontFamily(emojiPath);
-            if (dir != null && family != null)
+            fallbacks.Add(new FontFallback
             {
-                fallbacks.Add(new FontFallback
-                {
-                    FontFamily = new FontFamily($"file://{dir}#{family}")
-                });
-            }
+                FontFamily = new FontFamily(emojiFamily)
+            });
         }
 
         var notoUri = Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC");
@@ -63,20 +54,26 @@ public static class AppBuilderExtension
         });
     }
 
-    private static string? RunFcMatch(string pattern)
+    private static string? RunFcMatchFamily(string pattern)
     {
         try
         {
             var psi = new ProcessStartInfo
             {
                 FileName = "/bin/bash",
-                ArgumentList = { "-c", $"fc-match -f \"%{{file}}\\n\" \"{pattern}\" | head -n 1" },
+                ArgumentList =
+                {
+                    "-c",
+                    $"fc-match -f \"%{{family[0]}}\\n\" \"{pattern}\" | head -n 1"
+                },
                 RedirectStandardOutput = true,
+                RedirectStandardError = false,
                 UseShellExecute = false
             };
 
             using var p = Process.Start(psi);
-            if (p == null) return null;
+            if (p == null)
+                return null;
 
             var output = p.StandardOutput.ReadToEnd().Trim();
             return string.IsNullOrWhiteSpace(output) ? null : output;
@@ -84,33 +81,6 @@ public static class AppBuilderExtension
         catch
         {
             return null;
-        }
-    }
-
-    private static (string? Dir, string? Family) ConvertPathToFontFamily(string filePath)
-    {
-        try
-        {
-            string dir = Path.GetDirectoryName(filePath)!;
-            string file = Path.GetFileNameWithoutExtension(filePath);
-
-            if (file.StartsWith("NotoColorEmoji", StringComparison.OrdinalIgnoreCase))
-                return (dir, "Noto Color Emoji");
-
-            if (file.StartsWith("NotoEmoji", StringComparison.OrdinalIgnoreCase))
-                return (dir, "Noto Emoji");
-
-            if (file.StartsWith("NotoSansCJK", StringComparison.OrdinalIgnoreCase))
-                return (dir, "Noto Sans CJK SC");
-
-            if (file.StartsWith("DroidSansFallbackFull", StringComparison.OrdinalIgnoreCase))
-                return (dir, "Droid Sans Fallback");
-
-            return (dir, file);
-        }
-        catch
-        {
-            return (null, null);
         }
     }
 }
