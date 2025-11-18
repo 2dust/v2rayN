@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5.0.1
       with:
         submodules: 'recursive'
         fetch-depth: '0'
@@ -110,7 +110,7 @@ jobs:
         dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
 
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5.0.1
       with:
         submodules: 'recursive'
         fetch-depth: '0'
