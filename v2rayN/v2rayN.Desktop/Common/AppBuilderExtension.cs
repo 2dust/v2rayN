@@ -1,20 +1,29 @@
-public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
+using System.IO;
+using Avalonia;
+using Avalonia.Media;
+
+namespace v2rayN.Desktop.Common;
+
+public static class AppBuilderExtension
 {
-    var fallbacks = new List<FontFallback>();
-
-    var notoSansSc = new FontFamily(Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC"));
-    fallbacks.Add(new FontFallback { FontFamily = notoSansSc });
-
-    if (OperatingSystem.IsLinux())
+    public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
     {
-        fallbacks.Add(new FontFallback
+        var notoSansSc = new FontFamily(Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC"));
+
+        var fallbacks = new[]
         {
-            FontFamily = new FontFamily("Noto Color Emoji")
+            new FontFallback { FontFamily = notoSansSc },
+
+            OperatingSystem.IsLinux()
+                ? new FontFallback { FontFamily = new FontFamily("Noto Color Emoji") }
+                : null
+        };
+
+        var validFallbacks = fallbacks.Where(f => f is not null).ToArray()!;
+
+        return appBuilder.With(new FontManagerOptions
+        {
+            FontFallbacks = validFallbacks
         });
     }
-
-    return appBuilder.With(new FontManagerOptions
-    {
-        FontFallbacks = fallbacks.ToArray()
-    });
 }
