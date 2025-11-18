@@ -145,7 +145,7 @@
                                 x:Name="menuRoutingAdvancedRemove"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}"
-                                InputGestureText="Delete" />
+                                InputGestureText="Back" />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedSelectAll"
                                 Height="{StaticResource MenuItemHeight}"

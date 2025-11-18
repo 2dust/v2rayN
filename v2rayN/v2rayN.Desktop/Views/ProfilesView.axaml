@@ -115,7 +115,7 @@
                         <MenuItem
                             x:Name="menuRemoveServer"
                             Header="{x:Static resx:ResUI.menuRemoveServer}"
-                            InputGesture="Delete" />
+                            InputGesture="Back" />
                         <MenuItem x:Name="menuRemoveDuplicateServer" Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
                         <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
                         <Separator />

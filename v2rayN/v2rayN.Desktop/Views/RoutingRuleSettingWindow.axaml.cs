@@ -140,25 +140,28 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
         }
         else
         {
-            if (e.Key == Key.T)
+            switch (e.Key)
             {
-                ViewModel?.MoveRule(EMove.Top);
-            }
-            else if (e.Key == Key.U)
-            {
-                ViewModel?.MoveRule(EMove.Up);
-            }
-            else if (e.Key == Key.D)
-            {
-                ViewModel?.MoveRule(EMove.Down);
-            }
-            else if (e.Key == Key.B)
-            {
-                ViewModel?.MoveRule(EMove.Bottom);
-            }
-            else if (e.Key == Key.Delete)
-            {
-                ViewModel?.RuleRemoveAsync();
+                case Key.T:
+                    ViewModel?.MoveRule(EMove.Top);
+                    break;
+
+                case Key.U:
+                    ViewModel?.MoveRule(EMove.Up);
+                    break;
+
+                case Key.D:
+                    ViewModel?.MoveRule(EMove.Down);
+                    break;
+
+                case Key.B:
+                    ViewModel?.MoveRule(EMove.Bottom);
+                    break;
+
+                case Key.Delete:
+                case Key.Back:
+                    ViewModel?.RuleRemoveAsync();
+                    break;
             }
         }
     }

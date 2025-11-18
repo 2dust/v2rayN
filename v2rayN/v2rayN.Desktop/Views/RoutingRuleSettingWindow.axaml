@@ -187,7 +187,7 @@
                             <MenuItem
                                 x:Name="menuRuleRemove"
                                 Header="{x:Static resx:ResUI.menuRuleRemove}"
-                                InputGesture="Delete" />
+                                InputGesture="Back" />
                             <MenuItem
                                 x:Name="menuRuleSelectAll"
                                 Header="{x:Static resx:ResUI.menuSelectAll}"

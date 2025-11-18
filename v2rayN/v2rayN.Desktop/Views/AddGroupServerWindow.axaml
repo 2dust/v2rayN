@@ -152,7 +152,10 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="menuAddChildServer" Header="{x:Static resx:ResUI.menuAddChildServer}" />
-                            <MenuItem x:Name="menuRemoveChildServer" Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
+                            <MenuItem
+                                x:Name="menuRemoveChildServer"
+                                Header="{x:Static resx:ResUI.menuRemoveChildServer}"
+                                InputGesture="Back" />
                             <MenuItem
                                 x:Name="menuSelectAllChild"
                                 Header="{x:Static resx:ResUI.menuSelectAll}"

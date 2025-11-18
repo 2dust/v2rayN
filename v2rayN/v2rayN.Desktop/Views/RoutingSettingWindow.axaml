@@ -102,7 +102,7 @@
                             <MenuItem
                                 x:Name="menuRoutingAdvancedRemove"
                                 Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}"
-                                InputGesture="Delete" />
+                                InputGesture="Back" />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedSelectAll"
                                 Header="{x:Static resx:ResUI.menuSelectAll}"

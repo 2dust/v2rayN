@@ -292,33 +292,37 @@ public partial class ProfilesView
         }
         else
         {
-            if (e.Key is Key.Enter or Key.Return)
+            switch (e.Key)
             {
-                ViewModel?.SetDefaultServer();
-            }
-            else if (e.Key == Key.Delete)
-            {
-                ViewModel?.RemoveServerAsync();
-            }
-            else if (e.Key == Key.T)
-            {
-                ViewModel?.MoveServer(EMove.Top);
-            }
-            else if (e.Key == Key.U)
-            {
-                ViewModel?.MoveServer(EMove.Up);
-            }
-            else if (e.Key == Key.D)
-            {
-                ViewModel?.MoveServer(EMove.Down);
-            }
-            else if (e.Key == Key.B)
-            {
-                ViewModel?.MoveServer(EMove.Bottom);
-            }
-            else if (e.Key == Key.Escape)
-            {
-                ViewModel?.ServerSpeedtestStop();
+                case Key.Enter:
+                    //case Key.Return:
+                    ViewModel?.SetDefaultServer();
+                    break;
+
+                case Key.Delete:
+                case Key.Back:
+                    ViewModel?.RemoveServerAsync();
+                    break;
+
+                case Key.T:
+                    ViewModel?.MoveServer(EMove.Top);
+                    break;
+
+                case Key.U:
+                    ViewModel?.MoveServer(EMove.Up);
+                    break;
+
+                case Key.D:
+                    ViewModel?.MoveServer(EMove.Down);
+                    break;
+
+                case Key.B:
+                    ViewModel?.MoveServer(EMove.Bottom);
+                    break;
+
+                case Key.Escape:
+                    ViewModel?.ServerSpeedtestStop();
+                    break;
             }
         }
     }

@@ -264,7 +264,7 @@
                                 x:Name="menuRuleRemove"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuRuleRemove}"
-                                InputGestureText="Delete" />
+                                InputGestureText="Back" />
                             <MenuItem
                                 x:Name="menuRuleSelectAll"
                                 Height="{StaticResource MenuItemHeight}"

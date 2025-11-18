@@ -132,6 +132,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                     break;
 
                 case Key.Delete:
+                case Key.Back:
                     ViewModel?.ChildRemoveAsync();
                     e.Handled = true;
                     break;

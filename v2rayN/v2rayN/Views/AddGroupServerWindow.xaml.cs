@@ -91,25 +91,28 @@ public partial class AddGroupServerWindow
         }
         else
         {
-            if (e.Key == Key.T)
+            switch (e.Key)
             {
-                ViewModel?.MoveServer(EMove.Top);
-            }
-            else if (e.Key == Key.U)
-            {
-                ViewModel?.MoveServer(EMove.Up);
-            }
-            else if (e.Key == Key.D)
-            {
-                ViewModel?.MoveServer(EMove.Down);
-            }
-            else if (e.Key == Key.B)
-            {
-                ViewModel?.MoveServer(EMove.Bottom);
-            }
-            else if (e.Key == Key.Delete)
-            {
-                ViewModel?.ChildRemoveAsync();
+                case Key.T:
+                    ViewModel?.MoveServer(EMove.Top);
+                    break;
+
+                case Key.U:
+                    ViewModel?.MoveServer(EMove.Up);
+                    break;
+
+                case Key.D:
+                    ViewModel?.MoveServer(EMove.Down);
+                    break;
+
+                case Key.B:
+                    ViewModel?.MoveServer(EMove.Bottom);
+                    break;
+
+                case Key.Delete:
+                case Key.Back:
+                    ViewModel?.ChildRemoveAsync();
+                    break;
             }
         }
     }

@@ -138,7 +138,7 @@
                             x:Name="menuRemoveServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuRemoveServer}"
-                            InputGestureText="Delete" />
+                            InputGestureText="Back" />
                         <MenuItem
                             x:Name="menuRemoveDuplicateServer"
                             Height="{StaticResource MenuItemHeight}"
