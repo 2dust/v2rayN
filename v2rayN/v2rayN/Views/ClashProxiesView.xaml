@@ -142,7 +142,10 @@
                 <ListView.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
                         <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
-                        <MenuItem x:Name="menuProxiesSelectActivity" Header="{x:Static resx:ResUI.menuProxiesSelectActivity}" />
+                        <MenuItem
+                            x:Name="menuProxiesSelectActivity"
+                            Header="{x:Static resx:ResUI.menuProxiesSelectActivity}"
+                            InputGestureText="Enter" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.ItemsPanel>

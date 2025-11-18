@@ -123,11 +123,13 @@
                         <MenuItem
                             x:Name="menuSetDefaultServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
+                            Header="{x:Static resx:ResUI.menuSetDefaultServer}"
+                            InputGestureText="Enter" />
                         <MenuItem
                             x:Name="menuEditServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuEditServer}" />
+                            Header="{x:Static resx:ResUI.menuEditServer}"
+                            InputGestureText="Ctrl+D" />
                         <MenuItem
                             x:Name="menuCopyServer"
                             Height="{StaticResource MenuItemHeight}"
@@ -135,7 +137,8 @@
                         <MenuItem
                             x:Name="menuRemoveServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuRemoveServer}" />
+                            Header="{x:Static resx:ResUI.menuRemoveServer}"
+                            InputGestureText="Delete" />
                         <MenuItem
                             x:Name="menuRemoveDuplicateServer"
                             Height="{StaticResource MenuItemHeight}"
@@ -148,15 +151,18 @@
                         <MenuItem
                             x:Name="menuTcpingServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuTcpingServer}" />
+                            Header="{x:Static resx:ResUI.menuTcpingServer}"
+                            InputGestureText="Ctrl+O" />
                         <MenuItem
                             x:Name="menuRealPingServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuRealPingServer}" />
+                            Header="{x:Static resx:ResUI.menuRealPingServer}"
+                            InputGestureText="Ctrl+R" />
                         <MenuItem
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSpeedServer}" />
+                            Header="{x:Static resx:ResUI.menuSpeedServer}"
+                            InputGestureText="Ctrl+T" />
                         <MenuItem
                             x:Name="menuSortServerResult"
                             Height="{StaticResource MenuItemHeight}"
@@ -184,29 +190,35 @@
                             <MenuItem
                                 x:Name="menuMoveTop"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveTop}" />
+                                Header="{x:Static resx:ResUI.menuMoveTop}"
+                                InputGestureText="T" />
                             <MenuItem
                                 x:Name="menuMoveUp"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveUp}" />
+                                Header="{x:Static resx:ResUI.menuMoveUp}"
+                                InputGestureText="U" />
                             <MenuItem
                                 x:Name="menuMoveDown"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveDown}" />
+                                Header="{x:Static resx:ResUI.menuMoveDown}"
+                                InputGestureText="D" />
                             <MenuItem
                                 x:Name="menuMoveBottom"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                                Header="{x:Static resx:ResUI.menuMoveBottom}"
+                                InputGestureText="B" />
                         </MenuItem>
                         <MenuItem
                             x:Name="menuSelectAll"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuSelectAll}" />
+                            Header="{x:Static resx:ResUI.menuSelectAll}"
+                            InputGestureText="Ctrl+A" />
                         <Separator />
                         <MenuItem
                             x:Name="menuShareServer"
                             Height="{StaticResource MenuItemHeight}"
-                            Header="{x:Static resx:ResUI.menuShareServer}" />
+                            Header="{x:Static resx:ResUI.menuShareServer}"
+                            InputGestureText="Ctrl+F" />
                         <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem
                                 x:Name="menuExport2ClientConfig"
@@ -220,7 +232,8 @@
                             <MenuItem
                                 x:Name="menuExport2ShareUrl"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
+                                Header="{x:Static resx:ResUI.menuExport2ShareUrl}"
+                                InputGestureText="Ctrl+C" />
                             <MenuItem
                                 x:Name="menuExport2ShareUrlBase64"
                                 Height="{StaticResource MenuItemHeight}"

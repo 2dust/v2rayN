@@ -472,10 +472,10 @@
     <value>Nyelv (Újraindítás)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Megosztási linkek importálása vágólapról (Ctrl+V)</value>
+    <value>Megosztási linkek importálása vágólapról</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>QR kód beolvasása a képernyőről (Ctrl+S)</value>
+    <value>QR kód beolvasása a képernyőről</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
     <value>Kijelölt konfiguráció klónozása</value>
@@ -484,31 +484,31 @@
     <value>Ismétlődő konfigurációk eltávolítása</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Kijelölt konfigurációk eltávolítása (Delete)</value>
+    <value>Kijelölt konfigurációk eltávolítása</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Beállítás aktív konfigurációként (Enter)</value>
+    <value>Beállítás aktív konfigurációként</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Összes szolgáltatás statisztika törlése</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Konfigurációk valós késleltetésének tesztelése (Ctrl+R)</value>
+    <value>Konfigurációk valós késleltetésének tesztelése</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Rendezés teszteredmény szerint</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Konfigurációk letöltési sebességének tesztelése (Ctrl+T)</value>
+    <value>Konfigurációk letöltési sebességének tesztelése</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Konfigurációk tesztelése tcpinggel (Ctrl+O)</value>
+    <value>Konfigurációk tesztelése tcpinggel</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Kijelölt konfiguráció exportálása teljes konfigurációként</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Megosztási link exportálása vágólapra (Ctrl+C)</value>
+    <value>Megosztási link exportálása vágólapra</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Egyéni konfiguráció hozzáadása</value>
@@ -529,19 +529,19 @@
     <value>[VMess] konfiguráció hozzáadása</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>Összes kijelölése (Ctrl+A)</value>
+    <value>Összes kijelölése</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
     <value>Összes törlése</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>Másolás (Ctrl+C)</value>
+    <value>Másolás</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>Összes másolása</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Összes kijelölése (Ctrl+A)</value>
+    <value>Összes kijelölése</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>Hozzáadás</value>
@@ -781,7 +781,7 @@
     <value>PAC mód</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Konfiguráció megosztása (Ctrl+F)</value>
+    <value>Konfiguráció megosztása</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Útválasztás</value>
@@ -793,16 +793,16 @@
     <value>Futtatás rendszergazdaként</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>Mozgatás alulra (B)</value>
+    <value>Mozgatás alulra</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>Le (D)</value>
+    <value>Le</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>Mozgatás felülre (T)</value>
+    <value>Mozgatás felülre</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>Fel (U)</value>
+    <value>Fel</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
     <value>Szűrő, támogatja a reguláris kifejezéseket</value>
@@ -817,10 +817,10 @@
     <value>Szabályok importálása</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Kijelölt eltávolítása (Delete)</value>
+    <value>Kijelölt eltávolítása</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Beállítás aktív szabályként (Enter)</value>
+    <value>Beállítás aktív szabályként</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Tartomány stratégia</value>
@@ -853,7 +853,7 @@
     <value>Szabálylista</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Szabály eltávolítása (Delete)</value>
+    <value>Szabály eltávolítása</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>Útválasztási szabály részleteinek beállítása</value>
@@ -922,7 +922,7 @@
     <value>Teszt kihagyása</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Konfiguráció szerkesztése (Ctrl+D)</value>
+    <value>Konfiguráció szerkesztése</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Dupla kattintás a konfigurációra aktiválja</value>
@@ -1207,7 +1207,7 @@
     <value>Proxyk frissítése</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>Aktív csomópont kiválasztása (Enter)</value>
+    <value>Aktív csomópont kiválasztása</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Alapértelmezett tartomány stratégia kimenő forgalomhoz</value>

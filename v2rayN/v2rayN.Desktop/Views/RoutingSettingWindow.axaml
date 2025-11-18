@@ -99,9 +99,18 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="menuRoutingAdvancedAdd" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
-                            <MenuItem x:Name="menuRoutingAdvancedRemove" Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}" />
-                            <MenuItem x:Name="menuRoutingAdvancedSelectAll" Header="{x:Static resx:ResUI.menuSelectAll}" />
-                            <MenuItem x:Name="menuRoutingAdvancedSetDefault" Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedRemove"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}"
+                                InputGesture="Delete" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedSelectAll"
+                                Header="{x:Static resx:ResUI.menuSelectAll}"
+                                InputGesture="Ctrl+A" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedSetDefault"
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}"
+                                InputGesture="Enter" />
                             <Separator />
                             <MenuItem x:Name="menuRoutingAdvancedImportRules" Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
                         </ContextMenu>

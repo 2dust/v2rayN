@@ -91,11 +91,13 @@
                     <MenuItem
                         x:Name="menuMsgViewSelectAll"
                         Height="{StaticResource MenuItemHeight}"
-                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}"
+                        InputGestureText="Ctrl+A" />
                     <MenuItem
                         x:Name="menuMsgViewCopy"
                         Height="{StaticResource MenuItemHeight}"
-                        Header="{x:Static resx:ResUI.menuMsgViewCopy}" />
+                        Header="{x:Static resx:ResUI.menuMsgViewCopy}"
+                        InputGestureText="Ctrl+C" />
                     <MenuItem
                         x:Name="menuMsgViewCopyAll"
                         Height="{StaticResource MenuItemHeight}"

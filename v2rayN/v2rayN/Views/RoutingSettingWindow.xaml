@@ -144,15 +144,18 @@
                             <MenuItem
                                 x:Name="menuRoutingAdvancedRemove"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}" />
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}"
+                                InputGestureText="Delete" />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedSelectAll"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSelectAll}" />
+                                Header="{x:Static resx:ResUI.menuSelectAll}"
+                                InputGestureText="Ctrl+A" />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedSetDefault"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}" />
+                                Header="{x:Static resx:ResUI.menuRoutingAdvancedSetDefault}"
+                                InputGestureText="Enter" />
                             <Separator />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedImportRules"

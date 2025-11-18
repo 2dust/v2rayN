@@ -153,12 +153,27 @@
                         <ContextMenu>
                             <MenuItem x:Name="menuAddChildServer" Header="{x:Static resx:ResUI.menuAddChildServer}" />
                             <MenuItem x:Name="menuRemoveChildServer" Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
-                            <MenuItem x:Name="menuSelectAllChild" Header="{x:Static resx:ResUI.menuSelectAll}" />
+                            <MenuItem
+                                x:Name="menuSelectAllChild"
+                                Header="{x:Static resx:ResUI.menuSelectAll}"
+                                InputGesture="Ctrl+A" />
                             <Separator />
-                            <MenuItem x:Name="menuMoveTop" Header="{x:Static resx:ResUI.menuMoveTop}" />
-                            <MenuItem x:Name="menuMoveUp" Header="{x:Static resx:ResUI.menuMoveUp}" />
-                            <MenuItem x:Name="menuMoveDown" Header="{x:Static resx:ResUI.menuMoveDown}" />
-                            <MenuItem x:Name="menuMoveBottom" Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                            <MenuItem
+                                x:Name="menuMoveTop"
+                                Header="{x:Static resx:ResUI.menuMoveTop}"
+                                InputGesture="T" />
+                            <MenuItem
+                                x:Name="menuMoveUp"
+                                Header="{x:Static resx:ResUI.menuMoveUp}"
+                                InputGesture="U" />
+                            <MenuItem
+                                x:Name="menuMoveDown"
+                                Header="{x:Static resx:ResUI.menuMoveDown}"
+                                InputGesture="D" />
+                            <MenuItem
+                                x:Name="menuMoveBottom"
+                                Header="{x:Static resx:ResUI.menuMoveBottom}"
+                                InputGesture="B" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>

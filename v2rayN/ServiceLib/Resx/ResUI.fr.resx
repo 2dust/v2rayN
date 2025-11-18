@@ -472,10 +472,10 @@
     <value>Langue (redémarrage requis)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Importer liens depuis le presse-papiers (Ctrl+V)</value>
+    <value>Importer liens depuis le presse-papiers</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>Scanner le QR code à l’écran (Ctrl+S)</value>
+    <value>Scanner le QR code à l’écran</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
     <value>Cloner la sélection</value>
@@ -484,7 +484,7 @@
     <value>Supprimer les doublons</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Supprimer la sélection (multi-sélection) (Delete)</value>
+    <value>Supprimer la sélection (multi-sélection)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
     <value>Définir comme actif (Entrée)</value>
@@ -493,22 +493,22 @@
     <value>Effacer toutes les statistiques de service</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Tester la latence de connexion réelle (multi-sélect) (Ctrl+R)</value>
+    <value>Tester la latence de connexion réelle (multi-sélect)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Trier selon les résultats de test</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Tester la vitesse (multi-sélection) (Ctrl+T)</value>
+    <value>Tester la vitesse (multi-sélection)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Tester la latence Tcping (multi-sélection) (Ctrl+O)</value>
+    <value>Tester la latence Tcping (multi-sélection)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Exporter la configuration complète sélectionnée</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Exporter les liens de partage vers le presse-papiers (multi-sélection) (Ctrl+C)</value>
+    <value>Exporter les liens de partage vers le presse-papiers (multi-sélection)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Ajouter une configuration personnalisée</value>
@@ -529,19 +529,19 @@
     <value>Ajouter [VMess]</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>Tout sélectionner (Ctrl+A)</value>
+    <value>Tout sélectionner</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
     <value>Tout effacer</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>Copier (Ctrl+C)</value>
+    <value>Copier</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>Tout copier</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Tout sélect (Ctrl+A)</value>
+    <value>Tout sélect</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>Ajouter</value>
@@ -781,7 +781,7 @@
     <value>Mode PAC</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Partager (Ctrl+F)</value>
+    <value>Partager</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routage</value>
@@ -793,16 +793,16 @@
     <value>Exécuter en tant qu’administrateur</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>Déplacer tout en bas (B)</value>
+    <value>Déplacer tout en bas</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>Descendre (D)</value>
+    <value>Descendre</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>Déplacer tout en haut (T)</value>
+    <value>Déplacer tout en haut</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>Monter (U)</value>
+    <value>Monter</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
     <value>Filtre (regex pris en charge)</value>
@@ -817,7 +817,7 @@
     <value>Importer 1-clic du jeu de règles</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Suppr. règles sélectionnées (Delete)</value>
+    <value>Suppr. règles sélectionnées</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
     <value>Définir comme règles actives (Entrée)</value>
@@ -853,7 +853,7 @@
     <value>Liste des règles</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Supprimer les règles sélectionnées (Delete)</value>
+    <value>Supprimer les règles sélectionnées</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>Paramètres détaillés des règles de routage</value>
@@ -922,7 +922,7 @@
     <value>Ignorer le test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Éditer (Ctrl+D)</value>
+    <value>Éditer</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Double-cliquer sur l’interface principale pour activer</value>

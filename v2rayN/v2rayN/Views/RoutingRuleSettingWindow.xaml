@@ -263,11 +263,13 @@
                             <MenuItem
                                 x:Name="menuRuleRemove"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRuleRemove}" />
+                                Header="{x:Static resx:ResUI.menuRuleRemove}"
+                                InputGestureText="Delete" />
                             <MenuItem
                                 x:Name="menuRuleSelectAll"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSelectAll}" />
+                                Header="{x:Static resx:ResUI.menuSelectAll}"
+                                InputGestureText="Ctrl+A" />
                             <MenuItem
                                 x:Name="menuRuleExportSelected"
                                 Height="{StaticResource MenuItemHeight}"
@@ -276,19 +278,23 @@
                             <MenuItem
                                 x:Name="menuMoveTop"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveTop}" />
+                                Header="{x:Static resx:ResUI.menuMoveTop}"
+                                InputGestureText="T" />
                             <MenuItem
                                 x:Name="menuMoveUp"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveUp}" />
+                                Header="{x:Static resx:ResUI.menuMoveUp}"
+                                InputGestureText="U" />
                             <MenuItem
                                 x:Name="menuMoveDown"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveDown}" />
+                                Header="{x:Static resx:ResUI.menuMoveDown}"
+                                InputGestureText="D" />
                             <MenuItem
                                 x:Name="menuMoveBottom"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                                Header="{x:Static resx:ResUI.menuMoveBottom}"
+                                InputGestureText="B" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>

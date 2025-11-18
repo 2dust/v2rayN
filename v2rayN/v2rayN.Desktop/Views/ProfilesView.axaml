@@ -103,16 +103,34 @@
                 </DataGrid.KeyBindings>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem x:Name="menuSetDefaultServer" Header="{x:Static resx:ResUI.menuSetDefaultServer}" />
-                        <MenuItem x:Name="menuEditServer" Header="{x:Static resx:ResUI.menuEditServer}" />
+                        <MenuItem
+                            x:Name="menuSetDefaultServer"
+                            Header="{x:Static resx:ResUI.menuSetDefaultServer}"
+                            InputGesture="Enter" />
+                        <MenuItem
+                            x:Name="menuEditServer"
+                            Header="{x:Static resx:ResUI.menuEditServer}"
+                            InputGesture="Ctrl+D" />
                         <MenuItem x:Name="menuCopyServer" Header="{x:Static resx:ResUI.menuCopyServer}" />
-                        <MenuItem x:Name="menuRemoveServer" Header="{x:Static resx:ResUI.menuRemoveServer}" />
+                        <MenuItem
+                            x:Name="menuRemoveServer"
+                            Header="{x:Static resx:ResUI.menuRemoveServer}"
+                            InputGesture="Delete" />
                         <MenuItem x:Name="menuRemoveDuplicateServer" Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
                         <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
                         <Separator />
-                        <MenuItem x:Name="menuTcpingServer" Header="{x:Static resx:ResUI.menuTcpingServer}" />
-                        <MenuItem x:Name="menuRealPingServer" Header="{x:Static resx:ResUI.menuRealPingServer}" />
-                        <MenuItem x:Name="menuSpeedServer" Header="{x:Static resx:ResUI.menuSpeedServer}" />
+                        <MenuItem
+                            x:Name="menuTcpingServer"
+                            Header="{x:Static resx:ResUI.menuTcpingServer}"
+                            InputGesture="Ctrl+O" />
+                        <MenuItem
+                            x:Name="menuRealPingServer"
+                            Header="{x:Static resx:ResUI.menuRealPingServer}"
+                            InputGesture="Ctrl+R" />
+                        <MenuItem
+                            x:Name="menuSpeedServer"
+                            Header="{x:Static resx:ResUI.menuSpeedServer}"
+                            InputGesture="Ctrl+T" />
                         <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
                         <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
@@ -130,19 +148,40 @@
                             </MenuItem>
                         </MenuItem>
                         <MenuItem Header="{x:Static resx:ResUI.menuMoveTo}">
-                            <MenuItem x:Name="menuMoveTop" Header="{x:Static resx:ResUI.menuMoveTop}" />
-                            <MenuItem x:Name="menuMoveUp" Header="{x:Static resx:ResUI.menuMoveUp}" />
-                            <MenuItem x:Name="menuMoveDown" Header="{x:Static resx:ResUI.menuMoveDown}" />
-                            <MenuItem x:Name="menuMoveBottom" Header="{x:Static resx:ResUI.menuMoveBottom}" />
+                            <MenuItem
+                                x:Name="menuMoveTop"
+                                Header="{x:Static resx:ResUI.menuMoveTop}"
+                                InputGesture="T" />
+                            <MenuItem
+                                x:Name="menuMoveUp"
+                                Header="{x:Static resx:ResUI.menuMoveUp}"
+                                InputGesture="U" />
+                            <MenuItem
+                                x:Name="menuMoveDown"
+                                Header="{x:Static resx:ResUI.menuMoveDown}"
+                                InputGesture="D" />
+                            <MenuItem
+                                x:Name="menuMoveBottom"
+                                Header="{x:Static resx:ResUI.menuMoveBottom}"
+                                InputGesture="B" />
                         </MenuItem>
-                        <MenuItem x:Name="menuSelectAll" Header="{x:Static resx:ResUI.menuSelectAll}" />
+                        <MenuItem
+                            x:Name="menuSelectAll"
+                            Header="{x:Static resx:ResUI.menuSelectAll}"
+                            InputGesture="Ctrl+A" />
                         <Separator />
-                        <MenuItem x:Name="menuShareServer" Header="{x:Static resx:ResUI.menuShareServer}" />
+                        <MenuItem
+                            x:Name="menuShareServer"
+                            Header="{x:Static resx:ResUI.menuShareServer}"
+                            InputGesture="Ctrl+F" />
                         <MenuItem Header="{x:Static resx:ResUI.menuExportConfig}">
                             <MenuItem x:Name="menuExport2ClientConfig" Header="{x:Static resx:ResUI.menuExport2ClientConfig}" />
                             <MenuItem x:Name="menuExport2ClientConfigClipboard" Header="{x:Static resx:ResUI.menuExport2ClientConfigClipboard}" />
                             <Separator />
-                            <MenuItem x:Name="menuExport2ShareUrl" Header="{x:Static resx:ResUI.menuExport2ShareUrl}" />
+                            <MenuItem
+                                x:Name="menuExport2ShareUrl"
+                                Header="{x:Static resx:ResUI.menuExport2ShareUrl}"
+                                InputGesture="Ctrl+C" />
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
                         </MenuItem>
                         <Separator />

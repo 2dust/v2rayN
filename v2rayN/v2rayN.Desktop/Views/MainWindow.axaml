@@ -26,8 +26,14 @@
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
                 <Menu Margin="{StaticResource Margin4}">
                     <MenuItem Header="{x:Static resx:ResUI.menuServers}">
-                        <MenuItem x:Name="menuAddServerViaClipboard" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
-                        <MenuItem x:Name="menuAddServerViaScan" Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
+                        <MenuItem
+                            x:Name="menuAddServerViaClipboard"
+                            Header="{x:Static resx:ResUI.menuAddServerViaClipboard}"
+                            InputGesture="Ctrl+V" />
+                        <MenuItem
+                            x:Name="menuAddServerViaScan"
+                            Header="{x:Static resx:ResUI.menuAddServerViaScan}"
+                            InputGesture="Ctrl+S" />
                         <MenuItem x:Name="menuAddServerViaImage" Header="{x:Static resx:ResUI.menuAddServerViaImage}" />
                         <MenuItem x:Name="menuAddCustomServer" Header="{x:Static resx:ResUI.menuAddCustomServer}" />
                         <MenuItem x:Name="menuAddPolicyGroupServer" Header="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />

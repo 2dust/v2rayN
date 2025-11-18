@@ -110,7 +110,10 @@
                 <ItemsControl.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
-                        <MenuItem x:Name="menuProxiesSelectActivity" Header="{x:Static resx:ResUI.menuProxiesSelectActivity}" />
+                        <MenuItem
+                            x:Name="menuProxiesSelectActivity"
+                            Header="{x:Static resx:ResUI.menuProxiesSelectActivity}"
+                            InputGesture="Enter" />
                     </ContextMenu>
                 </ItemsControl.ContextMenu>
                 <ItemsControl.ItemsPanel>

@@ -472,10 +472,10 @@
     <value>Language (Restart)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Import Share Links from clipboard (Ctrl+V)</value>
+    <value>Import Share Links from clipboard</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>Scan QR code on the screen (Ctrl+S)</value>
+    <value>Scan QR code on the screen</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
     <value>Clone selected Configuration</value>
@@ -484,31 +484,31 @@
     <value>Remove duplicate Configurations</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Remove selected Configurations (Delete)</value>
+    <value>Remove selected Configurations</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Set as active Configuration (Enter)</value>
+    <value>Set as active Configuration</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Test Configurations real delay (Ctrl+R)</value>
+    <value>Test Configurations real delay</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Sort by test result</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Test Configurations download speed (Ctrl+T)</value>
+    <value>Test Configurations download speed</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Test Configurations with tcping (Ctrl+O)</value>
+    <value>Test Configurations with tcping</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>Export selected Configuration for complete configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Export Share Link to Clipboard (Ctrl+C)</value>
+    <value>Export Share Link to Clipboard</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>Add a custom configuration Configuration</value>
@@ -529,19 +529,19 @@
     <value>Add [VMess] Configuration</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>Select all (Ctrl+A)</value>
+    <value>Select all</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
     <value>Clear all</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>Copy (Ctrl+C)</value>
+    <value>Copy</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>Copy all</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Select all (Ctrl+A)</value>
+    <value>Select all</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>Add</value>
@@ -781,7 +781,7 @@
     <value>PAC mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Share Configuration (Ctrl+F)</value>
+    <value>Share Configuration</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routing</value>
@@ -793,16 +793,16 @@
     <value>Run as Admin</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>Move to bottom (B)</value>
+    <value>Move to bottom</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>Down (D)</value>
+    <value>Down</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>Move to top (T)</value>
+    <value>Move to top</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>Up (U)</value>
+    <value>Up</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
     <value>Filter, supports regular expressions</value>
@@ -817,10 +817,10 @@
     <value>Import Rules</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Remove selected (Delete)</value>
+    <value>Remove selected</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Set as active rule (Enter)</value>
+    <value>Set as active rule</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>Domain strategy</value>
@@ -853,7 +853,7 @@
     <value>Rule List</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Remove Rule (Delete)</value>
+    <value>Remove Rule</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>Routing Rule Details Setting</value>
@@ -922,7 +922,7 @@
     <value>Skip test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Edit Configuration (Ctrl+D)</value>
+    <value>Edit Configuration</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Double-clicking Configuration makes it active</value>
@@ -1207,7 +1207,7 @@
     <value>Refresh Proxies</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>Select active node (Enter)</value>
+    <value>Select active node</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Default domain strategy for outbound</value>

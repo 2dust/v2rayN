@@ -58,11 +58,13 @@
                                 <MenuItem
                                     x:Name="menuAddServerViaClipboard"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
+                                    Header="{x:Static resx:ResUI.menuAddServerViaClipboard}"
+                                    InputGestureText="Ctrl+V" />
                                 <MenuItem
                                     x:Name="menuAddServerViaScan"
                                     Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddServerViaScan}" />
+                                    Header="{x:Static resx:ResUI.menuAddServerViaScan}"
+                                    InputGestureText="Ctrl+S" />
                                 <MenuItem
                                     x:Name="menuAddServerViaImage"
                                     Height="{StaticResource MenuItemHeight}"

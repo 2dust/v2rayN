@@ -472,10 +472,10 @@
     <value>语言 (需重启)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>从剪贴板导入分享链接 (Ctrl+V)</value>
+    <value>从剪贴板导入分享链接</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>扫描屏幕上的二维码 (Ctrl+S)</value>
+    <value>扫描屏幕上的二维码</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
     <value>克隆所选</value>
@@ -484,31 +484,31 @@
     <value>移除重复</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>移除所选 (多选) (Delete)</value>
+    <value>移除所选 (多选)</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>设为活动 (Enter)</value>
+    <value>设为活动</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服务统计数据</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>测试真连接延迟 (多选) (Ctrl+R)</value>
+    <value>测试真连接延迟 (多选)</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按测试结果排序</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>测试速度 (多选) (Ctrl+T)</value>
+    <value>测试速度 (多选)</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>测试延迟 Tcping (多选) (Ctrl+O)</value>
+    <value>测试延迟 Tcping (多选)</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>导出所选完整配置</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>导出分享链接至剪贴板 (多选) (Ctrl+C)</value>
+    <value>导出分享链接至剪贴板 (多选)</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>添加自定义配置</value>
@@ -529,19 +529,19 @@
     <value>添加 [VMess] </value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>全选 (Ctrl+A)</value>
+    <value>全选</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
     <value>清除所有</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>复制 (Ctrl+C)</value>
+    <value>复制</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>复制所有</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>全选 (Ctrl+A)</value>
+    <value>全选</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>添加</value>
@@ -781,7 +781,7 @@
     <value>Pac 模式</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>分享 (Ctrl+F)</value>
+    <value>分享</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>路由</value>
@@ -793,16 +793,16 @@
     <value>以管理员身份运行</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>下移至底 (B)</value>
+    <value>下移至底</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>下移 (D)</value>
+    <value>下移</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>上移至顶 (T)</value>
+    <value>上移至顶</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>上移 (U)</value>
+    <value>上移</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
     <value>过滤器 (支持正则)</value>
@@ -817,10 +817,10 @@
     <value>一键导入规则集</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>移除所选规则 (Delete)</value>
+    <value>移除所选规则</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>设为活动规则 (Enter)</value>
+    <value>设为活动规则</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
     <value>域名解析策略</value>
@@ -853,7 +853,7 @@
     <value>规则列表</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>移除所选规则 (Delete)</value>
+    <value>移除所选规则</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
     <value>路由规则详情设置</value>
@@ -922,7 +922,7 @@
     <value>跳过测试</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>编辑 (Ctrl+D)</value>
+    <value>编辑</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>主界面双击设为活动</value>
@@ -1204,7 +1204,7 @@
     <value>刷新</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>设为活动 (Enter)</value>
+    <value>设为活动</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>Outbound 默认解析策略</value>

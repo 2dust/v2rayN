@@ -472,10 +472,10 @@
     <value>زبان</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>وارد کردن URL انبوه از کلیپ بورد (Ctrl+V)</value>
+    <value>وارد کردن URL انبوه از کلیپ بورد</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>اسکن کد QR روی صفحه (Ctrl+S)</value>
+    <value>اسکن کد QR روی صفحه</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
     <value>سرور انتخاب شده را شبیه سازی کنید</value>
@@ -484,31 +484,31 @@
     <value>سرورهای تکراری را حذف کنید</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>حذف سرورهای انتخابی (Delete)</value>
+    <value>حذف سرورهای انتخابی</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>به عنوان سرور فعال تنظیم کنید (Enter)</value>
+    <value>به عنوان سرور فعال تنظیم کنید</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>تمام آمار خدمات را پاک کنید</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>آزمایش سرورها با تاخیر واقعی (Ctrl+R)</value>
+    <value>آزمایش سرورها با تاخیر واقعی</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>مرتب سازی بر اساس نتیجه تست</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>تست سرعت دانلود سرورها (Ctrl+T)</value>
+    <value>تست سرعت دانلود سرورها</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>تست سرورها با tcping (Ctrl+O)</value>
+    <value>تست سرورها با tcping</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
     <value>سرور انتخابی را برای پیکربندی کلاینت صادر کنید</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>URL های اشتراک گذاری را به کلیپ بورد صادر کنید (Ctrl+C)</value>
+    <value>URL های اشتراک گذاری را به کلیپ بورد صادر کنید</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
     <value>یک سرور پیکربندی سفارشی اضافه شود</value>
@@ -529,19 +529,19 @@
     <value>سرور [VMess] را اضافه کنید</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>انتخاب همه (Ctrl+A)</value>
+    <value>انتخاب همه</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
     <value>همه را پاک کن</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>کپی (Ctrl+C)</value>
+    <value>کپی</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
     <value>کپی همه</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>انتخاب همه (Ctrl+A)</value>
+    <value>انتخاب همه</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
     <value>اضافه کردن</value>
@@ -796,13 +796,13 @@
     <value>به پایین حرکت شود(B)</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>پایین (D)</value>
+    <value>پایین</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>حرکت به بالا (T)</value>
+    <value>حرکت به بالا</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>بالا (U)</value>
+    <value>بالا</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
     <value>فیلتر، از عبارات منظم پشتیبانی می کند</value>
@@ -922,7 +922,7 @@
     <value>رد شدن از آزمون</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>ویرایش سرور (Ctrl+D)</value>
+    <value>ویرایش سرور</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>دوبار کلیک کردن سرور باعث فعال شدن آن می شود</value>
@@ -1207,7 +1207,7 @@
     <value>تازه سازی پروکسی ها</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>انتخاب گره فعال (Enter)</value>
+    <value>انتخاب گره فعال</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
     <value>استراتژی دامنه پیش فرض برای خروجی</value>
