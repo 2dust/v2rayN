@@ -26,12 +26,55 @@ public partial class CoreConfigSingboxService
                         }
 
                         await GenOutboundMux(node, outbound);
+                        await GenOutboundTransport(node, outbound);
                         break;
                     }
                 case EConfigType.Shadowsocks:
                     {
                         outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : Global.None;
                         outbound.password = node.Id;
+
+                        if (node.Network == nameof(ETransport.tcp) && node.HeaderType == Global.TcpHeaderHttp)
+                        {
+                            outbound.plugin = "obfs-local";
+                            outbound.plugin_opts = $"obfs=http;obfs-host={node.RequestHost};";
+                        }
+                        else
+                        {
+                            var pluginArgs = string.Empty;
+                            if (node.Network == nameof(ETransport.ws))
+                            {
+                                pluginArgs += "mode=websocket;";
+                                pluginArgs += $"host={node.RequestHost};";
+                                pluginArgs += $"path={node.Path};";
+                            }
+                            else if (node.Network == nameof(ETransport.quic))
+                            {
+                                pluginArgs += "mode=quic;";
+                            }
+                            if (node.StreamSecurity == Global.StreamSecurity)
+                            {
+                                pluginArgs += "tls;";
+                                var certs = CertPemManager.ParsePemChain(node.Cert);
+                                if (certs.Count > 0)
+                                {
+                                    var cert = certs.First();
+                                    const string beginMarker = "-----BEGIN CERTIFICATE-----\n";
+                                    const string endMarker = "\n-----END CERTIFICATE-----";
+
+                                    var base64Start = beginMarker.Length;
+                                    var endIndex = cert.IndexOf(endMarker, base64Start, StringComparison.Ordinal);
+                                    var base64Content = cert.Substring(base64Start, endIndex - base64Start);
+
+                                    pluginArgs += $"certRaw={base64Content};";
+                                }
+                            }
+                            if (pluginArgs.Length > 0)
+                            {
+                                outbound.plugin = "v2ray-plugin";
+                                outbound.plugin_opts = pluginArgs;
+                            }
+                        }
 
                         await GenOutboundMux(node, outbound);
                         break;
@@ -71,6 +114,8 @@ public partial class CoreConfigSingboxService
                         {
                             outbound.flow = node.Flow;
                         }
+
+                        await GenOutboundTransport(node, outbound);
                         break;
                     }
                 case EConfigType.Trojan:
@@ -78,6 +123,7 @@ public partial class CoreConfigSingboxService
                         outbound.password = node.Id;
 
                         await GenOutboundMux(node, outbound);
+                        await GenOutboundTransport(node, outbound);
                         break;
                     }
                 case EConfigType.Hysteria2:
@@ -127,8 +173,6 @@ public partial class CoreConfigSingboxService
             }
 
             await GenOutboundTls(node, outbound);
-
-            await GenOutboundTransport(node, outbound);
         }
         catch (Exception ex)
         {
@@ -232,54 +276,59 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            if (node.StreamSecurity is Global.StreamSecurityReality or Global.StreamSecurity)
+            if (node.StreamSecurity is not (Global.StreamSecurityReality or Global.StreamSecurity))
             {
-                var server_name = string.Empty;
-                if (node.Sni.IsNotEmpty())
-                {
-                    server_name = node.Sni;
-                }
-                else if (node.RequestHost.IsNotEmpty())
-                {
-                    server_name = Utils.String2List(node.RequestHost)?.First();
-                }
-                var tls = new Tls4Sbox()
+                return await Task.FromResult(0);
+            }
+            if (node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard)
+            {
+                return await Task.FromResult(0);
+            }
+            var server_name = string.Empty;
+            if (node.Sni.IsNotEmpty())
+            {
+                server_name = node.Sni;
+            }
+            else if (node.RequestHost.IsNotEmpty())
+            {
+                server_name = Utils.String2List(node.RequestHost)?.First();
+            }
+            var tls = new Tls4Sbox()
+            {
+                enabled = true,
+                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
+                server_name = server_name,
+                insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
+                alpn = node.GetAlpn(),
+            };
+            if (node.Fingerprint.IsNotEmpty())
+            {
+                tls.utls = new Utls4Sbox()
                 {
                     enabled = true,
-                    record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
-                    server_name = server_name,
-                    insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
-                    alpn = node.GetAlpn(),
+                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
                 };
-                if (node.Fingerprint.IsNotEmpty())
+            }
+            if (node.StreamSecurity == Global.StreamSecurity)
+            {
+                var certs = CertPemManager.ParsePemChain(node.Cert);
+                if (certs.Count > 0)
                 {
-                    tls.utls = new Utls4Sbox()
-                    {
-                        enabled = true,
-                        fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
-                    };
-                }
-                if (node.StreamSecurity == Global.StreamSecurity)
-                {
-                    var certs = CertPemManager.ParsePemChain(node.Cert);
-                    if (certs.Count > 0)
-                    {
-                        tls.certificate = certs;
-                        tls.insecure = false;
-                    }
-                }
-                else if (node.StreamSecurity == Global.StreamSecurityReality)
-                {
-                    tls.reality = new Reality4Sbox()
-                    {
-                        enabled = true,
-                        public_key = node.PublicKey,
-                        short_id = node.ShortId
-                    };
+                    tls.certificate = certs;
                     tls.insecure = false;
                 }
-                outbound.tls = tls;
             }
+            else if (node.StreamSecurity == Global.StreamSecurityReality)
+            {
+                tls.reality = new Reality4Sbox()
+                {
+                    enabled = true,
+                    public_key = node.PublicKey,
+                    short_id = node.ShortId
+                };
+                tls.insecure = false;
+            }
+            outbound.tls = tls;
         }
         catch (Exception ex)
         {
@@ -305,17 +354,9 @@ public partial class CoreConfigSingboxService
                 case nameof(ETransport.tcp):   //http
                     if (node.HeaderType == Global.TcpHeaderHttp)
                     {
-                        if (node.ConfigType == EConfigType.Shadowsocks)
-                        {
-                            outbound.plugin = "obfs-local";
-                            outbound.plugin_opts = $"obfs=http;obfs-host={node.RequestHost};";
-                        }
-                        else
-                        {
-                            transport.type = nameof(ETransport.http);
-                            transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
-                            transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
-                        }
+                        transport.type = nameof(ETransport.http);
+                        transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
+                        transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
                     }
                     break;
 
