@@ -41,7 +41,68 @@ public class ShadowsocksFmt : BaseFmt
         //url = Utile.Base64Encode(url);
         //new Sip002
         var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
-        return ToUri(EConfigType.Shadowsocks, item.Address, item.Port, pw, null, remark);
+
+        // plugin
+        var plugin = string.Empty;
+        var pluginArgs = string.Empty;
+
+        if (item.Network == nameof(ETransport.tcp) && item.HeaderType == Global.TcpHeaderHttp)
+        {
+            plugin = "obfs-local";
+            pluginArgs = $"obfs=http;obfs-host={item.RequestHost};";
+        }
+        else
+        {
+            if (item.Network == nameof(ETransport.ws))
+            {
+                pluginArgs += "mode=websocket;";
+                pluginArgs += $"host={item.RequestHost};";
+                pluginArgs += $"path={item.Path};";
+            }
+            else if (item.Network == nameof(ETransport.quic))
+            {
+                pluginArgs += "mode=quic;";
+            }
+            if (item.StreamSecurity == Global.StreamSecurity)
+            {
+                pluginArgs += "tls;";
+                var certs = CertPemManager.ParsePemChain(item.Cert);
+                if (certs.Count > 0)
+                {
+                    var cert = certs.First();
+                    const string beginMarker = "-----BEGIN CERTIFICATE-----\n";
+                    const string endMarker = "\n-----END CERTIFICATE-----";
+
+                    var base64Start = beginMarker.Length;
+                    var endIndex = cert.IndexOf(endMarker, base64Start, StringComparison.Ordinal);
+                    var base64Content = cert.Substring(base64Start, endIndex - base64Start);
+
+                    // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
+                    // Equal signs and commas [and backslashes] must be escaped with a backslash.
+                    base64Content = base64Content.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+
+                    pluginArgs += $"certRaw={base64Content};";
+                }
+            }
+            if (pluginArgs.Length > 0)
+            {
+                plugin = "v2ray-plugin";
+            }
+        }
+
+        var dicQuery = new Dictionary<string, string>();
+        if (plugin.IsNotEmpty())
+        {
+            var pluginStr = plugin + ";" + pluginArgs;
+            // pluginStr remove last ';' and url encode
+            if (pluginStr.EndsWith(';'))
+            {
+                pluginStr = pluginStr[..^1];
+            }
+            dicQuery["plugin"] = Utils.UrlEncode(pluginStr);
+        }
+
+        return ToUri(EConfigType.Shadowsocks, item.Address, item.Port, pw, dicQuery, remark);
     }
 
     private static readonly Regex UrlFinder = new(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -124,18 +185,80 @@ public class ShadowsocksFmt : BaseFmt
         var queryParameters = Utils.ParseQueryString(parsedUrl.Query);
         if (queryParameters["plugin"] != null)
         {
-            //obfs-host exists
-            var obfsHost = queryParameters["plugin"]?.Split(';').FirstOrDefault(t => t.Contains("obfs-host"));
-            if (queryParameters["plugin"].Contains("obfs=http") && obfsHost.IsNotEmpty())
-            {
-                obfsHost = obfsHost?.Replace("obfs-host=", "");
-                item.Network = Global.DefaultNetwork;
-                item.HeaderType = Global.TcpHeaderHttp;
-                item.RequestHost = obfsHost ?? "";
-            }
-            else
+            var pluginStr = queryParameters["plugin"];
+            var pluginParts = pluginStr.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (pluginParts.Length == 0)
             {
                 return null;
+            }
+
+            var pluginName = pluginParts[0];
+
+            // A typo in https://github.com/shadowsocks/shadowsocks-org/blob/6b1c064db4129de99c516294960e731934841c94/docs/doc/sip002.md?plain=1#L15
+            // "simple-obfs" should be "obfs-local"
+            if (pluginName == "simple-obfs")
+            {
+                pluginName = "obfs-local";
+            }
+
+            // Parse obfs-local plugin
+            if (pluginName == "obfs-local")
+            {
+                var obfsMode = pluginParts.FirstOrDefault(t => t.StartsWith("obfs="));
+                var obfsHost = pluginParts.FirstOrDefault(t => t.StartsWith("obfs-host="));
+
+                if ((!obfsMode.IsNullOrEmpty()) && obfsMode.Contains("obfs=http") && obfsHost.IsNotEmpty())
+                {
+                    obfsHost = obfsHost.Replace("obfs-host=", "");
+                    item.Network = Global.DefaultNetwork;
+                    item.HeaderType = Global.TcpHeaderHttp;
+                    item.RequestHost = obfsHost;
+                }
+            }
+            // Parse v2ray-plugin
+            else if (pluginName == "v2ray-plugin")
+            {
+                var mode = pluginParts.FirstOrDefault(t => t.StartsWith("mode="), "websocket");
+                var host = pluginParts.FirstOrDefault(t => t.StartsWith("host="));
+                var path = pluginParts.FirstOrDefault(t => t.StartsWith("path="));
+                var hasTls = pluginParts.Any(t => t == "tls");
+                var certRaw = pluginParts.FirstOrDefault(t => t.StartsWith("certRaw="));
+
+                var modeValue = mode.Replace("mode=", "");
+                if (modeValue == "websocket")
+                {
+                    item.Network = nameof(ETransport.ws);
+                    if (!host.IsNullOrEmpty())
+                    {
+                        item.RequestHost = host.Replace("host=", "");
+                    }
+                    if (!path.IsNullOrEmpty())
+                    {
+                        item.Path = path.Replace("path=", "");
+                    }
+                }
+                else if (modeValue == "quic")
+                {
+                    item.Network = nameof(ETransport.quic);
+                }
+
+                if (hasTls)
+                {
+                    item.StreamSecurity = Global.StreamSecurity;
+
+                    if (!certRaw.IsNullOrEmpty())
+                    {
+                        var certBase64 = certRaw.Replace("certRaw=", "");
+
+                        certBase64 = certBase64.Replace("\\=", "=").Replace("\\,", ",").Replace("\\\\", "\\");
+
+                        const string beginMarker = "-----BEGIN CERTIFICATE-----\n";
+                        const string endMarker = "\n-----END CERTIFICATE-----";
+                        var certPem = beginMarker + certBase64 + endMarker;
+                        item.Cert = certPem;
+                    }
+                }
             }
         }
 
