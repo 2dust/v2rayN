@@ -77,6 +77,10 @@ public class ShadowsocksFmt : BaseFmt
                     var endIndex = cert.IndexOf(endMarker, base64Start, StringComparison.Ordinal);
                     var base64Content = cert.Substring(base64Start, endIndex - base64Start);
 
+                    // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
+                    // Equal signs and commas [and backslashes] must be escaped with a backslash.
+                    base64Content = base64Content.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+
                     pluginArgs += $"certRaw={base64Content};";
                 }
             }
@@ -89,7 +93,13 @@ public class ShadowsocksFmt : BaseFmt
         var dicQuery = new Dictionary<string, string>();
         if (plugin.IsNotEmpty())
         {
-            dicQuery["plugin"] = plugin + (pluginArgs.IsNotEmpty() ? (";" + pluginArgs) : "");
+            var pluginStr = plugin + ";" + pluginArgs;
+            // pluginStr remove last ';' and url encode
+            if (pluginStr.EndsWith(';'))
+            {
+                pluginStr = pluginStr[..^1];
+            }
+            dicQuery["plugin"] = Utils.UrlEncode(pluginStr);
         }
 
         return ToUri(EConfigType.Shadowsocks, item.Address, item.Port, pw, dicQuery, remark);
@@ -240,6 +250,9 @@ public class ShadowsocksFmt : BaseFmt
                     if (!certRaw.IsNullOrEmpty())
                     {
                         var certBase64 = certRaw.Replace("certRaw=", "");
+
+                        certBase64 = certBase64.Replace("\\=", "=").Replace("\\,", ",").Replace("\\\\", "\\");
+
                         const string beginMarker = "-----BEGIN CERTIFICATE-----\n";
                         const string endMarker = "\n-----END CERTIFICATE-----";
                         var certPem = beginMarker + certBase64 + endMarker;
