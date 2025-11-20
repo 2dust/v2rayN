@@ -177,20 +177,27 @@ public class ShadowsocksFmt : BaseFmt
         {
             var pluginStr = queryParameters["plugin"];
             var pluginParts = pluginStr.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             if (pluginParts.Length == 0)
             {
                 return null;
             }
 
             var pluginName = pluginParts[0];
-            
+
+            // A typo in https://github.com/shadowsocks/shadowsocks-org/blob/6b1c064db4129de99c516294960e731934841c94/docs/doc/sip002.md?plain=1#L15
+            // "simple-obfs" should be "obfs-local"
+            if (pluginName == "simple-obfs")
+            {
+                pluginName = "obfs-local";
+            }
+
             // Parse obfs-local plugin
             if (pluginName == "obfs-local")
             {
                 var obfsMode = pluginParts.FirstOrDefault(t => t.StartsWith("obfs="));
                 var obfsHost = pluginParts.FirstOrDefault(t => t.StartsWith("obfs-host="));
-                
+
                 if ((!obfsMode.IsNullOrEmpty()) && obfsMode.Contains("obfs=http") && obfsHost.IsNotEmpty())
                 {
                     obfsHost = obfsHost.Replace("obfs-host=", "");
@@ -229,7 +236,7 @@ public class ShadowsocksFmt : BaseFmt
                 if (hasTls)
                 {
                     item.StreamSecurity = Global.StreamSecurity;
-                    
+
                     if (!certRaw.IsNullOrEmpty())
                     {
                         var certBase64 = certRaw.Replace("certRaw=", "");
