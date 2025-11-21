@@ -20,6 +20,7 @@
     mc:Ignorable="d">
     <materialDesign:DialogHost
         materialDesign:TransitionAssist.DisableTransitions="True"
+        CloseOnClickAway="True"
         Identifier="SubDialog"
         Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
         <DockPanel>

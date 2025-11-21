@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveUserControl
+<reactiveui:ReactiveUserControl
     x:Class="v2rayN.Views.BackupAndRestoreView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -23,15 +23,6 @@
     </UserControl.Resources>
     <DockPanel Margin="{StaticResource Margin8}">
         <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Bottom">
-            <Button
-                Width="100"
-                Margin="{StaticResource Margin8}"
-                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                Content="{x:Static resx:ResUI.menuClose}"
-                DockPanel.Dock="Right"
-                IsCancel="True"
-                Style="{StaticResource DefButton}" />
-
             <TextBlock
                 x:Name="txtMsg"
                 Margin="{StaticResource Margin8}"

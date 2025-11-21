@@ -1,4 +1,4 @@
-﻿<reactiveui:ReactiveUserControl
+<reactiveui:ReactiveUserControl
     x:Class="v2rayN.Views.CheckUpdateView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -38,15 +38,6 @@
                 Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckUpdate}"
                 IsDefault="True"
-                Style="{StaticResource DefButton}" />
-
-            <Button
-                Width="100"
-                Margin="{StaticResource Margin8}"
-                HorizontalAlignment="Right"
-                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                Content="{x:Static resx:ResUI.menuClose}"
-                IsCancel="True"
                 Style="{StaticResource DefButton}" />
         </StackPanel>
 
