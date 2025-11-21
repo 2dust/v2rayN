@@ -62,13 +62,11 @@ public partial class CoreConfigSingboxService
                                     const string beginMarker = "-----BEGIN CERTIFICATE-----\n";
                                     const string endMarker = "\n-----END CERTIFICATE-----";
 
-                                    var base64Start = beginMarker.Length;
-                                    var endIndex = cert.IndexOf(endMarker, base64Start, StringComparison.Ordinal);
-                                    var base64Content = cert.Substring(base64Start, endIndex - base64Start);
+                                    var base64Content = cert.Replace(beginMarker, "").Replace(endMarker, "").Trim();
 
                                     // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
                                     // Equal signs and commas [and backslashes] must be escaped with a backslash.
-                                    base64Content = base64Content.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                                    base64Content = base64Content.Replace("=", "\\=");
 
                                     pluginArgs += $"certRaw={base64Content};";
                                 }
