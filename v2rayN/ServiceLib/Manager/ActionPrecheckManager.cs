@@ -174,25 +174,30 @@ public class ActionPrecheckManager(Config config)
             return errors;
         }
 
-        var net = item.GetNetwork() ?? item.Network;
+        var net = item.GetNetwork();
 
         if (coreType == ECoreType.sing_box)
         {
             // sing-box does not support xhttp / kcp
-            // sing-box does not support transports like ws/http/httpupgrade/etc. when the node is not vmess/trojan/vless
+            // sing-box does not support transports like ws/http/httpupgrade/etc. when the node is not vmess/trojan/vless/shadowsocks
             if (net is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
             {
                 errors.Add(string.Format(ResUI.CoreNotSupportNetwork, nameof(ECoreType.sing_box), net));
                 return errors;
             }
 
-            if (item.ConfigType is not (EConfigType.VMess or EConfigType.VLESS or EConfigType.Trojan))
+            if (item.ConfigType is not (EConfigType.VMess or EConfigType.VLESS or EConfigType.Trojan or EConfigType.Shadowsocks)
+                && net is not nameof(ETransport.tcp))
             {
-                if (net is nameof(ETransport.ws) or nameof(ETransport.http) or nameof(ETransport.h2) or nameof(ETransport.quic) or nameof(ETransport.httpupgrade))
-                {
-                    errors.Add(string.Format(ResUI.CoreNotSupportProtocolTransport, nameof(ECoreType.sing_box), item.ConfigType.ToString(), net));
-                    return errors;
-                }
+                errors.Add(string.Format(ResUI.CoreNotSupportProtocolTransport, nameof(ECoreType.sing_box), item.ConfigType.ToString(), net));
+                return errors;
+            }
+
+            if (item.ConfigType is EConfigType.Shadowsocks
+                && net is not (nameof(ETransport.tcp) or nameof(ETransport.ws) or nameof(ETransport.quic)))
+            {
+                errors.Add(string.Format(ResUI.CoreNotSupportProtocolTransport, nameof(ECoreType.sing_box), item.ConfigType.ToString(), net));
+                return errors;
             }
         }
         else if (coreType is ECoreType.Xray)
