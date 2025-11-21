@@ -27,7 +27,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v5.0.1
+      uses: actions/checkout@v6.0.0
 
     - name: Setup
       uses: actions/setup-dotnet@v5.0.0
