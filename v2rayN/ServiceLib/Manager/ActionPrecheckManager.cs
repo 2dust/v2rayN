@@ -10,6 +10,13 @@ public class ActionPrecheckManager(Config config)
 
     private readonly Config _config = config;
 
+    // sing-box supported transports for different protocol types
+    private static readonly HashSet<string> SingboxUnsupportedTransports = [nameof(ETransport.kcp), nameof(ETransport.xhttp)];
+    private static readonly HashSet<EConfigType> SingboxTransportSupportedProtocols =
+        [EConfigType.VMess, EConfigType.VLESS, EConfigType.Trojan, EConfigType.Shadowsocks];
+    private static readonly HashSet<string> SingboxShadowsocksAllowedTransports =
+        [nameof(ETransport.tcp), nameof(ETransport.ws), nameof(ETransport.quic)];
+
     public async Task<List<string>> Check(string? indexId)
     {
         if (indexId.IsNullOrEmpty())
@@ -178,25 +185,10 @@ public class ActionPrecheckManager(Config config)
 
         if (coreType == ECoreType.sing_box)
         {
-            // sing-box does not support xhttp / kcp
-            // sing-box does not support transports like ws/http/httpupgrade/etc. when the node is not vmess/trojan/vless/shadowsocks
-            if (net is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
+            var transportError = ValidateSingboxTransport(item.ConfigType, net);
+            if (transportError != null)
             {
-                errors.Add(string.Format(ResUI.CoreNotSupportNetwork, nameof(ECoreType.sing_box), net));
-                return errors;
-            }
-
-            if (item.ConfigType is not (EConfigType.VMess or EConfigType.VLESS or EConfigType.Trojan or EConfigType.Shadowsocks)
-                && net is not nameof(ETransport.tcp))
-            {
-                errors.Add(string.Format(ResUI.CoreNotSupportProtocolTransport, nameof(ECoreType.sing_box), item.ConfigType.ToString(), net));
-                return errors;
-            }
-
-            if (item.ConfigType is EConfigType.Shadowsocks
-                && net is not (nameof(ETransport.tcp) or nameof(ETransport.ws) or nameof(ETransport.quic)))
-            {
-                errors.Add(string.Format(ResUI.CoreNotSupportProtocolTransport, nameof(ECoreType.sing_box), item.ConfigType.ToString(), net));
+                errors.Add(transportError);
                 return errors;
             }
         }
@@ -212,6 +204,31 @@ public class ActionPrecheckManager(Config config)
         }
 
         return errors;
+    }
+
+    private static string? ValidateSingboxTransport(EConfigType configType, string net)
+    {
+        // sing-box does not support xhttp / kcp transports
+        if (SingboxUnsupportedTransports.Contains(net))
+        {
+            return string.Format(ResUI.CoreNotSupportNetwork, nameof(ECoreType.sing_box), net);
+        }
+
+        // sing-box does not support non-tcp transports for protocols other than vmess/trojan/vless/shadowsocks
+        if (!SingboxTransportSupportedProtocols.Contains(configType) && net != nameof(ETransport.tcp))
+        {
+            return string.Format(ResUI.CoreNotSupportProtocolTransport,
+                nameof(ECoreType.sing_box), configType.ToString(), net);
+        }
+
+        // sing-box shadowsocks only supports tcp/ws/quic transports
+        if (configType == EConfigType.Shadowsocks && !SingboxShadowsocksAllowedTransports.Contains(net))
+        {
+            return string.Format(ResUI.CoreNotSupportProtocolTransport,
+                nameof(ECoreType.sing_box), configType.ToString(), net);
+        }
+
+        return null;
     }
 
     private async Task<List<string>> ValidateRelatedNodesExistAndValid(ProfileItem? item)
