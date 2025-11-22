@@ -173,7 +173,7 @@ public partial class CoreConfigV2rayService
                         serversItem.ota = false;
                         serversItem.level = 1;
 
-                        await GenOutboundMux(node, outbound);
+                        await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
 
                         outbound.settings.vnext = null;
                         break;
