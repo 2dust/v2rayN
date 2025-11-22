@@ -366,27 +366,32 @@ public partial class CoreConfigSingboxService
                     transport.type = nameof(ETransport.ws);
                     var wsPath = node.Path;
                     
-                    // Parse ed parameter from path using regex
+                    // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
                     {
-                        var regex = new Regex(@"[?&]ed=(\d+)");
-                        var match = regex.Match(wsPath);
-                        if (match.Success && int.TryParse(match.Groups[1].Value, out var edValue))
+                        var edRegex = new Regex(@"[?&]ed=(\d+)");
+                        var edMatch = edRegex.Match(wsPath);
+                        if (edMatch.Success && int.TryParse(edMatch.Groups[1].Value, out var edValue))
                         {
                             transport.max_early_data = edValue;
                             transport.early_data_header_name = "Sec-WebSocket-Protocol";
-                            // Remove ed parameter from path
-                            wsPath = regex.Replace(wsPath, "");
-                            // Clean up any leftover & at the beginning of query string
+
+                            wsPath = edRegex.Replace(wsPath, "");
                             wsPath = wsPath.Replace("?&", "?");
-                            // Remove trailing ? if no parameters left
-                            if (wsPath.EndsWith("?"))
+                            if (wsPath.EndsWith('?'))
                             {
                                 wsPath = wsPath.TrimEnd('?');
                             }
                         }
+
+                        var ehRegex = new Regex(@"[?&]eh=([^&]+)");
+                        var ehMatch = ehRegex.Match(wsPath);
+                        if (ehMatch.Success)
+                        {
+                            transport.early_data_header_name = Uri.UnescapeDataString(ehMatch.Groups[1].Value);
+                        }
                     }
-                    
+
                     transport.path = wsPath.IsNullOrEmpty() ? null : wsPath;
                     if (node.RequestHost.IsNotEmpty())
                     {
