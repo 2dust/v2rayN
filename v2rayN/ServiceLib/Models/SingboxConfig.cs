@@ -216,6 +216,8 @@ public class Transport4Sbox
     public string? idle_timeout { get; set; }
     public string? ping_timeout { get; set; }
     public bool? permit_without_stream { get; set; }
+    public int? max_early_data { get; set; }
+    public string? early_data_header_name { get; set; }
 }
 
 public class Headers4Sbox

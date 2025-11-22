@@ -364,7 +364,35 @@ public partial class CoreConfigSingboxService
 
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
-                    transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
+                    var wsPath = node.Path;
+                    
+                    // Parse eh and ed parameters from path using regex
+                    if (!wsPath.IsNullOrEmpty())
+                    {
+                        var edRegex = new Regex(@"[?&]ed=(\d+)");
+                        var edMatch = edRegex.Match(wsPath);
+                        if (edMatch.Success && int.TryParse(edMatch.Groups[1].Value, out var edValue))
+                        {
+                            transport.max_early_data = edValue;
+                            transport.early_data_header_name = "Sec-WebSocket-Protocol";
+
+                            wsPath = edRegex.Replace(wsPath, "");
+                            wsPath = wsPath.Replace("?&", "?");
+                            if (wsPath.EndsWith('?'))
+                            {
+                                wsPath = wsPath.TrimEnd('?');
+                            }
+                        }
+
+                        var ehRegex = new Regex(@"[?&]eh=([^&]+)");
+                        var ehMatch = ehRegex.Match(wsPath);
+                        if (ehMatch.Success)
+                        {
+                            transport.early_data_header_name = Uri.UnescapeDataString(ehMatch.Groups[1].Value);
+                        }
+                    }
+
+                    transport.path = wsPath.IsNullOrEmpty() ? null : wsPath;
                     if (node.RequestHost.IsNotEmpty())
                     {
                         transport.headers = new()
