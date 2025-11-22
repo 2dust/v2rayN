@@ -411,8 +411,6 @@ public class WsSettings4Ray
 
 public class Headers4Ray
 {
-    public string Host { get; set; }
-
     [JsonPropertyName("User-Agent")]
     public string UserAgent { get; set; }
 }

@@ -351,7 +351,6 @@ public partial class CoreConfigV2rayService
                     if (host.IsNotEmpty())
                     {
                         wsSettings.host = host;
-                        wsSettings.headers.Host = host;
                     }
                     if (path.IsNotEmpty())
                     {
