@@ -553,6 +553,11 @@ public class ProfilesViewModel : MyReactiveObject
 
     private async Task RemoveDuplicateServer()
     {
+        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        {
+            return;
+        }
+
         var tuple = await ConfigHandler.DedupServerList(_config, _config.SubIndexId);
         if (tuple.Item1 > 0 || tuple.Item2 > 0)
         {
