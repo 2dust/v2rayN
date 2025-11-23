@@ -7,7 +7,7 @@ namespace ServiceLib.Services;
 /// </summary>
 public class DownloadService
 {
-    public event EventHandler<RetResult>? UpdateCompleted;
+    public event EventHandler<UpdateResult>? UpdateCompleted;
 
     public event ErrorEventHandler? Error;
 
@@ -40,10 +40,10 @@ public class DownloadService
     {
         try
         {
-            UpdateCompleted?.Invoke(this, new RetResult(false, $"{ResUI.Downloading}   {url}"));
+            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {url}"));
 
             var progress = new Progress<double>();
-            progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new RetResult(value > 100, $"...{value}%"));
+            progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new UpdateResult(value > 100, $"...{value}%"));
 
             var webProxy = await GetWebProxy(blProxy);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
