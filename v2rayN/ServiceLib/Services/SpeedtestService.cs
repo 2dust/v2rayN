@@ -337,6 +337,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await clientSocket.ConnectAsync(endPoint, cts.Token).ConfigureAwait(false);
+            responseTime = (int)timer.ElapsedMilliseconds;
         }
         catch (OperationCanceledException)
         {
@@ -344,7 +345,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         finally
         {
             timer.Stop();
-            responseTime = (int)timer.Elapsed.TotalMilliseconds;
         }
         return responseTime;
     }
