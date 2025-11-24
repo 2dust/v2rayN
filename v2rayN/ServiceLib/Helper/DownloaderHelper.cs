@@ -71,28 +71,25 @@ public class DownloaderHelper
                 }
         };
 
-        var totalDatetime = DateTime.Now;
-        var totalSecond = 0;
+        var lastUpdateTime = DateTime.Now;
         var hasValue = false;
         double maxSpeed = 0;
         await using var downloader = new Downloader.DownloadService(downloadOpt);
-        //downloader.DownloadStarted += (sender, value) =>
-        //{
-        //    if (progress != null)
-        //    {
-        //        progress.Report("Start download data...");
-        //    }
-        //};
+
         downloader.DownloadProgressChanged += (sender, value) =>
         {
-            var ts = DateTime.Now - totalDatetime;
-            if (progress != null && ts.Seconds > totalSecond)
+            if (progress != null && value.BytesPerSecondSpeed > 0)
             {
                 hasValue = true;
-                totalSecond = ts.Seconds;
                 if (value.BytesPerSecondSpeed > maxSpeed)
                 {
                     maxSpeed = value.BytesPerSecondSpeed;
+                }
+                
+                var ts = DateTime.Now - lastUpdateTime;
+                if (ts.TotalMilliseconds >= 1000)
+                {
+                    lastUpdateTime = DateTime.Now;
                     var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
                     progress.Report(speed);
                 }
@@ -102,9 +99,18 @@ public class DownloaderHelper
         {
             if (progress != null)
             {
-                if (!hasValue && value.Error != null)
+                if (hasValue && maxSpeed > 0)
+                {
+                    var finalSpeed = (maxSpeed / 1000 / 1000).ToString("#0.0");
+                    progress.Report(finalSpeed);
+                }
+                else if (value.Error != null)
                 {
                     progress.Report(value.Error?.Message);
+                }
+                else
+                {
+                    progress.Report("0");
                 }
             }
         };
