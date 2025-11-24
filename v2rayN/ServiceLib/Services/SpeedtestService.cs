@@ -323,30 +323,28 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         var responseTime = -1;
 
+        if (!IPAddress.TryParse(url, out var ipAddress))
+        {
+            var ipHostInfo = await Dns.GetHostEntryAsync(url);
+            ipAddress = ipHostInfo.AddressList.First();
+        }
+
+        IPEndPoint endPoint = new(ipAddress, port);
+        using Socket clientSocket = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+        var timer = Stopwatch.StartNew();
         try
         {
-            if (!IPAddress.TryParse(url, out var ipAddress))
-            {
-                var ipHostInfo = await Dns.GetHostEntryAsync(url);
-                ipAddress = ipHostInfo.AddressList.First();
-            }
-
-            IPEndPoint endPoint = new(ipAddress, port);
-            using Socket clientSocket = new(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            var timer = Stopwatch.StartNew();
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await clientSocket.ConnectAsync(endPoint, cts.Token).ConfigureAwait(false);
-            timer.Stop();
-            responseTime = (int)timer.Elapsed.TotalMilliseconds;
         }
         catch (OperationCanceledException)
         {
-            // 超时情况，responseTime保持为-1
         }
-        catch (Exception ex)
+        finally
         {
-            Logging.SaveLog(_tag, ex);
+            timer.Stop();
+            responseTime = (int)timer.Elapsed.TotalMilliseconds;
         }
         return responseTime;
     }
