@@ -118,7 +118,23 @@ public class BaseFmt
                 }
                 if (item.Extra.IsNotEmpty())
                 {
-                    dicQuery.Add("extra", Utils.UrlEncode(item.Extra));
+                    var extra = item.Extra;
+                    try
+                    {
+                        var node = JsonNode.Parse(item.Extra);
+                        if (node != null)
+                        {
+                            extra = node.ToJsonString(new JsonSerializerOptions
+                            {
+                                WriteIndented = false,
+                                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                            });
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    dicQuery.Add("extra", Utils.UrlEncode(extra));
                 }
                 break;
 
