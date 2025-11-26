@@ -77,6 +77,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
     public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
+    public ReactiveCommand<Unit, Unit> DeleteSubCmd { get; }
 
     #endregion Menu
 
@@ -234,6 +235,10 @@ public class ProfilesViewModel : MyReactiveObject
         EditSubCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await EditSubAsync(false);
+        });
+        DeleteSubCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await DeleteSubAsync();
         });
 
         #endregion WhenAnyValue && ReactiveCommand
@@ -882,6 +887,24 @@ public class ProfilesViewModel : MyReactiveObject
             await RefreshSubscriptions();
             await SubSelectedChangedAsync(true);
         }
+    }
+
+    private async Task DeleteSubAsync()
+    {
+        var item = await AppManager.Instance.GetSubItem(_config.SubIndexId);
+        if (item is null)
+        {
+            return;
+        }
+
+        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        {
+            return;
+        }
+        await ConfigHandler.DeleteSubItem(_config, item.Id);
+
+        await RefreshSubscriptions();
+        await SubSelectedChangedAsync(true);
     }
 
     #endregion Subscription
