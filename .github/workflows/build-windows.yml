@@ -30,7 +30,7 @@ jobs:
       uses: actions/checkout@v6.0.0
 
     - name: Setup
-      uses: actions/setup-dotnet@v5.0.0
+      uses: actions/setup-dotnet@v5.0.1
       with:
         dotnet-version: '8.0.x'
 
