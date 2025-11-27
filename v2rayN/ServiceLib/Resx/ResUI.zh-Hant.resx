@@ -1537,7 +1537,7 @@
     <value>刪除子配置</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>子配置項</value>
+    <value>子配置項目一，從訂閱分組中自動新增</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>容錯移轉</value>
@@ -1634,5 +1634,8 @@
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
     <value>macOS 在 Dock 欄顯示 (需重啟)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>子配置項二，從自建中選擇新增</value>
   </data>
 </root>

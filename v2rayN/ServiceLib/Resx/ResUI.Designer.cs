@@ -1663,11 +1663,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Configuration List 的本地化字符串。
+        ///   查找类似 Configuration item 1, Auto add from subscription group 的本地化字符串。
         /// </summary>
         public static string menuServerList {
             get {
                 return ResourceManager.GetString("menuServerList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Configuration Item 2, Select and add from self-built 的本地化字符串。
+        /// </summary>
+        public static string menuServerList2 {
+            get {
+                return ResourceManager.GetString("menuServerList2", resourceCulture);
             }
         }
         

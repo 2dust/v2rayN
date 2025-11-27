@@ -1540,7 +1540,7 @@
     <value>Remove Child Configuration</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Configuration List</value>
+    <value>Configuration item 1, Auto add from subscription group</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Fallback</value>
@@ -1637,5 +1637,8 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
     <value>macOS displays this in the Dock (requires restart)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>Configuration Item 2, Select and add from self-built</value>
   </data>
 </root>

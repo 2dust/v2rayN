@@ -1537,7 +1537,7 @@
     <value>Supprimer une sous-configuration</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Liste des configurations</value>
+    <value>Configuration item 1, Auto add from subscription group</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Basculement (failover)</value>
@@ -1634,5 +1634,8 @@ Si un certificat auto-signé est utilisé ou si le système contient une CA non 
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
     <value>Afficher dans le Dock de macOS (redém. requis)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>Configuration Item 2, Select and add from self-built</value>
   </data>
 </root>

@@ -191,7 +191,7 @@
         </TabControl>
 
         <TabControl>
-            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList2}">
                 <DataGrid
                     x:Name="lstChild"
                     AutoGenerateColumns="False"
