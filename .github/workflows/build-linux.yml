@@ -97,16 +97,16 @@ jobs:
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-24.04
     container:
-      image: quay.io/almalinuxorg/10-base:latest
-      options: --platform=linux/amd64/v2
+      image: registry.access.redhat.com/ubi10/ubi
     env:
       RELEASE_TAG: ${{ github.event.inputs.release_tag != '' && github.event.inputs.release_tag || github.ref_name }}
 
     steps:
     - name: Prepare tools (Red Hat)
       run: |
+        dnf repolist all
         dnf -y makecache
-        dnf -y install epel-release
+        dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
         dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
 
     - name: Checkout repo (for scripts)
