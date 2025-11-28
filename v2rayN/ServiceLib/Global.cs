@@ -73,6 +73,7 @@ public class Global
     public const string GrpcMultiMode = "multi";
     public const int MaxPort = 65536;
     public const int MinFontSize = 8;
+    public const int MinFontSizeCount = 13;
     public const string RebootAs = "rebootas";
     public const string AvaAssets = "avares://v2rayN/Assets/";
     public const string LocalAppData = "V2RAYN_LOCAL_APPLICATION_DATA_V2";

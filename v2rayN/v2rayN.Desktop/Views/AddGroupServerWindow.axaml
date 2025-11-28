@@ -35,7 +35,7 @@
 
         <Grid
             Grid.Row="0"
-            ColumnDefinitions="180,Auto,Auto"
+            ColumnDefinitions="300,Auto,Auto"
             DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto">
             <TextBlock
@@ -75,7 +75,7 @@
                 Grid.Row="3"
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
-                ColumnDefinitions="180,Auto,Auto">
+                ColumnDefinitions="300,Auto,Auto">
                 <TextBlock
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
@@ -93,7 +93,7 @@
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid
                     Margin="{StaticResource Margin8}"
-                    ColumnDefinitions="180,Auto,Auto"
+                    ColumnDefinitions="300,Auto,Auto"
                     RowDefinitions="Auto,Auto,Auto">
 
                     <TextBlock
