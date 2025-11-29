@@ -230,6 +230,7 @@ public class ShadowsocksFmt : BaseFmt
                     if (!host.IsNullOrEmpty())
                     {
                         item.RequestHost = host.Replace("host=", "");
+                        item.Sni = item.RequestHost;
                     }
                     if (!path.IsNullOrEmpty())
                     {

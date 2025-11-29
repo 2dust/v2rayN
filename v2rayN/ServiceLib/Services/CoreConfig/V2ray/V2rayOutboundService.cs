@@ -180,10 +180,15 @@ public partial class CoreConfigV2rayService
                     }
                 case EConfigType.WireGuard:
                     {
+                        var address = node.Address;
+                        if (Utils.IsIpv6(address))
+                        {
+                            address = $"[{address}]";
+                        }
                         var peer = new WireguardPeer4Ray
                         {
                             publicKey = node.PublicKey,
-                            endpoint = node.Address + ":" + node.Port.ToString()
+                            endpoint = address + ":" + node.Port.ToString()
                         };
                         var setting = new Outboundsettings4Ray
                         {
