@@ -115,6 +115,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunEnableExInbound, v => v.togEnableExInbound.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunEnableIPv6Address, v => v.togEnableIPv6Address.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TunIPv4Address, v => v.txtTunIPv4Address.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TunIPv6Address, v => v.txtTunIPv6Address.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType2, v => v.cmbCoreType2.SelectedValue).DisposeWith(disposables);

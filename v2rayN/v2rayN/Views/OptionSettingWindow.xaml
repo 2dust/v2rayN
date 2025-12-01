@@ -1030,6 +1030,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -1124,6 +1126,31 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin8}"
                         HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsTunIPv4Address}" />
+                    <TextBox
+                        x:Name="txtTunIPv4Address"
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsTunIPv6Address}" />
+                    <TextBox
+                        x:Name="txtTunIPv6Address"
+                        Grid.Row="9"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
                 </Grid>
             </TabItem>
 

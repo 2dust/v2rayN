@@ -68,7 +68,11 @@ public partial class CoreConfigSingboxService
                 tunInbound.stack = _config.TunModeItem.Stack;
                 if (_config.TunModeItem.EnableIPv6Address == false)
                 {
-                    tunInbound.address = ["172.18.0.1/30"];
+                    tunInbound.address = [_config.TunModeItem.TunIPv4Address];
+                }
+                else
+                {
+                    tunInbound.address = [_config.TunModeItem.TunIPv4Address, _config.TunModeItem.TunIPv6Address];
                 }
 
                 singboxConfig.inbounds.Add(tunInbound);

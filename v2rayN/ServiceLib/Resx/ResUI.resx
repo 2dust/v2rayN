@@ -1077,6 +1077,12 @@
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>Enable IPv6 Address</value>
   </data>
+  <data name="TbSettingsTunIPv4Address" xml:space="preserve">
+    <value>Custom Tun IPv4 Address</value>
+  </data>
+  <data name="TbSettingsTunIPv6Address" xml:space="preserve">
+    <value>Custom Tun IPv6 Address</value>
+  </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
     <value>Add [WireGuard] </value>
   </data>

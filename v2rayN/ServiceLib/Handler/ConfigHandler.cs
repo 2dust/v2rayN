@@ -91,6 +91,8 @@ public static class ConfigHandler
         {
             EnableTun = false,
             Mtu = 9000,
+            TunIPv4Address = "172.18.0.1/30",
+            TunIPv6Address = "fdfe:dcba:9876::1/126",
         };
         config.GuiItem ??= new();
         config.MsgUIItem ??= new();

@@ -1074,6 +1074,12 @@
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>启用 IPv6</value>
   </data>
+  <data name="TbSettingsTunIPv4Address" xml:space="preserve">
+    <value>自定义 Tun IPv4 地址</value>
+  </data>
+  <data name="TbSettingsTunIPv6Address" xml:space="preserve">
+    <value>自定义 Tun IPv6 地址</value>
+  </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
     <value>添加 [WireGuard] </value>
   </data>

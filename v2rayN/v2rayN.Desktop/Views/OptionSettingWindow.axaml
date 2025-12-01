@@ -463,7 +463,7 @@
                             VerticalAlignment="Center"
                             IsVisible="{Binding BlIsLinux}"
                             Text="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}" />
-                        
+
                         <TextBlock
                             Grid.Row="10"
                             Grid.Column="0"
@@ -786,7 +786,7 @@
                     Margin="{StaticResource Margin4}"
                     ColumnDefinitions="Auto,Auto,Auto"
                     DockPanel.Dock="Top"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="2"
@@ -868,6 +868,30 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsTunIPv4Address}" />
+                    <TextBox
+                        x:Name="txtTunIPv4Address"
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsTunIPv6Address}" />
+                    <TextBox
+                        x:Name="txtTunIPv6Address"
+                        Grid.Row="9"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
                 </Grid>
             </TabItem>
 

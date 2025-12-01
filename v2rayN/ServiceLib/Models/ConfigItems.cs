@@ -147,6 +147,8 @@ public class TunModeItem
     public int Mtu { get; set; }
     public bool EnableExInbound { get; set; }
     public bool EnableIPv6Address { get; set; }
+    public string TunIPv4Address { get; set; }
+    public string TunIPv6Address { get; set; }
 }
 
 [Serializable]
