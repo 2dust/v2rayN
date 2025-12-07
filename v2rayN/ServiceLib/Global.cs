@@ -586,7 +586,6 @@ public class Global
 
     public static readonly List<string> IPAPIUrls =
     [
-        @"https://speed.cloudflare.com/meta",
         @"https://api.ip.sb/geoip",
         @"https://api-ipv4.ip.sb/geoip",
         @"https://api-ipv6.ip.sb/geoip",
