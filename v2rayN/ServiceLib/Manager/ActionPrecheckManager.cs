@@ -12,8 +12,10 @@ public class ActionPrecheckManager(Config config)
 
     // sing-box supported transports for different protocol types
     private static readonly HashSet<string> SingboxUnsupportedTransports = [nameof(ETransport.kcp), nameof(ETransport.xhttp)];
+
     private static readonly HashSet<EConfigType> SingboxTransportSupportedProtocols =
         [EConfigType.VMess, EConfigType.VLESS, EConfigType.Trojan, EConfigType.Shadowsocks];
+
     private static readonly HashSet<string> SingboxShadowsocksAllowedTransports =
         [nameof(ETransport.tcp), nameof(ETransport.ws), nameof(ETransport.quic)];
 

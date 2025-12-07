@@ -365,7 +365,7 @@ public partial class CoreConfigSingboxService
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
                     var wsPath = node.Path;
-                    
+
                     // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
                     {

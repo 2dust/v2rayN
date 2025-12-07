@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Avalonia;
-using Avalonia.Media;
-
 namespace v2rayN.Desktop.Common;
 
 public static class AppBuilderExtension
@@ -11,7 +5,7 @@ public static class AppBuilderExtension
     public static AppBuilder WithFontByDefault(this AppBuilder appBuilder)
     {
         var fallbacks = new List<FontFallback>();
-        
+
         var notoSansSc = new FontFamily(Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC"));
         fallbacks.Add(new FontFallback { FontFamily = notoSansSc });
 
