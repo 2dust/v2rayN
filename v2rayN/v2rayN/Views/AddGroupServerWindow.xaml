@@ -134,7 +134,10 @@
             </Grid>
         </Grid>
 
-        <TabControl DockPanel.Dock="Top">
+        <TabControl
+            Margin="{StaticResource Margin8}"
+            HorizontalContentAlignment="Left"
+            DockPanel.Dock="Top">
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
@@ -188,9 +191,7 @@
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
             </TabItem>
-        </TabControl>
 
-        <TabControl>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList2}">
                 <DataGrid
                     x:Name="lstChild"

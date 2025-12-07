@@ -34,7 +34,6 @@
         </StackPanel>
 
         <Grid
-            Grid.Row="0"
             ColumnDefinitions="300,Auto,Auto"
             DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto">
@@ -89,7 +88,7 @@
             </Grid>
         </Grid>
 
-        <TabControl DockPanel.Dock="Top">
+        <TabControl HorizontalContentAlignment="Stretch" DockPanel.Dock="Top">
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid
                     Margin="{StaticResource Margin8}"
@@ -131,9 +130,7 @@
                         VerticalAlignment="Center" />
                 </Grid>
             </TabItem>
-        </TabControl>
 
-        <TabControl>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList2}">
                 <DataGrid
                     x:Name="lstChild"
