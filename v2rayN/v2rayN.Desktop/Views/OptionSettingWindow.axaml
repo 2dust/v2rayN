@@ -592,7 +592,8 @@
                             Grid.Row="20"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            IsEditable="True" />
 
                         <TextBlock
                             Grid.Row="21"
