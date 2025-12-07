@@ -12,13 +12,13 @@
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
     <PackageVersion Include="CliWrap" Version="3.10.0" />
     <PackageVersion Include="Downloader" Version="4.0.3" />
-    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.2" />
+    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.0" />
     <PackageVersion Include="MessageBox.Avalonia" Version="3.3.0" />
     <PackageVersion Include="QRCoder" Version="1.7.0" />
-    <PackageVersion Include="ReactiveUI" Version="22.2.1" />
+    <PackageVersion Include="ReactiveUI" Version="22.3.1" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageVersion Include="ReactiveUI.WPF" Version="22.2.1" />
+    <PackageVersion Include="ReactiveUI.WPF" Version="22.3.1" />
     <PackageVersion Include="Semi.Avalonia" Version="11.3.7.1" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="11.2.0.1" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.1" />
