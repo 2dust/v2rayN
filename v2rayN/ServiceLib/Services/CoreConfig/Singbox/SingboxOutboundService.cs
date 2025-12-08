@@ -46,7 +46,10 @@ public partial class CoreConfigSingboxService
                             {
                                 pluginArgs += "mode=websocket;";
                                 pluginArgs += $"host={node.RequestHost};";
-                                pluginArgs += $"path={node.Path};";
+                                // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
+                                // Equal signs and commas [and backslashes] must be escaped with a backslash.
+                                var path = node.Path.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                                pluginArgs += $"path={path};";
                             }
                             else if (node.Network == nameof(ETransport.quic))
                             {
@@ -64,8 +67,6 @@ public partial class CoreConfigSingboxService
 
                                     var base64Content = cert.Replace(beginMarker, "").Replace(endMarker, "").Trim();
 
-                                    // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
-                                    // Equal signs and commas [and backslashes] must be escaped with a backslash.
                                     base64Content = base64Content.Replace("=", "\\=");
 
                                     pluginArgs += $"certRaw={base64Content};";
@@ -74,6 +75,9 @@ public partial class CoreConfigSingboxService
                             if (pluginArgs.Length > 0)
                             {
                                 outbound.plugin = "v2ray-plugin";
+                                pluginArgs += "mux=0;";
+                                // pluginStr remove last ';'
+                                pluginArgs = pluginArgs[..^1];
                                 outbound.plugin_opts = pluginArgs;
                             }
                         }

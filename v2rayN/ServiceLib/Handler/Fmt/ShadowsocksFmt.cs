@@ -57,7 +57,10 @@ public class ShadowsocksFmt : BaseFmt
             {
                 pluginArgs += "mode=websocket;";
                 pluginArgs += $"host={item.RequestHost};";
-                pluginArgs += $"path={item.Path};";
+                // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
+                // Equal signs and commas [and backslashes] must be escaped with a backslash.
+                var path = item.Path.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                pluginArgs += $"path={path};";
             }
             else if (item.Network == nameof(ETransport.quic))
             {
@@ -75,8 +78,6 @@ public class ShadowsocksFmt : BaseFmt
 
                     var base64Content = cert.Replace(beginMarker, "").Replace(endMarker, "").Trim();
 
-                    // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
-                    // Equal signs and commas [and backslashes] must be escaped with a backslash.
                     base64Content = base64Content.Replace("=", "\\=");
 
                     pluginArgs += $"certRaw={base64Content};";
@@ -85,6 +86,7 @@ public class ShadowsocksFmt : BaseFmt
             if (pluginArgs.Length > 0)
             {
                 plugin = "v2ray-plugin";
+                pluginArgs += "mux=0;";
             }
         }
 
@@ -222,6 +224,7 @@ public class ShadowsocksFmt : BaseFmt
                 var path = pluginParts.FirstOrDefault(t => t.StartsWith("path="));
                 var hasTls = pluginParts.Any(t => t == "tls");
                 var certRaw = pluginParts.FirstOrDefault(t => t.StartsWith("certRaw="));
+                var mux = pluginParts.FirstOrDefault(t => t.StartsWith("mux="));
 
                 var modeValue = mode.Replace("mode=", "");
                 if (modeValue == "websocket")
@@ -234,7 +237,9 @@ public class ShadowsocksFmt : BaseFmt
                     }
                     if (!path.IsNullOrEmpty())
                     {
-                        item.Path = path.Replace("path=", "");
+                        var pathValue = path.Replace("path=", "");
+                        pathValue = pathValue.Replace("\\=", "=").Replace("\\,", ",").Replace("\\\\", "\\");
+                        item.Path = pathValue;
                     }
                 }
                 else if (modeValue == "quic")
@@ -256,6 +261,16 @@ public class ShadowsocksFmt : BaseFmt
                         const string endMarker = "\n-----END CERTIFICATE-----";
                         var certPem = beginMarker + certBase64 + endMarker;
                         item.Cert = certPem;
+                    }
+                }
+
+                if (!mux.IsNullOrEmpty())
+                {
+                    var muxValue = mux.Replace("mux=", "");
+                    var muxCount = muxValue.ToInt();
+                    if (muxCount > 0)
+                    {
+                        return null;
                     }
                 }
             }
