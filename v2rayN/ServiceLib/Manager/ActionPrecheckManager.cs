@@ -3,12 +3,10 @@ namespace ServiceLib.Manager;
 /// <summary>
 /// Centralized pre-checks before sensitive actions (set active profile, generate config, etc.).
 /// </summary>
-public class ActionPrecheckManager(Config config)
+public class ActionPrecheckManager
 {
-    private static readonly Lazy<ActionPrecheckManager> _instance = new(() => new ActionPrecheckManager(AppManager.Instance.Config));
+    private static readonly Lazy<ActionPrecheckManager> _instance = new();
     public static ActionPrecheckManager Instance => _instance.Value;
-
-    private readonly Config _config = config;
 
     // sing-box supported transports for different protocol types
     private static readonly HashSet<string> SingboxUnsupportedTransports = [nameof(ETransport.kcp), nameof(ETransport.xhttp)];
@@ -56,6 +54,7 @@ public class ActionPrecheckManager(Config config)
         {
             return [];
         }
+
         var coreType = AppManager.Instance.GetCoreType(item, item.ConfigType);
         return await ValidateNodeAndCoreSupport(item, coreType);
     }
@@ -71,115 +70,35 @@ public class ActionPrecheckManager(Config config)
             errors.Add(string.Format(ResUI.NotSupportProtocol, item.ConfigType.ToString()));
             return errors;
         }
-
-        if (!item.IsComplex())
+        else if (item.ConfigType.IsGroupType())
         {
-            if (item.Address.IsNullOrEmpty())
-            {
-                errors.Add(string.Format(ResUI.InvalidProperty, "Address"));
-                return errors;
-            }
-
-            if (item.Port is <= 0 or >= 65536)
-            {
-                errors.Add(string.Format(ResUI.InvalidProperty, "Port"));
-                return errors;
-            }
-
-            switch (item.ConfigType)
-            {
-                case EConfigType.VMess:
-                    if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
-                    {
-                        errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
-                    }
-
-                    break;
-
-                case EConfigType.VLESS:
-                    if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
-                    {
-                        errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
-                    }
-
-                    if (!Global.Flows.Contains(item.Flow))
-                    {
-                        errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
-                    }
-
-                    break;
-
-                case EConfigType.Shadowsocks:
-                    if (item.Id.IsNullOrEmpty())
-                    {
-                        errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
-                    }
-
-                    if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
-                    {
-                        errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
-                    }
-
-                    break;
-            }
-
-            if (item.ConfigType is EConfigType.VLESS or EConfigType.Trojan
-                && item.StreamSecurity == Global.StreamSecurityReality
-                && item.PublicKey.IsNullOrEmpty())
-            {
-                errors.Add(string.Format(ResUI.InvalidProperty, "PublicKey"));
-            }
-
-            if (errors.Count > 0)
-            {
-                return errors;
-            }
+            var groupErrors = await ValidateGroupNode(item, coreType);
+            errors.AddRange(groupErrors);
+            return errors;
+        }
+        else if (!item.IsComplex())
+        {
+            var normalErrors = await ValidateNormalNode(item, coreType);
+            errors.AddRange(normalErrors);
+            return errors;
         }
 
-        if (item.ConfigType.IsGroupType())
+        return errors;
+    }
+
+    private async Task<List<string>> ValidateNormalNode(ProfileItem item, ECoreType? coreType = null)
+    {
+        var errors = new List<string>();
+
+        if (item.Address.IsNullOrEmpty())
         {
-            ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
-            if (group is null || group.NotHasChild())
-            {
-                errors.Add(string.Format(ResUI.GroupEmpty, item.Remarks));
-                return errors;
-            }
+            errors.Add(string.Format(ResUI.InvalidProperty, "Address"));
+            return errors;
+        }
 
-            var hasCycle = ProfileGroupItemManager.HasCycle(item.IndexId);
-            if (hasCycle)
-            {
-                errors.Add(string.Format(ResUI.GroupSelfReference, item.Remarks));
-                return errors;
-            }
-
-            var childIds = Utils.String2List(group.ChildItems) ?? [];
-            var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
-            childIds.AddRange(subItems.Select(p => p.IndexId));
-
-            foreach (var child in childIds)
-            {
-                var childErrors = new List<string>();
-                if (child.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
-                var childItem = await AppManager.Instance.GetProfileItem(child);
-                if (childItem is null)
-                {
-                    childErrors.Add(string.Format(ResUI.NodeTagNotExist, child));
-                    continue;
-                }
-
-                if (childItem.ConfigType is EConfigType.Custom or EConfigType.ProxyChain)
-                {
-                    childErrors.Add(string.Format(ResUI.InvalidProperty, childItem.Remarks));
-                    continue;
-                }
-
-                childErrors.AddRange(await ValidateNodeAndCoreSupport(childItem, coreType));
-                errors.AddRange(childErrors);
-            }
+        if (item.Port is <= 0 or > 65535)
+        {
+            errors.Add(string.Format(ResUI.InvalidProperty, "Port"));
             return errors;
         }
 
@@ -191,20 +110,138 @@ public class ActionPrecheckManager(Config config)
             if (transportError != null)
             {
                 errors.Add(transportError);
-                return errors;
+            }
+
+            if (!Global.SingboxSupportConfigType.Contains(item.ConfigType))
+            {
+                errors.Add(string.Format(ResUI.CoreNotSupportProtocol,
+                    nameof(ECoreType.sing_box), item.ConfigType.ToString()));
             }
         }
         else if (coreType is ECoreType.Xray)
         {
             // Xray core does not support these protocols
-            if (!Global.XraySupportConfigType.Contains(item.ConfigType)
-                && !item.IsComplex())
+            if (!Global.XraySupportConfigType.Contains(item.ConfigType))
             {
-                errors.Add(string.Format(ResUI.CoreNotSupportProtocol, nameof(ECoreType.Xray), item.ConfigType.ToString()));
-                return errors;
+                errors.Add(string.Format(ResUI.CoreNotSupportProtocol,
+                    nameof(ECoreType.Xray), item.ConfigType.ToString()));
             }
         }
 
+        switch (item.ConfigType)
+        {
+            case EConfigType.VMess:
+                if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
+                {
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                }
+
+                break;
+
+            case EConfigType.VLESS:
+                if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
+                {
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                }
+
+                if (!Global.Flows.Contains(item.Flow))
+                {
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
+                }
+
+                break;
+
+            case EConfigType.Shadowsocks:
+                if (item.Id.IsNullOrEmpty())
+                {
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                }
+
+                if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                {
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
+                }
+
+                break;
+        }
+
+        if (item.StreamSecurity == Global.StreamSecurity)
+        {
+            // check certificate validity
+            if ((!item.Cert.IsNullOrEmpty()) && (CertPemManager.ParsePemChain(item.Cert).Count == 0))
+            {
+                errors.Add(string.Format(ResUI.InvalidProperty, "TLS Certificate"));
+            }
+        }
+
+        if (item.StreamSecurity == Global.StreamSecurityReality)
+        {
+            if (item.PublicKey.IsNullOrEmpty())
+            {
+                errors.Add(string.Format(ResUI.InvalidProperty, "PublicKey"));
+            }
+        }
+
+        if (item.Network == nameof(ETransport.xhttp)
+            && !item.Extra.IsNullOrEmpty())
+        {
+            // check xhttp extra json validity
+            var xhttpExtra = JsonUtils.ParseJson(item.Extra);
+            if (xhttpExtra is null)
+            {
+                errors.Add(string.Format(ResUI.InvalidProperty, "XHTTP Extra"));
+            }
+        }
+
+        return errors;
+    }
+
+    private async Task<List<string>> ValidateGroupNode(ProfileItem item, ECoreType? coreType = null)
+    {
+        var errors = new List<string>();
+
+        ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
+        if (group is null || group.NotHasChild())
+        {
+            errors.Add(string.Format(ResUI.GroupEmpty, item.Remarks));
+            return errors;
+        }
+
+        var hasCycle = ProfileGroupItemManager.HasCycle(item.IndexId);
+        if (hasCycle)
+        {
+            errors.Add(string.Format(ResUI.GroupSelfReference, item.Remarks));
+            return errors;
+        }
+
+        var childIds = Utils.String2List(group.ChildItems) ?? [];
+        var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
+        childIds.AddRange(subItems.Select(p => p.IndexId));
+
+        foreach (var child in childIds)
+        {
+            var childErrors = new List<string>();
+            if (child.IsNullOrEmpty())
+            {
+                continue;
+            }
+
+            var childItem = await AppManager.Instance.GetProfileItem(child);
+            if (childItem is null)
+            {
+                childErrors.Add(string.Format(ResUI.NodeTagNotExist, child));
+                continue;
+            }
+
+            if (childItem.ConfigType is EConfigType.Custom or EConfigType.ProxyChain)
+            {
+                childErrors.Add(string.Format(ResUI.InvalidProperty, childItem.Remarks));
+                continue;
+            }
+
+            childErrors.AddRange(await ValidateNodeAndCoreSupport(childItem, coreType));
+            errors.AddRange(childErrors.Select(s => s.Insert(0, $"{childItem.Remarks}: ")));
+        }
         return errors;
     }
 
@@ -271,7 +308,7 @@ public class ActionPrecheckManager(Config config)
         if (node is not null)
         {
             var nodeErrors = await ValidateNodeAndCoreSupport(node, coreType);
-            errors.AddRange(nodeErrors.Select(s => ResUI.ProxyChainedPrefix + s));
+            errors.AddRange(nodeErrors.Select(s => ResUI.ProxyChainedPrefix + $"{node.Remarks}: " + s));
         }
         else if (tag.IsNotEmpty())
         {
@@ -289,7 +326,7 @@ public class ActionPrecheckManager(Config config)
         }
 
         var coreType = AppManager.Instance.GetCoreType(item, item.ConfigType);
-        var routing = await ConfigHandler.GetDefaultRouting(_config);
+        var routing = await ConfigHandler.GetDefaultRouting(AppManager.Instance.Config);
         if (routing == null)
         {
             return errors;
@@ -317,7 +354,7 @@ public class ActionPrecheckManager(Config config)
             }
 
             var tagErrors = await ValidateNodeAndCoreSupport(tagItem, coreType);
-            errors.AddRange(tagErrors.Select(s => ResUI.RoutingRuleOutboundPrefix + s));
+            errors.AddRange(tagErrors.Select(s => ResUI.RoutingRuleOutboundPrefix + $"{tagItem.Remarks}: " + s));
         }
 
         return errors;
