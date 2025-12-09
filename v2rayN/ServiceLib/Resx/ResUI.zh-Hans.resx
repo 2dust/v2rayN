@@ -1638,4 +1638,7 @@
   <data name="menuServerList2" xml:space="preserve">
     <value>子配置项二，从自建中选择添加</value>
   </data>
+  <data name="AlpnMustContainHttp11ForWsTls" xml:space="preserve">
+    <value>使用 WebSocket+TLS 时，ALPN 必须包含 'http/1.1'。</value>
+  </data>
 </root>
