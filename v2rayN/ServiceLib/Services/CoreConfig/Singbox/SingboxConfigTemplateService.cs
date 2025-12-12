@@ -22,6 +22,53 @@ public partial class CoreConfigSingboxService
             return JsonUtils.Serialize(singboxConfig);
         }
 
+        // Ensure dns node exists
+        if (singboxConfig.dns != null)
+        {
+            if (fullConfigTemplateNode["dns"] == null)
+            {
+                fullConfigTemplateNode["dns"] = JsonNode.Parse(JsonUtils.Serialize(singboxConfig.dns));
+            }
+            else
+            {
+                // Handle dns rules - append instead of override
+                if (fullConfigTemplateNode["dns"]["rules"] is JsonArray customDnsRulesNode)
+                {
+                    if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.dns?.rules)) is JsonArray newDnsRules)
+                    {
+                        foreach (var ruleNode in newDnsRules)
+                        {
+                            customDnsRulesNode.Add(ruleNode?.DeepClone());
+                        }
+
+                        fullConfigTemplateNode["dns"]["rules"] = customDnsRulesNode;
+                    }
+                }
+                else
+                {
+                    fullConfigTemplateNode["dns"]["rules"] = JsonNode.Parse(JsonUtils.Serialize(singboxConfig.dns?.rules));
+                }
+
+                // Handle dns servers - append instead of override
+                if (fullConfigTemplateNode["dns"]["servers"] is JsonArray customDnsServersNode)
+                {
+                    if (JsonNode.Parse(JsonUtils.Serialize(singboxConfig.dns?.servers)) is JsonArray newDnsServers)
+                    {
+                        foreach (var serverNode in newDnsServers)
+                        {
+                            customDnsServersNode.Add(serverNode?.DeepClone());
+                        }
+
+                        fullConfigTemplateNode["dns"]["servers"] = customDnsServersNode;
+                    }
+                }
+                else
+                {
+                    fullConfigTemplateNode["dns"]["servers"] = JsonNode.Parse(JsonUtils.Serialize(singboxConfig.dns?.servers));
+                }
+            }
+        }
+
         // Process outbounds
         var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : new JsonArray();
         foreach (var outbound in singboxConfig.outbounds)

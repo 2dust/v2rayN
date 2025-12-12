@@ -16,6 +16,50 @@ public partial class CoreConfigV2rayService
             return JsonUtils.Serialize(v2rayConfig);
         }
 
+        // Ensure dns node exists
+        if (fullConfigTemplateNode["dns"] == null)
+        {
+            fullConfigTemplateNode["dns"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.dns));
+        }
+        else
+        {
+            // Handle dns hosts - append instead of override
+            if (fullConfigTemplateNode["dns"]["hosts"] is JsonObject customDnsHostsNode)
+            {
+                if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.dns.hosts)) is JsonObject newDnsHosts)
+                {
+                    foreach (var hostNode in newDnsHosts)
+                    {
+                        customDnsHostsNode.Add(hostNode.Key, hostNode.Value?.DeepClone());
+                    }
+
+                    fullConfigTemplateNode["dns"]["hosts"] = customDnsHostsNode;
+                }
+            }
+            else
+            {
+                fullConfigTemplateNode["dns"]["hosts"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.dns.hosts));
+            }
+
+            // Handle dns servers - append instead of override
+            if (fullConfigTemplateNode["dns"]["servers"] is JsonArray customDnsServersNode)
+            {
+                if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.dns.servers)) is JsonArray newDnsServers)
+                {
+                    foreach (var serverNode in newDnsServers)
+                    {
+                        customDnsServersNode.Add(serverNode?.DeepClone());
+                    }
+
+                    fullConfigTemplateNode["dns"]["servers"] = customDnsServersNode;
+                }
+            }
+            else
+            {
+                fullConfigTemplateNode["dns"]["servers"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.dns.servers));
+            }
+        }
+
         // Handle balancer and rules modifications (for multiple load scenarios)
         if (v2rayConfig.routing?.balancers?.Count > 0)
         {
