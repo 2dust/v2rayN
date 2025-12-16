@@ -116,7 +116,7 @@ jobs:
         fetch-depth: '0'
 
     - name: Restore build artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: v2rayN-linux
         path: ${{ github.workspace }}/v2rayN/Release
