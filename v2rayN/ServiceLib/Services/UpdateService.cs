@@ -291,13 +291,6 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
                 return url;
             }
 
-            //Check for standalone windows .Net version
-            if (File.Exists(Path.Combine(Utils.GetBaseDirectory(), "wpfgfx_cor3.dll"))
-                && File.Exists(Path.Combine(Utils.GetBaseDirectory(), "D3DCompiler_47_cor3.dll")))
-            {
-                return url?.Replace(".zip", "-SelfContained.zip");
-            }
-
             //Check for avalonia desktop windows version
             if (File.Exists(Path.Combine(Utils.GetBaseDirectory(), "libHarfBuzzSharp.dll")))
             {
