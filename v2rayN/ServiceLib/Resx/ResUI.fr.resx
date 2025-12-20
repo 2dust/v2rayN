@@ -1767,4 +1767,5 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>Nouvelle MAJ</value>
   </data>
+  <!-- Forked version, additional resx go here -->
 </root>

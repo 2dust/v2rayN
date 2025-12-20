@@ -1827,4 +1827,5 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>僅適用於 v2rayN GUI 的下載與網路請求，不影響核心的憑證驗證</value>
   </data>
+  <!-- Forked version, additional resx go here -->
 </root>
