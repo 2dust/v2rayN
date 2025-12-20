@@ -6,9 +6,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.9" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
     <PackageVersion Include="CliWrap" Version="3.10.0" />
     <PackageVersion Include="Downloader" Version="4.0.3" />
