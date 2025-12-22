@@ -13,7 +13,7 @@
     Title="v2rayN"
     Width="1200"
     Height="800"
-    MinWidth="900"
+    MinWidth="800"
     x:TypeArguments="vms:MainWindowViewModel"
     Icon="/Resources/v2rayN.ico"
     ResizeMode="CanResizeWithGrip"

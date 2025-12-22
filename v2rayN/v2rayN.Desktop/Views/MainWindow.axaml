@@ -11,7 +11,7 @@
     Title="v2rayN"
     Width="1200"
     Height="800"
-    MinWidth="900"
+    MinWidth="600"
     x:DataType="vms:MainWindowViewModel"
     Icon="/Assets/NotifyIcon1.ico"
     ShowInTaskbar="True"
