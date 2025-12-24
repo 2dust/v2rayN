@@ -125,7 +125,7 @@ public sealed class CoreInfoManager
                 new CoreInfo
                 {
                     CoreType = ECoreType.mihomo,
-                    CoreExes = ["mihomo-windows-amd64-v1", "mihomo-windows-amd64-compatible", "mihomo-windows-amd64", "mihomo-linux-amd64", "clash", "mihomo"],
+                    CoreExes = GetMihomoCoreExes(),
                     Arguments = "-f {0}" + PortableMode(),
                     Url = GetCoreUrl(ECoreType.mihomo),
                     ReleaseApiUrl = urlMihomo.Replace(Global.GithubUrl, Global.GithubApiUrl),
@@ -247,5 +247,35 @@ public sealed class CoreInfoManager
     private static string GetCoreUrl(ECoreType eCoreType)
     {
         return $"{Global.GithubUrl}/{Global.CoreUrls[eCoreType]}/releases";
+    }
+
+    private static List<string>? GetMihomoCoreExes()
+    {
+        var names = new List<string>();
+
+        if (Utils.IsWindows())
+        {
+            names.Add("mihomo-windows-amd64-v1");
+            names.Add("mihomo-windows-amd64-compatible");
+            names.Add("mihomo-windows-amd64");
+            names.Add("mihomo-windows-arm64");
+        }
+        else if (Utils.IsLinux())
+        {
+            names.Add("mihomo-linux-amd64-v1");
+            names.Add("mihomo-linux-amd64");
+            names.Add("mihomo-linux-arm64");
+        }
+        else if (Utils.IsMacOS())
+        {
+            names.Add("mihomo-darwin-amd64-v1");
+            names.Add("mihomo-darwin-amd64");
+            names.Add("mihomo-darwin-arm64");
+        }
+
+        names.Add("clash");
+        names.Add("mihomo");
+
+        return names;
     }
 }
