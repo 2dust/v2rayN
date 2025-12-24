@@ -193,19 +193,6 @@ public class ActionPrecheckManager
             }
         }
 
-        // ws with tls, tls alpn should contain "http/1.1" in xray core
-        // rfc6455
-        // https://github.com/XTLS/Xray-core/blob/81f8f398c7b2b845853b1e85087c6122acc6db0b/transport/internet/tls/tls.go#L95-L116
-        if (item.Network == nameof(ETransport.ws)
-            && item.StreamSecurity == Global.StreamSecurity)
-        {
-            var alpnList = Utils.String2List(item.Alpn) ?? [];
-            if (alpnList.Count > 0 && !alpnList.Contains("http/1.1"))
-            {
-                errors.Add(ResUI.AlpnMustContainHttp11ForWsTls);
-            }
-        }
-
         return errors;
     }
 

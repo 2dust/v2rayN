@@ -1638,7 +1638,4 @@ Si un certificat auto-signé est utilisé ou si le système contient une CA non 
   <data name="menuServerList2" xml:space="preserve">
     <value>Élément de config 2 : choisir et ajouter depuis self-hosted</value>
   </data>
-  <data name="AlpnMustContainHttp11ForWsTls" xml:space="preserve">
-    <value>Avec WebSocket et TLS, l’ALPN doit inclure ‘http/1.1’.</value>
-  </data>
 </root>
