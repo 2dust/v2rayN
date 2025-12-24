@@ -30,7 +30,7 @@ public class StatisticsXrayService
             await Task.Delay(1000);
             try
             {
-                if (_config.RunningCoreType != ECoreType.Xray)
+                if (AppManager.Instance.RunningCoreType != ECoreType.Xray)
                 {
                     continue;
                 }

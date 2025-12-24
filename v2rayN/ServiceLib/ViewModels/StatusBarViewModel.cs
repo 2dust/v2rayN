@@ -549,7 +549,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         try
         {
-            if (_config.IsRunningCore(ECoreType.sing_box))
+            if (AppManager.Instance.IsRunningCore(ECoreType.sing_box))
             {
                 SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, EInboundProtocol.mixed, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
                 SpeedDirectDisplay = string.Empty;

@@ -10,7 +10,7 @@ public partial class CoreConfigSingboxService
             singboxConfig.inbounds = [];
 
             if (!_config.TunModeItem.EnableTun
-                || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && _config.RunningCoreType == ECoreType.sing_box))
+                || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && AppManager.Instance.RunningCoreType == ECoreType.sing_box))
             {
                 var inbound = new Inbound4Sbox()
                 {

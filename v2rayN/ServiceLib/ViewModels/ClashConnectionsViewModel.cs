@@ -128,7 +128,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
             {
                 await Task.Delay(1000 * 5);
                 numOfExecuted++;
-                if (!(AutoRefresh && _config.UiItem.ShowInTaskbar && _config.IsRunningCore(ECoreType.sing_box)))
+                if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar && AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
                 {
                     continue;
                 }

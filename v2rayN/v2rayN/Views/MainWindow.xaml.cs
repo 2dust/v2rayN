@@ -376,7 +376,7 @@ public partial class MainWindow
 
     public void ShowHideWindow(bool? blShow)
     {
-        var bl = blShow ?? !_config.UiItem.ShowInTaskbar;
+        var bl = blShow ?? !AppManager.Instance.ShowInTaskbar;
         if (bl)
         {
             this?.Show();
@@ -391,7 +391,7 @@ public partial class MainWindow
         {
             this?.Hide();
         }
-        _config.UiItem.ShowInTaskbar = bl;
+        AppManager.Instance.ShowInTaskbar = bl;
     }
 
     protected override void OnLoaded(object? sender, RoutedEventArgs e)

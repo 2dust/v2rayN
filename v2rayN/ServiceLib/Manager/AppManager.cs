@@ -31,6 +31,23 @@ public sealed class AppManager
 
     public string LinuxSudoPwd { get; set; }
 
+    public bool ShowInTaskbar { get; set; }
+
+    public ECoreType RunningCoreType { get; set; }
+
+    public bool IsRunningCore(ECoreType type)
+    {
+        switch (type)
+        {
+            case ECoreType.Xray when RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5:
+            case ECoreType.sing_box when RunningCoreType is ECoreType.sing_box or ECoreType.mihomo:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
     #endregion Property
 
     #region App

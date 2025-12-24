@@ -44,7 +44,7 @@ public class MsgViewModel : MyReactiveObject
 
         EnqueueQueueMsg(msg);
 
-        if (!_config.UiItem.ShowInTaskbar)
+        if (!AppManager.Instance.ShowInTaskbar)
         {
             return;
         }

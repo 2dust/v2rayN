@@ -8,21 +8,6 @@ public class Config
     public string IndexId { get; set; }
     public string SubIndexId { get; set; }
 
-    public ECoreType RunningCoreType { get; set; }
-
-    public bool IsRunningCore(ECoreType type)
-    {
-        switch (type)
-        {
-            case ECoreType.Xray when RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5:
-            case ECoreType.sing_box when RunningCoreType is ECoreType.sing_box or ECoreType.mihomo:
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
     #endregion property
 
     #region other entities
