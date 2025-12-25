@@ -94,6 +94,8 @@ public sealed class AppManager
         _ = StatePort;
         _ = StatePort2;
 
+        _ = MigrateProfileExtra();
+
         return true;
     }
 
@@ -225,15 +227,6 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
     }
 
-    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return null;
-        }
-        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
-    }
-
     public async Task<List<RoutingItem>?> RoutingItems()
     {
         return await SQLiteHelper.Instance.TableAsync<RoutingItem>().OrderBy(t => t.Sort).ToListAsync();
@@ -262,6 +255,40 @@ public sealed class AppManager
     public async Task<FullConfigTemplateItem?> GetFullConfigTemplateItem(ECoreType eCoreType)
     {
         return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
+    }
+
+    public async Task MigrateProfileExtra()
+    {
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync();
+        foreach (var item in list)
+        {
+            if (!item.JsonData.IsNullOrEmpty())
+            {
+                return;
+            }
+            ProtocolExtraItem extra = new()
+            {
+                AlterId = item.AlterId.ToString(),
+                Flow = item.Flow.IsNotEmpty() ? item.Flow : null,
+                Ports = item.Ports.IsNotEmpty() ? item.Ports : null,
+            };
+            if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+            {
+                extra.GroupType = nameof(item.ConfigType);
+                ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var groupItem);
+                if (groupItem != null && !groupItem.NotHasChild())
+                {
+                    extra.ChildItems = groupItem.ChildItems;
+                    extra.SubChildItems = groupItem.SubChildItems;
+                    extra.Filter = groupItem.Filter;
+                    extra.MultipleLoad = groupItem.MultipleLoad;
+                }
+            }
+            item.SetExtraItem(extra);
+            await SQLiteHelper.Instance.UpdateAsync(item);
+        }
+
+        await ProfileGroupItemManager.Instance.ClearAll();
     }
 
     #endregion SqliteHelper

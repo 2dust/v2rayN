@@ -128,6 +128,8 @@ public class ActionPrecheckManager
             }
         }
 
+        var extraItem = item.GetExtraItem();
+
         switch (item.ConfigType)
         {
             case EConfigType.VMess:
@@ -144,7 +146,7 @@ public class ActionPrecheckManager
                     errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                 }
 
-                if (!Global.Flows.Contains(item.Flow))
+                if (!Global.Flows.Contains(extraItem.Flow ?? string.Empty))
                 {
                     errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
                 }
@@ -202,37 +204,22 @@ public class ActionPrecheckManager
     {
         var errors = new List<string>();
 
-        ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
-        if (group is null || group.NotHasChild())
-        {
-            errors.Add(string.Format(ResUI.GroupEmpty, item.Remarks));
-            return errors;
-        }
-
-        var hasCycle = ProfileGroupItemManager.HasCycle(item.IndexId);
+        var hasCycle = await GroupProfileManager.HasCycle(item.IndexId, item.GetExtraItem());
         if (hasCycle)
         {
             errors.Add(string.Format(ResUI.GroupSelfReference, item.Remarks));
             return errors;
         }
 
-        var childIds = new List<string>();
-        var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
-        childIds.AddRangeSafe(subItems.Select(p => p.IndexId));
-        childIds.AddRangeSafe(Utils.String2List(group.ChildItems));
+        var (childItems, _) = await GroupProfileManager.GetChildProfileItems(item);
 
-        foreach (var child in childIds)
+        foreach (var childItem in childItems)
         {
             var childErrors = new List<string>();
-            if (child.IsNullOrEmpty())
-            {
-                continue;
-            }
 
-            var childItem = await AppManager.Instance.GetProfileItem(child);
             if (childItem is null)
             {
-                childErrors.Add(string.Format(ResUI.NodeTagNotExist, child));
+                childErrors.Add(string.Format(ResUI.NodeTagNotExist, ""));
                 continue;
             }
 

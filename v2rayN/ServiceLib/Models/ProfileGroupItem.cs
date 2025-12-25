@@ -1,5 +1,6 @@
 namespace ServiceLib.Models;
 
+// deprecated
 [Serializable]
 public class ProfileGroupItem
 {

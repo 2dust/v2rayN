@@ -24,11 +24,15 @@ public class Hysteria2Fmt : BaseFmt
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
         item.Path = GetQueryDecoded(query, "obfs-password");
-        item.Ports = GetQueryDecoded(query, "mport");
         if (item.CertSha.IsNullOrEmpty())
         {
             item.CertSha = GetQueryDecoded(query, "pinSHA256");
         }
+        ProtocolExtraItem extraItem = new()
+        {
+            Ports = GetQueryDecoded(query, "mport")
+        };
+        item.SetExtraItem(extraItem);
 
         return item;
     }
@@ -55,9 +59,10 @@ public class Hysteria2Fmt : BaseFmt
             dicQuery.Add("obfs", "salamander");
             dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
         }
-        if (item.Ports.IsNotEmpty())
+        var extra = item.GetExtraItem();
+        if (extra?.Ports?.IsNotEmpty() ?? false)
         {
-            dicQuery.Add("mport", Utils.UrlEncode(item.Ports.Replace(':', '-')));
+            dicQuery.Add("mport", Utils.UrlEncode(extra.Ports.Replace(':', '-')));
         }
         if (!item.CertSha.IsNullOrEmpty())
         {

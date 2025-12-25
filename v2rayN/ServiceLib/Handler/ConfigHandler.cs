@@ -258,6 +258,7 @@ public static class ConfigHandler
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
             item.EchForceQuery = profileItem.EchForceQuery;
+            item.JsonData = profileItem.JsonData;
         }
 
         var ret = item.ConfigType switch
@@ -359,11 +360,6 @@ public static class ConfigHandler
                 if (await AddCustomServer(config, profileItem, false) == 0)
                 {
                 }
-            }
-            else if (profileItem.ConfigType.IsGroupType())
-            {
-                var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
-                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
             }
             else
             {
@@ -967,9 +963,11 @@ public static class ConfigHandler
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-        if (!Global.Flows.Contains(profileItem.Flow))
+        var extraItem = profileItem.GetExtraItem();
+
+        if (!Global.Flows.Contains(extraItem.Flow ?? string.Empty))
         {
-            profileItem.Flow = Global.Flows.First();
+            extraItem.Flow = Global.Flows.First();
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -979,6 +977,8 @@ public static class ConfigHandler
         {
             profileItem.Security = Global.None;
         }
+
+        profileItem.SetExtraItem(extraItem);
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -1082,37 +1082,6 @@ public static class ConfigHandler
         return 0;
     }
 
-    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
-    {
-        var maxSort = -1;
-        if (profileItem.IndexId.IsNullOrEmpty())
-        {
-            profileItem.IndexId = Utils.GetGuid(false);
-            maxSort = ProfileExManager.Instance.GetMaxSort();
-        }
-        var groupType = profileItem.ConfigType == EConfigType.ProxyChain ? EConfigType.ProxyChain.ToString() : profileGroupItem.MultipleLoad.ToString();
-        profileItem.Address = $"{profileItem.CoreType}-{groupType}";
-        if (maxSort > 0)
-        {
-            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
-        }
-        if (toFile)
-        {
-            await SQLiteHelper.Instance.ReplaceAsync(profileItem);
-            if (profileGroupItem != null)
-            {
-                profileGroupItem.IndexId = profileItem.IndexId;
-                await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
-            }
-            else
-            {
-                ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(profileItem.IndexId);
-                await ProfileGroupItemManager.Instance.SaveTo();
-            }
-        }
-        return 0;
-    }
-
     /// <summary>
     /// Compare two profile items to determine if they represent the same server
     /// Used for deduplication and server matching
@@ -1128,6 +1097,8 @@ public static class ConfigHandler
             return false;
         }
 
+        var extraItem = o.GetExtraItem();
+
         return o.ConfigType == n.ConfigType
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
@@ -1138,7 +1109,7 @@ public static class ConfigHandler
                && AreEqual(o.RequestHost, n.RequestHost)
                && AreEqual(o.Path, n.Path)
                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-               && AreEqual(o.Flow, n.Flow)
+               && AreEqual(extraItem.Flow, extraItem.Flow)
                && AreEqual(o.Sni, n.Sni)
                && AreEqual(o.Alpn, n.Alpn)
                && AreEqual(o.Fingerprint, n.Fingerprint)
@@ -1199,7 +1170,7 @@ public static class ConfigHandler
         var indexId = Utils.GetGuid(false);
         var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId)).Remarks} ";
+        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId))?.Remarks} ";
         if (coreType == ECoreType.Xray)
         {
             remark += multipleLoad switch
@@ -1233,13 +1204,12 @@ public static class ConfigHandler
         {
             profile.Subid = subId;
         }
-        var profileGroup = new ProfileGroupItem
+        var extraItem = new ProtocolExtraItem
         {
-            ChildItems = childProfileIndexId,
-            MultipleLoad = multipleLoad,
-            IndexId = indexId,
+            ChildItems = childProfileIndexId, MultipleLoad = multipleLoad,
         };
-        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        profile.SetExtraItem(extraItem);
+        var ret = await AddServerCommon(config, profile, true);
         result.Success = ret == 0;
         result.Data = indexId;
         return result;
@@ -1261,7 +1231,7 @@ public static class ConfigHandler
             var tun2SocksAddress = node.Address;
             if (node.ConfigType.IsGroupType())
             {
-                var lstAddresses = (await ProfileGroupItemManager.GetAllChildDomainAddresses(node.IndexId)).ToList();
+                var lstAddresses = (await GroupProfileManager.GetAllChildDomainAddresses(node)).ToList();
                 if (lstAddresses.Count > 0)
                 {
                     tun2SocksAddress = Utils.List2String(lstAddresses);

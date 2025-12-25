@@ -23,6 +23,8 @@ public class VmessFmt : BaseFmt
         {
             return null;
         }
+
+        var extraItem = item?.GetExtraItem();
         var vmessQRCode = new VmessQRCode
         {
             v = item.ConfigVersion,
@@ -30,7 +32,7 @@ public class VmessFmt : BaseFmt
             add = item.Address,
             port = item.Port,
             id = item.Id,
-            aid = item.AlterId,
+            aid = int.TryParse(extraItem?.AlterId, out var result) ? result : 0,
             scy = item.Security,
             net = item.Network,
             type = item.HeaderType,
@@ -76,7 +78,10 @@ public class VmessFmt : BaseFmt
         item.Address = Utils.ToString(vmessQRCode.add);
         item.Port = vmessQRCode.port;
         item.Id = Utils.ToString(vmessQRCode.id);
-        item.AlterId = vmessQRCode.aid;
+        item.SetExtraItem(new ProtocolExtraItem
+        {
+            AlterId = vmessQRCode.aid.ToString(),
+        });
         item.Security = Utils.ToString(vmessQRCode.scy);
 
         item.Security = vmessQRCode.scy.IsNotEmpty() ? vmessQRCode.scy : Global.DefaultSecurity;

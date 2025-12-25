@@ -6,6 +6,7 @@ public partial class CoreConfigV2rayService
     {
         try
         {
+            var extraItem = node.GetExtraItem();
             var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
             switch (node.ConfigType)
             {
@@ -36,7 +37,7 @@ public partial class CoreConfigV2rayService
                         }
 
                         usersItem.id = node.Id;
-                        usersItem.alterId = node.AlterId;
+                        usersItem.alterId = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
                         usersItem.email = Global.UserEMail;
                         if (Global.VmessSecurities.Contains(node.Security))
                         {
@@ -142,13 +143,13 @@ public partial class CoreConfigV2rayService
                         usersItem.email = Global.UserEMail;
                         usersItem.encryption = node.Security;
 
-                        if (node.Flow.IsNullOrEmpty())
+                        if (extraItem.Flow.IsNullOrEmpty())
                         {
                             await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
                         }
                         else
                         {
-                            usersItem.flow = node.Flow;
+                            usersItem.flow = extraItem.Flow;
                             await GenOutboundMux(node, outbound, false, muxEnabled);
                         }
                         outbound.settings.servers = null;
@@ -509,13 +510,15 @@ public partial class CoreConfigV2rayService
                     break;
 
                 case "hysteria":
+                    var extraItem = node.GetExtraItem();
+                    var ports = extraItem?.Ports;
                     HysteriaUdpHop4Ray? udpHop = null;
-                    if (node.Ports.IsNotEmpty() &&
-                        (node.Ports.Contains(':') || node.Ports.Contains('-') || node.Ports.Contains(',')))
+                    if (!ports.IsNullOrEmpty() &&
+                        (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                     {
                         udpHop = new()
                         {
-                            ports = node.Ports.Replace(':', '-'),
+                            ports = ports.Replace(':', '-'),
                             interval = _config.HysteriaItem.HopInterval > 0
                                 ? _config.HysteriaItem.HopInterval
                                 : null,
@@ -592,13 +595,13 @@ public partial class CoreConfigV2rayService
             {
                 return -1;
             }
-            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+            var hasCycle = await GroupProfileManager.HasCycle(node);
             if (hasCycle)
             {
                 return -1;
             }
 
-            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+            var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
             if (childProfiles.Count <= 0)
             {
                 return -1;
@@ -627,8 +630,9 @@ public partial class CoreConfigV2rayService
             //add balancers
             if (node.ConfigType == EConfigType.PolicyGroup)
             {
-                await GenObservatory(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
-                await GenBalancer(v2rayConfig, profileGroupItem.MultipleLoad, baseTagName);
+                var multipleLoad = profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing;
+                await GenObservatory(v2rayConfig, multipleLoad, baseTagName);
+                await GenBalancer(v2rayConfig, multipleLoad, baseTagName);
             }
         }
         catch (Exception ex)
@@ -737,7 +741,7 @@ public partial class CoreConfigV2rayService
 
                 if (node.ConfigType.IsGroupType())
                 {
-                    var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                    var (childProfiles, _) = await GroupProfileManager.GetChildProfileItems(node);
                     if (childProfiles.Count <= 0)
                     {
                         continue;
@@ -891,7 +895,7 @@ public partial class CoreConfigV2rayService
 
             if (node.ConfigType.IsGroupType())
             {
-                var (childProfiles, _) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                var (childProfiles, _) = await GroupProfileManager.GetChildProfileItems(node);
                 if (childProfiles.Count <= 0)
                 {
                     continue;
