@@ -94,7 +94,7 @@ public class ProfileItem : ReactiveObject
                     return false;
                 }
 
-                if (!Global.Flows.Contains(Flow))
+                if (!Global.Flows.Contains(GetExtraItem().Flow ?? string.Empty))
                 {
                     return false;
                 }
@@ -125,6 +125,20 @@ public class ProfileItem : ReactiveObject
         return true;
     }
 
+    public void SetExtraItem(ProtocolExtraItem extraItem)
+    {
+        JsonData = JsonUtils.Serialize(extraItem, false);
+    }
+
+    public ProtocolExtraItem GetExtraItem()
+    {
+        if (JsonData.IsNullOrEmpty())
+        {
+            return new ProtocolExtraItem();
+        }
+        return JsonUtils.Deserialize<ProtocolExtraItem>(JsonData);
+    }
+
     #endregion function
 
     [PrimaryKey]
@@ -134,9 +148,7 @@ public class ProfileItem : ReactiveObject
     public int ConfigVersion { get; set; }
     public string Address { get; set; }
     public int Port { get; set; }
-    public string Ports { get; set; }
     public string Id { get; set; }
-    public int AlterId { get; set; }
     public string Security { get; set; }
     public string Network { get; set; }
     public string Remarks { get; set; }
@@ -147,7 +159,6 @@ public class ProfileItem : ReactiveObject
     public string AllowInsecure { get; set; }
     public string Subid { get; set; }
     public bool IsSub { get; set; } = true;
-    public string Flow { get; set; }
     public string Sni { get; set; }
     public string Alpn { get; set; } = string.Empty;
     public ECoreType? CoreType { get; set; }
@@ -164,4 +175,9 @@ public class ProfileItem : ReactiveObject
     public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
+    public string JsonData { get; set; }
+    // deprecated
+    public string Ports { get; set; }
+    public int AlterId { get; set; }
+    public string Flow { get; set; }
 }

@@ -17,6 +17,15 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string CertSha { get; set; }
 
+    [Reactive]
+    public int AlterId { get; set; }
+
+    [Reactive]
+    public string Ports { get; set; }
+
+    [Reactive]
+    public string Flow { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -63,6 +72,11 @@ public class AddServerViewModel : MyReactiveObject
         CoreType = SelectedSource?.CoreType?.ToString();
         Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
+
+        var extraItem = SelectedSource?.GetExtraItem();
+        Ports = extraItem?.Ports ?? string.Empty;
+        AlterId = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
+        Flow = extraItem?.Flow ?? string.Empty;
     }
 
     private async Task SaveServerAsync()
@@ -109,6 +123,11 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
+        var extraItem = SelectedSource.GetExtraItem();
+        extraItem.Ports = Ports;
+        extraItem.AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty;
+        extraItem.Flow = Flow;
+        SelectedSource.SetExtraItem(extraItem);
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
