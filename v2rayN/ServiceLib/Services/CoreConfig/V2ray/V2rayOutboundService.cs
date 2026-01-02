@@ -564,7 +564,7 @@ public partial class CoreConfigV2rayService
             var fragmentOutbound = new Outbounds4Ray
             {
                 protocol = "freedom",
-                tag = $"{Global.ProxyTag}3",
+                tag = $"frag-{Global.ProxyTag}",
                 settings = new()
                 {
                     fragment = new()
