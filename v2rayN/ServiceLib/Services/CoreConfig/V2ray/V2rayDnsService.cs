@@ -197,7 +197,7 @@ public partial class CoreConfigV2rayService
 
                     if (item.OutboundTag == Global.DirectTag)
                     {
-                        if (normalizedDomain.StartsWith("geosite:"))
+                        if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
                         {
                             (regionNames.Contains(normalizedDomain) ? expectedDomainList : directGeositeList).Add(normalizedDomain);
                         }
@@ -208,7 +208,7 @@ public partial class CoreConfigV2rayService
                     }
                     else if (item.OutboundTag != Global.BlockTag)
                     {
-                        if (normalizedDomain.StartsWith("geosite:"))
+                        if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
                         {
                             proxyGeositeList.Add(normalizedDomain);
                         }
