@@ -198,6 +198,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 if (!it.AllowTest)
                 {
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
                     continue;
                 }
 
