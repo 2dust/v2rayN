@@ -1,6 +1,7 @@
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 
 namespace v2rayN.ViewModels;
 
@@ -24,7 +25,7 @@ public class ThemeSettingViewModel : MyReactiveObject
     {
         _config = AppManager.Instance.Config;
 
-        RegisterSystemColorSet(_config, Application.Current.MainWindow, ModifyTheme);
+        RegisterSystemColorSet(_config, ModifyTheme);
 
         BindingUI();
         RestoreUI();
@@ -158,25 +159,15 @@ public class ThemeSettingViewModel : MyReactiveObject
         _paletteHelper.SetTheme(theme);
     }
 
-    public void RegisterSystemColorSet(Config config, Window window, Action updateFunc)
+    public static void RegisterSystemColorSet(Config config, Action updateFunc)
     {
-        var helper = new WindowInteropHelper(window);
-        var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
-        hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+        SystemEvents.UserPreferenceChanged += (s, e) =>
         {
-            if (config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
+            if ((e.Category == UserPreferenceCategory.Color || e.Category == UserPreferenceCategory.General)
+                && config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
             {
-                const int WM_SETTINGCHANGE = 0x001A;
-                if (msg == WM_SETTINGCHANGE)
-                {
-                    if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                    {
-                        updateFunc?.Invoke();
-                    }
-                }
+                updateFunc?.Invoke();
             }
-
-            return IntPtr.Zero;
-        });
+        };
     }
 }
