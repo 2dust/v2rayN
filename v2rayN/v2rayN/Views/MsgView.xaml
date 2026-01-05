@@ -35,7 +35,7 @@
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
                 AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ContentCopy" />
             </Button>
@@ -45,7 +45,7 @@
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
                 AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuMsgViewClear}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
             </Button>

@@ -116,10 +116,34 @@
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
             </Style>
             <Style
+                x:Key="FlatActionMiniButton"
+                BasedOn="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                TargetType="{x:Type ButtonBase}">
+                <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Background}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                <Setter Property="BorderThickness" Value="1.5" />
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary.Light}" />
+                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesign.Brush.Primary.Dark}" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style
                 x:Key="DefButton"
-                BasedOn="{StaticResource MaterialDesignRaisedButton}"
+                BasedOn="{StaticResource MaterialDesignFlatButton}"
                 TargetType="{x:Type ButtonBase}">
                 <Setter Property="FontSize" Value="{DynamicResource StdFontSize}" />
+                <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="16,4" />
             </Style>
             <Style
                 x:Key="DefContextMenu"

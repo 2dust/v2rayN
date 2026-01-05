@@ -62,7 +62,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuProxiesReload}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Reload" />
             </Button>
@@ -72,7 +72,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuProxiesDelaytest}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
             </Button>

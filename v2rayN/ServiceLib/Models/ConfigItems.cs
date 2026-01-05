@@ -91,11 +91,11 @@ public class UIItem
     public int MainGirdHeight1 { get; set; }
     public int MainGirdHeight2 { get; set; }
     public EGirdOrientation MainGirdOrientation { get; set; } = EGirdOrientation.Vertical;
-    public string? ColorPrimaryName { get; set; }
-    public string? CurrentTheme { get; set; }
+    public string? ColorPrimaryName { get; set; } = "blue";
+    public string? CurrentTheme { get; set; } = nameof(ETheme.FollowSystem);
     public string CurrentLanguage { get; set; }
     public string CurrentFontFamily { get; set; }
-    public int CurrentFontSize { get; set; }
+    public int CurrentFontSize { get; set; } = 12;
     public bool EnableDragDropSort { get; set; }
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }

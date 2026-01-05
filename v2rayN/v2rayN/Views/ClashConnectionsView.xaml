@@ -34,7 +34,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Close" />
             </Button>
@@ -44,7 +44,7 @@
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                Style="{StaticResource FlatActionMiniButton}"
                 ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
             </Button>

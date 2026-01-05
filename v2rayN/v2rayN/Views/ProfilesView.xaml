@@ -42,7 +42,7 @@
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
                     AutomationProperties.Name="{x:Static resx:ResUI.menuSubEdit}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    Style="{StaticResource FlatActionMiniButton}"
                     ToolTip="{x:Static resx:ResUI.menuSubEdit}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Edit" />
                 </Button>
@@ -52,9 +52,37 @@
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
                     AutomationProperties.Name="{x:Static resx:ResUI.menuSubAdd}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    Style="{StaticResource FlatActionMiniButton}"
                     ToolTip="{x:Static resx:ResUI.menuSubAdd}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
+                </Button>
+                <Button
+                    x:Name="btnAutofitColumnWidth"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
+                    Style="{StaticResource FlatActionMiniButton}"
+                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
+                </Button>
+                <Button
+                    x:Name="btnFastRealPing"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource FlatActionMiniButton}"
+                    ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
+                </Button>
+                <Button
+                    x:Name="menuMixedTestServer"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    Style="{StaticResource FlatActionMiniButton}"
+                    ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
                 </Button>
 
                 <TextBox
@@ -66,36 +94,6 @@
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                     Style="{StaticResource DefTextBox}" />
-
-                <Button
-                    x:Name="btnAutofitColumnWidth"
-                    Width="30"
-                    Height="30"
-                    Margin="{StaticResource MarginLeftRight4}"
-                    AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
-                </Button>
-
-                <Button
-                    x:Name="btnFastRealPing"
-                    Width="30"
-                    Height="30"
-                    Margin="{StaticResource MarginLeftRight4}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
-                </Button>
-                <Button
-                    x:Name="menuMixedTestServer"
-                    Width="30"
-                    Height="30"
-                    Margin="{StaticResource MarginLeftRight4}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
-                </Button>
             </WrapPanel>
             <DataGrid
                 x:Name="lstProfiles"
