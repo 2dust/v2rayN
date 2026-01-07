@@ -182,6 +182,14 @@ public class Tls4Sbox
     public string? fragment_fallback_delay { get; set; }
     public bool? record_fragment { get; set; }
     public List<string>? certificate { get; set; }
+    public Ech4Sbox? ech { get; set; }
+}
+
+public class Ech4Sbox
+{
+    public bool enabled { get; set; }
+    public List<string>? config { get; set; }
+    public string? query_server_name { get; set; }
 }
 
 public class Multiplex4Sbox

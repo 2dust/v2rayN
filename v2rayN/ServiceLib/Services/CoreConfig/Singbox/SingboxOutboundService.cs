@@ -334,6 +334,26 @@ public partial class CoreConfigSingboxService
                 };
                 tls.insecure = false;
             }
+
+            if (!node.EchConfigList.IsNullOrEmpty())
+            {
+                var ech = new Ech4Sbox()
+                {
+                    enabled = true,
+                };
+                if (node.EchConfigList.Contains("://"))
+                {
+                    var idx = node.EchConfigList.IndexOf('+');
+                    ech.query_server_name = idx > 0 ? node.EchConfigList[..idx] : null;
+                }
+                else
+                {
+                    ech.config = [$"-----BEGIN ECH CONFIGS-----\n" +
+                                  $"{node.EchConfigList}\n" +
+                                  $"-----END ECH CONFIGS-----"];
+                }
+                tls.ech = ech;
+            }
             outbound.tls = tls;
         }
         catch (Exception ex)
