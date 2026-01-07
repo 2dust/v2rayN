@@ -371,7 +371,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             await GenRouting(singboxConfig);
             await GenExperimental(singboxConfig);
-            await GenDns(null, singboxConfig);
+            await GenDns(parentNode, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 
             ret.Success = true;
@@ -428,7 +428,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             await GenRouting(singboxConfig);
             await GenExperimental(singboxConfig);
-            await GenDns(null, singboxConfig);
+            await GenDns(parentNode, singboxConfig);
             await ConvertGeo2Ruleset(singboxConfig);
 
             ret.Success = true;

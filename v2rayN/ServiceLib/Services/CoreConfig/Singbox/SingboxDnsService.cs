@@ -153,6 +153,12 @@ public partial class CoreConfigSingboxService
             }
             singboxConfig.dns.servers.Add(echDnsObject);
         }
+        else if (node?.ConfigType.IsGroupType() == true)
+        {
+            var echDnsObject = JsonUtils.DeepCopy(directDns);
+            echDnsObject.tag = Global.SingboxEchDNSTag;
+            singboxConfig.dns.servers.Add(echDnsObject);
+        }
 
         return await Task.FromResult(0);
     }
@@ -193,13 +199,26 @@ public partial class CoreConfigSingboxService
             && node?.EchConfigList?.Contains("://") == true)
         {
             var idx = node.EchConfigList.IndexOf('+');
-            var queryServerName = idx > 0 ? node.EchConfigList[..idx] : node.Sni;
+            List<string> queryServerNames = [(idx > 0 ? node.EchConfigList[..idx] : node.Sni)];
             singboxConfig.dns.rules.Add(new()
             {
                 query_type = new List<int> { 64, 65 },
                 server = Global.SingboxEchDNSTag,
-                domain = [queryServerName],
+                domain = queryServerNames,
             });
+        }
+        else if (node?.ConfigType.IsGroupType() == true)
+        {
+            var queryServerNames = (await ProfileGroupItemManager.GetAllChildEchQuerySni(node.IndexId)).ToList();
+            if (queryServerNames.Count > 0)
+            {
+                singboxConfig.dns.rules.Add(new()
+                {
+                    query_type = new List<int> { 64, 65 },
+                    server = Global.SingboxEchDNSTag,
+                    domain = queryServerNames,
+                });
+            }
         }
 
         if (simpleDNSItem.BlockBindingQuery == true)
