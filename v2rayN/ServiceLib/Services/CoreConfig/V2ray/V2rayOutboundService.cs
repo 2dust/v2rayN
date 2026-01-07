@@ -272,7 +272,9 @@ public partial class CoreConfigV2rayService
                 {
                     allowInsecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
                     alpn = node.GetAlpn(),
-                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
+                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint,
+                    echConfigList = node.EchConfigList.NullIfEmpty(),
+                    echForceQuery = node.EchForceQuery.NullIfEmpty()
                 };
                 if (sni.IsNotEmpty())
                 {
@@ -340,7 +342,7 @@ public partial class CoreConfigV2rayService
                     kcpSettings.header = new Header4Ray
                     {
                         type = node.HeaderType,
-                        domain = host.IsNullOrEmpty() ? null : host
+                        domain = host.NullIfEmpty()
                     };
                     if (path.IsNotEmpty())
                     {
@@ -450,7 +452,7 @@ public partial class CoreConfigV2rayService
                 case nameof(ETransport.grpc):
                     GrpcSettings4Ray grpcSettings = new()
                     {
-                        authority = host.IsNullOrEmpty() ? null : host,
+                        authority = host.NullIfEmpty(),
                         serviceName = path,
                         multiMode = node.HeaderType == Global.GrpcMultiMode,
                         idle_timeout = _config.GrpcItem.IdleTimeout,

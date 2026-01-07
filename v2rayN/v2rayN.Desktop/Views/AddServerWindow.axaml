@@ -713,7 +713,7 @@
                     Grid.Row="7"
                     ColumnDefinitions="300,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -768,15 +768,41 @@
                         Width="200"
                         Margin="{StaticResource Margin4}" />
 
-
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbEchConfigList}" />
+                    <TextBox
+                        x:Name="txtEchConfigList"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbEchForceQuery}" />
+                    <ComboBox
+                        x:Name="cmbEchForceQuery"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbCertPinning}" />
                     <StackPanel
-                        Grid.Row="5"
+                        Grid.Row="7"
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">

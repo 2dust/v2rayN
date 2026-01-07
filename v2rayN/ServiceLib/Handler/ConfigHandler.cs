@@ -253,6 +253,8 @@ public static class ConfigHandler
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
             item.Cert = profileItem.Cert;
+            item.EchConfigList = profileItem.EchConfigList;
+            item.EchForceQuery = profileItem.EchForceQuery;
         }
 
         var ret = item.ConfigType switch

@@ -1638,4 +1638,10 @@
   <data name="menuServerList2" xml:space="preserve">
     <value>子配置項二，從自建中選擇新增</value>
   </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbEchForceQuery" xml:space="preserve">
+    <value>EchForceQuery</value>
+  </data>
 </root>

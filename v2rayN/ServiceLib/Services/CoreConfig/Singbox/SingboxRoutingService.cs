@@ -113,7 +113,7 @@ public partial class CoreConfigSingboxService
                 clash_mode = ERuleMode.Global.ToString()
             });
 
-            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.IsNullOrEmpty() ? null : _config.RoutingBasicItem.DomainStrategy4Singbox;
+            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
             var defaultRouting = await ConfigHandler.GetDefaultRouting(_config);
             if (defaultRouting.DomainStrategy4Singbox.IsNotEmpty())
             {

@@ -356,6 +356,8 @@ public class TlsSettings4Ray
     public string? mldsa65Verify { get; set; }
     public List<CertificateSettings4Ray>? certificates { get; set; }
     public bool? disableSystemRoot { get; set; }
+    public string? echConfigList { get; set; }
+    public string? echForceQuery { get; set; }
 }
 
 public class CertificateSettings4Ray

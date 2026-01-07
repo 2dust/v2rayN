@@ -1641,4 +1641,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuServerList2" xml:space="preserve">
     <value>Configuration Item 2, Select and add from self-built</value>
   </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbEchForceQuery" xml:space="preserve">
+    <value>EchForceQuery</value>
+  </data>
 </root>

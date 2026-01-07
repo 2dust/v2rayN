@@ -1638,4 +1638,10 @@ Si un certificat auto-signé est utilisé ou si le système contient une CA non 
   <data name="menuServerList2" xml:space="preserve">
     <value>Élément de config 2 : choisir et ajouter depuis self-hosted</value>
   </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbEchForceQuery" xml:space="preserve">
+    <value>EchForceQuery</value>
+  </data>
 </root>

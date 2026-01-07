@@ -157,13 +157,13 @@ public partial class CoreConfigSingboxService
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Proxy.IsNullOrEmpty() ? null : simpleDNSItem.SingboxStrategy4Proxy,
+                strategy = simpleDNSItem.SingboxStrategy4Proxy.NullIfEmpty(),
                 clash_mode = ERuleMode.Global.ToString()
             },
             new Rule4Sbox
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Direct.IsNullOrEmpty() ? null : simpleDNSItem.SingboxStrategy4Direct,
+                strategy = simpleDNSItem.SingboxStrategy4Direct.NullIfEmpty(),
                 clash_mode = ERuleMode.Direct.ToString()
             }
         });

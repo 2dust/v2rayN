@@ -6,17 +6,17 @@ public static class Extension
 {
     public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
     {
-        return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
-    }
-
-    public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? value)
-    {
-        return string.IsNullOrWhiteSpace(value);
+        return string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value);
     }
 
     public static bool IsNotEmpty([NotNullWhen(false)] this string? value)
     {
-        return !string.IsNullOrEmpty(value);
+        return !string.IsNullOrWhiteSpace(value);
+    }
+
+    public static string? NullIfEmpty(this string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value;
     }
 
     public static bool BeginWithAny(this string s, IEnumerable<char> chars)

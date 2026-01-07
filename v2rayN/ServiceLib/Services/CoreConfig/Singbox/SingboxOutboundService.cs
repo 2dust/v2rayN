@@ -354,7 +354,7 @@ public partial class CoreConfigSingboxService
                 case nameof(ETransport.h2):
                     transport.type = nameof(ETransport.http);
                     transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
-                    transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
+                    transport.path = node.Path.NullIfEmpty();
                     break;
 
                 case nameof(ETransport.tcp):   //http
@@ -362,7 +362,7 @@ public partial class CoreConfigSingboxService
                     {
                         transport.type = nameof(ETransport.http);
                         transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
-                        transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
+                        transport.path = node.Path.NullIfEmpty();
                     }
                     break;
 
@@ -396,7 +396,7 @@ public partial class CoreConfigSingboxService
                         }
                     }
 
-                    transport.path = wsPath.IsNullOrEmpty() ? null : wsPath;
+                    transport.path = wsPath.NullIfEmpty();
                     if (node.RequestHost.IsNotEmpty())
                     {
                         transport.headers = new()
@@ -408,8 +408,8 @@ public partial class CoreConfigSingboxService
 
                 case nameof(ETransport.httpupgrade):
                     transport.type = nameof(ETransport.httpupgrade);
-                    transport.path = node.Path.IsNullOrEmpty() ? null : node.Path;
-                    transport.host = node.RequestHost.IsNullOrEmpty() ? null : node.RequestHost;
+                    transport.path = node.Path.NullIfEmpty();
+                    transport.host = node.RequestHost.NullIfEmpty();
 
                     break;
 
