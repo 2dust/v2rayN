@@ -316,5 +316,72 @@ public class ProfileGroupItemManager
         return childAddresses;
     }
 
+    public static async Task<HashSet<string>> GetAllChildEchQuerySni(string indexId)
+    {
+        // include grand children
+        var childAddresses = new HashSet<string>();
+        if (!Instance.TryGet(indexId, out var groupItem) || groupItem == null)
+        {
+            return childAddresses;
+        }
+
+        if (groupItem.SubChildItems.IsNotEmpty())
+        {
+            var subItems = await GetSubChildProfileItems(groupItem);
+            foreach (var childNode in subItems)
+            {
+                if (childNode.EchConfigList.IsNullOrEmpty())
+                {
+                    continue;
+                }
+                if (childNode.StreamSecurity == Global.StreamSecurity
+                    && childNode.EchConfigList?.Contains("://") == true)
+                {
+                    var idx = childNode.EchConfigList.IndexOf('+');
+                    childAddresses.Add(idx > 0 ? childNode.EchConfigList[..idx] : childNode.Sni);
+                }
+                else
+                {
+                    childAddresses.Add(childNode.Sni);
+                }
+            }
+        }
+
+        var childIds = Utils.String2List(groupItem.ChildItems) ?? [];
+
+        foreach (var childId in childIds)
+        {
+            var childNode = await AppManager.Instance.GetProfileItem(childId);
+            if (childNode == null)
+            {
+                continue;
+            }
+
+            if (!childNode.IsComplex() && !childNode.EchConfigList.IsNullOrEmpty())
+            {
+                if (childNode.StreamSecurity == Global.StreamSecurity
+                    && childNode.EchConfigList?.Contains("://") == true)
+                {
+                    var idx = childNode.EchConfigList.IndexOf('+');
+                    childAddresses.Add(idx > 0 ? childNode.EchConfigList[..idx] : childNode.Sni);
+                }
+                else
+                {
+                    childAddresses.Add(childNode.Sni);
+                }
+            }
+            else if (childNode.ConfigType.IsGroupType())
+            {
+                var subAddresses = await GetAllChildDomainAddresses(childNode.IndexId);
+                foreach (var addr in subAddresses)
+                {
+                    childAddresses.Add(addr);
+                }
+            }
+        }
+
+        return childAddresses;
+    }
+
     #endregion Helper
 }

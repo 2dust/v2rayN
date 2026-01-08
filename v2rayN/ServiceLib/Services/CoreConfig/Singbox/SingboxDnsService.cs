@@ -13,8 +13,8 @@ public partial class CoreConfigSingboxService
             }
 
             var simpleDNSItem = _config.SimpleDNSItem;
-            await GenDnsServers(singboxConfig, simpleDNSItem);
-            await GenDnsRules(singboxConfig, simpleDNSItem);
+            await GenDnsServers(node, singboxConfig, simpleDNSItem);
+            await GenDnsRules(node, singboxConfig, simpleDNSItem);
 
             singboxConfig.dns ??= new Dns4Sbox();
             singboxConfig.dns.independent_cache = true;
@@ -52,7 +52,7 @@ public partial class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<int> GenDnsServers(SingboxConfig singboxConfig, SimpleDNSItem simpleDNSItem)
+    private async Task<int> GenDnsServers(ProfileItem? node, SingboxConfig singboxConfig, SimpleDNSItem simpleDNSItem)
     {
         var finalDns = await GenDnsDomains(singboxConfig, simpleDNSItem);
 
@@ -133,6 +133,29 @@ public partial class CoreConfigSingboxService
             singboxConfig.dns.servers.Add(fakeip);
         }
 
+        // ech
+        var (_, dnsServer) = ParseEchParam(node?.EchConfigList);
+        if (dnsServer is not null)
+        {
+            dnsServer.tag = Global.SingboxEchDNSTag;
+            if (dnsServer.server is not null
+                && hostsDns.predefined.ContainsKey(dnsServer.server))
+            {
+                dnsServer.domain_resolver = Global.SingboxHostsDNSTag;
+            }
+            else
+            {
+                dnsServer.domain_resolver = Global.SingboxLocalDNSTag;
+            }
+            singboxConfig.dns.servers.Add(dnsServer);
+        }
+        else if (node?.ConfigType.IsGroupType() == true)
+        {
+            var echDnsObject = JsonUtils.DeepCopy(directDns);
+            echDnsObject.tag = Global.SingboxEchDNSTag;
+            singboxConfig.dns.servers.Add(echDnsObject);
+        }
+
         return await Task.FromResult(0);
     }
 
@@ -146,7 +169,7 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult(finalDns);
     }
 
-    private async Task<int> GenDnsRules(SingboxConfig singboxConfig, SimpleDNSItem simpleDNSItem)
+    private async Task<int> GenDnsRules(ProfileItem? node, SingboxConfig singboxConfig, SimpleDNSItem simpleDNSItem)
     {
         singboxConfig.dns ??= new Dns4Sbox();
         singboxConfig.dns.rules ??= new List<Rule4Sbox>();
@@ -167,6 +190,31 @@ public partial class CoreConfigSingboxService
                 clash_mode = ERuleMode.Direct.ToString()
             }
         });
+
+        var (ech, _) = ParseEchParam(node?.EchConfigList);
+        if (ech is not null)
+        {
+            var echDomain = ech.query_server_name ?? node?.Sni;
+            singboxConfig.dns.rules.Add(new()
+            {
+                query_type = new List<int> { 64, 65 },
+                server = Global.SingboxEchDNSTag,
+                domain = echDomain is not null ? new List<string> { echDomain } : null,
+            });
+        }
+        else if (node?.ConfigType.IsGroupType() == true)
+        {
+            var queryServerNames = (await ProfileGroupItemManager.GetAllChildEchQuerySni(node.IndexId)).ToList();
+            if (queryServerNames.Count > 0)
+            {
+                singboxConfig.dns.rules.Add(new()
+                {
+                    query_type = new List<int> { 64, 65 },
+                    server = Global.SingboxEchDNSTag,
+                    domain = queryServerNames,
+                });
+            }
+        }
 
         if (simpleDNSItem.BlockBindingQuery == true)
         {
