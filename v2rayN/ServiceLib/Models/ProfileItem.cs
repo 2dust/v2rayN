@@ -161,6 +161,7 @@ public class ProfileItem : ReactiveObject
     public string Extra { get; set; }
     public bool? MuxEnabled { get; set; }
     public string Cert { get; set; }
+    public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
 }

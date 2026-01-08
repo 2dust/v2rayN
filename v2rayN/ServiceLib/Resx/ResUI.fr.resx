@@ -1606,10 +1606,10 @@
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Certificat serveur (format PEM, facultatif)
-Si le certificat est défini, il est fixé et l’option « Ignorer la vérification » est désactivée.
+    <value>Pinned certificate (fill in either one)
+When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
 
-Si un certificat auto-signé est utilisé ou si le système contient une CA non fiable ou malveillante, l’action « Obtenir le certificat » peut échouer.</value>
+The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
     <value>Obtenir le certificat</value>
@@ -1643,5 +1643,11 @@ Si un certificat auto-signé est utilisé ou si le système contient une CA non 
   </data>
   <data name="TbEchForceQuery" xml:space="preserve">
     <value>EchForceQuery</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>Full certificate (chain), PEM format</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Certificate fingerprint (SHA-256)</value>
   </data>
 </root>

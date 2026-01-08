@@ -1606,7 +1606,7 @@
     <value>憑證綁定</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>伺服器憑證（PEM 格式，可選）
+    <value>固定憑證（二選一填寫即可）
 若已指定，憑證將會被綁定，並且「跳過憑證驗證」將被停用。
 
 若使用自簽憑證，或系統中存在不受信任或惡意的 CA，「取得憑證」動作可能會失敗。</value>
@@ -1643,5 +1643,11 @@
   </data>
   <data name="TbEchForceQuery" xml:space="preserve">
     <value>EchForceQuery</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>Full certificate (chain), PEM format</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Certificate fingerprint (SHA-256)</value>
   </data>
 </root>

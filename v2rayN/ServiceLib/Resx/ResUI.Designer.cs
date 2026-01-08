@@ -2617,7 +2617,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Server Certificate (PEM format, optional)
+        ///   查找类似 Pinned certificate (fill in either one)
         ///When specified, the certificate will be pinned, and &quot;Allow Insecure&quot; will be disabled.
         ///
         ///The &quot;Get Certificate&quot; action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA. 的本地化字符串。
@@ -2625,6 +2625,15 @@ namespace ServiceLib.Resx {
         public static string TbCertPinningTips {
             get {
                 return ResourceManager.GetString("TbCertPinningTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Certificate fingerprint (SHA-256) 的本地化字符串。
+        /// </summary>
+        public static string TbCertSha256Tips {
+            get {
+                return ResourceManager.GetString("TbCertSha256Tips", resourceCulture);
             }
         }
         
@@ -2886,6 +2895,15 @@ namespace ServiceLib.Resx {
         public static string TbFlow5 {
             get {
                 return ResourceManager.GetString("TbFlow5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Full certificate (chain), PEM format 的本地化字符串。
+        /// </summary>
+        public static string TbFullCertTips {
+            get {
+                return ResourceManager.GetString("TbFullCertTips", resourceCulture);
             }
         }
         
