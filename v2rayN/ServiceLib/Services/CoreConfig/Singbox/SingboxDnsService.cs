@@ -134,24 +134,20 @@ public partial class CoreConfigSingboxService
         }
 
         // ech
-        if (node?.StreamSecurity == Global.StreamSecurity
-            && node?.EchConfigList?.Contains("://") == true)
+        var (_, dnsServer) = ParseEchParam(node?.EchConfigList);
+        if (dnsServer is not null)
         {
-            // example.com+https://1.1.1.1/dns-query
-            var idx = node.EchConfigList.IndexOf('+');
-            var echDnsServer = idx > 0 ? node.EchConfigList[(idx + 1)..] : node.EchConfigList;
-            var echDnsObject = ParseDnsAddress(echDnsServer);
-            echDnsObject.tag = Global.SingboxEchDNSTag;
-            if (echDnsObject.server is not null
-                && hostsDns.predefined.ContainsKey(echDnsObject.server))
+            dnsServer.tag = Global.SingboxEchDNSTag;
+            if (dnsServer.server is not null
+                && hostsDns.predefined.ContainsKey(dnsServer.server))
             {
-                echDnsObject.domain_resolver = Global.SingboxHostsDNSTag;
+                dnsServer.domain_resolver = Global.SingboxHostsDNSTag;
             }
             else
             {
-                echDnsObject.domain_resolver = Global.SingboxLocalDNSTag;
+                dnsServer.domain_resolver = Global.SingboxLocalDNSTag;
             }
-            singboxConfig.dns.servers.Add(echDnsObject);
+            singboxConfig.dns.servers.Add(dnsServer);
         }
         else if (node?.ConfigType.IsGroupType() == true)
         {
@@ -195,16 +191,15 @@ public partial class CoreConfigSingboxService
             }
         });
 
-        if (node?.StreamSecurity == Global.StreamSecurity
-            && node?.EchConfigList?.Contains("://") == true)
+        var (ech, _) = ParseEchParam(node?.EchConfigList);
+        if (ech is not null)
         {
-            var idx = node.EchConfigList.IndexOf('+');
-            List<string> queryServerNames = [(idx > 0 ? node.EchConfigList[..idx] : node.Sni)];
+            var echDomain = ech.query_server_name ?? node?.Sni;
             singboxConfig.dns.rules.Add(new()
             {
                 query_type = new List<int> { 64, 65 },
                 server = Global.SingboxEchDNSTag,
-                domain = queryServerNames,
+                domain = echDomain is not null ? new List<string> { echDomain } : null,
             });
         }
         else if (node?.ConfigType.IsGroupType() == true)
