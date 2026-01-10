@@ -1606,10 +1606,10 @@
     <value>固定证书</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>服务器证书（PEM 格式，可选）
+    <value>固定证书（二选一填写即可）
 当指定此证书后，将固定该证书，并禁用“跳过证书验证”选项。
 
-“获取证书”操作可能失败，原因可能是使用了自签证书，或系统中存在不受信任或恶意的 CA。</value>
+“获取证书”操作可能失败，原因包括使用了自签名证书，或系统中存在不受信任甚至恶意的 CA。</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
     <value>获取证书</value>
@@ -1643,5 +1643,11 @@
   </data>
   <data name="TbEchForceQuery" xml:space="preserve">
     <value>EchForceQuery</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>完整证书（链），PEM 格式</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>证书指纹（SHA-256）</value>
   </data>
 </root>

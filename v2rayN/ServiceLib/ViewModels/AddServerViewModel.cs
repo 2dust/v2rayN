@@ -14,6 +14,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string CertTip { get; set; }
 
+    [Reactive]
+    public string CertSha { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -38,6 +41,12 @@ public class AddServerViewModel : MyReactiveObject
 
         this.WhenAnyValue(x => x.Cert)
             .Subscribe(_ => UpdateCertTip());
+
+        this.WhenAnyValue(x => x.CertSha)
+            .Subscribe(_ => UpdateCertTip());
+
+        this.WhenAnyValue(x => x.Cert)
+            .Subscribe(_ => UpdateCertSha());
 
         if (profileItem.IndexId.IsNullOrEmpty())
         {
@@ -97,7 +106,8 @@ public class AddServerViewModel : MyReactiveObject
             }
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
-        SelectedSource.Cert = Cert.IsNullOrEmpty() ? null : Cert;
+        SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
+        SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
@@ -113,8 +123,34 @@ public class AddServerViewModel : MyReactiveObject
     private void UpdateCertTip(string? errorMessage = null)
     {
         CertTip = errorMessage.IsNullOrEmpty()
-            ? (Cert.IsNullOrEmpty() ? ResUI.CertNotSet : ResUI.CertSet)
+            ? ((Cert.IsNullOrEmpty() && CertSha.IsNullOrEmpty()) ? ResUI.CertNotSet : ResUI.CertSet)
             : errorMessage;
+    }
+
+    private void UpdateCertSha()
+    {
+        if (Cert.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        var certList = CertPemManager.ParsePemChain(Cert);
+        if (certList.Count == 0)
+        {
+            return;
+        }
+
+        List<string> shaList = new();
+        foreach (var cert in certList)
+        {
+            var sha = CertPemManager.GetCertSha256Thumbprint(cert);
+            if (sha.IsNullOrEmpty())
+            {
+                return;
+            }
+            shaList.Add(sha);
+        }
+        CertSha = string.Join('~', shaList);
     }
 
     private async Task FetchCert()
@@ -142,8 +178,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             domain += $":{SelectedSource.Port}";
         }
-        string certError;
-        (Cert, certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+
+        (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
         UpdateCertTip(certError);
     }
 
@@ -172,8 +208,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             domain += $":{SelectedSource.Port}";
         }
-        string certError;
-        (var certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+
+        var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
         Cert = CertPemManager.ConcatenatePemChain(certs);
         UpdateCertTip(certError);
     }

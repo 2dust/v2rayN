@@ -1072,6 +1072,26 @@
                                         Content="{x:Static resx:ResUI.TbFetchCertChain}"
                                         Style="{StaticResource DefButton}" />
                                 </StackPanel>
+                                <TextBlock
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbCertSha256Tips}"
+                                    TextWrapping="Wrap" />
+                                <TextBox
+                                    x:Name="txtCertSha256Pinning"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource DefTextBox}" />
+                                <TextBlock
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbFullCertTips}"
+                                    TextWrapping="Wrap" />
                                 <TextBox
                                     x:Name="txtCert"
                                     Width="400"

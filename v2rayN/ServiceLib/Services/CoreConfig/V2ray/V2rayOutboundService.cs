@@ -301,6 +301,10 @@ public partial class CoreConfigV2rayService
                     tlsSettings.disableSystemRoot = true;
                     tlsSettings.allowInsecure = false;
                 }
+                else if (!node.CertSha.IsNullOrEmpty())
+                {
+                    tlsSettings.pinnedPeerCertSha256 = node.CertSha;
+                }
                 streamSettings.tlsSettings = tlsSettings;
             }
 

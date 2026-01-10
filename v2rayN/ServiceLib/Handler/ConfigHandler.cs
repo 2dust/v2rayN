@@ -253,6 +253,7 @@ public static class ConfigHandler
             item.Extra = profileItem.Extra;
             item.MuxEnabled = profileItem.MuxEnabled;
             item.Cert = profileItem.Cert;
+            item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
             item.EchForceQuery = profileItem.EchForceQuery;
         }
