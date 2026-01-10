@@ -56,7 +56,8 @@ public class ProfilesViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
     public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
+    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; } 
+    public ReactiveCommand<SubItem, Unit> MoveToGroupCmd { get; }
 
     //servers ping
     public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
@@ -179,6 +180,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await MoveServer(EMove.Bottom);
         }, canEditRemove);
+        MoveToGroupCmd = ReactiveCommand.CreateFromTask<SubItem>(async sub =>
+        {
+            SelectedMoveToGroup = sub;
+        });
 
         //servers ping
         FastRealPingCmd = ReactiveCommand.CreateFromTask(async () =>
