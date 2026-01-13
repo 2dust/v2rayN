@@ -230,9 +230,10 @@ public class ProfileGroupItemManager
         {
             return (new List<ProfileItem>(), profileGroupItem);
         }
-        var items = await GetChildProfileItems(profileGroupItem);
-        var subItems = await GetSubChildProfileItems(profileGroupItem);
-        items.AddRange(subItems);
+
+        var items = new List<ProfileItem>();
+        items.AddRange(await GetSubChildProfileItems(profileGroupItem));
+        items.AddRange(await GetChildProfileItems(profileGroupItem));
 
         return (items, profileGroupItem);
     }

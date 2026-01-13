@@ -214,9 +214,10 @@ public class ActionPrecheckManager
             return errors;
         }
 
-        var childIds = Utils.String2List(group.ChildItems) ?? [];
+        var childIds = new List<string>();
         var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
         childIds.AddRange(subItems.Select(p => p.IndexId));
+        childIds.AddRange(Utils.String2List(group.ChildItems));
 
         foreach (var child in childIds)
         {
