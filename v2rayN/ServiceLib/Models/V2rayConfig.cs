@@ -256,6 +256,8 @@ public class RulesItem4Ray
     public List<string>? domain { get; set; }
 
     public List<string>? protocol { get; set; }
+
+    public List<string>? process { get; set; }
 }
 
 public class BalancersItem4Ray
