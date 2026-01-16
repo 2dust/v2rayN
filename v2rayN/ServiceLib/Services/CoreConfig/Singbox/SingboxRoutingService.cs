@@ -278,7 +278,7 @@ public partial class CoreConfigSingboxService
                 }
             }
 
-            if (item.Process?.Count > 0)
+            if (_config.TunModeItem.EnableTun && item.Process?.Count > 0)
             {
                 var ruleProcName = JsonUtils.DeepCopy(rule3);
                 var ruleProcPath = JsonUtils.DeepCopy(rule3);

@@ -1024,7 +1024,7 @@
     <value>sing-box Mux 多路复用协议</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>进程名全称 (Tun 模式)</value>
+    <value>进程 (Tun 模式)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>

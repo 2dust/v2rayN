@@ -1027,7 +1027,7 @@
     <value>sing-box Mux protokoll</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Teljes folyamatnév (Tun mód)</value>
+    <value>Process (Tun mode)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP vagy IP CIDR</value>

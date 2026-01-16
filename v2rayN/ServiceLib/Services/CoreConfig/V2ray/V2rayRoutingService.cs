@@ -109,8 +109,7 @@ public partial class CoreConfigV2rayService
                 v2rayConfig.routing.rules.Add(it);
                 hasDomainIp = true;
             }
-
-            if (rule.process?.Count > 0)
+            if (_config.TunModeItem.EnableTun && rule.process?.Count > 0)
             {
                 var it = JsonUtils.DeepCopy(rule);
                 it.domain = null;

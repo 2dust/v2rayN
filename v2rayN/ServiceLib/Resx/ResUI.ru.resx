@@ -1027,7 +1027,7 @@
     <value>Протокол Mux для sing-box</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Полное имя процесса (режим TUN)</value>
+    <value>Process (Tun mode)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP-адрес или сеть CIDR</value>
