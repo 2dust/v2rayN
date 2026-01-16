@@ -7,8 +7,8 @@ public class Global
     public const string AppName = "v2rayN";
     public const string GithubUrl = "https://github.com";
     public const string GithubApiUrl = "https://api.github.com/repos";
-    public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
-    public const string SingboxRulesetUrl = @"https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-{0}/{1}.srs";
+    public const string GeoUrl = "https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/{0}.dat";
+    public const string SingboxRulesetUrl = @"https://testingcf.jsdelivr.net/gh/2dust/sing-box-rules@rule-set-{0}/{1}.srs";
 
     public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
     public const string ConfigFileName = "guiNConfig.json";
@@ -109,7 +109,7 @@ public class Global
 
     public static readonly List<string> SubConvertConfig =
     [
-        @"https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online.ini"
+        @"https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/config/ACL4SSR_Online.ini"
     ];
 
     public static readonly List<string> SubConvertTargets =
@@ -582,9 +582,9 @@ public class Global
 
     public static readonly List<string> OtherGeoUrls =
     [
-        @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat",
-        @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb",
-        @"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+        @"https://testingcf.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip-only-cn-private.dat",
+        @"https://testingcf.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb",
+        @"https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
     ];
 
     public static readonly List<string> IPAPIUrls =
