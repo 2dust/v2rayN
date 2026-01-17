@@ -38,6 +38,7 @@ public partial class OptionSettingWindow
         cmbCoreType4.ItemsSource = Global.CoreTypes;
         cmbCoreType5.ItemsSource = Global.CoreTypes;
         cmbCoreType6.ItemsSource = Global.CoreTypes;
+        cmbCoreType7.ItemsSource = Global.CoreTypes;
         cmbCoreType9.ItemsSource = Global.CoreTypes;
 
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(2, 7).ToList();
@@ -127,6 +128,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.CoreType4, v => v.cmbCoreType4.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType5, v => v.cmbCoreType5.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType6, v => v.cmbCoreType6.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CoreType7, v => v.cmbCoreType7.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
