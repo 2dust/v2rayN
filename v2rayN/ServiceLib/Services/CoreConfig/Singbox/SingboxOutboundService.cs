@@ -146,10 +146,13 @@ public partial class CoreConfigSingboxService
                             };
                         }
 
-                        var extra = node.GetExtraItem();
-                        outbound.up_mbps = int.TryParse(extra?.UpMbps, out var upMbps) && upMbps >= 0 ? upMbps : (_config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null);
-                        outbound.down_mbps = int.TryParse(extra?.DownMbps, out var downMbps) && downMbps >= 0 ? downMbps : (_config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null);
-                        var ports = extra?.Ports?.IsNullOrEmpty() == false ? extra.Ports : null;
+                        outbound.up_mbps = extraItem?.UpMbps is { } su and >= 0
+                            ? su
+                            : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
+                        outbound.down_mbps = extraItem?.DownMbps is { } sd and >= 0
+                            ? sd
+                            : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
+                        var ports = extraItem?.Ports?.IsNullOrEmpty() == false ? extraItem.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
                             outbound.server_port = null;
@@ -162,7 +165,9 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = _config.HysteriaItem.HopInterval > 0 ? $"{_config.HysteriaItem.HopInterval}s" : null;
+                            outbound.hop_interval = extraItem?.HopInterval is { } hi and >= 5
+                                ? $"{hi}s"
+                                : _config.HysteriaItem.HopInterval >= 5 ? $"{_config.HysteriaItem.HopInterval}s" : $"{Global.Hysteria2DefaultHopInt}s";
                         }
 
                         break;

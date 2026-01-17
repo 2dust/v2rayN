@@ -13,10 +13,10 @@ public class ProtocolExtraItem
     //public string? PluginArgs { get; set; }
 
     // hysteria2
-    public string? UpMbps { get; set; }
-    public string? DownMbps { get; set; }
+    public int? UpMbps { get; set; }
+    public int? DownMbps { get; set; }
     public string? Ports { get; set; }
-    public string? HopInterval { get; set; }
+    public int? HopInterval { get; set; }
 
     // group profile
     public string? GroupType { get; set; }

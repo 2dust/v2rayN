@@ -1662,4 +1662,7 @@
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
     <value>当未选择或 "AsIs" 时，由远程服务器端 DNS 解析；否则，使用内部 DNS 模块解析。</value>
   </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>端口跳跃间隔</value>
+  </data>
 </root>

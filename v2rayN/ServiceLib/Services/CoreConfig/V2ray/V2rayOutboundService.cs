@@ -512,24 +512,31 @@ public partial class CoreConfigV2rayService
                 case "hysteria":
                     var extraItem = node.GetExtraItem();
                     var ports = extraItem?.Ports;
+                    int? upMbps = extraItem?.UpMbps is { } su and >= 0
+                        ? su
+                        : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
+                    int? downMbps = extraItem?.DownMbps is { } sd and >= 0
+                        ? sd
+                        : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
+                    var hopInterval = extraItem?.HopInterval is { } hi and >= 5
+                        ? hi
+                        : _config.HysteriaItem.HopInterval >= 5 ? _config.HysteriaItem.HopInterval : Global.Hysteria2DefaultHopInt;
                     HysteriaUdpHop4Ray? udpHop = null;
                     if (!ports.IsNullOrEmpty() &&
                         (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                     {
-                        udpHop = new()
+                        udpHop = new HysteriaUdpHop4Ray
                         {
                             ports = ports.Replace(':', '-'),
-                            interval = _config.HysteriaItem.HopInterval > 0
-                                ? _config.HysteriaItem.HopInterval
-                                : null,
+                            interval = hopInterval,
                         };
                     }
                     HysteriaSettings4Ray hysteriaSettings = new()
                     {
                         version = 2,
                         auth = node.Id,
-                        up = _config.HysteriaItem.UpMbps > 0 ? $"{_config.HysteriaItem.UpMbps}mbps" : null,
-                        down = _config.HysteriaItem.DownMbps > 0 ? $"{_config.HysteriaItem.DownMbps}mbps" : null,
+                        up = upMbps > 0 ? $"{upMbps}mbps" : null,
+                        down = downMbps > 0 ? $"{downMbps}mbps" : null,
                         udphop = udpHop,
                     };
                     streamSettings.hysteriaSettings = hysteriaSettings;

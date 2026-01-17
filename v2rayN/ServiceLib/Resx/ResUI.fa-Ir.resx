@@ -1665,4 +1665,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
     <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
   </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>Port hopping interval</value>
+  </data>
 </root>
