@@ -12,7 +12,7 @@ public class TuicFmt : BaseFmt
         };
 
         var url = Utils.TryUri(str);
-        if (url == null)
+        if (url is null)
         {
             return null;
         }
@@ -21,7 +21,7 @@ public class TuicFmt : BaseFmt
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
         var rawUserInfo = Utils.UrlDecode(url.UserInfo);
-        var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
+        var userInfoParts = rawUserInfo.Split(':', 2);
         if (userInfoParts.Length == 2)
         {
             item.Id = userInfoParts.First();
@@ -37,7 +37,7 @@ public class TuicFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }

@@ -3,7 +3,7 @@ namespace ServiceLib.Services;
 /// <summary>
 /// http://stackoverflow.com/questions/6266820/working-example-of-createjobobject-setinformationjobobject-pinvoke-in-net
 /// </summary>
-public sealed class WindowsJobService : IDisposable
+public sealed partial class WindowsJobService : IDisposable
 {
     private nint handle = nint.Zero;
 
@@ -99,18 +99,20 @@ public sealed class WindowsJobService : IDisposable
 
     #region Interop
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-    private static extern nint CreateJobObject(nint a, string? lpName);
+    [LibraryImport("kernel32.dll", EntryPoint = "CreateJobObjectW", StringMarshalling = StringMarshalling.Utf16)]
+    private static partial nint CreateJobObject(nint a, string? lpName);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool SetInformationJobObject(nint hJob, JobObjectInfoType infoType, nint lpJobObjectInfo, uint cbJobObjectInfoLength);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool AssignProcessToJobObject(nint job, nint process);
-
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [LibraryImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool CloseHandle(nint hObject);
+    private static partial bool SetInformationJobObject(nint hJob, JobObjectInfoType infoType, nint lpJobObjectInfo, uint cbJobObjectInfoLength);
+
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool AssignProcessToJobObject(nint job, nint process);
+
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool CloseHandle(nint hObject);
 
     #endregion Interop
 }

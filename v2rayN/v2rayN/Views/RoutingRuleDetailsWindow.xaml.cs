@@ -13,10 +13,10 @@ public partial class RoutingRuleDetailsWindow
 
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
 
-        cmbOutboundTag.ItemsSource = Global.OutboundTags;
-        clbProtocol.ItemsSource = Global.RuleProtocols;
-        clbInboundTag.ItemsSource = Global.InboundTags;
-        cmbNetwork.ItemsSource = Global.RuleNetworks;
+        cmbOutboundTag.ItemsSource = AppConfig.OutboundTags;
+        clbProtocol.ItemsSource = AppConfig.RuleProtocols;
+        clbInboundTag.ItemsSource = AppConfig.InboundTags;
+        cmbNetwork.ItemsSource = AppConfig.RuleNetworks;
         cmbRuleType.ItemsSource = Utils.GetEnumNames<ERuleType>().AppendEmpty();
 
         if (!rulesItem.Id.IsNullOrEmpty())
@@ -67,18 +67,12 @@ public partial class RoutingRuleDetailsWindow
 
     private void ClbProtocol_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.ProtocolItems = clbProtocol.SelectedItems.Cast<string>().ToList();
-        }
+        ViewModel?.ProtocolItems = clbProtocol.SelectedItems.Cast<string>().ToList();
     }
 
     private void ClbInboundTag_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
-        }
+        ViewModel?.InboundTagItems = clbInboundTag.SelectedItems.Cast<string>().ToList();
     }
 
     private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)

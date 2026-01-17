@@ -22,26 +22,26 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
         ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 
-        cmbCoreType.ItemsSource = Global.CoreTypes.AppendEmpty();
-        cmbNetwork.ItemsSource = Global.Networks;
-        cmbFingerprint.ItemsSource = Global.Fingerprints;
-        cmbFingerprint2.ItemsSource = Global.Fingerprints;
-        cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
-        cmbAlpn.ItemsSource = Global.Alpns;
-        cmbEchForceQuery.ItemsSource = Global.EchForceQuerys;
+        cmbCoreType.ItemsSource = AppConfig.CoreTypes.AppendEmpty();
+        cmbNetwork.ItemsSource = AppConfig.Networks;
+        cmbFingerprint.ItemsSource = AppConfig.Fingerprints;
+        cmbFingerprint2.ItemsSource = AppConfig.Fingerprints;
+        cmbAllowInsecure.ItemsSource = AppConfig.AllowInsecure;
+        cmbAlpn.ItemsSource = AppConfig.Alpns;
+        cmbEchForceQuery.ItemsSource = AppConfig.EchForceQuerys;
 
         var lstStreamSecurity = new List<string>();
         lstStreamSecurity.Add(string.Empty);
-        lstStreamSecurity.Add(Global.StreamSecurity);
+        lstStreamSecurity.Add(AppConfig.StreamSecurity);
 
         switch (profileItem.ConfigType)
         {
             case EConfigType.VMess:
                 gridVMess.IsVisible = true;
-                cmbSecurity.ItemsSource = Global.VmessSecurities;
+                cmbSecurity.ItemsSource = AppConfig.VmessSecurities;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
-                    profileItem.Security = Global.DefaultSecurity;
+                    profileItem.Security = AppConfig.DefaultSecurity;
                 }
                 break;
 
@@ -57,18 +57,18 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.VLESS:
                 gridVLESS.IsVisible = true;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
-                cmbFlow5.ItemsSource = Global.Flows;
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
+                cmbFlow5.ItemsSource = AppConfig.Flows;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
-                    profileItem.Security = Global.None;
+                    profileItem.Security = AppConfig.None;
                 }
                 break;
 
             case EConfigType.Trojan:
                 gridTrojan.IsVisible = true;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
-                cmbFlow6.ItemsSource = Global.Flows;
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
+                cmbFlow6.ItemsSource = AppConfig.Flows;
                 break;
 
             case EConfigType.Hysteria2:
@@ -87,7 +87,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
 
-                cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
+                cmbHeaderType8.ItemsSource = AppConfig.TuicCongestionControls;
                 break;
 
             case EConfigType.WireGuard:
@@ -101,7 +101,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Anytls:
                 gridAnytls.IsVisible = true;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
                 cmbCoreType.IsEnabled = false;
                 break;
         }
@@ -232,12 +232,12 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
     private void CmbStreamSecurity_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var security = cmbStreamSecurity.SelectedItem.ToString();
-        if (security == Global.StreamSecurityReality)
+        if (security == AppConfig.StreamSecurityReality)
         {
             gridRealityMore.IsVisible = true;
             gridTlsMore.IsVisible = false;
         }
-        else if (security == Global.StreamSecurity)
+        else if (security == AppConfig.StreamSecurity)
         {
             gridRealityMore.IsVisible = false;
             gridTlsMore.IsVisible = true;
@@ -262,7 +262,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         var network = cmbNetwork.SelectedItem.ToString();
         if (network.IsNullOrEmpty())
         {
-            lstHeaderType.Add(Global.None);
+            lstHeaderType.Add(AppConfig.None);
             cmbHeaderType.ItemsSource = lstHeaderType;
             cmbHeaderType.SelectedIndex = 0;
             return;
@@ -270,26 +270,26 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
         if (network == nameof(ETransport.tcp))
         {
-            lstHeaderType.Add(Global.None);
-            lstHeaderType.Add(Global.TcpHeaderHttp);
+            lstHeaderType.Add(AppConfig.None);
+            lstHeaderType.Add(AppConfig.TcpHeaderHttp);
         }
         else if (network is nameof(ETransport.kcp) or nameof(ETransport.quic))
         {
-            lstHeaderType.Add(Global.None);
-            lstHeaderType.AddRange(Global.KcpHeaderTypes);
+            lstHeaderType.Add(AppConfig.None);
+            lstHeaderType.AddRange(AppConfig.KcpHeaderTypes);
         }
         else if (network is nameof(ETransport.xhttp))
         {
-            lstHeaderType.AddRange(Global.XhttpMode);
+            lstHeaderType.AddRange(AppConfig.XhttpMode);
         }
         else if (network == nameof(ETransport.grpc))
         {
-            lstHeaderType.Add(Global.GrpcGunMode);
-            lstHeaderType.Add(Global.GrpcMultiMode);
+            lstHeaderType.Add(AppConfig.GrpcGunMode);
+            lstHeaderType.Add(AppConfig.GrpcMultiMode);
         }
         else
         {
-            lstHeaderType.Add(Global.None);
+            lstHeaderType.Add(AppConfig.None);
         }
         cmbHeaderType.ItemsSource = lstHeaderType;
         cmbHeaderType.SelectedIndex = 0;
@@ -300,7 +300,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         var network = cmbNetwork.SelectedItem.ToString();
         if (network.IsNullOrEmpty())
         {
-            network = Global.DefaultNetwork;
+            network = AppConfig.DefaultNetwork;
         }
         labHeaderType.IsVisible = true;
         btnExtra.IsVisible = false;

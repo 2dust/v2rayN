@@ -28,10 +28,10 @@ public class ProfileItem : ReactiveObject
 
     public string GetSummary()
     {
-        var summary = $"[{ConfigType.ToString()}] ";
+        var summary = $"[{ConfigType}] ";
         if (IsComplex())
         {
-            summary += $"[{CoreType.ToString()}]{Remarks}";
+            summary += $"[{CoreType}]{Remarks}";
         }
         else
         {
@@ -54,11 +54,11 @@ public class ProfileItem : ReactiveObject
 
     public string GetNetwork()
     {
-        if (Network.IsNullOrEmpty() || !Global.Networks.Contains(Network))
+        if (Network.IsNullOrEmpty() || !AppConfig.Networks.Contains(Network))
         {
-            return Global.DefaultNetwork;
+            return AppConfig.DefaultNetwork;
         }
-        return Network.TrimEx();
+        return Network.TrimSafe();
     }
 
     public bool IsComplex()
@@ -94,7 +94,7 @@ public class ProfileItem : ReactiveObject
                     return false;
                 }
 
-                if (!Global.Flows.Contains(Flow))
+                if (!AppConfig.Flows.Contains(Flow))
                 {
                     return false;
                 }
@@ -107,7 +107,7 @@ public class ProfileItem : ReactiveObject
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(Security) || !Global.SsSecuritiesInSingbox.Contains(Security))
+                if (string.IsNullOrEmpty(Security) || !AppConfig.SsSecuritiesInSingbox.Contains(Security))
                 {
                     return false;
                 }
@@ -116,7 +116,7 @@ public class ProfileItem : ReactiveObject
         }
 
         if ((ConfigType is EConfigType.VLESS or EConfigType.Trojan)
-            && StreamSecurity == Global.StreamSecurityReality
+            && StreamSecurity == AppConfig.StreamSecurityReality
             && PublicKey.IsNullOrEmpty())
         {
             return false;

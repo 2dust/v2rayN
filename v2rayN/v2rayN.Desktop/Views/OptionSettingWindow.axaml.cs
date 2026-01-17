@@ -21,38 +21,38 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
         btnBrowseCustomSystemProxyScriptPath.Click += BtnBrowseCustomSystemProxyScriptPath_Click;
 
-        clbdestOverride.ItemsSource = Global.destOverrideProtocols;
+        clbdestOverride.ItemsSource = AppConfig.destOverrideProtocols;
         _config.Inbound.First().DestOverride?.ForEach(it =>
         {
             clbdestOverride.SelectedItems.Add(it);
         });
 
-        cmbsystemProxyAdvancedProtocol.ItemsSource = Global.IEProxyProtocols;
-        cmbloglevel.ItemsSource = Global.LogLevels;
-        cmbdefFingerprint.ItemsSource = Global.Fingerprints;
-        cmbdefUserAgent.ItemsSource = Global.UserAgent;
-        cmbmux4SboxProtocol.ItemsSource = Global.SingboxMuxs;
-        cmbMtu.ItemsSource = Global.TunMtus;
-        cmbStack.ItemsSource = Global.TunStacks;
+        cmbsystemProxyAdvancedProtocol.ItemsSource = AppConfig.IEProxyProtocols;
+        cmbloglevel.ItemsSource = AppConfig.LogLevels;
+        cmbdefFingerprint.ItemsSource = AppConfig.Fingerprints;
+        cmbdefUserAgent.ItemsSource = AppConfig.UserAgent;
+        cmbmux4SboxProtocol.ItemsSource = AppConfig.SingboxMuxs;
+        cmbMtu.ItemsSource = AppConfig.TunMtus;
+        cmbStack.ItemsSource = AppConfig.TunStacks;
 
-        cmbCoreType1.ItemsSource = Global.CoreTypes;
-        cmbCoreType2.ItemsSource = Global.CoreTypes;
-        cmbCoreType3.ItemsSource = Global.CoreTypes;
-        cmbCoreType4.ItemsSource = Global.CoreTypes;
-        cmbCoreType5.ItemsSource = Global.CoreTypes;
-        cmbCoreType6.ItemsSource = Global.CoreTypes;
-        cmbCoreType7.ItemsSource = Global.CoreTypes;
-        cmbCoreType9.ItemsSource = Global.CoreTypes;
+        cmbCoreType1.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType2.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType3.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType4.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType5.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType6.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType7.ItemsSource = AppConfig.CoreTypes;
+        cmbCoreType9.ItemsSource = AppConfig.CoreTypes;
 
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(2, 7).ToList();
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
-        cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
-        cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
-        cmbSubConvertUrl.ItemsSource = Global.SubConvertUrls;
-        cmbGetFilesSourceUrl.ItemsSource = Global.GeoFilesSources;
-        cmbSrsFilesSourceUrl.ItemsSource = Global.SingboxRulesetSources;
-        cmbRoutingRulesSourceUrl.ItemsSource = Global.RoutingRulesSources;
-        cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
+        cmbSpeedTestUrl.ItemsSource = AppConfig.SpeedTestUrls;
+        cmbSpeedPingTestUrl.ItemsSource = AppConfig.SpeedPingTestUrls;
+        cmbSubConvertUrl.ItemsSource = AppConfig.SubConvertUrls;
+        cmbGetFilesSourceUrl.ItemsSource = AppConfig.GeoFilesSources;
+        cmbSrsFilesSourceUrl.ItemsSource = AppConfig.SingboxRulesetSources;
+        cmbRoutingRulesSourceUrl.ItemsSource = AppConfig.RoutingRulesSources;
+        cmbIPAPIUrl.ItemsSource = AppConfig.IPAPIUrls;
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
 
@@ -153,7 +153,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbcurrentFontFamily.ItemsSource = lstFonts;
     }
 
-    private async Task<List<string>> GetFonts()
+    private static async Task<List<string>> GetFonts()
     {
         var lstFonts = new List<string>();
         try
@@ -164,7 +164,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             }
             else if (Utils.IsNonWindows())
             {
-                var result = await Utils.GetLinuxFontFamily("zh");
+                var result = await Utils.GetLinuxFontFamily();
                 if (result.IsNullOrEmpty())
                 {
                     return lstFonts;
@@ -188,10 +188,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
     private void ClbdestOverride_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
-        }
+        ViewModel?.destOverride = clbdestOverride.SelectedItems.Cast<string>().ToList();
     }
 
     private async void BtnBrowseCustomSystemProxyPacPath_Click(object? sender, RoutedEventArgs e)

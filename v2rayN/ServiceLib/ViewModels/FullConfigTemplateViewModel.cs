@@ -37,8 +37,8 @@ public class FullConfigTemplateViewModel : MyReactiveObject
 
     public FullConfigTemplateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSettingAsync();
@@ -76,7 +76,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
         }
 
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-        _ = _updateView?.Invoke(EViewAction.CloseWindow, null);
+        _ = UpdateView?.Invoke(EViewAction.CloseWindow, null);
     }
 
     private async Task<bool> SaveXrayConfigAsync()
@@ -90,7 +90,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
         item.AddProxyOnly = AddProxyOnly4Ray;
         item.ProxyDetour = ProxyDetour4Ray;
 
-        await ConfigHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigHandler.SaveFullConfigTemplate(Config, item);
         return true;
     }
 
@@ -107,7 +107,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
         item.AddProxyOnly = AddProxyOnly4Singbox;
         item.ProxyDetour = ProxyDetour4Singbox;
 
-        await ConfigHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigHandler.SaveFullConfigTemplate(Config, item);
         return true;
     }
 }

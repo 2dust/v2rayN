@@ -12,7 +12,7 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node == null
+            if (node is null
                 || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -39,7 +39,7 @@ public partial class CoreConfigV2rayService(Config config)
                 }
             }
 
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+            var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleClient);
             if (result.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -47,7 +47,7 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            if (v2rayConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -86,7 +86,7 @@ public partial class CoreConfigV2rayService(Config config)
 
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -94,8 +94,8 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -103,7 +103,7 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            if (v2rayConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -124,7 +124,7 @@ public partial class CoreConfigV2rayService(Config config)
             await GenDns(null, v2rayConfig);
             await GenStatistic(v2rayConfig);
 
-            var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
+            var defaultBalancerTag = $"{AppConfig.ProxyTag}{AppConfig.BalancerTagSuffix}";
 
             //add rule
             var rules = v2rayConfig.routing.rules;
@@ -136,7 +136,7 @@ public partial class CoreConfigV2rayService(Config config)
 
                 foreach (var rule in rules)
                 {
-                    if (rule.outboundTag == null)
+                    if (rule.outboundTag is null)
                     {
                         continue;
                     }
@@ -148,7 +148,7 @@ public partial class CoreConfigV2rayService(Config config)
                         continue;
                     }
 
-                    var outboundWithSuffix = rule.outboundTag + Global.BalancerTagSuffix;
+                    var outboundWithSuffix = rule.outboundTag + AppConfig.BalancerTagSuffix;
                     if (balancerTagSet.Contains(outboundWithSuffix))
                     {
                         rule.balancerTag = outboundWithSuffix;
@@ -156,7 +156,7 @@ public partial class CoreConfigV2rayService(Config config)
                     }
                 }
             }
-            if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
+            if (v2rayConfig.routing.domainStrategy == AppConfig.IPIfNonMatch)
             {
                 v2rayConfig.routing.rules.Add(new()
                 {
@@ -194,7 +194,7 @@ public partial class CoreConfigV2rayService(Config config)
 
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -202,8 +202,8 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -211,7 +211,7 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            if (v2rayConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -250,7 +250,7 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -258,8 +258,8 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -267,7 +267,7 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            if (v2rayConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -294,7 +294,7 @@ public partial class CoreConfigV2rayService(Config config)
 
             foreach (var it in selecteds)
             {
-                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
+                if (!AppConfig.XraySupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }
@@ -310,7 +310,7 @@ public partial class CoreConfigV2rayService(Config config)
 
                 //find unused port
                 var port = initPort;
-                for (var k = initPort; k < Global.MaxPort; k++)
+                for (var k = initPort; k < AppConfig.MaxPort; k++)
                 {
                     if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                     {
@@ -337,7 +337,7 @@ public partial class CoreConfigV2rayService(Config config)
                 //inbound
                 Inbounds4Ray inbound = new()
                 {
-                    listen = Global.Loopback,
+                    listen = AppConfig.Loopback,
                     port = port,
                     protocol = EInboundProtocol.mixed.ToString(),
                 };
@@ -347,7 +347,7 @@ public partial class CoreConfigV2rayService(Config config)
                 //outbound
                 var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(item, outbound);
-                outbound.tag = Global.ProxyTag + inbound.port.ToString();
+                outbound.tag = AppConfig.ProxyTag + inbound.port.ToString();
                 v2rayConfig.outbounds.Add(outbound);
 
                 //rule
@@ -378,7 +378,7 @@ public partial class CoreConfigV2rayService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node == null
+            if (node is null
                 || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -391,7 +391,7 @@ public partial class CoreConfigV2rayService(Config config)
                 return ret;
             }
 
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
+            var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleClient);
             if (result.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -399,7 +399,7 @@ public partial class CoreConfigV2rayService(Config config)
             }
 
             var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            if (v2rayConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -414,7 +414,7 @@ public partial class CoreConfigV2rayService(Config config)
             v2rayConfig.inbounds.Add(new()
             {
                 tag = $"{EInboundProtocol.socks}{port}",
-                listen = Global.Loopback,
+                listen = AppConfig.Loopback,
                 port = port,
                 protocol = EInboundProtocol.mixed.ToString(),
             });

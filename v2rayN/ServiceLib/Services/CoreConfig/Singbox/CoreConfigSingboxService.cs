@@ -12,7 +12,7 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node == null
+            if (node is null
                 || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -38,7 +38,7 @@ public partial class CoreConfigSingboxService(Config config)
                 }
             }
 
-            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+            var result = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleClient);
             if (result.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -46,7 +46,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
-            if (singboxConfig == null)
+            if (singboxConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -61,7 +61,7 @@ public partial class CoreConfigSingboxService(Config config)
                 singboxConfig.outbounds.RemoveAt(0);
                 var endpoints = new Endpoints4Sbox();
                 await GenEndpoint(node, endpoints);
-                endpoints.tag = Global.ProxyTag;
+                endpoints.tag = AppConfig.ProxyTag;
                 singboxConfig.endpoints = new() { endpoints };
             }
             else
@@ -98,7 +98,7 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -106,8 +106,8 @@ public partial class CoreConfigSingboxService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -115,7 +115,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
-            if (singboxConfig == null)
+            if (singboxConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -142,7 +142,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             foreach (var it in selecteds)
             {
-                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
+                if (!AppConfig.SingboxSupportConfigType.Contains(it.ConfigType))
                 {
                     continue;
                 }
@@ -158,7 +158,7 @@ public partial class CoreConfigSingboxService(Config config)
 
                 //find unused port
                 var port = initPort;
-                for (var k = initPort; k < Global.MaxPort; k++)
+                for (var k = initPort; k < AppConfig.MaxPort; k++)
                 {
                     if (lstIpEndPoints?.FindIndex(_it => _it.Port == k) >= 0)
                     {
@@ -185,7 +185,7 @@ public partial class CoreConfigSingboxService(Config config)
                 //inbound
                 Inbound4Sbox inbound = new()
                 {
-                    listen = Global.Loopback,
+                    listen = AppConfig.Loopback,
                     listen_port = port,
                     type = EInboundProtocol.mixed.ToString(),
                 };
@@ -199,7 +199,7 @@ public partial class CoreConfigSingboxService(Config config)
                     ret.Msg = ResUI.FailedGenDefaultConfiguration;
                     return ret;
                 }
-                var tag = Global.ProxyTag + inbound.listen_port.ToString();
+                var tag = AppConfig.ProxyTag + inbound.listen_port.ToString();
                 server.tag = tag;
                 if (server is Endpoints4Sbox endpoint)
                 {
@@ -221,7 +221,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
-            if (rawDNSItem != null && rawDNSItem.Enabled == true)
+            if (rawDNSItem is not null && rawDNSItem.Enabled == true)
             {
                 await GenDnsDomainsCompatible(singboxConfig, rawDNSItem);
             }
@@ -231,7 +231,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxLocalDNSTag,
+                server = AppConfig.SingboxLocalDNSTag,
             };
 
             ret.Success = true;
@@ -251,7 +251,7 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (node == null
+            if (node is null
                 || !node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
@@ -265,7 +265,7 @@ public partial class CoreConfigSingboxService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
+            var result = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleClient);
             if (result.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -273,7 +273,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
-            if (singboxConfig == null)
+            if (singboxConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -285,7 +285,7 @@ public partial class CoreConfigSingboxService(Config config)
                 singboxConfig.outbounds.RemoveAt(0);
                 var endpoints = new Endpoints4Sbox();
                 await GenEndpoint(node, endpoints);
-                endpoints.tag = Global.ProxyTag;
+                endpoints.tag = AppConfig.ProxyTag;
                 singboxConfig.endpoints = new() { endpoints };
             }
             else
@@ -294,7 +294,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             await GenMoreOutbounds(node, singboxConfig);
             var item = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
-            if (item != null && item.Enabled == true)
+            if (item is not null && item.Enabled == true)
             {
                 await GenDnsDomainsCompatible(singboxConfig, item);
             }
@@ -304,7 +304,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
             singboxConfig.route.default_domain_resolver = new()
             {
-                server = Global.SingboxLocalDNSTag,
+                server = AppConfig.SingboxLocalDNSTag,
             };
 
             singboxConfig.route.rules.Clear();
@@ -312,7 +312,7 @@ public partial class CoreConfigSingboxService(Config config)
             singboxConfig.inbounds.Add(new()
             {
                 tag = $"{EInboundProtocol.mixed}{port}",
-                listen = Global.Loopback,
+                listen = AppConfig.Loopback,
                 listen_port = port,
                 type = EInboundProtocol.mixed.ToString(),
             });
@@ -335,7 +335,7 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -343,8 +343,8 @@ public partial class CoreConfigSingboxService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -352,7 +352,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
-            if (singboxConfig == null)
+            if (singboxConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -392,7 +392,7 @@ public partial class CoreConfigSingboxService(Config config)
         var ret = new RetResult();
         try
         {
-            if (_config == null)
+            if (_config is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -400,8 +400,8 @@ public partial class CoreConfigSingboxService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var result = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleClient);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
             if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
             {
                 ret.Msg = ResUI.FailedGetDefaultConfiguration;
@@ -409,7 +409,7 @@ public partial class CoreConfigSingboxService(Config config)
             }
 
             var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(result);
-            if (singboxConfig == null)
+            if (singboxConfig is null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -447,7 +447,7 @@ public partial class CoreConfigSingboxService(Config config)
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
-        if (node == null || fileName is null)
+        if (node is null || fileName is null)
         {
             ret.Msg = ResUI.CheckServerSettings;
             return ret;
@@ -457,7 +457,7 @@ public partial class CoreConfigSingboxService(Config config)
 
         try
         {
-            if (node == null)
+            if (node is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -484,11 +484,11 @@ public partial class CoreConfigSingboxService(Config config)
                 return ret;
             }
 
-            if (node.Address == Global.CoreMultipleLoadConfigFileName)
+            if (node.Address == AppConfig.CoreMultipleLoadConfigFileName)
             {
                 var txtFile = File.ReadAllText(addressFileName);
                 var singboxConfig = JsonUtils.Deserialize<SingboxConfig>(txtFile);
-                if (singboxConfig == null)
+                if (singboxConfig is null)
                 {
                     File.Copy(addressFileName, fileName);
                 }

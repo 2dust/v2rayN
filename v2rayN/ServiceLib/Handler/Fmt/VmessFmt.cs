@@ -19,14 +19,14 @@ public class VmessFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
         var vmessQRCode = new VmessQRCode
         {
             v = item.ConfigVersion,
-            ps = item.Remarks.TrimEx(),
+            ps = item.Remarks.TrimSafe(),
             add = item.Address,
             port = item.Port,
             id = item.Id,
@@ -40,12 +40,12 @@ public class VmessFmt : BaseFmt
             sni = item.Sni,
             alpn = item.Alpn,
             fp = item.Fingerprint,
-            insecure = item.AllowInsecure.Equals(Global.AllowInsecure.First()) ? "1" : "0"
+            insecure = item.AllowInsecure.Equals(AppConfig.AllowInsecure[0], StringComparison.OrdinalIgnoreCase) ? "1" : "0"
         };
 
         var url = JsonUtils.Serialize(vmessQRCode);
         url = Utils.Base64Encode(url);
-        url = $"{Global.ProtocolShares[EConfigType.VMess]}{url}";
+        url = $"{AppConfig.ProtocolShares[EConfigType.VMess]}{url}";
 
         return url;
     }
@@ -58,18 +58,18 @@ public class VmessFmt : BaseFmt
             ConfigType = EConfigType.VMess
         };
 
-        result = result[Global.ProtocolShares[EConfigType.VMess].Length..];
+        result = result[AppConfig.ProtocolShares[EConfigType.VMess].Length..];
         result = Utils.Base64Decode(result);
 
         var vmessQRCode = JsonUtils.Deserialize<VmessQRCode>(result);
-        if (vmessQRCode == null)
+        if (vmessQRCode is null)
         {
             msg = ResUI.FailedConversionConfiguration;
             return null;
         }
 
-        item.Network = Global.DefaultNetwork;
-        item.HeaderType = Global.None;
+        item.Network = AppConfig.DefaultNetwork;
+        item.HeaderType = AppConfig.None;
 
         item.ConfigVersion = vmessQRCode.v;
         item.Remarks = Utils.ToString(vmessQRCode.ps);
@@ -79,7 +79,7 @@ public class VmessFmt : BaseFmt
         item.AlterId = vmessQRCode.aid;
         item.Security = Utils.ToString(vmessQRCode.scy);
 
-        item.Security = vmessQRCode.scy.IsNotEmpty() ? vmessQRCode.scy : Global.DefaultSecurity;
+        item.Security = vmessQRCode.scy.IsNotEmpty() ? vmessQRCode.scy : AppConfig.DefaultSecurity;
         if (vmessQRCode.net.IsNotEmpty())
         {
             item.Network = vmessQRCode.net;
@@ -95,7 +95,7 @@ public class VmessFmt : BaseFmt
         item.Sni = Utils.ToString(vmessQRCode.sni);
         item.Alpn = Utils.ToString(vmessQRCode.alpn);
         item.Fingerprint = Utils.ToString(vmessQRCode.fp);
-        item.AllowInsecure = vmessQRCode.insecure == "1" ? Global.AllowInsecure.First() : string.Empty;
+        item.AllowInsecure = vmessQRCode.insecure == "1" ? AppConfig.AllowInsecure.First() : string.Empty;
 
         return item;
     }
@@ -109,7 +109,7 @@ public class VmessFmt : BaseFmt
         };
 
         var url = Utils.TryUri(str);
-        if (url == null)
+        if (url is null)
         {
             return null;
         }

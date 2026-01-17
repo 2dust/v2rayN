@@ -53,7 +53,7 @@ public static class ProcUtils
             ProcessStartInfo startInfo = new()
             {
                 UseShellExecute = true,
-                Arguments = Global.RebootAs,
+                Arguments = AppConfig.RebootAs,
                 WorkingDirectory = Utils.StartupPath(),
                 FileName = Utils.GetExePath().AppendQuotes(),
                 Verb = blAdmin ? "runas" : null,

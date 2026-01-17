@@ -99,7 +99,7 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         BindingData();
     }
 
-    private string KeyEventItemToString(KeyEventItem? item)
+    private static string KeyEventItemToString(KeyEventItem? item)
     {
         if (item == null)
         {
@@ -109,22 +109,22 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         if (item.Control)
         {
-            res.Append($"{KeyModifiers.Control} +");
+            res.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Control} +");
         }
 
         if (item.Shift)
         {
-            res.Append($"{KeyModifiers.Shift} +");
+            res.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Shift} +");
         }
 
         if (item.Alt)
         {
-            res.Append($"{KeyModifiers.Alt} +");
+            res.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Alt} +");
         }
 
         if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
         {
-            res.Append($"{(Key)item.KeyCode}");
+            res.Append(CultureInfo.InvariantCulture, $"{(Key)item.KeyCode}");
         }
 
         return res.ToString();

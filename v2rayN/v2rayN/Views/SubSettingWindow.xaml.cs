@@ -100,10 +100,7 @@ public partial class SubSettingWindow
 
     private void LstSubscription_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
-        }
+        ViewModel?.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
     }
 
     private void menuClose_Click(object sender, System.Windows.RoutedEventArgs e)

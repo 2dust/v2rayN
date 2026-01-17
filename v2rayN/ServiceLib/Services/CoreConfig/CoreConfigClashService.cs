@@ -3,20 +3,15 @@ namespace ServiceLib.Services.CoreConfig;
 /// <summary>
 /// Core configuration file processing class
 /// </summary>
-public class CoreConfigClashService
+public class CoreConfigClashService(Config config)
 {
-    private Config _config;
+    private readonly Config _config = config;
     private static readonly string _tag = "CoreConfigClashService";
-
-    public CoreConfigClashService(Config config)
-    {
-        _config = config;
-    }
 
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
-        if (node == null || fileName is null)
+        if (node is null || fileName is null)
         {
             ret.Msg = ResUI.CheckServerSettings;
             return ret;
@@ -26,7 +21,7 @@ public class CoreConfigClashService
 
         try
         {
-            if (node == null)
+            if (node is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -66,7 +61,7 @@ public class CoreConfigClashService
             }
 
             var fileContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
-            if (fileContent == null)
+            if (fileContent is null)
             {
                 ret.Msg = ResUI.FailedConversionConfiguration;
                 return ret;
@@ -78,7 +73,7 @@ public class CoreConfigClashService
             fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
 
             //external-controller
-            fileContent["external-controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}";
+            fileContent["external-controller"] = $"{AppConfig.Loopback}:{AppManager.Instance.StatePort2}";
             fileContent.Remove("secret");
             //allow-lan
             if (_config.Inbound.First().AllowLANConn)
@@ -110,11 +105,11 @@ public class CoreConfigClashService
             //enable tun mode
             if (_config.TunModeItem.EnableTun)
             {
-                var tun = EmbedUtils.GetEmbedText(Global.ClashTunYaml);
+                var tun = EmbedUtils.GetEmbedText(AppConfig.ClashTunYaml);
                 if (tun.IsNotEmpty())
                 {
                     var tunContent = YamlUtils.FromYaml<Dictionary<string, object>>(tun);
-                    if (tunContent != null)
+                    if (tunContent is not null)
                     {
                         fileContent["tun"] = tunContent["tun"];
                     }
@@ -161,17 +156,17 @@ public class CoreConfigClashService
             return;
         }
 
-        var path = Utils.GetConfigPath(Global.ClashMixinConfigFileName);
+        var path = Utils.GetConfigPath(AppConfig.ClashMixinConfigFileName);
         if (!File.Exists(path))
         {
-            var mixin = EmbedUtils.GetEmbedText(Global.ClashMixinYaml);
+            var mixin = EmbedUtils.GetEmbedText(AppConfig.ClashMixinYaml);
             await File.AppendAllTextAsync(path, mixin);
         }
 
-        var txtFile = await File.ReadAllTextAsync(Utils.GetConfigPath(Global.ClashMixinConfigFileName));
+        var txtFile = await File.ReadAllTextAsync(Utils.GetConfigPath(AppConfig.ClashMixinConfigFileName));
 
         var mixinContent = YamlUtils.FromYaml<Dictionary<string, object>>(txtFile);
-        if (mixinContent == null)
+        if (mixinContent is null)
         {
             return;
         }

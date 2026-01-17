@@ -17,12 +17,12 @@ public class SubSettingViewModel : MyReactiveObject
 
     public SubSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedSource,
-           selectedSource => selectedSource != null && !selectedSource.Id.IsNullOrEmpty());
+           selectedSource => selectedSource is not null && !selectedSource.Id.IsNullOrEmpty());
 
         SubAddCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -38,7 +38,7 @@ public class SubSettingViewModel : MyReactiveObject
         }, canEditRemove);
         SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
+            await UpdateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
         }, canEditRemove);
 
         _ = Init();
@@ -72,7 +72,7 @@ public class SubSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await _updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
+        if (await UpdateView?.Invoke(EViewAction.SubEditWindow, item) == true)
         {
             await RefreshSubItems();
             IsModified = true;
@@ -81,14 +81,14 @@ public class SubSettingViewModel : MyReactiveObject
 
     private async Task DeleteSubAsync()
     {
-        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        if (await UpdateView?.Invoke(EViewAction.ShowYesNo, null) == false)
         {
             return;
         }
 
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            await ConfigHandler.DeleteSubItem(_config, it.Id);
+            await ConfigHandler.DeleteSubItem(Config, it.Id);
         }
         await RefreshSubItems();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);

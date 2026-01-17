@@ -44,7 +44,7 @@ public static class AutoStartupHandler
     private static async Task ClearTaskWindows()
     {
         var autoRunName = GetAutoRunNameWindows();
-        WindowsUtils.RegWriteValue(Global.AutoRunRegPath, autoRunName, "");
+        WindowsUtils.RegWriteValue(AppConfig.AutoRunRegPath, autoRunName, "");
         if (Utils.IsAdministrator())
         {
             AutoStartTaskService(autoRunName, "", "");
@@ -65,7 +65,7 @@ public static class AutoStartupHandler
             }
             else
             {
-                WindowsUtils.RegWriteValue(Global.AutoRunRegPath, autoRunName, exePath.AppendQuotes());
+                WindowsUtils.RegWriteValue(AppConfig.AutoRunRegPath, autoRunName, exePath.AppendQuotes());
             }
         }
         catch (Exception ex)
@@ -117,7 +117,7 @@ public static class AutoStartupHandler
 
     private static string GetAutoRunNameWindows()
     {
-        return $"{Global.AutoRunName}_{Utils.GetMd5(Utils.StartupPath())}";
+        return $"{AppConfig.AutoRunName}_{Utils.GetMd5(Utils.StartupPath())}";
     }
 
     #endregion Windows
@@ -141,7 +141,7 @@ public static class AutoStartupHandler
     {
         try
         {
-            var linuxConfig = EmbedUtils.GetEmbedText(Global.LinuxAutostartConfig);
+            var linuxConfig = EmbedUtils.GetEmbedText(AppConfig.LinuxAutostartConfig);
             if (linuxConfig.IsNotEmpty())
             {
                 linuxConfig = linuxConfig.Replace("$ExecPath$", Utils.GetExePath());
@@ -159,7 +159,7 @@ public static class AutoStartupHandler
 
     private static string GetHomePathLinux()
     {
-        var homePath = Path.Combine(Utils.GetHomePath(), ".config", "autostart", $"{Global.AppName}.desktop");
+        var homePath = Path.Combine(Utils.GetHomePath(), ".config", "autostart", $"{AppConfig.AppName}.desktop");
         Directory.CreateDirectory(Path.GetDirectoryName(homePath));
         return homePath;
     }
@@ -176,7 +176,7 @@ public static class AutoStartupHandler
             if (File.Exists(launchAgentPath))
             {
                 var args = new[] { "-c", $"launchctl unload -w \"{launchAgentPath}\"" };
-                await Utils.GetCliWrapOutput(Global.LinuxBash, args);
+                await Utils.GetCliWrapOutput(AppConfig.LinuxBash, args);
 
                 File.Delete(launchAgentPath);
             }
@@ -196,7 +196,7 @@ public static class AutoStartupHandler
             await File.WriteAllTextAsync(launchAgentPath, plistContent);
 
             var args = new[] { "-c", $"launchctl load -w \"{launchAgentPath}\"" };
-            await Utils.GetCliWrapOutput(Global.LinuxBash, args);
+            await Utils.GetCliWrapOutput(AppConfig.LinuxBash, args);
         }
         catch (Exception ex)
         {
@@ -207,7 +207,7 @@ public static class AutoStartupHandler
     private static string GetLaunchAgentPathMacOS()
     {
         var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var launchAgentPath = Path.Combine(homePath, "Library", "LaunchAgents", $"{Global.AppName}-LaunchAgent.plist");
+        var launchAgentPath = Path.Combine(homePath, "Library", "LaunchAgents", $"{AppConfig.AppName}-LaunchAgent.plist");
         Directory.CreateDirectory(Path.GetDirectoryName(launchAgentPath));
         return launchAgentPath;
     }
@@ -221,7 +221,7 @@ public static class AutoStartupHandler
 <plist version=""1.0"">
 <dict>
     <key>Label</key>
-    <string>{Global.AppName}-LaunchAgent</string>
+    <string>{AppConfig.AppName}-LaunchAgent</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/sh</string>

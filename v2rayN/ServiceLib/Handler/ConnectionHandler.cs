@@ -7,7 +7,7 @@ public static class ConnectionHandler
     public static async Task<string> RunAvailabilityCheck()
     {
         var time = await GetRealPingTimeInfo();
-        var ip = time > 0 ? await GetIPInfo() ?? Global.None : Global.None;
+        var ip = time > 0 ? await GetIPInfo() ?? AppConfig.None : AppConfig.None;
 
         return string.Format(ResUI.TestMeOutput, time, ip);
     }
@@ -22,13 +22,13 @@ public static class ConnectionHandler
 
         var downloadHandle = new DownloadService();
         var result = await downloadHandle.TryDownloadString(url, true, "");
-        if (result == null)
+        if (result is null)
         {
             return null;
         }
 
         var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-        if (ipInfo == null)
+        if (ipInfo is null)
         {
             return null;
         }
@@ -45,7 +45,7 @@ public static class ConnectionHandler
         try
         {
             var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-            var webProxy = new WebProxy($"socks5://{Global.Loopback}:{port}");
+            var webProxy = new WebProxy($"socks5://{AppConfig.Loopback}:{port}");
             var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
 
             for (var i = 0; i < 2; i++)
@@ -76,7 +76,7 @@ public static class ConnectionHandler
             using var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
-                UseProxy = webProxy != null
+                UseProxy = webProxy is not null
             });
 
             List<int> oneTime = new();

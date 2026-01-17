@@ -79,10 +79,7 @@ public partial class ProfilesSelectWindow
 
     private void LstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
-        }
+        ViewModel?.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
     }
 
     private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)
@@ -97,8 +94,7 @@ public partial class ProfilesSelectWindow
 
     private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        var colHeader = sender as DataGridColumnHeader;
-        if (colHeader == null || colHeader.TabIndex < 0 || colHeader.Column == null)
+        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column == null)
         {
             return;
         }

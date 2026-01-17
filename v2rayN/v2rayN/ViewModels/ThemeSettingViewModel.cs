@@ -9,8 +9,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 {
     private readonly PaletteHelper _paletteHelper = new();
 
-    private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
-    public IObservableCollection<Swatch> Swatches => _swatches;
+    public IObservableCollection<Swatch> Swatches { get; } = new ObservableCollectionExtended<Swatch>();
 
     [Reactive]
     public Swatch SelectedSwatch { get; set; }
@@ -23,9 +22,9 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     public ThemeSettingViewModel()
     {
-        _config = AppManager.Instance.Config;
+        Config = AppManager.Instance.Config;
 
-        RegisterSystemColorSet(_config, ModifyTheme);
+        RegisterSystemColorSet(Config, ModifyTheme);
 
         BindingUI();
         RestoreUI();
@@ -35,9 +34,9 @@ public class ThemeSettingViewModel : MyReactiveObject
     {
         ModifyTheme();
         ModifyFontSize();
-        if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
+        if (!Config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
-            var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
+            var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == Config.UiItem.ColorPrimaryName);
             if (swatch != null
                && swatch.ExemplarHue != null
                && swatch.ExemplarHue?.Color != null)
@@ -49,25 +48,25 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void BindingUI()
     {
-        _swatches.AddRange(new SwatchesProvider().Swatches);
-        if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
+        Swatches.AddRange(new SwatchesProvider().Swatches);
+        if (!Config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
-            SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
+            SelectedSwatch = Swatches.FirstOrDefault(t => t.Name == Config.UiItem.ColorPrimaryName);
         }
-        CurrentTheme = _config.UiItem.CurrentTheme;
-        CurrentFontSize = _config.UiItem.CurrentFontSize;
-        CurrentLanguage = _config.UiItem.CurrentLanguage;
+        CurrentTheme = Config.UiItem.CurrentTheme;
+        CurrentFontSize = Config.UiItem.CurrentFontSize;
+        CurrentLanguage = Config.UiItem.CurrentLanguage;
 
         this.WhenAnyValue(
                 x => x.CurrentTheme,
                 y => y != null && !y.IsNullOrEmpty())
             .Subscribe(c =>
              {
-                 if (_config.UiItem.CurrentTheme != CurrentTheme)
+                 if (Config.UiItem.CurrentTheme != CurrentTheme)
                  {
-                     _config.UiItem.CurrentTheme = CurrentTheme;
+                     Config.UiItem.CurrentTheme = CurrentTheme;
                      ModifyTheme();
-                     ConfigHandler.SaveConfig(_config);
+                     ConfigHandler.SaveConfig(Config);
                  }
              });
 
@@ -83,11 +82,11 @@ public class ThemeSettingViewModel : MyReactiveObject
                  {
                      return;
                  }
-                 if (_config.UiItem.ColorPrimaryName != SelectedSwatch?.Name)
+                 if (Config.UiItem.ColorPrimaryName != SelectedSwatch?.Name)
                  {
-                     _config.UiItem.ColorPrimaryName = SelectedSwatch?.Name;
+                     Config.UiItem.ColorPrimaryName = SelectedSwatch?.Name;
                      ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
-                     ConfigHandler.SaveConfig(_config);
+                     ConfigHandler.SaveConfig(Config);
                  }
              });
 
@@ -96,11 +95,11 @@ public class ThemeSettingViewModel : MyReactiveObject
            y => y > 0)
               .Subscribe(c =>
               {
-                  if (_config.UiItem.CurrentFontSize != CurrentFontSize)
+                  if (Config.UiItem.CurrentFontSize != CurrentFontSize)
                   {
-                      _config.UiItem.CurrentFontSize = CurrentFontSize;
+                      Config.UiItem.CurrentFontSize = CurrentFontSize;
                       ModifyFontSize();
-                      ConfigHandler.SaveConfig(_config);
+                      ConfigHandler.SaveConfig(Config);
                   }
               });
 
@@ -109,11 +108,11 @@ public class ThemeSettingViewModel : MyReactiveObject
          y => y != null && !y.IsNullOrEmpty())
             .Subscribe(c =>
             {
-                if (CurrentLanguage.IsNotEmpty() && _config.UiItem.CurrentLanguage != CurrentLanguage)
+                if (CurrentLanguage.IsNotEmpty() && Config.UiItem.CurrentLanguage != CurrentLanguage)
                 {
-                    _config.UiItem.CurrentLanguage = CurrentLanguage;
+                    Config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    ConfigHandler.SaveConfig(_config);
+                    ConfigHandler.SaveConfig(Config);
                     NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });
@@ -138,7 +137,7 @@ public class ThemeSettingViewModel : MyReactiveObject
     private void ModifyFontSize()
     {
         double size = (long)CurrentFontSize;
-        if (size < Global.MinFontSize)
+        if (size < AppConfig.MinFontSize)
         {
             return;
         }

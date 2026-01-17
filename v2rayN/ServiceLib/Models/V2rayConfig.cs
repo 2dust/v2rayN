@@ -128,7 +128,7 @@ public class Outboundsettings4Ray
 
     public string? secretKey { get; set; }
 
-    public Object? address { get; set; }
+    public object? address { get; set; }
     public int? port { get; set; }
 
     public List<WireguardPeer4Ray>? peers { get; set; }

@@ -13,14 +13,14 @@ public class DownloadService
 
     private static readonly string _tag = "DownloadService";
 
-    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    public static async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
     {
         try
         {
             var progress = new Progress<string>();
             progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
 
-            await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
+            await DownloaderHelper.DownloadDataAsync4Speed(webProxy,
                   url,
                   progress,
                   downloadTimeout);
@@ -28,7 +28,7 @@ public class DownloadService
         catch (Exception ex)
         {
             await updateFunc?.Invoke(false, ex.Message);
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 await updateFunc?.Invoke(false, ex.InnerException.Message);
             }
@@ -46,7 +46,7 @@ public class DownloadService
             progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new UpdateResult(value > 100, $"...{value}%"));
 
             var webProxy = await GetWebProxy(blProxy);
-            await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
+            await DownloaderHelper.DownloadFileAsync(webProxy,
                 url,
                 fileName,
                 progress,
@@ -57,7 +57,7 @@ public class DownloadService
             Logging.SaveLog(_tag, ex);
 
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
@@ -66,22 +66,22 @@ public class DownloadService
 
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
-        var webRequestHandler = new SocketsHttpHandler
+        using var webRequestHandler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
             Proxy = await GetWebProxy(blProxy)
         };
-        var client = new HttpClient(webRequestHandler);
+        using var client = new HttpClient(webRequestHandler);
+        using var response = await client.GetAsync(url);
 
-        var response = await client.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
         {
             return response.Headers.Location.ToString();
         }
         else
         {
-            Error?.Invoke(this, new ErrorEventArgs(new Exception("StatusCode error: " + response.StatusCode)));
-            Logging.SaveLog("StatusCode error: " + url);
+            Error?.Invoke(this, new ErrorEventArgs(new HttpRequestException($"StatusCode error: {response.StatusCode}", null, response.StatusCode)));
+            Logging.SaveLog($"StatusCode error: {url}");
             return null;
         }
     }
@@ -100,7 +100,7 @@ public class DownloadService
         {
             Logging.SaveLog(_tag, ex);
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
@@ -118,7 +118,7 @@ public class DownloadService
         {
             Logging.SaveLog(_tag, ex);
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
@@ -139,7 +139,7 @@ public class DownloadService
             var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
-                UseProxy = webProxy != null
+                UseProxy = webProxy is not null
             });
 
             if (userAgent.IsNullOrEmpty())
@@ -163,7 +163,7 @@ public class DownloadService
         {
             Logging.SaveLog(_tag, ex);
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
@@ -185,14 +185,14 @@ public class DownloadService
             {
                 userAgent = Utils.GetVersion(false);
             }
-            var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, timeout);
+            var result = await DownloaderHelper.DownloadStringAsync(webProxy, url, userAgent, timeout);
             return result;
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
@@ -200,22 +200,22 @@ public class DownloadService
         return null;
     }
 
-    private async Task<WebProxy?> GetWebProxy(bool blProxy)
+    private static async Task<WebProxy?> GetWebProxy(bool blProxy)
     {
         if (!blProxy)
         {
             return null;
         }
         var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-        if (await SocketCheck(Global.Loopback, port) == false)
+        if (await SocketCheck(AppConfig.Loopback, port) == false)
         {
             return null;
         }
 
-        return new WebProxy($"socks5://{Global.Loopback}:{port}");
+        return new WebProxy($"socks5://{AppConfig.Loopback}:{port}");
     }
 
-    private async Task<bool> SocketCheck(string ip, int port)
+    private static async Task<bool> SocketCheck(string ip, int port)
     {
         try
         {

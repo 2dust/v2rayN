@@ -4,12 +4,12 @@ public partial class CoreConfigSingboxService
 {
     private async Task<int> GenExperimental(SingboxConfig singboxConfig)
     {
-        //if (_config.guiItem.enableStatistics)
+        //if (Config.guiItem.enableStatistics)
         {
             singboxConfig.experimental ??= new Experimental4Sbox();
             singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
             {
-                external_controller = $"{Global.Loopback}:{AppManager.Instance.StatePort2}",
+                external_controller = $"{AppConfig.Loopback}:{AppManager.Instance.StatePort2}",
             };
         }
 

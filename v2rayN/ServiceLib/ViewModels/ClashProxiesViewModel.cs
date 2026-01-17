@@ -35,8 +35,8 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -58,15 +58,15 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         SelectedGroup = new();
         SelectedDetail = new();
-        AutoRefresh = _config.ClashUIItem.ProxiesAutoRefresh;
-        SortingSelected = _config.ClashUIItem.ProxiesSorting;
-        RuleModeSelected = (int)_config.ClashUIItem.RuleMode;
+        AutoRefresh = Config.ClashUIItem.ProxiesAutoRefresh;
+        SortingSelected = Config.ClashUIItem.ProxiesSorting;
+        RuleModeSelected = (int)Config.ClashUIItem.RuleMode;
 
         #region WhenAnyValue && ReactiveCommand
 
         this.WhenAnyValue(
            x => x.SelectedGroup,
-           y => y != null && y.Name.IsNotEmpty())
+           y => y is not null && y.Name.IsNotEmpty())
                .Subscribe(c => RefreshProxyDetails(c));
 
         this.WhenAnyValue(
@@ -82,7 +82,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         this.WhenAnyValue(
         x => x.AutoRefresh,
         y => y == true)
-            .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
+            .Subscribe(c => { Config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
 
         #endregion WhenAnyValue && ReactiveCommand
 
@@ -109,7 +109,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
-        if (_config.ClashUIItem.RuleMode == (ERuleMode)RuleModeSelected)
+        if (Config.ClashUIItem.RuleMode == (ERuleMode)RuleModeSelected)
         {
             return;
         }
@@ -118,7 +118,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public async Task SetRuleModeCheck(ERuleMode mode)
     {
-        if (_config.ClashUIItem.RuleMode == mode)
+        if (Config.ClashUIItem.RuleMode == mode)
         {
             return;
         }
@@ -131,9 +131,9 @@ public class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
-        if (SortingSelected != _config.ClashUIItem.ProxiesSorting)
+        if (SortingSelected != Config.ClashUIItem.ProxiesSorting)
         {
-            _config.ClashUIItem.ProxiesSorting = SortingSelected;
+            Config.ClashUIItem.ProxiesSorting = SortingSelected;
         }
 
         RefreshProxyDetails(c);
@@ -149,7 +149,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private async Task SetRuleMode(ERuleMode mode)
     {
-        _config.ClashUIItem.RuleMode = mode;
+        Config.ClashUIItem.RuleMode = mode;
 
         if (mode != ERuleMode.Unchanged)
         {
@@ -164,7 +164,7 @@ public class ClashProxiesViewModel : MyReactiveObject
     private async Task GetClashProxies(bool refreshUI)
     {
         var ret = await ClashApiManager.Instance.GetClashProxiesAsync();
-        if (ret?.Item1 == null || ret.Item2 == null)
+        if (ret?.Item1 is null || ret.Item2 is null)
         {
             return;
         }
@@ -179,7 +179,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public async Task RefreshProxyGroups()
     {
-        if (_proxies == null)
+        if (_proxies is null)
         {
             return;
         }
@@ -188,7 +188,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         ProxyGroups.Clear();
 
         var proxyGroups = ClashApiManager.Instance.GetClashProxyGroups();
-        if (proxyGroups != null && proxyGroups.Count > 0)
+        if (proxyGroups is not null && proxyGroups.Count > 0)
         {
             foreach (var it in proxyGroups)
             {
@@ -197,7 +197,7 @@ public class ClashProxiesViewModel : MyReactiveObject
                     continue;
                 }
                 var item = _proxies[it.name];
-                if (!Global.allowSelectType.Contains(item.type.ToLower()))
+                if (!AppConfig.allowSelectType.Contains(item.type.ToLower()))
                 {
                     continue;
                 }
@@ -213,12 +213,12 @@ public class ClashProxiesViewModel : MyReactiveObject
         //from api
         foreach (var kv in _proxies)
         {
-            if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
+            if (!AppConfig.allowSelectType.Contains(kv.Value.type.ToLower()))
             {
                 continue;
             }
             var item = ProxyGroups.FirstOrDefault(t => t.Name == kv.Key);
-            if (item != null && item.Name.IsNotEmpty())
+            if (item is not null && item.Name.IsNotEmpty())
             {
                 continue;
             }
@@ -230,9 +230,9 @@ public class ClashProxiesViewModel : MyReactiveObject
             });
         }
 
-        if (ProxyGroups != null && ProxyGroups.Count > 0)
+        if (ProxyGroups is not null && ProxyGroups.Count > 0)
         {
-            if (selectedName != null && ProxyGroups.Any(t => t.Name == selectedName))
+            if (selectedName is not null && ProxyGroups.Any(t => t.Name == selectedName))
             {
                 SelectedGroup = ProxyGroups.FirstOrDefault(t => t.Name == selectedName);
             }
@@ -260,13 +260,13 @@ public class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
-        if (_proxies == null)
+        if (_proxies is null)
         {
             return;
         }
 
         _proxies.TryGetValue(name, out var proxy);
-        if (proxy?.all == null)
+        if (proxy?.all is null)
         {
             return;
         }
@@ -274,7 +274,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         foreach (var item in proxy.all)
         {
             var proxy2 = TryGetProxy(item);
-            if (proxy2 == null)
+            if (proxy2 is null)
             {
                 continue;
             }
@@ -308,24 +308,24 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     private ProxiesItem? TryGetProxy(string name)
     {
-        if (_proxies == null)
+        if (_proxies is null)
         {
             return null;
         }
         _proxies.TryGetValue(name, out var proxy2);
-        if (proxy2 != null)
+        if (proxy2 is not null)
         {
             return proxy2;
         }
         //from providers
-        if (_providers != null)
+        if (_providers is not null)
         {
             foreach (var kv in _providers)
             {
-                if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
+                if (AppConfig.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
                 {
                     var proxy3 = kv.Value.proxies.FirstOrDefault(t => t.name == name);
-                    if (proxy3 != null)
+                    if (proxy3 is not null)
                     {
                         return proxy3;
                     }
@@ -337,11 +337,11 @@ public class ClashProxiesViewModel : MyReactiveObject
 
     public async Task SetActiveProxy()
     {
-        if (SelectedGroup == null || SelectedGroup.Name.IsNullOrEmpty())
+        if (SelectedGroup is null || SelectedGroup.Name.IsNullOrEmpty())
         {
             return;
         }
-        if (SelectedDetail == null || SelectedDetail.Name.IsNullOrEmpty())
+        if (SelectedDetail is null || SelectedDetail.Name.IsNullOrEmpty())
         {
             return;
         }
@@ -356,7 +356,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             return;
         }
         var selectedProxy = TryGetProxy(name);
-        if (selectedProxy == null || selectedProxy.type != "Selector")
+        if (selectedProxy is null || selectedProxy.type != "Selector")
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
@@ -366,7 +366,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         selectedProxy.now = nameNode;
         var group = ProxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
-        if (group != null)
+        if (group is not null)
         {
             group.Now = nameNode;
             var group2 = JsonUtils.DeepCopy(group);
@@ -381,7 +381,7 @@ public class ClashProxiesViewModel : MyReactiveObject
     {
         ClashApiManager.Instance.ClashProxiesDelayTest(blAll, ProxyDetails.ToList(), async (item, result) =>
         {
-            if (item == null || result.IsNullOrEmpty())
+            if (item is null || result.IsNullOrEmpty())
             {
                 return;
             }
@@ -400,18 +400,18 @@ public class ClashProxiesViewModel : MyReactiveObject
     public async Task ProxiesDelayTestResult(SpeedTestResult result)
     {
         var detail = ProxyDetails.FirstOrDefault(it => it.Name == result.IndexId);
-        if (detail == null)
+        if (detail is null)
         {
             return;
         }
 
         var dicResult = JsonUtils.Deserialize<Dictionary<string, object>>(result.Delay);
-        if (dicResult != null && dicResult.TryGetValue("delay", out var value))
+        if (dicResult is not null && dicResult.TryGetValue("delay", out var value))
         {
             detail.Delay = Convert.ToInt32(value.ToString());
             detail.DelayName = $"{detail.Delay}ms";
         }
-        else if (dicResult != null && dicResult.TryGetValue("message", out var value1))
+        else if (dicResult is not null && dicResult.TryGetValue("message", out var value1))
         {
             detail.Delay = _delayTimeout;
             detail.DelayName = $"{value1}";
@@ -441,11 +441,11 @@ public class ClashProxiesViewModel : MyReactiveObject
                   {
                       continue;
                   }
-                  if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
+                  if (Config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
                   {
                       continue;
                   }
-                  if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
+                  if (numOfExecuted % Config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
                   {
                       continue;
                   }

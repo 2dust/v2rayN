@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>

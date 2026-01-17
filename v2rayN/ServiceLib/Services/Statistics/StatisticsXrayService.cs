@@ -7,7 +7,7 @@ public class StatisticsXrayService
     private readonly Config _config;
     private bool _exitFlag;
     private readonly Func<ServerSpeedItem, Task>? _updateFunc;
-    private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort}/debug/vars";
+    private string Url => $"{AppConfig.HttpProtocol}{AppConfig.Loopback}:{AppManager.Instance.StatePort}/debug/vars";
 
     public StatisticsXrayService(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
@@ -36,7 +36,7 @@ public class StatisticsXrayService
                 }
 
                 var result = await HttpClientHelper.Instance.TryGetAsync(Url);
-                if (result != null)
+                if (result is not null)
                 {
                     var server = ParseOutput(result) ?? new ServerSpeedItem();
                     await _updateFunc?.Invoke(server);
@@ -54,7 +54,7 @@ public class StatisticsXrayService
         try
         {
             var source = JsonUtils.Deserialize<V2rayMetricsVars>(result);
-            if (source?.stats?.outbound == null)
+            if (source?.stats?.outbound is null)
             {
                 return null;
             }
@@ -63,18 +63,18 @@ public class StatisticsXrayService
             foreach (var key in source.stats.outbound.Keys.Cast<string>())
             {
                 var value = source.stats.outbound[key];
-                if (value == null)
+                if (value is null)
                 {
                     continue;
                 }
                 var state = JsonUtils.Deserialize<V2rayMetricsVarsLink>(value.ToString());
 
-                if (key.StartsWith(Global.ProxyTag))
+                if (key.StartsWith(AppConfig.ProxyTag))
                 {
                     server.ProxyUp += state.uplink / linkBase;
                     server.ProxyDown += state.downlink / linkBase;
                 }
-                else if (key == Global.DirectTag)
+                else if (key == AppConfig.DirectTag)
                 {
                     server.DirectUp = state.uplink / linkBase;
                     server.DirectDown = state.downlink / linkBase;

@@ -8,10 +8,10 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
     public GlobalHotkeySettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
-        _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
+        _globalHotkeys = JsonUtils.DeepCopy(Config.GlobalHotkeys);
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -22,7 +22,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
     public KeyEventItem GetKeyEventItem(EGlobalHotkey eg)
     {
         var item = _globalHotkeys.FirstOrDefault((it) => it.EGlobalHotkey == eg);
-        if (item != null)
+        if (item is not null)
         {
             return item;
         }
@@ -47,11 +47,11 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
     private async Task SaveSettingAsync()
     {
-        _config.GlobalHotkeys = _globalHotkeys;
+        Config.GlobalHotkeys = _globalHotkeys;
 
-        if (await ConfigHandler.SaveConfig(_config) == 0)
+        if (await ConfigHandler.SaveConfig(Config) == 0)
         {
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {

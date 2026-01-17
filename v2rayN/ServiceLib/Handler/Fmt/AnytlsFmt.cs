@@ -7,7 +7,7 @@ public class AnytlsFmt : BaseFmt
         msg = ResUI.ConfigurationFormatIncorrect;
 
         var parsedUrl = Utils.TryUri(str);
-        if (parsedUrl == null)
+        if (parsedUrl is null)
         {
             return null;
         }
@@ -30,7 +30,7 @@ public class AnytlsFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -41,7 +41,7 @@ public class AnytlsFmt : BaseFmt
         }
         var pw = item.Id;
         var dicQuery = new Dictionary<string, string>();
-        ToUriQuery(item, Global.None, ref dicQuery);
+        ToUriQuery(item, AppConfig.None, ref dicQuery);
 
         return ToUri(EConfigType.Anytls, item.Address, item.Port, pw, dicQuery, remark);
     }

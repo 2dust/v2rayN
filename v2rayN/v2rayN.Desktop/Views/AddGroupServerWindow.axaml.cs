@@ -19,7 +19,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
         ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
 
-        cmbCoreType.ItemsSource = Global.CoreTypes;
+        cmbCoreType.ItemsSource = AppConfig.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
         {
             ResUI.TbLeastPing,
@@ -162,9 +162,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
     private void LstChild_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
-        }
+        ViewModel?.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
     }
 }

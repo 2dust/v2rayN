@@ -30,11 +30,11 @@ public static class SysProxyHandler
                         break;
                     }
                 case ESysProxyType.ForcedChange when Utils.IsLinux():
-                    await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
+                    await ProxySettingLinux.SetProxy(AppConfig.Loopback, port, exceptions);
                     break;
 
                 case ESysProxyType.ForcedChange when Utils.IsMacOS():
-                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
+                    await ProxySettingOSX.SetProxy(AppConfig.Loopback, port, exceptions);
                     break;
 
                 case ESysProxyType.ForcedClear when Utils.IsWindows():
@@ -74,15 +74,14 @@ public static class SysProxyHandler
             strExceptions = $"<local>;{strExceptions}";
         }
 
-        strProxy = string.Empty;
         if (config.SystemProxyItem.SystemProxyAdvancedProtocol.IsNullOrEmpty())
         {
-            strProxy = $"{Global.Loopback}:{port}";
+            strProxy = $"{AppConfig.Loopback}:{port}";
         }
         else
         {
             strProxy = config.SystemProxyItem.SystemProxyAdvancedProtocol
-                .Replace("{ip}", Global.Loopback)
+                .Replace("{ip}", AppConfig.Loopback)
                 .Replace("{http_port}", port.ToString())
                 .Replace("{socks_port}", port.ToString());
         }
@@ -92,7 +91,7 @@ public static class SysProxyHandler
     {
         var portPac = AppManager.Instance.GetLocalPort(EInboundProtocol.pac);
         await PacManager.Instance.StartAsync(port, portPac);
-        var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
+        var strProxy = $"{AppConfig.HttpProtocol}{AppConfig.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
         ProxySettingWindows.SetProxy(strProxy, "", 4);
     }
 }

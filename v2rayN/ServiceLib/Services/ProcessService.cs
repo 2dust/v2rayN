@@ -39,7 +39,7 @@ public class ProcessService : IDisposable
             EnableRaisingEvents = true
         };
 
-        if (environmentVars != null)
+        if (environmentVars is not null)
         {
             foreach (var kv in environmentVars)
             {

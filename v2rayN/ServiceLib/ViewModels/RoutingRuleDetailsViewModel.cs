@@ -27,8 +27,8 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -38,7 +38,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         if (rulesItem.Id.IsNullOrEmpty())
         {
             rulesItem.Id = Utils.GetGuid(false);
-            rulesItem.OutboundTag = Global.ProxyTag;
+            rulesItem.OutboundTag = AppConfig.ProxyTag;
             rulesItem.Enabled = true;
             SelectedSource = rulesItem;
         }
@@ -73,7 +73,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         }
         SelectedSource.Protocol = ProtocolItems?.ToList();
         SelectedSource.InboundTag = InboundTagItems?.ToList();
-        SelectedSource.RuleType = RuleType.IsNullOrEmpty() ? null : (ERuleType)Enum.Parse(typeof(ERuleType), RuleType);
+        SelectedSource.RuleType = RuleType.IsNullOrEmpty() ? null : Enum.Parse<ERuleType>(RuleType);
 
         var hasRule = SelectedSource.Domain?.Count > 0
           || SelectedSource.Ip?.Count > 0
@@ -88,6 +88,6 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await _updateView?.Invoke(EViewAction.CloseWindow, null);
+        await UpdateView?.Invoke(EViewAction.CloseWindow, null);
     }
 }

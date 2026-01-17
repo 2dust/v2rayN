@@ -1,6 +1,6 @@
 namespace ServiceLib;
 
-public class Global
+public class AppConfig
 {
     #region const
 

@@ -5,7 +5,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 {
-    private bool _manualClose = false;
+    private bool _manualClose;
 
     public RoutingSettingWindow()
     {
@@ -21,8 +21,8 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
-        cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy.ItemsSource = AppConfig.DomainStrategies;
+        cmbdomainStrategy4Singbox.ItemsSource = AppConfig.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {
@@ -104,10 +104,7 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 
     private void lstRoutings_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
-        }
+        ViewModel?.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
     }
 
     private void LstRoutings_DoubleTapped(object? sender, TappedEventArgs e)

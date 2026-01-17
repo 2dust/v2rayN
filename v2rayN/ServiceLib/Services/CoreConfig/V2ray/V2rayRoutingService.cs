@@ -6,12 +6,12 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            if (v2rayConfig.routing?.rules != null)
+            if (v2rayConfig.routing?.rules is not null)
             {
                 v2rayConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
 
                 var routing = await ConfigHandler.GetDefaultRouting(_config);
-                if (routing != null)
+                if (routing is not null)
                 {
                     if (routing.DomainStrategy.IsNotEmpty())
                     {
@@ -47,7 +47,7 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            if (rule == null)
+            if (rule is null)
             {
                 return 0;
             }
@@ -95,7 +95,7 @@ public partial class CoreConfigV2rayService
                     {
                         it.domain.RemoveAt(k);
                     }
-                    it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
+                    it.domain[k] = it.domain[k].Replace(AppConfig.RoutingRuleComma, ",");
                 }
                 v2rayConfig.routing.rules.Add(it);
                 hasDomainIp = true;
@@ -123,7 +123,7 @@ public partial class CoreConfigV2rayService
                 if (rule.port.IsNotEmpty()
                     || rule.protocol?.Count > 0
                     || rule.inboundTag?.Count > 0
-                    || rule.network != null
+                    || rule.network is not null
                     )
                 {
                     var it = JsonUtils.DeepCopy(rule);
@@ -141,21 +141,21 @@ public partial class CoreConfigV2rayService
 
     private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, V2rayConfig v2rayConfig)
     {
-        if (Global.OutboundTags.Contains(outboundTag))
+        if (AppConfig.OutboundTags.Contains(outboundTag))
         {
             return outboundTag;
         }
 
         var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
 
-        if (node == null
-            || (!Global.XraySupportConfigType.Contains(node.ConfigType)
+        if (node is null
+            || (!AppConfig.XraySupportConfigType.Contains(node.ConfigType)
             && !node.ConfigType.IsGroupType()))
         {
-            return Global.ProxyTag;
+            return AppConfig.ProxyTag;
         }
 
-        var tag = $"{node.IndexId}-{Global.ProxyTag}";
+        var tag = $"{node.IndexId}-{AppConfig.ProxyTag}";
         if (v2rayConfig.outbounds.Any(p => p.tag == tag))
         {
             return tag;
@@ -168,10 +168,10 @@ public partial class CoreConfigV2rayService
             {
                 return tag;
             }
-            return Global.ProxyTag;
+            return AppConfig.ProxyTag;
         }
 
-        var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+        var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
         var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
         await GenOutbound(node, outbound);
         outbound.tag = tag;

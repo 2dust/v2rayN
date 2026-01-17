@@ -16,7 +16,7 @@ public partial class CoreConfigSingboxService
                 {
                     type = EInboundProtocol.mixed.ToString(),
                     tag = EInboundProtocol.socks.ToString(),
-                    listen = Global.Loopback,
+                    listen = AppConfig.Loopback,
                 };
                 singboxConfig.inbounds.Add(inbound);
 
@@ -53,14 +53,14 @@ public partial class CoreConfigSingboxService
             {
                 if (_config.TunModeItem.Mtu <= 0)
                 {
-                    _config.TunModeItem.Mtu = Global.TunMtus.First();
+                    _config.TunModeItem.Mtu = AppConfig.TunMtus.First();
                 }
                 if (_config.TunModeItem.Stack.IsNullOrEmpty())
                 {
-                    _config.TunModeItem.Stack = Global.TunStacks.First();
+                    _config.TunModeItem.Stack = AppConfig.TunStacks.First();
                 }
 
-                var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(EmbedUtils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
+                var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(EmbedUtils.GetEmbedText(AppConfig.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
                 tunInbound.interface_name = Utils.IsMacOS() ? $"utun{new Random().Next(99)}" : "singbox_tun";
                 tunInbound.mtu = _config.TunModeItem.Mtu;
                 tunInbound.auto_route = _config.TunModeItem.AutoRoute;

@@ -7,10 +7,13 @@ public static class CoreConfigHandler
 {
     private static readonly string _tag = "CoreConfigHandler";
 
+    private static readonly CompositeFormat _successfulConfigFormat =
+        CompositeFormat.Parse(ResUI.SuccessfulConfiguration);
+
     public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
     {
         var config = AppManager.Instance.Config;
-        var result = new RetResult();
+        RetResult result;
 
         if (node.ConfigType == EConfigType.Custom)
         {
@@ -33,7 +36,7 @@ public static class CoreConfigHandler
         {
             return result;
         }
-        if (fileName.IsNotEmpty() && result.Data != null)
+        if (fileName.IsNotEmpty() && result.Data is not null)
         {
             await File.WriteAllTextAsync(fileName, result.Data.ToString());
         }
@@ -46,7 +49,7 @@ public static class CoreConfigHandler
         var ret = new RetResult();
         try
         {
-            if (node == null || fileName is null)
+            if (node is null || fileName is null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
@@ -78,7 +81,7 @@ public static class CoreConfigHandler
                 return ret;
             }
 
-            ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
+            ret.Msg = string.Format(CultureInfo.CurrentCulture, _successfulConfigFormat, "");
             ret.Success = true;
             return await Task.FromResult(ret);
         }
@@ -111,7 +114,7 @@ public static class CoreConfigHandler
 
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, ProfileItem node, ServerTestItem testItem, string fileName)
     {
-        var result = new RetResult();
+        RetResult result;
         var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
         var port = Utils.GetFreePort(initPort + testItem.QueueNum);
         testItem.Port = port;

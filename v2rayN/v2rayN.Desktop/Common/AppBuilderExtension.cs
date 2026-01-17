@@ -6,7 +6,7 @@ public static class AppBuilderExtension
     {
         var fallbacks = new List<FontFallback>();
 
-        var notoSansSc = new FontFamily(Path.Combine(Global.AvaAssets, "Fonts#Noto Sans SC"));
+        var notoSansSc = new FontFamily(Path.Combine(AppConfig.AvaAssets, "Fonts#Noto Sans SC"));
         fallbacks.Add(new FontFallback { FontFamily = notoSansSc });
 
         if (OperatingSystem.IsLinux())

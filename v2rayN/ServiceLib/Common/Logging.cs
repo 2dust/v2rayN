@@ -47,7 +47,7 @@ public class Logging
 
         _logger2.Debug($"{strTitle},{ex.Message}");
         _logger2.Debug(ex.StackTrace);
-        if (ex?.InnerException != null)
+        if (ex?.InnerException is not null)
         {
             _logger2.Error(ex.InnerException);
         }

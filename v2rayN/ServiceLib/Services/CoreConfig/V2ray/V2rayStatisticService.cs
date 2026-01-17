@@ -26,10 +26,10 @@ public partial class CoreConfigV2rayService
                 Inbounds4Ray apiInbound = new();
                 Inboundsettings4Ray apiInboundSettings = new();
                 apiInbound.tag = tag;
-                apiInbound.listen = Global.Loopback;
+                apiInbound.listen = AppConfig.Loopback;
                 apiInbound.port = AppManager.Instance.StatePort;
-                apiInbound.protocol = Global.InboundAPIProtocol;
-                apiInboundSettings.address = Global.Loopback;
+                apiInbound.protocol = AppConfig.InboundAPIProtocol;
+                apiInboundSettings.address = AppConfig.Loopback;
                 apiInbound.settings = apiInboundSettings;
                 v2rayConfig.inbounds.Add(apiInbound);
             }

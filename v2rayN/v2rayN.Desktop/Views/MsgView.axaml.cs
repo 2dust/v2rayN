@@ -18,7 +18,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
         });
 
-        TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
+        TextEditorKeywordHighlighter.Attach(txtMsg, AppConfig.LogLevelColors.ToDictionary(
                 kv => kv.Key,
                 kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
             ));
@@ -78,13 +78,13 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)
     {
-        var data = txtMsg.SelectedText.TrimEx();
+        var data = txtMsg.SelectedText.TrimSafe();
         await AvaUtils.SetClipboardData(this, data);
     }
 
     private async void menuMsgViewCopyAll_Click(object? sender, RoutedEventArgs e)
     {
-        var data = txtMsg.Text.TrimEx();
+        var data = txtMsg.Text.TrimSafe();
         await AvaUtils.SetClipboardData(this, data);
     }
 

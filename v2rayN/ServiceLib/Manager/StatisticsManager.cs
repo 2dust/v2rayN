@@ -7,13 +7,12 @@ public class StatisticsManager
 
     private Config _config;
     private ServerStatItem? _serverStatItem;
-    private List<ServerStatItem> _lstServerStat;
     private Func<ServerSpeedItem, Task>? _updateFunc;
 
     private StatisticsXrayService? _statisticsXray;
     private StatisticsSingboxService? _statisticsSingbox;
     private static readonly string _tag = "StatisticsHandler";
-    public List<ServerStatItem> ServerStat => _lstServerStat;
+    public List<ServerStatItem> ServerStat { get; private set; }
 
     public async Task Init(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
@@ -45,16 +44,16 @@ public class StatisticsManager
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem ");
         _serverStatItem = null;
-        _lstServerStat = new();
+        ServerStat = new();
     }
 
     public async Task SaveTo()
     {
         try
         {
-            if (_lstServerStat != null)
+            if (ServerStat is not null)
             {
-                await SQLiteHelper.Instance.UpdateAllAsync(_lstServerStat);
+                await SQLiteHelper.Instance.UpdateAllAsync(ServerStat);
             }
         }
         catch (Exception ex)
@@ -65,7 +64,7 @@ public class StatisticsManager
 
     public async Task CloneServerStatItem(string indexId, string toIndexId)
     {
-        if (_lstServerStat == null)
+        if (ServerStat is null)
         {
             return;
         }
@@ -75,8 +74,8 @@ public class StatisticsManager
             return;
         }
 
-        var stat = _lstServerStat.FirstOrDefault(t => t.IndexId == indexId);
-        if (stat == null)
+        var stat = ServerStat.FirstOrDefault(t => t.IndexId == indexId);
+        if (stat is null)
         {
             return;
         }
@@ -84,7 +83,7 @@ public class StatisticsManager
         var toStat = JsonUtils.DeepCopy(stat);
         toStat.IndexId = toIndexId;
         await SQLiteHelper.Instance.ReplaceAsync(toStat);
-        _lstServerStat.Add(toStat);
+        ServerStat.Add(toStat);
     }
 
     private async Task InitData()
@@ -94,7 +93,7 @@ public class StatisticsManager
         var ticks = DateTime.Now.Date.Ticks;
         await SQLiteHelper.Instance.ExecuteAsync($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
 
-        _lstServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
+        ServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
     }
 
     private async Task UpdateServerStatHandler(ServerSpeedItem server)
@@ -129,15 +128,15 @@ public class StatisticsManager
     private async Task GetServerStatItem(string indexId)
     {
         var ticks = DateTime.Now.Date.Ticks;
-        if (_serverStatItem != null && _serverStatItem.IndexId != indexId)
+        if (_serverStatItem is not null && _serverStatItem.IndexId != indexId)
         {
             _serverStatItem = null;
         }
 
-        if (_serverStatItem == null)
+        if (_serverStatItem is null)
         {
-            _serverStatItem = _lstServerStat.FirstOrDefault(t => t.IndexId == indexId);
-            if (_serverStatItem == null)
+            _serverStatItem = ServerStat.FirstOrDefault(t => t.IndexId == indexId);
+            if (_serverStatItem is null)
             {
                 _serverStatItem = new ServerStatItem
                 {
@@ -149,7 +148,7 @@ public class StatisticsManager
                     DateNow = ticks
                 };
                 await SQLiteHelper.Instance.ReplaceAsync(_serverStatItem);
-                _lstServerStat.Add(_serverStatItem);
+                ServerStat.Add(_serverStatItem);
             }
         }
 

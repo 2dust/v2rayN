@@ -33,58 +33,29 @@ public class FmtHandler
 
     public static ProfileItem? ResolveConfig(string config, out string msg)
     {
-        msg = ResUI.ConfigurationFormatIncorrect;
+        var span = config.AsSpan().Trim();
+        if (span.IsEmpty)
+        {
+            msg = ResUI.FailedReadConfiguration;
+            return null;
+        }
 
         try
         {
-            var str = config.TrimEx();
-            if (str.IsNullOrEmpty())
+            return span switch
             {
-                msg = ResUI.FailedReadConfiguration;
-                return null;
-            }
-
-            if (str.StartsWith(Global.ProtocolShares[EConfigType.VMess]))
-            {
-                return VmessFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Shadowsocks]))
-            {
-                return ShadowsocksFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS]))
-            {
-                return SocksFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Trojan]))
-            {
-                return TrojanFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.VLESS]))
-            {
-                return VLESSFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2]) || str.StartsWith(Global.Hysteria2ProtocolShare))
-            {
-                return Hysteria2Fmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.TUIC]))
-            {
-                return TuicFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.WireGuard]))
-            {
-                return WireguardFmt.Resolve(str, out msg);
-            }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Anytls]))
-            {
-                return AnytlsFmt.Resolve(str, out msg);
-            }
-            else
-            {
-                msg = ResUI.NonvmessOrssProtocol;
-                return null;
-            }
+                _ when IsProtocol(span, EConfigType.VMess) => VmessFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.Shadowsocks) => ShadowsocksFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.SOCKS) => SocksFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.Trojan) => TrojanFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.VLESS) => VLESSFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.Hysteria2) || span.StartsWith(AppConfig.Hysteria2ProtocolShare,
+                    StringComparison.OrdinalIgnoreCase) => Hysteria2Fmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.TUIC) => TuicFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.WireGuard) => WireguardFmt.Resolve(config, out msg),
+                _ when IsProtocol(span, EConfigType.Anytls) => AnytlsFmt.Resolve(config, out msg),
+                _ => HandleUnknown(out msg)
+            };
         }
         catch (Exception ex)
         {
@@ -92,5 +63,17 @@ public class FmtHandler
             msg = ResUI.Incorrectconfiguration;
             return null;
         }
+    }
+
+    private static bool IsProtocol(ReadOnlySpan<char> strSpan, EConfigType type)
+    {
+        var prefix = AppConfig.ProtocolShares[type].AsSpan();
+        return strSpan.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static ProfileItem? HandleUnknown(out string msg)
+    {
+        msg = ResUI.NonvmessOrssProtocol;
+        return null;
     }
 }

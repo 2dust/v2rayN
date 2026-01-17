@@ -15,12 +15,12 @@ public class AddServer2ViewModel : MyReactiveObject
 
     public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _updateView?.Invoke(EViewAction.BrowseServer, null);
+            UpdateView?.Invoke(EViewAction.BrowseServer, null);
             await Task.CompletedTask;
         });
         EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -52,10 +52,10 @@ public class AddServer2ViewModel : MyReactiveObject
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
 
-        if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
+        if (await ConfigHandler.EditCustomServer(SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
@@ -73,7 +73,7 @@ public class AddServer2ViewModel : MyReactiveObject
         var item = await AppManager.Instance.GetProfileItem(SelectedSource.IndexId);
         item ??= SelectedSource;
         item.Address = fileName;
-        if (await ConfigHandler.AddCustomServer(_config, item, false) == 0)
+        if (await ConfigHandler.AddCustomServer(Config, item, false) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
             if (item.IndexId.IsNotEmpty())

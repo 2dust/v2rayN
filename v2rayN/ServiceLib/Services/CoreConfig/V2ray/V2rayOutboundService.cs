@@ -37,14 +37,14 @@ public partial class CoreConfigV2rayService
 
                         usersItem.id = node.Id;
                         usersItem.alterId = node.AlterId;
-                        usersItem.email = Global.UserEMail;
-                        if (Global.VmessSecurities.Contains(node.Security))
+                        usersItem.email = AppConfig.UserEMail;
+                        if (AppConfig.VmessSecurities.Contains(node.Security))
                         {
                             usersItem.security = node.Security;
                         }
                         else
                         {
-                            usersItem.security = Global.DefaultSecurity;
+                            usersItem.security = AppConfig.DefaultSecurity;
                         }
 
                         await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
@@ -139,7 +139,7 @@ public partial class CoreConfigV2rayService
                             usersItem = vnextItem.users.First();
                         }
                         usersItem.id = node.Id;
-                        usersItem.email = Global.UserEMail;
+                        usersItem.email = AppConfig.UserEMail;
                         usersItem.encryption = node.Security;
 
                         if (node.Flow.IsNullOrEmpty())
@@ -185,9 +185,9 @@ public partial class CoreConfigV2rayService
                             version = 2,
                             address = node.Address,
                             port = node.Port,
+                            vnext = null,
+                            servers = null
                         };
-                        outbound.settings.vnext = null;
-                        outbound.settings.servers = null;
                         break;
                     }
                 case EConfigType.WireGuard:
@@ -207,7 +207,7 @@ public partial class CoreConfigV2rayService
                             address = Utils.String2List(node.RequestHost),
                             secretKey = node.Id,
                             reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList(),
-                            mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt(),
+                            mtu = node.ShortId.IsNullOrEmpty() ? AppConfig.TunMtus.First() : node.ShortId.ToInt(),
                             peers = new List<WireguardPeer4Ray> { peer }
                         };
                         outbound.settings = setting;
@@ -217,7 +217,7 @@ public partial class CoreConfigV2rayService
                     }
             }
 
-            outbound.protocol = Global.ProtocolTypes[node.ConfigType];
+            outbound.protocol = AppConfig.ProtocolTypes[node.ConfigType];
             if (node.ConfigType == EConfigType.Hysteria2)
             {
                 outbound.protocol = "hysteria";
@@ -268,15 +268,15 @@ public partial class CoreConfigV2rayService
                 network = "hysteria";
             }
             streamSettings.network = network;
-            var host = node.RequestHost.TrimEx();
-            var path = node.Path.TrimEx();
-            var sni = node.Sni.TrimEx();
+            var host = node.RequestHost.TrimSafe();
+            var path = node.Path.TrimSafe();
+            var sni = node.Sni.TrimSafe();
             var useragent = "";
             if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
             {
                 try
                 {
-                    useragent = Global.UserAgentTexts[_config.CoreBasicItem.DefUserAgent];
+                    useragent = AppConfig.UserAgentTexts[_config.CoreBasicItem.DefUserAgent];
                 }
                 catch (KeyNotFoundException)
                 {
@@ -285,7 +285,7 @@ public partial class CoreConfigV2rayService
             }
 
             //if tls
-            if (node.StreamSecurity == Global.StreamSecurity)
+            if (node.StreamSecurity == AppConfig.StreamSecurity)
             {
                 streamSettings.security = node.StreamSecurity;
 
@@ -330,7 +330,7 @@ public partial class CoreConfigV2rayService
             }
 
             //if Reality
-            if (node.StreamSecurity == Global.StreamSecurityReality)
+            if (node.StreamSecurity == AppConfig.StreamSecurityReality)
             {
                 streamSettings.security = node.StreamSecurity;
 
@@ -355,19 +355,18 @@ public partial class CoreConfigV2rayService
                     KcpSettings4Ray kcpSettings = new()
                     {
                         mtu = _config.KcpItem.Mtu,
-                        tti = _config.KcpItem.Tti
-                    };
+                        tti = _config.KcpItem.Tti,
+                        uplinkCapacity = _config.KcpItem.UplinkCapacity,
+                        downlinkCapacity = _config.KcpItem.DownlinkCapacity,
 
-                    kcpSettings.uplinkCapacity = _config.KcpItem.UplinkCapacity;
-                    kcpSettings.downlinkCapacity = _config.KcpItem.DownlinkCapacity;
-
-                    kcpSettings.congestion = _config.KcpItem.Congestion;
-                    kcpSettings.readBufferSize = _config.KcpItem.ReadBufferSize;
-                    kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
-                    kcpSettings.header = new Header4Ray
-                    {
-                        type = node.HeaderType,
-                        domain = host.NullIfEmpty()
+                        congestion = _config.KcpItem.Congestion,
+                        readBufferSize = _config.KcpItem.ReadBufferSize,
+                        writeBufferSize = _config.KcpItem.WriteBufferSize,
+                        header = new Header4Ray
+                        {
+                            type = node.HeaderType,
+                            domain = host.NullIfEmpty()
+                        }
                     };
                     if (path.IsNotEmpty())
                     {
@@ -377,8 +376,10 @@ public partial class CoreConfigV2rayService
                     break;
                 //ws
                 case nameof(ETransport.ws):
-                    WsSettings4Ray wsSettings = new();
-                    wsSettings.headers = new Headers4Ray();
+                    WsSettings4Ray wsSettings = new()
+                    {
+                        headers = new Headers4Ray()
+                    };
 
                     if (host.IsNotEmpty())
                     {
@@ -423,7 +424,7 @@ public partial class CoreConfigV2rayService
                     {
                         xhttpSettings.host = host;
                     }
-                    if (node.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(node.HeaderType))
+                    if (node.HeaderType.IsNotEmpty() && AppConfig.XhttpMode.Contains(node.HeaderType))
                     {
                         xhttpSettings.mode = node.HeaderType;
                     }
@@ -461,7 +462,7 @@ public partial class CoreConfigV2rayService
                         }
                     };
                     streamSettings.quicSettings = quicsettings;
-                    if (node.StreamSecurity == Global.StreamSecurity)
+                    if (node.StreamSecurity == AppConfig.StreamSecurity)
                     {
                         if (sni.IsNotEmpty())
                         {
@@ -479,7 +480,7 @@ public partial class CoreConfigV2rayService
                     {
                         authority = host.NullIfEmpty(),
                         serviceName = path,
-                        multiMode = node.HeaderType == Global.GrpcMultiMode,
+                        multiMode = node.HeaderType == AppConfig.GrpcMultiMode,
                         idle_timeout = _config.GrpcItem.IdleTimeout,
                         health_check_timeout = _config.GrpcItem.HealthCheckTimeout,
                         permit_without_stream = _config.GrpcItem.PermitWithoutStream,
@@ -513,13 +514,13 @@ public partial class CoreConfigV2rayService
                     if (node.Path.IsNotEmpty())
                     {
                         streamSettings.udpmasks =
-                            [new() { type = "salamander", settings = new() { password = node.Path.TrimEx(), } }];
+                            [new() { type = "salamander", settings = new() { password = node.Path.TrimSafe(), } }];
                     }
                     break;
 
                 default:
                     //tcp
-                    if (node.HeaderType == Global.TcpHeaderHttp)
+                    if (node.HeaderType == AppConfig.TcpHeaderHttp)
                     {
                         TcpSettings4Ray tcpSettings = new()
                         {
@@ -530,7 +531,7 @@ public partial class CoreConfigV2rayService
                         };
 
                         //request Host
-                        var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                        var request = EmbedUtils.GetEmbedText(AppConfig.V2raySampleHttpRequestFileName);
                         var arrHost = host.Split(',');
                         var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
@@ -557,7 +558,7 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = AppConfig.ProxyTag, bool ignoreOriginChain = false)
     {
         try
         {
@@ -620,7 +621,7 @@ public partial class CoreConfigV2rayService
             var fragmentOutbound = new Outbounds4Ray
             {
                 protocol = "freedom",
-                tag = $"frag-{Global.ProxyTag}",
+                tag = $"frag-{AppConfig.ProxyTag}",
                 settings = new()
                 {
                     fragment = new()
@@ -654,17 +655,17 @@ public partial class CoreConfigV2rayService
 
             //current proxy
             var outbound = v2rayConfig.outbounds.First();
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
 
             //Previous proxy
             var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
-                && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
+                && AppConfig.XraySupportConfigType.Contains(prevNode.ConfigType))
             {
                 var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 await GenOutbound(prevNode, prevOutbound);
-                prevOutboundTag = $"prev-{Global.ProxyTag}";
+                prevOutboundTag = $"prev-{AppConfig.ProxyTag}";
                 prevOutbound.tag = prevOutboundTag;
                 v2rayConfig.outbounds.Add(prevOutbound);
             }
@@ -683,12 +684,12 @@ public partial class CoreConfigV2rayService
         return 0;
     }
 
-    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = AppConfig.ProxyTag)
     {
         try
         {
             // Get template and initialize list
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {
                 return 0;
@@ -731,7 +732,7 @@ public partial class CoreConfigV2rayService
                 string? prevTag = null;
                 var currentOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                 var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
-                if (nextOutbound != null)
+                if (nextOutbound is not null)
                 {
                     nextOutbound = JsonUtils.DeepCopy(nextOutbound);
                 }
@@ -752,7 +753,7 @@ public partial class CoreConfigV2rayService
                     {
                         var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
-                            && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
+                            && AppConfig.XraySupportConfigType.Contains(prevNode.ConfigType))
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
@@ -778,7 +779,7 @@ public partial class CoreConfigV2rayService
             }
 
             // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
-            if (baseTagName == Global.ProxyTag)
+            if (baseTagName == AppConfig.ProxyTag)
             {
                 resultOutbounds.AddRange(prevOutbounds);
                 resultOutbounds.AddRange(v2rayConfig.outbounds);
@@ -814,7 +815,7 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
 
             if (!prevOutboundTag.IsNullOrEmpty())
             {
@@ -827,9 +828,9 @@ public partial class CoreConfigV2rayService
             // Next proxy
             var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
-                && Global.XraySupportConfigType.Contains(nextNode.ConfigType))
+                && AppConfig.XraySupportConfigType.Contains(nextNode.ConfigType))
             {
-                if (nextOutbound == null)
+                if (nextOutbound is null)
                 {
                     nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
                     await GenOutbound(nextNode, nextOutbound);
@@ -851,13 +852,13 @@ public partial class CoreConfigV2rayService
         return null;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = AppConfig.ProxyTag)
     {
         var resultOutbounds = new List<Outbounds4Ray>();
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            if (node == null)
+            if (node is null)
             {
                 continue;
             }
@@ -880,7 +881,7 @@ public partial class CoreConfigV2rayService
                 };
                 continue;
             }
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {
                 break;
@@ -894,7 +895,7 @@ public partial class CoreConfigV2rayService
             outbound.tag = baseTagName + (i + 1).ToString();
             resultOutbounds.Add(outbound);
         }
-        if (baseTagName == Global.ProxyTag)
+        if (baseTagName == AppConfig.ProxyTag)
         {
             resultOutbounds.AddRange(v2rayConfig.outbounds);
             v2rayConfig.outbounds = resultOutbounds;
@@ -906,7 +907,7 @@ public partial class CoreConfigV2rayService
         return await Task.FromResult(0);
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = AppConfig.ProxyTag)
     {
         // Based on actual network flow instead of data packets
         var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
@@ -914,7 +915,7 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodesReverse.Count; i++)
         {
             var node = nodesReverse[i];
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.V2raySampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {
                 break;
@@ -947,7 +948,7 @@ public partial class CoreConfigV2rayService
 
             resultOutbounds.Add(outbound);
         }
-        if (baseTagName == Global.ProxyTag)
+        if (baseTagName == AppConfig.ProxyTag)
         {
             resultOutbounds.AddRange(v2rayConfig.outbounds);
             v2rayConfig.outbounds = resultOutbounds;

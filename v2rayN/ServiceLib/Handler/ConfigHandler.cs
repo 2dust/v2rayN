@@ -4,7 +4,7 @@ namespace ServiceLib.Handler;
 
 public static class ConfigHandler
 {
-    private static readonly string _configRes = Global.ConfigFileName;
+    private static readonly string _configRes = AppConfig.ConfigFileName;
     private static readonly string _tag = "ConfigHandler";
 
     #region ConfigHandler
@@ -42,7 +42,7 @@ public static class ConfigHandler
             MuxEnabled = false,
         };
 
-        if (config.Inbound == null)
+        if (config.Inbound is null)
         {
             config.Inbound = new List<InItem>();
             InItem inItem = new()
@@ -67,7 +67,7 @@ public static class ConfigHandler
         config.RoutingBasicItem ??= new();
         if (config.RoutingBasicItem.DomainStrategy.IsNullOrEmpty())
         {
-            config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();
+            config.RoutingBasicItem.DomainStrategy = AppConfig.DomainStrategies.First();
         }
 
         config.KcpItem ??= new KcpItem
@@ -104,16 +104,17 @@ public static class ConfigHandler
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
-            config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
-                ? Global.Languages.First()
-                : Global.Languages[2];
+            config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName
+                .Equals("zh", StringComparison.OrdinalIgnoreCase)
+                ? AppConfig.Languages.First()
+                : AppConfig.Languages[2];
         }
 
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
         config.SimpleDNSItem.GlobalFakeIp ??= true;
-        config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
+        config.SimpleDNSItem.BootstrapDNS ??= AppConfig.DomainPureIPDNSAddress.FirstOrDefault();
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -122,11 +123,11 @@ public static class ConfigHandler
         }
         if (config.SpeedTestItem.SpeedTestUrl.IsNullOrEmpty())
         {
-            config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
+            config.SpeedTestItem.SpeedTestUrl = AppConfig.SpeedTestUrls.First();
         }
         if (config.SpeedTestItem.SpeedPingTestUrl.IsNullOrEmpty())
         {
-            config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrls.First();
+            config.SpeedTestItem.SpeedPingTestUrl = AppConfig.SpeedPingTestUrls.First();
         }
         if (config.SpeedTestItem.MixedConcurrencyCount < 1)
         {
@@ -142,7 +143,7 @@ public static class ConfigHandler
 
         config.Mux4SboxItem ??= new()
         {
-            Protocol = Global.SingboxMuxs.First(),
+            Protocol = AppConfig.SingboxMuxs.First(),
             MaxConnections = 8
         };
 
@@ -165,7 +166,7 @@ public static class ConfigHandler
 
         if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
         {
-            config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
+            config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? AppConfig.SystemProxyExceptionsWindows : AppConfig.SystemProxyExceptionsLinux;
         }
 
         return config;
@@ -287,16 +288,16 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.VMess;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
-        profileItem.Network = profileItem.Network.TrimEx();
-        profileItem.HeaderType = profileItem.HeaderType.TrimEx();
-        profileItem.RequestHost = profileItem.RequestHost.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
-        profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Security = profileItem.Security.TrimSafe();
+        profileItem.Network = profileItem.Network.TrimSafe();
+        profileItem.HeaderType = profileItem.HeaderType.TrimSafe();
+        profileItem.RequestHost = profileItem.RequestHost.TrimSafe();
+        profileItem.Path = profileItem.Path.TrimSafe();
+        profileItem.StreamSecurity = profileItem.StreamSecurity.TrimSafe();
 
-        if (!Global.VmessSecurities.Contains(profileItem.Security))
+        if (!AppConfig.VmessSecurities.Contains(profileItem.Security))
         {
             return -1;
         }
@@ -361,7 +362,7 @@ public static class ConfigHandler
             else if (profileItem.ConfigType.IsGroupType())
             {
                 var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
-                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
+                await AddGroupServerCommon(profileItem, profileGroupItem, true);
             }
             else
             {
@@ -407,7 +408,7 @@ public static class ConfigHandler
             return 0;
         }
 
-        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == config.IndexId) != null)
+        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == config.IndexId) is not null)
         {
             return 0;
         }
@@ -443,76 +444,42 @@ public static class ConfigHandler
     /// Move a server in the list to a different position
     /// Supports moving to top, up, down, bottom or specific position
     /// </summary>
-    /// <param name="config">Current configuration</param>
     /// <param name="lstProfile">List of server profiles</param>
     /// <param name="index">Index of the server to move</param>
     /// <param name="eMove">Direction to move the server</param>
     /// <param name="pos">Target position when using EMove.Position</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> MoveServer(Config config, List<ProfileItem> lstProfile, int index, EMove eMove, int pos = -1)
+    public static Task<int> MoveServer(List<ProfileItem> lstProfile, int index, EMove eMove, int pos = -1)
     {
         var count = lstProfile.Count;
-        if (index < 0 || index > lstProfile.Count - 1)
+        if (index < 0 || index >= count)
         {
-            return -1;
+            return Task.FromResult(-1);
         }
 
-        for (var i = 0; i < lstProfile.Count; i++)
+        if ((eMove is EMove.Top or EMove.Up && index == 0) ||
+            (eMove is EMove.Down or EMove.Bottom && index == count - 1))
+        {
+            return Task.FromResult(0);
+        }
+
+        for (var i = 0; i < count; i++)
         {
             ProfileExManager.Instance.SetSort(lstProfile[i].IndexId, (i + 1) * 10);
         }
 
-        var sort = 0;
-        switch (eMove)
+        var sort = eMove switch
         {
-            case EMove.Top:
-                {
-                    if (index == 0)
-                    {
-                        return 0;
-                    }
-                    sort = ProfileExManager.Instance.GetSort(lstProfile.First().IndexId) - 1;
-
-                    break;
-                }
-            case EMove.Up:
-                {
-                    if (index == 0)
-                    {
-                        return 0;
-                    }
-                    sort = ProfileExManager.Instance.GetSort(lstProfile[index - 1].IndexId) - 1;
-
-                    break;
-                }
-
-            case EMove.Down:
-                {
-                    if (index == count - 1)
-                    {
-                        return 0;
-                    }
-                    sort = ProfileExManager.Instance.GetSort(lstProfile[index + 1].IndexId) + 1;
-
-                    break;
-                }
-            case EMove.Bottom:
-                {
-                    if (index == count - 1)
-                    {
-                        return 0;
-                    }
-                    sort = ProfileExManager.Instance.GetSort(lstProfile[^1].IndexId) + 1;
-
-                    break;
-                }
-            case EMove.Position:
-                sort = (pos * 10) + 1;
-                break;
-        }
+            EMove.Top => ProfileExManager.Instance.GetSort(lstProfile[0].IndexId) - 1,
+            EMove.Up => ProfileExManager.Instance.GetSort(lstProfile[index - 1].IndexId) - 1,
+            EMove.Down => ProfileExManager.Instance.GetSort(lstProfile[index + 1].IndexId) + 1,
+            EMove.Bottom => ProfileExManager.Instance.GetSort(lstProfile[^1].IndexId) + 1,
+            EMove.Position => (pos * 10) + 1,
+            _ => 0
+        };
 
         ProfileExManager.Instance.SetSort(lstProfile[index].IndexId, sort);
-        return await Task.FromResult(0);
+        return Task.FromResult(0);
     }
 
     /// <summary>
@@ -552,7 +519,7 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Custom;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
-            profileItem.Remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+            profileItem.Remarks = $"import custom@{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
         }
 
         await AddServerCommon(config, profileItem, true);
@@ -564,17 +531,13 @@ public static class ConfigHandler
     /// Edit an existing custom server configuration
     /// Updates the server's properties without changing the file
     /// </summary>
-    /// <param name="config">Current configuration</param>
     /// <param name="profileItem">Profile item with updated properties</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
+    public static async Task<int> EditCustomServer(ProfileItem profileItem)
     {
         var item = await AppManager.Instance.GetProfileItem(profileItem.IndexId);
-        if (item is null)
-        {
-            item = profileItem;
-        }
-        else
+
+        if (item is not null)
         {
             item.Remarks = profileItem.Remarks;
             item.Address = profileItem.Address;
@@ -583,14 +546,9 @@ public static class ConfigHandler
             item.PreSocksPort = profileItem.PreSocksPort;
         }
 
-        if (await SQLiteHelper.Instance.UpdateAsync(item) > 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
+        item ??= profileItem;
+
+        return await SQLiteHelper.Instance.UpdateAsync(item) > 0 ? 0 : -1;
 
         //ToJsonFile(config);
     }
@@ -607,9 +565,9 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.Shadowsocks;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Security = profileItem.Security.TrimSafe();
 
         if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
         {
@@ -637,7 +595,7 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.SOCKS;
 
-        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -656,7 +614,7 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.HTTP;
 
-        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -675,11 +633,11 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.Trojan;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
-            profileItem.StreamSecurity = Global.StreamSecurity;
+            profileItem.StreamSecurity = AppConfig.StreamSecurity;
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -705,14 +663,14 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Hysteria2;
         //profileItem.CoreType = ECoreType.sing_box;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Path = profileItem.Path.TrimSafe();
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
-            profileItem.StreamSecurity = Global.StreamSecurity;
+            profileItem.StreamSecurity = AppConfig.StreamSecurity;
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -738,19 +696,19 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.TUIC;
         profileItem.CoreType = ECoreType.sing_box;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Security = profileItem.Security.TrimSafe();
         profileItem.Network = string.Empty;
 
-        if (!Global.TuicCongestionControls.Contains(profileItem.HeaderType))
+        if (!AppConfig.TuicCongestionControls.Contains(profileItem.HeaderType))
         {
-            profileItem.HeaderType = Global.TuicCongestionControls.FirstOrDefault()!;
+            profileItem.HeaderType = AppConfig.TuicCongestionControls.FirstOrDefault()!;
         }
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
-            profileItem.StreamSecurity = Global.StreamSecurity;
+            profileItem.StreamSecurity = AppConfig.StreamSecurity;
         }
         if (profileItem.Alpn.IsNullOrEmpty())
         {
@@ -778,15 +736,15 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.WireGuard;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.PublicKey = profileItem.PublicKey.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
-        profileItem.RequestHost = profileItem.RequestHost.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.PublicKey = profileItem.PublicKey.TrimSafe();
+        profileItem.Path = profileItem.Path.TrimSafe();
+        profileItem.RequestHost = profileItem.RequestHost.TrimSafe();
         profileItem.Network = string.Empty;
         if (profileItem.ShortId.IsNullOrEmpty())
         {
-            profileItem.ShortId = Global.TunMtus.First().ToString();
+            profileItem.ShortId = AppConfig.TunMtus[0].ToString(CultureInfo.InvariantCulture);
         }
 
         if (profileItem.Id.IsNullOrEmpty())
@@ -812,13 +770,13 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Anytls;
         profileItem.CoreType = ECoreType.sing_box;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Security = profileItem.Security.TrimSafe();
         profileItem.Network = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
-            profileItem.StreamSecurity = Global.StreamSecurity;
+            profileItem.StreamSecurity = AppConfig.StreamSecurity;
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -864,10 +822,10 @@ public static class ConfigHandler
                               Delay = t33?.Delay ?? 0,
                               Speed = t33?.Speed ?? 0,
                               Sort = t33?.Sort ?? 0,
-                              TodayDown = (t22?.TodayDown ?? 0).ToString("D16"),
-                              TodayUp = (t22?.TodayUp ?? 0).ToString("D16"),
-                              TotalDown = (t22?.TotalDown ?? 0).ToString("D16"),
-                              TotalUp = (t22?.TotalUp ?? 0).ToString("D16"),
+                              TodayDown = (t22?.TodayDown ?? 0).ToString("D16", CultureInfo.InvariantCulture),
+                              TodayUp = (t22?.TodayUp ?? 0).ToString("D16", CultureInfo.InvariantCulture),
+                              TotalDown = (t22?.TotalDown ?? 0).ToString("D16", CultureInfo.InvariantCulture),
+                              TotalUp = (t22?.TotalUp ?? 0).ToString("D16", CultureInfo.InvariantCulture),
                           }).ToList();
 
         Enum.TryParse(colName, true, out EServerColName name);
@@ -956,18 +914,18 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.VLESS;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
-        profileItem.Network = profileItem.Network.TrimEx();
-        profileItem.HeaderType = profileItem.HeaderType.TrimEx();
-        profileItem.RequestHost = profileItem.RequestHost.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
-        profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
+        profileItem.Address = profileItem.Address.TrimSafe();
+        profileItem.Id = profileItem.Id.TrimSafe();
+        profileItem.Security = profileItem.Security.TrimSafe();
+        profileItem.Network = profileItem.Network.TrimSafe();
+        profileItem.HeaderType = profileItem.HeaderType.TrimSafe();
+        profileItem.RequestHost = profileItem.RequestHost.TrimSafe();
+        profileItem.Path = profileItem.Path.TrimSafe();
+        profileItem.StreamSecurity = profileItem.StreamSecurity.TrimSafe();
 
-        if (!Global.Flows.Contains(profileItem.Flow))
+        if (!AppConfig.Flows.Contains(profileItem.Flow))
         {
-            profileItem.Flow = Global.Flows.First();
+            profileItem.Flow = AppConfig.Flows.First();
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -975,7 +933,7 @@ public static class ConfigHandler
         }
         if (profileItem.Security.IsNullOrEmpty())
         {
-            profileItem.Security = Global.None;
+            profileItem.Security = AppConfig.None;
         }
 
         await AddServerCommon(config, profileItem, toFile);
@@ -993,7 +951,7 @@ public static class ConfigHandler
     public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
     {
         var lstProfile = await AppManager.Instance.ProfileItems(subId);
-        if (lstProfile == null)
+        if (lstProfile is null)
         {
             return new Tuple<int, int>(0, 0);
         }
@@ -1035,8 +993,8 @@ public static class ConfigHandler
 
         if (profileItem.StreamSecurity.IsNotEmpty())
         {
-            if (profileItem.StreamSecurity != Global.StreamSecurity
-                 && profileItem.StreamSecurity != Global.StreamSecurityReality)
+            if (profileItem.StreamSecurity is not AppConfig.StreamSecurity
+                 and not AppConfig.StreamSecurityReality)
             {
                 profileItem.StreamSecurity = string.Empty;
             }
@@ -1044,18 +1002,20 @@ public static class ConfigHandler
             {
                 if (profileItem.AllowInsecure.IsNullOrEmpty())
                 {
-                    profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
+                    profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure
+                        .ToString()
+                        .ToLowerInvariant();
                 }
-                if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == Global.StreamSecurityReality)
+                if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == AppConfig.StreamSecurityReality)
                 {
                     profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;
                 }
             }
         }
 
-        if (profileItem.Network.IsNotEmpty() && !Global.Networks.Contains(profileItem.Network))
+        if (profileItem.Network.IsNotEmpty() && !AppConfig.Networks.Contains(profileItem.Network))
         {
-            profileItem.Network = Global.DefaultNetwork;
+            profileItem.Network = AppConfig.DefaultNetwork;
         }
 
         var maxSort = -1;
@@ -1080,7 +1040,7 @@ public static class ConfigHandler
         return 0;
     }
 
-    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
+    public static async Task<int> AddGroupServerCommon(ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
     {
         var maxSort = -1;
         if (profileItem.IndexId.IsNullOrEmpty())
@@ -1097,7 +1057,7 @@ public static class ConfigHandler
         if (toFile)
         {
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
-            if (profileGroupItem != null)
+            if (profileGroupItem is not null)
             {
                 profileGroupItem.IndexId = profileItem.IndexId;
                 await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
@@ -1121,7 +1081,7 @@ public static class ConfigHandler
     /// <returns>True if the profiles match, false otherwise</returns>
     private static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
     {
-        if (o == null || n == null)
+        if (o is null || n is null)
         {
             return false;
         }
@@ -1142,11 +1102,11 @@ public static class ConfigHandler
                && AreEqual(o.Fingerprint, n.Fingerprint)
                && AreEqual(o.PublicKey, n.PublicKey)
                && AreEqual(o.ShortId, n.ShortId)
-               && (!remarks || o.Remarks == n.Remarks);
+               && (!remarks || string.Equals(o.Remarks, n.Remarks, StringComparison.Ordinal));
 
         static bool AreEqual(string? a, string? b)
         {
-            return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
+            return string.Equals(a ?? "", b ?? "", StringComparison.Ordinal);
         }
     }
 
@@ -1154,15 +1114,14 @@ public static class ConfigHandler
     /// Remove a single server profile by its index ID
     /// Deletes the configuration file if it's a custom config
     /// </summary>
-    /// <param name="config">Current configuration</param>
     /// <param name="indexId">Index ID of the profile to remove</param>
     /// <returns>0 if successful</returns>
-    private static async Task<int> RemoveProfileItem(Config config, string indexId)
+    private static async Task<int> RemoveProfileItem(string indexId)
     {
         try
         {
             var item = await AppManager.Instance.GetProfileItem(indexId);
-            if (item == null)
+            if (item is null)
             {
                 return 0;
             }
@@ -1185,12 +1144,11 @@ public static class ConfigHandler
     /// Create a group server that combines multiple servers for load balancing
     /// Generates a configuration file that references multiple servers
     /// </summary>
-    /// <param name="config">Current configuration</param>
     /// <param name="selecteds">Selected servers to combine</param>
     /// <param name="coreType">Core type to use (Xray or sing_box)</param>
     /// <param name="multipleLoad">Load balancing algorithm</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddGroupServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
+    public static async Task<RetResult> AddGroupServer4Multiple(List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
     {
         var result = new RetResult();
 
@@ -1237,7 +1195,7 @@ public static class ConfigHandler
             MultipleLoad = multipleLoad,
             IndexId = indexId,
         };
-        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        var ret = await AddGroupServerCommon(profile, profileGroup, true);
         result.Success = ret == 0;
         result.Data = indexId;
         return result;
@@ -1269,7 +1227,7 @@ public static class ConfigHandler
             {
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
+                Address = AppConfig.Loopback,
                 SpiderX = tun2SocksAddress, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
@@ -1281,7 +1239,7 @@ public static class ConfigHandler
             {
                 CoreType = preCoreType,
                 ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
+                Address = AppConfig.Loopback,
                 Port = node.PreSocksPort.Value,
             };
         }
@@ -1352,7 +1310,10 @@ public static class ConfigHandler
         foreach (var str in arrData)
         {
             //maybe sub
-            if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
+            if (
+                !isSub && (str.StartsWith(AppConfig.HttpsProtocol, StringComparison.OrdinalIgnoreCase)
+                || str.StartsWith(AppConfig.HttpProtocol, StringComparison.OrdinalIgnoreCase))
+               )
             {
                 if (await AddSubItem(config, str) == 0)
                 {
@@ -1438,7 +1399,7 @@ public static class ConfigHandler
         {
             lstProfiles = V2rayFmt.ResolveFullArray(strData, subRemarks);
         }
-        if (lstProfiles != null && lstProfiles.Count > 0)
+        if (lstProfiles is not null && lstProfiles.Count > 0)
         {
             if (isSub && subid.IsNotEmpty())
             {
@@ -1462,31 +1423,30 @@ public static class ConfigHandler
         }
 
         ProfileItem? profileItem = null;
-        //Is sing-box configuration
-        if (profileItem is null)
-        {
-            profileItem = SingboxFmt.ResolveFull(strData, subRemarks);
-        }
-        //Is v2ray configuration
-        if (profileItem is null)
-        {
-            profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
-        }
+
         //Is Html Page
         if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
         {
             return -1;
         }
-        //Is Clash configuration
-        if (profileItem is null)
+
+        var resolvers = new Func<string, string?, ProfileItem?>[]
         {
-            profileItem = ClashFmt.ResolveFull(strData, subRemarks);
-        }
-        //Is hysteria configuration
-        if (profileItem is null)
+            SingboxFmt.ResolveFull,
+            V2rayFmt.ResolveFull,
+            ClashFmt.ResolveFull,
+            Hysteria2Fmt.ResolveFull2
+        };
+
+        foreach (var resolver in resolvers)
         {
-            profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
+            profileItem ??= resolver(strData, subRemarks);
+            if (profileItem is not null)
+            {
+                break;
+            }
         }
+
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
             return -1;
@@ -1600,24 +1560,24 @@ public static class ConfigHandler
         }
 
         //Select active node
-        if (activeProfile != null)
+        if (activeProfile is not null)
         {
             var lstSub = await AppManager.Instance.ProfileItems(subid);
             var existItem = lstSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == activeProfile.Remarks : CompareProfileItem(t, activeProfile, true));
-            if (existItem != null)
+            if (existItem is not null)
             {
                 await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
             }
         }
 
         //Keep the last traffic statistics
-        if (lstOriSub != null)
+        if (lstOriSub is not null)
         {
             var lstSub = await AppManager.Instance.ProfileItems(subid);
             foreach (var item in lstSub)
             {
                 var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
-                if (existItem != null)
+                if (existItem is not null)
                 {
                     await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
                 }
@@ -1653,12 +1613,12 @@ public static class ConfigHandler
         };
 
         var uri = Utils.TryUri(url);
-        if (uri == null)
+        if (uri is null)
         {
             return -1;
         }
         //Do not allow http protocol
-        if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
+        if (url.StartsWith(AppConfig.HttpProtocol, StringComparison.OrdinalIgnoreCase) && !Utils.IsPrivateNetwork(uri.IdnHost))
         {
             //TODO Temporary reminder to be removed later
             NoticeManager.Instance.Enqueue(ResUI.InsecureUrlProtocol);
@@ -1835,7 +1795,7 @@ public static class ConfigHandler
         }
 
         var lstRules = JsonUtils.Deserialize<List<RulesItem>>(strData);
-        if (lstRules == null)
+        if (lstRules is null)
         {
             return -1;
         }
@@ -2028,14 +1988,14 @@ public static class ConfigHandler
         }
 
         var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
-        if (template == null)
+        if (template is null)
         {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
         }
 
         var items = await AppManager.Instance.RoutingItems();
         var maxSort = items.Count;
-        if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.Version)).ToList().Count > 0)
+        if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.Version, StringComparison.OrdinalIgnoreCase)).ToList().Count > 0)
         {
             return 0;
         }
@@ -2088,20 +2048,20 @@ public static class ConfigHandler
 
         //TODO Temporary code to be removed later
         var lockItem = items?.FirstOrDefault(t => t.Locked == true);
-        if (lockItem != null)
+        if (lockItem is not null)
         {
             await ConfigHandler.RemoveRoutingItem(lockItem);
             items = await AppManager.Instance.RoutingItems();
         }
 
-        if (!blImportAdvancedRules && items.Count(u => u.Remarks.StartsWith(ver)) > 0)
+        if (!blImportAdvancedRules && items.Any(u => u.Remarks.StartsWith(ver, StringComparison.OrdinalIgnoreCase)))
         {
             //migrate
             //TODO Temporary code to be removed later
             if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
             {
                 var item = items.FirstOrDefault(t => t.Id == config.RoutingBasicItem.RoutingIndexId);
-                if (item != null)
+                if (item is not null)
                 {
                     await SetDefaultRouting(config, item);
                 }
@@ -2119,7 +2079,7 @@ public static class ConfigHandler
             Url = string.Empty,
             Sort = maxSort + 1,
         };
-        await AddBatchRoutingRules(item2, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "white"));
+        await AddBatchRoutingRules(item2, EmbedUtils.GetEmbedText(AppConfig.CustomRoutingFileName + "white"));
 
         //Blacklist
         var item3 = new RoutingItem()
@@ -2128,7 +2088,7 @@ public static class ConfigHandler
             Url = string.Empty,
             Sort = maxSort + 2,
         };
-        await AddBatchRoutingRules(item3, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "black"));
+        await AddBatchRoutingRules(item3, EmbedUtils.GetEmbedText(AppConfig.CustomRoutingFileName + "black"));
 
         //Global
         var item1 = new RoutingItem()
@@ -2137,7 +2097,7 @@ public static class ConfigHandler
             Url = string.Empty,
             Sort = maxSort + 3,
         };
-        await AddBatchRoutingRules(item1, EmbedUtils.GetEmbedText(Global.CustomRoutingFileName + "global"));
+        await AddBatchRoutingRules(item1, EmbedUtils.GetEmbedText(AppConfig.CustomRoutingFileName + "global"));
 
         if (!blImportAdvancedRules)
         {
@@ -2217,7 +2177,7 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SaveDNSItems(Config config, DNSItem item)
     {
-        if (item == null)
+        if (item is null)
         {
             return -1;
         }
@@ -2256,7 +2216,7 @@ public static class ConfigHandler
         }
 
         var template = JsonUtils.Deserialize<DNSItem>(templateContent);
-        if (template == null)
+        if (template is null)
         {
             return currentItem;
         }
@@ -2292,9 +2252,9 @@ public static class ConfigHandler
             FakeIP = false,
             GlobalFakeIp = true,
             BlockBindingQuery = true,
-            DirectDNS = Global.DomainDirectDNSAddress.FirstOrDefault(),
-            RemoteDNS = Global.DomainRemoteDNSAddress.FirstOrDefault(),
-            BootstrapDNS = Global.DomainPureIPDNSAddress.FirstOrDefault(),
+            DirectDNS = AppConfig.DomainDirectDNSAddress.FirstOrDefault(),
+            RemoteDNS = AppConfig.DomainRemoteDNSAddress.FirstOrDefault(),
+            BootstrapDNS = AppConfig.DomainPureIPDNSAddress.FirstOrDefault(),
         };
     }
 
@@ -2308,7 +2268,7 @@ public static class ConfigHandler
         }
 
         var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
-        if (template == null)
+        if (template is null)
         {
             return null;
         }
@@ -2345,7 +2305,7 @@ public static class ConfigHandler
 
     public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
     {
-        if (item == null)
+        if (item is null)
         {
             return -1;
         }
@@ -2392,15 +2352,15 @@ public static class ConfigHandler
                 break;
 
             case EPresetType.Russia:
-                config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
-                config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
-                config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+                config.ConstItem.GeoSourceUrl = AppConfig.GeoFilesSources[1];
+                config.ConstItem.SrsSourceUrl = AppConfig.SingboxRulesetSources[1];
+                config.ConstItem.RouteRulesTemplateSourceUrl = AppConfig.RoutingRulesSources[1];
 
-                var xrayDnsRussia = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json");
-                var singboxDnsRussia = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json");
-                var simpleDnsRussia = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[1] + "simple_dns.json");
+                var xrayDnsRussia = await GetExternalDNSItem(ECoreType.Xray, AppConfig.DNSTemplateSources[1] + "v2ray.json");
+                var singboxDnsRussia = await GetExternalDNSItem(ECoreType.sing_box, AppConfig.DNSTemplateSources[1] + "sing_box.json");
+                var simpleDnsRussia = await GetExternalSimpleDNSItem(AppConfig.DNSTemplateSources[1] + "simple_dns.json");
 
-                if (simpleDnsRussia == null)
+                if (simpleDnsRussia is null)
                 {
                     xrayDnsRussia.Enabled = true;
                     singboxDnsRussia.Enabled = true;
@@ -2415,15 +2375,15 @@ public static class ConfigHandler
                 break;
 
             case EPresetType.Iran:
-                config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
-                config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
-                config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
+                config.ConstItem.GeoSourceUrl = AppConfig.GeoFilesSources[2];
+                config.ConstItem.SrsSourceUrl = AppConfig.SingboxRulesetSources[2];
+                config.ConstItem.RouteRulesTemplateSourceUrl = AppConfig.RoutingRulesSources[2];
 
-                var xrayDnsIran = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json");
-                var singboxDnsIran = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json");
-                var simpleDnsIran = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[2] + "simple_dns.json");
+                var xrayDnsIran = await GetExternalDNSItem(ECoreType.Xray, AppConfig.DNSTemplateSources[2] + "v2ray.json");
+                var singboxDnsIran = await GetExternalDNSItem(ECoreType.sing_box, AppConfig.DNSTemplateSources[2] + "sing_box.json");
+                var simpleDnsIran = await GetExternalSimpleDNSItem(AppConfig.DNSTemplateSources[2] + "simple_dns.json");
 
-                if (simpleDnsIran == null)
+                if (simpleDnsIran is null)
                 {
                     xrayDnsIran.Enabled = true;
                     singboxDnsIran.Enabled = true;
@@ -2448,7 +2408,7 @@ public static class ConfigHandler
     public static WindowSizeItem? GetWindowSizeItem(Config config, string typeName)
     {
         var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
-        if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
+        if (sizeItem is null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
         {
             return null;
         }
@@ -2459,7 +2419,7 @@ public static class ConfigHandler
     public static int SaveWindowSizeItem(Config config, string typeName, double width, double height)
     {
         var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
-        if (sizeItem == null)
+        if (sizeItem is null)
         {
             sizeItem = new WindowSizeItem { TypeName = typeName };
             config.UiItem.WindowSizeItem.Add(sizeItem);

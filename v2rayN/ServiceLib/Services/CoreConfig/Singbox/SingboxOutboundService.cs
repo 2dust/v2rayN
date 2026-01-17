@@ -8,7 +8,7 @@ public partial class CoreConfigSingboxService
         {
             outbound.server = node.Address;
             outbound.server_port = node.Port;
-            outbound.type = Global.ProtocolTypes[node.ConfigType];
+            outbound.type = AppConfig.ProtocolTypes[node.ConfigType];
 
             switch (node.ConfigType)
             {
@@ -16,13 +16,13 @@ public partial class CoreConfigSingboxService
                     {
                         outbound.uuid = node.Id;
                         outbound.alter_id = node.AlterId;
-                        if (Global.VmessSecurities.Contains(node.Security))
+                        if (AppConfig.VmessSecurities.Contains(node.Security))
                         {
                             outbound.security = node.Security;
                         }
                         else
                         {
-                            outbound.security = Global.DefaultSecurity;
+                            outbound.security = AppConfig.DefaultSecurity;
                         }
 
                         await GenOutboundMux(node, outbound);
@@ -31,10 +31,10 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Shadowsocks:
                     {
-                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : Global.None;
+                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : AppConfig.None;
                         outbound.password = node.Id;
 
-                        if (node.Network == nameof(ETransport.tcp) && node.HeaderType == Global.TcpHeaderHttp)
+                        if (node.Network == nameof(ETransport.tcp) && node.HeaderType == AppConfig.TcpHeaderHttp)
                         {
                             outbound.plugin = "obfs-local";
                             outbound.plugin_opts = $"obfs=http;obfs-host={node.RequestHost};";
@@ -55,7 +55,7 @@ public partial class CoreConfigSingboxService
                             {
                                 pluginArgs += "mode=quic;";
                             }
-                            if (node.StreamSecurity == Global.StreamSecurity)
+                            if (node.StreamSecurity == AppConfig.StreamSecurity)
                             {
                                 pluginArgs += "tls;";
                                 var certs = CertPemManager.ParsePemChain(node.Cert);
@@ -141,7 +141,7 @@ public partial class CoreConfigSingboxService
                             outbound.obfs = new()
                             {
                                 type = "salamander",
-                                password = node.Path.TrimEx(),
+                                password = node.Path.TrimSafe(),
                             };
                         }
 
@@ -192,7 +192,7 @@ public partial class CoreConfigSingboxService
         try
         {
             endpoint.address = Utils.String2List(node.RequestHost);
-            endpoint.type = Global.ProtocolTypes[node.ConfigType];
+            endpoint.type = AppConfig.ProtocolTypes[node.ConfigType];
 
             switch (node.ConfigType)
             {
@@ -208,7 +208,7 @@ public partial class CoreConfigSingboxService
                             allowed_ips = new() { "0.0.0.0/0", "::/0" },
                         };
                         endpoint.private_key = node.Id;
-                        endpoint.mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt();
+                        endpoint.mtu = node.ShortId.IsNullOrEmpty() ? AppConfig.TunMtus.First() : node.ShortId.ToInt();
                         endpoint.peers = new() { peer };
                         break;
                     }
@@ -225,7 +225,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
             if (node.ConfigType == EConfigType.WireGuard)
             {
                 var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
@@ -282,7 +282,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            if (node.StreamSecurity is not (Global.StreamSecurityReality or Global.StreamSecurity))
+            if (node.StreamSecurity is not (AppConfig.StreamSecurityReality or AppConfig.StreamSecurity))
             {
                 return await Task.FromResult(0);
             }
@@ -315,7 +315,7 @@ public partial class CoreConfigSingboxService
                     fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
                 };
             }
-            if (node.StreamSecurity == Global.StreamSecurity)
+            if (node.StreamSecurity == AppConfig.StreamSecurity)
             {
                 var certs = CertPemManager.ParsePemChain(node.Cert);
                 if (certs.Count > 0)
@@ -324,7 +324,7 @@ public partial class CoreConfigSingboxService
                     tls.insecure = false;
                 }
             }
-            else if (node.StreamSecurity == Global.StreamSecurityReality)
+            else if (node.StreamSecurity == AppConfig.StreamSecurityReality)
             {
                 tls.reality = new Reality4Sbox()
                 {
@@ -363,7 +363,7 @@ public partial class CoreConfigSingboxService
                     break;
 
                 case nameof(ETransport.tcp):   //http
-                    if (node.HeaderType == Global.TcpHeaderHttp)
+                    if (node.HeaderType == AppConfig.TcpHeaderHttp)
                     {
                         transport.type = nameof(ETransport.http);
                         transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
@@ -433,7 +433,7 @@ public partial class CoreConfigSingboxService
                 default:
                     break;
             }
-            if (transport.type != null)
+            if (transport.type is not null)
             {
                 outbound.transport = transport;
             }
@@ -445,7 +445,7 @@ public partial class CoreConfigSingboxService
         return await Task.FromResult(0);
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = AppConfig.ProxyTag, bool ignoreOriginChain = false)
     {
         try
         {
@@ -508,18 +508,18 @@ public partial class CoreConfigSingboxService
             }
 
             //current proxy
-            BaseServer4Sbox? outbound = singboxConfig.endpoints?.FirstOrDefault(t => t.tag == Global.ProxyTag, null);
+            BaseServer4Sbox? outbound = singboxConfig.endpoints?.FirstOrDefault(t => t.tag == AppConfig.ProxyTag, null);
             outbound ??= singboxConfig.outbounds.First();
 
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
 
             //Previous proxy
             var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
             string? prevOutboundTag = null;
             if (prevNode is not null
-                && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
+                && AppConfig.SingboxSupportConfigType.Contains(prevNode.ConfigType))
             {
-                prevOutboundTag = $"prev-{Global.ProxyTag}";
+                prevOutboundTag = $"prev-{AppConfig.ProxyTag}";
                 var prevServer = await GenServer(prevNode);
                 prevServer.tag = prevOutboundTag;
                 if (prevServer is Endpoints4Sbox endpoint)
@@ -555,12 +555,12 @@ public partial class CoreConfigSingboxService
         return 0;
     }
 
-    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = AppConfig.ProxyTag)
     {
         try
         {
             // Get outbound template and initialize lists
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
             if (txtOutbound.IsNullOrEmpty())
             {
                 return 0;
@@ -610,7 +610,7 @@ public partial class CoreConfigSingboxService
                 string? prevTag = null;
                 var currentServer = await GenServer(node);
                 var nextServer = nextProxyCache.GetValueOrDefault(node.Subid, null);
-                if (nextServer != null)
+                if (nextServer is not null)
                 {
                     nextServer = JsonUtils.DeepCopy(nextServer);
                 }
@@ -631,7 +631,7 @@ public partial class CoreConfigSingboxService
                     {
                         var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
                         if (prevNode is not null
-                            && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
+                            && AppConfig.SingboxSupportConfigType.Contains(prevNode.ConfigType))
                         {
                             var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
                             await GenOutbound(prevNode, prevOutbound);
@@ -707,7 +707,7 @@ public partial class CoreConfigSingboxService
                 .Concat(resultOutbounds)
                 .Concat(resultEndpoints)
                 .ToList();
-            await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
+            await AddRangeOutbounds(serverList, singboxConfig, baseTagName == AppConfig.ProxyTag);
         }
         catch (Exception ex)
         {
@@ -721,7 +721,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            var txtOutbound = EmbedUtils.GetEmbedText(AppConfig.SingboxSampleOutbound);
 
             if (!prevOutboundTag.IsNullOrEmpty())
             {
@@ -731,7 +731,7 @@ public partial class CoreConfigSingboxService
             // Next proxy
             var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode is not null
-                && Global.SingboxSupportConfigType.Contains(nextNode.ConfigType))
+                && AppConfig.SingboxSupportConfigType.Contains(nextNode.ConfigType))
             {
                 nextOutbound ??= await GenServer(nextNode);
                 nextOutbound.tag = outbound.tag;
@@ -748,7 +748,7 @@ public partial class CoreConfigSingboxService
         return null;
     }
 
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = AppConfig.ProxyTag)
     {
         var resultOutbounds = new List<Outbound4Sbox>();
         var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
@@ -756,7 +756,7 @@ public partial class CoreConfigSingboxService
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            if (node == null)
+            if (node is null)
             {
                 continue;
             }
@@ -830,11 +830,11 @@ public partial class CoreConfigSingboxService
         serverList = serverList.Concat(resultOutbounds)
             .Concat(resultEndpoints)
             .ToList();
-        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
+        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == AppConfig.ProxyTag);
         return await Task.FromResult(0);
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, string baseTagName = AppConfig.ProxyTag)
     {
         // Based on actual network flow instead of data packets
         var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
@@ -877,7 +877,7 @@ public partial class CoreConfigSingboxService
         serverList = serverList.Concat(resultOutbounds)
             .Concat(resultEndpoints)
             .ToList();
-        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
+        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == AppConfig.ProxyTag);
         return await Task.FromResult(0);
     }
 

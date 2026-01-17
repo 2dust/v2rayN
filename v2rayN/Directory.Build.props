@@ -8,7 +8,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <NoWarn>CA1031;CS1591;NU1507;CA1416;IDE0058;IDE0053;IDE0200;NETSDK1206</NoWarn>
+        <NoWarn>CA1031;CS1591;NU1507;CA1416;IDE0058;IDE0053;IDE0200;IDE0022;NETSDK1206</NoWarn>
         <Nullable>annotations</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <Authors>2dust</Authors>

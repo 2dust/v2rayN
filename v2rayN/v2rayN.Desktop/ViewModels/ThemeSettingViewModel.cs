@@ -15,7 +15,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     public ThemeSettingViewModel()
     {
-        _config = AppManager.Instance.Config;
+        Config = AppManager.Instance.Config;
 
         BindingUI();
         RestoreUI();
@@ -30,71 +30,64 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void BindingUI()
     {
-        CurrentTheme = _config.UiItem.CurrentTheme;
-        CurrentFontSize = _config.UiItem.CurrentFontSize;
-        CurrentLanguage = _config.UiItem.CurrentLanguage;
+        CurrentTheme = Config.UiItem.CurrentTheme;
+        CurrentFontSize = Config.UiItem.CurrentFontSize;
+        CurrentLanguage = Config.UiItem.CurrentLanguage;
 
         this.WhenAnyValue(x => x.CurrentTheme)
-            .Subscribe(c =>
+            .Where(t => t != Config.UiItem.CurrentTheme)
+            .Select(c => Observable.FromAsync(async () =>
             {
-                if (_config.UiItem.CurrentTheme != CurrentTheme)
-                {
-                    _config.UiItem.CurrentTheme = CurrentTheme;
-                    ModifyTheme();
-                    ConfigHandler.SaveConfig(_config);
-                }
-            });
+                Config.UiItem.CurrentTheme = c;
+                ModifyTheme();
+                await ConfigHandler.SaveConfig(Config);
+            }))
+            .Concat()
+            .Subscribe();
 
-        this.WhenAnyValue(
-                x => x.CurrentFontSize,
-                y => y > 0)
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentFontSize)
+            .Where(s => s >= AppConfig.MinFontSize && s != Config.UiItem.CurrentFontSize)
+            .Select(c => Observable.FromAsync(async () =>
             {
-                if (_config.UiItem.CurrentFontSize != CurrentFontSize && CurrentFontSize >= Global.MinFontSize)
-                {
-                    _config.UiItem.CurrentFontSize = CurrentFontSize;
-                    ModifyFontSize();
-                    ConfigHandler.SaveConfig(_config);
-                }
-            });
+                Config.UiItem.CurrentFontSize = c;
+                ModifyFontSize();
+                await ConfigHandler.SaveConfig(Config);
+            }))
+            .Concat()
+            .Subscribe();
 
-        this.WhenAnyValue(
-                x => x.CurrentLanguage,
-                y => y != null && !y.IsNullOrEmpty())
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentLanguage)
+            .Where(l => l.IsNotEmpty() && l != Config.UiItem.CurrentLanguage)
+            .Select(c => Observable.FromAsync(async () =>
             {
-                if (CurrentLanguage.IsNotEmpty() && _config.UiItem.CurrentLanguage != CurrentLanguage)
-                {
-                    _config.UiItem.CurrentLanguage = CurrentLanguage;
-                    Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    ConfigHandler.SaveConfig(_config);
-                    NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
-                }
-            });
+                Config.UiItem.CurrentLanguage = c;
+                Thread.CurrentThread.CurrentUICulture = new(c);
+                await ConfigHandler.SaveConfig(Config);
+                NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
+            }))
+            .Concat()
+            .Subscribe();
     }
 
     private void ModifyTheme()
     {
         var app = Application.Current;
-        if (app is not null)
+        app?.RequestedThemeVariant = CurrentTheme switch
         {
-            app.RequestedThemeVariant = CurrentTheme switch
-            {
-                nameof(ETheme.Dark) => ThemeVariant.Dark,
-                nameof(ETheme.Light) => ThemeVariant.Light,
-                nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
-                nameof(ETheme.Desert) => SemiTheme.Desert,
-                nameof(ETheme.Dusk) => SemiTheme.Dusk,
-                nameof(ETheme.NightSky) => SemiTheme.NightSky,
-                _ => ThemeVariant.Default,
-            };
-        }
+            nameof(ETheme.Dark) => ThemeVariant.Dark,
+            nameof(ETheme.Light) => ThemeVariant.Light,
+            nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
+            nameof(ETheme.Desert) => SemiTheme.Desert,
+            nameof(ETheme.Dusk) => SemiTheme.Dusk,
+            nameof(ETheme.NightSky) => SemiTheme.NightSky,
+            _ => ThemeVariant.Default,
+        };
     }
 
     private void ModifyFontSize()
     {
         double size = CurrentFontSize;
-        if (size < Global.MinFontSize)
+        if (size < AppConfig.MinFontSize)
         {
             return;
         }
@@ -121,7 +114,7 @@ public class ThemeSettingViewModel : MyReactiveObject
         ModifyFontSizeEx(size);
     }
 
-    private void ModifyFontSizeEx(double size)
+    private static void ModifyFontSizeEx(double size)
     {
         //DataGrid
         var rowHeight = 20 + (size / 2);
@@ -130,9 +123,9 @@ public class ThemeSettingViewModel : MyReactiveObject
         Application.Current?.Styles.Add(style);
     }
 
-    private void ModifyFontFamily()
+    private static void ModifyFontFamily()
     {
-        var currentFontFamily = _config.UiItem.CurrentFontFamily;
+        var currentFontFamily = Config.UiItem.CurrentFontFamily;
         if (currentFontFamily.IsNullOrEmpty())
         {
             return;

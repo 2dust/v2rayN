@@ -2,12 +2,9 @@ using Downloader;
 
 namespace ServiceLib.Helper;
 
-public class DownloaderHelper
+public static class DownloaderHelper
 {
-    private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
-    public static DownloaderHelper Instance => _instance.Value;
-
-    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
+    public static async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
     {
         if (url.IsNullOrEmpty())
         {
@@ -38,7 +35,7 @@ public class DownloaderHelper
         await using var downloader = new Downloader.DownloadService(downloadOpt);
         downloader.DownloadFileCompleted += (sender, value) =>
         {
-            if (value.Error != null)
+            if (value.Error is not null)
             {
                 throw value.Error;
             }
@@ -53,7 +50,7 @@ public class DownloaderHelper
         return await reader.ReadToEndAsync(cts.Token);
     }
 
-    public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
+    public static async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
     {
         if (url.IsNullOrEmpty())
         {
@@ -78,14 +75,14 @@ public class DownloaderHelper
 
         downloader.DownloadProgressChanged += (sender, value) =>
         {
-            if (progress != null && value.BytesPerSecondSpeed > 0)
+            if (progress is not null && value.BytesPerSecondSpeed > 0)
             {
                 hasValue = true;
                 if (value.BytesPerSecondSpeed > maxSpeed)
                 {
                     maxSpeed = value.BytesPerSecondSpeed;
                 }
-                
+
                 var ts = DateTime.Now - lastUpdateTime;
                 if (ts.TotalMilliseconds >= 1000)
                 {
@@ -97,14 +94,14 @@ public class DownloaderHelper
         };
         downloader.DownloadFileCompleted += (sender, value) =>
         {
-            if (progress != null)
+            if (progress is not null)
             {
                 if (hasValue && maxSpeed > 0)
                 {
                     var finalSpeed = (maxSpeed / 1000 / 1000).ToString("#0.0");
                     progress.Report(finalSpeed);
                 }
-                else if (value.Error != null)
+                else if (value.Error is not null)
                 {
                     progress.Report(value.Error?.Message);
                 }
@@ -122,7 +119,7 @@ public class DownloaderHelper
         downloadOpt = null;
     }
 
-    public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
+    public static async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
     {
         if (url.IsNullOrEmpty())
         {
@@ -164,13 +161,13 @@ public class DownloaderHelper
         };
         downloader.DownloadFileCompleted += (sender, value) =>
         {
-            if (progress != null)
+            if (progress is not null)
             {
-                if (hasValue && value.Error == null)
+                if (hasValue && value.Error is null)
                 {
                     progress.Report(101);
                 }
-                else if (value.Error != null)
+                else if (value.Error is not null)
                 {
                     throw value.Error;
                 }

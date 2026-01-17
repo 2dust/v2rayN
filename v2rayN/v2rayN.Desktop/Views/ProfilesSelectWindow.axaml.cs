@@ -9,7 +9,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
     public Task<ProfileItem?> ProfileItem => GetProfileItem();
     public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
-    private bool _allowMultiSelect = false;
+    private bool _allowMultiSelect;
 
     public ProfilesSelectWindow()
     {
@@ -77,10 +77,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
     private void LstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
-        }
+        ViewModel?.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
     }
 
     private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)

@@ -7,7 +7,7 @@ public class SocksFmt : BaseFmt
         msg = ResUI.ConfigurationFormatIncorrect;
 
         var item = ResolveSocksNew(str) ?? ResolveSocks(str);
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -23,7 +23,7 @@ public class SocksFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -43,7 +43,7 @@ public class SocksFmt : BaseFmt
         {
             ConfigType = EConfigType.SOCKS
         };
-        result = result[Global.ProtocolShares[EConfigType.SOCKS].Length..];
+        result = result[AppConfig.ProtocolShares[EConfigType.SOCKS].Length..];
         //remark
         var indexRemark = result.IndexOf('#');
         if (indexRemark > 0)
@@ -87,7 +87,7 @@ public class SocksFmt : BaseFmt
     private static ProfileItem? ResolveSocksNew(string result)
     {
         var parsedUrl = Utils.TryUri(result);
-        if (parsedUrl == null)
+        if (parsedUrl is null)
         {
             return null;
         }

@@ -42,7 +42,7 @@ public class QRCodeUtils
             }
         }
 
-        if (lastDtle != null)
+        if (lastDtle is not null)
         {
             throw lastDtle;
         }
@@ -52,7 +52,7 @@ public class QRCodeUtils
 
     public static string? ParseBarcode(string? fileName)
     {
-        if (fileName == null || !File.Exists(fileName))
+        if (fileName is null || !File.Exists(fileName))
         {
             return null;
         }
@@ -96,7 +96,7 @@ public class QRCodeUtils
         var reader = new BarcodeReader();
         var result = reader.Decode(bitmap);
 
-        if (result != null && result.Text.IsNotEmpty())
+        if (result is not null && result.Text.IsNotEmpty())
         {
             return result.Text;
         }

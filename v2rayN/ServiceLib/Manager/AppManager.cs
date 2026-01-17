@@ -5,11 +5,10 @@ public sealed class AppManager
     #region Property
 
     private static readonly Lazy<AppManager> _instance = new(() => new());
-    private Config _config;
     private int? _statePort;
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
-    public Config Config => _config;
+    public Config Config { get; private set; }
 
     public int StatePort
     {
@@ -25,7 +24,7 @@ public sealed class AppManager
         get
         {
             _statePort2 ??= Utils.GetFreePort(GetLocalPort(EInboundProtocol.api2));
-            return _statePort2.Value + (_config.TunModeItem.EnableTun ? 1 : 0);
+            return _statePort2.Value + (Config.TunModeItem.EnableTun ? 1 : 0);
         }
     }
 
@@ -56,17 +55,17 @@ public sealed class AppManager
     {
         if (Utils.HasWritePermission() == false)
         {
-            Environment.SetEnvironmentVariable(Global.LocalAppData, "1", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable(AppConfig.LocalAppData, "1", EnvironmentVariableTarget.Process);
         }
 
         Logging.Setup();
         var config = ConfigHandler.LoadConfig();
-        if (config == null)
+        if (config is null)
         {
             return false;
         }
-        _config = config;
-        Thread.CurrentThread.CurrentUICulture = new(_config.UiItem.CurrentLanguage);
+        Config = config;
+        Thread.CurrentThread.CurrentUICulture = new(Config.UiItem.CurrentLanguage);
 
         //Under Win10
         if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
@@ -88,7 +87,7 @@ public sealed class AppManager
     public bool InitComponents()
     {
         Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
-        Logging.LoggingEnabled(_config.GuiItem.EnableLog);
+        Logging.LoggingEnabled(Config.GuiItem.EnableLog);
 
         //First determine the port value
         _ = StatePort;
@@ -110,11 +109,11 @@ public sealed class AppManager
         {
             Logging.SaveLog("AppExitAsync Begin");
 
-            await SysProxyHandler.UpdateSysProxy(_config, true);
+            await SysProxyHandler.UpdateSysProxy(Config, true);
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
-            await ConfigHandler.SaveConfig(_config);
+            await ConfigHandler.SaveConfig(Config);
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
             await CoreManager.Instance.CoreStop();
@@ -149,7 +148,7 @@ public sealed class AppManager
 
     public int GetLocalPort(EInboundProtocol protocol)
     {
-        var localPort = _config.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
+        var localPort = Config.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
         return localPort + (int)protocol;
     }
 
@@ -274,25 +273,25 @@ public sealed class AppManager
         switch (coreType)
         {
             case ECoreType.v2fly:
-                return Global.SsSecurities;
+                return AppConfig.SsSecurities;
 
             case ECoreType.Xray:
-                return Global.SsSecuritiesInXray;
+                return AppConfig.SsSecuritiesInXray;
 
             case ECoreType.sing_box:
-                return Global.SsSecuritiesInSingbox;
+                return AppConfig.SsSecuritiesInSingbox;
         }
-        return Global.SsSecuritiesInSingbox;
+        return AppConfig.SsSecuritiesInSingbox;
     }
 
     public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
     {
-        if (profileItem?.CoreType != null)
+        if (profileItem?.CoreType is not null)
         {
             return (ECoreType)profileItem.CoreType;
         }
 
-        var item = _config.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
+        var item = Config.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
         return item?.CoreType ?? ECoreType.Xray;
     }
 

@@ -6,7 +6,7 @@ public partial class CoreConfigSingboxService
     {
         static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
         {
-            if (rule_set != null)
+            if (rule_set is not null)
             {
                 ruleSets.AddRange(rule_set);
             }
@@ -67,9 +67,9 @@ public partial class CoreConfigSingboxService
             if (result.IsNotEmpty())
             {
                 customRulesets = (JsonUtils.Deserialize<List<Ruleset4Sbox>>(result) ?? [])
-                    .Where(t => t.tag != null)
-                    .Where(t => t.type != null)
-                    .Where(t => t.format != null)
+                    .Where(t => t.tag is not null)
+                    .Where(t => t.type is not null)
+                    .Where(t => t.format is not null)
                     .ToList();
             }
         }
@@ -82,8 +82,10 @@ public partial class CoreConfigSingboxService
         foreach (var item in new HashSet<string>(ruleSets))
         {
             if (item.IsNullOrEmpty())
-            { continue; }
-            var customRuleset = customRulesets.FirstOrDefault(t => t.tag != null && t.tag.Equals(item));
+            {
+                continue;
+            }
+            var customRuleset = customRulesets.FirstOrDefault(t => t.tag is not null && t.tag.Equals(item));
             if (customRuleset is null)
             {
                 var pathSrs = Path.Combine(localSrss, $"{item}.srs");
@@ -100,7 +102,7 @@ public partial class CoreConfigSingboxService
                 else
                 {
                     var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
-                        ? Global.SingboxRulesetUrl
+                        ? AppConfig.SingboxRulesetUrl
                         : _config.ConstItem.SrsSourceUrl;
 
                     customRuleset = new()
@@ -109,7 +111,7 @@ public partial class CoreConfigSingboxService
                         format = "binary",
                         tag = item,
                         url = string.Format(srsUrl, item.StartsWith(geosite) ? geosite : geoip, item),
-                        download_detour = Global.ProxyTag
+                        download_detour = AppConfig.ProxyTag
                     };
                 }
             }

@@ -136,7 +136,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         if (preRelease)
         {
             var url = coreInfo?.ReleaseApiUrl;
-            var result = await downloadHandle.TryDownloadString(url, true, Global.AppName);
+            var result = await downloadHandle.TryDownloadString(url, true, AppConfig.AppName);
             if (result.IsNullOrEmpty())
             {
                 return new UpdateResult(false, "");
@@ -151,7 +151,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         {
             var url = Path.Combine(coreInfo.Url, "latest");
             var lastUrl = await downloadHandle.UrlRedirectAsync(url, true);
-            if (lastUrl == null)
+            if (lastUrl is null)
             {
                 return new UpdateResult(false, "");
             }
@@ -327,7 +327,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
     private async Task UpdateGeoFiles()
     {
         var geoUrl = string.IsNullOrEmpty(_config?.ConstItem.GeoSourceUrl)
-            ? Global.GeoUrl
+            ? AppConfig.GeoUrl
             : _config.ConstItem.GeoSourceUrl;
 
         List<string> files = ["geosite", "geoip"];
@@ -349,7 +349,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             return;
         }
 
-        foreach (var url in Global.OtherGeoUrls)
+        foreach (var url in AppConfig.OtherGeoUrls)
         {
             var fileName = Path.GetFileName(url);
             var targetPath = Utils.GetBinPath($"{fileName}");
@@ -415,7 +415,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
     private async Task UpdateSrsFile(string type, string srsName)
     {
         var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
-                        ? Global.SingboxRulesetUrl
+                        ? AppConfig.SingboxRulesetUrl
                         : _config.ConstItem.SrsSourceUrl;
 
         var fileName = $"{type}-{srsName}.srs";

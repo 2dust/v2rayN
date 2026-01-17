@@ -3,6 +3,9 @@ namespace ServiceLib.ViewModels;
 public class StatusBarViewModel : MyReactiveObject
 {
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
+
+    private static readonly CompositeFormat _speedDisplayFormat = CompositeFormat.Parse(ResUI.SpeedDisplayText);
+
     public static StatusBarViewModel Instance => _instance.Value;
 
     #region ObservableCollection
@@ -94,35 +97,35 @@ public class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
+        Config = AppManager.Instance.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = "-";
         BlSystemProxyPacVisible = Utils.IsWindows();
         BlIsNonWindows = Utils.IsNonWindows();
 
-        if (_config.TunModeItem.EnableTun && AllowEnableTun())
+        if (Config.TunModeItem.EnableTun && AllowEnableTun())
         {
             EnableTun = true;
         }
         else
         {
-            _config.TunModeItem.EnableTun = EnableTun = false;
+            Config.TunModeItem.EnableTun = EnableTun = false;
         }
 
         #region WhenAnyValue && ReactiveCommand
 
         this.WhenAnyValue(
                 x => x.SelectedRouting,
-                y => y != null && !y.Remarks.IsNullOrEmpty())
+                y => y is not null && !y.Remarks.IsNullOrEmpty())
             .Subscribe(async c => await RoutingSelectedChangedAsync(c));
 
         this.WhenAnyValue(
                 x => x.SelectedServer,
-                y => y != null && !y.Text.IsNullOrEmpty())
+                y => y is not null && !y.Text.IsNullOrEmpty())
             .Subscribe(ServerSelectedChanged);
 
-        SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
+        SystemProxySelected = (int)Config.SystemProxyItem.SysProxyType;
         this.WhenAnyValue(
                 x => x.SystemProxySelected,
                 y => y >= 0)
@@ -131,7 +134,7 @@ public class StatusBarViewModel : MyReactiveObject
         this.WhenAnyValue(
                 x => x.EnableTun,
                 y => y == true)
-            .Subscribe(async c => await DoEnableTun(c));
+            .Subscribe(async c => await DoEnableTun());
 
         CopyProxyCmdToClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -193,7 +196,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         #region AppEvents
 
-        if (updateView != null)
+        if (updateView is not null)
         {
             InitUpdateView(updateView);
         }
@@ -230,16 +233,16 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await ConfigHandler.InitBuiltinRouting(_config);
+        await ConfigHandler.InitBuiltinRouting(Config);
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
-        await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
+        await ChangeSystemProxyAsync(Config.SystemProxyItem.SysProxyType, true);
     }
 
     public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _updateView = updateView;
-        if (_updateView != null)
+        UpdateView = updateView;
+        if (UpdateView is not null)
         {
             AppEvents.ProfilesRefreshRequested
               .AsObservable()
@@ -251,33 +254,33 @@ public class StatusBarViewModel : MyReactiveObject
     private async Task CopyProxyCmdToClipboard()
     {
         var cmd = Utils.IsWindows() ? "set" : "export";
-        var address = $"{Global.Loopback}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}";
+        var address = $"{AppConfig.Loopback}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}";
 
         var sb = new StringBuilder();
-        sb.AppendLine($"{cmd} http_proxy={Global.HttpProtocol}{address}");
-        sb.AppendLine($"{cmd} https_proxy={Global.HttpProtocol}{address}");
-        sb.AppendLine($"{cmd} all_proxy={Global.Socks5Protocol}{address}");
+        sb.AppendLine($"{cmd} http_proxy={AppConfig.HttpProtocol}{address}");
+        sb.AppendLine($"{cmd} https_proxy={AppConfig.HttpProtocol}{address}");
+        sb.AppendLine($"{cmd} all_proxy={AppConfig.Socks5Protocol}{address}");
         sb.AppendLine("");
-        sb.AppendLine($"{cmd} HTTP_PROXY={Global.HttpProtocol}{address}");
-        sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
-        sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
+        sb.AppendLine($"{cmd} HTTP_PROXY={AppConfig.HttpProtocol}{address}");
+        sb.AppendLine($"{cmd} HTTPS_PROXY={AppConfig.HttpProtocol}{address}");
+        sb.AppendLine($"{cmd} ALL_PROXY={AppConfig.Socks5Protocol}{address}");
 
-        await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+        await UpdateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
     }
 
-    private async Task AddServerViaClipboard()
+    private static async Task AddServerViaClipboard()
     {
         AppEvents.AddServerViaClipboardRequested.Publish();
         await Task.Delay(1000);
     }
 
-    private async Task AddServerViaScan()
+    private static async Task AddServerViaScan()
     {
         AppEvents.AddServerViaScanRequested.Publish();
         await Task.Delay(1000);
     }
 
-    private async Task UpdateSubscriptionProcess(bool blProxy)
+    private static async Task UpdateSubscriptionProcess(bool blProxy)
     {
         AppEvents.SubscriptionsUpdateRequested.Publish(blProxy);
         await Task.Delay(1000);
@@ -288,8 +291,8 @@ public class StatusBarViewModel : MyReactiveObject
         await RefreshServersMenu();
 
         //display running server
-        var running = await ConfigHandler.GetDefaultServer(_config);
-        if (running != null)
+        var running = await ConfigHandler.GetDefaultServer(Config);
+        if (running is not null)
         {
             RunningServerDisplay =
                 RunningServerToolTipText = running.GetSummary();
@@ -303,10 +306,10 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, "");
+        var lstModel = await AppManager.Instance.ProfileItems(Config.SubIndexId, "");
 
         Servers.Clear();
-        if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
+        if (lstModel.Count > Config.GuiItem.TrayMenuServersLimit)
         {
             BlServers = false;
             return;
@@ -320,7 +323,7 @@ public class StatusBarViewModel : MyReactiveObject
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
             Servers.Add(item);
-            if (_config.IndexId == it.IndexId)
+            if (Config.IndexId == it.IndexId)
             {
                 SelectedServer = item;
             }
@@ -333,7 +336,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        if (SelectedServer == null)
+        if (SelectedServer is null)
         {
             return;
         }
@@ -346,8 +349,8 @@ public class StatusBarViewModel : MyReactiveObject
 
     public async Task TestServerAvailability()
     {
-        var item = await ConfigHandler.GetDefaultServer(_config);
-        if (item == null)
+        var item = await ConfigHandler.GetDefaultServer(Config);
+        if (item is null)
         {
             return;
         }
@@ -380,21 +383,21 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task SetListenerType(ESysProxyType type)
     {
-        if (_config.SystemProxyItem.SysProxyType == type)
+        if (Config.SystemProxyItem.SysProxyType == type)
         {
             return;
         }
-        _config.SystemProxyItem.SysProxyType = type;
+        Config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
-        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
+        NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {Config.SystemProxyItem.SysProxyType}");
 
-        SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
-        await ConfigHandler.SaveConfig(_config);
+        SystemProxySelected = (int)Config.SystemProxyItem.SysProxyType;
+        await ConfigHandler.SaveConfig(Config);
     }
 
     public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
     {
-        await SysProxyHandler.UpdateSysProxy(_config, false);
+        await SysProxyHandler.UpdateSysProxy(Config, false);
 
         BlSystemProxyClear = type == ESysProxyType.ForcedClear;
         BlSystemProxySet = type == ESysProxyType.ForcedChange;
@@ -403,7 +406,7 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (blChange)
         {
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            UpdateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
         }
     }
 
@@ -430,7 +433,7 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        if (SelectedRouting == null)
+        if (SelectedRouting is null)
         {
             return;
         }
@@ -441,11 +444,11 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigHandler.SetDefaultRouting(Config, item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             AppEvents.ReloadRequested.Publish();
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            UpdateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
         }
     }
 
@@ -455,46 +458,46 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        if (_config.SystemProxyItem.SysProxyType == (ESysProxyType)SystemProxySelected)
+        if (Config.SystemProxyItem.SysProxyType == (ESysProxyType)SystemProxySelected)
         {
             return;
         }
         await SetListenerType((ESysProxyType)SystemProxySelected);
     }
 
-    private async Task DoEnableTun(bool c)
+    private async Task DoEnableTun()
     {
-        if (_config.TunModeItem.EnableTun == EnableTun)
+        if (Config.TunModeItem.EnableTun == EnableTun)
         {
             return;
         }
 
-        _config.TunModeItem.EnableTun = EnableTun;
+        Config.TunModeItem.EnableTun = EnableTun;
 
         if (EnableTun && AllowEnableTun() == false)
         {
             // When running as a non-administrator, reboot to administrator mode
             if (Utils.IsWindows())
             {
-                _config.TunModeItem.EnableTun = false;
+                Config.TunModeItem.EnableTun = false;
                 await AppManager.Instance.RebootAsAdmin();
                 return;
             }
             else
             {
-                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
+                bool? passwordResult = await UpdateView?.Invoke(EViewAction.PasswordInput, null);
                 if (passwordResult == false)
                 {
-                    _config.TunModeItem.EnableTun = false;
+                    Config.TunModeItem.EnableTun = false;
                     return;
                 }
             }
         }
-        await ConfigHandler.SaveConfig(_config);
+        await ConfigHandler.SaveConfig(Config);
         AppEvents.ReloadRequested.Publish();
     }
 
-    private bool AllowEnableTun()
+    private static bool AllowEnableTun()
     {
         if (Utils.IsWindows())
         {
@@ -519,30 +522,30 @@ public class StatusBarViewModel : MyReactiveObject
     {
         StringBuilder sb = new();
         sb.Append($"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}");
-        if (_config.Inbound.First().SecondLocalPortEnabled)
+        if (Config.Inbound.First().SecondLocalPortEnabled)
         {
             sb.Append($",{AppManager.Instance.GetLocalPort(EInboundProtocol.socks2)}");
         }
         sb.Append(']');
         InboundDisplay = $"{ResUI.LabLocal}:{sb}";
 
-        if (_config.Inbound.First().AllowLANConn)
+        if (Config.Inbound.First().AllowLANConn)
         {
-            var lan = _config.Inbound.First().NewPort4LAN
+            var lan = Config.Inbound.First().NewPort4LAN
                 ? $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks3)}]"
                 : $"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}]";
             InboundLanDisplay = $"{ResUI.LabLAN}:{lan}";
         }
         else
         {
-            InboundLanDisplay = $"{ResUI.LabLAN}:{Global.None}";
+            InboundLanDisplay = $"{ResUI.LabLAN}:{AppConfig.None}";
         }
         await Task.CompletedTask;
     }
 
     public async Task UpdateStatistics(ServerSpeedItem update)
     {
-        if (!_config.GuiItem.DisplayRealTimeSpeed)
+        if (!Config.GuiItem.DisplayRealTimeSpeed)
         {
             return;
         }
@@ -551,13 +554,13 @@ public class StatusBarViewModel : MyReactiveObject
         {
             if (AppManager.Instance.IsRunningCore(ECoreType.sing_box))
             {
-                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, EInboundProtocol.mixed, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
+                SpeedProxyDisplay = string.Format(CultureInfo.CurrentCulture, _speedDisplayFormat, EInboundProtocol.mixed, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
                 SpeedDirectDisplay = string.Empty;
             }
             else
             {
-                SpeedProxyDisplay = string.Format(ResUI.SpeedDisplayText, Global.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
-                SpeedDirectDisplay = string.Format(ResUI.SpeedDisplayText, Global.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
+                SpeedProxyDisplay = string.Format(CultureInfo.CurrentCulture, _speedDisplayFormat, AppConfig.ProxyTag, Utils.HumanFy(update.ProxyUp), Utils.HumanFy(update.ProxyDown));
+                SpeedDirectDisplay = string.Format(CultureInfo.CurrentCulture, _speedDisplayFormat, AppConfig.DirectTag, Utils.HumanFy(update.DirectUp), Utils.HumanFy(update.DirectDown));
             }
         }
         catch

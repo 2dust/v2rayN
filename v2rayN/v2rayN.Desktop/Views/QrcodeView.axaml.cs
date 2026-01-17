@@ -17,7 +17,7 @@ public partial class QrcodeView : UserControl
         txtContent.GotFocus += (_, _) => Dispatcher.UIThread.Post(() => { txtContent.SelectAll(); });
     }
 
-    private Bitmap? GetQRCode(string? url)
+    private static Bitmap? GetQRCode(string? url)
     {
         try
         {
@@ -31,7 +31,7 @@ public partial class QrcodeView : UserControl
         }
     }
 
-    private Bitmap? ByteToBitmap(byte[]? bytes)
+    private static Bitmap? ByteToBitmap(byte[]? bytes)
     {
         if (bytes is null)
         {

@@ -72,7 +72,7 @@ public class GUIItem
     public bool KeepOlderDedupl { get; set; }
     public int AutoUpdateInterval { get; set; }
     public int TrayMenuServersLimit { get; set; } = 20;
-    public bool EnableHWA { get; set; } = false;
+    public bool EnableHWA { get; set; }
     public bool EnableLog { get; set; } = true;
 }
 
@@ -99,7 +99,7 @@ public class UIItem
     public bool EnableDragDropSort { get; set; }
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
-    public bool Hide2TrayWhenClose { get; set; }    
+    public bool Hide2TrayWhenClose { get; set; }
     public bool MacOSShowInDock { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }

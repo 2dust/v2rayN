@@ -17,26 +17,26 @@ public partial class AddServerWindow
 
         ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
 
-        cmbCoreType.ItemsSource = Global.CoreTypes.AppendEmpty();
-        cmbNetwork.ItemsSource = Global.Networks;
-        cmbFingerprint.ItemsSource = Global.Fingerprints;
-        cmbFingerprint2.ItemsSource = Global.Fingerprints;
-        cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
-        cmbAlpn.ItemsSource = Global.Alpns;
-        cmbEchForceQuery.ItemsSource = Global.EchForceQuerys;
+        cmbCoreType.ItemsSource = AppConfig.CoreTypes.AppendEmpty();
+        cmbNetwork.ItemsSource = AppConfig.Networks;
+        cmbFingerprint.ItemsSource = AppConfig.Fingerprints;
+        cmbFingerprint2.ItemsSource = AppConfig.Fingerprints;
+        cmbAllowInsecure.ItemsSource = AppConfig.AllowInsecure;
+        cmbAlpn.ItemsSource = AppConfig.Alpns;
+        cmbEchForceQuery.ItemsSource = AppConfig.EchForceQuerys;
 
         var lstStreamSecurity = new List<string>();
         lstStreamSecurity.Add(string.Empty);
-        lstStreamSecurity.Add(Global.StreamSecurity);
+        lstStreamSecurity.Add(AppConfig.StreamSecurity);
 
         switch (profileItem.ConfigType)
         {
             case EConfigType.VMess:
                 gridVMess.Visibility = Visibility.Visible;
-                cmbSecurity.ItemsSource = Global.VmessSecurities;
+                cmbSecurity.ItemsSource = AppConfig.VmessSecurities;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
-                    profileItem.Security = Global.DefaultSecurity;
+                    profileItem.Security = AppConfig.DefaultSecurity;
                 }
                 break;
 
@@ -52,18 +52,18 @@ public partial class AddServerWindow
 
             case EConfigType.VLESS:
                 gridVLESS.Visibility = Visibility.Visible;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
-                cmbFlow5.ItemsSource = Global.Flows;
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
+                cmbFlow5.ItemsSource = AppConfig.Flows;
                 if (profileItem.Security.IsNullOrEmpty())
                 {
-                    profileItem.Security = Global.None;
+                    profileItem.Security = AppConfig.None;
                 }
                 break;
 
             case EConfigType.Trojan:
                 gridTrojan.Visibility = Visibility.Visible;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
-                cmbFlow6.ItemsSource = Global.Flows;
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
+                cmbFlow6.ItemsSource = AppConfig.Flows;
                 break;
 
             case EConfigType.Hysteria2:
@@ -82,7 +82,7 @@ public partial class AddServerWindow
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.Text = string.Empty;
 
-                cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
+                cmbHeaderType8.ItemsSource = AppConfig.TuicCongestionControls;
                 break;
 
             case EConfigType.WireGuard:
@@ -97,7 +97,7 @@ public partial class AddServerWindow
             case EConfigType.Anytls:
                 gridAnytls.Visibility = Visibility.Visible;
                 cmbCoreType.IsEnabled = false;
-                lstStreamSecurity.Add(Global.StreamSecurityReality);
+                lstStreamSecurity.Add(AppConfig.StreamSecurityReality);
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -229,12 +229,12 @@ public partial class AddServerWindow
     private void CmbStreamSecurity_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var security = cmbStreamSecurity.SelectedItem.ToString();
-        if (security == Global.StreamSecurityReality)
+        if (security == AppConfig.StreamSecurityReality)
         {
             gridRealityMore.Visibility = Visibility.Visible;
             gridTlsMore.Visibility = Visibility.Hidden;
         }
-        else if (security == Global.StreamSecurity)
+        else if (security == AppConfig.StreamSecurity)
         {
             gridRealityMore.Visibility = Visibility.Hidden;
             gridTlsMore.Visibility = Visibility.Visible;
@@ -259,7 +259,7 @@ public partial class AddServerWindow
         var network = cmbNetwork.SelectedItem.ToString();
         if (network.IsNullOrEmpty())
         {
-            lstHeaderType.Add(Global.None);
+            lstHeaderType.Add(AppConfig.None);
             cmbHeaderType.ItemsSource = lstHeaderType;
             cmbHeaderType.SelectedIndex = 0;
             return;
@@ -267,26 +267,26 @@ public partial class AddServerWindow
 
         if (network == nameof(ETransport.tcp))
         {
-            lstHeaderType.Add(Global.None);
-            lstHeaderType.Add(Global.TcpHeaderHttp);
+            lstHeaderType.Add(AppConfig.None);
+            lstHeaderType.Add(AppConfig.TcpHeaderHttp);
         }
         else if (network is nameof(ETransport.kcp) or nameof(ETransport.quic))
         {
-            lstHeaderType.Add(Global.None);
-            lstHeaderType.AddRange(Global.KcpHeaderTypes);
+            lstHeaderType.Add(AppConfig.None);
+            lstHeaderType.AddRange(AppConfig.KcpHeaderTypes);
         }
         else if (network is nameof(ETransport.xhttp))
         {
-            lstHeaderType.AddRange(Global.XhttpMode);
+            lstHeaderType.AddRange(AppConfig.XhttpMode);
         }
         else if (network == nameof(ETransport.grpc))
         {
-            lstHeaderType.Add(Global.GrpcGunMode);
-            lstHeaderType.Add(Global.GrpcMultiMode);
+            lstHeaderType.Add(AppConfig.GrpcGunMode);
+            lstHeaderType.Add(AppConfig.GrpcMultiMode);
         }
         else
         {
-            lstHeaderType.Add(Global.None);
+            lstHeaderType.Add(AppConfig.None);
         }
         cmbHeaderType.ItemsSource = lstHeaderType;
         cmbHeaderType.SelectedIndex = 0;
@@ -297,7 +297,7 @@ public partial class AddServerWindow
         var network = cmbNetwork.SelectedItem.ToString();
         if (network.IsNullOrEmpty())
         {
-            network = Global.DefaultNetwork;
+            network = AppConfig.DefaultNetwork;
         }
         labHeaderType.Visibility = Visibility.Visible;
         popExtra.Visibility = Visibility.Hidden;

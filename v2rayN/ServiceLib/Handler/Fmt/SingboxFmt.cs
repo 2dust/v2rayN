@@ -15,7 +15,7 @@ public class SingboxFmt : BaseFmt
         {
             var objectString = JsonUtils.Serialize(configObject);
             var profileIt = ResolveFull(objectString, subRemarks);
-            if (profileIt != null)
+            if (profileIt is not null)
             {
                 lstResult.Add(profileIt);
             }
@@ -26,10 +26,10 @@ public class SingboxFmt : BaseFmt
     public static ProfileItem? ResolveFull(string strData, string? subRemarks)
     {
         var config = JsonUtils.ParseJson(strData);
-        if (config?["inbounds"] == null
-            || config["outbounds"] == null
-            || config["route"] == null
-            || config["dns"] == null)
+        if (config?["inbounds"] is null
+            || config["outbounds"] is null
+            || config["route"] is null
+            || config["dns"] is null)
         {
             return null;
         }

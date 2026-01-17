@@ -148,7 +148,7 @@ public class ProfileGroupItemManager
         try
         {
             var lst = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().Where(t => t.IndexId == item.IndexId).ToListAsync();
-            if (lst != null && lst.Count > 0)
+            if (lst is not null && lst.Count > 0)
             {
                 await SQLiteHelper.Instance.UpdateAllAsync(new List<ProfileGroupItem> { item });
             }
@@ -194,7 +194,7 @@ public class ProfileGroupItemManager
         {
             Instance.TryGet(indexId, out var groupItem);
 
-            if (groupItem == null || groupItem.ChildItems.IsNullOrEmpty())
+            if (groupItem is null || groupItem.ChildItems.IsNullOrEmpty())
             {
                 return false;
             }
@@ -202,7 +202,7 @@ public class ProfileGroupItemManager
             var childIds = Utils.String2List(groupItem.ChildItems)
                 .Where(p => !string.IsNullOrEmpty(p))
                 .ToList();
-            if (childIds == null)
+            if (childIds is null)
             {
                 return false;
             }
@@ -226,7 +226,7 @@ public class ProfileGroupItemManager
     public static async Task<(List<ProfileItem> Items, ProfileGroupItem? Group)> GetChildProfileItems(string? indexId)
     {
         Instance.TryGet(indexId, out var profileGroupItem);
-        if (profileGroupItem == null || profileGroupItem.NotHasChild())
+        if (profileGroupItem is null || profileGroupItem.NotHasChild())
         {
             return (new List<ProfileItem>(), profileGroupItem);
         }
@@ -240,7 +240,7 @@ public class ProfileGroupItemManager
 
     public static async Task<List<ProfileItem>> GetChildProfileItems(ProfileGroupItem? group)
     {
-        if (group == null || group.ChildItems.IsNullOrEmpty())
+        if (group is null || group.ChildItems.IsNullOrEmpty())
         {
             return new();
         }
@@ -250,7 +250,7 @@ public class ProfileGroupItemManager
                     .Select(AppManager.Instance.GetProfileItem)
             ))
             .Where(p =>
-                p != null &&
+                p is not null &&
                 p.IsValid() &&
                 p.ConfigType != EConfigType.Custom
             )
@@ -260,14 +260,14 @@ public class ProfileGroupItemManager
 
     public static async Task<List<ProfileItem>> GetSubChildProfileItems(ProfileGroupItem? group)
     {
-        if (group == null || group.SubChildItems.IsNullOrEmpty())
+        if (group is null || group.SubChildItems.IsNullOrEmpty())
         {
             return new();
         }
         var childProfiles = await AppManager.Instance.ProfileItems(group.SubChildItems);
 
         return childProfiles.Where(p =>
-                p != null &&
+                p is not null &&
                 p.IsValid() &&
                 !p.ConfigType.IsComplexType() &&
                 (group.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, group.Filter))
@@ -279,7 +279,7 @@ public class ProfileGroupItemManager
     {
         // include grand children
         var childAddresses = new HashSet<string>();
-        if (!Instance.TryGet(indexId, out var groupItem) || groupItem == null)
+        if (!Instance.TryGet(indexId, out var groupItem) || groupItem is null)
         {
             return childAddresses;
         }
@@ -295,7 +295,7 @@ public class ProfileGroupItemManager
         foreach (var childId in childIds)
         {
             var childNode = await AppManager.Instance.GetProfileItem(childId);
-            if (childNode == null)
+            if (childNode is null)
             {
                 continue;
             }
@@ -321,7 +321,7 @@ public class ProfileGroupItemManager
     {
         // include grand children
         var childAddresses = new HashSet<string>();
-        if (!Instance.TryGet(indexId, out var groupItem) || groupItem == null)
+        if (!Instance.TryGet(indexId, out var groupItem) || groupItem is null)
         {
             return childAddresses;
         }
@@ -335,7 +335,7 @@ public class ProfileGroupItemManager
                 {
                     continue;
                 }
-                if (childNode.StreamSecurity == Global.StreamSecurity
+                if (childNode.StreamSecurity == AppConfig.StreamSecurity
                     && childNode.EchConfigList?.Contains("://") == true)
                 {
                     var idx = childNode.EchConfigList.IndexOf('+');
@@ -353,14 +353,14 @@ public class ProfileGroupItemManager
         foreach (var childId in childIds)
         {
             var childNode = await AppManager.Instance.GetProfileItem(childId);
-            if (childNode == null)
+            if (childNode is null)
             {
                 continue;
             }
 
             if (!childNode.IsComplex() && !childNode.EchConfigList.IsNullOrEmpty())
             {
-                if (childNode.StreamSecurity == Global.StreamSecurity
+                if (childNode.StreamSecurity == AppConfig.StreamSecurity
                     && childNode.EchConfigList?.Contains("://") == true)
                 {
                     var idx = childNode.EchConfigList.IndexOf('+');

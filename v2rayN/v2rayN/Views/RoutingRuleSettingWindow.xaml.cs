@@ -9,16 +9,16 @@ public partial class RoutingRuleSettingWindow
         Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
         PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
-        lstRules.SelectionChanged += lstRules_SelectionChanged;
+        lstRules.SelectionChanged += LstRules_SelectionChanged;
         lstRules.MouseDoubleClick += LstRules_MouseDoubleClick;
-        menuRuleSelectAll.Click += menuRuleSelectAll_Click;
-        btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
-        btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
+        menuRuleSelectAll.Click += MenuRuleSelectAll_Click;
+        btnBrowseCustomIcon.Click += BtnBrowseCustomIcon_Click;
+        btnBrowseCustomRulesetPath4Singbox.Click += BtnBrowseCustomRulesetPath4Singbox_Click;
 
         ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
 
-        cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy.ItemsSource = AppConfig.DomainStrategies.AppendEmpty();
+        cmbdomainStrategy4Singbox.ItemsSource = AppConfig.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {
@@ -166,12 +166,9 @@ public partial class RoutingRuleSettingWindow
         }
     }
 
-    private void lstRules_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void LstRules_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
-        }
+        ViewModel?.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
     }
 
     private void LstRules_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -179,12 +176,12 @@ public partial class RoutingRuleSettingWindow
         ViewModel?.RuleEditAsync(false);
     }
 
-    private void menuRuleSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void MenuRuleSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         lstRules.SelectAll();
     }
 
-    private void btnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void BtnBrowseCustomIcon_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         if (UI.OpenFileDialog(out var fileName,
             "PNG,ICO|*.png;*.ico") != true)
@@ -195,7 +192,7 @@ public partial class RoutingRuleSettingWindow
         txtCustomIcon.Text = fileName;
     }
 
-    private void btnBrowseCustomRulesetPath4Singbox_Click(object sender, RoutedEventArgs e)
+    private void BtnBrowseCustomRulesetPath4Singbox_Click(object sender, RoutedEventArgs e)
     {
         if (UI.OpenFileDialog(out var fileName,
               "Config|*.json|All|*.*") != true)
@@ -206,7 +203,7 @@ public partial class RoutingRuleSettingWindow
         txtCustomRulesetPath4Singbox.Text = fileName;
     }
 
-    private void linkCustomRulesetPath4Singbox(object sender, RoutedEventArgs e)
+    private void LinkCustomRulesetPath4Singbox(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://github.com/2dust/v2rayCustomRoutingList/blob/master/singbox_custom_ruleset_example.json");
     }

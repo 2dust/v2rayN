@@ -39,12 +39,12 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public AddGroupServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedChild,
-            SelectedChild => SelectedChild != null && !SelectedChild.Remarks.IsNullOrEmpty());
+            SelectedChild => SelectedChild is not null && !SelectedChild.Remarks.IsNullOrEmpty());
 
         RemoveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -97,13 +97,13 @@ public class AddGroupServerViewModel : MyReactiveObject
         Filter = profileGroup?.Filter;
 
         var childItemMulti = ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(SelectedSource?.IndexId);
-        if (childItemMulti != null)
+        if (childItemMulti is not null)
         {
             var childIndexIds = Utils.String2List(childItemMulti.ChildItems) ?? [];
             foreach (var item in childIndexIds)
             {
                 var child = await AppManager.Instance.GetProfileItem(item);
-                if (child == null)
+                if (child is null)
                 {
                     continue;
                 }
@@ -114,14 +114,14 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public async Task ChildRemoveAsync()
     {
-        if (SelectedChild == null || SelectedChild.IndexId.IsNullOrEmpty())
+        if (SelectedChild is null || SelectedChild.IndexId.IsNullOrEmpty())
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
         foreach (var it in SelectedChildren ?? [SelectedChild])
         {
-            if (it != null)
+            if (it is not null)
             {
                 ChildItemsObs.Remove(it);
             }
@@ -131,7 +131,7 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public async Task MoveServer(EMove eMove)
     {
-        if (SelectedChild == null || SelectedChild.IndexId.IsNullOrEmpty())
+        if (SelectedChild is null || SelectedChild.IndexId.IsNullOrEmpty())
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
@@ -236,10 +236,10 @@ public class AddGroupServerViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigHandler.AddGroupServerCommon(_config, SelectedSource, profileGroup, true) == 0)
+        if (await ConfigHandler.AddGroupServerCommon(SelectedSource, profileGroup, true) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {

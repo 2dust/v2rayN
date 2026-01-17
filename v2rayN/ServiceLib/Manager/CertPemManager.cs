@@ -225,7 +225,7 @@ public class CertPemManager
             await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
 
             var remote = ssl.RemoteCertificate;
-            if (remote == null)
+            if (remote is null)
             {
                 return (null, null);
             }
@@ -308,7 +308,7 @@ public class CertPemManager
         X509Chain? chain,
         SslPolicyErrors sslPolicyErrors)
     {
-        if (certificate == null)
+        if (certificate is null)
         {
             return false;
         }
@@ -409,7 +409,7 @@ public class CertPemManager
     /// <returns>Concatenated PEM certificates string</returns>
     public static string ConcatenatePemChain(IEnumerable<string> pemList)
     {
-        if (pemList == null)
+        if (pemList is null)
         {
             return string.Empty;
         }

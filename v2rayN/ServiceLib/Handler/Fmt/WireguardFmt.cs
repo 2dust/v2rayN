@@ -12,7 +12,7 @@ public class WireguardFmt : BaseFmt
         };
 
         var url = Utils.TryUri(str);
-        if (url == null)
+        if (url is null)
         {
             return null;
         }
@@ -34,7 +34,7 @@ public class WireguardFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }

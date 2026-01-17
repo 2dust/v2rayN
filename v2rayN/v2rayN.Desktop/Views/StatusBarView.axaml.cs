@@ -69,7 +69,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         return await Task.FromResult(true);
     }
 
-    private void RefreshIcon()
+    private static void RefreshIcon()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
