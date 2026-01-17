@@ -168,7 +168,9 @@ public class ActionPrecheckManager
         if (item.StreamSecurity == Global.StreamSecurity)
         {
             // check certificate validity
-            if ((!item.Cert.IsNullOrEmpty()) && (CertPemManager.ParsePemChain(item.Cert).Count == 0))
+            if (!item.Cert.IsNullOrEmpty()
+                && (CertPemManager.ParsePemChain(item.Cert).Count == 0)
+                && !item.CertSha.IsNullOrEmpty())
             {
                 errors.Add(string.Format(ResUI.InvalidProperty, "TLS Certificate"));
             }

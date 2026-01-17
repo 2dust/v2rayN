@@ -416,4 +416,22 @@ public class CertPemManager
 
         return string.Concat(pemList);
     }
+
+    public static string GetCertSha256Thumbprint(string pemCert, bool includeColon = false)
+    {
+        try
+        {
+            var cert = X509Certificate2.CreateFromPem(pemCert);
+            var thumbprint = cert.GetCertHashString(HashAlgorithmName.SHA256);
+            if (includeColon)
+            {
+                return string.Join(":", thumbprint.Chunk(2).Select(c => new string(c)));
+            }
+            return thumbprint;
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
 }
