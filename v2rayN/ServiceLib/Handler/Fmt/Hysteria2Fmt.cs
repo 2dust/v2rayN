@@ -25,6 +25,10 @@ public class Hysteria2Fmt : BaseFmt
         ResolveUriQuery(query, ref item);
         item.Path = GetQueryDecoded(query, "obfs-password");
         item.Ports = GetQueryDecoded(query, "mport");
+        if (item.CertSha.IsNullOrEmpty())
+        {
+            item.CertSha = GetQueryDecoded(query, "pinSHA256");
+        }
 
         return item;
     }
@@ -54,6 +58,16 @@ public class Hysteria2Fmt : BaseFmt
         if (item.Ports.IsNotEmpty())
         {
             dicQuery.Add("mport", Utils.UrlEncode(item.Ports.Replace(':', '-')));
+        }
+        if (!item.CertSha.IsNullOrEmpty())
+        {
+            var sha = item.CertSha;
+            var idx = sha.IndexOf('~');
+            if (idx > 0)
+            {
+                sha = sha[..idx];
+            }
+            dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
 
         return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
