@@ -16,6 +16,13 @@ public static class AppBuilderExtension
                 FontFamily = new FontFamily("Noto Color Emoji")
             });
         }
+        else if (OperatingSystem.IsWindows())
+        {
+            fallbacks.Add(new FontFallback
+            {
+                FontFamily = new FontFamily("Segoe UI Emoji")
+            });
+        }
 
         return appBuilder.With(new FontManagerOptions
         {

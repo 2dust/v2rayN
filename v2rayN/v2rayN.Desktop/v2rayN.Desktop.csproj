@@ -28,6 +28,8 @@
 		<PackageReference Include="ReactiveUI.Fody">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
+		<PackageReference Include="SkiaSharp" />
+		<PackageReference Include="HarfBuzzSharp" />
 	</ItemGroup>
 
 	<ItemGroup>
