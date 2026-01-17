@@ -128,7 +128,8 @@ public class Outboundsettings4Ray
 
     public string? secretKey { get; set; }
 
-    public List<string>? address { get; set; }
+    public Object? address { get; set; }
+    public int? port { get; set; }
 
     public List<WireguardPeer4Ray>? peers { get; set; }
 
@@ -139,6 +140,8 @@ public class Outboundsettings4Ray
     public List<int>? reserved { get; set; }
 
     public int? workers { get; set; }
+
+    public int? version { get; set; }
 }
 
 public class WireguardPeer4Ray
@@ -336,6 +339,10 @@ public class StreamSettings4Ray
 
     public GrpcSettings4Ray? grpcSettings { get; set; }
 
+    public HysteriaSettings4Ray? hysteriaSettings { get; set; }
+
+    public List<UdpMasks4Ray>? udpmasks { get; set; }
+
     public Sockopt4Ray? sockopt { get; set; }
 }
 
@@ -458,6 +465,32 @@ public class GrpcSettings4Ray
     public int? health_check_timeout { get; set; }
     public bool? permit_without_stream { get; set; }
     public int? initial_windows_size { get; set; }
+}
+
+public class HysteriaSettings4Ray
+{
+    public int version { get; set; }
+    public string? auth { get; set; }
+    public string? up { get; set; }
+    public string? down { get; set; }
+    public HysteriaUdpHop4Ray? udphop { get; set; }
+}
+
+public class HysteriaUdpHop4Ray
+{
+    public string? ports { get; set; }
+    public int? interval { get; set; }
+}
+
+public class UdpMasks4Ray
+{
+    public string type { get; set; }
+    public UdpMasksSettings4Ray? settings { get; set; }
+}
+
+public class UdpMasksSettings4Ray
+{
+    public string? password { get; set; }
 }
 
 public class AccountsItem4Ray

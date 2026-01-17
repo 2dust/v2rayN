@@ -75,7 +75,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridHysteria2.IsVisible = true;
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
-                cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
                 break;

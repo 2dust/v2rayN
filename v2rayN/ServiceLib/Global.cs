@@ -300,6 +300,7 @@ public class Global
         EConfigType.VLESS,
         EConfigType.Shadowsocks,
         EConfigType.Trojan,
+        EConfigType.Hysteria2,
         EConfigType.WireGuard,
         EConfigType.SOCKS,
         EConfigType.HTTP,
