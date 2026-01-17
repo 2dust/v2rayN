@@ -62,6 +62,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         CoreType = SelectedSource?.CoreType?.ToString();
         Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
+        CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
     }
 
     private async Task SaveServerAsync()
