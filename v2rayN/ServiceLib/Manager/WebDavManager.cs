@@ -43,9 +43,12 @@ public sealed class WebDavManager
                 _webDir = _config.WebDavItem.DirName.TrimEx();
             }
 
+            // Ensure BaseAddress URL ends with a trailing slash
+            var baseUrl = _config.WebDavItem.Url.Trim().TrimEnd('/') + "/";
+
             var clientParams = new WebDavClientParams
             {
-                BaseAddress = new Uri(_config.WebDavItem.Url),
+                BaseAddress = new Uri(baseUrl),
                 Credentials = new NetworkCredential(_config.WebDavItem.UserName, _config.WebDavItem.Password)
             };
             _client = new WebDavClient(clientParams);
