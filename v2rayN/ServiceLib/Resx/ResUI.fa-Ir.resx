@@ -1027,7 +1027,7 @@
     <value>پروتکل sing-box Mux</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>نام کامل فرانید (حالت Tun)</value>
+    <value>Process (Tun mode)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP or IP CIDR</value>

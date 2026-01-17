@@ -68,6 +68,7 @@ public class Rule4Sbox
     public List<string>? ip_cidr { get; set; }
     public List<string>? source_ip_cidr { get; set; }
     public List<string>? process_name { get; set; }
+    public List<string>? process_path { get; set; }
     public List<string>? rule_set { get; set; }
     public List<Rule4Sbox>? rules { get; set; }
     public string? action { get; set; }

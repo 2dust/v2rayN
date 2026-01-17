@@ -1024,7 +1024,7 @@
     <value>Protocole de multiplexage Mux (sing-box)</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Nom complet du processus (mode Tun)</value>
+    <value>Process (Tun mode)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP ou IP CIDR</value>

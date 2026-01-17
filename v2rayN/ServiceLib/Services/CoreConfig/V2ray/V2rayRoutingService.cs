@@ -77,12 +77,17 @@ public partial class CoreConfigV2rayService
             {
                 rule.inboundTag = null;
             }
+            if (rule.process?.Count == 0)
+            {
+                rule.process = null;
+            }
 
             var hasDomainIp = false;
             if (rule.domain?.Count > 0)
             {
                 var it = JsonUtils.DeepCopy(rule);
                 it.ip = null;
+                it.process = null;
                 it.type = "field";
                 for (var k = it.domain.Count - 1; k >= 0; k--)
                 {
@@ -99,6 +104,16 @@ public partial class CoreConfigV2rayService
             {
                 var it = JsonUtils.DeepCopy(rule);
                 it.domain = null;
+                it.process = null;
+                it.type = "field";
+                v2rayConfig.routing.rules.Add(it);
+                hasDomainIp = true;
+            }
+            if (_config.TunModeItem.EnableTun && rule.process?.Count > 0)
+            {
+                var it = JsonUtils.DeepCopy(rule);
+                it.domain = null;
+                it.ip = null;
                 it.type = "field";
                 v2rayConfig.routing.rules.Add(it);
                 hasDomainIp = true;
