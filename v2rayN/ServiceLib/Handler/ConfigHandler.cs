@@ -1351,15 +1351,6 @@ public static class ConfigHandler
         }
         foreach (var str in arrData)
         {
-            //maybe sub
-            if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
-            {
-                if (await AddSubItem(config, str) == 0)
-                {
-                    countServers++;
-                }
-                continue;
-            }
             var profileItem = FmtHandler.ResolveConfig(str, out var msg);
             if (profileItem is null)
             {
@@ -1382,6 +1373,7 @@ public static class ConfigHandler
                 EConfigType.VMess => await AddVMessServer(config, profileItem, false),
                 EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
                 EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
+                EConfigType.HTTP => await AddHttpServer(config, profileItem, false),
                 EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
                 EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
                 EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
