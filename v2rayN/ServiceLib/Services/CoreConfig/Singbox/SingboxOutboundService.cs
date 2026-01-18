@@ -6,6 +6,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
+            var extraItem = node.GetExtraItem();
             outbound.server = node.Address;
             outbound.server_port = node.Port;
             outbound.type = Global.ProtocolTypes[node.ConfigType];
@@ -15,7 +16,7 @@ public partial class CoreConfigSingboxService
                 case EConfigType.VMess:
                     {
                         outbound.uuid = node.Id;
-                        outbound.alter_id = node.AlterId;
+                        outbound.alter_id = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
                         if (Global.VmessSecurities.Contains(node.Security))
                         {
                             outbound.security = node.Security;
@@ -112,13 +113,13 @@ public partial class CoreConfigSingboxService
 
                         outbound.packet_encoding = "xudp";
 
-                        if (node.Flow.IsNullOrEmpty())
+                        if (extraItem.Flow.IsNullOrEmpty())
                         {
                             await GenOutboundMux(node, outbound);
                         }
                         else
                         {
-                            outbound.flow = node.Flow;
+                            outbound.flow = extraItem.Flow;
                         }
 
                         await GenOutboundTransport(node, outbound);
@@ -145,12 +146,17 @@ public partial class CoreConfigSingboxService
                             };
                         }
 
-                        outbound.up_mbps = _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
-                        outbound.down_mbps = _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
-                        if (node.Ports.IsNotEmpty() && (node.Ports.Contains(':') || node.Ports.Contains('-') || node.Ports.Contains(',')))
+                        outbound.up_mbps = extraItem?.UpMbps is { } su and >= 0
+                            ? su
+                            : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
+                        outbound.down_mbps = extraItem?.DownMbps is { } sd and >= 0
+                            ? sd
+                            : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
+                        var ports = extraItem?.Ports?.IsNullOrEmpty() == false ? extraItem.Ports : null;
+                        if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
                             outbound.server_port = null;
-                            outbound.server_ports = node.Ports.Split(',')
+                            outbound.server_ports = ports.Split(',')
                                 .Select(p => p.Trim())
                                 .Where(p => p.IsNotEmpty())
                                 .Select(p =>
@@ -159,7 +165,9 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = _config.HysteriaItem.HopInterval > 0 ? $"{_config.HysteriaItem.HopInterval}s" : null;
+                            outbound.hop_interval = extraItem?.HopInterval is { } hi and >= 5
+                                ? $"{hi}s"
+                                : _config.HysteriaItem.HopInterval >= 5 ? $"{_config.HysteriaItem.HopInterval}s" : $"{Global.Hysteria2DefaultHopInt}s";
                         }
 
                         break;
@@ -453,13 +461,13 @@ public partial class CoreConfigSingboxService
             {
                 return -1;
             }
-            var hasCycle = ProfileGroupItemManager.HasCycle(node.IndexId);
+            var hasCycle = await GroupProfileManager.HasCycle(node);
             if (hasCycle)
             {
                 return -1;
             }
 
-            var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+            var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
             if (childProfiles.Count <= 0)
             {
                 return -1;
@@ -467,13 +475,14 @@ public partial class CoreConfigSingboxService
             switch (node.ConfigType)
             {
                 case EConfigType.PolicyGroup:
+                    var multipleLoad = profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing;
                     if (ignoreOriginChain)
                     {
-                        await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                        await GenOutboundsList(childProfiles, singboxConfig, multipleLoad, baseTagName);
                     }
                     else
                     {
-                        await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, baseTagName);
+                        await GenOutboundsListWithChain(childProfiles, singboxConfig, multipleLoad, baseTagName);
                     }
 
                     break;
@@ -585,7 +594,7 @@ public partial class CoreConfigSingboxService
 
                 if (node.ConfigType.IsGroupType())
                 {
-                    var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                    var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
                     if (childProfiles.Count <= 0)
                     {
                         continue;
@@ -594,7 +603,8 @@ public partial class CoreConfigSingboxService
                     var ret = node.ConfigType switch
                     {
                         EConfigType.PolicyGroup =>
-                            await GenOutboundsListWithChain(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
+                            await GenOutboundsListWithChain(childProfiles, singboxConfig,
+                                profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing, childBaseTagName),
                         EConfigType.ProxyChain =>
                             await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
                         _ => throw new NotImplementedException()
@@ -763,7 +773,7 @@ public partial class CoreConfigSingboxService
 
             if (node.ConfigType.IsGroupType())
             {
-                var (childProfiles, profileGroupItem) = await ProfileGroupItemManager.GetChildProfileItems(node.IndexId);
+                var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
                 if (childProfiles.Count <= 0)
                 {
                     continue;
@@ -772,7 +782,7 @@ public partial class CoreConfigSingboxService
                 var ret = node.ConfigType switch
                 {
                     EConfigType.PolicyGroup =>
-                        await GenOutboundsList(childProfiles, singboxConfig, profileGroupItem.MultipleLoad, childBaseTagName),
+                        await GenOutboundsList(childProfiles, singboxConfig, profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing, childBaseTagName),
                     EConfigType.ProxyChain =>
                         await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
                     _ => throw new NotImplementedException()

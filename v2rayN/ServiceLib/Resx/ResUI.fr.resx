@@ -1650,4 +1650,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
   </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>Port hopping interval</value>
+  </data>
 </root>
