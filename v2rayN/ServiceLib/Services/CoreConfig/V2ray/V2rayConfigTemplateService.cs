@@ -5,13 +5,13 @@ public partial class CoreConfigV2rayService
     private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig)
     {
         var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
-        if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
+        if (fullConfigTemplate is null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
         {
             return JsonUtils.Serialize(v2rayConfig);
         }
 
         var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplate.Config);
-        if (fullConfigTemplateNode == null)
+        if (fullConfigTemplateNode is null)
         {
             return JsonUtils.Serialize(v2rayConfig);
         }
@@ -23,11 +23,11 @@ public partial class CoreConfigV2rayService
 
             // Modify existing rules in custom config
             var rulesNode = fullConfigTemplateNode["routing"]?["rules"];
-            if (rulesNode != null)
+            if (rulesNode is not null)
             {
                 foreach (var rule in rulesNode.AsArray())
                 {
-                    if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                    if (rule["outboundTag"]?.GetValue<string>() == AppConfig.ProxyTag)
                     {
                         rule.AsObject().Remove("outboundTag");
                         rule["balancerTag"] = balancer.tag;
@@ -36,7 +36,7 @@ public partial class CoreConfigV2rayService
             }
 
             // Ensure routing node exists
-            if (fullConfigTemplateNode["routing"] == null)
+            if (fullConfigTemplateNode["routing"] is null)
             {
                 fullConfigTemplateNode["routing"] = new JsonObject();
             }
@@ -58,9 +58,9 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        if (v2rayConfig.observatory != null)
+        if (v2rayConfig.observatory is not null)
         {
-            if (fullConfigTemplateNode["observatory"] == null)
+            if (fullConfigTemplateNode["observatory"] is null)
             {
                 fullConfigTemplateNode["observatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.observatory));
             }
@@ -72,9 +72,9 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        if (v2rayConfig.burstObservatory != null)
+        if (v2rayConfig.burstObservatory is not null)
         {
-            if (fullConfigTemplateNode["burstObservatory"] == null)
+            if (fullConfigTemplateNode["burstObservatory"] is null)
             {
                 fullConfigTemplateNode["burstObservatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.burstObservatory));
             }

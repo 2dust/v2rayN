@@ -15,7 +15,7 @@ public class V2rayFmt : BaseFmt
         {
             var objectString = JsonUtils.Serialize(configObject);
             var profileIt = ResolveFull(objectString, subRemarks);
-            if (profileIt != null)
+            if (profileIt is not null)
             {
                 lstResult.Add(profileIt);
             }
@@ -27,9 +27,9 @@ public class V2rayFmt : BaseFmt
     public static ProfileItem? ResolveFull(string strData, string? subRemarks)
     {
         var config = JsonUtils.ParseJson(strData);
-        if (config?["inbounds"] == null
-            || config["outbounds"] == null
-            || config["routing"] == null)
+        if (config?["inbounds"] is null
+            || config["outbounds"] is null
+            || config["routing"] is null)
         {
             return null;
         }

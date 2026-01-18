@@ -14,7 +14,7 @@ public class CoreAdminManager
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
-        if (_config != null)
+        if (_config is not null)
         {
             return;
         }
@@ -67,14 +67,14 @@ public class CoreAdminManager
 
         try
         {
-            var shellFileName = Utils.IsMacOS() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
+            var shellFileName = Utils.IsMacOS() ? AppConfig.KillAsSudoOSXShellFileName : AppConfig.KillAsSudoLinuxShellFileName;
             var shFilePath = await FileUtils.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
             if (shFilePath.Contains(' '))
             {
                 shFilePath = shFilePath.AppendQuotes();
             }
             var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
-            var result = await Cli.Wrap(Global.LinuxBash)
+            var result = await Cli.Wrap(AppConfig.LinuxBash)
                 .WithArguments(arg)
                 .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
                 .ExecuteBufferedAsync();

@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace AmazTool;
 
-internal class Utils
+internal static class Utils
 {
     public static string GetExePath()
     {

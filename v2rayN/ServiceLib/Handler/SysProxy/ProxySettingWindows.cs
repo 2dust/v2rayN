@@ -2,7 +2,7 @@ using static ServiceLib.Handler.SysProxy.ProxySettingWindows.InternetConnectionO
 
 namespace ServiceLib.Handler.SysProxy;
 
-public static class ProxySettingWindows
+public static partial class ProxySettingWindows
 {
     private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
 
@@ -121,7 +121,7 @@ public static class ProxySettingWindows
 
         // default stuff
         list.dwSize = Marshal.SizeOf(list);
-        if (connectionName != null)
+        if (connectionName is not null)
         {
             list.szConnection = Marshal.StringToHGlobalAuto(connectionName); // !! remember to deallocate memory 3
         }
@@ -201,29 +201,29 @@ public static class ProxySettingWindows
     /// </summary>
     /// <returns>A list of RAS connection names. May be empty list if no dial up connection.</returns>
     /// <exception cref="ApplicationException">Error message with win32 error code</exception>
-    private static IEnumerable<string> EnumerateRasEntries()
+    private static List<string> EnumerateRasEntries()
     {
         var entries = 0;
         // attempt to query with 1 entry buffer
         var rasEntryNames = new RASENTRYNAME[1];
-        var bufferSize = Marshal.SizeOf(typeof(RASENTRYNAME));
-        rasEntryNames[0].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
+        var bufferSize = Marshal.SizeOf<RASENTRYNAME>();
+        rasEntryNames[0].dwSize = Marshal.SizeOf<RASENTRYNAME>();
 
         var result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
         // increase buffer if the buffer is not large enough
         if (result == (uint)ErrorCode.ERROR_BUFFER_TOO_SMALL)
         {
-            rasEntryNames = new RASENTRYNAME[bufferSize / Marshal.SizeOf(typeof(RASENTRYNAME))];
+            rasEntryNames = new RASENTRYNAME[bufferSize / Marshal.SizeOf<RASENTRYNAME>()];
             for (var i = 0; i < rasEntryNames.Length; i++)
             {
-                rasEntryNames[i].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
+                rasEntryNames[i].dwSize = Marshal.SizeOf<RASENTRYNAME>();
             }
 
             result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
         }
         if (result == 0)
         {
-            var entryNames = new List<string>();
+            var entryNames = new List<string>(entries);
             for (var i = 0; i < entries; i++)
             {
                 entryNames.Add(rasEntryNames[i].szEntryName);
@@ -231,7 +231,7 @@ public static class ProxySettingWindows
 
             return entryNames;
         }
-        throw new ApplicationException($"RasEnumEntries failed with error code: {result}");
+        throw new Win32Exception((int)result);
     }
 
     #region WinInet structures
@@ -340,11 +340,11 @@ public static class ProxySettingWindows
 
     #endregion WinInet enums
 
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
-        [DllImport("WinInet.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [LibraryImport("WinInet.dll", EntryPoint = "InternetSetOptionW", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool InternetSetOption(nint hInternet, InternetOption dwOption, nint lpBuffer, int dwBufferLength);
+        public static partial bool InternetSetOption(nint hInternet, InternetOption dwOption, nint lpBuffer, int dwBufferLength);
 
         [DllImport("Rasapi32.dll", CharSet = CharSet.Auto)]
         public static extern uint RasEnumEntries(

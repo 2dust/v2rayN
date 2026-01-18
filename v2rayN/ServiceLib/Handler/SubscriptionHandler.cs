@@ -59,8 +59,8 @@ public static class SubscriptionHandler
 
     private static bool IsValidSubscription(SubItem item, string subId)
     {
-        var id = item.Id.TrimEx();
-        var url = item.Url.TrimEx();
+        var id = item.Id.TrimSafe();
+        var url = item.Url.TrimSafe();
 
         if (id.IsNullOrEmpty() || url.IsNullOrEmpty())
         {
@@ -72,7 +72,7 @@ public static class SubscriptionHandler
             return false;
         }
 
-        if (!url.StartsWith(Global.HttpsProtocol) && !url.StartsWith(Global.HttpProtocol))
+        if (!url.StartsWith(AppConfig.HttpsProtocol) && !url.StartsWith(AppConfig.HttpProtocol))
         {
             return false;
         }
@@ -109,7 +109,7 @@ public static class SubscriptionHandler
         var result = await DownloadMainSubscription(config, item, blProxy, downloadHandle);
 
         // Process additional subscription links (if any)
-        if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimEx().IsNotEmpty())
+        if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimSafe().IsNotEmpty())
         {
             result = await DownloadAdditionalSubscriptions(item, result, blProxy, downloadHandle);
         }
@@ -120,13 +120,13 @@ public static class SubscriptionHandler
     private static async Task<string> DownloadMainSubscription(Config config, SubItem item, bool blProxy, DownloadService downloadHandle)
     {
         // Prepare subscription URL and download directly
-        var url = Utils.GetPunycode(item.Url.TrimEx());
+        var url = Utils.GetPunycode(item.Url.TrimSafe());
 
         // If conversion is needed
         if (item.ConvertTarget.IsNotEmpty())
         {
             var subConvertUrl = config.ConstItem.SubConvertUrl.IsNullOrEmpty()
-                ? Global.SubConvertUrls.FirstOrDefault()
+                ? AppConfig.SubConvertUrls.FirstOrDefault()
                 : config.ConstItem.SubConvertUrl;
 
             url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
@@ -138,7 +138,7 @@ public static class SubscriptionHandler
 
             if (!url.Contains("config="))
             {
-                url += string.Format("&config={0}", Global.SubConvertConfig.FirstOrDefault());
+                url += string.Format("&config={0}", AppConfig.SubConvertConfig.FirstOrDefault());
             }
         }
 
@@ -157,7 +157,7 @@ public static class SubscriptionHandler
         }
 
         // Process additional URL list
-        var lstUrl = item.MoreUrl.TrimEx().Split(",") ?? [];
+        var lstUrl = item.MoreUrl.TrimSafe().Split(",") ?? [];
         foreach (var it in lstUrl)
         {
             var url2 = Utils.GetPunycode(it);

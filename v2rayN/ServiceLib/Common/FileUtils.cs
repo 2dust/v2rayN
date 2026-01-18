@@ -41,7 +41,7 @@ public static class FileUtils
         {
             FileInfo fileInfo = new(fileName);
             using var originalFileStream = fileInfo.OpenRead();
-            using var decompressedFileStream = File.Create(toName != null ? Path.Combine(toPath, toName) : toPath);
+            using var decompressedFileStream = File.Create(toName is not null ? Path.Combine(toPath, toName) : toPath);
             using GZipStream decompressionStream = new(originalFileStream, CompressionMode.Decompress);
             decompressionStream.CopyTo(decompressedFileStream);
         }

@@ -11,7 +11,7 @@ public class CoreManager
     private WindowsJobService? _processJob;
     private ProcessService? _processService;
     private ProcessService? _processPreService;
-    private bool _linuxSudo = false;
+    private bool _linuxSudo;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
 
@@ -21,7 +21,7 @@ public class CoreManager
         _updateFunc = updateFunc;
 
         //Copy the bin folder to the storage location (for init)
-        if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
+        if (Environment.GetEnvironmentVariable(AppConfig.LocalAppData) == "1")
         {
             var fromPath = Utils.GetBaseDirectory("bin");
             var toPath = Utils.GetBinPath("");
@@ -59,13 +59,13 @@ public class CoreManager
 
     public async Task LoadCore(ProfileItem? node)
     {
-        if (node == null)
+        if (node is null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
-        var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
+        var fileName = Utils.GetBinConfigPath(AppConfig.CoreConfigFileName);
         var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
         if (result.Success != true)
         {
@@ -87,7 +87,7 @@ public class CoreManager
 
         await CoreStart(node);
         await CoreStartPreService(node);
-        if (_processService != null)
+        if (_processService is not null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
@@ -95,8 +95,8 @@ public class CoreManager
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.Any(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)) ? ECoreType.sing_box : ECoreType.Xray;
-        var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
+        var coreType = selecteds.Any(t => AppConfig.SingboxOnlyConfigType.Contains(t.ConfigType)) ? ECoreType.sing_box : ECoreType.Xray;
+        var fileName = string.Format(AppConfig.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
         await UpdateFunc(false, result.Msg);
@@ -120,7 +120,7 @@ public class CoreManager
             return null;
         }
 
-        var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
+        var fileName = string.Format(AppConfig.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
         if (result.Success != true)
@@ -143,14 +143,14 @@ public class CoreManager
                 _linuxSudo = false;
             }
 
-            if (_processService != null)
+            if (_processService is not null)
             {
                 await _processService.StopAsync();
                 _processService.Dispose();
                 _processService = null;
             }
 
-            if (_processPreService != null)
+            if (_processPreService is not null)
             {
                 await _processPreService.StopAsync();
                 _processPreService.Dispose();
@@ -171,7 +171,7 @@ public class CoreManager
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true);
+        var proc = await RunProcess(coreInfo, AppConfig.CoreConfigFileName, displayLog, true);
         if (proc is null)
         {
             return;
@@ -181,19 +181,19 @@ public class CoreManager
 
     private async Task CoreStartPreService(ProfileItem node)
     {
-        if (_processService != null && !_processService.HasExited)
+        if (_processService is not null && !_processService.HasExited)
         {
             var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
             var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
-            if (itemSocks != null)
+            if (itemSocks is not null)
             {
                 var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
-                var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+                var fileName = Utils.GetBinConfigPath(AppConfig.CorePreConfigFileName);
                 var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
                 if (result.Success)
                 {
                     var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                    var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
+                    var proc = await RunProcess(coreInfo, AppConfig.CorePreConfigFileName, true, true);
                     if (proc is null)
                     {
                         return;

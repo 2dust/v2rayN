@@ -13,8 +13,8 @@ public partial class ThemeSettingView
         ViewModel = new ThemeSettingViewModel();
 
         cmbCurrentTheme.ItemsSource = Utils.GetEnumNames<ETheme>().Take(3).ToList();
-        cmbCurrentFontSize.ItemsSource = Enumerable.Range(Global.MinFontSize, Global.MinFontSizeCount).ToList();
-        cmbCurrentLanguage.ItemsSource = Global.Languages;
+        cmbCurrentFontSize.ItemsSource = Enumerable.Range(AppConfig.MinFontSize, AppConfig.MinFontSizeCount).ToList();
+        cmbCurrentLanguage.ItemsSource = AppConfig.Languages;
 
         this.WhenActivated(disposables =>
         {

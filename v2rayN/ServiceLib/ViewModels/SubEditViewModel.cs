@@ -9,8 +9,8 @@ public class SubEditViewModel : MyReactiveObject
 
     public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -33,23 +33,23 @@ public class SubEditViewModel : MyReactiveObject
         if (url.IsNotEmpty())
         {
             var uri = Utils.TryUri(url);
-            if (uri == null)
+            if (uri is null)
             {
                 NoticeManager.Instance.Enqueue(ResUI.InvalidUrlTip);
                 return;
             }
             //Do not allow http protocol
-            if (url.StartsWith(Global.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
+            if (url.StartsWith(AppConfig.HttpProtocol) && !Utils.IsPrivateNetwork(uri.IdnHost))
             {
                 NoticeManager.Instance.Enqueue(ResUI.InsecureUrlProtocol);
                 //return;
             }
         }
 
-        if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
+        if (await ConfigHandler.AddSubItem(Config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {

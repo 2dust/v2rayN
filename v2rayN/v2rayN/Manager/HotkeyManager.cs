@@ -1,11 +1,14 @@
 namespace v2rayN.Manager;
 
-public sealed class HotkeyManager
+public sealed partial class HotkeyManager
 {
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
     public static HotkeyManager Instance = _instance.Value;
     private const int WmHotkey = 0x0312;
     private readonly Dictionary<int, List<EGlobalHotkey>> _hotkeyTriggerDic = new();
+
+    private static readonly CompositeFormat _registerGlobalHotkeySuccessfully =
+        CompositeFormat.Parse(ResUI.RegisterGlobalHotkeySuccessfully);
 
     public bool IsPause { get; set; } = false;
 
@@ -63,24 +66,24 @@ public sealed class HotkeyManager
     {
         foreach (var _hotkeyCode in _hotkeyTriggerDic.Keys)
         {
-            var hotkeyInfo = GetHotkeyInfo(_hotkeyCode);
+            var (fsModifiers, vKey, hotkeyStr, Names) = GetHotkeyInfo(_hotkeyCode);
             var isSuccess = false;
             var msg = string.Empty;
 
             Application.Current?.Dispatcher.Invoke(() =>
             {
-                isSuccess = RegisterHotKey(nint.Zero, _hotkeyCode, hotkeyInfo.fsModifiers, hotkeyInfo.vKey);
+                isSuccess = RegisterHotKey(nint.Zero, _hotkeyCode, fsModifiers, vKey);
             });
-            foreach (var name in hotkeyInfo.Names)
+            foreach (var name in Names)
             {
                 if (isSuccess)
                 {
-                    msg = string.Format(ResUI.RegisterGlobalHotkeySuccessfully, $"{name}({hotkeyInfo.hotkeyStr})");
+                    msg = string.Format(CultureInfo.CurrentCulture, _registerGlobalHotkeySuccessfully, $"{name}({hotkeyStr})");
                 }
                 else
                 {
                     var errInfo = new Win32Exception(Marshal.GetLastWin32Error()).Message;
-                    msg = string.Format(ResUI.RegisterGlobalHotkeyFailed, $"{name}({hotkeyInfo.hotkeyStr})", errInfo);
+                    msg = string.Format(CultureInfo.CurrentCulture, _registerGlobalHotkeySuccessfully, $"{name}({hotkeyStr})", errInfo);
                 }
                 UpdateViewEvent?.Invoke(false, msg);
             }
@@ -111,17 +114,17 @@ public sealed class HotkeyManager
         var key = KeyInterop.KeyFromVirtualKey(vKey);
         if ((modify & KeyModifiers.Ctrl) == KeyModifiers.Ctrl)
         {
-            hotkeyStr.Append($"{KeyModifiers.Ctrl}+");
+            hotkeyStr.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Ctrl}+");
         }
 
         if ((modify & KeyModifiers.Alt) == KeyModifiers.Alt)
         {
-            hotkeyStr.Append($"{KeyModifiers.Alt}+");
+            hotkeyStr.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Alt}+");
         }
 
         if ((modify & KeyModifiers.Shift) == KeyModifiers.Shift)
         {
-            hotkeyStr.Append($"{KeyModifiers.Shift}+");
+            hotkeyStr.Append(CultureInfo.InvariantCulture, $"{KeyModifiers.Shift}+");
         }
 
         hotkeyStr.Append(key.ToString());
@@ -165,11 +168,13 @@ public sealed class HotkeyManager
         }
     }
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool RegisterHotKey(nint hWnd, int id, int fsModifiers, int vlc);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool RegisterHotKey(nint hWnd, int id, int fsModifiers, int vlc);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool UnregisterHotKey(nint hWnd, int id);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool UnregisterHotKey(nint hWnd, int id);
 
     [Flags]
     private enum KeyModifiers

@@ -216,7 +216,7 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}">
-                <Hyperlink Click="linkCustomRulesetPath4Singbox">
+                <Hyperlink Click="LinkCustomRulesetPath4Singbox">
                     <TextBlock Text="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}" />
                     <materialDesign:PackIcon Kind="Link" />
                 </Hyperlink>

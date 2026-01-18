@@ -17,8 +17,8 @@ public class BackupAndRestoreViewModel : MyReactiveObject
 
     public BackupAndRestoreViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         WebDavCheckCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -33,7 +33,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
             await RemoteRestore();
         });
 
-        SelectedSource = JsonUtils.DeepCopy(_config.WebDavItem);
+        SelectedSource = JsonUtils.DeepCopy(Config.WebDavItem);
     }
 
     private void DisplayOperationMsg(string msg = "")
@@ -44,8 +44,8 @@ public class BackupAndRestoreViewModel : MyReactiveObject
     private async Task WebDavCheck()
     {
         DisplayOperationMsg();
-        _config.WebDavItem = SelectedSource;
-        _ = await ConfigHandler.SaveConfig(_config);
+        Config.WebDavItem = SelectedSource;
+        _ = await ConfigHandler.SaveConfig(Config);
 
         var result = await WebDavManager.Instance.CheckConnection();
         if (result)
@@ -145,7 +145,7 @@ public class BackupAndRestoreViewModel : MyReactiveObject
             {
                 if (Utils.UpgradeAppExists(out var upgradeFileName))
                 {
-                    _ = ProcUtils.ProcessStart(upgradeFileName, Global.RebootAs, Utils.StartupPath());
+                    _ = ProcUtils.ProcessStart(upgradeFileName, AppConfig.RebootAs, Utils.StartupPath());
                 }
             }
             AppManager.Instance.Shutdown(true);

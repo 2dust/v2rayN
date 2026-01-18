@@ -5,13 +5,8 @@ public class ProfilesSelectViewModel : MyReactiveObject
     #region private prop
 
     private string _serverFilter = string.Empty;
-    private Dictionary<string, bool> _dicHeaderSort = new();
+    private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private string _subIndexId = string.Empty;
-
-    // ConfigType filter state: default include-mode with all types selected
-    private List<EConfigType> _filterConfigTypes = new();
-
-    private bool _filterExclude = false;
 
     #endregion private prop
 
@@ -35,16 +30,16 @@ public class ProfilesSelectViewModel : MyReactiveObject
     // Include/Exclude filter for ConfigType
     public List<EConfigType> FilterConfigTypes
     {
-        get => _filterConfigTypes;
-        set => this.RaiseAndSetIfChanged(ref _filterConfigTypes, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = new();
 
     [Reactive]
     public bool FilterExclude
     {
-        get => _filterExclude;
-        set => this.RaiseAndSetIfChanged(ref _filterExclude, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = false;
 
     #endregion ObservableCollection
 
@@ -52,20 +47,20 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     public ProfilesSelectViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
-        _subIndexId = _config.SubIndexId ?? string.Empty;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
+        _subIndexId = Config.SubIndexId ?? string.Empty;
 
         #region WhenAnyValue && ReactiveCommand
 
         this.WhenAnyValue(
             x => x.SelectedSub,
-            y => y != null && !y.Remarks.IsNullOrEmpty() && _subIndexId != y.Id)
+            y => y is not null && !y.Remarks.IsNullOrEmpty() && _subIndexId != y.Id)
                 .Subscribe(async c => await SubSelectedChangedAsync(c));
 
         this.WhenAnyValue(
           x => x.ServerFilter,
-          y => y != null && _serverFilter != y)
+          y => y is not null && _serverFilter != y)
               .Subscribe(async c => await ServerFilterChanged(c));
 
         // React to ConfigType filter changes
@@ -108,7 +103,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     public bool CanOk()
     {
-        return SelectedProfile != null && !SelectedProfile.IndexId.IsNullOrEmpty();
+        return SelectedProfile is not null && !SelectedProfile.IndexId.IsNullOrEmpty();
     }
 
     public bool SelectFinish()
@@ -117,7 +112,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             return false;
         }
-        _updateView?.Invoke(EViewAction.CloseWindow, null);
+        UpdateView?.Invoke(EViewAction.CloseWindow, null);
         return true;
     }
 
@@ -135,7 +130,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await _updateView?.Invoke(EViewAction.ProfilesFocus, null);
+        await UpdateView?.Invoke(EViewAction.ProfilesFocus, null);
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -158,14 +153,14 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     private async Task RefreshServersBiz()
     {
-        var lstModel = await GetProfileItemsEx(_subIndexId, _serverFilter);
+        var lstModel = await GetProfileItemsEx(_serverFilter);
 
         ProfileItems.Clear();
         ProfileItems.AddRange(lstModel);
         if (lstModel.Count > 0)
         {
-            var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
-            if (selected != null)
+            var selected = lstModel.FirstOrDefault(t => t.IndexId == Config.IndexId);
+            if (selected is not null)
             {
                 SelectedProfile = selected;
             }
@@ -175,7 +170,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
             }
         }
 
-        await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
+        await UpdateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
     }
 
     public async Task RefreshSubscriptions()
@@ -188,7 +183,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             SubItems.Add(item);
         }
-        if (_subIndexId != null && SubItems.FirstOrDefault(t => t.Id == _subIndexId) != null)
+        if (_subIndexId is not null && SubItems.FirstOrDefault(t => t.Id == _subIndexId) is not null)
         {
             SelectedSub = SubItems.FirstOrDefault(t => t.Id == _subIndexId);
         }
@@ -198,7 +193,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         }
     }
 
-    private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
+    private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string filter)
     {
         var lstModel = await AppManager.Instance.ProfileItems(_subIndexId, filter);
         lstModel = (from t in lstModel
@@ -214,11 +209,11 @@ public class ProfilesSelectViewModel : MyReactiveObject
                         StreamSecurity = t.StreamSecurity,
                         Subid = t.Subid,
                         SubRemarks = t.SubRemarks,
-                        IsActive = t.IndexId == _config.IndexId,
+                        IsActive = t.IndexId == Config.IndexId,
                     }).OrderBy(t => t.Sort).ToList();
 
         // Apply ConfigType filter (include or exclude)
-        if (FilterConfigTypes != null && FilterConfigTypes.Count > 0)
+        if (FilterConfigTypes is not null && FilterConfigTypes.Count > 0)
         {
             if (FilterExclude)
             {
@@ -251,7 +246,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     public async Task<List<ProfileItem>?> GetProfileItems()
     {
-        if (SelectedProfiles == null || SelectedProfiles.Count == 0)
+        if (SelectedProfiles is null || SelectedProfiles.Count == 0)
         {
             return null;
         }
@@ -263,7 +258,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
                 continue;
             }
             var item = await AppManager.Instance.GetProfileItem(sp.IndexId);
-            if (item != null)
+            if (item is not null)
             {
                 lst.Add(item);
             }
@@ -284,13 +279,12 @@ public class ProfilesSelectViewModel : MyReactiveObject
         }
 
         var prop = typeof(ProfileItemModel).GetProperty(colName);
-        if (prop == null)
+        if (prop is null)
         {
             return;
         }
-
-        _dicHeaderSort.TryAdd(colName, true);
-        var asc = _dicHeaderSort[colName];
+;
+        var asc = _dicHeaderSort.GetValueOrDefault(colName, true);
 
         var comparer = Comparer<object?>.Create((a, b) =>
         {

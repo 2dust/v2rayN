@@ -2,7 +2,7 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
+    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string baseTagName = AppConfig.ProxyTag)
     {
         // Collect all existing subject selectors from both observatories
         var subjectSelectors = new List<string>();
@@ -83,7 +83,7 @@ public partial class CoreConfigV2rayService
         return await Task.FromResult(0);
     }
 
-    private async Task<string> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string selector = Global.ProxyTag)
+    private async Task<string> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string selector = AppConfig.ProxyTag)
     {
         var strategyType = multipleLoad switch
         {
@@ -93,7 +93,7 @@ public partial class CoreConfigV2rayService
             EMultipleLoad.LeastLoad => "leastLoad",
             _ => "roundRobin",
         };
-        var balancerTag = $"{selector}{Global.BalancerTagSuffix}";
+        var balancerTag = $"{selector}{AppConfig.BalancerTagSuffix}";
         var balancer = new BalancersItem4Ray
         {
             selector = [selector],

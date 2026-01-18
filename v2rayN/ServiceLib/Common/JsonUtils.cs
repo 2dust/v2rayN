@@ -100,7 +100,7 @@ public class JsonUtils
         var result = string.Empty;
         try
         {
-            if (obj == null)
+            if (obj is null)
             {
                 return result;
             }
@@ -125,7 +125,7 @@ public class JsonUtils
         var result = string.Empty;
         try
         {
-            if (obj == null)
+            if (obj is null)
             {
                 return result;
             }

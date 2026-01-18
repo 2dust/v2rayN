@@ -25,8 +25,8 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
         ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
 
-        cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy.ItemsSource = AppConfig.DomainStrategies.AppendEmpty();
+        cmbdomainStrategy4Singbox.ItemsSource = AppConfig.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {
@@ -168,10 +168,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
     private void lstRules_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
-        }
+        ViewModel?.SelectedSources = lstRules.SelectedItems.Cast<RulesItemModel>().ToList();
     }
 
     private void LstRules_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)

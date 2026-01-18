@@ -5,7 +5,7 @@ using Microsoft.Win32;
 
 namespace v2rayN.Common;
 
-internal static class WindowsUtils
+internal static partial class WindowsUtils
 {
     private static readonly string _tag = "WindowsUtils";
 
@@ -39,8 +39,8 @@ internal static class WindowsUtils
         }
     }
 
-    [DllImport("dwmapi.dll")]
-    public static extern int DwmSetWindowAttribute(nint hwnd, DWMWINDOWATTRIBUTE attribute, ref int attributeValue, uint attributeSize);
+    [LibraryImport("dwmapi.dll")]
+    public static partial int DwmSetWindowAttribute(nint hwnd, DWMWINDOWATTRIBUTE attribute, ref int attributeValue, uint attributeSize);
 
     public static ImageSource IconToImageSource(Icon icon)
     {

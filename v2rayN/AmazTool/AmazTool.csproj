@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
+        <NeutralLanguage>en-US</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>

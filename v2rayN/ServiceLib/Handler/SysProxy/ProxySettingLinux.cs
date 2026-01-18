@@ -2,7 +2,7 @@ namespace ServiceLib.Handler.SysProxy;
 
 public static class ProxySettingLinux
 {
-    private static readonly string _proxySetFileName = $"{Global.ProxySetLinuxShellFileName.Replace(Global.NamespaceSample, "")}.sh";
+    private static readonly string _proxySetFileName = $"{AppConfig.ProxySetLinuxShellFileName.Replace(AppConfig.NamespaceSample, "")}.sh";
 
     public static async Task SetProxy(string host, int port, string exceptions)
     {
@@ -21,7 +21,7 @@ public static class ProxySettingLinux
         var customSystemProxyScriptPath = AppManager.Instance.Config.SystemProxyItem?.CustomSystemProxyScriptPath;
         var fileName = (customSystemProxyScriptPath.IsNotEmpty() && File.Exists(customSystemProxyScriptPath))
             ? customSystemProxyScriptPath
-            : await FileUtils.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetLinuxShellFileName), false);
+            : await FileUtils.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(AppConfig.ProxySetLinuxShellFileName), false);
 
         // TODO: temporarily notify which script is being used
         NoticeManager.Instance.SendMessage(fileName);

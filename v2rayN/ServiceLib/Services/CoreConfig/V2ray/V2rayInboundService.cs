@@ -30,7 +30,7 @@ public partial class CoreConfigV2rayService
                     if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
                     {
                         inbound3.settings.auth = "password";
-                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
+                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
                     }
                 }
                 else
@@ -48,14 +48,14 @@ public partial class CoreConfigV2rayService
 
     private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
     {
-        var result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
+        var result = EmbedUtils.GetEmbedText(AppConfig.V2raySampleInbound);
         if (result.IsNullOrEmpty())
         {
             return new();
         }
 
         var inbound = JsonUtils.Deserialize<Inbounds4Ray>(result);
-        if (inbound == null)
+        if (inbound is null)
         {
             return new();
         }

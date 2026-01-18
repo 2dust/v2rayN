@@ -6,7 +6,7 @@ namespace v2rayN.Desktop.Manager;
 public sealed class HotkeyManager
 {
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
-    public static HotkeyManager Instance = _instance.Value;
+    public static HotkeyManager Instance => _instance.Value;
     private readonly Dictionary<int, EGlobalHotkey> _hotkeyTriggerDic = new();
     private GlobalHotKeys.HotKeyManager? _hotKeyManager;
 
@@ -14,7 +14,7 @@ public sealed class HotkeyManager
 
     private event Action<EGlobalHotkey>? _updateFunc;
 
-    public bool IsPause { get; set; } = false;
+    public bool IsPause { get; set; }
 
     public void Init(Config config, Action<EGlobalHotkey> updateFunc)
     {

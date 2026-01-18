@@ -45,9 +45,9 @@ public static class Extension
         }
     }
 
-    public static string TrimEx(this string? value)
+    public static string TrimSafe(this string? value)
     {
-        return value == null ? string.Empty : value.Trim();
+        return value?.Trim() ?? string.Empty;
     }
 
     public static string RemovePrefix(this string value, char prefix)
@@ -57,17 +57,26 @@ public static class Extension
 
     public static string RemovePrefix(this string value, string prefix)
     {
-        return value.StartsWith(prefix) ? value[prefix.Length..] : value;
+        return value.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) ? value[prefix.Length..] : value;
     }
 
-    public static string UpperFirstChar(this string value)
+    public static string UpperFirstChar(this string? value)
     {
         if (string.IsNullOrEmpty(value))
         {
             return string.Empty;
         }
 
-        return char.ToUpper(value.First()) + value[1..];
+        if (char.IsUpper(value[0]))
+        {
+            return value;
+        }
+
+        return string.Create(value.Length, value, (span, oldStr) =>
+        {
+            oldStr.AsSpan().CopyTo(span);
+            span[0] = char.ToUpper(span[0], CultureInfo.InvariantCulture);
+        });
     }
 
     public static string AppendQuotes(this string value)

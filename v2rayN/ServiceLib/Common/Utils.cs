@@ -9,6 +9,9 @@ public class Utils
 {
     private static readonly string _tag = "Utils";
 
+    private static readonly char[] LineSeparators = { '\r', '\n' };
+    private static readonly char[] FieldSeparators = { ' ', '\t' };
+
     #region Conversion Functions
 
     /// <summary>
@@ -19,7 +22,7 @@ public class Utils
     /// <returns></returns>
     public static string List2String(List<string>? lst, bool wrap = false)
     {
-        if (lst == null || lst.Count == 0)
+        if (lst is null || lst.Count == 0)
         {
             return string.Empty;
         }
@@ -141,7 +144,7 @@ public class Utils
     {
         try
         {
-            return Convert.ToBoolean(obj);
+            return Convert.ToBoolean(obj, CultureInfo.InvariantCulture);
         }
         catch
         {
@@ -232,13 +235,8 @@ public class Utils
         {
             var byteOld = Encoding.UTF8.GetBytes(str);
             var byteNew = MD5.HashData(byteOld);
-            StringBuilder sb = new(32);
-            foreach (var b in byteNew)
-            {
-                sb.Append(b.ToString("x2"));
-            }
 
-            return sb.ToString();
+            return Convert.ToHexStringLower(byteNew);
         }
         catch (Exception ex)
         {
@@ -264,7 +262,7 @@ public class Utils
             using var md5 = MD5.Create();
             using var stream = File.OpenRead(filePath);
             var hash = md5.ComputeHash(stream);
-            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            return Convert.ToHexStringLower(hash);
         }
         catch (Exception ex)
         {
@@ -335,24 +333,24 @@ public class Utils
     public static Dictionary<string, List<string>> ParseHostsToDictionary(string hostsContent)
     {
         var userHostsMap = hostsContent
-            .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+            .Split(LineSeparators, StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             // skip full-line comments
-            .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
+            .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('#'))
             // strip inline comments (truncate at '#')
             .Select(line =>
             {
                 var index = line.IndexOf('#');
-                return index >= 0 ? line.Substring(0, index).Trim() : line;
+                return index >= 0 ? line[..index].Trim() : line;
             })
             // ensure line still contains valid parts
             .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
-            .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+            .Select(line => line.Split(FieldSeparators, StringSplitOptions.RemoveEmptyEntries))
             .Where(parts => parts.Length >= 2)
-            .GroupBy(parts => parts[0])
+            .GroupBy(parts => parts[0], StringComparer.OrdinalIgnoreCase)
             .ToDictionary(
                 group => group.Key,
-                group => group.SelectMany(parts => parts.Skip(1)).ToList()
+                group => group.SelectMany(parts => parts.Skip(1)).Distinct(StringComparer.OrdinalIgnoreCase).ToList()
             );
 
         return userHostsMap;
@@ -660,15 +658,15 @@ public class Utils
         try
         {
             return blFull
-                ? $"{Global.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture}"
-                : $"{Global.AppName}/{GetVersionInfo()}";
+                ? $"{AppConfig.AppName} - V{GetVersionInfo()} - {RuntimeInformation.ProcessArchitecture}"
+                : $"{AppConfig.AppName}/{GetVersionInfo()}";
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
 
-        return Global.AppName;
+        return AppConfig.AppName;
     }
 
     public static string GetVersionInfo()
@@ -695,23 +693,16 @@ public class Utils
     /// <returns></returns>
     public static string GetGuid(bool full = true)
     {
-        try
+        var guid = Guid.NewGuid();
+
+        if (full)
         {
-            if (full)
-            {
-                return Guid.NewGuid().ToString("D");
-            }
-            else
-            {
-                return BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0).ToString();
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
+            return guid.ToString("D");
         }
 
-        return string.Empty;
+        Span<byte> buffer = stackalloc byte[16];
+        guid.TryWriteBytes(buffer);
+        return BitConverter.ToInt64(buffer).ToString(CultureInfo.InvariantCulture);
     }
 
     public static bool IsGuidByParse(string strSrc)
@@ -722,22 +713,22 @@ public class Utils
     public static Dictionary<string, string> GetSystemHosts()
     {
         var systemHosts = new Dictionary<string, string>();
-        var hostFile = @"C:\Windows\System32\drivers\etc\hosts";
+        var hostFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"drivers\etc\hosts");
         try
         {
             if (File.Exists(hostFile))
             {
-                var hosts = File.ReadAllText(hostFile).Replace("\r", "");
-                var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var hostsList = File.ReadAllText(hostFile)
+                    .Split(LineSeparators, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var host in hostsList)
                 {
-                    if (host.StartsWith("#"))
+                    if (host.StartsWith('#'))
                     {
                         continue;
                     }
 
-                    var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    var hostItem = host.Split(FieldSeparators, StringSplitOptions.RemoveEmptyEntries);
                     if (hostItem.Length < 2)
                     {
                         continue;
@@ -757,7 +748,7 @@ public class Utils
 
     public static async Task<string?> GetCliWrapOutput(string filePath, string? arg)
     {
-        return await GetCliWrapOutput(filePath, arg != null ? new List<string>() { arg } : null);
+        return await GetCliWrapOutput(filePath, arg is not null ? new List<string>() { arg } : null);
     }
 
     public static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args)
@@ -765,7 +756,7 @@ public class Utils
         try
         {
             var cmd = Cli.Wrap(filePath);
-            if (args != null)
+            if (args is not null)
             {
                 if (args.Count() == 1)
                 {
@@ -854,7 +845,7 @@ public class Utils
 
     public static string StartupPath()
     {
-        if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
+        if (Environment.GetEnvironmentVariable(AppConfig.LocalAppData) == "1")
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "v2rayN");
         }
@@ -917,9 +908,9 @@ public class Utils
             Directory.CreateDirectory(tempPath);
         }
 
-        if (coreType != null)
+        if (coreType is not null)
         {
-            tempPath = Path.Combine(tempPath, coreType.ToLower().ToString());
+            tempPath = Path.Combine(tempPath, coreType.ToLower(CultureInfo.InvariantCulture).ToString());
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);
@@ -1058,7 +1049,7 @@ public class Utils
     private static async Task<string?> GetLinuxUserId()
     {
         var arg = new List<string>() { "-c", "id -u" };
-        return await GetCliWrapOutput(Global.LinuxBash, arg);
+        return await GetCliWrapOutput(AppConfig.LinuxBash, arg);
     }
 
     public static async Task<string?> SetLinuxChmod(string? fileName)
@@ -1078,7 +1069,7 @@ public class Utils
             fileName = fileName.AppendQuotes();
         }
         var arg = new List<string>() { "-c", $"chmod +x {fileName}" };
-        return await GetCliWrapOutput(Global.LinuxBash, arg);
+        return await GetCliWrapOutput(AppConfig.LinuxBash, arg);
     }
 
     public static bool SetUnixFileMode(string? fileName)
@@ -1104,11 +1095,11 @@ public class Utils
         return false;
     }
 
-    public static async Task<string?> GetLinuxFontFamily(string lang)
+    public static async Task<string?> GetLinuxFontFamily()
     {
         // var arg = new List<string>() { "-c", $"fc-list :lang={lang} family" };
         var arg = new List<string>() { "-c", $"fc-list : family" };
-        return await GetCliWrapOutput(Global.LinuxBash, arg);
+        return await GetCliWrapOutput(AppConfig.LinuxBash, arg);
     }
 
     public static string? GetHomePath()

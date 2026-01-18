@@ -2,7 +2,7 @@ using Avalonia.Input.Platform;
 
 namespace v2rayN.Desktop.Common;
 
-internal class AvaUtils
+internal static class AvaUtils
 {
     public static async Task<string?> GetClipboardData(Window owner)
     {
@@ -48,7 +48,7 @@ internal class AvaUtils
             return new(fileName);
         }
 
-        var uri = new Uri(Path.Combine(Global.AvaAssets, $"NotifyIcon{index}.ico"));
+        var uri = new Uri(Path.Combine(AppConfig.AvaAssets, $"NotifyIcon{index}.ico"));
         using var bitmap = new Bitmap(AssetLoader.Open(uri));
         return new(bitmap);
     }

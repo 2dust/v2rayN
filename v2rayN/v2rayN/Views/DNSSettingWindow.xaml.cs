@@ -13,18 +13,18 @@ public partial class DNSSettingWindow
 
         ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
-        cmbRayFreedomDNSStrategy.ItemsSource = Global.DomainStrategy4Freedoms;
-        cmbSBDirectDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
-        cmbSBRemoteDNSStrategy.ItemsSource = Global.SingboxDomainStrategy4Out;
-        cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
-        cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
-        cmbBootstrapDNS.ItemsSource = Global.DomainPureIPDNSAddress;
-        cmbDirectExpectedIPs.ItemsSource = Global.ExpectedIPs;
+        cmbRayFreedomDNSStrategy.ItemsSource = AppConfig.DomainStrategy4Freedoms;
+        cmbSBDirectDNSStrategy.ItemsSource = AppConfig.SingboxDomainStrategy4Out;
+        cmbSBRemoteDNSStrategy.ItemsSource = AppConfig.SingboxDomainStrategy4Out;
+        cmbDirectDNS.ItemsSource = AppConfig.DomainDirectDNSAddress;
+        cmbRemoteDNS.ItemsSource = AppConfig.DomainRemoteDNSAddress;
+        cmbBootstrapDNS.ItemsSource = AppConfig.DomainPureIPDNSAddress;
+        cmbDirectExpectedIPs.ItemsSource = AppConfig.ExpectedIPs;
 
-        cmbdomainStrategy4FreedomCompatible.ItemsSource = Global.DomainStrategy4Freedoms;
-        cmbdomainStrategy4OutCompatible.ItemsSource = Global.SingboxDomainStrategy4Out;
-        cmbdomainDNSAddressCompatible.ItemsSource = Global.DomainPureIPDNSAddress;
-        cmbdomainDNSAddress2Compatible.ItemsSource = Global.DomainPureIPDNSAddress;
+        cmbdomainStrategy4FreedomCompatible.ItemsSource = AppConfig.DomainStrategy4Freedoms;
+        cmbdomainStrategy4OutCompatible.ItemsSource = AppConfig.SingboxDomainStrategy4Out;
+        cmbdomainDNSAddressCompatible.ItemsSource = AppConfig.DomainPureIPDNSAddress;
+        cmbdomainDNSAddress2Compatible.ItemsSource = AppConfig.DomainPureIPDNSAddress;
 
         this.WhenActivated(disposables =>
         {

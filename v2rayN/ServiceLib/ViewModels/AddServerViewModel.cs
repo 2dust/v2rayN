@@ -23,8 +23,8 @@ public class AddServerViewModel : MyReactiveObject
 
     public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
 
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -50,8 +50,8 @@ public class AddServerViewModel : MyReactiveObject
 
         if (profileItem.IndexId.IsNullOrEmpty())
         {
-            profileItem.Network = Global.DefaultNetwork;
-            profileItem.HeaderType = Global.None;
+            profileItem.Network = AppConfig.DefaultNetwork;
+            profileItem.HeaderType = AppConfig.None;
             profileItem.RequestHost = "";
             profileItem.StreamSecurity = "";
             SelectedSource = profileItem;
@@ -80,7 +80,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         var port = SelectedSource.Port.ToString();
         if (port.IsNullOrEmpty() || !Utils.IsNumeric(port)
-            || SelectedSource.Port <= 0 || SelectedSource.Port >= Global.MaxPort)
+            || SelectedSource.Port <= 0 || SelectedSource.Port >= AppConfig.MaxPort)
         {
             NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
             return;
@@ -110,10 +110,10 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
 
-        if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
+        if (await ConfigHandler.AddServer(Config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
@@ -156,7 +156,7 @@ public class AddServerViewModel : MyReactiveObject
 
     private async Task FetchCert()
     {
-        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        if (SelectedSource.StreamSecurity != AppConfig.StreamSecurity)
         {
             return;
         }
@@ -186,7 +186,7 @@ public class AddServerViewModel : MyReactiveObject
 
     private async Task FetchCertChain()
     {
-        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        if (SelectedSource.StreamSecurity != AppConfig.StreamSecurity)
         {
             return;
         }

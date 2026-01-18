@@ -7,6 +7,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = new();
 
+    private static readonly CompositeFormat _speedtestingTestFailedPart =
+        CompositeFormat.Parse(ResUI.SpeedtestingTestFailedPart);
+
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         Task.Run(async () =>
@@ -128,7 +131,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     var responseTime = await GetTcpingTime(it.Address, it.Port);
 
                     ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-                    await UpdateFunc(it.IndexId, responseTime.ToString());
+                    await UpdateFunc(it.IndexId, responseTime.ToString(CultureInfo.InvariantCulture));
                 }
                 catch (Exception ex)
                 {
@@ -143,7 +146,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (pageSize <= 0)
         {
-            pageSize = lstSelected.Count < Global.SpeedTestPageSize ? lstSelected.Count : Global.SpeedTestPageSize;
+            pageSize = lstSelected.Count < AppConfig.SpeedTestPageSize ? lstSelected.Count : AppConfig.SpeedTestPageSize;
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
@@ -168,7 +171,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 return;
             }
 
-            await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
+            await UpdateFunc("", string.Format(CultureInfo.InvariantCulture, _speedtestingTestFailedPart, lstFailed.Count));
 
             if (pageSizeNext > _config.SpeedTestItem.MixedConcurrencyCount)
             {
@@ -220,7 +223,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            if (processService != null)
+            if (processService is not null)
             {
                 await processService?.StopAsync();
             }
@@ -231,7 +234,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
     {
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
-        var downloadHandle = new DownloadService();
         List<Task> tasks = new();
         foreach (var it in selecteds)
         {
@@ -267,7 +269,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
                         if (delay > 0)
                         {
-                            await DoSpeedTest(downloadHandle, it);
+                            await DoSpeedTest(it);
                         }
                         else
                         {
@@ -281,7 +283,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 }
                 finally
                 {
-                    if (processService != null)
+                    if (processService is not null)
                     {
                         await processService?.StopAsync();
                     }
@@ -294,25 +296,24 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<int> DoRealPing(ServerTestItem it)
     {
-        var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
+        var webProxy = new WebProxy($"socks5://{AppConfig.Loopback}:{it.Port}");
         var responseTime = await ConnectionHandler.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-        await UpdateFunc(it.IndexId, responseTime.ToString());
+        await UpdateFunc(it.IndexId, responseTime.ToString(CultureInfo.InvariantCulture));
         return responseTime;
     }
 
-    private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it)
+    private async Task DoSpeedTest(ServerTestItem it)
     {
         await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-        var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
+        var webProxy = new WebProxy($"socks5://{AppConfig.Loopback}:{it.Port}");
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
-        await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (success, msg) =>
+        await DownloadService.DownloadDataAsync(url, webProxy, timeout, async (success, msg) =>
         {
-            decimal.TryParse(msg, out var dec);
-            if (dec > 0)
+            if (decimal.TryParse(msg, out var dec) && dec > 0)
             {
                 ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
             }
@@ -320,7 +321,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         });
     }
 
-    private async Task<int> GetTcpingTime(string url, int port)
+    private static async Task<int> GetTcpingTime(string url, int port)
     {
         var responseTime = -1;
 
@@ -350,11 +351,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return responseTime;
     }
 
-    private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
+    private static List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = new();
-        var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
-        var lst2 = lstSelected.Where(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
+        var lst1 = lstSelected.Where(t => AppConfig.XraySupportConfigType.Contains(t.ConfigType)).ToList();
+        var lst2 = lstSelected.Where(t => AppConfig.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {

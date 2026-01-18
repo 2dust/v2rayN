@@ -3,9 +3,9 @@ using MsBox.Avalonia;
 
 namespace v2rayN.Desktop.Common;
 
-internal class UI
+internal static class UI
 {
-    private static readonly string caption = Global.AppName;
+    private static readonly string caption = AppConfig.AppName;
 
     public static async Task<ButtonResult> ShowYesNo(Window owner, string msg)
     {
@@ -28,7 +28,7 @@ internal class UI
             FileTypeFilter = filter is null ? [FilePickerFileTypes.All, FilePickerFileTypes.ImagePng] : [filter]
         });
 
-        return files.FirstOrDefault()?.TryGetLocalPath();
+        return files is [var first, ..] ? first.TryGetLocalPath() : null;
     }
 
     public static async Task<string?> SaveFileDialog(Window owner, string filter)

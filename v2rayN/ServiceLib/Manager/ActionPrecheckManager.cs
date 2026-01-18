@@ -107,12 +107,12 @@ public class ActionPrecheckManager
         if (coreType == ECoreType.sing_box)
         {
             var transportError = ValidateSingboxTransport(item.ConfigType, net);
-            if (transportError != null)
+            if (transportError is not null)
             {
                 errors.Add(transportError);
             }
 
-            if (!Global.SingboxSupportConfigType.Contains(item.ConfigType))
+            if (!AppConfig.SingboxSupportConfigType.Contains(item.ConfigType))
             {
                 errors.Add(string.Format(ResUI.CoreNotSupportProtocol,
                     nameof(ECoreType.sing_box), item.ConfigType.ToString()));
@@ -121,7 +121,7 @@ public class ActionPrecheckManager
         else if (coreType is ECoreType.Xray)
         {
             // Xray core does not support these protocols
-            if (!Global.XraySupportConfigType.Contains(item.ConfigType))
+            if (!AppConfig.XraySupportConfigType.Contains(item.ConfigType))
             {
                 errors.Add(string.Format(ResUI.CoreNotSupportProtocol,
                     nameof(ECoreType.Xray), item.ConfigType.ToString()));
@@ -144,7 +144,7 @@ public class ActionPrecheckManager
                     errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                 }
 
-                if (!Global.Flows.Contains(item.Flow))
+                if (!AppConfig.Flows.Contains(item.Flow))
                 {
                     errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
                 }
@@ -157,7 +157,7 @@ public class ActionPrecheckManager
                     errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                 }
 
-                if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                if (string.IsNullOrEmpty(item.Security) || !AppConfig.SsSecuritiesInSingbox.Contains(item.Security))
                 {
                     errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
                 }
@@ -165,7 +165,7 @@ public class ActionPrecheckManager
                 break;
         }
 
-        if (item.StreamSecurity == Global.StreamSecurity)
+        if (item.StreamSecurity == AppConfig.StreamSecurity)
         {
             // check certificate validity
             if (!item.Cert.IsNullOrEmpty()
@@ -176,7 +176,7 @@ public class ActionPrecheckManager
             }
         }
 
-        if (item.StreamSecurity == Global.StreamSecurityReality)
+        if (item.StreamSecurity == AppConfig.StreamSecurityReality)
         {
             if (item.PublicKey.IsNullOrEmpty())
             {
@@ -330,7 +330,7 @@ public class ActionPrecheckManager
 
         var coreType = AppManager.Instance.GetCoreType(item, item.ConfigType);
         var routing = await ConfigHandler.GetDefaultRouting(AppManager.Instance.Config);
-        if (routing == null)
+        if (routing is null)
         {
             return errors;
         }
@@ -344,7 +344,7 @@ public class ActionPrecheckManager
             }
 
             var outboundTag = ruleItem.OutboundTag;
-            if (outboundTag.IsNullOrEmpty() || Global.OutboundTags.Contains(outboundTag))
+            if (outboundTag.IsNullOrEmpty() || AppConfig.OutboundTags.Contains(outboundTag))
             {
                 continue;
             }

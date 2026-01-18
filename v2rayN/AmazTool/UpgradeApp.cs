@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AmazTool;
 
-internal class UpgradeApp
+internal static class UpgradeApp
 {
     public static void Upgrade(string fileName)
     {
@@ -25,7 +25,7 @@ internal class UpgradeApp
             foreach (var pp in existing)
             {
                 var path = pp.MainModule?.FileName ?? "";
-                if (path.StartsWith(Utils.GetPath(Utils.V2rayN)))
+                if (path.StartsWith(Utils.GetPath(Utils.V2rayN), StringComparison.OrdinalIgnoreCase))
                 {
                     pp?.Kill();
                     pp?.WaitForExit(1000);
@@ -74,7 +74,7 @@ internal class UpgradeApp
                     var entryOutputPath = Utils.GetPath(fullName);
                     Directory.CreateDirectory(Path.GetDirectoryName(entryOutputPath)!);
                     //In the bin folder, if the file already exists, it will be skipped
-                    if (fullName.StartsWith("bin") && File.Exists(entryOutputPath))
+                    if (fullName.AsSpan().StartsWith("bin", StringComparison.OrdinalIgnoreCase) && File.Exists(entryOutputPath))
                     {
                         continue;
                     }

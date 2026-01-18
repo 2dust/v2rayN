@@ -4,7 +4,7 @@ namespace v2rayN.Common;
 
 internal class UI
 {
-    private static readonly string caption = Global.AppName;
+    private static readonly string caption = AppConfig.AppName;
 
     public static void Show(string msg)
     {

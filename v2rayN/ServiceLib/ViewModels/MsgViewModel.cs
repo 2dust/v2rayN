@@ -15,10 +15,10 @@ public class MsgViewModel : MyReactiveObject
 
     public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
-        MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
-        AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
+        MsgFilter = Config.MsgUIItem.MainMsgFilter ?? string.Empty;
+        AutoRefresh = Config.MsgUIItem.AutoRefresh ?? true;
 
         this.WhenAnyValue(
            x => x.MsgFilter)
@@ -27,7 +27,7 @@ public class MsgViewModel : MyReactiveObject
         this.WhenAnyValue(
           x => x.AutoRefresh,
           y => y == true)
-              .Subscribe(c => _config.MsgUIItem.AutoRefresh = AutoRefresh);
+              .Subscribe(c => Config.MsgUIItem.AutoRefresh = AutoRefresh);
 
         AppEvents.SendMsgViewRequested
          .AsObservable()
@@ -64,7 +64,7 @@ public class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
+            await UpdateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
         }
         finally
         {
@@ -105,7 +105,7 @@ public class MsgViewModel : MyReactiveObject
 
     private void DoMsgFilter()
     {
-        _config.MsgUIItem.MainMsgFilter = MsgFilter;
+        Config.MsgUIItem.MainMsgFilter = MsgFilter;
         _lastMsgFilterNotAvailable = false;
     }
 }

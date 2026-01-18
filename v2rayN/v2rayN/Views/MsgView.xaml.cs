@@ -21,7 +21,7 @@ public partial class MsgView
         menuMsgViewCopyAll.Click += menuMsgViewCopyAll_Click;
         menuMsgViewClear.Click += menuMsgViewClear_Click;
 
-        cmbMsgFilter.ItemsSource = Global.PresetMsgFilters;
+        cmbMsgFilter.ItemsSource = AppConfig.PresetMsgFilters;
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
@@ -71,7 +71,7 @@ public partial class MsgView
 
     private void menuMsgViewCopy_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        var data = txtMsg.SelectedText.TrimEx();
+        var data = txtMsg.SelectedText.TrimSafe();
         WindowsUtils.SetClipboardData(data);
     }
 

@@ -7,7 +7,7 @@ public partial class CoreConfigSingboxService
         try
         {
             var item = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
-            if (item != null && item.Enabled == true)
+            if (item is not null && item.Enabled == true)
             {
                 return await GenDnsCompatible(node, singboxConfig);
             }
@@ -22,22 +22,22 @@ public partial class CoreConfigSingboxService
             // final dns
             var routing = await ConfigHandler.GetDefaultRouting(_config);
             var useDirectDns = false;
-            if (routing != null)
+            if (routing is not null)
             {
                 var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
 
                 useDirectDns = rules?.LastOrDefault() is { } lastRule &&
-                                  lastRule.OutboundTag == Global.DirectTag &&
+                                  lastRule.OutboundTag == AppConfig.DirectTag &&
                                   (lastRule.Port == "0-65535" ||
                                    lastRule.Network == "tcp,udp" ||
                                    lastRule.Ip?.Contains("0.0.0.0/0") == true);
             }
-            singboxConfig.dns.final = useDirectDns ? Global.SingboxDirectDNSTag : Global.SingboxRemoteDNSTag;
+            singboxConfig.dns.final = useDirectDns ? AppConfig.SingboxDirectDNSTag : AppConfig.SingboxRemoteDNSTag;
             if ((!useDirectDns) && simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == false)
             {
                 singboxConfig.dns.rules.Add(new()
                 {
-                    server = Global.SingboxFakeDNSTag,
+                    server = AppConfig.SingboxFakeDNSTag,
                     query_type = new List<int> { 1, 28 }, // A and AAAA
                     rewrite_ttl = 1,
                 });
@@ -57,29 +57,29 @@ public partial class CoreConfigSingboxService
         var finalDns = await GenDnsDomains(singboxConfig, simpleDNSItem);
 
         var directDns = ParseDnsAddress(simpleDNSItem.DirectDNS);
-        directDns.tag = Global.SingboxDirectDNSTag;
-        directDns.domain_resolver = Global.SingboxLocalDNSTag;
+        directDns.tag = AppConfig.SingboxDirectDNSTag;
+        directDns.domain_resolver = AppConfig.SingboxLocalDNSTag;
 
         var remoteDns = ParseDnsAddress(simpleDNSItem.RemoteDNS);
-        remoteDns.tag = Global.SingboxRemoteDNSTag;
-        remoteDns.detour = Global.ProxyTag;
-        remoteDns.domain_resolver = Global.SingboxLocalDNSTag;
+        remoteDns.tag = AppConfig.SingboxRemoteDNSTag;
+        remoteDns.detour = AppConfig.ProxyTag;
+        remoteDns.domain_resolver = AppConfig.SingboxLocalDNSTag;
 
         var hostsDns = new Server4Sbox
         {
-            tag = Global.SingboxHostsDNSTag,
+            tag = AppConfig.SingboxHostsDNSTag,
             type = "hosts",
             predefined = new(),
         };
         if (simpleDNSItem.AddCommonHosts == true)
         {
-            hostsDns.predefined = Global.PredefinedHosts;
+            hostsDns.predefined = AppConfig.PredefinedHosts;
         }
 
         if (simpleDNSItem.UseSystemHosts == true)
         {
             var systemHosts = Utils.GetSystemHosts();
-            if (systemHosts != null && systemHosts.Count > 0)
+            if (systemHosts is not null && systemHosts.Count > 0)
             {
                 foreach (var host in systemHosts)
                 {
@@ -102,15 +102,15 @@ public partial class CoreConfigSingboxService
         {
             if (finalDns.server == host.Key)
             {
-                finalDns.domain_resolver = Global.SingboxHostsDNSTag;
+                finalDns.domain_resolver = AppConfig.SingboxHostsDNSTag;
             }
             if (remoteDns.server == host.Key)
             {
-                remoteDns.domain_resolver = Global.SingboxHostsDNSTag;
+                remoteDns.domain_resolver = AppConfig.SingboxHostsDNSTag;
             }
             if (directDns.server == host.Key)
             {
-                directDns.domain_resolver = Global.SingboxHostsDNSTag;
+                directDns.domain_resolver = AppConfig.SingboxHostsDNSTag;
             }
         }
 
@@ -125,7 +125,7 @@ public partial class CoreConfigSingboxService
         {
             var fakeip = new Server4Sbox
             {
-                tag = Global.SingboxFakeDNSTag,
+                tag = AppConfig.SingboxFakeDNSTag,
                 type = "fakeip",
                 inet4_range = "198.18.0.0/15",
                 inet6_range = "fc00::/18",
@@ -137,22 +137,22 @@ public partial class CoreConfigSingboxService
         var (_, dnsServer) = ParseEchParam(node?.EchConfigList);
         if (dnsServer is not null)
         {
-            dnsServer.tag = Global.SingboxEchDNSTag;
+            dnsServer.tag = AppConfig.SingboxEchDNSTag;
             if (dnsServer.server is not null
                 && hostsDns.predefined.ContainsKey(dnsServer.server))
             {
-                dnsServer.domain_resolver = Global.SingboxHostsDNSTag;
+                dnsServer.domain_resolver = AppConfig.SingboxHostsDNSTag;
             }
             else
             {
-                dnsServer.domain_resolver = Global.SingboxLocalDNSTag;
+                dnsServer.domain_resolver = AppConfig.SingboxLocalDNSTag;
             }
             singboxConfig.dns.servers.Add(dnsServer);
         }
         else if (node?.ConfigType.IsGroupType() == true)
         {
             var echDnsObject = JsonUtils.DeepCopy(directDns);
-            echDnsObject.tag = Global.SingboxEchDNSTag;
+            echDnsObject.tag = AppConfig.SingboxEchDNSTag;
             singboxConfig.dns.servers.Add(echDnsObject);
         }
 
@@ -162,7 +162,7 @@ public partial class CoreConfigSingboxService
     private async Task<Server4Sbox> GenDnsDomains(SingboxConfig singboxConfig, SimpleDNSItem? simpleDNSItem)
     {
         var finalDns = ParseDnsAddress(simpleDNSItem.BootstrapDNS);
-        finalDns.tag = Global.SingboxLocalDNSTag;
+        finalDns.tag = AppConfig.SingboxLocalDNSTag;
         singboxConfig.dns ??= new Dns4Sbox();
         singboxConfig.dns.servers ??= new List<Server4Sbox>();
         singboxConfig.dns.servers.Add(finalDns);
@@ -176,16 +176,16 @@ public partial class CoreConfigSingboxService
 
         singboxConfig.dns.rules.AddRange(new[]
             {
-            new Rule4Sbox { ip_accept_any = true, server = Global.SingboxHostsDNSTag },
+            new Rule4Sbox { ip_accept_any = true, server = AppConfig.SingboxHostsDNSTag },
             new Rule4Sbox
             {
-                server = Global.SingboxRemoteDNSTag,
+                server = AppConfig.SingboxRemoteDNSTag,
                 strategy = simpleDNSItem.SingboxStrategy4Proxy.NullIfEmpty(),
                 clash_mode = ERuleMode.Global.ToString()
             },
             new Rule4Sbox
             {
-                server = Global.SingboxDirectDNSTag,
+                server = AppConfig.SingboxDirectDNSTag,
                 strategy = simpleDNSItem.SingboxStrategy4Direct.NullIfEmpty(),
                 clash_mode = ERuleMode.Direct.ToString()
             }
@@ -198,7 +198,7 @@ public partial class CoreConfigSingboxService
             singboxConfig.dns.rules.Add(new()
             {
                 query_type = new List<int> { 64, 65 },
-                server = Global.SingboxEchDNSTag,
+                server = AppConfig.SingboxEchDNSTag,
                 domain = echDomain is not null ? new List<string> { echDomain } : null,
             });
         }
@@ -210,7 +210,7 @@ public partial class CoreConfigSingboxService
                 singboxConfig.dns.rules.Add(new()
                 {
                     query_type = new List<int> { 64, 65 },
-                    server = Global.SingboxEchDNSTag,
+                    server = AppConfig.SingboxEchDNSTag,
                     domain = queryServerNames,
                 });
             }
@@ -228,11 +228,11 @@ public partial class CoreConfigSingboxService
 
         if (simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == true)
         {
-            var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName));
+            var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(AppConfig.SingboxFakeIPFilterFileName));
             fakeipFilterRule.invert = true;
             var rule4Fake = new Rule4Sbox
             {
-                server = Global.SingboxFakeDNSTag,
+                server = AppConfig.SingboxFakeDNSTag,
                 type = "logical",
                 mode = "and",
                 rewrite_ttl = 1,
@@ -249,7 +249,7 @@ public partial class CoreConfigSingboxService
         }
 
         var routing = await ConfigHandler.GetDefaultRouting(_config);
-        if (routing == null)
+        if (routing is null)
         {
             return 0;
         }
@@ -306,9 +306,9 @@ public partial class CoreConfigSingboxService
                 continue;
             }
 
-            if (item.OutboundTag == Global.DirectTag)
+            if (item.OutboundTag == AppConfig.DirectTag)
             {
-                rule.server = Global.SingboxDirectDNSTag;
+                rule.server = AppConfig.SingboxDirectDNSTag;
                 rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Direct) ? null : simpleDNSItem.SingboxStrategy4Direct;
 
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0)
@@ -327,7 +327,7 @@ public partial class CoreConfigSingboxService
                     }
                 }
             }
-            else if (item.OutboundTag == Global.BlockTag)
+            else if (item.OutboundTag == AppConfig.BlockTag)
             {
                 rule.action = "predefined";
                 rule.rcode = "NXDOMAIN";
@@ -337,12 +337,12 @@ public partial class CoreConfigSingboxService
                 if (simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == false)
                 {
                     var rule4Fake = JsonUtils.DeepCopy(rule);
-                    rule4Fake.server = Global.SingboxFakeDNSTag;
+                    rule4Fake.server = AppConfig.SingboxFakeDNSTag;
                     rule4Fake.query_type = new List<int> { 1, 28 }; // A and AAAA
                     rule4Fake.rewrite_ttl = 1;
                     singboxConfig.dns.rules.Add(rule4Fake);
                 }
-                rule.server = Global.SingboxRemoteDNSTag;
+                rule.server = AppConfig.SingboxRemoteDNSTag;
                 rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Proxy) ? null : simpleDNSItem.SingboxStrategy4Proxy;
             }
 
@@ -360,11 +360,11 @@ public partial class CoreConfigSingboxService
             var strDNS = string.Empty;
             if (_config.TunModeItem.EnableTun)
             {
-                strDNS = string.IsNullOrEmpty(item?.TunDNS) ? EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName) : item?.TunDNS;
+                strDNS = string.IsNullOrEmpty(item?.TunDNS) ? EmbedUtils.GetEmbedText(AppConfig.TunSingboxDNSFileName) : item?.TunDNS;
             }
             else
             {
-                strDNS = string.IsNullOrEmpty(item?.NormalDNS) ? EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName) : item?.NormalDNS;
+                strDNS = string.IsNullOrEmpty(item?.NormalDNS) ? EmbedUtils.GetEmbedText(AppConfig.DNSSingboxNormalFileName) : item?.NormalDNS;
             }
 
             var dns4Sbox = JsonUtils.Deserialize<Dns4Sbox>(strDNS);
@@ -374,7 +374,7 @@ public partial class CoreConfigSingboxService
             }
             singboxConfig.dns = dns4Sbox;
 
-            if (dns4Sbox.servers != null && dns4Sbox.servers.Count > 0 && dns4Sbox.servers.First().address.IsNullOrEmpty())
+            if (dns4Sbox.servers is not null && dns4Sbox.servers.Count > 0 && dns4Sbox.servers.First().address.IsNullOrEmpty())
             {
                 await GenDnsDomainsCompatible(singboxConfig, item);
             }
@@ -398,9 +398,9 @@ public partial class CoreConfigSingboxService
         dns4Sbox.servers ??= [];
         dns4Sbox.rules ??= [];
 
-        var tag = Global.SingboxLocalDNSTag;
+        var tag = AppConfig.SingboxLocalDNSTag;
 
-        var finalDnsAddress = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
+        var finalDnsAddress = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? AppConfig.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
 
         var localDnsServer = ParseDnsAddress(finalDnsAddress);
         localDnsServer.tag = tag;
@@ -417,12 +417,12 @@ public partial class CoreConfigSingboxService
         dns4Sbox.servers ??= [];
         dns4Sbox.rules ??= [];
 
-        var tag = Global.SingboxLocalDNSTag;
+        var tag = AppConfig.SingboxLocalDNSTag;
         dns4Sbox.servers.Add(new()
         {
             tag = tag,
-            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
-            detour = Global.DirectTag,
+            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? AppConfig.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
+            detour = AppConfig.DirectTag,
             strategy = string.IsNullOrEmpty(dnsItem?.DomainStrategy4Freedom) ? null : dnsItem?.DomainStrategy4Freedom,
         });
         dns4Sbox.rules.Insert(0, new()
@@ -432,7 +432,7 @@ public partial class CoreConfigSingboxService
         });
         dns4Sbox.rules.Insert(0, new()
         {
-            server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
+            server = dns4Sbox.servers.Where(t => t.detour == AppConfig.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
             clash_mode = ERuleMode.Global.ToString()
         });
 
@@ -441,7 +441,7 @@ public partial class CoreConfigSingboxService
                        .Select(t => t.server)
                        .Distinct()
                        .ToList();
-        if (lstDomain != null && lstDomain.Count > 0)
+        if (lstDomain is not null && lstDomain.Count > 0)
         {
             dns4Sbox.rules.Insert(0, new()
             {
@@ -456,7 +456,7 @@ public partial class CoreConfigSingboxService
 
     private async Task<int> GenOutboundDnsRule(ProfileItem? node, SingboxConfig singboxConfig)
     {
-        if (node == null)
+        if (node is null)
         {
             return 0;
         }
@@ -466,7 +466,7 @@ public partial class CoreConfigSingboxService
         {
             domain.Add(node.Address);
         }
-        if (node.Address == Global.Loopback && node.SpiderX.IsNotEmpty()) // Tun2SocksAddress
+        if (node.Address == AppConfig.Loopback && node.SpiderX.IsNotEmpty()) // Tun2SocksAddress
         {
             domain.AddRange(Utils.String2List(node.SpiderX)
                 .Where(Utils.IsDomain)
@@ -481,7 +481,7 @@ public partial class CoreConfigSingboxService
         singboxConfig.dns.rules ??= new List<Rule4Sbox>();
         singboxConfig.dns.rules.Insert(0, new Rule4Sbox
         {
-            server = Global.SingboxLocalDNSTag,
+            server = AppConfig.SingboxLocalDNSTag,
             domain = domain,
         });
 

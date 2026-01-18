@@ -70,8 +70,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
         BlIsWindows = Utils.IsWindows();
 
         #region WhenAnyValue && ReactiveCommand
@@ -158,11 +158,11 @@ public class MainWindowViewModel : MyReactiveObject
         });
         SubGroupUpdateCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await UpdateSubscriptionProcess(_config.SubIndexId, false);
+            await UpdateSubscriptionProcess(Config.SubIndexId, false);
         });
         SubGroupUpdateViaProxyCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await UpdateSubscriptionProcess(_config.SubIndexId, true);
+            await UpdateSubscriptionProcess(Config.SubIndexId, true);
         });
 
         //Setting
@@ -184,7 +184,7 @@ public class MainWindowViewModel : MyReactiveObject
         });
         GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (await _updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
+            if (await UpdateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             }
@@ -255,17 +255,17 @@ public class MainWindowViewModel : MyReactiveObject
     {
         AppManager.Instance.ShowInTaskbar = true;
 
-        //await ConfigHandler.InitBuiltinRouting(_config);
-        await ConfigHandler.InitBuiltinDNS(_config);
-        await ConfigHandler.InitBuiltinFullConfigTemplate(_config);
+        //await ConfigHandler.InitBuiltinRouting(Config);
+        await ConfigHandler.InitBuiltinDNS(Config);
+        await ConfigHandler.InitBuiltinFullConfigTemplate(Config);
         await ProfileExManager.Instance.Init();
         await ProfileGroupItemManager.Instance.Init();
-        await CoreManager.Instance.Init(_config, UpdateHandler);
-        TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        await CoreManager.Instance.Init(Config, UpdateHandler);
+        TaskManager.Instance.RegUpdateTask(Config, UpdateTaskHandler);
 
-        if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
+        if (Config.GuiItem.EnableStatistics || Config.GuiItem.DisplayRealTimeSpeed)
         {
-            await StatisticsManager.Instance.Init(_config, UpdateStatisticsHandler);
+            await StatisticsManager.Instance.Init(Config, UpdateStatisticsHandler);
         }
         await RefreshServers();
 
@@ -291,13 +291,13 @@ public class MainWindowViewModel : MyReactiveObject
         NoticeManager.Instance.SendMessageEx(msg);
         if (success)
         {
-            var indexIdOld = _config.IndexId;
+            var indexIdOld = Config.IndexId;
             await RefreshServers();
-            if (indexIdOld != _config.IndexId)
+            if (indexIdOld != Config.IndexId)
             {
                 await Reload();
             }
-            if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
+            if (Config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
                 AppEvents.AdjustMainLvColWidthRequested.Publish();
             }
@@ -338,7 +338,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         ProfileItem item = new()
         {
-            Subid = _config.SubIndexId,
+            Subid = Config.SubIndexId,
             ConfigType = eConfigType,
             IsSub = false,
         };
@@ -346,20 +346,20 @@ public class MainWindowViewModel : MyReactiveObject
         bool? ret = false;
         if (eConfigType == EConfigType.Custom)
         {
-            ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
+            ret = await UpdateView?.Invoke(EViewAction.AddServer2Window, item);
         }
         else if (eConfigType.IsGroupType())
         {
-            ret = await _updateView?.Invoke(EViewAction.AddGroupServerWindow, item);
+            ret = await UpdateView?.Invoke(EViewAction.AddGroupServerWindow, item);
         }
         else
         {
-            ret = await _updateView?.Invoke(EViewAction.AddServerWindow, item);
+            ret = await UpdateView?.Invoke(EViewAction.AddServerWindow, item);
         }
         if (ret == true)
         {
             await RefreshServers();
-            if (item.IndexId == _config.IndexId)
+            if (item.IndexId == Config.IndexId)
             {
                 await Reload();
             }
@@ -368,12 +368,12 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaClipboardAsync(string? clipboardData)
     {
-        if (clipboardData == null)
+        if (clipboardData is null)
         {
-            await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
+            await UpdateView?.Invoke(EViewAction.AddServerViaClipboard, null);
             return;
         }
-        var ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.SubIndexId, false);
+        var ret = await ConfigHandler.AddBatchServers(Config, clipboardData, Config.SubIndexId, false);
         if (ret > 0)
         {
             RefreshSubscriptions();
@@ -388,7 +388,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaScanAsync()
     {
-        _updateView?.Invoke(EViewAction.ScanScreenTask, null);
+        UpdateView?.Invoke(EViewAction.ScanScreenTask, null);
         await Task.CompletedTask;
     }
 
@@ -400,7 +400,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaImageAsync()
     {
-        _updateView?.Invoke(EViewAction.ScanImageTask, null);
+        UpdateView?.Invoke(EViewAction.ScanImageTask, null);
         await Task.CompletedTask;
     }
 
@@ -423,7 +423,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         else
         {
-            var ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
+            var ret = await ConfigHandler.AddBatchServers(Config, result, Config.SubIndexId, false);
             if (ret > 0)
             {
                 RefreshSubscriptions();
@@ -443,7 +443,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task SubSettingAsync()
     {
-        if (await _updateView?.Invoke(EViewAction.SubSettingWindow, null) == true)
+        if (await UpdateView?.Invoke(EViewAction.SubSettingWindow, null) == true)
         {
             RefreshSubscriptions();
         }
@@ -451,7 +451,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler));
+        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(Config, subId, blProxy, UpdateTaskHandler));
     }
 
     #endregion Subscription
@@ -460,7 +460,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task OptionSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
+        var ret = await UpdateView?.Invoke(EViewAction.OptionSettingWindow, null);
         if (ret == true)
         {
             AppEvents.InboundDisplayRequested.Publish();
@@ -470,10 +470,10 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RoutingSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
+        var ret = await UpdateView?.Invoke(EViewAction.RoutingSettingWindow, null);
         if (ret == true)
         {
-            await ConfigHandler.InitBuiltinRouting(_config);
+            await ConfigHandler.InitBuiltinRouting(Config);
             AppEvents.RoutingsMenuRefreshRequested.Publish();
             await Reload();
         }
@@ -481,7 +481,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task DNSSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.DNSSettingWindow, null);
+        var ret = await UpdateView?.Invoke(EViewAction.DNSSettingWindow, null);
         if (ret == true)
         {
             await Reload();
@@ -490,7 +490,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task FullConfigTemplateAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.FullConfigTemplateWindow, null);
+        var ret = await UpdateView?.Invoke(EViewAction.FullConfigTemplateWindow, null);
         if (ret == true)
         {
             await Reload();
@@ -541,7 +541,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             SetReloadEnabled(false);
 
-            var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
+            var msgs = await ActionPrecheckManager.Instance.Check(Config.IndexId);
             if (msgs.Count > 0)
             {
                 foreach (var msg in msgs)
@@ -555,7 +555,7 @@ public class MainWindowViewModel : MyReactiveObject
             await Task.Run(async () =>
             {
                 await LoadCore();
-                await SysProxyHandler.UpdateSysProxy(_config, false);
+                await SysProxyHandler.UpdateSysProxy(Config, false);
                 await Task.Delay(1000);
             });
             AppEvents.TestServerRequested.Publish();
@@ -597,7 +597,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task LoadCore()
     {
-        var node = await ConfigHandler.GetDefaultServer(_config);
+        var node = await ConfigHandler.GetDefaultServer(Config);
         await CoreManager.Instance.LoadCore(node);
     }
 
@@ -607,12 +607,12 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task ApplyRegionalPreset(EPresetType type)
     {
-        await ConfigHandler.ApplyRegionalPreset(_config, type);
-        await ConfigHandler.InitRouting(_config);
+        await ConfigHandler.ApplyRegionalPreset(Config, type);
+        await ConfigHandler.InitRouting(Config);
         AppEvents.RoutingsMenuRefreshRequested.Publish();
 
-        await ConfigHandler.SaveConfig(_config);
-        await new UpdateService(_config, UpdateTaskHandler).UpdateGeoFileAll();
+        await ConfigHandler.SaveConfig(Config);
+        await new UpdateService(Config, UpdateTaskHandler).UpdateGeoFileAll();
         await Reload();
     }
 

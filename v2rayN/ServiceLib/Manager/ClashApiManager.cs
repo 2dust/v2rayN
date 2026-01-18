@@ -23,7 +23,7 @@ public sealed class ClashApiManager
             var result2 = await HttpClientHelper.Instance.TryGetAsync(url2);
             var clashProviders = JsonUtils.Deserialize<ClashProviders>(result2);
 
-            if (clashProxies != null || clashProviders != null)
+            if (clashProxies is not null || clashProviders is not null)
             {
                 _proxies = clashProxies?.proxies;
                 return new Tuple<ClashProxies, ClashProviders>(clashProxies, clashProviders);
@@ -41,14 +41,14 @@ public sealed class ClashApiManager
         {
             if (blAll)
             {
-                if (_proxies == null)
+                if (_proxies is null)
                 {
                     await GetClashProxiesAsync();
                 }
                 lstProxy = new List<ClashProxyModel>();
                 foreach (var kv in _proxies ?? [])
                 {
-                    if (Global.notAllowTestType.Contains(kv.Value.type?.ToLower()))
+                    if (AppConfig.notAllowTestType.Contains(kv.Value.type?.ToLower()))
                     {
                         continue;
                     }
@@ -70,7 +70,7 @@ public sealed class ClashApiManager
             var tasks = new List<Task>();
             foreach (var it in lstProxy)
             {
-                if (Global.notAllowTestType.Contains(it.Type.ToLower()))
+                if (AppConfig.notAllowTestType.Contains(it.Type.ToLower()))
                 {
                     continue;
                 }
@@ -123,7 +123,7 @@ public sealed class ClashApiManager
 
     public async Task ClashConfigUpdate(Dictionary<string, string> headers)
     {
-        if (_proxies == null)
+        if (_proxies is null)
         {
             return;
         }
@@ -182,6 +182,6 @@ public sealed class ClashApiManager
 
     private string GetApiUrl()
     {
-        return $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort2}";
+        return $"{AppConfig.HttpProtocol}{AppConfig.Loopback}:{AppManager.Instance.StatePort2}";
     }
 }

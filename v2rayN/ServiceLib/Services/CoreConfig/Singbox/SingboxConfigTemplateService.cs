@@ -5,7 +5,7 @@ public partial class CoreConfigSingboxService
     private async Task<string> ApplyFullConfigTemplate(SingboxConfig singboxConfig)
     {
         var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
-        if (fullConfigTemplate == null || !fullConfigTemplate.Enabled)
+        if (fullConfigTemplate is null || !fullConfigTemplate.Enabled)
         {
             return JsonUtils.Serialize(singboxConfig);
         }
@@ -17,7 +17,7 @@ public partial class CoreConfigSingboxService
         }
 
         var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
-        if (fullConfigTemplateNode == null)
+        if (fullConfigTemplateNode is null)
         {
             return JsonUtils.Serialize(singboxConfig);
         }
@@ -42,7 +42,7 @@ public partial class CoreConfigSingboxService
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         // Process endpoints
-        if (singboxConfig.endpoints != null && singboxConfig.endpoints.Count > 0)
+        if (singboxConfig.endpoints is not null && singboxConfig.endpoints.Count > 0)
         {
             var customEndpointsNode = fullConfigTemplateNode["endpoints"] is JsonArray endpoints ? endpoints : new JsonArray();
             foreach (var endpoint in singboxConfig.endpoints)

@@ -6,7 +6,7 @@ namespace v2rayN.Desktop.Views;
 public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
-    private Window? _window;
+    private readonly Window? _window;
 
     public ProfilesView()
     {
@@ -28,7 +28,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         lstProfiles.Sorting += LstProfiles_Sorting;
-        //if (_config.uiItem.enableDragDropSort)
+        //if (Config.uiItem.enableDragDropSort)
         //{
         //    lstProfiles.AllowDrop = true;
         //    lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
@@ -208,7 +208,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         return await Task.FromResult(true);
     }
 
-    public async Task ShareServer(string url)
+    public static async Task ShareServer(string url)
     {
         if (url.IsNullOrEmpty())
         {
@@ -229,10 +229,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     private void lstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
-        }
+        ViewModel?.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
     }
 
     private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
@@ -424,7 +421,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                         item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
                         item2.DisplayIndex = displayIndex++;
                     }
-                    if (item.Name.ToLower().StartsWith("to"))
+                    if (item.Name.StartsWith("to", StringComparison.OrdinalIgnoreCase))
                     {
                         item2.IsVisible = _config.GuiItem.EnableStatistics;
                     }

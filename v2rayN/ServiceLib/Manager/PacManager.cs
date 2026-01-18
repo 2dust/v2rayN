@@ -40,7 +40,7 @@ public class PacManager
 
         if (!File.Exists(fileName))
         {
-            var pac = EmbedUtils.GetEmbedText(Global.PacFileName);
+            var pac = EmbedUtils.GetEmbedText(AppConfig.PacFileName);
             await File.AppendAllTextAsync(fileName, pac);
         }
 
@@ -94,7 +94,7 @@ public class PacManager
 
     public void Stop()
     {
-        if (_tcpListener == null)
+        if (_tcpListener is null)
         {
             return;
         }

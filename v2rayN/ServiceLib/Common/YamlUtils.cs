@@ -41,7 +41,7 @@ public class YamlUtils
     public static string ToYaml(object? obj)
     {
         var result = string.Empty;
-        if (obj == null)
+        if (obj is null)
         {
             return result;
         }

@@ -58,13 +58,13 @@ public partial class SudoPasswordInputView : UserControl
         }
     }
 
-    private async Task<bool> CheckSudoPasswordAsync(string password)
+    private static async Task<bool> CheckSudoPasswordAsync(string password)
     {
         try
         {
             // Use sudo echo command to verify password
             var arg = new List<string>() { "-c", "sudo -S echo SUDO_CHECK" };
-            var result = await CliWrap.Cli.Wrap(Global.LinuxBash)
+            var result = await CliWrap.Cli.Wrap(AppConfig.LinuxBash)
                 .WithArguments(arg)
                 .WithStandardInputPipe(CliWrap.PipeSource.FromString(password))
                 .ExecuteBufferedAsync();

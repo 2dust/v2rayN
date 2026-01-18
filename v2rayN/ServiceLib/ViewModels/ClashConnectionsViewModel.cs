@@ -18,18 +18,18 @@ public class ClashConnectionsViewModel : MyReactiveObject
 
     public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
-        AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
+        AutoRefresh = Config.ClashUIItem.ConnectionsAutoRefresh;
 
         var canEditRemove = this.WhenAnyValue(
          x => x.SelectedSource,
-         selectedSource => selectedSource != null && selectedSource.Id.IsNotEmpty());
+         selectedSource => selectedSource is not null && selectedSource.Id.IsNotEmpty());
 
         this.WhenAnyValue(
            x => x.AutoRefresh,
            y => y == true)
-               .Subscribe(c => { _config.ClashUIItem.ConnectionsAutoRefresh = AutoRefresh; });
+               .Subscribe(c => { Config.ClashUIItem.ConnectionsAutoRefresh = AutoRefresh; });
         ConnectionCloseCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ClashConnectionClose(false);
@@ -51,7 +51,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
     private async Task GetClashConnections()
     {
         var ret = await ClashApiManager.Instance.GetClashConnectionsAsync();
-        if (ret == null)
+        if (ret is null)
         {
             return;
         }
@@ -133,12 +133,12 @@ public class ClashConnectionsViewModel : MyReactiveObject
                     continue;
                 }
 
-                if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
+                if (Config.ClashUIItem.ConnectionsRefreshInterval <= 0)
                 {
                     continue;
                 }
 
-                if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
+                if (numOfExecuted % Config.ClashUIItem.ConnectionsRefreshInterval != 0)
                 {
                     continue;
                 }

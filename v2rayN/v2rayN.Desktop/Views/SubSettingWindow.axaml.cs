@@ -6,7 +6,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
 {
-    private bool _manualClose = false;
+    private bool _manualClose;
 
     public SubSettingWindow()
     {
@@ -74,7 +74,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
         return await Task.FromResult(true);
     }
 
-    private async Task ShareSub(string url)
+    private static async Task ShareSub(string url)
     {
         if (url.IsNullOrEmpty())
         {
@@ -91,10 +91,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
 
     private void LstSubscription_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
-        }
+        ViewModel?.SelectedSources = lstSubscription.SelectedItems.Cast<SubItem>().ToList();
     }
 
     private void menuClose_Click(object? sender, RoutedEventArgs e)

@@ -9,10 +9,11 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
+    private static readonly CompositeFormat _menuWebsiteItemFormat = CompositeFormat.Parse(ResUI.menuWebsiteItem);
     private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
-    private bool _blCloseByUser = false;
+    private bool _blCloseByUser;
 
     public MainWindow()
     {
@@ -316,7 +317,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void MenuPromotion_Click(object? sender, RoutedEventArgs e)
     {
-        ProcUtils.ProcessStart($"{Utils.Base64Decode(Global.PromotionUrl)}?t={DateTime.Now.Ticks}");
+        ProcUtils.ProcessStart($"{Utils.Base64Decode(AppConfig.PromotionUrl)}?t={DateTime.Now.Ticks}");
     }
 
     private void MenuSettingsSetUWP_Click(object? sender, RoutedEventArgs e)
@@ -333,7 +334,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    public async Task ScanScreenTaskAsync()
+    public static async Task ScanScreenTaskAsync()
     {
         //ShowHideWindow(false);
 
@@ -487,10 +488,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             .Where(t => t.CoreType is not ECoreType.v2fly
                         and not ECoreType.hysteria))
         {
+            var coreName = it.CoreType.ToString().Replace("_", " ");
             var item = new MenuItem()
             {
                 Tag = it.Url?.Replace(@"/releases", ""),
-                Header = string.Format(ResUI.menuWebsiteItem, it.CoreType.ToString().Replace("_", " ")).UpperFirstChar()
+                Header = string.Format(CultureInfo.CurrentCulture, _menuWebsiteItemFormat, coreName).UpperFirstChar()
             };
             item.Click += MenuItem_Click;
             menuHelp.Items.Add(item);

@@ -12,7 +12,7 @@ public class TrojanFmt : BaseFmt
         };
 
         var url = Utils.TryUri(str);
-        if (url == null)
+        if (url is null)
         {
             return null;
         }
@@ -30,7 +30,7 @@ public class TrojanFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }

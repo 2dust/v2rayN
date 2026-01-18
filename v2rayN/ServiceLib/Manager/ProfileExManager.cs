@@ -161,7 +161,7 @@ public class ProfileExManager
     public int GetSort(string indexId)
     {
         var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
-        if (profileEx == null)
+        if (profileEx is null)
         {
             return 0;
         }
@@ -174,6 +174,6 @@ public class ProfileExManager
         {
             return 0;
         }
-        return _lstProfileEx.Max(t => t == null ? 0 : t.Sort);
+        return _lstProfileEx.Max(t => t is null ? 0 : t.Sort);
     }
 }

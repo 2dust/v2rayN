@@ -9,15 +9,15 @@ public partial class RoutingSettingWindow
         Owner = Application.Current.MainWindow;
         Closing += RoutingSettingWindow_Closing;
         PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
-        lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
+        lstRoutings.SelectionChanged += LstRoutings_SelectionChanged;
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
-        menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
-        btnCancel.Click += btnCancel_Click;
+        menuRoutingAdvancedSelectAll.Click += MenuRoutingAdvancedSelectAll_Click;
+        btnCancel.Click += BtnCancel_Click;
 
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
-        cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy.ItemsSource = AppConfig.DomainStrategies;
+        cmbdomainStrategy4Singbox.ItemsSource = AppConfig.DomainStrategies4Singbox;
 
         this.WhenActivated(disposables =>
         {
@@ -102,17 +102,14 @@ public partial class RoutingSettingWindow
         }
     }
 
-    private void menuRoutingAdvancedSelectAll_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void MenuRoutingAdvancedSelectAll_Click(object sender, RoutedEventArgs e)
     {
         lstRoutings.SelectAll();
     }
 
-    private void lstRoutings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void LstRoutings_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
-        }
+        ViewModel?.SelectedSources = lstRoutings.SelectedItems.Cast<RoutingItemModel>().ToList();
     }
 
     private void LstRoutings_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -120,17 +117,17 @@ public partial class RoutingSettingWindow
         ViewModel?.RoutingAdvancedEditAsync(false);
     }
 
-    private void linkdomainStrategy_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void LinkdomainStrategy_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html");
     }
 
-    private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
+    private void LinkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
     }
 
-    private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void BtnCancel_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel?.IsModified == true)
         {

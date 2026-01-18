@@ -211,10 +211,7 @@ public partial class ProfilesView
 
     private void LstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
-        }
+        ViewModel?.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
     }
 
     private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)
@@ -236,8 +233,7 @@ public partial class ProfilesView
 
     private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        var colHeader = sender as DataGridColumnHeader;
-        if (colHeader == null || colHeader.TabIndex < 0 || colHeader.Column == null)
+        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column == null)
         {
             return;
         }
@@ -365,7 +361,7 @@ public partial class ProfilesView
         var displayIndex = 0;
         foreach (var item in lvColumnItem)
         {
-            foreach (MyDGTextColumn item2 in lstProfiles.Columns)
+            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
             {
                 if (item2.ExName == item.Name)
                 {
@@ -378,7 +374,7 @@ public partial class ProfilesView
                         item2.Width = item.Width;
                         item2.DisplayIndex = displayIndex++;
                     }
-                    if (item.Name.ToLower().StartsWith("to"))
+                    if (item.Name.StartsWith("to", StringComparison.OrdinalIgnoreCase))
                     {
                         item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
                     }
@@ -409,7 +405,7 @@ public partial class ProfilesView
 
     private Point startPoint = new();
     private int startIndex = -1;
-    private string formatData = "ProfileItemModel";
+    private readonly string formatData = "ProfileItemModel";
 
     /// <summary>
     /// Helper to search up the VisualTree
@@ -421,9 +417,9 @@ public partial class ProfilesView
     {
         do
         {
-            if (current is T)
+            if (current is T t)
             {
-                return (T)current;
+                return t;
             }
             current = VisualTreeHelper.GetParent(current);
         }

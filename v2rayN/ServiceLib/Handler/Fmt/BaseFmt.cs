@@ -32,7 +32,7 @@ public class BaseFmt
         }
         else
         {
-            if (securityDef != null)
+            if (securityDef is not null)
             {
                 dicQuery.Add("security", securityDef);
             }
@@ -62,7 +62,7 @@ public class BaseFmt
             dicQuery.Add("pqv", Utils.UrlEncode(item.Mldsa65Verify));
         }
 
-        if (item.StreamSecurity.Equals(Global.StreamSecurity))
+        if (item.StreamSecurity.Equals(AppConfig.StreamSecurity, StringComparison.OrdinalIgnoreCase))
         {
             if (item.Alpn.IsNotEmpty())
             {
@@ -84,7 +84,7 @@ public class BaseFmt
         switch (item.Network)
         {
             case nameof(ETransport.tcp):
-                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
+                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : AppConfig.None);
                 if (item.RequestHost.IsNotEmpty())
                 {
                     dicQuery.Add("host", Utils.UrlEncode(item.RequestHost));
@@ -92,7 +92,7 @@ public class BaseFmt
                 break;
 
             case nameof(ETransport.kcp):
-                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
+                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : AppConfig.None);
                 if (item.Path.IsNotEmpty())
                 {
                     dicQuery.Add("seed", Utils.UrlEncode(item.Path));
@@ -120,14 +120,14 @@ public class BaseFmt
                 {
                     dicQuery.Add("path", Utils.UrlEncode(item.Path));
                 }
-                if (item.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(item.HeaderType))
+                if (item.HeaderType.IsNotEmpty() && AppConfig.XhttpMode.Contains(item.HeaderType))
                 {
                     dicQuery.Add("mode", Utils.UrlEncode(item.HeaderType));
                 }
                 if (item.Extra.IsNotEmpty())
                 {
                     var node = JsonUtils.ParseJson(item.Extra);
-                    var extra = node != null
+                    var extra = node is not null
                         ? JsonUtils.Serialize(node, new JsonSerializerOptions
                         {
                             WriteIndented = false,
@@ -153,7 +153,7 @@ public class BaseFmt
                 break;
 
             case nameof(ETransport.quic):
-                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : Global.None);
+                dicQuery.Add("headerType", item.HeaderType.IsNotEmpty() ? item.HeaderType : AppConfig.None);
                 dicQuery.Add("quicSecurity", Utils.UrlEncode(item.RequestHost));
                 dicQuery.Add("key", Utils.UrlEncode(item.Path));
                 break;
@@ -163,7 +163,7 @@ public class BaseFmt
                 {
                     dicQuery.Add("authority", Utils.UrlEncode(item.RequestHost));
                     dicQuery.Add("serviceName", Utils.UrlEncode(item.Path));
-                    if (item.HeaderType is Global.GrpcGunMode or Global.GrpcMultiMode)
+                    if (item.HeaderType is AppConfig.GrpcGunMode or AppConfig.GrpcMultiMode)
                     {
                         dicQuery.Add("mode", Utils.UrlEncode(item.HeaderType));
                     }
@@ -191,7 +191,7 @@ public class BaseFmt
 
     private static int ToUriQueryAllowInsecure(ProfileItem item, ref Dictionary<string, string> dicQuery)
     {
-        if (item.AllowInsecure.Equals(Global.AllowInsecure.First()))
+        if (item.AllowInsecure.Equals(AppConfig.AllowInsecure.First(), StringComparison.OrdinalIgnoreCase))
         {
             // Add two for compatibility
             dicQuery.Add("insecure", "1");
@@ -222,11 +222,11 @@ public class BaseFmt
 
         if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "1"))
         {
-            item.AllowInsecure = Global.AllowInsecure.First();
+            item.AllowInsecure = AppConfig.AllowInsecure.First();
         }
         else if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "0"))
         {
-            item.AllowInsecure = Global.AllowInsecure.Skip(1).First();
+            item.AllowInsecure = AppConfig.AllowInsecure.Skip(1).First();
         }
         else
         {
@@ -237,12 +237,12 @@ public class BaseFmt
         switch (item.Network)
         {
             case nameof(ETransport.tcp):
-                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
+                item.HeaderType = GetQueryValue(query, "headerType", AppConfig.None);
                 item.RequestHost = GetQueryDecoded(query, "host");
                 break;
 
             case nameof(ETransport.kcp):
-                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
+                item.HeaderType = GetQueryValue(query, "headerType", AppConfig.None);
                 item.Path = GetQueryDecoded(query, "seed");
                 break;
 
@@ -260,7 +260,7 @@ public class BaseFmt
                 if (extraDecoded.IsNotEmpty())
                 {
                     var node = JsonUtils.ParseJson(extraDecoded);
-                    if (node != null)
+                    if (node is not null)
                     {
                         extraDecoded = JsonUtils.Serialize(node, new JsonSerializerOptions
                         {
@@ -281,15 +281,15 @@ public class BaseFmt
                 break;
 
             case nameof(ETransport.quic):
-                item.HeaderType = GetQueryValue(query, "headerType", Global.None);
-                item.RequestHost = GetQueryValue(query, "quicSecurity", Global.None);
+                item.HeaderType = GetQueryValue(query, "headerType", AppConfig.None);
+                item.RequestHost = GetQueryValue(query, "quicSecurity", AppConfig.None);
                 item.Path = GetQueryDecoded(query, "key");
                 break;
 
             case nameof(ETransport.grpc):
                 item.RequestHost = GetQueryDecoded(query, "authority");
                 item.Path = GetQueryDecoded(query, "serviceName");
-                item.HeaderType = GetQueryDecoded(query, "mode", Global.GrpcGunMode);
+                item.HeaderType = GetQueryDecoded(query, "mode", AppConfig.GrpcGunMode);
                 break;
 
             default:
@@ -300,7 +300,7 @@ public class BaseFmt
 
     protected static bool Contains(string str, params string[] s)
     {
-        return s.All(item => str.Contains(item, StringComparison.OrdinalIgnoreCase));
+        return s.All(item => str.Contains(item, StringComparison.Ordinal));
     }
 
     protected static string WriteAllText(string strData, string ext = "json")
@@ -312,12 +312,12 @@ public class BaseFmt
 
     protected static string ToUri(EConfigType eConfigType, string address, object port, string userInfo, Dictionary<string, string>? dicQuery, string? remark)
     {
-        var query = dicQuery != null
+        var query = dicQuery is not null
             ? ("?" + string.Join("&", dicQuery.Select(x => x.Key + "=" + x.Value).ToArray()))
             : string.Empty;
 
         var url = $"{Utils.UrlEncode(userInfo)}@{GetIpv6(address)}:{port}";
-        return $"{Global.ProtocolShares[eConfigType]}{url}{query}{remark}";
+        return $"{AppConfig.ProtocolShares[eConfigType]}{url}{query}{remark}";
     }
 
     protected static string GetQueryValue(NameValueCollection query, string key, string defaultValue = "")

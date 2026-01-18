@@ -117,8 +117,8 @@ public class OptionSettingViewModel : MyReactiveObject
 
     public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        UpdateView = updateView;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -134,11 +134,11 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await _updateView?.Invoke(EViewAction.InitSettingFont, null);
+        await UpdateView?.Invoke(EViewAction.InitSettingFont, null);
 
         #region Core
 
-        var inbound = _config.Inbound.First();
+        var inbound = Config.Inbound.First();
         localPort = inbound.LocalPort;
         SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
         udpEnabled = inbound.UdpEnabled;
@@ -148,80 +148,80 @@ public class OptionSettingViewModel : MyReactiveObject
         newPort4LAN = inbound.NewPort4LAN;
         user = inbound.User;
         pass = inbound.Pass;
-        muxEnabled = _config.CoreBasicItem.MuxEnabled;
-        logEnabled = _config.CoreBasicItem.LogEnabled;
-        loglevel = _config.CoreBasicItem.Loglevel;
-        defAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
-        defFingerprint = _config.CoreBasicItem.DefFingerprint;
-        defUserAgent = _config.CoreBasicItem.DefUserAgent;
-        mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
-        enableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
-        hyUpMbps = _config.HysteriaItem.UpMbps;
-        hyDownMbps = _config.HysteriaItem.DownMbps;
-        enableFragment = _config.CoreBasicItem.EnableFragment;
+        muxEnabled = Config.CoreBasicItem.MuxEnabled;
+        logEnabled = Config.CoreBasicItem.LogEnabled;
+        loglevel = Config.CoreBasicItem.Loglevel;
+        defAllowInsecure = Config.CoreBasicItem.DefAllowInsecure;
+        defFingerprint = Config.CoreBasicItem.DefFingerprint;
+        defUserAgent = Config.CoreBasicItem.DefUserAgent;
+        mux4SboxProtocol = Config.Mux4SboxItem.Protocol;
+        enableCacheFile4Sbox = Config.CoreBasicItem.EnableCacheFile4Sbox;
+        hyUpMbps = Config.HysteriaItem.UpMbps;
+        hyDownMbps = Config.HysteriaItem.DownMbps;
+        enableFragment = Config.CoreBasicItem.EnableFragment;
 
         #endregion Core
 
         #region Core KCP
 
-        //Kcpmtu = _config.kcpItem.mtu;
-        //Kcptti = _config.kcpItem.tti;
-        //KcpuplinkCapacity = _config.kcpItem.uplinkCapacity;
-        //KcpdownlinkCapacity = _config.kcpItem.downlinkCapacity;
-        //KcpreadBufferSize = _config.kcpItem.readBufferSize;
-        //KcpwriteBufferSize = _config.kcpItem.writeBufferSize;
-        //Kcpcongestion = _config.kcpItem.congestion;
+        //Kcpmtu = Config.kcpItem.mtu;
+        //Kcptti = Config.kcpItem.tti;
+        //KcpuplinkCapacity = Config.kcpItem.uplinkCapacity;
+        //KcpdownlinkCapacity = Config.kcpItem.downlinkCapacity;
+        //KcpreadBufferSize = Config.kcpItem.readBufferSize;
+        //KcpwriteBufferSize = Config.kcpItem.writeBufferSize;
+        //Kcpcongestion = Config.kcpItem.congestion;
 
         #endregion Core KCP
 
         #region UI
 
-        AutoRun = _config.GuiItem.AutoRun;
-        EnableStatistics = _config.GuiItem.EnableStatistics;
-        DisplayRealTimeSpeed = _config.GuiItem.DisplayRealTimeSpeed;
-        KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
-        EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
-        EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
-        AutoHideStartup = _config.UiItem.AutoHideStartup;
-        Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
-        MacOSShowInDock = _config.UiItem.MacOSShowInDock;
-        EnableDragDropSort = _config.UiItem.EnableDragDropSort;
-        DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
-        AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
-        TrayMenuServersLimit = _config.GuiItem.TrayMenuServersLimit;
-        CurrentFontFamily = _config.UiItem.CurrentFontFamily;
-        SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
-        SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
-        MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
-        SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
-        EnableHWA = _config.GuiItem.EnableHWA;
-        SubConvertUrl = _config.ConstItem.SubConvertUrl;
-        MainGirdOrientation = (int)_config.UiItem.MainGirdOrientation;
-        GeoFileSourceUrl = _config.ConstItem.GeoSourceUrl;
-        SrsFileSourceUrl = _config.ConstItem.SrsSourceUrl;
-        RoutingRulesSourceUrl = _config.ConstItem.RouteRulesTemplateSourceUrl;
-        IPAPIUrl = _config.SpeedTestItem.IPAPIUrl;
+        AutoRun = Config.GuiItem.AutoRun;
+        EnableStatistics = Config.GuiItem.EnableStatistics;
+        DisplayRealTimeSpeed = Config.GuiItem.DisplayRealTimeSpeed;
+        KeepOlderDedupl = Config.GuiItem.KeepOlderDedupl;
+        EnableAutoAdjustMainLvColWidth = Config.UiItem.EnableAutoAdjustMainLvColWidth;
+        EnableUpdateSubOnlyRemarksExist = Config.UiItem.EnableUpdateSubOnlyRemarksExist;
+        AutoHideStartup = Config.UiItem.AutoHideStartup;
+        Hide2TrayWhenClose = Config.UiItem.Hide2TrayWhenClose;
+        MacOSShowInDock = Config.UiItem.MacOSShowInDock;
+        EnableDragDropSort = Config.UiItem.EnableDragDropSort;
+        DoubleClick2Activate = Config.UiItem.DoubleClick2Activate;
+        AutoUpdateInterval = Config.GuiItem.AutoUpdateInterval;
+        TrayMenuServersLimit = Config.GuiItem.TrayMenuServersLimit;
+        CurrentFontFamily = Config.UiItem.CurrentFontFamily;
+        SpeedTestTimeout = Config.SpeedTestItem.SpeedTestTimeout;
+        SpeedTestUrl = Config.SpeedTestItem.SpeedTestUrl;
+        MixedConcurrencyCount = Config.SpeedTestItem.MixedConcurrencyCount;
+        SpeedPingTestUrl = Config.SpeedTestItem.SpeedPingTestUrl;
+        EnableHWA = Config.GuiItem.EnableHWA;
+        SubConvertUrl = Config.ConstItem.SubConvertUrl;
+        MainGirdOrientation = (int)Config.UiItem.MainGirdOrientation;
+        GeoFileSourceUrl = Config.ConstItem.GeoSourceUrl;
+        SrsFileSourceUrl = Config.ConstItem.SrsSourceUrl;
+        RoutingRulesSourceUrl = Config.ConstItem.RouteRulesTemplateSourceUrl;
+        IPAPIUrl = Config.SpeedTestItem.IPAPIUrl;
 
         #endregion UI
 
         #region System proxy
 
-        notProxyLocalAddress = _config.SystemProxyItem.NotProxyLocalAddress;
-        systemProxyAdvancedProtocol = _config.SystemProxyItem.SystemProxyAdvancedProtocol;
-        systemProxyExceptions = _config.SystemProxyItem.SystemProxyExceptions;
-        CustomSystemProxyPacPath = _config.SystemProxyItem.CustomSystemProxyPacPath;
-        CustomSystemProxyScriptPath = _config.SystemProxyItem.CustomSystemProxyScriptPath;
+        notProxyLocalAddress = Config.SystemProxyItem.NotProxyLocalAddress;
+        systemProxyAdvancedProtocol = Config.SystemProxyItem.SystemProxyAdvancedProtocol;
+        systemProxyExceptions = Config.SystemProxyItem.SystemProxyExceptions;
+        CustomSystemProxyPacPath = Config.SystemProxyItem.CustomSystemProxyPacPath;
+        CustomSystemProxyScriptPath = Config.SystemProxyItem.CustomSystemProxyScriptPath;
 
         #endregion System proxy
 
         #region Tun mode
 
-        TunAutoRoute = _config.TunModeItem.AutoRoute;
-        TunStrictRoute = _config.TunModeItem.StrictRoute;
-        TunStack = _config.TunModeItem.Stack;
-        TunMtu = _config.TunModeItem.Mtu;
-        TunEnableExInbound = _config.TunModeItem.EnableExInbound;
-        TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
+        TunAutoRoute = Config.TunModeItem.AutoRoute;
+        TunStrictRoute = Config.TunModeItem.StrictRoute;
+        TunStack = Config.TunModeItem.Stack;
+        TunMtu = Config.TunModeItem.Mtu;
+        TunEnableExInbound = Config.TunModeItem.EnableExInbound;
+        TunEnableIPv6Address = Config.TunModeItem.EnableIPv6Address;
 
         #endregion Tun mode
 
@@ -230,25 +230,25 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task InitCoreType()
     {
-        if (_config.CoreTypeItem == null)
+        if (Config.CoreTypeItem is null)
         {
-            _config.CoreTypeItem = new List<CoreTypeItem>();
+            Config.CoreTypeItem = new List<CoreTypeItem>();
         }
 
-        foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
+        foreach (var it in Enum.GetValues<EConfigType>().Select(v => v))
         {
-            if (_config.CoreTypeItem.FindIndex(t => t.ConfigType == it) >= 0)
+            if (Config.CoreTypeItem.FindIndex(t => t.ConfigType == it) >= 0)
             {
                 continue;
             }
 
-            _config.CoreTypeItem.Add(new CoreTypeItem()
+            Config.CoreTypeItem.Add(new CoreTypeItem()
             {
                 ConfigType = it,
                 CoreType = ECoreType.Xray
             });
         }
-        _config.CoreTypeItem.ForEach(it =>
+        Config.CoreTypeItem.ForEach(it =>
         {
             var type = it.CoreType.ToString();
             switch ((int)it.ConfigType)
@@ -292,17 +292,17 @@ public class OptionSettingViewModel : MyReactiveObject
     private async Task SaveSettingAsync()
     {
         if (localPort.ToString().IsNullOrEmpty() || !Utils.IsNumeric(localPort.ToString())
-           || localPort <= 0 || localPort >= Global.MaxPort)
+           || localPort <= 0 || localPort >= AppConfig.MaxPort)
         {
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
-        var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
-                          || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
-                        || EnableDragDropSort != _config.UiItem.EnableDragDropSort
-                        || EnableHWA != _config.GuiItem.EnableHWA
-                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
+        var needReboot = EnableStatistics != Config.GuiItem.EnableStatistics
+                          || DisplayRealTimeSpeed != Config.GuiItem.DisplayRealTimeSpeed
+                        || EnableDragDropSort != Config.UiItem.EnableDragDropSort
+                        || EnableHWA != Config.GuiItem.EnableHWA
+                        || CurrentFontFamily != Config.UiItem.CurrentFontFamily
+                        || MainGirdOrientation != (int)Config.UiItem.MainGirdOrientation;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -316,83 +316,83 @@ public class OptionSettingViewModel : MyReactiveObject
         //}
 
         //Core
-        _config.Inbound.First().LocalPort = localPort;
-        _config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
-        _config.Inbound.First().UdpEnabled = udpEnabled;
-        _config.Inbound.First().SniffingEnabled = sniffingEnabled;
-        _config.Inbound.First().DestOverride = destOverride?.ToList();
-        _config.Inbound.First().RouteOnly = routeOnly;
-        _config.Inbound.First().AllowLANConn = allowLANConn;
-        _config.Inbound.First().NewPort4LAN = newPort4LAN;
-        _config.Inbound.First().User = user;
-        _config.Inbound.First().Pass = pass;
-        if (_config.Inbound.Count > 1)
+        Config.Inbound.First().LocalPort = localPort;
+        Config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
+        Config.Inbound.First().UdpEnabled = udpEnabled;
+        Config.Inbound.First().SniffingEnabled = sniffingEnabled;
+        Config.Inbound.First().DestOverride = destOverride?.ToList();
+        Config.Inbound.First().RouteOnly = routeOnly;
+        Config.Inbound.First().AllowLANConn = allowLANConn;
+        Config.Inbound.First().NewPort4LAN = newPort4LAN;
+        Config.Inbound.First().User = user;
+        Config.Inbound.First().Pass = pass;
+        if (Config.Inbound.Count > 1)
         {
-            _config.Inbound.RemoveAt(1);
+            Config.Inbound.RemoveAt(1);
         }
-        _config.CoreBasicItem.LogEnabled = logEnabled;
-        _config.CoreBasicItem.Loglevel = loglevel;
-        _config.CoreBasicItem.MuxEnabled = muxEnabled;
-        _config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
-        _config.CoreBasicItem.DefFingerprint = defFingerprint;
-        _config.CoreBasicItem.DefUserAgent = defUserAgent;
-        _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
-        _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
-        _config.HysteriaItem.UpMbps = hyUpMbps;
-        _config.HysteriaItem.DownMbps = hyDownMbps;
-        _config.CoreBasicItem.EnableFragment = enableFragment;
+        Config.CoreBasicItem.LogEnabled = logEnabled;
+        Config.CoreBasicItem.Loglevel = loglevel;
+        Config.CoreBasicItem.MuxEnabled = muxEnabled;
+        Config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
+        Config.CoreBasicItem.DefFingerprint = defFingerprint;
+        Config.CoreBasicItem.DefUserAgent = defUserAgent;
+        Config.Mux4SboxItem.Protocol = mux4SboxProtocol;
+        Config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
+        Config.HysteriaItem.UpMbps = hyUpMbps;
+        Config.HysteriaItem.DownMbps = hyDownMbps;
+        Config.CoreBasicItem.EnableFragment = enableFragment;
 
-        _config.GuiItem.AutoRun = AutoRun;
-        _config.GuiItem.EnableStatistics = EnableStatistics;
-        _config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
-        _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
-        _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
-        _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
-        _config.UiItem.AutoHideStartup = AutoHideStartup;
-        _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
-        _config.UiItem.MacOSShowInDock = MacOSShowInDock;
-        _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
-        _config.UiItem.EnableDragDropSort = EnableDragDropSort;
-        _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
-        _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
-        _config.UiItem.CurrentFontFamily = CurrentFontFamily;
-        _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
-        _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
-        _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
-        _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
-        _config.GuiItem.EnableHWA = EnableHWA;
-        _config.ConstItem.SubConvertUrl = SubConvertUrl;
-        _config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
-        _config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
-        _config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
-        _config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
-        _config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
+        Config.GuiItem.AutoRun = AutoRun;
+        Config.GuiItem.EnableStatistics = EnableStatistics;
+        Config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
+        Config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
+        Config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
+        Config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
+        Config.UiItem.AutoHideStartup = AutoHideStartup;
+        Config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
+        Config.UiItem.MacOSShowInDock = MacOSShowInDock;
+        Config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
+        Config.UiItem.EnableDragDropSort = EnableDragDropSort;
+        Config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
+        Config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
+        Config.UiItem.CurrentFontFamily = CurrentFontFamily;
+        Config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
+        Config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
+        Config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
+        Config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
+        Config.GuiItem.EnableHWA = EnableHWA;
+        Config.ConstItem.SubConvertUrl = SubConvertUrl;
+        Config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
+        Config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
+        Config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
+        Config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
+        Config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
 
         //systemProxy
-        _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
-        _config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
-        _config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
-        _config.SystemProxyItem.CustomSystemProxyPacPath = CustomSystemProxyPacPath;
-        _config.SystemProxyItem.CustomSystemProxyScriptPath = CustomSystemProxyScriptPath;
+        Config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;
+        Config.SystemProxyItem.NotProxyLocalAddress = notProxyLocalAddress;
+        Config.SystemProxyItem.SystemProxyAdvancedProtocol = systemProxyAdvancedProtocol;
+        Config.SystemProxyItem.CustomSystemProxyPacPath = CustomSystemProxyPacPath;
+        Config.SystemProxyItem.CustomSystemProxyScriptPath = CustomSystemProxyScriptPath;
 
         //tun mode
-        _config.TunModeItem.AutoRoute = TunAutoRoute;
-        _config.TunModeItem.StrictRoute = TunStrictRoute;
-        _config.TunModeItem.Stack = TunStack;
-        _config.TunModeItem.Mtu = TunMtu;
-        _config.TunModeItem.EnableExInbound = TunEnableExInbound;
-        _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
+        Config.TunModeItem.AutoRoute = TunAutoRoute;
+        Config.TunModeItem.StrictRoute = TunStrictRoute;
+        Config.TunModeItem.Stack = TunStack;
+        Config.TunModeItem.Mtu = TunMtu;
+        Config.TunModeItem.EnableExInbound = TunEnableExInbound;
+        Config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
 
         //coreType
         await SaveCoreType();
 
-        if (await ConfigHandler.SaveConfig(_config) == 0)
+        if (await ConfigHandler.SaveConfig(Config) == 0)
         {
-            await AutoStartupHandler.UpdateTask(_config);
+            await AutoStartupHandler.UpdateTask(Config);
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            UpdateView?.Invoke(EViewAction.CloseWindow, null);
         }
         else
         {
@@ -402,10 +402,10 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task SaveCoreType()
     {
-        for (var k = 1; k <= _config.CoreTypeItem.Count; k++)
+        for (var k = 1; k <= Config.CoreTypeItem.Count; k++)
         {
-            var item = _config.CoreTypeItem[k - 1];
-            var type = string.Empty;
+            var item = Config.CoreTypeItem[k - 1];
+            string type;
             switch ((int)item.ConfigType)
             {
                 case 1:

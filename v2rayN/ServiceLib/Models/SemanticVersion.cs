@@ -82,7 +82,7 @@ public class SemanticVersion
 
     public string ToVersionString(string? prefix = null)
     {
-        if (prefix == null)
+        if (prefix is null)
         {
             return version;
         }

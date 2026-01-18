@@ -8,7 +8,7 @@ public class StatisticsSingboxService
     private bool _exitFlag;
     private ClientWebSocket? webSocket;
     private readonly Func<ServerSpeedItem, Task>? _updateFunc;
-    private string Url => $"ws://{Global.Loopback}:{AppManager.Instance.StatePort2}/traffic";
+    private string Url => $"ws://{AppConfig.Loopback}:{AppManager.Instance.StatePort2}/traffic";
     private static readonly string _tag = "StatisticsSingboxService";
 
     public StatisticsSingboxService(Config config, Func<ServerSpeedItem, Task> updateFunc)
@@ -26,7 +26,7 @@ public class StatisticsSingboxService
 
         try
         {
-            if (webSocket == null)
+            if (webSocket is null)
             {
                 webSocket = new ClientWebSocket();
                 await webSocket.ConnectAsync(new Uri(Url), CancellationToken.None);
@@ -40,11 +40,8 @@ public class StatisticsSingboxService
         try
         {
             _exitFlag = true;
-            if (webSocket != null)
-            {
-                webSocket.Abort();
-                webSocket = null;
-            }
+            webSocket?.Abort();
+            webSocket = null;
         }
         catch (Exception ex)
         {
@@ -65,7 +62,7 @@ public class StatisticsSingboxService
                 {
                     continue;
                 }
-                if (webSocket != null)
+                if (webSocket is not null)
                 {
                     if (webSocket.State is WebSocketState.Aborted or WebSocketState.Closed)
                     {
@@ -112,7 +109,7 @@ public class StatisticsSingboxService
         try
         {
             var trafficItem = JsonUtils.Deserialize<TrafficItem>(source);
-            if (trafficItem != null)
+            if (trafficItem is not null)
             {
                 up = trafficItem.Up;
                 down = trafficItem.Down;

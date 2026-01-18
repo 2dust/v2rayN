@@ -9,11 +9,11 @@ public class VLESSFmt : BaseFmt
         ProfileItem item = new()
         {
             ConfigType = EConfigType.VLESS,
-            Security = Global.None
+            Security = AppConfig.None
         };
 
         var url = Utils.TryUri(str);
-        if (url == null)
+        if (url is null)
         {
             return null;
         }
@@ -24,7 +24,7 @@ public class VLESSFmt : BaseFmt
         item.Id = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        item.Security = GetQueryValue(query, "encryption", Global.None);
+        item.Security = GetQueryValue(query, "encryption", AppConfig.None);
         item.StreamSecurity = GetQueryValue(query, "security");
         ResolveUriQuery(query, ref item);
 
@@ -33,7 +33,7 @@ public class VLESSFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -50,9 +50,9 @@ public class VLESSFmt : BaseFmt
         }
         else
         {
-            dicQuery.Add("encryption", Global.None);
+            dicQuery.Add("encryption", AppConfig.None);
         }
-        ToUriQuery(item, Global.None, ref dicQuery);
+        ToUriQuery(item, AppConfig.None, ref dicQuery);
 
         return ToUri(EConfigType.VLESS, item.Address, item.Port, item.Id, dicQuery, remark);
     }

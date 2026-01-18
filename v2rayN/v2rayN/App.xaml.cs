@@ -22,7 +22,7 @@ public partial class App : Application
     {
         var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
-        var rebootas = (e.Args ?? Array.Empty<string>()).Any(t => t == Global.RebootAs);
+        var rebootas = (e.Args ?? Array.Empty<string>()).Any(t => t == AppConfig.RebootAs);
         ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out var bCreatedNew);
         if (!rebootas && !bCreatedNew)
         {

@@ -10,7 +10,7 @@ public sealed class WebDavManager
     private readonly Config? _config;
     private WebDavClient? _client;
     private string? _lastDescription;
-    private string _webDir = Global.AppName + "_backup";
+    private string _webDir = AppConfig.AppName + "_backup";
     private readonly string _webFileName = "backup.zip";
     private readonly string _tag = "WebDav--";
 
@@ -29,18 +29,18 @@ public sealed class WebDavManager
             {
                 throw new ArgumentException("webdav parameter error or null");
             }
-            if (_client != null)
+            if (_client is not null)
             {
                 _client?.Dispose();
                 _client = null;
             }
             if (_config.WebDavItem.DirName.IsNullOrEmpty())
             {
-                _webDir = Global.AppName + "_backup";
+                _webDir = AppConfig.AppName + "_backup";
             }
             else
             {
-                _webDir = _config.WebDavItem.DirName.TrimEx();
+                _webDir = _config.WebDavItem.DirName.TrimSafe();
             }
 
             // Ensure BaseAddress URL ends with a trailing slash

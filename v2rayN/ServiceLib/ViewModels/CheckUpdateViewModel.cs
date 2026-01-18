@@ -13,22 +13,22 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
-        _config = AppManager.Instance.Config;
-        _updateView = updateView;
+        Config = AppManager.Instance.Config;
+        base.UpdateView = updateView;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
         {
             Logging.SaveLog(_tag, ex);
-            _ = UpdateView(_v2rayN, ex.Message);
+            _ = UpdateViewAsync(_v2rayN, ex.Message);
         });
 
-        EnableCheckPreReleaseUpdate = _config.CheckUpdateItem.CheckPreReleaseUpdate;
+        EnableCheckPreReleaseUpdate = Config.CheckUpdateItem.CheckPreReleaseUpdate;
 
         this.WhenAnyValue(
         x => x.EnableCheckPreReleaseUpdate,
         y => y == true)
-            .Subscribe(c => _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate);
+            .Subscribe(c => Config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate);
 
         RefreshCheckUpdateItems();
     }
@@ -65,7 +65,7 @@ public class CheckUpdateViewModel : MyReactiveObject
 
         return new()
         {
-            IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
+            IsSelected = Config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
             CoreType = coreType,
             Remarks = ResUI.menuCheckUpdate,
         };
@@ -73,8 +73,8 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task SaveSelectedCoreTypes()
     {
-        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
-        await ConfigHandler.SaveConfig(_config);
+        Config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
+        await ConfigHandler.SaveConfig(Config);
     }
 
     private async Task CheckUpdate()
@@ -97,7 +97,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 continue;
             }
 
-            await UpdateView(item.CoreType, "...");
+            await UpdateViewAsync(item.CoreType, "...");
             if (item.CoreType == _geo)
             {
                 await CheckUpdateGeo();
@@ -106,7 +106,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             {
                 if (Utils.IsPackagedInstall())
                 {
-                    await UpdateView(_v2rayN, "Not Support");
+                    await UpdateViewAsync(_v2rayN, "Not Support");
                     continue;
                 }
                 await CheckUpdateN(EnableCheckPreReleaseUpdate);
@@ -127,7 +127,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     private void UpdatedPlusPlus(string coreType, string fileName)
     {
         var item = _lstUpdated.FirstOrDefault(x => x.CoreType == coreType);
-        if (item == null)
+        if (item is null)
         {
             return;
         }
@@ -142,13 +142,13 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         async Task _updateUI(bool success, string msg)
         {
-            await UpdateView(_geo, msg);
+            await UpdateViewAsync(_geo, msg);
             if (success)
             {
                 UpdatedPlusPlus(_geo, "");
             }
         }
-        await new UpdateService(_config, _updateUI).UpdateGeoFileAll()
+        await new UpdateService(Config, _updateUI).UpdateGeoFileAll()
             .ContinueWith(t => UpdatedPlusPlus(_geo, ""));
     }
 
@@ -156,14 +156,14 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         async Task _updateUI(bool success, string msg)
         {
-            await UpdateView(_v2rayN, msg);
+            await UpdateViewAsync(_v2rayN, msg);
             if (success)
             {
-                await UpdateView(_v2rayN, ResUI.OperationSuccess);
+                await UpdateViewAsync(_v2rayN, ResUI.OperationSuccess);
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
-        await new UpdateService(_config, _updateUI).CheckUpdateGuiN(preRelease)
+        await new UpdateService(Config, _updateUI).CheckUpdateGuiN(preRelease)
             .ContinueWith(t => UpdatedPlusPlus(_v2rayN, ""));
     }
 
@@ -171,16 +171,16 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         async Task _updateUI(bool success, string msg)
         {
-            await UpdateView(model.CoreType, msg);
+            await UpdateViewAsync(model.CoreType, msg);
             if (success)
             {
-                await UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
+                await UpdateViewAsync(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
 
                 UpdatedPlusPlus(model.CoreType, msg);
             }
         }
         var type = (ECoreType)Enum.Parse(typeof(ECoreType), model.CoreType);
-        await new UpdateService(_config, _updateUI).CheckUpdateCore(type, preRelease)
+        await new UpdateService(Config, _updateUI).CheckUpdateCore(type, preRelease)
             .ContinueWith(t => UpdatedPlusPlus(model.CoreType, ""));
     }
 
@@ -235,7 +235,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             if (!Utils.UpgradeAppExists(out var upgradeFileName))
             {
-                await UpdateView(_v2rayN, ResUI.UpgradeAppNotExistTip);
+                await UpdateViewAsync(_v2rayN, ResUI.UpgradeAppNotExistTip);
                 NoticeManager.Instance.SendMessageAndEnqueue(ResUI.UpgradeAppNotExistTip);
                 Logging.SaveLog("UpgradeApp does not exist");
                 return;
@@ -249,7 +249,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
         catch (Exception ex)
         {
-            await UpdateView(_v2rayN, ex.Message);
+            await UpdateViewAsync(_v2rayN, ex.Message);
         }
     }
 
@@ -300,7 +300,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 }
             }
 
-            await UpdateView(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
+            await UpdateViewAsync(item.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfully);
 
             if (File.Exists(fileName))
             {
@@ -309,7 +309,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private async Task UpdateView(string coreType, string msg)
+    private async Task UpdateViewAsync(string coreType, string msg)
     {
         var item = new CheckUpdateModel()
         {
@@ -328,7 +328,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     public async Task UpdateViewResult(CheckUpdateModel model)
     {
         var found = CheckUpdateModels.FirstOrDefault(t => t.CoreType == model.CoreType);
-        if (found == null)
+        if (found is null)
         {
             return;
         }

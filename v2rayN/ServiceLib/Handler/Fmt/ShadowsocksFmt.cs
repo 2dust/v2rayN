@@ -8,7 +8,7 @@ public class ShadowsocksFmt : BaseFmt
         ProfileItem? item;
 
         item = ResolveSSLegacy(str) ?? ResolveSip002(str);
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -24,7 +24,7 @@ public class ShadowsocksFmt : BaseFmt
 
     public static string? ToUri(ProfileItem? item)
     {
-        if (item == null)
+        if (item is null)
         {
             return null;
         }
@@ -46,7 +46,7 @@ public class ShadowsocksFmt : BaseFmt
         var plugin = string.Empty;
         var pluginArgs = string.Empty;
 
-        if (item.Network == nameof(ETransport.tcp) && item.HeaderType == Global.TcpHeaderHttp)
+        if (item.Network == nameof(ETransport.tcp) && item.HeaderType == AppConfig.TcpHeaderHttp)
         {
             plugin = "obfs-local";
             pluginArgs = $"obfs=http;obfs-host={item.RequestHost};";
@@ -66,7 +66,7 @@ public class ShadowsocksFmt : BaseFmt
             {
                 pluginArgs += "mode=quic;";
             }
-            if (item.StreamSecurity == Global.StreamSecurity)
+            if (item.StreamSecurity == AppConfig.StreamSecurity)
             {
                 pluginArgs += "tls;";
                 var certs = CertPemManager.ParsePemChain(item.Cert);
@@ -146,7 +146,7 @@ public class ShadowsocksFmt : BaseFmt
     private static ProfileItem? ResolveSip002(string result)
     {
         var parsedUrl = Utils.TryUri(result);
-        if (parsedUrl == null)
+        if (parsedUrl is null)
         {
             return null;
         }
@@ -183,7 +183,7 @@ public class ShadowsocksFmt : BaseFmt
         }
 
         var queryParameters = Utils.ParseQueryString(parsedUrl.Query);
-        if (queryParameters["plugin"] != null)
+        if (queryParameters["plugin"] is not null)
         {
             var pluginStr = queryParameters["plugin"];
             var pluginParts = pluginStr.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
@@ -211,8 +211,8 @@ public class ShadowsocksFmt : BaseFmt
                 if ((!obfsMode.IsNullOrEmpty()) && obfsMode.Contains("obfs=http") && obfsHost.IsNotEmpty())
                 {
                     obfsHost = obfsHost.Replace("obfs-host=", "");
-                    item.Network = Global.DefaultNetwork;
-                    item.HeaderType = Global.TcpHeaderHttp;
+                    item.Network = AppConfig.DefaultNetwork;
+                    item.HeaderType = AppConfig.TcpHeaderHttp;
                     item.RequestHost = obfsHost;
                 }
             }
@@ -249,7 +249,7 @@ public class ShadowsocksFmt : BaseFmt
 
                 if (hasTls)
                 {
-                    item.StreamSecurity = Global.StreamSecurity;
+                    item.StreamSecurity = AppConfig.StreamSecurity;
 
                     if (!certRaw.IsNullOrEmpty())
                     {

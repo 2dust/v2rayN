@@ -21,7 +21,7 @@ public partial class CoreConfigSingboxService
                 default:
                     break;
             }
-            if (_config.CoreBasicItem.Loglevel == Global.None)
+            if (_config.CoreBasicItem.Loglevel == AppConfig.None)
             {
                 singboxConfig.log.disabled = true;
             }

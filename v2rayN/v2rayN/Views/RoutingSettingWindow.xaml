@@ -88,7 +88,7 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}">
-                <Hyperlink Click="linkdomainStrategy_Click">
+                <Hyperlink Click="LinkdomainStrategy_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy}" />
                     <materialDesign:PackIcon Kind="Link" />
                 </Hyperlink>
@@ -107,7 +107,7 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}">
-                <Hyperlink Click="linkdomainStrategy4Singbox_Click">
+                <Hyperlink Click="LinkdomainStrategy4Singbox_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
                     <materialDesign:PackIcon Kind="Link" />
                 </Hyperlink>
