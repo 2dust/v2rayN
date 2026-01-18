@@ -178,15 +178,16 @@ public class Global
 
     public static readonly Dictionary<EConfigType, string> ProtocolShares = new()
     {
-        { EConfigType.VMess, "vmess://" },
-        { EConfigType.Shadowsocks, "ss://" },
-        { EConfigType.SOCKS, "socks://" },
-        { EConfigType.VLESS, "vless://" },
-        { EConfigType.Trojan, "trojan://" },
-        { EConfigType.Hysteria2, "hysteria2://" },
-        { EConfigType.TUIC, "tuic://" },
-        { EConfigType.WireGuard, "wireguard://" },
-        { EConfigType.Anytls, "anytls://" }
+            { EConfigType.VMess, "vmess://" },
+            { EConfigType.Shadowsocks, "ss://" },
+            { EConfigType.SOCKS, "socks://" },
+            { EConfigType.HTTP, "http://" },
+            { EConfigType.VLESS, "vless://" },
+            { EConfigType.Trojan, "trojan://" },
+            { EConfigType.Hysteria2, "hysteria2://" },
+            { EConfigType.TUIC, "tuic://" },
+            { EConfigType.WireGuard, "wireguard://" },
+            { EConfigType.Anytls, "anytls://" }
     };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
