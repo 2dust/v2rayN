@@ -228,7 +228,17 @@ public partial class CoreConfigSingboxService
 
         if (simpleDNSItem.FakeIP == true && simpleDNSItem.GlobalFakeIp == true)
         {
-            var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName));
+            var strFakeipFilter = EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName);
+            if (simpleDNSItem.EnableCustomFakeIP == true && simpleDNSItem.CustomFakeIPFilter.IsNotEmpty())
+            {
+                strFakeipFilter = simpleDNSItem.CustomFakeIPFilter;
+            }
+
+            var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(strFakeipFilter);
+            if (fakeipFilterRule == null)
+            {
+                 fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName));
+            }
             fakeipFilterRule.invert = true;
             var rule4Fake = new Rule4Sbox
             {

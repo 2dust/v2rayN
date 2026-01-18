@@ -276,6 +276,53 @@
                 </ScrollViewer>
             </TabItem>
 
+            <TabItem Header="{x:Static resx:ResUI.TbCustomFakeIP}">
+                <DockPanel Margin="{StaticResource Margin8}">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.TbEnableCustomFakeIP}" />
+                            <ToggleSwitch
+                                x:Name="togEnableCustomFakeIP"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" IsEnabled="{Binding ElementName=togEnableCustomFakeIP, Path=IsChecked}">
+                            <Button
+                                x:Name="btnImportDefFakeIPConfig"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbImportDefFakeIPConfig}" />
+                            <Button
+                                x:Name="btnValidateFakeIPConfig"
+                                Margin="{StaticResource Margin4}"
+                                Content="{x:Static resx:ResUI.TbValidateFakeIPConfig}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <HeaderedContentControl
+                        Margin="{StaticResource Margin4}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Header="FakeIP Filter (JSON)">
+                        <TextBox
+                            Name="txtCustomFakeIPFilter"
+                            VerticalAlignment="Stretch"
+                            Classes="TextArea"
+                            MinLines="10"
+                            TextWrapping="Wrap"
+                            IsEnabled="{Binding ElementName=togEnableCustomFakeIP, Path=IsChecked}" />
+                    </HeaderedContentControl>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="{x:Static resx:ResUI.TbCustomDnsRay}">
                 <DockPanel Margin="{StaticResource Margin8}">
                     <Grid DockPanel.Dock="Top">

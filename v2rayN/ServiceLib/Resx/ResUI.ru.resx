@@ -1014,6 +1014,18 @@
   <data name="TbCustomDnsSingbox" xml:space="preserve">
     <value>sing-box Custom DNS</value>
   </data>
+  <data name="TbCustomFakeIP" xml:space="preserve">
+    <value>Custom FakeIP</value>
+  </data>
+  <data name="TbEnableCustomFakeIP" xml:space="preserve">
+    <value>Enable Custom FakeIP</value>
+  </data>
+  <data name="TbImportDefFakeIPConfig" xml:space="preserve">
+    <value>Import Default FakeIP Config</value>
+  </data>
+  <data name="TbValidateFakeIPConfig" xml:space="preserve">
+    <value>Validate Format</value>
+  </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Заполните структуру DNS, нажмите, чтобы открыть документ</value>
   </data>

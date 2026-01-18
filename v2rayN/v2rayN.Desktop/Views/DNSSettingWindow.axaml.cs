@@ -61,6 +61,11 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
+            this.Bind(ViewModel, vm => vm.EnableCustomFakeIP, v => v.togEnableCustomFakeIP.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomFakeIPFilter, v => v.txtCustomFakeIPFilter.Text).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ImportDefFakeIPConfigCmd, v => v.btnImportDefFakeIPConfig).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ValidateFakeIPConfigCmd, v => v.btnValidateFakeIPConfig).DisposeWith(disposables);
+
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
                 .Select(b => !b)
                 .BindTo(this.FindControl<TextBlock>("txtBasicDNSSettingsInvalid"), t => t.IsVisible);

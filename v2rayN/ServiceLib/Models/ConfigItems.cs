@@ -270,4 +270,6 @@ public class SimpleDNSItem
     public string? SingboxStrategy4Proxy { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
+    public bool? EnableCustomFakeIP { get; set; }
+    public string? CustomFakeIPFilter { get; set; }
 }

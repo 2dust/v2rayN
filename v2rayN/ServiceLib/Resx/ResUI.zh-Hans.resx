@@ -1011,6 +1011,18 @@
   <data name="TbCustomDnsSingbox" xml:space="preserve">
     <value>sing-box 自定义 DNS</value>
   </data>
+  <data name="TbCustomFakeIP" xml:space="preserve">
+    <value>自定义 FakeIP</value>
+  </data>
+  <data name="TbEnableCustomFakeIP" xml:space="preserve">
+    <value>启用自定义 FakeIP</value>
+  </data>
+  <data name="TbImportDefFakeIPConfig" xml:space="preserve">
+    <value>点击导入默认 FakeIP 设置</value>
+  </data>
+  <data name="TbValidateFakeIPConfig" xml:space="preserve">
+    <value>验证格式</value>
+  </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>请填写 DNS JSON 结构，点击查看文档</value>
   </data>

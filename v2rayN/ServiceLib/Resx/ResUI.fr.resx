@@ -1011,6 +1011,18 @@
   <data name="TbCustomDnsSingbox" xml:space="preserve">
     <value>DNS personnalisé sing-box</value>
   </data>
+  <data name="TbCustomFakeIP" xml:space="preserve">
+    <value>FakeIP personnalisé</value>
+  </data>
+  <data name="TbEnableCustomFakeIP" xml:space="preserve">
+    <value>Activer FakeIP personnalisé</value>
+  </data>
+  <data name="TbImportDefFakeIPConfig" xml:space="preserve">
+    <value>Importer la config FakeIP par défaut</value>
+  </data>
+  <data name="TbValidateFakeIPConfig" xml:space="preserve">
+    <value>Valider le format</value>
+  </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Saisissez la structure JSON DNS ; cliquez pour voir la doc.</value>
   </data>

@@ -14,6 +14,8 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string? SingboxStrategy4Proxy { get; set; }
     [Reactive] public string? Hosts { get; set; }
     [Reactive] public string? DirectExpectedIPs { get; set; }
+    [Reactive] public bool? EnableCustomFakeIP { get; set; }
+    [Reactive] public string? CustomFakeIPFilter { get; set; }
 
     [Reactive] public bool UseSystemHostsCompatible { get; set; }
     [Reactive] public string DomainStrategy4FreedomCompatible { get; set; }
@@ -32,6 +34,8 @@ public class DNSSettingViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCompatibleCmd { get; }
+    public ReactiveCommand<Unit, Unit> ImportDefFakeIPConfigCmd { get; }
+    public ReactiveCommand<Unit, Unit> ValidateFakeIPConfigCmd { get; }
 
     public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
@@ -49,6 +53,39 @@ public class DNSSettingViewModel : MyReactiveObject
         {
             NormalDNS2Compatible = EmbedUtils.GetEmbedText(Global.DNSSingboxNormalFileName);
             TunDNS2Compatible = EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName);
+            await Task.CompletedTask;
+        });
+
+        ImportDefFakeIPConfigCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            CustomFakeIPFilter = EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName);
+            await Task.CompletedTask;
+        });
+
+        ValidateFakeIPConfigCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (CustomFakeIPFilter.IsNullOrEmpty())
+            {
+                NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
+                await Task.CompletedTask;
+                return;
+            }
+            try
+            {
+                var obj = JsonUtils.Deserialize<Rule4Sbox>(CustomFakeIPFilter);
+                if (obj == null)
+                {
+                    NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                }
+                else
+                {
+                    NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
+                }
+            }
+            catch
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
+            }
             await Task.CompletedTask;
         });
 
@@ -75,6 +112,8 @@ public class DNSSettingViewModel : MyReactiveObject
         SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
+        EnableCustomFakeIP = item.EnableCustomFakeIP;
+        CustomFakeIPFilter = item.CustomFakeIPFilter;
 
         var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         RayCustomDNSEnableCompatible = item1.Enabled;
@@ -105,6 +144,27 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
+        _config.SimpleDNSItem.EnableCustomFakeIP = EnableCustomFakeIP;
+        _config.SimpleDNSItem.CustomFakeIPFilter = CustomFakeIPFilter;
+
+        // Validate custom FakeIP filter JSON format
+        if (EnableCustomFakeIP == true && CustomFakeIPFilter.IsNotEmpty())
+        {
+            try
+            {
+                var obj = JsonUtils.Deserialize<Rule4Sbox>(CustomFakeIPFilter);
+                if (obj == null)
+                {
+                    NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                    return;
+                }
+            }
+            catch
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectDNSText);
+                return;
+            }
+        }
 
         if (NormalDNSCompatible.IsNotEmpty())
         {
