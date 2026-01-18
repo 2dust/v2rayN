@@ -13,6 +13,7 @@ public class FmtHandler
                 EConfigType.VMess => VmessFmt.ToUri(item),
                 EConfigType.Shadowsocks => ShadowsocksFmt.ToUri(item),
                 EConfigType.SOCKS => SocksFmt.ToUri(item),
+                EConfigType.HTTP => HttpFmt.ToUri(item),
                 EConfigType.Trojan => TrojanFmt.ToUri(item),
                 EConfigType.VLESS => VLESSFmt.ToUri(item),
                 EConfigType.Hysteria2 => Hysteria2Fmt.ToUri(item),
@@ -55,6 +56,10 @@ public class FmtHandler
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS]))
             {
                 return SocksFmt.Resolve(str, out msg);
+            }
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.HTTP]) || str.StartsWith("https://"))
+            {
+                return HttpFmt.Resolve(str, out msg);
             }
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.Trojan]))
             {
