@@ -6,7 +6,7 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            var extraItem = node.GetExtraItem();
+            var protocolExtra = node.GetProtocolExtra();
             var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
             switch (node.ConfigType)
             {
@@ -37,7 +37,7 @@ public partial class CoreConfigV2rayService
                         }
 
                         usersItem.id = node.Id;
-                        usersItem.alterId = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
+                        usersItem.alterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
                         usersItem.email = Global.UserEMail;
                         if (Global.VmessSecurities.Contains(node.Security))
                         {
@@ -143,13 +143,13 @@ public partial class CoreConfigV2rayService
                         usersItem.email = Global.UserEMail;
                         usersItem.encryption = node.Security;
 
-                        if (extraItem.Flow.IsNullOrEmpty())
+                        if (protocolExtra.Flow.IsNullOrEmpty())
                         {
                             await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
                         }
                         else
                         {
-                            usersItem.flow = extraItem.Flow;
+                            usersItem.flow = protocolExtra.Flow;
                             await GenOutboundMux(node, outbound, false, muxEnabled);
                         }
                         outbound.settings.servers = null;
@@ -510,15 +510,15 @@ public partial class CoreConfigV2rayService
                     break;
 
                 case "hysteria":
-                    var extraItem = node.GetExtraItem();
-                    var ports = extraItem?.Ports;
-                    int? upMbps = extraItem?.UpMbps is { } su and >= 0
+                    var protocolExtra = node.GetProtocolExtra();
+                    var ports = protocolExtra?.Ports;
+                    int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                         ? su
                         : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
-                    int? downMbps = extraItem?.DownMbps is { } sd and >= 0
+                    int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                         ? sd
                         : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
-                    var hopInterval = extraItem?.HopInterval is { } hi and >= 5
+                    var hopInterval = protocolExtra?.HopInterval is { } hi and >= 5
                         ? hi
                         : _config.HysteriaItem.HopInterval >= 5 ? _config.HysteriaItem.HopInterval : Global.Hysteria2DefaultHopInt;
                     HysteriaUdpHop4Ray? udpHop = null;

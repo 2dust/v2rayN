@@ -32,7 +32,7 @@ public class Hysteria2Fmt : BaseFmt
         {
             Ports = GetQueryDecoded(query, "mport")
         };
-        item.SetExtraItem(extraItem);
+        item.SetProtocolExtra(extraItem);
 
         return item;
     }
@@ -59,10 +59,10 @@ public class Hysteria2Fmt : BaseFmt
             dicQuery.Add("obfs", "salamander");
             dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
         }
-        var extra = item.GetExtraItem();
-        if (extra?.Ports?.IsNotEmpty() ?? false)
+        var protocolExtra = item.GetProtocolExtra();
+        if (protocolExtra?.Ports?.IsNotEmpty() ?? false)
         {
-            dicQuery.Add("mport", Utils.UrlEncode(extra.Ports.Replace(':', '-')));
+            dicQuery.Add("mport", Utils.UrlEncode(protocolExtra.Ports.Replace(':', '-')));
         }
         if (!item.CertSha.IsNullOrEmpty())
         {

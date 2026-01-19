@@ -24,15 +24,15 @@ public class VmessFmt : BaseFmt
             return null;
         }
 
-        var extraItem = item?.GetExtraItem();
+        var protocolExtra = item?.GetProtocolExtra();
         var vmessQRCode = new VmessQRCode
         {
-            v = item.ConfigVersion,
+            v = 2,
             ps = item.Remarks.TrimEx(),
             add = item.Address,
             port = item.Port,
             id = item.Id,
-            aid = int.TryParse(extraItem?.AlterId, out var result) ? result : 0,
+            aid = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0,
             scy = item.Security,
             net = item.Network,
             type = item.HeaderType,
@@ -73,12 +73,12 @@ public class VmessFmt : BaseFmt
         item.Network = Global.DefaultNetwork;
         item.HeaderType = Global.None;
 
-        item.ConfigVersion = vmessQRCode.v;
+        //item.ConfigVersion = vmessQRCode.v;
         item.Remarks = Utils.ToString(vmessQRCode.ps);
         item.Address = Utils.ToString(vmessQRCode.add);
         item.Port = vmessQRCode.port;
         item.Id = Utils.ToString(vmessQRCode.id);
-        item.SetExtraItem(new ProtocolExtraItem
+        item.SetProtocolExtra(new ProtocolExtraItem
         {
             AlterId = vmessQRCode.aid.ToString(),
         });

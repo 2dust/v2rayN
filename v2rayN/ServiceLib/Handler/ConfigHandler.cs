@@ -237,6 +237,8 @@ public static class ConfigHandler
             item.Security = profileItem.Security;
             item.Flow = profileItem.Flow;
 
+            item.Password = profileItem.Password;
+
             item.Network = profileItem.Network;
             item.HeaderType = profileItem.HeaderType;
             item.RequestHost = profileItem.RequestHost;
@@ -258,7 +260,7 @@ public static class ConfigHandler
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
             item.EchForceQuery = profileItem.EchForceQuery;
-            item.JsonData = profileItem.JsonData;
+            item.ProtoExtra = profileItem.ProtoExtra;
         }
 
         var ret = item.ConfigType switch
@@ -963,11 +965,11 @@ public static class ConfigHandler
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-        var extraItem = profileItem.GetExtraItem();
+        var protocolExtra = profileItem.GetProtocolExtra();
 
-        if (!Global.Flows.Contains(extraItem.Flow ?? string.Empty))
+        if (!Global.Flows.Contains(protocolExtra.Flow ?? string.Empty))
         {
-            extraItem.Flow = Global.Flows.First();
+            protocolExtra.Flow = Global.Flows.First();
         }
         if (profileItem.Id.IsNullOrEmpty())
         {
@@ -978,7 +980,7 @@ public static class ConfigHandler
             profileItem.Security = Global.None;
         }
 
-        profileItem.SetExtraItem(extraItem);
+        profileItem.SetProtocolExtra(protocolExtra);
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -1033,7 +1035,7 @@ public static class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> AddServerCommon(Config config, ProfileItem profileItem, bool toFile = true)
     {
-        profileItem.ConfigVersion = 2;
+        profileItem.ConfigVersion = 3;
 
         if (profileItem.StreamSecurity.IsNotEmpty())
         {
@@ -1097,7 +1099,7 @@ public static class ConfigHandler
             return false;
         }
 
-        var extraItem = o.GetExtraItem();
+        var protocolExtra = o.GetProtocolExtra();
 
         return o.ConfigType == n.ConfigType
                && AreEqual(o.Address, n.Address)
@@ -1109,7 +1111,7 @@ public static class ConfigHandler
                && AreEqual(o.RequestHost, n.RequestHost)
                && AreEqual(o.Path, n.Path)
                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-               && AreEqual(extraItem.Flow, extraItem.Flow)
+               && AreEqual(protocolExtra.Flow, protocolExtra.Flow)
                && AreEqual(o.Sni, n.Sni)
                && AreEqual(o.Alpn, n.Alpn)
                && AreEqual(o.Fingerprint, n.Fingerprint)
@@ -1208,7 +1210,7 @@ public static class ConfigHandler
         {
             ChildItems = childProfileIndexId, MultipleLoad = multipleLoad,
         };
-        profile.SetExtraItem(extraItem);
+        profile.SetProtocolExtra(extraItem);
         var ret = await AddServerCommon(config, profile, true);
         result.Success = ret == 0;
         result.Data = indexId;

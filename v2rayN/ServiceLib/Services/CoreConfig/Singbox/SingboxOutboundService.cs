@@ -6,7 +6,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var extraItem = node.GetExtraItem();
+            var protocolExtra = node.GetProtocolExtra();
             outbound.server = node.Address;
             outbound.server_port = node.Port;
             outbound.type = Global.ProtocolTypes[node.ConfigType];
@@ -16,7 +16,7 @@ public partial class CoreConfigSingboxService
                 case EConfigType.VMess:
                     {
                         outbound.uuid = node.Id;
-                        outbound.alter_id = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
+                        outbound.alter_id = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
                         if (Global.VmessSecurities.Contains(node.Security))
                         {
                             outbound.security = node.Security;
@@ -113,13 +113,13 @@ public partial class CoreConfigSingboxService
 
                         outbound.packet_encoding = "xudp";
 
-                        if (extraItem.Flow.IsNullOrEmpty())
+                        if (protocolExtra.Flow.IsNullOrEmpty())
                         {
                             await GenOutboundMux(node, outbound);
                         }
                         else
                         {
-                            outbound.flow = extraItem.Flow;
+                            outbound.flow = protocolExtra.Flow;
                         }
 
                         await GenOutboundTransport(node, outbound);
@@ -146,13 +146,13 @@ public partial class CoreConfigSingboxService
                             };
                         }
 
-                        outbound.up_mbps = extraItem?.UpMbps is { } su and >= 0
+                        outbound.up_mbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
                             : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
-                        outbound.down_mbps = extraItem?.DownMbps is { } sd and >= 0
+                        outbound.down_mbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
                             : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
-                        var ports = extraItem?.Ports?.IsNullOrEmpty() == false ? extraItem.Ports : null;
+                        var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
                             outbound.server_port = null;
@@ -165,7 +165,7 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = extraItem?.HopInterval is { } hi and >= 5
+                            outbound.hop_interval = protocolExtra?.HopInterval is { } hi and >= 5
                                 ? $"{hi}s"
                                 : _config.HysteriaItem.HopInterval >= 5 ? $"{_config.HysteriaItem.HopInterval}s" : $"{Global.Hysteria2DefaultHopInt}s";
                         }

@@ -79,8 +79,8 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public async Task Init()
     {
-        var extra = SelectedSource.GetExtraItem();
-        PolicyGroupType = (extra?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
+        var protocolExtra = SelectedSource.GetProtocolExtra();
+        PolicyGroupType = (protocolExtra?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
         {
             EMultipleLoad.LeastPing => ResUI.TbLeastPing,
             EMultipleLoad.Fallback => ResUI.TbFallback,
@@ -93,10 +93,10 @@ public class AddGroupServerViewModel : MyReactiveObject
         var subs = await AppManager.Instance.SubItems();
         subs.Add(new SubItem());
         SubItems.AddRange(subs);
-        SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == extra?.SubChildItems);
-        Filter = extra?.Filter;
+        SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == protocolExtra?.SubChildItems);
+        Filter = protocolExtra?.Filter;
 
-        var childIndexIds = Utils.String2List(extra?.ChildItems) ?? [];
+        var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
         foreach (var item in childIndexIds)
         {
             var child = await AppManager.Instance.GetProfileItem(item);
@@ -202,10 +202,10 @@ public class AddGroupServerViewModel : MyReactiveObject
             return;
         }
 
-        var extra = SelectedSource.GetExtraItem();
-        extra.ChildItems =
+        var protocolExtra = SelectedSource.GetProtocolExtra();
+        protocolExtra.ChildItems =
             Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList());
-        extra.MultipleLoad = PolicyGroupType switch
+        protocolExtra.MultipleLoad = PolicyGroupType switch
         {
             var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
             var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
@@ -215,17 +215,17 @@ public class AddGroupServerViewModel : MyReactiveObject
             _ => EMultipleLoad.LeastPing,
         };
 
-        extra.SubChildItems = SelectedSubItem?.Id;
-        extra.Filter = Filter;
+        protocolExtra.SubChildItems = SelectedSubItem?.Id;
+        protocolExtra.Filter = Filter;
 
-        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, extra);
+        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, protocolExtra);
         if (hasCycle)
         {
             NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));
             return;
         }
 
-        SelectedSource.SetExtraItem(extra);
+        SelectedSource.SetProtocolExtra(protocolExtra);
 
         if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
