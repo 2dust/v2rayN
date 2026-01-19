@@ -15,7 +15,6 @@ env:
   OutputArchArm: "windows-arm64"
   OutputPath64:  "${{ github.workspace }}/v2rayN/Release/windows-64"
   OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/windows-arm64"
-  OutputPath64Sc:  "${{ github.workspace }}/v2rayN/Release/windows-64-SelfContained"
 
 jobs:
   build:
@@ -39,11 +38,8 @@ jobs:
         cd v2rayN 
         dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -o $OutputPath64
         dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-arm64 -p:SelfContained=true -p:EnableWindowsTargeting=true -o $OutputPathArm64
-        dotnet publish ./v2rayN/v2rayN.csproj     -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -o $OutputPath64Sc
         dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPath64
         dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-arm64 -p:SelfContained=true -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPathArm64
-        dotnet publish ./AmazTool/AmazTool.csproj -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPath64Sc
-
   
     - name: Upload build artifacts
       uses: actions/upload-artifact@v6.0.0
@@ -59,7 +55,6 @@ jobs:
         chmod 755 package-release-zip.sh
         ./package-release-zip.sh $OutputArch $OutputPath64
         ./package-release-zip.sh $OutputArchArm $OutputPathArm64
-        ./package-release-zip.sh "windows-64-SelfContained" $OutputPath64Sc
     
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
