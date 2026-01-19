@@ -81,7 +81,9 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+#pragma warning disable CS0618
         SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
+#pragma warning restore CS0618
         return true;
     }
 
@@ -259,36 +261,54 @@ public sealed class AppManager
 
     public async Task MigrateProfileExtra()
     {
-        var list = await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync();
-        foreach (var item in list)
+#pragma warning disable CS0618
+        const int pageSize = 500;
+        int offset = 0;
+
+        while (true)
         {
-            if (!item.JsonData.IsNullOrEmpty())
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
             {
-                return;
+                break;
             }
-            ProtocolExtraItem extra = new()
+
+            foreach (var item in batch)
             {
-                AlterId = item.AlterId.ToString(),
-                Flow = item.Flow.IsNotEmpty() ? item.Flow : null,
-                Ports = item.Ports.IsNotEmpty() ? item.Ports : null,
-            };
-            if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
-            {
-                extra.GroupType = nameof(item.ConfigType);
-                ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var groupItem);
-                if (groupItem != null && !groupItem.NotHasChild())
+                ProtocolExtraItem extra = new()
                 {
-                    extra.ChildItems = groupItem.ChildItems;
-                    extra.SubChildItems = groupItem.SubChildItems;
-                    extra.Filter = groupItem.Filter;
-                    extra.MultipleLoad = groupItem.MultipleLoad;
+                    AlterId = item.AlterId.ToString(),
+                    Flow = item.Flow.IsNotEmpty() ? item.Flow : null,
+                    Ports = item.Ports.IsNotEmpty() ? item.Ports : null,
+                };
+
+                if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                {
+                    extra.GroupType = nameof(item.ConfigType);
+                    ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var groupItem);
+                    if (groupItem != null && !groupItem.NotHasChild())
+                    {
+                        extra.ChildItems = groupItem.ChildItems;
+                        extra.SubChildItems = groupItem.SubChildItems;
+                        extra.Filter = groupItem.Filter;
+                        extra.MultipleLoad = groupItem.MultipleLoad;
+                    }
                 }
+
+                item.SetProtocolExtra(extra);
+
+                item.Password = item.Id;
+
+                item.ConfigVersion = 3;
+                await SQLiteHelper.Instance.UpdateAsync(item);
             }
-            item.SetExtraItem(extra);
-            await SQLiteHelper.Instance.UpdateAsync(item);
+
+            offset += pageSize;
         }
 
-        await ProfileGroupItemManager.Instance.ClearAll();
+        //await ProfileGroupItemManager.Instance.ClearAll();
+#pragma warning restore CS0618
     }
 
     #endregion SqliteHelper

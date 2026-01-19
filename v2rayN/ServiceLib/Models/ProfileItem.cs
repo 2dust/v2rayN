@@ -7,9 +7,10 @@ public class ProfileItem : ReactiveObject
     {
         IndexId = string.Empty;
         ConfigType = EConfigType.VMess;
-        ConfigVersion = 2;
+        ConfigVersion = 3;
         Address = string.Empty;
         Port = 0;
+        Password = string.Empty;
         Id = string.Empty;
         AlterId = 0;
         Security = string.Empty;
@@ -94,7 +95,7 @@ public class ProfileItem : ReactiveObject
                     return false;
                 }
 
-                if (!Global.Flows.Contains(GetExtraItem().Flow ?? string.Empty))
+                if (!Global.Flows.Contains(GetProtocolExtra().Flow ?? string.Empty))
                 {
                     return false;
                 }
@@ -125,18 +126,18 @@ public class ProfileItem : ReactiveObject
         return true;
     }
 
-    public void SetExtraItem(ProtocolExtraItem extraItem)
+    public void SetProtocolExtra(ProtocolExtraItem extraItem)
     {
-        JsonData = JsonUtils.Serialize(extraItem, false);
+        ProtoExtra = JsonUtils.Serialize(extraItem, false);
     }
 
-    public ProtocolExtraItem GetExtraItem()
+    public ProtocolExtraItem GetProtocolExtra()
     {
-        if (JsonData.IsNullOrEmpty())
+        if (ProtoExtra.IsNullOrEmpty())
         {
             return new ProtocolExtraItem();
         }
-        return JsonUtils.Deserialize<ProtocolExtraItem>(JsonData);
+        return JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra);
     }
 
     #endregion function
@@ -148,8 +149,7 @@ public class ProfileItem : ReactiveObject
     public int ConfigVersion { get; set; }
     public string Address { get; set; }
     public int Port { get; set; }
-    public string Id { get; set; }
-    public string Security { get; set; }
+    public string Password { get; set; }
     public string Network { get; set; }
     public string Remarks { get; set; }
     public string HeaderType { get; set; }
@@ -175,9 +175,15 @@ public class ProfileItem : ReactiveObject
     public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
-    public string JsonData { get; set; }
-    // deprecated
+    public string ProtoExtra { get; set; }
+    [Obsolete("Use ProtocolExtraItem.Ports instead.")]
     public string Ports { get; set; }
+    [Obsolete("Use ProtocolExtraItem.AlterId instead.")]
     public int AlterId { get; set; }
+    [Obsolete("Use ProtocolExtraItem.Flow instead.")]
     public string Flow { get; set; }
+    [Obsolete("Use ProfileItem.Password instead.")]
+    public string Id { get; set; }
+    [Obsolete("Use ProtocolExtraItem.xxx instead.")]
+    public string Security { get; set; }
 }

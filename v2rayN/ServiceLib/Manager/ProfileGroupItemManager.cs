@@ -1,5 +1,6 @@
 namespace ServiceLib.Manager;
 
+[Obsolete("Use GroupProfileManager instead.")]
 public class ProfileGroupItemManager
 {
     private static readonly Lazy<ProfileGroupItemManager> _instance = new(() => new());

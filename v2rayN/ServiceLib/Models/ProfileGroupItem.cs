@@ -1,6 +1,6 @@
 namespace ServiceLib.Models;
 
-// deprecated
+[Obsolete("Use ProtocolExtraItem instead.")]
 [Serializable]
 public class ProfileGroupItem
 {

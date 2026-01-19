@@ -128,7 +128,7 @@ public class ActionPrecheckManager
             }
         }
 
-        var extraItem = item.GetExtraItem();
+        var protocolExtra = item.GetProtocolExtra();
 
         switch (item.ConfigType)
         {
@@ -146,7 +146,7 @@ public class ActionPrecheckManager
                     errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
                 }
 
-                if (!Global.Flows.Contains(extraItem.Flow ?? string.Empty))
+                if (!Global.Flows.Contains(protocolExtra.Flow ?? string.Empty))
                 {
                     errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
                 }
@@ -204,7 +204,7 @@ public class ActionPrecheckManager
     {
         var errors = new List<string>();
 
-        var hasCycle = await GroupProfileManager.HasCycle(item.IndexId, item.GetExtraItem());
+        var hasCycle = await GroupProfileManager.HasCycle(item.IndexId, item.GetProtocolExtra());
         if (hasCycle)
         {
             errors.Add(string.Format(ResUI.GroupSelfReference, item.Remarks));

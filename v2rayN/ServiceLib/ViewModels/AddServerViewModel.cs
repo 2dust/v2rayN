@@ -82,13 +82,13 @@ public class AddServerViewModel : MyReactiveObject
         Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
 
-        var extraItem = SelectedSource?.GetExtraItem();
-        Ports = extraItem?.Ports ?? string.Empty;
-        AlterId = int.TryParse(extraItem?.AlterId, out var result) ? result : 0;
-        Flow = extraItem?.Flow ?? string.Empty;
-        UpMbps = extraItem?.UpMbps ?? 0;
-        DownMbps = extraItem?.DownMbps ?? 0;
-        HopInterval = extraItem?.HopInterval ?? Global.Hysteria2DefaultHopInt;
+        var protocolExtra = SelectedSource?.GetProtocolExtra();
+        Ports = protocolExtra?.Ports ?? string.Empty;
+        AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
+        Flow = protocolExtra?.Flow ?? string.Empty;
+        UpMbps = protocolExtra?.UpMbps ?? 0;
+        DownMbps = protocolExtra?.DownMbps ?? 0;
+        HopInterval = protocolExtra?.HopInterval ?? Global.Hysteria2DefaultHopInt;
     }
 
     private async Task SaveServerAsync()
@@ -135,14 +135,14 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
-        var extraItem = SelectedSource.GetExtraItem();
-        extraItem.Ports = Ports;
-        extraItem.AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty;
-        extraItem.Flow = Flow;
-        extraItem.UpMbps = UpMbps;
-        extraItem.DownMbps = DownMbps;
-        extraItem.HopInterval = HopInterval >= 5 ? HopInterval : Global.Hysteria2DefaultHopInt;
-        SelectedSource.SetExtraItem(extraItem);
+        var protocolExtra = SelectedSource.GetProtocolExtra();
+        protocolExtra.Ports = Ports;
+        protocolExtra.AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty;
+        protocolExtra.Flow = Flow;
+        protocolExtra.UpMbps = UpMbps;
+        protocolExtra.DownMbps = DownMbps;
+        protocolExtra.HopInterval = HopInterval >= 5 ? HopInterval : Global.Hysteria2DefaultHopInt;
+        SelectedSource.SetProtocolExtra(protocolExtra);
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
