@@ -25,6 +25,7 @@ public class VLESSFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         protocolExtra.VlessEncryption = GetQueryValue(query, "encryption", Global.None);
+        protocolExtra.Flow = GetQueryValue(query, "flow");
         item.StreamSecurity = GetQueryValue(query, "security");
         ResolveUriQuery(query, ref item);
 
@@ -49,6 +50,10 @@ public class VLESSFmt : BaseFmt
         var dicQuery = new Dictionary<string, string>();
         dicQuery.Add("encryption",
             !protocolExtra.VlessEncryption.IsNullOrEmpty() ? protocolExtra.VlessEncryption : Global.None);
+        if (!protocolExtra.Flow.IsNullOrEmpty())
+        {
+            dicQuery.Add("flow", protocolExtra.Flow);
+        }
         ToUriQuery(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.VLESS, item.Address, item.Port, item.Password, dicQuery, remark);
