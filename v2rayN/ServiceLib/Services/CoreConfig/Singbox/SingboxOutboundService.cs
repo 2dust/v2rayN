@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
