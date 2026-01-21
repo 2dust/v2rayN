@@ -262,8 +262,11 @@ public sealed class AppManager
     public async Task MigrateProfileExtra()
     {
 #pragma warning disable CS0618
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
+
         const int pageSize = 500;
-        int offset = 0;
+        var offset = 0;
 
         while (true)
         {
@@ -286,7 +289,7 @@ public sealed class AppManager
                 if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
                     extra.GroupType = nameof(item.ConfigType);
-                    ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var groupItem);
+                    groupItems.TryGetValue(item.IndexId, out var groupItem);
                     if (groupItem != null && !groupItem.NotHasChild())
                     {
                         extra.ChildItems = groupItem.ChildItems;
