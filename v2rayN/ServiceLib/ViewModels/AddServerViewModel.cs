@@ -17,6 +17,47 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string CertSha { get; set; }
 
+    [Reactive]
+    public int AlterId { get; set; }
+
+    [Reactive]
+    public string Ports { get; set; }
+
+    [Reactive]
+    public int UpMbps { get; set; }
+
+    [Reactive]
+    public int DownMbps { get; set; }
+
+    [Reactive]
+    public int HopInterval { get; set; }
+
+    [Reactive]
+    public string Flow { get; set; }
+
+    [Reactive]
+    public string VmessSecurity { get; set; }
+
+    [Reactive]
+    public string VlessEncryption { get; set; }
+
+    [Reactive]
+    public string SsMethod { get; set; }
+
+    [Reactive]
+    public string Username { get; set; }
+
+    [Reactive]
+    public string WgPublicKey { get; set; }
+    //[Reactive]
+    //public string WgPresharedKey { get; set; }
+    [Reactive]
+    public string WgInterfaceAddress { get; set; }
+    [Reactive]
+    public string WgReserved { get; set; }
+    [Reactive]
+    public int WgMtu { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -63,6 +104,22 @@ public class AddServerViewModel : MyReactiveObject
         CoreType = SelectedSource?.CoreType?.ToString();
         Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
+
+        var protocolExtra = SelectedSource?.GetProtocolExtra();
+        Ports = protocolExtra?.Ports ?? string.Empty;
+        AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
+        Flow = protocolExtra?.Flow ?? string.Empty;
+        UpMbps = protocolExtra?.UpMbps ?? 0;
+        DownMbps = protocolExtra?.DownMbps ?? 0;
+        HopInterval = protocolExtra?.HopInterval ?? Global.Hysteria2DefaultHopInt;
+        VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
+        VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
+        SsMethod = protocolExtra?.SsMethod ?? string.Empty;
+        Username = protocolExtra?.Username ?? string.Empty;
+        WgPublicKey = protocolExtra?.WgPublicKey ?? string.Empty;
+        WgInterfaceAddress = protocolExtra?.WgInterfaceAddress ?? string.Empty;
+        WgReserved = protocolExtra?.WgReserved ?? string.Empty;
+        WgMtu = protocolExtra?.WgMtu ?? 1280;
     }
 
     private async Task SaveServerAsync()
@@ -87,12 +144,12 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (SelectedSource.ConfigType == EConfigType.Shadowsocks)
         {
-            if (SelectedSource.Id.IsNullOrEmpty())
+            if (SelectedSource.Password.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.FillPassword);
                 return;
             }
-            if (SelectedSource.Security.IsNullOrEmpty())
+            if (SsMethod.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                 return;
@@ -100,7 +157,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP)
         {
-            if (SelectedSource.Id.IsNullOrEmpty())
+            if (SelectedSource.Password.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.FillUUID);
                 return;
@@ -109,6 +166,23 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
+        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
+        {
+            Ports = Ports.IsNullOrEmpty() ? null : Ports,
+            AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty,
+            Flow = Flow.IsNullOrEmpty() ? null : Flow,
+            UpMbps = UpMbps > 0 ? UpMbps : null,
+            DownMbps = DownMbps > 0 ? DownMbps : null,
+            HopInterval = HopInterval >= 5 ? HopInterval : null,
+            VmessSecurity = VmessSecurity.IsNullOrEmpty() ? null : VmessSecurity,
+            VlessEncryption = VlessEncryption.IsNullOrEmpty() ? null : VlessEncryption,
+            SsMethod = SsMethod.IsNullOrEmpty() ? null : SsMethod,
+            Username = Username.IsNullOrEmpty() ? null : Username,
+            WgPublicKey = WgPublicKey.IsNullOrEmpty() ? null : WgPublicKey,
+            WgInterfaceAddress = WgInterfaceAddress.IsNullOrEmpty() ? null : WgInterfaceAddress,
+            WgReserved = WgReserved.IsNullOrEmpty() ? null : WgReserved,
+            WgMtu = WgMtu >= 576 ? WgMtu : null,
+        });
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {

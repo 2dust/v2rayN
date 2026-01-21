@@ -20,9 +20,10 @@ public class TrojanFmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
+        item.SetProtocolExtra(item.GetProtocolExtra() with { Flow = GetQueryValue(query, "flow") });
         ResolveUriQuery(query, ref item);
 
         return item;
@@ -40,8 +41,12 @@ public class TrojanFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         var dicQuery = new Dictionary<string, string>();
+        if (!item.GetProtocolExtra().Flow.IsNullOrEmpty())
+        {
+            dicQuery.Add("flow", item.GetProtocolExtra().Flow);
+        }
         ToUriQuery(item, null, ref dicQuery);
 
-        return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Id, dicQuery, remark);
+        return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 }

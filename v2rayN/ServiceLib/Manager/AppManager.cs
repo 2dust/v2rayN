@@ -81,7 +81,9 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+#pragma warning disable CS0618
         SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
+#pragma warning restore CS0618
         return true;
     }
 
@@ -93,6 +95,8 @@ public sealed class AppManager
         //First determine the port value
         _ = StatePort;
         _ = StatePort2;
+
+        _ = MigrateProfileExtra();
 
         return true;
     }
@@ -225,15 +229,6 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
     }
 
-    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return null;
-        }
-        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
-    }
-
     public async Task<List<RoutingItem>?> RoutingItems()
     {
         return await SQLiteHelper.Instance.TableAsync<RoutingItem>().OrderBy(t => t.Sort).ToListAsync();
@@ -262,6 +257,91 @@ public sealed class AppManager
     public async Task<FullConfigTemplateItem?> GetFullConfigTemplateItem(ECoreType eCoreType)
     {
         return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
+    }
+
+    public async Task MigrateProfileExtra()
+    {
+#pragma warning disable CS0618
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
+
+        const int pageSize = 500;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            foreach (var item in batch)
+            {
+                ProtocolExtraItem extra = new()
+                {
+                    AlterId = item.AlterId.ToString(),
+                    Flow = item.Flow.IsNotEmpty() ? item.Flow : null,
+                    Ports = item.Ports.IsNotEmpty() ? item.Ports : null,
+                };
+
+                if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                {
+                    extra = extra with { GroupType = nameof(item.ConfigType) };
+                    groupItems.TryGetValue(item.IndexId, out var groupItem);
+                    if (groupItem != null && !groupItem.NotHasChild())
+                    {
+                        extra = extra with
+                        {
+                            ChildItems = groupItem.ChildItems,
+                            SubChildItems = groupItem.SubChildItems,
+                            Filter = groupItem.Filter,
+                            MultipleLoad = groupItem.MultipleLoad,
+                        };
+                    }
+
+                    switch (item.ConfigType)
+                    {
+                        case EConfigType.Shadowsocks:
+                            extra = extra with {SsMethod = item.Security.IsNotEmpty() ? item.Security : null};
+                            break;
+                        case EConfigType.VMess:
+                            extra = extra with {VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null};
+                            break;
+                        case EConfigType.Hysteria2:
+                            extra = extra with
+                            {
+                                UpMbps = _config.HysteriaItem.UpMbps,
+                                DownMbps = _config.HysteriaItem.DownMbps,
+                                HopInterval = _config.HysteriaItem.HopInterval
+                            };
+                            break;
+                        case EConfigType.WireGuard:
+                            extra = extra with
+                            {
+                                WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null,
+                                WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null,
+                                WgReserved = item.Path.IsNotEmpty() ? item.Path : null,
+                                WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
+                            };
+                            break;
+                    }
+                }
+
+                item.SetProtocolExtra(extra);
+
+                item.Password = item.Id;
+
+                item.ConfigVersion = 3;
+                await SQLiteHelper.Instance.UpdateAsync(item);
+            }
+
+            offset += pageSize;
+        }
+
+        //await ProfileGroupItemManager.Instance.ClearAll();
+#pragma warning restore CS0618
     }
 
     #endregion SqliteHelper

@@ -1,5 +1,6 @@
 namespace ServiceLib.Models;
 
+[Obsolete("Use ProtocolExtraItem instead.")]
 [Serializable]
 public class ProfileGroupItem
 {

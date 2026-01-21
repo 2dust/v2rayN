@@ -90,6 +90,8 @@ public class Global
     public const string SingboxFakeDNSTag = "fake_dns";
     public const string SingboxEchDNSTag = "ech_dns";
 
+    public const int Hysteria2DefaultHopInt = 10;
+
     public static readonly List<string> IEProxyProtocols =
     [
         "{ip}:{http_port}",

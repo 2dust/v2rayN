@@ -12,7 +12,8 @@ public class ShadowsocksFmt : BaseFmt
         {
             return null;
         }
-        if (item.Address.Length == 0 || item.Port == 0 || item.Security.Length == 0 || item.Id.Length == 0)
+
+        if (item.Address.Length == 0 || item.Port == 0 || item.GetProtocolExtra().SsMethod.IsNullOrEmpty() || item.Password.Length == 0)
         {
             return null;
         }
@@ -40,7 +41,7 @@ public class ShadowsocksFmt : BaseFmt
         //    item.port);
         //url = Utile.Base64Encode(url);
         //new Sip002
-        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
+        var pw = Utils.Base64Encode($"{item.GetProtocolExtra().SsMethod}:{item.Password}", true);
 
         // plugin
         var plugin = string.Empty;
@@ -136,8 +137,8 @@ public class ShadowsocksFmt : BaseFmt
         {
             return null;
         }
-        item.Security = details.Groups["method"].Value;
-        item.Id = details.Groups["password"].Value;
+        item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = details.Groups["method"].Value });
+        item.Password = details.Groups["password"].Value;
         item.Address = details.Groups["hostname"].Value;
         item.Port = details.Groups["port"].Value.ToInt();
         return item;
@@ -166,8 +167,8 @@ public class ShadowsocksFmt : BaseFmt
             {
                 return null;
             }
-            item.Security = userInfoParts.First();
-            item.Id = Utils.UrlDecode(userInfoParts.Last());
+            item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = userInfoParts.First() });
+            item.Password = Utils.UrlDecode(userInfoParts.Last());
         }
         else
         {
@@ -178,8 +179,8 @@ public class ShadowsocksFmt : BaseFmt
             {
                 return null;
             }
-            item.Security = userInfoParts.First();
-            item.Id = userInfoParts.Last();
+            item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = userInfoParts.First() });
+            item.Password = userInfoParts.Last();
         }
 
         var queryParameters = Utils.ParseQueryString(parsedUrl.Query);
@@ -275,7 +276,6 @@ public class ShadowsocksFmt : BaseFmt
                 }
             }
         }
-
         return item;
     }
 
@@ -300,11 +300,11 @@ public class ShadowsocksFmt : BaseFmt
                 var ssItem = new ProfileItem()
                 {
                     Remarks = it.remarks,
-                    Security = it.method,
-                    Id = it.password,
+                    Password = it.password,
                     Address = it.server,
                     Port = it.server_port.ToInt()
                 };
+                ssItem.SetProtocolExtra(new ProtocolExtraItem() { SsMethod = it.method });
                 lst.Add(ssItem);
             }
             return lst;

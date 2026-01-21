@@ -79,8 +79,8 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public async Task Init()
     {
-        ProfileGroupItemManager.Instance.TryGet(SelectedSource.IndexId, out var profileGroup);
-        PolicyGroupType = (profileGroup?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
+        var protocolExtra = SelectedSource.GetProtocolExtra();
+        PolicyGroupType = (protocolExtra?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
         {
             EMultipleLoad.LeastPing => ResUI.TbLeastPing,
             EMultipleLoad.Fallback => ResUI.TbFallback,
@@ -93,22 +93,18 @@ public class AddGroupServerViewModel : MyReactiveObject
         var subs = await AppManager.Instance.SubItems();
         subs.Add(new SubItem());
         SubItems.AddRange(subs);
-        SelectedSubItem = SubItems.Where(s => s.Id == profileGroup?.SubChildItems).FirstOrDefault();
-        Filter = profileGroup?.Filter;
+        SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == protocolExtra?.SubChildItems);
+        Filter = protocolExtra?.Filter;
 
-        var childItemMulti = ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(SelectedSource?.IndexId);
-        if (childItemMulti != null)
+        var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
+        foreach (var item in childIndexIds)
         {
-            var childIndexIds = Utils.String2List(childItemMulti.ChildItems) ?? [];
-            foreach (var item in childIndexIds)
+            var child = await AppManager.Instance.GetProfileItem(item);
+            if (child == null)
             {
-                var child = await AppManager.Instance.GetProfileItem(item);
-                if (child == null)
-                {
-                    continue;
-                }
-                ChildItemsObs.Add(child);
+                continue;
             }
+            ChildItemsObs.Add(child);
         }
     }
 
@@ -205,38 +201,32 @@ public class AddGroupServerViewModel : MyReactiveObject
         {
             return;
         }
-        var childIndexIds = new List<string>();
-        foreach (var item in ChildItemsObs)
+
+        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
-            if (item.IndexId.IsNullOrEmpty())
+            ChildItems =
+            Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList()),
+            MultipleLoad = PolicyGroupType switch
             {
-                continue;
-            }
-            childIndexIds.Add(item.IndexId);
-        }
-        var profileGroup = ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(SelectedSource.IndexId);
-        profileGroup.ChildItems = Utils.List2String(childIndexIds);
-        profileGroup.MultipleLoad = PolicyGroupType switch
-        {
-            var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
-            var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
-            var s when s == ResUI.TbRandom => EMultipleLoad.Random,
-            var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
-            var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
-            _ => EMultipleLoad.LeastPing,
-        };
+                var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
+                var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
+                var s when s == ResUI.TbRandom => EMultipleLoad.Random,
+                var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
+                var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
+                _ => EMultipleLoad.LeastPing,
+            },
+            SubChildItems = SelectedSubItem?.Id,
+            Filter = Filter,
+        });
 
-        profileGroup.SubChildItems = SelectedSubItem?.Id;
-        profileGroup.Filter = Filter;
-
-        var hasCycle = ProfileGroupItemManager.HasCycle(profileGroup.IndexId);
+        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, SelectedSource.GetProtocolExtra());
         if (hasCycle)
         {
             NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));
             return;
         }
 
-        if (await ConfigHandler.AddGroupServerCommon(_config, SelectedSource, profileGroup, true) == 0)
+        if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             _updateView?.Invoke(EViewAction.CloseWindow, null);
