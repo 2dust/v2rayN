@@ -149,10 +149,10 @@ public partial class CoreConfigSingboxService
 
                         outbound.up_mbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
-                            : _config.HysteriaItem.UpMbps > 0 ? _config.HysteriaItem.UpMbps : null;
+                            : 0;
                         outbound.down_mbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
-                            : _config.HysteriaItem.DownMbps > 0 ? _config.HysteriaItem.DownMbps : null;
+                            : 0;
                         var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {

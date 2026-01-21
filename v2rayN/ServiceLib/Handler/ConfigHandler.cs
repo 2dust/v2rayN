@@ -713,6 +713,8 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Hysteria2;
         //profileItem.CoreType = ECoreType.sing_box;
 
+        var protocolExtra = profileItem.GetProtocolExtra();
+
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
@@ -726,6 +728,20 @@ public static class ConfigHandler
         {
             return -1;
         }
+        if (protocolExtra.UpMbps is null or < 0)
+        {
+            protocolExtra.UpMbps = config.HysteriaItem.UpMbps;
+        }
+        if (protocolExtra.DownMbps is null or < 0)
+        {
+            protocolExtra.DownMbps = config.HysteriaItem.DownMbps;
+        }
+        if (protocolExtra.HopInterval is null or <= 5)
+        {
+            protocolExtra.HopInterval = Global.Hysteria2DefaultHopInt;
+        }
+
+        profileItem.SetProtocolExtra(protocolExtra);
 
         await AddServerCommon(config, profileItem, toFile);
 
