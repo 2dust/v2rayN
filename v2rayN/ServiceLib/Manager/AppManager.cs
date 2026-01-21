@@ -306,6 +306,11 @@ public sealed class AppManager
                         case EConfigType.VMess:
                             extra.VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null;
                             break;
+                        case EConfigType.Hysteria2:
+                            extra.UpMbps = _config.HysteriaItem.UpMbps;
+                            extra.DownMbps = _config.HysteriaItem.DownMbps;
+                            extra.HopInterval = _config.HysteriaItem.HopInterval;
+                            break;
                         case EConfigType.WireGuard:
                             extra.WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null;
                             extra.WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null;
