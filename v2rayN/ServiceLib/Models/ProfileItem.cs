@@ -3,6 +3,8 @@ namespace ServiceLib.Models;
 [Serializable]
 public class ProfileItem : ReactiveObject
 {
+    private ProtocolExtraItem _protocolExtraItem = new();
+
     public ProfileItem()
     {
         IndexId = string.Empty;
@@ -127,16 +129,12 @@ public class ProfileItem : ReactiveObject
 
     public void SetProtocolExtra(ProtocolExtraItem extraItem)
     {
-        ProtoExtra = JsonUtils.Serialize(extraItem, false);
+        _protocolExtraItem = extraItem;
     }
 
     public ProtocolExtraItem GetProtocolExtra()
     {
-        if (ProtoExtra.IsNullOrEmpty())
-        {
-            return new ProtocolExtraItem();
-        }
-        return JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra);
+        return _protocolExtraItem;
     }
 
     #endregion function
@@ -174,7 +172,13 @@ public class ProfileItem : ReactiveObject
     public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
-    public string ProtoExtra { get; set; }
+
+    public string ProtoExtra
+    {
+        get => JsonUtils.Serialize(_protocolExtraItem, false);
+        set => _protocolExtraItem = JsonUtils.Deserialize<ProtocolExtraItem>(value);
+    }
+
     [Obsolete("Use ProtocolExtraItem.Ports instead.")]
     public string Ports { get; set; }
     [Obsolete("Use ProtocolExtraItem.AlterId instead.")]
