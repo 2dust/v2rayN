@@ -1,3 +1,5 @@
+using ServiceLib.Common;
+
 namespace ServiceLib.Manager;
 
 /// <summary>
@@ -133,17 +135,17 @@ public class ActionPrecheckManager
         switch (item.ConfigType)
         {
             case EConfigType.VMess:
-                if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
+                if (item.Password.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Password))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
                 break;
 
             case EConfigType.VLESS:
-                if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
+                if (item.Password.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Password) && item.Password.Length > 30))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
                 if (!Global.Flows.Contains(protocolExtra.Flow ?? string.Empty))
@@ -154,14 +156,14 @@ public class ActionPrecheckManager
                 break;
 
             case EConfigType.Shadowsocks:
-                if (item.Id.IsNullOrEmpty())
+                if (item.Password.IsNullOrEmpty())
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
-                if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                if (string.IsNullOrEmpty(protocolExtra.SsMethod) || !Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "SsMethod"));
                 }
 
                 break;

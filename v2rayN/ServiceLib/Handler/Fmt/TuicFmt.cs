@@ -10,6 +10,7 @@ public class TuicFmt : BaseFmt
         {
             ConfigType = EConfigType.TUIC
         };
+        var protocolExtra = item.GetProtocolExtra();
 
         var url = Utils.TryUri(str);
         if (url == null)
@@ -24,14 +25,15 @@ public class TuicFmt : BaseFmt
         var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
         if (userInfoParts.Length == 2)
         {
-            item.Id = userInfoParts.First();
-            item.Security = userInfoParts.Last();
+            item.Password = userInfoParts.First();
+            protocolExtra.Username = userInfoParts.Last();
         }
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
         item.HeaderType = GetQueryValue(query, "congestion_control");
 
+        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -53,6 +55,6 @@ public class TuicFmt : BaseFmt
 
         dicQuery.Add("congestion_control", item.HeaderType);
 
-        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Id}:{item.Security}", dicQuery, remark);
+        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Password}:{item.GetProtocolExtra().Username ?? ""}", dicQuery, remark);
     }
 }

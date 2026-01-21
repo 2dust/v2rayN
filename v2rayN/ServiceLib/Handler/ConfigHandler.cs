@@ -292,23 +292,27 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.VMess;
 
+        var protocolExtra = profileItem.GetProtocolExtra();
+
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        protocolExtra.VmessSecurity = protocolExtra.VmessSecurity?.TrimEx();
         profileItem.Network = profileItem.Network.TrimEx();
         profileItem.HeaderType = profileItem.HeaderType.TrimEx();
         profileItem.RequestHost = profileItem.RequestHost.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-        if (!Global.VmessSecurities.Contains(profileItem.Security))
+        if (!Global.VmessSecurities.Contains(protocolExtra.VmessSecurity))
         {
             return -1;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
+
+        profileItem.SetProtocolExtra(protocolExtra);
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -607,18 +611,22 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.Shadowsocks;
 
-        profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        var protocolExtra = profileItem.GetProtocolExtra();
 
-        if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        protocolExtra.SsMethod = protocolExtra.SsMethod.TrimEx();
+
+        if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(protocolExtra.SsMethod))
         {
             return -1;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
+
+        profileItem.SetProtocolExtra(protocolExtra);
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -676,12 +684,12 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Trojan;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -706,7 +714,7 @@ public static class ConfigHandler
         //profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.Network = string.Empty;
 
@@ -714,7 +722,7 @@ public static class ConfigHandler
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -738,9 +746,11 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.TUIC;
         profileItem.CoreType = ECoreType.sing_box;
 
+        var protocolExtra = profileItem.GetProtocolExtra();
+
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        protocolExtra.Username = protocolExtra.Username?.TrimEx();
         profileItem.Network = string.Empty;
 
         if (!Global.TuicCongestionControls.Contains(profileItem.HeaderType))
@@ -756,7 +766,7 @@ public static class ConfigHandler
         {
             profileItem.Alpn = "h3";
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -778,21 +788,25 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.WireGuard;
 
+        var protocolExtra = profileItem.GetProtocolExtra();
+
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.PublicKey = profileItem.PublicKey.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
-        profileItem.RequestHost = profileItem.RequestHost.TrimEx();
-        profileItem.Network = string.Empty;
-        if (profileItem.ShortId.IsNullOrEmpty())
+        profileItem.Password = profileItem.Password.TrimEx();
+        protocolExtra.WgPublicKey = protocolExtra.WgPublicKey?.TrimEx();
+        protocolExtra.WgPresharedKey = protocolExtra.WgPresharedKey?.TrimEx();
+        protocolExtra.WgInterfaceAddress = protocolExtra.WgInterfaceAddress?.TrimEx();
+        protocolExtra.WgReserved = protocolExtra.WgReserved?.TrimEx();
+        if (protocolExtra.WgMtu <= 0)
         {
-            profileItem.ShortId = Global.TunMtus.First().ToString();
+            protocolExtra.WgMtu = Global.TunMtus.First();
         }
 
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
+
+        profileItem.SetProtocolExtra(protocolExtra);
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -813,14 +827,13 @@ public static class ConfigHandler
         profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -858,7 +871,7 @@ public static class ConfigHandler
                               Remarks = t.Remarks,
                               Address = t.Address,
                               Port = t.Port,
-                              Security = t.Security,
+                              //Security = t.Security,
                               Network = t.Network,
                               StreamSecurity = t.StreamSecurity,
                               Delay = t33?.Delay ?? 0,
@@ -956,28 +969,28 @@ public static class ConfigHandler
     {
         profileItem.ConfigType = EConfigType.VLESS;
 
+        var protocolExtra = profileItem.GetProtocolExtra();
+
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = profileItem.Network.TrimEx();
         profileItem.HeaderType = profileItem.HeaderType.TrimEx();
         profileItem.RequestHost = profileItem.RequestHost.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
-
-        var protocolExtra = profileItem.GetProtocolExtra();
+        protocolExtra.VlessEncryption = protocolExtra.VlessEncryption?.TrimEx();
 
         if (!Global.Flows.Contains(protocolExtra.Flow ?? string.Empty))
         {
             protocolExtra.Flow = Global.Flows.First();
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
-        if (profileItem.Security.IsNullOrEmpty())
+        if (protocolExtra.VlessEncryption.IsNullOrEmpty())
         {
-            profileItem.Security = Global.None;
+            protocolExtra.VlessEncryption = Global.None;
         }
 
         profileItem.SetProtocolExtra(protocolExtra);
@@ -1099,19 +1112,22 @@ public static class ConfigHandler
             return false;
         }
 
-        var protocolExtra = o.GetProtocolExtra();
+        var oProtocolExtra = o.GetProtocolExtra();
+        var nProtocolExtra = n.GetProtocolExtra();
 
         return o.ConfigType == n.ConfigType
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
-               && AreEqual(o.Id, n.Id)
-               && AreEqual(o.Security, n.Security)
+               && AreEqual(o.Password, n.Password)
+               && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
+               && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
+               && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
                && AreEqual(o.Network, n.Network)
                && AreEqual(o.HeaderType, n.HeaderType)
                && AreEqual(o.RequestHost, n.RequestHost)
                && AreEqual(o.Path, n.Path)
                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-               && AreEqual(protocolExtra.Flow, protocolExtra.Flow)
+               && AreEqual(oProtocolExtra.Flow, nProtocolExtra.Flow)
                && AreEqual(o.Sni, n.Sni)
                && AreEqual(o.Alpn, n.Alpn)
                && AreEqual(o.Fingerprint, n.Fingerprint)

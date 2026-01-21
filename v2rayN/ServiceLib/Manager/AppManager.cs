@@ -294,6 +294,22 @@ public sealed class AppManager
                         extra.Filter = groupItem.Filter;
                         extra.MultipleLoad = groupItem.MultipleLoad;
                     }
+
+                    switch (item.ConfigType)
+                    {
+                        case EConfigType.Shadowsocks:
+                            extra.SsMethod = item.Security.IsNotEmpty() ? item.Security : null;
+                            break;
+                        case EConfigType.VMess:
+                            extra.VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null;
+                            break;
+                        case EConfigType.WireGuard:
+                            extra.WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null;
+                            extra.WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null;
+                            extra.WgReserved = item.Path.IsNotEmpty() ? item.Path : null;
+                            extra.WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280;
+                            break;
+                    }
                 }
 
                 item.SetProtocolExtra(extra);

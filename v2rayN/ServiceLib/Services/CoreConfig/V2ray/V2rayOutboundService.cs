@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
@@ -36,12 +38,12 @@ public partial class CoreConfigV2rayService
                             usersItem = vnextItem.users.First();
                         }
 
-                        usersItem.id = node.Id;
+                        usersItem.id = node.Password;
                         usersItem.alterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
                         usersItem.email = Global.UserEMail;
-                        if (Global.VmessSecurities.Contains(node.Security))
+                        if (Global.VmessSecurities.Contains(protocolExtra.VmessSecurity))
                         {
-                            usersItem.security = node.Security;
+                            usersItem.security = protocolExtra.VmessSecurity;
                         }
                         else
                         {
@@ -67,8 +69,9 @@ public partial class CoreConfigV2rayService
                         }
                         serversItem.address = node.Address;
                         serversItem.port = node.Port;
-                        serversItem.password = node.Id;
-                        serversItem.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : "none";
+                        serversItem.password = node.Password;
+                        serversItem.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(protocolExtra.SsMethod)
+                            ? protocolExtra.SsMethod : "none";
 
                         serversItem.ota = false;
                         serversItem.level = 1;
@@ -96,13 +99,13 @@ public partial class CoreConfigV2rayService
                         serversItem.method = null;
                         serversItem.password = null;
 
-                        if (node.Security.IsNotEmpty()
-                            && node.Id.IsNotEmpty())
+                        if (protocolExtra.Username.IsNotEmpty()
+                            && node.Password.IsNotEmpty())
                         {
                             SocksUsersItem4Ray socksUsersItem = new()
                             {
-                                user = node.Security,
-                                pass = node.Id,
+                                user = protocolExtra.Username ?? "",
+                                pass = node.Password,
                                 level = 1
                             };
 
@@ -139,9 +142,9 @@ public partial class CoreConfigV2rayService
                         {
                             usersItem = vnextItem.users.First();
                         }
-                        usersItem.id = node.Id;
+                        usersItem.id = node.Password;
                         usersItem.email = Global.UserEMail;
-                        usersItem.encryption = node.Security;
+                        usersItem.encryption = protocolExtra.VlessEncryption;
 
                         if (protocolExtra.Flow.IsNullOrEmpty())
                         {
@@ -169,7 +172,7 @@ public partial class CoreConfigV2rayService
                         }
                         serversItem.address = node.Address;
                         serversItem.port = node.Port;
-                        serversItem.password = node.Id;
+                        serversItem.password = node.Password;
 
                         serversItem.ota = false;
                         serversItem.level = 1;
@@ -200,16 +203,16 @@ public partial class CoreConfigV2rayService
                         }
                         var peer = new WireguardPeer4Ray
                         {
-                            publicKey = node.PublicKey,
+                            publicKey = protocolExtra.WgPublicKey ?? "",
                             endpoint = address + ":" + node.Port.ToString()
                         };
                         var setting = new Outboundsettings4Ray
                         {
-                            address = Utils.String2List(node.RequestHost),
-                            secretKey = node.Id,
-                            reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList(),
-                            mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt(),
-                            peers = new List<WireguardPeer4Ray> { peer }
+                            address = Utils.String2List(protocolExtra.WgInterfaceAddress),
+                            secretKey = node.Password,
+                            reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(int.Parse).ToList(),
+                            mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First(),
+                            peers = [peer]
                         };
                         outbound.settings = setting;
                         outbound.settings.vnext = null;
@@ -534,7 +537,7 @@ public partial class CoreConfigV2rayService
                     HysteriaSettings4Ray hysteriaSettings = new()
                     {
                         version = 2,
-                        auth = node.Id,
+                        auth = node.Password,
                         up = upMbps > 0 ? $"{upMbps}mbps" : null,
                         down = downMbps > 0 ? $"{downMbps}mbps" : null,
                         udphop = udpHop,

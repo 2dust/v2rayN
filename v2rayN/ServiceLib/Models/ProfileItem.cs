@@ -1,3 +1,5 @@
+using ServiceLib.Common;
+
 namespace ServiceLib.Models;
 
 [Serializable]
@@ -11,9 +13,6 @@ public class ProfileItem : ReactiveObject
         Address = string.Empty;
         Port = 0;
         Password = string.Empty;
-        Id = string.Empty;
-        AlterId = 0;
-        Security = string.Empty;
         Network = string.Empty;
         Remarks = string.Empty;
         HeaderType = string.Empty;
@@ -22,7 +21,6 @@ public class ProfileItem : ReactiveObject
         StreamSecurity = string.Empty;
         AllowInsecure = string.Empty;
         Subid = string.Empty;
-        Flow = string.Empty;
     }
 
     #region function
@@ -82,7 +80,7 @@ public class ProfileItem : ReactiveObject
         switch (ConfigType)
         {
             case EConfigType.VMess:
-                if (Id.IsNullOrEmpty() || !Utils.IsGuidByParse(Id))
+                if (Password.IsNullOrEmpty() || !Utils.IsGuidByParse(Password))
                 {
                     return false;
                 }
@@ -90,7 +88,7 @@ public class ProfileItem : ReactiveObject
                 break;
 
             case EConfigType.VLESS:
-                if (Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(Id) && Id.Length > 30))
+                if (Password.IsNullOrEmpty() || (!Utils.IsGuidByParse(Password) && Password.Length > 30))
                 {
                     return false;
                 }
@@ -103,12 +101,15 @@ public class ProfileItem : ReactiveObject
                 break;
 
             case EConfigType.Shadowsocks:
-                if (Id.IsNullOrEmpty())
+                if (Password.IsNullOrEmpty())
                 {
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(Security) || !Global.SsSecuritiesInSingbox.Contains(Security))
+                var protocolExtra = GetProtocolExtra();
+
+                if (string.IsNullOrEmpty(protocolExtra.SsMethod)
+                    || !Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod))
                 {
                     return false;
                 }
