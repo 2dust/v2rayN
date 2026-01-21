@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
@@ -15,11 +17,11 @@ public partial class CoreConfigSingboxService
             {
                 case EConfigType.VMess:
                     {
-                        outbound.uuid = node.Id;
-                        outbound.alter_id = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
-                        if (Global.VmessSecurities.Contains(node.Security))
+                        outbound.uuid = node.Password;
+                        outbound.alter_id = int.TryParse(protocolExtra.AlterId, out var result) ? result : 0;
+                        if (Global.VmessSecurities.Contains(protocolExtra.VmessSecurity))
                         {
-                            outbound.security = node.Security;
+                            outbound.security = protocolExtra.VmessSecurity;
                         }
                         else
                         {
@@ -32,8 +34,9 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Shadowsocks:
                     {
-                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(node.Security) ? node.Security : Global.None;
-                        outbound.password = node.Id;
+                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(protocolExtra.SsMethod)
+                            ? protocolExtra.SsMethod : Global.None;
+                        outbound.password = node.Password;
 
                         if (node.Network == nameof(ETransport.tcp) && node.HeaderType == Global.TcpHeaderHttp)
                         {
@@ -89,27 +92,27 @@ public partial class CoreConfigSingboxService
                 case EConfigType.SOCKS:
                     {
                         outbound.version = "5";
-                        if (node.Security.IsNotEmpty()
-                          && node.Id.IsNotEmpty())
+                        if (protocolExtra.Username.IsNotEmpty()
+                            && node.Password.IsNotEmpty())
                         {
-                            outbound.username = node.Security;
-                            outbound.password = node.Id;
+                            outbound.username = protocolExtra.Username;
+                            outbound.password = node.Password;
                         }
                         break;
                     }
                 case EConfigType.HTTP:
                     {
-                        if (node.Security.IsNotEmpty()
-                          && node.Id.IsNotEmpty())
+                        if (protocolExtra.Username.IsNotEmpty()
+                            && node.Password.IsNotEmpty())
                         {
-                            outbound.username = node.Security;
-                            outbound.password = node.Id;
+                            outbound.username = protocolExtra.Username;
+                            outbound.password = node.Password;
                         }
                         break;
                     }
                 case EConfigType.VLESS:
                     {
-                        outbound.uuid = node.Id;
+                        outbound.uuid = node.Password;
 
                         outbound.packet_encoding = "xudp";
 
@@ -127,7 +130,7 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Trojan:
                     {
-                        outbound.password = node.Id;
+                        outbound.password = node.Password;
 
                         await GenOutboundMux(node, outbound);
                         await GenOutboundTransport(node, outbound);
@@ -135,7 +138,7 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Hysteria2:
                     {
-                        outbound.password = node.Id;
+                        outbound.password = node.Password;
 
                         if (node.Path.IsNotEmpty())
                         {
@@ -174,14 +177,14 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.TUIC:
                     {
-                        outbound.uuid = node.Id;
-                        outbound.password = node.Security;
+                        outbound.uuid = node.Password;
+                        outbound.password = protocolExtra.Username;
                         outbound.congestion_control = node.HeaderType;
                         break;
                     }
                 case EConfigType.Anytls:
                     {
-                        outbound.password = node.Id;
+                        outbound.password = node.Password;
                         break;
                     }
             }
@@ -199,7 +202,9 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            endpoint.address = Utils.String2List(node.RequestHost);
+            var protocolExtra = node.GetProtocolExtra();
+
+            endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress);
             endpoint.type = Global.ProtocolTypes[node.ConfigType];
 
             switch (node.ConfigType)
@@ -208,16 +213,17 @@ public partial class CoreConfigSingboxService
                     {
                         var peer = new Peer4Sbox
                         {
-                            public_key = node.PublicKey,
-                            reserved = Utils.String2List(node.Path)?.Select(int.Parse).ToList(),
+                            public_key = protocolExtra.WgPublicKey,
+                            pre_shared_key = protocolExtra.WgPresharedKey,
+                            reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(int.Parse).ToList(),
                             address = node.Address,
                             port = node.Port,
                             // TODO default ["0.0.0.0/0", "::/0"]
                             allowed_ips = new() { "0.0.0.0/0", "::/0" },
                         };
-                        endpoint.private_key = node.Id;
-                        endpoint.mtu = node.ShortId.IsNullOrEmpty() ? Global.TunMtus.First() : node.ShortId.ToInt();
-                        endpoint.peers = new() { peer };
+                        endpoint.private_key = node.Password;
+                        endpoint.mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First();
+                        endpoint.peers = [peer];
                         break;
                     }
             }

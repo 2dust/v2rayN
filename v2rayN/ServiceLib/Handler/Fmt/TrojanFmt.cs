@@ -20,7 +20,7 @@ public class TrojanFmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
@@ -42,6 +42,6 @@ public class TrojanFmt : BaseFmt
         var dicQuery = new Dictionary<string, string>();
         ToUriQuery(item, null, ref dicQuery);
 
-        return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Id, dicQuery, remark);
+        return ToUri(EConfigType.Trojan, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 }

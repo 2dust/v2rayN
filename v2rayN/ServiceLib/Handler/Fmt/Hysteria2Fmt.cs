@@ -19,7 +19,7 @@ public class Hysteria2Fmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
@@ -75,7 +75,7 @@ public class Hysteria2Fmt : BaseFmt
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
 
-        return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
+        return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 
     public static ProfileItem? ResolveFull2(string strData, string? subRemarks)

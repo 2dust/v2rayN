@@ -33,7 +33,8 @@ public class SocksFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         //new
-        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
+        var protocolExtra = item.GetProtocolExtra();
+        var pw = Utils.Base64Encode($"{protocolExtra.Username}:{item.Password}", true);
         return ToUri(EConfigType.SOCKS, item.Address, item.Port, pw, null, remark);
     }
 
@@ -43,6 +44,7 @@ public class SocksFmt : BaseFmt
         {
             ConfigType = EConfigType.SOCKS
         };
+        var protocolExtra = item.GetProtocolExtra();
         result = result[Global.ProtocolShares[EConfigType.SOCKS].Length..];
         //remark
         var indexRemark = result.IndexOf('#');
@@ -78,9 +80,10 @@ public class SocksFmt : BaseFmt
         }
         item.Address = arr1[1][..indexPort];
         item.Port = arr1[1][(indexPort + 1)..].ToInt();
-        item.Security = arr21.First();
-        item.Id = arr21[1];
+        protocolExtra.Username = arr21.First();
+        item.Password = arr21[1];
 
+        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -98,6 +101,7 @@ public class SocksFmt : BaseFmt
             Address = parsedUrl.IdnHost,
             Port = parsedUrl.Port,
         };
+        var protocolExtra = item.GetProtocolExtra();
 
         // parse base64 UserInfo
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
@@ -105,8 +109,8 @@ public class SocksFmt : BaseFmt
         var userInfoParts = userInfo.Split([':'], 2);
         if (userInfoParts.Length == 2)
         {
-            item.Security = userInfoParts.First();
-            item.Id = userInfoParts[1];
+            protocolExtra.Username = userInfoParts.First();
+            item.Password = userInfoParts[1];
         }
 
         return item;

@@ -20,7 +20,7 @@ public class AnytlsFmt : BaseFmt
             Port = parsedUrl.Port,
         };
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
-        item.Id = rawUserInfo;
+        item.Password = rawUserInfo;
 
         var query = Utils.ParseQueryString(parsedUrl.Query);
         ResolveUriQuery(query, ref item);
@@ -39,7 +39,7 @@ public class AnytlsFmt : BaseFmt
         {
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
-        var pw = item.Id;
+        var pw = item.Password;
         var dicQuery = new Dictionary<string, string>();
         ToUriQuery(item, Global.None, ref dicQuery);
 

@@ -35,6 +35,29 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string Flow { get; set; }
 
+    [Reactive]
+    public string VmessSecurity { get; set; }
+
+    [Reactive]
+    public string VlessEncryption { get; set; }
+
+    [Reactive]
+    public string SsMethod { get; set; }
+
+    [Reactive]
+    public string Username { get; set; }
+
+    [Reactive]
+    public string WgPublicKey { get; set; }
+    //[Reactive]
+    //public string WgPresharedKey { get; set; }
+    [Reactive]
+    public string WgInterfaceAddress { get; set; }
+    [Reactive]
+    public string WgReserved { get; set; }
+    [Reactive]
+    public int WgMtu { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -89,6 +112,14 @@ public class AddServerViewModel : MyReactiveObject
         UpMbps = protocolExtra?.UpMbps ?? 0;
         DownMbps = protocolExtra?.DownMbps ?? 0;
         HopInterval = protocolExtra?.HopInterval ?? Global.Hysteria2DefaultHopInt;
+        VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
+        VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
+        SsMethod = protocolExtra?.SsMethod ?? string.Empty;
+        Username = protocolExtra?.Username ?? string.Empty;
+        WgPublicKey = protocolExtra?.WgPublicKey ?? string.Empty;
+        WgInterfaceAddress = protocolExtra?.WgInterfaceAddress ?? string.Empty;
+        WgReserved = protocolExtra?.WgReserved ?? string.Empty;
+        WgMtu = protocolExtra?.WgMtu ?? 1280;
     }
 
     private async Task SaveServerAsync()
@@ -113,12 +144,12 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (SelectedSource.ConfigType == EConfigType.Shadowsocks)
         {
-            if (SelectedSource.Id.IsNullOrEmpty())
+            if (SelectedSource.Password.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.FillPassword);
                 return;
             }
-            if (SelectedSource.Security.IsNullOrEmpty())
+            if (SsMethod.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                 return;
@@ -126,7 +157,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP)
         {
-            if (SelectedSource.Id.IsNullOrEmpty())
+            if (SelectedSource.Password.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.FillUUID);
                 return;
@@ -136,12 +167,20 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         var protocolExtra = SelectedSource.GetProtocolExtra();
-        protocolExtra.Ports = Ports;
+        protocolExtra.Ports = Ports.IsNullOrEmpty() ? null : Ports;
         protocolExtra.AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty;
-        protocolExtra.Flow = Flow;
-        protocolExtra.UpMbps = UpMbps;
-        protocolExtra.DownMbps = DownMbps;
-        protocolExtra.HopInterval = HopInterval >= 5 ? HopInterval : Global.Hysteria2DefaultHopInt;
+        protocolExtra.Flow = Flow.IsNullOrEmpty() ? null : Flow;
+        protocolExtra.UpMbps = UpMbps > 0 ? UpMbps : null;
+        protocolExtra.DownMbps = DownMbps > 0 ? DownMbps : null;
+        protocolExtra.HopInterval = HopInterval >= 5 ? HopInterval : null;
+        protocolExtra.VmessSecurity = VmessSecurity.IsNullOrEmpty() ? null : VmessSecurity;
+        protocolExtra.VlessEncryption = VlessEncryption.IsNullOrEmpty() ? null : VlessEncryption;
+        protocolExtra.SsMethod = SsMethod.IsNullOrEmpty() ? null : SsMethod;
+        protocolExtra.Username = Username.IsNullOrEmpty() ? null : Username;
+        protocolExtra.WgPublicKey = WgPublicKey.IsNullOrEmpty() ? null : WgPublicKey;
+        protocolExtra.WgInterfaceAddress = WgInterfaceAddress.IsNullOrEmpty() ? null : WgInterfaceAddress;
+        protocolExtra.WgReserved = WgReserved.IsNullOrEmpty() ? null : WgReserved;
+        protocolExtra.WgMtu = WgMtu >= 576 ? WgMtu : null;
         SelectedSource.SetProtocolExtra(protocolExtra);
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
