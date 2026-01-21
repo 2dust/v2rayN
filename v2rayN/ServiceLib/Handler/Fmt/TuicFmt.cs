@@ -10,7 +10,6 @@ public class TuicFmt : BaseFmt
         {
             ConfigType = EConfigType.TUIC
         };
-        var protocolExtra = item.GetProtocolExtra();
 
         var url = Utils.TryUri(str);
         if (url == null)
@@ -26,14 +25,13 @@ public class TuicFmt : BaseFmt
         if (userInfoParts.Length == 2)
         {
             item.Password = userInfoParts.First();
-            protocolExtra.Username = userInfoParts.Last();
+            item.SetProtocolExtra(item.GetProtocolExtra() with { Username = userInfoParts.Last() });
         }
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
         item.HeaderType = GetQueryValue(query, "congestion_control");
 
-        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 

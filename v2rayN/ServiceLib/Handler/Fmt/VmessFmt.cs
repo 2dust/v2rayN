@@ -24,7 +24,6 @@ public class VmessFmt : BaseFmt
             return null;
         }
 
-        var protocolExtra = item?.GetProtocolExtra();
         var vmessQRCode = new VmessQRCode
         {
             v = 2,
@@ -32,7 +31,7 @@ public class VmessFmt : BaseFmt
             add = item.Address,
             port = item.Port,
             id = item.Password,
-            aid = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0,
+            aid = int.TryParse(item.GetProtocolExtra()?.AlterId, out var result) ? result : 0,
             scy = item.GetProtocolExtra().VmessSecurity ?? "",
             net = item.Network,
             type = item.HeaderType,

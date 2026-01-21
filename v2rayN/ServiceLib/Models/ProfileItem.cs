@@ -106,10 +106,8 @@ public class ProfileItem : ReactiveObject
                     return false;
                 }
 
-                var protocolExtra = GetProtocolExtra();
-
-                if (string.IsNullOrEmpty(protocolExtra.SsMethod)
-                    || !Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod))
+                if (string.IsNullOrEmpty(GetProtocolExtra().SsMethod)
+                    || !Global.SsSecuritiesInSingbox.Contains(GetProtocolExtra().SsMethod))
                 {
                     return false;
                 }

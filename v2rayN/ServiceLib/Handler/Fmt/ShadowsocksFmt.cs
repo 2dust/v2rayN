@@ -13,8 +13,7 @@ public class ShadowsocksFmt : BaseFmt
             return null;
         }
 
-        var protocolExtra = item.GetProtocolExtra();
-        if (item.Address.Length == 0 || item.Port == 0 || protocolExtra.SsMethod.IsNullOrEmpty() || item.Password.Length == 0)
+        if (item.Address.Length == 0 || item.Port == 0 || item.GetProtocolExtra().SsMethod.IsNullOrEmpty() || item.Password.Length == 0)
         {
             return null;
         }
@@ -42,8 +41,7 @@ public class ShadowsocksFmt : BaseFmt
         //    item.port);
         //url = Utile.Base64Encode(url);
         //new Sip002
-        var protocolExtra = item.GetProtocolExtra();
-        var pw = Utils.Base64Encode($"{protocolExtra.SsMethod}:{item.Password}", true);
+        var pw = Utils.Base64Encode($"{item.GetProtocolExtra().SsMethod}:{item.Password}", true);
 
         // plugin
         var plugin = string.Empty;
@@ -139,12 +137,10 @@ public class ShadowsocksFmt : BaseFmt
         {
             return null;
         }
-        var protocolExtra = item.GetProtocolExtra();
-        protocolExtra.SsMethod = details.Groups["method"].Value;
+        item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = details.Groups["method"].Value });
         item.Password = details.Groups["password"].Value;
         item.Address = details.Groups["hostname"].Value;
         item.Port = details.Groups["port"].Value.ToInt();
-        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -162,7 +158,6 @@ public class ShadowsocksFmt : BaseFmt
             Address = parsedUrl.IdnHost,
             Port = parsedUrl.Port,
         };
-        var protocolExtra = item.GetProtocolExtra();
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
         //2022-blake3
         if (rawUserInfo.Contains(':'))
@@ -172,7 +167,7 @@ public class ShadowsocksFmt : BaseFmt
             {
                 return null;
             }
-            protocolExtra.SsMethod = userInfoParts.First();
+            item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = userInfoParts.First() });
             item.Password = Utils.UrlDecode(userInfoParts.Last());
         }
         else
@@ -184,7 +179,7 @@ public class ShadowsocksFmt : BaseFmt
             {
                 return null;
             }
-            protocolExtra.SsMethod = userInfoParts.First();
+            item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = userInfoParts.First() });
             item.Password = userInfoParts.Last();
         }
 
@@ -281,8 +276,6 @@ public class ShadowsocksFmt : BaseFmt
                 }
             }
         }
-
-        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 

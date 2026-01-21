@@ -202,30 +202,29 @@ public class AddGroupServerViewModel : MyReactiveObject
             return;
         }
 
-        var protocolExtra = SelectedSource.GetProtocolExtra();
-        protocolExtra.ChildItems =
-            Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList());
-        protocolExtra.MultipleLoad = PolicyGroupType switch
+        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
-            var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
-            var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
-            var s when s == ResUI.TbRandom => EMultipleLoad.Random,
-            var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
-            var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
-            _ => EMultipleLoad.LeastPing,
-        };
+            ChildItems =
+            Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList()),
+            MultipleLoad = PolicyGroupType switch
+            {
+                var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
+                var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
+                var s when s == ResUI.TbRandom => EMultipleLoad.Random,
+                var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
+                var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
+                _ => EMultipleLoad.LeastPing,
+            },
+            SubChildItems = SelectedSubItem?.Id,
+            Filter = Filter,
+        });
 
-        protocolExtra.SubChildItems = SelectedSubItem?.Id;
-        protocolExtra.Filter = Filter;
-
-        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, protocolExtra);
+        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, SelectedSource.GetProtocolExtra());
         if (hasCycle)
         {
             NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));
             return;
         }
-
-        SelectedSource.SetProtocolExtra(protocolExtra);
 
         if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
