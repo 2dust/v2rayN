@@ -1102,6 +1102,7 @@ public static class ConfigHandler
 
         if (toFile)
         {
+            profileItem.SetProtocolExtra();
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
         }
         return 0;

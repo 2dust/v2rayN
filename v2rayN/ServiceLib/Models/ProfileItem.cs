@@ -3,7 +3,7 @@ namespace ServiceLib.Models;
 [Serializable]
 public class ProfileItem : ReactiveObject
 {
-    private ProtocolExtraItem _protocolExtraItem = new();
+    private ProtocolExtraItem? _protocolExtraCache;
 
     public ProfileItem()
     {
@@ -129,12 +129,18 @@ public class ProfileItem : ReactiveObject
 
     public void SetProtocolExtra(ProtocolExtraItem extraItem)
     {
-        _protocolExtraItem = extraItem;
+        _protocolExtraCache = extraItem;
+        ProtoExtra = JsonUtils.Serialize(extraItem, false);
+    }
+
+    public void SetProtocolExtra()
+    {
+        ProtoExtra = JsonUtils.Serialize(_protocolExtraCache, false);
     }
 
     public ProtocolExtraItem GetProtocolExtra()
     {
-        return _protocolExtraItem;
+        return _protocolExtraCache ??= JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra) ?? new ProtocolExtraItem();
     }
 
     #endregion function
@@ -173,20 +179,20 @@ public class ProfileItem : ReactiveObject
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
 
-    public string ProtoExtra
-    {
-        get => JsonUtils.Serialize(_protocolExtraItem, false);
-        set => _protocolExtraItem = JsonUtils.Deserialize<ProtocolExtraItem>(value);
-    }
+    public string ProtoExtra { get; set; }
 
     [Obsolete("Use ProtocolExtraItem.Ports instead.")]
     public string Ports { get; set; }
+
     [Obsolete("Use ProtocolExtraItem.AlterId instead.")]
     public int AlterId { get; set; }
+
     [Obsolete("Use ProtocolExtraItem.Flow instead.")]
     public string Flow { get; set; }
+
     [Obsolete("Use ProfileItem.Password instead.")]
     public string Id { get; set; }
+
     [Obsolete("Use ProtocolExtraItem.xxx instead.")]
     public string Security { get; set; }
 }
