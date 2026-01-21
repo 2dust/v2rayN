@@ -59,10 +59,9 @@ public class Hysteria2Fmt : BaseFmt
             dicQuery.Add("obfs", "salamander");
             dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
         }
-        var protocolExtra = item.GetProtocolExtra();
-        if (protocolExtra?.Ports?.IsNotEmpty() ?? false)
+        if (item.GetProtocolExtra()?.Ports?.IsNotEmpty() ?? false)
         {
-            dicQuery.Add("mport", Utils.UrlEncode(protocolExtra.Ports.Replace(':', '-')));
+            dicQuery.Add("mport", Utils.UrlEncode(item.GetProtocolExtra().Ports.Replace(':', '-')));
         }
         if (!item.CertSha.IsNullOrEmpty())
         {

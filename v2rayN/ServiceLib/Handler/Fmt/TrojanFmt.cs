@@ -10,7 +10,6 @@ public class TrojanFmt : BaseFmt
         {
             ConfigType = EConfigType.Trojan
         };
-        var protocolExtra = item.GetProtocolExtra();
 
         var url = Utils.TryUri(str);
         if (url == null)
@@ -24,10 +23,9 @@ public class TrojanFmt : BaseFmt
         item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        protocolExtra.Flow = GetQueryValue(query, "flow");
+        item.SetProtocolExtra(item.GetProtocolExtra() with { Flow = GetQueryValue(query, "flow") });
         ResolveUriQuery(query, ref item);
 
-        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -37,16 +35,15 @@ public class TrojanFmt : BaseFmt
         {
             return null;
         }
-        var protocolExtra = item.GetProtocolExtra();
         var remark = string.Empty;
         if (item.Remarks.IsNotEmpty())
         {
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         var dicQuery = new Dictionary<string, string>();
-        if (!protocolExtra.Flow.IsNullOrEmpty())
+        if (!item.GetProtocolExtra().Flow.IsNullOrEmpty())
         {
-            dicQuery.Add("flow", protocolExtra.Flow);
+            dicQuery.Add("flow", item.GetProtocolExtra().Flow);
         }
         ToUriQuery(item, null, ref dicQuery);
 

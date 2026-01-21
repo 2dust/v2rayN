@@ -166,22 +166,23 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
-        var protocolExtra = SelectedSource.GetProtocolExtra();
-        protocolExtra.Ports = Ports.IsNullOrEmpty() ? null : Ports;
-        protocolExtra.AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty;
-        protocolExtra.Flow = Flow.IsNullOrEmpty() ? null : Flow;
-        protocolExtra.UpMbps = UpMbps > 0 ? UpMbps : null;
-        protocolExtra.DownMbps = DownMbps > 0 ? DownMbps : null;
-        protocolExtra.HopInterval = HopInterval >= 5 ? HopInterval : null;
-        protocolExtra.VmessSecurity = VmessSecurity.IsNullOrEmpty() ? null : VmessSecurity;
-        protocolExtra.VlessEncryption = VlessEncryption.IsNullOrEmpty() ? null : VlessEncryption;
-        protocolExtra.SsMethod = SsMethod.IsNullOrEmpty() ? null : SsMethod;
-        protocolExtra.Username = Username.IsNullOrEmpty() ? null : Username;
-        protocolExtra.WgPublicKey = WgPublicKey.IsNullOrEmpty() ? null : WgPublicKey;
-        protocolExtra.WgInterfaceAddress = WgInterfaceAddress.IsNullOrEmpty() ? null : WgInterfaceAddress;
-        protocolExtra.WgReserved = WgReserved.IsNullOrEmpty() ? null : WgReserved;
-        protocolExtra.WgMtu = WgMtu >= 576 ? WgMtu : null;
-        SelectedSource.SetProtocolExtra(protocolExtra);
+        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
+        {
+            Ports = Ports.IsNullOrEmpty() ? null : Ports,
+            AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty,
+            Flow = Flow.IsNullOrEmpty() ? null : Flow,
+            UpMbps = UpMbps > 0 ? UpMbps : null,
+            DownMbps = DownMbps > 0 ? DownMbps : null,
+            HopInterval = HopInterval >= 5 ? HopInterval : null,
+            VmessSecurity = VmessSecurity.IsNullOrEmpty() ? null : VmessSecurity,
+            VlessEncryption = VlessEncryption.IsNullOrEmpty() ? null : VlessEncryption,
+            SsMethod = SsMethod.IsNullOrEmpty() ? null : SsMethod,
+            Username = Username.IsNullOrEmpty() ? null : Username,
+            WgPublicKey = WgPublicKey.IsNullOrEmpty() ? null : WgPublicKey,
+            WgInterfaceAddress = WgInterfaceAddress.IsNullOrEmpty() ? null : WgInterfaceAddress,
+            WgReserved = WgReserved.IsNullOrEmpty() ? null : WgReserved,
+            WgMtu = WgMtu >= 576 ? WgMtu : null,
+        });
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {

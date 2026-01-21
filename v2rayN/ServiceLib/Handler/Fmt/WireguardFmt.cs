@@ -17,8 +17,6 @@ public class WireguardFmt : BaseFmt
             return null;
         }
 
-        var protocolExtra = item.GetProtocolExtra();
-
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
@@ -26,11 +24,13 @@ public class WireguardFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
 
-        protocolExtra.WgPublicKey = GetQueryDecoded(query, "publickey");
-        protocolExtra.WgReserved = GetQueryDecoded(query, "reserved");
-        protocolExtra.WgInterfaceAddress = GetQueryDecoded(query, "address");
-        protocolExtra.WgMtu = int.TryParse(GetQueryDecoded(query, "mtu"), out var mtu) ? mtu : 1280;
-        protocolExtra.WgPresharedKey = GetQueryDecoded(query, "presharedKey");
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            WgPublicKey = GetQueryDecoded(query, "publickey"),
+            WgReserved = GetQueryDecoded(query, "reserved"),
+            WgInterfaceAddress = GetQueryDecoded(query, "address"),
+            WgMtu = int.TryParse(GetQueryDecoded(query, "mtu"), out var mtuVal) ? mtuVal : 1280,
+        });
 
         return item;
     }
@@ -42,8 +42,6 @@ public class WireguardFmt : BaseFmt
             return null;
         }
 
-        var protocolExtra = item.GetProtocolExtra();
-
         var remark = string.Empty;
         if (item.Remarks.IsNotEmpty())
         {
@@ -51,19 +49,19 @@ public class WireguardFmt : BaseFmt
         }
 
         var dicQuery = new Dictionary<string, string>();
-        if (!protocolExtra.WgPublicKey.IsNullOrEmpty())
+        if (!item.GetProtocolExtra().WgPublicKey.IsNullOrEmpty())
         {
-            dicQuery.Add("publickey", Utils.UrlEncode(protocolExtra.WgPublicKey));
+            dicQuery.Add("publickey", Utils.UrlEncode(item.GetProtocolExtra().WgPublicKey));
         }
-        if (!protocolExtra.WgReserved.IsNullOrEmpty())
+        if (!item.GetProtocolExtra().WgReserved.IsNullOrEmpty())
         {
-            dicQuery.Add("reserved", Utils.UrlEncode(protocolExtra.WgReserved));
+            dicQuery.Add("reserved", Utils.UrlEncode(item.GetProtocolExtra().WgReserved));
         }
-        if (!protocolExtra.WgInterfaceAddress.IsNullOrEmpty())
+        if (!item.GetProtocolExtra().WgInterfaceAddress.IsNullOrEmpty())
         {
-            dicQuery.Add("address", Utils.UrlEncode(protocolExtra.WgInterfaceAddress));
+            dicQuery.Add("address", Utils.UrlEncode(item.GetProtocolExtra().WgInterfaceAddress));
         }
-        dicQuery.Add("mtu", Utils.UrlEncode(protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu.ToString() : "1280"));
+        dicQuery.Add("mtu", Utils.UrlEncode(item.GetProtocolExtra().WgMtu > 0 ? item.GetProtocolExtra().WgMtu.ToString() : "1280"));
         return ToUri(EConfigType.WireGuard, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 }

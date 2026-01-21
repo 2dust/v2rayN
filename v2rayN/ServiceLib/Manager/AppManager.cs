@@ -288,34 +288,43 @@ public sealed class AppManager
 
                 if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
-                    extra.GroupType = nameof(item.ConfigType);
+                    extra = extra with { GroupType = nameof(item.ConfigType) };
                     groupItems.TryGetValue(item.IndexId, out var groupItem);
                     if (groupItem != null && !groupItem.NotHasChild())
                     {
-                        extra.ChildItems = groupItem.ChildItems;
-                        extra.SubChildItems = groupItem.SubChildItems;
-                        extra.Filter = groupItem.Filter;
-                        extra.MultipleLoad = groupItem.MultipleLoad;
+                        extra = extra with
+                        {
+                            ChildItems = groupItem.ChildItems,
+                            SubChildItems = groupItem.SubChildItems,
+                            Filter = groupItem.Filter,
+                            MultipleLoad = groupItem.MultipleLoad,
+                        };
                     }
 
                     switch (item.ConfigType)
                     {
                         case EConfigType.Shadowsocks:
-                            extra.SsMethod = item.Security.IsNotEmpty() ? item.Security : null;
+                            extra = extra with {SsMethod = item.Security.IsNotEmpty() ? item.Security : null};
                             break;
                         case EConfigType.VMess:
-                            extra.VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null;
+                            extra = extra with {VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null};
                             break;
                         case EConfigType.Hysteria2:
-                            extra.UpMbps = _config.HysteriaItem.UpMbps;
-                            extra.DownMbps = _config.HysteriaItem.DownMbps;
-                            extra.HopInterval = _config.HysteriaItem.HopInterval;
+                            extra = extra with
+                            {
+                                UpMbps = _config.HysteriaItem.UpMbps,
+                                DownMbps = _config.HysteriaItem.DownMbps,
+                                HopInterval = _config.HysteriaItem.HopInterval
+                            };
                             break;
                         case EConfigType.WireGuard:
-                            extra.WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null;
-                            extra.WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null;
-                            extra.WgReserved = item.Path.IsNotEmpty() ? item.Path : null;
-                            extra.WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280;
+                            extra = extra with
+                            {
+                                WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null,
+                                WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null,
+                                WgReserved = item.Path.IsNotEmpty() ? item.Path : null,
+                                WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
+                            };
                             break;
                     }
                 }

@@ -10,7 +10,6 @@ public class VLESSFmt : BaseFmt
         {
             ConfigType = EConfigType.VLESS,
         };
-        var protocolExtra = item.GetProtocolExtra();
 
         var url = Utils.TryUri(str);
         if (url == null)
@@ -24,12 +23,14 @@ public class VLESSFmt : BaseFmt
         item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
-        protocolExtra.VlessEncryption = GetQueryValue(query, "encryption", Global.None);
-        protocolExtra.Flow = GetQueryValue(query, "flow");
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            VlessEncryption = GetQueryValue(query, "encryption", Global.None),
+            Flow = GetQueryValue(query, "flow")
+        });
         item.StreamSecurity = GetQueryValue(query, "security");
         ResolveUriQuery(query, ref item);
 
-        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -40,8 +41,6 @@ public class VLESSFmt : BaseFmt
             return null;
         }
 
-        var protocolExtra = item.GetProtocolExtra();
-
         var remark = string.Empty;
         if (item.Remarks.IsNotEmpty())
         {
@@ -49,10 +48,10 @@ public class VLESSFmt : BaseFmt
         }
         var dicQuery = new Dictionary<string, string>();
         dicQuery.Add("encryption",
-            !protocolExtra.VlessEncryption.IsNullOrEmpty() ? protocolExtra.VlessEncryption : Global.None);
-        if (!protocolExtra.Flow.IsNullOrEmpty())
+            !item.GetProtocolExtra().VlessEncryption.IsNullOrEmpty() ? item.GetProtocolExtra().VlessEncryption : Global.None);
+        if (!item.GetProtocolExtra().Flow.IsNullOrEmpty())
         {
-            dicQuery.Add("flow", protocolExtra.Flow);
+            dicQuery.Add("flow", item.GetProtocolExtra().Flow);
         }
         ToUriQuery(item, Global.None, ref dicQuery);
 
