@@ -282,6 +282,7 @@ public class ShadowsocksFmt : BaseFmt
             }
         }
 
+        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 

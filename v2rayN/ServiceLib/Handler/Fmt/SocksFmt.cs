@@ -113,6 +113,7 @@ public class SocksFmt : BaseFmt
             item.Password = userInfoParts[1];
         }
 
+        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 }
