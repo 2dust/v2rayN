@@ -230,12 +230,6 @@ public static class ConfigHandler
             item.Remarks = profileItem.Remarks;
             item.Address = profileItem.Address;
             item.Port = profileItem.Port;
-            item.Ports = profileItem.Ports;
-
-            item.Id = profileItem.Id;
-            item.AlterId = profileItem.AlterId;
-            item.Security = profileItem.Security;
-            item.Flow = profileItem.Flow;
 
             item.Password = profileItem.Password;
 
