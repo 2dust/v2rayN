@@ -1,5 +1,6 @@
 using System.Formats.Tar;
 using System.IO.Compression;
+using System.Security;
 
 namespace ServiceLib.Common;
 
@@ -102,7 +103,27 @@ public static class FileUtils
                     {
                         continue;
                     }
-                    entry.ExtractToFile(Path.Combine(toPath, entry.Name), true);
+
+                    // Security: Prevent ZIP Slip path traversal attack
+                    // Validate that the entry path doesn't escape the target directory
+                    var destinationPath = Path.GetFullPath(Path.Combine(toPath, entry.FullName));
+                    var baseDirectory = Path.GetFullPath(toPath);
+
+                    if (!destinationPath.StartsWith(baseDirectory + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                        && !destinationPath.Equals(baseDirectory, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Logging.SaveLog(_tag, new SecurityException($"ZIP entry path traversal detected: {entry.FullName}"));
+                        continue; // Skip this entry
+                    }
+
+                    // Create directory if it doesn't exist (for nested files)
+                    var destinationDir = Path.GetDirectoryName(destinationPath);
+                    if (destinationDir != null && !Directory.Exists(destinationDir))
+                    {
+                        Directory.CreateDirectory(destinationDir);
+                    }
+
+                    entry.ExtractToFile(destinationPath, true);
                 }
                 catch (IOException ex)
                 {
