@@ -16,3 +16,7 @@ Read the [Wiki](https://github.com/2dust/v2rayN/wiki) for details.
 ## Telegram Channel
 
 [github_2dust](https://t.me/github_2dust)
+
+
+修改版本
+增加了HTTP,HTTPS代理使用粘贴的方式导入,需要的自己用工作流生成.
