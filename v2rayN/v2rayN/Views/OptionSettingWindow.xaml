@@ -522,6 +522,33 @@
                 </Grid>
             </TabItem>-->
 
+            <TabItem Header="Reporting">
+                <Grid Margin="{StaticResource Margin8}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="Report URL" />
+                    <TextBox
+                        x:Name="txtReportUrl"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin8}"
+                        Style="{StaticResource DefTextBox}" />
+                </Grid>
+            </TabItem>
+
             <TabItem Header="{x:Static resx:ResUI.TbSettingsN}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid Grid.Row="2" Margin="{StaticResource Margin8}">

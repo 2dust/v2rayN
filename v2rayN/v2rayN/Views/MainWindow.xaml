@@ -10,7 +10,7 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:view="clr-namespace:v2rayN.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    Title="v2rayN"
+    Title="shi2ray"
     Width="1200"
     Height="800"
     MinWidth="800"

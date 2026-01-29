@@ -34,6 +34,13 @@ public class Config
     public List<KeyEventItem> GlobalHotkeys { get; set; }
     public List<CoreTypeItem> CoreTypeItem { get; set; }
     public SimpleDNSItem SimpleDNSItem { get; set; }
+    public ReportItem ReportItem { get; set; }
 
     #endregion other entities
+}
+
+[Serializable]
+public class ReportItem
+{
+    public string ReportUrl { get; set; } = "";
 }

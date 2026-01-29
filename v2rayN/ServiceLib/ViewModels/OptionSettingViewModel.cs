@@ -67,6 +67,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string SrsFileSourceUrl { get; set; }
     [Reactive] public string RoutingRulesSourceUrl { get; set; }
     [Reactive] public string IPAPIUrl { get; set; }
+    [Reactive] public string ReportUrl { get; set; }
 
     #endregion UI
 
@@ -201,6 +202,9 @@ public class OptionSettingViewModel : MyReactiveObject
         SrsFileSourceUrl = _config.ConstItem.SrsSourceUrl;
         RoutingRulesSourceUrl = _config.ConstItem.RouteRulesTemplateSourceUrl;
         IPAPIUrl = _config.SpeedTestItem.IPAPIUrl;
+        
+        if (_config.ReportItem == null) _config.ReportItem = new ReportItem();
+        ReportUrl = _config.ReportItem.ReportUrl;
 
         #endregion UI
 
@@ -367,6 +371,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.ConstItem.SrsSourceUrl = SrsFileSourceUrl;
         _config.ConstItem.RouteRulesTemplateSourceUrl = RoutingRulesSourceUrl;
         _config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
+        _config.ReportItem.ReportUrl = ReportUrl;
 
         //systemProxy
         _config.SystemProxyItem.SystemProxyExceptions = systemProxyExceptions;

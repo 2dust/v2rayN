@@ -1,5 +1,7 @@
 namespace ServiceLib.Manager;
 
+using ServiceLib.Services;
+
 /// <summary>
 /// Core process processing class
 /// </summary>
@@ -14,11 +16,13 @@ public class CoreManager
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
+    private ConnectionProbeService _connectionProbeService;
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
+        _connectionProbeService = new ConnectionProbeService(config);
 
         //Copy the bin folder to the storage location (for init)
         if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
@@ -90,6 +94,12 @@ public class CoreManager
         if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
+            
+            // Auto Report
+            _ = Task.Run(async () => {
+                await Task.Delay(2000); // Wait for core to stabilize
+                await _connectionProbeService.ProbeAndReportAsync(node, _updateFunc);
+            });
         }
     }
 

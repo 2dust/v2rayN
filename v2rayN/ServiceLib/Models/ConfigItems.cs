@@ -74,6 +74,7 @@ public class GUIItem
     public int TrayMenuServersLimit { get; set; } = 20;
     public bool EnableHWA { get; set; } = false;
     public bool EnableLog { get; set; } = true;
+    public bool PrivacyNoticeAccepted { get; set; }
 }
 
 [Serializable]

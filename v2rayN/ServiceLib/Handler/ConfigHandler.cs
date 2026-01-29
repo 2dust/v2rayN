@@ -1334,6 +1334,30 @@ public static class ConfigHandler
             return -1;
         }
 
+        // Check for reportUrl and auto-set
+        if (strData.Contains("reportUrl="))
+        {
+            try 
+            {
+                // Simple regex or string parsing to find reportUrl value
+                // It might be URL encoded, but usually it's just a query param.
+                // Regex pattern to capture reportUrl value until next & or end of line/string
+                var match = System.Text.RegularExpressions.Regex.Match(strData, @"reportUrl=([^&\s]+)");
+                if (match.Success)
+                {
+                    var url = match.Groups[1].Value;
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                         // Decode if necessary (it might be double encoded if inside a URI)
+                         // But for now take simpler approach
+                         config.ReportItem.ReportUrl = System.Web.HttpUtility.UrlDecode(url);
+                    }
+                }
+            }
+            catch {}
+        }
+
+
         var subFilter = string.Empty;
         //remove sub items
         if (isSub && subid.IsNotEmpty())
