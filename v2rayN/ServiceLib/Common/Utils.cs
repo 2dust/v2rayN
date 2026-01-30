@@ -719,10 +719,9 @@ public class Utils
         return Guid.TryParse(strSrc, out _);
     }
 
-    public static Dictionary<string, string> GetSystemHosts()
+    private static Dictionary<string, string> GetSystemHosts(string hostFile)
     {
         var systemHosts = new Dictionary<string, string>();
-        var hostFile = @"C:\Windows\System32\drivers\etc\hosts";
         try
         {
             if (File.Exists(hostFile))
@@ -753,6 +752,19 @@ public class Utils
         }
 
         return systemHosts;
+    }
+
+    public static Dictionary<string, string> GetSystemHosts()
+    {
+        var hosts = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts");
+        var hostsIcs = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts.ics");
+
+        foreach (var (key, value) in hostsIcs)
+        {
+            hosts[key] = value;
+        }
+
+        return hosts;
     }
 
     public static async Task<string?> GetCliWrapOutput(string filePath, string? arg)
