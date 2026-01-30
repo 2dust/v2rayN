@@ -8,9 +8,6 @@
 		<ApplicationIcon>Resources\v2rayN.ico</ApplicationIcon>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-        <AssemblyTitle>shi2ray</AssemblyTitle>
-        <Product>shi2ray</Product>
-        <Title>shi2ray</Title>
 	</PropertyGroup>
 
 	<ItemGroup>

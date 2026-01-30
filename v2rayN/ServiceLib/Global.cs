@@ -4,7 +4,7 @@ public class Global
 {
     #region const
 
-    public const string AppName = "shi2ray";
+    public const string AppName = "v2rayN";
     public const string GithubUrl = "https://github.com";
     public const string GithubApiUrl = "https://api.github.com/repos";
     public const string GeoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";

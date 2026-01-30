@@ -18,7 +18,7 @@ public partial class App : Application
     /// Open only one process
     /// </summary>
     /// <param name="e"></param>
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
@@ -36,18 +36,6 @@ public partial class App : Application
             UI.Show($"Loading GUI configuration file is abnormal,please restart the application{Environment.NewLine}加载GUI配置文件异常,请重启应用");
             Environment.Exit(0);
             return;
-        }
-
-        if (AppManager.Instance.Config.GuiItem.PrivacyNoticeAccepted == false)
-        {
-             var window = new Views.PrivacyNoticeWindow();
-             if (window.ShowDialog() != true)
-             {
-                 Environment.Exit(0);
-                 return;
-             }
-             AppManager.Instance.Config.GuiItem.PrivacyNoticeAccepted = true;
-             await ConfigHandler.SaveConfig(AppManager.Instance.Config);
         }
 
         AppManager.Instance.InitComponents();
