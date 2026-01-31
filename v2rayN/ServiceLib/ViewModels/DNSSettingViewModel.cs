@@ -13,6 +13,8 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string? Strategy4Proxy { get; set; }
     [Reactive] public string? Hosts { get; set; }
     [Reactive] public string? DirectExpectedIPs { get; set; }
+    [Reactive] public bool? ParallelQuery { get; set; }
+    [Reactive] public bool? ServeStale { get; set; }
 
     [Reactive] public bool UseSystemHostsCompatible { get; set; }
     [Reactive] public string DomainStrategy4FreedomCompatible { get; set; }
@@ -73,6 +75,8 @@ public class DNSSettingViewModel : MyReactiveObject
         Strategy4Proxy = item.Strategy4Proxy;
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
+        ParallelQuery = item.ParallelQuery;
+        ServeStale = item.ServeStale;
 
         var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         RayCustomDNSEnableCompatible = item1.Enabled;
@@ -102,6 +106,8 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.Strategy4Proxy = Strategy4Proxy;
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
+        _config.SimpleDNSItem.ParallelQuery = ParallelQuery;
+        _config.SimpleDNSItem.ServeStale = ServeStale;
 
         if (NormalDNSCompatible.IsNotEmpty())
         {

@@ -409,6 +409,7 @@ public class Global
     [
         "https://dns.alidns.com/dns-query",
         "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query,https://doh.pub/dns-query",
         "223.5.5.5",
         "119.29.29.29",
         "localhost"
@@ -417,8 +418,9 @@ public class Global
     public static readonly List<string> DomainRemoteDNSAddress =
     [
         "https://cloudflare-dns.com/dns-query",
-        "https://dns.cloudflare.com/dns-query",
         "https://dns.google/dns-query",
+        "https://cloudflare-dns.com/dns-query,https://dns.google/dns-query,8.8.8.8",
+        "https://dns.cloudflare.com/dns-query",
         "https://doh.dns.sb/dns-query",
         "https://doh.opendns.com/dns-query",
         "https://common.dot.dns.yandex.net",

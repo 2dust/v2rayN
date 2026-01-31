@@ -1647,4 +1647,10 @@
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
   </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Serve Stale</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Parallel Query</value>
+  </data>
 </root>
