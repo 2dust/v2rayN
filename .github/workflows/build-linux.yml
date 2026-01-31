@@ -103,11 +103,64 @@ jobs:
 
     steps:
     - name: Prepare tools (Red Hat)
+      shell: bash
       run: |
-        dnf repolist all
-        dnf -y makecache
-        dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
-        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
+        set -euo pipefail
+
+        . /etc/os-release
+        EL_MAJOR="${VERSION_ID%%.*}"
+        echo "EL_MAJOR=${EL_MAJOR}"
+
+        dnf -y makecache || true
+        command -v curl >/dev/null || dnf -y install curl ca-certificates
+
+        ARCH="$(uname -m)"
+        case "$ARCH" in x86_64|aarch64) ;; *) echo "Unsupported arch: $ARCH"; exit 1 ;; esac
+
+        install_epel_from_dir() {
+          local base="$1" rpm
+          echo "Try: $base"
+
+          rpm="$(
+            {
+              curl -fsSL "$base/Packages/"   2>/dev/null
+              curl -fsSL "$base/Packages/e/" 2>/dev/null | sed 's|href="|href="e/|'
+            } |
+            sed -n 's/.*href="\([^"]*epel-release-[^"]*\.noarch\.rpm\)".*/\1/p' |
+            sort -V | tail -n1
+          )" || true
+
+          if [[ -n "$rpm" ]]; then
+            dnf -y install "$base/Packages/$rpm"
+            return 0
+          fi
+          return 1
+        }
+
+        FEDORA="https://dl.fedoraproject.org/pub/epel/epel-release-latest-${EL_MAJOR}.noarch.rpm"
+        echo "Try Fedora: $FEDORA"
+
+        if curl -fsSLI "$FEDORA" >/dev/null; then
+          dnf -y install "$FEDORA"
+        else
+          ROCKY="https://dl.rockylinux.org/pub/rocky/${EL_MAJOR}/extras/${ARCH}/os"
+          if install_epel_from_dir "$ROCKY"; then
+            :
+          else
+            ALMA="https://repo.almalinux.org/almalinux/${EL_MAJOR}/extras/${ARCH}/os"
+            if install_epel_from_dir "$ALMA"; then
+              :
+            else
+              echo "EPEL bootstrap failed (Fedora/Rocky/Alma)"
+              exit 1
+            fi
+          fi
+        fi
+
+        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core \
+                       rsync findutils tar gzip unzip which
+
+        dnf repolist | grep -i epel || true
 
     - name: Checkout repo (for scripts)
       uses: actions/checkout@v6.0.1
