@@ -512,8 +512,15 @@ public partial class CoreConfigV2rayService
                     streamSettings.hysteriaSettings = hysteriaSettings;
                     if (node.Path.IsNotEmpty())
                     {
-                        streamSettings.udpmasks =
-                            [new() { type = "salamander", settings = new() { password = node.Path.TrimEx(), } }];
+                        streamSettings.finalmask ??= new();
+                        streamSettings.finalmask.udp =
+                        [
+                            new Mask4Ray
+                            {
+                                type = "salamander",
+                                settings = new MaskSettings4Ray { password = node.Path.TrimEx(), }
+                            }
+                        ];
                     }
                     break;
 

@@ -343,7 +343,7 @@ public class StreamSettings4Ray
 
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
 
-    public List<UdpMasks4Ray>? udpmasks { get; set; }
+    public FinalMask4Ray? finalmask { get; set; }
 
     public Sockopt4Ray? sockopt { get; set; }
 }
@@ -484,13 +484,19 @@ public class HysteriaUdpHop4Ray
     public int? interval { get; set; }
 }
 
-public class UdpMasks4Ray
+public class FinalMask4Ray
 {
-    public string type { get; set; }
-    public UdpMasksSettings4Ray? settings { get; set; }
+    public List<Mask4Ray>? tcp { get; set; }
+    public List<Mask4Ray>? udp { get; set; }
 }
 
-public class UdpMasksSettings4Ray
+public class Mask4Ray
+{
+    public string type { get; set; }
+    public MaskSettings4Ray? settings { get; set; }
+}
+
+public class MaskSettings4Ray
 {
     public string? password { get; set; }
 }
