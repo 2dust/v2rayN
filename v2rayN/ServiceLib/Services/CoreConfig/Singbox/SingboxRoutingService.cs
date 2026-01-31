@@ -10,7 +10,7 @@ public partial class CoreConfigSingboxService
             var simpleDnsItem = _config.SimpleDNSItem;
 
             var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
-            var directDnsStrategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDnsItem.Strategy4Freedom);
+            var directDnsStrategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom);
 
             var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (rawDNSItem is { Enabled: true })

@@ -398,13 +398,6 @@ public class Global
         ""
     ];
 
-    public static readonly Dictionary<string, string> DomainStrategy4SboxMap =
-        DomainStrategy
-            .Where(s => s.StartsWith("UseIPv4", StringComparison.Ordinal) || s.StartsWith("UseIPv6", StringComparison.Ordinal))
-            .ToDictionary(
-                key => key,
-                key => key.StartsWith("UseIPv4", StringComparison.Ordinal) ? "prefer_ipv4" : "prefer_ipv6");
-
     public static readonly List<string> DomainDirectDNSAddress =
     [
         "https://dns.alidns.com/dns-query",
