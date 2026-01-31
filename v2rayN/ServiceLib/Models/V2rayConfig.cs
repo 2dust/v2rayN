@@ -388,8 +388,6 @@ public class Header4Ray
     public object request { get; set; }
 
     public object response { get; set; }
-
-    public string? domain { get; set; }
 }
 
 public class KcpSettings4Ray
@@ -407,10 +405,6 @@ public class KcpSettings4Ray
     public int readBufferSize { get; set; }
 
     public int writeBufferSize { get; set; }
-
-    public Header4Ray header { get; set; }
-
-    public string seed { get; set; }
 }
 
 public class WsSettings4Ray
@@ -499,6 +493,7 @@ public class Mask4Ray
 public class MaskSettings4Ray
 {
     public string? password { get; set; }
+    public string? domain { get; set; }
 }
 
 public class AccountsItem4Ray

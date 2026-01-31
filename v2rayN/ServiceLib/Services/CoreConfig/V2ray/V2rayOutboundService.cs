@@ -364,14 +364,33 @@ public partial class CoreConfigV2rayService
                     kcpSettings.congestion = _config.KcpItem.Congestion;
                     kcpSettings.readBufferSize = _config.KcpItem.ReadBufferSize;
                     kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
-                    kcpSettings.header = new Header4Ray
+                    streamSettings.finalmask ??= new();
+                    if (Global.KcpHeaderMaskMap.TryGetValue(node.HeaderType, out var header))
                     {
-                        type = node.HeaderType,
-                        domain = host.NullIfEmpty()
-                    };
-                    if (path.IsNotEmpty())
+                        streamSettings.finalmask.udp =
+                        [
+                            new Mask4Ray
+                            {
+                                type = header,
+                                settings = node.HeaderType == "dns" && !host.IsNullOrEmpty() ? new MaskSettings4Ray { domain = host } : null
+                            }
+                        ];
+                    }
+                    streamSettings.finalmask.udp ??= [];
+                    if (path.IsNullOrEmpty())
                     {
-                        kcpSettings.seed = path;
+                        streamSettings.finalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "mkcp-original"
+                        });
+                    }
+                    else
+                    {
+                        streamSettings.finalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "mkcp-aes128gcm",
+                            settings = new MaskSettings4Ray { password = path }
+                        });
                     }
                     streamSettings.kcpSettings = kcpSettings;
                     break;
