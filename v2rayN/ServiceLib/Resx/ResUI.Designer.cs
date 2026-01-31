@@ -2728,6 +2728,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Direct Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbDirectResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbDirectResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {
@@ -3223,6 +3232,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remote Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbRemoteResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbRemoteResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Camouflage domain(host) 的本地化字符串。
         /// </summary>
         public static string TbRequestHost {
@@ -3358,15 +3376,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbSBDirectResolveStrategy {
-            get {
-                return ResourceManager.GetString("TbSBDirectResolveStrategy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 sing-box Full Config Template 的本地化字符串。
         /// </summary>
         public static string TbSBFullConfigTemplate {
@@ -3381,15 +3390,6 @@ namespace ServiceLib.Resx {
         public static string TbSBFullConfigTemplateDesc {
             get {
                 return ResourceManager.GetString("TbSBFullConfigTemplateDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 sing-box Remote Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbSBRemoteResolveStrategy {
-            get {
-                return ResourceManager.GetString("TbSBRemoteResolveStrategy", resourceCulture);
             }
         }
         
@@ -4416,15 +4416,6 @@ namespace ServiceLib.Resx {
         public static string TbValidateDirectExpectedIPsDesc {
             get {
                 return ResourceManager.GetString("TbValidateDirectExpectedIPsDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 xray Freedom Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbXrayFreedomStrategy {
-            get {
-                return ResourceManager.GetString("TbXrayFreedomStrategy", resourceCulture);
             }
         }
         

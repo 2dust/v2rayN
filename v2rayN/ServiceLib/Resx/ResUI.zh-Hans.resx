@@ -1419,14 +1419,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
     <value>通过代理，请确保远程可用</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray freedom 解析策略</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>直连解析策略</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box 直连解析策略</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box 远程解析策略</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>远程解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>添加常用 DNS Hosts</value>

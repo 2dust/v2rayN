@@ -1419,14 +1419,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
     <value>Via le proxy ; assurez-vous que le serveur distant est disponible</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>Stratégie de résolution xray freedom</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Stratégie de résolution directe</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>Stratégie de résolution directe sing-box</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>Stratégie de résolution distante sing-box</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Stratégie de résolution distante</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Ajouter des hôtes DNS courants</value>
