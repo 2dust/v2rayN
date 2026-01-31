@@ -180,13 +180,13 @@ public partial class CoreConfigSingboxService
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
-                strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Proxy),
+                strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Proxy),
                 clash_mode = ERuleMode.Global.ToString()
             },
             new Rule4Sbox
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Freedom),
+                strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Freedom),
                 clash_mode = ERuleMode.Direct.ToString()
             }
         });
@@ -309,7 +309,7 @@ public partial class CoreConfigSingboxService
             if (item.OutboundTag == Global.DirectTag)
             {
                 rule.server = Global.SingboxDirectDNSTag;
-                rule.strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Freedom);
+                rule.strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Freedom);
 
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0)
                 {
@@ -343,7 +343,7 @@ public partial class CoreConfigSingboxService
                     singboxConfig.dns.rules.Add(rule4Fake);
                 }
                 rule.server = Global.SingboxRemoteDNSTag;
-                rule.strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Proxy);
+                rule.strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Proxy);
             }
 
             singboxConfig.dns.rules.Add(rule);
