@@ -267,6 +267,8 @@ public class SimpleDNSItem
     public string? BootstrapDNS { get; set; }
     public string? Strategy4Freedom { get; set; }
     public string? Strategy4Proxy { get; set; }
+    public bool? ServeStale { get; set; }
+    public bool? ParallelQuery { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
 }

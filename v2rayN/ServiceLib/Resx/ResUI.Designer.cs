@@ -3070,6 +3070,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Parallel Query 的本地化字符串。
+        /// </summary>
+        public static string TbParallelQuery {
+            get {
+                return ResourceManager.GetString("TbParallelQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Path 的本地化字符串。
         /// </summary>
         public static string TbPath {
@@ -3435,6 +3444,15 @@ namespace ServiceLib.Resx {
         public static string TbSelectProfile {
             get {
                 return ResourceManager.GetString("TbSelectProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Serve Stale 的本地化字符串。
+        /// </summary>
+        public static string TbServeStale {
+            get {
+                return ResourceManager.GetString("TbServeStale", resourceCulture);
             }
         }
         

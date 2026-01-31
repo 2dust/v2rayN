@@ -114,6 +114,8 @@ public static class ConfigHandler
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
         config.SimpleDNSItem.GlobalFakeIp ??= true;
         config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
+        config.SimpleDNSItem.ServeStale ??= false;
+        config.SimpleDNSItem.ParallelQuery ??= false;
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
