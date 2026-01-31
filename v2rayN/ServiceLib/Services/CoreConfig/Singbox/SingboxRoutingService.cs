@@ -281,7 +281,9 @@ public partial class CoreConfigSingboxService
             if (_config.TunModeItem.EnableTun && item.Process?.Count > 0)
             {
                 var ruleProcName = JsonUtils.DeepCopy(rule3);
+                ruleProcName.process_name ??= [];
                 var ruleProcPath = JsonUtils.DeepCopy(rule3);
+                ruleProcPath.process_path ??= [];
                 foreach (var process in item.Process)
                 {
                     // sing-box doesn't support this, fall back to process name match
