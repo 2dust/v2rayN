@@ -339,13 +339,13 @@ public class Global
         IPOnDemand
     ];
 
-    public static readonly List<string> DomainStrategies4Singbox =
+    public static readonly List<string> DomainStrategies4Sbox =
     [
-        "ipv4_only",
-        "ipv6_only",
+        "",
         "prefer_ipv4",
         "prefer_ipv6",
-        ""
+        "ipv4_only",
+        "ipv6_only"
     ];
 
     public static readonly List<string> Fingerprints =
@@ -387,23 +387,23 @@ public class Global
         ""
     ];
 
-    public static readonly List<string> DomainStrategy4Freedoms =
+    public static readonly List<string> DomainStrategy =
     [
         "AsIs",
         "UseIP",
+        "UseIPv4v6",
+        "UseIPv6v4",
         "UseIPv4",
         "UseIPv6",
         ""
     ];
 
-    public static readonly List<string> SingboxDomainStrategy4Out =
-    [
-        "",
-        "ipv4_only",
-        "prefer_ipv4",
-        "prefer_ipv6",
-        "ipv6_only"
-    ];
+    public static readonly Dictionary<string, string> DomainStrategy4SboxMap =
+        DomainStrategy
+            .Where(s => s.StartsWith("UseIPv4", StringComparison.Ordinal) || s.StartsWith("UseIPv6", StringComparison.Ordinal))
+            .ToDictionary(
+                key => key,
+                key => key.StartsWith("UseIPv4", StringComparison.Ordinal) ? "prefer_ipv4" : "prefer_ipv6");
 
     public static readonly List<string> DomainDirectDNSAddress =
     [

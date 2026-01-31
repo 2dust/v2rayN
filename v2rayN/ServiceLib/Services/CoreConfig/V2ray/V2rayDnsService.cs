@@ -25,25 +25,38 @@ public partial class CoreConfigV2rayService
 
                 return result;
             }
-            var simpleDNSItem = _config.SimpleDNSItem;
-            var domainStrategy4Freedom = simpleDNSItem?.RayStrategy4Freedom;
+            var simpleDnsItem = _config.SimpleDNSItem;
 
+            var strategy4Freedom = simpleDnsItem?.Strategy4Freedom ?? Global.AsIs;
             //Outbound Freedom domainStrategy
-            if (domainStrategy4Freedom.IsNotEmpty())
+            if (strategy4Freedom.IsNotEmpty() && strategy4Freedom != Global.AsIs)
             {
                 var outbound = v2rayConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
                     outbound.settings = new()
                     {
-                        domainStrategy = domainStrategy4Freedom,
+                        domainStrategy = strategy4Freedom,
                         userLevel = 0
                     };
                 }
             }
 
-            await GenDnsServers(node, v2rayConfig, simpleDNSItem);
-            await GenDnsHosts(v2rayConfig, simpleDNSItem);
+            var strategy4Proxy = simpleDnsItem?.Strategy4Proxy ?? Global.AsIs;
+            //Outbound Proxy domainStrategy
+            if (strategy4Proxy.IsNotEmpty() && strategy4Proxy != Global.AsIs)
+            {
+                var xraySupportConfigTypeNames = Global.XraySupportConfigType
+                        .Select(x => x == EConfigType.Hysteria2 ? "hysteria" : Global.ProtocolTypes[x])
+                        .ToHashSet();
+                v2rayConfig.outbounds
+                    .Where(t => xraySupportConfigTypeNames.Contains(t.protocol))
+                    .ToList()
+                    .ForEach(outbound => outbound.targetStrategy = strategy4Proxy);
+            }
+
+            await GenDnsServers(node, v2rayConfig, simpleDnsItem);
+            await GenDnsHosts(v2rayConfig, simpleDnsItem);
 
             if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
             {

@@ -134,30 +134,14 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbXrayFreedomStrategy}" />
-                        <ComboBox
-                            x:Name="cmbRayFreedomDNSStrategy"
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Width="200"
-                            Margin="{StaticResource Margin8}"
-                            materialDesign:HintAssist.Hint="Default"
-                            Style="{StaticResource DefComboBox}" />
-
-                        <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBDirectResolveStrategy}" />
+                            Text="{x:Static resx:ResUI.TbDirectResolveStrategy}" />
                         <ComboBox
-                            x:Name="cmbSBDirectDNSStrategy"
+                            x:Name="cmbDirectDNSStrategy"
                             Grid.Row="5"
                             Grid.Column="1"
                             Width="200"
@@ -171,9 +155,9 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSBRemoteResolveStrategy}" />
+                            Text="{x:Static resx:ResUI.TbRemoteResolveStrategy}" />
                         <ComboBox
-                            x:Name="cmbSBRemoteDNSStrategy"
+                            x:Name="cmbRemoteDNSStrategy"
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="200"

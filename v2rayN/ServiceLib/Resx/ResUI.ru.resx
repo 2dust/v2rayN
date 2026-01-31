@@ -1422,14 +1422,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
     <value>Via proxy — please ensure remote availability</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>Стратегия резолвинга Freedom (Xray)</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Стратегия прямого резолвинга</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>Стратегия прямого резолвинга (sing-box)</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>Стратегия удалённого резолвинга (sing-box)</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Стратегия удалённого резолвинга</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Добавить стандартные записи hosts (DNS)</value>

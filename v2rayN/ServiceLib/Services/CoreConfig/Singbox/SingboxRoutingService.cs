@@ -7,21 +7,21 @@ public partial class CoreConfigSingboxService
         try
         {
             singboxConfig.route.final = Global.ProxyTag;
-            var item = _config.SimpleDNSItem;
+            var simpleDnsItem = _config.SimpleDNSItem;
 
             var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
-            var directDNSStrategy = item.SingboxStrategy4Direct.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : item.SingboxStrategy4Direct;
+            var directDnsStrategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDnsItem.Strategy4Freedom);
 
             var rawDNSItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
-            if (rawDNSItem != null && rawDNSItem.Enabled == true)
+            if (rawDNSItem is { Enabled: true })
             {
                 defaultDomainResolverTag = Global.SingboxLocalDNSTag;
-                directDNSStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? Global.SingboxDomainStrategy4Out.FirstOrDefault() : rawDNSItem.DomainStrategy4Freedom;
+                directDnsStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? null : rawDNSItem.DomainStrategy4Freedom;
             }
             singboxConfig.route.default_domain_resolver = new()
             {
                 server = defaultDomainResolverTag,
-                strategy = directDNSStrategy
+                strategy = directDnsStrategy
             };
 
             if (_config.TunModeItem.EnableTun)
@@ -73,18 +73,17 @@ public partial class CoreConfigSingboxService
 
             var hostsDomains = new List<string>();
             var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
-            if (dnsItem == null || dnsItem.Enabled == false)
+            if (dnsItem == null || !dnsItem.Enabled)
             {
-                var simpleDNSItem = _config.SimpleDNSItem;
-                if (!simpleDNSItem.Hosts.IsNullOrEmpty())
+                if (!simpleDnsItem.Hosts.IsNullOrEmpty())
                 {
-                    var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
+                    var userHostsMap = Utils.ParseHostsToDictionary(simpleDnsItem.Hosts);
                     foreach (var kvp in userHostsMap)
                     {
                         hostsDomains.Add(kvp.Key);
                     }
                 }
-                if (simpleDNSItem.UseSystemHosts == true)
+                if (simpleDnsItem.UseSystemHosts == true)
                 {
                     var systemHostsMap = Utils.GetSystemHosts();
                     foreach (var kvp in systemHostsMap)

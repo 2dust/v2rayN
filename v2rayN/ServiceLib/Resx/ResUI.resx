@@ -1422,14 +1422,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
     <value>Via proxy — please ensure remote availability</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray Freedom Resolution Strategy</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Direct Resolution Strategy</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box Direct Resolution Strategy</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box Remote Resolution Strategy</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Remote Resolution Strategy</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Add Common DNS Hosts</value>

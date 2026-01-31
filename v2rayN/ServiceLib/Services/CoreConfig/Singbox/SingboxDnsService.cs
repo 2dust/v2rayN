@@ -175,18 +175,18 @@ public partial class CoreConfigSingboxService
         singboxConfig.dns.rules ??= new List<Rule4Sbox>();
 
         singboxConfig.dns.rules.AddRange(new[]
-            {
+        {
             new Rule4Sbox { ip_accept_any = true, server = Global.SingboxHostsDNSTag },
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Proxy.NullIfEmpty(),
+                strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Proxy),
                 clash_mode = ERuleMode.Global.ToString()
             },
             new Rule4Sbox
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Direct.NullIfEmpty(),
+                strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Freedom),
                 clash_mode = ERuleMode.Direct.ToString()
             }
         });
@@ -309,7 +309,7 @@ public partial class CoreConfigSingboxService
             if (item.OutboundTag == Global.DirectTag)
             {
                 rule.server = Global.SingboxDirectDNSTag;
-                rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Direct) ? null : simpleDNSItem.SingboxStrategy4Direct;
+                rule.strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Freedom);
 
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0)
                 {
@@ -343,7 +343,7 @@ public partial class CoreConfigSingboxService
                     singboxConfig.dns.rules.Add(rule4Fake);
                 }
                 rule.server = Global.SingboxRemoteDNSTag;
-                rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Proxy) ? null : simpleDNSItem.SingboxStrategy4Proxy;
+                rule.strategy = Global.DomainStrategy4SboxMap.GetValueOrDefault(simpleDNSItem.Strategy4Proxy);
             }
 
             singboxConfig.dns.rules.Add(rule);
