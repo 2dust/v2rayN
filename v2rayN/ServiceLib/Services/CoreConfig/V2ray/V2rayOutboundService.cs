@@ -325,6 +325,7 @@ public partial class CoreConfigV2rayService
                 else if (!node.CertSha.IsNullOrEmpty())
                 {
                     tlsSettings.pinnedPeerCertSha256 = node.CertSha;
+                    tlsSettings.allowInsecure = false;
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }
