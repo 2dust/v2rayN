@@ -329,13 +329,13 @@ public class Global
         IPOnDemand
     ];
 
-    public static readonly List<string> DomainStrategies4Singbox =
+    public static readonly List<string> DomainStrategies4Sbox =
     [
-        "ipv4_only",
-        "ipv6_only",
+        "",
         "prefer_ipv4",
         "prefer_ipv6",
-        ""
+        "ipv4_only",
+        "ipv6_only"
     ];
 
     public static readonly List<string> Fingerprints =
@@ -377,28 +377,22 @@ public class Global
         ""
     ];
 
-    public static readonly List<string> DomainStrategy4Freedoms =
+    public static readonly List<string> DomainStrategy =
     [
         "AsIs",
         "UseIP",
+        "UseIPv4v6",
+        "UseIPv6v4",
         "UseIPv4",
         "UseIPv6",
         ""
-    ];
-
-    public static readonly List<string> SingboxDomainStrategy4Out =
-    [
-        "",
-        "ipv4_only",
-        "prefer_ipv4",
-        "prefer_ipv6",
-        "ipv6_only"
     ];
 
     public static readonly List<string> DomainDirectDNSAddress =
     [
         "https://dns.alidns.com/dns-query",
         "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query,https://doh.pub/dns-query",
         "223.5.5.5",
         "119.29.29.29",
         "localhost"
@@ -407,8 +401,9 @@ public class Global
     public static readonly List<string> DomainRemoteDNSAddress =
     [
         "https://cloudflare-dns.com/dns-query",
-        "https://dns.cloudflare.com/dns-query",
         "https://dns.google/dns-query",
+        "https://cloudflare-dns.com/dns-query,https://dns.google/dns-query,8.8.8.8",
+        "https://dns.cloudflare.com/dns-query",
         "https://doh.dns.sb/dns-query",
         "https://doh.opendns.com/dns-query",
         "https://common.dot.dns.yandex.net",

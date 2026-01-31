@@ -1422,14 +1422,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
     <value>Via proxy — please ensure remote availability</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray Freedom Resolution Strategy</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Direct Resolution Strategy</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box Direct Resolution Strategy</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box Remote Resolution Strategy</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Remote Resolution Strategy</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Add Common DNS Hosts</value>
@@ -1652,5 +1649,11 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Serve Stale</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Parallel Query</value>
   </data>
 </root>

@@ -1419,14 +1419,11 @@
   <data name="TbRemoteDNSTips" xml:space="preserve">
    <value>通过代理，请确保远程可用</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray freedom 解析策略</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>直連解析策略</value>
   </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box 直連解析策略</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box 遠程解析策略</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>遠程解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>新增常用 DNS Hosts</value>
@@ -1649,5 +1646,11 @@
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Serve Stale</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Parallel Query</value>
   </data>
 </root>

@@ -462,6 +462,18 @@ public class Utils
         return (domain, port);
     }
 
+    public static string? DomainStrategy4Sbox(string? strategy)
+    {
+        return strategy switch
+        {
+            not null when strategy.StartsWith("UseIPv4") => "prefer_ipv4",
+            not null when strategy.StartsWith("UseIPv6") => "prefer_ipv6",
+            not null when strategy.StartsWith("ForceIPv4") => "ipv4_only",
+            not null when strategy.StartsWith("ForceIPv6") => "ipv6_only",
+            _ => null
+        };
+    }
+
     #endregion Conversion Functions
 
     #region Data Checks

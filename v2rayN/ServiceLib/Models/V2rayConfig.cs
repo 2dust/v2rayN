@@ -3,7 +3,7 @@ namespace ServiceLib.Models;
 public class V2rayConfig
 {
     public Log4Ray log { get; set; }
-    public Dns4Ray dns { get; set; }
+    public object dns { get; set; }
     public List<Inbounds4Ray> inbounds { get; set; }
     public List<Outbounds4Ray> outbounds { get; set; }
     public Routing4Ray routing { get; set; }
@@ -104,6 +104,8 @@ public class Outbounds4Ray
     public string tag { get; set; }
 
     public string protocol { get; set; }
+
+    public string? targetStrategy { get; set; }
 
     public Outboundsettings4Ray settings { get; set; }
 
@@ -206,12 +208,8 @@ public class Dns4Ray
 {
     public Dictionary<string, object>? hosts { get; set; }
     public List<object> servers { get; set; }
-    public string? clientIp { get; set; }
-    public string? queryStrategy { get; set; }
-    public bool? disableCache { get; set; }
-    public bool? disableFallback { get; set; }
-    public bool? disableFallbackIfMatch { get; set; }
-    public bool? useSystemHosts { get; set; }
+    public bool? serveStale { get; set; }
+    public bool? enableParallelQuery { get; set; }
     public string? tag { get; set; }
 }
 

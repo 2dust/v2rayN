@@ -265,9 +265,10 @@ public class SimpleDNSItem
     public string? DirectDNS { get; set; }
     public string? RemoteDNS { get; set; }
     public string? BootstrapDNS { get; set; }
-    public string? RayStrategy4Freedom { get; set; }
-    public string? SingboxStrategy4Direct { get; set; }
-    public string? SingboxStrategy4Proxy { get; set; }
+    public string? Strategy4Freedom { get; set; }
+    public string? Strategy4Proxy { get; set; }
+    public bool? ServeStale { get; set; }
+    public bool? ParallelQuery { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
 }
