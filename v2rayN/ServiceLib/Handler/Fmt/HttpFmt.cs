@@ -2,6 +2,11 @@ namespace ServiceLib.Handler.Fmt;
 
 public class HttpFmt : BaseFmt
 {
+    private static string NormalizeColon(string value)
+    {
+        return value.Replace('：', ':');
+    }
+
     public static ProfileItem? Resolve(string str, out string msg)
     {
         msg = ResUI.ConfigurationFormatIncorrect;
@@ -36,17 +41,17 @@ public class HttpFmt : BaseFmt
         var userInfo = string.Empty;
         if (item.Security.IsNotEmpty() && item.Id.IsNotEmpty())
         {
-            userInfo = $"{item.Security}:{item.Id}";
+            userInfo = $"{NormalizeColon(item.Security)}:{NormalizeColon(item.Id)}";
         }
 
         var protocol = item.StreamSecurity == "tls" ? "https://" : "http://";
         if (userInfo.IsNotEmpty())
         {
-            return $"{protocol}{Utils.UrlEncode(userInfo)}@{GetIpv6(item.Address)}:{item.Port}{remark}";
+            return $"{protocol}{Utils.UrlEncode(userInfo)}@{GetIpv6(NormalizeColon(item.Address))}:{item.Port}{remark}";
         }
         else
         {
-            return $"{protocol}{GetIpv6(item.Address)}:{item.Port}{remark}";
+            return $"{protocol}{GetIpv6(NormalizeColon(item.Address))}:{item.Port}{remark}";
         }
     }
 
