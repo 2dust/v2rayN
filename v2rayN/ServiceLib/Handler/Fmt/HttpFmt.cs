@@ -7,6 +7,11 @@ public class HttpFmt : BaseFmt
         return value.Replace('：', ':');
     }
 
+    private static string EncodeUserInfoPart(string value)
+    {
+        return Uri.EscapeDataString(value);
+    }
+
     public static ProfileItem? Resolve(string str, out string msg)
     {
         msg = ResUI.ConfigurationFormatIncorrect;
@@ -41,13 +46,15 @@ public class HttpFmt : BaseFmt
         var userInfo = string.Empty;
         if (item.Security.IsNotEmpty() && item.Id.IsNotEmpty())
         {
-            userInfo = $"{NormalizeColon(item.Security)}:{NormalizeColon(item.Id)}";
+            var security = EncodeUserInfoPart(NormalizeColon(item.Security));
+            var id = EncodeUserInfoPart(NormalizeColon(item.Id));
+            userInfo = $"{security}:{id}";
         }
 
         var protocol = item.StreamSecurity == "tls" ? "https://" : "http://";
         if (userInfo.IsNotEmpty())
         {
-            return $"{protocol}{Utils.UrlEncode(userInfo)}@{GetIpv6(NormalizeColon(item.Address))}:{item.Port}{remark}";
+            return $"{protocol}{userInfo}@{GetIpv6(NormalizeColon(item.Address))}:{item.Port}{remark}";
         }
         else
         {
