@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v6.0.1
+      uses: actions/checkout@v6.0.2
       with:
         submodules: 'recursive'
         fetch-depth: '0'
@@ -163,7 +163,7 @@ jobs:
         dnf repolist | grep -i epel || true
 
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v6.0.1
+      uses: actions/checkout@v6.0.2
       with:
         submodules: 'recursive'
         fetch-depth: '0'
