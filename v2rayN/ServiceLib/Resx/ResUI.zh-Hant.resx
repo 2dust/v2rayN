@@ -1416,14 +1416,11 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>直連 DNS</value>
   </data>
-  <data name="TbRemoteDNSTips" xml:space="preserve">
-   <value>通过代理，请确保远程可用</value>
-  </data>
   <data name="TbDirectResolveStrategy" xml:space="preserve">
-    <value>直連解析策略</value>
+    <value>直連目標解析策略</value>
   </data>
   <data name="TbRemoteResolveStrategy" xml:space="preserve">
-    <value>遠程解析策略</value>
+    <value>代理目標解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>新增常用 DNS Hosts</value>
@@ -1447,7 +1444,7 @@
     <value>校驗相應地區域名 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>配置後，會對相應地區域名（如 geosite:cn）的返回 IP 進行校驗，僅返回期望 IP</value>
+    <value>配置後，會對相應地區域名（如 geosite:cn - geoip:cn）的返回 IP 進行校驗，僅返回期望 IP</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>啟用自訂 DNS</value>
@@ -1652,5 +1649,17 @@
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
     <value>Parallel Query</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
   </data>
 </root>

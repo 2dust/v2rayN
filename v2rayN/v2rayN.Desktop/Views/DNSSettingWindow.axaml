@@ -61,7 +61,15 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             IsEditable="True" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbDomesticDNSTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -75,6 +83,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="2"
@@ -83,7 +92,7 @@
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbRemoteDNSTips}"
                             TextWrapping="Wrap" />
-                        
+
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
@@ -96,6 +105,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="3"
@@ -117,7 +127,15 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             PlaceholderText="Default" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbDirectResolveStrategyTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="6"
@@ -131,8 +149,16 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             PlaceholderText="Default" />
-                        
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbRemoteResolveStrategyTips}"
+                            TextWrapping="Wrap" />
+
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="0"
@@ -144,8 +170,9 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
-                        
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
@@ -157,7 +184,8 @@
                             Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -189,7 +217,8 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -202,7 +231,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -215,7 +245,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="2"
@@ -235,7 +266,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="2"
@@ -256,6 +288,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="5"

@@ -2728,11 +2728,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Direct Resolution Strategy 的本地化字符串。
+        ///   查找类似 Direct Target Resolution Strategy 的本地化字符串。
         /// </summary>
         public static string TbDirectResolveStrategy {
             get {
                 return ResourceManager.GetString("TbDirectResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If unset or &quot;AsIs&quot;, DNS resolution uses the system DNS; otherwise, the internal DNS module is used. 的本地化字符串。
+        /// </summary>
+        public static string TbDirectResolveStrategyTips {
+            get {
+                return ResourceManager.GetString("TbDirectResolveStrategyTips", resourceCulture);
             }
         }
         
@@ -2805,6 +2814,15 @@ namespace ServiceLib.Resx {
         public static string TbDomesticDNS {
             get {
                 return ResourceManager.GetString("TbDomesticDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 By default, invoked only during routing for resolution 的本地化字符串。
+        /// </summary>
+        public static string TbDomesticDNSTips {
+            get {
+                return ResourceManager.GetString("TbDomesticDNSTips", resourceCulture);
             }
         }
         
@@ -3232,7 +3250,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Via proxy — please ensure remote availability 的本地化字符串。
+        ///   查找类似 By default, invoked only during routing for resolution; ensure the remote server can reach this DNS 的本地化字符串。
         /// </summary>
         public static string TbRemoteDNSTips {
             get {
@@ -3241,11 +3259,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Remote Resolution Strategy 的本地化字符串。
+        ///   查找类似 Proxy Target Resolution Strategy 的本地化字符串。
         /// </summary>
         public static string TbRemoteResolveStrategy {
             get {
                 return ResourceManager.GetString("TbRemoteResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If unset or &quot;AsIs&quot;, DNS resolution is performed by the remote server&apos;s DNS; otherwise, the internal DNS module is used. 的本地化字符串。
+        /// </summary>
+        public static string TbRemoteResolveStrategyTips {
+            get {
+                return ResourceManager.GetString("TbRemoteResolveStrategyTips", resourceCulture);
             }
         }
         
@@ -4429,7 +4456,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs 的本地化字符串。
+        ///   查找类似 When configured, validates IPs returned for regional domains (e.g., geosite:cn - geoip:cn), returning only expected IPs 的本地化字符串。
         /// </summary>
         public static string TbValidateDirectExpectedIPsDesc {
             get {

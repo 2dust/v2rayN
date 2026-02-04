@@ -84,6 +84,14 @@
                             Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbDomesticDNSTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -148,6 +156,14 @@
                             Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="Default"
                             Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbDirectResolveStrategyTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="6"
@@ -164,6 +180,14 @@
                             Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="Default"
                             Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRemoteResolveStrategyTips}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="7"
