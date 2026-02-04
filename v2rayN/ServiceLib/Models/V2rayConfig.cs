@@ -343,7 +343,7 @@ public class StreamSettings4Ray
 
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
 
-    public List<UdpMasks4Ray>? udpmasks { get; set; }
+    public FinalMask4Ray? finalmask { get; set; }
 
     public Sockopt4Ray? sockopt { get; set; }
 }
@@ -388,8 +388,6 @@ public class Header4Ray
     public object request { get; set; }
 
     public object response { get; set; }
-
-    public string? domain { get; set; }
 }
 
 public class KcpSettings4Ray
@@ -407,10 +405,6 @@ public class KcpSettings4Ray
     public int readBufferSize { get; set; }
 
     public int writeBufferSize { get; set; }
-
-    public Header4Ray header { get; set; }
-
-    public string seed { get; set; }
 }
 
 public class WsSettings4Ray
@@ -484,15 +478,22 @@ public class HysteriaUdpHop4Ray
     public int? interval { get; set; }
 }
 
-public class UdpMasks4Ray
+public class FinalMask4Ray
 {
-    public string type { get; set; }
-    public UdpMasksSettings4Ray? settings { get; set; }
+    public List<Mask4Ray>? tcp { get; set; }
+    public List<Mask4Ray>? udp { get; set; }
 }
 
-public class UdpMasksSettings4Ray
+public class Mask4Ray
+{
+    public string type { get; set; }
+    public MaskSettings4Ray? settings { get; set; }
+}
+
+public class MaskSettings4Ray
 {
     public string? password { get; set; }
+    public string? domain { get; set; }
 }
 
 public class AccountsItem4Ray
