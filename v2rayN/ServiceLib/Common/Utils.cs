@@ -505,6 +505,31 @@ public class Utils
         return false;
     }
 
+    public static bool IsIpAddress(string? ip)
+    {
+        if (ip.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        ip = ip.Trim();
+
+        // First, validate using built-in parser
+        if (!IPAddress.TryParse(ip, out var address))
+        {
+            return false;
+        }
+
+        // For IPv4: ensure it has exactly 3 dots (meaning 4 parts)
+        if (address.AddressFamily == AddressFamily.InterNetwork)
+        {
+            return ip.Count(c => c == '.') == 3;
+        }
+
+        // For IPv6: TryParse is already strict enough
+        return address.AddressFamily == AddressFamily.InterNetworkV6;
+    }
+
     public static Uri? TryUri(string url)
     {
         try
@@ -724,27 +749,60 @@ public class Utils
         var systemHosts = new Dictionary<string, string>();
         try
         {
-            if (File.Exists(hostFile))
+            if (!File.Exists(hostFile))
             {
-                var hosts = File.ReadAllText(hostFile).Replace("\r", "");
-                var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var host in hostsList)
-                {
-                    if (host.StartsWith("#"))
-                    {
-                        continue;
-                    }
-
-                    var hostItem = host.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (hostItem.Length < 2)
-                    {
-                        continue;
-                    }
-
-                    systemHosts.Add(hostItem[1], hostItem[0]);
-                }
+                return systemHosts;
             }
+            var hosts = File.ReadAllText(hostFile).Replace("\r", "");
+            var hostsList = hosts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var host in hostsList)
+            {
+                // Trim whitespace
+                var line = host.Trim();
+
+                // Skip comments and empty lines
+                if (line.IsNullOrEmpty() || line.StartsWith("#"))
+                {
+                    continue;
+                }
+
+                // Strip inline comments
+                var commentIndex = line.IndexOf('#');
+                if (commentIndex >= 0)
+                {
+                    line = line.Substring(0, commentIndex).Trim();
+                }
+                if (line.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                var hostItem = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                if (hostItem.Length < 2)
+                {
+                    continue;
+                }
+
+                var ipAddress = hostItem[0];
+                var domain = hostItem[1];
+
+                // Validate IP address
+                if (!IsIpAddress(ipAddress))
+                {
+                    continue;
+                }
+
+                // Validate domain name
+                if (domain.IsNullOrEmpty() || domain.Length > 255)
+                {
+                    continue;
+                }
+
+                systemHosts[domain] = ipAddress;
+            }
+
+            return systemHosts;
         }
         catch (Exception ex)
         {
