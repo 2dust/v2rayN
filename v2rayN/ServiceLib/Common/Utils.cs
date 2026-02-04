@@ -332,22 +332,20 @@ public class Utils
             .ToList();
     }
 
-    public static Dictionary<string, List<string>> ParseHostsToDictionary(string hostsContent)
+    public static Dictionary<string, List<string>> ParseHostsToDictionary(string? hostsContent)
     {
+        if (hostsContent.IsNullOrEmpty())
+        {
+            return new();
+        }
         var userHostsMap = hostsContent
-            .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+            .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             // skip full-line comments
-            .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
-            // strip inline comments (truncate at '#')
-            .Select(line =>
-            {
-                var index = line.IndexOf('#');
-                return index >= 0 ? line.Substring(0, index).Trim() : line;
-            })
+            .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('#'))
             // ensure line still contains valid parts
             .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
-            .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+            .Select(line => line.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries))
             .Where(parts => parts.Length >= 2)
             .GroupBy(parts => parts[0])
             .ToDictionary(

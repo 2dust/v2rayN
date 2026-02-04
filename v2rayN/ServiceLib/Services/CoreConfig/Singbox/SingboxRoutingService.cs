@@ -75,14 +75,8 @@ public partial class CoreConfigSingboxService
             var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
             if (dnsItem == null || !dnsItem.Enabled)
             {
-                if (!simpleDnsItem.Hosts.IsNullOrEmpty())
-                {
-                    var userHostsMap = Utils.ParseHostsToDictionary(simpleDnsItem.Hosts);
-                    foreach (var kvp in userHostsMap)
-                    {
-                        hostsDomains.Add(kvp.Key);
-                    }
-                }
+                var userHostsMap = Utils.ParseHostsToDictionary(simpleDnsItem.Hosts);
+                hostsDomains.AddRange(userHostsMap.Select(kvp => kvp.Key));
                 if (simpleDnsItem.UseSystemHosts == true)
                 {
                     var systemHostsMap = Utils.GetSystemHosts();

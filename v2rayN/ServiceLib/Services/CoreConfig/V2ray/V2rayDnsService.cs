@@ -333,14 +333,9 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        if (!simpleDNSItem.Hosts.IsNullOrEmpty())
+        foreach (var kvp in Utils.ParseHostsToDictionary(simpleDNSItem.Hosts))
         {
-            var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
-
-            foreach (var kvp in userHostsMap)
-            {
-                dnsItem.hosts[kvp.Key] = kvp.Value;
-            }
+            dnsItem.hosts[kvp.Key] = kvp.Value;
         }
         return await Task.FromResult(0);
     }
