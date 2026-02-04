@@ -226,7 +226,7 @@ public class CoreManager
         {
             if (mayNeedSudo
                 && _config.TunModeItem.EnableTun
-                && coreInfo.CoreType == ECoreType.sing_box
+                && (coreInfo.CoreType is ECoreType.sing_box or ECoreType.mihomo)
                 && Utils.IsNonWindows())
             {
                 _linuxSudo = true;
