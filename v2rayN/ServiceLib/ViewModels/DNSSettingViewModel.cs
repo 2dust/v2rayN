@@ -9,11 +9,12 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public string? DirectDNS { get; set; }
     [Reactive] public string? RemoteDNS { get; set; }
     [Reactive] public string? BootstrapDNS { get; set; }
-    [Reactive] public string? RayStrategy4Freedom { get; set; }
-    [Reactive] public string? SingboxStrategy4Direct { get; set; }
-    [Reactive] public string? SingboxStrategy4Proxy { get; set; }
+    [Reactive] public string? Strategy4Freedom { get; set; }
+    [Reactive] public string? Strategy4Proxy { get; set; }
     [Reactive] public string? Hosts { get; set; }
     [Reactive] public string? DirectExpectedIPs { get; set; }
+    [Reactive] public bool? ParallelQuery { get; set; }
+    [Reactive] public bool? ServeStale { get; set; }
 
     [Reactive] public bool UseSystemHostsCompatible { get; set; }
     [Reactive] public string DomainStrategy4FreedomCompatible { get; set; }
@@ -70,11 +71,12 @@ public class DNSSettingViewModel : MyReactiveObject
         DirectDNS = item.DirectDNS;
         RemoteDNS = item.RemoteDNS;
         BootstrapDNS = item.BootstrapDNS;
-        RayStrategy4Freedom = item.RayStrategy4Freedom;
-        SingboxStrategy4Direct = item.SingboxStrategy4Direct;
-        SingboxStrategy4Proxy = item.SingboxStrategy4Proxy;
+        Strategy4Freedom = item.Strategy4Freedom;
+        Strategy4Proxy = item.Strategy4Proxy;
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
+        ParallelQuery = item.ParallelQuery;
+        ServeStale = item.ServeStale;
 
         var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         RayCustomDNSEnableCompatible = item1.Enabled;
@@ -100,11 +102,12 @@ public class DNSSettingViewModel : MyReactiveObject
         _config.SimpleDNSItem.DirectDNS = DirectDNS;
         _config.SimpleDNSItem.RemoteDNS = RemoteDNS;
         _config.SimpleDNSItem.BootstrapDNS = BootstrapDNS;
-        _config.SimpleDNSItem.RayStrategy4Freedom = RayStrategy4Freedom;
-        _config.SimpleDNSItem.SingboxStrategy4Direct = SingboxStrategy4Direct;
-        _config.SimpleDNSItem.SingboxStrategy4Proxy = SingboxStrategy4Proxy;
+        _config.SimpleDNSItem.Strategy4Freedom = Strategy4Freedom;
+        _config.SimpleDNSItem.Strategy4Proxy = Strategy4Proxy;
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
+        _config.SimpleDNSItem.ParallelQuery = ParallelQuery;
+        _config.SimpleDNSItem.ServeStale = ServeStale;
 
         if (NormalDNSCompatible.IsNotEmpty())
         {

@@ -1416,17 +1416,11 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>DNS direct</value>
   </data>
-  <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>Via le proxy ; assurez-vous que le serveur distant est disponible</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Direct Target Resolution Strategy</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>Stratégie de résolution xray freedom</value>
-  </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>Stratégie de résolution directe sing-box</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>Stratégie de résolution distante sing-box</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Proxy Target Resolution Strategy</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Ajouter des hôtes DNS courants</value>
@@ -1450,7 +1444,7 @@
     <value>Valider les IP des domaines de la région concernée</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>Après config, les IP renvoyées des domaines régionaux (ex. geosite:cn) seront vérifiées ; seules les IP attendues seront retournées.</value>
+    <value>Après config, les IP renvoyées des domaines régionaux (ex. geosite:cn - geoip:cn) seront vérifiées ; seules les IP attendues seront retournées.</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>Activer le DNS personnalisé</value>
@@ -1649,5 +1643,23 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Serve Stale</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Parallel Query</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
   </data>
 </root>

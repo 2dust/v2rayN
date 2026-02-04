@@ -18,7 +18,7 @@ public partial class RoutingRuleSettingWindow
         ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
 
         this.WhenActivated(disposables =>
         {

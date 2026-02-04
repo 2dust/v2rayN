@@ -1416,17 +1416,11 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>直连 DNS</value>
   </data>
-  <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>通过代理，请确保远程可用</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>直连目标解析策略</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray freedom 解析策略</value>
-  </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box 直连解析策略</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box 远程解析策略</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>代理目标解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>添加常用 DNS Hosts</value>
@@ -1450,7 +1444,7 @@
     <value>校验相应地区域名 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>配置后，会对相应地区域名（如 geosite:cn）的返回 IP 进行校验，仅返回期望 IP</value>
+    <value>配置后，会对相应地区域名（如 geosite:cn - geoip:cn）的返回 IP 进行校验，仅返回期望 IP</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>启用自定义 DNS</value>
@@ -1649,5 +1643,23 @@
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>证书指纹（SHA-256）</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>乐观缓存</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>并行查询</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>默认仅在路由阶段被调用解析</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>默认仅在路由阶段被调用解析；请确保远程服务器可访问该 DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>当未选择或 "AsIs" 时，使用系统 DNS 进行解析；否则，使用内部 DNS 模块解析。</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>当未选择或 "AsIs" 时，由远程服务器端 DNS 解析；否则，使用内部 DNS 模块解析。</value>
   </data>
 </root>

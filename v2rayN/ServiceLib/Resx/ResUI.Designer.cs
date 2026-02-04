@@ -2728,6 +2728,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Direct Target Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbDirectResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbDirectResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If unset or &quot;AsIs&quot;, DNS resolution uses the system DNS; otherwise, the internal DNS module is used. 的本地化字符串。
+        /// </summary>
+        public static string TbDirectResolveStrategyTips {
+            get {
+                return ResourceManager.GetString("TbDirectResolveStrategyTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {
@@ -2796,6 +2814,15 @@ namespace ServiceLib.Resx {
         public static string TbDomesticDNS {
             get {
                 return ResourceManager.GetString("TbDomesticDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 By default, invoked only during routing for resolution 的本地化字符串。
+        /// </summary>
+        public static string TbDomesticDNSTips {
+            get {
+                return ResourceManager.GetString("TbDomesticDNSTips", resourceCulture);
             }
         }
         
@@ -3061,6 +3088,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Parallel Query 的本地化字符串。
+        /// </summary>
+        public static string TbParallelQuery {
+            get {
+                return ResourceManager.GetString("TbParallelQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Path 的本地化字符串。
         /// </summary>
         public static string TbPath {
@@ -3214,11 +3250,29 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Via proxy — please ensure remote availability 的本地化字符串。
+        ///   查找类似 By default, invoked only during routing for resolution; ensure the remote server can reach this DNS 的本地化字符串。
         /// </summary>
         public static string TbRemoteDNSTips {
             get {
                 return ResourceManager.GetString("TbRemoteDNSTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy Target Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbRemoteResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbRemoteResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If unset or &quot;AsIs&quot;, DNS resolution is performed by the remote server&apos;s DNS; otherwise, the internal DNS module is used. 的本地化字符串。
+        /// </summary>
+        public static string TbRemoteResolveStrategyTips {
+            get {
+                return ResourceManager.GetString("TbRemoteResolveStrategyTips", resourceCulture);
             }
         }
         
@@ -3358,15 +3412,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 sing-box Direct Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbSBDirectResolveStrategy {
-            get {
-                return ResourceManager.GetString("TbSBDirectResolveStrategy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 sing-box Full Config Template 的本地化字符串。
         /// </summary>
         public static string TbSBFullConfigTemplate {
@@ -3381,15 +3426,6 @@ namespace ServiceLib.Resx {
         public static string TbSBFullConfigTemplateDesc {
             get {
                 return ResourceManager.GetString("TbSBFullConfigTemplateDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 sing-box Remote Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbSBRemoteResolveStrategy {
-            get {
-                return ResourceManager.GetString("TbSBRemoteResolveStrategy", resourceCulture);
             }
         }
         
@@ -3435,6 +3471,15 @@ namespace ServiceLib.Resx {
         public static string TbSelectProfile {
             get {
                 return ResourceManager.GetString("TbSelectProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Serve Stale 的本地化字符串。
+        /// </summary>
+        public static string TbServeStale {
+            get {
+                return ResourceManager.GetString("TbServeStale", resourceCulture);
             }
         }
         
@@ -4411,20 +4456,11 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs 的本地化字符串。
+        ///   查找类似 When configured, validates IPs returned for regional domains (e.g., geosite:cn - geoip:cn), returning only expected IPs 的本地化字符串。
         /// </summary>
         public static string TbValidateDirectExpectedIPsDesc {
             get {
                 return ResourceManager.GetString("TbValidateDirectExpectedIPsDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 xray Freedom Resolution Strategy 的本地化字符串。
-        /// </summary>
-        public static string TbXrayFreedomStrategy {
-            get {
-                return ResourceManager.GetString("TbXrayFreedomStrategy", resourceCulture);
             }
         }
         
