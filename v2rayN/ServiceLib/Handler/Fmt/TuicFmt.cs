@@ -24,8 +24,8 @@ public class TuicFmt : BaseFmt
         var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
         if (userInfoParts.Length == 2)
         {
-            item.Password = userInfoParts.First();
-            item.SetProtocolExtra(item.GetProtocolExtra() with { Username = userInfoParts.Last() });
+            item.SetProtocolExtra(item.GetProtocolExtra() with { Username = userInfoParts.First() });
+            item.Password = userInfoParts.Last();
         }
 
         var query = Utils.ParseQueryString(url.Query);
