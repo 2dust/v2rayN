@@ -88,14 +88,9 @@ public partial class CoreConfigSingboxService
             }
         }
 
-        if (!simpleDNSItem.Hosts.IsNullOrEmpty())
+        foreach (var kvp in Utils.ParseHostsToDictionary(simpleDNSItem.Hosts))
         {
-            var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
-
-            foreach (var kvp in userHostsMap)
-            {
-                hostsDns.predefined[kvp.Key] = kvp.Value;
-            }
+            hostsDns.predefined[kvp.Key] = kvp.Value.Where(s => Utils.IsIpAddress(s)).ToList();
         }
 
         foreach (var host in hostsDns.predefined)
@@ -115,7 +110,7 @@ public partial class CoreConfigSingboxService
         }
 
         singboxConfig.dns ??= new Dns4Sbox();
-        singboxConfig.dns.servers ??= new List<Server4Sbox>();
+        singboxConfig.dns.servers ??= [];
         singboxConfig.dns.servers.Add(remoteDns);
         singboxConfig.dns.servers.Add(directDns);
         singboxConfig.dns.servers.Add(hostsDns);
@@ -191,13 +186,56 @@ public partial class CoreConfigSingboxService
             }
         });
 
+        foreach (var kvp in Utils.ParseHostsToDictionary(simpleDNSItem.Hosts))
+        {
+            var predefined = kvp.Value.First();
+            if (predefined.IsNullOrEmpty() || Utils.IsIpAddress(predefined))
+            {
+                continue;
+            }
+            if (predefined.StartsWith('#') && int.TryParse(predefined.AsSpan(1), out var rcode))
+            {
+                // xray syntactic sugar for predefined
+                // etc. #0 -> NOERROR
+                singboxConfig.dns.rules.Add(new()
+                {
+                    query_type = [1, 28],
+                    domain = [kvp.Key],
+                    action = "predefined",
+                    rcode = rcode switch
+                    {
+                        0 => "NOERROR",
+                        1 => "FORMERR",
+                        2 => "SERVFAIL",
+                        3 => "NXDOMAIN",
+                        4 => "NOTIMP",
+                        5 => "REFUSED",
+                        _ => "NOERROR",
+                    },
+                });
+                continue;
+            }
+            // CNAME record
+            Rule4Sbox rule = new()
+            {
+                query_type = [1, 28],
+                action = "predefined",
+                rcode = "NOERROR",
+                answer = [$"*. IN CNAME {predefined}."],
+            };
+            if (ParseV2Domain(kvp.Key, rule))
+            {
+                singboxConfig.dns.rules.Add(rule);
+            }
+        }
+
         var (ech, _) = ParseEchParam(node?.EchConfigList);
         if (ech is not null)
         {
             var echDomain = ech.query_server_name ?? node?.Sni;
             singboxConfig.dns.rules.Add(new()
             {
-                query_type = new List<int> { 64, 65 },
+                query_type = [64, 65],
                 server = Global.SingboxEchDNSTag,
                 domain = echDomain is not null ? new List<string> { echDomain } : null,
             });
@@ -209,7 +247,7 @@ public partial class CoreConfigSingboxService
             {
                 singboxConfig.dns.rules.Add(new()
                 {
-                    query_type = new List<int> { 64, 65 },
+                    query_type = [64, 65],
                     server = Global.SingboxEchDNSTag,
                     domain = queryServerNames,
                 });
@@ -220,9 +258,9 @@ public partial class CoreConfigSingboxService
         {
             singboxConfig.dns.rules.Add(new()
             {
-                query_type = new List<int> { 64, 65 },
+                query_type = [64, 65],
                 action = "predefined",
-                rcode = "NOTIMP"
+                rcode = "NOERROR"
             });
         }
 
@@ -236,13 +274,14 @@ public partial class CoreConfigSingboxService
                 type = "logical",
                 mode = "and",
                 rewrite_ttl = 1,
-                rules = new List<Rule4Sbox>
-                {
-                    new() {
-                        query_type = new List<int> { 1, 28 }, // A and AAAA
+                rules =
+                [
+                    new()
+                    {
+                        query_type = [1, 28], // A and AAAA
                     },
-                    fakeipFilterRule,
-                }
+                    fakeipFilterRule
+                ]
             };
 
             singboxConfig.dns.rules.Add(rule4Fake);
@@ -262,7 +301,7 @@ public partial class CoreConfigSingboxService
         if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
             var ipItems = simpleDNSItem.DirectExpectedIPs
-                .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
