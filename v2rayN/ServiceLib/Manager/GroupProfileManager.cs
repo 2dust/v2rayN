@@ -72,21 +72,30 @@ public class GroupProfileManager
     public static async Task<(List<ProfileItem> Items, ProtocolExtraItem? Extra)> GetChildProfileItems(ProfileItem profileItem)
     {
         var protocolExtra = profileItem?.GetProtocolExtra();
-        var items = await GetChildProfileItems(protocolExtra);
+        return (await GetChildProfileItemsByProtocolExtra(protocolExtra), protocolExtra);
+    }
+
+    public static async Task<List<ProfileItem>> GetChildProfileItemsByProtocolExtra(ProtocolExtraItem? protocolExtra)
+    {
+        if (protocolExtra == null)
+        {
+            return new();
+        }
+        var items = await GetSelectedChildProfileItems(protocolExtra);
         var subItems = await GetSubChildProfileItems(protocolExtra);
         items.AddRange(subItems);
 
-        return (items, protocolExtra);
+        return items;
     }
 
-    public static async Task<List<ProfileItem>> GetChildProfileItems(ProtocolExtraItem? extra)
+    public static async Task<List<ProfileItem>> GetSelectedChildProfileItems(ProtocolExtraItem? extra)
     {
         if (extra == null || extra.ChildItems.IsNullOrEmpty())
         {
             return new();
         }
         var childProfiles = (await Task.WhenAll(
-                Utils.String2List(extra.ChildItems)
+                (Utils.String2List(extra.ChildItems) ?? new())
                     .Where(p => !p.IsNullOrEmpty())
                     .Select(AppManager.Instance.GetProfileItem)
             ))
@@ -101,19 +110,19 @@ public class GroupProfileManager
 
     public static async Task<List<ProfileItem>> GetSubChildProfileItems(ProtocolExtraItem? extra)
     {
-        if (extra == null || extra.Filter.IsNullOrEmpty())
+        if (extra == null || extra.SubChildItems.IsNullOrEmpty())
         {
             return new();
         }
         var childProfiles = await AppManager.Instance.ProfileItems(extra.SubChildItems ?? string.Empty);
 
-        return childProfiles.Where(p =>
+        return childProfiles?.Where(p =>
                 p != null &&
                 p.IsValid() &&
                 !p.ConfigType.IsComplexType() &&
                 (extra.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extra.Filter))
             )
-            .ToList();
+            .ToList() ?? new();
     }
 
     public static async Task<HashSet<string>> GetAllChildDomainAddresses(ProfileItem profileItem)
