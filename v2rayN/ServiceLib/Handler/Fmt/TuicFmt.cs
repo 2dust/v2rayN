@@ -53,6 +53,6 @@ public class TuicFmt : BaseFmt
 
         dicQuery.Add("congestion_control", item.HeaderType);
 
-        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Password}:{item.GetProtocolExtra().Username ?? ""}", dicQuery, remark);
+        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.GetProtocolExtra().Username ?? ""}:{item.Password}", dicQuery, remark);
     }
 }

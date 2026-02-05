@@ -326,6 +326,14 @@ public sealed class AppManager
                                 HopInterval = _config.HysteriaItem.HopInterval
                             };
                             break;
+                        case EConfigType.TUIC:
+                            extra = extra with
+                            {
+                                Username = item.Id,
+                            };
+                            item.Id = item.Security;
+                            item.Password = item.Security;
+                            break;
                         case EConfigType.WireGuard:
                             extra = extra with
                             {

@@ -175,8 +175,8 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.TUIC:
                     {
-                        outbound.uuid = node.Password;
-                        outbound.password = protocolExtra.Username;
+                        outbound.uuid = protocolExtra.Username;
+                        outbound.password = node.Password;
                         outbound.congestion_control = node.HeaderType;
                         break;
                     }
