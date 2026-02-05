@@ -114,13 +114,13 @@ public partial class CoreConfigSingboxService
 
                         outbound.packet_encoding = "xudp";
 
-                        if (protocolExtra.Flow.IsNullOrEmpty())
+                        if (!protocolExtra.Flow.IsNullOrEmpty())
                         {
-                            await GenOutboundMux(node, outbound);
+                            outbound.flow = protocolExtra.Flow;
                         }
                         else
                         {
-                            outbound.flow = protocolExtra.Flow;
+                            await GenOutboundMux(node, outbound);
                         }
 
                         await GenOutboundTransport(node, outbound);

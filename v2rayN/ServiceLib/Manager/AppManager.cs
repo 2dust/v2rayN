@@ -96,7 +96,10 @@ public sealed class AppManager
         _ = StatePort;
         _ = StatePort2;
 
-        _ = MigrateProfileExtra();
+        Task.Run(async () =>
+        {
+            await MigrateProfileExtra();
+        }).Wait();
 
         return true;
     }
@@ -277,29 +280,33 @@ public sealed class AppManager
                 break;
             }
 
+            var batchSuccessCount = 0;
             foreach (var item in batch)
             {
-                var extra = item.GetProtocolExtra();
-
-                if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                try
                 {
-                    extra = extra with { GroupType = nameof(item.ConfigType) };
-                    groupItems.TryGetValue(item.IndexId, out var groupItem);
-                    if (groupItem != null && !groupItem.NotHasChild())
+                    var extra = item.GetProtocolExtra();
+
+                    if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                     {
-                        extra = extra with
+                        extra = extra with { GroupType = nameof(item.ConfigType) };
+                        groupItems.TryGetValue(item.IndexId, out var groupItem);
+                        if (groupItem != null && !groupItem.NotHasChild())
                         {
-                            ChildItems = groupItem.ChildItems,
-                            SubChildItems = groupItem.SubChildItems,
-                            Filter = groupItem.Filter,
-                            MultipleLoad = groupItem.MultipleLoad,
-                        };
+                            extra = extra with
+                            {
+                                ChildItems = groupItem.ChildItems,
+                                SubChildItems = groupItem.SubChildItems,
+                                Filter = groupItem.Filter,
+                                MultipleLoad = groupItem.MultipleLoad,
+                            };
+                        }
                     }
 
                     switch (item.ConfigType)
                     {
                         case EConfigType.Shadowsocks:
-                            extra = extra with {SsMethod = item.Security.NullIfEmpty() };
+                            extra = extra with { SsMethod = item.Security.NullIfEmpty() };
                             break;
                         case EConfigType.VMess:
                             extra = extra with
@@ -312,6 +319,7 @@ public sealed class AppManager
                             extra = extra with
                             {
                                 Flow = item.Flow.NullIfEmpty(),
+                                VlessEncryption = item.Security,
                             };
                             break;
                         case EConfigType.Hysteria2:
@@ -341,18 +349,27 @@ public sealed class AppManager
                                 WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
                             };
                             break;
+                        default:
+                            break;
                     }
+
+                    item.SetProtocolExtra(extra);
+
+                    item.Password = item.Id;
+
+                    item.ConfigVersion = 3;
+                    await SQLiteHelper.Instance.UpdateAsync(item);
+                    batchSuccessCount++;
                 }
-
-                item.SetProtocolExtra(extra);
-
-                item.Password = item.Id;
-
-                item.ConfigVersion = 3;
-                await SQLiteHelper.Instance.UpdateAsync(item);
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileExtra Error: {ex}");
+                }
             }
 
-            offset += pageSize;
+            // Only increment offset by the number of failed items that remain in the result set
+            // Successfully updated items are automatically excluded from future queries due to ConfigVersion = 3
+            offset += batch.Count - batchSuccessCount;
         }
 
         //await ProfileGroupItemManager.Instance.ClearAll();
