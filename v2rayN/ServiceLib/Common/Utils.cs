@@ -1086,7 +1086,19 @@ public class Utils
 
     public static string GetExeName(string name)
     {
-        return IsWindows() ? $"{name}.exe" : name;
+        if (name.IsNullOrEmpty() || IsNonWindows())
+        {
+            return name;
+        }
+
+        if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+        {
+            return name;
+        }
+        else
+        {
+            return $"{name}.exe";
+        }
     }
 
     public static bool IsAdministrator()

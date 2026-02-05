@@ -277,7 +277,7 @@ public partial class CoreConfigSingboxService
                 }
             }
 
-            if (_config.TunModeItem.EnableTun && item.Process?.Count > 0)
+            if (item.Process?.Count > 0)
             {
                 var ruleProcName = JsonUtils.DeepCopy(rule3);
                 ruleProcName.process_name ??= [];
@@ -304,11 +304,7 @@ public partial class CoreConfigSingboxService
                     }
 
                     // sing-box strictly matches the exe suffix on Windows
-                    var procName = process;
-                    if (Utils.IsWindows() && !procName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                    {
-                        procName += ".exe";
-                    }
+                    var procName = Utils.GetExeName(process);
 
                     ruleProcName.process_name.Add(procName);
                 }

@@ -248,7 +248,7 @@
                         <DataGridTextColumn
                             Width="*"
                             Binding="{Binding Domains}"
-                            Header="domain / ip" />
+                            Header="domain / ip / process" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
