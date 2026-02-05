@@ -1681,6 +1681,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Configuration item preview 的本地化字符串。
+        /// </summary>
+        public static string menuServerListPreview {
+            get {
+                return ResourceManager.GetString("menuServerListPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Configuration 的本地化字符串。
         /// </summary>
         public static string menuServers {

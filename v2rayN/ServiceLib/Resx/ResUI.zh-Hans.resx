@@ -1665,4 +1665,7 @@
   <data name="TbHopInt7" xml:space="preserve">
     <value>端口跳跃间隔</value>
   </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>子配置项预览</value>
+  </data>
 </root>
