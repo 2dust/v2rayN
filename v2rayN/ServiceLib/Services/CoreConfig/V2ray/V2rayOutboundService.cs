@@ -518,9 +518,11 @@ public partial class CoreConfigV2rayService
                     int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                         ? sd
                         : _config.HysteriaItem.UpMbps;
-                    var hopInterval = protocolExtra?.HopInterval is { } hi and >= 5
-                        ? hi
-                        : _config.HysteriaItem.HopInterval >= 5 ? _config.HysteriaItem.HopInterval : Global.Hysteria2DefaultHopInt;
+                    var hopInterval = !protocolExtra.HopInterval.IsNullOrEmpty()
+                        ? protocolExtra.HopInterval
+                        : (_config.HysteriaItem.HopInterval >= 5
+                            ? _config.HysteriaItem.HopInterval
+                            : Global.Hysteria2DefaultHopInt).ToString();
                     HysteriaUdpHop4Ray? udpHop = null;
                     if (!ports.IsNullOrEmpty() &&
                         (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))

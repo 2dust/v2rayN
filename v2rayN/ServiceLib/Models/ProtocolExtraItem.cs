@@ -30,7 +30,7 @@ public record ProtocolExtraItem
     public int? UpMbps { get; init; }
     public int? DownMbps { get; init; }
     public string? Ports { get; init; }
-    public int? HopInterval { get; init; }
+    public string? HopInterval { get; init; }
 
     // group profile
     public string? GroupType { get; init; }

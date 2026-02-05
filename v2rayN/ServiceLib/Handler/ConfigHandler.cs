@@ -722,7 +722,7 @@ public static class ConfigHandler
             SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
             UpMbps = profileItem.GetProtocolExtra().UpMbps is null or < 0 ? config.HysteriaItem.UpMbps : profileItem.GetProtocolExtra().UpMbps,
             DownMbps = profileItem.GetProtocolExtra().DownMbps is null or < 0 ? config.HysteriaItem.DownMbps : profileItem.GetProtocolExtra().DownMbps,
-            HopInterval = profileItem.GetProtocolExtra().HopInterval is null or <= 5 ? Global.Hysteria2DefaultHopInt : profileItem.GetProtocolExtra().HopInterval,
+            HopInterval = profileItem.GetProtocolExtra().HopInterval?.TrimEx(),
         });
 
         await AddServerCommon(config, profileItem, toFile);

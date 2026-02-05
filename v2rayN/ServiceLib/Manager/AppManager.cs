@@ -329,7 +329,7 @@ public sealed class AppManager
                                 Ports = item.Ports.NullIfEmpty(),
                                 UpMbps = _config.HysteriaItem.UpMbps,
                                 DownMbps = _config.HysteriaItem.DownMbps,
-                                HopInterval = _config.HysteriaItem.HopInterval
+                                HopInterval = _config.HysteriaItem.HopInterval.ToString(),
                             };
                             break;
                         case EConfigType.TUIC:

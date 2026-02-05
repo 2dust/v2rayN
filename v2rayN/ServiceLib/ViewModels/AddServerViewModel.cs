@@ -33,7 +33,7 @@ public class AddServerViewModel : MyReactiveObject
     public int DownMbps { get; set; }
 
     [Reactive]
-    public int HopInterval { get; set; }
+    public string HopInterval { get; set; }
 
     [Reactive]
     public string Flow { get; set; }
@@ -115,7 +115,7 @@ public class AddServerViewModel : MyReactiveObject
         SalamanderPass = protocolExtra?.SalamanderPass ?? string.Empty;
         UpMbps = protocolExtra?.UpMbps ?? _config.HysteriaItem.UpMbps;
         DownMbps = protocolExtra?.DownMbps ?? _config.HysteriaItem.DownMbps;
-        HopInterval = protocolExtra?.HopInterval ?? Global.Hysteria2DefaultHopInt;
+        HopInterval = protocolExtra?.HopInterval.IsNullOrEmpty() ?? true ? Global.Hysteria2DefaultHopInt.ToString() : protocolExtra.HopInterval;
         VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
         VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
         SsMethod = protocolExtra?.SsMethod ?? string.Empty;
@@ -178,7 +178,7 @@ public class AddServerViewModel : MyReactiveObject
             SalamanderPass = SalamanderPass.NullIfEmpty(),
             UpMbps = UpMbps >= 0 ? UpMbps : null,
             DownMbps = DownMbps >= 0 ? DownMbps : null,
-            HopInterval = HopInterval >= 5 ? HopInterval : null,
+            HopInterval = HopInterval.NullIfEmpty(),
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),

@@ -166,9 +166,24 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = protocolExtra?.HopInterval is { } hi and >= 5
-                                ? $"{hi}s"
-                                : _config.HysteriaItem.HopInterval >= 5 ? $"{_config.HysteriaItem.HopInterval}s" : $"{Global.Hysteria2DefaultHopInt}s";
+                            outbound.hop_interval = _config.HysteriaItem.HopInterval >= 5
+                                ? $"{_config.HysteriaItem.HopInterval}s"
+                                : $"{Global.Hysteria2DefaultHopInt}s";
+                            if (int.TryParse(protocolExtra.HopInterval, out var hiResult))
+                            {
+                                outbound.hop_interval = hiResult >= 5 ? $"{hiResult}s" : outbound.hop_interval;
+                            }
+                            else if (protocolExtra.HopInterval?.Contains('-') ?? false)
+                            {
+                                // may be a range like 5-10
+                                var parts = protocolExtra.HopInterval.Split('-');
+                                if (parts.Length == 2 && int.TryParse(parts[0], out var hiL) &&
+                                    int.TryParse(parts[0], out var hiH))
+                                {
+                                    var hi = (hiL + hiH) / 2;
+                                    outbound.hop_interval = hi >= 5 ? $"{hi}s" : outbound.hop_interval;
+                                }
+                            }
                         }
 
                         break;
