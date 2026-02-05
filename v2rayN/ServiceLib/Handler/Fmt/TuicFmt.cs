@@ -24,7 +24,7 @@ public class TuicFmt : BaseFmt
         var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
         if (userInfoParts.Length == 2)
         {
-            item.SetProtocolExtra(item.GetProtocolExtra() with { Username = userInfoParts.First() });
+            item.Username = userInfoParts.First();
             item.Password = userInfoParts.Last();
         }
 
@@ -53,6 +53,6 @@ public class TuicFmt : BaseFmt
 
         dicQuery.Add("congestion_control", item.HeaderType);
 
-        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.GetProtocolExtra().Username ?? ""}:{item.Password}", dicQuery, remark);
+        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Username ?? ""}:{item.Password}", dicQuery, remark);
     }
 }

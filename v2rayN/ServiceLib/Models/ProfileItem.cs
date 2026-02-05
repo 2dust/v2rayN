@@ -13,6 +13,7 @@ public class ProfileItem : ReactiveObject
         Address = string.Empty;
         Port = 0;
         Password = string.Empty;
+        Username = string.Empty;
         Network = string.Empty;
         Remarks = string.Empty;
         HeaderType = string.Empty;
@@ -151,6 +152,7 @@ public class ProfileItem : ReactiveObject
     public string Address { get; set; }
     public int Port { get; set; }
     public string Password { get; set; }
+    public string Username { get; set; }
     public string Network { get; set; }
     public string Remarks { get; set; }
     public string HeaderType { get; set; }

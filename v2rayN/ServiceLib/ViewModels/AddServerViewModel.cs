@@ -48,9 +48,6 @@ public class AddServerViewModel : MyReactiveObject
     public string SsMethod { get; set; }
 
     [Reactive]
-    public string Username { get; set; }
-
-    [Reactive]
     public string WgPublicKey { get; set; }
     //[Reactive]
     //public string WgPresharedKey { get; set; }
@@ -119,7 +116,6 @@ public class AddServerViewModel : MyReactiveObject
         VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
         VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
         SsMethod = protocolExtra?.SsMethod ?? string.Empty;
-        Username = protocolExtra?.Username ?? string.Empty;
         WgPublicKey = protocolExtra?.WgPublicKey ?? string.Empty;
         WgInterfaceAddress = protocolExtra?.WgInterfaceAddress ?? string.Empty;
         WgReserved = protocolExtra?.WgReserved ?? string.Empty;
@@ -182,7 +178,6 @@ public class AddServerViewModel : MyReactiveObject
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
-            Username = Username.NullIfEmpty(),
             WgPublicKey = WgPublicKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
             WgReserved = WgReserved.NullIfEmpty(),

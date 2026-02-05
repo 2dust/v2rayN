@@ -333,12 +333,13 @@ public sealed class AppManager
                             };
                             break;
                         case EConfigType.TUIC:
-                            extra = extra with
-                            {
-                                Username = item.Id,
-                            };
+                            item.Username = item.Id;
                             item.Id = item.Security;
                             item.Password = item.Security;
+                            break;
+                        case EConfigType.HTTP:
+                        case EConfigType.SOCKS:
+                            item.Username = item.Security;
                             break;
                         case EConfigType.WireGuard:
                             extra = extra with
@@ -348,8 +349,6 @@ public sealed class AppManager
                                 WgReserved = item.Path.NullIfEmpty(),
                                 WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
                             };
-                            break;
-                        default:
                             break;
                     }
 

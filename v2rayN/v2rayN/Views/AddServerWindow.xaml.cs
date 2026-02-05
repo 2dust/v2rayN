@@ -121,7 +121,7 @@ public partial class AddServerWindow
                 case EConfigType.SOCKS:
                 case EConfigType.HTTP:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
                     break;
 
                 case EConfigType.VLESS:
@@ -147,7 +147,7 @@ public partial class AddServerWindow
                     break;
 
                 case EConfigType.TUIC:
-                    this.Bind(ViewModel, vm => vm.Username, v => v.txtId8.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId8.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity8.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.HeaderType, v => v.cmbHeaderType8.Text).DisposeWith(disposables);
                     break;

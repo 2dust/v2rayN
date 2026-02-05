@@ -90,20 +90,20 @@ public partial class CoreConfigSingboxService
                 case EConfigType.SOCKS:
                     {
                         outbound.version = "5";
-                        if (protocolExtra.Username.IsNotEmpty()
+                        if (node.Username.IsNotEmpty()
                             && node.Password.IsNotEmpty())
                         {
-                            outbound.username = protocolExtra.Username;
+                            outbound.username = node.Username;
                             outbound.password = node.Password;
                         }
                         break;
                     }
                 case EConfigType.HTTP:
                     {
-                        if (protocolExtra.Username.IsNotEmpty()
+                        if (node.Username.IsNotEmpty()
                             && node.Password.IsNotEmpty())
                         {
-                            outbound.username = protocolExtra.Username;
+                            outbound.username = node.Username;
                             outbound.password = node.Password;
                         }
                         break;
@@ -190,7 +190,7 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.TUIC:
                     {
-                        outbound.uuid = protocolExtra.Username;
+                        outbound.uuid = node.Username;
                         outbound.password = node.Password;
                         outbound.congestion_control = node.HeaderType;
                         break;

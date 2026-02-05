@@ -745,11 +745,8 @@ public static class ConfigHandler
         profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
-        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
-        {
-            Username = profileItem.GetProtocolExtra().Username?.TrimEx()
-        });
         profileItem.Network = string.Empty;
 
         if (!Global.TuicCongestionControls.Contains(profileItem.HeaderType))

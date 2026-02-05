@@ -15,9 +15,6 @@ public record ProtocolExtraItem
     //public string? PluginArgs { get; init; }
     public string? SsMethod { get; init; }
 
-    // socks and http
-    public string? Username { get; init; }
-
     // wireguard
     public string? WgPublicKey { get; init; }
     public string? WgPresharedKey { get; init; }

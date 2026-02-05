@@ -97,12 +97,12 @@ public partial class CoreConfigV2rayService
                         serversItem.method = null;
                         serversItem.password = null;
 
-                        if (protocolExtra.Username.IsNotEmpty()
+                        if (node.Username.IsNotEmpty()
                             && node.Password.IsNotEmpty())
                         {
                             SocksUsersItem4Ray socksUsersItem = new()
                             {
-                                user = protocolExtra.Username ?? "",
+                                user = node.Username ?? "",
                                 pass = node.Password,
                                 level = 1
                             };
