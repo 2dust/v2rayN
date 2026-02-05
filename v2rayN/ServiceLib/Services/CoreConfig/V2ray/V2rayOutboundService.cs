@@ -532,7 +532,7 @@ public partial class CoreConfigV2rayService
                             interval = hopInterval,
                         };
                     }
-                    HysteriaSettings4Ray hysteriaSettings = new()
+                    streamSettings.hysteriaSettings = new()
                     {
                         version = 2,
                         auth = node.Password,
@@ -540,8 +540,7 @@ public partial class CoreConfigV2rayService
                         down = downMbps > 0 ? $"{downMbps}mbps" : null,
                         udphop = udpHop,
                     };
-                    streamSettings.hysteriaSettings = hysteriaSettings;
-                    if (node.Path.IsNotEmpty())
+                    if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                     {
                         streamSettings.finalmask ??= new();
                         streamSettings.finalmask.udp =
@@ -549,7 +548,7 @@ public partial class CoreConfigV2rayService
                             new Mask4Ray
                             {
                                 type = "salamander",
-                                settings = new MaskSettings4Ray { password = node.Path.TrimEx(), }
+                                settings = new MaskSettings4Ray { password = protocolExtra.SalamanderPass.TrimEx(), }
                             }
                         ];
                     }

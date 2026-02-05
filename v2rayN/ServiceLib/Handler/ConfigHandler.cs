@@ -707,7 +707,6 @@ public static class ConfigHandler
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
@@ -720,6 +719,7 @@ public static class ConfigHandler
         }
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
+            SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
             UpMbps = profileItem.GetProtocolExtra().UpMbps is null or < 0 ? config.HysteriaItem.UpMbps : profileItem.GetProtocolExtra().UpMbps,
             DownMbps = profileItem.GetProtocolExtra().DownMbps is null or < 0 ? config.HysteriaItem.DownMbps : profileItem.GetProtocolExtra().DownMbps,
             HopInterval = profileItem.GetProtocolExtra().HopInterval is null or <= 5 ? Global.Hysteria2DefaultHopInt : profileItem.GetProtocolExtra().HopInterval,
@@ -1119,6 +1119,7 @@ public static class ConfigHandler
                && AreEqual(o.Path, n.Path)
                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
                && AreEqual(oProtocolExtra.Flow, nProtocolExtra.Flow)
+               && AreEqual(oProtocolExtra.SalamanderPass, nProtocolExtra.SalamanderPass)
                && AreEqual(o.Sni, n.Sni)
                && AreEqual(o.Alpn, n.Alpn)
                && AreEqual(o.Fingerprint, n.Fingerprint)

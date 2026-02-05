@@ -138,12 +138,12 @@ public partial class CoreConfigSingboxService
                     {
                         outbound.password = node.Password;
 
-                        if (node.Path.IsNotEmpty())
+                        if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                         {
                             outbound.obfs = new()
                             {
                                 type = "salamander",
-                                password = node.Path.TrimEx(),
+                                password = protocolExtra.SalamanderPass.TrimEx(),
                             };
                         }
 

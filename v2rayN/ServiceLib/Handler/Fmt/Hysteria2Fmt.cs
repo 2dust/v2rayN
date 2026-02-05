@@ -23,16 +23,15 @@ public class Hysteria2Fmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
-        item.Path = GetQueryDecoded(query, "obfs-password");
         if (item.CertSha.IsNullOrEmpty())
         {
             item.CertSha = GetQueryDecoded(query, "pinSHA256");
         }
-        ProtocolExtraItem extraItem = new()
+        item.SetProtocolExtra(item.GetProtocolExtra() with
         {
-            Ports = GetQueryDecoded(query, "mport")
-        };
-        item.SetProtocolExtra(extraItem);
+            Ports = GetQueryDecoded(query, "mport"),
+            SalamanderPass = GetQueryDecoded(query, "obfs-password"),
+        });
 
         return item;
     }
@@ -53,15 +52,16 @@ public class Hysteria2Fmt : BaseFmt
         }
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
+        var protocolExtraItem = item.GetProtocolExtra();
 
-        if (item.Path.IsNotEmpty())
+        if (!protocolExtraItem.SalamanderPass.IsNullOrEmpty())
         {
             dicQuery.Add("obfs", "salamander");
-            dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
+            dicQuery.Add("obfs-password", Utils.UrlEncode(protocolExtraItem.SalamanderPass));
         }
-        if (item.GetProtocolExtra()?.Ports?.IsNotEmpty() ?? false)
+        if (!protocolExtraItem.Ports.IsNullOrEmpty())
         {
-            dicQuery.Add("mport", Utils.UrlEncode(item.GetProtocolExtra().Ports.Replace(':', '-')));
+            dicQuery.Add("mport", Utils.UrlEncode(protocolExtraItem.Ports.Replace(':', '-')));
         }
         if (!item.CertSha.IsNullOrEmpty())
         {

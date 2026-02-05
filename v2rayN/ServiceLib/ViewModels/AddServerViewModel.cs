@@ -18,6 +18,9 @@ public class AddServerViewModel : MyReactiveObject
     public string CertSha { get; set; }
 
     [Reactive]
+    public string SalamanderPass { get; set; }
+
+    [Reactive]
     public int AlterId { get; set; }
 
     [Reactive]
@@ -109,6 +112,7 @@ public class AddServerViewModel : MyReactiveObject
         Ports = protocolExtra?.Ports ?? string.Empty;
         AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
         Flow = protocolExtra?.Flow ?? string.Empty;
+        SalamanderPass = protocolExtra?.SalamanderPass ?? string.Empty;
         UpMbps = protocolExtra?.UpMbps ?? 0;
         DownMbps = protocolExtra?.DownMbps ?? 0;
         HopInterval = protocolExtra?.HopInterval ?? Global.Hysteria2DefaultHopInt;
@@ -168,19 +172,20 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
-            Ports = Ports.IsNullOrEmpty() ? null : Ports,
-            AlterId = AlterId > 0 ? AlterId.ToString() : string.Empty,
-            Flow = Flow.IsNullOrEmpty() ? null : Flow,
+            Ports = Ports.NullIfEmpty(),
+            AlterId = AlterId > 0 ? AlterId.ToString() : null,
+            Flow = Flow.NullIfEmpty(),
+            SalamanderPass = SalamanderPass.NullIfEmpty(),
             UpMbps = UpMbps > 0 ? UpMbps : null,
             DownMbps = DownMbps > 0 ? DownMbps : null,
             HopInterval = HopInterval >= 5 ? HopInterval : null,
-            VmessSecurity = VmessSecurity.IsNullOrEmpty() ? null : VmessSecurity,
-            VlessEncryption = VlessEncryption.IsNullOrEmpty() ? null : VlessEncryption,
-            SsMethod = SsMethod.IsNullOrEmpty() ? null : SsMethod,
-            Username = Username.IsNullOrEmpty() ? null : Username,
-            WgPublicKey = WgPublicKey.IsNullOrEmpty() ? null : WgPublicKey,
-            WgInterfaceAddress = WgInterfaceAddress.IsNullOrEmpty() ? null : WgInterfaceAddress,
-            WgReserved = WgReserved.IsNullOrEmpty() ? null : WgReserved,
+            VmessSecurity = VmessSecurity.NullIfEmpty(),
+            VlessEncryption = VlessEncryption.NullIfEmpty(),
+            SsMethod = SsMethod.NullIfEmpty(),
+            Username = Username.NullIfEmpty(),
+            WgPublicKey = WgPublicKey.NullIfEmpty(),
+            WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
+            WgReserved = WgReserved.NullIfEmpty(),
             WgMtu = WgMtu >= 576 ? WgMtu : null,
         });
 

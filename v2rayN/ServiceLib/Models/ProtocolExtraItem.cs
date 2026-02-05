@@ -26,6 +26,7 @@ public record ProtocolExtraItem
     public int? WgMtu { get; init; }
 
     // hysteria2
+    public string? SalamanderPass { get; init; }
     public int? UpMbps { get; init; }
     public int? DownMbps { get; init; }
     public string? Ports { get; init; }

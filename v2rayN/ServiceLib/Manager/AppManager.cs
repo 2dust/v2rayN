@@ -1,3 +1,5 @@
+using ServiceLib.Common;
+
 namespace ServiceLib.Manager;
 
 public sealed class AppManager
@@ -279,12 +281,7 @@ public sealed class AppManager
 
             foreach (var item in batch)
             {
-                ProtocolExtraItem extra = new()
-                {
-                    AlterId = item.AlterId.ToString(),
-                    Flow = item.Flow.IsNotEmpty() ? item.Flow : null,
-                    Ports = item.Ports.IsNotEmpty() ? item.Ports : null,
-                };
+                var extra = item.GetProtocolExtra();
 
                 if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
                 {
@@ -304,14 +301,26 @@ public sealed class AppManager
                     switch (item.ConfigType)
                     {
                         case EConfigType.Shadowsocks:
-                            extra = extra with {SsMethod = item.Security.IsNotEmpty() ? item.Security : null};
+                            extra = extra with {SsMethod = item.Security.NullIfEmpty() };
                             break;
                         case EConfigType.VMess:
-                            extra = extra with {VmessSecurity = item.Security.IsNotEmpty() ? item.Security : null};
+                            extra = extra with
+                            {
+                                AlterId = item.AlterId.ToString(),
+                                VmessSecurity = item.Security.NullIfEmpty(),
+                            };
+                            break;
+                        case EConfigType.VLESS:
+                            extra = extra with
+                            {
+                                Flow = item.Flow.NullIfEmpty(),
+                            };
                             break;
                         case EConfigType.Hysteria2:
                             extra = extra with
                             {
+                                SalamanderPass = item.Path.NullIfEmpty(),
+                                Ports = item.Ports.NullIfEmpty(),
                                 UpMbps = _config.HysteriaItem.UpMbps,
                                 DownMbps = _config.HysteriaItem.DownMbps,
                                 HopInterval = _config.HysteriaItem.HopInterval
@@ -320,9 +329,9 @@ public sealed class AppManager
                         case EConfigType.WireGuard:
                             extra = extra with
                             {
-                                WgPublicKey = item.PublicKey.IsNotEmpty() ? item.PublicKey : null,
-                                WgInterfaceAddress = item.RequestHost.IsNotEmpty() ? item.RequestHost : null,
-                                WgReserved = item.Path.IsNotEmpty() ? item.Path : null,
+                                WgPublicKey = item.PublicKey.NullIfEmpty(),
+                                WgInterfaceAddress = item.RequestHost.NullIfEmpty(),
+                                WgReserved = item.Path.NullIfEmpty(),
                                 WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
                             };
                             break;

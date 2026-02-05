@@ -144,7 +144,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
                 case EConfigType.Hysteria2:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId7.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.Path, v => v.txtPath7.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SalamanderPass, v => v.txtPath7.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Ports, v => v.txtPorts7.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.HopInterval, v => v.txtHopInt7.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.UpMbps, v => v.txtUpMbps7.Text).DisposeWith(disposables);
