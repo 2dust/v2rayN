@@ -515,10 +515,10 @@ public partial class CoreConfigV2rayService
                     var ports = protocolExtra?.Ports;
                     int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                         ? su
-                        : 0;
+                        : _config.HysteriaItem.UpMbps;
                     int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                         ? sd
-                        : 0;
+                        : _config.HysteriaItem.UpMbps;
                     var hopInterval = protocolExtra?.HopInterval is { } hi and >= 5
                         ? hi
                         : _config.HysteriaItem.HopInterval >= 5 ? _config.HysteriaItem.HopInterval : Global.Hysteria2DefaultHopInt;
