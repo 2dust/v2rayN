@@ -242,7 +242,7 @@ public partial class CoreConfigSingboxService
         }
         else if (node?.ConfigType.IsGroupType() == true)
         {
-            var queryServerNames = (await ProfileGroupItemManager.GetAllChildEchQuerySni(node.IndexId)).ToList();
+            var queryServerNames = (await GroupProfileManager.GetAllChildEchQuerySni(node)).ToList();
             if (queryServerNames.Count > 0)
             {
                 singboxConfig.dns.rules.Add(new()

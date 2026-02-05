@@ -20,14 +20,17 @@ public class WireguardFmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
 
-        item.PublicKey = GetQueryDecoded(query, "publickey");
-        item.Path = GetQueryDecoded(query, "reserved");
-        item.RequestHost = GetQueryDecoded(query, "address");
-        item.ShortId = GetQueryDecoded(query, "mtu");
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            WgPublicKey = GetQueryDecoded(query, "publickey"),
+            WgReserved = GetQueryDecoded(query, "reserved"),
+            WgInterfaceAddress = GetQueryDecoded(query, "address"),
+            WgMtu = int.TryParse(GetQueryDecoded(query, "mtu"), out var mtuVal) ? mtuVal : 1280,
+        });
 
         return item;
     }
@@ -46,22 +49,19 @@ public class WireguardFmt : BaseFmt
         }
 
         var dicQuery = new Dictionary<string, string>();
-        if (item.PublicKey.IsNotEmpty())
+        if (!item.GetProtocolExtra().WgPublicKey.IsNullOrEmpty())
         {
-            dicQuery.Add("publickey", Utils.UrlEncode(item.PublicKey));
+            dicQuery.Add("publickey", Utils.UrlEncode(item.GetProtocolExtra().WgPublicKey));
         }
-        if (item.Path.IsNotEmpty())
+        if (!item.GetProtocolExtra().WgReserved.IsNullOrEmpty())
         {
-            dicQuery.Add("reserved", Utils.UrlEncode(item.Path));
+            dicQuery.Add("reserved", Utils.UrlEncode(item.GetProtocolExtra().WgReserved));
         }
-        if (item.RequestHost.IsNotEmpty())
+        if (!item.GetProtocolExtra().WgInterfaceAddress.IsNullOrEmpty())
         {
-            dicQuery.Add("address", Utils.UrlEncode(item.RequestHost));
+            dicQuery.Add("address", Utils.UrlEncode(item.GetProtocolExtra().WgInterfaceAddress));
         }
-        if (item.ShortId.IsNotEmpty())
-        {
-            dicQuery.Add("mtu", Utils.UrlEncode(item.ShortId));
-        }
-        return ToUri(EConfigType.WireGuard, item.Address, item.Port, item.Id, dicQuery, remark);
+        dicQuery.Add("mtu", Utils.UrlEncode(item.GetProtocolExtra().WgMtu > 0 ? item.GetProtocolExtra().WgMtu.ToString() : "1280"));
+        return ToUri(EConfigType.WireGuard, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 }

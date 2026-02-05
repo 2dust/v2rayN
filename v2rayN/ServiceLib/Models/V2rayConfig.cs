@@ -473,7 +473,7 @@ public class HysteriaSettings4Ray
 public class HysteriaUdpHop4Ray
 {
     public string? ports { get; set; }
-    public int? interval { get; set; }
+    public string? interval { get; set; }
 }
 
 public class FinalMask4Ray

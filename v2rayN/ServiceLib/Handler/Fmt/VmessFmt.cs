@@ -23,15 +23,16 @@ public class VmessFmt : BaseFmt
         {
             return null;
         }
+
         var vmessQRCode = new VmessQRCode
         {
-            v = item.ConfigVersion,
+            v = 2,
             ps = item.Remarks.TrimEx(),
             add = item.Address,
             port = item.Port,
-            id = item.Id,
-            aid = item.AlterId,
-            scy = item.Security,
+            id = item.Password,
+            aid = int.TryParse(item.GetProtocolExtra()?.AlterId, out var result) ? result : 0,
+            scy = item.GetProtocolExtra().VmessSecurity ?? "",
             net = item.Network,
             type = item.HeaderType,
             host = item.RequestHost,
@@ -71,15 +72,16 @@ public class VmessFmt : BaseFmt
         item.Network = Global.DefaultNetwork;
         item.HeaderType = Global.None;
 
-        item.ConfigVersion = vmessQRCode.v;
+        //item.ConfigVersion = vmessQRCode.v;
         item.Remarks = Utils.ToString(vmessQRCode.ps);
         item.Address = Utils.ToString(vmessQRCode.add);
         item.Port = vmessQRCode.port;
-        item.Id = Utils.ToString(vmessQRCode.id);
-        item.AlterId = vmessQRCode.aid;
-        item.Security = Utils.ToString(vmessQRCode.scy);
-
-        item.Security = vmessQRCode.scy.IsNotEmpty() ? vmessQRCode.scy : Global.DefaultSecurity;
+        item.Password = Utils.ToString(vmessQRCode.id);
+        item.SetProtocolExtra(new ProtocolExtraItem
+        {
+            AlterId = vmessQRCode.aid.ToString(),
+            VmessSecurity = vmessQRCode.scy.IsNullOrEmpty() ? Global.DefaultSecurity : vmessQRCode.scy,
+        });
         if (vmessQRCode.net.IsNotEmpty())
         {
             item.Network = vmessQRCode.net;
@@ -105,7 +107,6 @@ public class VmessFmt : BaseFmt
         var item = new ProfileItem
         {
             ConfigType = EConfigType.VMess,
-            Security = "auto"
         };
 
         var url = Utils.TryUri(str);
@@ -117,7 +118,12 @@ public class VmessFmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
+
+        item.SetProtocolExtra(new ProtocolExtraItem
+        {
+            VmessSecurity = "auto",
+        });
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);

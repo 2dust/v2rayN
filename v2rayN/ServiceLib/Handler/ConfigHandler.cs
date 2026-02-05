@@ -230,12 +230,8 @@ public static class ConfigHandler
             item.Remarks = profileItem.Remarks;
             item.Address = profileItem.Address;
             item.Port = profileItem.Port;
-            item.Ports = profileItem.Ports;
 
-            item.Id = profileItem.Id;
-            item.AlterId = profileItem.AlterId;
-            item.Security = profileItem.Security;
-            item.Flow = profileItem.Flow;
+            item.Password = profileItem.Password;
 
             item.Network = profileItem.Network;
             item.HeaderType = profileItem.HeaderType;
@@ -258,6 +254,7 @@ public static class ConfigHandler
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
             item.EchForceQuery = profileItem.EchForceQuery;
+            item.ProtoExtra = profileItem.ProtoExtra;
         }
 
         var ret = item.ConfigType switch
@@ -290,19 +287,22 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.VMess;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+        {
+            VmessSecurity = profileItem.GetProtocolExtra().VmessSecurity?.TrimEx()
+        });
         profileItem.Network = profileItem.Network.TrimEx();
         profileItem.HeaderType = profileItem.HeaderType.TrimEx();
         profileItem.RequestHost = profileItem.RequestHost.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-        if (!Global.VmessSecurities.Contains(profileItem.Security))
+        if (!Global.VmessSecurities.Contains(profileItem.GetProtocolExtra().VmessSecurity))
         {
             return -1;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -359,11 +359,6 @@ public static class ConfigHandler
                 if (await AddCustomServer(config, profileItem, false) == 0)
                 {
                 }
-            }
-            else if (profileItem.ConfigType.IsGroupType())
-            {
-                var profileGroupItem = await AppManager.Instance.GetProfileGroupItem(it.IndexId);
-                await AddGroupServerCommon(config, profileItem, profileGroupItem, true);
             }
             else
             {
@@ -610,14 +605,17 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Shadowsocks;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+        {
+            SsMethod = profileItem.GetProtocolExtra().SsMethod?.TrimEx()
+        });
 
-        if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.Security))
+        if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.GetProtocolExtra().SsMethod))
         {
             return -1;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -678,12 +676,12 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Trojan;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -708,18 +706,24 @@ public static class ConfigHandler
         //profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
+        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+        {
+            SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
+            UpMbps = profileItem.GetProtocolExtra().UpMbps is null or < 0 ? config.HysteriaItem.UpMbps : profileItem.GetProtocolExtra().UpMbps,
+            DownMbps = profileItem.GetProtocolExtra().DownMbps is null or < 0 ? config.HysteriaItem.DownMbps : profileItem.GetProtocolExtra().DownMbps,
+            HopInterval = profileItem.GetProtocolExtra().HopInterval?.TrimEx(),
+        });
 
         await AddServerCommon(config, profileItem, toFile);
 
@@ -741,8 +745,8 @@ public static class ConfigHandler
         profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Username = profileItem.Username.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
 
         if (!Global.TuicCongestionControls.Contains(profileItem.HeaderType))
@@ -758,7 +762,7 @@ public static class ConfigHandler
         {
             profileItem.Alpn = "h3";
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -781,17 +785,17 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.WireGuard;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.PublicKey = profileItem.PublicKey.TrimEx();
-        profileItem.Path = profileItem.Path.TrimEx();
-        profileItem.RequestHost = profileItem.RequestHost.TrimEx();
-        profileItem.Network = string.Empty;
-        if (profileItem.ShortId.IsNullOrEmpty())
+        profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
-            profileItem.ShortId = Global.TunMtus.First().ToString();
-        }
+            WgPublicKey = profileItem.GetProtocolExtra().WgPublicKey?.TrimEx(),
+            WgPresharedKey = profileItem.GetProtocolExtra().WgPresharedKey?.TrimEx(),
+            WgInterfaceAddress = profileItem.GetProtocolExtra().WgInterfaceAddress?.TrimEx(),
+            WgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx(),
+            WgMtu = profileItem.GetProtocolExtra().WgMtu is null or <= 0 ? Global.TunMtus.First() : profileItem.GetProtocolExtra().WgMtu,
+        });
 
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -815,14 +819,13 @@ public static class ConfigHandler
         profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Id.IsNullOrEmpty())
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
         }
@@ -860,7 +863,7 @@ public static class ConfigHandler
                               Remarks = t.Remarks,
                               Address = t.Address,
                               Port = t.Port,
-                              Security = t.Security,
+                              //Security = t.Security,
                               Network = t.Network,
                               StreamSecurity = t.StreamSecurity,
                               Delay = t33?.Delay ?? 0,
@@ -959,25 +962,24 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.VLESS;
 
         profileItem.Address = profileItem.Address.TrimEx();
-        profileItem.Id = profileItem.Id.TrimEx();
-        profileItem.Security = profileItem.Security.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = profileItem.Network.TrimEx();
         profileItem.HeaderType = profileItem.HeaderType.TrimEx();
         profileItem.RequestHost = profileItem.RequestHost.TrimEx();
         profileItem.Path = profileItem.Path.TrimEx();
         profileItem.StreamSecurity = profileItem.StreamSecurity.TrimEx();
 
-        if (!Global.Flows.Contains(profileItem.Flow))
+        var vlessEncryption = profileItem.GetProtocolExtra().VlessEncryption?.TrimEx();
+        var flow = profileItem.GetProtocolExtra().Flow?.TrimEx() ?? string.Empty;
+        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
-            profileItem.Flow = Global.Flows.First();
-        }
-        if (profileItem.Id.IsNullOrEmpty())
+            VlessEncryption = vlessEncryption.IsNullOrEmpty() ? Global.None : vlessEncryption,
+            Flow = Global.Flows.Contains(flow) ? flow : Global.Flows.First(),
+        });
+
+        if (profileItem.Password.IsNullOrEmpty())
         {
             return -1;
-        }
-        if (profileItem.Security.IsNullOrEmpty())
-        {
-            profileItem.Security = Global.None;
         }
 
         await AddServerCommon(config, profileItem, toFile);
@@ -1033,7 +1035,7 @@ public static class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> AddServerCommon(Config config, ProfileItem profileItem, bool toFile = true)
     {
-        profileItem.ConfigVersion = 2;
+        profileItem.ConfigVersion = 3;
 
         if (profileItem.StreamSecurity.IsNotEmpty())
         {
@@ -1077,38 +1079,8 @@ public static class ConfigHandler
 
         if (toFile)
         {
+            profileItem.SetProtocolExtra();
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
-        }
-        return 0;
-    }
-
-    public static async Task<int> AddGroupServerCommon(Config config, ProfileItem profileItem, ProfileGroupItem profileGroupItem, bool toFile = true)
-    {
-        var maxSort = -1;
-        if (profileItem.IndexId.IsNullOrEmpty())
-        {
-            profileItem.IndexId = Utils.GetGuid(false);
-            maxSort = ProfileExManager.Instance.GetMaxSort();
-        }
-        var groupType = profileItem.ConfigType == EConfigType.ProxyChain ? EConfigType.ProxyChain.ToString() : profileGroupItem.MultipleLoad.ToString();
-        profileItem.Address = $"{profileItem.CoreType}-{groupType}";
-        if (maxSort > 0)
-        {
-            ProfileExManager.Instance.SetSort(profileItem.IndexId, maxSort + 1);
-        }
-        if (toFile)
-        {
-            await SQLiteHelper.Instance.ReplaceAsync(profileItem);
-            if (profileGroupItem != null)
-            {
-                profileGroupItem.IndexId = profileItem.IndexId;
-                await ProfileGroupItemManager.Instance.SaveItemAsync(profileGroupItem);
-            }
-            else
-            {
-                ProfileGroupItemManager.Instance.GetOrCreateAndMarkDirty(profileItem.IndexId);
-                await ProfileGroupItemManager.Instance.SaveTo();
-            }
         }
         return 0;
     }
@@ -1128,17 +1100,23 @@ public static class ConfigHandler
             return false;
         }
 
+        var oProtocolExtra = o.GetProtocolExtra();
+        var nProtocolExtra = n.GetProtocolExtra();
+
         return o.ConfigType == n.ConfigType
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
-               && AreEqual(o.Id, n.Id)
-               && AreEqual(o.Security, n.Security)
+               && AreEqual(o.Password, n.Password)
+               && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
+               && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
+               && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
                && AreEqual(o.Network, n.Network)
                && AreEqual(o.HeaderType, n.HeaderType)
                && AreEqual(o.RequestHost, n.RequestHost)
                && AreEqual(o.Path, n.Path)
                && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-               && AreEqual(o.Flow, n.Flow)
+               && AreEqual(oProtocolExtra.Flow, nProtocolExtra.Flow)
+               && AreEqual(oProtocolExtra.SalamanderPass, nProtocolExtra.SalamanderPass)
                && AreEqual(o.Sni, n.Sni)
                && AreEqual(o.Alpn, n.Alpn)
                && AreEqual(o.Fingerprint, n.Fingerprint)
@@ -1199,7 +1177,7 @@ public static class ConfigHandler
         var indexId = Utils.GetGuid(false);
         var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
 
-        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId)).Remarks} ";
+        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId))?.Remarks} ";
         if (coreType == ECoreType.Xray)
         {
             remark += multipleLoad switch
@@ -1233,13 +1211,12 @@ public static class ConfigHandler
         {
             profile.Subid = subId;
         }
-        var profileGroup = new ProfileGroupItem
+        var extraItem = new ProtocolExtraItem
         {
-            ChildItems = childProfileIndexId,
-            MultipleLoad = multipleLoad,
-            IndexId = indexId,
+            ChildItems = childProfileIndexId, MultipleLoad = multipleLoad,
         };
-        var ret = await AddGroupServerCommon(config, profile, profileGroup, true);
+        profile.SetProtocolExtra(extraItem);
+        var ret = await AddServerCommon(config, profile, true);
         result.Success = ret == 0;
         result.Data = indexId;
         return result;
@@ -1261,7 +1238,7 @@ public static class ConfigHandler
             var tun2SocksAddress = node.Address;
             if (node.ConfigType.IsGroupType())
             {
-                var lstAddresses = (await ProfileGroupItemManager.GetAllChildDomainAddresses(node.IndexId)).ToList();
+                var lstAddresses = (await GroupProfileManager.GetAllChildDomainAddresses(node)).ToList();
                 if (lstAddresses.Count > 0)
                 {
                     tun2SocksAddress = Utils.List2String(lstAddresses);

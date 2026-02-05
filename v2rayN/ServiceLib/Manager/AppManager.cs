@@ -81,7 +81,9 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+#pragma warning disable CS0618
         SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
+#pragma warning restore CS0618
         return true;
     }
 
@@ -93,6 +95,11 @@ public sealed class AppManager
         //First determine the port value
         _ = StatePort;
         _ = StatePort2;
+
+        Task.Run(async () =>
+        {
+            await MigrateProfileExtra();
+        }).Wait();
 
         return true;
     }
@@ -225,15 +232,6 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
     }
 
-    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return null;
-        }
-        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
-    }
-
     public async Task<List<RoutingItem>?> RoutingItems()
     {
         return await SQLiteHelper.Instance.TableAsync<RoutingItem>().OrderBy(t => t.Sort).ToListAsync();
@@ -262,6 +260,119 @@ public sealed class AppManager
     public async Task<FullConfigTemplateItem?> GetFullConfigTemplateItem(ECoreType eCoreType)
     {
         return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
+    }
+
+    public async Task MigrateProfileExtra()
+    {
+#pragma warning disable CS0618
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
+
+        const int pageSize = 500;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var batchSuccessCount = 0;
+            foreach (var item in batch)
+            {
+                try
+                {
+                    var extra = item.GetProtocolExtra();
+
+                    if (item.ConfigType is EConfigType.PolicyGroup or EConfigType.ProxyChain)
+                    {
+                        extra = extra with { GroupType = nameof(item.ConfigType) };
+                        groupItems.TryGetValue(item.IndexId, out var groupItem);
+                        if (groupItem != null && !groupItem.NotHasChild())
+                        {
+                            extra = extra with
+                            {
+                                ChildItems = groupItem.ChildItems,
+                                SubChildItems = groupItem.SubChildItems,
+                                Filter = groupItem.Filter,
+                                MultipleLoad = groupItem.MultipleLoad,
+                            };
+                        }
+                    }
+
+                    switch (item.ConfigType)
+                    {
+                        case EConfigType.Shadowsocks:
+                            extra = extra with { SsMethod = item.Security.NullIfEmpty() };
+                            break;
+                        case EConfigType.VMess:
+                            extra = extra with
+                            {
+                                AlterId = item.AlterId.ToString(),
+                                VmessSecurity = item.Security.NullIfEmpty(),
+                            };
+                            break;
+                        case EConfigType.VLESS:
+                            extra = extra with
+                            {
+                                Flow = item.Flow.NullIfEmpty(),
+                                VlessEncryption = item.Security,
+                            };
+                            break;
+                        case EConfigType.Hysteria2:
+                            extra = extra with
+                            {
+                                SalamanderPass = item.Path.NullIfEmpty(),
+                                Ports = item.Ports.NullIfEmpty(),
+                                UpMbps = _config.HysteriaItem.UpMbps,
+                                DownMbps = _config.HysteriaItem.DownMbps,
+                                HopInterval = _config.HysteriaItem.HopInterval.ToString(),
+                            };
+                            break;
+                        case EConfigType.TUIC:
+                            item.Username = item.Id;
+                            item.Id = item.Security;
+                            item.Password = item.Security;
+                            break;
+                        case EConfigType.HTTP:
+                        case EConfigType.SOCKS:
+                            item.Username = item.Security;
+                            break;
+                        case EConfigType.WireGuard:
+                            extra = extra with
+                            {
+                                WgPublicKey = item.PublicKey.NullIfEmpty(),
+                                WgInterfaceAddress = item.RequestHost.NullIfEmpty(),
+                                WgReserved = item.Path.NullIfEmpty(),
+                                WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
+                            };
+                            break;
+                    }
+
+                    item.SetProtocolExtra(extra);
+
+                    item.Password = item.Id;
+
+                    item.ConfigVersion = 3;
+                    await SQLiteHelper.Instance.UpdateAsync(item);
+                    batchSuccessCount++;
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileExtra Error: {ex}");
+                }
+            }
+
+            // Only increment offset by the number of failed items that remain in the result set
+            // Successfully updated items are automatically excluded from future queries due to ConfigVersion = 3
+            offset += batch.Count - batchSuccessCount;
+        }
+
+        //await ProfileGroupItemManager.Instance.ClearAll();
+#pragma warning restore CS0618
     }
 
     #endregion SqliteHelper

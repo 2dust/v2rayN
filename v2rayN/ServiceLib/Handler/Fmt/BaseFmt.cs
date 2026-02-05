@@ -21,11 +21,6 @@ public class BaseFmt
 
     protected static int ToUriQuery(ProfileItem item, string? securityDef, ref Dictionary<string, string> dicQuery)
     {
-        if (item.Flow.IsNotEmpty())
-        {
-            dicQuery.Add("flow", item.Flow);
-        }
-
         if (item.StreamSecurity.IsNotEmpty())
         {
             dicQuery.Add("security", item.StreamSecurity);
@@ -208,7 +203,6 @@ public class BaseFmt
 
     protected static int ResolveUriQuery(NameValueCollection query, ref ProfileItem item)
     {
-        item.Flow = GetQueryValue(query, "flow");
         item.StreamSecurity = GetQueryValue(query, "security");
         item.Sni = GetQueryValue(query, "sni");
         item.Alpn = GetQueryDecoded(query, "alpn");

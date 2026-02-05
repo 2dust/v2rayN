@@ -446,7 +446,7 @@ public class ProfilesViewModel : MyReactiveObject
                         Remarks = t.Remarks,
                         Address = t.Address,
                         Port = t.Port,
-                        Security = t.Security,
+                        //Security = t.Security,
                         Network = t.Network,
                         StreamSecurity = t.StreamSecurity,
                         Subid = t.Subid,

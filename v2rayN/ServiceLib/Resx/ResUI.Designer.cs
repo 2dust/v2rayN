@@ -2998,6 +2998,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Port hopping interval 的本地化字符串。
+        /// </summary>
+        public static string TbHopInt7 {
+            get {
+                return ResourceManager.GetString("TbHopInt7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 UUID(id) 的本地化字符串。
         /// </summary>
         public static string TbId {

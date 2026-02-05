@@ -128,23 +128,25 @@ public class ActionPrecheckManager
             }
         }
 
+        var protocolExtra = item.GetProtocolExtra();
+
         switch (item.ConfigType)
         {
             case EConfigType.VMess:
-                if (item.Id.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Id))
+                if (item.Password.IsNullOrEmpty() || !Utils.IsGuidByParse(item.Password))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
                 break;
 
             case EConfigType.VLESS:
-                if (item.Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Id) && item.Id.Length > 30))
+                if (item.Password.IsNullOrEmpty() || (!Utils.IsGuidByParse(item.Password) && item.Password.Length > 30))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
-                if (!Global.Flows.Contains(item.Flow))
+                if (!Global.Flows.Contains(protocolExtra.Flow ?? string.Empty))
                 {
                     errors.Add(string.Format(ResUI.InvalidProperty, "Flow"));
                 }
@@ -152,14 +154,14 @@ public class ActionPrecheckManager
                 break;
 
             case EConfigType.Shadowsocks:
-                if (item.Id.IsNullOrEmpty())
+                if (item.Password.IsNullOrEmpty())
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Id"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "Password"));
                 }
 
-                if (string.IsNullOrEmpty(item.Security) || !Global.SsSecuritiesInSingbox.Contains(item.Security))
+                if (string.IsNullOrEmpty(protocolExtra.SsMethod) || !Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod))
                 {
-                    errors.Add(string.Format(ResUI.InvalidProperty, "Security"));
+                    errors.Add(string.Format(ResUI.InvalidProperty, "SsMethod"));
                 }
 
                 break;
@@ -202,37 +204,22 @@ public class ActionPrecheckManager
     {
         var errors = new List<string>();
 
-        ProfileGroupItemManager.Instance.TryGet(item.IndexId, out var group);
-        if (group is null || group.NotHasChild())
-        {
-            errors.Add(string.Format(ResUI.GroupEmpty, item.Remarks));
-            return errors;
-        }
-
-        var hasCycle = ProfileGroupItemManager.HasCycle(item.IndexId);
+        var hasCycle = await GroupProfileManager.HasCycle(item.IndexId, item.GetProtocolExtra());
         if (hasCycle)
         {
             errors.Add(string.Format(ResUI.GroupSelfReference, item.Remarks));
             return errors;
         }
 
-        var childIds = new List<string>();
-        var subItems = await ProfileGroupItemManager.GetSubChildProfileItems(group);
-        childIds.AddRangeSafe(subItems.Select(p => p.IndexId));
-        childIds.AddRangeSafe(Utils.String2List(group.ChildItems));
+        var (childItems, _) = await GroupProfileManager.GetChildProfileItems(item);
 
-        foreach (var child in childIds)
+        foreach (var childItem in childItems)
         {
             var childErrors = new List<string>();
-            if (child.IsNullOrEmpty())
-            {
-                continue;
-            }
 
-            var childItem = await AppManager.Instance.GetProfileItem(child);
             if (childItem is null)
             {
-                childErrors.Add(string.Format(ResUI.NodeTagNotExist, child));
+                childErrors.Add(string.Format(ResUI.NodeTagNotExist, ""));
                 continue;
             }
 

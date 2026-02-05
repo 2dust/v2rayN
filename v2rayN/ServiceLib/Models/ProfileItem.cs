@@ -3,16 +3,17 @@ namespace ServiceLib.Models;
 [Serializable]
 public class ProfileItem : ReactiveObject
 {
+    private ProtocolExtraItem? _protocolExtraCache;
+
     public ProfileItem()
     {
         IndexId = string.Empty;
         ConfigType = EConfigType.VMess;
-        ConfigVersion = 2;
+        ConfigVersion = 3;
         Address = string.Empty;
         Port = 0;
-        Id = string.Empty;
-        AlterId = 0;
-        Security = string.Empty;
+        Password = string.Empty;
+        Username = string.Empty;
         Network = string.Empty;
         Remarks = string.Empty;
         HeaderType = string.Empty;
@@ -21,7 +22,6 @@ public class ProfileItem : ReactiveObject
         StreamSecurity = string.Empty;
         AllowInsecure = string.Empty;
         Subid = string.Empty;
-        Flow = string.Empty;
     }
 
     #region function
@@ -81,7 +81,7 @@ public class ProfileItem : ReactiveObject
         switch (ConfigType)
         {
             case EConfigType.VMess:
-                if (Id.IsNullOrEmpty() || !Utils.IsGuidByParse(Id))
+                if (Password.IsNullOrEmpty() || !Utils.IsGuidByParse(Password))
                 {
                     return false;
                 }
@@ -89,12 +89,12 @@ public class ProfileItem : ReactiveObject
                 break;
 
             case EConfigType.VLESS:
-                if (Id.IsNullOrEmpty() || (!Utils.IsGuidByParse(Id) && Id.Length > 30))
+                if (Password.IsNullOrEmpty() || (!Utils.IsGuidByParse(Password) && Password.Length > 30))
                 {
                     return false;
                 }
 
-                if (!Global.Flows.Contains(Flow))
+                if (!Global.Flows.Contains(GetProtocolExtra().Flow ?? string.Empty))
                 {
                     return false;
                 }
@@ -102,12 +102,13 @@ public class ProfileItem : ReactiveObject
                 break;
 
             case EConfigType.Shadowsocks:
-                if (Id.IsNullOrEmpty())
+                if (Password.IsNullOrEmpty())
                 {
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(Security) || !Global.SsSecuritiesInSingbox.Contains(Security))
+                if (string.IsNullOrEmpty(GetProtocolExtra().SsMethod)
+                    || !Global.SsSecuritiesInSingbox.Contains(GetProtocolExtra().SsMethod))
                 {
                     return false;
                 }
@@ -125,6 +126,22 @@ public class ProfileItem : ReactiveObject
         return true;
     }
 
+    public void SetProtocolExtra(ProtocolExtraItem extraItem)
+    {
+        _protocolExtraCache = extraItem;
+        ProtoExtra = JsonUtils.Serialize(extraItem, false);
+    }
+
+    public void SetProtocolExtra()
+    {
+        ProtoExtra = JsonUtils.Serialize(_protocolExtraCache, false);
+    }
+
+    public ProtocolExtraItem GetProtocolExtra()
+    {
+        return _protocolExtraCache ??= JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra) ?? new ProtocolExtraItem();
+    }
+
     #endregion function
 
     [PrimaryKey]
@@ -134,10 +151,8 @@ public class ProfileItem : ReactiveObject
     public int ConfigVersion { get; set; }
     public string Address { get; set; }
     public int Port { get; set; }
-    public string Ports { get; set; }
-    public string Id { get; set; }
-    public int AlterId { get; set; }
-    public string Security { get; set; }
+    public string Password { get; set; }
+    public string Username { get; set; }
     public string Network { get; set; }
     public string Remarks { get; set; }
     public string HeaderType { get; set; }
@@ -147,7 +162,6 @@ public class ProfileItem : ReactiveObject
     public string AllowInsecure { get; set; }
     public string Subid { get; set; }
     public bool IsSub { get; set; } = true;
-    public string Flow { get; set; }
     public string Sni { get; set; }
     public string Alpn { get; set; } = string.Empty;
     public ECoreType? CoreType { get; set; }
@@ -164,4 +178,21 @@ public class ProfileItem : ReactiveObject
     public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
+
+    public string ProtoExtra { get; set; }
+
+    [Obsolete("Use ProtocolExtraItem.Ports instead.")]
+    public string Ports { get; set; }
+
+    [Obsolete("Use ProtocolExtraItem.AlterId instead.")]
+    public int AlterId { get; set; }
+
+    [Obsolete("Use ProtocolExtraItem.Flow instead.")]
+    public string Flow { get; set; }
+
+    [Obsolete("Use ProfileItem.Password instead.")]
+    public string Id { get; set; }
+
+    [Obsolete("Use ProtocolExtraItem.xxx instead.")]
+    public string Security { get; set; }
 }
