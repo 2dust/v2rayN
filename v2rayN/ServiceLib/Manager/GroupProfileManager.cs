@@ -126,24 +126,38 @@ public class GroupProfileManager
             .ToList() ?? new();
     }
 
+    public static async Task<List<ProfileItem>> GetAllChildProfileItems(ProfileItem profileItem)
+    {
+        var allChildItems = new List<ProfileItem>();
+        var visited = new HashSet<string>();
+
+        await CollectChildItems(profileItem, allChildItems, visited);
+
+        return allChildItems;
+    }
+
+    private static async Task CollectChildItems(ProfileItem profileItem, List<ProfileItem> allChildItems, HashSet<string> visited)
+    {
+        var (childItems, _) = await GetChildProfileItems(profileItem);
+        foreach (var child in childItems.Where(child => visited.Add(child.IndexId)))
+        {
+            allChildItems.Add(child);
+
+            if (child.ConfigType.IsGroupType())
+            {
+                await CollectChildItems(child, allChildItems, visited);
+            }
+        }
+    }
+
+
     public static async Task<HashSet<string>> GetAllChildDomainAddresses(ProfileItem profileItem)
     {
         var childAddresses = new HashSet<string>();
-        var (childItems, _) = await GetChildProfileItems(profileItem);
-        foreach (var child in childItems)
+        var childItems = await GetAllChildProfileItems(profileItem);
+        foreach (var child in childItems.Where(child => !child.Address.IsNullOrEmpty()).Where(child => Utils.IsDomain(child.Address)))
         {
-            if (!child.IsComplex())
-            {
-                childAddresses.Add(child.Address);
-            }
-            else if (child.ConfigType.IsGroupType())
-            {
-                var subAddresses = await GetAllChildDomainAddresses(child);
-                foreach (var addr in subAddresses)
-                {
-                    childAddresses.Add(addr);
-                }
-            }
+            childAddresses.Add(child.Address);
         }
         return childAddresses;
     }
@@ -151,30 +165,21 @@ public class GroupProfileManager
     public static async Task<HashSet<string>> GetAllChildEchQuerySni(ProfileItem profileItem)
     {
         var childAddresses = new HashSet<string>();
-        var (childItems, _) = await GetChildProfileItems(profileItem);
-        foreach (var childNode in childItems)
+        var childItems = await GetAllChildProfileItems(profileItem);
+        foreach (var childNode in childItems.Where(childNode => !childNode.EchConfigList.IsNullOrEmpty()))
         {
-            if (!childNode.IsComplex() && !childNode.EchConfigList.IsNullOrEmpty())
+            var sni = childNode.Sni;
+            if (childNode.StreamSecurity == Global.StreamSecurity
+                && childNode.EchConfigList?.Contains("://") == true)
             {
-                if (childNode.StreamSecurity == Global.StreamSecurity
-                    && childNode.EchConfigList?.Contains("://") == true)
-                {
-                    var idx = childNode.EchConfigList.IndexOf('+');
-                    childAddresses.Add(idx > 0 ? childNode.EchConfigList[..idx] : childNode.Sni);
-                }
-                else
-                {
-                    childAddresses.Add(childNode.Sni);
-                }
+                var idx = childNode.EchConfigList.IndexOf('+');
+                sni = idx > 0 ? childNode.EchConfigList[..idx] : childNode.Sni;
             }
-            else if (childNode.ConfigType.IsGroupType())
+            if (!Utils.IsDomain(sni))
             {
-                var subAddresses = await GetAllChildDomainAddresses(childNode);
-                foreach (var addr in subAddresses)
-                {
-                    childAddresses.Add(addr);
-                }
+                continue;
             }
+            childAddresses.Add(sni);
         }
         return childAddresses;
     }

@@ -2,7 +2,7 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
 {
-    private async Task<int> ConvertGeo2Ruleset(SingboxConfig singboxConfig)
+    private void ConvertGeo2Ruleset()
     {
         static void AddRuleSets(List<string> ruleSets, List<string>? rule_set)
         {
@@ -16,14 +16,14 @@ public partial class CoreConfigSingboxService
         var ruleSets = new List<string>();
 
         //convert route geosite & geoip to ruleset
-        foreach (var rule in singboxConfig.route.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
+        foreach (var rule in _coreConfig.route.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
         {
             rule.rule_set ??= new List<string>();
             rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList());
             rule.geosite = null;
             AddRuleSets(ruleSets, rule.rule_set);
         }
-        foreach (var rule in singboxConfig.route.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
+        foreach (var rule in _coreConfig.route.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
         {
             rule.rule_set ??= new List<string>();
             rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList());
@@ -32,24 +32,24 @@ public partial class CoreConfigSingboxService
         }
 
         //convert dns geosite & geoip to ruleset
-        foreach (var rule in singboxConfig.dns?.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
+        foreach (var rule in _coreConfig.dns?.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
         {
             rule.rule_set ??= new List<string>();
             rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList());
             rule.geosite = null;
         }
-        foreach (var rule in singboxConfig.dns?.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
+        foreach (var rule in _coreConfig.dns?.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
         {
             rule.rule_set ??= new List<string>();
             rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList());
             rule.geoip = null;
         }
-        foreach (var dnsRule in singboxConfig.dns?.rules.Where(t => t.rule_set?.Count > 0).ToList() ?? [])
+        foreach (var dnsRule in _coreConfig.dns?.rules.Where(t => t.rule_set?.Count > 0).ToList() ?? [])
         {
             AddRuleSets(ruleSets, dnsRule.rule_set);
         }
         //rules in rules
-        foreach (var item in singboxConfig.dns?.rules.Where(t => t.rules?.Count > 0).Select(t => t.rules).ToList() ?? [])
+        foreach (var item in _coreConfig.dns?.rules.Where(t => t.rules?.Count > 0).Select(t => t.rules).ToList() ?? [])
         {
             foreach (var item2 in item ?? [])
             {
@@ -60,7 +60,7 @@ public partial class CoreConfigSingboxService
         //load custom ruleset file
         List<Ruleset4Sbox> customRulesets = [];
 
-        var routing = await ConfigHandler.GetDefaultRouting(_config);
+        var routing = context.RoutingItem;
         if (routing.CustomRulesetPath4Singbox.IsNotEmpty())
         {
             var result = EmbedUtils.LoadResource(routing.CustomRulesetPath4Singbox);
@@ -78,7 +78,7 @@ public partial class CoreConfigSingboxService
         var localSrss = Utils.GetBinPath("srss");
 
         //Add ruleset srs
-        singboxConfig.route.rule_set = [];
+        _coreConfig.route.rule_set = [];
         foreach (var item in new HashSet<string>(ruleSets))
         {
             if (item.IsNullOrEmpty())
@@ -99,9 +99,9 @@ public partial class CoreConfigSingboxService
                 }
                 else
                 {
-                    var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
+                    var srsUrl = string.IsNullOrEmpty(context.AppConfig.ConstItem.SrsSourceUrl)
                         ? Global.SingboxRulesetUrl
-                        : _config.ConstItem.SrsSourceUrl;
+                        : context.AppConfig.ConstItem.SrsSourceUrl;
 
                     customRuleset = new()
                     {
@@ -113,9 +113,7 @@ public partial class CoreConfigSingboxService
                     };
                 }
             }
-            singboxConfig.route.rule_set.Add(customRuleset);
+            _coreConfig.route.rule_set.Add(customRuleset);
         }
-
-        return 0;
     }
 }

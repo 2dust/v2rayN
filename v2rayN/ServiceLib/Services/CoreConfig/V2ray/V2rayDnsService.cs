@@ -2,46 +2,45 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenDns(ProfileItem? node, V2rayConfig v2rayConfig)
+    private void GenDns()
     {
         try
         {
-            var item = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
+            var item = context.RawDnsItem;
             if (item is { Enabled: true })
             {
-                var result = await GenDnsCompatible(node, v2rayConfig);
+                GenDnsCustom();
 
-                if (v2rayConfig.routing.domainStrategy != Global.IPIfNonMatch)
+                if (_coreConfig.routing.domainStrategy != Global.IPIfNonMatch)
                 {
-                    return result;
+                    return;
                 }
 
                 // DNS routing
-                var dnsObj = JsonUtils.SerializeToNode(v2rayConfig.dns);
+                var dnsObj = JsonUtils.SerializeToNode(_coreConfig.dns);
                 if (dnsObj == null)
                 {
-                    return result;
+                    return;
                 }
 
                 dnsObj["tag"] = Global.DnsTag;
-                v2rayConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(dnsObj));
-                v2rayConfig.routing.rules.Add(new RulesItem4Ray
+                _coreConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(dnsObj));
+                _coreConfig.routing.rules.Add(new RulesItem4Ray
                 {
                     type = "field",
                     inboundTag = new List<string> { Global.DnsTag },
                     outboundTag = Global.ProxyTag,
                 });
-
-                return result;
+                return;
             }
-            var simpleDnsItem = _config.SimpleDNSItem;
-            var dnsItem = v2rayConfig.dns is Dns4Ray dns4Ray ? dns4Ray : new Dns4Ray();
+            var simpleDnsItem = context.SimpleDnsItem;
+            var dnsItem = _coreConfig.dns is Dns4Ray dns4Ray ? dns4Ray : new Dns4Ray();
 
             var strategy4Freedom = simpleDnsItem?.Strategy4Freedom ?? Global.AsIs;
             //Outbound Freedom domainStrategy
             if (strategy4Freedom.IsNotEmpty() && strategy4Freedom != Global.AsIs)
             {
-                var outbound = v2rayConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
+                var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
                     outbound.settings = new()
@@ -59,23 +58,23 @@ public partial class CoreConfigV2rayService
                 var xraySupportConfigTypeNames = Global.XraySupportConfigType
                         .Select(x => x == EConfigType.Hysteria2 ? "hysteria" : Global.ProtocolTypes[x])
                         .ToHashSet();
-                v2rayConfig.outbounds
+                _coreConfig.outbounds
                     .Where(t => xraySupportConfigTypeNames.Contains(t.protocol))
                     .ToList()
                     .ForEach(outbound => outbound.targetStrategy = strategy4Proxy);
             }
 
-            await GenDnsServers(node, dnsItem, simpleDnsItem);
-            await GenDnsHosts(dnsItem, simpleDnsItem);
+            FillDnsServers(dnsItem);
+            FillDnsHosts(dnsItem);
 
             dnsItem.serveStale = simpleDnsItem?.ServeStale is true ? true : null;
             dnsItem.enableParallelQuery = simpleDnsItem?.ParallelQuery is true ? true : null;
 
-            if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
+            if (_coreConfig.routing.domainStrategy == Global.IPIfNonMatch)
             {
                 // DNS routing
                 dnsItem.tag = Global.DnsTag;
-                v2rayConfig.routing.rules.Add(new RulesItem4Ray
+                _coreConfig.routing.rules.Add(new RulesItem4Ray
                 {
                     type = "field",
                     inboundTag = new List<string> { Global.DnsTag },
@@ -83,17 +82,18 @@ public partial class CoreConfigV2rayService
                 });
             }
 
-            v2rayConfig.dns = dnsItem;
+            _coreConfig.dns = dnsItem;
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenDnsServers(ProfileItem? node, Dns4Ray dnsItem, SimpleDNSItem simpleDNSItem)
+    private void FillDnsServers(Dns4Ray dnsItem)
     {
+        var node = context.Node;
+        var simpleDNSItem = context.SimpleDnsItem;
         static List<string> ParseDnsAddresses(string? dnsInput, string defaultAddress)
         {
             var addresses = dnsInput?.Split(dnsInput.Contains(',') ? ',' : ';')
@@ -197,9 +197,9 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        var routing = await ConfigHandler.GetDefaultRouting(_config);
+        var routing = context.RoutingItem;
         List<RulesItem>? rules = null;
-        rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
+        rules = JsonUtils.Deserialize<List<RulesItem>>(routing?.RuleSet) ?? [];
         foreach (var item in rules)
         {
             if (!item.Enabled || item.Domain is null || item.Domain.Count == 0)
@@ -251,22 +251,9 @@ public partial class CoreConfigV2rayService
             directDomainList.Add(node.Address);
         }
 
-        if (node?.Subid is not null)
+        if (context.ProtectDomainList.Count > 0)
         {
-            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-            if (subItem is not null)
-            {
-                foreach (var profile in new[] { subItem.PrevProfile, subItem.NextProfile })
-                {
-                    var profileNode = await AppManager.Instance.GetProfileItemViaRemarks(profile);
-                    if (profileNode is not null
-                        && Global.XraySupportConfigType.Contains(profileNode.ConfigType)
-                        && Utils.IsDomain(profileNode.Address))
-                    {
-                        directDomainList.Add(profileNode.Address);
-                    }
-                }
-            }
+            directDomainList.AddRange(context.ProtectDomainList);
         }
 
         dnsItem.servers ??= [];
@@ -300,15 +287,14 @@ public partial class CoreConfigV2rayService
 
         var defaultDnsServers = useDirectDns ? directDNSAddress : remoteDNSAddress;
         dnsItem.servers.AddRange(defaultDnsServers);
-
-        return 0;
     }
 
-    private async Task<int> GenDnsHosts(Dns4Ray dnsItem, SimpleDNSItem simpleDNSItem)
+    private void FillDnsHosts(Dns4Ray dnsItem)
     {
+        var simpleDNSItem = context.SimpleDnsItem;
         if (simpleDNSItem.AddCommonHosts == false && simpleDNSItem.UseSystemHosts == false && simpleDNSItem.Hosts.IsNullOrEmpty())
         {
-            return await Task.FromResult(0);
+            return;
         }
         dnsItem.hosts ??= new Dictionary<string, object>();
         if (simpleDNSItem.AddCommonHosts == true)
@@ -337,14 +323,13 @@ public partial class CoreConfigV2rayService
         {
             dnsItem.hosts[kvp.Key] = kvp.Value;
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<int> GenDnsCompatible(ProfileItem? node, V2rayConfig v2rayConfig)
+    private void GenDnsCustom()
     {
         try
         {
-            var item = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
+            var item = context.RawDnsItem;
             var normalDNS = item?.NormalDNS;
             var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
             if (normalDNS.IsNullOrEmpty())
@@ -355,7 +340,7 @@ public partial class CoreConfigV2rayService
             //Outbound Freedom domainStrategy
             if (domainStrategy4Freedom.IsNotEmpty())
             {
-                var outbound = v2rayConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
+                var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
                     outbound.settings = new();
@@ -410,63 +395,38 @@ public partial class CoreConfigV2rayService
                 }
             }
 
-            await GenDnsDomainsCompatible(node, obj, item);
+            FillDnsDomainsCustom(obj);
 
-            v2rayConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(obj));
+            _coreConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(obj));
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenDnsDomainsCompatible(ProfileItem? node, JsonNode dns, DNSItem? dnsItem)
+    private void FillDnsDomainsCustom(JsonNode dns)
     {
-        if (node == null)
-        {
-            return 0;
-        }
+        var node = context.Node;
         var servers = dns["servers"];
-        if (servers != null)
+        if (servers == null)
         {
-            var domainList = new List<string>();
-            if (Utils.IsDomain(node.Address))
-            {
-                domainList.Add(node.Address);
-            }
-            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-            if (subItem is not null)
-            {
-                // Previous proxy
-                var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-                if (prevNode is not null
-                    && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType)
-                    && Utils.IsDomain(prevNode.Address))
-                {
-                    domainList.Add(prevNode.Address);
-                }
-
-                // Next proxy
-                var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-                if (nextNode is not null
-                    && Global.SingboxSupportConfigType.Contains(nextNode.ConfigType)
-                    && Utils.IsDomain(nextNode.Address))
-                {
-                    domainList.Add(nextNode.Address);
-                }
-            }
-            if (domainList.Count > 0)
-            {
-                var dnsServer = new DnsServer4Ray()
-                {
-                    address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
-                    skipFallback = true,
-                    domains = domainList
-                };
-                servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
-            }
+            return;
         }
-        return await Task.FromResult(0);
+
+        var domainList = context.ProtectDomainList;
+        if (domainList.Count <= 0)
+        {
+            return;
+        }
+
+        var dnsItem = context.RawDnsItem;
+        var dnsServer = new DnsServer4Ray()
+        {
+            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
+            skipFallback = true,
+            domains = domainList.ToList(),
+        };
+        servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
     }
 }

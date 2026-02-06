@@ -66,7 +66,9 @@ public class CoreManager
         }
 
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
+        var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
+        context = context with { IsTunEnabled = _config.TunModeItem.EnableTun };
+        var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -85,8 +87,8 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(node);
-        await CoreStartPreService(node);
+        await CoreStart(context);
+        await CoreStartPreService(context);
         if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
@@ -122,7 +124,8 @@ public class CoreManager
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
-        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
+        var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
+        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
         {
             return null;
@@ -165,8 +168,9 @@ public class CoreManager
 
     #region Private
 
-    private async Task CoreStart(ProfileItem node)
+    private async Task CoreStart(CoreConfigContext context)
     {
+        var node = context.Node;
         var coreType = AppManager.Instance.RunningCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
@@ -179,17 +183,20 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(ProfileItem node)
+    private async Task CoreStartPreService(CoreConfigContext context)
     {
+        var node = context.Node;
         if (_processService != null && !_processService.HasExited)
         {
             var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-            var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
+            var itemSocks = ConfigHandler.GetPreSocksItem(_config, node, coreType);
             if (itemSocks != null)
             {
                 var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
                 var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-                var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
+                var itemSocksContext = await CoreConfigHandler.BuildCoreConfigContext(_config, itemSocks);
+                itemSocksContext.ProtectDomainList.AddRangeSafe(context.ProtectDomainList);
+                var result = await CoreConfigHandler.GenerateClientConfig(itemSocksContext, fileName);
                 if (result.Success)
                 {
                     var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);

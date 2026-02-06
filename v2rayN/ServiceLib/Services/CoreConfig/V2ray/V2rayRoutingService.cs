@@ -2,20 +2,20 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenRouting(V2rayConfig v2rayConfig)
+    private void GenRouting()
     {
         try
         {
-            if (v2rayConfig.routing?.rules != null)
+            if (_coreConfig.routing?.rules != null)
             {
-                v2rayConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
+                _coreConfig.routing.domainStrategy = context.AppConfig.RoutingBasicItem.DomainStrategy;
 
-                var routing = await ConfigHandler.GetDefaultRouting(_config);
+                var routing = context.RoutingItem;
                 if (routing != null)
                 {
                     if (routing.DomainStrategy.IsNotEmpty())
                     {
-                        v2rayConfig.routing.domainStrategy = routing.DomainStrategy;
+                        _coreConfig.routing.domainStrategy = routing.DomainStrategy;
                     }
                     var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                     foreach (var item in rules)
@@ -31,7 +31,18 @@ public partial class CoreConfigV2rayService
                         }
 
                         var item2 = JsonUtils.Deserialize<RulesItem4Ray>(JsonUtils.Serialize(item));
-                        await GenRoutingUserRule(item2, v2rayConfig);
+                        GenRoutingUserRule(item2);
+                    }
+                }
+                var balancerTagList = _coreConfig.routing.balancers
+                    ?.Select(p => p.tag)
+                    .ToList() ?? [];
+                if (balancerTagList.Count > 0)
+                {
+                    foreach (var rulesItem in _coreConfig.routing.rules.Where(r => balancerTagList.Contains(r.outboundTag)))
+                    {
+                        rulesItem.balancerTag = rulesItem.outboundTag;
+                        rulesItem.outboundTag = null;
                     }
                 }
             }
@@ -40,95 +51,94 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenRoutingUserRule(RulesItem4Ray? rule, V2rayConfig v2rayConfig)
+    private void GenRoutingUserRule(RulesItem4Ray? userRule)
     {
         try
         {
-            if (rule == null)
+            if (userRule == null)
             {
-                return 0;
+                return;
             }
-            rule.outboundTag = await GenRoutingUserRuleOutbound(rule.outboundTag, v2rayConfig);
+            userRule.outboundTag = GenRoutingUserRuleOutbound(userRule.outboundTag ?? Global.ProxyTag);
 
-            if (rule.port.IsNullOrEmpty())
+            if (userRule.port.IsNullOrEmpty())
             {
-                rule.port = null;
+                userRule.port = null;
             }
-            if (rule.network.IsNullOrEmpty())
+            if (userRule.network.IsNullOrEmpty())
             {
-                rule.network = null;
+                userRule.network = null;
             }
-            if (rule.domain?.Count == 0)
+            if (userRule.domain?.Count == 0)
             {
-                rule.domain = null;
+                userRule.domain = null;
             }
-            if (rule.ip?.Count == 0)
+            if (userRule.ip?.Count == 0)
             {
-                rule.ip = null;
+                userRule.ip = null;
             }
-            if (rule.protocol?.Count == 0)
+            if (userRule.protocol?.Count == 0)
             {
-                rule.protocol = null;
+                userRule.protocol = null;
             }
-            if (rule.inboundTag?.Count == 0)
+            if (userRule.inboundTag?.Count == 0)
             {
-                rule.inboundTag = null;
+                userRule.inboundTag = null;
             }
-            if (rule.process?.Count == 0)
+            if (userRule.process?.Count == 0)
             {
-                rule.process = null;
+                userRule.process = null;
             }
 
             var hasDomainIp = false;
-            if (rule.domain?.Count > 0)
+            if (userRule.domain?.Count > 0)
             {
-                var it = JsonUtils.DeepCopy(rule);
+                var it = JsonUtils.DeepCopy(userRule);
                 it.ip = null;
                 it.process = null;
                 it.type = "field";
                 for (var k = it.domain.Count - 1; k >= 0; k--)
                 {
-                    if (it.domain[k].StartsWith("#"))
+                    if (it.domain[k].StartsWith('#'))
                     {
                         it.domain.RemoveAt(k);
                     }
                     it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
                 }
-                v2rayConfig.routing.rules.Add(it);
+                _coreConfig.routing.rules.Add(it);
                 hasDomainIp = true;
             }
-            if (rule.ip?.Count > 0)
+            if (userRule.ip?.Count > 0)
             {
-                var it = JsonUtils.DeepCopy(rule);
+                var it = JsonUtils.DeepCopy(userRule);
                 it.domain = null;
                 it.process = null;
                 it.type = "field";
-                v2rayConfig.routing.rules.Add(it);
+                _coreConfig.routing.rules.Add(it);
                 hasDomainIp = true;
             }
-            if (rule.process?.Count > 0)
+            if (userRule.process?.Count > 0)
             {
-                var it = JsonUtils.DeepCopy(rule);
+                var it = JsonUtils.DeepCopy(userRule);
                 it.domain = null;
                 it.ip = null;
                 it.type = "field";
-                v2rayConfig.routing.rules.Add(it);
+                _coreConfig.routing.rules.Add(it);
                 hasDomainIp = true;
             }
             if (!hasDomainIp)
             {
-                if (rule.port.IsNotEmpty()
-                    || rule.protocol?.Count > 0
-                    || rule.inboundTag?.Count > 0
-                    || rule.network != null
+                if (userRule.port.IsNotEmpty()
+                    || userRule.protocol?.Count > 0
+                    || userRule.inboundTag?.Count > 0
+                    || userRule.network != null
                     )
                 {
-                    var it = JsonUtils.DeepCopy(rule);
+                    var it = JsonUtils.DeepCopy(userRule);
                     it.type = "field";
-                    v2rayConfig.routing.rules.Add(it);
+                    _coreConfig.routing.rules.Add(it);
                 }
             }
         }
@@ -136,17 +146,16 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<string?> GenRoutingUserRuleOutbound(string outboundTag, V2rayConfig v2rayConfig)
+    private string GenRoutingUserRuleOutbound(string outboundTag)
     {
         if (Global.OutboundTags.Contains(outboundTag))
         {
             return outboundTag;
         }
 
-        var node = await AppManager.Instance.GetProfileItemViaRemarks(outboundTag);
+        var node = context.AllProxiesMap.GetValueOrDefault($"remark:{outboundTag}");
 
         if (node == null
             || (!Global.XraySupportConfigType.Contains(node.ConfigType)
@@ -156,27 +165,20 @@ public partial class CoreConfigV2rayService
         }
 
         var tag = $"{node.IndexId}-{Global.ProxyTag}";
-        if (v2rayConfig.outbounds.Any(p => p.tag == tag))
+        if (_coreConfig.outbounds.Any(p => p.tag == tag))
         {
             return tag;
         }
 
-        if (node.ConfigType.IsGroupType())
+        var proxyOutbounds = new CoreConfigV2rayService(context with { Node = node, }).BuildAllProxyOutbounds(tag);
+        _coreConfig.outbounds.AddRange(proxyOutbounds);
+        if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
         {
-            var ret = await GenGroupOutbound(node, v2rayConfig, tag);
-            if (ret == 0)
-            {
-                return tag;
-            }
-            return Global.ProxyTag;
+            var multipleLoad = node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+            GenObservatory(multipleLoad, tag);
+            GenBalancer(multipleLoad, tag);
         }
 
-        var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-        var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-        await GenOutbound(node, outbound);
-        outbound.tag = tag;
-        v2rayConfig.outbounds.Add(outbound);
-
-        return outbound.tag;
+        return tag;
     }
 }

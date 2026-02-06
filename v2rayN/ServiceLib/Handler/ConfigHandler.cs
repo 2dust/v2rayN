@@ -1231,26 +1231,16 @@ public static class ConfigHandler
     /// <param name="node">Server node that might need pre-SOCKS</param>
     /// <param name="coreType">Core type being used</param>
     /// <returns>A SOCKS profile item or null if not needed</returns>
-    public static async Task<ProfileItem?> GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
+    public static ProfileItem? GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
         ProfileItem? itemSocks = null;
         if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
         {
-            var tun2SocksAddress = node.Address;
-            if (node.ConfigType.IsGroupType())
-            {
-                var lstAddresses = (await GroupProfileManager.GetAllChildDomainAddresses(node)).ToList();
-                if (lstAddresses.Count > 0)
-                {
-                    tun2SocksAddress = Utils.List2String(lstAddresses);
-                }
-            }
             itemSocks = new ProfileItem()
             {
                 CoreType = ECoreType.sing_box,
                 ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                SpiderX = tun2SocksAddress, // Tun2SocksAddress
                 Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
             };
         }
@@ -1265,7 +1255,6 @@ public static class ConfigHandler
                 Port = node.PreSocksPort.Value,
             };
         }
-        await Task.CompletedTask;
         return itemSocks;
     }
 

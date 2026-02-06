@@ -2,10 +2,85 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
 {
-    private async Task<int> GenOutbound(ProfileItem node, Outbound4Sbox outbound)
+    private void GenOutbounds()
+    {
+        var proxyOutbounds = BuildAllProxyOutbounds();
+        FillRangeProxy(proxyOutbounds, _coreConfig, true);
+    }
+
+    private List<BaseServer4Sbox> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag, bool withSelector = true)
+    {
+        var proxyOutboundList = new List<BaseServer4Sbox>();
+        if (!context.Node.ConfigType.IsComplexType())
+        {
+            var outbound = BuildProxyOutbound(baseTagName);
+            proxyOutboundList.Add(outbound);
+        }
+        else
+        {
+            proxyOutboundList.AddRange(BuildGroupProxyOutbounds(baseTagName));
+        }
+        var proxyTags = proxyOutboundList.Where(n => n.tag.StartsWith(Global.ProxyTag)).Select(n => n.tag).ToList();
+        if (proxyTags.Count > 1)
+        {
+            proxyOutboundList.InsertRange(0, BuildSelectorOutbounds(proxyTags, baseTagName));
+        }
+        return proxyOutboundList;
+    }
+
+    private BaseServer4Sbox BuildProxyOutbound(string baseTagName = Global.ProxyTag)
+    {
+        var outbound = BuildProxyServer();
+        outbound.tag = baseTagName;
+        return outbound;
+    }
+
+    private List<BaseServer4Sbox> BuildGroupProxyOutbounds(string baseTagName = Global.ProxyTag)
+    {
+        var proxyOutboundList = new List<BaseServer4Sbox>();
+        switch (context.Node.ConfigType)
+        {
+            case EConfigType.PolicyGroup:
+                proxyOutboundList = BuildOutboundsList(baseTagName);
+                break;
+            case EConfigType.ProxyChain:
+                proxyOutboundList = BuildChainOutboundsList(baseTagName);
+                break;
+        }
+        return proxyOutboundList;
+    }
+
+    private BaseServer4Sbox BuildProxyServer()
     {
         try
         {
+            var node = context.Node;
+            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            if (node.ConfigType == EConfigType.WireGuard)
+            {
+                var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
+                FillEndpoint(endpoint);
+                return endpoint;
+            }
+            else
+            {
+                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                FillOutbound(outbound);
+                return outbound;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        throw new InvalidOperationException();
+    }
+
+    private void FillOutbound(Outbound4Sbox outbound)
+    {
+        try
+        {
+            var node = context.Node;
             var protocolExtra = node.GetProtocolExtra();
             outbound.server = node.Address;
             outbound.server_port = node.Port;
@@ -26,8 +101,8 @@ public partial class CoreConfigSingboxService
                             outbound.security = Global.DefaultSecurity;
                         }
 
-                        await GenOutboundMux(node, outbound);
-                        await GenOutboundTransport(node, outbound);
+                        FillOutboundMux(outbound);
+                        FillOutboundTransport(outbound);
                         break;
                     }
                 case EConfigType.Shadowsocks:
@@ -84,7 +159,7 @@ public partial class CoreConfigSingboxService
                             }
                         }
 
-                        await GenOutboundMux(node, outbound);
+                        FillOutboundMux(outbound);
                         break;
                     }
                 case EConfigType.SOCKS:
@@ -120,18 +195,18 @@ public partial class CoreConfigSingboxService
                         }
                         else
                         {
-                            await GenOutboundMux(node, outbound);
+                            FillOutboundMux(outbound);
                         }
 
-                        await GenOutboundTransport(node, outbound);
+                        FillOutboundTransport(outbound);
                         break;
                     }
                 case EConfigType.Trojan:
                     {
                         outbound.password = node.Password;
 
-                        await GenOutboundMux(node, outbound);
-                        await GenOutboundTransport(node, outbound);
+                        FillOutboundMux(outbound);
+                        FillOutboundTransport(outbound);
                         break;
                     }
                 case EConfigType.Hysteria2:
@@ -149,10 +224,10 @@ public partial class CoreConfigSingboxService
 
                         outbound.up_mbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
-                            : _config.HysteriaItem.UpMbps;
+                            : context.AppConfig.HysteriaItem.UpMbps;
                         outbound.down_mbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
-                            : _config.HysteriaItem.DownMbps;
+                            : context.AppConfig.HysteriaItem.DownMbps;
                         var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
@@ -166,8 +241,8 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = _config.HysteriaItem.HopInterval >= 5
-                                ? $"{_config.HysteriaItem.HopInterval}s"
+                            outbound.hop_interval = context.AppConfig.HysteriaItem.HopInterval >= 5
+                                ? $"{context.AppConfig.HysteriaItem.HopInterval}s"
                                 : $"{Global.Hysteria2DefaultHopInt}s";
                             if (int.TryParse(protocolExtra.HopInterval, out var hiResult))
                             {
@@ -202,19 +277,19 @@ public partial class CoreConfigSingboxService
                     }
             }
 
-            await GenOutboundTls(node, outbound);
+            FillOutboundTls(outbound);
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenEndpoint(ProfileItem node, Endpoints4Sbox endpoint)
+    private void FillEndpoint(Endpoints4Sbox endpoint)
     {
         try
         {
+            var node = context.Node;
             var protocolExtra = node.GetProtocolExtra();
 
             endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress);
@@ -245,55 +320,22 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<BaseServer4Sbox?> GenServer(ProfileItem node)
+    private void FillOutboundMux(Outbound4Sbox outbound)
     {
         try
         {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-            if (node.ConfigType == EConfigType.WireGuard)
-            {
-                var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
-                var ret = await GenEndpoint(node, endpoint);
-                if (ret != 0)
-                {
-                    return null;
-                }
-                return endpoint;
-            }
-            else
-            {
-                var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                var ret = await GenOutbound(node, outbound);
-                if (ret != 0)
-                {
-                    return null;
-                }
-                return outbound;
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-        return await Task.FromResult<BaseServer4Sbox?>(null);
-    }
-
-    private async Task<int> GenOutboundMux(ProfileItem node, Outbound4Sbox outbound)
-    {
-        try
-        {
-            var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
-            if (muxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
+            var config = context.AppConfig;
+            var muxEnabled = context.Node.MuxEnabled ?? config.CoreBasicItem.MuxEnabled;
+            if (muxEnabled && config.Mux4SboxItem.Protocol.IsNotEmpty())
             {
                 var mux = new Multiplex4Sbox()
                 {
                     enabled = true,
-                    protocol = _config.Mux4SboxItem.Protocol,
-                    max_connections = _config.Mux4SboxItem.MaxConnections,
-                    padding = _config.Mux4SboxItem.Padding,
+                    protocol = config.Mux4SboxItem.Protocol,
+                    max_connections = config.Mux4SboxItem.MaxConnections,
+                    padding = config.Mux4SboxItem.Padding,
                 };
                 outbound.multiplex = mux;
             }
@@ -302,36 +344,36 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<int> GenOutboundTls(ProfileItem node, Outbound4Sbox outbound)
+    private void FillOutboundTls(Outbound4Sbox outbound)
     {
         try
         {
+            var node = context.Node;
             if (node.StreamSecurity is not (Global.StreamSecurityReality or Global.StreamSecurity))
             {
-                return await Task.FromResult(0);
+                return;
             }
             if (node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard)
             {
-                return await Task.FromResult(0);
+                return;
             }
-            var server_name = string.Empty;
+            var serverName = string.Empty;
             if (node.Sni.IsNotEmpty())
             {
-                server_name = node.Sni;
+                serverName = node.Sni;
             }
             else if (node.RequestHost.IsNotEmpty())
             {
-                server_name = Utils.String2List(node.RequestHost)?.First();
+                serverName = Utils.String2List(node.RequestHost)?.First();
             }
             var tls = new Tls4Sbox()
             {
                 enabled = true,
-                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
-                server_name = server_name,
-                insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
+                record_fragment = context.AppConfig.CoreBasicItem.EnableFragment ? true : null,
+                server_name = serverName,
+                insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? context.AppConfig.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
                 alpn = node.GetAlpn(),
             };
             if (node.Fingerprint.IsNotEmpty())
@@ -339,7 +381,7 @@ public partial class CoreConfigSingboxService
                 tls.utls = new Utls4Sbox()
                 {
                     enabled = true,
-                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint
+                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? context.AppConfig.CoreBasicItem.DefFingerprint : node.Fingerprint
                 };
             }
             if (node.StreamSecurity == Global.StreamSecurity)
@@ -372,13 +414,13 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<int> GenOutboundTransport(ProfileItem node, Outbound4Sbox outbound)
+    private void FillOutboundTransport(Outbound4Sbox outbound)
     {
         try
         {
+            var node = context.Node;
             var transport = new Transport4Sbox();
 
             switch (node.GetNetwork())
@@ -452,9 +494,9 @@ public partial class CoreConfigSingboxService
                 case nameof(ETransport.grpc):
                     transport.type = nameof(ETransport.grpc);
                     transport.service_name = node.Path;
-                    transport.idle_timeout = _config.GrpcItem.IdleTimeout?.ToString("##s");
-                    transport.ping_timeout = _config.GrpcItem.HealthCheckTimeout?.ToString("##s");
-                    transport.permit_without_stream = _config.GrpcItem.PermitWithoutStream;
+                    transport.idle_timeout = context.AppConfig.GrpcItem.IdleTimeout?.ToString("##s");
+                    transport.ping_timeout = context.AppConfig.GrpcItem.HealthCheckTimeout?.ToString("##s");
+                    transport.permit_without_stream = context.AppConfig.GrpcItem.PermitWithoutStream;
                     break;
 
                 default:
@@ -469,458 +511,145 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    private List<Outbound4Sbox> BuildSelectorOutbounds(List<string> proxyTags, string baseTagName = Global.ProxyTag)
     {
-        try
+        var multipleLoad = context.Node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+        var outUrltest = new Outbound4Sbox
         {
-            if (!node.ConfigType.IsGroupType())
-            {
-                return -1;
-            }
-            var hasCycle = await GroupProfileManager.HasCycle(node);
-            if (hasCycle)
-            {
-                return -1;
-            }
+            type = "urltest",
+            tag = $"{Global.ProxyTag}-auto",
+            outbounds = proxyTags,
+            interrupt_exist_connections = false,
+        };
 
-            var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
-            if (childProfiles.Count <= 0)
-            {
-                return -1;
-            }
-            switch (node.ConfigType)
-            {
-                case EConfigType.PolicyGroup:
-                    var multipleLoad = profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing;
-                    if (ignoreOriginChain)
-                    {
-                        await GenOutboundsList(childProfiles, singboxConfig, multipleLoad, baseTagName);
-                    }
-                    else
-                    {
-                        await GenOutboundsListWithChain(childProfiles, singboxConfig, multipleLoad, baseTagName);
-                    }
-
-                    break;
-
-                case EConfigType.ProxyChain:
-                    await GenChainOutboundsList(childProfiles, singboxConfig, baseTagName);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        catch (Exception ex)
+        if (multipleLoad == EMultipleLoad.Fallback)
         {
-            Logging.SaveLog(_tag, ex);
+            outUrltest.tolerance = 5000;
         }
-        return await Task.FromResult(0);
+
+        // Add selector outbound (manual selection)
+        var outSelector = new Outbound4Sbox
+        {
+            type = "selector",
+            tag = Global.ProxyTag,
+            outbounds = JsonUtils.DeepCopy(proxyTags),
+            interrupt_exist_connections = false,
+        };
+        outSelector.outbounds.Insert(0, outUrltest.tag);
+
+        return [outSelector, outUrltest];
     }
 
-    private async Task<int> GenMoreOutbounds(ProfileItem node, SingboxConfig singboxConfig)
+    private List<BaseServer4Sbox> BuildOutboundsList(string baseTagName = Global.ProxyTag)
     {
-        if (node.Subid.IsNullOrEmpty())
+        var nodes = new List<ProfileItem>();
+        foreach (var nodeId in Utils.String2List(context.Node.GetProtocolExtra().ChildItems) ?? [])
         {
-            return 0;
-        }
-        try
-        {
-            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-            if (subItem is null)
+            if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
             {
-                return 0;
-            }
-
-            //current proxy
-            BaseServer4Sbox? outbound = singboxConfig.endpoints?.FirstOrDefault(t => t.tag == Global.ProxyTag, null);
-            outbound ??= singboxConfig.outbounds.First();
-
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-
-            //Previous proxy
-            var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-            string? prevOutboundTag = null;
-            if (prevNode is not null
-                && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
-            {
-                prevOutboundTag = $"prev-{Global.ProxyTag}";
-                var prevServer = await GenServer(prevNode);
-                prevServer.tag = prevOutboundTag;
-                if (prevServer is Endpoints4Sbox endpoint)
-                {
-                    singboxConfig.endpoints ??= new();
-                    singboxConfig.endpoints.Add(endpoint);
-                }
-                else if (prevServer is Outbound4Sbox outboundPrev)
-                {
-                    singboxConfig.outbounds.Add(outboundPrev);
-                }
-            }
-            var nextServer = await GenChainOutbounds(subItem, outbound, prevOutboundTag);
-
-            if (nextServer is not null)
-            {
-                if (nextServer is Endpoints4Sbox endpoint)
-                {
-                    singboxConfig.endpoints ??= new();
-                    singboxConfig.endpoints.Insert(0, endpoint);
-                }
-                else if (nextServer is Outbound4Sbox outboundNext)
-                {
-                    singboxConfig.outbounds.Insert(0, outboundNext);
-                }
+                nodes.Add(node);
             }
         }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-
-        return 0;
-    }
-
-    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
-    {
-        try
-        {
-            // Get outbound template and initialize lists
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-            if (txtOutbound.IsNullOrEmpty())
-            {
-                return 0;
-            }
-
-            var resultOutbounds = new List<Outbound4Sbox>();
-            var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
-            var prevOutbounds = new List<Outbound4Sbox>(); // Separate list for prev outbounds
-            var prevEndpoints = new List<Endpoints4Sbox>(); // Separate list for prev endpoints
-            var proxyTags = new List<string>(); // For selector and urltest outbounds
-
-            // Cache for chain proxies to avoid duplicate generation
-            var nextProxyCache = new Dictionary<string, BaseServer4Sbox?>();
-            var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
-            var prevIndex = 0; // Index for prev outbounds
-
-            // Process each node
-            var index = 0;
-            foreach (var node in nodes)
-            {
-                index++;
-
-                if (node.ConfigType.IsGroupType())
-                {
-                    var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
-                    if (childProfiles.Count <= 0)
-                    {
-                        continue;
-                    }
-                    var childBaseTagName = $"{baseTagName}-{index}";
-                    var ret = node.ConfigType switch
-                    {
-                        EConfigType.PolicyGroup =>
-                            await GenOutboundsListWithChain(childProfiles, singboxConfig,
-                                profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing, childBaseTagName),
-                        EConfigType.ProxyChain =>
-                            await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
-                        _ => throw new NotImplementedException()
-                    };
-                    if (ret == 0)
-                    {
-                        proxyTags.Add(childBaseTagName);
-                    }
-                    continue;
-                }
-
-                // Handle proxy chain
-                string? prevTag = null;
-                var currentServer = await GenServer(node);
-                var nextServer = nextProxyCache.GetValueOrDefault(node.Subid, null);
-                if (nextServer != null)
-                {
-                    nextServer = JsonUtils.DeepCopy(nextServer);
-                }
-
-                var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-
-                // current proxy
-                currentServer.tag = $"{baseTagName}-{index}";
-                proxyTags.Add(currentServer.tag);
-
-                if (!node.Subid.IsNullOrEmpty())
-                {
-                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
-                    {
-                        prevTag = value; // maybe null
-                    }
-                    else
-                    {
-                        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-                        if (prevNode is not null
-                            && Global.SingboxSupportConfigType.Contains(prevNode.ConfigType))
-                        {
-                            var prevOutbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
-                            await GenOutbound(prevNode, prevOutbound);
-                            prevTag = $"prev-{baseTagName}-{++prevIndex}";
-                            prevOutbound.tag = prevTag;
-                            prevOutbounds.Add(prevOutbound);
-                        }
-                        prevProxyTags[node.Subid] = prevTag;
-                    }
-
-                    nextServer = await GenChainOutbounds(subItem, currentServer, prevTag, nextServer);
-                    if (!nextProxyCache.ContainsKey(node.Subid))
-                    {
-                        nextProxyCache[node.Subid] = nextServer;
-                    }
-                }
-
-                if (nextServer is not null)
-                {
-                    if (nextServer is Endpoints4Sbox nextEndpoint)
-                    {
-                        resultEndpoints.Add(nextEndpoint);
-                    }
-                    else if (nextServer is Outbound4Sbox nextOutbound)
-                    {
-                        resultOutbounds.Add(nextOutbound);
-                    }
-                }
-                if (currentServer is Endpoints4Sbox currentEndpoint)
-                {
-                    resultEndpoints.Add(currentEndpoint);
-                }
-                else if (currentServer is Outbound4Sbox currentOutbound)
-                {
-                    resultOutbounds.Add(currentOutbound);
-                }
-            }
-
-            // Add urltest outbound (auto selection based on latency)
-            if (proxyTags.Count > 0)
-            {
-                var outUrltest = new Outbound4Sbox
-                {
-                    type = "urltest",
-                    tag = $"{baseTagName}-auto",
-                    outbounds = proxyTags,
-                    interrupt_exist_connections = false,
-                };
-
-                if (multipleLoad == EMultipleLoad.Fallback)
-                {
-                    outUrltest.tolerance = 5000;
-                }
-
-                // Add selector outbound (manual selection)
-                var outSelector = new Outbound4Sbox
-                {
-                    type = "selector",
-                    tag = baseTagName,
-                    outbounds = JsonUtils.DeepCopy(proxyTags),
-                    interrupt_exist_connections = false,
-                };
-                outSelector.outbounds.Insert(0, outUrltest.tag);
-
-                // Insert these at the beginning
-                resultOutbounds.Insert(0, outUrltest);
-                resultOutbounds.Insert(0, outSelector);
-            }
-
-            // Merge results: first the selector/urltest/proxies, then other outbounds, and finally prev outbounds
-            var serverList = new List<BaseServer4Sbox>();
-            serverList = serverList.Concat(prevOutbounds)
-                .Concat(resultOutbounds)
-                .Concat(resultEndpoints)
-                .ToList();
-            await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-
-        return 0;
-    }
-
-    private async Task<BaseServer4Sbox?> GenChainOutbounds(SubItem subItem, BaseServer4Sbox outbound, string? prevOutboundTag, BaseServer4Sbox? nextOutbound = null)
-    {
-        try
-        {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-
-            if (!prevOutboundTag.IsNullOrEmpty())
-            {
-                outbound.detour = prevOutboundTag;
-            }
-
-            // Next proxy
-            var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            if (nextNode is not null
-                && Global.SingboxSupportConfigType.Contains(nextNode.ConfigType))
-            {
-                nextOutbound ??= await GenServer(nextNode);
-                nextOutbound.tag = outbound.tag;
-
-                outbound.tag = $"mid-{outbound.tag}";
-                nextOutbound.detour = outbound.tag;
-            }
-            return nextOutbound;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-        return null;
-    }
-
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
-    {
-        var resultOutbounds = new List<Outbound4Sbox>();
-        var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
-        var proxyTags = new List<string>(); // For selector and urltest outbounds
+        var resultOutbounds = new List<BaseServer4Sbox>();
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            if (node == null)
-            {
-                continue;
-            }
+            var currentTag = baseTagName + (i + 1).ToString();
 
             if (node.ConfigType.IsGroupType())
             {
-                var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
-                if (childProfiles.Count <= 0)
-                {
-                    continue;
-                }
-                var childBaseTagName = $"{baseTagName}-{i + 1}";
-                var ret = node.ConfigType switch
-                {
-                    EConfigType.PolicyGroup =>
-                        await GenOutboundsList(childProfiles, singboxConfig, profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing, childBaseTagName),
-                    EConfigType.ProxyChain =>
-                        await GenChainOutboundsList(childProfiles, singboxConfig, childBaseTagName),
-                    _ => throw new NotImplementedException()
-                };
-                if (ret == 0)
-                {
-                    proxyTags.Add(childBaseTagName);
-                }
+                var childProfiles = new CoreConfigSingboxService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                resultOutbounds.AddRange(childProfiles);
                 continue;
             }
-            var server = await GenServer(node);
-            if (server is null)
-            {
-                break;
-            }
-            server.tag = baseTagName + (i + 1).ToString();
-            if (server is Endpoints4Sbox endpoint)
-            {
-                resultEndpoints.Add(endpoint);
-            }
-            else if (server is Outbound4Sbox outbound)
-            {
-                resultOutbounds.Add(outbound);
-            }
-            proxyTags.Add(server.tag);
+            var outbound = new CoreConfigSingboxService(context with { Node = node, }).BuildProxyOutbound();
+            outbound.tag = currentTag;
+            resultOutbounds.Add(outbound);
         }
-        // Add urltest outbound (auto selection based on latency)
-        if (proxyTags.Count > 0)
-        {
-            var outUrltest = new Outbound4Sbox
-            {
-                type = "urltest",
-                tag = $"{baseTagName}-auto",
-                outbounds = proxyTags,
-                interrupt_exist_connections = false,
-            };
-            if (multipleLoad == EMultipleLoad.Fallback)
-            {
-                outUrltest.tolerance = 5000;
-            }
-            // Add selector outbound (manual selection)
-            var outSelector = new Outbound4Sbox
-            {
-                type = "selector",
-                tag = baseTagName,
-                outbounds = JsonUtils.DeepCopy(proxyTags),
-                interrupt_exist_connections = false,
-            };
-            outSelector.outbounds.Insert(0, outUrltest.tag);
-            // Insert these at the beginning
-            resultOutbounds.Insert(0, outUrltest);
-            resultOutbounds.Insert(0, outSelector);
-        }
-        var serverList = new List<BaseServer4Sbox>();
-        serverList = serverList.Concat(resultOutbounds)
-            .Concat(resultEndpoints)
-            .ToList();
-        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
-        return await Task.FromResult(0);
+        return resultOutbounds;
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, SingboxConfig singboxConfig, string baseTagName = Global.ProxyTag)
+    private List<BaseServer4Sbox> BuildChainOutboundsList(string baseTagName = Global.ProxyTag)
     {
+        var nodes = new List<ProfileItem>();
+        foreach (var nodeId in Utils.String2List(context.Node.GetProtocolExtra().ChildItems) ?? [])
+        {
+            if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
+            {
+                nodes.Add(node);
+            }
+        }
         // Based on actual network flow instead of data packets
         var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
-        var resultOutbounds = new List<Outbound4Sbox>();
-        var resultEndpoints = new List<Endpoints4Sbox>(); // For endpoints
+        var resultOutbounds = new List<BaseServer4Sbox>();
         for (var i = 0; i < nodesReverse.Count; i++)
         {
             var node = nodesReverse[i];
-            var server = await GenServer(node);
+            var currentTag = i == 0 ? baseTagName : "chain-" + baseTagName + i.ToString();
+            var dialerProxyTag = i != nodesReverse.Count - 1 ? "chain-" + baseTagName + (i + 1).ToString() : null;
+            if (node.ConfigType.IsGroupType())
+            {
+                var childProfiles = new CoreConfigSingboxService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                if (!dialerProxyTag.IsNullOrEmpty())
+                {
+                    var chainEndNodes =
+                        childProfiles.Where(n => n?.detour.IsNullOrEmpty() ?? true);
+                    foreach (var chainEndNode in chainEndNodes)
+                    {
+                        chainEndNode.detour = dialerProxyTag;
+                    }
+                }
+                if (i != 0)
+                {
+                    var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
+                    var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
+                    resultOutbounds.Clear();
+                    foreach (var chainStartNode in chainStartNodes)
+                    {
+                        var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
+                        for (var j = 0; j < existedChainNodesClone.Count; j++)
+                        {
+                            var existedChainNode = existedChainNodesClone[j];
+                            var cloneTag = $"{existedChainNode.tag}-clone{j}";
+                            existedChainNode.tag = cloneTag;
+                            var previousDialerProxyTag = existedChainNode.detour;
+                            existedChainNode.detour = (previousDialerProxyTag == currentTag)
+                                ? chainStartNode.tag
+                                : existedChainNodesClone[j + 1].tag;
+                            resultOutbounds.Add(existedChainNode);
+                        }
+                    }
+                }
+                resultOutbounds.AddRange(childProfiles);
+                continue;
+            }
+            var outbound = new CoreConfigSingboxService(context with { Node = node, }).BuildProxyOutbound();
 
-            if (server is null)
+            outbound.tag = currentTag;
+
+            if (!dialerProxyTag.IsNullOrEmpty())
             {
-                break;
+                outbound.detour = dialerProxyTag;
             }
 
-            if (i == 0)
-            {
-                server.tag = baseTagName;
-            }
-            else
-            {
-                server.tag = baseTagName + i.ToString();
-            }
-
-            if (i != nodesReverse.Count - 1)
-            {
-                server.detour = baseTagName + (i + 1).ToString();
-            }
-
-            if (server is Endpoints4Sbox endpoint)
-            {
-                resultEndpoints.Add(endpoint);
-            }
-            else if (server is Outbound4Sbox outbound)
-            {
-                resultOutbounds.Add(outbound);
-            }
+            resultOutbounds.Add(outbound);
         }
-        var serverList = new List<BaseServer4Sbox>();
-        serverList = serverList.Concat(resultOutbounds)
-            .Concat(resultEndpoints)
-            .ToList();
-        await AddRangeOutbounds(serverList, singboxConfig, baseTagName == Global.ProxyTag);
-        return await Task.FromResult(0);
+        return resultOutbounds;
     }
 
-    private async Task<int> AddRangeOutbounds(List<BaseServer4Sbox> servers, SingboxConfig singboxConfig, bool prepend = true)
+    private static void FillRangeProxy(List<BaseServer4Sbox> servers, SingboxConfig singboxConfig, bool prepend = true)
     {
         try
         {
             if (servers is null || servers.Count <= 0)
             {
-                return 0;
+                return;
             }
             var outbounds = servers.Where(s => s is Outbound4Sbox).Cast<Outbound4Sbox>().ToList();
             var endpoints = servers.Where(s => s is Endpoints4Sbox).Cast<Endpoints4Sbox>().ToList();
-            singboxConfig.endpoints ??= new();
+            singboxConfig.endpoints ??= [];
             if (prepend)
             {
                 singboxConfig.outbounds.InsertRange(0, outbounds);
@@ -936,10 +665,9 @@ public partial class CoreConfigSingboxService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private (Ech4Sbox? ech, Server4Sbox? dnsServer) ParseEchParam(string? echConfig)
+    private static (Ech4Sbox? ech, Server4Sbox? dnsServer) ParseEchParam(string? echConfig)
     {
         if (echConfig.IsNullOrEmpty())
         {

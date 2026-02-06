@@ -1,17 +1,19 @@
 namespace ServiceLib.Services.CoreConfig;
 
-public partial class CoreConfigV2rayService(Config config)
+public partial class CoreConfigV2rayService(CoreConfigContext context)
 {
-    private readonly Config _config = config;
     private static readonly string _tag = "CoreConfigV2rayService";
+
+    private V2rayConfig _coreConfig = new();
 
     #region public gen function
 
-    public async Task<RetResult> GenerateClientConfigContent(ProfileItem node)
+    public RetResult GenerateClientConfigContent()
     {
         var ret = new RetResult();
         try
         {
+            var node = context?.Node;
             if (node == null
                 || !node.IsValid())
             {
@@ -27,18 +29,6 @@ public partial class CoreConfigV2rayService(Config config)
 
             ret.Msg = ResUI.InitialConfiguration;
 
-            if (node.ConfigType.IsGroupType())
-            {
-                switch (node.ConfigType)
-                {
-                    case EConfigType.PolicyGroup:
-                        return await GenerateClientMultipleLoadConfig(node);
-
-                    case EConfigType.ProxyChain:
-                        return await GenerateClientChainConfig(node);
-                }
-            }
-
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
             if (result.IsNullOrEmpty())
             {
@@ -46,30 +36,28 @@ public partial class CoreConfigV2rayService(Config config)
                 return ret;
             }
 
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            _coreConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+            if (_coreConfig == null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
 
-            await GenLog(v2rayConfig);
+            GenLog();
 
-            await GenInbounds(v2rayConfig);
+            GenInbounds();
 
-            await GenOutbound(node, v2rayConfig.outbounds.First());
+            GenOutbounds();
 
-            await GenMoreOutbounds(node, v2rayConfig);
+            GenRouting();
 
-            await GenRouting(v2rayConfig);
+            GenDns();
 
-            await GenDns(node, v2rayConfig);
-
-            await GenStatistic(v2rayConfig);
+            GenStatistic();
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
+            ret.Data = ApplyFullConfigTemplate();
             return ret;
         }
         catch (Exception ex)
@@ -80,182 +68,11 @@ public partial class CoreConfigV2rayService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientMultipleLoadConfig(ProfileItem parentNode)
-    {
-        var ret = new RetResult();
-
-        try
-        {
-            if (_config == null)
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            ret.Msg = ResUI.InitialConfiguration;
-
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-            if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
-            {
-                ret.Msg = ResUI.FailedGetDefaultConfiguration;
-                return ret;
-            }
-
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-            v2rayConfig.outbounds.RemoveAt(0);
-
-            await GenLog(v2rayConfig);
-            await GenInbounds(v2rayConfig);
-
-            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
-            if (groupRet != 0)
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-
-            await GenRouting(v2rayConfig);
-            await GenDns(null, v2rayConfig);
-            await GenStatistic(v2rayConfig);
-
-            var defaultBalancerTag = $"{Global.ProxyTag}{Global.BalancerTagSuffix}";
-
-            //add rule
-            var rules = v2rayConfig.routing.rules;
-            if (rules?.Count > 0 && ((v2rayConfig.routing.balancers?.Count ?? 0) > 0))
-            {
-                var balancerTagSet = v2rayConfig.routing.balancers
-                    .Select(b => b.tag)
-                    .ToHashSet();
-
-                foreach (var rule in rules)
-                {
-                    if (rule.outboundTag == null)
-                    {
-                        continue;
-                    }
-
-                    if (balancerTagSet.Contains(rule.outboundTag))
-                    {
-                        rule.balancerTag = rule.outboundTag;
-                        rule.outboundTag = null;
-                        continue;
-                    }
-
-                    var outboundWithSuffix = rule.outboundTag + Global.BalancerTagSuffix;
-                    if (balancerTagSet.Contains(outboundWithSuffix))
-                    {
-                        rule.balancerTag = outboundWithSuffix;
-                        rule.outboundTag = null;
-                    }
-                }
-            }
-            if (v2rayConfig.routing.domainStrategy == Global.IPIfNonMatch)
-            {
-                v2rayConfig.routing.rules.Add(new()
-                {
-                    ip = ["0.0.0.0/0", "::/0"],
-                    balancerTag = defaultBalancerTag,
-                    type = "field"
-                });
-            }
-            else
-            {
-                v2rayConfig.routing.rules.Add(new()
-                {
-                    network = "tcp,udp",
-                    balancerTag = defaultBalancerTag,
-                    type = "field"
-                });
-            }
-
-            ret.Success = true;
-
-            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
-            return ret;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            ret.Msg = ResUI.FailedGenDefaultConfiguration;
-            return ret;
-        }
-    }
-
-    public async Task<RetResult> GenerateClientChainConfig(ProfileItem parentNode)
-    {
-        var ret = new RetResult();
-
-        try
-        {
-            if (_config == null)
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            ret.Msg = ResUI.InitialConfiguration;
-
-            var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-            if (result.IsNullOrEmpty() || txtOutbound.IsNullOrEmpty())
-            {
-                ret.Msg = ResUI.FailedGetDefaultConfiguration;
-                return ret;
-            }
-
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-            v2rayConfig.outbounds.RemoveAt(0);
-
-            await GenLog(v2rayConfig);
-            await GenInbounds(v2rayConfig);
-
-            var groupRet = await GenGroupOutbound(parentNode, v2rayConfig);
-            if (groupRet != 0)
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-
-            await GenRouting(v2rayConfig);
-            await GenDns(null, v2rayConfig);
-            await GenStatistic(v2rayConfig);
-
-            ret.Success = true;
-
-            ret.Data = await ApplyFullConfigTemplate(v2rayConfig);
-            return ret;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            ret.Msg = ResUI.FailedGenDefaultConfiguration;
-            return ret;
-        }
-    }
-
-    public async Task<RetResult> GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
+    public RetResult GenerateClientSpeedtestConfig(List<ServerTestItem> selecteds)
     {
         var ret = new RetResult();
         try
         {
-            if (_config == null)
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
             ret.Msg = ResUI.InitialConfiguration;
 
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
@@ -285,7 +102,7 @@ public partial class CoreConfigV2rayService(Config config)
                 Logging.SaveLog(_tag, ex);
             }
 
-            await GenLog(v2rayConfig);
+            GenLog();
             v2rayConfig.inbounds.Clear();
             v2rayConfig.outbounds.Clear();
             v2rayConfig.routing.rules.Clear();
@@ -302,7 +119,7 @@ public partial class CoreConfigV2rayService(Config config)
                 {
                     continue;
                 }
-                var item = await AppManager.Instance.GetProfileItem(it.IndexId);
+                var item = context.AllProxiesMap.GetValueOrDefault(it.IndexId);
                 if (item is null || item.IsComplex() || !item.IsValid())
                 {
                     continue;
@@ -344,19 +161,31 @@ public partial class CoreConfigV2rayService(Config config)
                 inbound.tag = inbound.protocol + inbound.port.ToString();
                 v2rayConfig.inbounds.Add(inbound);
 
+                var tag = Global.ProxyTag + inbound.port.ToString();
+                var isBalancer = false;
                 //outbound
-                var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(item, outbound);
-                outbound.tag = Global.ProxyTag + inbound.port.ToString();
-                v2rayConfig.outbounds.Add(outbound);
+                var proxyOutbounds = BuildAllProxyOutbounds(tag);
+                v2rayConfig.outbounds.AddRange(proxyOutbounds);
+                if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
+                {
+                    isBalancer = true;
+                    var multipleLoad = context.Node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+                    GenObservatory(multipleLoad, tag);
+                    GenBalancer(multipleLoad, tag);
+                }
 
                 //rule
                 RulesItem4Ray rule = new()
                 {
                     inboundTag = new List<string> { inbound.tag },
-                    outboundTag = outbound.tag,
+                    outboundTag = tag,
                     type = "field"
                 };
+                if (isBalancer)
+                {
+                    rule.balancerTag = tag;
+                    rule.outboundTag = null;
+                }
                 v2rayConfig.routing.rules.Add(rule);
             }
 
@@ -373,11 +202,12 @@ public partial class CoreConfigV2rayService(Config config)
         }
     }
 
-    public async Task<RetResult> GenerateClientSpeedtestConfig(ProfileItem node, int port)
+    public RetResult GenerateClientSpeedtestConfig(int port)
     {
         var ret = new RetResult();
         try
         {
+            var node = context.Node;
             if (node == null
                 || !node.IsValid())
             {
@@ -405,9 +235,8 @@ public partial class CoreConfigV2rayService(Config config)
                 return ret;
             }
 
-            await GenLog(v2rayConfig);
-            await GenOutbound(node, v2rayConfig.outbounds.First());
-            await GenMoreOutbounds(node, v2rayConfig);
+            GenLog();
+            GenOutbounds();
 
             v2rayConfig.routing.rules.Clear();
             v2rayConfig.inbounds.Clear();
