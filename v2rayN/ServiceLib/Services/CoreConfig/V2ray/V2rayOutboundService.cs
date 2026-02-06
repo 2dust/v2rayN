@@ -757,21 +757,31 @@ public partial class CoreConfigV2rayService
                     {
                         var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
                         resultOutbounds.Clear();
+                        var j = 0;
                         foreach (var chainStartNode in chainStartNodes)
                         {
                             var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
-                            for (var j = 0; j < existedChainNodesClone.Count; j++)
+                            foreach (var existedChainNode in existedChainNodesClone)
                             {
-                                var existedChainNode = existedChainNodesClone[j];
                                 var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
                                 existedChainNode.tag = cloneTag;
+                            }
+                            for (var k = 0; k < existedChainNodesClone.Count; k++)
+                            {
+                                var existedChainNode = existedChainNodesClone[k];
                                 var previousDialerProxyTag = existedChainNode.streamSettings?.sockopt?.dialerProxy;
+                                var nextTag = k + 1 < existedChainNodesClone.Count
+                                    ? existedChainNodesClone[k + 1].tag
+                                    : chainStartNode.tag;
                                 existedChainNode.streamSettings.sockopt = new()
                                 {
-                                    dialerProxy = (previousDialerProxyTag == currentTag) ? chainStartNode.tag : existedChainNodesClone[j + 1].tag
+                                    dialerProxy = (previousDialerProxyTag == currentTag)
+                                        ? chainStartNode.tag
+                                        : nextTag
                                 };
                                 resultOutbounds.Add(existedChainNode);
                             }
+                            j++;
                         }
                     }
                 }
