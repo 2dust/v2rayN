@@ -743,22 +743,45 @@ public partial class CoreConfigV2rayService
                 if (i != 0)
                 {
                     var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
-                    var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
-                    resultOutbounds.Clear();
-                    foreach (var chainStartNode in chainStartNodes)
+                    if (chainStartNodes.Count == 1)
                     {
-                        var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
-                        for (var j = 0; j < existedChainNodesClone.Count; j++)
+                        foreach (var existedChainEndNode in resultOutbounds.Where(n => n.streamSettings?.sockopt?.dialerProxy == currentTag))
                         {
-                            var existedChainNode = existedChainNodesClone[j];
-                            var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
-                            existedChainNode.tag = cloneTag;
-                            var previousDialerProxyTag = existedChainNode.streamSettings?.sockopt?.dialerProxy;
-                            existedChainNode.streamSettings.sockopt = new()
+                            existedChainEndNode.streamSettings.sockopt = new()
                             {
-                                dialerProxy = (previousDialerProxyTag == currentTag) ? chainStartNode.tag : existedChainNodesClone[j + 1].tag
+                                dialerProxy = chainStartNodes.First().tag
                             };
-                            resultOutbounds.Add(existedChainNode);
+                        }
+                    }
+                    else if (chainStartNodes.Count > 1)
+                    {
+                        var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
+                        resultOutbounds.Clear();
+                        var j = 0;
+                        foreach (var chainStartNode in chainStartNodes)
+                        {
+                            var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
+                            foreach (var existedChainNode in existedChainNodesClone)
+                            {
+                                var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
+                                existedChainNode.tag = cloneTag;
+                            }
+                            for (var k = 0; k < existedChainNodesClone.Count; k++)
+                            {
+                                var existedChainNode = existedChainNodesClone[k];
+                                var previousDialerProxyTag = existedChainNode.streamSettings?.sockopt?.dialerProxy;
+                                var nextTag = k + 1 < existedChainNodesClone.Count
+                                    ? existedChainNodesClone[k + 1].tag
+                                    : chainStartNode.tag;
+                                existedChainNode.streamSettings.sockopt = new()
+                                {
+                                    dialerProxy = (previousDialerProxyTag == currentTag)
+                                        ? chainStartNode.tag
+                                        : nextTag
+                                };
+                                resultOutbounds.Add(existedChainNode);
+                            }
+                            j++;
                         }
                     }
                 }

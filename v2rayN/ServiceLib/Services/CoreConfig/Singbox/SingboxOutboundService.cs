@@ -519,7 +519,7 @@ public partial class CoreConfigSingboxService
         var outUrltest = new Outbound4Sbox
         {
             type = "urltest",
-            tag = $"{Global.ProxyTag}-auto",
+            tag = $"{baseTagName}-auto",
             outbounds = proxyTags,
             interrupt_exist_connections = false,
         };
@@ -533,7 +533,7 @@ public partial class CoreConfigSingboxService
         var outSelector = new Outbound4Sbox
         {
             type = "selector",
-            tag = Global.ProxyTag,
+            tag = baseTagName,
             outbounds = JsonUtils.DeepCopy(proxyTags),
             interrupt_exist_connections = false,
         };
@@ -604,21 +604,39 @@ public partial class CoreConfigSingboxService
                 if (i != 0)
                 {
                     var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
-                    var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
-                    resultOutbounds.Clear();
-                    foreach (var chainStartNode in chainStartNodes)
+                    if (chainStartNodes.Count == 1)
                     {
-                        var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
-                        for (var j = 0; j < existedChainNodesClone.Count; j++)
+                        foreach (var existedChainEndNode in resultOutbounds.Where(n => n.detour == currentTag))
                         {
-                            var existedChainNode = existedChainNodesClone[j];
-                            var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
-                            existedChainNode.tag = cloneTag;
-                            var previousDialerProxyTag = existedChainNode.detour;
-                            existedChainNode.detour = (previousDialerProxyTag == currentTag)
-                                ? chainStartNode.tag
-                                : existedChainNodesClone[j + 1].tag;
-                            resultOutbounds.Add(existedChainNode);
+                            existedChainEndNode.detour = chainStartNodes.First().tag;
+                        }
+                    }
+                    else if (chainStartNodes.Count > 1)
+                    {
+                        var existedChainNodes = CloneOutbounds(resultOutbounds);
+                        resultOutbounds.Clear();
+                        var j = 0;
+                        foreach (var chainStartNode in chainStartNodes)
+                        {
+                            var existedChainNodesClone = CloneOutbounds(existedChainNodes);
+                            foreach (var existedChainNode in existedChainNodesClone)
+                            {
+                                var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
+                                existedChainNode.tag = cloneTag;
+                            }
+                            for (var k = 0; k < existedChainNodesClone.Count; k++)
+                            {
+                                var existedChainNode = existedChainNodesClone[k];
+                                var previousDialerProxyTag = existedChainNode.detour;
+                                var nextTag = k + 1 < existedChainNodesClone.Count
+                                    ? existedChainNodesClone[k + 1].tag
+                                    : chainStartNode.tag;
+                                existedChainNode.detour = (previousDialerProxyTag == currentTag)
+                                    ? chainStartNode.tag
+                                    : nextTag;
+                                resultOutbounds.Add(existedChainNode);
+                            }
+                            j++;
                         }
                     }
                 }
@@ -637,6 +655,33 @@ public partial class CoreConfigSingboxService
             resultOutbounds.Add(outbound);
         }
         return resultOutbounds;
+    }
+
+    private static List<BaseServer4Sbox> CloneOutbounds(List<BaseServer4Sbox> source)
+    {
+        if (source is null || source.Count == 0)
+        {
+            return [];
+        }
+
+        var result = new List<BaseServer4Sbox>(source.Count);
+        foreach (var item in source)
+        {
+            BaseServer4Sbox? clone = null;
+            if (item is Outbound4Sbox outbound)
+            {
+                clone = JsonUtils.DeepCopy(outbound);
+            }
+            else if (item is Endpoints4Sbox endpoint)
+            {
+                clone = JsonUtils.DeepCopy(endpoint);
+            }
+            if (clone is not null)
+            {
+                result.Add(clone);
+            }
+        }
+        return result;
     }
 
     private static void FillRangeProxy(List<BaseServer4Sbox> servers, SingboxConfig singboxConfig, bool prepend = true)

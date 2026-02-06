@@ -83,8 +83,8 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 return ret;
             }
 
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            _coreConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+            if (_coreConfig == null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -103,9 +103,9 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             }
 
             GenLog();
-            v2rayConfig.inbounds.Clear();
-            v2rayConfig.outbounds.Clear();
-            v2rayConfig.routing.rules.Clear();
+            _coreConfig.inbounds.Clear();
+            _coreConfig.outbounds.Clear();
+            _coreConfig.routing.rules.Clear();
 
             var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
 
@@ -159,13 +159,14 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                     protocol = EInboundProtocol.mixed.ToString(),
                 };
                 inbound.tag = inbound.protocol + inbound.port.ToString();
-                v2rayConfig.inbounds.Add(inbound);
+                _coreConfig.inbounds.Add(inbound);
 
                 var tag = Global.ProxyTag + inbound.port.ToString();
                 var isBalancer = false;
                 //outbound
-                var proxyOutbounds = BuildAllProxyOutbounds(tag);
-                v2rayConfig.outbounds.AddRange(proxyOutbounds);
+                var proxyOutbounds =
+                    new CoreConfigV2rayService(context with { Node = item }).BuildAllProxyOutbounds(tag);
+                _coreConfig.outbounds.AddRange(proxyOutbounds);
                 if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
                 {
                     isBalancer = true;
@@ -186,12 +187,12 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                     rule.balancerTag = tag;
                     rule.outboundTag = null;
                 }
-                v2rayConfig.routing.rules.Add(rule);
+                _coreConfig.routing.rules.Add(rule);
             }
 
             //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(v2rayConfig);
+            ret.Data = JsonUtils.Serialize(_coreConfig);
             return ret;
         }
         catch (Exception ex)
@@ -228,8 +229,8 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 return ret;
             }
 
-            var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result);
-            if (v2rayConfig == null)
+            _coreConfig = JsonUtils.Deserialize<V2rayConfig>(result);
+            if (_coreConfig == null)
             {
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
@@ -238,9 +239,9 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             GenLog();
             GenOutbounds();
 
-            v2rayConfig.routing.rules.Clear();
-            v2rayConfig.inbounds.Clear();
-            v2rayConfig.inbounds.Add(new()
+            _coreConfig.routing.rules.Clear();
+            _coreConfig.inbounds.Clear();
+            _coreConfig.inbounds.Add(new()
             {
                 tag = $"{EInboundProtocol.socks}{port}",
                 listen = Global.Loopback,
@@ -250,7 +251,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(v2rayConfig);
+            ret.Data = JsonUtils.Serialize(_coreConfig);
             return ret;
         }
         catch (Exception ex)

@@ -349,6 +349,7 @@ public partial class CoreConfigSingboxService
     {
         GenDnsServers();
         _coreConfig.dns ??= new();
+        _coreConfig.dns.rules ??= [];
         _coreConfig.dns.rules.Clear();
         _coreConfig.dns.final = Global.SingboxDirectDNSTag;
         _coreConfig.route.default_domain_resolver = new()
