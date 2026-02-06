@@ -95,13 +95,13 @@ public static class CoreConfigHandler
     {
         var result = new RetResult();
         var context = await BuildCoreConfigContext(config, new());
-        foreach (var serverTestItem in selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty()))
+        var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
+            .Select(serverTestItem => serverTestItem.IndexId!)
+            .ToList();
+        foreach (var id in ids)
         {
-            var node = await AppManager.Instance.GetProfileItem(serverTestItem.IndexId!);
-            if (node != null)
-            {
-                await FillNodeContext(context, node, false);
-            }
+            var node = await AppManager.Instance.GetProfileItem(id) ?? new();
+            await FillNodeContext(context, node, false);
         }
         if (coreType == ECoreType.sing_box)
         {
@@ -186,34 +186,37 @@ public static class CoreConfigHandler
             return node;
         }
         context.AllProxiesMap[node.IndexId] = node;
+        var newItems = new List<ProfileItem> { node };
+
         if (node.ConfigType.IsGroupType())
         {
             var groupChildList = await GroupProfileManager.GetAllChildProfileItems(node);
             foreach (var childItem in groupChildList)
             {
                 context.AllProxiesMap[childItem.IndexId] = childItem;
+                newItems.Add(childItem);
             }
         }
 
-        foreach (var profileItemPair in context.AllProxiesMap)
+        foreach (var item in newItems)
         {
-            var address = profileItemPair.Value.Address;
+            var address = item.Address;
             if (Utils.IsDomain(address))
             {
                 context.ProtectDomainList.Add(address);
             }
 
-            if (profileItemPair.Value.EchConfigList.IsNullOrEmpty())
+            if (item.EchConfigList.IsNullOrEmpty())
             {
                 continue;
             }
 
-            var echQuerySni = profileItemPair.Value.Sni;
-            if (profileItemPair.Value.StreamSecurity == Global.StreamSecurity
-                && profileItemPair.Value.EchConfigList?.Contains("://") == true)
+            var echQuerySni = item.Sni;
+            if (item.StreamSecurity == Global.StreamSecurity
+                && item.EchConfigList?.Contains("://") == true)
             {
-                var idx = profileItemPair.Value.EchConfigList.IndexOf('+');
-                echQuerySni = idx > 0 ? profileItemPair.Value.EchConfigList[..idx] : profileItemPair.Value.Sni;
+                var idx = item.EchConfigList.IndexOf('+');
+                echQuerySni = idx > 0 ? item.EchConfigList[..idx] : item.Sni;
             }
             if (!Utils.IsDomain(echQuerySni))
             {
