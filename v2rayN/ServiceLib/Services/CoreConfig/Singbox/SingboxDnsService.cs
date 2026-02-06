@@ -378,8 +378,15 @@ public partial class CoreConfigSingboxService
                 return;
             }
             _coreConfig.dns = dns4Sbox;
-
-            GenDnsProtectCustom();
+            if (dns4Sbox.servers?.Count > 0 &&
+                dns4Sbox.servers.First().address.IsNullOrEmpty())
+            {
+                GenDnsProtectCustom();
+            }
+            else
+            {
+                GenDnsProtectCustomLegacy();
+            }
         }
         catch (Exception ex)
         {
@@ -395,6 +402,16 @@ public partial class CoreConfigSingboxService
         dns4Sbox.rules ??= [];
 
         var tag = Global.SingboxLocalDNSTag;
+        dns4Sbox.rules.Insert(0, new()
+        {
+            server = tag,
+            clash_mode = ERuleMode.Direct.ToString()
+        });
+        dns4Sbox.rules.Insert(0, new()
+        {
+            server = dns4Sbox.servers.Where(t => t.detour == Global.ProxyTag).Select(t => t.tag).FirstOrDefault() ?? "remote",
+            clash_mode = ERuleMode.Global.ToString()
+        });
 
         var finalDnsAddress = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
 
@@ -405,6 +422,21 @@ public partial class CoreConfigSingboxService
         dns4Sbox.rules.Insert(0, BuildProtectDomainRule());
 
         _coreConfig.dns = dns4Sbox;
+    }
+
+    private void GenDnsProtectCustomLegacy()
+    {
+        GenDnsProtectCustom();
+
+        var localDnsServer = _coreConfig.dns?.servers?.FirstOrDefault(s => s.tag == Global.SingboxLocalDNSTag);
+        if (localDnsServer == null)
+        {
+            return;
+        }
+        localDnsServer.type = null;
+        localDnsServer.server = null;
+        var dnsItem = context.RawDnsItem;
+        localDnsServer.address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
     }
 
     private Rule4Sbox BuildProtectDomainRule()
