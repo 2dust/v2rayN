@@ -1665,4 +1665,7 @@
   <data name="TbHopInt7" xml:space="preserve">
     <value>Port hopping interval</value>
   </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>Configuration item preview</value>
+  </data>
 </root>

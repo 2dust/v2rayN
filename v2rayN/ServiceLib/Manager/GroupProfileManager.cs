@@ -75,7 +75,7 @@ public class GroupProfileManager
         return (await GetChildProfileItemsByProtocolExtra(protocolExtra), protocolExtra);
     }
 
-    private static async Task<List<ProfileItem>> GetChildProfileItemsByProtocolExtra(ProtocolExtraItem? protocolExtra)
+    public static async Task<List<ProfileItem>> GetChildProfileItemsByProtocolExtra(ProtocolExtraItem? protocolExtra)
     {
         if (protocolExtra == null)
         {

@@ -135,6 +135,7 @@
         </Grid>
 
         <TabControl
+            x:Name="tabControl"
             Margin="{StaticResource Margin8}"
             HorizontalContentAlignment="Left"
             DockPanel.Dock="Top">
@@ -244,6 +245,47 @@
                                 InputGestureText="B" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding ConfigType}"
+                            Header="{x:Static resx:ResUI.LvServiceType}" />
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Address}"
+                            Header="{x:Static resx:ResUI.LvAddress}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Port}"
+                            Header="{x:Static resx:ResUI.LvPort}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Network}"
+                            Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding StreamSecurity}"
+                            Header="{x:Static resx:ResUI.LvTLS}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerListPreview}">
+                <DataGrid
+                    x:Name="lstPreviewChild"
+                    AutoGenerateColumns="False"
+                    BorderThickness="1"
+                    CanUserAddRows="False"
+                    CanUserResizeRows="False"
+                    CanUserSortColumns="False"
+                    EnableRowVirtualization="True"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    Style="{StaticResource DefDataGrid}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="150"
