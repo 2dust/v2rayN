@@ -200,7 +200,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
-        var lstModel = await AppManager.Instance.ProfileItems(_subIndexId, filter);
+        var lstModel = await AppManager.Instance.ProfileModels(_subIndexId, filter);
         lstModel = (from t in lstModel
                     select new ProfileItemModel
                     {

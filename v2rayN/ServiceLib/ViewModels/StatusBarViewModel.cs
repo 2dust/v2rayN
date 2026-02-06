@@ -303,7 +303,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, "");
+        var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, "");
 
         Servers.Clear();
         if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
@@ -315,7 +315,7 @@ public class StatusBarViewModel : MyReactiveObject
         BlServers = true;
         for (var k = 0; k < lstModel.Count; k++)
         {
-            ProfileItem it = lstModel[k];
+            var it = lstModel[k];
             var name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };

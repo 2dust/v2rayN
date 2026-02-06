@@ -56,7 +56,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
     public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; } 
+    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
     public ReactiveCommand<SubItem, Unit> MoveToGroupCmd { get; }
 
     //servers ping
@@ -428,7 +428,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
-        var lstModel = await AppManager.Instance.ProfileItems(_config.SubIndexId, filter);
+        var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, filter);
 
         await ConfigHandler.SetDefaultServer(_config, lstModel);
 

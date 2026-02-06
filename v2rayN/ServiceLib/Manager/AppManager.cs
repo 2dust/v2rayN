@@ -191,10 +191,17 @@ public sealed class AppManager
         return (await ProfileItems(subid))?.Select(t => t.IndexId)?.ToList();
     }
 
-    public async Task<List<ProfileItemModel>?> ProfileItems(string subid, string filter)
+    public async Task<List<ProfileItemModel>?> ProfileModels(string subid, string filter)
     {
-        var sql = @$"select a.*
-                           ,b.remarks subRemarks
+        var sql = @$"select a.IndexId
+                           ,a.ConfigType
+                           ,a.Remarks
+                           ,a.Address
+                           ,a.Port
+                           ,a.Network
+                           ,a.StreamSecurity
+                           ,a.Subid
+                           ,b.remarks as subRemarks
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";

@@ -844,7 +844,7 @@ public static class ConfigHandler
     /// <returns>0 if successful, -1 if failed</returns>
     public static async Task<int> SortServers(Config config, string subId, string colName, bool asc)
     {
-        var lstModel = await AppManager.Instance.ProfileItems(subId, "");
+        var lstModel = await AppManager.Instance.ProfileModels(subId, "");
         if (lstModel.Count <= 0)
         {
             return -1;
@@ -1213,7 +1213,8 @@ public static class ConfigHandler
         }
         var extraItem = new ProtocolExtraItem
         {
-            ChildItems = childProfileIndexId, MultipleLoad = multipleLoad,
+            ChildItems = childProfileIndexId,
+            MultipleLoad = multipleLoad,
         };
         profile.SetProtocolExtra(extraItem);
         var ret = await AddServerCommon(config, profile, true);
@@ -1277,7 +1278,7 @@ public static class ConfigHandler
     /// <returns>Number of removed servers or -1 if failed</returns>
     public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
     {
-        var lstModel = await AppManager.Instance.ProfileItems(subid, "");
+        var lstModel = await AppManager.Instance.ProfileModels(subid, "");
         if (lstModel is { Count: <= 0 })
         {
             return -1;

@@ -1,7 +1,7 @@
 namespace ServiceLib.Models;
 
 [Serializable]
-public class ProfileItem : ReactiveObject
+public class ProfileItem
 {
     private ProtocolExtraItem? _protocolExtraCache;
 
@@ -10,6 +10,7 @@ public class ProfileItem : ReactiveObject
         IndexId = string.Empty;
         ConfigType = EConfigType.VMess;
         ConfigVersion = 3;
+        Subid = string.Empty;
         Address = string.Empty;
         Port = 0;
         Password = string.Empty;
@@ -21,7 +22,6 @@ public class ProfileItem : ReactiveObject
         Path = string.Empty;
         StreamSecurity = string.Empty;
         AllowInsecure = string.Empty;
-        Subid = string.Empty;
     }
 
     #region function
@@ -148,26 +148,26 @@ public class ProfileItem : ReactiveObject
     public string IndexId { get; set; }
 
     public EConfigType ConfigType { get; set; }
+    public ECoreType? CoreType { get; set; }
     public int ConfigVersion { get; set; }
+    public string Subid { get; set; }
+    public bool IsSub { get; set; } = true;
+    public int? PreSocksPort { get; set; }
+    public bool DisplayLog { get; set; } = true;
+    public string Remarks { get; set; }
     public string Address { get; set; }
     public int Port { get; set; }
     public string Password { get; set; }
     public string Username { get; set; }
     public string Network { get; set; }
-    public string Remarks { get; set; }
     public string HeaderType { get; set; }
     public string RequestHost { get; set; }
     public string Path { get; set; }
     public string StreamSecurity { get; set; }
     public string AllowInsecure { get; set; }
-    public string Subid { get; set; }
-    public bool IsSub { get; set; } = true;
     public string Sni { get; set; }
     public string Alpn { get; set; } = string.Empty;
-    public ECoreType? CoreType { get; set; }
-    public int? PreSocksPort { get; set; }
     public string Fingerprint { get; set; }
-    public bool DisplayLog { get; set; } = true;
     public string PublicKey { get; set; }
     public string ShortId { get; set; }
     public string SpiderX { get; set; }

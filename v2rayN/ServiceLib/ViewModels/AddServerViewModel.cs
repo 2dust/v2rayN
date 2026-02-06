@@ -49,12 +49,15 @@ public class AddServerViewModel : MyReactiveObject
 
     [Reactive]
     public string WgPublicKey { get; set; }
+
     //[Reactive]
     //public string WgPresharedKey { get; set; }
     [Reactive]
     public string WgInterfaceAddress { get; set; }
+
     [Reactive]
     public string WgReserved { get; set; }
+
     [Reactive]
     public int WgMtu { get; set; }
 
