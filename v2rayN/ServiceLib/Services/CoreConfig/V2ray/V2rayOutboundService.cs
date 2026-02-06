@@ -692,7 +692,7 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            var currentTag = baseTagName + (i + 1).ToString();
+            var currentTag = $"{baseTagName}-{i + 1}";
 
             if (node.ConfigType.IsGroupType())
             {
@@ -723,8 +723,8 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodesReverse.Count; i++)
         {
             var node = nodesReverse[i];
-            var currentTag = i == 0 ? baseTagName : "chain-" + baseTagName + i.ToString();
-            var dialerProxyTag = i != nodesReverse.Count - 1 ? "chain-" + baseTagName + (i + 1).ToString() : null;
+            var currentTag = i == 0 ? baseTagName : $"chain-{baseTagName}-{i}";
+            var dialerProxyTag = i != nodesReverse.Count - 1 ? $"chain-{baseTagName}-{i + 1}" : null;
             if (node.ConfigType.IsGroupType())
             {
                 var childProfiles = new CoreConfigV2rayService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
@@ -751,7 +751,7 @@ public partial class CoreConfigV2rayService
                         for (var j = 0; j < existedChainNodesClone.Count; j++)
                         {
                             var existedChainNode = existedChainNodesClone[j];
-                            var cloneTag = $"{existedChainNode.tag}-clone{j}";
+                            var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
                             existedChainNode.tag = cloneTag;
                             var previousDialerProxyTag = existedChainNode.streamSettings?.sockopt?.dialerProxy;
                             existedChainNode.streamSettings.sockopt = new()
