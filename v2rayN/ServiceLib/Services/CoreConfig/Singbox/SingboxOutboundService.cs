@@ -604,21 +604,31 @@ public partial class CoreConfigSingboxService
                 if (i != 0)
                 {
                     var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
-                    var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
-                    resultOutbounds.Clear();
-                    foreach (var chainStartNode in chainStartNodes)
+                    if (chainStartNodes.Count == 1)
                     {
-                        var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
-                        for (var j = 0; j < existedChainNodesClone.Count; j++)
+                        foreach (var existedChainEndNode in resultOutbounds.Where(n => n.detour == currentTag))
                         {
-                            var existedChainNode = existedChainNodesClone[j];
-                            var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
-                            existedChainNode.tag = cloneTag;
-                            var previousDialerProxyTag = existedChainNode.detour;
-                            existedChainNode.detour = (previousDialerProxyTag == currentTag)
-                                ? chainStartNode.tag
-                                : existedChainNodesClone[j + 1].tag;
-                            resultOutbounds.Add(existedChainNode);
+                            existedChainEndNode.detour = chainStartNodes.First().tag;
+                        }
+                    }
+                    else if (chainStartNodes.Count > 1)
+                    {
+                        var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
+                        resultOutbounds.Clear();
+                        foreach (var chainStartNode in chainStartNodes)
+                        {
+                            var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
+                            for (var j = 0; j < existedChainNodesClone.Count; j++)
+                            {
+                                var existedChainNode = existedChainNodesClone[j];
+                                var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
+                                existedChainNode.tag = cloneTag;
+                                var previousDialerProxyTag = existedChainNode.detour;
+                                existedChainNode.detour = (previousDialerProxyTag == currentTag)
+                                    ? chainStartNode.tag
+                                    : existedChainNodesClone[j + 1].tag;
+                                resultOutbounds.Add(existedChainNode);
+                            }
                         }
                     }
                 }
