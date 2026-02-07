@@ -301,7 +301,7 @@ public partial class CoreConfigSingboxService
         if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
             var ipItems = simpleDNSItem.DirectExpectedIPs
-                .Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
+                .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();

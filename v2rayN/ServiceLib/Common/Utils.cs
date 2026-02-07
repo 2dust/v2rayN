@@ -339,13 +339,13 @@ public class Utils
             return new();
         }
         var userHostsMap = hostsContent
-            .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+            .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             // skip full-line comments
             .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('#'))
             // ensure line still contains valid parts
             .Where(line => !string.IsNullOrWhiteSpace(line) && line.Contains(' '))
-            .Select(line => line.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries))
+            .Select(line => line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
             .Where(parts => parts.Length >= 2)
             .GroupBy(parts => parts[0])
             .ToDictionary(
