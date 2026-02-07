@@ -577,6 +577,12 @@ https://github.com/2dust/v2rayN
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
+install -dm0755 %{buildroot}%{_sysconfdir}/sudoers.d
+cat > %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny << 'EOF'
+ALL ALL=(ALL) !/home/*/.local/share/v2rayN/bin/mihomo/mihomo
+EOF
+chmod 0440 %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny
+
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
 cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
@@ -630,6 +636,7 @@ fi
 /opt/v2rayN
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
+%config(noreplace) /etc/sudoers.d/v2rayn-mihomo-deny
 SPEC
 
   # Autostart injection (inside %install) and %files entry
