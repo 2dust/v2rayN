@@ -24,8 +24,8 @@ public class TuicFmt : BaseFmt
         var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
         if (userInfoParts.Length == 2)
         {
-            item.Id = userInfoParts.First();
-            item.Security = userInfoParts.Last();
+            item.Username = userInfoParts.First();
+            item.Password = userInfoParts.Last();
         }
 
         var query = Utils.ParseQueryString(url.Query);
@@ -53,6 +53,6 @@ public class TuicFmt : BaseFmt
 
         dicQuery.Add("congestion_control", item.HeaderType);
 
-        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Id}:{item.Security}", dicQuery, remark);
+        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Username ?? ""}:{item.Password}", dicQuery, remark);
     }
 }

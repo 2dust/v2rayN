@@ -360,7 +360,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="300,Auto,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -407,6 +407,41 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbPorts7Tips}" />
+                    
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbHopInt7}" />
+                    <TextBox
+                        x:Name="txtHopInt7"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+                    
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}" />
+                    <StackPanel
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                        <TextBox
+                            x:Name="txtUpMbps7"
+                            Width="90"
+                            Margin="{StaticResource Margin4}"
+                            Watermark="Up" />
+                        <TextBox
+                            x:Name="txtDownMbps7"
+                            Width="90"
+                            Margin="{StaticResource Margin4}"
+                            Watermark="Down" />
+                    </StackPanel>
                 </Grid>
                 <Grid
                     x:Name="gridTuic"

@@ -200,7 +200,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
-        var lstModel = await AppManager.Instance.ProfileItems(_subIndexId, filter);
+        var lstModel = await AppManager.Instance.ProfileModels(_subIndexId, filter);
         lstModel = (from t in lstModel
                     select new ProfileItemModel
                     {
@@ -209,7 +209,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
                         Remarks = t.Remarks,
                         Address = t.Address,
                         Port = t.Port,
-                        Security = t.Security,
+                        //Security = t.Security,
                         Network = t.Network,
                         StreamSecurity = t.StreamSecurity,
                         Subid = t.Subid,

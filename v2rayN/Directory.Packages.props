@@ -5,7 +5,7 @@
     <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.0" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.11" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.11" />
@@ -22,7 +22,7 @@
     <PackageVersion Include="Semi.Avalonia" Version="11.3.7.2" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="11.2.0.1" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.2" />
-    <PackageVersion Include="NLog" Version="6.0.7" />
+    <PackageVersion Include="NLog" Version="6.1.0" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />

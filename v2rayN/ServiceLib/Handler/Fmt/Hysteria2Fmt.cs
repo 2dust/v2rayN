@@ -19,16 +19,19 @@ public class Hysteria2Fmt : BaseFmt
         item.Address = url.IdnHost;
         item.Port = url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
-        item.Id = Utils.UrlDecode(url.UserInfo);
+        item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
-        item.Path = GetQueryDecoded(query, "obfs-password");
-        item.Ports = GetQueryDecoded(query, "mport");
         if (item.CertSha.IsNullOrEmpty())
         {
             item.CertSha = GetQueryDecoded(query, "pinSHA256");
         }
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            Ports = GetQueryDecoded(query, "mport"),
+            SalamanderPass = GetQueryDecoded(query, "obfs-password"),
+        });
 
         return item;
     }
@@ -49,15 +52,16 @@ public class Hysteria2Fmt : BaseFmt
         }
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
+        var protocolExtraItem = item.GetProtocolExtra();
 
-        if (item.Path.IsNotEmpty())
+        if (!protocolExtraItem.SalamanderPass.IsNullOrEmpty())
         {
             dicQuery.Add("obfs", "salamander");
-            dicQuery.Add("obfs-password", Utils.UrlEncode(item.Path));
+            dicQuery.Add("obfs-password", Utils.UrlEncode(protocolExtraItem.SalamanderPass));
         }
-        if (item.Ports.IsNotEmpty())
+        if (!protocolExtraItem.Ports.IsNullOrEmpty())
         {
-            dicQuery.Add("mport", Utils.UrlEncode(item.Ports.Replace(':', '-')));
+            dicQuery.Add("mport", Utils.UrlEncode(protocolExtraItem.Ports.Replace(':', '-')));
         }
         if (!item.CertSha.IsNullOrEmpty())
         {
@@ -70,7 +74,7 @@ public class Hysteria2Fmt : BaseFmt
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
 
-        return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Id, dicQuery, remark);
+        return ToUri(EConfigType.Hysteria2, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 
     public static ProfileItem? ResolveFull2(string strData, string? subRemarks)

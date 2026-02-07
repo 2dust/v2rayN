@@ -88,7 +88,10 @@
             </Grid>
         </Grid>
 
-        <TabControl HorizontalContentAlignment="Stretch" DockPanel.Dock="Top">
+        <TabControl
+            x:Name="tabControl"
+            HorizontalContentAlignment="Stretch"
+            DockPanel.Dock="Top">
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid
                     Margin="{StaticResource Margin8}"
@@ -134,7 +137,6 @@
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList2}">
                 <DataGrid
                     x:Name="lstChild"
-                    Grid.Row="1"
                     AutoGenerateColumns="False"
                     Background="Transparent"
                     BorderThickness="1"
@@ -176,6 +178,48 @@
                                 InputGesture="B" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding ConfigType}"
+                            Header="{x:Static resx:ResUI.LvServiceType}" />
+                        <DataGridTextColumn
+                            Width="150"
+                            Binding="{Binding Remarks}"
+                            Header="{x:Static resx:ResUI.LvRemarks}" />
+                        <DataGridTextColumn
+                            Width="120"
+                            Binding="{Binding Address}"
+                            Header="{x:Static resx:ResUI.LvAddress}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Port}"
+                            Header="{x:Static resx:ResUI.LvPort}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Network}"
+                            Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding StreamSecurity}"
+                            Header="{x:Static resx:ResUI.LvTLS}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerListPreview}">
+                <DataGrid
+                    x:Name="lstPreviewChild"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    BorderThickness="1"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    GridLinesVisibility="All"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding AllProfilePreviewItemsObs}"
+                    SelectionMode="Extended">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="150"

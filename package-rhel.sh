@@ -10,7 +10,7 @@ if [[ -r /etc/os-release ]]; then
       ;;
     *)
       echo "[ERROR] Unsupported system: $NAME ($ID)."
-      echo "This script only supports Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS or Ubuntu/Debian."
+      echo "This script only supports Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS."
       exit 1
       ;;
   esac
@@ -483,20 +483,11 @@ build_for_arch() {
   trap '[[ -n "${WORKDIR:-}" ]] && rm -rf "$WORKDIR"' RETURN
 
   # rpmbuild topdir selection
-  local TOPDIR SPECDIR SOURCEDIR USE_TOPDIR_DEFINE
-  if [[ "$ID" =~ ^(rhel|rocky|almalinux|centos)$ ]]; then
-    rpmdev-setuptree
-    TOPDIR="${HOME}/rpmbuild"
-    SPECDIR="${TOPDIR}/SPECS"
-    SOURCEDIR="${TOPDIR}/SOURCES"
-    USE_TOPDIR_DEFINE=0
-  else
-    TOPDIR="${WORKDIR}/rpmbuild"
-    SPECDIR="${TOPDIR}/SPECS}"
-    SOURCEDIR="${TOPDIR}/SOURCES"
-    mkdir -p "${SPECDIR}" "${SOURCEDIR}" "${TOPDIR}/BUILD" "${TOPDIR}/RPMS" "${TOPDIR}/SRPMS"
-    USE_TOPDIR_DEFINE=1
-  fi
+  local TOPDIR SPECDIR SOURCEDIR
+  rpmdev-setuptree
+  TOPDIR="${HOME}/rpmbuild"
+  SPECDIR="${TOPDIR}/SPECS"
+  SOURCEDIR="${TOPDIR}/SOURCES"
 
   # Stage publish content
   mkdir -p "$WORKDIR/$PKGROOT"
@@ -533,8 +524,6 @@ build_for_arch() {
       download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
-    # ---- REQUIRED: always fetch mihomo in netcore mode, per-arch ----
-    # download_mihomo "$WORKDIR/$PKGROOT" || echo "[!] mihomo download failed (skipped)"
   fi
 
   # Tarball
@@ -587,6 +576,12 @@ https://github.com/2dust/v2rayN
 %install
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
+
+install -dm0755 %{buildroot}%{_sysconfdir}/sudoers.d
+cat > %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny << 'EOF'
+ALL ALL=(ALL) !/home/*/.local/share/v2rayN/bin/mihomo/mihomo
+EOF
+chmod 0440 %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny
 
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
@@ -641,6 +636,7 @@ fi
 /opt/v2rayN
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
+%config(noreplace) /etc/sudoers.d/v2rayn-mihomo-deny
 SPEC
 
   # Autostart injection (inside %install) and %files entry
@@ -680,35 +676,8 @@ SPEC
   sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
   sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
 
-  # ----- Select proper 'strip' per target arch on Ubuntu only (cross-binutils) -----
-  # NOTE: We define only __strip to point to the target-arch strip.
-  #       DO NOT override __brp_strip (it must stay the brp script path).
-  local STRIP_ARGS=()
-  if [[ "$ID" == "ubuntu" ]]; then
-    local STRIP_BIN=""
-    if [[ "$short" == "x64" ]]; then
-      STRIP_BIN="/usr/bin/x86_64-linux-gnu-strip"
-    else
-      STRIP_BIN="/usr/bin/aarch64-linux-gnu-strip"
-    fi
-    if [[ -x "$STRIP_BIN" ]]; then
-      STRIP_ARGS=( --define "__strip $STRIP_BIN" )
-    fi
-  fi
-
   # Build RPM for this arch (force rpm --target to match compile arch)
-  if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
-    rpmbuild -ba "$SPECFILE" --define "_topdir $TOPDIR" --target "$rpm_target" "${STRIP_ARGS[@]}"
-  else
-    rpmbuild -ba "$SPECFILE" --target "$rpm_target" "${STRIP_ARGS[@]}"
-  fi
-
-  # Copy temporary rpmbuild to ~/rpmbuild on Debian/Ubuntu path
-  if [[ "$USE_TOPDIR_DEFINE" -eq 1 ]]; then
-    mkdir -p "$HOME/rpmbuild"
-    rsync -a "$TOPDIR"/ "$HOME/rpmbuild"/
-    TOPDIR="$HOME/rpmbuild"
-  fi
+  rpmbuild -ba "$SPECFILE" --target "$rpm_target"
 
   echo "Build done for $short. RPM at:"
   local f

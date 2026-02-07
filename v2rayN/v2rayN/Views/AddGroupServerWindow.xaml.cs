@@ -11,6 +11,7 @@ public partial class AddGroupServerWindow
         PreviewKeyDown += AddGroupServerWindow_PreviewKeyDown;
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         menuSelectAllChild.Click += MenuSelectAllChild_Click;
+        tabControl.SelectionChanged += TabControl_SelectionChanged;
 
         ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
 
@@ -33,6 +34,10 @@ public partial class AddGroupServerWindow
             case EConfigType.ProxyChain:
                 Title = ResUI.TbConfigTypeProxyChain;
                 gridPolicyGroup.Visibility = Visibility.Collapsed;
+                if (tabControl.Items.Count > 0)
+                {
+                    tabControl.Items.RemoveAt(0);
+                }
                 break;
         }
 
@@ -47,6 +52,8 @@ public partial class AddGroupServerWindow
 
             this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.AllProfilePreviewItemsObs, v => v.lstPreviewChild.ItemsSource).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
@@ -147,5 +154,30 @@ public partial class AddGroupServerWindow
     private void MenuSelectAllChild_Click(object sender, RoutedEventArgs e)
     {
         lstChild.SelectAll();
+    }
+
+    private async void TabControl_SelectionChanged(object? sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        try
+        {
+            if (e.Source is not System.Windows.Controls.TabControl tc)
+            {
+                return;
+            }
+            if (!(tc.SelectedIndex == tc.Items.Count - 1 && tc.Items.Count > 0))
+            {
+                return;
+            }
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            await ViewModel.UpdatePreviewList();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

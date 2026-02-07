@@ -85,7 +85,7 @@ public class DownloaderHelper
                 {
                     maxSpeed = value.BytesPerSecondSpeed;
                 }
-                
+
                 var ts = DateTime.Now - lastUpdateTime;
                 if (ts.TotalMilliseconds >= 1000)
                 {

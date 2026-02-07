@@ -88,14 +88,9 @@ public partial class CoreConfigSingboxService
             }
         }
 
-        if (!simpleDNSItem.Hosts.IsNullOrEmpty())
+        foreach (var kvp in Utils.ParseHostsToDictionary(simpleDNSItem.Hosts))
         {
-            var userHostsMap = Utils.ParseHostsToDictionary(simpleDNSItem.Hosts);
-
-            foreach (var kvp in userHostsMap)
-            {
-                hostsDns.predefined[kvp.Key] = kvp.Value;
-            }
+            hostsDns.predefined[kvp.Key] = kvp.Value.Where(s => Utils.IsIpAddress(s)).ToList();
         }
 
         foreach (var host in hostsDns.predefined)
@@ -115,7 +110,7 @@ public partial class CoreConfigSingboxService
         }
 
         singboxConfig.dns ??= new Dns4Sbox();
-        singboxConfig.dns.servers ??= new List<Server4Sbox>();
+        singboxConfig.dns.servers ??= [];
         singboxConfig.dns.servers.Add(remoteDns);
         singboxConfig.dns.servers.Add(directDns);
         singboxConfig.dns.servers.Add(hostsDns);
@@ -175,21 +170,64 @@ public partial class CoreConfigSingboxService
         singboxConfig.dns.rules ??= new List<Rule4Sbox>();
 
         singboxConfig.dns.rules.AddRange(new[]
-            {
+        {
             new Rule4Sbox { ip_accept_any = true, server = Global.SingboxHostsDNSTag },
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Proxy.NullIfEmpty(),
+                strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Proxy),
                 clash_mode = ERuleMode.Global.ToString()
             },
             new Rule4Sbox
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = simpleDNSItem.SingboxStrategy4Direct.NullIfEmpty(),
+                strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Freedom),
                 clash_mode = ERuleMode.Direct.ToString()
             }
         });
+
+        foreach (var kvp in Utils.ParseHostsToDictionary(simpleDNSItem.Hosts))
+        {
+            var predefined = kvp.Value.First();
+            if (predefined.IsNullOrEmpty() || Utils.IsIpAddress(predefined))
+            {
+                continue;
+            }
+            if (predefined.StartsWith('#') && int.TryParse(predefined.AsSpan(1), out var rcode))
+            {
+                // xray syntactic sugar for predefined
+                // etc. #0 -> NOERROR
+                singboxConfig.dns.rules.Add(new()
+                {
+                    query_type = [1, 28],
+                    domain = [kvp.Key],
+                    action = "predefined",
+                    rcode = rcode switch
+                    {
+                        0 => "NOERROR",
+                        1 => "FORMERR",
+                        2 => "SERVFAIL",
+                        3 => "NXDOMAIN",
+                        4 => "NOTIMP",
+                        5 => "REFUSED",
+                        _ => "NOERROR",
+                    },
+                });
+                continue;
+            }
+            // CNAME record
+            Rule4Sbox rule = new()
+            {
+                query_type = [1, 28],
+                action = "predefined",
+                rcode = "NOERROR",
+                answer = [$"*. IN CNAME {predefined}."],
+            };
+            if (ParseV2Domain(kvp.Key, rule))
+            {
+                singboxConfig.dns.rules.Add(rule);
+            }
+        }
 
         var (ech, _) = ParseEchParam(node?.EchConfigList);
         if (ech is not null)
@@ -197,19 +235,19 @@ public partial class CoreConfigSingboxService
             var echDomain = ech.query_server_name ?? node?.Sni;
             singboxConfig.dns.rules.Add(new()
             {
-                query_type = new List<int> { 64, 65 },
+                query_type = [64, 65],
                 server = Global.SingboxEchDNSTag,
                 domain = echDomain is not null ? new List<string> { echDomain } : null,
             });
         }
         else if (node?.ConfigType.IsGroupType() == true)
         {
-            var queryServerNames = (await ProfileGroupItemManager.GetAllChildEchQuerySni(node.IndexId)).ToList();
+            var queryServerNames = (await GroupProfileManager.GetAllChildEchQuerySni(node)).ToList();
             if (queryServerNames.Count > 0)
             {
                 singboxConfig.dns.rules.Add(new()
                 {
-                    query_type = new List<int> { 64, 65 },
+                    query_type = [64, 65],
                     server = Global.SingboxEchDNSTag,
                     domain = queryServerNames,
                 });
@@ -220,9 +258,9 @@ public partial class CoreConfigSingboxService
         {
             singboxConfig.dns.rules.Add(new()
             {
-                query_type = new List<int> { 64, 65 },
+                query_type = [64, 65],
                 action = "predefined",
-                rcode = "NOTIMP"
+                rcode = "NOERROR"
             });
         }
 
@@ -236,13 +274,14 @@ public partial class CoreConfigSingboxService
                 type = "logical",
                 mode = "and",
                 rewrite_ttl = 1,
-                rules = new List<Rule4Sbox>
-                {
-                    new() {
-                        query_type = new List<int> { 1, 28 }, // A and AAAA
+                rules =
+                [
+                    new()
+                    {
+                        query_type = [1, 28], // A and AAAA
                     },
-                    fakeipFilterRule,
-                }
+                    fakeipFilterRule
+                ]
             };
 
             singboxConfig.dns.rules.Add(rule4Fake);
@@ -309,7 +348,7 @@ public partial class CoreConfigSingboxService
             if (item.OutboundTag == Global.DirectTag)
             {
                 rule.server = Global.SingboxDirectDNSTag;
-                rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Direct) ? null : simpleDNSItem.SingboxStrategy4Direct;
+                rule.strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Freedom);
 
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0)
                 {
@@ -343,7 +382,7 @@ public partial class CoreConfigSingboxService
                     singboxConfig.dns.rules.Add(rule4Fake);
                 }
                 rule.server = Global.SingboxRemoteDNSTag;
-                rule.strategy = string.IsNullOrEmpty(simpleDNSItem.SingboxStrategy4Proxy) ? null : simpleDNSItem.SingboxStrategy4Proxy;
+                rule.strategy = Utils.DomainStrategy4Sbox(simpleDNSItem.Strategy4Proxy);
             }
 
             singboxConfig.dns.rules.Add(rule);

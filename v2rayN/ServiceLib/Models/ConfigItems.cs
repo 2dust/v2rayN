@@ -99,7 +99,7 @@ public class UIItem
     public bool EnableDragDropSort { get; set; }
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
-    public bool Hide2TrayWhenClose { get; set; }    
+    public bool Hide2TrayWhenClose { get; set; }
     public bool MacOSShowInDock { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }
@@ -265,9 +265,10 @@ public class SimpleDNSItem
     public string? DirectDNS { get; set; }
     public string? RemoteDNS { get; set; }
     public string? BootstrapDNS { get; set; }
-    public string? RayStrategy4Freedom { get; set; }
-    public string? SingboxStrategy4Direct { get; set; }
-    public string? SingboxStrategy4Proxy { get; set; }
+    public string? Strategy4Freedom { get; set; }
+    public string? Strategy4Proxy { get; set; }
+    public bool? ServeStale { get; set; }
+    public bool? ParallelQuery { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
 }
