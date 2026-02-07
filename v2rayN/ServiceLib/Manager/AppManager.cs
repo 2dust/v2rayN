@@ -230,6 +230,18 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
     }
 
+    public async Task<List<ProfileItem>> GetProfileItemsByIndexIds(List<string> indexIds)
+    {
+        var ids = indexIds.Where(id => id.IsNotEmpty()).Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+        return await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+            .Where(it => ids.Contains(it.IndexId))
+            .ToListAsync();
+    }
+
     public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
     {
         if (remarks.IsNullOrEmpty())

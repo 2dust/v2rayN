@@ -98,9 +98,9 @@ public static class CoreConfigHandler
         var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
             .Select(serverTestItem => serverTestItem.IndexId!)
             .ToList();
-        foreach (var id in ids)
+        var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
+        foreach (var node in nodes)
         {
-            var node = await AppManager.Instance.GetProfileItem(id) ?? new();
             await FillNodeContext(context, node, false);
         }
         if (coreType == ECoreType.sing_box)
