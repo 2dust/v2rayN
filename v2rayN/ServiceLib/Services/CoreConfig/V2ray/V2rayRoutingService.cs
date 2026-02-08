@@ -8,7 +8,7 @@ public partial class CoreConfigV2rayService
         {
             if (_coreConfig.routing?.rules != null)
             {
-                _coreConfig.routing.domainStrategy = context.AppConfig.RoutingBasicItem.DomainStrategy;
+                _coreConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
 
                 var routing = context.RoutingItem;
                 if (routing != null)

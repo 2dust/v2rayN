@@ -92,7 +92,6 @@ public partial class CoreConfigV2rayService
 
     private void FillDnsServers(Dns4Ray dnsItem)
     {
-        var node = context.Node;
         var simpleDNSItem = context.SimpleDnsItem;
         static List<string> ParseDnsAddresses(string? dnsInput, string defaultAddress)
         {
@@ -244,11 +243,6 @@ public partial class CoreConfigV2rayService
                     }
                 }
             }
-        }
-
-        if (Utils.IsDomain(node?.Address))
-        {
-            directDomainList.Add(node.Address);
         }
 
         if (context.ProtectDomainList.Count > 0)
@@ -407,7 +401,6 @@ public partial class CoreConfigV2rayService
 
     private void FillDnsDomainsCustom(JsonNode dns)
     {
-        var node = context.Node;
         var servers = dns["servers"];
         if (servers == null)
         {

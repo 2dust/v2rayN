@@ -13,14 +13,14 @@ public partial class CoreConfigSingboxService
             };
         }
 
-        if (context.AppConfig.CoreBasicItem.EnableCacheFile4Sbox)
+        if (_config.CoreBasicItem.EnableCacheFile4Sbox)
         {
             _coreConfig.experimental ??= new Experimental4Sbox();
             _coreConfig.experimental.cache_file = new CacheFile4Sbox()
             {
                 enabled = true,
                 path = Utils.GetBinPath("cache.db"),
-                store_fakeip = context.AppConfig.SimpleDNSItem.FakeIP == true
+                store_fakeip = context.SimpleDnsItem.FakeIP == true
             };
         }
     }

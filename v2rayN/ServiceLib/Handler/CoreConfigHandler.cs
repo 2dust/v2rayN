@@ -18,7 +18,6 @@ public static class CoreConfigHandler
             result = node.CoreType switch
             {
                 ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
-                ECoreType.sing_box => await new CoreConfigSingboxService(context).GenerateClientCustomConfig(fileName),
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }

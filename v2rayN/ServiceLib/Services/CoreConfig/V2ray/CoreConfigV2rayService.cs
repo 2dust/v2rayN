@@ -3,6 +3,8 @@ namespace ServiceLib.Services.CoreConfig;
 public partial class CoreConfigV2rayService(CoreConfigContext context)
 {
     private static readonly string _tag = "CoreConfigV2rayService";
+    private readonly Config _config = context.AppConfig;
+    private readonly ProfileItem _node = context.Node;
 
     private V2rayConfig _coreConfig = new();
 
@@ -13,17 +15,16 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            var node = context?.Node;
-            if (node == null
-                || !node.IsValid())
+            if (_node == null
+                || !_node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
             }
 
-            if (node.GetNetwork() is nameof(ETransport.quic))
+            if (_node.GetNetwork() is nameof(ETransport.quic))
             {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
                 return ret;
             }
 
@@ -170,7 +171,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
                 {
                     isBalancer = true;
-                    var multipleLoad = context.Node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+                    var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
                     GenObservatory(multipleLoad, tag);
                     GenBalancer(multipleLoad, tag);
                 }
@@ -208,17 +209,16 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            var node = context.Node;
-            if (node == null
-                || !node.IsValid())
+            if (_node == null
+                || !_node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
             }
 
-            if (node.GetNetwork() is nameof(ETransport.quic))
+            if (_node.GetNetwork() is nameof(ETransport.quic))
             {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
                 return ret;
             }
 

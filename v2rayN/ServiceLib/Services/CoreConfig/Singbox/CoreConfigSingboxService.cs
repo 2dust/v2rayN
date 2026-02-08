@@ -3,6 +3,8 @@ namespace ServiceLib.Services.CoreConfig;
 public partial class CoreConfigSingboxService(CoreConfigContext context)
 {
     private static readonly string _tag = "CoreConfigSingboxService";
+    private readonly Config _config = context.AppConfig;
+    private readonly ProfileItem _node = context.Node;
 
     private SingboxConfig _coreConfig = new();
 
@@ -13,16 +15,15 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            var node = context.Node;
-            if (node == null
-                || !node.IsValid())
+            if (_node == null
+                || !_node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
             }
-            if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
+            if (_node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
             {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
                 return ret;
             }
 
@@ -193,16 +194,15 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            var node = context.Node;
-            if (node == null
-                || !node.IsValid())
+            if (_node == null
+                || !_node.IsValid())
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
             }
-            if (node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
+            if (_node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
             {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {node.GetNetwork()}";
+                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
                 return ret;
             }
 
@@ -239,88 +239,6 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
             ret.Data = JsonUtils.Serialize(_coreConfig);
-            return ret;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            ret.Msg = ResUI.FailedGenDefaultConfiguration;
-            return ret;
-        }
-    }
-
-    public async Task<RetResult> GenerateClientCustomConfig(string? fileName)
-    {
-        var ret = new RetResult();
-        var node = context.Node;
-        if (node == null || fileName is null)
-        {
-            ret.Msg = ResUI.CheckServerSettings;
-            return ret;
-        }
-
-        ret.Msg = ResUI.InitialConfiguration;
-
-        try
-        {
-            if (node == null)
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
-            }
-
-            var addressFileName = node.Address;
-            if (addressFileName.IsNullOrEmpty())
-            {
-                ret.Msg = ResUI.FailedGetDefaultConfiguration;
-                return ret;
-            }
-            if (!File.Exists(addressFileName))
-            {
-                addressFileName = Path.Combine(Utils.GetConfigPath(), addressFileName);
-            }
-            if (!File.Exists(addressFileName))
-            {
-                ret.Msg = ResUI.FailedReadConfiguration + "1";
-                return ret;
-            }
-
-            if (node.Address == Global.CoreMultipleLoadConfigFileName)
-            {
-                var txtFile = File.ReadAllText(addressFileName);
-                _coreConfig = JsonUtils.Deserialize<SingboxConfig>(txtFile);
-                if (_coreConfig == null)
-                {
-                    File.Copy(addressFileName, fileName);
-                }
-                else
-                {
-                    GenInbounds();
-                    GenExperimental();
-
-                    var content = JsonUtils.Serialize(_coreConfig, true);
-                    await File.WriteAllTextAsync(fileName, content);
-                }
-            }
-            else
-            {
-                File.Copy(addressFileName, fileName);
-            }
-
-            //check again
-            if (!File.Exists(fileName))
-            {
-                ret.Msg = ResUI.FailedReadConfiguration + "2";
-                return ret;
-            }
-
-            ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
-            ret.Success = true;
             return ret;
         }
         catch (Exception ex)
