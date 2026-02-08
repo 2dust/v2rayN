@@ -4,7 +4,7 @@ public partial class CoreConfigV2rayService
 {
     private void GenStatistic()
     {
-        if (context.AppConfig.GuiItem.EnableStatistics || context.AppConfig.GuiItem.DisplayRealTimeSpeed)
+        if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {
             var tag = EInboundProtocol.api.ToString();
             Metrics4Ray apiObj = new();

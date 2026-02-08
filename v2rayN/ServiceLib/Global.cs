@@ -15,7 +15,6 @@ public class Global
     public const string CoreConfigFileName = "config.json";
     public const string CorePreConfigFileName = "configPre.json";
     public const string CoreSpeedtestConfigFileName = "configTest{0}.json";
-    public const string CoreMultipleLoadConfigFileName = "configMultipleLoad.json";
     public const string ClashMixinConfigFileName = "Mixin.yaml";
 
     public const string NamespaceSample = "ServiceLib.Sample.";

@@ -18,7 +18,6 @@ public static class CoreConfigHandler
             result = node.CoreType switch
             {
                 ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
-                ECoreType.sing_box => await new CoreConfigSingboxService(context).GenerateClientCustomConfig(fileName),
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
@@ -96,8 +95,7 @@ public static class CoreConfigHandler
         var result = new RetResult();
         var context = await BuildCoreConfigContext(config, new());
         var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
-            .Select(serverTestItem => serverTestItem.IndexId!)
-            .ToList();
+            .Select(serverTestItem => serverTestItem.IndexId);
         var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
         foreach (var node in nodes)
         {
@@ -172,7 +170,8 @@ public static class CoreConfigHandler
                 var ruleOutboundNode = await AppManager.Instance.GetProfileItemViaRemarks(ruleItem.OutboundTag);
                 if (ruleOutboundNode != null)
                 {
-                    await FillNodeContext(context, ruleOutboundNode);
+                    var ruleOutboundNodeAct = await FillNodeContext(context, ruleOutboundNode, false);
+                    context.AllProxiesMap[$"remark:{ruleItem.OutboundTag}"] = ruleOutboundNodeAct;
                 }
             }
         }
@@ -185,18 +184,21 @@ public static class CoreConfigHandler
         {
             return node;
         }
-        context.AllProxiesMap[node.IndexId] = node;
         var newItems = new List<ProfileItem> { node };
-
         if (node.ConfigType.IsGroupType())
         {
-            var groupChildList = await GroupProfileManager.GetAllChildProfileItems(node);
-            foreach (var childItem in groupChildList)
+            var (groupChildList, _) = await GroupProfileManager.GetChildProfileItems(node);
+            foreach (var childItem in groupChildList.Where(childItem => !context.AllProxiesMap.ContainsKey(childItem.IndexId)))
             {
-                context.AllProxiesMap[childItem.IndexId] = childItem;
-                newItems.Add(childItem);
+                await FillNodeContext(context, childItem, false);
             }
+            node.SetProtocolExtra(node.GetProtocolExtra() with
+            {
+                ChildItems = Utils.List2String(groupChildList.Select(n => n.IndexId).ToList()),
+            });
+            newItems.AddRange(groupChildList);
         }
+        context.AllProxiesMap[node.IndexId] = node;
 
         foreach (var item in newItems)
         {

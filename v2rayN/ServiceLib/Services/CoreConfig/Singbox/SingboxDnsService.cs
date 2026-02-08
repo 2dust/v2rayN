@@ -348,6 +348,10 @@ public partial class CoreConfigSingboxService
     private void GenMinimizedDns()
     {
         GenDnsServers();
+        foreach (var server in _coreConfig.dns!.servers.Where(s => !string.IsNullOrEmpty(s.detour)).ToList())
+        {
+            _coreConfig.dns.servers.Remove(server);
+        }
         _coreConfig.dns ??= new();
         _coreConfig.dns.rules ??= [];
         _coreConfig.dns.rules.Clear();
