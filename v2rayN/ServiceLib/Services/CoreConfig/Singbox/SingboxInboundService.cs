@@ -9,8 +9,8 @@ public partial class CoreConfigSingboxService
             var listen = "0.0.0.0";
             _coreConfig.inbounds = [];
 
-            if (!context.AppConfig.TunModeItem.EnableTun
-                || (context.AppConfig.TunModeItem.EnableTun && context.AppConfig.TunModeItem.EnableExInbound && AppManager.Instance.RunningCoreType == ECoreType.sing_box))
+            if (!_config.TunModeItem.EnableTun
+                || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && AppManager.Instance.RunningCoreType == ECoreType.sing_box))
             {
                 var inbound = new Inbound4Sbox()
                 {
@@ -22,24 +22,24 @@ public partial class CoreConfigSingboxService
 
                 inbound.listen_port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
 
-                if (context.AppConfig.Inbound.First().SecondLocalPortEnabled)
+                if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
                     var inbound2 = BuildInbound(inbound, EInboundProtocol.socks2, true);
                     _coreConfig.inbounds.Add(inbound2);
                 }
 
-                if (context.AppConfig.Inbound.First().AllowLANConn)
+                if (_config.Inbound.First().AllowLANConn)
                 {
-                    if (context.AppConfig.Inbound.First().NewPort4LAN)
+                    if (_config.Inbound.First().NewPort4LAN)
                     {
                         var inbound3 = BuildInbound(inbound, EInboundProtocol.socks3, true);
                         inbound3.listen = listen;
                         _coreConfig.inbounds.Add(inbound3);
 
                         //auth
-                        if (context.AppConfig.Inbound.First().User.IsNotEmpty() && context.AppConfig.Inbound.First().Pass.IsNotEmpty())
+                        if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
                         {
-                            inbound3.users = new() { new() { username = context.AppConfig.Inbound.First().User, password = context.AppConfig.Inbound.First().Pass } };
+                            inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
                         }
                     }
                     else
@@ -49,24 +49,24 @@ public partial class CoreConfigSingboxService
                 }
             }
 
-            if (context.AppConfig.TunModeItem.EnableTun)
+            if (_config.TunModeItem.EnableTun)
             {
-                if (context.AppConfig.TunModeItem.Mtu <= 0)
+                if (_config.TunModeItem.Mtu <= 0)
                 {
-                    context.AppConfig.TunModeItem.Mtu = Global.TunMtus.First();
+                    _config.TunModeItem.Mtu = Global.TunMtus.First();
                 }
-                if (context.AppConfig.TunModeItem.Stack.IsNullOrEmpty())
+                if (_config.TunModeItem.Stack.IsNullOrEmpty())
                 {
-                    context.AppConfig.TunModeItem.Stack = Global.TunStacks.First();
+                    _config.TunModeItem.Stack = Global.TunStacks.First();
                 }
 
                 var tunInbound = JsonUtils.Deserialize<Inbound4Sbox>(EmbedUtils.GetEmbedText(Global.TunSingboxInboundFileName)) ?? new Inbound4Sbox { };
                 tunInbound.interface_name = Utils.IsMacOS() ? $"utun{new Random().Next(99)}" : "singbox_tun";
-                tunInbound.mtu = context.AppConfig.TunModeItem.Mtu;
-                tunInbound.auto_route = context.AppConfig.TunModeItem.AutoRoute;
-                tunInbound.strict_route = context.AppConfig.TunModeItem.StrictRoute;
-                tunInbound.stack = context.AppConfig.TunModeItem.Stack;
-                if (context.AppConfig.TunModeItem.EnableIPv6Address == false)
+                tunInbound.mtu = _config.TunModeItem.Mtu;
+                tunInbound.auto_route = _config.TunModeItem.AutoRoute;
+                tunInbound.strict_route = _config.TunModeItem.StrictRoute;
+                tunInbound.stack = _config.TunModeItem.Stack;
+                if (_config.TunModeItem.EnableIPv6Address == false)
                 {
                     tunInbound.address = ["172.18.0.1/30"];
                 }

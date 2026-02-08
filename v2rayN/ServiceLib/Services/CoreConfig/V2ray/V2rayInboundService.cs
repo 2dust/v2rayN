@@ -6,32 +6,31 @@ public partial class CoreConfigV2rayService
     {
         try
         {
-            var config = context.AppConfig;
             var listen = "0.0.0.0";
             _coreConfig.inbounds = [];
 
-            var inbound = BuildInbound(config.Inbound.First(), EInboundProtocol.socks, true);
+            var inbound = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
             _coreConfig.inbounds.Add(inbound);
 
-            if (config.Inbound.First().SecondLocalPortEnabled)
+            if (_config.Inbound.First().SecondLocalPortEnabled)
             {
-                var inbound2 = BuildInbound(config.Inbound.First(), EInboundProtocol.socks2, true);
+                var inbound2 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
                 _coreConfig.inbounds.Add(inbound2);
             }
 
-            if (config.Inbound.First().AllowLANConn)
+            if (_config.Inbound.First().AllowLANConn)
             {
-                if (config.Inbound.First().NewPort4LAN)
+                if (_config.Inbound.First().NewPort4LAN)
                 {
-                    var inbound3 = BuildInbound(config.Inbound.First(), EInboundProtocol.socks3, true);
+                    var inbound3 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
                     inbound3.listen = listen;
                     _coreConfig.inbounds.Add(inbound3);
 
                     //auth
-                    if (config.Inbound.First().User.IsNotEmpty() && config.Inbound.First().Pass.IsNotEmpty())
+                    if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
                     {
                         inbound3.settings.auth = "password";
-                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new() { user = config.Inbound.First().User, pass = config.Inbound.First().Pass } };
+                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
                     }
                 }
                 else

@@ -99,9 +99,9 @@ public partial class CoreConfigSingboxService
                 }
                 else
                 {
-                    var srsUrl = string.IsNullOrEmpty(context.AppConfig.ConstItem.SrsSourceUrl)
+                    var srsUrl = string.IsNullOrEmpty(_config.ConstItem.SrsSourceUrl)
                         ? Global.SingboxRulesetUrl
-                        : context.AppConfig.ConstItem.SrsSourceUrl;
+                        : _config.ConstItem.SrsSourceUrl;
 
                     customRuleset = new()
                     {

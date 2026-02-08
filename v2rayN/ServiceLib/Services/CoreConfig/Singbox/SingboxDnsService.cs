@@ -348,6 +348,10 @@ public partial class CoreConfigSingboxService
     private void GenMinimizedDns()
     {
         GenDnsServers();
+        foreach (var server in _coreConfig.dns!.servers.Where(s => !string.IsNullOrEmpty(s.detour)).ToList())
+        {
+            _coreConfig.dns.servers.Remove(server);
+        }
         _coreConfig.dns ??= new();
         _coreConfig.dns.rules ??= [];
         _coreConfig.dns.rules.Clear();
@@ -429,15 +433,17 @@ public partial class CoreConfigSingboxService
     {
         GenDnsProtectCustom();
 
-        var localDnsServer = _coreConfig.dns?.servers?.FirstOrDefault(s => s.tag == Global.SingboxLocalDNSTag);
-        if (localDnsServer == null)
-        {
-            return;
-        }
-        localDnsServer.type = null;
-        localDnsServer.server = null;
+        _coreConfig.dns?.servers?.RemoveAll(s => s.tag == Global.SingboxLocalDNSTag);
         var dnsItem = context.RawDnsItem;
-        localDnsServer.address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress;
+        var localDnsServer = new Server4Sbox()
+        {
+            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress)
+                ? Global.DomainPureIPDNSAddress.FirstOrDefault()
+                : dnsItem?.DomainDNSAddress,
+            tag = Global.SingboxLocalDNSTag,
+            detour = Global.DirectTag,
+        };
+        _coreConfig.dns?.servers?.Add(localDnsServer);
     }
 
     private Rule4Sbox BuildProtectDomainRule()

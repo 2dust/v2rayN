@@ -11,7 +11,7 @@ public partial class CoreConfigSingboxService
     private List<BaseServer4Sbox> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag, bool withSelector = true)
     {
         var proxyOutboundList = new List<BaseServer4Sbox>();
-        if (!context.Node.ConfigType.IsComplexType())
+        if (!_node.ConfigType.IsComplexType())
         {
             var outbound = BuildProxyOutbound(baseTagName);
             proxyOutboundList.Add(outbound);
@@ -38,7 +38,7 @@ public partial class CoreConfigSingboxService
     private List<BaseServer4Sbox> BuildGroupProxyOutbounds(string baseTagName = Global.ProxyTag)
     {
         var proxyOutboundList = new List<BaseServer4Sbox>();
-        switch (context.Node.ConfigType)
+        switch (_node.ConfigType)
         {
             case EConfigType.PolicyGroup:
                 proxyOutboundList = BuildOutboundsList(baseTagName);
@@ -54,9 +54,8 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var node = context.Node;
             var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-            if (node.ConfigType == EConfigType.WireGuard)
+            if (_node.ConfigType == EConfigType.WireGuard)
             {
                 var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
                 FillEndpoint(endpoint);
@@ -80,17 +79,16 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var node = context.Node;
-            var protocolExtra = node.GetProtocolExtra();
-            outbound.server = node.Address;
-            outbound.server_port = node.Port;
-            outbound.type = Global.ProtocolTypes[node.ConfigType];
+            var protocolExtra = _node.GetProtocolExtra();
+            outbound.server = _node.Address;
+            outbound.server_port = _node.Port;
+            outbound.type = Global.ProtocolTypes[_node.ConfigType];
 
-            switch (node.ConfigType)
+            switch (_node.ConfigType)
             {
                 case EConfigType.VMess:
                     {
-                        outbound.uuid = node.Password;
+                        outbound.uuid = _node.Password;
                         outbound.alter_id = int.TryParse(protocolExtra.AlterId, out var result) ? result : 0;
                         if (Global.VmessSecurities.Contains(protocolExtra.VmessSecurity))
                         {
@@ -107,35 +105,35 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Shadowsocks:
                     {
-                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(protocolExtra.SsMethod)
+                        outbound.method = AppManager.Instance.GetShadowsocksSecurities(_node).Contains(protocolExtra.SsMethod)
                             ? protocolExtra.SsMethod : Global.None;
-                        outbound.password = node.Password;
+                        outbound.password = _node.Password;
 
-                        if (node.Network == nameof(ETransport.tcp) && node.HeaderType == Global.TcpHeaderHttp)
+                        if (_node.Network == nameof(ETransport.tcp) && _node.HeaderType == Global.TcpHeaderHttp)
                         {
                             outbound.plugin = "obfs-local";
-                            outbound.plugin_opts = $"obfs=http;obfs-host={node.RequestHost};";
+                            outbound.plugin_opts = $"obfs=http;obfs-host={_node.RequestHost};";
                         }
                         else
                         {
                             var pluginArgs = string.Empty;
-                            if (node.Network == nameof(ETransport.ws))
+                            if (_node.Network == nameof(ETransport.ws))
                             {
                                 pluginArgs += "mode=websocket;";
-                                pluginArgs += $"host={node.RequestHost};";
+                                pluginArgs += $"host={_node.RequestHost};";
                                 // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
                                 // Equal signs and commas [and backslashes] must be escaped with a backslash.
-                                var path = node.Path.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                                var path = _node.Path.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
                                 pluginArgs += $"path={path};";
                             }
-                            else if (node.Network == nameof(ETransport.quic))
+                            else if (_node.Network == nameof(ETransport.quic))
                             {
                                 pluginArgs += "mode=quic;";
                             }
-                            if (node.StreamSecurity == Global.StreamSecurity)
+                            if (_node.StreamSecurity == Global.StreamSecurity)
                             {
                                 pluginArgs += "tls;";
-                                var certs = CertPemManager.ParsePemChain(node.Cert);
+                                var certs = CertPemManager.ParsePemChain(_node.Cert);
                                 if (certs.Count > 0)
                                 {
                                     var cert = certs.First();
@@ -165,27 +163,27 @@ public partial class CoreConfigSingboxService
                 case EConfigType.SOCKS:
                     {
                         outbound.version = "5";
-                        if (node.Username.IsNotEmpty()
-                            && node.Password.IsNotEmpty())
+                        if (_node.Username.IsNotEmpty()
+                            && _node.Password.IsNotEmpty())
                         {
-                            outbound.username = node.Username;
-                            outbound.password = node.Password;
+                            outbound.username = _node.Username;
+                            outbound.password = _node.Password;
                         }
                         break;
                     }
                 case EConfigType.HTTP:
                     {
-                        if (node.Username.IsNotEmpty()
-                            && node.Password.IsNotEmpty())
+                        if (_node.Username.IsNotEmpty()
+                            && _node.Password.IsNotEmpty())
                         {
-                            outbound.username = node.Username;
-                            outbound.password = node.Password;
+                            outbound.username = _node.Username;
+                            outbound.password = _node.Password;
                         }
                         break;
                     }
                 case EConfigType.VLESS:
                     {
-                        outbound.uuid = node.Password;
+                        outbound.uuid = _node.Password;
 
                         outbound.packet_encoding = "xudp";
 
@@ -203,7 +201,7 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Trojan:
                     {
-                        outbound.password = node.Password;
+                        outbound.password = _node.Password;
 
                         FillOutboundMux(outbound);
                         FillOutboundTransport(outbound);
@@ -211,7 +209,7 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.Hysteria2:
                     {
-                        outbound.password = node.Password;
+                        outbound.password = _node.Password;
 
                         if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                         {
@@ -224,10 +222,10 @@ public partial class CoreConfigSingboxService
 
                         outbound.up_mbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
-                            : context.AppConfig.HysteriaItem.UpMbps;
+                            : _config.HysteriaItem.UpMbps;
                         outbound.down_mbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
-                            : context.AppConfig.HysteriaItem.DownMbps;
+                            : _config.HysteriaItem.DownMbps;
                         var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
@@ -241,8 +239,8 @@ public partial class CoreConfigSingboxService
                                     return port.Contains(':') ? port : $"{port}:{port}";
                                 })
                                 .ToList();
-                            outbound.hop_interval = context.AppConfig.HysteriaItem.HopInterval >= 5
-                                ? $"{context.AppConfig.HysteriaItem.HopInterval}s"
+                            outbound.hop_interval = _config.HysteriaItem.HopInterval >= 5
+                                ? $"{_config.HysteriaItem.HopInterval}s"
                                 : $"{Global.Hysteria2DefaultHopInt}s";
                             if (int.TryParse(protocolExtra.HopInterval, out var hiResult))
                             {
@@ -265,14 +263,14 @@ public partial class CoreConfigSingboxService
                     }
                 case EConfigType.TUIC:
                     {
-                        outbound.uuid = node.Username;
-                        outbound.password = node.Password;
-                        outbound.congestion_control = node.HeaderType;
+                        outbound.uuid = _node.Username;
+                        outbound.password = _node.Password;
+                        outbound.congestion_control = _node.HeaderType;
                         break;
                     }
                 case EConfigType.Anytls:
                     {
-                        outbound.password = node.Password;
+                        outbound.password = _node.Password;
                         break;
                     }
             }
@@ -289,13 +287,12 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var node = context.Node;
-            var protocolExtra = node.GetProtocolExtra();
+            var protocolExtra = _node.GetProtocolExtra();
 
             endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress);
-            endpoint.type = Global.ProtocolTypes[node.ConfigType];
+            endpoint.type = Global.ProtocolTypes[_node.ConfigType];
 
-            switch (node.ConfigType)
+            switch (_node.ConfigType)
             {
                 case EConfigType.WireGuard:
                     {
@@ -304,12 +301,12 @@ public partial class CoreConfigSingboxService
                             public_key = protocolExtra.WgPublicKey,
                             pre_shared_key = protocolExtra.WgPresharedKey,
                             reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(int.Parse).ToList(),
-                            address = node.Address,
-                            port = node.Port,
+                            address = _node.Address,
+                            port = _node.Port,
                             // TODO default ["0.0.0.0/0", "::/0"]
                             allowed_ips = new() { "0.0.0.0/0", "::/0" },
                         };
-                        endpoint.private_key = node.Password;
+                        endpoint.private_key = _node.Password;
                         endpoint.mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First();
                         endpoint.peers = [peer];
                         break;
@@ -326,16 +323,15 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var config = context.AppConfig;
-            var muxEnabled = context.Node.MuxEnabled ?? config.CoreBasicItem.MuxEnabled;
-            if (muxEnabled && config.Mux4SboxItem.Protocol.IsNotEmpty())
+            var muxEnabled = _node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
+            if (muxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
             {
                 var mux = new Multiplex4Sbox()
                 {
                     enabled = true,
-                    protocol = config.Mux4SboxItem.Protocol,
-                    max_connections = config.Mux4SboxItem.MaxConnections,
-                    padding = config.Mux4SboxItem.Padding,
+                    protocol = _config.Mux4SboxItem.Protocol,
+                    max_connections = _config.Mux4SboxItem.MaxConnections,
+                    padding = _config.Mux4SboxItem.Padding,
                 };
                 outbound.multiplex = mux;
             }
@@ -350,60 +346,59 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var node = context.Node;
-            if (node.StreamSecurity is not (Global.StreamSecurityReality or Global.StreamSecurity))
+            if (_node.StreamSecurity is not (Global.StreamSecurityReality or Global.StreamSecurity))
             {
                 return;
             }
-            if (node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard)
+            if (_node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard)
             {
                 return;
             }
             var serverName = string.Empty;
-            if (node.Sni.IsNotEmpty())
+            if (_node.Sni.IsNotEmpty())
             {
-                serverName = node.Sni;
+                serverName = _node.Sni;
             }
-            else if (node.RequestHost.IsNotEmpty())
+            else if (_node.RequestHost.IsNotEmpty())
             {
-                serverName = Utils.String2List(node.RequestHost)?.First();
+                serverName = Utils.String2List(_node.RequestHost)?.First();
             }
             var tls = new Tls4Sbox()
             {
                 enabled = true,
-                record_fragment = context.AppConfig.CoreBasicItem.EnableFragment ? true : null,
+                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
-                insecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? context.AppConfig.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
-                alpn = node.GetAlpn(),
+                insecure = Utils.ToBool(_node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : _node.AllowInsecure),
+                alpn = _node.GetAlpn(),
             };
-            if (node.Fingerprint.IsNotEmpty())
+            if (_node.Fingerprint.IsNotEmpty())
             {
                 tls.utls = new Utls4Sbox()
                 {
                     enabled = true,
-                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? context.AppConfig.CoreBasicItem.DefFingerprint : node.Fingerprint
+                    fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint
                 };
             }
-            if (node.StreamSecurity == Global.StreamSecurity)
+            if (_node.StreamSecurity == Global.StreamSecurity)
             {
-                var certs = CertPemManager.ParsePemChain(node.Cert);
+                var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
                     tls.certificate = certs;
                     tls.insecure = false;
                 }
             }
-            else if (node.StreamSecurity == Global.StreamSecurityReality)
+            else if (_node.StreamSecurity == Global.StreamSecurityReality)
             {
                 tls.reality = new Reality4Sbox()
                 {
                     enabled = true,
-                    public_key = node.PublicKey,
-                    short_id = node.ShortId
+                    public_key = _node.PublicKey,
+                    short_id = _node.ShortId
                 };
                 tls.insecure = false;
             }
-            var (ech, _) = ParseEchParam(node.EchConfigList);
+            var (ech, _) = ParseEchParam(_node.EchConfigList);
             if (ech is not null)
             {
                 tls.ech = ech;
@@ -420,29 +415,28 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var node = context.Node;
             var transport = new Transport4Sbox();
 
-            switch (node.GetNetwork())
+            switch (_node.GetNetwork())
             {
                 case nameof(ETransport.h2):
                     transport.type = nameof(ETransport.http);
-                    transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
-                    transport.path = node.Path.NullIfEmpty();
+                    transport.host = _node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(_node.RequestHost);
+                    transport.path = _node.Path.NullIfEmpty();
                     break;
 
                 case nameof(ETransport.tcp):   //http
-                    if (node.HeaderType == Global.TcpHeaderHttp)
+                    if (_node.HeaderType == Global.TcpHeaderHttp)
                     {
                         transport.type = nameof(ETransport.http);
-                        transport.host = node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(node.RequestHost);
-                        transport.path = node.Path.NullIfEmpty();
+                        transport.host = _node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(_node.RequestHost);
+                        transport.path = _node.Path.NullIfEmpty();
                     }
                     break;
 
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
-                    var wsPath = node.Path;
+                    var wsPath = _node.Path;
 
                     // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
@@ -471,19 +465,19 @@ public partial class CoreConfigSingboxService
                     }
 
                     transport.path = wsPath.NullIfEmpty();
-                    if (node.RequestHost.IsNotEmpty())
+                    if (_node.RequestHost.IsNotEmpty())
                     {
                         transport.headers = new()
                         {
-                            Host = node.RequestHost
+                            Host = _node.RequestHost
                         };
                     }
                     break;
 
                 case nameof(ETransport.httpupgrade):
                     transport.type = nameof(ETransport.httpupgrade);
-                    transport.path = node.Path.NullIfEmpty();
-                    transport.host = node.RequestHost.NullIfEmpty();
+                    transport.path = _node.Path.NullIfEmpty();
+                    transport.host = _node.RequestHost.NullIfEmpty();
 
                     break;
 
@@ -493,10 +487,10 @@ public partial class CoreConfigSingboxService
 
                 case nameof(ETransport.grpc):
                     transport.type = nameof(ETransport.grpc);
-                    transport.service_name = node.Path;
-                    transport.idle_timeout = context.AppConfig.GrpcItem.IdleTimeout?.ToString("##s");
-                    transport.ping_timeout = context.AppConfig.GrpcItem.HealthCheckTimeout?.ToString("##s");
-                    transport.permit_without_stream = context.AppConfig.GrpcItem.PermitWithoutStream;
+                    transport.service_name = _node.Path;
+                    transport.idle_timeout = _config.GrpcItem.IdleTimeout?.ToString("##s");
+                    transport.ping_timeout = _config.GrpcItem.HealthCheckTimeout?.ToString("##s");
+                    transport.permit_without_stream = _config.GrpcItem.PermitWithoutStream;
                     break;
 
                 default:
@@ -515,7 +509,7 @@ public partial class CoreConfigSingboxService
 
     private List<Outbound4Sbox> BuildSelectorOutbounds(List<string> proxyTags, string baseTagName = Global.ProxyTag)
     {
-        var multipleLoad = context.Node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+        var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
         var outUrltest = new Outbound4Sbox
         {
             type = "urltest",
@@ -545,7 +539,7 @@ public partial class CoreConfigSingboxService
     private List<BaseServer4Sbox> BuildOutboundsList(string baseTagName = Global.ProxyTag)
     {
         var nodes = new List<ProfileItem>();
-        foreach (var nodeId in Utils.String2List(context.Node.GetProtocolExtra().ChildItems) ?? [])
+        foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
         {
             if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
             {
@@ -574,7 +568,7 @@ public partial class CoreConfigSingboxService
     private List<BaseServer4Sbox> BuildChainOutboundsList(string baseTagName = Global.ProxyTag)
     {
         var nodes = new List<ProfileItem>();
-        foreach (var nodeId in Utils.String2List(context.Node.GetProtocolExtra().ChildItems) ?? [])
+        foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
         {
             if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
             {

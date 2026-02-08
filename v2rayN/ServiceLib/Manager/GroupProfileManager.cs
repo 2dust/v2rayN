@@ -79,7 +79,7 @@ public class GroupProfileManager
     {
         if (protocolExtra == null)
         {
-            return new();
+            return [];
         }
 
         var items = new List<ProfileItem>();
@@ -93,27 +93,44 @@ public class GroupProfileManager
     {
         if (extra == null || extra.ChildItems.IsNullOrEmpty())
         {
-            return new();
+            return [];
         }
-        var childProfiles = (await Task.WhenAll(
-                (Utils.String2List(extra.ChildItems) ?? new())
-                    .Where(p => !p.IsNullOrEmpty())
-                    .Select(AppManager.Instance.GetProfileItem)
-            ))
-            .Where(p =>
-                p != null &&
-                p.IsValid() &&
-                p.ConfigType != EConfigType.Custom
-            )
-            .ToList();
-        return childProfiles ?? new();
+        var childProfileIds = Utils.String2List(extra.ChildItems)
+            ?.Where(p => !string.IsNullOrEmpty(p))
+            .ToList() ?? [];
+        if (childProfileIds.Count == 0)
+        {
+            return [];
+        }
+
+        var childProfiles = await AppManager.Instance.GetProfileItemsByIndexIds(childProfileIds);
+        if (childProfiles == null || childProfiles.Count == 0)
+        {
+            return [];
+        }
+
+        var profileMap = childProfiles
+            .Where(p => p != null && !p.IndexId.IsNullOrEmpty())
+            .GroupBy(p => p!.IndexId!)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        var ordered = new List<ProfileItem>(childProfileIds.Count);
+        foreach (var id in childProfileIds)
+        {
+            if (id != null && profileMap.TryGetValue(id, out var item) && item != null)
+            {
+                ordered.Add(item);
+            }
+        }
+
+        return ordered;
     }
 
     private static async Task<List<ProfileItem>> GetSubChildProfileItems(ProtocolExtraItem? extra)
     {
         if (extra == null || extra.SubChildItems.IsNullOrEmpty())
         {
-            return new();
+            return [];
         }
         var childProfiles = await AppManager.Instance.ProfileItems(extra.SubChildItems ?? string.Empty);
 
@@ -123,7 +140,7 @@ public class GroupProfileManager
                 !p.ConfigType.IsComplexType() &&
                 (extra.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extra.Filter))
             )
-            .ToList() ?? new();
+            .ToList() ?? [];
     }
 
     public static async Task<List<ProfileItem>> GetAllChildProfileItems(ProfileItem profileItem)
@@ -148,39 +165,5 @@ public class GroupProfileManager
                 await CollectChildItems(child, allChildItems, visited);
             }
         }
-    }
-
-
-    public static async Task<HashSet<string>> GetAllChildDomainAddresses(ProfileItem profileItem)
-    {
-        var childAddresses = new HashSet<string>();
-        var childItems = await GetAllChildProfileItems(profileItem);
-        foreach (var child in childItems.Where(child => !child.Address.IsNullOrEmpty()).Where(child => Utils.IsDomain(child.Address)))
-        {
-            childAddresses.Add(child.Address);
-        }
-        return childAddresses;
-    }
-
-    public static async Task<HashSet<string>> GetAllChildEchQuerySni(ProfileItem profileItem)
-    {
-        var childAddresses = new HashSet<string>();
-        var childItems = await GetAllChildProfileItems(profileItem);
-        foreach (var childNode in childItems.Where(childNode => !childNode.EchConfigList.IsNullOrEmpty()))
-        {
-            var sni = childNode.Sni;
-            if (childNode.StreamSecurity == Global.StreamSecurity
-                && childNode.EchConfigList?.Contains("://") == true)
-            {
-                var idx = childNode.EchConfigList.IndexOf('+');
-                sni = idx > 0 ? childNode.EchConfigList[..idx] : childNode.Sni;
-            }
-            if (!Utils.IsDomain(sni))
-            {
-                continue;
-            }
-            childAddresses.Add(sni);
-        }
-        return childAddresses;
     }
 }

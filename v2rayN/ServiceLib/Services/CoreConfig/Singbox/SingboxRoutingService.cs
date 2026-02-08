@@ -7,7 +7,7 @@ public partial class CoreConfigSingboxService
         try
         {
             _coreConfig.route.final = Global.ProxyTag;
-            var simpleDnsItem = context.AppConfig.SimpleDNSItem;
+            var simpleDnsItem = context.SimpleDnsItem;
 
             var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
             var directDnsStrategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom);
@@ -24,7 +24,7 @@ public partial class CoreConfigSingboxService
                 strategy = directDnsStrategy
             };
 
-            if (context.AppConfig.TunModeItem.EnableTun)
+            if (_config.TunModeItem.EnableTun)
             {
                 _coreConfig.route.auto_detect_interface = true;
 
@@ -49,7 +49,7 @@ public partial class CoreConfigSingboxService
                 });
             }
 
-            if (context.AppConfig.Inbound.First().SniffingEnabled)
+            if (_config.Inbound.First().SniffingEnabled)
             {
                 _coreConfig.route.rules.Add(new()
                 {
@@ -102,7 +102,7 @@ public partial class CoreConfigSingboxService
                 clash_mode = ERuleMode.Global.ToString()
             });
 
-            var domainStrategy = context.AppConfig.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
+            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
             var routing = context.RoutingItem;
             if (routing.DomainStrategy4Singbox.IsNotEmpty())
             {
@@ -113,7 +113,7 @@ public partial class CoreConfigSingboxService
                 action = "resolve",
                 strategy = domainStrategy
             };
-            if (context.AppConfig.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
+            if (_config.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
             {
                 _coreConfig.route.rules.Add(resolveRule);
             }
@@ -142,7 +142,7 @@ public partial class CoreConfigSingboxService
                     }
                 }
             }
-            if (context.AppConfig.RoutingBasicItem.DomainStrategy == Global.IPIfNonMatch)
+            if (_config.RoutingBasicItem.DomainStrategy == Global.IPIfNonMatch)
             {
                 _coreConfig.route.rules.Add(resolveRule);
                 foreach (var item2 in ipRules)
@@ -413,8 +413,8 @@ public partial class CoreConfigSingboxService
         }
 
         var tag = $"{node.IndexId}-{Global.ProxyTag}";
-        if (_coreConfig.outbounds.Any(o => o.tag == tag)
-            || (_coreConfig.endpoints != null && _coreConfig.endpoints.Any(e => e.tag == tag)))
+        if (_coreConfig.outbounds.Any(o => o.tag.StartsWith(tag))
+            || (_coreConfig.endpoints != null && _coreConfig.endpoints.Any(e => e.tag.StartsWith(tag))))
         {
             return tag;
         }
