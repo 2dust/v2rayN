@@ -2,13 +2,94 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenOutbound(ProfileItem node, Outbounds4Ray outbound)
+    private void GenOutbounds()
+    {
+        var proxyOutboundList = BuildAllProxyOutbounds();
+        _coreConfig.outbounds.InsertRange(0, proxyOutboundList);
+        if (proxyOutboundList.Count(n => n.tag.StartsWith(Global.ProxyTag)) > 1)
+        {
+            var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+            GenObservatory(multipleLoad);
+            GenBalancer(multipleLoad);
+        }
+    }
+
+    private List<Outbounds4Ray> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag)
+    {
+        var proxyOutboundList = new List<Outbounds4Ray>();
+        if (_node.ConfigType.IsGroupType())
+        {
+            proxyOutboundList.AddRange(BuildGroupProxyOutbounds(baseTagName));
+        }
+        else
+        {
+            proxyOutboundList.Add(BuildProxyOutbound(baseTagName));
+        }
+
+        if (_config.CoreBasicItem.EnableFragment)
+        {
+            var fragmentOutbound = new Outbounds4Ray
+            {
+                protocol = "freedom",
+                tag = $"frag-{Global.ProxyTag}",
+                settings = new()
+                {
+                    fragment = new()
+                    {
+                        packets = _config.Fragment4RayItem?.Packets,
+                        length = _config.Fragment4RayItem?.Length,
+                        interval = _config.Fragment4RayItem?.Interval
+                    }
+                }
+            };
+            var actOutboundWithTlsList =
+                proxyOutboundList.Where(n => n.streamSettings?.security.IsNullOrEmpty() == false
+                                             && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true));
+            foreach (var outbound in actOutboundWithTlsList)
+            {
+                var fragmentOutboundClone = JsonUtils.DeepCopy(fragmentOutbound);
+                fragmentOutboundClone.tag = $"frag-{outbound.tag}";
+                outbound.streamSettings.sockopt = new()
+                {
+                    dialerProxy = fragmentOutboundClone.tag
+                };
+                proxyOutboundList.Add(fragmentOutboundClone);
+            }
+        }
+        return proxyOutboundList;
+    }
+
+    private List<Outbounds4Ray> BuildGroupProxyOutbounds(string baseTagName = Global.ProxyTag)
+    {
+        var proxyOutboundList = new List<Outbounds4Ray>();
+        switch (_node.ConfigType)
+        {
+            case EConfigType.PolicyGroup:
+                proxyOutboundList.AddRange(BuildOutboundsList(baseTagName));
+                break;
+            case EConfigType.ProxyChain:
+                proxyOutboundList.AddRange(BuildChainOutboundsList(baseTagName));
+                break;
+        }
+        return proxyOutboundList;
+    }
+
+    private Outbounds4Ray BuildProxyOutbound(string baseTagName = Global.ProxyTag)
+    {
+        var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
+        var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+        FillOutbound(outbound);
+        outbound.tag = baseTagName;
+        return outbound;
+    }
+
+    private void FillOutbound(Outbounds4Ray outbound)
     {
         try
         {
-            var protocolExtra = node.GetProtocolExtra();
-            var muxEnabled = node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
-            switch (node.ConfigType)
+            var protocolExtra = _node.GetProtocolExtra();
+            var muxEnabled = _node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
+            switch (_node.ConfigType)
             {
                 case EConfigType.VMess:
                     {
@@ -22,8 +103,8 @@ public partial class CoreConfigV2rayService
                         {
                             vnextItem = outbound.settings.vnext.First();
                         }
-                        vnextItem.address = node.Address;
-                        vnextItem.port = node.Port;
+                        vnextItem.address = _node.Address;
+                        vnextItem.port = _node.Port;
 
                         UsersItem4Ray usersItem;
                         if (vnextItem.users.Count <= 0)
@@ -36,7 +117,7 @@ public partial class CoreConfigV2rayService
                             usersItem = vnextItem.users.First();
                         }
 
-                        usersItem.id = node.Password;
+                        usersItem.id = _node.Password;
                         usersItem.alterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
                         usersItem.email = Global.UserEMail;
                         if (Global.VmessSecurities.Contains(protocolExtra.VmessSecurity))
@@ -48,7 +129,7 @@ public partial class CoreConfigV2rayService
                             usersItem.security = Global.DefaultSecurity;
                         }
 
-                        await GenOutboundMux(node, outbound, muxEnabled, muxEnabled);
+                        FillOutboundMux(outbound, muxEnabled, muxEnabled);
 
                         outbound.settings.servers = null;
                         break;
@@ -65,16 +146,16 @@ public partial class CoreConfigV2rayService
                         {
                             serversItem = outbound.settings.servers.First();
                         }
-                        serversItem.address = node.Address;
-                        serversItem.port = node.Port;
-                        serversItem.password = node.Password;
-                        serversItem.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(protocolExtra.SsMethod)
+                        serversItem.address = _node.Address;
+                        serversItem.port = _node.Port;
+                        serversItem.password = _node.Password;
+                        serversItem.method = AppManager.Instance.GetShadowsocksSecurities(_node).Contains(protocolExtra.SsMethod)
                             ? protocolExtra.SsMethod : "none";
 
                         serversItem.ota = false;
                         serversItem.level = 1;
 
-                        await GenOutboundMux(node, outbound);
+                        FillOutboundMux(outbound);
 
                         outbound.settings.vnext = null;
                         break;
@@ -92,25 +173,25 @@ public partial class CoreConfigV2rayService
                         {
                             serversItem = outbound.settings.servers.First();
                         }
-                        serversItem.address = node.Address;
-                        serversItem.port = node.Port;
+                        serversItem.address = _node.Address;
+                        serversItem.port = _node.Port;
                         serversItem.method = null;
                         serversItem.password = null;
 
-                        if (node.Username.IsNotEmpty()
-                            && node.Password.IsNotEmpty())
+                        if (_node.Username.IsNotEmpty()
+                            && _node.Password.IsNotEmpty())
                         {
                             SocksUsersItem4Ray socksUsersItem = new()
                             {
-                                user = node.Username ?? "",
-                                pass = node.Password,
+                                user = _node.Username ?? "",
+                                pass = _node.Password,
                                 level = 1
                             };
 
                             serversItem.users = new List<SocksUsersItem4Ray>() { socksUsersItem };
                         }
 
-                        await GenOutboundMux(node, outbound);
+                        FillOutboundMux(outbound);
 
                         outbound.settings.vnext = null;
                         break;
@@ -127,8 +208,8 @@ public partial class CoreConfigV2rayService
                         {
                             vnextItem = outbound.settings.vnext.First();
                         }
-                        vnextItem.address = node.Address;
-                        vnextItem.port = node.Port;
+                        vnextItem.address = _node.Address;
+                        vnextItem.port = _node.Port;
 
                         UsersItem4Ray usersItem;
                         if (vnextItem.users.Count <= 0)
@@ -140,7 +221,7 @@ public partial class CoreConfigV2rayService
                         {
                             usersItem = vnextItem.users.First();
                         }
-                        usersItem.id = node.Password;
+                        usersItem.id = _node.Password;
                         usersItem.email = Global.UserEMail;
                         usersItem.encryption = protocolExtra.VlessEncryption;
 
@@ -150,7 +231,7 @@ public partial class CoreConfigV2rayService
                         }
                         else
                         {
-                            await GenOutboundMux(node, outbound, false, muxEnabled);
+                            FillOutboundMux(outbound, false, muxEnabled);
                         }
                         outbound.settings.servers = null;
                         break;
@@ -167,14 +248,14 @@ public partial class CoreConfigV2rayService
                         {
                             serversItem = outbound.settings.servers.First();
                         }
-                        serversItem.address = node.Address;
-                        serversItem.port = node.Port;
-                        serversItem.password = node.Password;
+                        serversItem.address = _node.Address;
+                        serversItem.port = _node.Port;
+                        serversItem.password = _node.Password;
 
                         serversItem.ota = false;
                         serversItem.level = 1;
 
-                        await GenOutboundMux(node, outbound);
+                        FillOutboundMux(outbound);
 
                         outbound.settings.vnext = null;
                         break;
@@ -184,8 +265,8 @@ public partial class CoreConfigV2rayService
                         outbound.settings = new()
                         {
                             version = 2,
-                            address = node.Address,
-                            port = node.Port,
+                            address = _node.Address,
+                            port = _node.Port,
                         };
                         outbound.settings.vnext = null;
                         outbound.settings.servers = null;
@@ -193,7 +274,7 @@ public partial class CoreConfigV2rayService
                     }
                 case EConfigType.WireGuard:
                     {
-                        var address = node.Address;
+                        var address = _node.Address;
                         if (Utils.IsIpv6(address))
                         {
                             address = $"[{address}]";
@@ -201,12 +282,12 @@ public partial class CoreConfigV2rayService
                         var peer = new WireguardPeer4Ray
                         {
                             publicKey = protocolExtra.WgPublicKey ?? "",
-                            endpoint = address + ":" + node.Port.ToString()
+                            endpoint = address + ":" + _node.Port.ToString()
                         };
                         var setting = new Outboundsettings4Ray
                         {
                             address = Utils.String2List(protocolExtra.WgInterfaceAddress),
-                            secretKey = node.Password,
+                            secretKey = _node.Password,
                             reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(int.Parse).ToList(),
                             mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First(),
                             peers = [peer]
@@ -218,21 +299,20 @@ public partial class CoreConfigV2rayService
                     }
             }
 
-            outbound.protocol = Global.ProtocolTypes[node.ConfigType];
-            if (node.ConfigType == EConfigType.Hysteria2)
+            outbound.protocol = Global.ProtocolTypes[_node.ConfigType];
+            if (_node.ConfigType == EConfigType.Hysteria2)
             {
                 outbound.protocol = "hysteria";
             }
-            await GenBoundStreamSettings(node, outbound);
+            FillBoundStreamSettings(outbound);
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenOutboundMux(ProfileItem node, Outbounds4Ray outbound, bool enabledTCP = false, bool enabledUDP = false)
+    private void FillOutboundMux(Outbounds4Ray outbound, bool enabledTCP = false, bool enabledUDP = false)
     {
         try
         {
@@ -255,23 +335,22 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private async Task<int> GenBoundStreamSettings(ProfileItem node, Outbounds4Ray outbound)
+    private void FillBoundStreamSettings(Outbounds4Ray outbound)
     {
         try
         {
             var streamSettings = outbound.streamSettings;
-            var network = node.GetNetwork();
-            if (node.ConfigType == EConfigType.Hysteria2)
+            var network = _node.GetNetwork();
+            if (_node.ConfigType == EConfigType.Hysteria2)
             {
                 network = "hysteria";
             }
             streamSettings.network = network;
-            var host = node.RequestHost.TrimEx();
-            var path = node.Path.TrimEx();
-            var sni = node.Sni.TrimEx();
+            var host = _node.RequestHost.TrimEx();
+            var path = _node.Path.TrimEx();
+            var sni = _node.Sni.TrimEx();
             var useragent = "";
             if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
             {
@@ -286,17 +365,17 @@ public partial class CoreConfigV2rayService
             }
 
             //if tls
-            if (node.StreamSecurity == Global.StreamSecurity)
+            if (_node.StreamSecurity == Global.StreamSecurity)
             {
-                streamSettings.security = node.StreamSecurity;
+                streamSettings.security = _node.StreamSecurity;
 
                 TlsSettings4Ray tlsSettings = new()
                 {
-                    allowInsecure = Utils.ToBool(node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : node.AllowInsecure),
-                    alpn = node.GetAlpn(),
-                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint,
-                    echConfigList = node.EchConfigList.NullIfEmpty(),
-                    echForceQuery = node.EchForceQuery.NullIfEmpty()
+                    allowInsecure = Utils.ToBool(_node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : _node.AllowInsecure),
+                    alpn = _node.GetAlpn(),
+                    fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
+                    echConfigList = _node.EchConfigList.NullIfEmpty(),
+                    echForceQuery = _node.EchForceQuery.NullIfEmpty()
                 };
                 if (sni.IsNotEmpty())
                 {
@@ -306,7 +385,7 @@ public partial class CoreConfigV2rayService
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
                 }
-                var certs = CertPemManager.ParsePemChain(node.Cert);
+                var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
                     var certsettings = new List<CertificateSettings4Ray>();
@@ -323,27 +402,27 @@ public partial class CoreConfigV2rayService
                     tlsSettings.disableSystemRoot = true;
                     tlsSettings.allowInsecure = false;
                 }
-                else if (!node.CertSha.IsNullOrEmpty())
+                else if (!_node.CertSha.IsNullOrEmpty())
                 {
-                    tlsSettings.pinnedPeerCertSha256 = node.CertSha;
+                    tlsSettings.pinnedPeerCertSha256 = _node.CertSha;
                     tlsSettings.allowInsecure = false;
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }
 
             //if Reality
-            if (node.StreamSecurity == Global.StreamSecurityReality)
+            if (_node.StreamSecurity == Global.StreamSecurityReality)
             {
-                streamSettings.security = node.StreamSecurity;
+                streamSettings.security = _node.StreamSecurity;
 
                 TlsSettings4Ray realitySettings = new()
                 {
-                    fingerprint = node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : node.Fingerprint,
+                    fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     serverName = sni,
-                    publicKey = node.PublicKey,
-                    shortId = node.ShortId,
-                    spiderX = node.SpiderX,
-                    mldsa65Verify = node.Mldsa65Verify,
+                    publicKey = _node.PublicKey,
+                    shortId = _node.ShortId,
+                    spiderX = _node.SpiderX,
+                    mldsa65Verify = _node.Mldsa65Verify,
                     show = false,
                 };
 
@@ -367,14 +446,14 @@ public partial class CoreConfigV2rayService
                     kcpSettings.readBufferSize = _config.KcpItem.ReadBufferSize;
                     kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
                     streamSettings.finalmask ??= new();
-                    if (Global.KcpHeaderMaskMap.TryGetValue(node.HeaderType, out var header))
+                    if (Global.KcpHeaderMaskMap.TryGetValue(_node.HeaderType, out var header))
                     {
                         streamSettings.finalmask.udp =
                         [
                             new Mask4Ray
                             {
                                 type = header,
-                                settings = node.HeaderType == "dns" && !host.IsNullOrEmpty() ? new MaskSettings4Ray { domain = host } : null
+                                settings = _node.HeaderType == "dns" && !host.IsNullOrEmpty() ? new MaskSettings4Ray { domain = host } : null
                             }
                         ];
                     }
@@ -444,17 +523,17 @@ public partial class CoreConfigV2rayService
                     {
                         xhttpSettings.host = host;
                     }
-                    if (node.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(node.HeaderType))
+                    if (_node.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(_node.HeaderType))
                     {
-                        xhttpSettings.mode = node.HeaderType;
+                        xhttpSettings.mode = _node.HeaderType;
                     }
-                    if (node.Extra.IsNotEmpty())
+                    if (_node.Extra.IsNotEmpty())
                     {
-                        xhttpSettings.extra = JsonUtils.ParseJson(node.Extra);
+                        xhttpSettings.extra = JsonUtils.ParseJson(_node.Extra);
                     }
 
                     streamSettings.xhttpSettings = xhttpSettings;
-                    await GenOutboundMux(node, outbound);
+                    FillOutboundMux(outbound);
 
                     break;
                 //h2
@@ -478,11 +557,11 @@ public partial class CoreConfigV2rayService
                         key = path,
                         header = new Header4Ray
                         {
-                            type = node.HeaderType
+                            type = _node.HeaderType
                         }
                     };
                     streamSettings.quicSettings = quicsettings;
-                    if (node.StreamSecurity == Global.StreamSecurity)
+                    if (_node.StreamSecurity == Global.StreamSecurity)
                     {
                         if (sni.IsNotEmpty())
                         {
@@ -490,7 +569,7 @@ public partial class CoreConfigV2rayService
                         }
                         else
                         {
-                            streamSettings.tlsSettings.serverName = node.Address;
+                            streamSettings.tlsSettings.serverName = _node.Address;
                         }
                     }
                     break;
@@ -500,7 +579,7 @@ public partial class CoreConfigV2rayService
                     {
                         authority = host.NullIfEmpty(),
                         serviceName = path,
-                        multiMode = node.HeaderType == Global.GrpcMultiMode,
+                        multiMode = _node.HeaderType == Global.GrpcMultiMode,
                         idle_timeout = _config.GrpcItem.IdleTimeout,
                         health_check_timeout = _config.GrpcItem.HealthCheckTimeout,
                         permit_without_stream = _config.GrpcItem.PermitWithoutStream,
@@ -510,7 +589,7 @@ public partial class CoreConfigV2rayService
                     break;
 
                 case "hysteria":
-                    var protocolExtra = node.GetProtocolExtra();
+                    var protocolExtra = _node.GetProtocolExtra();
                     var ports = protocolExtra?.Ports;
                     int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                         ? su
@@ -536,7 +615,7 @@ public partial class CoreConfigV2rayService
                     streamSettings.hysteriaSettings = new()
                     {
                         version = 2,
-                        auth = node.Password,
+                        auth = _node.Password,
                         up = upMbps > 0 ? $"{upMbps}mbps" : null,
                         down = downMbps > 0 ? $"{downMbps}mbps" : null,
                         udphop = udpHop,
@@ -557,13 +636,13 @@ public partial class CoreConfigV2rayService
 
                 default:
                     //tcp
-                    if (node.HeaderType == Global.TcpHeaderHttp)
+                    if (_node.HeaderType == Global.TcpHeaderHttp)
                     {
                         TcpSettings4Ray tcpSettings = new()
                         {
                             header = new Header4Ray
                             {
-                                type = node.HeaderType
+                                type = _node.HeaderType
                             }
                         };
 
@@ -592,410 +671,132 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return 0;
     }
 
-    private async Task<int> GenGroupOutbound(ProfileItem node, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag, bool ignoreOriginChain = false)
+    private List<Outbounds4Ray> BuildOutboundsList(string baseTagName = Global.ProxyTag)
     {
-        try
+        var nodes = new List<ProfileItem>();
+        foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
         {
-            if (!node.ConfigType.IsGroupType())
+            if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
             {
-                return -1;
-            }
-            var hasCycle = await GroupProfileManager.HasCycle(node);
-            if (hasCycle)
-            {
-                return -1;
-            }
-
-            var (childProfiles, profileExtraItem) = await GroupProfileManager.GetChildProfileItems(node);
-            if (childProfiles.Count <= 0)
-            {
-                return -1;
-            }
-            switch (node.ConfigType)
-            {
-                case EConfigType.PolicyGroup:
-                    if (ignoreOriginChain)
-                    {
-                        await GenOutboundsList(childProfiles, v2rayConfig, baseTagName);
-                    }
-                    else
-                    {
-                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, baseTagName);
-                    }
-                    break;
-
-                case EConfigType.ProxyChain:
-                    await GenChainOutboundsList(childProfiles, v2rayConfig, baseTagName);
-                    break;
-
-                default:
-                    break;
-            }
-
-            //add balancers
-            if (node.ConfigType == EConfigType.PolicyGroup)
-            {
-                var multipleLoad = profileExtraItem?.MultipleLoad ?? EMultipleLoad.LeastPing;
-                await GenObservatory(v2rayConfig, multipleLoad, baseTagName);
-                await GenBalancer(v2rayConfig, multipleLoad, baseTagName);
+                nodes.Add(node);
             }
         }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-        return await Task.FromResult(0);
-    }
-
-    private async Task<int> GenMoreOutbounds(ProfileItem node, V2rayConfig v2rayConfig)
-    {
-        //fragment proxy
-        if (_config.CoreBasicItem.EnableFragment
-            && v2rayConfig.outbounds.First().streamSettings?.security.IsNullOrEmpty() == false)
-        {
-            var fragmentOutbound = new Outbounds4Ray
-            {
-                protocol = "freedom",
-                tag = $"frag-{Global.ProxyTag}",
-                settings = new()
-                {
-                    fragment = new()
-                    {
-                        packets = _config.Fragment4RayItem?.Packets,
-                        length = _config.Fragment4RayItem?.Length,
-                        interval = _config.Fragment4RayItem?.Interval
-                    }
-                }
-            };
-
-            v2rayConfig.outbounds.Add(fragmentOutbound);
-            v2rayConfig.outbounds.First().streamSettings.sockopt = new()
-            {
-                dialerProxy = fragmentOutbound.tag
-            };
-            return 0;
-        }
-
-        if (node.Subid.IsNullOrEmpty())
-        {
-            return 0;
-        }
-        try
-        {
-            var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-            if (subItem is null)
-            {
-                return 0;
-            }
-
-            //current proxy
-            var outbound = v2rayConfig.outbounds.First();
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-
-            //Previous proxy
-            var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-            string? prevOutboundTag = null;
-            if (prevNode is not null
-                && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
-            {
-                var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                await GenOutbound(prevNode, prevOutbound);
-                prevOutboundTag = $"prev-{Global.ProxyTag}";
-                prevOutbound.tag = prevOutboundTag;
-                v2rayConfig.outbounds.Add(prevOutbound);
-            }
-            var nextOutbound = await GenChainOutbounds(subItem, outbound, prevOutboundTag);
-
-            if (nextOutbound is not null)
-            {
-                v2rayConfig.outbounds.Insert(0, nextOutbound);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-
-        return 0;
-    }
-
-    private async Task<int> GenOutboundsListWithChain(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
-    {
-        try
-        {
-            // Get template and initialize list
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-            if (txtOutbound.IsNullOrEmpty())
-            {
-                return 0;
-            }
-
-            var resultOutbounds = new List<Outbounds4Ray>();
-            var prevOutbounds = new List<Outbounds4Ray>(); // Separate list for prev outbounds and fragment
-
-            // Cache for chain proxies to avoid duplicate generation
-            var nextProxyCache = new Dictionary<string, Outbounds4Ray?>();
-            var prevProxyTags = new Dictionary<string, string?>(); // Map from profile name to tag
-            var prevIndex = 0; // Index for prev outbounds
-
-            // Process nodes
-            var index = 0;
-            foreach (var node in nodes)
-            {
-                index++;
-
-                if (node.ConfigType.IsGroupType())
-                {
-                    var (childProfiles, _) = await GroupProfileManager.GetChildProfileItems(node);
-                    if (childProfiles.Count <= 0)
-                    {
-                        continue;
-                    }
-                    var childBaseTagName = $"{baseTagName}-{index}";
-                    var ret = node.ConfigType switch
-                    {
-                        EConfigType.PolicyGroup =>
-                            await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
-                        EConfigType.ProxyChain =>
-                            await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
-                        _ => throw new NotImplementedException()
-                    };
-                    continue;
-                }
-
-                // Handle proxy chain
-                string? prevTag = null;
-                var currentOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                var nextOutbound = nextProxyCache.GetValueOrDefault(node.Subid, null);
-                if (nextOutbound != null)
-                {
-                    nextOutbound = JsonUtils.DeepCopy(nextOutbound);
-                }
-
-                var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-
-                // current proxy
-                await GenOutbound(node, currentOutbound);
-                currentOutbound.tag = $"{baseTagName}-{index}";
-
-                if (!node.Subid.IsNullOrEmpty())
-                {
-                    if (prevProxyTags.TryGetValue(node.Subid, out var value))
-                    {
-                        prevTag = value; // maybe null
-                    }
-                    else
-                    {
-                        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-                        if (prevNode is not null
-                            && Global.XraySupportConfigType.Contains(prevNode.ConfigType))
-                        {
-                            var prevOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                            await GenOutbound(prevNode, prevOutbound);
-                            prevTag = $"prev-{baseTagName}-{++prevIndex}";
-                            prevOutbound.tag = prevTag;
-                            prevOutbounds.Add(prevOutbound);
-                        }
-                        prevProxyTags[node.Subid] = prevTag;
-                    }
-
-                    nextOutbound = await GenChainOutbounds(subItem, currentOutbound, prevTag, nextOutbound);
-                    if (!nextProxyCache.ContainsKey(node.Subid))
-                    {
-                        nextProxyCache[node.Subid] = nextOutbound;
-                    }
-                }
-
-                if (nextOutbound is not null)
-                {
-                    resultOutbounds.Add(nextOutbound);
-                }
-                resultOutbounds.Add(currentOutbound);
-            }
-
-            // Merge results: first the main chain outbounds, then other outbounds, and finally utility outbounds
-            if (baseTagName == Global.ProxyTag)
-            {
-                resultOutbounds.AddRange(prevOutbounds);
-                resultOutbounds.AddRange(v2rayConfig.outbounds);
-                v2rayConfig.outbounds = resultOutbounds;
-            }
-            else
-            {
-                v2rayConfig.outbounds.AddRange(prevOutbounds);
-                v2rayConfig.outbounds.AddRange(resultOutbounds);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-
-        return 0;
-    }
-
-    /// <summary>
-    /// Generates a chained outbound configuration for the given subItem and outbound.
-    /// The outbound's tag must be set before calling this method.
-    /// Returns the next proxy's outbound configuration, which may be null if no next proxy exists.
-    /// </summary>
-    /// <param name="subItem">The subscription item containing proxy chain information.</param>
-    /// <param name="outbound">The current outbound configuration. Its tag must be set before calling this method.</param>
-    /// <param name="prevOutboundTag">The tag of the previous outbound in the chain, if any.</param>
-    /// <param name="nextOutbound">The outbound for the next proxy in the chain, if already created. If null, will be created inside.</param>
-    /// <returns>
-    /// The outbound configuration for the next proxy in the chain, or null if no next proxy exists.
-    /// </returns>
-    private async Task<Outbounds4Ray?> GenChainOutbounds(SubItem subItem, Outbounds4Ray outbound, string? prevOutboundTag, Outbounds4Ray? nextOutbound = null)
-    {
-        try
-        {
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-
-            if (!prevOutboundTag.IsNullOrEmpty())
-            {
-                outbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = prevOutboundTag
-                };
-            }
-
-            // Next proxy
-            var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-            if (nextNode is not null
-                && Global.XraySupportConfigType.Contains(nextNode.ConfigType))
-            {
-                if (nextOutbound == null)
-                {
-                    nextOutbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-                    await GenOutbound(nextNode, nextOutbound);
-                }
-                nextOutbound.tag = outbound.tag;
-
-                outbound.tag = $"mid-{outbound.tag}";
-                nextOutbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = outbound.tag
-                };
-            }
-            return nextOutbound;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-        }
-        return null;
-    }
-
-    private async Task<int> GenOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
-    {
         var resultOutbounds = new List<Outbounds4Ray>();
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            if (node == null)
-            {
-                continue;
-            }
+            var currentTag = $"{baseTagName}-{i + 1}";
 
             if (node.ConfigType.IsGroupType())
             {
-                var (childProfiles, _) = await GroupProfileManager.GetChildProfileItems(node);
-                if (childProfiles.Count <= 0)
-                {
-                    continue;
-                }
-                var childBaseTagName = $"{baseTagName}-{i + 1}";
-                var ret = node.ConfigType switch
-                {
-                    EConfigType.PolicyGroup =>
-                        await GenOutboundsListWithChain(childProfiles, v2rayConfig, childBaseTagName),
-                    EConfigType.ProxyChain =>
-                        await GenChainOutboundsList(childProfiles, v2rayConfig, childBaseTagName),
-                    _ => throw new NotImplementedException()
-                };
+                var childProfiles = new CoreConfigV2rayService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                resultOutbounds.AddRange(childProfiles);
                 continue;
             }
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-            if (txtOutbound.IsNullOrEmpty())
-            {
-                break;
-            }
-            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-            var result = await GenOutbound(node, outbound);
-            if (result != 0)
-            {
-                break;
-            }
-            outbound.tag = baseTagName + (i + 1).ToString();
+            var outbound = new CoreConfigV2rayService(context with { Node = node, }).BuildProxyOutbound();
+            outbound.tag = currentTag;
             resultOutbounds.Add(outbound);
         }
-        if (baseTagName == Global.ProxyTag)
-        {
-            resultOutbounds.AddRange(v2rayConfig.outbounds);
-            v2rayConfig.outbounds = resultOutbounds;
-        }
-        else
-        {
-            v2rayConfig.outbounds.AddRange(resultOutbounds);
-        }
-        return await Task.FromResult(0);
+        return resultOutbounds;
     }
 
-    private async Task<int> GenChainOutboundsList(List<ProfileItem> nodes, V2rayConfig v2rayConfig, string baseTagName = Global.ProxyTag)
+    private List<Outbounds4Ray> BuildChainOutboundsList(string baseTagName = Global.ProxyTag)
     {
+        var nodes = new List<ProfileItem>();
+        foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
+        {
+            if (context.AllProxiesMap.TryGetValue(nodeId, out var node))
+            {
+                nodes.Add(node);
+            }
+        }
         // Based on actual network flow instead of data packets
         var nodesReverse = nodes.AsEnumerable().Reverse().ToList();
         var resultOutbounds = new List<Outbounds4Ray>();
         for (var i = 0; i < nodesReverse.Count; i++)
         {
             var node = nodesReverse[i];
-            var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
-            if (txtOutbound.IsNullOrEmpty())
+            var currentTag = i == 0 ? baseTagName : $"chain-{baseTagName}-{i}";
+            var dialerProxyTag = i != nodesReverse.Count - 1 ? $"chain-{baseTagName}-{i + 1}" : null;
+            if (node.ConfigType.IsGroupType())
             {
-                break;
+                var childProfiles = new CoreConfigV2rayService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                if (!dialerProxyTag.IsNullOrEmpty())
+                {
+                    var chainEndNodes =
+                        childProfiles.Where(n => n?.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true);
+                    foreach (var chainEndNode in chainEndNodes)
+                    {
+                        chainEndNode.streamSettings.sockopt = new()
+                        {
+                            dialerProxy = dialerProxyTag
+                        };
+                    }
+                }
+                if (i != 0)
+                {
+                    var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
+                    if (chainStartNodes.Count == 1)
+                    {
+                        foreach (var existedChainEndNode in resultOutbounds.Where(n => n.streamSettings?.sockopt?.dialerProxy == currentTag))
+                        {
+                            existedChainEndNode.streamSettings.sockopt = new()
+                            {
+                                dialerProxy = chainStartNodes.First().tag
+                            };
+                        }
+                    }
+                    else if (chainStartNodes.Count > 1)
+                    {
+                        var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
+                        resultOutbounds.Clear();
+                        var j = 0;
+                        foreach (var chainStartNode in chainStartNodes)
+                        {
+                            var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
+                            foreach (var existedChainNode in existedChainNodesClone)
+                            {
+                                var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
+                                existedChainNode.tag = cloneTag;
+                            }
+                            for (var k = 0; k < existedChainNodesClone.Count; k++)
+                            {
+                                var existedChainNode = existedChainNodesClone[k];
+                                var previousDialerProxyTag = existedChainNode.streamSettings?.sockopt?.dialerProxy;
+                                var nextTag = k + 1 < existedChainNodesClone.Count
+                                    ? existedChainNodesClone[k + 1].tag
+                                    : chainStartNode.tag;
+                                existedChainNode.streamSettings.sockopt = new()
+                                {
+                                    dialerProxy = (previousDialerProxyTag == currentTag)
+                                        ? chainStartNode.tag
+                                        : nextTag
+                                };
+                                resultOutbounds.Add(existedChainNode);
+                            }
+                            j++;
+                        }
+                    }
+                }
+                resultOutbounds.AddRange(childProfiles);
+                continue;
             }
-            var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-            var result = await GenOutbound(node, outbound);
+            var outbound = new CoreConfigV2rayService(context with { Node = node, }).BuildProxyOutbound();
 
-            if (result != 0)
-            {
-                break;
-            }
+            outbound.tag = currentTag;
 
-            if (i == 0)
-            {
-                outbound.tag = baseTagName;
-            }
-            else
-            {
-                // avoid v2ray observe
-                outbound.tag = "chain-" + baseTagName + i.ToString();
-            }
-
-            if (i != nodesReverse.Count - 1)
+            if (!dialerProxyTag.IsNullOrEmpty())
             {
                 outbound.streamSettings.sockopt = new()
                 {
-                    dialerProxy = "chain-" + baseTagName + (i + 1).ToString()
+                    dialerProxy = dialerProxyTag
                 };
             }
 
             resultOutbounds.Add(outbound);
         }
-        if (baseTagName == Global.ProxyTag)
-        {
-            resultOutbounds.AddRange(v2rayConfig.outbounds);
-            v2rayConfig.outbounds = resultOutbounds;
-        }
-        else
-        {
-            v2rayConfig.outbounds.AddRange(resultOutbounds);
-        }
-
-        return await Task.FromResult(0);
+        return resultOutbounds;
     }
 }

@@ -255,9 +255,8 @@ public class Server4Sbox : BaseServer4Sbox
     // public List<string>? path { get; set; } // hosts
     public Dictionary<string, List<string>>? predefined { get; set; }
 
-    // Deprecated
+    // Deprecated in sing-box 1.12.0 , kept for backward compatibility
     public string? address { get; set; }
-
     public string? address_resolver { get; set; }
     public string? address_strategy { get; set; }
     public string? strategy { get; set; }

@@ -801,7 +801,8 @@ public class ProfilesViewModel : MyReactiveObject
 
         if (blClipboard)
         {
-            var result = await CoreConfigHandler.GenerateClientConfig(item, null);
+            var context = await CoreConfigHandler.BuildCoreConfigContext(_config, item);
+            var result = await CoreConfigHandler.GenerateClientConfig(context, null);
             if (result.Success != true)
             {
                 NoticeManager.Instance.Enqueue(result.Msg);
@@ -824,7 +825,8 @@ public class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        var result = await CoreConfigHandler.GenerateClientConfig(item, fileName);
+        var context = await CoreConfigHandler.BuildCoreConfigContext(_config, item);
+        var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)
         {
             NoticeManager.Instance.Enqueue(result.Msg);
