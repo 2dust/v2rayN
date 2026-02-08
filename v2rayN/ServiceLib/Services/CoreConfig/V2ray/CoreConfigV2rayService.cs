@@ -120,8 +120,9 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 {
                     continue;
                 }
-                var item = context.AllProxiesMap.GetValueOrDefault(it.IndexId);
-                if (item is null || item.IsComplex() || !item.IsValid())
+                var actIndexId = context.ServerTestItemMap.GetValueOrDefault(it.IndexId, it.IndexId);
+                var item = context.AllProxiesMap.GetValueOrDefault(actIndexId);
+                if (item is null || item.ConfigType is EConfigType.Custom || !item.IsValid())
                 {
                     continue;
                 }
