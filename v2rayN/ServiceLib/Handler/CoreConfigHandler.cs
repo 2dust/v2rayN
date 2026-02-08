@@ -99,7 +99,12 @@ public static class CoreConfigHandler
         var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
         foreach (var node in nodes)
         {
-            await FillNodeContext(context, node, false);
+            var actNode = await FillNodeContext(context, node, true);
+            if (node.IndexId == actNode.IndexId)
+            {
+                continue;
+            }
+            context.ServerTestItemMap[node.IndexId] = actNode.IndexId;
         }
         if (coreType == ECoreType.sing_box)
         {
