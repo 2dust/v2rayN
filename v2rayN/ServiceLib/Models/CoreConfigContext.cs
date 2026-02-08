@@ -13,5 +13,9 @@ public record CoreConfigContext
     // TUN Compatibility
     public bool IsTunEnabled { get; init; } = false;
     public HashSet<string> ProtectDomainList { get; init; } = new();
-    public int ProtectSocksPort { get; init; } = 0;
+    // -> tun inbound --(if routing proxy)--> relay outbound    
+    // -> proxy core (relay inbound --> proxy outbound --(dialerProxy)--> protect outbound)
+    // -> protect inbound -> direct proxy outbound data -> internet
+    public int TunProtectSsPort { get; init; } = 0;
+    public int ProxyRelaySsPort { get; init; } = 0;
 }
