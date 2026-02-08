@@ -144,7 +144,6 @@ public class TunModeItem
     public bool StrictRoute { get; set; } = true;
     public string Stack { get; set; }
     public int Mtu { get; set; }
-    public bool EnableExInbound { get; set; }
     public bool EnableIPv6Address { get; set; }
 }
 
