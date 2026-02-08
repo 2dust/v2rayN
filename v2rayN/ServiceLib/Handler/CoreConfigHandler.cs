@@ -183,18 +183,21 @@ public static class CoreConfigHandler
         {
             return node;
         }
-        context.AllProxiesMap[node.IndexId] = node;
         var newItems = new List<ProfileItem> { node };
-
         if (node.ConfigType.IsGroupType())
         {
             var groupChildList = await GroupProfileManager.GetAllChildProfileItems(node);
             foreach (var childItem in groupChildList)
             {
                 context.AllProxiesMap[childItem.IndexId] = childItem;
-                newItems.Add(childItem);
             }
+            node.SetProtocolExtra(node.GetProtocolExtra() with
+            {
+                ChildItems = Utils.List2String(groupChildList.Select(n => n.IndexId).ToList()),
+            });
+            newItems.AddRange(groupChildList);
         }
+        context.AllProxiesMap[node.IndexId] = node;
 
         foreach (var item in newItems)
         {
