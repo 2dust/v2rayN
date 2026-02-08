@@ -154,7 +154,8 @@ public static class CoreConfigHandler
             IsTunEnabled = config.TunModeItem.EnableTun,
             SimpleDnsItem = config.SimpleDNSItem,
             ProtectDomainList = [],
-            ProtectSocksPort = 0,
+            TunProtectSsPort = 0,
+            ProxyRelaySsPort = 0,
             RawDnsItem = await AppManager.Instance.GetDNSItem(coreType),
             RoutingItem = await ConfigHandler.GetDefaultRouting(config),
         };

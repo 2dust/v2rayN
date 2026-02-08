@@ -67,7 +67,38 @@ public class CoreManager
 
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
         var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
-        context = context with { IsTunEnabled = _config.TunModeItem.EnableTun };
+        CoreConfigContext? preContext = null;
+        if (context.IsTunEnabled)
+        {
+            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+            if (coreType == ECoreType.Xray && node.ConfigType != EConfigType.Custom)
+            {
+                var tunProtectSsPort = Utils.GetFreePort();
+                var proxyRelaySsPort = Utils.GetFreePort();
+                context = context with { TunProtectSsPort = tunProtectSsPort, ProxyRelaySsPort = proxyRelaySsPort, };
+                var preItem = new ProfileItem()
+                {
+                    CoreType = ECoreType.sing_box,
+                    ConfigType = EConfigType.Shadowsocks,
+                    Address = Global.Loopback,
+                    Port = proxyRelaySsPort,
+                    Password = Global.None,
+                };
+                preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
+                {
+                    SsMethod = Global.None,
+                });
+                preContext = context with { Node = preItem, };
+            }
+            else
+            {
+                var preItem = ConfigHandler.GetPreSocksItem(_config, node, coreType);
+                if (preItem is not null)
+                {
+                    preContext = context with { Node = preItem, };
+                }
+            }
+        }
         var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)
         {
@@ -88,7 +119,7 @@ public class CoreManager
         }
 
         await CoreStart(context);
-        await CoreStartPreService(context);
+        await CoreStartPreService(preContext);
         if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
@@ -183,30 +214,22 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(CoreConfigContext context)
+    private async Task CoreStartPreService(CoreConfigContext? preContext)
     {
-        var node = context.Node;
-        if (_processService != null && !_processService.HasExited)
+        if (_processService is { HasExited: false } && preContext != null)
         {
-            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-            var itemSocks = ConfigHandler.GetPreSocksItem(_config, node, coreType);
-            if (itemSocks != null)
+            var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
+            var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+            var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
+            if (result.Success)
             {
-                var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
-                var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-                var itemSocksContext = await CoreConfigHandler.BuildCoreConfigContext(_config, itemSocks);
-                itemSocksContext.ProtectDomainList.AddRangeSafe(context.ProtectDomainList);
-                var result = await CoreConfigHandler.GenerateClientConfig(itemSocksContext, fileName);
-                if (result.Success)
+                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
+                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
+                if (proc is null)
                 {
-                    var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                    var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
-                    if (proc is null)
-                    {
-                        return;
-                    }
-                    _processPreService = proc;
+                    return;
                 }
+                _processPreService = proc;
             }
         }
     }

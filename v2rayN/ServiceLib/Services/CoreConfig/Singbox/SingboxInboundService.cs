@@ -7,10 +7,11 @@ public partial class CoreConfigSingboxService
         try
         {
             var listen = "0.0.0.0";
+            var listenPort = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
             _coreConfig.inbounds = [];
 
-            if (!_config.TunModeItem.EnableTun
-                || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && AppManager.Instance.RunningCoreType == ECoreType.sing_box))
+            if (!context.IsTunEnabled
+                || (context.IsTunEnabled && _node.Port != listenPort))
             {
                 var inbound = new Inbound4Sbox()
                 {
@@ -20,7 +21,7 @@ public partial class CoreConfigSingboxService
                 };
                 _coreConfig.inbounds.Add(inbound);
 
-                inbound.listen_port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+                inbound.listen_port = listenPort;
 
                 if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
@@ -49,7 +50,7 @@ public partial class CoreConfigSingboxService
                 }
             }
 
-            if (_config.TunModeItem.EnableTun)
+            if (context.IsTunEnabled)
             {
                 if (_config.TunModeItem.Mtu <= 0)
                 {
