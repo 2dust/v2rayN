@@ -1071,9 +1071,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>További bejövő engedélyezése</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>IPv6 cím engedélyezése</value>
   </data>
