@@ -2,12 +2,12 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
 {
-    private async Task<int> GenInbounds(SingboxConfig singboxConfig)
+    private void GenInbounds()
     {
         try
         {
             var listen = "0.0.0.0";
-            singboxConfig.inbounds = [];
+            _coreConfig.inbounds = [];
 
             if (!_config.TunModeItem.EnableTun
                 || (_config.TunModeItem.EnableTun && _config.TunModeItem.EnableExInbound && AppManager.Instance.RunningCoreType == ECoreType.sing_box))
@@ -18,23 +18,23 @@ public partial class CoreConfigSingboxService
                     tag = EInboundProtocol.socks.ToString(),
                     listen = Global.Loopback,
                 };
-                singboxConfig.inbounds.Add(inbound);
+                _coreConfig.inbounds.Add(inbound);
 
                 inbound.listen_port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
 
                 if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
-                    var inbound2 = GetInbound(inbound, EInboundProtocol.socks2, true);
-                    singboxConfig.inbounds.Add(inbound2);
+                    var inbound2 = BuildInbound(inbound, EInboundProtocol.socks2, true);
+                    _coreConfig.inbounds.Add(inbound2);
                 }
 
                 if (_config.Inbound.First().AllowLANConn)
                 {
                     if (_config.Inbound.First().NewPort4LAN)
                     {
-                        var inbound3 = GetInbound(inbound, EInboundProtocol.socks3, true);
+                        var inbound3 = BuildInbound(inbound, EInboundProtocol.socks3, true);
                         inbound3.listen = listen;
-                        singboxConfig.inbounds.Add(inbound3);
+                        _coreConfig.inbounds.Add(inbound3);
 
                         //auth
                         if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
@@ -71,17 +71,16 @@ public partial class CoreConfigSingboxService
                     tunInbound.address = ["172.18.0.1/30"];
                 }
 
-                singboxConfig.inbounds.Add(tunInbound);
+                _coreConfig.inbounds.Add(tunInbound);
             }
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private Inbound4Sbox GetInbound(Inbound4Sbox inItem, EInboundProtocol protocol, bool bSocks)
+    private Inbound4Sbox BuildInbound(Inbound4Sbox inItem, EInboundProtocol protocol, bool bSocks)
     {
         var inbound = JsonUtils.DeepCopy(inItem);
         inbound.tag = protocol.ToString();
