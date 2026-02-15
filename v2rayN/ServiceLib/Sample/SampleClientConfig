@@ -1,4 +1,4 @@
-﻿{
+{
 	"log": {
 		"access": "Vaccess.log",
 		"error": "Verror.log",
@@ -6,34 +6,6 @@
 	},
 	"inbounds": [],
 	"outbounds": [
-		{
-			"tag": "proxy",
-			"protocol": "vmess",
-			"settings": {
-				"vnext": [{
-					"address": "",
-					"port": 0,
-					"users": [{
-						"id": "",
-						"security": "auto"
-					}]
-				}],
-				"servers": [{
-					"address": "",
-					"method": "",
-					"ota": false,
-					"password": "",
-					"port": 0,
-					"level": 1
-				}]
-			},
-			"streamSettings": {
-				"network": "tcp"
-			},
-			"mux": {
-				"enabled": false
-			}
-		},
 		{
 			"protocol": "freedom",
 			"tag": "direct"

@@ -6,18 +6,11 @@
 	"inbounds": [],
 	"outbounds": [
 		{
-			"type": "vless",
-			"tag": "proxy",
-			"server": "",
-			"server_port": 443
-		},
-		{
 			"type": "direct",
 			"tag": "direct"
 		}
 	],
 	"route": {
-		"rules": [
-		]
+		"rules": []
 	}
 }
