@@ -3772,15 +3772,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enable additional Inbound 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsEnableExInbound {
-            get {
-                return ResourceManager.GetString("TbSettingsEnableExInbound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable fragment 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableFragment {

@@ -1068,9 +1068,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>启用额外监听端口</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>启用 IPv6</value>
   </data>

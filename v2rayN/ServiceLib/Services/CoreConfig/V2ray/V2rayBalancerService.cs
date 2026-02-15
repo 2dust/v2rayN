@@ -2,17 +2,17 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenObservatory(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
+    private void GenObservatory(EMultipleLoad multipleLoad, string baseTagName = Global.ProxyTag)
     {
         // Collect all existing subject selectors from both observatories
         var subjectSelectors = new List<string>();
-        subjectSelectors.AddRange(v2rayConfig.burstObservatory?.subjectSelector ?? []);
-        subjectSelectors.AddRange(v2rayConfig.observatory?.subjectSelector ?? []);
+        subjectSelectors.AddRange(_coreConfig.burstObservatory?.subjectSelector ?? []);
+        subjectSelectors.AddRange(_coreConfig.observatory?.subjectSelector ?? []);
 
         // Case 1: exact match already exists -> nothing to do
         if (subjectSelectors.Any(baseTagName.StartsWith))
         {
-            return await Task.FromResult(0);
+            return;
         }
 
         // Case 2: prefix match exists -> reuse it and move to the first position
@@ -21,28 +21,28 @@ public partial class CoreConfigV2rayService
         {
             baseTagName = matched;
 
-            if (v2rayConfig.burstObservatory?.subjectSelector?.Contains(baseTagName) == true)
+            if (_coreConfig.burstObservatory?.subjectSelector?.Contains(baseTagName) == true)
             {
-                v2rayConfig.burstObservatory.subjectSelector.Remove(baseTagName);
-                v2rayConfig.burstObservatory.subjectSelector.Insert(0, baseTagName);
+                _coreConfig.burstObservatory.subjectSelector.Remove(baseTagName);
+                _coreConfig.burstObservatory.subjectSelector.Insert(0, baseTagName);
             }
 
-            if (v2rayConfig.observatory?.subjectSelector?.Contains(baseTagName) == true)
+            if (_coreConfig.observatory?.subjectSelector?.Contains(baseTagName) == true)
             {
-                v2rayConfig.observatory.subjectSelector.Remove(baseTagName);
-                v2rayConfig.observatory.subjectSelector.Insert(0, baseTagName);
+                _coreConfig.observatory.subjectSelector.Remove(baseTagName);
+                _coreConfig.observatory.subjectSelector.Insert(0, baseTagName);
             }
 
-            return await Task.FromResult(0);
+            return;
         }
 
         // Case 3: need to create or insert based on multipleLoad type
         if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
         {
-            if (v2rayConfig.burstObservatory is null)
+            if (_coreConfig.burstObservatory is null)
             {
                 // Create new burst observatory with default ping config
-                v2rayConfig.burstObservatory = new BurstObservatory4Ray
+                _coreConfig.burstObservatory = new BurstObservatory4Ray
                 {
                     subjectSelector = [baseTagName],
                     pingConfig = new()
@@ -56,16 +56,16 @@ public partial class CoreConfigV2rayService
             }
             else
             {
-                v2rayConfig.burstObservatory.subjectSelector ??= new();
-                v2rayConfig.burstObservatory.subjectSelector.Add(baseTagName);
+                _coreConfig.burstObservatory.subjectSelector ??= new();
+                _coreConfig.burstObservatory.subjectSelector.Add(baseTagName);
             }
         }
         else if (multipleLoad is EMultipleLoad.LeastPing)
         {
-            if (v2rayConfig.observatory is null)
+            if (_coreConfig.observatory is null)
             {
                 // Create new observatory with default probe config
-                v2rayConfig.observatory = new Observatory4Ray
+                _coreConfig.observatory = new Observatory4Ray
                 {
                     subjectSelector = [baseTagName],
                     probeUrl = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl,
@@ -75,15 +75,13 @@ public partial class CoreConfigV2rayService
             }
             else
             {
-                v2rayConfig.observatory.subjectSelector ??= new();
-                v2rayConfig.observatory.subjectSelector.Add(baseTagName);
+                _coreConfig.observatory.subjectSelector ??= new();
+                _coreConfig.observatory.subjectSelector.Add(baseTagName);
             }
         }
-
-        return await Task.FromResult(0);
     }
 
-    private async Task<string> GenBalancer(V2rayConfig v2rayConfig, EMultipleLoad multipleLoad, string selector = Global.ProxyTag)
+    private void GenBalancer(EMultipleLoad multipleLoad, string selector = Global.ProxyTag)
     {
         var strategyType = multipleLoad switch
         {
@@ -107,8 +105,7 @@ public partial class CoreConfigV2rayService
             },
             tag = balancerTag,
         };
-        v2rayConfig.routing.balancers ??= new();
-        v2rayConfig.routing.balancers.Add(balancer);
-        return await Task.FromResult(balancerTag);
+        _coreConfig.routing.balancers ??= new();
+        _coreConfig.routing.balancers.Add(balancer);
     }
 }

@@ -1071,9 +1071,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>فعال سازی additional Inbound</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>فعال سازی آدرس IPv6</value>
   </data>

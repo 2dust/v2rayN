@@ -95,7 +95,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool TunStrictRoute { get; set; }
     [Reactive] public string TunStack { get; set; }
     [Reactive] public int TunMtu { get; set; }
-    [Reactive] public bool TunEnableExInbound { get; set; }
     [Reactive] public bool TunEnableIPv6Address { get; set; }
 
     #endregion Tun mode
@@ -220,7 +219,6 @@ public class OptionSettingViewModel : MyReactiveObject
         TunStrictRoute = _config.TunModeItem.StrictRoute;
         TunStack = _config.TunModeItem.Stack;
         TunMtu = _config.TunModeItem.Mtu;
-        TunEnableExInbound = _config.TunModeItem.EnableExInbound;
         TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
 
         #endregion Tun mode
@@ -380,7 +378,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.TunModeItem.StrictRoute = TunStrictRoute;
         _config.TunModeItem.Stack = TunStack;
         _config.TunModeItem.Mtu = TunMtu;
-        _config.TunModeItem.EnableExInbound = TunEnableExInbound;
         _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
 
         //coreType
