@@ -1639,33 +1639,33 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
-    <value>Full certificate (chain), PEM format</value>
+    <value>Certificat complet (chaîne), format PEM</value>
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
-    <value>Certificate fingerprint (SHA-256)</value>
+    <value>Empreinte du certificat (SHA-256)</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
-    <value>Serve Stale</value>
+    <value>Cache optimiste</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>Parallel Query</value>
+    <value>Requête parallèle</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution</value>
+    <value>Par défaut, utilisé uniquement lors du routage pour la résolution.</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+    <value>Si non défini ou « AsIs », le DNS système est utilisé ; sinon, le module DNS interne est utilisé.</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
     <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+    <value>Si non défini ou « AsIs », la résolution DNS est assurée par le serveur distant ; sinon, le module DNS interne est utilisé.</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
-    <value>Port hopping interval</value>
+    <value>Intervalle de saut de port</value>
   </data>
   <data name="menuServerListPreview" xml:space="preserve">
-    <value>Configuration item preview</value>
+    <value>Aperçu des sous-config</value>
   </data>
 </root>
