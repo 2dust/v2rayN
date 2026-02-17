@@ -16,7 +16,7 @@ cp -rf $OutputPath "${PackagePath}/opt/v2rayN"
 echo "When this file exists, app will not store configs under this folder" > "${PackagePath}/opt/v2rayN/NotStoreConfigHere.txt"
 
 if [ $Arch = "linux-64" ]; then
-    Arch2="amd64" 
+    Arch2="amd64"
 else
     Arch2="arm64"
 fi
@@ -32,9 +32,8 @@ Depends: libc6 (>= 2.34), fontconfig (>= 2.13.1), desktop-file-utils (>= 0.26), 
 Description: A GUI client for Windows and Linux, support Xray core and sing-box-core and others
 EOF
 
-cat >"${PackagePath}/DEBIAN/postinst" <<-EOF
-if [ ! -s /usr/share/applications/v2rayN.desktop ]; then
-    cat >/usr/share/applications/v2rayN.desktop<<-END
+mkdir -p "${PackagePath}/usr/share/applications"
+cat >"${PackagePath}/usr/share/applications/v2rayN.desktop" <<-EOF
 [Desktop Entry]
 Name=v2rayN
 Comment=A GUI client for Windows and Linux, support Xray core and sing-box-core and others
@@ -43,10 +42,12 @@ Icon=/opt/v2rayN/v2rayN.png
 Terminal=false
 Type=Application
 Categories=Network;Application;
-END
-fi
+EOF
 
-update-desktop-database
+cat >"${PackagePath}/DEBIAN/postinst" <<-'EOF'
+set -e
+update-desktop-database || true
+exit 0
 EOF
 
 sudo chmod 0755 "${PackagePath}/DEBIAN/postinst"
