@@ -179,6 +179,8 @@ public class ServersItem4Ray
 
     public string flow { get; set; }
 
+    public bool? uot { get; set; }
+
     public List<SocksUsersItem4Ray> users { get; set; }
 }
 

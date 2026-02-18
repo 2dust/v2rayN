@@ -2,6 +2,9 @@ namespace ServiceLib.Models;
 
 public record ProtocolExtraItem
 {
+    public bool? Uot { get; init; }
+    public string? CongestionControl { get; init; }
+
     // vmess
     public string? AlterId { get; init; }
     public string? VmessSecurity { get; init; }
