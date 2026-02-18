@@ -115,6 +115,7 @@ public partial class AddServerWindow
                 case EConfigType.Shadowsocks:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId3.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SsMethod, v => v.cmbSecurity3.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled3.IsChecked).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(disposables);
                     break;
 
@@ -149,7 +150,7 @@ public partial class AddServerWindow
                 case EConfigType.TUIC:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId8.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity8.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.HeaderType, v => v.cmbHeaderType8.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbHeaderType8.Text).DisposeWith(disposables);
                     break;
 
                 case EConfigType.WireGuard:

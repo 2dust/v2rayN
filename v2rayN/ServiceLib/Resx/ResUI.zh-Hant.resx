@@ -1668,4 +1668,7 @@
   <data name="menuServerListPreview" xml:space="preserve">
     <value>Configuration item preview</value>
   </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
 </root>

@@ -276,6 +276,20 @@
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbUot}" />
+                    <ToggleButton
+                        x:Name="togUotEnabled3"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
