@@ -133,6 +133,7 @@ public class Outbound4Sbox : BaseServer4Sbox
     public int? recv_window_conn { get; set; }
     public int? recv_window { get; set; }
     public bool? disable_mtu_discovery { get; set; }
+    public bool? udp_over_tcp { get; set; }
     public string? method { get; set; }
     public string? username { get; set; }
     public string? password { get; set; }
