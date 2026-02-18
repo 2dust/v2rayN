@@ -19,6 +19,7 @@ public class FmtHandler
                 EConfigType.TUIC => TuicFmt.ToUri(item),
                 EConfigType.WireGuard => WireguardFmt.ToUri(item),
                 EConfigType.Anytls => AnytlsFmt.ToUri(item),
+                EConfigType.Naive => NaiveFmt.ToUri(item),
                 _ => null,
             };
 
@@ -79,6 +80,12 @@ public class FmtHandler
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.Anytls]))
             {
                 return AnytlsFmt.Resolve(str, out msg);
+            }
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Naive])
+                     || str.StartsWith(Global.NaiveHttpsProtocolShare)
+                     || str.StartsWith(Global.NaiveQuicProtocolShare))
+            {
+                return NaiveFmt.Resolve(str, out msg);
             }
             else
             {

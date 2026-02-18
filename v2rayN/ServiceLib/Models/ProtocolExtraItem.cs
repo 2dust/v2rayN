@@ -32,6 +32,9 @@ public record ProtocolExtraItem
     public string? Ports { get; init; }
     public string? HopInterval { get; init; }
 
+    // naiveproxy
+    public int? InsecureConcurrency { get; init; }
+
     // group profile
     public string? GroupType { get; init; }
     public string? ChildItems { get; init; }
