@@ -517,16 +517,16 @@
     <value>添加 [Shadowsocks]</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>添加 [SOCKS] </value>
+    <value>添加 [SOCKS]</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>添加 [Trojan] </value>
+    <value>添加 [Trojan]</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>添加 [VLESS] </value>
+    <value>添加 [VLESS]</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>添加 [VMess] </value>
+    <value>添加 [VMess]</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>全选</value>
@@ -1033,7 +1033,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>添加 [Hysteria2] </value>
+    <value>添加 [Hysteria2]</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria 最大带宽 (Up/Dw)</value>
@@ -1042,7 +1042,7 @@
     <value>使用系统 hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>添加 [TUIC] </value>
+    <value>添加 [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
@@ -1075,7 +1075,7 @@
     <value>启用 IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>添加 [WireGuard] </value>
+    <value>添加 [WireGuard]</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>PrivateKey</value>
@@ -1108,7 +1108,7 @@
     <value>*grpc Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>添加 [HTTP] </value>
+    <value>添加 [HTTP]</value>
   </data>
   <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
     <value>和分组前置代理冲突</value>
@@ -1408,7 +1408,7 @@
     <value>Mldsa65Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
-    <value>添加 [Anytls] </value>
+    <value>添加 [Anytls]</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
     <value>远程 DNS</value>
@@ -1670,5 +1670,14 @@
   </data>
   <data name="TbUot" xml:space="preserve">
     <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>添加 [NaïveProxy]</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>不安全并发</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>用户名</value>
   </data>
 </root>

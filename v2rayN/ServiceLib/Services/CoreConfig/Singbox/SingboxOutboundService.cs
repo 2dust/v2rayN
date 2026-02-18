@@ -201,6 +201,22 @@ public partial class CoreConfigSingboxService
                         outbound.password = node.Password;
                         break;
                     }
+                case EConfigType.Naive:
+                    {
+                        outbound.username = node.Username;
+                        outbound.password = node.Password;
+                        if (outbound.network == "quic")
+                        {
+                            outbound.quic = true;
+                            outbound.quic_congestion_control = protocolExtra.CongestionControl.NullIfEmpty();
+                        }
+                        if (protocolExtra.InsecureConcurrency > 0)
+                        {
+                            outbound.insecure_concurrency = protocolExtra.InsecureConcurrency;
+                        }
+                        outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
+                        break;
+                    }
             }
 
             await GenOutboundTls(node, outbound);

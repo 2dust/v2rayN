@@ -13,6 +13,7 @@ public enum EConfigType
     WireGuard = 9,
     HTTP = 10,
     Anytls = 11,
+    Naive = 12,
     PolicyGroup = 101,
     ProxyChain = 102,
 }

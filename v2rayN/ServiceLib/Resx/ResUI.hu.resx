@@ -1674,4 +1674,13 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbUot" xml:space="preserve">
     <value>UDP over TCP</value>
   </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>[NaïveProxy] konfiguráció hozzáadása</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Insecure Concurrency</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>

@@ -93,8 +93,21 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Anytls:
                 gridAnytls.IsVisible = true;
+                sepa2.IsVisible = false;
+                gridTransport.IsVisible = false;
                 lstStreamSecurity.Add(Global.StreamSecurityReality);
                 cmbCoreType.IsEnabled = false;
+                break;
+
+            case EConfigType.Naive:
+                gridNaive.IsVisible = true;
+                cmbCoreType.IsEnabled = false;
+                cmbFingerprint.IsEnabled = false;
+                cmbFingerprint.SelectedValue = string.Empty;
+                cmbAllowInsecure.IsEnabled = false;
+                cmbAllowInsecure.SelectedValue = string.Empty;
+
+                cmbHeaderType12.ItemsSource = Global.NaiveCongestionControls;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -167,7 +180,15 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     break;
 
                 case EConfigType.Anytls:
-                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId10.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId11.Text).DisposeWith(disposables);
+                    break;
+
+                case EConfigType.Naive:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId12.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity12.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.InsecureConcurrency, v => v.txtInsecureConcurrency12.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbHeaderType12.SelectedValue).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled12.IsChecked).DisposeWith(disposables);
                     break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);
