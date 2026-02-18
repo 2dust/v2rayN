@@ -78,6 +78,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
+                gridFinalmask.IsVisible = false;
 
                 cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
                 break;
@@ -95,6 +96,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridAnytls.IsVisible = true;
                 lstStreamSecurity.Add(Global.StreamSecurityReality);
                 cmbCoreType.IsEnabled = false;
+                gridFinalmask.IsVisible = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -193,6 +195,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.SpiderX, v => v.txtSpiderX.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Mldsa65Verify, v => v.txtMldsa65Verify.Text).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.SelectedSource.Finalmask, v => v.txtFinalmask.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.FetchCertCmd, v => v.btnFetchCert).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCertChainCmd, v => v.btnFetchCertChain).DisposeWith(disposables);
