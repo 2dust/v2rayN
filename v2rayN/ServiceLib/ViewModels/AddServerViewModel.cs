@@ -67,6 +67,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string CongestionControl { get; set; }
 
+    [Reactive]
+    public int InsecureConcurrency { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -131,6 +134,7 @@ public class AddServerViewModel : MyReactiveObject
         WgMtu = protocolExtra?.WgMtu ?? 1280;
         Uot = protocolExtra?.Uot ?? false;
         CongestionControl = protocolExtra?.CongestionControl ?? string.Empty;
+        InsecureConcurrency = protocolExtra?.InsecureConcurrency ?? 0;
     }
 
     private async Task SaveServerAsync()
@@ -195,6 +199,7 @@ public class AddServerViewModel : MyReactiveObject
             WgMtu = WgMtu >= 576 ? WgMtu : null,
             Uot = Uot ? true : null,
             CongestionControl = CongestionControl.NullIfEmpty(),
+            InsecureConcurrency = InsecureConcurrency > 0 ? InsecureConcurrency : null
         });
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)

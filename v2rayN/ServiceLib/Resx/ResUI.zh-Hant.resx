@@ -1671,4 +1671,13 @@
   <data name="TbUot" xml:space="preserve">
     <value>UDP over TCP</value>
   </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>新增 [NaïveProxy] 節點</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Insecure Concurrency</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>
