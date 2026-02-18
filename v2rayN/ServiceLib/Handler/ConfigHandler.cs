@@ -254,6 +254,7 @@ public static class ConfigHandler
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
             item.EchForceQuery = profileItem.EchForceQuery;
+            item.Finalmask = profileItem.Finalmask;
             item.ProtoExtra = profileItem.ProtoExtra;
         }
 
@@ -1122,6 +1123,7 @@ public static class ConfigHandler
                && AreEqual(o.Fingerprint, n.Fingerprint)
                && AreEqual(o.PublicKey, n.PublicKey)
                && AreEqual(o.ShortId, n.ShortId)
+               && AreEqual(o.Finalmask, n.Finalmask)
                && (!remarks || o.Remarks == n.Remarks);
 
         static bool AreEqual(string? a, string? b)

@@ -1668,4 +1668,7 @@
   <data name="menuServerListPreview" xml:space="preserve">
     <value>子配置项预览</value>
   </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
 </root>

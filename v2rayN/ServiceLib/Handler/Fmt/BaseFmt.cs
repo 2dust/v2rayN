@@ -73,6 +73,19 @@ public class BaseFmt
         {
             dicQuery.Add("pcs", Utils.UrlEncode(item.CertSha));
         }
+        if (item.Finalmask.IsNotEmpty())
+        {
+            var node = JsonUtils.ParseJson(item.Finalmask);
+            var finalmask = node != null
+                ? JsonUtils.Serialize(node, new JsonSerializerOptions
+                {
+                    WriteIndented = false,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                })
+                : item.Finalmask;
+            dicQuery.Add("fm", Utils.UrlEncode(finalmask));
+        }
 
         dicQuery.Add("type", item.Network.IsNotEmpty() ? item.Network : nameof(ETransport.tcp));
 
@@ -213,6 +226,24 @@ public class BaseFmt
         item.Mldsa65Verify = GetQueryDecoded(query, "pqv");
         item.EchConfigList = GetQueryDecoded(query, "ech");
         item.CertSha = GetQueryDecoded(query, "pcs");
+
+        var finalmaskDecoded = GetQueryDecoded(query, "fm");
+        if (finalmaskDecoded.IsNotEmpty())
+        {
+            var node = JsonUtils.ParseJson(finalmaskDecoded);
+            item.Finalmask = node != null
+                ? JsonUtils.Serialize(node, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                })
+                : finalmaskDecoded;
+        }
+        else
+        {
+            item.Finalmask = string.Empty;
+        }
 
         if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "1"))
         {
