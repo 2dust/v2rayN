@@ -275,14 +275,7 @@ public partial class CoreConfigV2rayService
             var useragent = "";
             if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
             {
-                try
-                {
-                    useragent = Global.UserAgentTexts[_config.CoreBasicItem.DefUserAgent];
-                }
-                catch (KeyNotFoundException)
-                {
-                    useragent = _config.CoreBasicItem.DefUserAgent;
-                }
+                useragent = Global.UserAgentTexts.GetValueOrDefault(_config.CoreBasicItem.DefUserAgent, _config.CoreBasicItem.DefUserAgent);
             }
 
             //if tls
@@ -586,6 +579,11 @@ public partial class CoreConfigV2rayService
                         streamSettings.tcpSettings = tcpSettings;
                     }
                     break;
+            }
+
+            if (!node.Finalmask.IsNullOrEmpty())
+            {
+                streamSettings.finalmask = JsonUtils.Deserialize<Finalmask4Ray>(node.Finalmask);
             }
         }
         catch (Exception ex)

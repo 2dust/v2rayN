@@ -60,6 +60,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -1265,6 +1267,36 @@
                 </Grid>
                 <Separator
                     Grid.Row="8"
+                    Margin="0,2"
+                    Style="{DynamicResource MaterialDesignSeparator}" />
+                <Grid x:Name="gridFinalmask" Grid.Row="9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbFinalmask}" />
+                    <TextBox
+                        x:Name="txtFinalmask"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        HorizontalScrollBarVisibility="Auto"
+                        MaxLines="8"
+                        MinLines="4"
+                        Style="{StaticResource MyOutlinedTextBox}"
+                        TextWrapping="NoWrap"
+                        VerticalScrollBarVisibility="Auto" />
+                </Grid>
+                <Separator
+                    Grid.Row="10"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
             </Grid>

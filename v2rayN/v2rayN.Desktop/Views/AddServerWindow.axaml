@@ -32,7 +32,7 @@
                 IsCancel="True" />
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                 <Grid
                     Grid.Row="0"
@@ -407,7 +407,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbPorts7Tips}" />
-                    
+
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
@@ -420,7 +420,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
-                    
+
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
@@ -997,6 +997,27 @@
                         HorizontalAlignment="Left" />
                 </Grid>
                 <Separator Grid.Row="8" Margin="{StaticResource MarginTb8}" />
+                <Grid
+                    x:Name="gridFinalmask"
+                    Grid.Row="9"
+                    ColumnDefinitions="300,Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbFinalmask}" />
+                    <TextBox
+                        x:Name="txtFinalmask"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        Classes="TextArea"
+                        TextWrapping="NoWrap" />
+                </Grid>
+                <Separator Grid.Row="10" Margin="{StaticResource MarginTb8}" />
             </Grid>
         </ScrollViewer>
     </DockPanel>
