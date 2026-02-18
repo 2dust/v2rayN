@@ -231,6 +231,7 @@ public static class ConfigHandler
             item.Address = profileItem.Address;
             item.Port = profileItem.Port;
 
+            item.Username = profileItem.Username;
             item.Password = profileItem.Password;
 
             item.Network = profileItem.Network;
@@ -1109,7 +1110,8 @@ public static class ConfigHandler
 
         if (toFile)
         {
-            profileItem.SetProtocolExtra();
+            //profileItem.SetProtocolExtra();
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra());
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
         }
         return 0;
@@ -1137,6 +1139,7 @@ public static class ConfigHandler
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
                && AreEqual(o.Password, n.Password)
+               && AreEqual(o.Username, n.Username)
                && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
                && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
                && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
