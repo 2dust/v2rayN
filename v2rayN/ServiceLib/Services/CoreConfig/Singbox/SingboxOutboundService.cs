@@ -35,6 +35,7 @@ public partial class CoreConfigSingboxService
                         outbound.method = AppManager.Instance.GetShadowsocksSecurities(node).Contains(protocolExtra.SsMethod)
                             ? protocolExtra.SsMethod : Global.None;
                         outbound.password = node.Password;
+                        outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
 
                         if (node.Network == nameof(ETransport.tcp) && node.HeaderType == Global.TcpHeaderHttp)
                         {
@@ -192,12 +193,28 @@ public partial class CoreConfigSingboxService
                     {
                         outbound.uuid = node.Username;
                         outbound.password = node.Password;
-                        outbound.congestion_control = node.HeaderType;
+                        outbound.congestion_control = protocolExtra.CongestionControl;
                         break;
                     }
                 case EConfigType.Anytls:
                     {
                         outbound.password = node.Password;
+                        break;
+                    }
+                case EConfigType.Naive:
+                    {
+                        outbound.username = node.Username;
+                        outbound.password = node.Password;
+                        if (outbound.network == "quic")
+                        {
+                            outbound.quic = true;
+                            outbound.quic_congestion_control = protocolExtra.CongestionControl.NullIfEmpty();
+                        }
+                        if (protocolExtra.InsecureConcurrency > 0)
+                        {
+                            outbound.insecure_concurrency = protocolExtra.InsecureConcurrency;
+                        }
+                        outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
                         break;
                     }
             }

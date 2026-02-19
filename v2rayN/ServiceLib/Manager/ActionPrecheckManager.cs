@@ -243,6 +243,11 @@ public class ActionPrecheckManager
             return string.Format(ResUI.CoreNotSupportNetwork, nameof(ECoreType.sing_box), net);
         }
 
+        if (configType == EConfigType.Naive && net == "quic")
+        {
+            return null;
+        }
+
         // sing-box does not support non-tcp transports for protocols other than vmess/trojan/vless/shadowsocks
         if (!SingboxTransportSupportedProtocols.Contains(configType) && net != nameof(ETransport.tcp))
         {

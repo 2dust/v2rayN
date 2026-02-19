@@ -2,6 +2,9 @@ namespace ServiceLib.Models;
 
 public record ProtocolExtraItem
 {
+    public bool? Uot { get; init; }
+    public string? CongestionControl { get; init; }
+
     // vmess
     public string? AlterId { get; init; }
     public string? VmessSecurity { get; init; }
@@ -28,6 +31,9 @@ public record ProtocolExtraItem
     public int? DownMbps { get; init; }
     public string? Ports { get; init; }
     public string? HopInterval { get; init; }
+
+    // naiveproxy
+    public int? InsecureConcurrency { get; init; }
 
     // group profile
     public string? GroupType { get; init; }
