@@ -423,6 +423,9 @@
   <data name="menuReload" xml:space="preserve">
     <value>Reload</value>
   </data>
+  <data name="menuStartBrowser" xml:space="preserve">
+    <value>Start browser</value>
+  </data>
   <data name="menuRoutingSetting" xml:space="preserve">
     <value>Routing Setting</value>
   </data>

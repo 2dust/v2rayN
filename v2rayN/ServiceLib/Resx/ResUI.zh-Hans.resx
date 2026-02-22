@@ -423,6 +423,9 @@
   <data name="menuReload" xml:space="preserve">
     <value>重启服务</value>
   </data>
+  <data name="menuStartBrowser" xml:space="preserve">
+    <value>启动浏览器</value>
+  </data>
   <data name="menuRoutingSetting" xml:space="preserve">
     <value>路由设置</value>
   </data>

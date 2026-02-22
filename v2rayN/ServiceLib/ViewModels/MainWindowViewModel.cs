@@ -53,6 +53,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
+    public ReactiveCommand<Unit, Unit> StartBrowserCmd { get; }
+
     [Reactive]
     public bool BlReloadEnabled { get; set; }
 
@@ -205,6 +207,11 @@ public class MainWindowViewModel : MyReactiveObject
         ReloadCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await Reload();
+        });
+
+        StartBrowserCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await StartBrowser();
         });
 
         RegionalPresetDefaultCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -517,6 +524,42 @@ public class MainWindowViewModel : MyReactiveObject
         {
             ProcUtils.ProcessStart("open", path);
         }
+        await Task.CompletedTask;
+    }
+
+    private async Task StartBrowser()
+    {
+        if (!Utils.IsWindows())
+        {
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+            await Task.CompletedTask;
+            return;
+        }
+
+        try
+        {
+            var v2rayNPath = Utils.StartupPath();
+            var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+            var edgeDataDir = Path.Combine(v2rayNPath, "edge-data");
+
+            var process = new System.Diagnostics.Process
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "msedge.exe",
+                    Arguments = $"--user-data-dir=\"{edgeDataDir}\" --proxy-server=127.0.0.1:{port} https://www.google.com/",
+                    WorkingDirectory = v2rayNPath,
+                    UseShellExecute = true
+                }
+            };
+            process.Start();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("StartBrowser", ex);
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+        }
+
         await Task.CompletedTask;
     }
 

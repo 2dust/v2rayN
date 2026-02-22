@@ -270,6 +270,23 @@
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
+                                x:Name="menuStartBrowser"
+                                Padding="{StaticResource MarginLeftRight8}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.menuStartBrowser}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Margin="{StaticResource MarginRight8}"
+                                            VerticalAlignment="Center"
+                                            Kind="OpenInBrowser" />
+                                        <TextBlock Text="{x:Static resx:ResUI.menuStartBrowser}" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </Menu>
+                        <Separator />
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
+                            <MenuItem
                                 x:Name="menuPromotion"
                                 Padding="{StaticResource MarginLeftRight8}"
                                 AutomationProperties.Name="{x:Static resx:ResUI.menuPromotion}">
