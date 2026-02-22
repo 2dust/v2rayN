@@ -148,6 +148,12 @@ public partial class MainWindow
              .ObserveOn(RxApp.MainThreadScheduler)
              .Subscribe(blShow => ShowHideWindow(blShow))
              .DisposeWith(disposables);
+
+            AppEvents.SubscriptionDecryptFailedRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(async subId => await OpenSubEditForDecryptFailed(subId))
+                .DisposeWith(disposables);
         });
 
         Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
@@ -178,6 +184,22 @@ public partial class MainWindow
     private async Task DelegateSnackMsg(string content)
     {
         MainSnackbar.MessageQueue?.Enqueue(content);
+        await Task.CompletedTask;
+    }
+
+    private async Task OpenSubEditForDecryptFailed(string subId)
+    {
+        if (subId.IsNullOrEmpty())
+        {
+            return;
+        }
+        var lst = await AppManager.Instance.SubItems();
+        var item = lst?.FirstOrDefault(x => x.Id == subId);
+        if (item == null)
+        {
+            return;
+        }
+        new SubEditWindow(item, focusLoginPassword: true).ShowDialog();
         await Task.CompletedTask;
     }
 

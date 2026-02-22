@@ -2,9 +2,12 @@ namespace v2rayN.Views;
 
 public partial class SubEditWindow
 {
-    public SubEditWindow(SubItem subItem)
+    private readonly bool _focusLoginPassword;
+
+    public SubEditWindow(SubItem subItem, bool focusLoginPassword = false)
     {
         InitializeComponent();
+        _focusLoginPassword = focusLoginPassword;
 
         Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
@@ -17,6 +20,7 @@ public partial class SubEditWindow
         {
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Url, v => v.txtUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.LoginPassword, v => v.txtLoginPassword.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.MoreUrl, v => v.txtMoreUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Enabled, v => v.togEnable.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.AutoUpdateInterval, v => v.txtAutoUpdateInterval.Text).DisposeWith(disposables);
@@ -47,7 +51,15 @@ public partial class SubEditWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        txtRemarks.Focus();
+        if (_focusLoginPassword)
+        {
+            txtLoginPassword.Focus();
+            txtLoginPassword.SelectAll();
+        }
+        else
+        {
+            txtRemarks.Focus();
+        }
     }
 
     private async void BtnSelectPrevProfile_Click(object sender, RoutedEventArgs e)

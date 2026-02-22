@@ -228,6 +228,9 @@
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>无效的订阅内容</value>
   </data>
+  <data name="MsgSubscriptionDecryptFailed" xml:space="preserve">
+    <value>订阅解密失败</value>
+  </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>正在解压......</value>
   </data>
@@ -308,6 +311,9 @@
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>别名</value>
+  </data>
+  <data name="LvLoginPassword" xml:space="preserve">
+    <value>登录密码</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
     <value>可选地址 (Url)</value>
@@ -866,6 +872,9 @@
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
     <value>支持填写 DnsObject，JSON 格式，点击查看文档</value>
+  </data>
+  <data name="SubLoginPasswordTips" xml:space="preserve">
+    <value>请输入网站登录密码</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分组此处请留空</value>

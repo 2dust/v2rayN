@@ -149,6 +149,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
              .ObserveOn(RxApp.MainThreadScheduler)
              .Subscribe(blShow => ShowHideWindow(blShow))
              .DisposeWith(disposables);
+
+            AppEvents.SubscriptionDecryptFailedRequested
+                .AsObservable()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(async subId => await OpenSubEditForDecryptFailed(subId))
+                .DisposeWith(disposables);
         });
 
         if (Utils.IsWindows())
@@ -185,6 +191,21 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         _manager?.Show(new Notification(null, content, NotificationType.Information));
         await Task.CompletedTask;
+    }
+
+    private async Task OpenSubEditForDecryptFailed(string subId)
+    {
+        if (subId.IsNullOrEmpty())
+        {
+            return;
+        }
+        var lst = await AppManager.Instance.SubItems();
+        var item = lst?.FirstOrDefault(x => x.Id == subId);
+        if (item == null)
+        {
+            return;
+        }
+        await new SubEditWindow(item, focusLoginPassword: true).ShowDialog<bool>(this);
     }
 
     private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)

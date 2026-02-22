@@ -88,12 +88,21 @@ public class DownloadService
 
     public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent)
     {
+        var (content, _) = await TryDownloadStringWithHeaders(url, blProxy, userAgent);
+        return content;
+    }
+
+    /// <summary>
+    /// Download string and return response headers (for subscription encryption detection).
+    /// </summary>
+    public async Task<(string? Content, HttpHeaders? ResponseHeaders)> TryDownloadStringWithHeaders(string url, bool blProxy, string userAgent)
+    {
         try
         {
-            var result1 = await DownloadStringAsync(url, blProxy, userAgent, 15);
-            if (result1.IsNotEmpty())
+            var (content, headers) = await DownloadStringWithHeadersAsync(url, blProxy, userAgent, 15);
+            if (content.IsNotEmpty())
             {
-                return result1;
+                return (content, headers);
             }
         }
         catch (Exception ex)
@@ -111,7 +120,7 @@ public class DownloadService
             var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent, 15);
             if (result2.IsNotEmpty())
             {
-                return result2;
+                return (result2, null);
             }
         }
         catch (Exception ex)
@@ -124,7 +133,7 @@ public class DownloadService
             }
         }
 
-        return null;
+        return (null, null);
     }
 
     /// <summary>
@@ -132,6 +141,12 @@ public class DownloadService
     /// </summary>
     /// <param name="url"></param>
     private async Task<string?> DownloadStringAsync(string url, bool blProxy, string userAgent, int timeout)
+    {
+        var (content, _) = await DownloadStringWithHeadersAsync(url, blProxy, userAgent, timeout);
+        return content;
+    }
+
+    private async Task<(string? Content, HttpHeaders? ResponseHeaders)> DownloadStringWithHeadersAsync(string url, bool blProxy, string userAgent, int timeout)
     {
         try
         {
@@ -156,8 +171,10 @@ public class DownloadService
             }
 
             using var cts = new CancellationTokenSource();
-            var result = await client.GetStringAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
-            return result;
+            using var response = await client.GetAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync(cts.Token);
+            return (content, response.Headers);
         }
         catch (Exception ex)
         {
@@ -168,7 +185,7 @@ public class DownloadService
                 Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
             }
         }
-        return null;
+        return (null, null);
     }
 
     /// <summary>

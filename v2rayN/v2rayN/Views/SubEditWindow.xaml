@@ -64,6 +64,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -145,10 +146,26 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvLoginPassword}" />
+                <TextBox
+                    x:Name="txtLoginPassword"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubLoginPasswordTips}"
+                    Style="{StaticResource MyOutlinedTextBox}" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.LvEnabled}" />
 
                 <DockPanel
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}">
                     <ToggleButton
@@ -176,7 +193,7 @@
                 </DockPanel>
 
                 <TextBlock
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -184,7 +201,7 @@
                     Text="{x:Static resx:ResUI.LvFilter}" />
                 <TextBox
                     x:Name="txtFilter"
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -193,7 +210,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -201,7 +218,7 @@
                     Text="{x:Static resx:ResUI.LvConvertTarget}" />
                 <ComboBox
                     x:Name="cmbConvertTarget"
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvConvertTargetTip}"
@@ -209,14 +226,14 @@
                     Style="{StaticResource MyOutlinedTextComboBox}" />
 
                 <TextBlock
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvUserAgent}" />
                 <TextBox
                     x:Name="txtUserAgent"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -226,7 +243,7 @@
                     TextWrapping="Wrap" />
 
                 <TextBlock
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -234,7 +251,7 @@
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
@@ -244,7 +261,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -252,7 +269,7 @@
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -260,7 +277,7 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -269,7 +286,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -277,7 +294,7 @@
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -285,7 +302,7 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -294,7 +311,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -302,7 +319,7 @@
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
@@ -312,7 +329,7 @@
                     ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -320,7 +337,7 @@
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"

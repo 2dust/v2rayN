@@ -7,6 +7,7 @@ public static class AppEvents
     public static readonly EventChannel<Unit> AddServerViaScanRequested = new();
     public static readonly EventChannel<Unit> AddServerViaClipboardRequested = new();
     public static readonly EventChannel<bool> SubscriptionsUpdateRequested = new();
+    public static readonly EventChannel<string> SubscriptionDecryptFailedRequested = new();
 
     public static readonly EventChannel<Unit> ProfilesRefreshRequested = new();
     public static readonly EventChannel<Unit> SubscriptionsRefreshRequested = new();

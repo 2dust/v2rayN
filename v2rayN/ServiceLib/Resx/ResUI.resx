@@ -228,6 +228,9 @@
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
     <value>Invalid subscription content</value>
   </data>
+  <data name="MsgSubscriptionDecryptFailed" xml:space="preserve">
+    <value>Subscription decryption failed</value>
+  </data>
   <data name="MsgUnpacking" xml:space="preserve">
     <value>Unpacking...</value>
   </data>
@@ -308,6 +311,9 @@
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>Remarks</value>
+  </data>
+  <data name="LvLoginPassword" xml:space="preserve">
+    <value>Login password</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
     <value>URL (optional)</value>
@@ -866,6 +872,9 @@
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
     <value>Supports DNS Object; Click to view documentation</value>
+  </data>
+  <data name="SubLoginPasswordTips" xml:space="preserve">
+    <value>Please enter the website login password</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>

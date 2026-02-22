@@ -12,6 +12,8 @@ public class SubItem
 
     public string MoreUrl { get; set; }
 
+    public string? LoginPassword { get; set; }
+
     public bool Enabled { get; set; } = true;
 
     public string UserAgent { get; set; } = string.Empty;

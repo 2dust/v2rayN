@@ -450,7 +450,22 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler));
+        var decryptPromptShown = false;
+        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(
+            _config,
+            subId,
+            blProxy,
+            UpdateTaskHandler,
+            async subItem =>
+            {
+                if (decryptPromptShown || subItem?.Id.IsNullOrEmpty() != false)
+                {
+                    return;
+                }
+                decryptPromptShown = true;
+                AppEvents.SubscriptionDecryptFailedRequested.Publish(subItem.Id);
+                await Task.CompletedTask;
+            }));
     }
 
     #endregion Subscription
