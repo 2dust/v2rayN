@@ -39,9 +39,9 @@ public partial class CoreConfigV2rayService
                     .ToList() ?? [];
                 if (balancerTagList.Count > 0)
                 {
-                    foreach (var rulesItem in _coreConfig.routing.rules.Where(r => balancerTagList.Contains(r.outboundTag)))
+                    foreach (var rulesItem in _coreConfig.routing.rules.Where(r => balancerTagList.Contains(r.outboundTag + Global.BalancerTagSuffix)))
                     {
-                        rulesItem.balancerTag = rulesItem.outboundTag;
+                        rulesItem.balancerTag = rulesItem.outboundTag + Global.BalancerTagSuffix;
                         rulesItem.outboundTag = null;
                     }
                 }

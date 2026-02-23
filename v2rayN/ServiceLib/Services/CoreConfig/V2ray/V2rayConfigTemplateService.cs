@@ -19,18 +19,22 @@ public partial class CoreConfigV2rayService
         // Handle balancer and rules modifications (for multiple load scenarios)
         if (_coreConfig.routing?.balancers?.Count > 0)
         {
-            var balancer = _coreConfig.routing.balancers.First();
+            var balancer =
+                _coreConfig.routing.balancers.FirstOrDefault(b => b.tag == Global.ProxyTag + Global.BalancerTagSuffix, null);
 
             // Modify existing rules in custom config
-            var rulesNode = fullConfigTemplateNode["routing"]?["rules"];
-            if (rulesNode != null)
+            if (balancer != null)
             {
-                foreach (var rule in rulesNode.AsArray())
+                var rulesNode = fullConfigTemplateNode["routing"]?["rules"];
+                if (rulesNode != null)
                 {
-                    if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                    foreach (var rule in rulesNode.AsArray())
                     {
-                        rule.AsObject().Remove("outboundTag");
-                        rule["balancerTag"] = balancer.tag;
+                        if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                        {
+                            rule.AsObject().Remove("outboundTag");
+                            rule["balancerTag"] = balancer.tag;
+                        }
                     }
                 }
             }
@@ -97,8 +101,8 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if ((!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
-                && ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true) == true))
+            else if (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()
+                && (outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true))
             {
                 var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
                     ?? outbound.settings?.vnext?.FirstOrDefault()?.address
