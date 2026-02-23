@@ -215,7 +215,7 @@ public class CertPemManager
             using var client = new TcpClient();
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
-            using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
+            await using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
@@ -262,7 +262,7 @@ public class CertPemManager
             using var client = new TcpClient();
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
-            using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
+            await using var ssl = new SslStream(client.GetStream(), false, ValidateServerCertificate);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
@@ -280,11 +280,7 @@ public class CertPemManager
             var chain = new X509Chain();
             chain.Build(certChain);
 
-            foreach (var element in chain.ChainElements)
-            {
-                var pem = ExportCertToPem(element.Certificate);
-                pemList.Add(pem);
-            }
+            pemList.AddRange(chain.ChainElements.Select(element => ExportCertToPem(element.Certificate)));
 
             return (pemList, null);
         }

@@ -247,11 +247,6 @@ public class AddServerViewModel : MyReactiveObject
         {
             serverName = SelectedSource.Address;
         }
-        if (!Utils.IsDomain(serverName))
-        {
-            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
-            return;
-        }
         if (SelectedSource.Port > 0)
         {
             domain += $":{SelectedSource.Port}";
@@ -276,11 +271,6 @@ public class AddServerViewModel : MyReactiveObject
         if (serverName.IsNullOrEmpty())
         {
             serverName = SelectedSource.Address;
-        }
-        if (!Utils.IsDomain(serverName))
-        {
-            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
-            return;
         }
         if (SelectedSource.Port > 0)
         {
