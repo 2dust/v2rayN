@@ -66,7 +66,7 @@ public class Hysteria2Fmt : BaseFmt
         if (!item.CertSha.IsNullOrEmpty())
         {
             var sha = item.CertSha;
-            var idx = sha.IndexOf('~');
+            var idx = sha.IndexOf(',');
             if (idx > 0)
             {
                 sha = sha[..idx];
