@@ -601,7 +601,7 @@ public partial class CoreConfigV2rayService
                     {
                         udpHop = new HysteriaUdpHop4Ray
                         {
-                            ports = ports.Replace(':', '-'),
+                            port = ports.Replace(':', '-'),
                             interval = hopInterval,
                         };
                     }
