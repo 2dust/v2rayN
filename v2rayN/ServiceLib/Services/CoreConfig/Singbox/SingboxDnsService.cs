@@ -26,11 +26,15 @@ public partial class CoreConfigSingboxService
             {
                 var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
 
-                useDirectDns = rules?.LastOrDefault() is { } lastRule &&
-                                  lastRule.OutboundTag == Global.DirectTag &&
-                                  (lastRule.Port == "0-65535" ||
-                                   lastRule.Network == "tcp,udp" ||
-                                   lastRule.Ip?.Contains("0.0.0.0/0") == true);
+                if (rules?.LastOrDefault() is { } lastRule && lastRule.OutboundTag == Global.DirectTag)
+                {
+                    var noDomain = lastRule.Domain == null || lastRule.Domain.Count == 0;
+                    var noProcess = lastRule.Process == null || lastRule.Process.Count == 0;
+                    var isAnyIp = lastRule.Ip == null || lastRule.Ip.Count == 0 || lastRule.Ip.Contains("0.0.0.0/0");
+                    var isAnyPort = string.IsNullOrEmpty(lastRule.Port) || lastRule.Port == "0-65535";
+                    var isAnyNetwork = string.IsNullOrEmpty(lastRule.Network) || lastRule.Network == "tcp,udp";
+                    useDirectDns = noDomain && noProcess && isAnyIp && isAnyPort && isAnyNetwork;
+                }
             }
             _coreConfig.dns.final = useDirectDns ? Global.SingboxDirectDNSTag : Global.SingboxRemoteDNSTag;
             var simpleDnsItem = context.SimpleDnsItem;

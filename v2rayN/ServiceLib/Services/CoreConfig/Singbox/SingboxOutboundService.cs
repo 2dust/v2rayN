@@ -20,10 +20,13 @@ public partial class CoreConfigSingboxService
         {
             proxyOutboundList.AddRange(BuildGroupProxyOutbounds(baseTagName));
         }
-        var proxyTags = proxyOutboundList.Where(n => n.tag.StartsWith(Global.ProxyTag)).Select(n => n.tag).ToList();
-        if (proxyTags.Count > 1)
+        if (withSelector)
         {
-            proxyOutboundList.InsertRange(0, BuildSelectorOutbounds(proxyTags, baseTagName));
+            var proxyTags = proxyOutboundList.Where(n => n.tag.StartsWith(Global.ProxyTag)).Select(n => n.tag).ToList();
+            if (proxyTags.Count > 1)
+            {
+                proxyOutboundList.InsertRange(0, BuildSelectorOutbounds(proxyTags, baseTagName));
+            }
         }
         return proxyOutboundList;
     }
