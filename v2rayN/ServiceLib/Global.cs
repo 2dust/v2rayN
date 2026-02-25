@@ -49,6 +49,7 @@ public class Global
     public const string DirectTag = "direct";
     public const string BlockTag = "block";
     public const string DnsTag = "dns-module";
+    public const string DirectDnsTag = "direct-dns";
     public const string BalancerTagSuffix = "-round";
     public const string StreamSecurity = "tls";
     public const string StreamSecurityReality = "reality";

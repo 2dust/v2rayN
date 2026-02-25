@@ -220,12 +220,6 @@ public class DnsServer4Ray
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
     public List<string>? expectedIPs { get; set; }
-    public List<string>? unexpectedIPs { get; set; }
-    public string? clientIp { get; set; }
-    public string? queryStrategy { get; set; }
-    public int? timeoutMs { get; set; }
-    public bool? disableCache { get; set; }
-    public bool? finalQuery { get; set; }
     public string? tag { get; set; }
 }
 
