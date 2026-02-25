@@ -333,7 +333,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 {
                     inboundTag = new List<string> { "proxy-relay-ss" },
                     outboundTag = hasBalancer ? null : Global.ProxyTag,
-                    balancerTag = hasBalancer ? Global.ProxyTag : null,
+                    balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix: null,
                     type = "field"
                 }
             ];
