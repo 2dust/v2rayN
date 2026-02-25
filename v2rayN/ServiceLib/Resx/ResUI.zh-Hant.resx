@@ -1110,9 +1110,6 @@
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>新增 [HTTP] 節點</value>
   </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>和分組前置代理衝突</value>
-  </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>啟用分片（Fragment）</value>
   </data>

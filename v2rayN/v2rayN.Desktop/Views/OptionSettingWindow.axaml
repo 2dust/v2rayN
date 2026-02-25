@@ -325,12 +325,6 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="20"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}"
-                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

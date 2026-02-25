@@ -3799,15 +3799,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 which conflicts with the group previous proxy 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsEnableFragmentTips {
-            get {
-                return ResourceManager.GetString("TbSettingsEnableFragmentTips", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable hardware acceleration (requires restart) 的本地化字符串。
         /// </summary>
         public static string TbSettingsEnableHWA {
