@@ -304,7 +304,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             var protectNode = new ProfileItem()
             {
-                CoreType = ECoreType.sing_box,
+                CoreType = ECoreType.Xray,
                 ConfigType = EConfigType.Shadowsocks,
                 Address = Global.Loopback,
                 Port = context.TunProtectSsPort,

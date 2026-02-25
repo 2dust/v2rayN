@@ -67,37 +67,13 @@ public class CoreManager
 
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
         var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
-        CoreConfigContext? preContext = null;
-        if (context.IsTunEnabled)
+        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(context);
+        if (preContext is not null)
         {
-            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-            if (coreType == ECoreType.Xray && node.ConfigType != EConfigType.Custom)
+            context = context with
             {
-                var tunProtectSsPort = Utils.GetFreePort();
-                var proxyRelaySsPort = Utils.GetFreePort();
-                context = context with { TunProtectSsPort = tunProtectSsPort, ProxyRelaySsPort = proxyRelaySsPort, };
-                var preItem = new ProfileItem()
-                {
-                    CoreType = ECoreType.sing_box,
-                    ConfigType = EConfigType.Shadowsocks,
-                    Address = Global.Loopback,
-                    Port = proxyRelaySsPort,
-                    Password = Global.None,
-                };
-                preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
-                {
-                    SsMethod = Global.None,
-                });
-                preContext = context with { Node = preItem, };
-            }
-            else
-            {
-                var preItem = ConfigHandler.GetPreSocksItem(_config, node, coreType);
-                if (preItem is not null)
-                {
-                    preContext = context with { Node = preItem, };
-                }
-            }
+                TunProtectSsPort = preContext.TunProtectSsPort, ProxyRelaySsPort = preContext.ProxyRelaySsPort,
+            };
         }
         var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)

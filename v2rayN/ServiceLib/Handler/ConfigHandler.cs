@@ -1249,6 +1249,47 @@ public static class ConfigHandler
         return itemSocks;
     }
 
+    public static CoreConfigContext? GetPreSocksCoreConfigContext(CoreConfigContext nodeContext)
+    {
+        var config = nodeContext.AppConfig;
+        var node = nodeContext.Node;
+        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+
+        var preSocksItem = GetPreSocksItem(config, node, coreType);
+        if (preSocksItem != null)
+        {
+            return nodeContext with { Node = preSocksItem, };
+        }
+
+        if ((!nodeContext.IsTunEnabled)
+            || coreType != ECoreType.Xray
+            || node.ConfigType == EConfigType.Custom)
+        {
+            return null;
+        }
+        var tunProtectSsPort = Utils.GetFreePort();
+        var proxyRelaySsPort = Utils.GetFreePort();
+        var preItem = new ProfileItem()
+        {
+            CoreType = ECoreType.sing_box,
+            ConfigType = EConfigType.Shadowsocks,
+            Address = Global.Loopback,
+            Port = proxyRelaySsPort,
+            Password = Global.None,
+        };
+        preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
+        {
+            SsMethod = Global.None,
+        });
+        var preContext = nodeContext with
+        {
+            Node = preItem,
+            TunProtectSsPort = tunProtectSsPort,
+            ProxyRelaySsPort = proxyRelaySsPort,
+        };
+        return preContext;
+    }
+
     /// <summary>
     /// Remove servers with invalid test results (timeout)
     /// Useful for cleaning up subscription lists
