@@ -39,7 +39,6 @@ echo "[OK] Kernel version >= ${MIN_KERNEL_MAJOR}.${MIN_KERNEL_MINOR}."
 # ===== Config & Parse arguments =========================================================
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
-AUTOSTART=0              # 1 = enable system-wide autostart (/etc/xdg/autostart)
 FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
 ARCH_OVERRIDE=""         # --arch x64|arm64|all (optional compile target)
 BUILD_FROM=""            # --buildfrom 1|2|3 to select channel non-interactively
@@ -55,7 +54,6 @@ if [[ -n "${VERSION_ARG:-}" ]]; then shift || true; fi
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --with-core)     WITH_CORE="${2:-both}"; shift 2;;
-    --autostart)     AUTOSTART=1; shift;;
     --xray-ver)      XRAY_VER="${2:-}"; shift 2;;
     --singbox-ver)   SING_VER="${2:-}"; shift 2;;
     --netcore)       FORCE_NETCORE=1; shift;;
@@ -216,6 +214,35 @@ git_try_checkout() {
   return 1
 }
 
+apply_channel_or_keep() {
+  local ch="$1" tag=""
+  if [[ "$ch" == "keep" ]]; then
+    echo "[*] Keep current repository state (no checkout)."
+    if git describe --tags --abbrev=0 >/dev/null 2>&1; then
+      VERSION="$(git describe --tags --abbrev=0)"
+    else
+      VERSION="0.0.0+git"
+    fi
+    VERSION="${VERSION#v}"
+  else
+    echo "[*] Resolving ${ch} tag from GitHub releases..."
+    tag=""
+    if [[ "$ch" == "prerelease" ]]; then
+      tag="$(get_latest_tag_prerelease || true)"
+      if [[ -z "$tag" ]]; then
+        echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
+        tag="$(get_latest_tag_latest || true)"
+      fi
+    else
+      tag="$(get_latest_tag_latest || true)"
+    fi
+    [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+    echo "[*] Latest tag for '${ch}': ${tag}"
+    git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
+    VERSION="${tag#v}"
+  fi
+}
+
 if git rev-parse --git-dir >/dev/null 2>&1; then
   if [[ -n "${VERSION_ARG:-}" ]]; then
     echo "[*] Trying to switch v2rayN repo to version: ${VERSION_ARG}"
@@ -224,59 +251,11 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
     else
       echo "[WARN] Tag '${VERSION_ARG}' not found."
       ch="$(choose_channel)"
-      if [[ "$ch" == "keep" ]]; then
-        echo "[*] Keep current repository state (no checkout)."
-        if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-          VERSION="$(git describe --tags --abbrev=0)"
-        else
-          VERSION="0.0.0+git"
-        fi
-        VERSION="${VERSION#v}"
-      else
-        echo "[*] Resolving ${ch} tag from GitHub releases..."
-        tag=""
-        if [[ "$ch" == "prerelease" ]]; then
-          tag="$(get_latest_tag_prerelease || true)"
-          if [[ -z "$tag" ]]; then
-            echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
-            tag="$(get_latest_tag_latest || true)"
-          fi
-        else
-          tag="$(get_latest_tag_latest || true)"
-        fi
-        [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
-        echo "[*] Latest tag for '${ch}': ${tag}"
-        git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
-        VERSION="${tag#v}"
-      fi
+      apply_channel_or_keep "$ch"
     fi
   else
     ch="$(choose_channel)"
-    if [[ "$ch" == "keep" ]]; then
-      echo "[*] Keep current repository state (no checkout)."
-      if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-        VERSION="$(git describe --tags --abbrev=0)"
-      else
-        VERSION="0.0.0+git"
-      fi
-      VERSION="${VERSION#v}"
-    else
-      echo "[*] Resolving ${ch} tag from GitHub releases..."
-      tag=""
-      if [[ "$ch" == "prerelease" ]]; then
-        tag="$(get_latest_tag_prerelease || true)"
-        if [[ -z "$tag" ]]; then
-          echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
-          tag="$(get_latest_tag_latest || true)"
-        fi
-      else
-        tag="$(get_latest_tag_latest || true)"
-      fi
-      [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
-      echo "[*] Latest tag for '${ch}': ${tag}"
-      git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
-      VERSION="${tag#v}"
-    fi
+    apply_channel_or_keep "$ch"
   fi
 else
   echo "[WARN] Current directory is not a git repo; cannot checkout version. Proceeding on current tree."
@@ -577,12 +556,6 @@ https://github.com/2dust/v2rayN
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
-install -dm0755 %{buildroot}%{_sysconfdir}/sudoers.d
-cat > %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny << 'EOF'
-ALL ALL=(ALL) !/home/*/.local/share/v2rayN/bin/mihomo/mihomo
-EOF
-chmod 0440 %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny
-
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
 cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
@@ -636,41 +609,7 @@ fi
 /opt/v2rayN
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-%config(noreplace) /etc/sudoers.d/v2rayn-mihomo-deny
 SPEC
-
-  # Autostart injection (inside %install) and %files entry
-  if [[ "$AUTOSTART" -eq 1 ]]; then
-    awk '
-      BEGIN{ins=0}
-      /^%post$/ && !ins {
-        print "# --- Autostart (.desktop) ---"
-        print "install -dm0755 %{buildroot}/etc/xdg/autostart"
-        print "cat > %{buildroot}/etc/xdg/autostart/v2rayn.desktop << '\''EOF'\''"
-        print "[Desktop Entry]"
-        print "Type=Application"
-        print "Name=v2rayN (Autostart)"
-        print "Exec=v2rayn"
-        print "X-GNOME-Autostart-enabled=true"
-        print "NoDisplay=false"
-        print "EOF"
-        ins=1
-      }
-      {print}
-    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
-
-    awk '
-      BEGIN{infiles=0; done=0}
-      /^%files$/        {infiles=1}
-      infiles && done==0 && $0 ~ /%{_datadir}\/icons\/hicolor\/256x256\/apps\/v2rayn\.png/ {
-        print
-        print "%config(noreplace) /etc/xdg/autostart/v2rayn.desktop"
-        done=1
-        next
-      }
-      {print}
-    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
-  fi
 
   # Replace placeholders
   sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
