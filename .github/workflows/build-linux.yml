@@ -50,7 +50,7 @@ jobs:
         dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-arm64 -p:SelfContained=true -p:PublishTrimmed=true -o "$OutputPathArm64"
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v6.0.0
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: v2rayN-linux
         path: |
@@ -190,7 +190,7 @@ jobs:
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
 
     - name: Upload RPM artifacts
-      uses: actions/upload-artifact@v6.0.0
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: v2rayN-rpm
         path: dist/rpm/**/*.rpm
