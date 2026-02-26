@@ -24,6 +24,7 @@ global using ServiceLib.Common;
 global using ServiceLib.Enums;
 global using ServiceLib.Events;
 global using ServiceLib.Handler;
+global using ServiceLib.Handler.Builder;
 global using ServiceLib.Handler.Fmt;
 global using ServiceLib.Handler.SysProxy;
 global using ServiceLib.Helper;

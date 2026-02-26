@@ -93,13 +93,14 @@ public static class CoreConfigHandler
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType)
     {
         var result = new RetResult();
-        var context = await BuildCoreConfigContext(config, new());
+        var builderResult = await CoreConfigContextBuilder.Build(config, new());
+        var context = builderResult.Context;
         var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
             .Select(serverTestItem => serverTestItem.IndexId);
         var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
         foreach (var node in nodes)
         {
-            var actNode = await FillNodeContext(context, node, true);
+            var (actNode, _) = await CoreConfigContextBuilder.FillNodeContext(context, node, true);
             if (node.IndexId == actNode.IndexId)
             {
                 continue;
@@ -145,129 +146,5 @@ public static class CoreConfigHandler
 
         await File.WriteAllTextAsync(fileName, result.Data.ToString());
         return result;
-    }
-
-    public static async Task<CoreConfigContext> BuildCoreConfigContext(Config config, ProfileItem node)
-    {
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
-        var context = new CoreConfigContext()
-        {
-            Node = node,
-            AllProxiesMap = [],
-            AppConfig = config,
-            FullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(coreType),
-            IsTunEnabled = config.TunModeItem.EnableTun,
-            SimpleDnsItem = config.SimpleDNSItem,
-            ProtectDomainList = [],
-            TunProtectSsPort = 0,
-            ProxyRelaySsPort = 0,
-            RawDnsItem = await AppManager.Instance.GetDNSItem(coreType),
-            RoutingItem = await ConfigHandler.GetDefaultRouting(config),
-        };
-        context = context with
-        {
-            Node = await FillNodeContext(context, node)
-        };
-        if (!(context.RoutingItem?.RuleSet.IsNullOrEmpty() ?? true))
-        {
-            var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet);
-            foreach (var ruleItem in rules.Where(ruleItem => !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
-            {
-                var ruleOutboundNode = await AppManager.Instance.GetProfileItemViaRemarks(ruleItem.OutboundTag);
-                if (ruleOutboundNode != null)
-                {
-                    var ruleOutboundNodeAct = await FillNodeContext(context, ruleOutboundNode, false);
-                    context.AllProxiesMap[$"remark:{ruleItem.OutboundTag}"] = ruleOutboundNodeAct;
-                }
-            }
-        }
-        return context;
-    }
-
-    private static async Task<ProfileItem> FillNodeContext(CoreConfigContext context, ProfileItem node, bool includeSubChain = true)
-    {
-        if (node.IndexId.IsNullOrEmpty())
-        {
-            return node;
-        }
-        var newItems = new List<ProfileItem> { node };
-        if (node.ConfigType.IsGroupType())
-        {
-            var (groupChildList, _) = await GroupProfileManager.GetChildProfileItems(node);
-            foreach (var childItem in groupChildList.Where(childItem => !context.AllProxiesMap.ContainsKey(childItem.IndexId)))
-            {
-                await FillNodeContext(context, childItem, false);
-            }
-            node.SetProtocolExtra(node.GetProtocolExtra() with
-            {
-                ChildItems = Utils.List2String(groupChildList.Select(n => n.IndexId).ToList()),
-            });
-            newItems.AddRange(groupChildList);
-        }
-        context.AllProxiesMap[node.IndexId] = node;
-
-        foreach (var item in newItems)
-        {
-            var address = item.Address;
-            if (Utils.IsDomain(address))
-            {
-                context.ProtectDomainList.Add(address);
-            }
-
-            if (item.EchConfigList.IsNullOrEmpty())
-            {
-                continue;
-            }
-
-            var echQuerySni = item.Sni;
-            if (item.StreamSecurity == Global.StreamSecurity
-                && item.EchConfigList?.Contains("://") == true)
-            {
-                var idx = item.EchConfigList.IndexOf('+');
-                echQuerySni = idx > 0 ? item.EchConfigList[..idx] : item.Sni;
-            }
-            if (!Utils.IsDomain(echQuerySni))
-            {
-                continue;
-            }
-            context.ProtectDomainList.Add(echQuerySni);
-        }
-
-        if (!includeSubChain || node.Subid.IsNullOrEmpty())
-        {
-            return node;
-        }
-
-        var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-        if (subItem == null)
-        {
-            return node;
-        }
-        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-        var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
-        if (prevNode is null && nextNode is null)
-        {
-            return node;
-        }
-
-        var prevNodeAct = prevNode is null ? null : await FillNodeContext(context, prevNode, false);
-        var nextNodeAct = nextNode is null ? null : await FillNodeContext(context, nextNode, false);
-
-        // Build new proxy chain node
-        var chainNode = new ProfileItem()
-        {
-            IndexId = $"inner-{Utils.GetGuid(false)}",
-            ConfigType = EConfigType.ProxyChain,
-            CoreType = node.CoreType ?? ECoreType.Xray,
-        };
-        List<string?> childItems = [prevNodeAct?.IndexId, node.IndexId, nextNodeAct?.IndexId];
-        var chainExtraItem = chainNode.GetProtocolExtra() with
-        {
-            GroupType = chainNode.ConfigType.ToString(),
-            ChildItems = string.Join(",", childItems.Where(x => !x.IsNullOrEmpty())),
-        };
-        chainNode.SetProtocolExtra(chainExtraItem);
-        context.AllProxiesMap[chainNode.IndexId] = chainNode;
-        return chainNode;
     }
 }

@@ -57,26 +57,27 @@ public class CoreManager
         }
     }
 
-    public async Task LoadCore(ProfileItem? node)
+    public async Task LoadCore(CoreConfigContext? context)
     {
-        if (node == null)
+        if (context == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
+        var contextMod = context;
+        var node = contextMod.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
-        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(context);
+        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
         if (preContext is not null)
         {
-            context = context with
+            contextMod = contextMod with
             {
                 TunProtectSsPort = preContext.TunProtectSsPort,
                 ProxyRelaySsPort = preContext.ProxyRelaySsPort,
             };
         }
-        var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
+        var result = await CoreConfigHandler.GenerateClientConfig(contextMod, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -95,7 +96,7 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(context);
+        await CoreStart(contextMod);
         await CoreStartPreService(preContext);
         if (_processService != null)
         {
@@ -132,7 +133,7 @@ public class CoreManager
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
-        var context = await CoreConfigHandler.BuildCoreConfigContext(_config, node);
+        var (context, _) = await CoreConfigContextBuilder.Build(_config, node);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
         {
