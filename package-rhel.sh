@@ -323,9 +323,11 @@ download_v2rayn_bundle() {
   curl -fL "$url" -o "$zipname" || { echo "[!] Bundle download failed"; return 1; }
   unzip -q "$zipname" -d "$tmp" || { echo "[!] Bundle unzip failed"; return 1; }
 
-  if [[ -d "$tmp"/v2rayN-linux-*/bin ]]; then
-      mkdir -p "$outroot/bin"
-      rsync -a "$tmp"/v2rayN-linux-*/bin/ "$outroot/bin/"
+  if [[ -d "$tmp/bin" ]]; then
+    mkdir -p "$outroot/bin"
+    rsync -a "$tmp/bin/" "$outroot/bin/"
+  else
+    rsync -a "$tmp/" "$outroot/"
   fi
 
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
