@@ -1071,9 +1071,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>Включить дополнительный входящий канал</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>Включить IPv6 адреса</value>
   </data>
@@ -1112,9 +1109,6 @@
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>Добавить сервер [HTTP]</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>что конфликтует с предыдущим прокси группы</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Включить фрагментацию (Fragment)</value>

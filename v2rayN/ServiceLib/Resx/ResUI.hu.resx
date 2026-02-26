@@ -1071,9 +1071,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>További bejövő engedélyezése</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>IPv6 cím engedélyezése</value>
   </data>
@@ -1112,9 +1109,6 @@
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>HTTP konfiguráció hozzáadása</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>which conflicts with the group previous proxy</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Fragment engedélyezése</value>

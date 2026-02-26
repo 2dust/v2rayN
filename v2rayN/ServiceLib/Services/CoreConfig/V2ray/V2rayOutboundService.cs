@@ -31,7 +31,7 @@ public partial class CoreConfigV2rayService
             var fragmentOutbound = new Outbounds4Ray
             {
                 protocol = "freedom",
-                tag = $"frag-{Global.ProxyTag}",
+                tag = $"frag-{baseTagName}",
                 settings = new()
                 {
                     fragment = new()
@@ -44,16 +44,17 @@ public partial class CoreConfigV2rayService
             };
             var actOutboundWithTlsList =
                 proxyOutboundList.Where(n => n.streamSettings?.security.IsNullOrEmpty() == false
-                                             && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true));
+                                             && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true)).ToList();
+            if (actOutboundWithTlsList.Count > 0)
+            {
+                proxyOutboundList.Add(fragmentOutbound);
+            }
             foreach (var outbound in actOutboundWithTlsList)
             {
-                var fragmentOutboundClone = JsonUtils.DeepCopy(fragmentOutbound);
-                fragmentOutboundClone.tag = $"frag-{outbound.tag}";
                 outbound.streamSettings.sockopt = new()
                 {
-                    dialerProxy = fragmentOutboundClone.tag
+                    dialerProxy = fragmentOutbound.tag
                 };
-                proxyOutboundList.Add(fragmentOutboundClone);
             }
         }
         return proxyOutboundList;
@@ -67,6 +68,7 @@ public partial class CoreConfigV2rayService
             case EConfigType.PolicyGroup:
                 proxyOutboundList.AddRange(BuildOutboundsList(baseTagName));
                 break;
+
             case EConfigType.ProxyChain:
                 proxyOutboundList.AddRange(BuildChainOutboundsList(baseTagName));
                 break;
@@ -601,7 +603,7 @@ public partial class CoreConfigV2rayService
                     {
                         udpHop = new HysteriaUdpHop4Ray
                         {
-                            ports = ports.Replace(':', '-'),
+                            port = ports.Replace(':', '-'),
                             interval = hopInterval,
                         };
                     }

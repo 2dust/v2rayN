@@ -61,6 +61,51 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
             ret.Success = true;
 
             ret.Data = ApplyFullConfigTemplate();
+            if (context.TunProtectSsPort is > 0 and <= 65535)
+            {
+                var ssInbound = new
+                {
+                    type = "shadowsocks",
+                    tag = "tun-protect-ss",
+                    listen = Global.Loopback,
+                    listen_port = context.TunProtectSsPort,
+                    method = "none",
+                    password = "none",
+                };
+                var directRule = new Rule4Sbox()
+                {
+                    inbound = new List<string> { ssInbound.tag },
+                    outbound = Global.DirectTag,
+                };
+                var singboxConfigNode = JsonUtils.ParseJson(ret.Data.ToString())!.AsObject();
+                var inboundsNode = singboxConfigNode["inbounds"]!.AsArray();
+                inboundsNode.Add(JsonUtils.SerializeToNode(ssInbound, new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                }));
+                var routeNode = singboxConfigNode["route"]?.AsObject();
+                var rulesNode = routeNode?["rules"]?.AsArray();
+                var protectRuleNode = JsonUtils.SerializeToNode(directRule,
+                    new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
+                if (rulesNode != null)
+                {
+                    rulesNode.Insert(0, protectRuleNode);
+                }
+                else
+                {
+                    var newRulesNode = new JsonArray() { protectRuleNode };
+                    if (routeNode is null)
+                    {
+                        var newRouteNode = new JsonObject() { ["rules"] = newRulesNode };
+                        singboxConfigNode["route"] = newRouteNode;
+                    }
+                    else
+                    {
+                        routeNode["rules"] = newRulesNode;
+                    }
+                }
+                ret.Data = JsonUtils.Serialize(singboxConfigNode);
+            }
             return ret;
         }
         catch (Exception ex)
@@ -92,18 +137,8 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            List<IPEndPoint> lstIpEndPoints = new();
-            List<TcpConnectionInformation> lstTcpConns = new();
-            try
-            {
-                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
-                lstIpEndPoints.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners());
-                lstTcpConns.AddRange(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections());
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
+
+            var (lstIpEndPoints, lstTcpConns) = Utils.GetActiveNetworkInfo();
 
             GenLog();
             GenMinimizedDns();

@@ -43,6 +43,7 @@ public partial class CoreConfigSingboxService
             case EConfigType.PolicyGroup:
                 proxyOutboundList = BuildOutboundsList(baseTagName);
                 break;
+
             case EConfigType.ProxyChain:
                 proxyOutboundList = BuildChainOutboundsList(baseTagName);
                 break;

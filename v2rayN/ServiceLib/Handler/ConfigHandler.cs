@@ -1235,29 +1235,61 @@ public static class ConfigHandler
     /// <returns>A SOCKS profile item or null if not needed</returns>
     public static ProfileItem? GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
+        if (node.ConfigType != EConfigType.Custom || !(node.PreSocksPort > 0))
+        {
+            return null;
+        }
         ProfileItem? itemSocks = null;
-        if (node.ConfigType != EConfigType.Custom && coreType != ECoreType.sing_box && config.TunModeItem.EnableTun)
+        var preCoreType = AppManager.Instance.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
+        itemSocks = new ProfileItem()
         {
-            itemSocks = new ProfileItem()
-            {
-                CoreType = ECoreType.sing_box,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
-            };
-        }
-        else if (node.ConfigType == EConfigType.Custom && node.PreSocksPort > 0)
-        {
-            var preCoreType = AppManager.Instance.RunningCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
-            itemSocks = new ProfileItem()
-            {
-                CoreType = preCoreType,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = node.PreSocksPort.Value,
-            };
-        }
+            CoreType = preCoreType,
+            ConfigType = EConfigType.SOCKS,
+            Address = Global.Loopback,
+            Port = node.PreSocksPort.Value,
+        };
         return itemSocks;
+    }
+
+    public static CoreConfigContext? GetPreSocksCoreConfigContext(CoreConfigContext nodeContext)
+    {
+        var config = nodeContext.AppConfig;
+        var node = nodeContext.Node;
+        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+
+        var preSocksItem = GetPreSocksItem(config, node, coreType);
+        if (preSocksItem != null)
+        {
+            return nodeContext with { Node = preSocksItem, };
+        }
+
+        if ((!nodeContext.IsTunEnabled)
+            || coreType != ECoreType.Xray
+            || node.ConfigType == EConfigType.Custom)
+        {
+            return null;
+        }
+        var tunProtectSsPort = Utils.GetFreePort();
+        var proxyRelaySsPort = Utils.GetFreePort();
+        var preItem = new ProfileItem()
+        {
+            CoreType = ECoreType.sing_box,
+            ConfigType = EConfigType.Shadowsocks,
+            Address = Global.Loopback,
+            Port = proxyRelaySsPort,
+            Password = Global.None,
+        };
+        preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
+        {
+            SsMethod = Global.None,
+        });
+        var preContext = nodeContext with
+        {
+            Node = preItem,
+            TunProtectSsPort = tunProtectSsPort,
+            ProxyRelaySsPort = proxyRelaySsPort,
+        };
+        return preContext;
     }
 
     /// <summary>

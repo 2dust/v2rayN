@@ -1068,9 +1068,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>启用额外监听端口</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>启用 IPv6</value>
   </data>
@@ -1109,9 +1106,6 @@
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>添加 [HTTP] </value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>和分组前置代理冲突</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>启用分片 (Fragment)</value>

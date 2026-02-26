@@ -5,10 +5,10 @@
     <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.0" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.11" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
     <PackageVersion Include="CliWrap" Version="3.10.0" />
     <PackageVersion Include="Downloader" Version="4.0.3" />
@@ -19,9 +19,9 @@
     <PackageVersion Include="ReactiveUI" Version="22.3.1" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageVersion Include="ReactiveUI.WPF" Version="22.3.1" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.3.7.2" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.3.7.3" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="11.2.0.1" />
-    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.2" />
+    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.3" />
     <PackageVersion Include="NLog" Version="6.1.0" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
