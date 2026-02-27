@@ -100,7 +100,7 @@ public static class CoreConfigHandler
         var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
         foreach (var node in nodes)
         {
-            var (actNode, _) = await CoreConfigContextBuilder.FillNodeContext(context, node, true);
+            var (actNode, _) = await CoreConfigContextBuilder.ResolveNodeAsync(context, node, true);
             if (node.IndexId == actNode.IndexId)
             {
                 continue;

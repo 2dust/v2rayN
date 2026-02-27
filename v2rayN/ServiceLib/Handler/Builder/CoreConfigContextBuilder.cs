@@ -7,6 +7,10 @@ public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeVali
 
 public class CoreConfigContextBuilder
 {
+    /// <summary>
+    /// Builds a <see cref="CoreConfigContext"/> for the given node, resolves its proxy map,
+    /// and processes outbound nodes referenced by routing rules.
+    /// </summary>
     public static async Task<CoreConfigContextBuilderResult> Build(Config config, ProfileItem node)
     {
         var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box
@@ -28,7 +32,7 @@ public class CoreConfigContextBuilder
             RoutingItem = await ConfigHandler.GetDefaultRouting(config),
         };
         var validatorResult = NodeValidatorResult.Empty();
-        var (actNode, nodeValidatorResult) = await FillNodeContext(context, node);
+        var (actNode, nodeValidatorResult) = await ResolveNodeAsync(context, node);
         if (!nodeValidatorResult.Success)
         {
             return new CoreConfigContextBuilderResult(context, nodeValidatorResult);
@@ -46,7 +50,7 @@ public class CoreConfigContextBuilder
                     continue;
                 }
 
-                var (actRuleNode, ruleNodeValidatorResult) = await FillNodeContext(context, ruleOutboundNode, false);
+                var (actRuleNode, ruleNodeValidatorResult) = await ResolveNodeAsync(context, ruleOutboundNode, false);
                 validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Warnings.Select(w =>
                     $"Routing rule {ruleItem.Remarks} outbound node {ruleItem.OutboundTag} warning: {w}"));
                 if (!ruleNodeValidatorResult.Success)
@@ -64,7 +68,11 @@ public class CoreConfigContextBuilder
         return new CoreConfigContextBuilderResult(context, validatorResult);
     }
 
-    public static async Task<(ProfileItem, NodeValidatorResult)> FillNodeContext(CoreConfigContext context,
+    /// <summary>
+    /// Resolves a node into the context, optionally wrapping it in a subscription-level proxy chain.
+    /// Returns the effective (possibly replaced) node and the validation result.
+    /// </summary>
+    public static async Task<(ProfileItem, NodeValidatorResult)> ResolveNodeAsync(CoreConfigContext context,
         ProfileItem node,
         bool includeSubChain = true)
     {
@@ -75,19 +83,24 @@ public class CoreConfigContextBuilder
 
         if (includeSubChain)
         {
-            var virtualChainNode = await BuildVirtualSubChainNode(node);
+            var virtualChainNode = await BuildSubscriptionChainNodeAsync(node);
             if (virtualChainNode != null)
             {
                 context.AllProxiesMap[virtualChainNode.IndexId] = virtualChainNode;
-                return await FillNodeContext(context, virtualChainNode, false);
+                return await ResolveNodeAsync(context, virtualChainNode, false);
             }
         }
 
-        var fillResult = await FillNodeContextPrivate(context, node);
+        var fillResult = await RegisterNodeAsync(context, node);
         return (node, fillResult);
     }
 
-    private static async Task<ProfileItem?> BuildVirtualSubChainNode(ProfileItem node)
+    /// <summary>
+    /// If the node's subscription defines prev/next profiles, creates a virtual
+    /// <see cref="EConfigType.ProxyChain"/> node that wraps them together.
+    /// Returns <c>null</c> when no chain is needed.
+    /// </summary>
+    private static async Task<ProfileItem?> BuildSubscriptionChainNodeAsync(ProfileItem node)
     {
         if (node.Subid.IsNullOrEmpty())
         {
@@ -126,19 +139,27 @@ public class CoreConfigContextBuilder
         return chainNode;
     }
 
-    private static async Task<NodeValidatorResult> FillNodeContextPrivate(CoreConfigContext context, ProfileItem node)
+    /// <summary>
+    /// Dispatches registration to either <see cref="RegisterGroupNodeAsync"/> or
+    /// <see cref="RegisterSingleNodeAsync"/> based on the node's config type.
+    /// </summary>
+    private static async Task<NodeValidatorResult> RegisterNodeAsync(CoreConfigContext context, ProfileItem node)
     {
         if (node.ConfigType.IsGroupType())
         {
-            return await FillGroupNodeContextPrivate(context, node);
+            return await RegisterGroupNodeAsync(context, node);
         }
         else
         {
-            return FillNormalNodeContextPrivate(context, node);
+            return RegisterSingleNodeAsync(context, node);
         }
     }
 
-    private static NodeValidatorResult FillNormalNodeContextPrivate(CoreConfigContext context, ProfileItem node)
+    /// <summary>
+    /// Validates a single (non-group) node and, on success, adds it to the proxy map
+    /// and records any domain addresses that should bypass the proxy.
+    /// </summary>
+    private static NodeValidatorResult RegisterSingleNodeAsync(CoreConfigContext context, ProfileItem node)
     {
         if (node.ConfigType.IsGroupType())
         {
@@ -178,7 +199,11 @@ public class CoreConfigContextBuilder
         return nodeValidatorResult;
     }
 
-    private static async Task<NodeValidatorResult> FillGroupNodeContextPrivate(CoreConfigContext context,
+    /// <summary>
+    /// Entry point for registering a group node. Initialises the visited/ancestor sets
+    /// and delegates to <see cref="TraverseGroupNodeAsync"/>.
+    /// </summary>
+    private static async Task<NodeValidatorResult> RegisterGroupNodeAsync(CoreConfigContext context,
         ProfileItem node)
     {
         if (!node.ConfigType.IsGroupType())
@@ -188,10 +213,15 @@ public class CoreConfigContextBuilder
 
         HashSet<string> ancestors = [node.IndexId];
         HashSet<string> globalVisited = [node.IndexId];
-        return await FillGroupNodeContextPrivate(context, node, globalVisited, ancestors);
+        return await TraverseGroupNodeAsync(context, node, globalVisited, ancestors);
     }
 
-    private static async Task<NodeValidatorResult> FillGroupNodeContextPrivate(
+    /// <summary>
+    /// Recursively walks the children of a group node, registering valid leaf nodes
+    /// and nested groups. Detects cycles via <paramref name="ancestorsGroup"/> and
+    /// deduplicates shared nodes via <paramref name="globalVisitedGroup"/>.
+    /// </summary>
+    private static async Task<NodeValidatorResult> TraverseGroupNodeAsync(
         CoreConfigContext context,
         ProfileItem node,
         HashSet<string> globalVisitedGroup,
@@ -217,7 +247,7 @@ public class CoreConfigContextBuilder
 
             if (!childNode.ConfigType.IsGroupType())
             {
-                var childNodeResult = FillNormalNodeContextPrivate(context, childNode);
+                var childNodeResult = RegisterSingleNodeAsync(context, childNode);
                 childNodeValidatorResult.Warnings.AddRange(childNodeResult.Warnings.Select(w =>
                     $"Group {node.Remarks} child node {childNode.Remarks} warning: {w}"));
                 childNodeValidatorResult.Errors.AddRange(childNodeResult.Errors.Select(e =>
@@ -235,7 +265,7 @@ public class CoreConfigContextBuilder
             globalVisitedGroup.Add(childNode.IndexId);
             var newAncestorsGroup = new HashSet<string>(ancestorsGroup) { childNode.IndexId };
             var childGroupResult =
-                await FillGroupNodeContextPrivate(context, childNode, globalVisitedGroup, newAncestorsGroup);
+                await TraverseGroupNodeAsync(context, childNode, globalVisitedGroup, newAncestorsGroup);
             childNodeValidatorResult.Warnings.AddRange(childGroupResult.Warnings.Select(w =>
                 $"Group {node.Remarks} child group node {childNode.Remarks} warning: {w}"));
             childNodeValidatorResult.Errors.AddRange(childGroupResult.Errors.Select(e =>
