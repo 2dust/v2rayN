@@ -1671,4 +1671,16 @@
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
     <value>节点组 {0} 下没有有效的子节点。</value>
   </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>路由规则 {0} 的出站标签为空，已回退为仅使用代理节点。</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>路由规则 {0} 的出站节点 {1} 未找到，已回退为仅使用代理节点。</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>订阅前置节点 {0} 未找到，已跳过。</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>订阅后置节点 {0} 未找到，已跳过。</value>
+  </data>
 </root>

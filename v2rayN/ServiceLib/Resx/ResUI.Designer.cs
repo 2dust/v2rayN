@@ -2041,11 +2041,29 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Routing rule {0} has an empty outbound tag. Fallback to proxy node only. 的本地化字符串。
+        /// </summary>
+        public static string MsgRoutingRuleEmptyOutboundTag {
+            get {
+                return ResourceManager.GetString("MsgRoutingRuleEmptyOutboundTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only. 的本地化字符串。
         /// </summary>
         public static string MsgRoutingRuleOutboundNodeError {
             get {
                 return ResourceManager.GetString("MsgRoutingRuleOutboundNodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Routing rule {0} outbound node {1} not found. Fallback to proxy node only. 的本地化字符串。
+        /// </summary>
+        public static string MsgRoutingRuleOutboundNodeNotFound {
+            get {
+                return ResourceManager.GetString("MsgRoutingRuleOutboundNodeNotFound", resourceCulture);
             }
         }
         
@@ -2109,6 +2127,24 @@ namespace ServiceLib.Resx {
         public static string MsgSubscriptionDecodingFailed {
             get {
                 return ResourceManager.GetString("MsgSubscriptionDecodingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subscription next proxy {0} not found. Skipping. 的本地化字符串。
+        /// </summary>
+        public static string MsgSubscriptionNextProfileNotFound {
+            get {
+                return ResourceManager.GetString("MsgSubscriptionNextProfileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Subscription previous proxy {0} not found. Skipping. 的本地化字符串。
+        /// </summary>
+        public static string MsgSubscriptionPrevProfileNotFound {
+            get {
+                return ResourceManager.GetString("MsgSubscriptionPrevProfileNotFound", resourceCulture);
             }
         }
         

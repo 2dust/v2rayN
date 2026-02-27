@@ -1671,4 +1671,16 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
     <value>Group {0} has no valid child node.</value>
   </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>Subscription previous proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>Subscription next proxy {0} not found. Skipping.</value>
+  </data>
 </root>

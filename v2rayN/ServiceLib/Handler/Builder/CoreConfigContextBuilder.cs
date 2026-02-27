@@ -1,4 +1,4 @@
-﻿namespace ServiceLib.Handler.Builder;
+namespace ServiceLib.Handler.Builder;
 
 public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeValidatorResult ValidatorResult)
 {
@@ -44,9 +44,17 @@ public class CoreConfigContextBuilder
             var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet);
             foreach (var ruleItem in rules.Where(ruleItem => !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
             {
+                if (ruleItem.OutboundTag.IsNullOrEmpty())
+                {
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleEmptyOutboundTag, ruleItem.Remarks));
+                    ruleItem.OutboundTag = Global.ProxyTag;
+                    continue;
+                }
                 var ruleOutboundNode = await AppManager.Instance.GetProfileItemViaRemarks(ruleItem.OutboundTag);
                 if (ruleOutboundNode == null)
                 {
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleOutboundNodeNotFound, ruleItem.Remarks, ruleItem.OutboundTag));
+                    ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
 
@@ -83,43 +91,71 @@ public class CoreConfigContextBuilder
 
         if (includeSubChain)
         {
-            var virtualChainNode = await BuildSubscriptionChainNodeAsync(node);
+            var (virtualChainNode, chainValidatorResult) = await BuildSubscriptionChainNodeAsync(node);
             if (virtualChainNode != null)
             {
                 context.AllProxiesMap[virtualChainNode.IndexId] = virtualChainNode;
-                return await ResolveNodeAsync(context, virtualChainNode, false);
+                var (resolvedNode, resolvedResult) = await ResolveNodeAsync(context, virtualChainNode, false);
+                resolvedResult.Warnings.InsertRange(0, chainValidatorResult.Warnings);
+                return (resolvedNode, resolvedResult);
+            }
+            // Chain not built but warnings may still exist (e.g. missing profiles)
+            if (chainValidatorResult.Warnings.Count > 0)
+            {
+                var fillResult = await RegisterNodeAsync(context, node);
+                fillResult.Warnings.InsertRange(0, chainValidatorResult.Warnings);
+                return (node, fillResult);
             }
         }
 
-        var fillResult = await RegisterNodeAsync(context, node);
-        return (node, fillResult);
+        var registerResult = await RegisterNodeAsync(context, node);
+        return (node, registerResult);
     }
 
     /// <summary>
     /// If the node's subscription defines prev/next profiles, creates a virtual
     /// <see cref="EConfigType.ProxyChain"/> node that wraps them together.
-    /// Returns <c>null</c> when no chain is needed.
+    /// Returns <c>null</c> as the chain item when no chain is needed.
+    /// Any warnings (e.g. missing prev/next profile) are returned in the validator result.
     /// </summary>
-    private static async Task<ProfileItem?> BuildSubscriptionChainNodeAsync(ProfileItem node)
+    private static async Task<(ProfileItem? ChainNode, NodeValidatorResult ValidatorResult)> BuildSubscriptionChainNodeAsync(ProfileItem node)
     {
+        var result = NodeValidatorResult.Empty();
+
         if (node.Subid.IsNullOrEmpty())
         {
-            return null;
+            return (null, result);
         }
 
         var subItem = await AppManager.Instance.GetSubItem(node.Subid);
-        if (subItem == null
-            || (subItem.PrevProfile.IsNullOrEmpty()
-            && subItem.NextProfile.IsNullOrEmpty()))
+        if (subItem == null)
         {
-            return null;
+            return (null, result);
         }
 
-        var prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
-        var nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+        ProfileItem? prevNode = null;
+        ProfileItem? nextNode = null;
+
+        if (!subItem.PrevProfile.IsNullOrEmpty())
+        {
+            prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            if (prevNode == null)
+            {
+                result.Warnings.Add(string.Format(ResUI.MsgSubscriptionPrevProfileNotFound, subItem.PrevProfile));
+            }
+        }
+        if (!subItem.NextProfile.IsNullOrEmpty())
+        {
+            nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            if (nextNode == null)
+            {
+                result.Warnings.Add(string.Format(ResUI.MsgSubscriptionNextProfileNotFound, subItem.NextProfile));
+            }
+        }
+
         if (prevNode is null && nextNode is null)
         {
-            return null;
+            return (null, result);
         }
 
         // Build new proxy chain node
@@ -136,7 +172,7 @@ public class CoreConfigContextBuilder
             ChildItems = string.Join(",", childItems.Where(x => !x.IsNullOrEmpty())),
         };
         chainNode.SetProtocolExtra(chainExtraItem);
-        return chainNode;
+        return (chainNode, result);
     }
 
     /// <summary>
