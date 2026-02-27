@@ -1163,15 +1163,22 @@ public static class ConfigHandler
         return 0;
     }
 
-    private const string PolicyGroupDefaultAllFilter = "^(?!.*(?:剩余|过期|到期|重置)).*$";
+    // Matches subscription-info noise words in both Chinese and English.
+    // Chinese: 剩余(remaining), 过期/到期(expired/expiry), 重置(reset)
+    // English: remaining, expir(e/ed/y), reset
+    private const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";
+
+    private const string PolicyGroupDefaultAllFilter = $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*$";
 
     /// <summary>
     /// Combines a region pattern with PolicyGroupDefaultAllFilter so results must
-    /// match the region keyword AND not contain expiry/traffic noise words.
-    /// Result pattern: ^(?!.*(?:剩余|过期|到期|重置)).*(?:regionPattern).*$
+    /// match the region keyword AND not contain expiry/traffic noise words (CN + EN).
+    /// Result pattern: ^(?!.*(?:...excludeKeywords...)).*(?:regionPattern).*$
     /// </summary>
     private static string CombineWithDefaultAllFilter(string regionPattern)
-        => $"^(?!.*(?:剩余|过期|到期|重置)).*(?:{regionPattern}).*$";
+    {
+        return $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*(?:{regionPattern}).*$";
+    }
 
     /// <summary>
     /// Create a group server that combines multiple servers for load balancing
@@ -1216,23 +1223,23 @@ public static class ConfigHandler
 
     private static readonly Dictionary<string, string> PolicyGroupRegionFilters = new()
     {
-        { "JP", "日本|[Jj][Pp]|🇯🇵" },
-        { "US", "美国|[Uu][Ss]|🇺🇸" },
-        { "HK", "香港|[Hh][Kk]|🇭🇰" },
-        { "TW", "台湾|[Tt][Ww]|🇹🇼" },
-        { "KR", "韩国|[Kk][Rr]|🇰🇷" },
-        { "SG", "新加坡|[Ss][Gg]|🇸🇬" },
-        { "DE", "德国|[Dd][Ee]|🇩🇪" },
-        { "FR", "法国|[Ff][Rr]|🇫🇷" },
-        { "GB", "英国|[Gg][Bb]|🇬🇧" },
-        { "CA", "加拿大|[Cc][Aa]|🇨🇦" },
-        { "AU", "澳大利亚|[Aa][Uu]|🇦🇺" },
-        { "RU", "俄罗斯|[Rr][Uu]|🇷🇺" },
-        { "BR", "巴西|[Bb][Rr]|🇧🇷" },
-        { "IN", "印度|[Ii][Nn]|🇮🇳" },
-        { "VN", "越南|[Vv][Nn]|🇻🇳" },
-        { "ID", "印度尼西亚|[Ii][Dd]|🇮🇩" },
-        { "MX", "墨西哥|[Mm][Xx]|🇲🇽" }
+        { "JP", "日本|\\b[Jj][Pp]\\b|🇯🇵|[Jj]apan" },
+        { "US", "美国|\\b[Uu][Ss]\\b|🇺🇸|[Uu]nited [Ss]tates|\\b[Uu][Ss][Aa]\\b" },
+        { "HK", "香港|\\b[Hh][Kk]\\b|🇭🇰|[Hh]ong ?[Kk]ong" },
+        { "TW", "台湾|台灣|\\b[Tt][Ww]\\b|🇹🇼|[Tt]aiwan" },
+        { "KR", "韩国|\\b[Kk][Rr]\\b|🇰🇷|[Kk]orea" },
+        { "SG", "新加坡|\\b[Ss][Gg]\\b|🇸🇬|[Ss]ingapore" },
+        { "DE", "德国|\\b[Dd][Ee]\\b|🇩🇪|[Gg]ermany" },
+        { "FR", "法国|\\b[Ff][Rr]\\b|🇫🇷|[Ff]rance" },
+        { "GB", "英国|\\b[Gg][Bb]\\b|🇬🇧|[Uu]nited [Kk]ingdom|[Bb]ritain" },
+        { "CA", "加拿大|🇨🇦|[Cc]anada" },
+        { "AU", "澳大利亚|\\b[Aa][Uu]\\b|🇦🇺|[Aa]ustralia" },
+        { "RU", "俄罗斯|\\b[Rr][Uu]\\b|🇷🇺|[Rr]ussia" },
+        { "BR", "巴西|\\b[Bb][Rr]\\b|🇧🇷|[Bb]razil" },
+        { "IN", "印度|🇮🇳|[Ii]ndia" },
+        { "VN", "越南|\\b[Vv][Nn]\\b|🇻🇳|[Vv]ietnam" },
+        { "ID", "印度尼西亚|\\b[Ii][Dd]\\b|🇮🇩|[Ii]ndonesia" },
+        { "MX", "墨西哥|\\b[Mm][Xx]\\b|🇲🇽|[Mm]exico" }
     };
 
     public static async Task<RetResult> AddGroupRegionServer(Config config, SubItem? subItem)
