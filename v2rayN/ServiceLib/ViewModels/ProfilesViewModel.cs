@@ -45,6 +45,7 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
     public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
     public ReactiveCommand<Unit, Unit> GenGroupAllServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupRegionServerCmd { get; }
 
     //servers move
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -132,6 +133,10 @@ public class ProfilesViewModel : MyReactiveObject
         GenGroupAllServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await GenGroupAllServer();
+        }, canEditRemove);
+        GenGroupRegionServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await GenGroupRegionServer();
         }, canEditRemove);
 
         //servers move
@@ -620,6 +625,19 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
         _pendingSelectIndexId = ret.Data?.ToString();
+        await RefreshServers();
+    }
+
+    private async Task GenGroupRegionServer()
+    {
+        var ret = await ConfigHandler.AddGroupRegionServer(_config, SelectedSub);
+        if (ret.Success != true)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+            return;
+        }
+        var indexIdList = ret.Data as List<string>;
+        _pendingSelectIndexId = indexIdList?.FirstOrDefault();
         await RefreshServers();
     }
 

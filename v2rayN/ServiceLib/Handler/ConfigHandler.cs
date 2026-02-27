@@ -1163,6 +1163,16 @@ public static class ConfigHandler
         return 0;
     }
 
+    private const string PolicyGroupDefaultAllFilter = "^(?!.*(?:剩余|过期|到期|重置)).*$";
+
+    /// <summary>
+    /// Combines a region pattern with PolicyGroupDefaultAllFilter so results must
+    /// match the region keyword AND not contain expiry/traffic noise words.
+    /// Result pattern: ^(?!.*(?:剩余|过期|到期|重置)).*(?:regionPattern).*$
+    /// </summary>
+    private static string CombineWithDefaultAllFilter(string regionPattern)
+        => $"^(?!.*(?:剩余|过期|到期|重置)).*(?:{regionPattern}).*$";
+
     /// <summary>
     /// Create a group server that combines multiple servers for load balancing
     /// Generates a PolicyGroup profile with references to the sub-items
@@ -1195,12 +1205,82 @@ public static class ConfigHandler
             MultipleLoad = EMultipleLoad.LeastPing,
             GroupType = profile.ConfigType.ToString(),
             SubChildItems = subId,
-            Filter = Global.PolicyGroupDefaultAllFilter,
+            Filter = PolicyGroupDefaultAllFilter,
         };
         profile.SetProtocolExtra(extraItem);
         var ret = await AddServerCommon(config, profile, true);
         result.Success = ret == 0;
         result.Data = indexId;
+        return result;
+    }
+
+    private static readonly Dictionary<string, string> PolicyGroupRegionFilters = new()
+    {
+        { "JP", "日本|[Jj][Pp]|🇯🇵" },
+        { "US", "美国|[Uu][Ss]|🇺🇸" },
+        { "HK", "香港|[Hh][Kk]|🇭🇰" },
+        { "TW", "台湾|[Tt][Ww]|🇹🇼" },
+        { "KR", "韩国|[Kk][Rr]|🇰🇷" },
+        { "SG", "新加坡|[Ss][Gg]|🇸🇬" },
+        { "DE", "德国|[Dd][Ee]|🇩🇪" },
+        { "FR", "法国|[Ff][Rr]|🇫🇷" },
+        { "GB", "英国|[Gg][Bb]|🇬🇧" },
+        { "CA", "加拿大|[Cc][Aa]|🇨🇦" },
+        { "AU", "澳大利亚|[Aa][Uu]|🇦🇺" },
+        { "RU", "俄罗斯|[Rr][Uu]|🇷🇺" },
+        { "BR", "巴西|[Bb][Rr]|🇧🇷" },
+        { "IN", "印度|[Ii][Nn]|🇮🇳" },
+        { "VN", "越南|[Vv][Nn]|🇻🇳" },
+        { "ID", "印度尼西亚|[Ii][Dd]|🇮🇩" },
+        { "MX", "墨西哥|[Mm][Xx]|🇲🇽" }
+    };
+
+    public static async Task<RetResult> AddGroupRegionServer(Config config, SubItem? subItem)
+    {
+        var result = new RetResult();
+        List<string> indexIdList = [];
+
+        foreach (var regionFilter in PolicyGroupRegionFilters)
+        {
+            var indexId = Utils.GetGuid(false);
+            var subId = subItem?.Id;
+
+            var remark = subItem is null ? ResUI.TbConfigTypePolicyGroup : $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup} - {regionFilter.Key}";
+            var profile = new ProfileItem
+            {
+                IndexId = indexId,
+                CoreType = ECoreType.Xray,
+                ConfigType = EConfigType.PolicyGroup,
+                Remarks = remark,
+                IsSub = false
+            };
+            if (!subId.IsNullOrEmpty())
+            {
+                profile.Subid = subId;
+            }
+            var extraItem = new ProtocolExtraItem
+            {
+                MultipleLoad = EMultipleLoad.LeastPing,
+                GroupType = profile.ConfigType.ToString(),
+                SubChildItems = subId,
+                Filter = CombineWithDefaultAllFilter(regionFilter.Value),
+            };
+            profile.SetProtocolExtra(extraItem);
+
+            var childProfile = await GroupProfileManager.GetChildProfileItemsByProtocolExtra(extraItem);
+            if (childProfile.Count == 0)
+            {
+                continue;
+            }
+
+            var ret = await AddServerCommon(config, profile, true);
+            if (ret == 0)
+            {
+                indexIdList.Add(indexId);
+            }
+        }
+        result.Success = indexIdList.Count > 0;
+        result.Data = indexIdList;
         return result;
     }
 

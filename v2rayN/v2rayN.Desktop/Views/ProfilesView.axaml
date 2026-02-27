@@ -195,6 +195,7 @@
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
                             <MenuItem x:Name="menuGenGroupAllServer" Header="{x:Static resx:ResUI.menuAllServers}" />
+                            <MenuItem x:Name="menuGenGroupRegionServer" Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

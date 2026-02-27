@@ -245,6 +245,10 @@
                                 x:Name="menuGenGroupAllServer"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuAllServers}" />
+                            <MenuItem
+                                x:Name="menuGenGroupRegionServer"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

@@ -1665,4 +1665,7 @@
   <data name="menuAllServers" xml:space="preserve">
     <value>全部配置项</value>
   </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>按地区分组</value>
+  </data>
 </root>

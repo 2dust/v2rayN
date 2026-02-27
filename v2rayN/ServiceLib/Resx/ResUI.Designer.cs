@@ -1024,6 +1024,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Group by Region 的本地化字符串。
+        /// </summary>
+        public static string menuGenRegionGroup {
+            get {
+                return ResourceManager.GetString("menuGenRegionGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Global Hotkey Setting 的本地化字符串。
         /// </summary>
         public static string menuGlobalHotkeySetting {

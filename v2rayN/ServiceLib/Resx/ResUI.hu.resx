@@ -1668,4 +1668,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuAllServers" xml:space="preserve">
     <value>All configurations</value>
   </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Group by Region</value>
+  </data>
 </root>

@@ -1665,4 +1665,7 @@
   <data name="menuAllServers" xml:space="preserve">
     <value>All configurations</value>
   </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Group by Region</value>
+  </data>
 </root>
