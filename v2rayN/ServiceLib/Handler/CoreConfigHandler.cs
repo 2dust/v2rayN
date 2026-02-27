@@ -93,7 +93,11 @@ public static class CoreConfigHandler
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType)
     {
         var result = new RetResult();
-        var builderResult = await CoreConfigContextBuilder.Build(config, new());
+        var dummyNode = new ProfileItem
+        {
+            CoreType = coreType
+        };
+        var builderResult = await CoreConfigContextBuilder.Build(config, dummyNode);
         var context = builderResult.Context;
         var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
             .Select(serverTestItem => serverTestItem.IndexId);
