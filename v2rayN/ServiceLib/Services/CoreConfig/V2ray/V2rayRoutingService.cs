@@ -181,4 +181,28 @@ public partial class CoreConfigV2rayService
 
         return tag;
     }
+
+    private RulesItem4Ray BuildFinalRule()
+    {
+        var finalRule = new RulesItem4Ray()
+        {
+            type = "field",
+            network = "tcp,udp",
+            outboundTag = Global.ProxyTag,
+        };
+        var balancer =
+            _coreConfig?.routing?.balancers?.FirstOrDefault(b => b.tag == Global.ProxyTag + Global.BalancerTagSuffix, null);
+        var domainStrategy = _coreConfig.routing?.domainStrategy ?? Global.AsIs;
+        if (balancer is not null)
+        {
+            finalRule.outboundTag = null;
+            finalRule.balancerTag = balancer.tag;
+        }
+        if (domainStrategy == Global.IPIfNonMatch)
+        {
+            finalRule.network = null;
+            finalRule.ip = ["0.0.0.0/0", "::/0"];
+        }
+        return finalRule;
+    }
 }
