@@ -13,13 +13,12 @@ public class CoreConfigContextBuilder
     /// </summary>
     public static async Task<CoreConfigContextBuilderResult> Build(Config config, ProfileItem node)
     {
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box
-            ? ECoreType.sing_box
-            : ECoreType.Xray;
+        var runCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreType = runCoreType == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
         var context = new CoreConfigContext()
         {
             Node = node,
-            RunCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType),
+            RunCoreType = runCoreType,
             AllProxiesMap = [],
             AppConfig = config,
             FullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(coreType),
@@ -298,7 +297,6 @@ public class CoreConfigContextBuilder
                 continue;
             }
 
-            globalVisitedGroup.Add(childNode.IndexId);
             var newAncestorsGroup = new HashSet<string>(ancestorsGroup) { childNode.IndexId };
             var childGroupResult =
                 await TraverseGroupNodeAsync(context, childNode, globalVisitedGroup, newAncestorsGroup);
@@ -311,6 +309,7 @@ public class CoreConfigContextBuilder
                 continue;
             }
 
+            globalVisitedGroup.Add(childNode.IndexId);
             childIndexIdList.Add(childNode.IndexId);
         }
 
