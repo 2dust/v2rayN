@@ -128,7 +128,7 @@ public class GroupProfileManager
 
     private static async Task<List<ProfileItem>> GetSubChildProfileItems(ProtocolExtraItem? extra)
     {
-        if (extra == null || extra.SubChildItems.IsNullOrEmpty())
+        if (extra == null || extra.Filter.IsNullOrEmpty())
         {
             return [];
         }

@@ -1368,24 +1368,6 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>會覆蓋埠，多組時用逗號 (,) 隔開</value>
   </data>
-  <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>多選生成策略組</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>多選隨機 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多選負載平衡 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多選最低延遲 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多選最穩定 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>多選最低延遲 sing-box</value>
-  </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>匯出</value>
   </data>
@@ -1529,12 +1511,6 @@
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>容錯移轉</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>多選容錯移轉 sing-box</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>多選容錯移轉 Xray</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
     <value>核心 '{0}' 不支援網路類型 '{1}'</value>
@@ -1682,5 +1658,11 @@
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
     <value>Subscription next proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Generate Policy Group</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>All configurations</value>
   </data>
 </root>

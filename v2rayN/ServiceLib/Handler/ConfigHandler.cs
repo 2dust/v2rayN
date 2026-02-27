@@ -1165,46 +1165,23 @@ public static class ConfigHandler
 
     /// <summary>
     /// Create a group server that combines multiple servers for load balancing
-    /// Generates a configuration file that references multiple servers
+    /// Generates a PolicyGroup profile with references to the sub-items
     /// </summary>
     /// <param name="config">Current configuration</param>
-    /// <param name="selecteds">Selected servers to combine</param>
-    /// <param name="coreType">Core type to use (Xray or sing_box)</param>
-    /// <param name="multipleLoad">Load balancing algorithm</param>
+    /// <param name="subItem">Sub-item for grouping</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddGroupServer4Multiple(Config config, List<ProfileItem> selecteds, ECoreType coreType, EMultipleLoad multipleLoad, string? subId)
+    public static async Task<RetResult> AddGroupAllServer(Config config, SubItem? subItem)
     {
         var result = new RetResult();
 
         var indexId = Utils.GetGuid(false);
-        var childProfileIndexId = Utils.List2String(selecteds.Select(p => p.IndexId).ToList());
+        var subId = subItem?.Id;
 
-        var remark = subId.IsNullOrEmpty() ? string.Empty : $"{(await AppManager.Instance.GetSubItem(subId))?.Remarks} ";
-        if (coreType == ECoreType.Xray)
-        {
-            remark += multipleLoad switch
-            {
-                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerXrayLeastPing,
-                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerXrayFallback,
-                EMultipleLoad.Random => ResUI.menuGenGroupMultipleServerXrayRandom,
-                EMultipleLoad.RoundRobin => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
-                EMultipleLoad.LeastLoad => ResUI.menuGenGroupMultipleServerXrayLeastLoad,
-                _ => ResUI.menuGenGroupMultipleServerXrayRoundRobin,
-            };
-        }
-        else if (coreType == ECoreType.sing_box)
-        {
-            remark += multipleLoad switch
-            {
-                EMultipleLoad.LeastPing => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
-                EMultipleLoad.Fallback => ResUI.menuGenGroupMultipleServerSingBoxFallback,
-                _ => ResUI.menuGenGroupMultipleServerSingBoxLeastPing,
-            };
-        }
+        var remark = subItem is null ? ResUI.TbConfigTypePolicyGroup : $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup}";
         var profile = new ProfileItem
         {
             IndexId = indexId,
-            CoreType = coreType,
+            CoreType = ECoreType.Xray,
             ConfigType = EConfigType.PolicyGroup,
             Remarks = remark,
             IsSub = false
@@ -1215,8 +1192,10 @@ public static class ConfigHandler
         }
         var extraItem = new ProtocolExtraItem
         {
-            ChildItems = childProfileIndexId,
-            MultipleLoad = multipleLoad,
+            MultipleLoad = EMultipleLoad.LeastPing,
+            GroupType = profile.ConfigType.ToString(),
+            SubChildItems = subId,
+            Filter = Global.PolicyGroupDefaultAllFilter,
         };
         profile.SetProtocolExtra(extraItem);
         var ret = await AddServerCommon(config, profile, true);

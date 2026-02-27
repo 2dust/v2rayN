@@ -90,6 +90,8 @@ public class Global
 
     public const int Hysteria2DefaultHopInt = 10;
 
+    public const string PolicyGroupDefaultAllFilter = "^(?!.*(剩余|过期|到期|重置)).*$";
+
     public static readonly List<string> IEProxyProtocols =
     [
         "{ip}:{http_port}",
