@@ -1536,38 +1536,20 @@
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
     <value>Xray basculement (multi-sélection)</value>
   </data>
-  <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} ».</value>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} »</value>
   </data>
-  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} » avec le mode de transport « {2} ».</value>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} » avec le mode de transport « {2} »</value>
   </data>
-  <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} ».</value>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} »</value>
   </data>
-  <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>Chaîne de proxy : </value>
-  </data>
-  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>Règle de routage sortante : </value>
-  </data>
-  <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>Groupe de stratégie : </value>
-  </data>
-  <data name="NodeTagNotExist" xml:space="preserve">
-    <value>L’alias « {0} » n’existe pas.</value>
-  </data>
-  <data name="GroupEmpty" xml:space="preserve">
-    <value>Le groupe « {0} » est vide. Veuillez ajouter au moins une configuration.</value>
-  </data>
-  <data name="InvalidProperty" xml:space="preserve">
+  <data name="MsgInvalidProperty" xml:space="preserve">
     <value>La propriété {0} est invalide, veuillez vérifier</value>
   </data>
-  <data name="GroupSelfReference" xml:space="preserve">
-    <value>Le groupe {0} ne peut pas se référencer lui-même ni créer de référence circulaire</value>
-  </data>
-  <data name="NotSupportProtocol" xml:space="preserve">
-    <value>Protocole « {0} » non pris en charge.</value>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>Protocole « {0} » non pris en charge</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>Si le système n’a pas de zone de notif., n’activez pas cette option</value>
@@ -1664,5 +1646,29 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>Group {0} child node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>Group {0} child group node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>Group {0} has no valid child node.</value>
   </data>
 </root>

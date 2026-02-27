@@ -1536,38 +1536,20 @@
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
     <value>多選容錯移轉 Xray</value>
   </data>
-  <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>核心 '{0}' 不支援網路類型 '{1}'.</value>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>核心 '{0}' 不支援網路類型 '{1}'</value>
   </data>
-  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>核心 '{0}' 在使用傳輸方式 '{2}' 時不支援協定 '{1}'.</value>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>核心 '{0}' 在使用傳輸方式 '{2}' 時不支援協定 '{1}'</value>
   </data>
-  <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>核心 '{0}' 不支援協定 '{1}'.</value>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>核心 '{0}' 不支援協定 '{1}'</value>
   </data>
-  <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>代理鏈： </value>
+  <data name="MsgInvalidProperty" xml:space="preserve">
+    <value>{0} 屬性無效，請檢查</value>
   </data>
-  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>路由規則出站： </value>
-  </data>
-  <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>策略組： </value>
-  </data>
-  <data name="NodeTagNotExist" xml:space="preserve">
-    <value>別名 '{0}' 不存在。</value>
-  </data>
-  <data name="GroupEmpty" xml:space="preserve">
-    <value>組“{0}”為空.請至少添加一個配置。</value>
-  </data>
-  <data name="InvalidProperty" xml:space="preserve">
-    <value>{0}屬性無效，請檢查</value>
-  </data>
-  <data name="GroupSelfReference" xml:space="preserve">
-    <value>{0} 分組不能引用自身或循環引用</value>
-  </data>
-  <data name="NotSupportProtocol" xml:space="preserve">
-    <value>不支援協定 '{0}'.</value>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>不支援協定 '{0}'</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>如果系統沒有託盤功能，請不要開啟</value>
@@ -1664,5 +1646,29 @@
   </data>
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>Group {0} child node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>Group {0} child group node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>Group {0} has no valid child node.</value>
   </data>
 </root>

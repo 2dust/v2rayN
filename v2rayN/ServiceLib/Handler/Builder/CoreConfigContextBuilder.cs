@@ -52,11 +52,11 @@ public class CoreConfigContextBuilder
 
                 var (actRuleNode, ruleNodeValidatorResult) = await ResolveNodeAsync(context, ruleOutboundNode, false);
                 validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Warnings.Select(w =>
-                    $"Routing rule {ruleItem.Remarks} outbound node {ruleItem.OutboundTag} warning: {w}"));
+                    string.Format(ResUI.MsgRoutingRuleOutboundNodeWarning, ruleItem.Remarks, ruleItem.OutboundTag, w)));
                 if (!ruleNodeValidatorResult.Success)
                 {
                     validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Errors.Select(e =>
-                        $"Routing rule {ruleItem.Remarks} outbound node {ruleItem.OutboundTag} error: {e}. Fallback to proxy node only."));
+                        string.Format(ResUI.MsgRoutingRuleOutboundNodeError, ruleItem.Remarks, ruleItem.OutboundTag, e)));
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
@@ -235,7 +235,7 @@ public class CoreConfigContextBuilder
             if (ancestorsGroup.Contains(childNode.IndexId))
             {
                 childNodeValidatorResult.Errors.Add(
-                    $"Group {node.Remarks} has a cycle dependency on child node {childNode.Remarks}. Skipping this node.");
+                    string.Format(ResUI.MsgGroupCycleDependency, node.Remarks, childNode.Remarks));
                 continue;
             }
 
@@ -249,9 +249,9 @@ public class CoreConfigContextBuilder
             {
                 var childNodeResult = RegisterSingleNodeAsync(context, childNode);
                 childNodeValidatorResult.Warnings.AddRange(childNodeResult.Warnings.Select(w =>
-                    $"Group {node.Remarks} child node {childNode.Remarks} warning: {w}"));
+                    string.Format(ResUI.MsgGroupChildNodeWarning, node.Remarks, childNode.Remarks, w)));
                 childNodeValidatorResult.Errors.AddRange(childNodeResult.Errors.Select(e =>
-                    $"Group {node.Remarks} child node {childNode.Remarks} error: {e}. Skipping this node."));
+                    string.Format(ResUI.MsgGroupChildNodeError, node.Remarks, childNode.Remarks, e)));
                 if (!childNodeResult.Success)
                 {
                     continue;
@@ -267,9 +267,9 @@ public class CoreConfigContextBuilder
             var childGroupResult =
                 await TraverseGroupNodeAsync(context, childNode, globalVisitedGroup, newAncestorsGroup);
             childNodeValidatorResult.Warnings.AddRange(childGroupResult.Warnings.Select(w =>
-                $"Group {node.Remarks} child group node {childNode.Remarks} warning: {w}"));
+                string.Format(ResUI.MsgGroupChildGroupNodeWarning, node.Remarks, childNode.Remarks, w)));
             childNodeValidatorResult.Errors.AddRange(childGroupResult.Errors.Select(e =>
-                $"Group {node.Remarks} child group node {childNode.Remarks} error: {e}. Skipping this node."));
+                string.Format(ResUI.MsgGroupChildGroupNodeError, node.Remarks, childNode.Remarks, e)));
             if (!childGroupResult.Success)
             {
                 continue;
@@ -280,7 +280,7 @@ public class CoreConfigContextBuilder
 
         if (childIndexIdList.Count == 0)
         {
-            childNodeValidatorResult.Errors.Add($"Group {node.Remarks} has no valid child node.");
+            childNodeValidatorResult.Errors.Add(string.Format(ResUI.MsgGroupNoValidChildNode, node.Remarks));
             return childNodeValidatorResult;
         }
         else
