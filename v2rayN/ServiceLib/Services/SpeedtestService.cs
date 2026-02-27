@@ -62,8 +62,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         var lstSelected = new List<ServerTestItem>();
-        foreach (var it in selecteds)
+        for (var i = 0; i < selecteds.Count; i++)
         {
+            var it = selecteds[i];
             if (it.ConfigType.IsComplexType())
             {
                 continue;
@@ -74,13 +75,16 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 continue;
             }
 
+            var profile = await AppManager.Instance.GetProfileItem(it.IndexId) ?? it;
             lstSelected.Add(new ServerTestItem()
             {
                 IndexId = it.IndexId,
                 Address = it.Address,
                 Port = it.Port,
                 ConfigType = it.ConfigType,
-                QueueNum = selecteds.IndexOf(it)
+                QueueNum = i,
+                Profile = profile,
+                CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
             });
         }
 
@@ -353,8 +357,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = new();
-        var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
-        var lst2 = lstSelected.Where(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
+        var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType) && t.CoreType == ECoreType.Xray).ToList();
+        var lst2 = lstSelected.Where(t => Global.SingboxSupportConfigType.Contains(t.ConfigType) && t.CoreType == ECoreType.sing_box).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {

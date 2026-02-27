@@ -9,4 +9,6 @@ public class ServerTestItem
     public EConfigType ConfigType { get; set; }
     public bool AllowTest { get; set; }
     public int QueueNum { get; set; }
+    public required ProfileItem Profile { get; set; }
+    public ECoreType CoreType { get; set; }
 }
