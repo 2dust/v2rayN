@@ -41,7 +41,7 @@ public class CoreConfigContextBuilder
         if (!(context.RoutingItem?.RuleSet.IsNullOrEmpty() ?? true))
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet) ?? [];
-            foreach (var ruleItem in rules.Where(ruleItem => !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
+            foreach (var ruleItem in rules.Where(ruleItem => ruleItem.Enabled && !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
             {
                 if (ruleItem.OutboundTag.IsNullOrEmpty())
                 {
