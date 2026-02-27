@@ -106,16 +106,11 @@ public class NodeValidator
                 break;
 
             case EConfigType.VLESS:
-                // Example of converting a non-critical issue to Warning if desired
-                if (item.Password.Length <= 30 && !Utils.IsGuidByParse(item.Password))
-                {
-                    v.Assert(!item.Password.IsNullOrEmpty(), string.Format(ResUI.MsgInvalidProperty, "Password"));
-                }
-                else
-                {
-                    v.Assert(!item.Password.IsNullOrEmpty(), string.Format(ResUI.MsgInvalidProperty, "Password"));
-                }
-
+                v.Assert(
+                    !item.Password.IsNullOrEmpty()
+                    && (Utils.IsGuidByParse(item.Password) || item.Password.Length <= 30),
+                    string.Format(ResUI.MsgInvalidProperty, "Password")
+                );
                 v.Assert(Global.Flows.Contains(protocolExtra.Flow ?? string.Empty),
                     string.Format(ResUI.MsgInvalidProperty, "Flow"));
                 break;

@@ -40,7 +40,7 @@ public class CoreConfigContextBuilder
         validatorResult.Warnings.AddRange(nodeValidatorResult.Warnings);
         if (!(context.RoutingItem?.RuleSet.IsNullOrEmpty() ?? true))
         {
-            var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet);
+            var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet) ?? [];
             foreach (var ruleItem in rules.Where(ruleItem => !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
             {
                 if (ruleItem.OutboundTag.IsNullOrEmpty())
