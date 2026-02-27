@@ -8,6 +8,7 @@ public class ProfilesViewModel : MyReactiveObject
     private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
+    private string? _pendingSelectIndexId;
 
     #endregion private prop
 
@@ -362,15 +363,14 @@ public class ProfilesViewModel : MyReactiveObject
         ProfileItems.AddRange(lstModel);
         if (lstModel.Count > 0)
         {
-            var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
-            if (selected != null)
+            ProfileItemModel? selected = null;
+            if (!_pendingSelectIndexId.IsNullOrEmpty())
             {
-                SelectedProfile = selected;
+                selected = lstModel.FirstOrDefault(t => t.IndexId == _pendingSelectIndexId);
+                _pendingSelectIndexId = null;
             }
-            else
-            {
-                SelectedProfile = lstModel.First();
-            }
+            selected ??= lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
+            SelectedProfile = selected ?? lstModel.First();
         }
 
         await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
@@ -619,6 +619,7 @@ public class ProfilesViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
         }
+        _pendingSelectIndexId = ret.Data?.ToString();
         await RefreshServers();
     }
 
