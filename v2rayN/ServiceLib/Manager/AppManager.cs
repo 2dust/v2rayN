@@ -242,6 +242,12 @@ public sealed class AppManager
             .ToListAsync();
     }
 
+    public async Task<Dictionary<string, ProfileItem>> GetProfileItemsByIndexIdsAsMap(IEnumerable<string> indexIds)
+    {
+        var items = await GetProfileItemsByIndexIds(indexIds);
+        return items.ToDictionary(it => it.IndexId);
+    }
+
     public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
     {
         if (remarks.IsNullOrEmpty())

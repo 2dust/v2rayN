@@ -103,16 +103,7 @@ public class GroupProfileManager
             return [];
         }
 
-        var childProfiles = await AppManager.Instance.GetProfileItemsByIndexIds(childProfileIds);
-        if (childProfiles == null || childProfiles.Count == 0)
-        {
-            return [];
-        }
-
-        var profileMap = childProfiles
-            .Where(p => p != null && !p.IndexId.IsNullOrEmpty())
-            .GroupBy(p => p!.IndexId!)
-            .ToDictionary(g => g.Key, g => g.First());
+        var profileMap = await AppManager.Instance.GetProfileItemsByIndexIdsAsMap(childProfileIds);
 
         var ordered = new List<ProfileItem>(childProfileIds.Count);
         foreach (var id in childProfileIds)
