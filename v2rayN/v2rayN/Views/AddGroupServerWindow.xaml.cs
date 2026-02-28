@@ -24,6 +24,7 @@ public partial class AddGroupServerWindow
             ResUI.TbRoundRobin,
             ResUI.TbLeastLoad,
         };
+        cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
 
         switch (profileItem.ConfigType)
         {
@@ -48,7 +49,7 @@ public partial class AddGroupServerWindow
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.Filter, v => v.txtFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);

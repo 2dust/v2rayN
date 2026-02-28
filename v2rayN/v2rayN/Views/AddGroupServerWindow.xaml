@@ -173,7 +173,8 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
+                        Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}"
+                        TextWrapping="Wrap" />
 
                     <TextBlock
                         Grid.Row="1"
@@ -182,14 +183,15 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.LvFilter}" />
-                    <TextBox
-                        x:Name="txtFilter"
+                    <ComboBox
+                        x:Name="cmbFilter"
                         Grid.Row="1"
                         Grid.Column="1"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        AcceptsReturn="True"
-                        Style="{StaticResource DefTextBox}" />
+                        IsEditable="True"
+                        Style="{StaticResource DefComboBox}" />
                 </Grid>
             </TabItem>
 
