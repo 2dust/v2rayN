@@ -1191,10 +1191,15 @@ public static class ConfigHandler
     {
         var result = new RetResult();
 
-        var indexId = Utils.GetGuid(false);
         var subId = subItem?.Id;
+        if (subId.IsNullOrEmpty())
+        {
+            result.Success = false;
+            return result;
+        }
 
-        var remark = subItem is null ? ResUI.TbConfigTypePolicyGroup : $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup}";
+        var indexId = Utils.GetGuid(false);
+        var remark = $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup}";
         var profile = new ProfileItem
         {
             IndexId = indexId,
@@ -1245,14 +1250,18 @@ public static class ConfigHandler
     public static async Task<RetResult> AddGroupRegionServer(Config config, SubItem? subItem)
     {
         var result = new RetResult();
+        var subId = subItem?.Id;
+        if (subId.IsNullOrEmpty())
+        {
+            result.Success = false;
+            return result;
+        }
         List<string> indexIdList = [];
 
         foreach (var regionFilter in PolicyGroupRegionFilters)
         {
             var indexId = Utils.GetGuid(false);
-            var subId = subItem?.Id;
-
-            var remark = subItem is null ? ResUI.TbConfigTypePolicyGroup : $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup} - {regionFilter.Key}";
+            var remark = $"{subItem.Remarks} - {ResUI.TbConfigTypePolicyGroup} - {regionFilter.Key}";
             var profile = new ProfileItem
             {
                 IndexId = indexId,
