@@ -255,19 +255,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             return null;
         }
-        var lst = new List<ProfileItem>();
-        foreach (var sp in SelectedProfiles)
-        {
-            if (string.IsNullOrEmpty(sp?.IndexId))
-            {
-                continue;
-            }
-            var item = await AppManager.Instance.GetProfileItem(sp.IndexId);
-            if (item != null)
-            {
-                lst.Add(item);
-            }
-        }
+        var lst = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(SelectedProfiles.Select(sp => sp?.IndexId));
         if (lst.Count == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);

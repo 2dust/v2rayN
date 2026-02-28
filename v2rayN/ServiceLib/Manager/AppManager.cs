@@ -248,6 +248,24 @@ public sealed class AppManager
         return items.ToDictionary(it => it.IndexId);
     }
 
+    public async Task<List<ProfileItem>> GetProfileItemsOrderedByIndexIds(IEnumerable<string> indexIds)
+    {
+        var idList = indexIds.Where(id => !id.IsNullOrEmpty()).Distinct().ToList();
+        if (idList.Count == 0)
+        {
+            return [];
+        }
+
+        var items = await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+            .Where(it => idList.Contains(it.IndexId))
+            .ToListAsync();
+        var itemMap = items.ToDictionary(it => it.IndexId);
+
+        return idList.Select(id => itemMap.GetValueOrDefault(id))
+            .Where(item => item != null)
+            .ToList();
+    }
+
     public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
     {
         if (remarks.IsNullOrEmpty())

@@ -52,10 +52,10 @@ public class GroupProfileManager
                 return false;
             }
 
-            foreach (var child in childIds)
+            var childItems = await AppManager.Instance.GetProfileItemsByIndexIds(childIds);
+            foreach (var childItem in childItems)
             {
-                var childItem = await AppManager.Instance.GetProfileItem(child);
-                if (await HasCycle(child, childItem?.GetProtocolExtra(), visited, stack))
+                if (await HasCycle(childItem.IndexId, childItem?.GetProtocolExtra(), visited, stack))
                 {
                     return true;
                 }
@@ -103,17 +103,7 @@ public class GroupProfileManager
             return [];
         }
 
-        var profileMap = await AppManager.Instance.GetProfileItemsByIndexIdsAsMap(childProfileIds);
-
-        var ordered = new List<ProfileItem>(childProfileIds.Count);
-        foreach (var id in childProfileIds)
-        {
-            if (id != null && profileMap.TryGetValue(id, out var item) && item != null)
-            {
-                ordered.Add(item);
-            }
-        }
-
+        var ordered = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childProfileIds);
         return ordered;
     }
 

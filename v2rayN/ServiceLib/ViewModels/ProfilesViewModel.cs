@@ -456,14 +456,7 @@ public class ProfilesViewModel : MyReactiveObject
         var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort);
         if (latest)
         {
-            foreach (var profile in orderProfiles)
-            {
-                var item = await AppManager.Instance.GetProfileItem(profile.IndexId);
-                if (item is not null)
-                {
-                    lstSelected.Add(item);
-                }
-            }
+            lstSelected.AddRange(await AppManager.Instance.GetProfileItemsOrderedByIndexIds(orderProfiles.Select(sp => sp?.IndexId)));
         }
         else
         {
