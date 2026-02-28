@@ -1256,6 +1256,7 @@ public static class ConfigHandler
             result.Success = false;
             return result;
         }
+        var childProfiles = await AppManager.Instance.ProfileItems(subId);
         List<string> indexIdList = [];
 
         foreach (var regionFilter in PolicyGroupRegionFilters)
@@ -1283,8 +1284,14 @@ public static class ConfigHandler
             };
             profile.SetProtocolExtra(extraItem);
 
-            var childProfile = await GroupProfileManager.GetChildProfileItemsByProtocolExtra(extraItem);
-            if (childProfile.Count == 0)
+            var matchedChildProfiles = childProfiles?.Where(p =>
+                    p != null &&
+                    p.IsValid() &&
+                    !p.ConfigType.IsComplexType() &&
+                    (extraItem.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extraItem.Filter))
+                )
+                .ToList() ?? [];
+            if (matchedChildProfiles.Count == 0)
             {
                 continue;
             }
