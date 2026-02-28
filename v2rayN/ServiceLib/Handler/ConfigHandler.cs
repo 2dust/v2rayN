@@ -1163,23 +1163,6 @@ public static class ConfigHandler
         return 0;
     }
 
-    // Matches subscription-info noise words in both Chinese and English.
-    // Chinese: 剩余(remaining), 过期/到期(expired/expiry), 重置(reset)
-    // English: remaining, expir(e/ed/y), reset
-    private const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";
-
-    private const string PolicyGroupDefaultAllFilter = $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*$";
-
-    /// <summary>
-    /// Combines a region pattern with PolicyGroupDefaultAllFilter so results must
-    /// match the region keyword AND not contain expiry/traffic noise words (CN + EN).
-    /// Result pattern: ^(?!.*(?:...excludeKeywords...)).*(?:regionPattern).*$
-    /// </summary>
-    private static string CombineWithDefaultAllFilter(string regionPattern)
-    {
-        return $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*(?:{regionPattern}).*$";
-    }
-
     /// <summary>
     /// Create a group server that combines multiple servers for load balancing
     /// Generates a PolicyGroup profile with references to the sub-items
@@ -1217,13 +1200,18 @@ public static class ConfigHandler
             MultipleLoad = EMultipleLoad.LeastPing,
             GroupType = profile.ConfigType.ToString(),
             SubChildItems = subId,
-            Filter = PolicyGroupDefaultAllFilter,
+            Filter = Global.PolicyGroupDefaultAllFilter,
         };
         profile.SetProtocolExtra(extraItem);
         var ret = await AddServerCommon(config, profile, true);
         result.Success = ret == 0;
         result.Data = indexId;
         return result;
+    }
+
+    private static string CombineWithDefaultAllFilter(string regionPattern)
+    {
+        return $"^(?!.*(?:{Global.PolicyGroupExcludeKeywords})).*(?:{regionPattern}).*$";
     }
 
     private static readonly Dictionary<string, string> PolicyGroupRegionFilters = new()
