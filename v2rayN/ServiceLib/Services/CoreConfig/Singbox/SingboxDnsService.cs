@@ -148,15 +148,20 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns ??= new Dns4Sbox();
         _coreConfig.dns.rules ??= [];
 
-        _coreConfig.dns.rules.AddRange(new[]
+        _coreConfig.dns.rules.Add(new() { ip_accept_any = true, server = Global.SingboxHostsDNSTag });
+
+        if (context.ProtectDomainList.Count > 0)
         {
-            new Rule4Sbox { ip_accept_any = true, server = Global.SingboxHostsDNSTag },
-            new Rule4Sbox
+            _coreConfig.dns.rules.Add(new()
             {
                 server = Global.SingboxDirectDNSTag,
                 strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom),
                 domain = context.ProtectDomainList.ToList(),
-            },
+            });
+        }
+
+        _coreConfig.dns.rules.AddRange(new[]
+        {
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
