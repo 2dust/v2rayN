@@ -24,13 +24,13 @@ public class DownloaderHelper
 
         var downloadOpt = new DownloadConfiguration()
         {
-            Timeout = timeout * 1000,
+            BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
                     Headers = headers,
                     UserAgent = userAgent,
-                    Timeout = timeout * 1000,
+                    ConnectTimeout = timeout * 1000,
                     Proxy = webProxy
                 }
         };
@@ -62,11 +62,11 @@ public class DownloaderHelper
 
         var downloadOpt = new DownloadConfiguration()
         {
-            Timeout = timeout * 1000,
+            BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
-                    Timeout= timeout * 1000,
+                    ConnectTimeout= timeout * 1000,
                     Proxy = webProxy
                 }
         };
@@ -139,11 +139,11 @@ public class DownloaderHelper
 
         var downloadOpt = new DownloadConfiguration()
         {
-            Timeout = timeout * 1000,
+            BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
                 {
-                    Timeout= timeout * 1000,
+                    ConnectTimeout= timeout * 1000,
                     Proxy = webProxy
                 }
         };

@@ -1,45 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ====== Require Red Hat Enterprise Linux/FedoraLinux/RockyLinux/AlmaLinux/CentOS ======
-if [[ -r /etc/os-release ]]; then
-  . /etc/os-release
-  case "$ID" in
-    rhel|rocky|almalinux|fedora|centos)
-      echo "[OK] Detected supported system: $NAME $VERSION_ID"
-      ;;
-    *)
-      echo "[ERROR] Unsupported system: $NAME ($ID)."
-      echo "This script only supports Red Hat Enterprise Linux/RockyLinux/AlmaLinux/CentOS."
-      exit 1
-      ;;
-  esac
-else
-  echo "[ERROR] Cannot detect system (missing /etc/os-release)."
-  exit 1
+# Require Red Hat base branch
+. /etc/os-release
+
+case "${ID:-}" in
+  rhel|rocky|almalinux|fedora|centos)
+    echo "Detected supported system: ${NAME:-$ID} ${VERSION_ID:-}"
+    ;;
+  *)
+    echo "Unsupported system: ${NAME:-unknown} (${ID:-unknown})."
+    echo "This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
+    exit 1
+    ;;
+esac
+
+# Kernel version
+MIN_KERNEL="6.11"
+CURRENT_KERNEL="$(uname -r)"
+
+lowest="$(printf '%s\n%s\n' "$MIN_KERNEL" "$CURRENT_KERNEL" | sort -V | head -n1)"
+
+if [[ "$lowest" != "$MIN_KERNEL" ]]; then
+    echo "Kernel $CURRENT_KERNEL is below $MIN_KERNEL"
+    exit 1
 fi
 
-# ======================== Kernel version check (require >= 6.11) =======================
-MIN_KERNEL_MAJOR=6
-MIN_KERNEL_MINOR=11
-KERNEL_FULL=$(uname -r)
-KERNEL_MAJOR=$(echo "$KERNEL_FULL" | cut -d. -f1)
-KERNEL_MINOR=$(echo "$KERNEL_FULL" | cut -d. -f2)
+echo "[OK] Kernel $CURRENT_KERNEL verified."
 
-echo "[INFO] Detected kernel version: $KERNEL_FULL"
-
-if (( KERNEL_MAJOR < MIN_KERNEL_MAJOR )) || { (( KERNEL_MAJOR == MIN_KERNEL_MAJOR )) && (( KERNEL_MINOR < MIN_KERNEL_MINOR )); }; then
-  echo "[ERROR] Kernel $KERNEL_FULL is too old. Requires Linux >= ${MIN_KERNEL_MAJOR}.${MIN_KERNEL_MINOR}."
-  echo "Please upgrade your system or use a newer container (e.g. Fedora 42+, RHEL 10+)."
-  exit 1
-fi
-
-echo "[OK] Kernel version >= ${MIN_KERNEL_MAJOR}.${MIN_KERNEL_MINOR}."
-
-# ===== Config & Parse arguments =========================================================
+# Config & Parse arguments
 VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
 WITH_CORE="both"         # Default: bundle both xray+sing-box
-AUTOSTART=0              # 1 = enable system-wide autostart (/etc/xdg/autostart)
 FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
 ARCH_OVERRIDE=""         # --arch x64|arm64|all (optional compile target)
 BUILD_FROM=""            # --buildfrom 1|2|3 to select channel non-interactively
@@ -55,7 +46,6 @@ if [[ -n "${VERSION_ARG:-}" ]]; then shift || true; fi
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --with-core)     WITH_CORE="${2:-both}"; shift 2;;
-    --autostart)     AUTOSTART=1; shift;;
     --xray-ver)      XRAY_VER="${2:-}"; shift 2;;
     --singbox-ver)   SING_VER="${2:-}"; shift 2;;
     --netcore)       FORCE_NETCORE=1; shift;;
@@ -69,38 +59,26 @@ done
 
 # Conflict: version number AND --buildfrom cannot be used together
 if [[ -n "${VERSION_ARG:-}" && -n "${BUILD_FROM:-}" ]]; then
-  echo "[ERROR] You cannot specify both an explicit version and --buildfrom at the same time."
+  echo "You cannot specify both an explicit version and --buildfrom at the same time."
   echo "        Provide either a version (e.g. 7.14.0) OR --buildfrom 1|2|3."
   exit 1
 fi
 
-# ===== Environment check + Dependencies ========================================
+# Check and install dependencies
 host_arch="$(uname -m)"
 [[ "$host_arch" == "aarch64" || "$host_arch" == "x86_64" ]] || { echo "Only supports aarch64 / x86_64"; exit 1; }
 
 install_ok=0
-case "$ID" in
-  rhel|rocky|almalinux|centos)
-    if command -v dnf >/dev/null 2>&1; then
-      sudo dnf -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar rsync || \
-      sudo dnf -y install dotnet-sdk rpm-build rpmdevtools curl unzip tar rsync
-      install_ok=1
-    elif command -v yum >/dev/null 2>&1; then
-      sudo yum -y install dotnet-sdk-8.0 rpm-build rpmdevtools curl unzip tar rsync || \
-      sudo yum -y install dotnet-sdk rpm-build rpmdevtools curl unzip tar rsync
-      install_ok=1
-    fi
-    ;;
-  *)
-    ;;
-esac
 
-if [[ "$install_ok" -ne 1 ]]; then
-  echo "[WARN] Could not auto-install dependencies for '$ID'. Make sure these are available:"
-  echo "       dotnet-sdk 8.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on RPM-based distros)"
+if command -v dnf >/dev/null 2>&1; then
+  sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-8.0 \
+    && install_ok=1
 fi
 
-command -v curl >/dev/null
+if [[ "$install_ok" -ne 1 ]]; then
+  echo "Could not auto-install dependencies for '$ID'. Make sure these are available:"
+  echo "dotnet-sdk 8.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+fi
 
 # Root directory
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -119,9 +97,6 @@ if [[ ! -f "$PROJECT" ]]; then
 fi
 [[ -f "$PROJECT" ]] || { echo "v2rayN.Desktop.csproj not found"; exit 1; }
 
-# Resolve GUI version & auto checkout
-VERSION=""
-
 choose_channel() {
   # If --buildfrom provided, map it directly and skip interaction.
   if [[ -n "${BUILD_FROM:-}" ]]; then
@@ -135,60 +110,35 @@ choose_channel() {
 
   # Print menu to stderr and read from /dev/tty so stdout only carries the token.
   local ch="latest" sel=""
+
   if [[ -t 0 ]]; then
     echo "[?] Choose v2rayN release channel:" >&2
     echo "    1) Latest (stable)  [default]" >&2
     echo "    2) Pre-release (preview)" >&2
     echo "    3) Keep current (do nothing)" >&2
     printf "Enter 1, 2 or 3 [default 1]: " >&2
+
     if read -r sel </dev/tty; then
       case "${sel:-}" in
         2) ch="prerelease" ;;
         3) ch="keep" ;;
-        *) ch="latest" ;;
       esac
-    else
-      ch="latest"
     fi
-  else
-    ch="latest"
   fi
+
   echo "$ch"
 }
 
 get_latest_tag_latest() {
-  # Resolve /releases/latest → tag_name
   curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases/latest" \
-    | grep -Eo '"tag_name":\s*"v?[^"]+"' \
-    | head -n1 \
-    | sed -E 's/.*"tag_name":\s*"v?([^"]+)".*/\1/'
+    | jq -re '.tag_name' \
+    | sed 's/^v//'
 }
 
 get_latest_tag_prerelease() {
-  # Resolve newest prerelease=true tag; prefer jq, fallback to sed/grep (no awk)
-  local json tag
-  json="$(curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20")" || return 1
-
-  # 1) Use jq if present
-  if command -v jq >/dev/null 2>&1; then
-    tag="$(printf '%s' "$json" \
-      | jq -r '[.[] | select(.prerelease==true)][0].tag_name' 2>/dev/null \
-      | sed 's/^v//')" || true
-  fi
-
-  # 2) Fallback to sed/grep only
-  if [[ -z "${tag:-}" || "${tag:-}" == "null" ]]; then
-    tag="$(printf '%s' "$json" \
-      | tr '\n' ' ' \
-      | sed 's/},[[:space:]]*{/\n/g' \
-      | grep -m1 -E '"prerelease"[[:space:]]*:[[:space:]]*true' \
-      | grep -Eo '"tag_name"[[:space:]]*:[[:space:]]*"v?[^"]+"' \
-      | head -n1 \
-      | sed -E 's/.*"tag_name"[[:space:]]*:[[:space:]]*"v?([^"]+)".*/\1/')" || true
-  fi
-
-  [[ -n "${tag:-}" && "${tag:-}" != "null" ]] || return 1
-  printf '%s\n' "$tag"
+  curl -fsSL "https://api.github.com/repos/2dust/v2rayN/releases?per_page=20" \
+    | jq -re 'first(.[] | select(.prerelease == true) | .tag_name)' \
+    | sed 's/^v//'
 }
 
 git_try_checkout() {
@@ -196,11 +146,7 @@ git_try_checkout() {
   local want="$1" ref=""
   if git rev-parse --git-dir >/dev/null 2>&1; then
     git fetch --tags --force --prune --depth=1 || true
-    if git rev-parse "refs/tags/v${want}" >/dev/null 2>&1; then
-      ref="v${want}"
-    elif git rev-parse "refs/tags/${want}" >/dev/null 2>&1; then
-      ref="${want}"
-    elif git rev-parse --verify "${want}" >/dev/null 2>&1; then
+    if git rev-parse "refs/tags/${want}" >/dev/null 2>&1; then
       ref="${want}"
     fi
     if [[ -n "$ref" ]]; then
@@ -216,88 +162,56 @@ git_try_checkout() {
   return 1
 }
 
+apply_channel_or_keep() {
+  local ch="$1" tag
+
+  if [[ "$ch" == "keep" ]]; then
+    echo "[*] Keep current repository state (no checkout)."
+    VERSION="$(git describe --tags --abbrev=0 2>/dev/null || echo '0.0.0+git')"
+    VERSION="${VERSION#v}"
+    return 0
+  fi
+
+  echo "[*] Resolving ${ch} tag from GitHub releases..."
+  if [[ "$ch" == "prerelease" ]]; then
+    tag="$(get_latest_tag_prerelease || true)"
+  else
+    tag="$(get_latest_tag_latest || true)"
+  fi
+
+  [[ -n "$tag" ]] || { echo "Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+  echo "[*] Latest tag for '${ch}': ${tag}"
+  git_try_checkout "$tag" || { echo "Failed to checkout '${tag}'."; exit 1; }
+  VERSION="${tag#v}"
+}
+
 if git rev-parse --git-dir >/dev/null 2>&1; then
   if [[ -n "${VERSION_ARG:-}" ]]; then
-    echo "[*] Trying to switch v2rayN repo to version: ${VERSION_ARG}"
-    if git_try_checkout "${VERSION_ARG#v}"; then
-      VERSION="${VERSION_ARG#v}"
+    clean_ver="${VERSION_ARG#v}"
+    if git_try_checkout "$clean_ver"; then
+      VERSION="$clean_ver"
     else
       echo "[WARN] Tag '${VERSION_ARG}' not found."
       ch="$(choose_channel)"
-      if [[ "$ch" == "keep" ]]; then
-        echo "[*] Keep current repository state (no checkout)."
-        if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-          VERSION="$(git describe --tags --abbrev=0)"
-        else
-          VERSION="0.0.0+git"
-        fi
-        VERSION="${VERSION#v}"
-      else
-        echo "[*] Resolving ${ch} tag from GitHub releases..."
-        tag=""
-        if [[ "$ch" == "prerelease" ]]; then
-          tag="$(get_latest_tag_prerelease || true)"
-          if [[ -z "$tag" ]]; then
-            echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
-            tag="$(get_latest_tag_latest || true)"
-          fi
-        else
-          tag="$(get_latest_tag_latest || true)"
-        fi
-        [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
-        echo "[*] Latest tag for '${ch}': ${tag}"
-        git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
-        VERSION="${tag#v}"
-      fi
+      apply_channel_or_keep "$ch"
     fi
   else
     ch="$(choose_channel)"
-    if [[ "$ch" == "keep" ]]; then
-      echo "[*] Keep current repository state (no checkout)."
-      if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-        VERSION="$(git describe --tags --abbrev=0)"
-      else
-        VERSION="0.0.0+git"
-      fi
-      VERSION="${VERSION#v}"
-    else
-      echo "[*] Resolving ${ch} tag from GitHub releases..."
-      tag=""
-      if [[ "$ch" == "prerelease" ]]; then
-        tag="$(get_latest_tag_prerelease || true)"
-        if [[ -z "$tag" ]]; then
-          echo "[WARN] Failed to resolve prerelease tag, falling back to latest."
-          tag="$(get_latest_tag_latest || true)"
-        fi
-      else
-        tag="$(get_latest_tag_latest || true)"
-      fi
-      [[ -n "$tag" ]] || { echo "[ERROR] Failed to resolve latest tag for channel '${ch}'."; exit 1; }
-      echo "[*] Latest tag for '${ch}': ${tag}"
-      git_try_checkout "$tag" || { echo "[ERROR] Failed to checkout '${tag}'."; exit 1; }
-      VERSION="${tag#v}"
-    fi
+    apply_channel_or_keep "$ch"
   fi
 else
-  echo "[WARN] Current directory is not a git repo; cannot checkout version. Proceeding on current tree."
-  VERSION="${VERSION_ARG:-}"
-  if [[ -z "$VERSION" ]]; then
-    if git describe --tags --abbrev=0 >/dev/null 2>&1; then
-      VERSION="$(git describe --tags --abbrev=0)"
-    else
-      VERSION="0.0.0+git"
-    fi
-  fi
-  VERSION="${VERSION#v}"
+  echo "Current directory is not a git repo; proceeding on current tree."
+  VERSION="${VERSION_ARG:-0.0.0}"
 fi
+
+VERSION="${VERSION#v}"
 echo "[*] GUI version resolved as: ${VERSION}"
 
-# ===== Helpers for core/rules download (use RID_DIR for arch sync) =====================
+# Helpers for core
 download_xray() {
-  # Download Xray core and install to outdir/xray
+  # Download Xray core
   local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
-  if [[ -n "${XRAY_VER:-}" ]]; then ver="${XRAY_VER}"; fi
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
@@ -316,10 +230,9 @@ download_xray() {
 }
 
 download_singbox() {
-  # Download sing-box core and install to outdir/sing-box
+  # Download sing-box
   local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
-  if [[ -n "${SING_VER:-}" ]]; then ver="${SING_VER}"; fi
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
@@ -339,7 +252,7 @@ download_singbox() {
   install -Dm755 "$bin" "$outdir/sing-box"
 }
 
-# Move geo files to a unified path: outroot/bin
+# Move geo files to outroot/bin
 unify_geo_layout() {
   local outroot="$1"
   mkdir -p "$outroot/bin"
@@ -351,18 +264,13 @@ unify_geo_layout() {
     "geoip.metadb" \
   )
   for n in "${names[@]}"; do
-    # If file exists under bin/xray/, move it up to bin/
     if [[ -f "$outroot/bin/xray/$n" ]]; then
       mv -f "$outroot/bin/xray/$n" "$outroot/bin/$n"
-    fi
-    # If file already in bin/, leave it as-is
-    if [[ -f "$outroot/bin/$n" ]]; then
-      :
     fi
   done
 }
 
-# Download geo/rule assets; then unify to bin/
+# Download geo/rule assets
 download_geo_assets() {
   local outroot="$1"
   local bin_dir="$outroot/bin"
@@ -396,7 +304,7 @@ download_geo_assets() {
       "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
   done
 
-  # Unify to bin/
+  # Unify to bin
   unify_geo_layout "$outroot"
 }
 
@@ -427,7 +335,7 @@ download_v2rayn_bundle() {
 
   local nested_dir
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
-  if [[ -n "${nested_dir:-}" && -d "$nested_dir/bin" ]]; then
+  if [[ -n "$nested_dir" && -d "$nested_dir/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$nested_dir/bin/" "$outroot/bin/"
     rm -rf "$nested_dir"
@@ -451,7 +359,7 @@ build_for_arch() {
   case "$short" in
     x64)   rid="linux-x64";   rpm_target="x86_64"; archdir="x86_64" ;;
     arm64) rid="linux-arm64"; rpm_target="aarch64"; archdir="aarch64" ;;
-    *) echo "[ERROR] Unknown arch '$short' (use x64|arm64)"; return 1;;
+    *) echo "Unknown arch '$short' (use x64|arm64)"; return 1;;
   esac
 
   echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
@@ -464,8 +372,7 @@ build_for_arch() {
   dotnet publish "$PROJECT" \
     -c Release -r "$rid" \
     -p:PublishSingleFile=false \
-    -p:SelfContained=true \
-    -p:IncludeNativeLibrariesForSelfExtract=true
+    -p:SelfContained=true
 
   # Per-arch variables (scoped)
   local RID_DIR="$rid"
@@ -502,28 +409,28 @@ build_for_arch() {
   mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
 
   # Bundle / cores per-arch
+  fetch_separate_cores_and_rules() {
+    local outroot="$1"
+
+    if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+      download_xray "$outroot/bin/xray" || echo "[!] xray download failed (skipped)"
+    fi
+    if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+      download_singbox "$outroot/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+    fi
+    download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
+  }
+
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
     if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
       echo "[*] Using v2rayN bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
-      if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-        download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
-      fi
-      if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-        download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
-      fi
-      download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
+      fetch_separate_cores_and_rules "$WORKDIR/$PKGROOT"
     fi
   else
     echo "[*] --netcore specified: use separate core + rules."
-    if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-      download_xray "$WORKDIR/$PKGROOT/bin/xray" || echo "[!] xray download failed (skipped)"
-    fi
-    if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-      download_singbox "$WORKDIR/$PKGROOT/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
-    fi
-    download_geo_assets "$WORKDIR/$PKGROOT" || echo "[!] Geo rules download failed (skipped)"
+    fetch_separate_cores_and_rules "$WORKDIR/$PKGROOT"
   fi
 
   # Tarball
@@ -576,12 +483,6 @@ https://github.com/2dust/v2rayN
 %install
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
-
-install -dm0755 %{buildroot}%{_sysconfdir}/sudoers.d
-cat > %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny << 'EOF'
-ALL ALL=(ALL) !/home/*/.local/share/v2rayN/bin/mihomo/mihomo
-EOF
-chmod 0440 %{buildroot}%{_sysconfdir}/sudoers.d/v2rayn-mihomo-deny
 
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
@@ -636,47 +537,13 @@ fi
 /opt/v2rayN
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-%config(noreplace) /etc/sudoers.d/v2rayn-mihomo-deny
 SPEC
-
-  # Autostart injection (inside %install) and %files entry
-  if [[ "$AUTOSTART" -eq 1 ]]; then
-    awk '
-      BEGIN{ins=0}
-      /^%post$/ && !ins {
-        print "# --- Autostart (.desktop) ---"
-        print "install -dm0755 %{buildroot}/etc/xdg/autostart"
-        print "cat > %{buildroot}/etc/xdg/autostart/v2rayn.desktop << '\''EOF'\''"
-        print "[Desktop Entry]"
-        print "Type=Application"
-        print "Name=v2rayN (Autostart)"
-        print "Exec=v2rayn"
-        print "X-GNOME-Autostart-enabled=true"
-        print "NoDisplay=false"
-        print "EOF"
-        ins=1
-      }
-      {print}
-    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
-
-    awk '
-      BEGIN{infiles=0; done=0}
-      /^%files$/        {infiles=1}
-      infiles && done==0 && $0 ~ /%{_datadir}\/icons\/hicolor\/256x256\/apps\/v2rayn\.png/ {
-        print
-        print "%config(noreplace) /etc/xdg/autostart/v2rayn.desktop"
-        done=1
-        next
-      }
-      {print}
-    ' "$SPECFILE" > "${SPECFILE}.tmp" && mv "${SPECFILE}.tmp" "$SPECFILE"
-  fi
 
   # Replace placeholders
   sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
   sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
 
-  # Build RPM for this arch (force rpm --target to match compile arch)
+  # Build RPM for this arch
   rpmbuild -ba "$SPECFILE" --target "$rpm_target"
 
   echo "Build done for $short. RPM at:"
@@ -690,33 +557,18 @@ SPEC
 
 # ===== Arch selection and build orchestration =========================================
 case "${ARCH_OVERRIDE:-}" in
-  "")
-    # No --arch: use host architecture
-    if [[ "$host_arch" == "aarch64" ]]; then
-      build_for_arch arm64
-    else
-      build_for_arch x64
-    fi
-    ;;
-  x64|amd64)
-    build_for_arch x64
-    ;;
-  arm64|aarch64)
-    build_for_arch arm64
-    ;;
-  all)
-    BUILT_ALL=1
-    # Build x64 and arm64 separately; each package contains its own arch-only binaries.
-    build_for_arch x64
-    build_for_arch arm64
-    ;;
-  *)
-    echo "[ERROR] Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all."
-    exit 1
-    ;;
+  all)           targets=(x64 arm64); BUILT_ALL=1 ;;
+  x64|amd64)     targets=(x64) ;;
+  arm64|aarch64) targets=(arm64) ;;
+  "")            targets=($([[ "$host_arch" == "aarch64" ]] && echo arm64 || echo x64)) ;;
+  *)             echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all."; exit 1 ;;
 esac
 
-# ===== Final summary if building both arches ==========================================
+for arch in "${targets[@]}"; do
+  build_for_arch "$arch"
+done
+
+# Print Both arches information
 if [[ "$BUILT_ALL" -eq 1 ]]; then
   echo ""
   echo "================ Build Summary (both architectures) ================"
@@ -725,7 +577,7 @@ if [[ "$BUILT_ALL" -eq 1 ]]; then
       echo "$rp"
     done
   else
-    echo "[WARN] No RPMs detected in summary (check build logs above)."
+    echo "No RPMs detected in summary (check build logs above)."
   fi
-  echo "==================================================================="
+  echo "===================================================================="
 fi

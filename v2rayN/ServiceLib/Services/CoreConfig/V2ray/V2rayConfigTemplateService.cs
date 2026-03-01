@@ -2,35 +2,39 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<string> ApplyFullConfigTemplate(V2rayConfig v2rayConfig)
+    private string ApplyFullConfigTemplate()
     {
-        var fullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var fullConfigTemplate = context.FullConfigTemplate;
         if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
         {
-            return JsonUtils.Serialize(v2rayConfig);
+            return JsonUtils.Serialize(_coreConfig);
         }
 
         var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplate.Config);
         if (fullConfigTemplateNode == null)
         {
-            return JsonUtils.Serialize(v2rayConfig);
+            return JsonUtils.Serialize(_coreConfig);
         }
 
         // Handle balancer and rules modifications (for multiple load scenarios)
-        if (v2rayConfig.routing?.balancers?.Count > 0)
+        if (_coreConfig.routing?.balancers?.Count > 0)
         {
-            var balancer = v2rayConfig.routing.balancers.First();
+            var balancer =
+                _coreConfig.routing.balancers.FirstOrDefault(b => b.tag == Global.ProxyTag + Global.BalancerTagSuffix, null);
 
             // Modify existing rules in custom config
-            var rulesNode = fullConfigTemplateNode["routing"]?["rules"];
-            if (rulesNode != null)
+            if (balancer != null)
             {
-                foreach (var rule in rulesNode.AsArray())
+                var rulesNode = fullConfigTemplateNode["routing"]?["rules"];
+                if (rulesNode != null)
                 {
-                    if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                    foreach (var rule in rulesNode.AsArray())
                     {
-                        rule.AsObject().Remove("outboundTag");
-                        rule["balancerTag"] = balancer.tag;
+                        if (rule["outboundTag"]?.GetValue<string>() == Global.ProxyTag)
+                        {
+                            rule.AsObject().Remove("outboundTag");
+                            rule["balancerTag"] = balancer.tag;
+                        }
                     }
                 }
             }
@@ -44,7 +48,7 @@ public partial class CoreConfigV2rayService
             // Handle balancers - append instead of override
             if (fullConfigTemplateNode["routing"]["balancers"] is JsonArray customBalancersNode)
             {
-                if (JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.routing.balancers)) is JsonArray newBalancers)
+                if (JsonNode.Parse(JsonUtils.Serialize(_coreConfig.routing.balancers)) is JsonArray newBalancers)
                 {
                     foreach (var balancerNode in newBalancers)
                     {
@@ -54,33 +58,33 @@ public partial class CoreConfigV2rayService
             }
             else
             {
-                fullConfigTemplateNode["routing"]["balancers"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.routing.balancers));
+                fullConfigTemplateNode["routing"]["balancers"] = JsonNode.Parse(JsonUtils.Serialize(_coreConfig.routing.balancers));
             }
         }
 
-        if (v2rayConfig.observatory != null)
+        if (_coreConfig.observatory != null)
         {
             if (fullConfigTemplateNode["observatory"] == null)
             {
-                fullConfigTemplateNode["observatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.observatory));
+                fullConfigTemplateNode["observatory"] = JsonNode.Parse(JsonUtils.Serialize(_coreConfig.observatory));
             }
             else
             {
-                var subjectSelector = v2rayConfig.observatory.subjectSelector;
+                var subjectSelector = _coreConfig.observatory.subjectSelector;
                 subjectSelector.AddRange(fullConfigTemplateNode["observatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
                 fullConfigTemplateNode["observatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
             }
         }
 
-        if (v2rayConfig.burstObservatory != null)
+        if (_coreConfig.burstObservatory != null)
         {
             if (fullConfigTemplateNode["burstObservatory"] == null)
             {
-                fullConfigTemplateNode["burstObservatory"] = JsonNode.Parse(JsonUtils.Serialize(v2rayConfig.burstObservatory));
+                fullConfigTemplateNode["burstObservatory"] = JsonNode.Parse(JsonUtils.Serialize(_coreConfig.burstObservatory));
             }
             else
             {
-                var subjectSelector = v2rayConfig.burstObservatory.subjectSelector;
+                var subjectSelector = _coreConfig.burstObservatory.subjectSelector;
                 subjectSelector.AddRange(fullConfigTemplateNode["burstObservatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
                 fullConfigTemplateNode["burstObservatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
             }
@@ -88,7 +92,7 @@ public partial class CoreConfigV2rayService
 
         var customOutboundsNode = new JsonArray();
 
-        foreach (var outbound in v2rayConfig.outbounds)
+        foreach (var outbound in _coreConfig.outbounds)
         {
             if (outbound.protocol.ToLower() is "blackhole" or "dns" or "freedom")
             {
@@ -97,8 +101,8 @@ public partial class CoreConfigV2rayService
                     continue;
                 }
             }
-            else if ((!fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
-                && ((outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true) == true))
+            else if (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()
+                && (outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true))
             {
                 var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
                     ?? outbound.settings?.vnext?.FirstOrDefault()?.address
@@ -123,6 +127,6 @@ public partial class CoreConfigV2rayService
 
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
-        return await Task.FromResult(JsonUtils.Serialize(fullConfigTemplateNode));
+        return JsonUtils.Serialize(fullConfigTemplateNode);
     }
 }

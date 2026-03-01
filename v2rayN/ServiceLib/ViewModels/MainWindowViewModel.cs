@@ -540,7 +540,14 @@ public class MainWindowViewModel : MyReactiveObject
         {
             SetReloadEnabled(false);
 
-            var msgs = await ActionPrecheckManager.Instance.Check(_config.IndexId);
+            var profileItem = await ConfigHandler.GetDefaultServer(_config);
+            if (profileItem == null)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
+                return;
+            }
+            var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, profileItem);
+            var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
             if (msgs.Count > 0)
             {
                 foreach (var msg in msgs)
@@ -548,12 +555,15 @@ public class MainWindowViewModel : MyReactiveObject
                     NoticeManager.Instance.SendMessage(msg);
                 }
                 NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-                return;
+                if (!validatorResult.Success)
+                {
+                    return;
+                }
             }
 
             await Task.Run(async () =>
             {
-                await LoadCore();
+                await LoadCore(context);
                 await SysProxyHandler.UpdateSysProxy(_config, false);
                 await Task.Delay(1000);
             });
@@ -594,10 +604,9 @@ public class MainWindowViewModel : MyReactiveObject
         RxApp.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
     }
 
-    private async Task LoadCore()
+    private async Task LoadCore(CoreConfigContext? context)
     {
-        var node = await ConfigHandler.GetDefaultServer(_config);
-        await CoreManager.Instance.LoadCore(node);
+        await CoreManager.Instance.LoadCore(context);
     }
 
     #endregion core job

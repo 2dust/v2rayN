@@ -391,13 +391,6 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
-                            Grid.Row="20"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin8}"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}"
-                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -1096,20 +1089,6 @@
                         Margin="{StaticResource Margin8}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefComboBox}" />
-
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsEnableExInbound}" />
-                    <ToggleButton
-                        x:Name="togEnableExInbound"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="7"

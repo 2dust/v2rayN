@@ -1068,9 +1068,6 @@
   <data name="TbSettingsTunMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>Activer un port d’écoute supplémentaire</value>
-  </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>Activer IPv6</value>
   </data>
@@ -1109,9 +1106,6 @@
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>Ajouter [HTTP]</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>En conflit avec le proxy amont de groupe</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Activer le fragmentation (Fragment)</value>
@@ -1542,38 +1536,20 @@
   <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
     <value>Xray basculement (multi-sélection)</value>
   </data>
-  <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} ».</value>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} »</value>
   </data>
-  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} » avec le mode de transport « {2} ».</value>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} » avec le mode de transport « {2} »</value>
   </data>
-  <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} ».</value>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>Le cœur « {0} » ne prend pas en charge le protocole « {1} »</value>
   </data>
-  <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>Chaîne de proxy : </value>
-  </data>
-  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>Règle de routage sortante : </value>
-  </data>
-  <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>Groupe de stratégie : </value>
-  </data>
-  <data name="NodeTagNotExist" xml:space="preserve">
-    <value>L’alias « {0} » n’existe pas.</value>
-  </data>
-  <data name="GroupEmpty" xml:space="preserve">
-    <value>Le groupe « {0} » est vide. Veuillez ajouter au moins une configuration.</value>
-  </data>
-  <data name="InvalidProperty" xml:space="preserve">
+  <data name="MsgInvalidProperty" xml:space="preserve">
     <value>La propriété {0} est invalide, veuillez vérifier</value>
   </data>
-  <data name="GroupSelfReference" xml:space="preserve">
-    <value>Le groupe {0} ne peut pas se référencer lui-même ni créer de référence circulaire</value>
-  </data>
-  <data name="NotSupportProtocol" xml:space="preserve">
-    <value>Protocole « {0} » non pris en charge.</value>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>Protocole « {0} » non pris en charge</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>Si le système n’a pas de zone de notif., n’activez pas cette option</value>
@@ -1639,33 +1615,72 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
-    <value>Full certificate (chain), PEM format</value>
+    <value>Certificat complet (chaîne), format PEM</value>
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
-    <value>Certificate fingerprint (SHA-256)</value>
+    <value>Empreinte du certificat (SHA-256)</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
-    <value>Serve Stale</value>
+    <value>Cache optimiste</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>Parallel Query</value>
+    <value>Requête parallèle</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution</value>
+    <value>Par défaut, utilisé uniquement lors du routage pour la résolution.</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+    <value>Par défaut, invoqué uniquement au routage pour la résolution. Vérifiez que le serveur distant peut joindre ce DNS.</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+    <value>Si non défini ou « AsIs », le DNS système est utilisé ; sinon, le module DNS interne est utilisé.</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+    <value>Si non défini ou « AsIs », la résolution DNS est assurée par le serveur distant ; sinon, le module DNS interne est utilisé.</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
-    <value>Port hopping interval</value>
+    <value>Intervalle de saut de port</value>
   </data>
   <data name="menuServerListPreview" xml:space="preserve">
-    <value>Configuration item preview</value>
+    <value>Aperçu des sous-config</value>
+  </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>Group {0} child node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>Group {0} child group node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>Group {0} has no valid child node.</value>
+  </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>Subscription previous proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>Subscription next proxy {0} not found. Skipping.</value>
   </data>
 </root>

@@ -7,27 +7,27 @@ public static class CoreConfigHandler
 {
     private static readonly string _tag = "CoreConfigHandler";
 
-    public static async Task<RetResult> GenerateClientConfig(ProfileItem node, string? fileName)
+    public static async Task<RetResult> GenerateClientConfig(CoreConfigContext context, string? fileName)
     {
         var config = AppManager.Instance.Config;
         var result = new RetResult();
+        var node = context.Node;
 
         if (node.ConfigType == EConfigType.Custom)
         {
             result = node.CoreType switch
             {
                 ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
-                ECoreType.sing_box => await new CoreConfigSingboxService(config).GenerateClientCustomConfig(node, fileName),
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
         else if (AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
         {
-            result = await new CoreConfigSingboxService(config).GenerateClientConfigContent(node);
+            result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
         }
         else
         {
-            result = await new CoreConfigV2rayService(config).GenerateClientConfigContent(node);
+            result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
         }
         if (result.Success != true)
         {
@@ -93,13 +93,31 @@ public static class CoreConfigHandler
     public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, string fileName, List<ServerTestItem> selecteds, ECoreType coreType)
     {
         var result = new RetResult();
+        var dummyNode = new ProfileItem
+        {
+            CoreType = coreType
+        };
+        var builderResult = await CoreConfigContextBuilder.Build(config, dummyNode);
+        var context = builderResult.Context;
+        var ids = selecteds.Where(serverTestItem => !serverTestItem.IndexId.IsNullOrEmpty())
+            .Select(serverTestItem => serverTestItem.IndexId);
+        var nodes = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
+        foreach (var node in nodes)
+        {
+            var (actNode, _) = await CoreConfigContextBuilder.ResolveNodeAsync(context, node, true);
+            if (node.IndexId == actNode.IndexId)
+            {
+                continue;
+            }
+            context.ServerTestItemMap[node.IndexId] = actNode.IndexId;
+        }
         if (coreType == ECoreType.sing_box)
         {
-            result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(selecteds);
+            result = new CoreConfigSingboxService(context).GenerateClientSpeedtestConfig(selecteds);
         }
         else if (coreType == ECoreType.Xray)
         {
-            result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(selecteds);
+            result = new CoreConfigV2rayService(context).GenerateClientSpeedtestConfig(selecteds);
         }
         if (result.Success != true)
         {
@@ -109,20 +127,21 @@ public static class CoreConfigHandler
         return result;
     }
 
-    public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, ProfileItem node, ServerTestItem testItem, string fileName)
+    public static async Task<RetResult> GenerateClientSpeedtestConfig(Config config, CoreConfigContext context, ServerTestItem testItem, string fileName)
     {
         var result = new RetResult();
+        var node = context.Node;
         var initPort = AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest);
         var port = Utils.GetFreePort(initPort + testItem.QueueNum);
         testItem.Port = port;
 
         if (AppManager.Instance.GetCoreType(node, node.ConfigType) == ECoreType.sing_box)
         {
-            result = await new CoreConfigSingboxService(config).GenerateClientSpeedtestConfig(node, port);
+            result = new CoreConfigSingboxService(context).GenerateClientSpeedtestConfig(port);
         }
         else
         {
-            result = await new CoreConfigV2rayService(config).GenerateClientSpeedtestConfig(node, port);
+            result = new CoreConfigV2rayService(context).GenerateClientSpeedtestConfig(port);
         }
         if (result.Success != true)
         {

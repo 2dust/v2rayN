@@ -218,7 +218,7 @@ public class AddServerViewModel : MyReactiveObject
             return;
         }
 
-        List<string> shaList = new();
+        List<string> shaList = [];
         foreach (var cert in certList)
         {
             var sha = CertPemManager.GetCertSha256Thumbprint(cert);
@@ -228,7 +228,7 @@ public class AddServerViewModel : MyReactiveObject
             }
             shaList.Add(sha);
         }
-        CertSha = string.Join('~', shaList);
+        CertSha = string.Join(',', shaList);
     }
 
     private async Task FetchCert()
@@ -246,11 +246,6 @@ public class AddServerViewModel : MyReactiveObject
         if (serverName.IsNullOrEmpty())
         {
             serverName = SelectedSource.Address;
-        }
-        if (!Utils.IsDomain(serverName))
-        {
-            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
-            return;
         }
         if (SelectedSource.Port > 0)
         {
@@ -276,11 +271,6 @@ public class AddServerViewModel : MyReactiveObject
         if (serverName.IsNullOrEmpty())
         {
             serverName = SelectedSource.Address;
-        }
-        if (!Utils.IsDomain(serverName))
-        {
-            UpdateCertTip(ResUI.ServerNameMustBeValidDomain);
-            return;
         }
         if (SelectedSource.Port > 0)
         {

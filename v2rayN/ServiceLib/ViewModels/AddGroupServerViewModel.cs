@@ -234,13 +234,6 @@ public class AddGroupServerViewModel : MyReactiveObject
 
         SelectedSource.SetProtocolExtra(protocolExtra);
 
-        var hasCycle = await GroupProfileManager.HasCycle(SelectedSource.IndexId, protocolExtra);
-        if (hasCycle)
-        {
-            NoticeManager.Instance.Enqueue(string.Format(ResUI.GroupSelfReference, remarks));
-            return;
-        }
-
         if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);

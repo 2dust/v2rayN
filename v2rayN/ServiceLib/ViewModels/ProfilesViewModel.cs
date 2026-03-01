@@ -788,7 +788,8 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        var msgs = await ActionPrecheckManager.Instance.Check(item);
+        var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, item);
+        var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
         if (msgs.Count > 0)
         {
             foreach (var msg in msgs)
@@ -796,12 +797,15 @@ public class ProfilesViewModel : MyReactiveObject
                 NoticeManager.Instance.SendMessage(msg);
             }
             NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-            return;
+            if (!validatorResult.Success)
+            {
+                return;
+            }
         }
 
         if (blClipboard)
         {
-            var result = await CoreConfigHandler.GenerateClientConfig(item, null);
+            var result = await CoreConfigHandler.GenerateClientConfig(context, null);
             if (result.Success != true)
             {
                 NoticeManager.Instance.Enqueue(result.Msg);
@@ -824,7 +828,21 @@ public class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        var result = await CoreConfigHandler.GenerateClientConfig(item, fileName);
+        var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, item);
+        var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
+        if (msgs.Count > 0)
+        {
+            foreach (var msg in msgs)
+            {
+                NoticeManager.Instance.SendMessage(msg);
+            }
+            NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
+            if (!validatorResult.Success)
+            {
+                return;
+            }
+        }
+        var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)
         {
             NoticeManager.Instance.Enqueue(result.Msg);

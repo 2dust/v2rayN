@@ -178,6 +178,7 @@ public class ProfileItem
     public string CertSha { get; set; }
     public string EchConfigList { get; set; }
     public string EchForceQuery { get; set; }
+    public string Finalmask { get; set; }
 
     public string ProtoExtra { get; set; }
 

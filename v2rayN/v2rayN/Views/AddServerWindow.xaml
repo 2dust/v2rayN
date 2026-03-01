@@ -60,6 +60,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -928,12 +930,47 @@
                         Text="{x:Static resx:ResUI.TbPath}" />
                 </Grid>
 
+                <Grid x:Name="gridFinalmask" Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbFinalmask}" />
+                    <materialDesign:PopupBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        StaysOpen="True"
+                        Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                        <StackPanel>
+                            <TextBox
+                                x:Name="txtFinalmask"
+                                Width="400"
+                                Margin="{StaticResource Margin4}"
+                                AcceptsReturn="True"
+                                HorizontalScrollBarVisibility="Auto"
+                                MaxLines="8"
+                                MinLines="4"
+                                Style="{StaticResource MyOutlinedTextBox}"
+                                TextWrapping="NoWrap"
+                                VerticalScrollBarVisibility="Auto" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </Grid>
+
                 <Separator
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
 
-                <Grid x:Name="gridTls" Grid.Row="6">
+                <Grid x:Name="gridTls" Grid.Row="7">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -963,7 +1000,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridTlsMore"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Visibility="Hidden">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -1152,7 +1189,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Visibility="Hidden">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -1264,7 +1301,7 @@
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
                 <Separator
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
             </Grid>

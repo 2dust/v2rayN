@@ -57,16 +57,27 @@ public class CoreManager
         }
     }
 
-    public async Task LoadCore(ProfileItem? node)
+    public async Task LoadCore(CoreConfigContext? context)
     {
-        if (node == null)
+        if (context == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
+        var contextMod = context;
+        var node = contextMod.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
+        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
+        if (preContext is not null)
+        {
+            contextMod = contextMod with
+            {
+                TunProtectSsPort = preContext.TunProtectSsPort,
+                ProxyRelaySsPort = preContext.ProxyRelaySsPort,
+            };
+        }
+        var result = await CoreConfigHandler.GenerateClientConfig(contextMod, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -85,8 +96,8 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(node);
-        await CoreStartPreService(node);
+        await CoreStart(contextMod);
+        await CoreStartPreService(preContext);
         if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
@@ -122,7 +133,8 @@ public class CoreManager
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
-        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
+        var (context, _) = await CoreConfigContextBuilder.Build(_config, node);
+        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
         {
             return null;
@@ -165,8 +177,9 @@ public class CoreManager
 
     #region Private
 
-    private async Task CoreStart(ProfileItem node)
+    private async Task CoreStart(CoreConfigContext context)
     {
+        var node = context.Node;
         var coreType = AppManager.Instance.RunningCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
@@ -179,27 +192,22 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(ProfileItem node)
+    private async Task CoreStartPreService(CoreConfigContext? preContext)
     {
-        if (_processService != null && !_processService.HasExited)
+        if (_processService is { HasExited: false } && preContext != null)
         {
-            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-            var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
-            if (itemSocks != null)
+            var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
+            var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+            var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
+            if (result.Success)
             {
-                var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
-                var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-                var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
-                if (result.Success)
+                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
+                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
+                if (proc is null)
                 {
-                    var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                    var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
-                    if (proc is null)
-                    {
-                        return;
-                    }
-                    _processPreService = proc;
+                    return;
                 }
+                _processPreService = proc;
             }
         }
     }

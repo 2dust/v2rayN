@@ -2,35 +2,35 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private async Task<int> GenInbounds(V2rayConfig v2rayConfig)
+    private void GenInbounds()
     {
         try
         {
             var listen = "0.0.0.0";
-            v2rayConfig.inbounds = [];
+            _coreConfig.inbounds = [];
 
-            var inbound = GetInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
-            v2rayConfig.inbounds.Add(inbound);
+            var inbound = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
+            _coreConfig.inbounds.Add(inbound);
 
             if (_config.Inbound.First().SecondLocalPortEnabled)
             {
-                var inbound2 = GetInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
-                v2rayConfig.inbounds.Add(inbound2);
+                var inbound2 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
+                _coreConfig.inbounds.Add(inbound2);
             }
 
             if (_config.Inbound.First().AllowLANConn)
             {
                 if (_config.Inbound.First().NewPort4LAN)
                 {
-                    var inbound3 = GetInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
+                    var inbound3 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
                     inbound3.listen = listen;
-                    v2rayConfig.inbounds.Add(inbound3);
+                    _coreConfig.inbounds.Add(inbound3);
 
                     //auth
                     if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
                     {
                         inbound3.settings.auth = "password";
-                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new AccountsItem4Ray() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
+                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
                     }
                 }
                 else
@@ -43,10 +43,9 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
-        return await Task.FromResult(0);
     }
 
-    private Inbounds4Ray GetInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
+    private Inbounds4Ray BuildInbound(InItem inItem, EInboundProtocol protocol, bool bSocks)
     {
         var result = EmbedUtils.GetEmbedText(Global.V2raySampleInbound);
         if (result.IsNullOrEmpty())

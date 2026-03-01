@@ -32,7 +32,7 @@
                 IsCancel="True" />
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                 <Grid
                     Grid.Row="0"
@@ -407,7 +407,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbPorts7Tips}" />
-                    
+
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
@@ -420,7 +420,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
-                    
+
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
@@ -722,11 +722,51 @@
                         Text="{x:Static resx:ResUI.TbPath}" />
                 </Grid>
 
-                <Separator Grid.Row="5" Margin="{StaticResource MarginTb8}" />
+                <Grid
+                    x:Name="gridFinalmask"
+                    Grid.Row="5"
+                    ColumnDefinitions="300,Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbFinalmask}" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="{StaticResource MarginLr4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Classes="IconButton">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconMore}">
+                                <PathIcon.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </PathIcon.RenderTransform>
+                            </PathIcon>
+                        </Button.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBox
+                                        x:Name="txtFinalmask"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}"
+                                        AcceptsReturn="True"
+                                        Classes="TextArea"
+                                        TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+
+                <Separator Grid.Row="6" Margin="{StaticResource MarginTb8}" />
 
                 <Grid
                     x:Name="gridTls"
-                    Grid.Row="6"
+                    Grid.Row="7"
                     ColumnDefinitions="300,Auto"
                     RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
@@ -745,7 +785,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridTlsMore"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     ColumnDefinitions="300,Auto"
                     IsVisible="False"
                     RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -908,7 +948,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     ColumnDefinitions="300,Auto"
                     IsVisible="False"
                     RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
@@ -996,7 +1036,7 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
                 </Grid>
-                <Separator Grid.Row="8" Margin="{StaticResource MarginTb8}" />
+                <Separator Grid.Row="9" Margin="{StaticResource MarginTb8}" />
             </Grid>
         </ScrollViewer>
     </DockPanel>
