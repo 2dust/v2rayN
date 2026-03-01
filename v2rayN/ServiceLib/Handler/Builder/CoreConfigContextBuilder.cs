@@ -25,14 +25,15 @@ public record CoreConfigContextBuilderAllResult(
         [.. MainResult.ValidatorResult.Warnings, .. PreSocksResult?.ValidatorResult.Warnings ?? []]);
 
     /// <summary>
-    /// The main context with TunProtectSsPort/ProxyRelaySsPort merged in from the
-    /// pre-socks result (if any). Pass this to the core runner.
+    /// The main context with TunProtectSsPort/ProxyRelaySsPort and ProtectDomainList merged in
+    /// from the pre-socks result (if any). Pass this to the core runner.
     /// </summary>
     public CoreConfigContext ResolvedMainContext => PreSocksResult is not null
         ? MainResult.Context with
         {
             TunProtectSsPort = PreSocksResult.Context.TunProtectSsPort,
             ProxyRelaySsPort = PreSocksResult.Context.ProxyRelaySsPort,
+            ProtectDomainList = [.. MainResult.Context.ProtectDomainList ?? [], .. PreSocksResult.Context.ProtectDomainList ?? []],
         }
         : MainResult.Context;
 }
@@ -138,11 +139,12 @@ public class CoreConfigContextBuilder
         if (preSocksItem != null)
         {
             var preSocksResult = await Build(nodeContext.AppConfig, preSocksItem);
-            var protectDomainList = nodeContext.ProtectDomainList ?? [];
-            protectDomainList.UnionWith(preSocksResult.Context.ProtectDomainList ?? []);
             return preSocksResult with
             {
-                Context = preSocksResult.Context with { ProtectDomainList = protectDomainList }
+                Context = preSocksResult.Context with
+                {
+                    ProtectDomainList = [.. nodeContext.ProtectDomainList ?? [], .. preSocksResult.Context.ProtectDomainList ?? []],
+                }
             };
         }
 
@@ -168,13 +170,11 @@ public class CoreConfigContextBuilder
             SsMethod = Global.None,
         });
         var preResult2 = await Build(nodeContext.AppConfig, preItem);
-        var protectDomainList2 = nodeContext.ProtectDomainList ?? [];
-        protectDomainList2.UnionWith(preResult2.Context.ProtectDomainList ?? []);
         return preResult2 with
         {
             Context = preResult2.Context with
             {
-                ProtectDomainList = protectDomainList2,
+                ProtectDomainList = [.. nodeContext.ProtectDomainList ?? [], .. preResult2.Context.ProtectDomainList ?? []],
                 TunProtectSsPort = tunProtectSsPort,
                 ProxyRelaySsPort = proxyRelaySsPort,
             }
