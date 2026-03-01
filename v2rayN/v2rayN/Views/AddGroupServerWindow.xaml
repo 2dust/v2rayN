@@ -147,7 +147,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -163,7 +163,7 @@
                         x:Name="cmbSubChildItems"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Width="200"
+                        Width="600"
                         Margin="{StaticResource Margin4}"
                         DisplayMemberPath="Remarks"
                         Style="{StaticResource DefComboBox}" />
@@ -187,7 +187,7 @@
                         x:Name="cmbFilter"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Width="200"
+                        Width="600"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         IsEditable="True"
@@ -253,11 +253,11 @@
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <DataGridTextColumn
@@ -294,11 +294,11 @@
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <DataGridTextColumn
