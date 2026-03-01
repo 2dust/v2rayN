@@ -546,8 +546,13 @@ public class MainWindowViewModel : MyReactiveObject
                 NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
                 return;
             }
-            var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, profileItem);
-            var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
+            var allResult = await CoreConfigContextBuilder.BuildAll(_config, profileItem);
+            var msgs = new List<string>([.. allResult.MainResult.ValidatorResult.Errors, .. allResult.MainResult.ValidatorResult.Warnings]);
+            if (allResult.PreSocksResult is not null)
+            {
+                msgs.AddRange(allResult.PreSocksResult.ValidatorResult.Errors);
+                msgs.AddRange(allResult.PreSocksResult.ValidatorResult.Warnings);
+            }
             if (msgs.Count > 0)
             {
                 foreach (var msg in msgs)
@@ -555,7 +560,7 @@ public class MainWindowViewModel : MyReactiveObject
                     NoticeManager.Instance.SendMessage(msg);
                 }
                 NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-                if (!validatorResult.Success)
+                if (!allResult.Success)
                 {
                     return;
                 }
@@ -563,7 +568,7 @@ public class MainWindowViewModel : MyReactiveObject
 
             await Task.Run(async () =>
             {
-                await LoadCore(context);
+                await LoadCore(allResult.ResolvedMainContext, allResult.PreSocksResult?.Context);
                 await SysProxyHandler.UpdateSysProxy(_config, false);
                 await Task.Delay(1000);
             });
@@ -604,9 +609,9 @@ public class MainWindowViewModel : MyReactiveObject
         RxApp.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
     }
 
-    private async Task LoadCore(CoreConfigContext? context)
+    private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
-        await CoreManager.Instance.LoadCore(context);
+        await CoreManager.Instance.LoadCore(mainContext, preContext);
     }
 
     #endregion core job

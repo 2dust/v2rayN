@@ -5,6 +5,30 @@ public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeVali
     public bool Success => ValidatorResult.Success;
 }
 
+/// <summary>
+/// Holds the results of a full context build, including the main context and an optional
+/// pre-socks context (e.g. for TUN protection or pre-socks chaining).
+/// </summary>
+public record CoreConfigContextBuilderAllResult(
+    CoreConfigContextBuilderResult MainResult,
+    CoreConfigContextBuilderResult? PreSocksResult)
+{
+    /// <summary>True only when both the main result and (if present) the pre-socks result succeeded.</summary>
+    public bool Success => MainResult.Success && (PreSocksResult?.Success ?? true);
+
+    /// <summary>
+    /// The main context with TunProtectSsPort/ProxyRelaySsPort merged in from the
+    /// pre-socks result (if any). Pass this to the core runner.
+    /// </summary>
+    public CoreConfigContext ResolvedMainContext => PreSocksResult is not null
+        ? MainResult.Context with
+        {
+            TunProtectSsPort = PreSocksResult.Context.TunProtectSsPort,
+            ProxyRelaySsPort = PreSocksResult.Context.ProxyRelaySsPort,
+        }
+        : MainResult.Context;
+}
+
 public class CoreConfigContextBuilder
 {
     /// <summary>
@@ -73,6 +97,80 @@ public class CoreConfigContextBuilder
         }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);
+    }
+
+    /// <summary>
+    /// Builds the main <see cref="CoreConfigContext"/> for <paramref name="node"/> and, when
+    /// the main build succeeds, also builds the optional pre-socks context required for TUN
+    /// protection or pre-socks proxy chaining.
+    /// </summary>
+    public static async Task<CoreConfigContextBuilderAllResult> BuildAll(Config config, ProfileItem node)
+    {
+        var mainResult = await Build(config, node);
+        if (!mainResult.Success)
+        {
+            return new CoreConfigContextBuilderAllResult(mainResult, null);
+        }
+
+        var preResult = await BuildPreSocksIfNeeded(mainResult.Context);
+        return new CoreConfigContextBuilderAllResult(mainResult, preResult);
+    }
+
+    /// <summary>
+    /// Determines whether a pre-socks context is required for <paramref name="nodeContext"/>
+    /// and, if so, builds and returns it. Returns <c>null</c> when no pre-socks core is needed.
+    /// </summary>
+    private static async Task<CoreConfigContextBuilderResult?> BuildPreSocksIfNeeded(CoreConfigContext nodeContext)
+    {
+        var config = nodeContext.AppConfig;
+        var node = nodeContext.Node;
+        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+
+        var preSocksItem = ConfigHandler.GetPreSocksItem(config, node, coreType);
+        if (preSocksItem != null)
+        {
+            var preSocksResult = await Build(nodeContext.AppConfig, preSocksItem);
+            var protectDomainList = nodeContext.ProtectDomainList ?? [];
+            protectDomainList.UnionWith(preSocksResult.Context.ProtectDomainList ?? []);
+            return preSocksResult with
+            {
+                Context = preSocksResult.Context with { ProtectDomainList = protectDomainList }
+            };
+        }
+
+        if (!nodeContext.IsTunEnabled
+            || coreType != ECoreType.Xray
+            || node.ConfigType == EConfigType.Custom)
+        {
+            return null;
+        }
+
+        var tunProtectSsPort = Utils.GetFreePort();
+        var proxyRelaySsPort = Utils.GetFreePort();
+        var preItem = new ProfileItem()
+        {
+            CoreType = ECoreType.sing_box,
+            ConfigType = EConfigType.Shadowsocks,
+            Address = Global.Loopback,
+            Port = proxyRelaySsPort,
+            Password = Global.None,
+        };
+        preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
+        {
+            SsMethod = Global.None,
+        });
+        var preResult2 = await Build(nodeContext.AppConfig, preItem);
+        var protectDomainList2 = nodeContext.ProtectDomainList ?? [];
+        protectDomainList2.UnionWith(preResult2.Context.ProtectDomainList ?? []);
+        return preResult2 with
+        {
+            Context = preResult2.Context with
+            {
+                ProtectDomainList = protectDomainList2,
+                TunProtectSsPort = tunProtectSsPort,
+                ProxyRelaySsPort = proxyRelaySsPort,
+            }
+        };
     }
 
     /// <summary>

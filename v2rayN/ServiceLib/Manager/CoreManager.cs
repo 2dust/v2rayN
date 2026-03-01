@@ -57,45 +57,19 @@ public class CoreManager
         }
     }
 
-    public async Task LoadCore(CoreConfigContext? context)
+    /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
+    /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
+    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
-        if (context == null)
+        if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
-        var contextMod = context;
-        var node = contextMod.Node;
+        var node = mainContext.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var preResult = await ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
-        if (preResult is not null)
-        {
-            var validatorResult = preResult.ValidatorResult;
-            var msgs = new List<string>([.. validatorResult.Errors, .. validatorResult.Warnings]);
-            if (msgs.Count > 0)
-            {
-                foreach (var msg in msgs)
-                {
-                    await UpdateFunc(false, msg);
-                }
-                await UpdateFunc(true, Utils.List2String(msgs.Take(10).ToList(), true));
-                if (!validatorResult.Success)
-                {
-                    return;
-                }
-            }
-        }
-        var preContext = preResult?.Context;
-        if (preContext is not null)
-        {
-            contextMod = contextMod with
-            {
-                TunProtectSsPort = preContext.TunProtectSsPort,
-                ProxyRelaySsPort = preContext.ProxyRelaySsPort,
-            };
-        }
-        var result = await CoreConfigHandler.GenerateClientConfig(contextMod, fileName);
+        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -114,7 +88,7 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(contextMod);
+        await CoreStart(mainContext);
         await CoreStartPreService(preContext);
         if (_processService != null)
         {

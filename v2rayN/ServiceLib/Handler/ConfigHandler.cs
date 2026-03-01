@@ -1251,62 +1251,6 @@ public static class ConfigHandler
         return itemSocks;
     }
 
-    public static async Task<CoreConfigContextBuilderResult?> GetPreSocksCoreConfigContext(CoreConfigContext nodeContext)
-    {
-        var config = nodeContext.AppConfig;
-        var node = nodeContext.Node;
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-
-        var preSocksItem = GetPreSocksItem(config, node, coreType);
-        if (preSocksItem != null)
-        {
-            var preSocksResult = await CoreConfigContextBuilder.Build(nodeContext.AppConfig, preSocksItem);
-            // share protect domain
-            var protectDomainList = nodeContext.ProtectDomainList ?? [];
-            protectDomainList.UnionWith(preSocksResult.Context.ProtectDomainList ?? []);
-            preSocksResult = preSocksResult with
-            {
-                Context = preSocksResult.Context with { ProtectDomainList = protectDomainList, }
-            };
-            return preSocksResult;
-        }
-
-        if ((!nodeContext.IsTunEnabled)
-            || coreType != ECoreType.Xray
-            || node.ConfigType == EConfigType.Custom)
-        {
-            return null;
-        }
-        var tunProtectSsPort = Utils.GetFreePort();
-        var proxyRelaySsPort = Utils.GetFreePort();
-        var preItem = new ProfileItem()
-        {
-            CoreType = ECoreType.sing_box,
-            ConfigType = EConfigType.Shadowsocks,
-            Address = Global.Loopback,
-            Port = proxyRelaySsPort,
-            Password = Global.None,
-        };
-        preItem.SetProtocolExtra(preItem.GetProtocolExtra() with
-        {
-            SsMethod = Global.None,
-        });
-        var preResult = await CoreConfigContextBuilder.Build(nodeContext.AppConfig, preItem);
-        // share protect domain
-        var protectDomainList2 = nodeContext.ProtectDomainList ?? [];
-        protectDomainList2.UnionWith(preResult.Context.ProtectDomainList ?? []);
-        preResult = preResult with
-        {
-            Context = preResult.Context with
-            {
-                ProtectDomainList = protectDomainList2,
-                TunProtectSsPort = tunProtectSsPort,
-                ProxyRelaySsPort = proxyRelaySsPort,
-            }
-        };
-        return preResult;
-    }
-
     /// <summary>
     /// Remove servers with invalid test results (timeout)
     /// Useful for cleaning up subscription lists
