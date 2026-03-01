@@ -433,7 +433,11 @@ public partial class CoreConfigSingboxService
         localDnsServer.tag = tag;
 
         dns4Sbox.servers.Add(localDnsServer);
-        dns4Sbox.rules.Insert(0, BuildProtectDomainRule());
+        var protectDomainRule = BuildProtectDomainRule();
+        if (protectDomainRule != null)
+        {
+            dns4Sbox.rules.Insert(0, protectDomainRule);
+        }
 
         _coreConfig.dns = dns4Sbox;
     }
@@ -455,8 +459,12 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns?.servers?.Add(localDnsServer);
     }
 
-    private Rule4Sbox BuildProtectDomainRule()
+    private Rule4Sbox? BuildProtectDomainRule()
     {
+        if (context.ProtectDomainList.Count == 0)
+        {
+            return null;
+        }
         return new()
         {
             server = Global.SingboxLocalDNSTag,
