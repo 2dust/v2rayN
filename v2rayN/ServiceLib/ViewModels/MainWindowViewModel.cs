@@ -547,23 +547,9 @@ public class MainWindowViewModel : MyReactiveObject
                 return;
             }
             var allResult = await CoreConfigContextBuilder.BuildAll(_config, profileItem);
-            var msgs = new List<string>([.. allResult.MainResult.ValidatorResult.Errors, .. allResult.MainResult.ValidatorResult.Warnings]);
-            if (allResult.PreSocksResult is not null)
+            if (NoticeManager.Instance.NotifyValidatorResult(allResult.CombinedValidatorResult) && !allResult.Success)
             {
-                msgs.AddRange(allResult.PreSocksResult.ValidatorResult.Errors);
-                msgs.AddRange(allResult.PreSocksResult.ValidatorResult.Warnings);
-            }
-            if (msgs.Count > 0)
-            {
-                foreach (var msg in msgs)
-                {
-                    NoticeManager.Instance.SendMessage(msg);
-                }
-                NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-                if (!allResult.Success)
-                {
-                    return;
-                }
+                return;
             }
 
             await Task.Run(async () =>

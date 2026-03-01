@@ -17,6 +17,14 @@ public record CoreConfigContextBuilderAllResult(
     public bool Success => MainResult.Success && (PreSocksResult?.Success ?? true);
 
     /// <summary>
+    /// Merges all errors and warnings from the main result and the optional pre-socks result
+    /// into a single <see cref="NodeValidatorResult"/> for unified notification.
+    /// </summary>
+    public NodeValidatorResult CombinedValidatorResult => new(
+        [.. MainResult.ValidatorResult.Errors, .. PreSocksResult?.ValidatorResult.Errors ?? []],
+        [.. MainResult.ValidatorResult.Warnings, .. PreSocksResult?.ValidatorResult.Warnings ?? []]);
+
+    /// <summary>
     /// The main context with TunProtectSsPort/ProxyRelaySsPort merged in from the
     /// pre-socks result (if any). Pass this to the core runner.
     /// </summary>
