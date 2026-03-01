@@ -68,7 +68,25 @@ public class CoreManager
         var contextMod = context;
         var node = contextMod.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
+        var preResult = await ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
+        if (preResult is not null)
+        {
+            var validatorResult = preResult.ValidatorResult;
+            var msgs = new List<string>([.. validatorResult.Errors, .. validatorResult.Warnings]);
+            if (msgs.Count > 0)
+            {
+                foreach (var msg in msgs)
+                {
+                    await UpdateFunc(false, msg);
+                }
+                await UpdateFunc(true, Utils.List2String(msgs.Take(10).ToList(), true));
+                if (!validatorResult.Success)
+                {
+                    return;
+                }
+            }
+        }
+        var preContext = preResult?.Context;
         if (preContext is not null)
         {
             contextMod = contextMod with

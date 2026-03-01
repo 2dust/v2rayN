@@ -1251,7 +1251,7 @@ public static class ConfigHandler
         return itemSocks;
     }
 
-    public static CoreConfigContext? GetPreSocksCoreConfigContext(CoreConfigContext nodeContext)
+    public static async Task<CoreConfigContextBuilderResult?> GetPreSocksCoreConfigContext(CoreConfigContext nodeContext)
     {
         var config = nodeContext.AppConfig;
         var node = nodeContext.Node;
@@ -1260,7 +1260,15 @@ public static class ConfigHandler
         var preSocksItem = GetPreSocksItem(config, node, coreType);
         if (preSocksItem != null)
         {
-            return nodeContext with { Node = preSocksItem, };
+            var preSocksResult = await CoreConfigContextBuilder.Build(nodeContext.AppConfig, preSocksItem);
+            // share protect domain
+            var protectDomainList = nodeContext.ProtectDomainList ?? [];
+            protectDomainList.UnionWith(preSocksResult.Context.ProtectDomainList ?? []);
+            preSocksResult = preSocksResult with
+            {
+                Context = preSocksResult.Context with { ProtectDomainList = protectDomainList, }
+            };
+            return preSocksResult;
         }
 
         if ((!nodeContext.IsTunEnabled)
@@ -1283,13 +1291,20 @@ public static class ConfigHandler
         {
             SsMethod = Global.None,
         });
-        var preContext = nodeContext with
+        var preResult = await CoreConfigContextBuilder.Build(nodeContext.AppConfig, preItem);
+        // share protect domain
+        var protectDomainList2 = nodeContext.ProtectDomainList ?? [];
+        protectDomainList2.UnionWith(preResult.Context.ProtectDomainList ?? []);
+        preResult = preResult with
         {
-            Node = preItem,
-            TunProtectSsPort = tunProtectSsPort,
-            ProxyRelaySsPort = proxyRelaySsPort,
+            Context = preResult.Context with
+            {
+                ProtectDomainList = protectDomainList2,
+                TunProtectSsPort = tunProtectSsPort,
+                ProxyRelaySsPort = proxyRelaySsPort,
+            }
         };
-        return preContext;
+        return preResult;
     }
 
     /// <summary>
