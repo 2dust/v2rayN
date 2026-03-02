@@ -437,7 +437,7 @@ public partial class CoreConfigV2rayService
 
             FillDnsDomainsCustom(obj);
 
-            _coreConfig.dns = JsonUtils.Deserialize<Dns4Ray>(JsonUtils.Serialize(obj));
+            _coreConfig.dns = obj;
         }
         catch (Exception ex)
         {
