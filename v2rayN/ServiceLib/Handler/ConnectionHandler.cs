@@ -5,8 +5,8 @@ public static class ConnectionHandler
     private static readonly string _tag = "ConnectionHandler";
     private static readonly string[] _speedtestIpApiUrls =
     [
-        "https://api.ipapi.is",
-        "https://api.ip.sb/geoip"
+        "https://www.cloudflare.com/cdn-cgi/trace",
+        "https://api.ipapi.is"
     ];
 
     public static async Task<string> RunAvailabilityCheck()
@@ -70,12 +70,58 @@ public static class ConnectionHandler
             }
 
             var result = await response.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false);
+            if (url.Contains("/cdn-cgi/trace", StringComparison.OrdinalIgnoreCase))
+            {
+                return ParseCloudflareTrace(result);
+            }
+
             return JsonUtils.Deserialize<IPAPIInfo>(result);
         }
         catch
         {
             return null;
         }
+    }
+
+    private static IPAPIInfo? ParseCloudflareTrace(string? traceContent)
+    {
+        if (traceContent.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        var tracePairs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var line in traceContent.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var idx = line.IndexOf('=');
+            if (idx <= 0)
+            {
+                continue;
+            }
+
+            var key = line[..idx];
+            var value = line[(idx + 1)..];
+            tracePairs[key] = value;
+        }
+
+        tracePairs.TryGetValue("ip", out var ip);
+        if (ip.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        tracePairs.TryGetValue("loc", out var loc);
+
+        return new IPAPIInfo
+        {
+            ip = ip,
+            clientIp = ip,
+            ip_addr = ip,
+            query = ip,
+            country = loc,
+            country_code = loc,
+            countryCode = loc
+        };
     }
 
     private static string? FormatCountryAndIp(IPAPIInfo? ipInfo, bool compact)
