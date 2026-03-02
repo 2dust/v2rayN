@@ -127,7 +127,7 @@
     <value>設定格式不正確</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意，自訂設定完全依賴您自己的設定，不能使用所有設定功能。如需使用系統代理請手動修改偵聽埠。</value>
+    <value>注意，自訂設定完全依賴您自行輸入的內容，部分功能可能無法使用。如需啟用系統代理，請手動調整監聽埠。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
@@ -139,7 +139,7 @@
     <value>生成預設設定檔失敗</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value>獲取預設設定失敗</value>
+    <value>取得預設設定失敗</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
     <value>匯入自訂設定失敗</value>
@@ -148,7 +148,7 @@
     <value>讀取設定失敗</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>請填寫正確格式的埠</value>
+    <value>請填寫有效的埠號</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>請填寫本機偵聽埠</value>
@@ -247,7 +247,7 @@
     <value>非 VMess 或 SS 協定</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>在資料夾 ({0}) 下未找到 Core 檔案 (檔案名: {1})，請下載後放入資料夾，下載網址: {2}</value>
+    <value>在資料夾 ({0}) 中找不到 Core 檔案（檔名：{1}）。請下載後放入該資料夾。下載網址：{2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>掃描完成，未發現有效二維碼</value>
@@ -304,7 +304,7 @@
     <value>是否確定移除規則？</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0}，必填其中一項.</value>
+    <value>{0}，至少需填寫其中一項。</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>別名</value>
@@ -385,7 +385,7 @@
     <value>所有</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>請瀏覽匯入設定</value>
+    <value>請選擇要匯入的設定檔</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>測試中...</value>
@@ -472,7 +472,7 @@
     <value>語言 (需重啟)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>從剪貼簿導入分享連結</value>
+    <value>從剪貼簿匯入分享連結</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>掃描螢幕上的二維碼</value>
@@ -616,10 +616,10 @@
     <value>SNI</value>
   </data>
   <data name="TbStreamSecurity" xml:space="preserve">
-    <value>傳輸層安全 (TLS)</value>
+    <value>傳輸層安全性 (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*預設 TCP，選錯會無法連接</value>
+    <value>*預設 TCP，選錯會無法連線</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core 類型</value>
@@ -652,7 +652,7 @@
     <value>SOCKS 埠</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>*自訂設定的 Socks 埠值，可不設定；當設定此值後，將使用 Xray/sing-box (Tun) 額外啟動一個前置 Socks 服務，提供分流和速度顯示等功能</value>
+    <value>*自訂設定的 Socks 埠值，可留空；當設定此值後，將使用 Xray/sing-box (Tun) 額外啟動一個前置 Socks 服務，提供分流和速度顯示等功能</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>瀏覽</value>
@@ -1309,7 +1309,7 @@
     <value>安裝字體到系統中，選擇或填入字體名稱，重新啟動後生效</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
-    <value>是否確定退出？</value>
+    <value>確定要退出嗎？</value>
   </data>
   <data name="LvMemo" xml:space="preserve">
     <value>備註備忘</value>
@@ -1495,13 +1495,13 @@
     <value>策略組類型</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>添加策略組</value>
+    <value>新增策略組</value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>添加鏈式代理</value>
+    <value>新增鏈式代理</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>添加子配置</value>
+    <value>新增子配置</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
     <value>刪除子配置</value>
@@ -1591,81 +1591,81 @@
     <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
-    <value>Full certificate (chain), PEM format</value>
+    <value>完整憑證（鏈），PEM 格式</value>
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
-    <value>Certificate fingerprint (SHA-256)</value>
+    <value>憑證指紋（SHA-256）</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
-    <value>Serve Stale</value>
+    <value>提供過期快取（Serve Stale）</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>Parallel Query</value>
+    <value>并行查詢</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution</value>
+    <value>預設僅在路由期間進行解析時調用</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+    <value>預設僅在路由期間進行解析時調用；請確保遠端伺服器能連線至此 DNS</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+    <value>若未設定或為 "AsIs"，使用系統 DNS 解析；否則將使用內建 DNS 模組。</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+    <value>若未設定或為 "AsIs"，由遠端伺服器的 DNS 解析；否則將使用內建 DNS 模組。</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
-    <value>Port hopping interval</value>
+    <value>連接埠跳轉間隔</value>
   </data>
   <data name="menuServerListPreview" xml:space="preserve">
-    <value>Configuration item preview</value>
+    <value>子配置項預覽</value>
   </data>
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+    <value>路由規則 {0} 的出站節點 {1} 發出警告：{2}</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+    <value>路由規則 {0} 的出站節點 {1} 發生錯誤：{2}。已回退為僅使用代理節點。</value>
   </data>
   <data name="MsgGroupCycleDependency" xml:space="preserve">
-    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+    <value>節點組 {0} 與子節點 {1} 存在循環依賴。已跳過此節點。</value>
   </data>
   <data name="MsgGroupChildNodeWarning" xml:space="preserve">
-    <value>Group {0} child node {1} warning: {2}</value>
+    <value>節點組 {0} 的子節點 {1} 發出警告：{2}</value>
   </data>
   <data name="MsgGroupChildNodeError" xml:space="preserve">
-    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+    <value>節點組 {0} 的子節點 {1} 發生錯誤：{2}。已跳過此節點。</value>
   </data>
   <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
-    <value>Group {0} child group node {1} warning: {2}</value>
+    <value>節點組 {0} 的子節點組 {1} 發出警告：{2}</value>
   </data>
   <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
-    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+    <value>節點組 {0} 的子節點組 {1} 發生錯誤：{2}。已跳過此節點。</value>
   </data>
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
-    <value>Group {0} has no valid child node.</value>
+    <value>節點組 {0} 沒有可用的有效子節點。</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
-    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+    <value>路由規則 {0} 的出站標籤為空。已回退為僅使用代理節點。</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+    <value>找不到路由規則 {0} 的出站節點 {1}。已回退為僅使用代理節點。</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
-    <value>Subscription previous proxy {0} not found. Skipping.</value>
+    <value>找不到訂閱的前一個代理 {0}。已跳過。</value>
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
-    <value>Subscription next proxy {0} not found. Skipping.</value>
+    <value>找不到訂閱的下一個代理 {0}。已跳過。</value>
   </data>
   <data name="menuGenGroupServer" xml:space="preserve">
-    <value>Generate Policy Group</value>
+    <value>生成策略組</value>
   </data>
   <data name="menuAllServers" xml:space="preserve">
-    <value>All configurations</value>
+    <value>所有配置項</value>
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
-    <value>Group by Region</value>
+    <value>按區域分組</value>
   </data>
 </root>
