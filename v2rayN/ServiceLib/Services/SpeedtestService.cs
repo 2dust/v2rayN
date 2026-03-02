@@ -6,13 +6,19 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = new();
+    private int _remarksUpdated;
 
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         Task.Run(async () =>
         {
+            Interlocked.Exchange(ref _remarksUpdated, 0);
             await RunAsync(actionType, selecteds);
             await ProfileExManager.Instance.SaveTo();
+            if (Interlocked.CompareExchange(ref _remarksUpdated, 0, 0) > 0)
+            {
+                AppEvents.ProfilesRefreshRequested.Publish();
+            }
             await UpdateFunc("", ResUI.SpeedtestingCompleted);
         });
     }
@@ -80,6 +86,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 Address = it.Address,
                 Port = it.Port,
                 ConfigType = it.ConfigType,
+                NeedAutoFillRemarks = it.Remarks.IsNullOrEmpty(),
                 QueueNum = selecteds.IndexOf(it)
             });
         }
@@ -297,9 +304,46 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
         var responseTime = await ConnectionHandler.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
 
+        if (responseTime > 0 && it.NeedAutoFillRemarks)
+        {
+            await TryAutoFillRemarks(it, webProxy);
+        }
+
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());
         return responseTime;
+    }
+
+    private async Task TryAutoFillRemarks(ServerTestItem it, IWebProxy webProxy)
+    {
+        if (!it.NeedAutoFillRemarks || it.IndexId.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        var remarks = await ConnectionHandler.GetCountryCodeAndIP(webProxy, 8);
+        if (remarks.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        var profileItem = await AppManager.Instance.GetProfileItem(it.IndexId);
+        if (profileItem == null)
+        {
+            return;
+        }
+        if (profileItem.Remarks.IsNotEmpty())
+        {
+            it.NeedAutoFillRemarks = false;
+            return;
+        }
+
+        profileItem.Remarks = remarks;
+        if (await SQLiteHelper.Instance.UpdateAsync(profileItem) > 0)
+        {
+            it.NeedAutoFillRemarks = false;
+            Interlocked.Increment(ref _remarksUpdated);
+        }
     }
 
     private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it)
