@@ -67,19 +67,27 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
-        var lstSelected = new List<ServerTestItem>();
-        foreach (var it in selecteds)
+        var lstSelected = new List<ServerTestItem>(selecteds.Count);
+        var ids = selecteds.Where(it => !it.IndexId.IsNullOrEmpty()
+            && it.ConfigType != EConfigType.Custom
+            && (it.ConfigType.IsComplexType() || it.Port > 0))
+            .Select(it => it.IndexId)
+            .ToList();
+        var profileMap = await AppManager.Instance.GetProfileItemsByIndexIdsAsMap(ids);
+        for (var i = 0; i < selecteds.Count; i++)
         {
-            if (it.ConfigType.IsComplexType())
+            var it = selecteds[i];
+            if (it.ConfigType == EConfigType.Custom)
             {
                 continue;
             }
 
-            if (it.Port <= 0)
+            if (!it.ConfigType.IsComplexType() && it.Port <= 0)
             {
                 continue;
             }
 
+            var profile = profileMap.GetValueOrDefault(it.IndexId, it);
             lstSelected.Add(new ServerTestItem()
             {
                 IndexId = it.IndexId,
@@ -88,6 +96,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 ConfigType = it.ConfigType,
                 NeedAutoFillRemarks = it.Remarks.IsNullOrEmpty(),
                 QueueNum = selecteds.IndexOf(it)
+                QueueNum = i,
+                Profile = profile,
+                CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
             });
         }
 
@@ -397,8 +408,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = new();
-        var lst1 = lstSelected.Where(t => Global.XraySupportConfigType.Contains(t.ConfigType)).ToList();
-        var lst2 = lstSelected.Where(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)).ToList();
+        var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
+        var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {

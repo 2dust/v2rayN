@@ -29,6 +29,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ResUI.TbRoundRobin,
             ResUI.TbLeastLoad,
         };
+        cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
 
         switch (profileItem.ConfigType)
         {
@@ -53,7 +54,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
             //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.Filter, v => v.txtFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
@@ -147,14 +148,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
     {
         var selectWindow = new ProfilesSelectWindow();
-        if (ViewModel?.SelectedSource?.ConfigType == EConfigType.PolicyGroup)
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
-        }
-        else
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
-        }
+        selectWindow.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
         selectWindow.AllowMultiSelect(true);
         var result = await selectWindow.ShowDialog<bool?>(this);
         if (result == true)

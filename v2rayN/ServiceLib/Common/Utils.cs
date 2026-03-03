@@ -497,6 +497,13 @@ public class Utils
             return false;
         }
 
+        var ext = Path.GetExtension(domain);
+        if (ext.IsNotEmpty()
+            && ext[1..].ToLowerInvariant() is "json" or "txt" or "xml" or "cfg" or "ini" or "log" or "yaml" or "yml" or "toml")
+        {
+            return false;
+        }
+
         return Uri.CheckHostName(domain) == UriHostNameType.Dns;
     }
 

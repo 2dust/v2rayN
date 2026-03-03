@@ -240,32 +240,15 @@
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
                             <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayRandom"
+                                x:Name="menuGenGroupAllServer"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
+                                Header="{x:Static resx:ResUI.menuAllServers}" />
                             <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayRoundRobin"
+                                x:Name="menuGenGroupRegionServer"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayLeastLoad"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerSingBoxLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerSingBoxFallback"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
+                                Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

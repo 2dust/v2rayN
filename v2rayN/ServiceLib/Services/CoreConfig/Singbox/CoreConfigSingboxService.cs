@@ -149,11 +149,11 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!Global.SingboxSupportConfigType.Contains(it.ConfigType))
+                if (!(Global.SingboxSupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType()))
                 {
                     continue;
                 }
-                if (it.Port <= 0)
+                if (!it.ConfigType.IsComplexType() && it.Port <= 0)
                 {
                     continue;
                 }

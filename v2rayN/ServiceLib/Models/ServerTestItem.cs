@@ -10,4 +10,6 @@ public class ServerTestItem
     public bool AllowTest { get; set; }
     public bool NeedAutoFillRemarks { get; set; }
     public int QueueNum { get; set; }
+    public required ProfileItem Profile { get; set; }
+    public ECoreType CoreType { get; set; }
 }

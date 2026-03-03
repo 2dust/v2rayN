@@ -148,15 +148,20 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns ??= new Dns4Sbox();
         _coreConfig.dns.rules ??= [];
 
-        _coreConfig.dns.rules.AddRange(new[]
+        _coreConfig.dns.rules.Add(new() { ip_accept_any = true, server = Global.SingboxHostsDNSTag });
+
+        if (context.ProtectDomainList.Count > 0)
         {
-            new Rule4Sbox { ip_accept_any = true, server = Global.SingboxHostsDNSTag },
-            new Rule4Sbox
+            _coreConfig.dns.rules.Add(new()
             {
                 server = Global.SingboxDirectDNSTag,
                 strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom),
                 domain = context.ProtectDomainList.ToList(),
-            },
+            });
+        }
+
+        _coreConfig.dns.rules.AddRange(new[]
+        {
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
@@ -428,7 +433,11 @@ public partial class CoreConfigSingboxService
         localDnsServer.tag = tag;
 
         dns4Sbox.servers.Add(localDnsServer);
-        dns4Sbox.rules.Insert(0, BuildProtectDomainRule());
+        var protectDomainRule = BuildProtectDomainRule();
+        if (protectDomainRule != null)
+        {
+            dns4Sbox.rules.Insert(0, protectDomainRule);
+        }
 
         _coreConfig.dns = dns4Sbox;
     }
@@ -450,8 +459,12 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns?.servers?.Add(localDnsServer);
     }
 
-    private Rule4Sbox BuildProtectDomainRule()
+    private Rule4Sbox? BuildProtectDomainRule()
     {
+        if (context.ProtectDomainList.Count == 0)
+        {
+            return null;
+        }
         return new()
         {
             server = Global.SingboxLocalDNSTag,

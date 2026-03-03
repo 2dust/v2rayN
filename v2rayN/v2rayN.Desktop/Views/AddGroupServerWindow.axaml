@@ -95,7 +95,7 @@
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList}">
                 <Grid
                     Margin="{StaticResource Margin8}"
-                    ColumnDefinitions="300,Auto,Auto"
+                    ColumnDefinitions="Auto,Auto,Auto"
                     RowDefinitions="Auto,Auto,Auto">
 
                     <TextBlock
@@ -108,7 +108,7 @@
                         x:Name="cmbSubChildItems"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Width="200"
+                        Width="600"
                         Margin="{StaticResource Margin4}"
                         DisplayMemberBinding="{Binding Remarks}"
                         ItemsSource="{Binding SubItems}" />
@@ -117,7 +117,8 @@
                         Grid.Column="2"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}" />
+                        Text="{x:Static resx:ResUI.TbPolicyGroupSubChildTip}"
+                        TextWrapping="Wrap" />
 
                     <TextBlock
                         Grid.Row="1"
@@ -125,12 +126,14 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.LvFilter}" />
-                    <TextBox
-                        x:Name="txtFilter"
+                    <ComboBox
+                        x:Name="cmbFilter"
                         Grid.Row="1"
                         Grid.Column="1"
+                        Width="600"
                         Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center"
+                        IsEditable="True" />
                 </Grid>
             </TabItem>
 
@@ -184,11 +187,11 @@
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <DataGridTextColumn
@@ -226,11 +229,11 @@
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <DataGridTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <DataGridTextColumn

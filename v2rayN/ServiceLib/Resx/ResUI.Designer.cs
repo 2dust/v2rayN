@@ -835,6 +835,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 All configurations 的本地化字符串。
+        /// </summary>
+        public static string menuAllServers {
+            get {
+                return ResourceManager.GetString("menuAllServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Backup and Restore 的本地化字符串。
         /// </summary>
         public static string menuBackupAndRestore {
@@ -1006,74 +1015,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Generate Policy Group from Multiple Profiles 的本地化字符串。
+        ///   查找类似 Generate Policy Group 的本地化字符串。
         /// </summary>
-        public static string menuGenGroupMultipleServer {
+        public static string menuGenGroupServer {
             get {
-                return ResourceManager.GetString("menuGenGroupMultipleServer", resourceCulture);
+                return ResourceManager.GetString("menuGenGroupServer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Fallback by sing-box 的本地化字符串。
+        ///   查找类似 Group by Region 的本地化字符串。
         /// </summary>
-        public static string menuGenGroupMultipleServerSingBoxFallback {
+        public static string menuGenRegionGroup {
             get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxFallback", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 LeastPing by sing-box 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerSingBoxLeastPing {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerSingBoxLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Fallback by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerXrayFallback {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerXrayFallback", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 LeastLoad by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerXrayLeastLoad {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastLoad", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 LeastPing by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerXrayLeastPing {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerXrayLeastPing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Random by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerXrayRandom {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRandom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 RoundRobin by Xray 的本地化字符串。
-        /// </summary>
-        public static string menuGenGroupMultipleServerXrayRoundRobin {
-            get {
-                return ResourceManager.GetString("menuGenGroupMultipleServerXrayRoundRobin", resourceCulture);
+                return ResourceManager.GetString("menuGenRegionGroup", resourceCulture);
             }
         }
         

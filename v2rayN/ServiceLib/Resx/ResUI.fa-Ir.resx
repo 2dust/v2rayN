@@ -1371,24 +1371,6 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>مخفی و پورت می شود، با کاما (،) جدا می شود</value>
   </data>
-  <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>Generate Policy Group from Multiple Profiles</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>چند سرور تصادفی توسط Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>چند سرور RoundRobin توسط Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>چند سرور LeastPing توسط Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>چند سرور LeastLoad توسط Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>LeastPing چند سرور توسط sing-box</value>
-  </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>صادر کردن سرور</value>
   </data>
@@ -1532,12 +1514,6 @@
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Fallback</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by sing-box</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by Xray</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
     <value>Core '{0}' does not support network type '{1}'</value>
@@ -1685,5 +1661,14 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
     <value>Subscription next proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Generate Policy Group</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>All configurations</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Group by Region</value>
   </data>
 </root>

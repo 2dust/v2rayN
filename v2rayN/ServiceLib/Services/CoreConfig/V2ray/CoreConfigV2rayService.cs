@@ -112,11 +112,11 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!Global.XraySupportConfigType.Contains(it.ConfigType))
+                if (!(Global.XraySupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType()))
                 {
                     continue;
                 }
-                if (it.Port <= 0)
+                if (!it.ConfigType.IsComplexType() && it.Port <= 0)
                 {
                     continue;
                 }
@@ -180,13 +180,13 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 //rule
                 RulesItem4Ray rule = new()
                 {
-                    inboundTag = new List<string> { inbound.tag },
+                    inboundTag = [inbound.tag],
                     outboundTag = tag,
                     type = "field"
                 };
                 if (isBalancer)
                 {
-                    rule.balancerTag = tag;
+                    rule.balancerTag = tag + Global.BalancerTagSuffix;
                     rule.outboundTag = null;
                 }
                 _coreConfig.routing.rules.Add(rule);
@@ -301,6 +301,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             GenLog();
             _coreConfig.outbounds.Clear();
             GenOutbounds();
+            GenStatistic();
 
             var protectNode = new ProfileItem()
             {
@@ -326,18 +327,17 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 Node = protectNode,
             }).BuildProxyOutbound("tun-project-ss"));
 
+            _coreConfig.routing.rules ??= [];
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
-            _coreConfig.routing.rules =
-            [
-                new()
-                {
-                    inboundTag = new List<string> { "proxy-relay-ss" },
-                    outboundTag = hasBalancer ? null : Global.ProxyTag,
-                    balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix: null,
-                    type = "field"
-                }
-            ];
-            _coreConfig.inbounds.Clear();
+            _coreConfig.routing.rules.Add(new()
+            {
+                inboundTag = ["proxy-relay-ss"],
+                outboundTag = hasBalancer ? null : Global.ProxyTag,
+                balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix : null,
+                type = "field"
+            });
+
+            //_coreConfig.inbounds.Clear();
 
             var configNode = JsonUtils.ParseJson(JsonUtils.Serialize(_coreConfig))!;
             configNode["inbounds"]!.AsArray().Add(new

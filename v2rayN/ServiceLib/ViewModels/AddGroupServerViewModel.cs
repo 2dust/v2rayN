@@ -99,15 +99,8 @@ public class AddGroupServerViewModel : MyReactiveObject
         Filter = protocolExtra?.Filter;
 
         var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
-        foreach (var item in childIndexIds)
-        {
-            var child = await AppManager.Instance.GetProfileItem(item);
-            if (child == null)
-            {
-                continue;
-            }
-            ChildItemsObs.Add(child);
-        }
+        var childItemList = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childIndexIds);
+        ChildItemsObs.AddRange(childItemList);
     }
 
     public async Task ChildRemoveAsync()

@@ -1368,24 +1368,6 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Écrase le port ; pour plusieurs groupes, séparer par virgules (,)</value>
   </data>
-  <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>Générer un groupe de stratégie depuis plusieurs profils</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>Xray aléatoire (multi-sélection)</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Xray équilibrage (tourniquet) multi-sélection</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Xray latence minimale (multi-sélection)</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Xray le plus stable (multi-sélection)</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>sing-box latence minimale (multi-sélection)</value>
-  </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>Exporter</value>
   </data>
@@ -1529,12 +1511,6 @@
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Basculement (failover)</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>sing-box basculement (multi-sélection)</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>Xray basculement (multi-sélection)</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
     <value>Le cœur « {0} » ne prend pas en charge le type de réseau « {1} »</value>
@@ -1682,5 +1658,14 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
     <value>Subscription next proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Generate Policy Group</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>All configurations</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Group by Region</value>
   </data>
 </root>

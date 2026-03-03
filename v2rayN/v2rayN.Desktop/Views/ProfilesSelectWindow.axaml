@@ -90,17 +90,17 @@
                             Header="{x:Static resx:ResUI.LvServiceType}"
                             Tag="ConfigType" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}"
                             Tag="Remarks" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}"
                             Tag="Address" />
                         <DataGridTextColumn
-                            Width="60"
+                            Width="100"
                             Binding="{Binding Port}"
                             Header="{x:Static resx:ResUI.LvPort}"
                             Tag="Port" />

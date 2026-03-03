@@ -119,17 +119,17 @@
                             ExName="ConfigType"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <base:MyDGTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             ExName="Remarks"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <base:MyDGTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             ExName="Address"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <base:MyDGTextColumn
-                            Width="60"
+                            Width="100"
                             Binding="{Binding Port}"
                             ExName="Port"
                             Header="{x:Static resx:ResUI.LvPort}" />

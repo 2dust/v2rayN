@@ -193,14 +193,9 @@
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxFallback" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
+                            <MenuItem x:Name="menuGenGroupAllServer" Header="{x:Static resx:ResUI.menuAllServers}" />
+                            <MenuItem x:Name="menuGenGroupRegionServer" Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>

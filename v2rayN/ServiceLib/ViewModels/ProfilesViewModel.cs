@@ -8,6 +8,7 @@ public class ProfilesViewModel : MyReactiveObject
     private string _serverFilter = string.Empty;
     private Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
+    private string? _pendingSelectIndexId;
 
     #endregion private prop
 
@@ -43,13 +44,8 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
     public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
     public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayRandomCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayRoundRobinCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastPingCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayLeastLoadCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerXrayFallbackCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerSingBoxLeastPingCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupMultipleServerSingBoxFallbackCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupAllServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> GenGroupRegionServerCmd { get; }
 
     //servers move
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -134,33 +130,13 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await ShareServerAsync();
         }, canEditRemove);
-        GenGroupMultipleServerXrayRandomCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupAllServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.Random);
+            await GenGroupAllServer();
         }, canEditRemove);
-        GenGroupMultipleServerXrayRoundRobinCmd = ReactiveCommand.CreateFromTask(async () =>
+        GenGroupRegionServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.RoundRobin);
-        }, canEditRemove);
-        GenGroupMultipleServerXrayLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.LeastPing);
-        }, canEditRemove);
-        GenGroupMultipleServerXrayLeastLoadCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.LeastLoad);
-        }, canEditRemove);
-        GenGroupMultipleServerXrayFallbackCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await GenGroupMultipleServer(ECoreType.Xray, EMultipleLoad.Fallback);
-        }, canEditRemove);
-        GenGroupMultipleServerSingBoxLeastPingCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await GenGroupMultipleServer(ECoreType.sing_box, EMultipleLoad.LeastPing);
-        }, canEditRemove);
-        GenGroupMultipleServerSingBoxFallbackCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await GenGroupMultipleServer(ECoreType.sing_box, EMultipleLoad.Fallback);
+            await GenGroupRegionServer();
         }, canEditRemove);
 
         //servers move
@@ -392,15 +368,14 @@ public class ProfilesViewModel : MyReactiveObject
         ProfileItems.AddRange(lstModel);
         if (lstModel.Count > 0)
         {
-            var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
-            if (selected != null)
+            ProfileItemModel? selected = null;
+            if (!_pendingSelectIndexId.IsNullOrEmpty())
             {
-                SelectedProfile = selected;
+                selected = lstModel.FirstOrDefault(t => t.IndexId == _pendingSelectIndexId);
+                _pendingSelectIndexId = null;
             }
-            else
-            {
-                SelectedProfile = lstModel.First();
-            }
+            selected ??= lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
+            SelectedProfile = selected ?? lstModel.First();
         }
 
         await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
@@ -481,14 +456,7 @@ public class ProfilesViewModel : MyReactiveObject
         var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort);
         if (latest)
         {
-            foreach (var profile in orderProfiles)
-            {
-                var item = await AppManager.Instance.GetProfileItem(profile.IndexId);
-                if (item is not null)
-                {
-                    lstSelected.Add(item);
-                }
-            }
+            lstSelected.AddRange(await AppManager.Instance.GetProfileItemsOrderedByIndexIds(orderProfiles.Select(sp => sp?.IndexId)));
         }
         else
         {
@@ -641,29 +609,29 @@ public class ProfilesViewModel : MyReactiveObject
         await _updateView?.Invoke(EViewAction.ShareServer, url);
     }
 
-    private async Task GenGroupMultipleServer(ECoreType coreType, EMultipleLoad multipleLoad)
+    private async Task GenGroupAllServer()
     {
-        var lstSelected = await GetProfileItems(true);
-        if (lstSelected == null)
-        {
-            return;
-        }
-
-        var ret = await ConfigHandler.AddGroupServer4Multiple(_config, lstSelected, coreType, multipleLoad, SelectedSub?.Id);
+        var ret = await ConfigHandler.AddGroupAllServer(_config, SelectedSub);
         if (ret.Success != true)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
         }
-        if (ret?.Data?.ToString() == _config.IndexId)
+        _pendingSelectIndexId = ret.Data?.ToString();
+        await RefreshServers();
+    }
+
+    private async Task GenGroupRegionServer()
+    {
+        var ret = await ConfigHandler.AddGroupRegionServer(_config, SelectedSub);
+        if (ret.Success != true)
         {
-            await RefreshServers();
-            Reload();
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+            return;
         }
-        else
-        {
-            await SetDefaultServer(ret?.Data?.ToString());
-        }
+        var indexIdList = ret.Data as List<string>;
+        _pendingSelectIndexId = indexIdList?.FirstOrDefault();
+        await RefreshServers();
     }
 
     public async Task SortServer(string colName)
@@ -789,18 +757,9 @@ public class ProfilesViewModel : MyReactiveObject
         }
 
         var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, item);
-        var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
-        if (msgs.Count > 0)
+        if (NoticeManager.Instance.NotifyValidatorResult(validatorResult) && !validatorResult.Success)
         {
-            foreach (var msg in msgs)
-            {
-                NoticeManager.Instance.SendMessage(msg);
-            }
-            NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-            if (!validatorResult.Success)
-            {
-                return;
-            }
+            return;
         }
 
         if (blClipboard)
@@ -829,18 +788,9 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
         var (context, validatorResult) = await CoreConfigContextBuilder.Build(_config, item);
-        var msgs = new List<string>([..validatorResult.Errors, ..validatorResult.Warnings]);
-        if (msgs.Count > 0)
+        if (NoticeManager.Instance.NotifyValidatorResult(validatorResult) && !validatorResult.Success)
         {
-            foreach (var msg in msgs)
-            {
-                NoticeManager.Instance.SendMessage(msg);
-            }
-            NoticeManager.Instance.Enqueue(Utils.List2String(msgs.Take(10).ToList(), true));
-            if (!validatorResult.Success)
-            {
-                return;
-            }
+            return;
         }
         var result = await CoreConfigHandler.GenerateClientConfig(context, fileName);
         if (result.Success != true)

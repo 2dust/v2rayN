@@ -57,27 +57,19 @@ public class CoreManager
         }
     }
 
-    public async Task LoadCore(CoreConfigContext? context)
+    /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
+    /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
+    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
-        if (context == null)
+        if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
-        var contextMod = context;
-        var node = contextMod.Node;
+        var node = mainContext.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var preContext = ConfigHandler.GetPreSocksCoreConfigContext(contextMod);
-        if (preContext is not null)
-        {
-            contextMod = contextMod with
-            {
-                TunProtectSsPort = preContext.TunProtectSsPort,
-                ProxyRelaySsPort = preContext.ProxyRelaySsPort,
-            };
-        }
-        var result = await CoreConfigHandler.GenerateClientConfig(contextMod, fileName);
+        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -96,7 +88,7 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(contextMod);
+        await CoreStart(mainContext);
         await CoreStartPreService(preContext);
         if (_processService != null)
         {
@@ -106,7 +98,7 @@ public class CoreManager
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.Any(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)) ? ECoreType.sing_box : ECoreType.Xray;
+        var coreType = selecteds.FirstOrDefault()?.CoreType == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
