@@ -28,6 +28,7 @@ public class Dns4Sbox
     public bool? disable_cache { get; set; }
     public bool? disable_expire { get; set; }
     public bool? independent_cache { get; set; }
+    public int? cache_capacity { get; set; }
     public bool? reverse_mapping { get; set; }
     public string? client_subnet { get; set; }
 }
