@@ -127,12 +127,6 @@ public class AddServerViewModel : MyReactiveObject
 
     private async Task SaveServerAsync()
     {
-        if (SelectedSource.Remarks.IsNullOrEmpty())
-        {
-            NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
-            return;
-        }
-
         if (SelectedSource.Address.IsNullOrEmpty())
         {
             NoticeManager.Instance.Enqueue(ResUI.FillServerAddress);
