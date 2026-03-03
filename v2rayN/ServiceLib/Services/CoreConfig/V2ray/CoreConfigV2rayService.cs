@@ -301,6 +301,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             GenLog();
             _coreConfig.outbounds.Clear();
             GenOutbounds();
+            GenStatistic();
 
             var protectNode = new ProfileItem()
             {
@@ -326,18 +327,17 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 Node = protectNode,
             }).BuildProxyOutbound("tun-project-ss"));
 
+            _coreConfig.routing.rules ??= [];
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
-            _coreConfig.routing.rules =
-            [
-                new()
-                {
-                    inboundTag = new List<string> { "proxy-relay-ss" },
-                    outboundTag = hasBalancer ? null : Global.ProxyTag,
-                    balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix: null,
-                    type = "field"
-                }
-            ];
-            _coreConfig.inbounds.Clear();
+            _coreConfig.routing.rules.Add(new()
+            {
+                inboundTag = ["proxy-relay-ss"],
+                outboundTag = hasBalancer ? null : Global.ProxyTag,
+                balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix : null,
+                type = "field"
+            });
+
+            //_coreConfig.inbounds.Clear();
 
             var configNode = JsonUtils.ParseJson(JsonUtils.Serialize(_coreConfig))!;
             configNode["inbounds"]!.AsArray().Add(new
