@@ -95,7 +95,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 Port = it.Port,
                 ConfigType = it.ConfigType,
                 NeedAutoFillRemarks = it.Remarks.IsNullOrEmpty(),
-                QueueNum = selecteds.IndexOf(it)
                 QueueNum = i,
                 Profile = profile,
                 CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
