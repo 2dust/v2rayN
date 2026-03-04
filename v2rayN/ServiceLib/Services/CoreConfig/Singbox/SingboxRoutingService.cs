@@ -355,6 +355,11 @@ public partial class CoreConfigSingboxService
             rule.domain_keyword ??= [];
             rule.domain_keyword?.Add(domain.Substring(8));
         }
+        else if (domain.StartsWith("dotless:"))
+        {
+            rule.domain_keyword ??= [];
+            rule.domain_keyword?.Add(domain.Substring(8));
+        }
         else
         {
             rule.domain_keyword ??= [];
