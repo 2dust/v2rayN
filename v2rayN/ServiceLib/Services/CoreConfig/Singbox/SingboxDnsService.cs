@@ -101,7 +101,7 @@ public partial class CoreConfigSingboxService
             {
                 continue;
             }
-            if (testRule.domain_keyword?.Count > 0 && !kvp.Key.StartsWith("keyword:"))
+            if (testRule.domain_keyword?.Count > 0 && !kvp.Key.Contains(':'))
             {
                 testRule.domain = testRule.domain_keyword;
                 testRule.domain_keyword = null;
@@ -213,7 +213,7 @@ public partial class CoreConfigSingboxService
             // The matching format (domain:, full:, etc.) is the same as the domain
             // in the commonly used Routing System. The difference is that without a prefix,
             // it defaults to using the full: prefix (similar to the common hosts file syntax).
-            if (rule.domain_keyword?.Count > 0 && !kvp.Key.StartsWith("keyword:"))
+            if (rule.domain_keyword?.Count > 0 && !kvp.Key.Contains(':'))
             {
                 rule.domain = rule.domain_keyword;
                 rule.domain_keyword = null;

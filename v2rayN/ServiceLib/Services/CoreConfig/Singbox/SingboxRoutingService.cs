@@ -96,7 +96,7 @@ public partial class CoreConfigSingboxService
                     {
                         continue;
                     }
-                    if (domainRule.domain_keyword?.Count > 0 && !host.StartsWith("keyword:"))
+                    if (domainRule.domain_keyword?.Count > 0 && !host.Contains(':'))
                     {
                         domainRule.domain = domainRule.domain_keyword;
                         domainRule.domain_keyword = null;
