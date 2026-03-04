@@ -20,3 +20,4 @@ Read the [Wiki](https://github.com/2dust/v2rayN/wiki) for details.
 
 修改版本
 增加了HTTP,HTTPS代理使用粘贴的方式导入,需要的自己用工作流生成.
+增加测速的同时，对于别名为空的节点自动补充国家代码和IP地址
