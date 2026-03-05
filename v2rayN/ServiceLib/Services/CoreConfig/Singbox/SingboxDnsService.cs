@@ -93,7 +93,23 @@ public partial class CoreConfigSingboxService
 
         foreach (var kvp in Utils.ParseHostsToDictionary(simpleDnsItem.Hosts))
         {
-            hostsDns.predefined[kvp.Key] = kvp.Value.Where(Utils.IsIpAddress).ToList();
+            // only allow full match
+            // like example.com and full:example.com,
+            // but not domain:example.com, keyword:example.com or regex:example.com etc.
+            var testRule = new Rule4Sbox();
+            if (!ParseV2Domain(kvp.Key, testRule))
+            {
+                continue;
+            }
+            if (testRule.domain_keyword?.Count > 0 && !kvp.Key.Contains(':'))
+            {
+                testRule.domain = testRule.domain_keyword;
+                testRule.domain_keyword = null;
+            }
+            if (testRule.domain?.Count == 1)
+            {
+                hostsDns.predefined[testRule.domain.First()] = kvp.Value.Where(Utils.IsIpAddress).ToList();
+            }
         }
 
         foreach (var host in hostsDns.predefined)
@@ -179,44 +195,66 @@ public partial class CoreConfigSingboxService
         foreach (var kvp in Utils.ParseHostsToDictionary(simpleDnsItem.Hosts))
         {
             var predefined = kvp.Value.First();
-            if (predefined.IsNullOrEmpty() || Utils.IsIpAddress(predefined))
+            if (predefined.IsNullOrEmpty())
             {
                 continue;
             }
-            if (predefined.StartsWith('#') && int.TryParse(predefined.AsSpan(1), out var rcode))
+            var rule = new Rule4Sbox()
             {
-                // xray syntactic sugar for predefined
-                // etc. #0 -> NOERROR
-                _coreConfig.dns.rules.Add(new()
-                {
-                    query_type = [1, 28],
-                    domain = [kvp.Key],
-                    action = "predefined",
-                    rcode = rcode switch
-                    {
-                        0 => "NOERROR",
-                        1 => "FORMERR",
-                        2 => "SERVFAIL",
-                        3 => "NXDOMAIN",
-                        4 => "NOTIMP",
-                        5 => "REFUSED",
-                        _ => "NOERROR",
-                    },
-                });
-                continue;
-            }
-            // CNAME record
-            Rule4Sbox rule = new()
-            {
-                query_type = [1, 28],
+                query_type = [1, 5, 28], // A, CNAME and AAAA
                 action = "predefined",
                 rcode = "NOERROR",
-                answer = [$"*. IN CNAME {predefined}."],
             };
-            if (ParseV2Domain(kvp.Key, rule))
+            if (!ParseV2Domain(kvp.Key, rule))
             {
-                _coreConfig.dns.rules.Add(rule);
+                continue;
             }
+            // see: https://xtls.github.io/en/config/dns.html#dnsobject
+            // The matching format (domain:, full:, etc.) is the same as the domain
+            // in the commonly used Routing System. The difference is that without a prefix,
+            // it defaults to using the full: prefix (similar to the common hosts file syntax).
+            if (rule.domain_keyword?.Count > 0 && !kvp.Key.Contains(':'))
+            {
+                rule.domain = rule.domain_keyword;
+                rule.domain_keyword = null;
+            }
+            // example.com #0 -> example.com with NOERROR
+            if (predefined.StartsWith('#') && int.TryParse(predefined.AsSpan(1), out var rcode))
+            {
+                rule.rcode = rcode switch
+                {
+                    0 => "NOERROR",
+                    1 => "FORMERR",
+                    2 => "SERVFAIL",
+                    3 => "NXDOMAIN",
+                    4 => "NOTIMP",
+                    5 => "REFUSED",
+                    _ => "NOERROR",
+                };
+            }
+            else if (Utils.IsDomain(predefined))
+            {
+                // example.com CNAME target.com -> example.com with CNAME target.com
+                rule.answer = new List<string> { $"*. IN CNAME {predefined}." };
+            }
+            else if (Utils.IsIpAddress(predefined) && (rule.domain?.Count ?? 0) == 0)
+            {
+                // not full match, but an IP address, treat it as predefined answer
+                if (Utils.IsIpv6(predefined))
+                {
+                    rule.answer = new List<string> { $"*. IN AAAA {predefined}" };
+
+                }
+                else
+                {
+                    rule.answer = new List<string> { $"*. IN A {predefined}" };
+                }
+            }
+            else
+            {
+                continue;
+            }
+            _coreConfig.dns.rules.Add(rule);
         }
 
         if (simpleDnsItem.BlockBindingQuery == true)
