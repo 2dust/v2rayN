@@ -1689,4 +1689,7 @@
   <data name="TbUsername" xml:space="preserve">
     <value>用户名</value>
   </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP 路由策略</value>
+  </data>
 </root>
