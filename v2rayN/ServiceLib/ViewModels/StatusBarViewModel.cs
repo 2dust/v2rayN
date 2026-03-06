@@ -291,8 +291,17 @@ public class StatusBarViewModel : MyReactiveObject
         var running = await ConfigHandler.GetDefaultServer(_config);
         if (running != null)
         {
+            var summary = running.GetSummary();
+            if (running.Subid.IsNotEmpty())
+            {
+                var subItem = await AppManager.Instance.GetSubItem(running.Subid);
+                if (subItem != null)
+                {
+                    summary = $"{subItem.Remarks}: {summary}";
+                }
+            }
             RunningServerDisplay =
-                RunningServerToolTipText = running.GetSummary();
+                RunningServerToolTipText = summary;
         }
         else
         {
