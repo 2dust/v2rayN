@@ -1668,4 +1668,7 @@
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>按地区分组</value>
   </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP 路由策略</value>
+  </data>
 </root>

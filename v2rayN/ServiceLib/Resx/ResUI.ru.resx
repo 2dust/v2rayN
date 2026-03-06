@@ -1671,4 +1671,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>Group by Region</value>
   </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP routing policy</value>
+  </data>
 </root>
