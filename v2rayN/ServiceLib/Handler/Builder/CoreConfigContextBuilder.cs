@@ -268,7 +268,7 @@ public class CoreConfigContextBuilder
         {
             IndexId = $"inner-{Utils.GetGuid(false)}",
             ConfigType = EConfigType.ProxyChain,
-            CoreType = node.CoreType ?? ECoreType.Xray,
+            CoreType = AppManager.Instance.GetCoreType(node, node.ConfigType),
         };
         List<string?> childItems = [prevNode?.IndexId, node.IndexId, nextNode?.IndexId];
         var chainExtraItem = chainNode.GetProtocolExtra() with
