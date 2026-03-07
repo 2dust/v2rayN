@@ -91,6 +91,7 @@ public static class ConfigHandler
         {
             EnableTun = false,
             Mtu = 9000,
+            IcmpRouting = Global.TunIcmpRoutingPolicies.First(),
         };
         config.GuiItem ??= new();
         config.MsgUIItem ??= new();

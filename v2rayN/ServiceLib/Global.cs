@@ -660,5 +660,14 @@ public class Global
         ""
     ];
 
+    public static readonly List<string> TunIcmpRoutingPolicies =
+    [
+        "rule",
+        "direct",
+        "unreachable",
+        "drop",
+        "reply",
+    ];
+
     #endregion const
 }
