@@ -132,7 +132,7 @@ public class CoreManager
             return null;
         }
 
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
         return await RunProcess(coreInfo, fileName, true, false);
     }
