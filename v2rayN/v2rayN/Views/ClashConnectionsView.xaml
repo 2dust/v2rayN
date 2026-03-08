@@ -2,6 +2,7 @@
     x:Class="v2rayN.Views.ClashConnectionsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -78,25 +79,30 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn
+                <base:MyDGTextColumn
                     Width="300"
                     Binding="{Binding Host}"
+                    ExName="Host"
                     Header="{x:Static resx:ResUI.TbSortingHost}" />
-                <DataGridTextColumn
+                <base:MyDGTextColumn
                     Width="500"
                     Binding="{Binding Chain}"
+                    ExName="Chain"
                     Header="{x:Static resx:ResUI.TbSortingChain}" />
-                <DataGridTextColumn
+                <base:MyDGTextColumn
                     Width="80"
                     Binding="{Binding Network}"
+                    ExName="Network"
                     Header="{x:Static resx:ResUI.TbSortingNetwork}" />
-                <DataGridTextColumn
+                <base:MyDGTextColumn
                     Width="160"
                     Binding="{Binding Type}"
+                    ExName="Type"
                     Header="{x:Static resx:ResUI.TbSortingType}" />
-                <DataGridTextColumn
+                <base:MyDGTextColumn
                     Width="100"
                     Binding="{Binding Elapsed}"
+                    ExName="Elapsed"
                     Header="{x:Static resx:ResUI.TbSortingTime}" />
             </DataGrid.Columns>
         </DataGrid>
