@@ -463,7 +463,7 @@ public class HysteriaSettings4Ray
 
 public class UdpHop4Ray
 {
-    public string? port { get; set; }
+    public string? ports { get; set; }
     public string? interval { get; set; }
 }
 
@@ -490,7 +490,7 @@ public class QuicParams4Ray
     public string? congestion { get; set; }
     public string? brutalUp { get; set; }
     public string? brutalDown { get; set; }
-    public UdpHop4Ray? udphop { get; set; }
+    public UdpHop4Ray? udpHop { get; set; }
 }
 
 public class AccountsItem4Ray

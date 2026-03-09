@@ -605,10 +605,10 @@ public partial class CoreConfigV2rayService
                     {
                         var udpHop = new UdpHop4Ray
                         {
-                            port = ports.Replace(':', '-'),
+                            ports = ports.Replace(':', '-'),
                             interval = hopInterval,
                         };
-                        quicParams.udphop = udpHop;
+                        quicParams.udpHop = udpHop;
                     }
                     if (upMbps > 0 || downMbps > 0)
                     {
