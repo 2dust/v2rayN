@@ -154,6 +154,7 @@ public static class ConfigHandler
             DownMbps = 100
         };
         config.ClashUIItem ??= new();
+        config.ClashUIItem.ConnectionsColumnItem ??= new();
         config.SystemProxyItem ??= new();
         config.WebDavItem ??= new();
         config.CheckUpdateItem ??= new();

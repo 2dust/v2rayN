@@ -10,6 +10,7 @@ namespace v2rayN.Views;
 public partial class ProfilesView
 {
     private static Config _config;
+    private static readonly string _tag = "ProfilesView";
 
     public ProfilesView()
     {
@@ -339,7 +340,7 @@ public partial class ProfilesView
         }
         catch (Exception ex)
         {
-            Logging.SaveLog("ProfilesView", ex);
+            Logging.SaveLog(_tag, ex);
         }
     }
 
@@ -357,46 +358,59 @@ public partial class ProfilesView
 
     private void RestoreUI()
     {
-        var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
-        var displayIndex = 0;
-        foreach (var item in lvColumnItem)
+        try
         {
-            foreach (MyDGTextColumn item2 in lstProfiles.Columns)
+            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+            var displayIndex = 0;
+            foreach (var item in lvColumnItem)
             {
-                if (item2.ExName == item.Name)
+                foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
                 {
-                    if (item.Width < 0)
+                    if (item2.ExName == item.Name)
                     {
-                        item2.Visibility = Visibility.Hidden;
-                    }
-                    else
-                    {
-                        item2.Width = item.Width;
-                        item2.DisplayIndex = displayIndex++;
-                    }
-                    if (item.Name.ToLower().StartsWith("to"))
-                    {
-                        item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                        if (item.Width < 0)
+                        {
+                            item2.Visibility = Visibility.Hidden;
+                        }
+                        else
+                        {
+                            item2.Width = item.Width;
+                            item2.DisplayIndex = displayIndex++;
+                        }
+                        if (item.Name.ToLower().StartsWith("to"))
+                        {
+                            item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
         }
     }
 
     private void StorageUI()
     {
-        List<ColumnItem> lvColumnItem = new();
-        foreach (var t in lstProfiles.Columns)
+        try
         {
-            var item2 = (MyDGTextColumn)t;
-            lvColumnItem.Add(new()
+            List<ColumnItem> lvColumnItem = new();
+            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
             {
-                Name = item2.ExName,
-                Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
-                Index = item2.DisplayIndex
-            });
+                lvColumnItem.Add(new()
+                {
+                    Name = item2.ExName,
+                    Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
+                    Index = item2.DisplayIndex
+                });
+            }
+            _config.UiItem.MainColumnItem = lvColumnItem;
         }
-        _config.UiItem.MainColumnItem = lvColumnItem;
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
     }
 
     #endregion UI
@@ -405,7 +419,7 @@ public partial class ProfilesView
 
     private Point startPoint = new();
     private int startIndex = -1;
-    private string formatData = "ProfileItemModel";
+    private readonly string formatData = "ProfileItemModel";
 
     /// <summary>
     /// Helper to search up the VisualTree

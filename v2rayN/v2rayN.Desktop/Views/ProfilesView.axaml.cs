@@ -7,6 +7,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
     private Window? _window;
+    private static readonly string _tag = "ProfilesView";
 
     public ProfilesView()
     {
@@ -381,7 +382,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
         catch (Exception ex)
         {
-            Logging.SaveLog("ProfilesView", ex);
+            Logging.SaveLog(_tag, ex);
         }
     }
 
@@ -399,53 +400,67 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     private void RestoreUI()
     {
-        var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
-        var displayIndex = 0;
-        foreach (var item in lvColumnItem)
+        try
         {
+            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+            var displayIndex = 0;
+            foreach (var item in lvColumnItem)
+            {
+                foreach (var item2 in lstProfiles.Columns)
+                {
+                    if (item2.Tag == null)
+                    {
+                        continue;
+                    }
+                    if (item2.Tag.Equals(item.Name))
+                    {
+                        if (item.Width < 0)
+                        {
+                            item2.IsVisible = false;
+                        }
+                        else
+                        {
+                            item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
+                            item2.DisplayIndex = displayIndex++;
+                        }
+                        if (item.Name.ToLower().StartsWith("to"))
+                        {
+                            item2.IsVisible = _config.GuiItem.EnableStatistics;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private void StorageUI()
+    {
+        try
+        {
+            List<ColumnItem> lvColumnItem = new();
             foreach (var item2 in lstProfiles.Columns)
             {
                 if (item2.Tag == null)
                 {
                     continue;
                 }
-                if (item2.Tag.Equals(item.Name))
+                lvColumnItem.Add(new()
                 {
-                    if (item.Width < 0)
-                    {
-                        item2.IsVisible = false;
-                    }
-                    else
-                    {
-                        item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
-                        item2.DisplayIndex = displayIndex++;
-                    }
-                    if (item.Name.ToLower().StartsWith("to"))
-                    {
-                        item2.IsVisible = _config.GuiItem.EnableStatistics;
-                    }
-                }
+                    Name = (string)item2.Tag,
+                    Width = (int)(item2.IsVisible == true ? item2.ActualWidth : -1),
+                    Index = item2.DisplayIndex
+                });
             }
+            _config.UiItem.MainColumnItem = lvColumnItem;
         }
-    }
-
-    private void StorageUI()
-    {
-        List<ColumnItem> lvColumnItem = new();
-        foreach (var item2 in lstProfiles.Columns)
+        catch (Exception ex)
         {
-            if (item2.Tag == null)
-            {
-                continue;
-            }
-            lvColumnItem.Add(new()
-            {
-                Name = (string)item2.Tag,
-                Width = (int)(item2.IsVisible == true ? item2.ActualWidth : -1),
-                Index = item2.DisplayIndex
-            });
+            Logging.SaveLog(_tag, ex);
         }
-        _config.UiItem.MainColumnItem = lvColumnItem;
     }
 
     #endregion UI
