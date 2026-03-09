@@ -22,8 +22,8 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string defUserAgent { get; set; }
     [Reactive] public string mux4SboxProtocol { get; set; }
     [Reactive] public bool enableCacheFile4Sbox { get; set; }
-    [Reactive] public int hyUpMbps { get; set; }
-    [Reactive] public int hyDownMbps { get; set; }
+    [Reactive] public int? hyUpMbps { get; set; }
+    [Reactive] public int? hyDownMbps { get; set; }
     [Reactive] public bool enableFragment { get; set; }
 
     #endregion Core
@@ -336,8 +336,8 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.DefUserAgent = defUserAgent;
         _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
         _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
-        _config.HysteriaItem.UpMbps = hyUpMbps;
-        _config.HysteriaItem.DownMbps = hyDownMbps;
+        _config.HysteriaItem.UpMbps = hyUpMbps ?? 0;
+        _config.HysteriaItem.DownMbps = hyDownMbps ?? 0;
         _config.CoreBasicItem.EnableFragment = enableFragment;
 
         _config.GuiItem.AutoRun = AutoRun;

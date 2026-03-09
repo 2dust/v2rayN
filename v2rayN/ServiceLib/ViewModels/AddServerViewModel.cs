@@ -27,10 +27,10 @@ public class AddServerViewModel : MyReactiveObject
     public string Ports { get; set; }
 
     [Reactive]
-    public int UpMbps { get; set; }
+    public int? UpMbps { get; set; }
 
     [Reactive]
-    public int DownMbps { get; set; }
+    public int? DownMbps { get; set; }
 
     [Reactive]
     public string HopInterval { get; set; }
@@ -175,8 +175,8 @@ public class AddServerViewModel : MyReactiveObject
             AlterId = AlterId > 0 ? AlterId.ToString() : null,
             Flow = Flow.NullIfEmpty(),
             SalamanderPass = SalamanderPass.NullIfEmpty(),
-            UpMbps = UpMbps >= 0 ? UpMbps : null,
-            DownMbps = DownMbps >= 0 ? DownMbps : null,
+            UpMbps = UpMbps ?? 0,
+            DownMbps = DownMbps ?? 0,
             HopInterval = HopInterval.NullIfEmpty(),
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
