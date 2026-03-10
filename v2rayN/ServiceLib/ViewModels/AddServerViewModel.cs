@@ -27,10 +27,10 @@ public class AddServerViewModel : MyReactiveObject
     public string Ports { get; set; }
 
     [Reactive]
-    public int UpMbps { get; set; }
+    public int? UpMbps { get; set; }
 
     [Reactive]
-    public int DownMbps { get; set; }
+    public int? DownMbps { get; set; }
 
     [Reactive]
     public string HopInterval { get; set; }
@@ -113,8 +113,8 @@ public class AddServerViewModel : MyReactiveObject
         AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
         Flow = protocolExtra?.Flow ?? string.Empty;
         SalamanderPass = protocolExtra?.SalamanderPass ?? string.Empty;
-        UpMbps = protocolExtra?.UpMbps ?? _config.HysteriaItem.UpMbps;
-        DownMbps = protocolExtra?.DownMbps ?? _config.HysteriaItem.DownMbps;
+        UpMbps = protocolExtra?.UpMbps;
+        DownMbps = protocolExtra?.DownMbps;
         HopInterval = protocolExtra?.HopInterval.IsNullOrEmpty() ?? true ? Global.Hysteria2DefaultHopInt.ToString() : protocolExtra.HopInterval;
         VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
         VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
@@ -175,8 +175,8 @@ public class AddServerViewModel : MyReactiveObject
             AlterId = AlterId > 0 ? AlterId.ToString() : null,
             Flow = Flow.NullIfEmpty(),
             SalamanderPass = SalamanderPass.NullIfEmpty(),
-            UpMbps = UpMbps >= 0 ? UpMbps : null,
-            DownMbps = DownMbps >= 0 ? DownMbps : null,
+            UpMbps = UpMbps,
+            DownMbps = DownMbps,
             HopInterval = HopInterval.NullIfEmpty(),
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),

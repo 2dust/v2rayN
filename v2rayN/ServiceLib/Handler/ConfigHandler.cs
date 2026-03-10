@@ -723,8 +723,6 @@ public static class ConfigHandler
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
             SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
-            UpMbps = profileItem.GetProtocolExtra().UpMbps is null or < 0 ? config.HysteriaItem.UpMbps : profileItem.GetProtocolExtra().UpMbps,
-            DownMbps = profileItem.GetProtocolExtra().DownMbps is null or < 0 ? config.HysteriaItem.DownMbps : profileItem.GetProtocolExtra().DownMbps,
             HopInterval = profileItem.GetProtocolExtra().HopInterval?.TrimEx(),
         });
 
