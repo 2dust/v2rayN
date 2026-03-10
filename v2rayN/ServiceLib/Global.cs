@@ -95,7 +95,7 @@ public class Global
 
     public const string PolicyGroupDefaultAllFilter = $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*$";
 
-    public static readonly List<string> PolicyGroupDefaultFilterList = 
+    public static readonly List<string> PolicyGroupDefaultFilterList =
     [
         // All nodes (exclude traffic/expiry info)
         PolicyGroupDefaultAllFilter,

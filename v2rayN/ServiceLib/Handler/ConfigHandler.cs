@@ -1040,8 +1040,8 @@ public static class ConfigHandler
 
         if (profileItem.StreamSecurity.IsNotEmpty())
         {
-            if (profileItem.StreamSecurity != Global.StreamSecurity
-                 && profileItem.StreamSecurity != Global.StreamSecurityReality)
+            if (profileItem.StreamSecurity is not Global.StreamSecurity
+                 and not Global.StreamSecurityReality)
             {
                 profileItem.StreamSecurity = string.Empty;
             }
