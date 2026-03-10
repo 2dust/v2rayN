@@ -363,44 +363,36 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         var geoipFiles = new List<string>();
         var geoSiteFiles = new List<string>();
 
-        //Collect used files list
+        // Collect from routing rules
         var routingItems = await AppManager.Instance.RoutingItems();
         foreach (var routing in routingItems)
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
             foreach (var item in rules ?? [])
             {
-                foreach (var ip in item.Ip ?? [])
-                {
-                    var prefix = "geoip:";
-                    if (ip.StartsWith(prefix))
-                    {
-                        geoipFiles.Add(ip.Substring(prefix.Length));
-                    }
-                }
-
-                foreach (var domain in item.Domain ?? [])
-                {
-                    var prefix = "geosite:";
-                    if (domain.StartsWith(prefix))
-                    {
-                        geoSiteFiles.Add(domain.Substring(prefix.Length));
-                    }
-                }
+                AddPrefixedItems(item.Ip, "geoip:", geoipFiles);
+                AddPrefixedItems(item.Domain, "geosite:", geoSiteFiles);
             }
         }
 
-        //append dns items TODO
-        geoSiteFiles.Add("google");
-        geoSiteFiles.Add("cn");
-        geoSiteFiles.Add("geolocation-cn");
-        geoSiteFiles.Add("category-ads-all");
+        // Collect from DNS configuration
+        var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
+        if (dnsItem != null)
+        {
+            ExtractDnsRuleSets(dnsItem.NormalDNS, geoipFiles, geoSiteFiles);
+            ExtractDnsRuleSets(dnsItem.TunDNS, geoipFiles, geoSiteFiles);
+        }
 
+        // Append default items
+        geoSiteFiles.AddRange(["google", "cn", "geolocation-cn", "category-ads-all"]);
+
+        // Download files
         var path = Utils.GetBinPath("srss");
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
+
         foreach (var item in geoipFiles.Distinct())
         {
             await UpdateSrsFile("geoip", item);
@@ -409,6 +401,63 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         foreach (var item in geoSiteFiles.Distinct())
         {
             await UpdateSrsFile("geosite", item);
+        }
+    }
+
+    private void AddPrefixedItems(List<string>? items, string prefix, List<string> output)
+    {
+        if (items == null)
+        {
+            return;
+        }
+
+        foreach (var item in items)
+        {
+            if (item.StartsWith(prefix))
+            {
+                output.Add(item.Substring(prefix.Length));
+            }
+        }
+    }
+
+    private void ExtractDnsRuleSets(string? dnsJson, List<string> geoipFiles, List<string> geoSiteFiles)
+    {
+        if (string.IsNullOrEmpty(dnsJson))
+        {
+            return;
+        }
+
+        try
+        {
+            var dns = JsonUtils.Deserialize<Dns4Sbox>(dnsJson);
+            if (dns?.rules != null)
+            {
+                foreach (var rule in dns.rules)
+                {
+                    ExtractSrsRuleSets(rule, geoipFiles, geoSiteFiles);
+                }
+            }
+        }
+        catch { }
+    }
+
+    private void ExtractSrsRuleSets(Rule4Sbox? rule, List<string> geoipFiles, List<string> geoSiteFiles)
+    {
+        if (rule == null)
+        {
+            return;
+        }
+
+        AddPrefixedItems(rule.rule_set, "geosite-", geoSiteFiles);
+        AddPrefixedItems(rule.rule_set, "geoip-", geoipFiles);
+
+        // Handle nested rules recursively
+        if (rule.rules != null)
+        {
+            foreach (var nestedRule in rule.rules)
+            {
+                ExtractSrsRuleSets(nestedRule, geoipFiles, geoSiteFiles);
+            }
         }
     }
 
