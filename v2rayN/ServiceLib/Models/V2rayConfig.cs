@@ -360,6 +360,7 @@ public class TlsSettings4Ray
     public bool? disableSystemRoot { get; set; }
     public string? echConfigList { get; set; }
     public string? echForceQuery { get; set; }
+    public Sockopt4Ray? echSockopt { get; set; }
 }
 
 public class CertificateSettings4Ray

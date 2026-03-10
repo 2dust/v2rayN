@@ -8,9 +8,9 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
     public ClashConnectionsView()
     {
         InitializeComponent();
-        
+
         _config = AppManager.Instance.Config;
-        
+
         ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
@@ -65,7 +65,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
     {
         ViewModel?.ClashConnectionClose(false);
     }
-    
+
     #region UI
 
     private void RestoreUI()

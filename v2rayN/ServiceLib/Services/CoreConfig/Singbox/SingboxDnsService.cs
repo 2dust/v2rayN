@@ -243,7 +243,6 @@ public partial class CoreConfigSingboxService
                 if (Utils.IsIpv6(predefined))
                 {
                     rule.answer = new List<string> { $"*. IN AAAA {predefined}" };
-
                 }
                 else
                 {

@@ -227,7 +227,7 @@ public class CoreConfigContextBuilder
     {
         var result = NodeValidatorResult.Empty();
 
-        if (node.Subid.IsNullOrEmpty())
+        if (node.Subid.IsNullOrEmpty() || node.ConfigType == EConfigType.Custom)
         {
             return (null, result);
         }

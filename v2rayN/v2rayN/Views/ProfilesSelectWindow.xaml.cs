@@ -97,8 +97,7 @@ public partial class ProfilesSelectWindow
 
     private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        var colHeader = sender as DataGridColumnHeader;
-        if (colHeader == null || colHeader.TabIndex < 0 || colHeader.Column == null)
+        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column == null)
         {
             return;
         }

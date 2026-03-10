@@ -316,16 +316,24 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 SsMethod = Global.None,
             });
 
-            foreach (var outbound in _coreConfig.outbounds.Where(outbound => outbound.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
+            foreach (var outbound in _coreConfig.outbounds
+                .Where(o => o.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
             {
-                outbound.streamSettings ??= new StreamSettings4Ray();
-                outbound.streamSettings.sockopt ??= new Sockopt4Ray();
-                outbound.streamSettings.sockopt.dialerProxy = "tun-project-ss";
+                outbound.streamSettings ??= new();
+                outbound.streamSettings.sockopt ??= new();
+                outbound.streamSettings.sockopt.dialerProxy = "tun-protect-ss";
+            }
+            // ech protected
+            foreach (var outbound in _coreConfig.outbounds
+                .Where(outbound => outbound.streamSettings?.tlsSettings?.echConfigList?.IsNullOrEmpty() == false))
+            {
+                outbound.streamSettings!.tlsSettings!.echSockopt ??= new();
+                outbound.streamSettings.tlsSettings.echSockopt.dialerProxy = "tun-protect-ss";
             }
             _coreConfig.outbounds.Add(new CoreConfigV2rayService(context with
             {
                 Node = protectNode,
-            }).BuildProxyOutbound("tun-project-ss"));
+            }).BuildProxyOutbound("tun-protect-ss"));
 
             _coreConfig.routing.rules ??= [];
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
