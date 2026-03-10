@@ -321,19 +321,19 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 outbound.streamSettings ??= new();
                 outbound.streamSettings.sockopt ??= new();
-                outbound.streamSettings.sockopt.dialerProxy = "tun-project-ss";
+                outbound.streamSettings.sockopt.dialerProxy = "tun-protect-ss";
             }
             // ech protected
             foreach (var outbound in _coreConfig.outbounds
                 .Where(outbound => outbound.streamSettings?.tlsSettings?.echConfigList?.IsNullOrEmpty() == false))
             {
                 outbound.streamSettings!.tlsSettings!.echSockopt ??= new();
-                outbound.streamSettings.tlsSettings.echSockopt.dialerProxy = "tun-project-ss";
+                outbound.streamSettings.tlsSettings.echSockopt.dialerProxy = "tun-protect-ss";
             }
             _coreConfig.outbounds.Add(new CoreConfigV2rayService(context with
             {
                 Node = protectNode,
-            }).BuildProxyOutbound("tun-project-ss"));
+            }).BuildProxyOutbound("tun-protect-ss"));
 
             _coreConfig.routing.rules ??= [];
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
