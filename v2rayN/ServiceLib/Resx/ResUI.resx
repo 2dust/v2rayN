@@ -1027,7 +1027,7 @@
     <value>sing-box Mux Protocol</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Tun mode)</value>
+    <value>Process name: Linux/Windows/macOS (sing-box)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP or IP CIDR</value>

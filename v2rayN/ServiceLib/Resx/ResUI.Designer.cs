@@ -3376,7 +3376,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Process (Tun mode) 的本地化字符串。
+        ///   查找类似 Process name: Linux/Windows/macOS (sing-box) 的本地化字符串。
         /// </summary>
         public static string TbRoutingRuleProcess {
             get {
