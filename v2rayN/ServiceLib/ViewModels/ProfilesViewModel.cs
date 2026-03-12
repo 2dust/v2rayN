@@ -228,22 +228,22 @@ public class ProfilesViewModel : MyReactiveObject
 
         AppEvents.ProfilesRefreshRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await RefreshServersBiz());
 
         AppEvents.SubscriptionsRefreshRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await RefreshSubscriptions());
 
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
         AppEvents.SetDefaultServerRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async indexId => await SetDefaultServer(indexId));
 
         #endregion AppEvents
@@ -732,7 +732,7 @@ public class ProfilesViewModel : MyReactiveObject
 
         _speedtestService ??= new SpeedtestService(_config, async (SpeedTestResult result) =>
         {
-            RxApp.MainThreadScheduler.Schedule(result, (scheduler, result) =>
+            RxSchedulers.MainThreadScheduler.Schedule(result, (scheduler, result) =>
             {
                 _ = SetSpeedTestResult(result);
                 return Disposable.Empty;

@@ -20,6 +20,7 @@ global using System.Windows.Threading;
 global using DynamicData;
 global using DynamicData.Binding;
 global using ReactiveUI;
+global using ReactiveUI.Builder;
 global using ReactiveUI.Fody.Helpers;
 global using ServiceLib;
 global using ServiceLib.Base;
