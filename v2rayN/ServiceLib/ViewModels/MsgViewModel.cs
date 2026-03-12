@@ -31,7 +31,7 @@ public class MsgViewModel : MyReactiveObject
 
         AppEvents.SendMsgViewRequested
          .AsObservable()
-         //.ObserveOn(RxApp.MainThreadScheduler)
+         //.ObserveOn(RxSchedulers.MainThreadScheduler)
          .Subscribe(content => _ = AppendQueueMsg(content));
     }
 

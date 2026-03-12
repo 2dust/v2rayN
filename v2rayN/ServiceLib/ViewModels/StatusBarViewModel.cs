@@ -200,27 +200,27 @@ public class StatusBarViewModel : MyReactiveObject
 
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
         AppEvents.RoutingsMenuRefreshRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await RefreshRoutingsMenu());
 
         AppEvents.TestServerRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await TestServerAvailability());
 
         AppEvents.InboundDisplayRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await InboundDisplayStatus());
 
         AppEvents.SysProxyChangeRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await SetListenerType(result));
 
         #endregion AppEvents
@@ -243,7 +243,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             AppEvents.ProfilesRefreshRequested
               .AsObservable()
-              .ObserveOn(RxApp.MainThreadScheduler)
+              .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
         }
     }
@@ -362,7 +362,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task TestServerAvailabilitySub(string msg)
     {
-        RxApp.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        RxSchedulers.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
         {
             _ = TestServerAvailabilityResult(msg);
             return Disposable.Empty;

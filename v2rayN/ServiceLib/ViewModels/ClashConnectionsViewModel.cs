@@ -56,7 +56,7 @@ public class ClashConnectionsViewModel : MyReactiveObject
             return;
         }
 
-        RxApp.MainThreadScheduler.Schedule(ret?.connections, (scheduler, model) =>
+        RxSchedulers.MainThreadScheduler.Schedule(ret?.connections, (scheduler, model) =>
         {
             _ = RefreshConnections(model);
             return Disposable.Empty;
