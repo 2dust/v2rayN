@@ -1098,9 +1098,6 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>آدرس اینترنتی تست پینگ سرعت</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی آیا وجود دارد!</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>پایان تست...</value>
   </data>

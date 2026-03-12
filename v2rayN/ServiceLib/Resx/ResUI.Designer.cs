@@ -3817,15 +3817,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Updating subscription, only determining if remarks exist 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsEnableUpdateSubOnlyRemarksExist {
-            get {
-                return ResourceManager.GetString("TbSettingsEnableUpdateSubOnlyRemarksExist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Exception 的本地化字符串。
         /// </summary>
         public static string TbSettingsException {

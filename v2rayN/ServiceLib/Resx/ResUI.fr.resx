@@ -1095,9 +1095,6 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Adresse de test de connexion réelle</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Ne vérifier l’existence de l’alias qu’à la maj. des abonnements</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Arrêt du test en cours...</value>
   </data>

@@ -47,7 +47,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool KeepOlderDedupl { get; set; }
     [Reactive] public bool DisplayRealTimeSpeed { get; set; }
     [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
-    [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
     [Reactive] public bool AutoHideStartup { get; set; }
     [Reactive] public bool Hide2TrayWhenClose { get; set; }
     [Reactive] public bool MacOSShowInDock { get; set; }
@@ -180,7 +179,6 @@ public class OptionSettingViewModel : MyReactiveObject
         DisplayRealTimeSpeed = _config.GuiItem.DisplayRealTimeSpeed;
         KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
         EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
-        EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
         AutoHideStartup = _config.UiItem.AutoHideStartup;
         Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
         MacOSShowInDock = _config.UiItem.MacOSShowInDock;
@@ -345,7 +343,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
         _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
         _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
-        _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
         _config.UiItem.AutoHideStartup = AutoHideStartup;
         _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
         _config.UiItem.MacOSShowInDock = MacOSShowInDock;

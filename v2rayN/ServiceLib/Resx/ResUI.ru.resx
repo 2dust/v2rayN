@@ -1098,9 +1098,6 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>URL для быстрой проверки реальной задержки</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Обновляя подписку, проверять лишь наличие примечаний</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Отмена тестирования...</value>
   </data>

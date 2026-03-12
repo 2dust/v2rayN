@@ -1095,9 +1095,6 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真連線測試位址</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>更新訂閱時只判斷別名是否存在</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>測試終止中...</value>
   </data>
