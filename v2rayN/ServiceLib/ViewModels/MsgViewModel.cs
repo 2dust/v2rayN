@@ -2,9 +2,15 @@ namespace ServiceLib.ViewModels;
 
 public class MsgViewModel : MyReactiveObject
 {
+    private const int MaxQueuedMessagesVisible = 2_000;
+    private const int MaxQueuedMessagesHidden = 500;
+    private const int MaxFlushMessages = 200;
+    private const int MaxFlushChars = 64 * 1024;
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
+    private int _queuedMessageCount = 0;
     private int _showLock = 0; // 0 = unlocked, 1 = locked
+    private long _droppedMessageCount = 0;
     public int NumMaxMsg { get; } = 500;
 
     [Reactive]
@@ -31,19 +37,28 @@ public class MsgViewModel : MyReactiveObject
 
         AppEvents.SendMsgViewRequested
          .AsObservable()
-         //.ObserveOn(RxSchedulers.MainThreadScheduler)
+         //.ObserveOn(RxApp.MainThreadScheduler)
          .Subscribe(content => _ = AppendQueueMsg(content));
     }
 
-    private async Task AppendQueueMsg(string msg)
+    private Task AppendQueueMsg(string msg)
     {
         if (AutoRefresh == false)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        EnqueueQueueMsg(msg);
+        if (!EnqueueQueueMsg(msg))
+        {
+            return Task.CompletedTask;
+        }
 
+        TryScheduleDrain();
+        return Task.CompletedTask;
+    }
+
+    private void TryScheduleDrain()
+    {
         if (!AppManager.Instance.ShowInTaskbar)
         {
             return;
@@ -54,25 +69,59 @@ public class MsgViewModel : MyReactiveObject
             return;
         }
 
+        _ = DrainQueueMsgAsync();
+    }
+
+    private async Task DrainQueueMsgAsync()
+    {
         try
         {
             await Task.Delay(500).ConfigureAwait(false);
 
-            var sb = new StringBuilder();
-            while (_queueMsg.TryDequeue(out var line))
+            var batch = DequeueBatch();
+            if (_updateView != null && !string.IsNullOrEmpty(batch))
             {
-                sb.Append(line);
+                await _updateView(EViewAction.DispatcherShowMsg, batch);
             }
-
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
         }
         finally
         {
             Interlocked.Exchange(ref _showLock, 0);
         }
+
+        if (AppManager.Instance.ShowInTaskbar && !_queueMsg.IsEmpty)
+        {
+            TryScheduleDrain();
+        }
     }
 
-    private void EnqueueQueueMsg(string msg)
+    private string DequeueBatch()
+    {
+        var sb = new StringBuilder();
+        var droppedCount = Interlocked.Exchange(ref _droppedMessageCount, 0);
+        if (droppedCount > 0)
+        {
+            sb.Append($"----- Message queue trimmed: dropped {droppedCount} messages -----{Environment.NewLine}");
+        }
+
+        var dequeuedCount = 0;
+        while (dequeuedCount < MaxFlushMessages
+               && _queueMsg.TryDequeue(out var line))
+        {
+            Interlocked.Decrement(ref _queuedMessageCount);
+            sb.Append(line);
+            dequeuedCount++;
+
+            if (sb.Length >= MaxFlushChars)
+            {
+                break;
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private bool EnqueueQueueMsg(string msg)
     {
         //filter msg
         if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
@@ -81,21 +130,39 @@ public class MsgViewModel : MyReactiveObject
             {
                 if (!Regex.IsMatch(msg, MsgFilter))
                 {
-                    return;
+                    return false;
                 }
             }
             catch (Exception ex)
             {
-                _queueMsg.Enqueue(ex.Message);
+                msg = ex.Message;
                 _lastMsgFilterNotAvailable = true;
             }
         }
 
-        _queueMsg.Enqueue(msg);
-        if (!msg.EndsWith(Environment.NewLine))
+        _queueMsg.Enqueue(NormalizeMessage(msg));
+        Interlocked.Increment(ref _queuedMessageCount);
+        TrimQueuedMessages();
+        return true;
+    }
+
+    private void TrimQueuedMessages()
+    {
+        var maxQueuedMessages = AppManager.Instance.ShowInTaskbar
+            ? MaxQueuedMessagesVisible
+            : MaxQueuedMessagesHidden;
+
+        while (Volatile.Read(ref _queuedMessageCount) > maxQueuedMessages
+               && _queueMsg.TryDequeue(out _))
         {
-            _queueMsg.Enqueue(Environment.NewLine);
+            Interlocked.Decrement(ref _queuedMessageCount);
+            Interlocked.Increment(ref _droppedMessageCount);
         }
+    }
+
+    private static string NormalizeMessage(string msg)
+    {
+        return msg.EndsWith(Environment.NewLine) ? msg : msg + Environment.NewLine;
     }
 
     //public void ClearMsg()

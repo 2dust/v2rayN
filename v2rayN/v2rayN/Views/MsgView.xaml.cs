@@ -45,16 +45,30 @@ public partial class MsgView
 
     private void ShowMsg(object msg)
     {
-        if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
-        {
-            ClearMsg();
-        }
-
         txtMsg.AppendText(msg.ToString());
+        TrimMsg();
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
         }
+    }
+
+    private void TrimMsg()
+    {
+        var maxLines = ViewModel?.NumMaxMsg ?? 500;
+        if (txtMsg.LineCount <= maxLines)
+        {
+            return;
+        }
+
+        var keepFromCharIndex = txtMsg.GetCharacterIndexFromLineIndex(txtMsg.LineCount - maxLines);
+        if (keepFromCharIndex <= 0)
+        {
+            return;
+        }
+
+        txtMsg.Select(0, keepFromCharIndex);
+        txtMsg.SelectedText = string.Empty;
     }
 
     public void ClearMsg()

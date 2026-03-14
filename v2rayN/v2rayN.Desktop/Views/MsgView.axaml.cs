@@ -43,22 +43,30 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     private void ShowMsg(object msg)
     {
-        //var lineCount = txtMsg.LineCount;
-        //if (lineCount > ViewModel?.NumMaxMsg)
-        //{
-        //    var cutLine = txtMsg.Document.GetLineByNumber(lineCount - KeepLines);
-        //    txtMsg.Document.Remove(0, cutLine.Offset);
-        //}
-        if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
-        {
-            ClearMsg();
-        }
-
         txtMsg.AppendText(msg.ToString());
+        TrimMsg();
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
         }
+    }
+
+    private void TrimMsg()
+    {
+        var maxLines = ViewModel?.NumMaxMsg ?? 500;
+        if (txtMsg.LineCount <= maxLines || txtMsg.Document == null)
+        {
+            return;
+        }
+
+        var firstKeepLine = txtMsg.LineCount - maxLines + 1;
+        var cutLine = txtMsg.Document.GetLineByNumber(firstKeepLine);
+        if (cutLine.Offset <= 0)
+        {
+            return;
+        }
+
+        txtMsg.Document.Remove(0, cutLine.Offset);
     }
 
     public void ClearMsg()
