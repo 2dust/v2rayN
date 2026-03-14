@@ -1665,4 +1665,16 @@
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>按區域分組</value>
   </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
 </root>

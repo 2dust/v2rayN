@@ -1668,4 +1668,16 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>Group by Region</value>
   </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>Másolás</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>Összes kijelölése</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
 </root>

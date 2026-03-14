@@ -925,6 +925,42 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        public static string menuEditCopy {
+            get {
+                return ResourceManager.GetString("menuEditCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Format 的本地化字符串。
+        /// </summary>
+        public static string menuEditFormat {
+            get {
+                return ResourceManager.GetString("menuEditFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Paste 的本地化字符串。
+        /// </summary>
+        public static string menuEditPaste {
+            get {
+                return ResourceManager.GetString("menuEditPaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select all 的本地化字符串。
+        /// </summary>
+        public static string menuEditSelectAll {
+            get {
+                return ResourceManager.GetString("menuEditSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit  的本地化字符串。
         /// </summary>
         public static string menuEditServer {
