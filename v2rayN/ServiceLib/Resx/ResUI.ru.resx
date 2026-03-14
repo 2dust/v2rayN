@@ -1027,7 +1027,7 @@
     <value>Протокол Mux для sing-box</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Tun mode)</value>
+    <value>Process (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP-адрес или сеть CIDR</value>
@@ -1097,9 +1097,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>URL для быстрой проверки реальной задержки</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Обновляя подписку, проверять лишь наличие примечаний</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Отмена тестирования...</value>

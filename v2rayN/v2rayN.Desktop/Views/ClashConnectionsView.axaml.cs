@@ -28,7 +28,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
 
             AppEvents.AppExitRequested
               .AsObservable()
-              .ObserveOn(RxApp.MainThreadScheduler)
+              .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
         });

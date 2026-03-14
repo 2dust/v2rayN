@@ -90,7 +90,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         AppEvents.ProxiesReloadRequested
             .AsObservable()
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await ProxiesReload());
 
         #endregion AppEvents
@@ -173,7 +173,7 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         if (refreshUI)
         {
-            RxApp.MainThreadScheduler.Schedule(() => _ = RefreshProxyGroups());
+            RxSchedulers.MainThreadScheduler.Schedule(() => _ = RefreshProxyGroups());
         }
     }
 
@@ -387,7 +387,7 @@ public class ClashProxiesViewModel : MyReactiveObject
             }
 
             var model = new SpeedTestResult() { IndexId = item.Name, Delay = result };
-            RxApp.MainThreadScheduler.Schedule(model, (scheduler, model) =>
+            RxSchedulers.MainThreadScheduler.Schedule(model, (scheduler, model) =>
             {
                 _ = ProxiesDelayTestResult(model);
                 return Disposable.Empty;

@@ -204,7 +204,7 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task UpdateFinishedSub(bool blReload)
     {
-        RxApp.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        RxSchedulers.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
         {
             _ = UpdateFinishedResult(blReload);
             return Disposable.Empty;
@@ -317,7 +317,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             Remarks = msg,
         };
 
-        RxApp.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        RxSchedulers.MainThreadScheduler.Schedule(item, (scheduler, model) =>
         {
             _ = UpdateViewResult(model);
             return Disposable.Empty;

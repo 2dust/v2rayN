@@ -1027,7 +1027,7 @@
     <value>sing-box Mux protokoll</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Tun mode)</value>
+    <value>Process (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP vagy IP CIDR</value>
@@ -1097,9 +1097,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Sebesség Ping Teszt URL</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Előfizetés frissítése, csak a megjegyzések létezésének ellenőrzése</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Teszt megszakítása...</value>

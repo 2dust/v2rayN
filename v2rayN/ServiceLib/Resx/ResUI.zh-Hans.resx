@@ -1024,7 +1024,7 @@
     <value>sing-box Mux 多路复用协议</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>进程 (Tun 模式)</value>
+    <value>进程 (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
@@ -1094,9 +1094,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真连接测试地址</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>更新订阅时只判断别名已存在否</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>测试终止中...</value>

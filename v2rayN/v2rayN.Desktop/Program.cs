@@ -59,7 +59,7 @@ internal class Program
            //.WithInterFont()
            .WithFontByDefault()
            .LogToTrace()
-           .UseReactiveUI();
+           .UseReactiveUI(_ => { });
 
         if (OperatingSystem.IsMacOS())
         {

@@ -33,7 +33,7 @@ public partial class ClashConnectionsView
 
             AppEvents.AppExitRequested
                 .AsObservable()
-                .ObserveOn(RxApp.MainThreadScheduler)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(_ => StorageUI())
                 .DisposeWith(disposables);
         });

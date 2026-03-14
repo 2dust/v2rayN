@@ -1024,7 +1024,7 @@
     <value>Protocole de multiplexage Mux (sing-box)</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Tun mode)</value>
+    <value>Process (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP ou IP CIDR</value>
@@ -1094,9 +1094,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Adresse de test de connexion réelle</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Ne vérifier l’existence de l’alias qu’à la maj. des abonnements</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Arrêt du test en cours...</value>
