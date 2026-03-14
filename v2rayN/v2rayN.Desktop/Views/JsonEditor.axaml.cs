@@ -15,12 +15,37 @@ public partial class JsonEditor : UserControl
     private static readonly Lazy<IHighlightingDefinition> SHighlightingLight =
         new(() => BuildHighlighting(dark: false), isThreadSafe: true);
 
+    public static readonly StyledProperty<string> TextProperty =
+        AvaloniaProperty.Register<JsonEditor, string>(nameof(Text), defaultValue: string.Empty);
+
+    public string Text
+    {
+        get => GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
+
     public JsonEditor()
     {
         InitializeComponent();
         var isDark = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
         Editor.SyntaxHighlighting = isDark ? SHighlightingDark.Value : SHighlightingLight.Value;
         Editor.TextArea.TextView.Options.EnableHyperlinks = false;
+
+        Editor.TextChanged += (_, _) =>
+        {
+            if (Text != Editor.Text)
+            {
+                SetCurrentValue(TextProperty, Editor.Text);
+            }
+        };
+
+        this.GetObservable(TextProperty).Subscribe(text =>
+        {
+            if (Editor.Text != text)
+            {
+                Editor.Text = text ?? string.Empty;
+            }
+        });
     }
 
     private static IHighlightingDefinition BuildHighlighting(bool dark)
@@ -50,12 +75,6 @@ public partial class JsonEditor : UserControl
             """;
         using var reader = XmlReader.Create(new StringReader(xshd));
         return HighlightingLoader.Load(reader, HighlightingManager.Instance);
-    }
-
-    public string Text
-    {
-        get => Editor.Text;
-        set => Editor.Text = value;
     }
 
     private void FormatJson_Click(object? sender, RoutedEventArgs e)
