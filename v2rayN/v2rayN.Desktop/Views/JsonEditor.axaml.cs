@@ -1,6 +1,7 @@
 using System.Text.Json;
-using AvaloniaEdit.TextMate;
-using TextMateSharp.Grammars;
+using System.Xml;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
 
 namespace v2rayN.Desktop.Views;
 
@@ -8,17 +9,47 @@ public partial class JsonEditor : UserControl
 {
     private static readonly JsonSerializerOptions SIndentedOptions = new() { WriteIndented = true };
 
+    private static readonly Lazy<IHighlightingDefinition> SHighlightingDark =
+        new(() => BuildHighlighting(dark: true), isThreadSafe: true);
+
+    private static readonly Lazy<IHighlightingDefinition> SHighlightingLight =
+        new(() => BuildHighlighting(dark: false), isThreadSafe: true);
+
     public JsonEditor()
     {
         InitializeComponent();
-        var currentTheme = Application.Current?.ActualThemeVariant;
-        var themeName = currentTheme == ThemeVariant.Dark ? ThemeName.DarkPlus :
-            currentTheme == ThemeVariant.Light ? ThemeName.LightPlus :
-            ThemeName.DarkPlus;
-        var jsonRegistryOptions = new RegistryOptions(themeName);
-        var grammarScopeName = jsonRegistryOptions.GetScopeByLanguageId(jsonRegistryOptions.GetLanguageByExtension(".json").Id);
-        Editor.InstallTextMate(jsonRegistryOptions).SetGrammar(grammarScopeName);
+        var isDark = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
+        Editor.SyntaxHighlighting = isDark ? SHighlightingDark.Value : SHighlightingLight.Value;
         Editor.TextArea.TextView.Options.EnableHyperlinks = false;
+    }
+
+    private static IHighlightingDefinition BuildHighlighting(bool dark)
+    {
+        var keyColor = dark ? "#9CDCFE" : "#0451A5";
+        var strColor = dark ? "#CE9178" : "#A31515";
+        var numColor = dark ? "#B5CEA8" : "#098658";
+        var kwColor  = dark ? "#569CD6" : "#0000FF";
+        var xshd = $"""
+            <?xml version="1.0"?>
+            <SyntaxDefinition name="JSON" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+              <Color name="Key" foreground="{keyColor}" />
+              <Color name="String" foreground="{strColor}" />
+              <Color name="Number" foreground="{numColor}" />
+              <Color name="Keyword" foreground="{kwColor}" fontWeight="bold" />
+              <RuleSet>
+                <Rule color="Key">"([^"\\]|\\.)*"(?=\s*:)</Rule>
+                <Rule color="String">"([^"\\]|\\.)*"</Rule>
+                <Rule color="Number">-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?</Rule>
+                <Keywords color="Keyword">
+                  <Word>true</Word>
+                  <Word>false</Word>
+                  <Word>null</Word>
+                </Keywords>
+              </RuleSet>
+            </SyntaxDefinition>
+            """;
+        using var reader = XmlReader.Create(new StringReader(xshd));
+        return HighlightingLoader.Load(reader, HighlightingManager.Instance);
     }
 
     public string Text

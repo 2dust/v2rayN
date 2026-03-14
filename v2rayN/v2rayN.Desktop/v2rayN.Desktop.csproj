@@ -15,7 +15,6 @@
 		</PackageReference>
 		<PackageReference Include="Avalonia.Desktop" />
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
-		<PackageReference Include="AvaloniaEdit.TextMate" />
 		<PackageReference Include="ReactiveUI.Avalonia" />
 		<PackageReference Include="MessageBox.Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
@@ -29,7 +28,6 @@
 		<PackageReference Include="ReactiveUI.Fody">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="TextMateSharp.Grammars" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -9,7 +9,6 @@
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.12" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.12" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
-    <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.4.1" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.12" />
     <PackageVersion Include="CliWrap" Version="3.10.0" />
     <PackageVersion Include="Downloader" Version="5.1.0" />
@@ -26,7 +25,6 @@
     <PackageVersion Include="NLog" Version="6.1.1" />
     <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-    <PackageVersion Include="TextMateSharp.Grammars" Version="2.0.3" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />
     <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
