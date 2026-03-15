@@ -528,7 +528,7 @@ EOF
 [Desktop Entry]
 Type=Application
 Name=v2rayN
-Comment=v2rayN for Debian and Ubuntu
+Comment=v2rayN for Debian GNU Linux
 Exec=v2rayn
 Icon=v2rayn
 Terminal=false
