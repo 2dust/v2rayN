@@ -5,12 +5,12 @@ set -euo pipefail
 . /etc/os-release
 
 case "${ID:-}" in
-  debian|ubuntu)
+  debian)
     echo "Detected supported system: ${NAME:-$ID} ${VERSION_ID:-}"
     ;;
   *)
     echo "Unsupported system: ${NAME:-unknown} (${ID:-unknown})."
-    echo "This script only supports: Debian / Ubuntu."
+    echo "This script only supports: Debian."
     exit 1
     ;;
 esac
