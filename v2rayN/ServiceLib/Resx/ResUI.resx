@@ -1320,6 +1320,18 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Local outbound address (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughHint" xml:space="preserve">
+    <value>e.g. 192.168.1.10</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Only applies to Xray. Fill in a local IPv4 address; leave empty to disable.</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+  </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*xhttp mode</value>
   </data>

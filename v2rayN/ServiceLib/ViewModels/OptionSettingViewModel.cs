@@ -20,6 +20,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool defAllowInsecure { get; set; }
     [Reactive] public string defFingerprint { get; set; }
     [Reactive] public string defUserAgent { get; set; }
+    [Reactive] public string sendThrough { get; set; }
     [Reactive] public string mux4SboxProtocol { get; set; }
     [Reactive] public bool enableCacheFile4Sbox { get; set; }
     [Reactive] public int? hyUpMbps { get; set; }
@@ -152,6 +153,7 @@ public class OptionSettingViewModel : MyReactiveObject
         defAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
         defFingerprint = _config.CoreBasicItem.DefFingerprint;
         defUserAgent = _config.CoreBasicItem.DefUserAgent;
+        sendThrough = _config.CoreBasicItem.SendThrough;
         mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
         enableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
         hyUpMbps = _config.HysteriaItem.UpMbps;
@@ -293,6 +295,12 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
+        var sendThroughValue = sendThrough?.TrimEx();
+        if (sendThroughValue.IsNotEmpty() && !Utils.IsIpv4(sendThroughValue))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.FillCorrectSendThroughIPv4);
+            return;
+        }
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
@@ -332,6 +340,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
         _config.CoreBasicItem.DefFingerprint = defFingerprint;
         _config.CoreBasicItem.DefUserAgent = defUserAgent;
+        _config.CoreBasicItem.SendThrough = sendThrough?.TrimEx();
         _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
         _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
         _config.HysteriaItem.UpMbps = hyUpMbps ?? 0;
