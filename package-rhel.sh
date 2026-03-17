@@ -226,7 +226,7 @@ download_xray() {
   tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
   curl -fL "$url" -o "$tmp/$zipname"
   unzip -q "$tmp/$zipname" -d "$tmp"
-  install -Dm755 "$tmp/xray" "$outdir/xray"
+  install -m 755 "$tmp/xray" "$outdir/xray"
 }
 
 download_singbox() {
@@ -249,7 +249,7 @@ download_singbox() {
   tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
   [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; return 1; }
-  install -Dm755 "$bin" "$outdir/sing-box"
+  install -m 755 "$bin" "$outdir/sing-box"
 }
 
 # Move geo files to outroot/bin
@@ -486,7 +486,7 @@ cp -a * %{buildroot}/opt/v2rayN/
 
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
-cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
+install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
 DIR="/opt/v2rayN"
@@ -503,11 +503,10 @@ echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
-chmod 0755 %{buildroot}%{_bindir}/v2rayn
 
 # Desktop file
 install -dm0755 %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
+install -m0644 /dev/stdin %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
