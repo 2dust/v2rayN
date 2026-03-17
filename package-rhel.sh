@@ -484,6 +484,11 @@ https://github.com/2dust/v2rayN
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
+# Normalize permissions
+find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
+find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
+[ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
+
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
 install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
