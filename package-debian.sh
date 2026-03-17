@@ -248,7 +248,7 @@ download_xray() {
   tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/$zipname"
   unzip -q "$tmp/$zipname" -d "$tmp"
-  install -Dm755 "$tmp/xray" "$outdir/xray"
+  install -m 755 "$tmp/xray" "$outdir/xray"
   rm -rf "$tmp"
 }
 
@@ -271,7 +271,7 @@ download_singbox() {
   tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
   [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
-  install -Dm755 "$bin" "$outdir/sing-box"
+  install -m 755 "$bin" "$outdir/sing-box"
   rm -rf "$tmp"
 }
 
@@ -444,7 +444,7 @@ build_for_arch() {
   fi
 
   # Wrapper
-  cat > "$STAGE/usr/bin/v2rayn" <<'EOF'
+  install -m 755 /dev/stdin "$STAGE/usr/bin/v2rayn" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 DIR="/opt/v2rayN"
@@ -464,7 +464,6 @@ echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
-  chmod 0755 "$STAGE/usr/bin/v2rayn"
 
   SHLIBS_DEPENDS=""
   EXTRA_DEPENDS="libc6 (>= 2.34), fontconfig (>= 2.13.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 8.32), bash (>= 5.1), libfreetype6 (>= 2.11)"
@@ -524,7 +523,7 @@ EOF
   fi
 
   # Desktop file
-  cat > "$STAGE/usr/share/applications/v2rayn.desktop" <<'EOF'
+  install -m 644 /dev/stdin "$STAGE/usr/share/applications/v2rayn.desktop" <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
@@ -534,7 +533,6 @@ Icon=v2rayn
 Terminal=false
 Categories=Network;
 EOF
-  chmod 0644 "$STAGE/usr/share/applications/v2rayn.desktop"
 
   # Control file
   cat > "$DEBIAN_DIR/control" <<EOF
@@ -552,7 +550,7 @@ Description: v2rayN (Avalonia) GUI client for Linux
 EOF
 
   # postinst
-  cat > "$DEBIAN_DIR/postinst" <<'EOF'
+  install -m 755 /dev/stdin "$DEBIAN_DIR/postinst" <<'EOF'
 #!/bin/sh
 set -e
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
@@ -561,10 +559,9 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then
 fi
 exit 0
 EOF
-  chmod 0755 "$DEBIAN_DIR/postinst"
 
   # postrm
-  cat > "$DEBIAN_DIR/postrm" <<'EOF'
+  install -m 755 /dev/stdin "$DEBIAN_DIR/postrm" <<'EOF'
 #!/bin/sh
 set -e
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
@@ -573,7 +570,6 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then
 fi
 exit 0
 EOF
-  chmod 0755 "$DEBIAN_DIR/postrm"
 
   # Normalize permissions
   find "$STAGE/opt/v2rayN" -type d -exec chmod 0755 {} +
