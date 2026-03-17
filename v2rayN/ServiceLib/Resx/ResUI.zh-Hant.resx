@@ -1710,4 +1710,10 @@
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>僅用於抓取自簽證書，存在中間人風險。</value>
   </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
 </root>

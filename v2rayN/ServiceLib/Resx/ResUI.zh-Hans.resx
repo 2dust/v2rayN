@@ -1716,4 +1716,10 @@
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>仅用于抓取自签证书，存在中间人风险。</value>
   </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>测试 UDP 延迟 (多选)</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP 测试地址</value>
+  </data>
 </root>
