@@ -483,16 +483,10 @@ EOF
 
   local SYS_LIBDIR=""
   local SYS_USRLIBDIR=""
-  case "$deb_arch" in
-    amd64)
-      SYS_LIBDIR="/lib/x86_64-linux-gnu"
-      SYS_USRLIBDIR="/usr/lib/x86_64-linux-gnu"
-      ;;
-    arm64)
-      SYS_LIBDIR="/lib/aarch64-linux-gnu"
-      SYS_USRLIBDIR="/usr/lib/aarch64-linux-gnu"
-      ;;
-  esac
+  multiarch="$(dpkg-architecture -a"$deb_arch" -qDEB_HOST_MULTIARCH)"
+
+  SYS_LIBDIR="/lib/$multiarch"
+  SYS_USRLIBDIR="/usr/lib/$multiarch"
 
   : > "$DEBIAN_DIR/substvars"
   mapfile -t ELF_FILES < <(
