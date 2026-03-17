@@ -571,13 +571,6 @@ fi
 exit 0
 EOF
 
-  # Normalize permissions
-  find "$STAGE/opt/v2rayN" -type d -exec chmod 0755 {} +
-  find "$STAGE/opt/v2rayN" -type f -exec chmod 0644 {} +
-  [[ -f "$STAGE/opt/v2rayN/v2rayN" ]] && chmod 0755 "$STAGE/opt/v2rayN/v2rayN" || true
-  [[ -f "$STAGE/opt/v2rayN/bin/xray/xray" ]] && chmod 0755 "$STAGE/opt/v2rayN/bin/xray/xray" || true
-  [[ -f "$STAGE/opt/v2rayN/bin/sing_box/sing-box" ]] && chmod 0755 "$STAGE/opt/v2rayN/bin/sing_box/sing-box" || true
-
   local deb_out
   deb_out="$OUTPUT_DIR/v2rayn_${VERSION}_${deb_arch}.deb"
 
