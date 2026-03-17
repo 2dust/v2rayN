@@ -159,6 +159,10 @@
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGestureText="Ctrl+R" />
                         <MenuItem
+                            x:Name="menuUdpTestServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuUdpTestServer}" />
+                        <MenuItem
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
