@@ -402,11 +402,12 @@ build_for_arch() {
   mkdir -p "$WORKDIR/$PKGROOT"
   cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
 
-  # Optional icon
+  # Required icon
   local ICON_CANDIDATE
   PROJECT_DIR="$(cd "$(dirname "$PROJECT")" && pwd)"
   ICON_CANDIDATE="$PROJECT_DIR/v2rayN.png"
-  [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
+  [[ -f "$ICON_CANDIDATE" ]] || { echo "Required icon not found: $ICON_CANDIDATE"; return 1; }
+  cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png"
 
   # Prepare bin structure
   mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
