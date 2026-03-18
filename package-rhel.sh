@@ -380,7 +380,7 @@ build_for_arch() {
   local RID_DIR="$rid"
   local PUBDIR
   PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
-  [[ -d "$PUBDIR" ]]
+  [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
 
   # Per-arch working area
   local PKGROOT="v2rayN-publish"
