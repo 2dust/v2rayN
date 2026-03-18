@@ -232,14 +232,14 @@ VERSION="${VERSION#v}"
 echo "[*] GUI version resolved as: ${VERSION}"
 
 download_xray() {
-  local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
+  local outdir="$1" rid="$2" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
   else
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
@@ -253,14 +253,14 @@ download_xray() {
 }
 
 download_singbox() {
-  local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
+  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
   else
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
@@ -330,9 +330,9 @@ download_geo_assets() {
 }
 
 download_v2rayn_bundle() {
-  local outroot="$1"
+  local outroot="$1" rid="$2"
   local url=""
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
   else
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
@@ -396,7 +396,6 @@ build_for_arch() {
   local PUBDIR
   PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
   [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
-  export RID_DIR
 
   local WORKDIR PKGROOT STAGE DEBIAN_DIR
   WORKDIR="$(mktemp -d)"
@@ -424,16 +423,16 @@ build_for_arch() {
     local outroot="$1"
 
     if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-      download_xray "$outroot/bin/xray" || echo "[!] xray download failed (skipped)"
+      download_xray "$outroot/bin/xray" "$RID_DIR" || echo "[!] xray download failed (skipped)"
     fi
     if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-      download_singbox "$outroot/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+      download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
   }
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
-    if download_v2rayn_bundle "$STAGE/opt/v2rayN"; then
+    if download_v2rayn_bundle "$STAGE/opt/v2rayN" "$RID_DIR"; then
       echo "[*] Using v2rayN bundle bin assets."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
