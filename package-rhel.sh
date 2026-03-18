@@ -210,14 +210,14 @@ echo "[*] GUI version resolved as: ${VERSION}"
 # Helpers for core
 download_xray() {
   # Download Xray core
-  local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
+  local outdir="$1" rid="$2" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
   else
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
@@ -232,14 +232,14 @@ download_xray() {
 
 download_singbox() {
   # Download sing-box
-  local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
+  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
   else
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
@@ -312,9 +312,9 @@ download_geo_assets() {
 
 # Prefer the prebuilt v2rayN core bundle; then unify geo layout
 download_v2rayn_bundle() {
-  local outroot="$1"
+  local outroot="$1" rid="$2"
   local url=""
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
   else
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
@@ -382,9 +382,6 @@ build_for_arch() {
   PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
   [[ -d "$PUBDIR" ]]
 
-  # Make RID_DIR visible to download helpers (they read this var)
-  export RID_DIR
-
   # Per-arch working area
   local PKGROOT="v2rayN-publish"
   local WORKDIR
@@ -417,16 +414,16 @@ build_for_arch() {
     local outroot="$1"
 
     if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-      download_xray "$outroot/bin/xray" || echo "[!] xray download failed (skipped)"
+      download_xray "$outroot/bin/xray" "$RID_DIR" || echo "[!] xray download failed (skipped)"
     fi
     if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-      download_singbox "$outroot/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+      download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
   }
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
-    if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
+    if download_v2rayn_bundle "$WORKDIR/$PKGROOT" "$RID_DIR"; then
       echo "[*] Using v2rayN bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
@@ -527,10 +524,8 @@ Categories=Network;
 EOF
 
 # Icon
-if [ -f "%{_builddir}/__PKGROOT__/v2rayn.png" ]; then
-  install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
-  install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-fi
+install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
+install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 
 %post
 /usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
