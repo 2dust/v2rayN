@@ -414,7 +414,8 @@ build_for_arch() {
   cp -a "$PUBDIR/." "$STAGE/opt/v2rayN/"
 
   local ICON_CANDIDATE
-  ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
+  PROJECT_DIR="$(cd "$(dirname "$PROJECT")" && pwd)"
+  ICON_CANDIDATE="$PROJECT_DIR/v2rayN.png"
   [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$STAGE/usr/share/icons/hicolor/256x256/apps/v2rayn.png" || true
 
   mkdir -p "$STAGE/opt/v2rayN/bin/xray" "$STAGE/opt/v2rayN/bin/sing_box"
