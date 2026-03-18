@@ -223,10 +223,11 @@ download_xray() {
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
   fi
   echo "[+] Download xray: $url"
-  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/$zipname"
   unzip -q "$tmp/$zipname" -d "$tmp"
   install -m 755 "$tmp/xray" "$outdir/xray"
+  rm -rf "$tmp"
 }
 
 download_singbox() {
@@ -244,12 +245,13 @@ download_singbox() {
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
   fi
   echo "[+] Download sing-box: $url"
-  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/$tarname"
   tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
-  [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; return 1; }
+  [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
   install -m 755 "$bin" "$outdir/sing-box"
+  rm -rf "$tmp"
 }
 
 # Move geo files to outroot/bin
