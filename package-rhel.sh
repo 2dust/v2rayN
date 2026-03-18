@@ -402,7 +402,8 @@ build_for_arch() {
 
   # Optional icon
   local ICON_CANDIDATE
-  ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
+  PROJECT_DIR="$(cd "$(dirname "$PROJECT")" && pwd)"
+  ICON_CANDIDATE="$PROJECT_DIR/v2rayN.png"
   [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
 
   # Prepare bin structure
