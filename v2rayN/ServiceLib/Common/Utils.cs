@@ -522,6 +522,23 @@ public class Utils
         return false;
     }
 
+    public static bool IsIpv4(string? ip)
+    {
+        if (ip.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        ip = ip.Trim();
+        if (!IPAddress.TryParse(ip, out var address))
+        {
+            return false;
+        }
+
+        return address.AddressFamily == AddressFamily.InterNetwork
+               && ip.Count(c => c == '.') == 3;
+    }
+
     public static bool IsIpAddress(string? ip)
     {
         if (ip.IsNullOrEmpty())

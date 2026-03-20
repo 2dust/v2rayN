@@ -41,6 +41,7 @@ public static class ConfigHandler
             Loglevel = "warning",
             MuxEnabled = false,
         };
+        config.CoreBasicItem.SendThrough = config.CoreBasicItem.SendThrough?.TrimEx();
 
         if (config.Inbound == null)
         {
