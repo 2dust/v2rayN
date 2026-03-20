@@ -1,0 +1,23 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.JsonEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib">
+
+    <ae:TextEditor
+        Name="Editor"
+        FontFamily="Cascadia Code,Consolas,Monospace"
+        FontSize="14"
+        ShowLineNumbers="True">
+        <ae:TextEditor.ContextMenu>
+            <ContextMenu>
+                <MenuItem Click="FormatJson_Click" Header="{x:Static resx:ResUI.menuEditFormat}" />
+                <Separator />
+                <MenuItem Click="Copy_Click" Header="{x:Static resx:ResUI.menuEditCopy}" />
+                <MenuItem Click="Paste_Click" Header="{x:Static resx:ResUI.menuEditPaste}" />
+                <MenuItem Click="SelectAll_Click" Header="{x:Static resx:ResUI.menuEditSelectAll}" />
+            </ContextMenu>
+        </ae:TextEditor.ContextMenu>
+    </ae:TextEditor>
+</UserControl>

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuServers}"
     Width="900"
@@ -658,16 +659,13 @@
                                             Margin="{StaticResource Margin4}"
                                             VerticalAlignment="Center"
                                             Text="{x:Static resx:ResUI.TransportExtraTip}" />
-                                        <TextBox
+                                        <views:JsonEditor
                                             x:Name="txtExtra"
                                             Width="400"
                                             MinHeight="100"
                                             Margin="{StaticResource Margin4}"
                                             HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Classes="TextArea"
-                                            MinLines="6"
-                                            TextWrapping="Wrap" />
+                                            VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
@@ -749,13 +747,13 @@
                         <Button.Flyout>
                             <Flyout>
                                 <StackPanel>
-                                    <TextBox
+                                    <views:JsonEditor
                                         x:Name="txtFinalmask"
                                         Width="400"
+                                        MinHeight="100"
                                         Margin="{StaticResource Margin4}"
-                                        AcceptsReturn="True"
-                                        Classes="TextArea"
-                                        TextWrapping="NoWrap" />
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center" />
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>

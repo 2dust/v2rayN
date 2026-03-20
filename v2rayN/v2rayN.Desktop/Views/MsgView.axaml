@@ -79,8 +79,8 @@
                     <MenuItem
                         x:Name="menuMsgViewSelectAll"
                         Click="menuMsgViewSelectAll_Click"
-                        InputGesture="Ctrl+A" 
-                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}" />
+                        Header="{x:Static resx:ResUI.menuMsgViewSelectAll}"
+                        InputGesture="Ctrl+A" />
                     <MenuItem
                         x:Name="menuMsgViewCopy"
                         Click="menuMsgViewCopy_Click"

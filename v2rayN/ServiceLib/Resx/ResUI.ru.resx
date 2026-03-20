@@ -1668,4 +1668,16 @@
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>Группировка по регионам</value>
   </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>Скопировать</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>Выбрать все</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
 </root>
