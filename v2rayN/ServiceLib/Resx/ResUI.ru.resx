@@ -1027,7 +1027,7 @@
     <value>Протокол Mux для sing-box</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Linux/Windows)</value>
+    <value>Процесс (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP-адрес или сеть CIDR</value>
@@ -1393,10 +1393,10 @@
     <value>Внутренний DNS</value>
   </data>
   <data name="TbDirectResolveStrategy" xml:space="preserve">
-    <value>Direct Target Resolution Strategy</value>
+    <value>Стратегия разрешения прямых соединений</value>
   </data>
   <data name="TbRemoteResolveStrategy" xml:space="preserve">
-    <value>Proxy Target Resolution Strategy</value>
+    <value>Стратегия разрешения прокси-соединений</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Добавить стандартные записи hosts (DNS)</value>
@@ -1429,7 +1429,7 @@
     <value>Включён пользовательский DNS — настройки на этой странице не применяются</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Block ECH and HTTP/3 availability checks when enabled</value>
+    <value>При включении блокирует проверки доступности ECH и HTTP/3</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Пожалуйста, заполните корректный шаблон конфигурации</value>
@@ -1462,127 +1462,127 @@
     <value>Эта функция предназначена для продвинутых пользователей и особых случаев. После включения игнорируются базовые настройки ядра, DNS и маршрутизации. Вы должны самостоятельно корректно задать порт системного прокси, учёт трафика и другие связанные параметры — всё настраивается вручную.</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
-    <value>Start parsing and processing subscription content</value>
+    <value>Начинается разбор и обработка содержимого подписки</value>
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
-    <value>Select Profile</value>
+    <value>Выбрать профиль</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
+    <value>По умолчанию применяется глобально, со встроенной фильтрацией FakeIP (только sing-box).</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
-    <value>Please Add At Least One Configuration</value>
+    <value>Добавьте хотя бы одну конфигурацию</value>
   </data>
   <data name="TbConfigTypePolicyGroup" xml:space="preserve">
-    <value>Policy Group</value>
+    <value>Группа политик</value>
   </data>
   <data name="TbConfigTypeProxyChain" xml:space="preserve">
-    <value>Proxy Chain</value>
+    <value>Цепочка прокси</value>
   </data>
   <data name="TbLeastPing" xml:space="preserve">
-    <value>Lowest Latency</value>
+    <value>Наименьшая задержка</value>
   </data>
   <data name="TbRandom" xml:space="preserve">
-    <value>Random</value>
+    <value>Случайный</value>
   </data>
   <data name="TbRoundRobin" xml:space="preserve">
-    <value>Round Robin</value>
+    <value>Циклический (Round Robin)</value>
   </data>
   <data name="TbLeastLoad" xml:space="preserve">
-    <value>Most Stable</value>
+    <value>Наиболее стабильный</value>
   </data>
   <data name="TbPolicyGroupType" xml:space="preserve">
-    <value>Policy Group Type</value>
+    <value>Тип группы политик</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>Add Policy Group Configuration</value>
+    <value>Добавить группу политик </value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>Add Proxy Chain Configuration</value>
+    <value>Добавить цепочку прокси</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>Add Child Configuration</value>
+    <value>Добавить дочернюю конфигурацию </value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>Remove Child Configuration</value>
+    <value>Удалить дочернюю конфигурацию </value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Configuration item 1, Auto add from subscription group</value>
+    <value>Конфигурация 1: автодобавление из группы подписки</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
-    <value>Fallback</value>
+    <value>Резервный (Fallback)</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
-    <value>Core '{0}' does not support network type '{1}'</value>
+    <value>Ядро «{0}» не поддерживает тип сети «{1}»</value>
   </data>
   <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'</value>
+    <value>Ядро «{0}» не поддерживает протокол «{1}» при транспорте «{2}»</value>
   </data>
   <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}'</value>
+    <value>Ядро «{0}» не поддерживает протокол «{1}»</value>
   </data>
   <data name="MsgInvalidProperty" xml:space="preserve">
-    <value>The {0} property is invalid, please check</value>
+    <value>Свойство {0} недопустимо, проверьте его</value>
   </data>
   <data name="MsgNotSupportProtocol" xml:space="preserve">
-    <value>Not support protocol '{0}'</value>
+    <value>Протокол «{0}» не поддерживается</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>If the system does not have a tray function, please do not enable it</value>
+    <value>Если в системе нет функции трея, не включайте эту опцию</value>
   </data>
   <data name="TbRuleTypeTips" xml:space="preserve">
-    <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>
+    <value>Можно задать отдельные правила для маршрутизации и DNS или выбрать «ALL» для применения к обоим</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
-    <value>Rule Type</value>
+    <value>Тип правила</value>
   </data>
   <data name="TbBootstrapDNS" xml:space="preserve">
     <value>Bootstrap DNS</value>
   </data>
   <data name="TbBootstrapDNSTips" xml:space="preserve">
-    <value>Resolve DNS server domains, requires IP</value>
+    <value>Разрешает домены DNS-серверов, требуется IP-адрес</value>
   </data>
   <data name="menuFastRealPing" xml:space="preserve">
-    <value>Test real delay</value>
+    <value>Тест реальной задержки</value>
   </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
-    <value>Auto add filtered configuration from subscription groups</value>
+    <value>Автодобавление отфильтрованных конфигураций из групп подписки</value>
   </data>
   <data name="TbCertPinning" xml:space="preserve">
-    <value>Certificate Pinning</value>
+    <value>Привязка сертификата</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Pinned certificate (fill in either one)
-When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
+    <value>Привязанный сертификат (заполните любое из полей)
+При указании сертификат будет привязан, а «Разрешить небезопасные» отключится.
 
-The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
+Получение сертификата может завершиться неудачей при использовании самоподписанного сертификата или при наличии ненадёжного / вредоносного ЦС в системе.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
-    <value>Fetch Certificate</value>
+    <value>Получить сертификат</value>
   </data>
   <data name="TbFetchCertChain" xml:space="preserve">
-    <value>Fetch Certificate Chain</value>
+    <value>Получить цепочку сертификатов</value>
   </data>
   <data name="ServerNameMustBeValidDomain" xml:space="preserve">
-    <value>Please set a valid domain</value>
+    <value>Укажите корректный домен</value>
   </data>
   <data name="CertNotSet" xml:space="preserve">
-    <value>Certificate not set</value>
+    <value>Сертификат не задан</value>
   </data>
   <data name="CertSet" xml:space="preserve">
-    <value>Certificate set</value>
+    <value>Сертификат задан</value>
   </data>
   <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
-    <value>Custom PAC file path</value>
+    <value>Путь к пользовательскому PAC-файлу</value>
   </data>
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
-    <value>Custom system proxy script file path</value>
+    <value>Путь к скрипту системного прокси</value>
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
-    <value>macOS displays this in the Dock (requires restart)</value>
+    <value>Отображать в Dock на macOS (требуется перезапуск)</value>
   </data>
   <data name="menuServerList2" xml:space="preserve">
-    <value>Configuration Item 2, Select and add from self-built</value>
+    <value>Конфигурация 2: выбор и добавление из собственных</value>
   </data>
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
@@ -1591,82 +1591,82 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
-    <value>Full certificate (chain), PEM format</value>
+    <value>Полный сертификат (цепочка) в формате PEM</value>
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
-    <value>Certificate fingerprint (SHA-256)</value>
+    <value>Отпечаток сертификата (SHA-256)</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
-    <value>Serve Stale</value>
+    <value>Отдавать устаревшие записи (Serve Stale)</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>Parallel Query</value>
+    <value>Параллельные запросы</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution</value>
+    <value>По умолчанию используется только при разрешении имён в процессе маршрутизации</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+    <value>По умолчанию используется только при разрешении имён в процессе маршрутизации; убедитесь, что удалённый сервер может достичь этого DNS</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+    <value>Если не задано или «AsIs», используется системный DNS; иначе — встроенный DNS-модуль.</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+    <value>Если не задано или «AsIs», разрешение DNS выполняется DNS удалённого сервера; иначе — встроенный DNS-модуль.</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
-    <value>Port hopping interval</value>
+    <value>Интервал смены портов (Port Hopping)</value>
   </data>
   <data name="menuServerListPreview" xml:space="preserve">
-    <value>Configuration item preview</value>
+    <value>Предпросмотр конфигурации</value>
   </data>
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+    <value>Правило маршрутизации {0}, исходящий узел {1}, предупреждение: {2}</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+    <value>Правило маршрутизации {0}, исходящий узел {1}, ошибка: {2}. Используется только прокси-узел.</value>
   </data>
   <data name="MsgGroupCycleDependency" xml:space="preserve">
-    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+    <value>Группа {0} имеет циклическую зависимость на дочерний узел {1}. Узел пропущен.</value>
   </data>
   <data name="MsgGroupChildNodeWarning" xml:space="preserve">
-    <value>Group {0} child node {1} warning: {2}</value>
+    <value>Группа {0}: предупреждение дочернего узла {1}: {2}</value>
   </data>
   <data name="MsgGroupChildNodeError" xml:space="preserve">
-    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+    <value>Группа {0}: ошибка дочернего узла {1}: {2}. Узел пропущен.</value>
   </data>
   <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
-    <value>Group {0} child group node {1} warning: {2}</value>
+    <value>Группа {0}: предупреждение дочернего узла группы {1}: {2}</value>
   </data>
   <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
-    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+    <value>Группа {0}: ошибка дочернего узла группы {1}: {2}. Узел пропущен.</value>
   </data>
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
-    <value>Group {0} has no valid child node.</value>
+    <value>У группы {0} нет допустимых дочерних узлов.</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
-    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+    <value>У правила маршрутизации {0} пустой исходящий тег. Используется только прокси-узел.</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+    <value>Правило маршрутизации {0}, исходящий узел {1} не найден. Используется только прокси-узел.</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
-    <value>Subscription previous proxy {0} not found. Skipping.</value>
+    <value>Предыдущий прокси подписки {0} не найден. Пропущено.</value>
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
-    <value>Subscription next proxy {0} not found. Skipping.</value>
+    <value>Следующий прокси подписки {0} не найден. Пропущено.</value>
   </data>
   <data name="menuGenGroupServer" xml:space="preserve">
-    <value>Generate Policy Group</value>
+    <value>Сгенерировать группу политик</value>
   </data>
   <data name="menuAllServers" xml:space="preserve">
-    <value>All configurations</value>
+    <value>Все конфигурации</value>
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
-    <value>Group by Region</value>
+    <value>Группировка по регионам</value>
   </data>
   <data name="menuEditCopy" xml:space="preserve">
     <value>Скопировать</value>
@@ -1680,4 +1680,5 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuEditFormat" xml:space="preserve">
     <value>Format</value>
   </data>
+</root>
 </root>
