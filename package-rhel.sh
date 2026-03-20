@@ -210,46 +210,48 @@ echo "[*] GUI version resolved as: ${VERSION}"
 # Helpers for core
 download_xray() {
   # Download Xray core
-  local outdir="$1" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
+  local outdir="$1" rid="$2" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
   else
     url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
   fi
   echo "[+] Download xray: $url"
-  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/$zipname"
   unzip -q "$tmp/$zipname" -d "$tmp"
-  install -Dm755 "$tmp/xray" "$outdir/xray"
+  install -m 755 "$tmp/xray" "$outdir/xray"
+  rm -rf "$tmp"
 }
 
 download_singbox() {
   # Download sing-box
-  local outdir="$1" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
+  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
         | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
   else
     url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
   fi
   echo "[+] Download sing-box: $url"
-  tmp="$(mktemp -d)"; trap '[[ -n "${tmp:-}" ]] && rm -rf "$tmp"' RETURN
+  tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/$tarname"
   tar -C "$tmp" -xzf "$tmp/$tarname"
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
-  [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; return 1; }
-  install -Dm755 "$bin" "$outdir/sing-box"
+  [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
+  install -m 755 "$bin" "$outdir/sing-box"
+  rm -rf "$tmp"
 }
 
 # Move geo files to outroot/bin
@@ -310,9 +312,9 @@ download_geo_assets() {
 
 # Prefer the prebuilt v2rayN core bundle; then unify geo layout
 download_v2rayn_bundle() {
-  local outroot="$1"
+  local outroot="$1" rid="$2"
   local url=""
-  if [[ "$RID_DIR" == "linux-arm64" ]]; then
+  if [[ "$rid" == "linux-arm64" ]]; then
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
   else
     url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
@@ -378,10 +380,7 @@ build_for_arch() {
   local RID_DIR="$rid"
   local PUBDIR
   PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
-  [[ -d "$PUBDIR" ]]
-
-  # Make RID_DIR visible to download helpers (they read this var)
-  export RID_DIR
+  [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
 
   # Per-arch working area
   local PKGROOT="v2rayN-publish"
@@ -400,10 +399,12 @@ build_for_arch() {
   mkdir -p "$WORKDIR/$PKGROOT"
   cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
 
-  # Optional icon
+  # Required icon
   local ICON_CANDIDATE
-  ICON_CANDIDATE="$(dirname "$PROJECT")/../v2rayN.Desktop/v2rayN.png"
-  [[ -f "$ICON_CANDIDATE" ]] && cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png" || true
+  PROJECT_DIR="$(cd "$(dirname "$PROJECT")" && pwd)"
+  ICON_CANDIDATE="$PROJECT_DIR/v2rayN.png"
+  [[ -f "$ICON_CANDIDATE" ]] || { echo "Required icon not found: $ICON_CANDIDATE"; return 1; }
+  cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png"
 
   # Prepare bin structure
   mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
@@ -413,16 +414,16 @@ build_for_arch() {
     local outroot="$1"
 
     if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-      download_xray "$outroot/bin/xray" || echo "[!] xray download failed (skipped)"
+      download_xray "$outroot/bin/xray" "$RID_DIR" || echo "[!] xray download failed (skipped)"
     fi
     if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-      download_singbox "$outroot/bin/sing_box" || echo "[!] sing-box download failed (skipped)"
+      download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
   }
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
-    if download_v2rayn_bundle "$WORKDIR/$PKGROOT"; then
+    if download_v2rayn_bundle "$WORKDIR/$PKGROOT" "$RID_DIR"; then
       echo "[*] Using v2rayN bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
@@ -484,9 +485,14 @@ https://github.com/2dust/v2rayN
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
+# Normalize permissions
+find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
+find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
+[ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
+
 # Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
-cat > %{buildroot}%{_bindir}/v2rayn << 'EOF'
+install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
 DIR="/opt/v2rayN"
@@ -503,11 +509,10 @@ echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
-chmod 0755 %{buildroot}%{_bindir}/v2rayn
 
 # Desktop file
 install -dm0755 %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
+install -m0644 /dev/stdin %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
@@ -519,10 +524,8 @@ Categories=Network;
 EOF
 
 # Icon
-if [ -f "%{_builddir}/__PKGROOT__/v2rayn.png" ]; then
-  install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
-  install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-fi
+install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
+install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 
 %post
 /usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true

@@ -9,9 +9,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
-      - 'V*'
 
 permissions:
   contents: write
@@ -56,23 +53,6 @@ jobs:
         path: |
           ${{ github.workspace }}/v2rayN/Release/linux*
 
-    # release debian package
-    - name: Package debian
-      if: github.event.inputs.release_tag != ''
-      run: |
-        chmod 755 package-debian.sh
-        ./package-debian.sh "$OutputArch" "$OutputPath64" "${{ github.event.inputs.release_tag }}"
-        ./package-debian.sh "$OutputArchArm" "$OutputPathArm64" "${{ github.event.inputs.release_tag }}"
-
-    - name: Upload deb to release
-      uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
-      with:
-        file: ${{ github.workspace }}/v2rayN*.deb
-        tag: ${{ github.event.inputs.release_tag }}
-        file_glob: true
-        prerelease: true
-
     # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''
@@ -87,6 +67,65 @@ jobs:
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
         tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
+
+  deb:
+    needs: build
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '') ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-24.04
+    container:
+      image: debian:13
+    env:
+      RELEASE_TAG: ${{ github.event.inputs.release_tag != '' && github.event.inputs.release_tag || github.ref_name }}
+
+    steps:
+    - name: Prepare tools (Debian)
+      shell: bash
+      run: |
+        set -euo pipefail
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file \
+                           ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev \
+                           libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
+
+    - name: Checkout repo (for scripts)
+      uses: actions/checkout@v6.0.2
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Ensure script permissions
+      run: chmod 755 package-debian.sh
+
+    - name: Package DEB (Debian-family)
+      run: ./package-debian.sh "${RELEASE_TAG}" --arch all
+
+    - name: Collect DEBs into workspace
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/dist/deb"
+        rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb/" || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_amd64.deb" \
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" \
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
+        echo "==== Dist tree ===="
+        ls -R "$GITHUB_WORKSPACE/dist/deb" || true
+
+    - name: Upload DEB artifacts
+      uses: actions/upload-artifact@v7.0.0
+      with:
+        name: v2rayN-deb
+        path: dist/deb/**/*.deb
+
+    - name: Upload DEBs to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: dist/deb/**/*.deb
+        tag: ${{ env.RELEASE_TAG }}
         file_glob: true
         prerelease: true
 
