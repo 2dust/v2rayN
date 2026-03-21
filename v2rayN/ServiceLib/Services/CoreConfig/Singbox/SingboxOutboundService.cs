@@ -744,13 +744,12 @@ public partial class CoreConfigSingboxService
             }, null);
         }
         var idx = echConfig.IndexOf('+');
-        // NOTE: query_server_name, since sing-box 1.13.0
-        //var queryServerName = idx > 0 ? echConfig[..idx] : null;
+        var queryServerName = idx > 0 ? echConfig[..idx] : null;
         var echDnsServer = idx > 0 ? echConfig[(idx + 1)..] : echConfig;
         return (new Ech4Sbox()
         {
             enabled = true,
-            query_server_name = null,
+            query_server_name = queryServerName,
         }, ParseDnsAddress(echDnsServer));
     }
 }
