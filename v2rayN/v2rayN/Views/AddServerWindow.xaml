@@ -660,7 +660,7 @@
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbHeaderType8}" />
                     <ComboBox
-                        x:Name="cmbHeaderType8"
+                        x:Name="cmbCongestionControl8"
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
@@ -846,15 +846,24 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbInsecureConcurrency}" />
-                    <TextBox
-                        x:Name="txtInsecureConcurrency12"
+                        Text="QUIC" />
+                    <StackPanel
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left"
-                        Style="{StaticResource DefTextBox}" />
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ToggleButton
+                            x:Name="togNaiveQuic12"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                        <ComboBox
+                            x:Name="cmbCongestionControl12"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Right"
+                            materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TbHeaderType8}"
+                            Style="{StaticResource DefComboBox}" />
+                    </StackPanel>
 
                     <TextBlock
                         Grid.Row="4"
@@ -862,14 +871,15 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbHeaderType8}" />
-                    <ComboBox
-                        x:Name="cmbHeaderType12"
+                        Text="{x:Static resx:ResUI.TbInsecureConcurrency}" />
+                    <TextBox
+                        x:Name="txtInsecureConcurrency12"
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefComboBox}" />
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
                         Grid.Row="5"

@@ -80,7 +80,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbFingerprint.SelectedValue = string.Empty;
                 gridFinalmask.IsVisible = false;
 
-                cmbHeaderType8.ItemsSource = Global.TuicCongestionControls;
+                cmbCongestionControl8.ItemsSource = Global.TuicCongestionControls;
                 break;
 
             case EConfigType.WireGuard:
@@ -103,14 +103,18 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case EConfigType.Naive:
                 gridNaive.IsVisible = true;
+                sepa2.IsVisible = false;
+                gridTransport.IsVisible = false;
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbFingerprint.SelectedValue = string.Empty;
+                cmbAlpn.IsEnabled = false;
+                cmbAlpn.SelectedValue = string.Empty;
                 cmbAllowInsecure.IsEnabled = false;
                 cmbAllowInsecure.SelectedValue = string.Empty;
 
-                cmbHeaderType12.ItemsSource = Global.NaiveCongestionControls;
+                cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -171,7 +175,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 case EConfigType.TUIC:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId8.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity8.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbHeaderType8.SelectedValue).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbCongestionControl8.SelectedValue).DisposeWith(disposables);
                     break;
 
                 case EConfigType.WireGuard:
@@ -189,8 +193,10 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 case EConfigType.Naive:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId12.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity12.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.NaiveQuic, v => v.togNaiveQuic12.IsChecked).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.NaiveQuic, v => v.cmbCongestionControl12.IsEnabled).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbCongestionControl12.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.InsecureConcurrency, v => v.txtInsecureConcurrency12.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbHeaderType12.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled12.IsChecked).DisposeWith(disposables);
                     break;
             }

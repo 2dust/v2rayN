@@ -34,6 +34,7 @@ public record ProtocolExtraItem
 
     // naiveproxy
     public int? InsecureConcurrency { get; init; }
+    public bool? NaiveQuic { get; init; }
 
     // group profile
     public string? GroupType { get; init; }

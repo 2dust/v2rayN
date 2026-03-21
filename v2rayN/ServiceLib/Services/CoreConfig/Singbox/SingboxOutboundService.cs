@@ -282,7 +282,7 @@ public partial class CoreConfigSingboxService
                     {
                         outbound.username = _node.Username;
                         outbound.password = _node.Password;
-                        if (outbound.network == "quic")
+                        if (protocolExtra.NaiveQuic == true)
                         {
                             outbound.quic = true;
                             outbound.quic_congestion_control = protocolExtra.CongestionControl.NullIfEmpty();
