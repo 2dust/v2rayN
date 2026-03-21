@@ -19,9 +19,13 @@ public class NaiveFmt : BaseFmt
             Address = parsedUrl.IdnHost,
             Port = parsedUrl.Port,
         };
+        var protocolExtra = item.GetProtocolExtra();
         if (parsedUrl.Scheme.Contains("quic"))
         {
-            item.Network = "quic";
+            protocolExtra = protocolExtra with
+            {
+                NaiveQuic = true,
+            };
         }
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
         if (rawUserInfo.Contains(':'))
@@ -40,12 +44,13 @@ public class NaiveFmt : BaseFmt
         var insecureConcurrency = int.TryParse(GetQueryValue(query, "insecure-concurrency"), out var ic) ? ic : 0;
         if (insecureConcurrency > 0)
         {
-            item.SetProtocolExtra(item.GetProtocolExtra() with
+            protocolExtra = protocolExtra with
             {
                 InsecureConcurrency = insecureConcurrency,
-            });
+            };
         }
 
+        item.SetProtocolExtra(protocolExtra);
         return item;
     }
 
@@ -63,9 +68,10 @@ public class NaiveFmt : BaseFmt
         var userInfo = item.Username.IsNotEmpty() ? $"{Utils.UrlEncode(item.Username)}:{Utils.UrlEncode(item.Password)}" : Utils.UrlEncode(item.Password);
         var dicQuery = new Dictionary<string, string>();
         ToUriQuery(item, Global.None, ref dicQuery);
-        if (item.GetProtocolExtra().InsecureConcurrency > 0)
+        var protocolExtra = item.GetProtocolExtra();
+        if (protocolExtra.InsecureConcurrency > 0)
         {
-            dicQuery.Add("insecure-concurrency", item.GetProtocolExtra()?.InsecureConcurrency.ToString());
+            dicQuery.Add("insecure-concurrency", protocolExtra?.InsecureConcurrency.ToString());
         }
 
         var query = dicQuery.Count > 0
@@ -73,7 +79,7 @@ public class NaiveFmt : BaseFmt
             : string.Empty;
         var url = $"{userInfo}@{GetIpv6(item.Address)}:{item.Port}";
 
-        if (item.Network == "quic")
+        if (protocolExtra.NaiveQuic == true)
         {
             return $"{Global.NaiveQuicProtocolShare}{url}{query}{remark}";
         }

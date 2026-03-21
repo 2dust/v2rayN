@@ -497,7 +497,7 @@
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbHeaderType8}" />
                     <ComboBox
-                        x:Name="cmbHeaderType8"
+                        x:Name="cmbCongestionControl8"
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
@@ -637,27 +637,36 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbInsecureConcurrency}" />
-                    <TextBox
-                        x:Name="txtInsecureConcurrency12"
+                        Text="QUIC" />
+                    <StackPanel
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ToggleSwitch
+                            x:Name="togNaiveQuic12"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                        <ComboBox
+                            x:Name="cmbCongestionControl12"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            PlaceholderText="{x:Static resx:ResUI.TbHeaderType8}" />
+                    </StackPanel>
 
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbHeaderType8}" />
-                    <ComboBox
-                        x:Name="cmbHeaderType12"
+                        Text="{x:Static resx:ResUI.TbInsecureConcurrency}" />
+                    <TextBox
+                        x:Name="txtInsecureConcurrency12"
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="5"

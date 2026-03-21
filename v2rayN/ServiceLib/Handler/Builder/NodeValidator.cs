@@ -152,12 +152,6 @@ public class NodeValidator
 
     private static string? ValidateSingboxTransport(EConfigType configType, string net)
     {
-        // Naive support tcp and quic transports
-        if (configType == EConfigType.Naive && net == "quic")
-        {
-            return null;
-        }
-
         // sing-box does not support xhttp / kcp transports
         if (SingboxUnsupportedTransports.Contains(net))
         {
