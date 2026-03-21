@@ -825,6 +825,20 @@
                         HorizontalAlignment="Left" />
 
                     <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbIcmpRoutingPolicy}" />
+                    <ComboBox
+                        x:Name="cmbIcmpRoutingPolicy"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
                         Grid.Row="7"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"

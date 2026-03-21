@@ -47,6 +47,36 @@ public partial class CoreConfigSingboxService
                     outbound = Global.DirectTag,
                     process_name = lstDirectExe
                 });
+
+                // ICMP Routing
+                var icmpRouting = _config.TunModeItem.IcmpRouting ?? "";
+                if (!Global.TunIcmpRoutingPolicies.Contains(icmpRouting))
+                {
+                    icmpRouting = Global.TunIcmpRoutingPolicies.First();
+                }
+                if (icmpRouting == "direct")
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        network = ["icmp"],
+                        outbound = Global.DirectTag,
+                    });
+                }
+                else if (icmpRouting != "rule")
+                {
+                    var rejectMethod = icmpRouting switch
+                    {
+                        "unreachable" => "default",
+                        "drop" => "drop",
+                        _ => "reply",
+                    };
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        network = ["icmp"],
+                        action = "reject",
+                        method = rejectMethod,
+                    });
+                }
             }
 
             if (_config.Inbound.First().SniffingEnabled)

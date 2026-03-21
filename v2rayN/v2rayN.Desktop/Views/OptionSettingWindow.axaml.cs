@@ -34,6 +34,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbmux4SboxProtocol.ItemsSource = Global.SingboxMuxs;
         cmbMtu.ItemsSource = Global.TunMtus;
         cmbStack.ItemsSource = Global.TunStacks;
+        cmbIcmpRoutingPolicy.ItemsSource = Global.TunIcmpRoutingPolicies;
 
         cmbCoreType1.ItemsSource = Global.CoreTypes;
         cmbCoreType2.ItemsSource = Global.CoreTypes;
@@ -114,6 +115,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.TunStack, v => v.cmbStack.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunMtu, v => v.cmbMtu.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunEnableIPv6Address, v => v.togEnableIPv6Address.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TunIcmpRouting, v => v.cmbIcmpRoutingPolicy.SelectedValue).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType2, v => v.cmbCoreType2.SelectedValue).DisposeWith(disposables);
