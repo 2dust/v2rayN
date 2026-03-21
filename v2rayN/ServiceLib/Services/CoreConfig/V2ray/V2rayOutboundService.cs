@@ -153,6 +153,7 @@ public partial class CoreConfigV2rayService
                         serversItem.password = _node.Password;
                         serversItem.method = AppManager.Instance.GetShadowsocksSecurities(_node).Contains(protocolExtra.SsMethod)
                             ? protocolExtra.SsMethod : "none";
+                        serversItem.uot = protocolExtra.Uot == true ? true : null;
 
                         serversItem.ota = false;
                         serversItem.level = 1;

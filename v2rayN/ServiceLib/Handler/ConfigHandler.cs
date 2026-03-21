@@ -269,6 +269,7 @@ public static class ConfigHandler
             EConfigType.TUIC => await AddTuicServer(config, item),
             EConfigType.WireGuard => await AddWireguardServer(config, item),
             EConfigType.Anytls => await AddAnytlsServer(config, item),
+            EConfigType.Naive => await AddNaiveServer(config, item),
             _ => -1,
         };
         return ret;
@@ -804,7 +805,7 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit a Anytls server
+    /// Add or edit an Anytls server
     /// Validates and processes Anytls-specific settings
     /// </summary>
     /// <param name="config">Current configuration</param>
@@ -819,6 +820,35 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
+        if (profileItem.StreamSecurity.IsNullOrEmpty())
+        {
+            profileItem.StreamSecurity = Global.StreamSecurity;
+        }
+        if (profileItem.Password.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        await AddServerCommon(config, profileItem, toFile);
+        return 0;
+    }
+
+    /// <summary>
+    /// Add or edit a Naive server
+    /// Validates and processes Naive-specific settings
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Naive profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddNaiveServer(Config config, ProfileItem profileItem, bool toFile = true)
+    {
+        profileItem.ConfigType = EConfigType.Naive;
+        profileItem.CoreType = ECoreType.sing_box;
+
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Username = profileItem.Username.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Network = profileItem.Network == "quic" ? "quic" : string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
@@ -1077,7 +1107,8 @@ public static class ConfigHandler
 
         if (toFile)
         {
-            profileItem.SetProtocolExtra();
+            //profileItem.SetProtocolExtra();
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra());
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
         }
         return 0;
@@ -1105,6 +1136,7 @@ public static class ConfigHandler
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
                && AreEqual(o.Password, n.Password)
+               && AreEqual(o.Username, n.Username)
                && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
                && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
                && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
@@ -1496,6 +1528,7 @@ public static class ConfigHandler
                 EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
                 EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
                 EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
+                EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
                 _ => -1,
             };
 

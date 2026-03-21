@@ -30,7 +30,10 @@ public class TuicFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
-        item.HeaderType = GetQueryValue(query, "congestion_control");
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            CongestionControl = GetQueryValue(query, "congestion_control")
+        });
 
         return item;
     }
@@ -51,7 +54,10 @@ public class TuicFmt : BaseFmt
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
 
-        dicQuery.Add("congestion_control", item.HeaderType);
+        if (!item.GetProtocolExtra().CongestionControl.IsNullOrEmpty())
+        {
+            dicQuery.Add("congestion_control", item.GetProtocolExtra().CongestionControl);
+        }
 
         return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Username ?? ""}:{item.Password}", dicQuery, remark);
     }
