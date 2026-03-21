@@ -322,6 +322,7 @@ public class CoreConfigContextBuilder
             context.ProtectDomainList.Add(address);
         }
 
+        // ech query server name protect
         if (!node.EchConfigList.IsNullOrEmpty())
         {
             var echQuerySni = node.Sni;
@@ -336,6 +337,20 @@ public class CoreConfigContextBuilder
             {
                 context.ProtectDomainList.Add(echQuerySni);
             }
+        }
+
+        // xhttp downloadSettings address protect
+        if (!string.IsNullOrEmpty(node.Extra)
+            && JsonUtils.ParseJson(node.Extra) is JsonObject extra
+            && extra.TryGetPropertyValue("downloadSettings", out var dsNode)
+            && dsNode is JsonObject downloadSettings
+            && downloadSettings.TryGetPropertyValue("address", out var dAddrNode)
+            && dAddrNode is JsonValue dAddrValue
+            && dAddrValue.TryGetValue(out string? dAddr)
+            && !string.IsNullOrEmpty(dAddr)
+            && Utils.IsDomain(dAddr))
+        {
+            context.ProtectDomainList.Add(dAddr);
         }
 
         return nodeValidatorResult;
