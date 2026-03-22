@@ -271,7 +271,7 @@
     <value>去重完成。原數量: {0}，現數量: {1}。</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>確定要移除重複的節點嗎？</value>
+    <value>是否確定移除？</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>用戶端設定檔儲存在：{0}</value>
