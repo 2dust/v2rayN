@@ -1672,10 +1672,10 @@
     <value>全選</value>
   </data>
   <data name="menuEditPaste" xml:space="preserve">
-    <value>Paste</value>
+    <value>貼上</value>
   </data>
   <data name="menuEditFormat" xml:space="preserve">
-    <value>Format</value>
+    <value>格式化</value>
   </data>
   <data name="TbUot" xml:space="preserve">
     <value>UDP over TCP</value>
@@ -1684,12 +1684,12 @@
     <value>新增 [NaïveProxy] 節點</value>
   </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
-    <value>Insecure Concurrency</value>
+    <value>不安全的並行處理</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
-    <value>Username</value>
+    <value>使用者名稱</value>
   </data>
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
-    <value>ICMP routing policy</value>
+    <value>ICMP 路由策略</value>
   </data>
 </root>
