@@ -182,13 +182,14 @@ public class Global
         @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
     ];
 
-    public static readonly Dictionary<string, string> UserAgentTexts = new()
+    public static readonly Dictionary<string, string> TcpHttpUserAgentTexts = new()
     {
         {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
         {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
         {"safari","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" },
         {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
-        {"none",""}
+        {"none",""},
+        {"golang",""}
     };
 
     public const string Hysteria2ProtocolShare = "hy2://";
@@ -391,9 +392,8 @@ public class Global
     [
         "chrome",
         "firefox",
-        "safari",
         "edge",
-        "none"
+        "golang"
     ];
 
     public static readonly List<string> XhttpMode =
