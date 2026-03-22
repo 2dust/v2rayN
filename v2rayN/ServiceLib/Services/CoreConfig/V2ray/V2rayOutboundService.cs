@@ -688,7 +688,7 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
-            var currentTag = $"{baseTagName}-{i + 1}";
+            var currentTag = $"{baseTagName}-{i + 1}-{node.Remarks}";
 
             if (node.ConfigType.IsGroupType())
             {
@@ -719,8 +719,8 @@ public partial class CoreConfigV2rayService
         for (var i = 0; i < nodesReverse.Count; i++)
         {
             var node = nodesReverse[i];
-            var currentTag = i == 0 ? baseTagName : $"chain-{baseTagName}-{i}";
-            var dialerProxyTag = i != nodesReverse.Count - 1 ? $"chain-{baseTagName}-{i + 1}" : null;
+            var currentTag = i == 0 ? baseTagName : $"chain-{baseTagName}-{i}-{node.Remarks}";
+            var dialerProxyTag = i != nodesReverse.Count - 1 ? $"chain-{baseTagName}-{i + 1}-{node.Remarks}" : null;
             if (node.ConfigType.IsGroupType())
             {
                 var childProfiles = new CoreConfigV2rayService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);

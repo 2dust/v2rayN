@@ -494,7 +494,7 @@ public partial class CoreConfigSingboxService
             return Global.ProxyTag;
         }
 
-        var tag = $"{node.IndexId}-{Global.ProxyTag}";
+        var tag = $"{node.IndexId}-{Global.ProxyTag}-{node.Remarks}";
         if (_coreConfig.outbounds.Any(o => o.tag.StartsWith(tag))
             || (_coreConfig.endpoints != null && _coreConfig.endpoints.Any(e => e.tag.StartsWith(tag))))
         {
