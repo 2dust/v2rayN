@@ -354,11 +354,7 @@ public partial class CoreConfigV2rayService
             var host = _node.RequestHost.TrimEx();
             var path = _node.Path.TrimEx();
             var sni = _node.Sni.TrimEx();
-            var useragent = "";
-            if (!_config.CoreBasicItem.DefUserAgent.IsNullOrEmpty())
-            {
-                useragent = Global.UserAgentTexts.GetValueOrDefault(_config.CoreBasicItem.DefUserAgent, _config.CoreBasicItem.DefUserAgent);
-            }
+            var useragent = _config.CoreBasicItem.DefUserAgent ?? string.Empty;
 
             //if tls
             if (_node.StreamSecurity == Global.StreamSecurity)
@@ -495,13 +491,17 @@ public partial class CoreConfigV2rayService
                 case nameof(ETransport.httpupgrade):
                     HttpupgradeSettings4Ray httpupgradeSettings = new();
 
+                    if (host.IsNotEmpty())
+                    {
+                        httpupgradeSettings.host = host;
+                    }
                     if (path.IsNotEmpty())
                     {
                         httpupgradeSettings.path = path;
                     }
-                    if (host.IsNotEmpty())
+                    if (useragent.IsNotEmpty())
                     {
-                        httpupgradeSettings.host = host;
+                        httpupgradeSettings.headers.UserAgent = useragent;
                     }
                     streamSettings.httpupgradeSettings = httpupgradeSettings;
 
@@ -580,6 +580,7 @@ public partial class CoreConfigV2rayService
                         health_check_timeout = _config.GrpcItem.HealthCheckTimeout,
                         permit_without_stream = _config.GrpcItem.PermitWithoutStream,
                         initial_windows_size = _config.GrpcItem.InitialWindowsSize,
+                        user_agent = useragent.NullIfEmpty(),
                     };
                     streamSettings.grpcSettings = grpcSettings;
                     break;
@@ -644,10 +645,11 @@ public partial class CoreConfigV2rayService
 
                         //request Host
                         var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
+                        var useragentValue = Global.TcpHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
                         var arrHost = host.Split(',');
                         var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
-                        request = request.Replace("$requestUserAgent$", $"{useragent.AppendQuotes()}");
+                        request = request.Replace("$requestUserAgent$", $"{useragentValue.AppendQuotes()}");
                         //Path
                         var pathHttp = @"/";
                         if (path.IsNotEmpty())
