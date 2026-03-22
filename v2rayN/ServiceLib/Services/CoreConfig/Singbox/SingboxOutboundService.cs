@@ -224,13 +224,14 @@ public partial class CoreConfigSingboxService
                                 password = protocolExtra.SalamanderPass.TrimEx(),
                             };
                         }
-
-                        outbound.up_mbps = protocolExtra?.UpMbps is { } su and >= 0
+                        int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
                             : _config.HysteriaItem.UpMbps;
-                        outbound.down_mbps = protocolExtra?.DownMbps is { } sd and >= 0
+                        int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
-                            : _config.HysteriaItem.DownMbps;
+                            : _config.HysteriaItem.UpMbps;
+                        outbound.up_mbps = upMbps > 0 ? upMbps : null;
+                        outbound.down_mbps = downMbps > 0 ? downMbps : null;
                         var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;
                         if ((!ports.IsNullOrEmpty()) && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
                         {
