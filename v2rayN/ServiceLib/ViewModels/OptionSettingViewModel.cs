@@ -22,8 +22,8 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string defUserAgent { get; set; }
     [Reactive] public string mux4SboxProtocol { get; set; }
     [Reactive] public bool enableCacheFile4Sbox { get; set; }
-    [Reactive] public int hyUpMbps { get; set; }
-    [Reactive] public int hyDownMbps { get; set; }
+    [Reactive] public int? hyUpMbps { get; set; }
+    [Reactive] public int? hyDownMbps { get; set; }
     [Reactive] public bool enableFragment { get; set; }
 
     #endregion Core
@@ -47,7 +47,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool KeepOlderDedupl { get; set; }
     [Reactive] public bool DisplayRealTimeSpeed { get; set; }
     [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
-    [Reactive] public bool EnableUpdateSubOnlyRemarksExist { get; set; }
     [Reactive] public bool AutoHideStartup { get; set; }
     [Reactive] public bool Hide2TrayWhenClose { get; set; }
     [Reactive] public bool MacOSShowInDock { get; set; }
@@ -96,6 +95,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string TunStack { get; set; }
     [Reactive] public int TunMtu { get; set; }
     [Reactive] public bool TunEnableIPv6Address { get; set; }
+    [Reactive] public string TunIcmpRouting { get; set; }
 
     #endregion Tun mode
 
@@ -180,7 +180,6 @@ public class OptionSettingViewModel : MyReactiveObject
         DisplayRealTimeSpeed = _config.GuiItem.DisplayRealTimeSpeed;
         KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
         EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
-        EnableUpdateSubOnlyRemarksExist = _config.UiItem.EnableUpdateSubOnlyRemarksExist;
         AutoHideStartup = _config.UiItem.AutoHideStartup;
         Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
         MacOSShowInDock = _config.UiItem.MacOSShowInDock;
@@ -220,6 +219,7 @@ public class OptionSettingViewModel : MyReactiveObject
         TunStack = _config.TunModeItem.Stack;
         TunMtu = _config.TunModeItem.Mtu;
         TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
+        TunIcmpRouting = _config.TunModeItem.IcmpRouting;
 
         #endregion Tun mode
 
@@ -336,8 +336,8 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.DefUserAgent = defUserAgent;
         _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
         _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
-        _config.HysteriaItem.UpMbps = hyUpMbps;
-        _config.HysteriaItem.DownMbps = hyDownMbps;
+        _config.HysteriaItem.UpMbps = hyUpMbps ?? 0;
+        _config.HysteriaItem.DownMbps = hyDownMbps ?? 0;
         _config.CoreBasicItem.EnableFragment = enableFragment;
 
         _config.GuiItem.AutoRun = AutoRun;
@@ -345,7 +345,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.GuiItem.DisplayRealTimeSpeed = DisplayRealTimeSpeed;
         _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
         _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
-        _config.UiItem.EnableUpdateSubOnlyRemarksExist = EnableUpdateSubOnlyRemarksExist;
         _config.UiItem.AutoHideStartup = AutoHideStartup;
         _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
         _config.UiItem.MacOSShowInDock = MacOSShowInDock;
@@ -379,6 +378,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.TunModeItem.Stack = TunStack;
         _config.TunModeItem.Mtu = TunMtu;
         _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
+        _config.TunModeItem.IcmpRouting = TunIcmpRouting;
 
         //coreType
         await SaveCoreType();

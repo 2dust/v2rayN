@@ -71,6 +71,7 @@ public partial class MainWindow
             this.BindCommand(ViewModel, vm => vm.AddTuicServerCmd, v => v.menuAddTuicServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddWireguardServerCmd, v => v.menuAddWireguardServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddAnytlsServerCmd, v => v.menuAddAnytlsServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AddNaiveServerCmd, v => v.menuAddNaiveServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddCustomServerCmd, v => v.menuAddCustomServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddPolicyGroupServerCmd, v => v.menuAddPolicyGroupServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddProxyChainServerCmd, v => v.menuAddProxyChainServer).DisposeWith(disposables);
@@ -127,25 +128,25 @@ public partial class MainWindow
 
             AppEvents.SendSnackMsgRequested
               .AsObservable()
-              .ObserveOn(RxApp.MainThreadScheduler)
+              .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(async content => await DelegateSnackMsg(content))
               .DisposeWith(disposables);
 
             AppEvents.AppExitRequested
               .AsObservable()
-              .ObserveOn(RxApp.MainThreadScheduler)
+              .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
 
             AppEvents.ShutdownRequested
              .AsObservable()
-             .ObserveOn(RxApp.MainThreadScheduler)
+             .ObserveOn(RxSchedulers.MainThreadScheduler)
              .Subscribe(content => Shutdown(content))
              .DisposeWith(disposables);
 
             AppEvents.ShowHideWindowRequested
              .AsObservable()
-             .ObserveOn(RxApp.MainThreadScheduler)
+             .ObserveOn(RxSchedulers.MainThreadScheduler)
              .Subscribe(blShow => ShowHideWindow(blShow))
              .DisposeWith(disposables);
         });

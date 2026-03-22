@@ -179,6 +179,8 @@ public class ServersItem4Ray
 
     public string flow { get; set; }
 
+    public bool? uot { get; set; }
+
     public List<SocksUsersItem4Ray> users { get; set; }
 }
 
@@ -360,6 +362,7 @@ public class TlsSettings4Ray
     public bool? disableSystemRoot { get; set; }
     public string? echConfigList { get; set; }
     public string? echForceQuery { get; set; }
+    public Sockopt4Ray? echSockopt { get; set; }
 }
 
 public class CertificateSettings4Ray

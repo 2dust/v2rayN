@@ -91,14 +91,12 @@ public static class ConfigHandler
         {
             EnableTun = false,
             Mtu = 9000,
+            IcmpRouting = Global.TunIcmpRoutingPolicies.First(),
         };
         config.GuiItem ??= new();
         config.MsgUIItem ??= new();
 
-        config.UiItem ??= new UIItem()
-        {
-            EnableUpdateSubOnlyRemarksExist = true
-        };
+        config.UiItem ??= new();
         config.UiItem.MainColumnItem ??= new();
         config.UiItem.WindowSizeItem ??= new();
 
@@ -154,6 +152,7 @@ public static class ConfigHandler
             DownMbps = 100
         };
         config.ClashUIItem ??= new();
+        config.ClashUIItem.ConnectionsColumnItem ??= new();
         config.SystemProxyItem ??= new();
         config.WebDavItem ??= new();
         config.CheckUpdateItem ??= new();
@@ -271,6 +270,7 @@ public static class ConfigHandler
             EConfigType.TUIC => await AddTuicServer(config, item),
             EConfigType.WireGuard => await AddWireguardServer(config, item),
             EConfigType.Anytls => await AddAnytlsServer(config, item),
+            EConfigType.Naive => await AddNaiveServer(config, item),
             _ => -1,
         };
         return ret;
@@ -722,8 +722,6 @@ public static class ConfigHandler
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
             SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
-            UpMbps = profileItem.GetProtocolExtra().UpMbps is null or < 0 ? config.HysteriaItem.UpMbps : profileItem.GetProtocolExtra().UpMbps,
-            DownMbps = profileItem.GetProtocolExtra().DownMbps is null or < 0 ? config.HysteriaItem.DownMbps : profileItem.GetProtocolExtra().DownMbps,
             HopInterval = profileItem.GetProtocolExtra().HopInterval?.TrimEx(),
         });
 
@@ -808,7 +806,7 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Add or edit a Anytls server
+    /// Add or edit an Anytls server
     /// Validates and processes Anytls-specific settings
     /// </summary>
     /// <param name="config">Current configuration</param>
@@ -822,6 +820,36 @@ public static class ConfigHandler
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Network = string.Empty;
+        if (profileItem.StreamSecurity.IsNullOrEmpty())
+        {
+            profileItem.StreamSecurity = Global.StreamSecurity;
+        }
+        if (profileItem.Password.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        await AddServerCommon(config, profileItem, toFile);
+        return 0;
+    }
+
+    /// <summary>
+    /// Add or edit a Naive server
+    /// Validates and processes Naive-specific settings
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">Naive profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddNaiveServer(Config config, ProfileItem profileItem, bool toFile = true)
+    {
+        profileItem.ConfigType = EConfigType.Naive;
+        profileItem.CoreType = ECoreType.sing_box;
+
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Username = profileItem.Username.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Alpn = string.Empty;
         profileItem.Network = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
@@ -1041,8 +1069,8 @@ public static class ConfigHandler
 
         if (profileItem.StreamSecurity.IsNotEmpty())
         {
-            if (profileItem.StreamSecurity != Global.StreamSecurity
-                 && profileItem.StreamSecurity != Global.StreamSecurityReality)
+            if (profileItem.StreamSecurity is not Global.StreamSecurity
+                 and not Global.StreamSecurityReality)
             {
                 profileItem.StreamSecurity = string.Empty;
             }
@@ -1081,7 +1109,8 @@ public static class ConfigHandler
 
         if (toFile)
         {
-            profileItem.SetProtocolExtra();
+            //profileItem.SetProtocolExtra();
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra());
             await SQLiteHelper.Instance.ReplaceAsync(profileItem);
         }
         return 0;
@@ -1109,6 +1138,7 @@ public static class ConfigHandler
                && AreEqual(o.Address, n.Address)
                && o.Port == n.Port
                && AreEqual(o.Password, n.Password)
+               && AreEqual(o.Username, n.Username)
                && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
                && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
                && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
@@ -1130,6 +1160,84 @@ public static class ConfigHandler
         static bool AreEqual(string? a, string? b)
         {
             return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
+        }
+    }
+
+    /// <summary>
+    /// Searches the specified collection for a profile item that matches the target profile item based on a series of
+    /// criteria.
+    /// </summary>
+    /// <remarks>The method attempts to find a match by comparing the target's remarks, address, port, and
+    /// password in various combinations. The search is performed in order of specificity, starting with the most
+    /// detailed comparison. If no match is found at any stage, the method returns null.</remarks>
+    /// <param name="source">An enumerable collection of profile items to search. This parameter can be null.</param>
+    /// <param name="target">The profile item to match against items in the source collection. This parameter can be null.</param>
+    /// <returns>A profile item from the source collection that matches the target item according to defined criteria; otherwise,
+    /// null if no match is found or if either parameter is null.</returns>
+    private static ProfileItem? FindMatchedProfileItem(IEnumerable<ProfileItem>? source, ProfileItem? target)
+    {
+        if (source == null || target == null)
+        {
+            return null;
+        }
+
+        var matchedItem = source.FirstOrDefault(t => CompareProfileItem(t, target, true));
+        if (matchedItem != null)
+        {
+            return matchedItem;
+        }
+
+        if (target.Remarks.IsNotEmpty())
+        {
+            matchedItem = source.FirstOrDefault(t => t.Remarks == target.Remarks);
+            if (matchedItem != null)
+            {
+                return matchedItem;
+            }
+        }
+
+        if (target.Address.IsNotEmpty() && target.Port > 0 && target.Password.IsNotEmpty())
+        {
+            matchedItem = source.FirstOrDefault(t =>
+                IsSameText(t.Address, target.Address) &&
+                t.Port == target.Port &&
+                IsSameText(t.Password, target.Password));
+            if (matchedItem != null)
+            {
+                return matchedItem;
+            }
+        }
+
+        if (target.Address.IsNotEmpty() && target.Port > 0)
+        {
+            matchedItem = source.FirstOrDefault(t =>
+                IsSameText(t.Address, target.Address) &&
+                t.Port == target.Port);
+            if (matchedItem != null)
+            {
+                return matchedItem;
+            }
+        }
+
+        if (target.Address.IsNotEmpty())
+        {
+            matchedItem = source.FirstOrDefault(t => IsSameText(t.Address, target.Address));
+            if (matchedItem != null)
+            {
+                return matchedItem;
+            }
+        }
+
+        return null;
+
+        static bool IsSameText(string? left, string? right)
+        {
+            if (left.IsNullOrEmpty() || right.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            return string.Equals(left.TrimEx(), right.TrimEx(), StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -1332,6 +1440,7 @@ public static class ConfigHandler
     public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
     {
         var lstModel = await AppManager.Instance.ProfileModels(subid, "");
+        lstModel.RemoveAll(t => t.ConfigType.IsComplexType());
         if (lstModel is { Count: <= 0 })
         {
             return -1;
@@ -1413,6 +1522,7 @@ public static class ConfigHandler
                 EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
                 EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
                 EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
+                EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
                 _ => -1,
             };
 
@@ -1628,7 +1738,7 @@ public static class ConfigHandler
         if (activeProfile != null)
         {
             var lstSub = await AppManager.Instance.ProfileItems(subid);
-            var existItem = lstSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == activeProfile.Remarks : CompareProfileItem(t, activeProfile, true));
+            var existItem = FindMatchedProfileItem(lstSub, activeProfile);
             if (existItem != null)
             {
                 await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
@@ -1641,7 +1751,7 @@ public static class ConfigHandler
             var lstSub = await AppManager.Instance.ProfileItems(subid);
             foreach (var item in lstSub)
             {
-                var existItem = lstOriSub?.FirstOrDefault(t => config.UiItem.EnableUpdateSubOnlyRemarksExist ? t.Remarks == item.Remarks : CompareProfileItem(t, item, true));
+                var existItem = FindMatchedProfileItem(lstOriSub, item);
                 if (existItem != null)
                 {
                     await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);

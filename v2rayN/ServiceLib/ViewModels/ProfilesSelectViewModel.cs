@@ -188,14 +188,9 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             SubItems.Add(item);
         }
-        if (_subIndexId != null && SubItems.FirstOrDefault(t => t.Id == _subIndexId) != null)
-        {
-            SelectedSub = SubItems.FirstOrDefault(t => t.Id == _subIndexId);
-        }
-        else
-        {
-            SelectedSub = SubItems.First();
-        }
+        SelectedSub = (_config.SubIndexId.IsNotEmpty()
+                        ? SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
+                        : null) ?? SubItems.LastOrDefault();
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)

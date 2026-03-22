@@ -81,7 +81,9 @@ public class NodeValidator
         {
             var transportError = ValidateSingboxTransport(item.ConfigType, net);
             if (transportError != null)
+            {
                 v.Error(transportError);
+            }
 
             if (!Global.SingboxSupportConfigType.Contains(item.ConfigType))
             {

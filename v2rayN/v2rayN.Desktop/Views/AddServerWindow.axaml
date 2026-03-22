@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuServers}"
     Width="900"
@@ -196,6 +197,19 @@
                         Grid.Column="1"
                         Width="300"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbUot}" />
+                    <ToggleSwitch
+                        x:Name="togUotEnabled3"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -483,7 +497,7 @@
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbHeaderType8}" />
                     <ComboBox
-                        x:Name="cmbHeaderType8"
+                        x:Name="cmbCongestionControl8"
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
@@ -580,11 +594,92 @@
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbId3}" />
                     <TextBox
-                        x:Name="txtId10"
+                        x:Name="txtId11"
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
+                </Grid>
+                <Grid
+                    x:Name="gridNaive"
+                    Grid.Row="2"
+                    ColumnDefinitions="300,Auto"
+                    IsVisible="False"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbUsername}" />
+                    <TextBox
+                        x:Name="txtId12"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbId3}" />
+                    <TextBox
+                        x:Name="txtSecurity12"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="QUIC" />
+                    <StackPanel
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ToggleSwitch
+                            x:Name="togNaiveQuic12"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                        <ComboBox
+                            x:Name="cmbCongestionControl12"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            PlaceholderText="{x:Static resx:ResUI.TbHeaderType8}" />
+                    </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbInsecureConcurrency}" />
+                    <TextBox
+                        x:Name="txtInsecureConcurrency12"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbUot}" />
+                    <ToggleSwitch
+                        x:Name="togUotEnabled12"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
                 </Grid>
 
                 <Separator
@@ -658,16 +753,13 @@
                                             Margin="{StaticResource Margin4}"
                                             VerticalAlignment="Center"
                                             Text="{x:Static resx:ResUI.TransportExtraTip}" />
-                                        <TextBox
+                                        <views:JsonEditor
                                             x:Name="txtExtra"
                                             Width="400"
                                             MinHeight="100"
                                             Margin="{StaticResource Margin4}"
                                             HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            Classes="TextArea"
-                                            MinLines="6"
-                                            TextWrapping="Wrap" />
+                                            VerticalAlignment="Center" />
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
@@ -749,13 +841,13 @@
                         <Button.Flyout>
                             <Flyout>
                                 <StackPanel>
-                                    <TextBox
+                                    <views:JsonEditor
                                         x:Name="txtFinalmask"
                                         Width="400"
+                                        MinHeight="100"
                                         Margin="{StaticResource Margin4}"
-                                        AcceptsReturn="True"
-                                        Classes="TextArea"
-                                        TextWrapping="NoWrap" />
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center" />
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>

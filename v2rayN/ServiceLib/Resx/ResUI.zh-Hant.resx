@@ -1024,7 +1024,7 @@
     <value>sing-box Mux 多路復用協定</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>行程 (Tun 模式)</value>
+    <value>行程 (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
@@ -1094,9 +1094,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真連線測試位址</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>更新訂閱時只判斷別名是否存在</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>測試終止中...</value>
@@ -1667,5 +1664,32 @@
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>按區域分組</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>貼上</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>格式化</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>新增 [NaïveProxy] 節點</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>不安全的並行處理</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>使用者名稱</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP 路由策略</value>
   </data>
 </root>

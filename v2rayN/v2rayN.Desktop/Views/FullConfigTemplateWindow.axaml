@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:views="clr-namespace:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuFullConfigTemplate}"
     Width="900"
@@ -94,12 +95,7 @@
                         BorderBrush="Gray"
                         BorderThickness="1"
                         Header="xray config template json">
-                        <TextBox
-                            x:Name="rayFullConfigTemplate"
-                            VerticalAlignment="Stretch"
-                            Classes="TextArea"
-                            MinLines="10"
-                            TextWrapping="Wrap" />
+                        <views:JsonEditor x:Name="rayFullConfigTemplate" VerticalAlignment="Stretch" />
                     </HeaderedContentControl>
                 </DockPanel>
             </TabItem>
@@ -166,12 +162,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="sing-box config template json">
-                            <TextBox
-                                x:Name="sbFullConfigTemplate"
-                                VerticalAlignment="Stretch"
-                                Classes="TextArea"
-                                MinLines="10"
-                                TextWrapping="Wrap" />
+                            <views:JsonEditor x:Name="sbFullConfigTemplate" VerticalAlignment="Stretch" />
                         </HeaderedContentControl>
 
                         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
@@ -181,12 +172,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="sing-box tun config template json">
-                            <TextBox
-                                x:Name="sbFullTunConfigTemplate"
-                                VerticalAlignment="Stretch"
-                                Classes="TextArea"
-                                MinLines="10"
-                                TextWrapping="Wrap" />
+                            <views:JsonEditor x:Name="sbFullTunConfigTemplate" VerticalAlignment="Stretch" />
                         </HeaderedContentControl>
                     </Grid>
                 </DockPanel>

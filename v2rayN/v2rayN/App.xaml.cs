@@ -39,6 +39,11 @@ public partial class App : Application
         }
 
         AppManager.Instance.InitComponents();
+
+        RxAppBuilder.CreateReactiveUIBuilder()
+            .WithWpf()
+            .BuildApp();
+
         base.OnStartup(e);
     }
 

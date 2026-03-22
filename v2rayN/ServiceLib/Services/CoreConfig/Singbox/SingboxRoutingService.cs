@@ -47,6 +47,36 @@ public partial class CoreConfigSingboxService
                     outbound = Global.DirectTag,
                     process_name = lstDirectExe
                 });
+
+                // ICMP Routing
+                var icmpRouting = _config.TunModeItem.IcmpRouting ?? "";
+                if (!Global.TunIcmpRoutingPolicies.Contains(icmpRouting))
+                {
+                    icmpRouting = Global.TunIcmpRoutingPolicies.First();
+                }
+                if (icmpRouting == "direct")
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        network = ["icmp"],
+                        outbound = Global.DirectTag,
+                    });
+                }
+                else if (icmpRouting != "rule")
+                {
+                    var rejectMethod = icmpRouting switch
+                    {
+                        "unreachable" => "default",
+                        "drop" => "drop",
+                        _ => "reply",
+                    };
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        network = ["icmp"],
+                        action = "reject",
+                        method = rejectMethod,
+                    });
+                }
             }
 
             if (_config.Inbound.First().SniffingEnabled)
@@ -84,11 +114,58 @@ public partial class CoreConfigSingboxService
             }
             if (hostsDomains.Count > 0)
             {
-                _coreConfig.route.rules.Add(new()
+                var hostsResolveRule = new Rule4Sbox
                 {
                     action = "resolve",
-                    domain = hostsDomains,
-                });
+                };
+                var hostsCounter = 0;
+                foreach (var host in hostsDomains)
+                {
+                    var domainRule = new Rule4Sbox();
+                    if (!ParseV2Domain(host, domainRule))
+                    {
+                        continue;
+                    }
+                    if (domainRule.domain_keyword?.Count > 0 && !host.Contains(':'))
+                    {
+                        domainRule.domain = domainRule.domain_keyword;
+                        domainRule.domain_keyword = null;
+                    }
+                    if (domainRule.domain?.Count > 0)
+                    {
+                        hostsResolveRule.domain ??= [];
+                        hostsResolveRule.domain.AddRange(domainRule.domain);
+                        hostsCounter++;
+                    }
+                    else if (domainRule.domain_keyword?.Count > 0)
+                    {
+                        hostsResolveRule.domain_keyword ??= [];
+                        hostsResolveRule.domain_keyword.AddRange(domainRule.domain_keyword);
+                        hostsCounter++;
+                    }
+                    else if (domainRule.domain_suffix?.Count > 0)
+                    {
+                        hostsResolveRule.domain_suffix ??= [];
+                        hostsResolveRule.domain_suffix.AddRange(domainRule.domain_suffix);
+                        hostsCounter++;
+                    }
+                    else if (domainRule.domain_regex?.Count > 0)
+                    {
+                        hostsResolveRule.domain_regex ??= [];
+                        hostsResolveRule.domain_regex.AddRange(domainRule.domain_regex);
+                        hostsCounter++;
+                    }
+                    else if (domainRule.geosite?.Count > 0)
+                    {
+                        hostsResolveRule.geosite ??= [];
+                        hostsResolveRule.geosite.AddRange(domainRule.geosite);
+                        hostsCounter++;
+                    }
+                }
+                if (hostsCounter > 0)
+                {
+                    _coreConfig.route.rules.Add(hostsResolveRule);
+                }
             }
 
             _coreConfig.route.rules.Add(new()
@@ -351,6 +428,11 @@ public partial class CoreConfigSingboxService
             rule.domain?.Add(domain.Substring(5));
         }
         else if (domain.StartsWith("keyword:"))
+        {
+            rule.domain_keyword ??= [];
+            rule.domain_keyword?.Add(domain.Substring(8));
+        }
+        else if (domain.StartsWith("dotless:"))
         {
             rule.domain_keyword ??= [];
             rule.domain_keyword?.Add(domain.Substring(8));

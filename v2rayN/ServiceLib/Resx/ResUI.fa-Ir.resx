@@ -1027,7 +1027,7 @@
     <value>پروتکل sing-box Mux</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Tun mode)</value>
+    <value>Process (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP or IP CIDR</value>
@@ -1097,9 +1097,6 @@
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>آدرس اینترنتی تست پینگ سرعت</value>
-  </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>اشتراک در حال به‌روزرسانی، فقط مشخص کنید که ملاحظاتی آیا وجود دارد!</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>پایان تست...</value>
@@ -1670,5 +1667,32 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>Group by Region</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>کپی</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>انتخاب همه</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>Add NaïveProxy</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Insecure Concurrency</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP routing policy</value>
   </data>
 </root>

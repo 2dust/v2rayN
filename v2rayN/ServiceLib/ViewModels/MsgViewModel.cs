@@ -31,7 +31,7 @@ public class MsgViewModel : MyReactiveObject
 
         AppEvents.SendMsgViewRequested
          .AsObservable()
-         //.ObserveOn(RxApp.MainThreadScheduler)
+         //.ObserveOn(RxSchedulers.MainThreadScheduler)
          .Subscribe(content => _ = AppendQueueMsg(content));
     }
 
@@ -86,15 +86,25 @@ public class MsgViewModel : MyReactiveObject
             }
             catch (Exception ex)
             {
-                _queueMsg.Enqueue(ex.Message);
+                EnqueueWithLimit(ex.Message);
                 _lastMsgFilterNotAvailable = true;
             }
         }
 
-        _queueMsg.Enqueue(msg);
+        EnqueueWithLimit(msg);
         if (!msg.EndsWith(Environment.NewLine))
         {
-            _queueMsg.Enqueue(Environment.NewLine);
+            EnqueueWithLimit(Environment.NewLine);
+        }
+    }
+
+    private void EnqueueWithLimit(string item)
+    {
+        _queueMsg.Enqueue(item);
+
+        while (_queueMsg.Count > NumMaxMsg)
+        {
+            _queueMsg.TryDequeue(out _);
         }
     }
 
