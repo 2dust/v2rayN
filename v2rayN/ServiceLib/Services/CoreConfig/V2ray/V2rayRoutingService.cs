@@ -164,7 +164,7 @@ public partial class CoreConfigV2rayService
             return Global.ProxyTag;
         }
 
-        var tag = $"{node.IndexId}-{Global.ProxyTag}";
+        var tag = $"{node.IndexId}-{Global.ProxyTag}-{node.Remarks}";
         if (_coreConfig.outbounds.Any(p => p.tag.StartsWith(tag)))
         {
             return tag;
