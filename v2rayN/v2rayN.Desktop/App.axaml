@@ -64,6 +64,14 @@
                             IsVisible="{Binding BlSystemProxyPacVisible}"
                             ToggleType="Radio" />
                         <NativeMenuItemSeparator />
+                        <NativeMenuItem
+                            Header="{x:Static resx:ResUI.menuRouting}"
+                            IsVisible="{Binding BlRouting}">
+                            <NativeMenuItem.Menu>
+                                <NativeMenu />
+                            </NativeMenuItem.Menu>
+                        </NativeMenuItem>
+                        <NativeMenuItemSeparator />
                         <NativeMenuItem Click="MenuAddServerViaClipboardClick" Header="{x:Static resx:ResUI.menuAddServerViaClipboard}" />
                         <NativeMenuItem Command="{Binding SubUpdateCmd}" Header="{x:Static resx:ResUI.menuSubUpdate}" />
                         <NativeMenuItem Command="{Binding SubUpdateViaProxyCmd}" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
