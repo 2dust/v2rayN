@@ -690,6 +690,11 @@ public partial class CoreConfigV2rayService
             var node = nodes[i];
             var currentTag = $"{baseTagName}-{i + 1}";
 
+            if (nodes.Count == 1)
+            {
+                currentTag = baseTagName;
+            }
+
             if (node.ConfigType.IsGroupType())
             {
                 var childProfiles = new CoreConfigV2rayService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
