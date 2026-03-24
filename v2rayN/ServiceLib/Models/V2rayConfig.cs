@@ -421,6 +421,8 @@ public class HttpupgradeSettings4Ray
     public string? path { get; set; }
 
     public string? host { get; set; }
+
+    public Headers4Ray headers { get; set; }
 }
 
 public class XhttpSettings4Ray
@@ -456,6 +458,7 @@ public class GrpcSettings4Ray
     public int? health_check_timeout { get; set; }
     public bool? permit_without_stream { get; set; }
     public int? initial_windows_size { get; set; }
+    public string? user_agent { get; set; }
 }
 
 public class HysteriaSettings4Ray
