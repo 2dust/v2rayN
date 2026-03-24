@@ -316,24 +316,50 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 SsMethod = Global.None,
             });
 
+            const string protectTag = "tun-protect-ss";
             foreach (var outbound in _coreConfig.outbounds
                 .Where(o => o.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
             {
                 outbound.streamSettings ??= new();
                 outbound.streamSettings.sockopt ??= new();
-                outbound.streamSettings.sockopt.dialerProxy = "tun-protect-ss";
+                outbound.streamSettings.sockopt.dialerProxy = protectTag;
             }
             // ech protected
             foreach (var outbound in _coreConfig.outbounds
                 .Where(outbound => outbound.streamSettings?.tlsSettings?.echConfigList?.IsNullOrEmpty() == false))
             {
                 outbound.streamSettings!.tlsSettings!.echSockopt ??= new();
-                outbound.streamSettings.tlsSettings.echSockopt.dialerProxy = "tun-protect-ss";
+                outbound.streamSettings.tlsSettings.echSockopt.dialerProxy = protectTag;
+            }
+            // xhttp download protected
+            foreach (var outbound in _coreConfig.outbounds
+                .Where(o => o.streamSettings?.xhttpSettings?.extra is not null))
+            {
+                var xhttpExtra = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings.xhttpSettings!.extra));
+                if (xhttpExtra is not JsonObject xhttpExtraObject
+                    || xhttpExtraObject["downloadSettings"] is not JsonObject downloadSettings)
+                {
+                    continue;
+                }
+                // dialerProxy
+                var sockopt = downloadSettings["sockopt"] as JsonObject ?? new JsonObject();
+                sockopt["dialerProxy"] = protectTag;
+                downloadSettings["sockopt"] = sockopt;
+                // ech protected
+                if (downloadSettings["tlsSettings"] is JsonObject tlsSettings
+                    && tlsSettings["echConfigList"] is not null)
+                {
+                    tlsSettings["echSockopt"] = new JsonObject
+                    {
+                        ["dialerProxy"] = protectTag
+                    };
+                }
+                outbound.streamSettings.xhttpSettings.extra = xhttpExtraObject;
             }
             _coreConfig.outbounds.Add(new CoreConfigV2rayService(context with
             {
                 Node = protectNode,
-            }).BuildProxyOutbound("tun-protect-ss"));
+            }).BuildProxyOutbound(protectTag));
 
             _coreConfig.routing.rules ??= [];
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
