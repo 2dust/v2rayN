@@ -8,6 +8,7 @@
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:view="using:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:Name="mainWindow"
     Title="v2rayN"
     Width="1200"
     Height="800"
@@ -17,11 +18,84 @@
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Styles>
+        <Style Selector="Border.windowTitleBar">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+        <Style Selector="Button.windowTitleBarButton">
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinWidth" Value="36" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Theme" Value="{DynamicResource BorderlessButton}" />
+        </Style>
+        <Style Selector="TextBlock.windowTitleBarGlyph">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Styles>
     <dialogHost:DialogHost
         Background="Gray"
         CloseOnClickAway="True"
         DisableOpeningAnimation="True">
-        <DockPanel>
+        <DockPanel LastChildFill="True">
+            <Border
+                x:Name="linuxTitleBar"
+                Classes="windowTitleBar"
+                DockPanel.Dock="Top"
+                IsVisible="False">
+                <Grid ColumnDefinitions="Auto,*,Auto" Height="36">
+                    <Border
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        DoubleTapped="LinuxTitleBar_DoubleTapped"
+                        PointerPressed="LinuxTitleBar_PointerPressed" />
+                    <StackPanel
+                        Grid.Column="0"
+                        Margin="12,0,0,0"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Source="/Assets/NotifyIcon1.ico" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Text="{Binding Title, ElementName=mainWindow}" />
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="btnLinuxMinimize"
+                            Classes="windowTitleBarButton"
+                            Click="BtnLinuxMinimize_Click">
+                            <TextBlock Classes="windowTitleBarGlyph" Text="-" />
+                        </Button>
+                        <Button
+                            x:Name="btnLinuxMaximizeRestore"
+                            Classes="windowTitleBarButton"
+                            Click="BtnLinuxMaximizeRestore_Click">
+                            <TextBlock
+                                x:Name="txtLinuxMaximizeRestore"
+                                Classes="windowTitleBarGlyph"
+                                Text="□" />
+                        </Button>
+                        <Button
+                            x:Name="btnLinuxClose"
+                            Classes="windowTitleBarButton"
+                            Click="BtnLinuxClose_Click">
+                            <TextBlock Classes="windowTitleBarGlyph" Text="×" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
                 <Menu Margin="{StaticResource Margin4}">

@@ -10,6 +10,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
     private readonly WindowNotificationManager? _manager;
+    private IDisposable? _linuxWindowStateSubscription;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
@@ -162,6 +163,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         else
         {
             Title = $"{Utils.GetVersion()}";
+            ConfigureLinuxTitleBar();
         }
         menuAddServerViaScan.IsVisible = false;
 
@@ -388,6 +390,81 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         await AppManager.Instance.AppExitAsync(true);
     }
 
+    private void ConfigureLinuxTitleBar()
+    {
+        if (!Utils.IsLinux())
+        {
+            return;
+        }
+
+        linuxTitleBar.IsVisible = true;
+        SystemDecorations = SystemDecorations.BorderOnly;
+        btnLinuxMaximizeRestore.IsVisible = CanResize;
+
+        _linuxWindowStateSubscription = this
+            .GetObservable(WindowStateProperty)
+            .Subscribe(_ => UpdateLinuxTitleBarWindowState());
+        UpdateLinuxTitleBarWindowState();
+    }
+
+    private void UpdateLinuxTitleBarWindowState()
+    {
+        txtLinuxMaximizeRestore.Text = WindowState == WindowState.Maximized ? "❐" : "□";
+    }
+
+    private void LinuxTitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (!Utils.IsLinux() || e.GetCurrentPoint(this).Properties.IsLeftButtonPressed == false)
+        {
+            return;
+        }
+
+        BeginMoveDrag(e);
+    }
+
+    private void LinuxTitleBar_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (!Utils.IsLinux() || !CanResize)
+        {
+            return;
+        }
+
+        ToggleLinuxWindowState();
+    }
+
+    private void BtnLinuxMinimize_Click(object? sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void BtnLinuxMaximizeRestore_Click(object? sender, RoutedEventArgs e)
+    {
+        ToggleLinuxWindowState();
+    }
+
+    private void BtnLinuxClose_Click(object? sender, RoutedEventArgs e)
+    {
+        HideToTray();
+    }
+
+    private void ToggleLinuxWindowState()
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+
+    private void HideToTray()
+    {
+        foreach (var ownedWindow in OwnedWindows)
+        {
+            ownedWindow.Close();
+        }
+
+        Hide();
+        AppManager.Instance.ShowInTaskbar = false;
+    }
+
     private void Shutdown(bool obj)
     {
         if (obj is bool b && _blCloseByUser == false)
@@ -448,6 +525,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             ShowHideWindow(false);
         }
         RestoreUI();
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        _linuxWindowStateSubscription?.Dispose();
+        base.OnClosed(e);
     }
 
     private void RestoreUI()
