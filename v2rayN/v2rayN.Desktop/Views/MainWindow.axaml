@@ -52,7 +52,6 @@
                     <Border
                         Grid.ColumnSpan="2"
                         Background="Transparent"
-                        DoubleTapped="LinuxTitleBar_DoubleTapped"
                         PointerPressed="LinuxTitleBar_PointerPressed" />
                     <StackPanel
                         Grid.Column="0"
@@ -71,21 +70,6 @@
                     <StackPanel
                         Grid.Column="2"
                         Orientation="Horizontal">
-                        <Button
-                            x:Name="btnLinuxMinimize"
-                            Classes="windowTitleBarButton"
-                            Click="BtnLinuxMinimize_Click">
-                            <TextBlock Classes="windowTitleBarGlyph" Text="-" />
-                        </Button>
-                        <Button
-                            x:Name="btnLinuxMaximizeRestore"
-                            Classes="windowTitleBarButton"
-                            Click="BtnLinuxMaximizeRestore_Click">
-                            <TextBlock
-                                x:Name="txtLinuxMaximizeRestore"
-                                Classes="windowTitleBarGlyph"
-                                Text="□" />
-                        </Button>
                         <Button
                             x:Name="btnLinuxClose"
                             Classes="windowTitleBarButton"

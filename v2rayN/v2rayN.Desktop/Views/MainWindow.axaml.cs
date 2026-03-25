@@ -10,7 +10,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
     private readonly WindowNotificationManager? _manager;
-    private IDisposable? _linuxWindowStateSubscription;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
@@ -406,17 +405,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
         linuxTitleBar.IsVisible = true;
         SystemDecorations = SystemDecorations.BorderOnly;
-        btnLinuxMaximizeRestore.IsVisible = CanResize;
-
-        _linuxWindowStateSubscription = this
-            .GetObservable(WindowStateProperty)
-            .Subscribe(_ => UpdateLinuxTitleBarWindowState());
-        UpdateLinuxTitleBarWindowState();
-    }
-
-    private void UpdateLinuxTitleBarWindowState()
-    {
-        txtLinuxMaximizeRestore.Text = WindowState == WindowState.Maximized ? "❐" : "□";
     }
 
     private void LinuxTitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -429,36 +417,9 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         BeginMoveDrag(e);
     }
 
-    private void LinuxTitleBar_DoubleTapped(object? sender, TappedEventArgs e)
-    {
-        if (!Utils.IsLinux() || !CanResize)
-        {
-            return;
-        }
-
-        ToggleLinuxWindowState();
-    }
-
-    private void BtnLinuxMinimize_Click(object? sender, RoutedEventArgs e)
-    {
-        HideToTray();
-    }
-
-    private void BtnLinuxMaximizeRestore_Click(object? sender, RoutedEventArgs e)
-    {
-        ToggleLinuxWindowState();
-    }
-
     private void BtnLinuxClose_Click(object? sender, RoutedEventArgs e)
     {
         HideToTray();
-    }
-
-    private void ToggleLinuxWindowState()
-    {
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
     }
 
     private void HideToTray()
@@ -532,12 +493,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             ShowHideWindow(false);
         }
         RestoreUI();
-    }
-
-    protected override void OnClosed(EventArgs e)
-    {
-        _linuxWindowStateSubscription?.Dispose();
-        base.OnClosed(e);
     }
 
     private void RestoreUI()
