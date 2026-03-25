@@ -14,7 +14,37 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Margin="{StaticResource Margin8}">
+    <Grid RowDefinitions="Auto,*">
+        <Border
+            x:Name="linuxTitleBar"
+            Classes="windowTitleBar"
+            IsVisible="False">
+            <Grid ColumnDefinitions="Auto,*,Auto" Height="36">
+                <Border
+                    x:Name="linuxTitleBarDragRegion"
+                    Grid.ColumnSpan="2"
+                    Background="Transparent" />
+                <StackPanel
+                    Grid.Column="0"
+                    Margin="12,0,0,0"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Image
+                        Width="16"
+                        Height="16"
+                        Source="/Assets/NotifyIcon1.ico" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="btnLinuxClose" Classes="windowTitleBarButton">
+                        <TextBlock Classes="windowTitleBarGlyph" Text="×" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <DockPanel Grid.Row="1" Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
@@ -1131,5 +1161,6 @@
                 <Separator Grid.Row="9" Margin="{StaticResource MarginTb8}" />
             </Grid>
         </ScrollViewer>
-    </DockPanel>
+        </DockPanel>
+    </Grid>
 </Window>

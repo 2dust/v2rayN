@@ -18,26 +18,6 @@
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.Styles>
-        <Style Selector="Border.windowTitleBar">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-        </Style>
-        <Style Selector="Button.windowTitleBarButton">
-            <Setter Property="Width" Value="36" />
-            <Setter Property="Height" Value="32" />
-            <Setter Property="MinWidth" Value="36" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Theme" Value="{DynamicResource BorderlessButton}" />
-        </Style>
-        <Style Selector="TextBlock.windowTitleBarGlyph">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-    </Window.Styles>
     <dialogHost:DialogHost
         Background="Gray"
         CloseOnClickAway="True"
@@ -50,9 +30,9 @@
                 IsVisible="False">
                 <Grid ColumnDefinitions="Auto,*,Auto" Height="36">
                     <Border
+                        x:Name="linuxTitleBarDragRegion"
                         Grid.ColumnSpan="2"
-                        Background="Transparent"
-                        PointerPressed="LinuxTitleBar_PointerPressed" />
+                        Background="Transparent" />
                     <StackPanel
                         Grid.Column="0"
                         Margin="12,0,0,0"
@@ -72,8 +52,7 @@
                         Orientation="Horizontal">
                         <Button
                             x:Name="btnLinuxClose"
-                            Classes="windowTitleBarButton"
-                            Click="BtnLinuxClose_Click">
+                            Classes="windowTitleBarButton">
                             <TextBlock Classes="windowTitleBarGlyph" Text="×" />
                         </Button>
                     </StackPanel>

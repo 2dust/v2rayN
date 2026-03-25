@@ -1,5 +1,6 @@
 using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
+using MsBox.Avalonia.Dto;
 
 namespace v2rayN.Desktop.Common;
 
@@ -9,7 +10,17 @@ internal class UI
 
     public static async Task<ButtonResult> ShowYesNo(Window owner, string msg)
     {
-        var box = MessageBoxManager.GetMessageBoxStandard(caption, msg, ButtonEnum.YesNo);
+        var messageBoxParams = new MessageBoxStandardParams
+        {
+            ContentTitle = caption,
+            ContentMessage = msg,
+            ButtonDefinitions = ButtonEnum.YesNo,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            CanResize = false,
+            Topmost = false,
+            SystemDecorations = Utils.IsLinux() ? SystemDecorations.BorderOnly : SystemDecorations.Full
+        };
+        var box = MessageBoxManager.GetMessageBoxStandard(messageBoxParams);
         return await box.ShowWindowDialogAsync(owner);
     }
 

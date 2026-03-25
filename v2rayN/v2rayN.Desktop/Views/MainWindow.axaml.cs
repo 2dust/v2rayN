@@ -162,7 +162,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         else
         {
             Title = $"{Utils.GetVersion()}";
-            ConfigureLinuxTitleBar();
         }
         menuAddServerViaScan.IsVisible = false;
 
@@ -396,28 +395,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         await AppManager.Instance.AppExitAsync(true);
     }
 
-    private void ConfigureLinuxTitleBar()
-    {
-        if (!Utils.IsLinux())
-        {
-            return;
-        }
-
-        linuxTitleBar.IsVisible = true;
-        SystemDecorations = SystemDecorations.BorderOnly;
-    }
-
-    private void LinuxTitleBar_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (!Utils.IsLinux() || e.GetCurrentPoint(this).Properties.IsLeftButtonPressed == false)
-        {
-            return;
-        }
-
-        BeginMoveDrag(e);
-    }
-
-    private void BtnLinuxClose_Click(object? sender, RoutedEventArgs e)
+    protected override void HandleLinuxTitleBarClose()
     {
         HideToTray();
     }

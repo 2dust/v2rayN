@@ -22,6 +22,24 @@
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
         <dialogHost:DialogHostStyles />
+        <Style Selector="Border.windowTitleBar">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+        <Style Selector="Button.windowTitleBarButton">
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinWidth" Value="36" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Theme" Value="{DynamicResource BorderlessButton}" />
+        </Style>
+        <Style Selector="TextBlock.windowTitleBarGlyph">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultTertiaryForeground}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
     </Application.Styles>
 
     <TrayIcon.Icons>
