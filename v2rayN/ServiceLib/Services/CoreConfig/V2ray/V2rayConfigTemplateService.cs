@@ -109,9 +109,7 @@ public partial class CoreConfigV2rayService
                     ?? string.Empty;
                 if (!Utils.IsPrivateNetwork(outboundAddress))
                 {
-                    outbound.streamSettings ??= new StreamSettings4Ray();
-                    outbound.streamSettings.sockopt ??= new Sockopt4Ray();
-                    outbound.streamSettings.sockopt.dialerProxy = fullConfigTemplate.ProxyDetour;
+                    FillDialerProxy(outbound, fullConfigTemplate.ProxyDetour);
                 }
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
