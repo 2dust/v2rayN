@@ -282,7 +282,14 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
                 e.Cancel = true;
-                ShowHideWindow(false);
+                if (Utils.IsLinux())
+                {
+                    HideToTray();
+                }
+                else
+                {
+                    ShowHideWindow(false);
+                }
                 break;
 
             case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
