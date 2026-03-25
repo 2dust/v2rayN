@@ -156,7 +156,7 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await MoveServer(EMove.Bottom);
         }, canEditRemove);
-        MoveToGroupCmd = ReactiveCommand.CreateFromTask<SubItem>(async sub =>
+        MoveToGroupCmd = ReactiveCommand.Create<SubItem>(sub =>
         {
             SelectedMoveToGroup = sub;
         });

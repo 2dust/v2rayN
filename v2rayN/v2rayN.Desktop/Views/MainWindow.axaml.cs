@@ -441,7 +441,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void BtnLinuxMinimize_Click(object? sender, RoutedEventArgs e)
     {
-        WindowState = WindowState.Minimized;
+        HideToTray();
     }
 
     private void BtnLinuxMaximizeRestore_Click(object? sender, RoutedEventArgs e)
@@ -510,7 +510,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
             {
-                WindowState = WindowState.Minimized;
+                HideToTray();
                 return;
             }
 
