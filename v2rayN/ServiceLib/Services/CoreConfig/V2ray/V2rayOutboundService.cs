@@ -51,10 +51,7 @@ public partial class CoreConfigV2rayService
             }
             foreach (var outbound in actOutboundWithTlsList)
             {
-                outbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = fragmentOutbound.tag
-                };
+                FillDialerProxy(outbound, fragmentOutbound.tag);
             }
         }
         return proxyOutboundList;
@@ -748,10 +745,7 @@ public partial class CoreConfigV2rayService
                         childProfiles.Where(n => n?.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true);
                     foreach (var chainEndNode in chainEndNodes)
                     {
-                        chainEndNode.streamSettings.sockopt = new()
-                        {
-                            dialerProxy = dialerProxyTag
-                        };
+                        FillDialerProxy(chainEndNode, dialerProxyTag);
                     }
                 }
                 if (i != 0)
@@ -759,12 +753,10 @@ public partial class CoreConfigV2rayService
                     var chainStartNodes = childProfiles.Where(n => n.tag.StartsWith(currentTag)).ToList();
                     if (chainStartNodes.Count == 1)
                     {
+                        var firstChainTag = chainStartNodes.First().tag;
                         foreach (var existedChainEndNode in resultOutbounds.Where(n => n.streamSettings?.sockopt?.dialerProxy == currentTag))
                         {
-                            existedChainEndNode.streamSettings.sockopt = new()
-                            {
-                                dialerProxy = chainStartNodes.First().tag
-                            };
+                            FillDialerProxy(existedChainEndNode, firstChainTag);
                         }
                     }
                     else if (chainStartNodes.Count > 1)
@@ -787,12 +779,8 @@ public partial class CoreConfigV2rayService
                                 var nextTag = k + 1 < existedChainNodesClone.Count
                                     ? existedChainNodesClone[k + 1].tag
                                     : chainStartNode.tag;
-                                existedChainNode.streamSettings.sockopt = new()
-                                {
-                                    dialerProxy = (previousDialerProxyTag == currentTag)
-                                        ? chainStartNode.tag
-                                        : nextTag
-                                };
+                                FillDialerProxy(existedChainNode,
+                                    previousDialerProxyTag == currentTag ? chainStartNode.tag : nextTag);
                                 resultOutbounds.Add(existedChainNode);
                             }
                             j++;
@@ -808,14 +796,32 @@ public partial class CoreConfigV2rayService
 
             if (!dialerProxyTag.IsNullOrEmpty())
             {
-                outbound.streamSettings.sockopt = new()
-                {
-                    dialerProxy = dialerProxyTag
-                };
+                FillDialerProxy(outbound, dialerProxyTag);
             }
 
             resultOutbounds.Add(outbound);
         }
         return resultOutbounds;
+    }
+
+    private static void FillDialerProxy(Outbounds4Ray outbound, string dialerProxyTag)
+    {
+        outbound.streamSettings ??= new();
+        outbound.streamSettings.sockopt ??= new();
+        outbound.streamSettings.sockopt.dialerProxy = dialerProxyTag;
+
+        // xhttp download dialer proxy
+        if (outbound?.streamSettings?.xhttpSettings?.extra is not null)
+        {
+            var xhttpExtra = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings.xhttpSettings!.extra));
+            if (xhttpExtra is JsonObject xhttpExtraObject
+                && xhttpExtraObject["downloadSettings"] is JsonObject downloadSettings)
+            {
+                var sockopt = downloadSettings["sockopt"] as JsonObject ?? new JsonObject();
+                sockopt["dialerProxy"] = dialerProxyTag;
+                downloadSettings["sockopt"] = sockopt;
+                outbound.streamSettings.xhttpSettings.extra = xhttpExtraObject;
+            }
+        }
     }
 }
