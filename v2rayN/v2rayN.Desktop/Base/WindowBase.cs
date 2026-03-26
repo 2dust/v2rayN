@@ -8,7 +8,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 
     public WindowBase()
     {
-        if (Utils.IsLinux())
+        if (Utils.IsWayland())
         {
             SystemDecorations = SystemDecorations.BorderOnly;
         }
@@ -65,7 +65,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 
     private void ConfigureLinuxTitleBar()
     {
-        if (!Utils.IsLinux())
+        if (!Utils.IsWayland())
         {
             return;
         }

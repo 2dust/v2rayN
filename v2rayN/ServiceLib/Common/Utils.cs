@@ -1101,6 +1101,13 @@ public class Utils
 
     public static bool IsLinux() => OperatingSystem.IsLinux();
 
+    public static bool IsWayland() =>
+        OperatingSystem.IsLinux()
+        && (
+            Environment.GetEnvironmentVariable("WAYLAND_DISPLAY").IsNotEmpty()
+            || string.Equals(Environment.GetEnvironmentVariable("XDG_SESSION_TYPE"), "wayland", StringComparison.OrdinalIgnoreCase)
+        );
+
     public static bool IsMacOS() => OperatingSystem.IsMacOS();
 
     public static bool IsNonWindows() => !OperatingSystem.IsWindows();

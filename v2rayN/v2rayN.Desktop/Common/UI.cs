@@ -18,7 +18,7 @@ internal class UI
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             CanResize = false,
             Topmost = false,
-            SystemDecorations = Utils.IsLinux() ? SystemDecorations.BorderOnly : SystemDecorations.Full
+            SystemDecorations = Utils.IsWayland() ? SystemDecorations.BorderOnly : SystemDecorations.Full
         };
         var box = MessageBoxManager.GetMessageBoxStandard(messageBoxParams);
         return await box.ShowWindowDialogAsync(owner);
