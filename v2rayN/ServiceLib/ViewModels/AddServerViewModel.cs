@@ -73,6 +73,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public bool NaiveQuic { get; set; }
 
+    [Reactive]
+    public bool AllowInsecureCertFetch { get; set; }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -272,7 +275,7 @@ public class AddServerViewModel : MyReactiveObject
             domain += $":{SelectedSource.Port}";
         }
 
-        (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+        (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName, allowInsecure: AllowInsecureCertFetch);
         UpdateCertTip(certError);
     }
 
@@ -297,7 +300,7 @@ public class AddServerViewModel : MyReactiveObject
             domain += $":{SelectedSource.Port}";
         }
 
-        var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+        var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName, allowInsecure: AllowInsecureCertFetch);
         Cert = CertPemManager.ConcatenatePemChain(certs);
         UpdateCertTip(certError);
     }
