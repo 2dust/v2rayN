@@ -6,8 +6,7 @@ public class McBeService : IUdpTest
     private const string McBeDefaultServer = "pms.mc-complex.com";
     // 0x01 | client alive time in ms (unsigned long long) | magic | client GUID
     private static readonly byte[] McBeQueryPacket =
-    new byte[]
-    {
+    [
         // 0x01
         0x01,
         // Client alive time (1000 ms)
@@ -18,19 +17,19 @@ public class McBeService : IUdpTest
         // Client GUID (random 16 bytes)
         0x66, 0x0E, 0xAB, 0xBC, 0x61, 0x0D, 0x1F, 0x4E,
         0xA4, 0x40, 0x8C, 0x65, 0xC1, 0xBE, 0xF5, 0x4B
-    };
-    private static readonly byte[] McBeMagicBytes = new byte[]
-    {
+    ];
+    private static readonly byte[] McBeMagicBytes =
+    [
         0x00, 0xFF, 0xFF, 0x00, 0xFE, 0xFE, 0xFE, 0xFE,
         0xFD, 0xFD, 0xFD, 0xFD, 0x12, 0x34, 0x56, 0x78
-    };
-    private static readonly List<string> ValidGameModes = new List<string>
-    {
+    ];
+    private static readonly List<string> ValidGameModes =
+    [
         "Survival",
         "Creative",
         "Adventure",
         "Spectator"
-    };
+    ];
 
     public byte[] BuildUdpRequestPacket()
     {
@@ -45,7 +44,7 @@ public class McBeService : IUdpTest
         // Edition Example:
         // 
         // MCPE;Dedicated Server;527;1.19.1;0;10;13253860892328930865;Bedrock level;Survival;1;19132;19133;
-        if (mcbeResponseBytes == null || mcbeResponseBytes.Length < 48)
+        if (mcbeResponseBytes.Length < 48)
         {
             return false;
         }

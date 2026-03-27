@@ -52,7 +52,7 @@ public class UdpService
         }
 
         // Handle IPv6 format: [::1]:port or [2001:db8::1]:port
-        if (targetServerHost.StartsWith("["))
+        if (targetServerHost.StartsWith('['))
         {
             var closeBracketIndex = targetServerHost.IndexOf(']');
             if (closeBracketIndex > 0)
@@ -96,64 +96,57 @@ public class UdpService
             throw new InvalidOperationException("Failed to build UDP request packet.");
         }
         using var channel = new Socks5UdpChannel(Global.Loopback, socks5Port);
-        try
+        if (!await channel.EstablishUdpAssociationAsync(cancellationToken).ConfigureAwait(false))
         {
-            if (!await channel.EstablishUdpAssociationAsync(cancellationToken).ConfigureAwait(false))
+            throw new Exception("Failed to establish UDP association with SOCKS5 proxy.");
+        }
+
+        var (targetHost, targetPort) = ParseHostAndPort(targetServerHost);
+
+        byte[] udpReceiveResult = null;
+
+        // Get minimum round trip time from two attempts
+        var roundTripTime = TimeSpan.MaxValue;
+
+        for (var attempt = 0; attempt < 2; attempt++)
+        {
+            try
             {
-                throw new Exception("Failed to establish UDP association with SOCKS5 proxy.");
-            }
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                await channel.SendAsync(targetHost, targetPort, udpRequestPacket).ConfigureAwait(false);
+                var (_, receiveResult) = await channel.ReceiveAsync(cancellationToken).ConfigureAwait(false);
+                stopwatch.Stop();
 
-            var (targetHost, targetPort) = ParseHostAndPort(targetServerHost);
+                udpReceiveResult = receiveResult;
 
-            byte[] udpReceiveResult = null;
-
-            // Get minimum round trip time from two attempts
-            var roundTripTime = TimeSpan.MaxValue;
-
-            for (var attempt = 0; attempt < 2; attempt++)
-            {
-                try
+                var currentRoundTripTime = stopwatch.Elapsed;
+                if (currentRoundTripTime < roundTripTime)
                 {
-                    var stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    await channel.SendAsync(targetHost, targetPort, udpRequestPacket).ConfigureAwait(false);
-                    var (_, receiveResult) = await channel.ReceiveAsync(cancellationToken).ConfigureAwait(false);
-                    stopwatch.Stop();
-
-                    udpReceiveResult = receiveResult;
-
-                    var currentRoundTripTime = stopwatch.Elapsed;
-                    if (currentRoundTripTime < roundTripTime)
-                    {
-                        roundTripTime = currentRoundTripTime;
-                    }
-                }
-                catch
-                {
-                    if (attempt == 1 && roundTripTime == TimeSpan.MaxValue)
-                    {
-                        throw;
-                    }
+                    roundTripTime = currentRoundTripTime;
                 }
             }
-
-            if ((udpReceiveResult?.Length ?? 0) < 4 + 1 + 4 + 2)
+            catch
             {
-                throw new Exception("Received NTP response is too short.");
-            }
-
-            if (_udpTest.VerifyAndExtractUdpResponse(udpReceiveResult))
-            {
-                return roundTripTime;
-            }
-            else
-            {
-                throw new Exception("Failed to verify and extract UDP response.");
+                if (attempt == 1 && roundTripTime == TimeSpan.MaxValue)
+                {
+                    throw;
+                }
             }
         }
-        catch
+
+        if ((udpReceiveResult?.Length ?? 0) < 4 + 1 + 4 + 2)
         {
-            throw;
+            throw new Exception("Received NTP response is too short.");
+        }
+
+        if (udpReceiveResult != null && _udpTest.VerifyAndExtractUdpResponse(udpReceiveResult))
+        {
+            return roundTripTime;
+        }
+        else
+        {
+            throw new Exception("Failed to verify and extract UDP response.");
         }
     }
 }

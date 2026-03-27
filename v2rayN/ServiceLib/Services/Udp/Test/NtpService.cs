@@ -1,5 +1,3 @@
-using System.Buffers.Binary;
-
 namespace ServiceLib.Services.Udp.Test;
 
 public class NtpService : IUdpTest
@@ -16,7 +14,7 @@ public class NtpService : IUdpTest
 
     public bool VerifyAndExtractUdpResponse(byte[] ntpResponseBytes)
     {
-        if (ntpResponseBytes == null || ntpResponseBytes.Length < 48)
+        if (ntpResponseBytes.Length < 48)
         {
             return false;
         }
@@ -24,17 +22,7 @@ public class NtpService : IUdpTest
         {
             return false;
         }
-        try
-        {
-            var secsSince1900 = BinaryPrimitives.ReadUInt32BigEndian(ntpResponseBytes.AsSpan(40, 4));
-            const long ntpToUnixEpochOffsetSeconds = 2208988800L;
-            var unixSecs = (long)secsSince1900 - ntpToUnixEpochOffsetSeconds;
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        return true;
     }
 
     public ushort GetDefaultTargetPort()
