@@ -4,9 +4,9 @@ namespace ServiceLib.Services.Udp;
 
 public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposable
 {
-    private TcpClient tcpClient;
-    private UdpClient udpClient;
-    private IPEndPoint relayEndPoint;
+    private TcpClient _tcpClient;
+    private UdpClient _udpClient;
+    private IPEndPoint _relayEndPoint;
 
     private bool _initialized = false;
 
@@ -24,7 +24,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             Port = (ushort)remote.Port
         };
         var packet = BuildSocks5UdpPacket(addrData, data);
-        await udpClient.SendAsync(packet, packet.Length, relayEndPoint);
+        await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         addrData.Port = port;
 
         var packet = BuildSocks5UdpPacket(addrData, data);
-        await udpClient.SendAsync(packet, packet.Length, relayEndPoint);
+        await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
     public async Task<(Socks5RemoteEndpoint Remote, byte[] Data)> ReceiveAsync(
         CancellationToken cancellationToken = default)
     {
-        var result = await udpClient.ReceiveAsync(cancellationToken).ConfigureAwait(false);
+        var result = await _udpClient.ReceiveAsync(cancellationToken).ConfigureAwait(false);
         var (remote, payload) = ParseSocks5UdpPacket(result.Buffer);
         return (remote, payload);
     }
@@ -200,8 +200,8 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
     public void Dispose()
     {
-        tcpClient.Dispose();
-        udpClient.Dispose();
+        _tcpClient.Dispose();
+        _udpClient.Dispose();
     }
 
     #region SOCKS5 Connection Handling
@@ -217,20 +217,20 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             _initialized = false;
         }
 
-        udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
-        tcpClient = new TcpClient();
+        _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
+        _tcpClient = new TcpClient();
         try
         {
-            await tcpClient.ConnectAsync(socks5Host, socks5TcpPort, cancellationToken).ConfigureAwait(false);
+            await _tcpClient.ConnectAsync(socks5Host, socks5TcpPort, cancellationToken).ConfigureAwait(false);
         }
         catch (SocketException)
         {
             return false;
         }
 
-        var tcpControlStream = tcpClient.GetStream();
+        var tcpControlStream = _tcpClient.GetStream();
 
-        byte[] handshakeRequest = { Socks5Version, 0x01, 0x00 };
+        byte[] handshakeRequest = [Socks5Version, 0x01, 0x00];
         await tcpControlStream.WriteAsync(handshakeRequest, cancellationToken).ConfigureAwait(false);
         var handshakeResponse = new byte[2];
         if (await tcpControlStream.ReadAsync(handshakeResponse, cancellationToken).ConfigureAwait(false) < 2 ||
@@ -264,7 +264,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             return false;
         }
 
-        relayEndPoint = new IPEndPoint(proxyRelayIp, proxyRelaySocksAddr.Port);
+        _relayEndPoint = new IPEndPoint(proxyRelayIp, proxyRelaySocksAddr.Port);
         _initialized = true;
         return true;
     }
@@ -296,7 +296,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                     }
                     else
                     {
-                        ms.Write(new byte[] { 0, 0, 0, 0 });
+                        ms.Write([0, 0, 0, 0]);
                     }
 
                     break;
