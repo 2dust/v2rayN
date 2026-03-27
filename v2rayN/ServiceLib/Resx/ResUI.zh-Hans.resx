@@ -1692,4 +1692,10 @@
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
     <value>ICMP 路由策略</value>
   </data>
+  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
+    <value>允许不安全获取证书（自签名）</value>
+  </data>
+  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
+    <value>仅用于抓取自签证书，存在中间人风险。</value>
+  </data>
 </root>
