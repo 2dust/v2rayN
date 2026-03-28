@@ -331,7 +331,7 @@ public class StreamSettings4Ray
 
     public TlsSettings4Ray? tlsSettings { get; set; }
 
-    public TcpSettings4Ray? tcpSettings { get; set; }
+    public RawSettings4Ray? rawSettings { get; set; }
 
     public KcpSettings4Ray? kcpSettings { get; set; }
 
@@ -385,7 +385,7 @@ public class CertificateSettings4Ray
     public string? usage { get; set; }
 }
 
-public class TcpSettings4Ray
+public class RawSettings4Ray
 {
     public Header4Ray header { get; set; }
 }

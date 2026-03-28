@@ -37,7 +37,7 @@ public class VmessFmt : BaseFmt
             net = item.Network,
             type = item.GetNetwork() switch
             {
-                nameof(ETransport.tcp) => item.GetTransportExtra().TcpHeaderType,
+                nameof(ETransport.raw) => item.GetTransportExtra().RawHeaderType,
                 nameof(ETransport.kcp) => item.GetTransportExtra().KcpHeaderType,
                 nameof(ETransport.xhttp) => item.GetTransportExtra().XhttpMode,
                 nameof(ETransport.grpc) => item.GetTransportExtra().GrpcMode,
@@ -45,7 +45,7 @@ public class VmessFmt : BaseFmt
             },
             host = item.GetNetwork() switch
             {
-                nameof(ETransport.tcp) => item.GetTransportExtra().TcpHost,
+                nameof(ETransport.raw) => item.GetTransportExtra().RawHost,
                 nameof(ETransport.ws) => item.GetTransportExtra().WsHost,
                 nameof(ETransport.httpupgrade) => item.GetTransportExtra().HttpupgradeHost,
                 nameof(ETransport.xhttp) => item.GetTransportExtra().XhttpHost,
@@ -96,7 +96,7 @@ public class VmessFmt : BaseFmt
         item.Network = Global.DefaultNetwork;
         var transport = new TransportExtra
         {
-            TcpHeaderType = Global.None,
+            RawHeaderType = Global.None,
         };
 
         //item.ConfigVersion = vmessQRCode.v;
@@ -117,7 +117,7 @@ public class VmessFmt : BaseFmt
         {
             transport = item.GetNetwork() switch
             {
-                nameof(ETransport.tcp) => transport with { TcpHeaderType = vmessQRCode.type },
+                nameof(ETransport.raw) => transport with { RawHeaderType = vmessQRCode.type },
                 nameof(ETransport.kcp) => transport with { KcpHeaderType = vmessQRCode.type },
                 nameof(ETransport.xhttp) => transport with { XhttpMode = vmessQRCode.type },
                 nameof(ETransport.grpc) => transport with { GrpcMode = vmessQRCode.type },
@@ -126,7 +126,7 @@ public class VmessFmt : BaseFmt
         }
         transport = item.GetNetwork() switch
         {
-            nameof(ETransport.tcp) => transport with { TcpHost = Utils.ToString(vmessQRCode.host) },
+            nameof(ETransport.raw) => transport with { RawHost = Utils.ToString(vmessQRCode.host) },
             nameof(ETransport.kcp) => transport with { KcpSeed = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.ws) => transport with { WsHost = Utils.ToString(vmessQRCode.host), WsPath = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.httpupgrade) => transport with { HttpupgradeHost = Utils.ToString(vmessQRCode.host), HttpupgradePath = Utils.ToString(vmessQRCode.path) },

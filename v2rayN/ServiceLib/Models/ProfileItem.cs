@@ -167,9 +167,9 @@ public class ProfileItem
     public string Password { get; set; }
     public string Username { get; set; }
     public string Network { get; set; }
-    [Obsolete("Use TransportExtra.TcpHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
+    [Obsolete("Use TransportExtra.RawHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
     public string HeaderType { get; set; }
-    [Obsolete("Use TransportExtra.TcpHost/WsHost/HttpupgradeHost/XhttpHost/GrpcAuthority instead.")]
+    [Obsolete("Use TransportExtra.RawHost/WsHost/HttpupgradeHost/XhttpHost/GrpcAuthority instead.")]
     public string RequestHost { get; set; }
     [Obsolete("Use TransportExtra.WsPath/HttpupgradePath/XhttpPath/GrpcServiceName/KcpSeed instead.")]
     public string Path { get; set; }

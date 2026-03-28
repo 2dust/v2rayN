@@ -199,8 +199,8 @@ public partial class AddServerWindow
                     break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.TcpHeaderType, v => v.cmbHeaderTypeTcp.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.TcpHost, v => v.txtRequestHostTcp.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RawHost, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.KcpHeaderType, v => v.cmbHeaderTypeKcp.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.KcpSeed, v => v.txtKcpSeed.Text).DisposeWith(disposables);
@@ -301,7 +301,7 @@ public partial class AddServerWindow
 
     private void SetHeaderType()
     {
-        cmbHeaderTypeTcp.ItemsSource = new List<string> { Global.None, Global.TcpHeaderHttp };
+        cmbHeaderTypeRaw.ItemsSource = new List<string> { Global.None, Global.RawHeaderHttp };
 
         var kcpHeaderTypes = new List<string> { Global.None };
         kcpHeaderTypes.AddRange(Global.KcpHeaderTypes);
@@ -326,7 +326,7 @@ public partial class AddServerWindow
             network = Global.DefaultNetwork;
         }
 
-        gridTransportTcp.Visibility = Visibility.Collapsed;
+        gridTransportRaw.Visibility = Visibility.Collapsed;
         gridTransportKcp.Visibility = Visibility.Collapsed;
         gridTransportWs.Visibility = Visibility.Collapsed;
         gridTransportHttpupgrade.Visibility = Visibility.Collapsed;
@@ -335,8 +335,8 @@ public partial class AddServerWindow
 
         switch (network)
         {
-            case nameof(ETransport.tcp):
-                gridTransportTcp.Visibility = Visibility.Visible;
+            case nameof(ETransport.raw):
+                gridTransportRaw.Visibility = Visibility.Visible;
                 break;
             case nameof(ETransport.kcp):
                 gridTransportKcp.Visibility = Visibility.Visible;
@@ -354,7 +354,7 @@ public partial class AddServerWindow
                 gridTransportGrpc.Visibility = Visibility.Visible;
                 break;
             default:
-                gridTransportTcp.Visibility = Visibility.Visible;
+                gridTransportRaw.Visibility = Visibility.Visible;
                 break;
         }
     }

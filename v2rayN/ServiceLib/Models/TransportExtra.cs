@@ -2,8 +2,8 @@ namespace ServiceLib.Models;
 
 public record TransportExtra
 {
-    public string? TcpHeaderType { get; init; }
-    public string? TcpHost { get; init; }
+    public string? RawHeaderType { get; init; }
+    public string? RawHost { get; init; }
 
     public string? WsHost { get; init; }
     public string? WsPath { get; init; }

@@ -74,10 +74,10 @@ public class AddServerViewModel : MyReactiveObject
     public bool NaiveQuic { get; set; }
 
     [Reactive]
-    public string TcpHeaderType { get; set; }
+    public string RawHeaderType { get; set; }
 
     [Reactive]
-    public string TcpHost { get; set; }
+    public string RawHost { get; set; }
 
     [Reactive]
     public string WsHost { get; set; }
@@ -122,7 +122,7 @@ public class AddServerViewModel : MyReactiveObject
     {
         get => SelectedSource.GetNetwork() switch
         {
-            nameof(ETransport.tcp) => TcpHeaderType,
+            nameof(ETransport.raw) => RawHeaderType,
             nameof(ETransport.kcp) => KcpHeaderType,
             nameof(ETransport.xhttp) => XhttpMode,
             nameof(ETransport.grpc) => GrpcMode,
@@ -132,8 +132,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             switch (SelectedSource.GetNetwork())
             {
-                case nameof(ETransport.tcp):
-                    TcpHeaderType = value;
+                case nameof(ETransport.raw):
+                    RawHeaderType = value;
                     break;
                 case nameof(ETransport.kcp):
                     KcpHeaderType = value;
@@ -153,7 +153,7 @@ public class AddServerViewModel : MyReactiveObject
     {
         get => SelectedSource.GetNetwork() switch
         {
-            nameof(ETransport.tcp) => TcpHost,
+            nameof(ETransport.raw) => RawHost,
             nameof(ETransport.ws) => WsHost,
             nameof(ETransport.httpupgrade) => HttpupgradeHost,
             nameof(ETransport.xhttp) => XhttpHost,
@@ -164,8 +164,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             switch (SelectedSource.GetNetwork())
             {
-                case nameof(ETransport.tcp):
-                    TcpHost = value;
+                case nameof(ETransport.raw):
+                    RawHost = value;
                     break;
                 case nameof(ETransport.ws):
                     WsHost = value;
@@ -309,8 +309,8 @@ public class AddServerViewModel : MyReactiveObject
         InsecureConcurrency = protocolExtra?.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra?.NaiveQuic ?? false;
 
-        TcpHeaderType = transport.TcpHeaderType ?? Global.None;
-        TcpHost = transport.TcpHost ?? string.Empty;
+        RawHeaderType = transport.RawHeaderType ?? Global.None;
+        RawHost = transport.RawHost ?? string.Empty;
         WsHost = transport.WsHost ?? string.Empty;
         WsPath = transport.WsPath ?? string.Empty;
         HttpupgradeHost = transport.HttpupgradeHost ?? string.Empty;
@@ -378,8 +378,8 @@ public class AddServerViewModel : MyReactiveObject
 
         var transport = new TransportExtra
         {
-            TcpHeaderType = TcpHeaderType.NullIfEmpty(),
-            TcpHost = TcpHost.NullIfEmpty(),
+            RawHeaderType = RawHeaderType.NullIfEmpty(),
+            RawHost = RawHost.NullIfEmpty(),
             WsHost = WsHost.NullIfEmpty(),
             WsPath = WsPath.NullIfEmpty(),
             HttpupgradeHost = HttpupgradeHost.NullIfEmpty(),
@@ -517,7 +517,7 @@ public class AddServerViewModel : MyReactiveObject
     {
         return SelectedSource.GetNetwork() switch
         {
-            nameof(ETransport.tcp) => TcpHost,
+            nameof(ETransport.raw) => RawHost,
             nameof(ETransport.ws) => WsHost,
             nameof(ETransport.httpupgrade) => HttpupgradeHost,
             nameof(ETransport.xhttp) => XhttpHost,
