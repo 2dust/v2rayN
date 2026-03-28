@@ -92,18 +92,18 @@ public class BaseFmt
         var network = item.GetNetwork();
         if (!Global.Networks.Contains(network))
         {
-            network = nameof(ETransport.tcp);
+            network = nameof(ETransport.raw);
         }
 
         dicQuery.Add("type", network);
 
         switch (network)
         {
-            case nameof(ETransport.tcp):
-                dicQuery.Add("headerType", transport.TcpHeaderType.IsNotEmpty() ? transport.TcpHeaderType : Global.None);
-                if (transport.TcpHost.IsNotEmpty())
+            case nameof(ETransport.raw):
+                dicQuery.Add("headerType", transport.RawHeaderType.IsNotEmpty() ? transport.RawHeaderType : Global.None);
+                if (transport.RawHost.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.TcpHost));
+                    dicQuery.Add("host", Utils.UrlEncode(transport.RawHost));
                 }
                 break;
 
@@ -259,20 +259,20 @@ public class BaseFmt
             item.AllowInsecure = string.Empty;
         }
 
-        var net = GetQueryValue(query, "type", nameof(ETransport.tcp));
+        var net = GetQueryValue(query, "type", nameof(ETransport.raw));
         if (!Global.Networks.Contains(net))
         {
-            net = nameof(ETransport.tcp);
+            net = nameof(ETransport.raw);
         }
 
         item.Network = net;
         switch (item.Network)
         {
-            case nameof(ETransport.tcp):
+            case nameof(ETransport.raw):
                 transport = transport with
                 {
-                    TcpHeaderType = GetQueryValue(query, "headerType", Global.None),
-                    TcpHost = GetQueryDecoded(query, "host"),
+                    RawHeaderType = GetQueryValue(query, "headerType", Global.None),
+                    RawHost = GetQueryDecoded(query, "host"),
                 };
                 break;
 
@@ -336,7 +336,7 @@ public class BaseFmt
                 break;
 
             default:
-                item.Network = nameof(ETransport.tcp);
+                item.Network = nameof(ETransport.raw);
                 break;
         }
 

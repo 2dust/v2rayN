@@ -116,10 +116,10 @@ public partial class CoreConfigSingboxService
                         outbound.password = _node.Password;
                         outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
 
-                        if (network == nameof(ETransport.tcp) && transportExtra.TcpHeaderType == Global.TcpHeaderHttp)
+                        if (network == nameof(ETransport.raw) && transportExtra.RawHeaderType == Global.RawHeaderHttp)
                         {
                             outbound.plugin = "obfs-local";
-                            outbound.plugin_opts = $"obfs=http;obfs-host={transportExtra.TcpHost};";
+                            outbound.plugin_opts = $"obfs=http;obfs-host={transportExtra.RawHost};";
                         }
                         else
                         {
@@ -383,7 +383,7 @@ public partial class CoreConfigSingboxService
             {
                 var host = _node.GetNetwork() switch
                 {
-                    nameof(ETransport.tcp) => _node.GetTransportExtra().TcpHost,
+                    nameof(ETransport.raw) => _node.GetTransportExtra().RawHost,
                     nameof(ETransport.ws) => _node.GetTransportExtra().WsHost,
                     nameof(ETransport.httpupgrade) => _node.GetTransportExtra().HttpupgradeHost,
                     nameof(ETransport.xhttp) => _node.GetTransportExtra().XhttpHost,
@@ -449,11 +449,11 @@ public partial class CoreConfigSingboxService
 
             switch (_node.GetNetwork())
             {
-                case nameof(ETransport.tcp):   //http
-                    if (transportExtra.TcpHeaderType == Global.TcpHeaderHttp)
+                case nameof(ETransport.raw):   //http
+                    if (transportExtra.RawHeaderType == Global.RawHeaderHttp)
                     {
                         transport.type = nameof(ETransport.http);
-                        transport.host = transportExtra.TcpHost.IsNullOrEmpty() ? null : Utils.String2List(transportExtra.TcpHost);
+                        transport.host = transportExtra.RawHost.IsNullOrEmpty() ? null : Utils.String2List(transportExtra.RawHost);
                     }
                     break;
 

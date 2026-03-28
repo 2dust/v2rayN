@@ -42,8 +42,8 @@ public class Global
     public const string SingboxFakeIPFilterFileName = NamespaceSample + "singbox_fakeip_filter";
 
     public const string DefaultSecurity = "auto";
-    public const string DefaultNetwork = "tcp";
-    public const string TcpHeaderHttp = "http";
+    public const string DefaultNetwork = "raw";
+    public const string RawHeaderHttp = "http";
     public const string None = "none";
     public const string ProxyTag = "proxy";
     public const string DirectTag = "direct";
@@ -182,7 +182,7 @@ public class Global
         @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
     ];
 
-    public static readonly Dictionary<string, string> TcpHttpUserAgentTexts = new()
+    public static readonly Dictionary<string, string> RawHttpUserAgentTexts = new()
     {
         {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
         {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
@@ -292,7 +292,7 @@ public class Global
 
     public static readonly List<string> Networks =
     [
-        "tcp",
+        "raw",
         "xhttp",
         "kcp",
         "grpc",

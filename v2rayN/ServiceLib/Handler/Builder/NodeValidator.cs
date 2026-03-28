@@ -20,7 +20,7 @@ public class NodeValidator
         [EConfigType.VMess, EConfigType.VLESS, EConfigType.Trojan, EConfigType.Shadowsocks];
 
     private static readonly HashSet<string> SingboxShadowsocksAllowedTransports =
-        [nameof(ETransport.tcp), nameof(ETransport.ws)];
+        [nameof(ETransport.raw), nameof(ETransport.ws)];
 
     public static NodeValidatorResult Validate(ProfileItem item, ECoreType coreType)
     {
@@ -160,7 +160,7 @@ public class NodeValidator
         }
 
         // sing-box does not support non-tcp transports for protocols other than vmess/trojan/vless/shadowsocks
-        if (!SingboxTransportSupportedProtocols.Contains(configType) && net != nameof(ETransport.tcp))
+        if (!SingboxTransportSupportedProtocols.Contains(configType) && net != nameof(ETransport.raw))
         {
             return string.Format(ResUI.MsgCoreNotSupportProtocolTransport,
                 nameof(ECoreType.sing_box), configType.ToString(), net);

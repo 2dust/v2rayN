@@ -717,7 +717,7 @@
 
                     <Grid Grid.Row="2">
                         <Grid
-                            x:Name="gridTransportTcp"
+                            x:Name="gridTransportRaw"
                             ColumnDefinitions="300,Auto"
                             IsVisible="False"
                             RowDefinitions="Auto,Auto">
@@ -728,7 +728,7 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Static resx:ResUI.TbHeaderType}" />
                             <ComboBox
-                                x:Name="cmbHeaderTypeTcp"
+                                x:Name="cmbHeaderTypeRaw"
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Width="200"
@@ -740,7 +740,7 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Static resx:ResUI.TbRequestHost}" />
                             <TextBox
-                                x:Name="txtRequestHostTcp"
+                                x:Name="txtRequestHostRaw"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Width="400"

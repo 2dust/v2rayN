@@ -48,10 +48,10 @@ public class ShadowsocksFmt : BaseFmt
         var plugin = string.Empty;
         var pluginArgs = string.Empty;
 
-        if (item.Network == nameof(ETransport.tcp) && transport.TcpHeaderType == Global.TcpHeaderHttp)
+        if (item.Network == nameof(ETransport.raw) && transport.RawHeaderType == Global.RawHeaderHttp)
         {
             plugin = "obfs-local";
-            pluginArgs = $"obfs=http;obfs-host={transport.TcpHost};";
+            pluginArgs = $"obfs=http;obfs-host={transport.RawHost};";
         }
         else
         {
@@ -212,8 +212,8 @@ public class ShadowsocksFmt : BaseFmt
                     item.Network = Global.DefaultNetwork;
                     item.SetTransportExtra(item.GetTransportExtra() with
                     {
-                        TcpHeaderType = Global.TcpHeaderHttp,
-                        TcpHost = obfsHost,
+                        RawHeaderType = Global.RawHeaderHttp,
+                        RawHost = obfsHost,
                     });
                 }
             }

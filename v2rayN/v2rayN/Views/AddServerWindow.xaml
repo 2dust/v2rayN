@@ -943,7 +943,7 @@
                     </Grid>
 
                     <Grid Grid.Row="2">
-                        <Grid x:Name="gridTransportTcp" Visibility="Collapsed">
+                        <Grid x:Name="gridTransportRaw" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300" />
                                 <ColumnDefinition Width="Auto" />
@@ -960,7 +960,7 @@
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbHeaderType}" />
                             <ComboBox
-                                x:Name="cmbHeaderTypeTcp"
+                                x:Name="cmbHeaderTypeRaw"
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Width="200"
@@ -974,7 +974,7 @@
                                 Style="{StaticResource ToolbarTextBlock}"
                                 Text="{x:Static resx:ResUI.TbRequestHost}" />
                             <TextBox
-                                x:Name="txtRequestHostTcp"
+                                x:Name="txtRequestHostRaw"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Width="400"

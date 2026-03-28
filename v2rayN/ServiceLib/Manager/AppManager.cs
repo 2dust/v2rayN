@@ -364,14 +364,19 @@ public sealed class AppManager
                     var extra = item.GetProtocolExtra();
                     var transport = extra.Transport ?? new TransportExtra();
                     var network = item.GetNetwork();
+                    if (network == "tcp")
+                    {
+                        network = nameof(ETransport.raw);
+                        item.Network = network;
+                    }
 
                     switch (network)
                     {
-                        case nameof(ETransport.tcp):
+                        case nameof(ETransport.raw):
                             transport = transport with
                             {
-                                TcpHeaderType = item.HeaderType.NullIfEmpty(),
-                                TcpHost = item.RequestHost.NullIfEmpty(),
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                RawHost = item.RequestHost.NullIfEmpty(),
                             };
                             break;
 
@@ -422,8 +427,8 @@ public sealed class AppManager
                             item.Network = Global.DefaultNetwork;
                             transport = transport with
                             {
-                                TcpHeaderType = item.HeaderType.NullIfEmpty(),
-                                TcpHost = item.RequestHost.NullIfEmpty(),
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                RawHost = item.RequestHost.NullIfEmpty(),
                             };
                             break;
                     }

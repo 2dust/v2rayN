@@ -356,9 +356,9 @@ public partial class CoreConfigV2rayService
             var xhttpExtra = string.Empty;
             switch (network)
             {
-                case nameof(ETransport.tcp):
-                    host = transport.TcpHost?.TrimEx() ?? string.Empty;
-                    headerType = transport.TcpHeaderType?.TrimEx() ?? string.Empty;
+                case nameof(ETransport.raw):
+                    host = transport.RawHost?.TrimEx() ?? string.Empty;
+                    headerType = transport.RawHeaderType?.TrimEx() ?? string.Empty;
                     break;
 
                 case nameof(ETransport.kcp):
@@ -641,11 +641,10 @@ public partial class CoreConfigV2rayService
                     streamSettings.finalmask = hy2Finalmask;
                     break;
 
-                default:
-                    //tcp
-                    if (headerType == Global.TcpHeaderHttp)
+                case nameof(ETransport.raw):
+                    if (headerType == Global.RawHeaderHttp)
                     {
-                        TcpSettings4Ray tcpSettings = new()
+                        RawSettings4Ray rawSettings = new()
                         {
                             header = new Header4Ray
                             {
@@ -655,7 +654,7 @@ public partial class CoreConfigV2rayService
 
                         //request Host
                         var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
-                        var useragentValue = Global.TcpHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
+                        var useragentValue = Global.RawHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
                         var arrHost = host.Split(',');
                         var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
@@ -668,10 +667,13 @@ public partial class CoreConfigV2rayService
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
-                        tcpSettings.header.request = JsonUtils.Deserialize<object>(request);
+                        rawSettings.header.request = JsonUtils.Deserialize<object>(request);
 
-                        streamSettings.tcpSettings = tcpSettings;
+                        streamSettings.rawSettings = rawSettings;
                     }
+                    break;
+
+                default:
                     break;
             }
 
