@@ -5,14 +5,8 @@ public record TransportExtra
     public string? RawHeaderType { get; init; }
     public string? RawHost { get; init; }
 
-    public string? WsHost { get; init; }
-    public string? WsPath { get; init; }
-
-    public string? HttpupgradeHost { get; init; }
-    public string? HttpupgradePath { get; init; }
-
-    public string? XhttpHost { get; init; }
-    public string? XhttpPath { get; init; }
+    public string? Host { get; init; }
+    public string? Path { get; init; }
     public string? XhttpMode { get; init; }
     public string? XhttpExtra { get; init; }
 

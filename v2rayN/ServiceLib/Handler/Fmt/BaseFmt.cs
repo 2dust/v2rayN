@@ -116,35 +116,35 @@ public class BaseFmt
                 break;
 
             case nameof(ETransport.ws):
-                if (transport.WsHost.IsNotEmpty())
+                if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.WsHost));
+                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
                 }
-                if (transport.WsPath.IsNotEmpty())
+                if (transport.Path.IsNotEmpty())
                 {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.WsPath));
+                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
                 }
                 break;
 
             case nameof(ETransport.httpupgrade):
-                if (transport.HttpupgradeHost.IsNotEmpty())
+                if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.HttpupgradeHost));
+                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
                 }
-                if (transport.HttpupgradePath.IsNotEmpty())
+                if (transport.Path.IsNotEmpty())
                 {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.HttpupgradePath));
+                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
                 }
                 break;
 
             case nameof(ETransport.xhttp):
-                if (transport.XhttpHost.IsNotEmpty())
+                if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.XhttpHost));
+                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
                 }
-                if (transport.XhttpPath.IsNotEmpty())
+                if (transport.Path.IsNotEmpty())
                 {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.XhttpPath));
+                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
                 }
                 if (transport.XhttpMode.IsNotEmpty() && Global.XhttpMode.Contains(transport.XhttpMode))
                 {
@@ -288,16 +288,16 @@ public class BaseFmt
             case nameof(ETransport.ws):
                 transport = transport with
                 {
-                    WsHost = GetQueryDecoded(query, "host"),
-                    WsPath = GetQueryDecoded(query, "path", "/"),
+                    Host = GetQueryDecoded(query, "host"),
+                    Path = GetQueryDecoded(query, "path", "/"),
                 };
                 break;
 
             case nameof(ETransport.httpupgrade):
                 transport = transport with
                 {
-                    HttpupgradeHost = GetQueryDecoded(query, "host"),
-                    HttpupgradePath = GetQueryDecoded(query, "path", "/"),
+                    Host = GetQueryDecoded(query, "host"),
+                    Path = GetQueryDecoded(query, "path", "/"),
                 };
                 break;
 
@@ -319,8 +319,8 @@ public class BaseFmt
 
                 transport = transport with
                 {
-                    XhttpHost = GetQueryDecoded(query, "host"),
-                    XhttpPath = GetQueryDecoded(query, "path", "/"),
+                    Host = GetQueryDecoded(query, "host"),
+                    Path = GetQueryDecoded(query, "path", "/"),
                     XhttpMode = GetQueryDecoded(query, "mode"),
                     XhttpExtra = xhttpExtra,
                 };

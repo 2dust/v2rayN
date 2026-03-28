@@ -205,15 +205,15 @@ public partial class AddServerWindow
             this.Bind(ViewModel, vm => vm.KcpHeaderType, v => v.cmbHeaderTypeKcp.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.KcpSeed, v => v.txtKcpSeed.Text).DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.WsHost, v => v.txtRequestHostWs.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.WsPath, v => v.txtPathWs.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostWs.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Path, v => v.txtPathWs.Text).DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.HttpupgradeHost, v => v.txtRequestHostHttpupgrade.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.HttpupgradePath, v => v.txtPathHttpupgrade.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostHttpupgrade.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Path, v => v.txtPathHttpupgrade.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.XhttpMode, v => v.cmbHeaderTypeXhttp.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.XhttpHost, v => v.txtRequestHostXhttp.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.XhttpPath, v => v.txtPathXhttp.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostXhttp.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Path, v => v.txtPathXhttp.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.XhttpExtra, v => v.txtExtraXhttp.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.GrpcMode, v => v.cmbHeaderTypeGrpc.Text).DisposeWith(disposables);
