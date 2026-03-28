@@ -1695,4 +1695,7 @@
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
     <value>ICMP routing policy</value>
   </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>Legacy TUN Protect</value>
+  </data>
 </root>

@@ -145,6 +145,7 @@ public class TunModeItem
     public int Mtu { get; set; }
     public bool EnableIPv6Address { get; set; }
     public string IcmpRouting { get; set; }
+    public bool EnableLegacyProtect { get; set; }
 }
 
 [Serializable]

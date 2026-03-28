@@ -1009,6 +1009,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -1102,6 +1103,20 @@
                     <ToggleButton
                         x:Name="togEnableIPv6Address"
                         Grid.Row="7"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin8}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbLegacyProtect}" />
+                    <ToggleButton
+                        x:Name="togEnableLegacyProtect"
+                        Grid.Row="8"
                         Grid.Column="1"
                         Margin="{StaticResource Margin8}"
                         HorizontalAlignment="Left" />

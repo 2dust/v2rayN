@@ -3151,6 +3151,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Legacy TUN Protect 的本地化字符串。
+        /// </summary>
+        public static string TbLegacyProtect {
+            get {
+                return ResourceManager.GetString("TbLegacyProtect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address (IPv4, IPv6) 的本地化字符串。
         /// </summary>
         public static string TbLocalAddress {

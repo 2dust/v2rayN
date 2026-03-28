@@ -1692,4 +1692,7 @@
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
     <value>ICMP 路由策略</value>
   </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>旧版 TUN 保护</value>
+  </data>
 </root>
