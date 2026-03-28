@@ -9,7 +9,7 @@ public class ProfileItem
     {
         IndexId = string.Empty;
         ConfigType = EConfigType.VMess;
-        ConfigVersion = 3;
+        ConfigVersion = 4;
         Subid = string.Empty;
         Address = string.Empty;
         Port = 0;
@@ -17,9 +17,6 @@ public class ProfileItem
         Username = string.Empty;
         Network = string.Empty;
         Remarks = string.Empty;
-        HeaderType = string.Empty;
-        RequestHost = string.Empty;
-        Path = string.Empty;
         StreamSecurity = string.Empty;
         AllowInsecure = string.Empty;
     }
@@ -142,6 +139,16 @@ public class ProfileItem
         return _protocolExtraCache ??= JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra) ?? new ProtocolExtraItem();
     }
 
+    public TransportExtra GetTransportExtra()
+    {
+        return GetProtocolExtra().Transport ?? new TransportExtra();
+    }
+
+    public void SetTransportExtra(TransportExtra transportExtra)
+    {
+        SetProtocolExtra(GetProtocolExtra() with { Transport = transportExtra });
+    }
+
     #endregion function
 
     [PrimaryKey]
@@ -160,8 +167,11 @@ public class ProfileItem
     public string Password { get; set; }
     public string Username { get; set; }
     public string Network { get; set; }
+    [Obsolete("Use TransportExtra.TcpHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
     public string HeaderType { get; set; }
+    [Obsolete("Use TransportExtra.TcpHost/WsHost/HttpupgradeHost/XhttpHost/GrpcAuthority instead.")]
     public string RequestHost { get; set; }
+    [Obsolete("Use TransportExtra.WsPath/HttpupgradePath/XhttpPath/GrpcServiceName/KcpSeed instead.")]
     public string Path { get; set; }
     public string StreamSecurity { get; set; }
     public string AllowInsecure { get; set; }
@@ -172,6 +182,7 @@ public class ProfileItem
     public string ShortId { get; set; }
     public string SpiderX { get; set; }
     public string Mldsa65Verify { get; set; }
+    [Obsolete("Use TransportExtra.XhttpExtra instead.")]
     public string Extra { get; set; }
     public bool? MuxEnabled { get; set; }
     public string Cert { get; set; }

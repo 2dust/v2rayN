@@ -2,6 +2,8 @@ namespace ServiceLib.Models;
 
 public record ProtocolExtraItem
 {
+    public TransportExtra? Transport { get; init; }
+
     public bool? Uot { get; init; }
     public string? CongestionControl { get; init; }
 

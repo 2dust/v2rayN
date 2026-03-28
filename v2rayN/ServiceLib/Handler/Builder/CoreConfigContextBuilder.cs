@@ -313,8 +313,9 @@ public class CoreConfigContextBuilder
         }
 
         // xhttp downloadSettings address protect
-        if (!string.IsNullOrEmpty(node.Extra)
-            && JsonUtils.ParseJson(node.Extra) is JsonObject extra
+        var xhttpExtra = node.GetTransportExtra().XhttpExtra;
+        if (!string.IsNullOrEmpty(xhttpExtra)
+            && JsonUtils.ParseJson(xhttpExtra) is JsonObject extra
             && extra.TryGetPropertyValue("downloadSettings", out var dsNode)
             && dsNode is JsonObject downloadSettings
             && downloadSettings.TryGetPropertyValue("address", out var dAddrNode)
