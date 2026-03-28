@@ -20,7 +20,7 @@ public class NodeValidator
         [EConfigType.VMess, EConfigType.VLESS, EConfigType.Trojan, EConfigType.Shadowsocks];
 
     private static readonly HashSet<string> SingboxShadowsocksAllowedTransports =
-        [nameof(ETransport.tcp), nameof(ETransport.ws), nameof(ETransport.quic)];
+        [nameof(ETransport.tcp), nameof(ETransport.ws)];
 
     public static NodeValidatorResult Validate(ProfileItem item, ECoreType coreType)
     {
@@ -141,9 +141,10 @@ public class NodeValidator
             v.Assert(!item.PublicKey.IsNullOrEmpty(), string.Format(ResUI.MsgInvalidProperty, "PublicKey"));
         }
 
-        if (item.Network == nameof(ETransport.xhttp) && !item.Extra.IsNullOrEmpty())
+        var transport = item.GetTransportExtra();
+        if (item.Network == nameof(ETransport.xhttp) && !transport.XhttpExtra.IsNullOrEmpty())
         {
-            if (JsonUtils.ParseJson(item.Extra) is null)
+            if (JsonUtils.ParseJson(transport.XhttpExtra) is null)
             {
                 v.Error(string.Format(ResUI.MsgInvalidProperty, "XHTTP Extra"));
             }

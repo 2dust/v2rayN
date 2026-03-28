@@ -73,6 +73,167 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public bool NaiveQuic { get; set; }
 
+    [Reactive]
+    public string TcpHeaderType { get; set; }
+
+    [Reactive]
+    public string TcpHost { get; set; }
+
+    [Reactive]
+    public string WsHost { get; set; }
+
+    [Reactive]
+    public string WsPath { get; set; }
+
+    [Reactive]
+    public string HttpupgradeHost { get; set; }
+
+    [Reactive]
+    public string HttpupgradePath { get; set; }
+
+    [Reactive]
+    public string XhttpHost { get; set; }
+
+    [Reactive]
+    public string XhttpPath { get; set; }
+
+    [Reactive]
+    public string XhttpMode { get; set; }
+
+    [Reactive]
+    public string XhttpExtra { get; set; }
+
+    [Reactive]
+    public string GrpcAuthority { get; set; }
+
+    [Reactive]
+    public string GrpcServiceName { get; set; }
+
+    [Reactive]
+    public string GrpcMode { get; set; }
+
+    [Reactive]
+    public string KcpHeaderType { get; set; }
+
+    [Reactive]
+    public string KcpSeed { get; set; }
+
+    public string TransportHeaderType
+    {
+        get => SelectedSource.GetNetwork() switch
+        {
+            nameof(ETransport.tcp) => TcpHeaderType,
+            nameof(ETransport.kcp) => KcpHeaderType,
+            nameof(ETransport.xhttp) => XhttpMode,
+            nameof(ETransport.grpc) => GrpcMode,
+            _ => string.Empty,
+        };
+        set
+        {
+            switch (SelectedSource.GetNetwork())
+            {
+                case nameof(ETransport.tcp):
+                    TcpHeaderType = value;
+                    break;
+                case nameof(ETransport.kcp):
+                    KcpHeaderType = value;
+                    break;
+                case nameof(ETransport.xhttp):
+                    XhttpMode = value;
+                    break;
+                case nameof(ETransport.grpc):
+                    GrpcMode = value;
+                    break;
+            }
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public string TransportHost
+    {
+        get => SelectedSource.GetNetwork() switch
+        {
+            nameof(ETransport.tcp) => TcpHost,
+            nameof(ETransport.ws) => WsHost,
+            nameof(ETransport.httpupgrade) => HttpupgradeHost,
+            nameof(ETransport.xhttp) => XhttpHost,
+            nameof(ETransport.grpc) => GrpcAuthority,
+            _ => string.Empty,
+        };
+        set
+        {
+            switch (SelectedSource.GetNetwork())
+            {
+                case nameof(ETransport.tcp):
+                    TcpHost = value;
+                    break;
+                case nameof(ETransport.ws):
+                    WsHost = value;
+                    break;
+                case nameof(ETransport.httpupgrade):
+                    HttpupgradeHost = value;
+                    break;
+                case nameof(ETransport.xhttp):
+                    XhttpHost = value;
+                    break;
+                case nameof(ETransport.grpc):
+                    GrpcAuthority = value;
+                    break;
+            }
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public string TransportPath
+    {
+        get => SelectedSource.GetNetwork() switch
+        {
+            nameof(ETransport.kcp) => KcpSeed,
+            nameof(ETransport.ws) => WsPath,
+            nameof(ETransport.httpupgrade) => HttpupgradePath,
+            nameof(ETransport.xhttp) => XhttpPath,
+            nameof(ETransport.grpc) => GrpcServiceName,
+            _ => string.Empty,
+        };
+        set
+        {
+            switch (SelectedSource.GetNetwork())
+            {
+                case nameof(ETransport.kcp):
+                    KcpSeed = value;
+                    break;
+                case nameof(ETransport.ws):
+                    WsPath = value;
+                    break;
+                case nameof(ETransport.httpupgrade):
+                    HttpupgradePath = value;
+                    break;
+                case nameof(ETransport.xhttp):
+                    XhttpPath = value;
+                    break;
+                case nameof(ETransport.grpc):
+                    GrpcServiceName = value;
+                    break;
+            }
+            this.RaisePropertyChanged();
+        }
+    }
+
+    public string TransportExtraText
+    {
+        get => SelectedSource.GetNetwork() == nameof(ETransport.xhttp)
+            ? XhttpExtra
+            : string.Empty;
+        set
+        {
+            if (SelectedSource.GetNetwork() == nameof(ETransport.xhttp))
+            {
+                XhttpExtra = value;
+            }
+            this.RaisePropertyChanged();
+        }
+    }
+
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -101,14 +262,21 @@ public class AddServerViewModel : MyReactiveObject
         this.WhenAnyValue(x => x.CertSha)
             .Subscribe(_ => UpdateCertTip());
 
+        this.WhenAnyValue(x => x.SelectedSource.Network)
+            .Subscribe(_ =>
+            {
+                this.RaisePropertyChanged(nameof(TransportHeaderType));
+                this.RaisePropertyChanged(nameof(TransportHost));
+                this.RaisePropertyChanged(nameof(TransportPath));
+                this.RaisePropertyChanged(nameof(TransportExtraText));
+            });
+
         this.WhenAnyValue(x => x.Cert)
             .Subscribe(_ => UpdateCertSha());
 
         if (profileItem.IndexId.IsNullOrEmpty())
         {
             profileItem.Network = Global.DefaultNetwork;
-            profileItem.HeaderType = Global.None;
-            profileItem.RequestHost = "";
             profileItem.StreamSecurity = "";
             SelectedSource = profileItem;
         }
@@ -121,6 +289,7 @@ public class AddServerViewModel : MyReactiveObject
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
 
         var protocolExtra = SelectedSource?.GetProtocolExtra();
+        var transport = protocolExtra?.Transport ?? new TransportExtra();
         Ports = protocolExtra?.Ports ?? string.Empty;
         AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
         Flow = protocolExtra?.Flow ?? string.Empty;
@@ -139,6 +308,23 @@ public class AddServerViewModel : MyReactiveObject
         CongestionControl = protocolExtra?.CongestionControl ?? string.Empty;
         InsecureConcurrency = protocolExtra?.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra?.NaiveQuic ?? false;
+
+        TcpHeaderType = transport.TcpHeaderType ?? Global.None;
+        TcpHost = transport.TcpHost ?? string.Empty;
+        WsHost = transport.WsHost ?? string.Empty;
+        WsPath = transport.WsPath ?? string.Empty;
+        HttpupgradeHost = transport.HttpupgradeHost ?? string.Empty;
+        HttpupgradePath = transport.HttpupgradePath ?? string.Empty;
+        XhttpHost = transport.XhttpHost ?? string.Empty;
+        XhttpPath = transport.XhttpPath ?? string.Empty;
+        XhttpMode = transport.XhttpMode ?? string.Empty;
+        XhttpExtra = transport.XhttpExtra ?? string.Empty;
+        GrpcAuthority = transport.GrpcAuthority ?? string.Empty;
+        GrpcServiceName = transport.GrpcServiceName ?? string.Empty;
+        GrpcMode = transport.GrpcMode.IsNullOrEmpty() ? Global.GrpcGunMode : transport.GrpcMode;
+        KcpHeaderType = transport.KcpHeaderType.IsNullOrEmpty() ? Global.None : transport.KcpHeaderType;
+        KcpSeed = transport.KcpSeed ?? string.Empty;
+
     }
 
     private async Task SaveServerAsync()
@@ -185,8 +371,33 @@ public class AddServerViewModel : MyReactiveObject
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
+        if (!Global.Networks.Contains(SelectedSource.Network))
+        {
+            SelectedSource.Network = Global.DefaultNetwork;
+        }
+
+        var transport = new TransportExtra
+        {
+            TcpHeaderType = TcpHeaderType.NullIfEmpty(),
+            TcpHost = TcpHost.NullIfEmpty(),
+            WsHost = WsHost.NullIfEmpty(),
+            WsPath = WsPath.NullIfEmpty(),
+            HttpupgradeHost = HttpupgradeHost.NullIfEmpty(),
+            HttpupgradePath = HttpupgradePath.NullIfEmpty(),
+            XhttpHost = XhttpHost.NullIfEmpty(),
+            XhttpPath = XhttpPath.NullIfEmpty(),
+            XhttpMode = XhttpMode.NullIfEmpty(),
+            XhttpExtra = XhttpExtra.NullIfEmpty(),
+            GrpcAuthority = GrpcAuthority.NullIfEmpty(),
+            GrpcServiceName = GrpcServiceName.NullIfEmpty(),
+            GrpcMode = GrpcMode.NullIfEmpty(),
+            KcpHeaderType = KcpHeaderType.NullIfEmpty(),
+            KcpSeed = KcpSeed.NullIfEmpty(),
+        };
+
         SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
+            Transport = transport,
             Ports = Ports.NullIfEmpty(),
             AlterId = AlterId > 0 ? AlterId.ToString() : null,
             Flow = Flow.NullIfEmpty(),
@@ -261,7 +472,7 @@ public class AddServerViewModel : MyReactiveObject
         var serverName = SelectedSource.Sni;
         if (serverName.IsNullOrEmpty())
         {
-            serverName = SelectedSource.RequestHost;
+            serverName = GetCurrentTransportHost();
         }
         if (serverName.IsNullOrEmpty())
         {
@@ -286,7 +497,7 @@ public class AddServerViewModel : MyReactiveObject
         var serverName = SelectedSource.Sni;
         if (serverName.IsNullOrEmpty())
         {
-            serverName = SelectedSource.RequestHost;
+            serverName = GetCurrentTransportHost();
         }
         if (serverName.IsNullOrEmpty())
         {
@@ -300,5 +511,18 @@ public class AddServerViewModel : MyReactiveObject
         var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
         Cert = CertPemManager.ConcatenatePemChain(certs);
         UpdateCertTip(certError);
+    }
+
+    private string GetCurrentTransportHost()
+    {
+        return SelectedSource.GetNetwork() switch
+        {
+            nameof(ETransport.tcp) => TcpHost,
+            nameof(ETransport.ws) => WsHost,
+            nameof(ETransport.httpupgrade) => HttpupgradeHost,
+            nameof(ETransport.xhttp) => XhttpHost,
+            nameof(ETransport.grpc) => GrpcAuthority,
+            _ => string.Empty,
+        };
     }
 }

@@ -293,13 +293,11 @@ public class Global
     public static readonly List<string> Networks =
     [
         "tcp",
-        "kcp",
-        "ws",
-        "httpupgrade",
         "xhttp",
-        "h2",
-        "quic",
-        "grpc"
+        "kcp",
+        "grpc",
+        "ws",
+        "httpupgrade"
     ];
 
     public static readonly List<string> KcpHeaderTypes =

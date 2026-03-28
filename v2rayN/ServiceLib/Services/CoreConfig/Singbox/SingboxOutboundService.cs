@@ -84,6 +84,8 @@ public partial class CoreConfigSingboxService
         try
         {
             var protocolExtra = _node.GetProtocolExtra();
+            var transportExtra = _node.GetTransportExtra();
+            var network = _node.GetNetwork();
             outbound.server = _node.Address;
             outbound.server_port = _node.Port;
             outbound.type = Global.ProtocolTypes[_node.ConfigType];
@@ -114,26 +116,22 @@ public partial class CoreConfigSingboxService
                         outbound.password = _node.Password;
                         outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
 
-                        if (_node.Network == nameof(ETransport.tcp) && _node.HeaderType == Global.TcpHeaderHttp)
+                        if (network == nameof(ETransport.tcp) && transportExtra.TcpHeaderType == Global.TcpHeaderHttp)
                         {
                             outbound.plugin = "obfs-local";
-                            outbound.plugin_opts = $"obfs=http;obfs-host={_node.RequestHost};";
+                            outbound.plugin_opts = $"obfs=http;obfs-host={transportExtra.TcpHost};";
                         }
                         else
                         {
                             var pluginArgs = string.Empty;
-                            if (_node.Network == nameof(ETransport.ws))
+                            if (network == nameof(ETransport.ws))
                             {
                                 pluginArgs += "mode=websocket;";
-                                pluginArgs += $"host={_node.RequestHost};";
+                                pluginArgs += $"host={transportExtra.WsHost};";
                                 // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
                                 // Equal signs and commas [and backslashes] must be escaped with a backslash.
-                                var path = _node.Path.Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                                var path = (transportExtra.WsPath ?? string.Empty).Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
                                 pluginArgs += $"path={path};";
-                            }
-                            else if (_node.Network == nameof(ETransport.quic))
-                            {
-                                pluginArgs += "mode=quic;";
                             }
                             if (_node.StreamSecurity == Global.StreamSecurity)
                             {
@@ -381,9 +379,18 @@ public partial class CoreConfigSingboxService
             {
                 serverName = _node.Sni;
             }
-            else if (_node.RequestHost.IsNotEmpty())
+            else
             {
-                serverName = Utils.String2List(_node.RequestHost)?.First();
+                var host = _node.GetNetwork() switch
+                {
+                    nameof(ETransport.tcp) => _node.GetTransportExtra().TcpHost,
+                    nameof(ETransport.ws) => _node.GetTransportExtra().WsHost,
+                    nameof(ETransport.httpupgrade) => _node.GetTransportExtra().HttpupgradeHost,
+                    nameof(ETransport.xhttp) => _node.GetTransportExtra().XhttpHost,
+                    nameof(ETransport.grpc) => _node.GetTransportExtra().GrpcAuthority,
+                    _ => null,
+                };
+                serverName = Utils.String2List(host)?.First();
             }
             var tls = new Tls4Sbox()
             {
@@ -438,27 +445,21 @@ public partial class CoreConfigSingboxService
         try
         {
             var transport = new Transport4Sbox();
+            var transportExtra = _node.GetTransportExtra();
 
             switch (_node.GetNetwork())
             {
-                case nameof(ETransport.h2):
-                    transport.type = nameof(ETransport.http);
-                    transport.host = _node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(_node.RequestHost);
-                    transport.path = _node.Path.NullIfEmpty();
-                    break;
-
                 case nameof(ETransport.tcp):   //http
-                    if (_node.HeaderType == Global.TcpHeaderHttp)
+                    if (transportExtra.TcpHeaderType == Global.TcpHeaderHttp)
                     {
                         transport.type = nameof(ETransport.http);
-                        transport.host = _node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(_node.RequestHost);
-                        transport.path = _node.Path.NullIfEmpty();
+                        transport.host = transportExtra.TcpHost.IsNullOrEmpty() ? null : Utils.String2List(transportExtra.TcpHost);
                     }
                     break;
 
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
-                    var wsPath = _node.Path;
+                    var wsPath = transportExtra.WsPath;
 
                     // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
@@ -487,29 +488,25 @@ public partial class CoreConfigSingboxService
                     }
 
                     transport.path = wsPath.NullIfEmpty();
-                    if (_node.RequestHost.IsNotEmpty())
+                    if (transportExtra.WsHost.IsNotEmpty())
                     {
                         transport.headers = new()
                         {
-                            Host = _node.RequestHost
+                            Host = transportExtra.WsHost
                         };
                     }
                     break;
 
                 case nameof(ETransport.httpupgrade):
                     transport.type = nameof(ETransport.httpupgrade);
-                    transport.path = _node.Path.NullIfEmpty();
-                    transport.host = _node.RequestHost.NullIfEmpty();
+                    transport.path = transportExtra.HttpupgradePath.NullIfEmpty();
+                    transport.host = transportExtra.HttpupgradeHost.NullIfEmpty();
 
-                    break;
-
-                case nameof(ETransport.quic):
-                    transport.type = nameof(ETransport.quic);
                     break;
 
                 case nameof(ETransport.grpc):
                     transport.type = nameof(ETransport.grpc);
-                    transport.service_name = _node.Path;
+                    transport.service_name = transportExtra.GrpcServiceName;
                     transport.idle_timeout = _config.GrpcItem.IdleTimeout?.ToString("##s");
                     transport.ping_timeout = _config.GrpcItem.HealthCheckTimeout?.ToString("##s");
                     transport.permit_without_stream = _config.GrpcItem.PermitWithoutStream;
