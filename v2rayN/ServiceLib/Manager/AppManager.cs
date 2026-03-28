@@ -361,14 +361,13 @@ public sealed class AppManager
             {
                 try
                 {
+                    if (item.Network == "tcp")
+                    {
+                        item.Network = nameof(ETransport.raw);
+                    }
                     var extra = item.GetProtocolExtra();
                     var transport = extra.Transport ?? new TransportExtra();
                     var network = item.GetNetwork();
-                    if (network == "tcp")
-                    {
-                        network = nameof(ETransport.raw);
-                        item.Network = network;
-                    }
 
                     switch (network)
                     {
@@ -381,26 +380,19 @@ public sealed class AppManager
                             break;
 
                         case nameof(ETransport.ws):
-                            transport = transport with
-                            {
-                                WsHost = item.RequestHost.NullIfEmpty(),
-                                WsPath = item.Path.NullIfEmpty(),
-                            };
-                            break;
-
                         case nameof(ETransport.httpupgrade):
                             transport = transport with
                             {
-                                HttpupgradeHost = item.RequestHost.NullIfEmpty(),
-                                HttpupgradePath = item.Path.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
                             };
                             break;
 
                         case nameof(ETransport.xhttp):
                             transport = transport with
                             {
-                                XhttpHost = item.RequestHost.NullIfEmpty(),
-                                XhttpPath = item.Path.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
                                 XhttpMode = item.HeaderType.NullIfEmpty(),
                                 XhttpExtra = item.Extra.NullIfEmpty(),
                             };

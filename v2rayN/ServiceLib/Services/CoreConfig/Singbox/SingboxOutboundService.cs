@@ -127,10 +127,10 @@ public partial class CoreConfigSingboxService
                             if (network == nameof(ETransport.ws))
                             {
                                 pluginArgs += "mode=websocket;";
-                                pluginArgs += $"host={transportExtra.WsHost};";
+                                pluginArgs += $"host={transportExtra.Host};";
                                 // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
                                 // Equal signs and commas [and backslashes] must be escaped with a backslash.
-                                var path = (transportExtra.WsPath ?? string.Empty).Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                                var path = (transportExtra.Path ?? string.Empty).Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
                                 pluginArgs += $"path={path};";
                             }
                             if (_node.StreamSecurity == Global.StreamSecurity)
@@ -384,9 +384,9 @@ public partial class CoreConfigSingboxService
                 var host = _node.GetNetwork() switch
                 {
                     nameof(ETransport.raw) => _node.GetTransportExtra().RawHost,
-                    nameof(ETransport.ws) => _node.GetTransportExtra().WsHost,
-                    nameof(ETransport.httpupgrade) => _node.GetTransportExtra().HttpupgradeHost,
-                    nameof(ETransport.xhttp) => _node.GetTransportExtra().XhttpHost,
+                    nameof(ETransport.ws) => _node.GetTransportExtra().Host,
+                    nameof(ETransport.httpupgrade) => _node.GetTransportExtra().Host,
+                    nameof(ETransport.xhttp) => _node.GetTransportExtra().Host,
                     nameof(ETransport.grpc) => _node.GetTransportExtra().GrpcAuthority,
                     _ => null,
                 };
@@ -459,7 +459,7 @@ public partial class CoreConfigSingboxService
 
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
-                    var wsPath = transportExtra.WsPath;
+                    var wsPath = transportExtra.Path;
 
                     // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
@@ -488,19 +488,19 @@ public partial class CoreConfigSingboxService
                     }
 
                     transport.path = wsPath.NullIfEmpty();
-                    if (transportExtra.WsHost.IsNotEmpty())
+                    if (transportExtra.Host.IsNotEmpty())
                     {
                         transport.headers = new()
                         {
-                            Host = transportExtra.WsHost
+                            Host = transportExtra.Host
                         };
                     }
                     break;
 
                 case nameof(ETransport.httpupgrade):
                     transport.type = nameof(ETransport.httpupgrade);
-                    transport.path = transportExtra.HttpupgradePath.NullIfEmpty();
-                    transport.host = transportExtra.HttpupgradeHost.NullIfEmpty();
+                    transport.path = transportExtra.Path.NullIfEmpty();
+                    transport.host = transportExtra.Host.NullIfEmpty();
 
                     break;
 

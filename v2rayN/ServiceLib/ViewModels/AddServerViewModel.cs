@@ -80,22 +80,10 @@ public class AddServerViewModel : MyReactiveObject
     public string RawHost { get; set; }
 
     [Reactive]
-    public string WsHost { get; set; }
+    public string Host { get; set; }
 
     [Reactive]
-    public string WsPath { get; set; }
-
-    [Reactive]
-    public string HttpupgradeHost { get; set; }
-
-    [Reactive]
-    public string HttpupgradePath { get; set; }
-
-    [Reactive]
-    public string XhttpHost { get; set; }
-
-    [Reactive]
-    public string XhttpPath { get; set; }
+    public string Path { get; set; }
 
     [Reactive]
     public string XhttpMode { get; set; }
@@ -154,9 +142,9 @@ public class AddServerViewModel : MyReactiveObject
         get => SelectedSource.GetNetwork() switch
         {
             nameof(ETransport.raw) => RawHost,
-            nameof(ETransport.ws) => WsHost,
-            nameof(ETransport.httpupgrade) => HttpupgradeHost,
-            nameof(ETransport.xhttp) => XhttpHost,
+            nameof(ETransport.ws) => Host,
+            nameof(ETransport.httpupgrade) => Host,
+            nameof(ETransport.xhttp) => Host,
             nameof(ETransport.grpc) => GrpcAuthority,
             _ => string.Empty,
         };
@@ -168,13 +156,13 @@ public class AddServerViewModel : MyReactiveObject
                     RawHost = value;
                     break;
                 case nameof(ETransport.ws):
-                    WsHost = value;
+                    Host = value;
                     break;
                 case nameof(ETransport.httpupgrade):
-                    HttpupgradeHost = value;
+                    Host = value;
                     break;
                 case nameof(ETransport.xhttp):
-                    XhttpHost = value;
+                    Host = value;
                     break;
                 case nameof(ETransport.grpc):
                     GrpcAuthority = value;
@@ -189,9 +177,9 @@ public class AddServerViewModel : MyReactiveObject
         get => SelectedSource.GetNetwork() switch
         {
             nameof(ETransport.kcp) => KcpSeed,
-            nameof(ETransport.ws) => WsPath,
-            nameof(ETransport.httpupgrade) => HttpupgradePath,
-            nameof(ETransport.xhttp) => XhttpPath,
+            nameof(ETransport.ws) => Path,
+            nameof(ETransport.httpupgrade) => Path,
+            nameof(ETransport.xhttp) => Path,
             nameof(ETransport.grpc) => GrpcServiceName,
             _ => string.Empty,
         };
@@ -203,13 +191,13 @@ public class AddServerViewModel : MyReactiveObject
                     KcpSeed = value;
                     break;
                 case nameof(ETransport.ws):
-                    WsPath = value;
+                    Path = value;
                     break;
                 case nameof(ETransport.httpupgrade):
-                    HttpupgradePath = value;
+                    Path = value;
                     break;
                 case nameof(ETransport.xhttp):
-                    XhttpPath = value;
+                    Path = value;
                     break;
                 case nameof(ETransport.grpc):
                     GrpcServiceName = value;
@@ -311,12 +299,8 @@ public class AddServerViewModel : MyReactiveObject
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         RawHost = transport.RawHost ?? string.Empty;
-        WsHost = transport.WsHost ?? string.Empty;
-        WsPath = transport.WsPath ?? string.Empty;
-        HttpupgradeHost = transport.HttpupgradeHost ?? string.Empty;
-        HttpupgradePath = transport.HttpupgradePath ?? string.Empty;
-        XhttpHost = transport.XhttpHost ?? string.Empty;
-        XhttpPath = transport.XhttpPath ?? string.Empty;
+        Host = transport.Host ?? string.Empty;
+        Path = transport.Path ?? string.Empty;
         XhttpMode = transport.XhttpMode ?? string.Empty;
         XhttpExtra = transport.XhttpExtra ?? string.Empty;
         GrpcAuthority = transport.GrpcAuthority ?? string.Empty;
@@ -380,12 +364,8 @@ public class AddServerViewModel : MyReactiveObject
         {
             RawHeaderType = RawHeaderType.NullIfEmpty(),
             RawHost = RawHost.NullIfEmpty(),
-            WsHost = WsHost.NullIfEmpty(),
-            WsPath = WsPath.NullIfEmpty(),
-            HttpupgradeHost = HttpupgradeHost.NullIfEmpty(),
-            HttpupgradePath = HttpupgradePath.NullIfEmpty(),
-            XhttpHost = XhttpHost.NullIfEmpty(),
-            XhttpPath = XhttpPath.NullIfEmpty(),
+            Host = Host.NullIfEmpty(),
+            Path = Path.NullIfEmpty(),
             XhttpMode = XhttpMode.NullIfEmpty(),
             XhttpExtra = XhttpExtra.NullIfEmpty(),
             GrpcAuthority = GrpcAuthority.NullIfEmpty(),
@@ -518,9 +498,9 @@ public class AddServerViewModel : MyReactiveObject
         return SelectedSource.GetNetwork() switch
         {
             nameof(ETransport.raw) => RawHost,
-            nameof(ETransport.ws) => WsHost,
-            nameof(ETransport.httpupgrade) => HttpupgradeHost,
-            nameof(ETransport.xhttp) => XhttpHost,
+            nameof(ETransport.ws) => Host,
+            nameof(ETransport.httpupgrade) => Host,
+            nameof(ETransport.xhttp) => Host,
             nameof(ETransport.grpc) => GrpcAuthority,
             _ => string.Empty,
         };

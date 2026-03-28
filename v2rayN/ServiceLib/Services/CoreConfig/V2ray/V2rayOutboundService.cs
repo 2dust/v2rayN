@@ -367,18 +367,18 @@ public partial class CoreConfigV2rayService
                     break;
 
                 case nameof(ETransport.ws):
-                    host = transport.WsHost?.TrimEx() ?? string.Empty;
-                    path = transport.WsPath?.TrimEx() ?? string.Empty;
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
                     break;
 
                 case nameof(ETransport.httpupgrade):
-                    host = transport.HttpupgradeHost?.TrimEx() ?? string.Empty;
-                    path = transport.HttpupgradePath?.TrimEx() ?? string.Empty;
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
                     break;
 
                 case nameof(ETransport.xhttp):
-                    host = transport.XhttpHost?.TrimEx() ?? string.Empty;
-                    path = transport.XhttpPath?.TrimEx() ?? string.Empty;
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
                     headerType = transport.XhttpMode?.TrimEx() ?? string.Empty;
                     xhttpExtra = transport.XhttpExtra?.TrimEx() ?? string.Empty;
                     break;

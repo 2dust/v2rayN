@@ -58,10 +58,10 @@ public class ShadowsocksFmt : BaseFmt
             if (item.Network == nameof(ETransport.ws))
             {
                 pluginArgs += "mode=websocket;";
-                pluginArgs += $"host={transport.WsHost};";
+                pluginArgs += $"host={transport.Host};";
                 // https://github.com/shadowsocks/v2ray-plugin/blob/e9af1cdd2549d528deb20a4ab8d61c5fbe51f306/args.go#L172
                 // Equal signs and commas [and backslashes] must be escaped with a backslash.
-                var path = (transport.WsPath ?? string.Empty).Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
+                var path = (transport.Path ?? string.Empty).Replace("\\", "\\\\").Replace("=", "\\=").Replace(",", "\\,");
                 pluginArgs += $"path={path};";
             }
             if (item.StreamSecurity == Global.StreamSecurity)
@@ -235,14 +235,14 @@ public class ShadowsocksFmt : BaseFmt
                     if (!host.IsNullOrEmpty())
                     {
                         var wsHost = host.Replace("host=", "");
-                        t = t with { WsHost = wsHost };
+                        t = t with { Host = wsHost };
                         item.Sni = wsHost;
                     }
                     if (!path.IsNullOrEmpty())
                     {
                         var pathValue = path.Replace("path=", "");
                         pathValue = pathValue.Replace("\\=", "=").Replace("\\,", ",").Replace("\\\\", "\\");
-                        t = t with { WsPath = pathValue };
+                        t = t with { Path = pathValue };
                     }
                     item.SetTransportExtra(t);
                 }

@@ -46,18 +46,18 @@ public class VmessFmt : BaseFmt
             host = item.GetNetwork() switch
             {
                 nameof(ETransport.raw) => item.GetTransportExtra().RawHost,
-                nameof(ETransport.ws) => item.GetTransportExtra().WsHost,
-                nameof(ETransport.httpupgrade) => item.GetTransportExtra().HttpupgradeHost,
-                nameof(ETransport.xhttp) => item.GetTransportExtra().XhttpHost,
+                nameof(ETransport.ws) => item.GetTransportExtra().Host,
+                nameof(ETransport.httpupgrade) => item.GetTransportExtra().Host,
+                nameof(ETransport.xhttp) => item.GetTransportExtra().Host,
                 nameof(ETransport.grpc) => item.GetTransportExtra().GrpcAuthority,
                 _ => null,
             },
             path = item.GetNetwork() switch
             {
                 nameof(ETransport.kcp) => item.GetTransportExtra().KcpSeed,
-                nameof(ETransport.ws) => item.GetTransportExtra().WsPath,
-                nameof(ETransport.httpupgrade) => item.GetTransportExtra().HttpupgradePath,
-                nameof(ETransport.xhttp) => item.GetTransportExtra().XhttpPath,
+                nameof(ETransport.ws) => item.GetTransportExtra().Path,
+                nameof(ETransport.httpupgrade) => item.GetTransportExtra().Path,
+                nameof(ETransport.xhttp) => item.GetTransportExtra().Path,
                 nameof(ETransport.grpc) => item.GetTransportExtra().GrpcServiceName,
                 _ => null,
             },
@@ -128,9 +128,9 @@ public class VmessFmt : BaseFmt
         {
             nameof(ETransport.raw) => transport with { RawHost = Utils.ToString(vmessQRCode.host) },
             nameof(ETransport.kcp) => transport with { KcpSeed = Utils.ToString(vmessQRCode.path) },
-            nameof(ETransport.ws) => transport with { WsHost = Utils.ToString(vmessQRCode.host), WsPath = Utils.ToString(vmessQRCode.path) },
-            nameof(ETransport.httpupgrade) => transport with { HttpupgradeHost = Utils.ToString(vmessQRCode.host), HttpupgradePath = Utils.ToString(vmessQRCode.path) },
-            nameof(ETransport.xhttp) => transport with { XhttpHost = Utils.ToString(vmessQRCode.host), XhttpPath = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.ws) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.httpupgrade) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.xhttp) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.grpc) => transport with { GrpcAuthority = Utils.ToString(vmessQRCode.host), GrpcServiceName = Utils.ToString(vmessQRCode.path) },
             _ => transport,
         };
