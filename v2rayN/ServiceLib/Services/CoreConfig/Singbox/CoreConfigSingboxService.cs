@@ -61,7 +61,8 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
             ret.Success = true;
 
             ret.Data = ApplyFullConfigTemplate();
-            if (context.TunProtectSsPort is > 0 and <= 65535)
+            if (!context.AppConfig.TunModeItem.EnableLegacyProtect
+                && context.TunProtectSsPort is > 0 and <= 65535)
             {
                 var ssInbound = new
                 {

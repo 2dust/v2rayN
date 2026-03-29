@@ -15,7 +15,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            if (context.IsTunEnabled && context.TunProtectSsPort > 0 && context.ProxyRelaySsPort > 0)
+            if (!context.AppConfig.TunModeItem.EnableLegacyProtect
+                && context.IsTunEnabled
+                && context.TunProtectSsPort is > 0 and <= 65535
+                && context.ProxyRelaySsPort is > 0 and <= 65535)
             {
                 return GenerateClientProxyRelayConfig();
             }
