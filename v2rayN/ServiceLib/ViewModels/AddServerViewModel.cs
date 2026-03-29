@@ -77,9 +77,6 @@ public class AddServerViewModel : MyReactiveObject
     public string RawHeaderType { get; set; }
 
     [Reactive]
-    public string RawHost { get; set; }
-
-    [Reactive]
     public string Host { get; set; }
 
     [Reactive]
@@ -141,7 +138,7 @@ public class AddServerViewModel : MyReactiveObject
     {
         get => SelectedSource.GetNetwork() switch
         {
-            nameof(ETransport.raw) => RawHost,
+            nameof(ETransport.raw) => Host,
             nameof(ETransport.ws) => Host,
             nameof(ETransport.httpupgrade) => Host,
             nameof(ETransport.xhttp) => Host,
@@ -153,7 +150,7 @@ public class AddServerViewModel : MyReactiveObject
             switch (SelectedSource.GetNetwork())
             {
                 case nameof(ETransport.raw):
-                    RawHost = value;
+                    Host = value;
                     break;
                 case nameof(ETransport.ws):
                     Host = value;
@@ -298,10 +295,9 @@ public class AddServerViewModel : MyReactiveObject
         NaiveQuic = protocolExtra?.NaiveQuic ?? false;
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
-        RawHost = transport.RawHost ?? string.Empty;
         Host = transport.Host ?? string.Empty;
         Path = transport.Path ?? string.Empty;
-        XhttpMode = transport.XhttpMode ?? string.Empty;
+        XhttpMode = transport.XhttpMode ?? Global.DefaultXhttpMode;
         XhttpExtra = transport.XhttpExtra ?? string.Empty;
         GrpcAuthority = transport.GrpcAuthority ?? string.Empty;
         GrpcServiceName = transport.GrpcServiceName ?? string.Empty;
@@ -363,7 +359,6 @@ public class AddServerViewModel : MyReactiveObject
         var transport = new TransportExtra
         {
             RawHeaderType = RawHeaderType.NullIfEmpty(),
-            RawHost = RawHost.NullIfEmpty(),
             Host = Host.NullIfEmpty(),
             Path = Path.NullIfEmpty(),
             XhttpMode = XhttpMode.NullIfEmpty(),
@@ -497,7 +492,7 @@ public class AddServerViewModel : MyReactiveObject
     {
         return SelectedSource.GetNetwork() switch
         {
-            nameof(ETransport.raw) => RawHost,
+            nameof(ETransport.raw) => Host,
             nameof(ETransport.ws) => Host,
             nameof(ETransport.httpupgrade) => Host,
             nameof(ETransport.xhttp) => Host,

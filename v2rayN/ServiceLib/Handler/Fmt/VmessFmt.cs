@@ -34,7 +34,7 @@ public class VmessFmt : BaseFmt
             id = item.Password,
             aid = int.TryParse(item.GetProtocolExtra()?.AlterId, out var result) ? result : 0,
             scy = item.GetProtocolExtra().VmessSecurity ?? "",
-            net = item.Network,
+            net = item.GetNetwork() == nameof(ETransport.raw) ? Global.RawNetworkAlias : item.Network,
             type = item.GetNetwork() switch
             {
                 nameof(ETransport.raw) => item.GetTransportExtra().RawHeaderType,
@@ -45,7 +45,7 @@ public class VmessFmt : BaseFmt
             },
             host = item.GetNetwork() switch
             {
-                nameof(ETransport.raw) => item.GetTransportExtra().RawHost,
+                nameof(ETransport.raw) => item.GetTransportExtra().Host,
                 nameof(ETransport.ws) => item.GetTransportExtra().Host,
                 nameof(ETransport.httpupgrade) => item.GetTransportExtra().Host,
                 nameof(ETransport.xhttp) => item.GetTransportExtra().Host,
@@ -54,6 +54,7 @@ public class VmessFmt : BaseFmt
             },
             path = item.GetNetwork() switch
             {
+                nameof(ETransport.raw) => item.GetTransportExtra().Path,
                 nameof(ETransport.kcp) => item.GetTransportExtra().KcpSeed,
                 nameof(ETransport.ws) => item.GetTransportExtra().Path,
                 nameof(ETransport.httpupgrade) => item.GetTransportExtra().Path,
@@ -111,7 +112,7 @@ public class VmessFmt : BaseFmt
         });
         if (vmessQRCode.net.IsNotEmpty())
         {
-            item.Network = vmessQRCode.net;
+            item.Network = vmessQRCode.net == Global.RawNetworkAlias ? nameof(ETransport.raw) : vmessQRCode.net;
         }
         if (vmessQRCode.type.IsNotEmpty())
         {
@@ -126,7 +127,7 @@ public class VmessFmt : BaseFmt
         }
         transport = item.GetNetwork() switch
         {
-            nameof(ETransport.raw) => transport with { RawHost = Utils.ToString(vmessQRCode.host) },
+            nameof(ETransport.raw) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.kcp) => transport with { KcpSeed = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.ws) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
             nameof(ETransport.httpupgrade) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
@@ -164,7 +165,7 @@ public class VmessFmt : BaseFmt
 
         item.SetProtocolExtra(new ProtocolExtraItem
         {
-            VmessSecurity = "auto",
+            VmessSecurity = Global.DefaultSecurity,
         });
 
         var query = Utils.ParseQueryString(url.Query);

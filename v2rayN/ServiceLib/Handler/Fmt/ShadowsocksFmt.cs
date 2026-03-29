@@ -51,7 +51,7 @@ public class ShadowsocksFmt : BaseFmt
         if (item.Network == nameof(ETransport.raw) && transport.RawHeaderType == Global.RawHeaderHttp)
         {
             plugin = "obfs-local";
-            pluginArgs = $"obfs=http;obfs-host={transport.RawHost};";
+            pluginArgs = $"obfs=http;obfs-host={transport.Host};";
         }
         else
         {
@@ -213,7 +213,7 @@ public class ShadowsocksFmt : BaseFmt
                     item.SetTransportExtra(item.GetTransportExtra() with
                     {
                         RawHeaderType = Global.RawHeaderHttp,
-                        RawHost = obfsHost,
+                        Host = obfsHost,
                     });
                 }
             }
