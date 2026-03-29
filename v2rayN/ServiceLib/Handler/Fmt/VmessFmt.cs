@@ -26,6 +26,7 @@ public class VmessFmt : BaseFmt
 
         var vmessQRCode = new VmessQRCode
         {
+            // vmess link keeps shared transport keys; map from new transport model on export.
             v = 2,
             ps = item.Remarks.TrimEx(),
             add = item.Address,
@@ -33,10 +34,34 @@ public class VmessFmt : BaseFmt
             id = item.Password,
             aid = int.TryParse(item.GetProtocolExtra()?.AlterId, out var result) ? result : 0,
             scy = item.GetProtocolExtra().VmessSecurity ?? "",
-            net = item.Network,
-            type = item.HeaderType,
-            host = item.RequestHost,
-            path = item.Path,
+            net = item.GetNetwork() == nameof(ETransport.raw) ? Global.RawNetworkAlias : item.Network,
+            type = item.GetNetwork() switch
+            {
+                nameof(ETransport.raw) => item.GetTransportExtra().RawHeaderType,
+                nameof(ETransport.kcp) => item.GetTransportExtra().KcpHeaderType,
+                nameof(ETransport.xhttp) => item.GetTransportExtra().XhttpMode,
+                nameof(ETransport.grpc) => item.GetTransportExtra().GrpcMode,
+                _ => Global.None,
+            },
+            host = item.GetNetwork() switch
+            {
+                nameof(ETransport.raw) => item.GetTransportExtra().Host,
+                nameof(ETransport.ws) => item.GetTransportExtra().Host,
+                nameof(ETransport.httpupgrade) => item.GetTransportExtra().Host,
+                nameof(ETransport.xhttp) => item.GetTransportExtra().Host,
+                nameof(ETransport.grpc) => item.GetTransportExtra().GrpcAuthority,
+                _ => null,
+            },
+            path = item.GetNetwork() switch
+            {
+                nameof(ETransport.raw) => item.GetTransportExtra().Path,
+                nameof(ETransport.kcp) => item.GetTransportExtra().KcpSeed,
+                nameof(ETransport.ws) => item.GetTransportExtra().Path,
+                nameof(ETransport.httpupgrade) => item.GetTransportExtra().Path,
+                nameof(ETransport.xhttp) => item.GetTransportExtra().Path,
+                nameof(ETransport.grpc) => item.GetTransportExtra().GrpcServiceName,
+                _ => null,
+            },
             tls = item.StreamSecurity,
             sni = item.Sni,
             alpn = item.Alpn,
@@ -70,7 +95,10 @@ public class VmessFmt : BaseFmt
         }
 
         item.Network = Global.DefaultNetwork;
-        item.HeaderType = Global.None;
+        var transport = new TransportExtra
+        {
+            RawHeaderType = Global.None,
+        };
 
         //item.ConfigVersion = vmessQRCode.v;
         item.Remarks = Utils.ToString(vmessQRCode.ps);
@@ -84,15 +112,30 @@ public class VmessFmt : BaseFmt
         });
         if (vmessQRCode.net.IsNotEmpty())
         {
-            item.Network = vmessQRCode.net;
+            item.Network = vmessQRCode.net == Global.RawNetworkAlias ? nameof(ETransport.raw) : vmessQRCode.net;
         }
         if (vmessQRCode.type.IsNotEmpty())
         {
-            item.HeaderType = vmessQRCode.type;
+            transport = item.GetNetwork() switch
+            {
+                nameof(ETransport.raw) => transport with { RawHeaderType = vmessQRCode.type },
+                nameof(ETransport.kcp) => transport with { KcpHeaderType = vmessQRCode.type },
+                nameof(ETransport.xhttp) => transport with { XhttpMode = vmessQRCode.type },
+                nameof(ETransport.grpc) => transport with { GrpcMode = vmessQRCode.type },
+                _ => transport,
+            };
         }
-
-        item.RequestHost = Utils.ToString(vmessQRCode.host);
-        item.Path = Utils.ToString(vmessQRCode.path);
+        transport = item.GetNetwork() switch
+        {
+            nameof(ETransport.raw) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.kcp) => transport with { KcpSeed = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.ws) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.httpupgrade) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.xhttp) => transport with { Host = Utils.ToString(vmessQRCode.host), Path = Utils.ToString(vmessQRCode.path) },
+            nameof(ETransport.grpc) => transport with { GrpcAuthority = Utils.ToString(vmessQRCode.host), GrpcServiceName = Utils.ToString(vmessQRCode.path) },
+            _ => transport,
+        };
+        item.SetTransportExtra(transport);
         item.StreamSecurity = Utils.ToString(vmessQRCode.tls);
         item.Sni = Utils.ToString(vmessQRCode.sni);
         item.Alpn = Utils.ToString(vmessQRCode.alpn);
@@ -122,7 +165,7 @@ public class VmessFmt : BaseFmt
 
         item.SetProtocolExtra(new ProtocolExtraItem
         {
-            VmessSecurity = "auto",
+            VmessSecurity = Global.DefaultSecurity,
         });
 
         var query = Utils.ParseQueryString(url.Query);

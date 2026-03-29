@@ -348,8 +348,49 @@ public partial class CoreConfigV2rayService
                 network = "hysteria";
             }
             streamSettings.network = network;
-            var host = _node.RequestHost.TrimEx();
-            var path = _node.Path.TrimEx();
+            var transport = _node.GetTransportExtra();
+            var host = string.Empty;
+            var path = string.Empty;
+            var kcpSeed = string.Empty;
+            var headerType = string.Empty;
+            var xhttpExtra = string.Empty;
+            switch (network)
+            {
+                case nameof(ETransport.raw):
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
+                    headerType = transport.RawHeaderType?.TrimEx() ?? string.Empty;
+                    break;
+
+                case nameof(ETransport.kcp):
+                    kcpSeed = transport.KcpSeed?.TrimEx() ?? string.Empty;
+                    headerType = transport.KcpHeaderType?.TrimEx() ?? string.Empty;
+                    break;
+
+                case nameof(ETransport.ws):
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
+                    break;
+
+                case nameof(ETransport.httpupgrade):
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
+                    break;
+
+                case nameof(ETransport.xhttp):
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
+                    headerType = transport.XhttpMode?.TrimEx() ?? string.Empty;
+                    xhttpExtra = transport.XhttpExtra?.TrimEx() ?? string.Empty;
+                    break;
+
+                case nameof(ETransport.grpc):
+                    host = transport.GrpcAuthority?.TrimEx() ?? string.Empty;
+                    path = transport.GrpcServiceName?.TrimEx() ?? string.Empty;
+                    headerType = transport.GrpcMode?.TrimEx() ?? string.Empty;
+                    break;
+            }
+
             var sni = _node.Sni.TrimEx();
             var useragent = _config.CoreBasicItem.DefUserAgent ?? string.Empty;
 
@@ -435,19 +476,19 @@ public partial class CoreConfigV2rayService
                     kcpSettings.readBufferSize = _config.KcpItem.ReadBufferSize;
                     kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
                     var kcpFinalmask = new Finalmask4Ray();
-                    if (Global.KcpHeaderMaskMap.TryGetValue(_node.HeaderType, out var header))
+                    if (Global.KcpHeaderMaskMap.TryGetValue(headerType, out var header))
                     {
                         kcpFinalmask.udp =
                         [
                             new Mask4Ray
                             {
                                 type = header,
-                                settings = _node.HeaderType == "dns" && !host.IsNullOrEmpty() ? new MaskSettings4Ray { domain = host } : null
+                                settings = null
                             }
                         ];
                     }
                     kcpFinalmask.udp ??= [];
-                    if (path.IsNullOrEmpty())
+                    if (kcpSeed.IsNullOrEmpty())
                     {
                         kcpFinalmask.udp.Add(new Mask4Ray
                         {
@@ -459,7 +500,7 @@ public partial class CoreConfigV2rayService
                         kcpFinalmask.udp.Add(new Mask4Ray
                         {
                             type = "mkcp-aes128gcm",
-                            settings = new MaskSettings4Ray { password = path }
+                            settings = new MaskSettings4Ray { password = kcpSeed }
                         });
                     }
                     streamSettings.kcpSettings = kcpSettings;
@@ -517,63 +558,25 @@ public partial class CoreConfigV2rayService
                     {
                         xhttpSettings.host = host;
                     }
-                    if (_node.HeaderType.IsNotEmpty() && Global.XhttpMode.Contains(_node.HeaderType))
+                    if (headerType.IsNotEmpty() && Global.XhttpMode.Contains(headerType))
                     {
-                        xhttpSettings.mode = _node.HeaderType;
+                        xhttpSettings.mode = headerType;
                     }
-                    if (_node.Extra.IsNotEmpty())
+                    if (xhttpExtra.IsNotEmpty())
                     {
-                        xhttpSettings.extra = JsonUtils.ParseJson(_node.Extra);
+                        xhttpSettings.extra = JsonUtils.ParseJson(xhttpExtra);
                     }
 
                     streamSettings.xhttpSettings = xhttpSettings;
                     FillOutboundMux(outbound);
 
                     break;
-                //h2
-                case nameof(ETransport.h2):
-                    HttpSettings4Ray httpSettings = new();
-
-                    if (host.IsNotEmpty())
-                    {
-                        httpSettings.host = Utils.String2List(host);
-                    }
-                    httpSettings.path = path;
-
-                    streamSettings.httpSettings = httpSettings;
-
-                    break;
-                //quic
-                case nameof(ETransport.quic):
-                    QuicSettings4Ray quicsettings = new()
-                    {
-                        security = host,
-                        key = path,
-                        header = new Header4Ray
-                        {
-                            type = _node.HeaderType
-                        }
-                    };
-                    streamSettings.quicSettings = quicsettings;
-                    if (_node.StreamSecurity == Global.StreamSecurity)
-                    {
-                        if (sni.IsNotEmpty())
-                        {
-                            streamSettings.tlsSettings.serverName = sni;
-                        }
-                        else
-                        {
-                            streamSettings.tlsSettings.serverName = _node.Address;
-                        }
-                    }
-                    break;
-
                 case nameof(ETransport.grpc):
                     GrpcSettings4Ray grpcSettings = new()
                     {
                         authority = host.NullIfEmpty(),
                         serviceName = path,
-                        multiMode = _node.HeaderType == Global.GrpcMultiMode,
+                        multiMode = headerType == Global.GrpcMultiMode,
                         idle_timeout = _config.GrpcItem.IdleTimeout,
                         health_check_timeout = _config.GrpcItem.HealthCheckTimeout,
                         permit_without_stream = _config.GrpcItem.PermitWithoutStream,
@@ -639,21 +642,20 @@ public partial class CoreConfigV2rayService
                     streamSettings.finalmask = hy2Finalmask;
                     break;
 
-                default:
-                    //tcp
-                    if (_node.HeaderType == Global.TcpHeaderHttp)
+                case nameof(ETransport.raw):
+                    if (headerType == Global.RawHeaderHttp)
                     {
-                        TcpSettings4Ray tcpSettings = new()
+                        RawSettings4Ray rawSettings = new()
                         {
                             header = new Header4Ray
                             {
-                                type = _node.HeaderType
+                                type = headerType
                             }
                         };
 
                         //request Host
                         var request = EmbedUtils.GetEmbedText(Global.V2raySampleHttpRequestFileName);
-                        var useragentValue = Global.TcpHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
+                        var useragentValue = Global.RawHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
                         var arrHost = host.Split(',');
                         var host2 = string.Join(",".AppendQuotes(), arrHost);
                         request = request.Replace("$requestHost$", $"{host2.AppendQuotes()}");
@@ -666,10 +668,13 @@ public partial class CoreConfigV2rayService
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
-                        tcpSettings.header.request = JsonUtils.Deserialize<object>(request);
+                        rawSettings.header.request = JsonUtils.Deserialize<object>(request);
 
-                        streamSettings.tcpSettings = tcpSettings;
+                        streamSettings.rawSettings = rawSettings;
                     }
+                    break;
+
+                default:
                     break;
             }
 

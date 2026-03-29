@@ -308,8 +308,15 @@ public sealed class AppManager
 #pragma warning disable CS0618
     public async Task MigrateProfileExtra()
     {
-        await MigrateProfileExtraGroup();
+        await MigrateProfileExtraGroupV2ToV3();
 
+        await MigrateProfileExtraV2ToV3();
+
+        await MigrateProfileTransportV3ToV4();
+    }
+
+    private async Task MigrateProfileExtraV2ToV3()
+    {
         const int pageSize = 100;
         var offset = 0;
 
@@ -325,7 +332,7 @@ public sealed class AppManager
                 break;
             }
 
-            var batchSuccessCount = await MigrateProfileExtraSub(batch);
+            var batchSuccessCount = await MigrateProfileExtraV2ToV3Sub(batch);
 
             // Only increment offset by the number of failed items that remain in the result set
             // Successfully updated items are automatically excluded from future queries due to ConfigVersion = 3
@@ -335,7 +342,121 @@ public sealed class AppManager
         //await ProfileGroupItemManager.Instance.ClearAll();
     }
 
-    private async Task<int> MigrateProfileExtraSub(List<ProfileItem> batch)
+    private async Task MigrateProfileTransportV3ToV4()
+    {
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion = 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var updateProfileItems = new List<ProfileItem>();
+            foreach (var item in batch)
+            {
+                try
+                {
+                    if (item.Network == Global.RawNetworkAlias)
+                    {
+                        item.Network = nameof(ETransport.raw);
+                    }
+                    var extra = item.GetProtocolExtra();
+                    var transport = extra.Transport ?? new TransportExtra();
+                    var network = item.GetNetwork();
+
+                    switch (network)
+                    {
+                        case nameof(ETransport.raw):
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.ws):
+                        case nameof(ETransport.httpupgrade):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.xhttp):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                                XhttpMode = item.HeaderType.NullIfEmpty(),
+                                XhttpExtra = item.Extra.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.grpc):
+                            transport = transport with
+                            {
+                                GrpcAuthority = item.RequestHost.NullIfEmpty(),
+                                GrpcServiceName = item.Path.NullIfEmpty(),
+                                GrpcMode = item.HeaderType.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.kcp):
+                            transport = transport with
+                            {
+                                KcpHeaderType = item.HeaderType.NullIfEmpty(),
+                                KcpSeed = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        default:
+                            item.Network = Global.DefaultNetwork;
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                            };
+                            break;
+                    }
+
+                    item.SetProtocolExtra(extra with { Transport = transport });
+                    item.ConfigVersion = 4;
+                    updateProfileItems.Add(item);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 Error: {ex}");
+                }
+            }
+
+            if (updateProfileItems.Count > 0)
+            {
+                try
+                {
+                    var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                    offset += batch.Count - count;
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 update error: {ex}");
+                    offset += batch.Count;
+                }
+            }
+            else
+            {
+                offset += batch.Count;
+            }
+        }
+    }
+
+    private async Task<int> MigrateProfileExtraV2ToV3Sub(List<ProfileItem> batch)
     {
         var updateProfileItems = new List<ProfileItem>();
 
@@ -433,7 +554,7 @@ public sealed class AppManager
         }
     }
 
-    private async Task<bool> MigrateProfileExtraGroup()
+    private async Task<bool> MigrateProfileExtraGroupV2ToV3()
     {
         var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
         var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
