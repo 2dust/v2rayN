@@ -5,6 +5,7 @@ namespace ServiceLib.Handler.Fmt;
 public class BaseFmt
 {
     private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
+    private static string UrlEncodeSafe(string? value) => Utils.UrlEncode(value ?? string.Empty);
 
     protected static string GetIpv6(string address)
     {
@@ -95,15 +96,20 @@ public class BaseFmt
             network = nameof(ETransport.raw);
         }
 
-        dicQuery.Add("type", network);
+        //dicQuery.Add("type", network);
+        dicQuery.Add("type", network == nameof(ETransport.raw) ? Global.RawNetworkAlias : network);
 
         switch (network)
         {
             case nameof(ETransport.raw):
                 dicQuery.Add("headerType", transport.RawHeaderType.IsNotEmpty() ? transport.RawHeaderType : Global.None);
-                if (transport.RawHost.IsNotEmpty())
+                if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.RawHost));
+                    dicQuery.Add("host", UrlEncodeSafe(transport.Host));
+                }
+                if (transport.Path.IsNotEmpty())
+                {
+                    dicQuery.Add("path", UrlEncodeSafe(transport.Path));
                 }
                 break;
 
@@ -111,44 +117,34 @@ public class BaseFmt
                 dicQuery.Add("headerType", transport.KcpHeaderType.IsNotEmpty() ? transport.KcpHeaderType : Global.None);
                 if (transport.KcpSeed.IsNotEmpty())
                 {
-                    dicQuery.Add("seed", Utils.UrlEncode(transport.KcpSeed));
+                    dicQuery.Add("seed", UrlEncodeSafe(transport.KcpSeed));
                 }
                 break;
 
             case nameof(ETransport.ws):
-                if (transport.Host.IsNotEmpty())
-                {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
-                }
-                if (transport.Path.IsNotEmpty())
-                {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
-                }
-                break;
-
             case nameof(ETransport.httpupgrade):
                 if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
+                    dicQuery.Add("host", UrlEncodeSafe(transport.Host));
                 }
                 if (transport.Path.IsNotEmpty())
                 {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
+                    dicQuery.Add("path", UrlEncodeSafe(transport.Path));
                 }
                 break;
 
             case nameof(ETransport.xhttp):
                 if (transport.Host.IsNotEmpty())
                 {
-                    dicQuery.Add("host", Utils.UrlEncode(transport.Host));
+                    dicQuery.Add("host", UrlEncodeSafe(transport.Host));
                 }
                 if (transport.Path.IsNotEmpty())
                 {
-                    dicQuery.Add("path", Utils.UrlEncode(transport.Path));
+                    dicQuery.Add("path", UrlEncodeSafe(transport.Path));
                 }
                 if (transport.XhttpMode.IsNotEmpty() && Global.XhttpMode.Contains(transport.XhttpMode))
                 {
-                    dicQuery.Add("mode", Utils.UrlEncode(transport.XhttpMode));
+                    dicQuery.Add("mode", UrlEncodeSafe(transport.XhttpMode));
                 }
                 if (transport.XhttpExtra.IsNotEmpty())
                 {
@@ -161,18 +157,18 @@ public class BaseFmt
                             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                         })
                         : transport.XhttpExtra;
-                    dicQuery.Add("extra", Utils.UrlEncode(extra));
+                    dicQuery.Add("extra", UrlEncodeSafe(extra));
                 }
                 break;
 
             case nameof(ETransport.grpc):
                 if (transport.GrpcServiceName.IsNotEmpty())
                 {
-                    dicQuery.Add("authority", Utils.UrlEncode(transport.GrpcAuthority));
-                    dicQuery.Add("serviceName", Utils.UrlEncode(transport.GrpcServiceName));
+                    dicQuery.Add("authority", UrlEncodeSafe(transport.GrpcAuthority));
+                    dicQuery.Add("serviceName", UrlEncodeSafe(transport.GrpcServiceName));
                     if (transport.GrpcMode is Global.GrpcGunMode or Global.GrpcMultiMode)
                     {
-                        dicQuery.Add("mode", Utils.UrlEncode(transport.GrpcMode));
+                        dicQuery.Add("mode", UrlEncodeSafe(transport.GrpcMode));
                     }
                 }
                 break;
@@ -260,6 +256,10 @@ public class BaseFmt
         }
 
         var net = GetQueryValue(query, "type", nameof(ETransport.raw));
+        if (net == Global.RawNetworkAlias)
+        {
+            net = nameof(ETransport.raw);
+        }
         if (!Global.Networks.Contains(net))
         {
             net = nameof(ETransport.raw);
@@ -272,7 +272,8 @@ public class BaseFmt
                 transport = transport with
                 {
                     RawHeaderType = GetQueryValue(query, "headerType", Global.None),
-                    RawHost = GetQueryDecoded(query, "host"),
+                    Host = GetQueryDecoded(query, "host"),
+                    Path = GetQueryDecoded(query, "path"),
                 };
                 break;
 
@@ -286,13 +287,6 @@ public class BaseFmt
                 break;
 
             case nameof(ETransport.ws):
-                transport = transport with
-                {
-                    Host = GetQueryDecoded(query, "host"),
-                    Path = GetQueryDecoded(query, "path", "/"),
-                };
-                break;
-
             case nameof(ETransport.httpupgrade):
                 transport = transport with
                 {

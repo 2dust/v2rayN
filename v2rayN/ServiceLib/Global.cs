@@ -45,6 +45,8 @@ public class Global
     public const string DefaultNetwork = "raw";
     public const string RawHeaderHttp = "http";
     public const string None = "none";
+    public const string RawNetworkAlias = "tcp";
+    public const string DefaultXhttpMode = "auto";
     public const string ProxyTag = "proxy";
     public const string DirectTag = "direct";
     public const string BlockTag = "block";

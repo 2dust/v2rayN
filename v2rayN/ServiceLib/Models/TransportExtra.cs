@@ -3,7 +3,6 @@ namespace ServiceLib.Models;
 public record TransportExtra
 {
     public string? RawHeaderType { get; init; }
-    public string? RawHost { get; init; }
 
     public string? Host { get; init; }
     public string? Path { get; init; }

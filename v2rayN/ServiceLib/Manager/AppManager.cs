@@ -361,7 +361,7 @@ public sealed class AppManager
             {
                 try
                 {
-                    if (item.Network == "tcp")
+                    if (item.Network == Global.RawNetworkAlias)
                     {
                         item.Network = nameof(ETransport.raw);
                     }
@@ -375,7 +375,8 @@ public sealed class AppManager
                             transport = transport with
                             {
                                 RawHeaderType = item.HeaderType.NullIfEmpty(),
-                                RawHost = item.RequestHost.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
                             };
                             break;
 
@@ -420,7 +421,7 @@ public sealed class AppManager
                             transport = transport with
                             {
                                 RawHeaderType = item.HeaderType.NullIfEmpty(),
-                                RawHost = item.RequestHost.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
                             };
                             break;
                     }

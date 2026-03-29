@@ -16,6 +16,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         cmbNetwork.SelectionChanged += CmbNetwork_SelectionChanged;
+        cmbHeaderTypeRaw.SelectionChanged += CmbHeaderTypeRaw_SelectionChanged;
         cmbStreamSecurity.SelectionChanged += CmbStreamSecurity_SelectionChanged;
         btnGUID.Click += btnGUID_Click;
         btnGUID5.Click += btnGUID_Click;
@@ -24,6 +25,16 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
         cmbCoreType.ItemsSource = Global.CoreTypes.AppendEmpty();
         cmbNetwork.ItemsSource = Global.Networks;
+
+        cmbHeaderTypeRaw.ItemsSource = new List<string> { Global.None, Global.RawHeaderHttp };
+
+        var kcpHeaderTypes = new List<string> { Global.None };
+        kcpHeaderTypes.AddRange(Global.KcpHeaderTypes);
+        cmbHeaderTypeKcp.ItemsSource = kcpHeaderTypes;
+
+        cmbHeaderTypeXhttp.ItemsSource = Global.XhttpMode;
+        cmbHeaderTypeGrpc.ItemsSource = new List<string> { Global.GrpcGunMode, Global.GrpcMultiMode };
+
         cmbFingerprint.ItemsSource = Global.Fingerprints;
         cmbFingerprint2.ItemsSource = Global.Fingerprints;
         cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
@@ -202,7 +213,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.RawHost, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Path, v => v.txtPathRaw.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.KcpHeaderType, v => v.cmbHeaderTypeKcp.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.KcpSeed, v => v.txtKcpSeed.Text).DisposeWith(disposables);
@@ -269,8 +281,12 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
     private void CmbNetwork_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        SetHeaderType();
-        SetTips();
+        SetTransportGridVisibility();
+    }
+
+    private void CmbHeaderTypeRaw_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        SetRawHttpFieldsVisibility();
     }
 
     private void CmbStreamSecurity_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -297,25 +313,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
     {
         txtId.Text =
         txtId5.Text = Utils.GetGuid();
-    }
-
-    private void SetHeaderType()
-    {
-        cmbHeaderTypeRaw.ItemsSource = new List<string> { Global.None, Global.RawHeaderHttp };
-
-        var kcpHeaderTypes = new List<string> { Global.None };
-        kcpHeaderTypes.AddRange(Global.KcpHeaderTypes);
-        cmbHeaderTypeKcp.ItemsSource = kcpHeaderTypes;
-
-        cmbHeaderTypeXhttp.ItemsSource = Global.XhttpMode;
-        cmbHeaderTypeGrpc.ItemsSource = new List<string> { Global.GrpcGunMode, Global.GrpcMultiMode };
-
-        SetTransportGridVisibility();
-    }
-
-    private void SetTips()
-    {
-        SetTransportGridVisibility();
     }
 
     private void SetTransportGridVisibility()
@@ -357,5 +354,21 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransportRaw.IsVisible = true;
                 break;
         }
+
+        SetRawHttpFieldsVisibility();
+    }
+
+    private void SetRawHttpFieldsVisibility()
+    {
+        var network = cmbNetwork.SelectedItem?.ToString();
+        if (network.IsNullOrEmpty())
+        {
+            network = Global.DefaultNetwork;
+        }
+
+        var rawHeaderType = cmbHeaderTypeRaw.SelectedItem?.ToString();
+        var showRawHttpFields = network == nameof(ETransport.raw)
+                                && rawHeaderType == Global.RawHeaderHttp;
+        gridTransportRawHttp.IsVisible = showRawHttpFields;
     }
 }

@@ -169,7 +169,7 @@ public class ProfileItem
     public string Network { get; set; }
     [Obsolete("Use TransportExtra.RawHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
     public string HeaderType { get; set; }
-    [Obsolete("Use TransportExtra.RawHost/Host/GrpcAuthority instead.")]
+    [Obsolete("Use TransportExtra.Host/GrpcAuthority instead.")]
     public string RequestHost { get; set; }
     [Obsolete("Use TransportExtra.Path/GrpcServiceName/KcpSeed instead.")]
     public string Path { get; set; }

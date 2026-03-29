@@ -1139,7 +1139,6 @@ public static class ConfigHandler
                && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
                && AreEqual(o.Network, n.Network)
                && AreEqual(oTransport.RawHeaderType, nTransport.RawHeaderType)
-               && AreEqual(oTransport.RawHost, nTransport.RawHost)
                && AreEqual(oTransport.Host, nTransport.Host)
                && AreEqual(oTransport.Path, nTransport.Path)
                && AreEqual(oTransport.XhttpMode, nTransport.XhttpMode)

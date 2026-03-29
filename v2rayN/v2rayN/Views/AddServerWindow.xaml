@@ -944,42 +944,73 @@
 
                     <Grid Grid.Row="2">
                         <Grid x:Name="gridTransportRaw" Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="300" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource ToolbarTextBlock}"
-                                Text="{x:Static resx:ResUI.TbHeaderType}" />
-                            <ComboBox
-                                x:Name="cmbHeaderTypeRaw"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Width="200"
-                                Margin="{StaticResource Margin4}"
-                                Style="{StaticResource DefComboBox}" />
-                            <TextBlock
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbHeaderType}" />
+                                <ComboBox
+                                    x:Name="cmbHeaderTypeRaw"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Width="200"
+                                    Margin="{StaticResource Margin4}"
+                                    Style="{StaticResource DefComboBox}" />
+                            </Grid>
+
+                            <Grid
+                                x:Name="gridTransportRawHttp"
                                 Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Style="{StaticResource ToolbarTextBlock}"
-                                Text="{x:Static resx:ResUI.TbRequestHost}" />
-                            <TextBox
-                                x:Name="txtRequestHostRaw"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Width="400"
-                                Margin="{StaticResource Margin4}"
-                                Style="{StaticResource DefTextBox}" />
+                                Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                <TextBox
+                                    x:Name="txtRequestHostRaw"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    Style="{StaticResource DefTextBox}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbPath}" />
+                                <TextBox
+                                    x:Name="txtPathRaw"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    Style="{StaticResource DefTextBox}" />
+                            </Grid>
                         </Grid>
 
                         <Grid x:Name="gridTransportXhttp" Visibility="Collapsed">

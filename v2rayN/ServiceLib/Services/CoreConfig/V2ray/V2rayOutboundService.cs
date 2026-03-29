@@ -357,7 +357,8 @@ public partial class CoreConfigV2rayService
             switch (network)
             {
                 case nameof(ETransport.raw):
-                    host = transport.RawHost?.TrimEx() ?? string.Empty;
+                    host = transport.Host?.TrimEx() ?? string.Empty;
+                    path = transport.Path?.TrimEx() ?? string.Empty;
                     headerType = transport.RawHeaderType?.TrimEx() ?? string.Empty;
                     break;
 

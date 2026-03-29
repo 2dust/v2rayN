@@ -119,7 +119,7 @@ public partial class CoreConfigSingboxService
                         if (network == nameof(ETransport.raw) && transportExtra.RawHeaderType == Global.RawHeaderHttp)
                         {
                             outbound.plugin = "obfs-local";
-                            outbound.plugin_opts = $"obfs=http;obfs-host={transportExtra.RawHost};";
+                            outbound.plugin_opts = $"obfs=http;obfs-host={transportExtra.Host};";
                         }
                         else
                         {
@@ -383,7 +383,7 @@ public partial class CoreConfigSingboxService
             {
                 var host = _node.GetNetwork() switch
                 {
-                    nameof(ETransport.raw) => _node.GetTransportExtra().RawHost,
+                    nameof(ETransport.raw) => _node.GetTransportExtra().Host,
                     nameof(ETransport.ws) => _node.GetTransportExtra().Host,
                     nameof(ETransport.httpupgrade) => _node.GetTransportExtra().Host,
                     nameof(ETransport.xhttp) => _node.GetTransportExtra().Host,
@@ -453,7 +453,8 @@ public partial class CoreConfigSingboxService
                     if (transportExtra.RawHeaderType == Global.RawHeaderHttp)
                     {
                         transport.type = nameof(ETransport.http);
-                        transport.host = transportExtra.RawHost.IsNullOrEmpty() ? null : Utils.String2List(transportExtra.RawHost);
+                        transport.host = transportExtra.Host.IsNullOrEmpty() ? null : Utils.String2List(transportExtra.Host);
+                        transport.path = transportExtra.Path.NullIfEmpty();
                     }
                     break;
 
