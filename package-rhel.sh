@@ -232,11 +232,13 @@ download_xray() {
 
 download_singbox() {
   # Download sing-box
-  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin
+  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin cronet
   mkdir -p "$outdir"
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
-        | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
+      | grep -Eo '"tag_name":\s*"v[^"]+"' \
+      | sed -E 's/.*"v([^"]+)".*/\1/' \
+      | head -n1)" || true
   fi
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
   if [[ "$rid" == "linux-arm64" ]]; then
@@ -251,6 +253,8 @@ download_singbox() {
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
   [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
   install -m 755 "$bin" "$outdir/sing-box"
+  cronet="$(find "$tmp" -type f -name 'libcronet*.so*' | head -n1 || true)"
+  [[ -n "$cronet" ]] && install -m 644 "$cronet" "$outdir/libcronet.so"
   rm -rf "$tmp"
 }
 
