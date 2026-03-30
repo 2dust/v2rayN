@@ -17,7 +17,7 @@ jobs:
         run: |
 
           $wingetPackage = "2dust.v2rayN"
-          $gitToken = "${{ secrets.PT_WINGET }}"
+          $gitToken = "${PT_WINGET}"
 
           $github = Invoke-RestMethod -uri "https://api.github.com/repos/2dust/v2rayN/releases" 
 
@@ -37,3 +37,6 @@ jobs:
           Write-Host "arm64 URL: $arm64InstallerUrl"
           
           .\wingetcreate.exe update $wingetPackage -s -v $ver -u "$x64InstallerUrl|x64" "$arm64InstallerUrl|arm64" -t $gitToken
+
+        env:
+          PT_WINGET: ${{ secrets.PT_WINGET }}
