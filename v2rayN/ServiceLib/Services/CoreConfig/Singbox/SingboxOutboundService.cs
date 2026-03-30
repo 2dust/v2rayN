@@ -22,7 +22,7 @@ public partial class CoreConfigSingboxService
         }
         if (withSelector)
         {
-            var proxyTags = proxyOutboundList.Where(n => n.tag.StartsWith(Global.ProxyTag)).Select(n => n.tag).ToList();
+            var proxyTags = proxyOutboundList.Where(n => n.tag.StartsWith(baseTagName)).Select(n => n.tag).ToList();
             if (proxyTags.Count > 1)
             {
                 proxyOutboundList.InsertRange(0, BuildSelectorOutbounds(proxyTags, baseTagName));
