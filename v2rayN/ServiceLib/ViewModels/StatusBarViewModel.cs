@@ -469,29 +469,38 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        _config.TunModeItem.EnableTun = EnableTun;
-
-        if (EnableTun && AllowEnableTun() == false)
+        var allowEnableTun = AllowEnableTun();
+        if (PrepareTunConfigForPrivilegeEscalation(_config, EnableTun, allowEnableTun, Utils.IsWindows()))
         {
-            // When running as a non-administrator, reboot to administrator mode
-            if (Utils.IsWindows())
+            await ConfigHandler.SaveConfig(_config);
+            if (!await AppManager.Instance.RebootAsAdmin())
             {
                 _config.TunModeItem.EnableTun = false;
-                await AppManager.Instance.RebootAsAdmin();
+                EnableTun = false;
+                await ConfigHandler.SaveConfig(_config);
+                NoticeManager.Instance.SendMessageEx(ResUI.OperationFailed);
+            }
+            return;
+        }
+
+        if (EnableTun && !allowEnableTun)
+        {
+            bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
+            if (passwordResult == false)
+            {
+                _config.TunModeItem.EnableTun = false;
                 return;
             }
-            else
-            {
-                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
-                if (passwordResult == false)
-                {
-                    _config.TunModeItem.EnableTun = false;
-                    return;
-                }
-            }
         }
+
         await ConfigHandler.SaveConfig(_config);
         AppEvents.ReloadRequested.Publish();
+    }
+
+    private static bool PrepareTunConfigForPrivilegeEscalation(Config config, bool enableTun, bool allowEnableTun, bool isWindows)
+    {
+        config.TunModeItem.EnableTun = enableTun;
+        return enableTun && !allowEnableTun && isWindows;
     }
 
     private bool AllowEnableTun()
