@@ -142,7 +142,7 @@
     <value>Не удалось получить конфигурацию по умолчанию</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Не удалось импортировать сервер пользовательской конфигурации</value>
+    <value>Не удалось импортировать пользовательскую конфигурацию</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Не удалось прочитать файл конфигурации</value>
@@ -211,13 +211,13 @@
     <value>Не удалось импортировать подписку</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Содержимое подписки успешно импортировано</value>
+    <value>Содержимое подписки успешно получено</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
     <value>Нет установленных подписок</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>Парсинг {0} прошел успешно</value>
+    <value>Успешно обработано: {0}</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
     <value>Начинаю получать подписки</value>
@@ -244,7 +244,7 @@
     <value>Успешное обновление ядра! Перезапуск службы...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Не является протоколом VMess или Shadowsocks</value>
+    <value>Протокол не VMess и не Shadowsocks</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
     <value>Файл ядра ({1}) не найден в папке {0}. Скачайте по адресу {2} и поместите его туда</value>
@@ -253,7 +253,7 @@
     <value>Сканирование завершено, не найден корректный QR код</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value>Операция безуспешна, проверьте и попробуйте ещё раз</value>
+    <value>Операция не удалась, проверьте и повторите попытку</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
     <value>Введите примечания</value>
@@ -268,7 +268,7 @@
     <value>Сначала выберите сервер</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Удаление дублей завершено. Старая: {0}, Новая: {1}</value>
+    <value>Дедупликация конфигураций завершена. Было: {0}, Стало: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
     <value>Вы уверены, что хотите удалить сервер?</value>
@@ -283,16 +283,16 @@
     <value>Конфигурация выполнена успешно {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Пользовательская конфигурация сервера успешно импортирована</value>
+    <value>Пользовательская конфигурация успешно импортирована</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} серверов импортировано из буфера обмена</value>
+    <value>Из буфера обмена импортировано конфигураций: {0}</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Сканирование URL-адреса импорта прошло успешно</value>
+    <value>Ссылка общего доступа успешно отсканирована и импортирована</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>Задержка текущего сервера: {0} мс, {1}</value>
+    <value>Задержка: {0} мс, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
     <value>Операция успешна</value>
@@ -334,7 +334,7 @@
     <value>Введите корректный пользовательский DNS</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*WebSocket-путь</value>
+    <value>*Путь ws/http upgrade/xhttp</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
     <value>*HTTP2-путь</value>
@@ -349,7 +349,7 @@
     <value>*http-хосты, разделённые запятыми (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*WebSocket-хост</value>
+    <value>*Хост ws/http upgrade/xhttp</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
     <value>*HTTP2-хосты, разделённые запятыми (,)</value>
@@ -382,7 +382,7 @@
     <value>Глобальная горячая клавиша {0} зарегистрирована успешно</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
-    <value>Все серверы</value>
+    <value>Все</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
     <value>Выберите файл конфигурации сервера для импорта</value>
@@ -397,7 +397,7 @@
     <value>Локальный</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Фильтр серверов</value>
+    <value>Фильтр, нажмите Enter для выполнения</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Проверить обновления</value>
@@ -409,19 +409,19 @@
     <value>Выход</value>
   </data>
   <data name="menuGlobalHotkeySetting" xml:space="preserve">
-    <value>Глобальная настройка горячих клавиш</value>
+    <value>Настройка глобальных горячих клавиш</value>
   </data>
   <data name="menuHelp" xml:space="preserve">
     <value>Помощь</value>
   </data>
   <data name="menuOptionSetting" xml:space="preserve">
-    <value>Настройка параметров</value>
+    <value>Настройки</value>
   </data>
   <data name="menuPromotion" xml:space="preserve">
-    <value>Содействие</value>
+    <value>Продвижение</value>
   </data>
   <data name="menuReload" xml:space="preserve">
-    <value>Перезагрузка</value>
+    <value>Перезагрузить</value>
   </data>
   <data name="menuRoutingSetting" xml:space="preserve">
     <value>Настройки маршрутизации</value>
@@ -436,13 +436,13 @@
     <value>Обновить текущую подписку без прокси</value>
   </data>
   <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
-    <value>Обновить подписку через прокси</value>
+    <value>Обновить текущую подписку через прокси</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
     <value>Группа подписки</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
-    <value>Настройки группы подписки</value>
+    <value>Настройки групп подписки</value>
   </data>
   <data name="menuSubUpdate" xml:space="preserve">
     <value>Обновить подписку без прокси</value>
@@ -472,46 +472,46 @@
     <value>Язык (требуется перезапуск)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Импорт массива URL из буфера обмена</value>
+    <value>Импорт ссылок общего доступа из буфера обмена</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>Сканировать QR-код с экрана</value>
+    <value>Сканировать QR-код на экране</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>Клонировать выбранный сервер</value>
+    <value>Клонировать выбранное</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>Удалить дубликаты серверов</value>
+    <value>Удалить дубликаты</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Удалить выбранные серверы</value>
+    <value>Удалить выбранное</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Установить как активный сервер</value>
+    <value>Сделать активным</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
-    <value>Очистить всю статистику</value>
+    <value>Очистить статистику всех сервисов</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Тест на реальную задержку сервера</value>
+    <value>Тест реальной задержки</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
-    <value>Сортировать по результату теста</value>
+    <value>Сортировка по результату теста</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Тест на скорость загрузки сервера</value>
+    <value>Тест скорости загрузки</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Тест задержки с tcping</value>
+    <value>Тест tcping</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Экспортировать выбранный сервер для клиента</value>
+    <value>Экспортировать выбранное как полную конфигурацию</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Экспорт URL-адресов общего доступа в буфер обмена</value>
+    <value>Копировать ссылку общего доступа в буфер обмена</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Добавить сервер пользовательской конфигурации</value>
+    <value>Добавить пользовательскую конфигурацию</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
     <value>Добавить сервер [Shadowsocks]</value>
@@ -556,13 +556,13 @@
     <value>Поделиться</value>
   </data>
   <data name="LvEnabled" xml:space="preserve">
-    <value>Включены обновления</value>
+    <value>Включить обновление</value>
   </data>
   <data name="LvSort" xml:space="preserve">
     <value>Сортировка</value>
   </data>
   <data name="LvUserAgent" xml:space="preserve">
-    <value>Заголовок User-Agent</value>
+    <value>User-Agent</value>
   </data>
   <data name="TbCancel" xml:space="preserve">
     <value>Отмена</value>
@@ -595,7 +595,7 @@
     <value>UUID (id)</value>
   </data>
   <data name="TbNetwork" xml:space="preserve">
-    <value>Транспортный протокол сети</value>
+    <value>Транспортный протокол (network)</value>
   </data>
   <data name="TbPath" xml:space="preserve">
     <value>Путь</value>
@@ -604,13 +604,13 @@
     <value>Порт</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
-    <value>Примечание</value>
+    <value>Псевдоним (remarks)</value>
   </data>
   <data name="TbRequestHost" xml:space="preserve">
-    <value>Маскирующий домен (хост)</value>
+    <value>Камуфляжный домен (host)</value>
   </data>
   <data name="TbSecurity" xml:space="preserve">
-    <value>Метод шифрования</value>
+    <value>Метод шифрования (security)</value>
   </data>
   <data name="TbSNI" xml:space="preserve">
     <value>SNI</value>
@@ -619,13 +619,13 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*По-умолчанию TCP</value>
+    <value>*По умолчанию TCP</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Ядро</value>
   </data>
   <data name="TbFlow5" xml:space="preserve">
-    <value>Поток</value>
+    <value>Управление потоком (Flow)</value>
   </data>
   <data name="TbGUID" xml:space="preserve">
     <value>Генерировать</value>
@@ -634,7 +634,7 @@
     <value>Пароль</value>
   </data>
   <data name="TbId4" xml:space="preserve">
-    <value>Пароль(Необязательно)</value>
+    <value>Пароль (необязательно)</value>
   </data>
   <data name="TbId5" xml:space="preserve">
     <value>UUID(id)</value>
@@ -643,10 +643,10 @@
     <value>Шифрование</value>
   </data>
   <data name="TbSecurity4" xml:space="preserve">
-    <value>Пользователь(Необязательно)</value>
+    <value>Пользователь (необязательно)</value>
   </data>
   <data name="TbSecurity5" xml:space="preserve">
-    <value>Шифрования</value>
+    <value>Шифрование</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
     <value>Порт SOCKS</value>
@@ -655,7 +655,7 @@
     <value>* После установки этого значения служба SOCKS будет запущена с использованием Xray/sing-box(TUN) для обеспечения таких функций, как отображение скорости</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
-    <value>Просмотр</value>
+    <value>Обзор</value>
   </data>
   <data name="TbEdit" xml:space="preserve">
     <value>Редактировать</value>
@@ -667,7 +667,7 @@
     <value>Разрешить подключения из локальной сети</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Автоскрытие при автозапуске</value>
+    <value>Автоматически скрывать при запуске</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
     <value>Интервал автоматического обновления Geo в часах</value>
@@ -676,7 +676,7 @@
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbCustomDnsRay" xml:space="preserve">
-    <value>V2ray Custom DNS</value>
+    <value>Пользовательский DNS для V2ray</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Ядро: настройки KCP</value>
@@ -700,10 +700,10 @@
     <value>Исключение</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>Исключение. Не используйте прокси-сервер для адресов, начинающихся с (,), используйте точку с запятой (;)</value>
+    <value>Исключения: не использовать прокси для адресов, начинающихся с указанных. Разделяйте точкой с запятой (;)</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>Показывать скорость в реальном времени</value>
+    <value>Показывать скорость в реальном времени (требуется перезапуск)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
     <value>Сохранить старые при удалении дублей</value>
@@ -721,7 +721,7 @@
     <value>Настройки v2rayN</value>
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
-    <value>Пароль аутентификации</value>
+    <value>Пароль авторизации</value>
   </data>
   <data name="TbSettingsRemoteDNS" xml:space="preserve">
     <value>Пользовательский DNS (если несколько, то делите запятыми (,))</value>
@@ -736,10 +736,10 @@
     <value>Смешанный порт</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
-    <value>Автозапуск</value>
+    <value>Запускать при старте системы</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Включить статистику (требуется перезагрузка)</value>
+    <value>Включить статистику трафика (требуется перезапуск)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
     <value>URL конвертации подписок</value>
@@ -748,31 +748,31 @@
     <value>Настройки системного прокси</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Лимит серверов в меню трея</value>
+    <value>Лимит отображения серверов в контекстном меню трея</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Включить UDP</value>
   </data>
   <data name="TbSettingsUser" xml:space="preserve">
-    <value>Имя пользователя (логин)</value>
+    <value>Пользователь авторизации</value>
   </data>
   <data name="TbClearSystemProxy" xml:space="preserve">
     <value>Очистить системный прокси</value>
   </data>
   <data name="TbDisplayGUI" xml:space="preserve">
-    <value>Показать GUI</value>
+    <value>Показать интерфейс</value>
   </data>
   <data name="TbGlobalHotkeySetting" xml:space="preserve">
-    <value>Настройка горячих клавиш</value>
+    <value>Настройка глобальных горячих клавиш</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Установите непосредственно, нажав на клавиатуру, вступит в силу после перезапуска</value>
+    <value>Задайте, нажав нужную комбинацию клавиш; вступит в силу после перезапуска</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
-    <value>Не изменять системный прокси</value>
+    <value>Не менять системный прокси</value>
   </data>
   <data name="TbReset" xml:space="preserve">
-    <value>Обнулить</value>
+    <value>Сбросить</value>
   </data>
   <data name="TbSetSystemProxy" xml:space="preserve">
     <value>Установить системный прокси</value>
@@ -781,16 +781,16 @@
     <value>Режим PAC</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Поделиться сервером</value>
+    <value>Поделиться</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Маршрутизация</value>
   </data>
   <data name="NotRunAsAdmin" xml:space="preserve">
-    <value>Пользователь</value>
+    <value>Запущено без прав администратора</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
-    <value>Администратор</value>
+    <value>Запущено от имени администратора</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
     <value>Спуститься вниз</value>
@@ -808,13 +808,13 @@
     <value>Фильтр, поддерживает regex</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
-    <value>{0} веб-сайт</value>
+    <value>Веб-сайт {0}</value>
   </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
     <value>Добавить</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>Добавить расширенные правила</value>
+    <value>Импортировать правила</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
     <value>Удалить выбранные</value>
@@ -859,7 +859,7 @@
     <value>Детальные настройки правил маршрутизации</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Домен и IP автоматически сортируются при сохранении</value>
+    <value>Домен, IP и процесс автоматически сортируются при сохранении</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
     <value>Документация RuleObject</value>
@@ -868,7 +868,7 @@
     <value>Поддерживаются DNS-объекты, нажмите для просмотра документации</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
-    <value>Необязательное поле</value>
+    <value>Для группы оставьте это поле пустым</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
     <value>Настройки маршрутизации изменены</value>
@@ -880,7 +880,7 @@
     <value>Только маршрут</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
-    <value>Не используйте прокси-серверы для локальных (интранет) адресов</value>
+    <value>Не использовать прокси для локальных (интранет) адресов</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
     <value>Тест задержки и скорости всех серверов (Ctrl+E)</value>
@@ -895,13 +895,13 @@
     <value>Не удалось запустить ядро, посмотрите логи</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
-    <value>Фильтр примечаний (Regex)</value>
+    <value>Фильтр по примечаниям (регулярные выражения)</value>
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
-    <value>Показать логи</value>
+    <value>Отображать журнал</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>Режим VPN</value>
+    <value>Включить TUN</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>Новый порт для локальной сети</value>
@@ -910,10 +910,10 @@
     <value>Настройки режима TUN</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
-    <value>Перейти в группу</value>
+    <value>Переместить в группу</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>Включить сортировку перетаскиванием сервера (требуется перезагрузка)</value>
+    <value>Включить сортировку перетаскиванием сервера (требуется перезапуск)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Автообновление</value>
@@ -922,10 +922,10 @@
     <value>Пропустить тест</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Редактировать сервер</value>
+    <value>Редактировать</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Двойной клик чтобы сделать сервер активным</value>
+    <value>Двойной клик для активации конфигурации</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
     <value>Тест завершен</value>
@@ -940,16 +940,16 @@
     <value>Параметр действует только для TCP/HTTP и WebSocket (WS)</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>Шрифт (требуется перезагрузка)</value>
+    <value>Шрифт (требуется перезапуск)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
     <value>Скопируйте файл шрифта TTF/TTC в каталог guiFonts и заново откройте окно настроек</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac порт = +3,Xray API порт = +4, mihomo API порт = +5</value>
+    <value>PAC-порт = +3; Xray API порт = +4; mihomo API порт = +5;</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
-    <value>Установите это с правами администратора</value>
+    <value>Установите с правами администратора; после запуска приложение получит права администратора</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>Размер шрифта</value>
@@ -964,7 +964,7 @@
     <value>Переместить вверх/вниз</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
-    <value>PublicKey</value>
+    <value>Открытый ключ</value>
   </data>
   <data name="TbShortId" xml:space="preserve">
     <value>ShortId</value>
@@ -973,22 +973,22 @@
     <value>SpiderX</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Включить аппаратное ускорение (требуется перезагрузка)</value>
+    <value>Включить аппаратное ускорение (требуется перезапуск)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Ожидание тестирования…</value>
+    <value>Ожидание…</value>
   </data>
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
-    <value>нажмите ESC для отмены</value>
+    <value>Нажмите ESC для прекращения теста</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
-    <value>Отключите при аномальном разрыве соединения</value>
+    <value>Отключите при нестабильном соединении</value>
   </data>
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
     <value>Обновления не включены — подписка пропущена</value>
   </data>
   <data name="menuRebootAsAdmin" xml:space="preserve">
-    <value>Перезагрузить как администратор</value>
+    <value>Перезапустить от имени администратора</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
     <value>Дополнительные URL через запятую, конвертация подписки недоступна</value>
@@ -1003,7 +1003,7 @@
     <value>Включить запись логов в файл</value>
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
-    <value>Преобразовать тип цели</value>
+    <value>Целевой тип конвертации</value>
   </data>
   <data name="LvConvertTargetTip" xml:space="preserve">
     <value>Если преобразование не требуется, оставьте поле пустым</value>
@@ -1012,7 +1012,7 @@
     <value>Настройки DNS</value>
   </data>
   <data name="TbCustomDnsSingbox" xml:space="preserve">
-    <value>sing-box Custom DNS</value>
+    <value>Пользовательский DNS для sing-box</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
     <value>Заполните структуру DNS, нажмите, чтобы открыть документ</value>
@@ -1042,13 +1042,13 @@
     <value>Максимальная пропускная способность Hysteria (загрузка/отдача)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>Использовать системные узлы</value>
+    <value>Использовать системный файл hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
     <value>Добавить сервер [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
-    <value>Контроль перегрузок</value>
+    <value>Управление перегрузками</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Примечания к предыдущему прокси</value>
@@ -1084,7 +1084,7 @@
     <value>Зарезервировано (2, 3, 4)</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Адрес (Ipv4,Ipv6)</value>
+    <value>Адрес (IPv4, IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
     <value>Пароль obfs</value>
@@ -1099,7 +1099,7 @@
     <value>URL для быстрой проверки реальной задержки</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
-    <value>Отмена тестирования...</value>
+    <value>Завершение тестирования...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
     <value>* gRPC Authority (HTTP/2 псевдозаголовок :authority)</value>
@@ -1117,7 +1117,7 @@
     <value>Пользовательский набор правил для sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
-    <value>Операция успешна. Перезапустите приложение</value>
+    <value>Операция успешна. Закройте приложение, нажав «Выход» в меню трея, и запустите его заново</value>
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
     <value>Открыть место хранения</value>
@@ -1138,10 +1138,10 @@
     <value>Скорость загрузки</value>
   </data>
   <data name="TbSortingDownTraffic" xml:space="preserve">
-    <value>Скачанный трафик</value>
+    <value>Загруженный трафик</value>
   </data>
   <data name="TbSortingHost" xml:space="preserve">
-    <value>Узел</value>
+    <value>Хост</value>
   </data>
   <data name="TbSortingName" xml:space="preserve">
     <value>Имя</value>
@@ -1204,7 +1204,7 @@
     <value>Стратегия домена по умолчанию для исходящих</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Основная ориентация макета (требуется перезагрузка)</value>
+    <value>Основная ориентация макета (требуется перезапуск)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
     <value>Исходящий DNS адрес</value>
@@ -1216,13 +1216,13 @@
     <value>Экспорт ссылок в формате Base64 в буфер обмена</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Экспортировать выбранный сервер для полной конфигурации в буфер обмена</value>
+    <value>Экспортировать полную конфигурацию в буфер обмена</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Показать или скрыть главное окно</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>Пользовательская конфигурация порта SOCKS</value>
+    <value>Порт SOCKS для пользовательской конфигурации</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
     <value>Резервное копирование и восстановление</value>
@@ -1276,13 +1276,13 @@
     <value>Источник файлов наборов правил sing-box (необязательно)</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>Программы для обновления не существует</value>
+    <value>Приложение для обновления не найдено</value>
   </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
-    <value>Источник правил маршрутизации</value>
+    <value>Источник правил маршрутизации (необязательно)</value>
   </data>
   <data name="menuRegionalPresets" xml:space="preserve">
-    <value>Региональные пресеты</value>
+    <value>Настройка региональных пресетов</value>
   </data>
   <data name="menuRegionalPresetsDefault" xml:space="preserve">
     <value>По умолчанию (Китай)</value>
@@ -1300,13 +1300,13 @@
     <value>Сканировать QR-код с изображения</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
-    <value>Неверный адрес (Url)</value>
+    <value>Неверный адрес (URL)</value>
   </data>
   <data name="InsecureUrlProtocol" xml:space="preserve">
     <value>Не используйте небезопасный адрес подписки по протоколу HTTP</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>Установите шрифт в систему и перезапустите настройки</value>
+    <value>Установите шрифт в систему, выберите или введите имя шрифта, перезапустите настройки</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
     <value>Вы уверены, что хотите выйти?</value>
@@ -1324,16 +1324,16 @@
     <value>*XHTTP-режим</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>Дополнительный „сырой“ JSON для XHTTP, формат: { XHTTP Object }</value>
+    <value>Дополнительный сырой JSON для XHTTP, формат: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>Скрыть в трее при закрытии окна</value>
+    <value>Сворачивать в трей при закрытии окна</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
     <value>Количество одновременно выполняемых тестов при многоэтапном тестировании</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Исключение. Не используйте прокси-сервер для адресов с запятой (,)</value>
+    <value>Исключения: не использовать прокси для указанных адресов. Разделяйте запятой (,)</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
     <value>Тип сниффинга</value>
@@ -1345,7 +1345,7 @@
     <value>socks: локальный порт, socks2: второй локальный порт, socks3: LAN порт</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
-    <value>Темы</value>
+    <value>Тема</value>
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
     <value>Копировать команду прокси в буфер обмена</value>
@@ -1675,27 +1675,27 @@
     <value>Выбрать все</value>
   </data>
   <data name="menuEditPaste" xml:space="preserve">
-    <value>Paste</value>
+    <value>Вставить</value>
   </data>
   <data name="menuEditFormat" xml:space="preserve">
-    <value>Format</value>
+    <value>Форматировать</value>
   </data>
   <data name="TbUot" xml:space="preserve">
-    <value>UDP over TCP</value>
+    <value>UDP поверх TCP</value>
   </data>
   <data name="menuAddNaiveServer" xml:space="preserve">
     <value>Добавить сервер [NaïveProxy]</value>
   </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
-    <value>Insecure Concurrency</value>
+    <value>Небезопасная конкурентность (Insecure Concurrency)</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
-    <value>Username</value>
+    <value>Имя пользователя</value>
   </data>
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
-    <value>ICMP routing policy</value>
+    <value>Политика маршрутизации ICMP</value>
   </data>
   <data name="TbLegacyProtect" xml:space="preserve">
-    <value>Legacy TUN Protect</value>
+    <value>Устаревшая защита TUN (Legacy Protect)</value>
   </data>
 </root>
