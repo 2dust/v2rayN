@@ -62,7 +62,7 @@ jobs:
         mv "v2rayN-${OutputArchArm}.zip" "v2rayN-${OutputArchArm}-desktop.zip"
 
     - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip

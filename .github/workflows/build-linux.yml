@@ -62,7 +62,7 @@ jobs:
         ./package-release-zip.sh "$OutputArchArm" "$OutputPathArm64"
     
     - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
@@ -122,7 +122,7 @@ jobs:
         path: dist/deb/**/*.deb
 
     - name: Upload DEBs to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       with:
         file: dist/deb/**/*.deb
         tag: ${{ env.RELEASE_TAG }}
@@ -235,7 +235,7 @@ jobs:
         path: dist/rpm/**/*.rpm
 
     - name: Upload RPMs to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       with:
         file: dist/rpm/**/*.rpm
         tag: ${{ env.RELEASE_TAG }}

@@ -57,11 +57,13 @@ jobs:
       run: |
         brew install create-dmg
         chmod 755 package-osx.sh
-        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
-        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+        ./package-osx.sh $OutputArch $OutputPath64 "${INPUT_RELEASE_TAG}"
+        ./package-osx.sh $OutputArchArm $OutputPathArm64 "${INPUT_RELEASE_TAG}"
     
+      env:
+        INPUT_RELEASE_TAG: ${{ github.event.inputs.release_tag }}
     - name: Upload dmg to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.dmg
@@ -78,7 +80,7 @@ jobs:
         ./package-release-zip.sh $OutputArchArm $OutputPathArm64
     
     - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
+      uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
