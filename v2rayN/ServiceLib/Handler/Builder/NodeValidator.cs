@@ -143,9 +143,17 @@ public class NodeValidator
 
         if (item.Network == nameof(ETransport.xhttp) && !item.Extra.IsNullOrEmpty())
         {
-            if (JsonUtils.ParseJson(item.Extra) is null)
+            if (JsonUtils.ParseJson(item.Extra) is not JsonObject)
             {
                 v.Error(string.Format(ResUI.MsgInvalidProperty, "XHTTP Extra"));
+            }
+        }
+
+        if (!item.Finalmask.IsNullOrEmpty())
+        {
+            if (JsonUtils.ParseJson(item.Finalmask) is not JsonObject)
+            {
+                v.Error(string.Format(ResUI.MsgInvalidProperty, "Finalmask"));
             }
         }
     }
