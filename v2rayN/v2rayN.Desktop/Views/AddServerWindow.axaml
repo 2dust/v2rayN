@@ -726,7 +726,7 @@
                                     Grid.Column="0"
                                     Margin="{StaticResource Margin4}"
                                     VerticalAlignment="Center"
-                                    Text="{x:Static resx:ResUI.TbHeaderType}" />
+                                    Text="{x:Static resx:ResUI.TransportHeaderType1}" />
                                 <ComboBox
                                     x:Name="cmbHeaderTypeRaw"
                                     Grid.Row="0"
@@ -746,7 +746,7 @@
                                     Grid.Column="0"
                                     Margin="{StaticResource Margin4}"
                                     VerticalAlignment="Center"
-                                    Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                    Text="{x:Static resx:ResUI.TbCamouflageDomain}" />
                                 <TextBox
                                     x:Name="txtRequestHostRaw"
                                     Grid.Row="0"
@@ -778,7 +778,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbHeaderType}" />
+                                Text="{x:Static resx:ResUI.TransportHeaderType5}" />
                             <ComboBox
                                 x:Name="cmbHeaderTypeXhttp"
                                 Grid.Row="0"
@@ -790,7 +790,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                Text="{x:Static resx:ResUI.TbHost}" />
                             <TextBox
                                 x:Name="txtRequestHostXhttp"
                                 Grid.Row="1"
@@ -837,7 +837,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbHeaderType}" />
+                                Text="{x:Static resx:ResUI.TransportHeaderType2}" />
                             <ComboBox
                                 x:Name="cmbHeaderTypeKcp"
                                 Grid.Row="0"
@@ -868,7 +868,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbHeaderType}" />
+                                Text="{x:Static resx:ResUI.TransportHeaderType4}" />
                             <ComboBox
                                 x:Name="cmbHeaderTypeGrpc"
                                 Grid.Row="0"
@@ -880,7 +880,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                Text="{x:Static resx:ResUI.TransportRequestHostTip5}" />
                             <TextBox
                                 x:Name="txtRequestHostGrpc"
                                 Grid.Row="1"
@@ -892,7 +892,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbPath}" />
+                                Text="{x:Static resx:ResUI.TransportPathTip4}" />
                             <TextBox
                                 x:Name="txtPathGrpc"
                                 Grid.Row="2"
@@ -911,7 +911,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                Text="{x:Static resx:ResUI.TbHost}" />
                             <TextBox
                                 x:Name="txtRequestHostWs"
                                 Grid.Row="0"
@@ -942,7 +942,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbRequestHost}" />
+                                Text="{x:Static resx:ResUI.TbHost}" />
                             <TextBox
                                 x:Name="txtRequestHostHttpupgrade"
                                 Grid.Row="0"

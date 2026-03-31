@@ -343,7 +343,7 @@
     <value>*QUIC 加密金鑰</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc serviceName</value>
+    <value>gRPC serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http host 中間逗號 (,) 分隔</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC 加密方式</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*TCP 偽裝類型</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*KCP 偽裝類型</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>KCP 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC 偽裝類型</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*GRPC 模式</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>gRPC 模式</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -606,9 +606,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>別名 (remarks)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>偽裝域名 (host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>加密方式 (security)</value>
   </data>
@@ -619,7 +616,7 @@
     <value>傳輸層安全性 (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*預設 TCP，選錯會無法連線</value>
+    <value>*預設 raw，選錯會無法連線</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core 類型</value>
@@ -937,7 +934,7 @@
     <value>使用者代理 (User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>僅對 TCP/HTTP、WS、gRPC、XHTTP 生效</value>
+    <value>僅對 raw/HTTP、WS、gRPC、XHTTP 生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>目前字型 (需重啟)</value>
@@ -1099,7 +1096,7 @@
     <value>測試終止中...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
+    <value>gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>新增 [HTTP] 節點</value>
@@ -1317,8 +1314,8 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密碼將調用命令行校驗，如果因為校驗錯誤導致無法正常運行時，請重啟本應用。密碼不會存儲，每次重啟後都需要再次輸入。</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp 模式</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>xhttp 模式</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
@@ -1697,5 +1694,11 @@
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>偽裝域名</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>

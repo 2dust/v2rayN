@@ -343,7 +343,7 @@
     <value>*clé de chiffrement QUIC</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*nom de service gRPC</value>
+    <value>nom de service gRPC</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*hôte http, séparés par des virgules (,)</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*méthode de chiffrement QUIC</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*type de camouflage tcp</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>type de camouflage raw</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*type de camouflage kcp</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>type de camouflage kcp</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*type de camouflage QUIC</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>type de camouflage QUIC</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*mode gRPC</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>mode gRPC</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -606,9 +606,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>Alias (remarks)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>Domaine de camouflage (host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>Méthode de chiffrement (security)</value>
   </data>
@@ -619,7 +616,7 @@
     <value>Sécurité couche transport (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*tcp par défaut ; un mauvais choix bloque la connexion</value>
+    <value>*raw par défaut ; un mauvais choix bloque la connexion</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Type de Core</value>
@@ -937,7 +934,7 @@
     <value>Agent utilisateur (User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
+    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Police actuelle (redémarrage requis)</value>
@@ -1099,7 +1096,7 @@
     <value>Arrêt du test en cours...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*Autorité gRPC</value>
+    <value>Autorité gRPC</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>Ajouter [HTTP]</value>
@@ -1326,8 +1323,8 @@
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
     <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*Mode XHTTP</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>Mode XHTTP</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>JSON brut XHTTP Extra, format : { XHTTPObject }</value>
@@ -1706,5 +1703,11 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Pour environnements multi-interfaces, entrez l’adresse IPv4 de la machine locale.</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Domaine de camouflage</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>

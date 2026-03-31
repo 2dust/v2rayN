@@ -343,7 +343,7 @@
     <value>*QUIC-ключ / KCP-seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>Имя сервиса *gRPC</value>
+    <value>Имя сервиса gRPC</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http-хосты, разделённые запятыми (,)</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>Безопасность *QUIC</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>Тип *TCP-камуфляжа</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>Тип raw-камуфляжа</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>Тип *KCP-камуфляжа</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>Тип KCP-камуфляжа</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>Тип *QUIC-камуфляжа</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>Тип QUIC-камуфляжа</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>Режим *gRPC</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>Режим gRPC</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -606,9 +606,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>Псевдоним (remarks)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>Камуфляжный домен (host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>Метод шифрования (security)</value>
   </data>
@@ -619,7 +616,7 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*По умолчанию TCP</value>
+    <value>*По-умолчанию raw</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Ядро</value>
@@ -937,7 +934,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
+    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Шрифт (требуется перезапуск)</value>
@@ -1102,7 +1099,7 @@
     <value>Завершение тестирования...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>* gRPC Authority (HTTP/2 псевдозаголовок :authority)</value>
+    <value>gRPC Authority (HTTP/2 псевдозаголовок :authority)</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>Добавить сервер [HTTP]</value>
@@ -1320,8 +1317,8 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Пароль sudo будет проверен в терминале. Если из-за ошибки проверки приложение начнёт работать некорректно, перезапустите его. Пароль не сохраняется — его нужно вводить после каждого перезапуска.</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*XHTTP-режим</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>XHTTP-режим</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>Дополнительный сырой JSON для XHTTP, формат: { XHTTP Object }</value>
@@ -1700,5 +1697,11 @@
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Камуфляжный домен</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>

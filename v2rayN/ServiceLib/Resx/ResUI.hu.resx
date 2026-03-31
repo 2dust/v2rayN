@@ -343,7 +343,7 @@
     <value>*QUIC kulcs/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc szolgáltatásnév</value>
+    <value>gRPC szolgáltatásnév</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http host vesszővel elválasztva (,)</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC biztonság</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*tcp álcázási típus</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw álcázási típus</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*kcp álcázási típus</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>kcp álcázási típus</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC álcázási típus</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC álcázási típus</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*grpc mód</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>gRPC mód</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -606,9 +606,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>Alias (megjegyzések)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>Álcázási tartomány(host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>Titkosítási módszer (biztonság)</value>
   </data>
@@ -619,7 +616,7 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*Alapértelmezett érték tcp</value>
+    <value>*Alapértelmezett érték raw</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core Típus</value>
@@ -937,7 +934,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
+    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Betűtípus (újraindítást igényel)</value>
@@ -1102,7 +1099,7 @@
     <value>Teszt megszakítása...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
+    <value>gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>HTTP konfiguráció hozzáadása</value>
@@ -1320,8 +1317,8 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>A jelszót a parancssoron keresztül ellenőrizzük. Ha egy érvényesítési hiba miatt az alkalmazás hibásan működik, indítsa újra az alkalmazást. A jelszó nem kerül tárolásra, és minden újraindítás után újra meg kell adni.</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp mód</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>xhttp mód</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>XHTTP Extra nyers JSON, formátum: { XHTTP Objektum }</value>
@@ -1700,5 +1697,11 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Álcázási tartomány</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>

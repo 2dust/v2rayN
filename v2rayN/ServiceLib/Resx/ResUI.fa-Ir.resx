@@ -343,7 +343,7 @@
     <value>*QUIC key/Kcp seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc serviceName</value>
+    <value>gRPC serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*هاست http جدا شده با کاما (،)</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC securty</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*tcp camouflage type</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*kcp camouflage type</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>kcp camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC camouflage type</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*حالت grpc</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>حالت grpc</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -606,9 +606,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>نام مستعار (ملاحظات)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>Camouflage domain(host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>روش رمزگذاری (امنیتی)</value>
   </data>
@@ -619,7 +616,7 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*مقدار پیش فرض tcp</value>
+    <value>*مقدار پیش فرض raw</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>نوع هسته</value>
@@ -937,7 +934,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
+    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>FontFamily (نیاز به راه اندازی مجدد)</value>
@@ -1102,7 +1099,7 @@
     <value>پایان تست...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
+    <value>RPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>افزودن سرور [HTTP]</value>
@@ -1320,8 +1317,8 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*حالت xhttp</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>حالت xhttp</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
     <value>جیسون خام XHTTP Extra, فرمت: { XHTTPObject }</value>
@@ -1700,5 +1697,11 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Camouflage domain</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
   </data>
 </root>

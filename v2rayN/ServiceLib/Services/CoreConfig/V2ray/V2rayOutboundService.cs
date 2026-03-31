@@ -647,7 +647,8 @@ public partial class CoreConfigV2rayService
                     streamSettings.finalmask = hy2Finalmask;
                     break;
 
-                case nameof(ETransport.raw):
+                default:
+                    // raw
                     if (headerType == Global.RawHeaderHttp)
                     {
                         RawSettings4Ray rawSettings = new()
@@ -677,9 +678,6 @@ public partial class CoreConfigV2rayService
 
                         streamSettings.rawSettings = rawSettings;
                     }
-                    break;
-
-                default:
                     break;
             }
 
