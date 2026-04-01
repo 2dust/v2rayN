@@ -144,16 +144,10 @@ public sealed class AppManager
         AppEvents.ShutdownRequested.Publish(byUser);
     }
 
-    public async Task<bool> RebootAsAdmin()
+    public async Task RebootAsAdmin()
     {
-        var started = ProcUtils.RebootAsAdmin();
-        if (!started)
-        {
-            return false;
-        }
-
+        ProcUtils.RebootAsAdmin();
         await AppManager.Instance.AppExitAsync(true);
-        return true;
     }
 
     #endregion App
