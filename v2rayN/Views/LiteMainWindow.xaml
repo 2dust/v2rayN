@@ -1,0 +1,9 @@
+<Window x:Class="v2rayN.Views.LiteMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lite Main Window" Height="450" Width="800" Background="#1E1E1E">
+    <Grid>
+        <TextBlock Text="Welcome to v2rayN Lite!" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Content="Start" Width="100" Height="30" Background="#007ACC" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" />
+    </Grid>
+</Window>
