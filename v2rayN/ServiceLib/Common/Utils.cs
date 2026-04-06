@@ -1093,6 +1093,24 @@ public class Utils
         }
     }
 
+    public static string GetOptCorePath(string filename = "")
+    {
+        var tempPath = Path.Combine("/opt/v2rayn-core");
+        if (!Directory.Exists(tempPath))
+        {
+            Directory.CreateDirectory(tempPath);
+        }
+
+        if (filename.IsNullOrEmpty())
+        {
+            return tempPath;
+        }
+        else
+        {
+            return Path.Combine(tempPath, filename);
+        }
+    }
+
     #endregion TempPath
 
     #region Platform
