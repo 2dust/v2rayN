@@ -430,7 +430,6 @@ build_for_arch() {
   mkdir -p "$STAGE/usr/bin"
   mkdir -p "$STAGE/usr/share/applications"
   mkdir -p "$STAGE/usr/share/icons/hicolor/256x256/apps"
-  mkdir -p "$STAGE/opt/v2rayn-core"
   mkdir -p "$DEBIAN_DIR"
 
   # Stage publish content from source build
