@@ -1,0 +1,11 @@
+tunnel:
+  name: v2rayn-tun
+  mtu: 8500
+  multi-queue: false
+  ipv4: 198.18.0.1
+  ipv6: 'fc00::1'
+
+socks5:
+  port: 10808
+  address: 127.0.0.1
+  udp: 'udp'
