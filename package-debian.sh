@@ -294,7 +294,7 @@ download_hev_socks5_tunnel() {
     tmp="$(mktemp -d)"
     curl -fL "$url" -o "$tmp/$filename"
     # The file must be write-protected because of CAP_NET_ADMIN
-    install -m 544 -o 785 -g 785 "$tmp/$filename" "$outdir/hev-socks5-tunnel"
+    install -m 544 "$tmp/$filename" "$outdir/hev-socks5-tunnel"
     rm -rf "$tmp"
 }
 
@@ -593,6 +593,7 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
 setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
+chown -R v2rayn-core:v2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel
 exit 0
 EOF
 
