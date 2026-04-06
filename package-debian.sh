@@ -569,7 +569,7 @@ EOF
 
   # preinst
   install -m 755 /dev/stdin "$DEBIAN_DIR/preinst" <<'EOF'
-#!/bin/sh
+#!/bin/bash
 set -e
 useradd --no-create-home --uid 785 --system v2rayn-core
 groupadd v2rayn # Users in this group are allowed to use TUN
