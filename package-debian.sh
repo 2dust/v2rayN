@@ -572,6 +572,8 @@ EOF
 #!/bin/sh
 set -e
 useradd --no-create-home --uid 785 --system v2rayn-core
+groupadd v2rayn # Users in this group are allowed to use TUN
+id -u 1000 && gpasswd -a $(id -un 1000) v2rayn
 exit 0
 EOF
 
