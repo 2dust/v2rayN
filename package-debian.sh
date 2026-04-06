@@ -280,6 +280,25 @@ download_singbox() {
   rm -rf "$tmp"
 }
 
+download_hev_socks5_tunnel() {
+    local outdir="$1" rid="$2" ver url tmp filename
+    mkdir -p "$outdir"
+    ver=$(curl -fs https://api.github.com/repos/heiher/hev-socks5-tunnel/releases/latest | jq -r '.tag_name')
+    if [[ "$rid" == "linux-arm64" ]]; then
+        filename="hev-socks5-tunnel-linux-arm64"
+    else
+        filename="hev-socks5-tunnel-linux-x86_64"
+    fi
+    url="https://github.com/heiher/hev-socks5-tunnel/releases/download/${ver}/${filename}"
+    echo "[+] Download hev-socks5-tunnel: $url"
+    tmp="$(mktemp -d)"
+    curl -fL "$url" -o "$tmp/$filename"
+    # The file must be write-protected because of CAP_NET_ADMIN
+    install -m 544 -o v2rayn-core -g v2rayn-core "$tmp/$filename" "$outdir/hev-socks5-tunnel"
+    setcap 'CAP_NET_ADMIN+ep' "$outdir/hev-socks5-tunnel"
+    rm -rf "$tmp"
+}
+
 unify_geo_layout() {
   local outroot="$1"
   mkdir -p "$outroot/bin"
