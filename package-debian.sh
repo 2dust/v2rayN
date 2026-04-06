@@ -452,7 +452,7 @@ build_for_arch() {
       download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
-    download_hev_socks5_tunnel /opt/v2rayn-core "$RID_DIR" || echo "[!] hev-socks5-tunnel download failed (skipped)"
+    download_hev_socks5_tunnel "$STAGE/opt/v2rayn-core" "$RID_DIR" || echo "[!] hev-socks5-tunnel download failed (skipped)"
   }
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
