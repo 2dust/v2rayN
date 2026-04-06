@@ -294,7 +294,7 @@ download_hev_socks5_tunnel() {
     tmp="$(mktemp -d)"
     curl -fL "$url" -o "$tmp/$filename"
     # The file must be write-protected because of CAP_NET_ADMIN
-    install -m 544 -o v2rayn-core -g v2rayn-core "$tmp/$filename" "$outdir/hev-socks5-tunnel"
+    install -m 544 -o 785 -g 785 "$tmp/$filename" "$outdir/hev-socks5-tunnel"
     rm -rf "$tmp"
 }
 
