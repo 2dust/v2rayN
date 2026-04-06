@@ -567,6 +567,14 @@ Description: v2rayN (Avalonia) GUI client for Linux
  Shadowsocks / tuic / WireGuard.
 EOF
 
+  # preinst
+  install -m 755 /dev/stdin "$DEBIAN_DIR/preinst" <<'EOF'
+#!/bin/sh
+set -e
+useradd --no-create-home --uid 785 --system v2rayn-core
+exit 0
+EOF
+
   # postinst
   install -m 755 /dev/stdin "$DEBIAN_DIR/postinst" <<'EOF'
 #!/bin/sh
