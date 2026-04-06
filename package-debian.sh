@@ -467,7 +467,7 @@ build_for_arch() {
     echo "[*] --netcore specified: use separate core + rules."
     fetch_separate_cores_and_rules "$STAGE/opt/v2rayN"
   fi
-
+  install -m 440 $PROJECT_DIR/sudoers-v2rayn-core $STAGE/etc/sudoers.d/v2rayn-core
   # Wrapper
   install -m 755 /dev/stdin "$STAGE/usr/bin/v2rayn" <<'EOF'
 #!/usr/bin/env bash
