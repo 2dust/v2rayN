@@ -75,7 +75,7 @@ public partial class CoreConfigSingboxService
         }
 
         //Local srs files address
-        var localSrss = Utils.GetBinPath("srss");
+        var localSrss = Utils.GetOptBinPath("srss");
 
         //Add ruleset srs
         _coreConfig.route.rule_set = [];
