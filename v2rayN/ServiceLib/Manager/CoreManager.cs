@@ -207,6 +207,59 @@ public class CoreManager
         }
     }
 
+    private async Task CreateTUNRoutes()
+    {
+        if (Utils.IsLinux())
+        {
+            var procService = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "/sbin/ip rule add pref 5000 not uidrange 785-785 lookup 6418",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: _updateFunc
+            );
+            await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
+            var procService2 = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "/sbin/ip route add table 6418 default via 198.18.0.1 dev v2rayn-tun",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: _updateFunc
+            );
+            await procService2.StartAsync(AppManager.Instance.LinuxSudoPwd);
+        }
+    }
+
+    private async Task DeleteTUNRoutes()
+    {
+        if (Utils.IsLinux())
+        {
+            var procService = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "/sbin/ip rule delete pref 5000",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: _updateFunc
+            );
+            await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
+            var procService2 = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "/sbin/ip route flush table 6418",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: _updateFunc
+            );
+            await procService2.StartAsync(AppManager.Instance.LinuxSudoPwd);
+        }
+    }
     private async Task UpdateFunc(bool notify, string msg)
     {
         await _updateFunc?.Invoke(notify, msg);
