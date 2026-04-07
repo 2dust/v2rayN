@@ -29,12 +29,12 @@ public class CoreAdminManager
         await _updateFunc?.Invoke(notify, msg);
     }
 
-    public async Task<ProcessService?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
+    public async Task<ProcessService?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath, uint UID)
     {
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        sb.AppendLine($"exec sudo -S -- {cmdLine}");
+        sb.AppendLine($"exec sudo -u#{UID.ToString()} -S -- {cmdLine}");
         var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
         var procService = new ProcessService(
