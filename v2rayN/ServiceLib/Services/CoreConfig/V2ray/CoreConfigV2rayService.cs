@@ -17,8 +17,8 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         {
             if (!context.AppConfig.TunModeItem.EnableLegacyProtect
                 && context.IsTunEnabled
-                && context.TunProtectSsPort is > 0 and <= 65535
-                && context.ProxyRelaySsPort is > 0 and <= 65535)
+                && context.TunProtectSocksPort is > 0 and <= 65535
+                && context.ProxyRelaySocksPort is > 0 and <= 65535)
             {
                 return GenerateClientProxyRelayConfig();
             }
@@ -309,17 +309,16 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             var protectNode = new ProfileItem()
             {
                 CoreType = ECoreType.Xray,
-                ConfigType = EConfigType.Shadowsocks,
+                ConfigType = EConfigType.SOCKS,
                 Address = Global.Loopback,
-                Port = context.TunProtectSsPort,
-                Password = Global.None,
+                Port = context.TunProtectSocksPort,
             };
             protectNode.SetProtocolExtra(protectNode.GetProtocolExtra() with
             {
                 SsMethod = Global.None,
             });
 
-            const string protectTag = "tun-protect-ss";
+            const string protectTag = "tun-protect-socks";
             foreach (var outbound in _coreConfig.outbounds
                 .Where(o => o.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
             {
@@ -368,7 +367,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             var hasBalancer = _coreConfig.routing.balancers is { Count: > 0 };
             _coreConfig.routing.rules.Add(new()
             {
-                inboundTag = ["proxy-relay-ss"],
+                inboundTag = ["proxy-relay-socks"],
                 outboundTag = hasBalancer ? null : Global.ProxyTag,
                 balancerTag = hasBalancer ? Global.ProxyTag + Global.BalancerTagSuffix : null,
                 type = "field"
@@ -380,15 +379,14 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             configNode["inbounds"]!.AsArray().Add(new
             {
                 listen = Global.Loopback,
-                port = context.ProxyRelaySsPort,
-                protocol = "shadowsocks",
+                port = context.ProxyRelaySocksPort,
+                protocol = "socks",
                 settings = new
                 {
-                    network = "tcp,udp",
-                    method = Global.None,
-                    password = Global.None,
+                    auth = "noauth",
+                    udp = true,
                 },
-                tag = "proxy-relay-ss",
+                tag = "proxy-relay-socks",
             });
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");

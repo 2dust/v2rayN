@@ -62,16 +62,23 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             ret.Data = ApplyFullConfigTemplate();
             if (!context.AppConfig.TunModeItem.EnableLegacyProtect
-                && context.TunProtectSsPort is > 0 and <= 65535)
+                && context.TunProtectSocksPort is > 0 and <= 65535)
             {
+                // Replace relay proxy outbound, avoid mux or other feature cause issue, and add a socks inbound for tun protect
+                var relayProxyIndex = _coreConfig.outbounds.FindIndex(o => o.tag == Global.ProxyTag);
+                _coreConfig.outbounds[relayProxyIndex] = new Outbound4Sbox()
+                {
+                    type = Global.ProtocolTypes[EConfigType.SOCKS],
+                    tag = Global.ProxyTag,
+                    server = Global.Loopback,
+                    server_port = context.ProxyRelaySocksPort,
+                };
                 var ssInbound = new
                 {
-                    type = "shadowsocks",
-                    tag = "tun-protect-ss",
+                    type = "socks",
+                    tag = "tun-protect-socks",
                     listen = Global.Loopback,
-                    listen_port = context.TunProtectSsPort,
-                    method = "none",
-                    password = "none",
+                    listen_port = context.TunProtectSocksPort,
                 };
                 var directRule = new Rule4Sbox()
                 {
