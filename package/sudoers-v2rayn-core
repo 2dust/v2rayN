@@ -1,5 +1,5 @@
 %v2rayn             ALL = (v2rayn-core) NOPASSWD: /opt/v2rayN/bin/sing_box/sing-box
-%v2rayn             ALL = (v2rayn-core) NOPASSWD: /opt/v2rayn-core/hev-socks5-tunnel /opt/v2rayn-core/v2rayn-tun.yaml
+%v2rayn             ALL = (v2rayn-core) NOPASSWD: /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip rule add pref 5000 not uidrange 785-785 lookup 6418
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip route add table 6418 default via 198.18.0.1 dev v2rayn-tun
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip route delete table 6418 default via 198.18.0.1 dev v2rayn-tun
