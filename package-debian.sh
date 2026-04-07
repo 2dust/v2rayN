@@ -596,7 +596,7 @@ chown -R v2rayn-core:v2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel
 chmod 544 /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 chmod 444 /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
-chmod +x /opt/v2rayN/bin/sing_box/hev-socks5-tunnel
+chmod +x /opt/v2rayN/bin/sing_box/sing-box
 exit 0
 EOF
 
