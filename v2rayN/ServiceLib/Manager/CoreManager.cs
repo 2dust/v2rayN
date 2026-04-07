@@ -299,7 +299,6 @@ public class CoreManager
         try
         {
             if (mayNeedSudo
-                && _config.TunModeItem.EnableTun
                 && (coreInfo.CoreType is ECoreType.sing_box or ECoreType.mihomo)
                 && Utils.IsNonWindows())
             {
