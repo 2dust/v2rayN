@@ -240,7 +240,7 @@ public class CoreManager
         {
             var procService = new ProcessService(
                 fileName: "/usr/bin/sudo",
-                arguments: "/sbin/ip rule delete pref 5000",
+                arguments: "/sbin/ip rule delete pref 5000 not uidrange 785-785 lookup 6418",
                 workingDirectory: Utils.GetBinConfigPath(),
                 displayLog: true,
                 redirectInput: false,
@@ -250,7 +250,7 @@ public class CoreManager
             await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
             var procService2 = new ProcessService(
                 fileName: "/usr/bin/sudo",
-                arguments: "/sbin/ip route flush table 6418",
+                arguments: "/sbin/ip route delete table 6418 default via 198.18.0.1 dev v2rayn-tun",
                 workingDirectory: Utils.GetBinConfigPath(),
                 displayLog: true,
                 redirectInput: false,
