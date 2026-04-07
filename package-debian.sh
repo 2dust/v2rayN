@@ -592,10 +592,10 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
-setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 chown -R v2rayn-core:v2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel
-chmod 444 /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 chmod 544 /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
+setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
+chmod 444 /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 chmod +x /opt/v2rayN/bin/sing_box/hev-socks5-tunnel
 exit 0
 EOF
