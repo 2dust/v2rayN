@@ -260,6 +260,24 @@ public class CoreManager
             await procService2.StartAsync(AppManager.Instance.LinuxSudoPwd);
         }
     }
+
+    private async Task StartTUNProcess()
+    {
+        if (Utils.IsLinux())
+        {
+            var procService = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "-uv2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: _updateFunc
+            );
+            await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
+        }
+    }
+
     private async Task UpdateFunc(bool notify, string msg)
     {
         await _updateFunc?.Invoke(notify, msg);
