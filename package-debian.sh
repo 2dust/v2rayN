@@ -452,7 +452,7 @@ build_for_arch() {
       download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
     fi
     download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
-    download_hev_socks5_tunnel "$STAGE/opt/v2rayn-core" "$RID_DIR" || echo "[!] hev-socks5-tunnel download failed (skipped)"
+    download_hev_socks5_tunnel "$outroot/bin/hev_socks5_tunnel" "$RID_DIR" || echo "[!] hev-socks5-tunnel download failed (skipped)"
   }
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
@@ -467,7 +467,7 @@ build_for_arch() {
     fetch_separate_cores_and_rules "$STAGE/opt/v2rayN"
   fi
   install -m 440 $PROJECT_DIR/package/sudoers-v2rayn-core $STAGE/etc/sudoers.d/v2rayn-core
-  install -m 444 $PROJECT_DIR/package/v2rayn-tun.yaml $STAGE/opt/v2rayn-core/v2rayn-tun.yaml
+  install -m 444 $PROJECT_DIR/package/v2rayn-tun.yaml $STAGE/opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 
   # Wrapper
   install -m 755 /dev/stdin "$STAGE/usr/bin/v2rayn" <<'EOF'
