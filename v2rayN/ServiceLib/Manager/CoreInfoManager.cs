@@ -35,7 +35,7 @@ public sealed class CoreInfoManager
         msg = string.Empty;
         foreach (var name in coreInfo?.CoreExes)
         {
-            var vName = Utils.GetBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
+            var vName = Utils.GetOptBinPath(Utils.GetExeName(name), coreInfo.CoreType.ToString());
             if (File.Exists(vName))
             {
                 fileName = vName;

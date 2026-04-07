@@ -1093,12 +1093,21 @@ public class Utils
         }
     }
 
-    public static string GetOptCorePath(string filename = "")
+    public static string GetOptBinPath(string filename, string? coreType = null)
     {
-        var tempPath = Path.Combine("/opt/v2rayn-core");
+        var tempPath = Path.Combine("/opt/v2rayN/","bin");
         if (!Directory.Exists(tempPath))
         {
             Directory.CreateDirectory(tempPath);
+        }
+
+        if (coreType != null)
+        {
+            tempPath = Path.Combine(tempPath, coreType.ToLower().ToString());
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
         }
 
         if (filename.IsNullOrEmpty())
