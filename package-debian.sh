@@ -430,6 +430,7 @@ build_for_arch() {
   mkdir -p "$STAGE/usr/bin"
   mkdir -p "$STAGE/usr/share/applications"
   mkdir -p "$STAGE/usr/share/icons/hicolor/256x256/apps"
+  mkdir -p "$STAGE/etc/sudoers.d"
   mkdir -p "$DEBIAN_DIR"
 
   # Stage publish content from source build
@@ -591,7 +592,7 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
-setcap 'CAP_NET_ADMIN+ep' /opt/v2rayn-core/hev-socks5-tunnel
+setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 exit 0
 EOF
 
