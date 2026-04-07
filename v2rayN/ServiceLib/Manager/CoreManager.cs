@@ -179,7 +179,7 @@ public class CoreManager
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, 0);
+        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, 785);
         if (proc is null)
         {
             return;
@@ -197,7 +197,7 @@ public class CoreManager
             if (result.Success)
             {
                 var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, 0);
+                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, 785);
                 if (proc is null)
                 {
                     return;
