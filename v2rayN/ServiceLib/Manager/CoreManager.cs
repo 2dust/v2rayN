@@ -115,7 +115,7 @@ public class CoreManager
         await UpdateFunc(false, configPath);
 
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false, 0);
+        return await RunProcess(coreInfo, fileName, true, true, 785);
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(ServerTestItem testItem)
@@ -137,7 +137,7 @@ public class CoreManager
 
         var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false, 0);
+        return await RunProcess(coreInfo, fileName, true, true, 785);
     }
 
     public async Task CoreStop()
