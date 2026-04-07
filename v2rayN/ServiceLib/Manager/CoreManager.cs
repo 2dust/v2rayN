@@ -216,7 +216,7 @@ public class CoreManager
 
     #region Process
 
-    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
+    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, uint UID)
     {
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
@@ -234,7 +234,7 @@ public class CoreManager
             {
                 _linuxSudo = true;
                 await CoreAdminManager.Instance.Init(_config, _updateFunc);
-                return await CoreAdminManager.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath);
+                return await CoreAdminManager.Instance.RunProcessAsLinuxSudo(fileName, coreInfo, configPath, UID);
             }
 
             return await RunProcessNormal(fileName, coreInfo, configPath, displayLog);
