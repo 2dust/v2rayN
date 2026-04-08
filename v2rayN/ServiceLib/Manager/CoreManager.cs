@@ -88,6 +88,12 @@ public class CoreManager
             await WindowsUtils.RemoveTunDevice();
         }
 
+        if (Utils.IsLinux() && !_config.TunModeItem.EnableTun)
+        {
+            await DeleteTUNRoutes();
+            await KillTUNProcess();
+        }
+
         await CoreStart(mainContext);
         await CoreStartPreService(preContext);
 

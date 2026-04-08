@@ -480,6 +480,10 @@ public class StatusBarViewModel : MyReactiveObject
                 await AppManager.Instance.RebootAsAdmin();
                 return;
             }
+            else if (Utils.IsLinux()) {
+                await CoreManager.StartTUNProcess();
+                await CoreManager.CreateTUNRoutes();
+            }
             else
             {
                 bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
@@ -502,7 +506,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
+            return false;
         }
         else if (Utils.IsMacOS())
         {
