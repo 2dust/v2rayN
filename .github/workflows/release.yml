@@ -37,3 +37,13 @@ jobs:
     uses: ./.github/workflows/build-osx.yml
     with:
       release_tag: ${{ inputs.release_tag }}
+
+  windows-desktop:
+    name: build and release windows desktop
+    if: inputs.release_tag != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-windows-desktop.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      
