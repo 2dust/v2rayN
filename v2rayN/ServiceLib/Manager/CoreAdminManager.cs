@@ -36,14 +36,15 @@ public class CoreAdminManager
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
         sb.AppendLine($"exec sudo -u#{UID.ToString()} -S -- {cmdLine}");
         var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
-
+        Dictionary<string,string> env = new Dictionary<string, string>();
+        env.Add("ENABLE_DEPRECATED_LEGACY_DNS_SERVERS", "true");
         var procService = new ProcessService(
             fileName: shFilePath,
             arguments: "",
             workingDirectory: Utils.GetBinConfigPath(),
             displayLog: true,
             redirectInput: true,
-            environmentVars: null,
+            environmentVars: env,
             updateFunc: _updateFunc
         );
 
