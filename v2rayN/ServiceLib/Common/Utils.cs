@@ -1014,7 +1014,7 @@ public class Utils
 
     public static string GetBinPath(string filename, string? coreType = null)
     {
-        var tempPath = Path.Combine(StartupPath(), "bin");
+        var tempPath = Path.Combine("/opt/v2rayN/", "bin");
         if (!Directory.Exists(tempPath))
         {
             Directory.CreateDirectory(tempPath);
@@ -1041,7 +1041,7 @@ public class Utils
 
     public static string GetLogPath(string filename = "")
     {
-        var tempPath = Path.Combine(StartupPath(), "guiLogs");
+        var tempPath = Path.Combine("/opt/v2rayN/", "guiLogs");
         if (!Directory.Exists(tempPath))
         {
             Directory.CreateDirectory(tempPath);
@@ -1059,7 +1059,7 @@ public class Utils
 
     public static string GetFontsPath(string filename = "")
     {
-        var tempPath = Path.Combine(StartupPath(), "guiFonts");
+        var tempPath = Path.Combine("/opt/v2rayN/", "guiFonts");
         if (!Directory.Exists(tempPath))
         {
             Directory.CreateDirectory(tempPath);
@@ -1077,7 +1077,7 @@ public class Utils
 
     public static string GetBinConfigPath(string filename = "")
     {
-        var tempPath = Path.Combine(StartupPath(), "binConfigs");
+        var tempPath = Path.Combine("/opt/v2rayN/", "binConfigs");
         if (!Directory.Exists(tempPath))
         {
             Directory.CreateDirectory(tempPath);
