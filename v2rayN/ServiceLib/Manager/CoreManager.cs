@@ -278,6 +278,22 @@ public class CoreManager
         }
     }
 
+    public static async Task KillTUNProcess()
+    {
+        if (Utils.IsLinux())
+        {
+            var procService = new ProcessService(
+                fileName: "/usr/bin/sudo",
+                arguments: "-uv2rayn-core /usr/bin/pkill --pidfile /run/user/785/v2rayn-hev-socks5-tunnel.pid",
+                workingDirectory: Utils.GetBinConfigPath(),
+                displayLog: true,
+                redirectInput: false,
+                environmentVars: null,
+                updateFunc: null
+            );
+            await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
+        }
+    }
     private async Task UpdateFunc(bool notify, string msg)
     {
         await _updateFunc?.Invoke(notify, msg);
