@@ -74,5 +74,4 @@ jobs:
       uses: actions/upload-artifact@v7.0.0
       with:
         name: v2rayN-${{ inputs.target }}-${{ inputs.arch }}
-        path: |
-          ${{ github.workspace }}/v2rayN/Release/${{ inputs.target }}-${{ inputs.arch }}
+        path: ${{ github.workspace }}/v2rayN/Release/${{ inputs.target }}-${{ inputs.arch }}
