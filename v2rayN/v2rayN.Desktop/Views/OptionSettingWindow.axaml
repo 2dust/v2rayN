@@ -305,12 +305,12 @@
                                 x:Name="txtUpMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
-                                Watermark="Up" />
+                                PlaceholderText="Up" />
                             <TextBox
                                 x:Name="txtDownMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
-                                Watermark="Down" />
+                                PlaceholderText="Down" />
                         </StackPanel>
 
                         <TextBlock
@@ -338,7 +338,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            Watermark="0.0.0.0" />
+                            PlaceholderText="0.0.0.0" />
                         <TextBlock
                             Grid.Row="21"
                             Grid.Column="2"
@@ -723,7 +723,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="proxy_set.sh" />
+                                PlaceholderText="proxy_set.sh" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyScriptPath"
                                 Margin="{StaticResource Margin4}"
@@ -768,7 +768,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="pac.txt" />
+                                PlaceholderText="pac.txt" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyPacPath"
                                 Margin="{StaticResource Margin4}"

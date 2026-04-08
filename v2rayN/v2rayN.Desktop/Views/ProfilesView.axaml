@@ -63,7 +63,7 @@
                     Width="200"
                     Margin="{StaticResource MarginLr4}"
                     VerticalContentAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+                    PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}" />
 
                 <Button
                     x:Name="btnAutofitColumnWidth"
