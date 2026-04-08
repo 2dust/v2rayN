@@ -4,7 +4,7 @@ name: WinGet submission on release
 # Modified by @MerrickZ https://github.com/anpho
 
 on:
-  workflow_dispatch:
+  workflow_call:
   release:
     types: [released]
 

@@ -1,0 +1,78 @@
+name: build v2rayN
+
+on:
+  workflow_call:
+    inputs:
+      target: # windows linux macos windows-desktop
+        required: true
+        type: string
+      arch: # x64 arm64
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+
+  OutputPath: "${{ github.workspace }}/v2rayN/Release/${{ inputs.target }}-${{ inputs.arch }}"
+  RID: |-
+    ${{
+      case(
+        inputs.target == macos, format('osx-{0}', inputs.arch),
+        startsWith(inputs.target, 'windows'), format('win-{0}', inputs.arch),
+        format('{0}-{1}', inputs.target, inputs.arch)
+      )
+    }}
+  Project: |-
+    ${{
+      case(
+        inputs.target == 'windows', './v2rayN/v2rayN.csproj',
+        './v2rayN.Desktop/v2rayN.Desktop.csproj'
+      )
+    }}
+  ExtOpt: |-
+    ${{
+      case(
+        startsWith(inputs.target, 'windows'), '-p:EnableWindowsTargeting=true',
+        ''
+      )
+    }}
+
+jobs:
+  build:
+    runs-on: |-
+      ${{
+        case(
+          inputs.target == macos, 'macos-latest',
+          inputs.target == linux, 'ubuntu-24.04',
+          'ubuntu-latest'
+        )
+      }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6.0.2
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5.2.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build v2rayN
+      working-directory: ./v2rayN
+      run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $OutputPath
+
+    - name: Build AmazTool
+      working-directory: ./v2rayN
+      run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $OutputPath
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v7.0.0
+      with:
+        name: v2rayN-${{ inputs.target }}-${{ inputs.arch }}
+        path: |
+          ${{ github.workspace }}/v2rayN/Release/${{ inputs.target }}-${{ inputs.arch }}

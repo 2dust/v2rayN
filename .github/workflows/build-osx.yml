@@ -1,7 +1,7 @@
 name: release macOS
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       release_tag:
         required: false
@@ -13,63 +13,39 @@ on:
 env:
   OutputArch: "macos-64"
   OutputArchArm: "macos-arm64"
-  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/macos-64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/macos-x64"
   OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/macos-arm64"
 
 jobs:
   build:
     strategy:
       matrix:
-        configuration: [Release]
+        arch: [ x64, arm64 ]
+    uses: ./.github/workflows/build.yml
+    with: 
+      target: macos
+      arch: ${{ matrix.arch }}
 
+  release-zip:
     runs-on: macos-latest
-
+    needs: build
+    if: inputs.release_tag != ''
     steps:
     - name: Checkout
       uses: actions/checkout@v6.0.2
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
 
-    - name: Setup
-      uses: actions/setup-dotnet@v5.2.0
+    - name: Restore build artifacts x64
+      uses: actions/download-artifact@v8
       with:
-        dotnet-version: '8.0.x'
+        name: v2rayN-macos-x64
+        path: ${{ github.workspace }}/v2rayN/Release
 
-    - name: Build
-      run: |
-        cd v2rayN 
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-x64   -p:SelfContained=true -o $OutputPath64
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-arm64 -p:SelfContained=true -o $OutputPathArm64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-x64   -p:SelfContained=true -p:PublishTrimmed=true -o $OutputPath64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-arm64 -p:SelfContained=true -p:PublishTrimmed=true -o $OutputPathArm64
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7.0.0
+    - name: Restore build artifacts arm64
+      uses: actions/download-artifact@v8
       with:
-        name: v2rayN-macos
-        path: |
-          ${{ github.workspace }}/v2rayN/Release/macos*
-    
-    # release osx package
-    - name: Package osx
-      if: github.event.inputs.release_tag != ''
-      run: |
-        brew install create-dmg
-        chmod 755 package-osx.sh
-        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
-        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
-    
-    - name: Upload dmg to release
-      uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
-      with:
-        file: ${{ github.workspace }}/v2rayN*.dmg
-        tag: ${{ github.event.inputs.release_tag }}
-        file_glob: true
-        prerelease: true
+        name: v2rayN-macos-arm64
+        path: ${{ github.workspace }}/v2rayN/Release
 
-    # release zip archive
     - name: Package release zip archive
       if: github.event.inputs.release_tag != ''
       run: |
@@ -82,6 +58,41 @@ jobs:
       if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ github.event.inputs.release_tag }}
+        file_glob: true
+        prerelease: true
+
+  release-dmg:
+    runs-on: macos-latest
+    needs: build
+    if: inputs.release_tag != ''
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6.0.2
+
+    - name: Restore build artifacts x64
+      uses: actions/download-artifact@v8
+      with:
+        name: v2rayN-osx-x64
+        path: ${{ github.workspace }}/v2rayN/Release
+
+    - name: Restore build artifacts arm64
+      uses: actions/download-artifact@v8
+      with:
+        name: v2rayN-osx-arm64
+        path: ${{ github.workspace }}/v2rayN/Release
+
+    - name: Package osx
+      run: |
+        brew install create-dmg
+        chmod 755 package-osx.sh
+        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
+        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+    
+    - name: Upload dmg to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ${{ github.workspace }}/v2rayN*.dmg
         tag: ${{ github.event.inputs.release_tag }}
         file_glob: true
         prerelease: true

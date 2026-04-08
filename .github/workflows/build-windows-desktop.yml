@@ -13,47 +13,40 @@ on:
 env:
   OutputArch: "windows-64"
   OutputArchArm: "windows-arm64"
-  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/windows-64"
-  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/windows-arm64"
+  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/windows-desktop-64"
+  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/windows-desktop-arm64"
 
 jobs:
   build:
     strategy:
       matrix:
-        configuration: [Release]
+        arch: [ x64, arm64 ]
+    uses: ./.github/workflows/build.yml
+    with: 
+      target: windows-desktop
+      arch: ${{ matrix.arch }}
 
+  release-zip:
     runs-on: ubuntu-latest
-
+    needs: build
+    if: inputs.release_tag != ''
     steps:
     - name: Checkout
       uses: actions/checkout@v6.0.2
+
+    - name: Restore build artifacts x64
+      uses: actions/download-artifact@v8
       with:
-        submodules: 'recursive'
-        fetch-depth: '0'
+        name: v2rayN-windows-dekstop-x64
+        path: ${{ github.workspace }}/v2rayN/Release
 
-    - name: Setup
-      uses: actions/setup-dotnet@v5.2.0
+    - name: Restore build artifacts arm64
+      uses: actions/download-artifact@v8
       with:
-        dotnet-version: '8.0.x'
+        name: v2rayN-windows-dekstop-arm64
+        path: ${{ github.workspace }}/v2rayN/Release
 
-    - name: Build
-      run: |
-        cd v2rayN 
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -o $OutputPath64
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r win-arm64 -p:SelfContained=true -p:EnableWindowsTargeting=true -o $OutputPathArm64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r win-x64   -p:SelfContained=true -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPath64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r win-arm64 -p:SelfContained=true -p:EnableWindowsTargeting=true -p:PublishTrimmed=true -o $OutputPathArm64
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7.0.0
-      with:
-        name: v2rayN-windows-desktop
-        path: |
-          ${{ github.workspace }}/v2rayN/Release/windows*
-
-    # release zip archive
     - name: Package release zip archive
-      if: github.event.inputs.release_tag != ''
       run: |
         chmod 755 package-release-zip.sh
         ./package-release-zip.sh $OutputArch $OutputPath64
@@ -63,7 +56,6 @@ jobs:
 
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.zip
         tag: ${{ github.event.inputs.release_tag }}

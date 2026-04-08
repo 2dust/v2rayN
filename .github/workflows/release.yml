@@ -1,0 +1,39 @@
+name: release all platforms
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: build and release windows
+    if: inputs.release_tag != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-windows.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+
+  linux:
+    name: build and release linux
+    if: inputs.release_tag != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-linux.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+
+  osx:
+    name: build and release osx
+    if: inputs.release_tag != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build-osx.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
