@@ -19,7 +19,7 @@ env:
   RID: |-
     ${{
       case(
-        inputs.target == macos, format('osx-{0}', inputs.arch),
+        inputs.target == 'macos', format('osx-{0}', inputs.arch),
         startsWith(inputs.target, 'windows'), format('win-{0}', inputs.arch),
         format('{0}-{1}', inputs.target, inputs.arch)
       )
@@ -44,8 +44,8 @@ jobs:
     runs-on: |-
       ${{
         case(
-          inputs.target == macos, 'macos-latest',
-          inputs.target == linux, 'ubuntu-24.04',
+          inputs.target == 'macos', 'macos-latest',
+          inputs.target == 'linux', 'ubuntu-24.04',
           'ubuntu-latest'
         )
       }}
