@@ -207,7 +207,7 @@ public class CoreManager
         }
     }
 
-    private async Task CreateTUNRoutes()
+    public static async Task CreateTUNRoutes()
     {
         if (Utils.IsLinux())
         {
@@ -218,7 +218,7 @@ public class CoreManager
                 displayLog: true,
                 redirectInput: false,
                 environmentVars: null,
-                updateFunc: _updateFunc
+                updateFunc: null
             );
             await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
             var procService2 = new ProcessService(
@@ -228,13 +228,13 @@ public class CoreManager
                 displayLog: true,
                 redirectInput: false,
                 environmentVars: null,
-                updateFunc: _updateFunc
+                updateFunc: null
             );
             await procService2.StartAsync(AppManager.Instance.LinuxSudoPwd);
         }
     }
 
-    private async Task DeleteTUNRoutes()
+    public static async Task DeleteTUNRoutes()
     {
         if (Utils.IsLinux())
         {
@@ -245,7 +245,7 @@ public class CoreManager
                 displayLog: true,
                 redirectInput: false,
                 environmentVars: null,
-                updateFunc: _updateFunc
+                updateFunc: null
             );
             await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
             var procService2 = new ProcessService(
@@ -255,13 +255,13 @@ public class CoreManager
                 displayLog: true,
                 redirectInput: false,
                 environmentVars: null,
-                updateFunc: _updateFunc
+                updateFunc: null
             );
             await procService2.StartAsync(AppManager.Instance.LinuxSudoPwd);
         }
     }
 
-    private async Task StartTUNProcess()
+    public static async Task StartTUNProcess()
     {
         if (Utils.IsLinux())
         {
@@ -272,7 +272,7 @@ public class CoreManager
                 displayLog: true,
                 redirectInput: false,
                 environmentVars: null,
-                updateFunc: _updateFunc
+                updateFunc: null
             );
             await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
         }
