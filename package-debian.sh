@@ -597,6 +597,7 @@ chmod 544 /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 chmod 444 /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 chmod +x /opt/v2rayN/bin/sing_box/sing-box
+loginctl enable-linger v2rayn-core
 exit 0
 EOF
 
