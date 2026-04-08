@@ -9,3 +9,6 @@ socks5:
   port: 10808
   address: 127.0.0.1
   udp: 'udp'
+
+misc:
+  pid-file: /run/user/785/v2rayn-hev-socks5-tunnel.pid
