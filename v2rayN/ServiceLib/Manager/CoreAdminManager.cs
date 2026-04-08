@@ -34,7 +34,7 @@ public class CoreAdminManager
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        sb.AppendLine($"exec sudo -u#{UID.ToString()} -S -- {cmdLine}");
+        sb.AppendLine($"exec sudo -u#{UID.ToString()} -- {cmdLine}");
         var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
         Dictionary<string,string> env = new Dictionary<string, string>();
         env.Add("ENABLE_DEPRECATED_LEGACY_DNS_SERVERS", "true");
@@ -43,7 +43,7 @@ public class CoreAdminManager
             arguments: "",
             workingDirectory: Utils.GetBinConfigPath(),
             displayLog: true,
-            redirectInput: true,
+            redirectInput: false,
             environmentVars: env,
             updateFunc: _updateFunc
         );
