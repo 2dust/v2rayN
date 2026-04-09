@@ -68,19 +68,19 @@ public class CoreAdminManager
 
         try
         {
-            var shellFileName = Utils.IsMacOS() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
-            var shFilePath = await FileUtils.CreateLinuxShellFile("kill_as_sudo.sh", EmbedUtils.GetEmbedText(shellFileName), true);
-            if (shFilePath.Contains(' '))
+            if (Utils.IsLinux())
             {
-                shFilePath = shFilePath.AppendQuotes();
+                var procService = new ProcessService(
+                    fileName: "/usr/bin/sudo",
+                    arguments: "-u#785 /usr/bin/pkill --uid 785 --exact sing-box",
+                    workingDirectory: Utils.GetBinConfigPath(),
+                    displayLog: true,
+                    redirectInput: false,
+                    environmentVars: null,
+                    updateFunc: null
+                );
+                await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
             }
-            var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
-            var result = await Cli.Wrap(Global.LinuxBash)
-                .WithArguments(arg)
-                .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
-                .ExecuteBufferedAsync();
-
-            await UpdateFunc(false, result.StandardOutput.ToString());
         }
         catch (Exception ex)
         {

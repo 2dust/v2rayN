@@ -150,11 +150,8 @@ public class CoreManager
     {
         try
         {
-            if (_linuxSudo)
-            {
-                await CoreAdminManager.Instance.KillProcessAsLinuxSudo();
-                _linuxSudo = false;
-            }
+            await CoreAdminManager.Instance.KillProcessAsLinuxSudo();
+            _linuxSudo = false;
 
             if (_processService != null)
             {
