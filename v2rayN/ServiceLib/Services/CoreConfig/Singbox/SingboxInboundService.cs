@@ -50,7 +50,7 @@ public partial class CoreConfigSingboxService
                 }
             }
 
-            if (context.IsTunEnabled)
+            if (context.IsTunEnabled && !Utils.IsLinux())
             {
                 if (_config.TunModeItem.Mtu <= 0)
                 {

@@ -10,7 +10,7 @@ public partial class CoreConfigSingboxService
             return JsonUtils.Serialize(_coreConfig);
         }
 
-        var fullConfigTemplateItem = context.IsTunEnabled ? fullConfigTemplate.TunConfig : fullConfigTemplate.Config;
+        var fullConfigTemplateItem = (context.IsTunEnabled && !Utils.IsLinux()) ? fullConfigTemplate.TunConfig : fullConfigTemplate.Config;
         if (fullConfigTemplateItem.IsNullOrEmpty())
         {
             return JsonUtils.Serialize(_coreConfig);

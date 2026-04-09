@@ -414,7 +414,7 @@ public partial class CoreConfigSingboxService
         {
             var item = context.RawDnsItem;
             var strDNS = string.Empty;
-            if (context.IsTunEnabled)
+            if (context.IsTunEnabled && !Utils.IsLinux())
             {
                 strDNS = string.IsNullOrEmpty(item?.TunDNS) ? EmbedUtils.GetEmbedText(Global.TunSingboxDNSFileName) : item?.TunDNS;
             }
