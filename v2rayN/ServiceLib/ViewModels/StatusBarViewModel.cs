@@ -480,7 +480,8 @@ public class StatusBarViewModel : MyReactiveObject
                 await AppManager.Instance.RebootAsAdmin();
                 return;
             }
-            else if (Utils.IsLinux()) {
+            else if (Utils.IsLinux()) 
+            {
                 await CoreManager.StartTUNProcess();
                 await CoreManager.CreateTUNRoutes();
             }
