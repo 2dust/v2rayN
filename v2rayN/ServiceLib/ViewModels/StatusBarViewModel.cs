@@ -495,7 +495,11 @@ public class StatusBarViewModel : MyReactiveObject
             }
         }
         await ConfigHandler.SaveConfig(_config);
+        // On Linux TUN is managed by an external program, not by the core
+        if (!Utils.IsLinux()) 
+        {
         AppEvents.ReloadRequested.Publish();
+        }
     }
 
     private bool AllowEnableTun()
