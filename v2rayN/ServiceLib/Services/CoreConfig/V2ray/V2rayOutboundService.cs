@@ -12,6 +12,10 @@ public partial class CoreConfigV2rayService
             GenObservatory(multipleLoad);
             GenBalancer(multipleLoad);
         }
+        if (context.IsTunEnabled)
+        {
+            _coreConfig.outbounds.Add(BuildDnsOutbound());
+        }
     }
 
     private List<Outbounds4Ray> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag)
@@ -824,5 +828,11 @@ public partial class CoreConfigV2rayService
                 outbound.streamSettings.xhttpSettings.extra = xhttpExtraObject;
             }
         }
+    }
+
+    private static Outbounds4Ray BuildDnsOutbound()
+    {
+        var outbound = new Outbounds4Ray { tag = Global.DnsOutboundTag, protocol = "dns", };
+        return outbound;
     }
 }

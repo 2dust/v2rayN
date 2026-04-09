@@ -1417,10 +1417,12 @@ public static class ConfigHandler
     public static ProfileItem? GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
     {
         ProfileItem? itemSocks = null;
+        var enableLegacyProtect = config.TunModeItem.EnableLegacyProtect
+                                  || Utils.IsNonWindows();
         if (node.ConfigType != EConfigType.Custom
             && coreType != ECoreType.sing_box
             && config.TunModeItem.EnableTun
-            && config.TunModeItem.EnableLegacyProtect)
+            && enableLegacyProtect)
         {
             itemSocks = new ProfileItem()
             {

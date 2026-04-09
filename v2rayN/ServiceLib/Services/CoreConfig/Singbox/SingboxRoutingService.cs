@@ -24,7 +24,7 @@ public partial class CoreConfigSingboxService
                 strategy = directDnsStrategy
             };
 
-            if (_config.TunModeItem.EnableTun)
+            if (context.IsTunEnabled)
             {
                 _coreConfig.route.auto_detect_interface = true;
 

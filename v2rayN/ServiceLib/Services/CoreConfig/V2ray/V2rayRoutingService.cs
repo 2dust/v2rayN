@@ -6,6 +6,31 @@ public partial class CoreConfigV2rayService
     {
         try
         {
+            if (context.IsTunEnabled)
+            {
+                var tunRules = JsonUtils.Deserialize<List<RulesItem4Ray>>(EmbedUtils.GetEmbedText(Global.V2raySampleTunRules));
+                if (tunRules != null)
+                {
+                    _coreConfig.routing.rules.AddRange(tunRules);
+                }
+                var (lstDnsExe, lstDirectExe) = BuildRoutingDirectExe();
+                _coreConfig.routing.rules.Add(new()
+                {
+                    port = "53",
+                    process = lstDnsExe,
+                    outboundTag = Global.DnsOutboundTag,
+                });
+                _coreConfig.routing.rules.Add(new()
+                {
+                    process = lstDirectExe,
+                    outboundTag = Global.DirectTag,
+                });
+                _coreConfig.routing.rules.Add(new()
+                {
+                    port = "53",
+                    outboundTag = Global.DnsOutboundTag,
+                });
+            }
             if (_coreConfig.routing?.rules != null)
             {
                 _coreConfig.routing.domainStrategy = _config.RoutingBasicItem.DomainStrategy;
@@ -204,5 +229,38 @@ public partial class CoreConfigV2rayService
             finalRule.ip = ["0.0.0.0/0", "::/0"];
         }
         return finalRule;
+    }
+
+    private static (List<string> lstDnsExe, List<string> lstDirectExe) BuildRoutingDirectExe()
+    {
+        var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        var coreInfoResult = CoreInfoManager.Instance.GetCoreInfo();
+
+        foreach (var coreConfig in coreInfoResult)
+        {
+            if (coreConfig.CoreType == ECoreType.v2rayN)
+            {
+                continue;
+            }
+
+            foreach (var baseExeName in coreConfig.CoreExes)
+            {
+                if (coreConfig.CoreType != ECoreType.Xray)
+                {
+                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
+                }
+                directExeSet.Add(Utils.GetExeName(baseExeName));
+            }
+        }
+
+        directExeSet.Add("xray/");
+        directExeSet.Add("self/");
+
+        var lstDnsExe = new List<string>(dnsExeSet);
+        var lstDirectExe = new List<string>(directExeSet);
+
+        return (lstDnsExe, lstDirectExe);
     }
 }

@@ -7,36 +7,61 @@ public partial class CoreConfigV2rayService
         try
         {
             var listen = "0.0.0.0";
+            var listenPort = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
             _coreConfig.inbounds = [];
-
             var inbound = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
-            _coreConfig.inbounds.Add(inbound);
 
-            if (_config.Inbound.First().SecondLocalPortEnabled)
+            if (!context.IsTunEnabled
+                || (context.IsTunEnabled && _node.Address != Global.Loopback && _node.Port != listenPort))
             {
-                var inbound2 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
-                _coreConfig.inbounds.Add(inbound2);
-            }
+                _coreConfig.inbounds.Add(inbound);
 
-            if (_config.Inbound.First().AllowLANConn)
-            {
-                if (_config.Inbound.First().NewPort4LAN)
+                if (_config.Inbound.First().SecondLocalPortEnabled)
                 {
-                    var inbound3 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
-                    inbound3.listen = listen;
-                    _coreConfig.inbounds.Add(inbound3);
+                    var inbound2 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks2, true);
+                    _coreConfig.inbounds.Add(inbound2);
+                }
 
-                    //auth
-                    if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
+                if (_config.Inbound.First().AllowLANConn)
+                {
+                    if (_config.Inbound.First().NewPort4LAN)
                     {
-                        inbound3.settings.auth = "password";
-                        inbound3.settings.accounts = new List<AccountsItem4Ray> { new() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass } };
+                        var inbound3 = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks3, true);
+                        inbound3.listen = listen;
+                        _coreConfig.inbounds.Add(inbound3);
+
+                        //auth
+                        if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
+                        {
+                            inbound3.settings.auth = "password";
+                            inbound3.settings.accounts = new List<AccountsItem4Ray>
+                            {
+                                new() { user = _config.Inbound.First().User, pass = _config.Inbound.First().Pass }
+                            };
+                        }
+                    }
+                    else
+                    {
+                        inbound.listen = listen;
                     }
                 }
-                else
+            }
+
+            if (context.IsTunEnabled)
+            {
+                if (_config.TunModeItem.Mtu <= 0)
                 {
-                    inbound.listen = listen;
+                    _config.TunModeItem.Mtu = Global.TunMtus.First();
                 }
+                var tunInbound = JsonUtils.Deserialize<Inbounds4Ray>(EmbedUtils.GetEmbedText(Global.V2raySampleTunInbound)) ?? new Inbounds4Ray { };
+                tunInbound.settings.name = Utils.IsMacOS() ? $"utun{new Random().Next(99)}" : "xray_tun";
+                tunInbound.settings.MTU = [_config.TunModeItem.Mtu];
+                if (_config.TunModeItem.EnableIPv6Address == false)
+                {
+                    tunInbound.settings.gateway = ["172.18.0.1/30"];
+                }
+                tunInbound.sniffing = inbound.sniffing;
+                _coreConfig.inbounds.Add(tunInbound);
             }
         }
         catch (Exception ex)

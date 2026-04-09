@@ -23,19 +23,6 @@ public record CoreConfigContextBuilderAllResult(
     public NodeValidatorResult CombinedValidatorResult => new(
         [.. MainResult.ValidatorResult.Errors, .. PreSocksResult?.ValidatorResult.Errors ?? []],
         [.. MainResult.ValidatorResult.Warnings, .. PreSocksResult?.ValidatorResult.Warnings ?? []]);
-
-    /// <summary>
-    /// The main context with TunProtectSocksPort/ProxyRelaySocksPort and ProtectDomainList merged in
-    /// from the pre-socks result (if any). Pass this to the core runner.
-    /// </summary>
-    public CoreConfigContext ResolvedMainContext => PreSocksResult is not null
-        ? MainResult.Context with
-        {
-            TunProtectSocksPort = PreSocksResult.Context.TunProtectSocksPort,
-            ProxyRelaySocksPort = PreSocksResult.Context.ProxyRelaySocksPort,
-            ProtectDomainList = [.. MainResult.Context.ProtectDomainList ?? [], .. PreSocksResult.Context.ProtectDomainList ?? []],
-        }
-        : MainResult.Context;
 }
 
 public class CoreConfigContextBuilder
@@ -58,8 +45,6 @@ public class CoreConfigContextBuilder
             IsTunEnabled = config.TunModeItem.EnableTun,
             SimpleDnsItem = config.SimpleDNSItem,
             ProtectDomainList = [],
-            TunProtectSocksPort = 0,
-            ProxyRelaySocksPort = 0,
             RawDnsItem = await AppManager.Instance.GetDNSItem(coreType),
             RoutingItem = await ConfigHandler.GetDefaultRouting(config),
         };
@@ -122,7 +107,20 @@ public class CoreConfigContextBuilder
         }
 
         var preResult = await BuildPreSocksIfNeeded(mainResult.Context);
-        return new CoreConfigContextBuilderAllResult(mainResult, preResult);
+        if (preResult is null)
+        {
+            return new CoreConfigContextBuilderAllResult(mainResult, null);
+        }
+
+        var resolvedMainResult = mainResult with
+        {
+            Context = mainResult.Context with
+            {
+                IsTunEnabled = false, // main core doesn't handle tun directly when pre-socks is used
+                ProtectDomainList = [.. mainResult.Context.ProtectDomainList, .. preResult.Context.ProtectDomainList],
+            }
+        };
+        return new CoreConfigContextBuilderAllResult(resolvedMainResult, preResult);
     }
 
     /// <summary>
@@ -148,32 +146,7 @@ public class CoreConfigContextBuilder
             };
         }
 
-        if (!nodeContext.IsTunEnabled
-            || coreType != ECoreType.Xray
-            || node.ConfigType == EConfigType.Custom)
-        {
-            return null;
-        }
-
-        var tunProtectSocksPort = Utils.GetFreePort();
-        var proxyRelaySocksPort = Utils.GetFreePort();
-        var preItem = new ProfileItem()
-        {
-            CoreType = ECoreType.sing_box,
-            ConfigType = EConfigType.SOCKS,
-            Address = Global.Loopback,
-            Port = proxyRelaySocksPort,
-        };
-        var preResult2 = await Build(nodeContext.AppConfig, preItem);
-        return preResult2 with
-        {
-            Context = preResult2.Context with
-            {
-                ProtectDomainList = [.. nodeContext.ProtectDomainList ?? [], .. preResult2.Context.ProtectDomainList ?? []],
-                TunProtectSocksPort = tunProtectSocksPort,
-                ProxyRelaySocksPort = proxyRelaySocksPort,
-            }
-        };
+        return null;
     }
 
     /// <summary>

@@ -559,7 +559,7 @@ public class MainWindowViewModel : MyReactiveObject
 
             await Task.Run(async () =>
             {
-                await LoadCore(allResult.ResolvedMainContext, allResult.PreSocksResult?.Context);
+                await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
                 await SysProxyHandler.UpdateSysProxy(_config, false);
                 await Task.Delay(1000);
             });

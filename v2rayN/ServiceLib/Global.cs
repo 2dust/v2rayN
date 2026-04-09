@@ -24,6 +24,8 @@ public class Global
     public const string V2raySampleHttpResponseFileName = NamespaceSample + "SampleHttpResponse";
     public const string V2raySampleInbound = NamespaceSample + "SampleInbound";
     public const string V2raySampleOutbound = NamespaceSample + "SampleOutbound";
+    public const string V2raySampleTunInbound = NamespaceSample + "SampleTunInbound";
+    public const string V2raySampleTunRules = NamespaceSample + "SampleTunRules";
     public const string SingboxSampleOutbound = NamespaceSample + "SingboxSampleOutbound";
     public const string CustomRoutingFileName = NamespaceSample + "custom_routing_";
     public const string TunSingboxDNSFileName = NamespaceSample + "tun_singbox_dns";
@@ -48,6 +50,7 @@ public class Global
     public const string ProxyTag = "proxy";
     public const string DirectTag = "direct";
     public const string BlockTag = "block";
+    public const string DnsOutboundTag = "dns";
     public const string DnsTag = "dns-module";
     public const string DirectDnsTag = "direct-dns";
     public const string BalancerTagSuffix = "-round";

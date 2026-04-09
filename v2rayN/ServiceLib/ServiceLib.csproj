@@ -38,6 +38,8 @@
 		<EmbeddedResource Include="Sample\SampleHttpResponse" />
 		<EmbeddedResource Include="Sample\SampleInbound" />
 		<EmbeddedResource Include="Sample\SampleOutbound" />
+		<EmbeddedResource Include="Sample\SampleTunInbound" />
+		<EmbeddedResource Include="Sample\SampleTunRules" />
 		<EmbeddedResource Include="Sample\SingboxSampleClientConfig" />
 		<EmbeddedResource Include="Sample\SingboxSampleOutbound" />
 		<EmbeddedResource Include="Sample\tun_singbox_dns" />

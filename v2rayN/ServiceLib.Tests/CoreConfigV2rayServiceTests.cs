@@ -75,9 +75,7 @@ public class CoreConfigV2rayServiceTests
         var service = new CoreConfigV2rayService(CreateContext(
             node,
             config,
-            isTunEnabled: true,
-            tunProtectSsPort: 10811,
-            proxyRelaySsPort: 10812));
+            isTunEnabled: true));
 
         var result = service.GenerateClientConfigContent();
 
@@ -91,9 +89,7 @@ public class CoreConfigV2rayServiceTests
         ProfileItem node,
         Config? config = null,
         Dictionary<string, ProfileItem>? allProxiesMap = null,
-        bool isTunEnabled = false,
-        int tunProtectSsPort = 0,
-        int proxyRelaySsPort = 0)
+        bool isTunEnabled = false)
     {
         return new CoreConfigContext
         {
@@ -103,8 +99,6 @@ public class CoreConfigV2rayServiceTests
             AllProxiesMap = allProxiesMap ?? new(),
             SimpleDnsItem = new SimpleDNSItem(),
             IsTunEnabled = isTunEnabled,
-            TunProtectSocksPort = tunProtectSsPort,
-            ProxyRelaySocksPort = proxyRelaySsPort,
         };
     }
 

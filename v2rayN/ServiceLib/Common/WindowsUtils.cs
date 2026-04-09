@@ -53,19 +53,23 @@ internal static class WindowsUtils
 
     public static async Task RemoveTunDevice()
     {
-        try
+        var tunNameList = new List<string> { "singbox_tun", "xray_tun" };
+        foreach (var tunName in tunNameList)
         {
-            var sum = MD5.HashData(Encoding.UTF8.GetBytes("wintunsingbox_tun"));
-            var guid = new Guid(sum);
-            var pnpUtilPath = @"C:\Windows\System32\pnputil.exe";
-            var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
+            try
+            {
+                var sum = MD5.HashData(Encoding.UTF8.GetBytes($"wintun{tunName}"));
+                var guid = new Guid(sum);
+                var pnpUtilPath = @"C:\Windows\System32\pnputil.exe";
+                var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
 
-            // Try to remove the device
-            _ = await Utils.GetCliWrapOutput(pnpUtilPath, arg);
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
+                // Try to remove the device
+                _ = await Utils.GetCliWrapOutput(pnpUtilPath, arg);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
         }
     }
 }
