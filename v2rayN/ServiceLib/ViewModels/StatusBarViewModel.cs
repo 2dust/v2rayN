@@ -494,6 +494,15 @@ public class StatusBarViewModel : MyReactiveObject
                 }
             }
         }
+        
+        if (EnableTun == false)
+        {
+            if (Utils.IsLinux())
+            {
+                await CoreManager.DeleteTUNRoutes();
+                await CoreManager.KillTUNProcess();            
+            }
+        }
         await ConfigHandler.SaveConfig(_config);
         // On Linux TUN is managed by an external program, not by the core
         if (!Utils.IsLinux()) 
