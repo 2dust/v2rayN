@@ -592,6 +592,7 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
+loginctl enable-linger v2rayn-core
 chown -R v2rayn-core:v2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel
 chmod 544 /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
@@ -610,6 +611,7 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
+loginctl disable-linger v2rayn-core
 userdel v2rayn-core
 groupdel v2rayn
 exit 0
