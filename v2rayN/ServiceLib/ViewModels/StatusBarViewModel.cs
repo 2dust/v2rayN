@@ -508,7 +508,7 @@ public class StatusBarViewModel : MyReactiveObject
         // On Linux TUN is managed by an external program, not by the core
         if (!Utils.IsLinux()) 
         {
-        AppEvents.ReloadRequested.Publish();
+            AppEvents.ReloadRequested.Publish();
         }
     }
 
