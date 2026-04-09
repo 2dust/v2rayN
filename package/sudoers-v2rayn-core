@@ -1,7 +1,8 @@
 Defaults!/opt/v2rayN/bin/sing_box/sing-box env_keep += "ENABLE_DEPRECATED_LEGACY_DNS_SERVERS"
 %v2rayn             ALL = (v2rayn-core) NOPASSWD: /opt/v2rayN/bin/sing_box/sing-box
 %v2rayn             ALL = (v2rayn-core) NOPASSWD: /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
-%v2rayn             ALL = (v2rayn-core) NOPASSWD: /usr/bin/pkill --pidfile /run/user/785/v2rayn-hev-socks5-tunnel.pid
+%v2rayn             ALL = (v2rayn-core) NOPASSWD: /usr/bin/pkill --uid 785 --pidfile /run/user/785/v2rayn-hev-socks5-tunnel.pid
+%v2rayn             ALL = (v2rayn-core) NOPASSWD: /usr/bin/pkill --uid 785 --exact sing-box
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip rule add pref 5000 not uidrange 785-785 lookup 6418
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip route add table 6418 default via 198.18.0.1 dev v2rayn-tun
 %v2rayn             ALL = (root) NOPASSWD: /sbin/ip route delete table 6418 default via 198.18.0.1 dev v2rayn-tun
