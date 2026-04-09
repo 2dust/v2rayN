@@ -28,6 +28,8 @@
 
         <UseSystemResourceKeys>true</UseSystemResourceKeys>
         <PublishSingleFile>true</PublishSingleFile>
+        <!-- 单文件自包含发布时压缩嵌入的托管程序集，减小产物体积（首次启动略增解压时间） -->
+        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
         <PublishReadyToRun>false</PublishReadyToRun>
     </PropertyGroup>
 </Project>
