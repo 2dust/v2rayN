@@ -576,11 +576,11 @@ EOF
 set -e
 id -u 785 || useradd --no-create-home --uid 785 --system v2rayn-core
 getent group v2rayn || groupadd v2rayn # Users in this group are allowed to use TUN
-id -u 1000 && gpasswd -a $(id -un 1000) v2rayn 
+id -u 1000 && gpasswd -a $(id -un 1000) v2rayn
 if [ ! -d /etc/iproute2/rt_tables ]; then
-  mkdir -p /etc/iproute2/
+  mkdir -p /etc/iproute2/ || true
 fi
-grep '^6418 ' /etc/iproute2/rt_tables || echo '6418 v2rayn-tun' >> /etc/iproute2/rt_tables
+grep '^6418 ' /etc/iproute2/rt_tables || echo '6418 v2rayn-tun' >> /etc/iproute2/rt_tables || true
 exit 0
 EOF
 
