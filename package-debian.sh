@@ -575,6 +575,7 @@ EOF
 #!/bin/bash
 set -e
 id -u 785 || useradd --no-create-home --uid 785 --system v2rayn-core
+loginctl enable-linger v2rayn-core
 getent group v2rayn || groupadd v2rayn # Users in this group are allowed to use TUN
 id -u 1000 && gpasswd -a $(id -un 1000) v2rayn
 if [ ! -d /etc/iproute2/rt_tables ]; then
@@ -592,7 +593,6 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
-loginctl enable-linger v2rayn-core
 chown -R v2rayn-core:v2rayn-core /opt/v2rayN/bin/hev_socks5_tunnel
 chmod 544 /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
@@ -603,7 +603,6 @@ chown -R v2rayn-core:v2rayn /opt/v2rayN/binConfigs
 chmod 570 /opt/v2rayN/binConfigs
 chown -R v2rayn-core:v2rayn /opt/v2rayN/guiLogs
 chmod 750 /opt/v2rayN/guiLogs
-loginctl enable-linger v2rayn-core
 exit 0
 EOF
 
