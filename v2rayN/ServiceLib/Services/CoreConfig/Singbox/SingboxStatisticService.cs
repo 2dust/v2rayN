@@ -18,7 +18,7 @@ public partial class CoreConfigSingboxService
             _coreConfig.experimental ??= new Experimental4Sbox();
             _coreConfig.experimental.cache_file = new CacheFile4Sbox()
             {
-                enabled = true,
+                enabled = false,
                 path = Utils.GetBinPath("cache.db"),
                 store_fakeip = context.SimpleDnsItem.FakeIP == true
             };
