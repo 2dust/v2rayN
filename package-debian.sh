@@ -574,9 +574,9 @@ EOF
   install -m 755 /dev/stdin "$DEBIAN_DIR/preinst" <<'EOF'
 #!/bin/bash
 set -e
-useradd --no-create-home --uid 785 --system v2rayn-core
-groupadd v2rayn # Users in this group are allowed to use TUN
-id -u 1000 && gpasswd -a $(id -un 1000) v2rayn
+id -u 785 || useradd --no-create-home --uid 785 --system v2rayn-core
+getent group v2rayn || groupadd v2rayn # Users in this group are allowed to use TUN
+id -u 1000 && gpasswd -a $(id -un 1000) v2rayn 
 if [ ! -d /etc/iproute2/rt_tables ]; then
   mkdir -p /etc/iproute2/
 fi
