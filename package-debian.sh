@@ -599,6 +599,10 @@ setcap 'CAP_NET_ADMIN+ep' /opt/v2rayN/bin/hev_socks5_tunnel/hev-socks5-tunnel
 chmod 444 /opt/v2rayN/bin/hev_socks5_tunnel/v2rayn-tun.yaml
 chmod +x /opt/v2rayN/bin/sing_box/sing-box
 chmod +x /opt/v2rayN/bin/xray/xray
+chown -R v2rayn-core:v2rayn /opt/v2rayN/binConfigs
+chmod 570 /opt/v2rayN/binConfigs
+chown -R v2rayn-core:v2rayn /opt/v2rayN/guiLogs
+chmod 750 /opt/v2rayN/guiLogs
 loginctl enable-linger v2rayn-core
 exit 0
 EOF
