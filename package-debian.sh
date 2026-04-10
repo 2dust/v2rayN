@@ -615,9 +615,9 @@ update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
-pgrep --uid 785 && pkill --uid 785
-id -u 785 && userdel v2rayn-core
-getent group v2rayn && groupdel v2rayn
+pgrep --uid 785 && pkill --uid 785 || true
+id -u 785 && userdel v2rayn-core || true
+getent group v2rayn && groupdel v2rayn || true
 exit 0
 EOF
 
