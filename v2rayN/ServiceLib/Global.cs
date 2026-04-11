@@ -143,7 +143,7 @@ public class Global
         @"https://cachefly.cachefly.net/50mb.test",
         @"https://speed.cloudflare.com/__down?bytes=10000000",
         @"https://speed.cloudflare.com/__down?bytes=50000000",
-        @"https://speed.cloudflare.com/__down?bytes=100000000",
+        @"https://speed.cloudflare.com/__down?bytes=99999999",
     ];
 
     public static readonly List<string> SpeedPingTestUrls =
