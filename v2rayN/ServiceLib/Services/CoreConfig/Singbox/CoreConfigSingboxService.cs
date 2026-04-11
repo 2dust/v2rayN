@@ -57,6 +57,8 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             ConvertGeo2Ruleset();
 
+            ApplyOutboundSendThrough();
+
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
 
@@ -221,6 +223,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 _coreConfig.route.rules.Add(rule);
             }
 
+            ApplyOutboundSendThrough();
             ret.Success = true;
             ret.Data = JsonUtils.Serialize(_coreConfig);
             return ret;
@@ -279,6 +282,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 listen_port = port,
                 type = EInboundProtocol.mixed.ToString(),
             });
+            ApplyOutboundSendThrough();
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
