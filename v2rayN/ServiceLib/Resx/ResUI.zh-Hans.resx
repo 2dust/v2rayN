@@ -1321,7 +1321,7 @@
     <value>本地出站地址 (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>仅对 Xray 生效，填写本机 IPv4；留空则不设置。</value>
+    <value>用于多网口环境，请填写本机 IPv4 地址</value>
   </data>
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
     <value>请填写正确的 SendThrough IPv4 地址。</value>

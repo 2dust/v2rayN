@@ -1324,7 +1324,7 @@
     <value>Local outbound address (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>Only applies to Xray. Fill in a local IPv4 address; leave empty to disable.</value>
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
   </data>
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
     <value>Please fill in the correct IPv4 address for SendThrough.</value>

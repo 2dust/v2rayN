@@ -4015,24 +4015,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Local outbound address (SendThrough) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsSendThrough {
-            get {
-                return ResourceManager.GetString("TbSettingsSendThrough", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Only applies to Xray. Fill in a local IPv4 address; leave empty to disable. 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsSendThroughTip {
-            get {
-                return ResourceManager.GetString("TbSettingsSendThroughTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Enable Log 的本地化字符串。
         /// </summary>
         public static string TbSettingsLogEnabled {
@@ -4173,6 +4155,24 @@ namespace ServiceLib.Resx {
         public static string TbSettingsSecondLocalPortEnabled {
             get {
                 return ResourceManager.GetString("TbSettingsSecondLocalPortEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local outbound address (SendThrough) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSendThrough {
+            get {
+                return ResourceManager.GetString("TbSettingsSendThrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 For multi-interface environments, enter the local machine&apos;s IPv4 address 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSendThroughTip {
+            get {
+                return ResourceManager.GetString("TbSettingsSendThroughTip", resourceCulture);
             }
         }
         

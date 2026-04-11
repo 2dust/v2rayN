@@ -1695,4 +1695,7 @@
   <data name="TbLegacyProtect" xml:space="preserve">
     <value>Legacy TUN Protect</value>
   </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
 </root>
