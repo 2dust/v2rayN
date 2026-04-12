@@ -424,11 +424,12 @@ public class Global
 
     public static readonly List<string> DomainDirectDNSAddress =
     [
-        "https://dns.alidns.com/dns-query",
-        "https://doh.pub/dns-query",
-        "https://dns.alidns.com/dns-query,https://doh.pub/dns-query",
-        "223.5.5.5",
         "119.29.29.29",
+        "223.5.5.5",
+        "119.29.29.29,223.5.5.5,https://doh.pub/dns-query",
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+        "https://doh.pub/dns-query,https://dns.alidns.com/dns-query",
         "localhost"
     ];
 
@@ -450,8 +451,8 @@ public class Global
 
     public static readonly List<string> DomainPureIPDNSAddress =
     [
-        "223.5.5.5",
         "119.29.29.29",
+        "223.5.5.5",
         "localhost"
     ];
 
