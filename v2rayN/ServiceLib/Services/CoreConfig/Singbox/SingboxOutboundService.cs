@@ -438,6 +438,8 @@ public partial class CoreConfigSingboxService
         try
         {
             var transport = new Transport4Sbox();
+            var useragent = _config.CoreBasicItem.DefUserAgent ?? string.Empty;
+            var useragentValue = Global.TcpHttpUserAgentTexts.GetValueOrDefault(useragent, useragent);
 
             switch (_node.GetNetwork())
             {
@@ -453,6 +455,11 @@ public partial class CoreConfigSingboxService
                         transport.type = nameof(ETransport.http);
                         transport.host = _node.RequestHost.IsNullOrEmpty() ? null : Utils.String2List(_node.RequestHost);
                         transport.path = _node.Path.NullIfEmpty();
+                        if (!useragentValue.IsNullOrEmpty())
+                        {
+                            transport.headers ??= new();
+                            transport.headers.UserAgent = useragentValue;
+                        }
                     }
                     break;
 
@@ -494,12 +501,22 @@ public partial class CoreConfigSingboxService
                             Host = _node.RequestHost
                         };
                     }
+                    if (!useragentValue.IsNullOrEmpty())
+                    {
+                        transport.headers ??= new();
+                        transport.headers.UserAgent = useragentValue;
+                    }
                     break;
 
                 case nameof(ETransport.httpupgrade):
                     transport.type = nameof(ETransport.httpupgrade);
                     transport.path = _node.Path.NullIfEmpty();
                     transport.host = _node.RequestHost.NullIfEmpty();
+                    if (!useragentValue.IsNullOrEmpty())
+                    {
+                        transport.headers ??= new();
+                        transport.headers.UserAgent = useragentValue;
+                    }
 
                     break;
 

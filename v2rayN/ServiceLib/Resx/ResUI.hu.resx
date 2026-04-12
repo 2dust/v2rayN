@@ -937,7 +937,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>Ez a paraméter csak tcp/http és ws esetén érvényes</value>
+    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Betűtípus (újraindítást igényel)</value>

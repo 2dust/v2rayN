@@ -937,7 +937,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>این پارامتر فقط برای tcp/http و ws معتبر است</value>
+    <value>This parameter is valid only for tcp/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>FontFamily (نیاز به راه اندازی مجدد)</value>

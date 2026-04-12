@@ -937,7 +937,7 @@
     <value>使用者代理 (User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>僅對 TCP/HTTP、WS 協定生效</value>
+    <value>僅對 TCP/HTTP、WS、gRPC、XHTTP 生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>目前字型 (需重啟)</value>
