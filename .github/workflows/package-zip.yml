@@ -6,7 +6,7 @@ on:
       release_tag:
         required: true
         type: string
-      target:
+      target: # windows linux macos windows-desktop
         required: true
         type: string
 
