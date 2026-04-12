@@ -1,0 +1,64 @@
+name: package and release Zip
+
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+      target:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: package x64 arm64
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
+    runs-on: ubuntu-latest
+    env:
+      Target: |- 
+        ${{
+          case(
+            inputs.target == 'windows-desktop', 'windows',
+            inputs.target
+          )
+        }}
+      Arch: |-
+        ${{
+          case(
+            matrix.arch == 'x64', '64',
+            matrix.arch
+          ) 
+        }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6.0.2
+
+    - name: Restore build artifacts
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ matrix.arch }}
+        path: v2rayN-${{ env.Target }}-${{ env.Arch }}
+    
+    - name: Get v2rayN-core-bin
+      run: wget -nv -O v2rayN-$Target-$Arch.zip "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-$Target-$Arch.zip"
+    
+    - name: Package zip archive
+      run: 7z a -tZip v2rayN-$Target-$Arch.zip v2rayN-$Target-$Arch -mx1
+
+    - name: Rename windows-desktop 
+      if: inputs.target == 'windows-desktop'
+      run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
+    
+    - name: Upload zip archive to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: ${{ github.workspace }}/v2rayN*.zip
+        tag: ${{ inputs.release_tag }}
+        file_glob: true
+        prerelease: true

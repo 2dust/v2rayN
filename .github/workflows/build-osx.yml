@@ -10,78 +10,62 @@ on:
     branches:
       - master
 
-env:
-  OutputArch: "macos-64"
-  OutputArchArm: "macos-arm64"
-  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/macos-64"
-  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/macos-arm64"
+permissions:
+  contents: write
 
 jobs:
   build:
+    uses: ./.github/workflows/build.yml
+    with:
+      target: macos
+
+  release-zip:
+    if: inputs.release_tag != ''
+    needs: build
+    uses: ./.github/workflows/package-zip.yml
+    with:
+      target: macos
+      release_tag: ${{ inputs.release_tag }}
+    
+  dmg:
+    name: package and release macOS dmg
+    if: inputs.release_tag != ''
+    needs: build
     strategy:
       matrix:
-        configuration: [Release]
-
+        arch: [ x64, arm64 ]
     runs-on: macos-latest
-
+    env:
+      Arch: |-
+        ${{
+          case(
+            matrix.arch == 'x64', '64',
+            matrix.arch
+          ) 
+        }} 
     steps:
     - name: Checkout
       uses: actions/checkout@v6.0.2
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
 
-    - name: Setup
-      uses: actions/setup-dotnet@v5.2.0
+    - name: Restore build artifacts
+      uses: actions/download-artifact@v8
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Build
-      run: |
-        cd v2rayN 
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-x64   -p:SelfContained=true -o $OutputPath64
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r osx-arm64 -p:SelfContained=true -o $OutputPathArm64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-x64   -p:SelfContained=true -p:PublishTrimmed=true -o $OutputPath64
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r osx-arm64 -p:SelfContained=true -p:PublishTrimmed=true -o $OutputPathArm64
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7.0.1
-      with:
-        name: v2rayN-macos
-        path: |
-          ${{ github.workspace }}/v2rayN/Release/macos*
+        name: ${{ matrix.arch }}
+        path: v2rayN-macos-${{ env.Arch }}
     
-    # release osx package
-    - name: Package osx
-      if: github.event.inputs.release_tag != ''
-      run: |
-        brew install create-dmg
-        chmod 755 package-osx.sh
-        ./package-osx.sh $OutputArch $OutputPath64 ${{ github.event.inputs.release_tag }}
-        ./package-osx.sh $OutputArchArm $OutputPathArm64 ${{ github.event.inputs.release_tag }}
+    - name: Setup create-dmg
+      run: brew install create-dmg
+
+    - name: Ensure script permissions
+      run: chmod 755 package-osx.sh
+
+    - name: Package dmg
+      run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
     
     - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
       with:
         file: ${{ github.workspace }}/v2rayN*.dmg
-        tag: ${{ github.event.inputs.release_tag }}
-        file_glob: true
-        prerelease: true
-
-    # release zip archive
-    - name: Package release zip archive
-      if: github.event.inputs.release_tag != ''
-      run: |
-        chmod 755 package-release-zip.sh
-        ./package-release-zip.sh $OutputArch $OutputPath64
-        ./package-release-zip.sh $OutputArchArm $OutputPathArm64
-    
-    - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
-      with:
-        file: ${{ github.workspace }}/v2rayN*.zip
-        tag: ${{ github.event.inputs.release_tag }}
+        tag: ${{ inputs.release_tag }}
         file_glob: true
         prerelease: true

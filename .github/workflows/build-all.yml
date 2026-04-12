@@ -13,7 +13,7 @@ jobs:
     steps:
 
       - name: Trigger build windows
-        if: github.event.inputs.release_tag != ''
+        if: inputs.release_tag != ''
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
@@ -22,12 +22,12 @@ jobs:
             -d "{
               \"ref\": \"master\",
               \"inputs\": {
-                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+                \"release_tag\": \"${{ inputs.release_tag }}\"
               }
             }"
 
       - name: Trigger build linux
-        if: github.event.inputs.release_tag != ''
+        if: inputs.release_tag != ''
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
@@ -36,12 +36,12 @@ jobs:
             -d "{
               \"ref\": \"master\",
               \"inputs\": {
-                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+                \"release_tag\": \"${{ inputs.release_tag }}\"
               }
             }"
 
       - name: Trigger build osx
-        if: github.event.inputs.release_tag != ''
+        if: inputs.release_tag != ''
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
@@ -50,12 +50,12 @@ jobs:
             -d "{
               \"ref\": \"master\",
               \"inputs\": {
-                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+                \"release_tag\": \"${{ inputs.release_tag }}\"
               }
             }"
 
       - name: Trigger build windows desktop
-        if: github.event.inputs.release_tag != ''
+        if: inputs.release_tag != ''
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
@@ -64,6 +64,6 @@ jobs:
             -d "{
               \"ref\": \"master\",
               \"inputs\": {
-                \"release_tag\": \"${{ github.event.inputs.release_tag }}\"
+                \"release_tag\": \"${{ inputs.release_tag }}\"
               }
             }"

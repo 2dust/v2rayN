@@ -13,73 +13,29 @@ on:
 permissions:
   contents: write
 
-env:
-  OutputArch: "linux-64"
-  OutputArchArm: "linux-arm64"
-  OutputPath64:  "${{ github.workspace }}/v2rayN/Release/linux-64"
-  OutputPathArm64:  "${{ github.workspace }}/v2rayN/Release/linux-arm64"
-
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration: [Release]
-    runs-on: ubuntu-24.04
+    uses: ./.github/workflows/build.yml
+    with:
+      target: linux
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v6.0.2
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v5.2.0
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Build
-      run: |
-        cd v2rayN
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-x64   -p:SelfContained=true -o "$OutputPath64"
-        dotnet publish ./v2rayN.Desktop/v2rayN.Desktop.csproj -c Release -r linux-arm64 -p:SelfContained=true -o "$OutputPathArm64"
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-x64   -p:SelfContained=true -p:PublishTrimmed=true -o "$OutputPath64"
-        dotnet publish ./AmazTool/AmazTool.csproj             -c Release -r linux-arm64 -p:SelfContained=true -p:PublishTrimmed=true -o "$OutputPathArm64"
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7.0.1
-      with:
-        name: v2rayN-linux
-        path: |
-          ${{ github.workspace }}/v2rayN/Release/linux*
-
-    # release zip archive
-    - name: Package release zip archive
-      if: github.event.inputs.release_tag != ''
-      run: |
-        chmod 755 package-release-zip.sh
-        ./package-release-zip.sh "$OutputArch" "$OutputPath64"
-        ./package-release-zip.sh "$OutputArchArm" "$OutputPathArm64"
-    
-    - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
-      if: github.event.inputs.release_tag != ''
-      with:
-        file: ${{ github.workspace }}/v2rayN*.zip
-        tag: ${{ github.event.inputs.release_tag }}
-        file_glob: true
-        prerelease: true
+  release-zip:
+    if: inputs.release_tag != ''
+    needs: build
+    uses: ./.github/workflows/package-zip.yml
+    with:
+      target: linux
+      release_tag: ${{ inputs.release_tag }}
 
   deb:
-    needs: build
+    name: build and release deb
     if: |
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '') ||
+      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04
-    container:
-      image: debian:13
+    runs-on: ubuntu-latest
+    container: debian:13
     env:
-      RELEASE_TAG: ${{ github.event.inputs.release_tag != '' && github.event.inputs.release_tag || github.ref_name }}
+      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
 
     steps:
     - name: Prepare tools (Debian)
@@ -115,12 +71,6 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
 
-    - name: Upload DEB artifacts
-      uses: actions/upload-artifact@v7.0.1
-      with:
-        name: v2rayN-deb
-        path: dist/deb/**/*.deb
-
     - name: Upload DEBs to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -130,15 +80,14 @@ jobs:
         prerelease: true
 
   rpm:
-    needs: build
+    name: build and release rpm
     if: |
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '') ||
+      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04
-    container:
-      image: registry.access.redhat.com/ubi10/ubi
+    runs-on: ubuntu-latest
+    container: registry.access.redhat.com/ubi10/ubi
     env:
-      RELEASE_TAG: ${{ github.event.inputs.release_tag != '' && github.event.inputs.release_tag || github.ref_name }}
+      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
 
     steps:
     - name: Prepare tools (Red Hat)
@@ -207,12 +156,6 @@ jobs:
         submodules: 'recursive'
         fetch-depth: '0'
 
-    - name: Restore build artifacts
-      uses: actions/download-artifact@v8
-      with:
-        name: v2rayN-linux
-        path: ${{ github.workspace }}/v2rayN/Release
-
     - name: Ensure script permissions
       run: chmod 755 package-rhel.sh
 
@@ -227,13 +170,7 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
-
-    - name: Upload RPM artifacts
-      uses: actions/upload-artifact@v7.0.1
-      with:
-        name: v2rayN-rpm
-        path: dist/rpm/**/*.rpm
-
+  
     - name: Upload RPMs to release
       uses: svenstaro/upload-release-action@v2
       with:
