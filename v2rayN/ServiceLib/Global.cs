@@ -189,7 +189,8 @@ public class Global
         {"safari","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" },
         {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
         {"none",""},
-        {"golang",""}
+        {"golang","Go-http-client/1.1"},
+        {"curl","curl/7.68.0"},
     };
 
     public const string Hysteria2ProtocolShare = "hy2://";
@@ -393,7 +394,8 @@ public class Global
         "chrome",
         "firefox",
         "edge",
-        "golang"
+        "curl",
+        "golang",
     ];
 
     public static readonly List<string> XhttpMode =
@@ -440,7 +442,7 @@ public class Global
         "https://dns.cloudflare.com/dns-query",
         "https://doh.dns.sb/dns-query",
         "https://doh.opendns.com/dns-query",
-        "https://common.dot.dns.yandex.net",
+        "https://common.dot.dns.yandex.net/dns-query",
         "8.8.8.8",
         "1.1.1.1",
         "185.222.222.222",
