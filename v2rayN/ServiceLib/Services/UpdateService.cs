@@ -304,6 +304,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             return RuntimeInformation.ProcessArchitecture switch
             {
                 Architecture.Arm64 => coreInfo?.DownloadUrlLinuxArm64,
+                Architecture.RiscV64 => coreInfo?.DownloadUrlLinuxRiscV64,
                 Architecture.X64 => coreInfo?.DownloadUrlLinux64,
                 _ => null,
             };
