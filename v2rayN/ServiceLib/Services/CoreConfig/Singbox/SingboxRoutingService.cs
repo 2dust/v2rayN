@@ -96,7 +96,6 @@ public partial class CoreConfigSingboxService
                 _coreConfig.route.rules.Add(new()
                 {
                     port = [53],
-                    network = ["udp"],
                     action = "hijack-dns"
                 });
             }
