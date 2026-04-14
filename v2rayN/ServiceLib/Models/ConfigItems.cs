@@ -49,11 +49,9 @@ public class KcpItem
 
     public int DownlinkCapacity { get; set; }
 
-    public bool Congestion { get; set; }
+    public int CwndMultiplier { get; set; }
 
-    public int ReadBufferSize { get; set; }
-
-    public int WriteBufferSize { get; set; }
+    public int MaxSendingWindow { get; set; }
 }
 
 [Serializable]

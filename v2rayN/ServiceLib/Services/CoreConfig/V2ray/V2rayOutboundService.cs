@@ -431,9 +431,8 @@ public partial class CoreConfigV2rayService
                     kcpSettings.uplinkCapacity = _config.KcpItem.UplinkCapacity;
                     kcpSettings.downlinkCapacity = _config.KcpItem.DownlinkCapacity;
 
-                    kcpSettings.congestion = _config.KcpItem.Congestion;
-                    kcpSettings.readBufferSize = _config.KcpItem.ReadBufferSize;
-                    kcpSettings.writeBufferSize = _config.KcpItem.WriteBufferSize;
+                    kcpSettings.cwndMultiplier = _config.KcpItem.CwndMultiplier;
+                    kcpSettings.maxSendingWindow = _config.KcpItem.MaxSendingWindow;
                     var kcpFinalmask = new Finalmask4Ray();
                     if (Global.KcpHeaderMaskMap.TryGetValue(_node.HeaderType, out var header))
                     {

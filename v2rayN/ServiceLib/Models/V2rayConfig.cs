@@ -397,11 +397,9 @@ public class KcpSettings4Ray
 
     public int downlinkCapacity { get; set; }
 
-    public bool congestion { get; set; }
+    public int cwndMultiplier { get; set; }
 
-    public int readBufferSize { get; set; }
-
-    public int writeBufferSize { get; set; }
+    public int maxSendingWindow { get; set; }
 }
 
 public class WsSettings4Ray

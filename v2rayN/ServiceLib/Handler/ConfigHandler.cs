@@ -77,10 +77,11 @@ public static class ConfigHandler
             Tti = 50,
             UplinkCapacity = 12,
             DownlinkCapacity = 100,
-            ReadBufferSize = 2,
-            WriteBufferSize = 2,
-            Congestion = false
+            CwndMultiplier = 1,
+            MaxSendingWindow = 2 * 1024 * 1024,
         };
+        config.KcpItem.CwndMultiplier = config.KcpItem.CwndMultiplier <= 0 ? 1 : config.KcpItem.CwndMultiplier;
+        config.KcpItem.MaxSendingWindow = config.KcpItem.MaxSendingWindow <= 0 ? (2 * 1024 * 1024) : config.KcpItem.MaxSendingWindow;
         config.GrpcItem ??= new GrpcItem
         {
             IdleTimeout = 60,
