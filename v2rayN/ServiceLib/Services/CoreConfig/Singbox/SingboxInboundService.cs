@@ -11,7 +11,7 @@ public partial class CoreConfigSingboxService
             _coreConfig.inbounds = [];
 
             if (!context.IsTunEnabled
-                || (context.IsTunEnabled && _node.Port != listenPort))
+                || (context.IsTunEnabled && _node.Address != Global.Loopback && _node.Port != listenPort))
             {
                 var inbound = new Inbound4Sbox()
                 {

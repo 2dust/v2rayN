@@ -34,14 +34,14 @@ public partial class CoreConfigSingboxService
                     _coreConfig.route.rules.AddRange(tunRules);
                 }
 
-                var (lstDnsExe, lstDirectExe) = BuildRoutingDirectExe();
                 _coreConfig.route.rules.Add(new()
                 {
                     port = [53],
-                    action = "hijack-dns",
-                    process_name = lstDnsExe
+                    network = ["udp"],
+                    action = "hijack-dns"
                 });
 
+                var lstDirectExe = BuildRoutingDirectExe();
                 _coreConfig.route.rules.Add(new()
                 {
                     outbound = Global.DirectTag,
@@ -77,28 +77,6 @@ public partial class CoreConfigSingboxService
                         method = rejectMethod,
                     });
                 }
-            }
-
-            if (_config.Inbound.First().SniffingEnabled)
-            {
-                _coreConfig.route.rules.Add(new()
-                {
-                    action = "sniff"
-                });
-                _coreConfig.route.rules.Add(new()
-                {
-                    protocol = ["dns"],
-                    action = "hijack-dns"
-                });
-            }
-            else
-            {
-                _coreConfig.route.rules.Add(new()
-                {
-                    port = [53],
-                    network = ["udp"],
-                    action = "hijack-dns"
-                });
             }
 
             var hostsDomains = new List<string>();
@@ -234,9 +212,8 @@ public partial class CoreConfigSingboxService
         }
     }
 
-    private static (List<string> lstDnsExe, List<string> lstDirectExe) BuildRoutingDirectExe()
+    private static List<string> BuildRoutingDirectExe()
     {
-        var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         var coreInfoResult = CoreInfoManager.Instance.GetCoreInfo();
@@ -248,20 +225,18 @@ public partial class CoreConfigSingboxService
                 continue;
             }
 
+            if (coreConfig.CoreExes == null)
+            {
+                continue;
+            }
+
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                if (coreConfig.CoreType != ECoreType.sing_box)
-                {
-                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
-                }
                 directExeSet.Add(Utils.GetExeName(baseExeName));
             }
         }
 
-        var lstDnsExe = new List<string>(dnsExeSet);
-        var lstDirectExe = new List<string>(directExeSet);
-
-        return (lstDnsExe, lstDirectExe);
+        return new List<string>(directExeSet);
     }
 
     private void GenRoutingUserRule(RulesItem? item)
