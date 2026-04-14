@@ -216,7 +216,7 @@ jobs:
     - name: Ensure script permissions
       run: chmod 755 package-rhel-riscv.sh
 
-    - name: Package RPM (RHEL)
+    - name: Package RPM (RHEL-family)
       run: ./package-rhel-riscv.sh "${RELEASE_TAG}"
 
     - name: Collect RPMs into workspace
