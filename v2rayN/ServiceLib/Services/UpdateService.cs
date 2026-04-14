@@ -299,15 +299,22 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
 
             return url;
         }
+
         else if (Utils.IsLinux())
         {
-            return RuntimeInformation.ProcessArchitecture switch
+            var arch = RuntimeInformation.ProcessArchitecture;
+            if (arch.ToString().Equals("RiscV64", StringComparison.OrdinalIgnoreCase))
+            {
+                return coreInfo?.DownloadUrlLinuxRiscV64;
+            }
+            return arch switch
             {
                 Architecture.Arm64 => coreInfo?.DownloadUrlLinuxArm64,
                 Architecture.X64 => coreInfo?.DownloadUrlLinux64,
                 _ => null,
             };
         }
+        
         else if (Utils.IsMacOS())
         {
             return RuntimeInformation.ProcessArchitecture switch
