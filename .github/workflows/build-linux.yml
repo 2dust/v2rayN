@@ -32,7 +32,7 @@ jobs:
     if: |
       (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: debian:13
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
@@ -84,7 +84,7 @@ jobs:
     if: |
       (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container: registry.access.redhat.com/ubi10/ubi
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
