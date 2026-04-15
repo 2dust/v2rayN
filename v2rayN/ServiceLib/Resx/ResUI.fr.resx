@@ -1316,6 +1316,15 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
+    </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Adresse sortante locale (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Pour environnement multi-interfaces, veuillez saisir l’adresse IPv4 de la machine locale.</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
   </data>
   <data name="TransportHeaderTypeTip5" xml:space="preserve">
     <value>*Mode XHTTP</value>
@@ -1621,28 +1630,28 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Finalmask</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+    <value>Règle de routage {0} nœud sortant {1} avertissement: {2}</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+    <value>Règle {0} nœud VPN sortant {1} erreur : {2}. Repli nœud proxy uniquement.</value>
   </data>
   <data name="MsgGroupCycleDependency" xml:space="preserve">
-    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+    <value>Le groupe {0} a une dépendance cyclique avec le nœud enfant {1}. Nœud ignoré.</value>
   </data>
   <data name="MsgGroupChildNodeWarning" xml:space="preserve">
-    <value>Group {0} child node {1} warning: {2}</value>
+    <value>Groupe {0} nœud enfant {1} avertissement : {2}</value>
   </data>
   <data name="MsgGroupChildNodeError" xml:space="preserve">
-    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+    <value>Groupe {0} nœud enfant {1} erreur : {2}. Nœud ignoré.</value>
   </data>
   <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
-    <value>Group {0} child group node {1} warning: {2}</value>
+    <value>Groupe {0} nœud enfant groupe {1} avertissement: {2}</value>
   </data>
   <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
-    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+    <value>Groupe {0} nœud groupe enfant {1} erreur: {2}. Nœud ignoré.</value>
   </data>
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
-    <value>Group {0} has no valid child node.</value>
+    <value>Groupe {0} n’a aucun nœud enfant valide.</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
     <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
