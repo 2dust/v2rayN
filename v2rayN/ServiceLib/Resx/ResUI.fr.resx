@@ -1660,19 +1660,19 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Règle de routage {0} nœud sortant {1} introuvable. Repli sur le seul nœud proxy.</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
-    <value>Subscription previous proxy {0} not found. Skipping.</value>
+    <value>Nœud proxy précédent de l’abonnement {0} introuvable. Ignoré.</value>
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
-    <value>Subscription next proxy {0} not found. Skipping.</value>
+    <value>Nœud proxy suivant de l’abonnement {0} introuvable. Ignoré.</value>
   </data>
   <data name="menuGenGroupServer" xml:space="preserve">
-    <value>Generate Policy Group</value>
+    <value>Générer groupe de stratégie</value>
   </data>
   <data name="menuAllServers" xml:space="preserve">
-    <value>All configurations</value>
+    <value>Toutes configurations</value>
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
-    <value>Group by Region</value>
+    <value>Grouper par région</value>
   </data>
   <data name="menuEditCopy" xml:space="preserve">
     <value>Copier</value>
@@ -1681,7 +1681,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Tout sélect</value>
   </data>
   <data name="menuEditPaste" xml:space="preserve">
-    <value>Paste</value>
+    <value>Coller</value>
   </data>
   <data name="menuEditFormat" xml:space="preserve">
     <value>Format</value>
@@ -1696,15 +1696,15 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Insecure Concurrency</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
-    <value>Username</value>
+    <value>Nom d’utilisateur</value>
   </data>
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
-    <value>ICMP routing policy</value>
+    <value>Politique de routage ICMP</value>
   </data>
   <data name="TbLegacyProtect" xml:space="preserve">
-    <value>Legacy TUN Protect</value>
+    <value>Protection TUN héritée</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+    <value>Pour environnements multi-interfaces, entrez l’adresse IPv4 de la machine locale.</value>
   </data>
 </root>
