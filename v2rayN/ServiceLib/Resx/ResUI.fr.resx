@@ -1654,10 +1654,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Groupe {0} n’a aucun nœud enfant valide.</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
-    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+    <value>Règle de routage {0} tag sortant vide. Replié sur le nœud proxy uniquement.</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+    <value>Règle de routage {0} nœud sortant {1} introuvable. Repli sur le seul nœud proxy.</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
     <value>Subscription previous proxy {0} not found. Skipping.</value>
