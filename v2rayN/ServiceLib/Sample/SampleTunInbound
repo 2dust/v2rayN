@@ -3,9 +3,7 @@
   "protocol": "tun",
   "settings": {
     "name": "xray_tun",
-    "MTU": [
-      9000
-    ],
+    "MTU": 9000,
     "gateway": [
       "172.18.0.1/30",
       "fdfe:dcba:9876::1/126"

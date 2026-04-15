@@ -78,7 +78,7 @@ public class Inboundsettings4Ray
 
     public string? name { get; set; }
 
-    public List<int>? MTU { get; set; }
+    public int? MTU { get; set; }
 
     public List<string>? gateway { get; set; }
 

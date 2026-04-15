@@ -55,7 +55,7 @@ public partial class CoreConfigV2rayService
                 }
                 var tunInbound = JsonUtils.Deserialize<Inbounds4Ray>(EmbedUtils.GetEmbedText(Global.V2raySampleTunInbound)) ?? new Inbounds4Ray { };
                 tunInbound.settings.name = Utils.IsMacOS() ? $"utun{new Random().Next(99)}" : "xray_tun";
-                tunInbound.settings.MTU = [_config.TunModeItem.Mtu];
+                tunInbound.settings.MTU = _config.TunModeItem.Mtu;
                 if (_config.TunModeItem.EnableIPv6Address == false)
                 {
                     tunInbound.settings.gateway = ["172.18.0.1/30"];
