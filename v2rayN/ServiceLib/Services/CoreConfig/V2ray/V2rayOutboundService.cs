@@ -225,12 +225,13 @@ public partial class CoreConfigV2rayService
                         usersItem.email = Global.UserEMail;
                         usersItem.encryption = protocolExtra.VlessEncryption;
 
-                        if (!protocolExtra.Flow.IsNullOrEmpty())
+                        if (protocolExtra.Flow.IsNullOrEmpty())
                         {
-                            usersItem.flow = protocolExtra.Flow;
+                            FillOutboundMux(outbound, muxEnabled, muxEnabled);
                         }
                         else
                         {
+                            usersItem.flow = protocolExtra.Flow;
                             FillOutboundMux(outbound, false, muxEnabled);
                         }
                         outbound.settings.servers = null;
