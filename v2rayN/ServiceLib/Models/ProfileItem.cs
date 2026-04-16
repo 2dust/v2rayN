@@ -4,6 +4,7 @@ namespace ServiceLib.Models;
 public class ProfileItem
 {
     private ProtocolExtraItem? _protocolExtraCache;
+    private TransportExtra? _transportExtraCache;
 
     public ProfileItem()
     {
@@ -123,30 +124,26 @@ public class ProfileItem
         return true;
     }
 
+    public ProtocolExtraItem GetProtocolExtra()
+    {
+        return _protocolExtraCache ??= JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra) ?? new ProtocolExtraItem();
+    }
+
     public void SetProtocolExtra(ProtocolExtraItem extraItem)
     {
         _protocolExtraCache = extraItem;
         ProtoExtra = JsonUtils.Serialize(extraItem, false);
     }
 
-    public void SetProtocolExtra()
-    {
-        ProtoExtra = JsonUtils.Serialize(_protocolExtraCache, false);
-    }
-
-    public ProtocolExtraItem GetProtocolExtra()
-    {
-        return _protocolExtraCache ??= JsonUtils.Deserialize<ProtocolExtraItem>(ProtoExtra) ?? new ProtocolExtraItem();
-    }
-
     public TransportExtra GetTransportExtra()
     {
-        return GetProtocolExtra().Transport ?? new TransportExtra();
+        return _transportExtraCache ??= JsonUtils.Deserialize<TransportExtra>(TransportExtra) ?? new TransportExtra();
     }
 
     public void SetTransportExtra(TransportExtra transportExtra)
     {
-        SetProtocolExtra(GetProtocolExtra() with { Transport = transportExtra });
+        _transportExtraCache = transportExtra;
+        TransportExtra = JsonUtils.Serialize(transportExtra, false);
     }
 
     #endregion function
@@ -192,6 +189,7 @@ public class ProfileItem
     public string Finalmask { get; set; }
 
     public string ProtoExtra { get; set; }
+    public string TransportExtra { get; set; }
 
     [Obsolete("Use ProtocolExtraItem.Ports instead.")]
     public string Ports { get; set; }

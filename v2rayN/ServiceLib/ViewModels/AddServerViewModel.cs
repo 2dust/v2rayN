@@ -274,7 +274,7 @@ public class AddServerViewModel : MyReactiveObject
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
 
         var protocolExtra = SelectedSource?.GetProtocolExtra();
-        var transport = protocolExtra?.Transport ?? new TransportExtra();
+        var transport = SelectedSource?.GetTransportExtra();
         Ports = protocolExtra?.Ports ?? string.Empty;
         AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
         Flow = protocolExtra?.Flow ?? string.Empty;
@@ -372,7 +372,6 @@ public class AddServerViewModel : MyReactiveObject
 
         SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
-            Transport = transport,
             Ports = Ports.NullIfEmpty(),
             AlterId = AlterId > 0 ? AlterId.ToString() : null,
             Flow = Flow.NullIfEmpty(),
@@ -392,6 +391,7 @@ public class AddServerViewModel : MyReactiveObject
             InsecureConcurrency = InsecureConcurrency > 0 ? InsecureConcurrency : null,
             NaiveQuic = NaiveQuic ? true : null,
         });
+        SelectedSource.SetTransportExtra(transport);
 
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {

@@ -366,8 +366,7 @@ public sealed class AppManager
                     {
                         item.Network = nameof(ETransport.raw);
                     }
-                    var extra = item.GetProtocolExtra();
-                    var transport = extra.Transport ?? new TransportExtra();
+                    var transport = item.GetTransportExtra();
                     var network = item.GetNetwork();
 
                     switch (network)
@@ -427,7 +426,7 @@ public sealed class AppManager
                             break;
                     }
 
-                    item.SetProtocolExtra(extra with { Transport = transport });
+                    item.SetTransportExtra(transport);
                     item.ConfigVersion = 4;
                     updateProfileItems.Add(item);
                 }

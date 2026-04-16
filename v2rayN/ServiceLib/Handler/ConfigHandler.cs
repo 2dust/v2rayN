@@ -254,6 +254,7 @@ public static class ConfigHandler
             item.EchForceQuery = profileItem.EchForceQuery;
             item.Finalmask = profileItem.Finalmask;
             item.ProtoExtra = profileItem.ProtoExtra;
+            item.TransportExtra = profileItem.TransportExtra;
         }
 
         var ret = item.ConfigType switch
@@ -1127,8 +1128,8 @@ public static class ConfigHandler
 
         var oProtocolExtra = o.GetProtocolExtra();
         var nProtocolExtra = n.GetProtocolExtra();
-        var oTransport = oProtocolExtra.Transport ?? new TransportExtra();
-        var nTransport = nProtocolExtra.Transport ?? new TransportExtra();
+        var oTransport = o.GetTransportExtra();
+        var nTransport = n.GetTransportExtra();
 
         return o.ConfigType == n.ConfigType
                && AreEqual(o.Address, n.Address)
