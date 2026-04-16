@@ -12,6 +12,10 @@ public partial class CoreConfigV2rayService
             GenObservatory(multipleLoad);
             GenBalancer(multipleLoad);
         }
+        if (_config.CoreBasicItem.EnableFragment)
+        {
+            ApplyOutboundFragment();
+        }
         if (context.IsTunEnabled)
         {
             _coreConfig.outbounds.Add(BuildDnsOutbound());
@@ -28,35 +32,6 @@ public partial class CoreConfigV2rayService
         else
         {
             proxyOutboundList.Add(BuildProxyOutbound(baseTagName));
-        }
-
-        if (_config.CoreBasicItem.EnableFragment)
-        {
-            var fragmentOutbound = new Outbounds4Ray
-            {
-                protocol = "freedom",
-                tag = $"frag-{baseTagName}",
-                settings = new()
-                {
-                    fragment = new()
-                    {
-                        packets = _config.Fragment4RayItem?.Packets,
-                        length = _config.Fragment4RayItem?.Length,
-                        interval = _config.Fragment4RayItem?.Interval
-                    }
-                }
-            };
-            var actOutboundWithTlsList =
-                proxyOutboundList.Where(n => n.streamSettings?.security.IsNullOrEmpty() == false
-                                             && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true)).ToList();
-            if (actOutboundWithTlsList.Count > 0)
-            {
-                proxyOutboundList.Add(fragmentOutbound);
-            }
-            foreach (var outbound in actOutboundWithTlsList)
-            {
-                FillDialerProxy(outbound, fragmentOutbound.tag);
-            }
         }
         return proxyOutboundList;
     }
@@ -837,5 +812,69 @@ public partial class CoreConfigV2rayService
     {
         var outbound = new Outbounds4Ray { tag = Global.DnsOutboundTag, protocol = "dns", };
         return outbound;
+    }
+
+    private void ApplyOutboundFragment()
+    {
+        var actOutboundWithTlsList =
+            _coreConfig.outbounds.Where(n => n.streamSettings?.security.IsNullOrEmpty() == false
+                                             && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
+                .ToList();
+
+        var configPackets = _config.Fragment4RayItem?.Packets ?? "tlshello";
+        var configLength = _config.Fragment4RayItem?.Length ?? "50-100";
+        var configDelay = _config.Fragment4RayItem?.Interval ?? "10-20";
+
+        var fragmentMask = new Mask4Ray
+        {
+            type = "fragment",
+            settings = new MaskSettings4Ray
+            {
+                packets = configPackets,
+                length = configLength,
+                delay = configDelay,
+            }
+        };
+        var noiseMask = new Mask4Ray
+        {
+            type = "noise",
+            settings = new MaskSettings4Ray
+            {
+                length = "10-20",
+                delay = "10-16",
+            }
+        };
+
+        foreach (var outbound in actOutboundWithTlsList)
+        {
+            //var packets = configPackets;
+            //if (outbound.streamSettings.security == Global.StreamSecurityReality
+            //    && packets == "tlshello")
+            //{
+            //    packets = "1-3";
+            //}
+            //else if (outbound.streamSettings.security == Global.StreamSecurity
+            //         && packets != "tlshello")
+            //{
+            //    packets = "tlshello";
+            //}
+            var finalMaskJsonObj = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings?.finalmask)) as JsonObject ?? new JsonObject();
+            // tcp fragment
+            var tcpFinalmaskList = finalMaskJsonObj["tcp"] as JsonArray ?? [];
+            if (tcpFinalmaskList.Count == 0)
+            {
+                tcpFinalmaskList.Add(JsonUtils.SerializeToNode(fragmentMask));
+                finalMaskJsonObj["tcp"] = tcpFinalmaskList;
+            }
+            // udp noise
+            var udpFinalmaskList = finalMaskJsonObj["udp"] as JsonArray ?? [];
+            if (udpFinalmaskList.Count == 0)
+            {
+                udpFinalmaskList.Add(JsonUtils.SerializeToNode(noiseMask));
+                finalMaskJsonObj["udp"] = udpFinalmaskList;
+            }
+            // write back
+            outbound.streamSettings.finalmask = finalMaskJsonObj;
+        }
     }
 }
