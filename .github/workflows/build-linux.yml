@@ -25,7 +25,7 @@ jobs:
       (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-24.04-riscv
-    container: ghcr.io/xujiegb/fedora-riscv:43-latest
+    container: rockylinux/rockylinux:10
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
 
