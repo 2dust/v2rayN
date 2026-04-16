@@ -18,6 +18,9 @@ public class AddServerViewModel : MyReactiveObject
     public string CertSha { get; set; }
 
     [Reactive]
+    public bool AllowInsecureCertFetch { get; set; }
+
+    [Reactive]
     public string SalamanderPass { get; set; }
 
     [Reactive]
@@ -468,7 +471,7 @@ public class AddServerViewModel : MyReactiveObject
             domain += $":{SelectedSource.Port}";
         }
 
-        (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName);
+        (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName, allowInsecure: AllowInsecureCertFetch);
         UpdateCertTip(certError);
     }
 
@@ -493,7 +496,7 @@ public class AddServerViewModel : MyReactiveObject
             domain += $":{SelectedSource.Port}";
         }
 
-        var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName);
+        var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName, allowInsecure: AllowInsecureCertFetch);
         Cert = CertPemManager.ConcatenatePemChain(certs);
         UpdateCertTip(certError);
     }

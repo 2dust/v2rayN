@@ -2581,6 +2581,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Allow insecure cert fetch (self-signed) 的本地化字符串。
+        /// </summary>
+        public static string TbAllowInsecureCertFetch {
+            get {
+                return ResourceManager.GetString("TbAllowInsecureCertFetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Only for fetching self-signed certificates. This may expose you to MITM risks. 的本地化字符串。
+        /// </summary>
+        public static string TbAllowInsecureCertFetchTips {
+            get {
+                return ResourceManager.GetString("TbAllowInsecureCertFetchTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ALPN 的本地化字符串。
         /// </summary>
         public static string TbAlpn {

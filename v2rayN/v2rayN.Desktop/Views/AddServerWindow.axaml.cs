@@ -242,6 +242,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.CertSha, v => v.txtCertSha256Pinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CertTip, v => v.labCertPinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.togAllowInsecureCertFetch.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.txtAllowInsecureCertFetchTips.IsVisible).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchForceQuery, v => v.cmbEchForceQuery.SelectedValue).DisposeWith(disposables);
 

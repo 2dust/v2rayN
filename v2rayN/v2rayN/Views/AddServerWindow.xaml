@@ -1483,6 +1483,27 @@
                                         Content="{x:Static resx:ResUI.TbFetchCertChain}"
                                         Style="{StaticResource DefButton}" />
                                 </StackPanel>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbAllowInsecureCertFetch}" />
+                                    <ToggleButton
+                                        x:Name="togAllowInsecureCertFetch"
+                                        Margin="{StaticResource Margin4}"
+                                        HorizontalAlignment="Left" />
+                                </StackPanel>
+                                <TextBlock
+                                    x:Name="txtAllowInsecureCertFetchTips"
+                                    Width="400"
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Foreground="#FFD32F2F"
+                                    Style="{StaticResource ToolbarTextBlock}"
+                                    Text="{x:Static resx:ResUI.TbAllowInsecureCertFetchTips}"
+                                    TextWrapping="Wrap"
+                                    Visibility="Collapsed" />
                                 <TextBlock
                                     Width="400"
                                     Margin="{StaticResource Margin4}"

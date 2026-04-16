@@ -1707,4 +1707,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TransportExtra" xml:space="preserve">
     <value>XHTTP Extra</value>
   </data>
+  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
+    <value>Allow insecure cert fetch (self-signed)</value>
+  </data>
+  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
+    <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+  </data>
 </root>
