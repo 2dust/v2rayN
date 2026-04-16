@@ -19,6 +19,14 @@ jobs:
     with:
       target: linux
 
+  release-zip:
+    if: inputs.release_tag != ''
+    needs: build
+    uses: ./.github/workflows/package-zip.yml
+    with:
+      target: linux
+      release_tag: ${{ inputs.release_tag }}
+
   rpm-riscv64:
     name: build and release rpm riscv64
     if: |
@@ -243,11 +251,3 @@ jobs:
         tag: ${{ env.RELEASE_TAG }}
         file_glob: true
         prerelease: true
-
-  release-zip:
-    if: inputs.release_tag != ''
-    needs: build
-    uses: ./.github/workflows/package-zip.yml
-    with:
-      target: linux
-      release_tag: ${{ inputs.release_tag }}
