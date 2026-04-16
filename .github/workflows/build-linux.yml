@@ -196,8 +196,8 @@ jobs:
         set -euo pipefail
         dnf -y makecache
         dnf -y install \
-          sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which curl jq wget file \
-          ca-certificates desktop-file-utils xdg-utils python3 gcc make glibc-devel kernel-headers libatomic libstdc++
+          sudo git rpm-build rpmdevtools dnf-plugins-core \
+          rsync findutils tar gzip unzip which jq
 
     - name: Checkout repo (for scripts)
       shell: bash
