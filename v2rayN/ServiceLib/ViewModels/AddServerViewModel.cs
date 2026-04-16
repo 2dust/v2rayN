@@ -120,12 +120,15 @@ public class AddServerViewModel : MyReactiveObject
                 case nameof(ETransport.raw):
                     RawHeaderType = value;
                     break;
+
                 case nameof(ETransport.kcp):
                     KcpHeaderType = value;
                     break;
+
                 case nameof(ETransport.xhttp):
                     XhttpMode = value;
                     break;
+
                 case nameof(ETransport.grpc):
                     GrpcMode = value;
                     break;
@@ -152,15 +155,19 @@ public class AddServerViewModel : MyReactiveObject
                 case nameof(ETransport.raw):
                     Host = value;
                     break;
+
                 case nameof(ETransport.ws):
                     Host = value;
                     break;
+
                 case nameof(ETransport.httpupgrade):
                     Host = value;
                     break;
+
                 case nameof(ETransport.xhttp):
                     Host = value;
                     break;
+
                 case nameof(ETransport.grpc):
                     GrpcAuthority = value;
                     break;
@@ -187,15 +194,19 @@ public class AddServerViewModel : MyReactiveObject
                 case nameof(ETransport.kcp):
                     KcpSeed = value;
                     break;
+
                 case nameof(ETransport.ws):
                     Path = value;
                     break;
+
                 case nameof(ETransport.httpupgrade):
                     Path = value;
                     break;
+
                 case nameof(ETransport.xhttp):
                     Path = value;
                     break;
+
                 case nameof(ETransport.grpc):
                     GrpcServiceName = value;
                     break;
@@ -304,7 +315,6 @@ public class AddServerViewModel : MyReactiveObject
         GrpcMode = transport.GrpcMode.IsNullOrEmpty() ? Global.GrpcGunMode : transport.GrpcMode;
         KcpHeaderType = transport.KcpHeaderType.IsNullOrEmpty() ? Global.None : transport.KcpHeaderType;
         KcpSeed = transport.KcpSeed ?? string.Empty;
-
     }
 
     private async Task SaveServerAsync()
@@ -356,7 +366,7 @@ public class AddServerViewModel : MyReactiveObject
             SelectedSource.Network = Global.DefaultNetwork;
         }
 
-        var transport = new TransportExtra
+        var transport = new TransportExtraItem
         {
             RawHeaderType = RawHeaderType.NullIfEmpty(),
             Host = Host.NullIfEmpty(),

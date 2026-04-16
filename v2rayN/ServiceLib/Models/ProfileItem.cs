@@ -4,7 +4,7 @@ namespace ServiceLib.Models;
 public class ProfileItem
 {
     private ProtocolExtraItem? _protocolExtraCache;
-    private TransportExtra? _transportExtraCache;
+    private TransportExtraItem? _transportExtraCache;
 
     public ProfileItem()
     {
@@ -135,12 +135,12 @@ public class ProfileItem
         ProtoExtra = JsonUtils.Serialize(extraItem, false);
     }
 
-    public TransportExtra GetTransportExtra()
+    public TransportExtraItem GetTransportExtra()
     {
-        return _transportExtraCache ??= JsonUtils.Deserialize<TransportExtra>(TransportExtra) ?? new TransportExtra();
+        return _transportExtraCache ??= JsonUtils.Deserialize<TransportExtraItem>(TransportExtra) ?? new TransportExtraItem();
     }
 
-    public void SetTransportExtra(TransportExtra transportExtra)
+    public void SetTransportExtra(TransportExtraItem transportExtra)
     {
         _transportExtraCache = transportExtra;
         TransportExtra = JsonUtils.Serialize(transportExtra, false);
@@ -164,12 +164,16 @@ public class ProfileItem
     public string Password { get; set; }
     public string Username { get; set; }
     public string Network { get; set; }
+
     [Obsolete("Use TransportExtra.RawHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
     public string HeaderType { get; set; }
+
     [Obsolete("Use TransportExtra.Host/GrpcAuthority instead.")]
     public string RequestHost { get; set; }
+
     [Obsolete("Use TransportExtra.Path/GrpcServiceName/KcpSeed instead.")]
     public string Path { get; set; }
+
     public string StreamSecurity { get; set; }
     public string AllowInsecure { get; set; }
     public string Sni { get; set; }
@@ -179,8 +183,10 @@ public class ProfileItem
     public string ShortId { get; set; }
     public string SpiderX { get; set; }
     public string Mldsa65Verify { get; set; }
+
     [Obsolete("Use TransportExtra.XhttpExtra instead.")]
     public string Extra { get; set; }
+
     public bool? MuxEnabled { get; set; }
     public string Cert { get; set; }
     public string CertSha { get; set; }

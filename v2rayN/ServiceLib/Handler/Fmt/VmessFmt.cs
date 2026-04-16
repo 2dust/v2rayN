@@ -95,7 +95,7 @@ public class VmessFmt : BaseFmt
         }
 
         item.Network = Global.DefaultNetwork;
-        var transport = new TransportExtra
+        var transport = new TransportExtraItem
         {
             RawHeaderType = Global.None,
         };

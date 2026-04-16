@@ -1,6 +1,6 @@
 namespace ServiceLib.Models;
 
-public record TransportExtra
+public record TransportExtraItem
 {
     public string? RawHeaderType { get; init; }
 
