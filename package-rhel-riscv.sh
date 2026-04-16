@@ -37,7 +37,7 @@ DOTNET_RISCV_VERSION="10.0.105"
 DOTNET_RISCV_BASE="https://github.com/filipnavara/dotnet-riscv/releases/download"
 DOTNET_RISCV_FILE="dotnet-sdk-${DOTNET_RISCV_VERSION}-linux-riscv64.tar.gz"
 DOTNET_SDK_URL="${DOTNET_RISCV_BASE}/${DOTNET_RISCV_VERSION}/${DOTNET_RISCV_FILE}"
-SKIA_VER="${SKIA_VER:-3.119.1}"
+SKIA_VER="${SKIA_VER:-3.119.2}"
 HARFBUZZ_VER="${HARFBUZZ_VER:-8.3.1.1}"
 
 # If the first argument starts with --, do not treat it as a version number
@@ -111,9 +111,9 @@ build_sqlite_native_riscv64() {
   mkdir -p "$outdir"
   workdir="$(mktemp -d)"
 
-  # SQLite 3.49.1 amalgamation
-  sqlite_year="2025"
-  sqlite_ver="3490100"
+  # SQLite 3.51.3 amalgamation
+  sqlite_year="2026"
+  sqlite_ver="3510300"
   sqlite_zip="sqlite-amalgamation-${sqlite_ver}.zip"
 
   echo "[+] Download SQLite amalgamation: ${sqlite_zip}"
