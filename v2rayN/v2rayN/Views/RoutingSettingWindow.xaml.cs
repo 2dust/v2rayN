@@ -12,7 +12,6 @@ public partial class RoutingSettingWindow
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
-        btnCancel.Click += btnCancel_Click;
 
         ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
@@ -33,8 +32,6 @@ public partial class RoutingSettingWindow
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedSetDefaultCmd, v => v.menuRoutingAdvancedSetDefault).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
@@ -43,10 +40,6 @@ public partial class RoutingSettingWindow
     {
         switch (action)
         {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
             case EViewAction.ShowYesNo:
                 if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
                 {
@@ -68,6 +61,7 @@ public partial class RoutingSettingWindow
 
     private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
+        // DomainStrategy is auto-saved reactively; just ensure the caller knows changes were made
         if (ViewModel?.IsModified == true)
         {
             DialogResult = true;
@@ -128,17 +122,5 @@ public partial class RoutingSettingWindow
     private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
-    }
-
-    private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-        if (ViewModel?.IsModified == true)
-        {
-            DialogResult = true;
-        }
-        else
-        {
-            Close();
-        }
     }
 }

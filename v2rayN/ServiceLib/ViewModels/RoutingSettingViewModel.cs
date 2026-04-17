@@ -22,7 +22,6 @@ public class RoutingSettingViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
     public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     public bool IsModified { get; set; }
 
     #endregion Reactive
@@ -53,12 +52,19 @@ public class RoutingSettingViewModel : MyReactiveObject
             await RoutingAdvancedImportRules();
         });
 
-        SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await SaveRoutingAsync();
-        });
-
         _ = Init();
+
+        // Auto-save DomainStrategy when changed
+        this.WhenAnyValue(
+            x => x.DomainStrategy,
+            x => x.DomainStrategy4Singbox)
+            .Skip(1)
+            .DistinctUntilChanged()
+            .Subscribe(x =>
+            {
+                IsModified = true;
+                _ = SaveSettingsAsync();
+            });
     }
 
     private async Task Init()
@@ -96,20 +102,14 @@ public class RoutingSettingViewModel : MyReactiveObject
         }
     }
 
-    private async Task SaveRoutingAsync()
+    /// <summary>
+    /// Save DomainStrategy settings
+    /// </summary>
+    public async Task SaveSettingsAsync()
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-
-        if (await ConfigHandler.SaveConfig(_config) == 0)
-        {
-            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
-        }
-        else
-        {
-            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
-        }
+        await ConfigHandler.SaveConfig(_config);
     }
 
     #endregion Refresh Save
