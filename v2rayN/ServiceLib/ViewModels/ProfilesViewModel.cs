@@ -333,6 +333,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
         _config.SubIndexId = SelectedSub?.Id;
+        await ConfigHandler.SaveConfig(_config);
 
         await RefreshServers();
 
@@ -393,7 +394,7 @@ public class ProfilesViewModel : MyReactiveObject
         }
         SelectedSub = (_config.SubIndexId.IsNotEmpty()
                         ? SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
-                        : null) ?? SubItems.LastOrDefault();
+                        : null) ?? SubItems.FirstOrDefault();
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
