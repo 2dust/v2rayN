@@ -1327,7 +1327,7 @@
     <value>XHTTP 模式</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
+    <value>原始 JSON，格式： { XHTTPObject }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>关闭窗口时隐藏至托盘</value>
@@ -1706,5 +1706,8 @@
   </data>
   <data name="TbHost" xml:space="preserve">
     <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
   </data>
 </root>

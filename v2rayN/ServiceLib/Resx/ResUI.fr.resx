@@ -1327,7 +1327,7 @@
     <value>Mode XHTTP</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>JSON brut XHTTP Extra, format : { XHTTPObject }</value>
+    <value>Raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Masquer dans la barre d’état à la fermeture de la fenêtre</value>
@@ -1706,5 +1706,8 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbHost" xml:space="preserve">
     <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
   </data>
 </root>

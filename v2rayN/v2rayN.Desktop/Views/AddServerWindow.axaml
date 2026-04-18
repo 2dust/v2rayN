@@ -814,17 +814,17 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Top"
-                                Text="{x:Static resx:ResUI.TransportExtraTip}"
+                                Text="{x:Static resx:ResUI.TransportExtra}"
                                 TextWrapping="Wrap" />
-                            <views:JsonEditor
-                                x:Name="txtExtraXhttp"
+                            <Expander
                                 Grid.Row="3"
                                 Grid.Column="1"
-                                Width="400"
-                                MinHeight="100"
-                                Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center" />
+                                IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock FontWeight="Normal" Text="{x:Static resx:ResUI.TransportExtraTip}" />
+                                </Expander.Header>
+                                <views:JsonEditor x:Name="txtExtraXhttp" HorizontalAlignment="Stretch" />
+                            </Expander>
                         </Grid>
 
                         <Grid

@@ -1071,7 +1071,7 @@
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Top"
                                 Style="{StaticResource ToolbarTextBlock}"
-                                Text="{x:Static resx:ResUI.TransportExtraTip}"
+                                Text="{x:Static resx:ResUI.TransportExtra}"
                                 TextWrapping="Wrap" />
                             <TextBox
                                 x:Name="txtExtraXhttp"
@@ -1080,8 +1080,10 @@
                                 Width="400"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
+                                materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TransportExtraTip}"
                                 AcceptsReturn="True"
-                                MinLines="6"
+                                MaxLines="12"
+                                MinLines="3"
                                 Style="{StaticResource MyOutlinedTextBox}"
                                 TextWrapping="Wrap" />
                         </Grid>

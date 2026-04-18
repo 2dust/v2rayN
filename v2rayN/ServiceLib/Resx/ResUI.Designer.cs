@@ -4681,7 +4681,16 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 XHTTP Extra raw JSON, format: { XHTTP Object } 的本地化字符串。
+        ///   查找类似 XHTTP Extra 的本地化字符串。
+        /// </summary>
+        public static string TransportExtra {
+            get {
+                return ResourceManager.GetString("TransportExtra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Raw JSON, format: { XHTTP Object } 的本地化字符串。
         /// </summary>
         public static string TransportExtraTip {
             get {

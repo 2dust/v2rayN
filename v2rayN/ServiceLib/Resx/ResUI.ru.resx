@@ -1321,7 +1321,7 @@
     <value>XHTTP-режим</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>Дополнительный сырой JSON для XHTTP, формат: { XHTTP Object }</value>
+    <value>Raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Сворачивать в трей при закрытии окна</value>
@@ -1703,5 +1703,8 @@
   </data>
   <data name="TbHost" xml:space="preserve">
     <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
   </data>
 </root>
