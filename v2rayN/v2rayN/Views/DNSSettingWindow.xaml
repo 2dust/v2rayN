@@ -453,16 +453,37 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <TextBox
-                        x:Name="txtnormalDNSCompatible"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Stretch"
-                        materialDesign:HintAssist.Hint="HTTP/SOCKS"
-                        AcceptsReturn="True"
-                        BorderThickness="1"
-                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        TextWrapping="Wrap"
-                        VerticalScrollBarVisibility="Auto" />
+                    <Grid Margin="{StaticResource Margin8}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            x:Name="txtnormalDNSCompatible"
+                            Grid.Column="0"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="HTTP/SOCKS"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                        <TextBox
+                            x:Name="txttunDNSCompatible"
+                            Grid.Column="2"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TbSettingsTunMode}"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                    </Grid>
                 </DockPanel>
             </TabItem>
 

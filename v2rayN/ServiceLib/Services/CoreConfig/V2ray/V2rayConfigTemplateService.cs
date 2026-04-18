@@ -5,12 +5,18 @@ public partial class CoreConfigV2rayService
     private string ApplyFullConfigTemplate()
     {
         var fullConfigTemplate = context.FullConfigTemplate;
-        if (fullConfigTemplate == null || !fullConfigTemplate.Enabled || fullConfigTemplate.Config.IsNullOrEmpty())
+        if (fullConfigTemplate is not { Enabled: true })
         {
             return JsonUtils.Serialize(_coreConfig);
         }
 
-        var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplate.Config);
+        var fullConfigTemplateItem = context.IsTunEnabled ? fullConfigTemplate.TunConfig : fullConfigTemplate.Config;
+        if (fullConfigTemplateItem.IsNullOrEmpty())
+        {
+            return JsonUtils.Serialize(_coreConfig);
+        }
+
+        var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
         if (fullConfigTemplateNode == null)
         {
             return JsonUtils.Serialize(_coreConfig);

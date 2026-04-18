@@ -370,11 +370,11 @@ public partial class CoreConfigV2rayService
         try
         {
             var item = context.RawDnsItem;
-            var normalDNS = item?.NormalDNS;
+            var customDNS = context.IsTunEnabled ? item?.TunDNS : item?.NormalDNS;
             var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
-            if (normalDNS.IsNullOrEmpty())
+            if (customDNS.IsNullOrEmpty())
             {
-                normalDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
+                customDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
             }
 
             //Outbound Freedom domainStrategy
@@ -389,11 +389,11 @@ public partial class CoreConfigV2rayService
                 }
             }
 
-            var obj = JsonUtils.ParseJson(normalDNS);
+            var obj = JsonUtils.ParseJson(customDNS);
             if (obj is null)
             {
                 List<string> servers = [];
-                var arrDNS = normalDNS.Split(',');
+                var arrDNS = customDNS.Split(',');
                 foreach (var str in arrDNS)
                 {
                     servers.Add(str);

@@ -107,16 +107,37 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <TextBox
-                        x:Name="rayFullConfigTemplate"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Stretch"
-                        materialDesign:HintAssist.Hint="xray config template json"
-                        AcceptsReturn="True"
-                        BorderThickness="1"
-                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        TextWrapping="Wrap"
-                        VerticalScrollBarVisibility="Auto" />
+                    <Grid Margin="{StaticResource Margin8}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                            x:Name="rayFullConfigTemplate"
+                            Grid.Column="0"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="xray config template json"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                        <TextBox
+                            x:Name="rayFullTunConfigTemplate"
+                            Grid.Column="2"
+                            VerticalAlignment="Stretch"
+                            materialDesign:HintAssist.Hint="xray tun config template json"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbSBFullConfigTemplate}">

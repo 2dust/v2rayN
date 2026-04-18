@@ -90,13 +90,26 @@
                         </StackPanel>
                     </WrapPanel>
 
-                    <HeaderedContentControl
-                        Margin="{StaticResource Margin4}"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        Header="xray config template json">
-                        <views:JsonEditor x:Name="rayFullConfigTemplate" VerticalAlignment="Stretch" />
-                    </HeaderedContentControl>
+                    <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="*,10,*">
+
+                        <HeaderedContentControl
+                            Grid.Column="0"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Header="xray config template json">
+                            <views:JsonEditor x:Name="rayFullConfigTemplate" VerticalAlignment="Stretch" />
+                        </HeaderedContentControl>
+
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                        <HeaderedContentControl
+                            Grid.Column="2"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Header="xray tun config template json">
+                            <views:JsonEditor x:Name="rayFullTunConfigTemplate" VerticalAlignment="Stretch" />
+                        </HeaderedContentControl>
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.TbSBFullConfigTemplate}">
