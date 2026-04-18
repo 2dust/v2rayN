@@ -94,7 +94,7 @@ public class Global
     public const string SingboxHostsDNSTag = "hosts_dns";
     public const string SingboxFakeDNSTag = "fake_dns";
 
-    public const int Hysteria2DefaultHopInt = 10;
+    public const int Hysteria2DefaultHopInt = 30;
 
     public const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";
 

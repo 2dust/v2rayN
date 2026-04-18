@@ -197,7 +197,7 @@ public class HysteriaItem
 {
     public int UpMbps { get; set; }
     public int DownMbps { get; set; }
-    public int HopInterval { get; set; } = 30;
+    public int HopInterval { get; set; } = Global.Hysteria2DefaultHopInt;
 }
 
 [Serializable]

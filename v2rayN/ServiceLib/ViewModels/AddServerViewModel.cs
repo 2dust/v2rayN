@@ -292,7 +292,7 @@ public class AddServerViewModel : MyReactiveObject
         SalamanderPass = protocolExtra?.SalamanderPass ?? string.Empty;
         UpMbps = protocolExtra?.UpMbps;
         DownMbps = protocolExtra?.DownMbps;
-        HopInterval = protocolExtra?.HopInterval.IsNullOrEmpty() ?? true ? Global.Hysteria2DefaultHopInt.ToString() : protocolExtra.HopInterval;
+        HopInterval = protocolExtra?.HopInterval ?? string.Empty;
         VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
         VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
         SsMethod = protocolExtra?.SsMethod ?? string.Empty;
