@@ -1,5 +1,5 @@
 using Avalonia.Platform.Storage;
-using MsBox.Avalonia;
+using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop.Common;
 
@@ -9,8 +9,9 @@ internal class UI
 
     public static async Task<ButtonResult> ShowYesNo(Window owner, string msg)
     {
-        var box = MessageBoxManager.GetMessageBoxStandard(caption, msg, ButtonEnum.YesNo);
-        return await box.ShowWindowDialogAsync(owner);
+        var box = new MessageBoxDialog(caption, msg);
+        var result = await box.ShowDialog<ButtonResult>(owner);
+        return result == ButtonResult.Yes ? ButtonResult.Yes : ButtonResult.No;
     }
 
     public static async Task<string?> OpenFileDialog(Window owner, FilePickerFileType? filter)

@@ -1,0 +1,53 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.MessageBoxDialog"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    Width="420"
+    MinWidth="350"
+    MaxWidth="600"
+    CanResize="False"
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    SystemDecorations="Full"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+    <Grid Margin="24" RowDefinitions="*,Auto">
+        <ScrollViewer
+            Grid.Row="0"
+            MinHeight="60"
+            MaxHeight="300"
+            Margin="0,0,0,24"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <TextBlock
+                x:Name="txtMessage"
+                VerticalAlignment="Center"
+                FontSize="14"
+                LineHeight="22"
+                TextWrapping="Wrap" />
+        </ScrollViewer>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="12">
+            <Button
+                x:Name="btnYes"
+                MinWidth="90"
+                HorizontalContentAlignment="Center"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
+            <Button
+                x:Name="btnNo"
+                MinWidth="90"
+                HorizontalContentAlignment="Center"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -20,7 +20,6 @@ global using Avalonia.Platform;
 global using Avalonia.Styling;
 global using Avalonia.Threading;
 global using DynamicData;
-global using MsBox.Avalonia.Enums;
 global using ReactiveUI;
 global using ReactiveUI.Avalonia;
 global using ReactiveUI.Fody.Helpers;
