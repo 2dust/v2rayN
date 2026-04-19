@@ -88,10 +88,10 @@ if command -v apt-get >/dev/null 2>&1; then
       libc6:arm64 libgcc-s1:arm64 libstdc++6:arm64 zlib1g:arm64 libfontconfig1:arm64
   fi
 
-  # Install .NET SDK 8 via official script
+  # Install .NET SDK 10 via official script
   wget -q https://dot.net/v1/dotnet-install.sh
   chmod +x dotnet-install.sh
-  ./dotnet-install.sh --channel 8.0 --install-dir "$HOME/.dotnet"
+  ./dotnet-install.sh --channel 10.0 --install-dir "$HOME/.dotnet"
 
   export PATH="$HOME/.dotnet:$PATH"
   export DOTNET_ROOT="$HOME/.dotnet"
@@ -101,7 +101,7 @@ fi
 
 if [[ "$install_ok" -ne 1 ]]; then
   echo "Could not auto-install dependencies for '$ID'. Make sure these are available:"
-  echo "dotnet-sdk 8.x, curl, unzip, tar, rsync, git, dpkg-deb, desktop-file-utils, xdg-utils"
+  echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, git, dpkg-deb, desktop-file-utils, xdg-utils"
   exit 1
 fi
 
@@ -389,7 +389,7 @@ build_for_arch() {
   echo "[*] Building for target: $short  (RID=$rid, DEB arch=$deb_arch)"
 
   dotnet clean "$PROJECT" -c Release
-  rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
+  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
 
   dotnet restore "$PROJECT"
   dotnet publish "$PROJECT" \
@@ -399,7 +399,7 @@ build_for_arch() {
 
   local RID_DIR="$rid"
   local PUBDIR
-  PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
+  PUBDIR="$(dirname "$PROJECT")/bin/Release/net10.0/${RID_DIR}/publish"
   [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
 
   local WORKDIR PKGROOT STAGE DEBIAN_DIR
