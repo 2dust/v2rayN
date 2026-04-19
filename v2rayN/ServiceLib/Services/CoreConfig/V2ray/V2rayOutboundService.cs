@@ -12,10 +12,6 @@ public partial class CoreConfigV2rayService
             GenObservatory(multipleLoad);
             GenBalancer(multipleLoad);
         }
-        if (_config.CoreBasicItem.EnableFragment)
-        {
-            ApplyOutboundFragment();
-        }
         if (context.IsTunEnabled)
         {
             _coreConfig.outbounds.Add(BuildDnsOutbound());

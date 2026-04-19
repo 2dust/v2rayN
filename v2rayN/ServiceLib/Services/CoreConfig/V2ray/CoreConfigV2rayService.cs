@@ -55,6 +55,11 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             GenDns();
 
             GenStatistic();
+
+            if (_config.CoreBasicItem.EnableFragment)
+            {
+                ApplyOutboundFragment();
+            }
             ApplyOutboundSendThrough();
 
             var finalRule = BuildFinalRule();
@@ -189,6 +194,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 _coreConfig.routing.rules.Add(rule);
             }
 
+            if (_config.CoreBasicItem.EnableFragment)
+            {
+                ApplyOutboundFragment();
+            }
             ApplyOutboundSendThrough();
             //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
             ret.Success = true;
@@ -250,6 +259,11 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             });
 
             _coreConfig.routing.rules.Add(BuildFinalRule());
+
+            if (_config.CoreBasicItem.EnableFragment)
+            {
+                ApplyOutboundFragment();
+            }
             ApplyOutboundSendThrough();
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
