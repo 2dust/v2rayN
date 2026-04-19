@@ -419,7 +419,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<int> DoUdpTest(ServerTestItem it)
     {
-        var udpService = UdpService.CreateFromTarget(_config?.SpeedTestItem.UdpTestTarget, out var udpTestUrl);
+        var udpService = UdpTestService.CreateFromTarget(_config?.SpeedTestItem.UdpTestTarget, out var udpTestUrl);
         var responseTime = -1;
         try
         {

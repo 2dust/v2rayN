@@ -2,7 +2,7 @@ using ServiceLib.UdpTest.Tester;
 
 namespace ServiceLib.UdpTest;
 
-public class UdpService
+public class UdpTestService
 {
     private const string DefaultUdpTestType = "ntp";
     private readonly IUdpTest _udpTest;
@@ -16,24 +16,24 @@ public class UdpService
             ["mcbe"] = () => new McBeService(),
         };
 
-    private UdpService(IUdpTest udpTest)
+    private UdpTestService(IUdpTest udpTest)
     {
         _udpTest = udpTest;
     }
 
-    public static UdpService Create(string? udpTestType)
+    public static UdpTestService Create(string? udpTestType)
     {
         if (string.IsNullOrEmpty(udpTestType))
         {
-            return new UdpService(UdpTestFactories[DefaultUdpTestType]());
+            return new UdpTestService(UdpTestFactories[DefaultUdpTestType]());
         }
 
         return UdpTestFactories.TryGetValue(udpTestType, out var factory)
-            ? new UdpService(factory())
-            : new UdpService(UdpTestFactories[DefaultUdpTestType]());
+            ? new UdpTestService(factory())
+            : new UdpTestService(UdpTestFactories[DefaultUdpTestType]());
     }
 
-    public static UdpService CreateFromTarget(string? udpTestTarget, out string targetServerHost)
+    public static UdpTestService CreateFromTarget(string? udpTestTarget, out string targetServerHost)
     {
         var parts = udpTestTarget?.Split(':', 2);
         var udpTestType = parts?.Length > 0 ? parts[0] : DefaultUdpTestType;
