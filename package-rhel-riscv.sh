@@ -69,7 +69,7 @@ if [[ -n "${VERSION_ARG:-}" && -n "${BUILD_FROM:-}" ]]; then
 fi
 
 apply_riscv_patch() {
-  # Upgrade net8.0 -> net10.0
+  # Ensure all project files target net10.0
   find . -type f \( -name "*.csproj" -o -name "*.props" -o -name "*.targets" \) \
     -exec sed -i 's/net8\.0/net10.0/g' {} +
 

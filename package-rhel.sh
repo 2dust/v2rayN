@@ -71,13 +71,13 @@ host_arch="$(uname -m)"
 install_ok=0
 
 if command -v dnf >/dev/null 2>&1; then
-  sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-8.0 \
+  sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
     && install_ok=1
 fi
 
 if [[ "$install_ok" -ne 1 ]]; then
   echo "Could not auto-install dependencies for '$ID'. Make sure these are available:"
-  echo "dotnet-sdk 8.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+  echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
 fi
 
 # Root directory
@@ -372,7 +372,7 @@ build_for_arch() {
 
   # .NET publish (self-contained) for this RID
   dotnet clean "$PROJECT" -c Release
-  rm -rf "$(dirname "$PROJECT")/bin/Release/net8.0" || true
+  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
 
   dotnet restore "$PROJECT"
   dotnet publish "$PROJECT" \
@@ -383,7 +383,7 @@ build_for_arch() {
   # Per-arch variables (scoped)
   local RID_DIR="$rid"
   local PUBDIR
-  PUBDIR="$(dirname "$PROJECT")/bin/Release/net8.0/${RID_DIR}/publish"
+  PUBDIR="$(dirname "$PROJECT")/bin/Release/net10.0/${RID_DIR}/publish"
   [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
 
   # Per-arch working area
