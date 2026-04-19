@@ -1,4 +1,4 @@
-using ServiceLib.Services.Udp;
+using ServiceLib.UdpTest;
 
 namespace ServiceLib.Services;
 

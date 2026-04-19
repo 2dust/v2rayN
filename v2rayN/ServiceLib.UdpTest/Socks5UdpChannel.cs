@@ -1,6 +1,4 @@
-using System.Buffers.Binary;
-
-namespace ServiceLib.Services.Udp;
+namespace ServiceLib.UdpTest;
 
 public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposable
 {

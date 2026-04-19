@@ -1,27 +1,29 @@
-namespace ServiceLib.Services.Udp;
+using ServiceLib.UdpTest.Tester;
+
+namespace ServiceLib.UdpTest;
 
 public class UdpService
 {
     private const string DefaultUdpTestType = "ntp";
-    private readonly Test.IUdpTest _udpTest;
+    private readonly IUdpTest _udpTest;
 
-    private static readonly IReadOnlyDictionary<string, Func<Test.IUdpTest>> UdpTestFactories =
-        new Dictionary<string, Func<Test.IUdpTest>>(StringComparer.OrdinalIgnoreCase)
+    private static readonly IReadOnlyDictionary<string, Func<IUdpTest>> UdpTestFactories =
+        new Dictionary<string, Func<IUdpTest>>(StringComparer.OrdinalIgnoreCase)
         {
-            ["ntp"] = () => new Test.NtpService(),
-            ["dns"] = () => new Test.DnsService(),
-            ["stun"] = () => new Test.StunService(),
-            ["mcbe"] = () => new Test.McBeService(),
+            ["ntp"] = () => new NtpService(),
+            ["dns"] = () => new DnsService(),
+            ["stun"] = () => new StunService(),
+            ["mcbe"] = () => new McBeService(),
         };
 
-    private UdpService(Test.IUdpTest udpTest)
+    private UdpService(IUdpTest udpTest)
     {
         _udpTest = udpTest;
     }
 
     public static UdpService Create(string? udpTestType)
     {
-        if (udpTestType.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(udpTestType))
         {
             return new UdpService(UdpTestFactories[DefaultUdpTestType]());
         }
@@ -37,7 +39,7 @@ public class UdpService
         var udpTestType = parts?.Length > 0 ? parts[0] : DefaultUdpTestType;
 
         var udpService = Create(udpTestType);
-        targetServerHost = parts?.Length > 1 && parts[1].IsNotEmpty()
+        targetServerHost = parts?.Length > 1 && !string.IsNullOrEmpty(parts[1])
             ? parts[1]
             : udpService._udpTest.GetDefaultTargetHost();
 
@@ -46,7 +48,7 @@ public class UdpService
 
     private (string host, ushort port) ParseHostAndPort(string targetServerHost)
     {
-        if (targetServerHost.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(targetServerHost))
         {
             return (_udpTest.GetDefaultTargetHost(), _udpTest.GetDefaultTargetPort());
         }
@@ -95,7 +97,7 @@ public class UdpService
         {
             throw new InvalidOperationException("Failed to build UDP request packet.");
         }
-        using var channel = new Socks5UdpChannel(Global.Loopback, socks5Port);
+        using var channel = new Socks5UdpChannel("127.0.0.1", socks5Port);
         if (!await channel.EstablishUdpAssociationAsync(cancellationToken).ConfigureAwait(false))
         {
             throw new Exception("Failed to establish UDP association with SOCKS5 proxy.");

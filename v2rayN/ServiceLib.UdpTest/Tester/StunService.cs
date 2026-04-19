@@ -1,4 +1,4 @@
-namespace ServiceLib.Services.Udp.Test;
+namespace ServiceLib.UdpTest.Tester;
 
 public class StunService : IUdpTest
 {
