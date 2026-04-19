@@ -45,7 +45,7 @@
                     Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconEdit}" />
+                        <PathIcon Data="{StaticResource SemiIconEditStroked}" />
                     </Button.Content>
                 </Button>
                 <Button
@@ -54,7 +54,7 @@
                     Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconPlus}" />
+                        <PathIcon Data="{StaticResource SemiIconPlusCircleStroked}" />
                     </Button.Content>
                 </Button>
 
@@ -71,7 +71,7 @@
                     Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconExpand}" />
+                        <PathIcon Data="{StaticResource SemiIconWindowAdaptionStroked}" />
                     </Button.Content>
                 </Button>
 
@@ -81,7 +81,7 @@
                     Classes="IconButton Success"
                     ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconBolt}" />
+                        <PathIcon Data="{StaticResource SemiIconLightningStroked}" />
                     </Button.Content>
                 </Button>
                 <Button
