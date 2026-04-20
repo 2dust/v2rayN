@@ -429,15 +429,7 @@ public partial class CoreConfigSingboxService
                 return;
             }
             _coreConfig.dns = dns4Sbox;
-            if (dns4Sbox.servers?.Count > 0 &&
-                dns4Sbox.servers.First().address.IsNullOrEmpty())
-            {
-                GenDnsProtectCustom();
-            }
-            else
-            {
-                GenDnsProtectCustomLegacy();
-            }
+            GenDnsProtectCustom();
         }
         catch (Exception ex)
         {
@@ -477,23 +469,6 @@ public partial class CoreConfigSingboxService
         }
 
         _coreConfig.dns = dns4Sbox;
-    }
-
-    private void GenDnsProtectCustomLegacy()
-    {
-        GenDnsProtectCustom();
-
-        _coreConfig.dns?.servers?.RemoveAll(s => s.tag == Global.SingboxLocalDNSTag);
-        var dnsItem = context.RawDnsItem;
-        var localDnsServer = new Server4Sbox()
-        {
-            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress)
-                ? Global.DomainPureIPDNSAddress.FirstOrDefault()
-                : dnsItem?.DomainDNSAddress,
-            tag = Global.SingboxLocalDNSTag,
-            detour = Global.DirectTag,
-        };
-        _coreConfig.dns?.servers?.Add(localDnsServer);
     }
 
     private Rule4Sbox? BuildProtectDomainRule()
