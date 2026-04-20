@@ -481,7 +481,7 @@ public class CoreConfigSingboxServiceTests
         {
             servers =
             [
-                new Server4Sbox { tag = "remote", address = "8.8.8.8", detour = Global.ProxyTag, }
+                new Server4Sbox { tag = "remote", type = "udp", server = "8.8.8.8", detour = Global.ProxyTag, }
             ],
             rules = [],
         };
@@ -503,7 +503,7 @@ public class CoreConfigSingboxServiceTests
         result.Success.Should().BeTrue($"ret msg: {result.Msg}");
         var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
 
-        cfg.dns.servers.Should().Contain(s => s.tag == "remote" && s.address == "8.8.8.8");
+        cfg.dns.servers.Should().Contain(s => s.tag == "remote" && s.type == "udp" && s.server == "8.8.8.8");
         cfg.dns.servers.Should().Contain(s => s.tag == Global.SingboxLocalDNSTag);
         cfg.dns.rules.Should().Contain(r => r.clash_mode == ERuleMode.Global.ToString());
         cfg.dns.rules.Should().Contain(r => r.clash_mode == ERuleMode.Direct.ToString());
