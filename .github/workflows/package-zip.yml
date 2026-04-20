@@ -55,6 +55,9 @@ jobs:
       if: inputs.target == 'windows-desktop'
       run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
     
+    - name: Sleep for race condition between matrix jobs
+      run: sleep $(awk 'BEGIN { srand(); printf "%.3f", rand()*2 }')
+
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
       with:

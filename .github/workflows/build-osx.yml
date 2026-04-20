@@ -61,6 +61,9 @@ jobs:
 
     - name: Package dmg
       run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
+
+    - name: Sleep for race condition between matrix jobs
+      run: sleep $(awk 'BEGIN { srand(); printf "%.3f", rand()*2 }')
     
     - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
