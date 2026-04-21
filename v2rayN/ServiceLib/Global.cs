@@ -511,6 +511,7 @@ public class Global
     [
         "http",
         "tls",
+        "quic",
         "bittorrent"
     ];
 
@@ -528,7 +529,6 @@ public class Global
         "tls",
         "quic",
         "fakedns",
-        "fakedns+others"
     ];
 
     public static readonly List<int> TunMtus =
