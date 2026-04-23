@@ -251,3 +251,77 @@ jobs:
             --data-binary @"$f" \
             "${upload_url}?name=${f##*/}"
         done
+
+  deb-riscv64:
+    name: build and release deb riscv64
+    if: |
+      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-24.04-riscv
+    container: debian:13
+    env:
+      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
+
+    steps:
+    - name: Prepare tools (Debian)
+      shell: bash
+      run: |
+        set -euo pipefail
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file \
+                           ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev \
+                           gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1
+
+    - name: Checkout repo (for scripts)
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        rm -rf ./*
+        git init .
+        git config --global --add safe.directory "$PWD"
+        git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git fetch --depth=1 origin "${GITHUB_SHA}"
+        git checkout FETCH_HEAD
+        git submodule update --init --recursive
+
+    - name: Ensure script permissions
+      run: chmod 755 package-debian-riscv.sh
+
+    - name: Package DEB (Debian-family)
+      run: ./package-debian-riscv.sh "${RELEASE_TAG}"
+
+    - name: Collect DEBs into workspace
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/dist/deb-riscv64"
+        rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-riscv64/" || true
+        find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" \
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
+        echo "==== Dist tree ===="
+        ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
+
+    - name: Upload DEBs to release
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+        shopt -s globstar nullglob
+
+        files=(dist/deb-riscv64/**/*.deb)
+        (( ${#files[@]} )) || { echo "No DEBs found."; exit 1; }
+
+        api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
+        upload_url="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$api" | jq -r '.upload_url // empty' | sed 's/{?name,label}//')"
+        [[ "$upload_url" ]] || { echo "Release upload URL not found: ${RELEASE_TAG}"; exit 1; }
+
+        for f in "${files[@]}"; do
+          echo "Uploading ${f##*/}"
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Content-Type: application/vnd.debian.binary-package" \
+            --data-binary @"$f" \
+            "${upload_url}?name=${f##*/}"
+        done
