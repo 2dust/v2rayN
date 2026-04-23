@@ -1,0 +1,258 @@
+name: update riscv dependent versions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * *'
+  push:
+    branches: 
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-riscv-dependent
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: resolve
+        id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET_FILES=(
+            package-rhel-riscv.sh
+            package-debian-riscv.sh
+          )
+
+          echo "==> restore projects"
+          find . -name '*.csproj' | while read -r p; do
+            if grep -q '<TargetFramework>.*-windows' "$p"; then
+              echo "[skip] $p"
+            else
+              echo "[restore] $p"
+              dotnet restore "$p" -p:EnableWindowsTargeting=true || true
+            fi
+          done
+
+          echo "==> collect assets"
+          mapfile -t ASSETS < <(find . -path '*/obj/project.assets.json')
+          printf '  %s\n' "${ASSETS[@]}"
+
+          ALL_LIBS=()
+          for f in "${ASSETS[@]}"; do
+            mapfile -t libs < <(jq -r '.libraries | keys[]' "$f")
+            ALL_LIBS+=("${libs[@]}")
+          done
+          mapfile -t LIBS < <(printf '%s\n' "${ALL_LIBS[@]}" | sort -u)
+
+          extract() {
+            local name="$1"
+            for i in "${LIBS[@]}"; do
+              [[ "$i" == "$name/"* ]] && echo "${i#*/}"
+            done | sort -u
+          }
+
+          norm_version() { echo "${1#v}"; }
+          is_preview() { [[ "$(norm_version "$1")" == *-* ]]; }
+          base_version() { local v; v="$(norm_version "$1")"; echo "${v%%-*}"; }
+
+          key() {
+            local v core pre a b c p1 p2 p3
+            v="$(norm_version "$1")"
+            core="${v%%-*}"
+            [[ "$v" == *-* ]] && pre="${v#*-}" || pre=""
+
+            IFS='.' read -r a b c <<< "$core"
+            a=${a//[^0-9]/}; a=${a:-0}
+            b=${b//[^0-9]/}; b=${b:-0}
+            c=${c//[^0-9]/}; c=${c:-0}
+
+            if [[ -z "$pre" ]]; then
+              printf "%05d.%05d.%05d.1\n" "$a" "$b" "$c"
+            else
+              pre="${pre#preview.}"
+              IFS='.' read -ra p <<< "$pre"
+              p1=${p[0]:-0}; p1=${p1//[^0-9]/}; p1=${p1:-0}
+              p2=${p[1]:-0}; p2=${p2//[^0-9]/}; p2=${p2:-0}
+              p3=${p[2]:-0}; p3=${p3//[^0-9]/}; p3=${p3:-0}
+              printf "%05d.%05d.%05d.0.%05d.%05d.%05d\n" \
+                "$a" "$b" "$c" "$p1" "$p2" "$p3"
+            fi
+          }
+
+          latest() {
+            local best="" best_key="" cur cur_key
+            for cur in "$@"; do
+              [[ -n "$cur" ]] || continue
+              cur_key="$(key "$cur")"
+              echo "  candidate: $cur -> $cur_key" >&2
+              if [[ -z "$best_key" || "$cur_key" > "$best_key" ]]; then
+                best="$cur"
+                best_key="$cur_key"
+              fi
+            done
+            echo "$best"
+          }
+
+          log_mixed_versions() {
+            local name="$1"; shift
+            local versions=("$@") bases=() v b
+            mapfile -t bases < <(
+              for v in "${versions[@]}"; do
+                [[ -n "$v" ]] && base_version "$v"
+              done | sort -u
+            )
+
+            for b in "${bases[@]}"; do
+              local has_stable=0 has_preview=0 matched=()
+              for v in "${versions[@]}"; do
+                [[ -n "$v" ]] || continue
+                [[ "$(base_version "$v")" == "$b" ]] || continue
+                matched+=("$v")
+                if is_preview "$v"; then
+                  has_preview=1
+                else
+                  has_stable=1
+                fi
+              done
+
+              if [[ "$has_stable" -eq 1 && "$has_preview" -eq 1 ]]; then
+                echo "[warn] $name: stable and preview both exist for base $b, prefer stable for this base" >&2
+                printf '  %s\n' "${matched[@]}" >&2
+              fi
+            done
+          }
+
+          filter_mixed_versions() {
+            local versions=("$@") stable_bases=() v b
+            mapfile -t stable_bases < <(
+              for v in "${versions[@]}"; do
+                if [[ -n "$v" ]] && ! is_preview "$v"; then
+                  base_version "$v"
+                fi
+              done | sort -u
+            )
+
+            for v in "${versions[@]}"; do
+              [[ -n "$v" ]] || continue
+              b="$(base_version "$v")"
+              if is_preview "$v" && printf '%s\n' "${stable_bases[@]}" | grep -qxF "$b"; then
+                continue
+              fi
+              echo "$v"
+            done
+          }
+
+          read_var() {
+            sed -nE "s/^$2=\"\\\$\\{$2:-([^\"]+)\\}\".*/\\1/p" "$1" | head -n1
+          }
+
+          choose_final_version() {
+            local old="$1" new="$2"
+            [[ -n "$new" ]] || { echo "$old"; return; }
+            [[ -n "$old" ]] || { echo "$new"; return; }
+            if [[ "$(key "$old")" > "$(key "$new")" ]]; then
+              echo "$old"
+            else
+              echo "$new"
+            fi
+          }
+
+          update_file() {
+            local file="$1"
+            local old_skia old_harf final_skia final_harf changed=0
+
+            old_skia="$(read_var "$file" SKIA_VER)"
+            old_harf="$(read_var "$file" HARFBUZZ_VER)"
+            final_skia="$(choose_final_version "$old_skia" "$NEW_SKIA")"
+            final_harf="$(choose_final_version "$old_harf" "$NEW_HARF")"
+
+            echo "==> check $file"
+            echo "    SKIA_VER:      ${old_skia} -> ${NEW_SKIA} (apply: ${final_skia})"
+            echo "    HARFBUZZ_VER:  ${old_harf} -> ${NEW_HARF} (apply: ${final_harf})"
+
+            if [[ "$old_skia" != "$final_skia" ]]; then
+              sed -i -E "s|^SKIA_VER=.*|SKIA_VER=\"\\\${SKIA_VER:-$final_skia}\"|" "$file"
+              changed=1
+            fi
+            if [[ "$old_harf" != "$final_harf" ]]; then
+              sed -i -E "s|^HARFBUZZ_VER=.*|HARFBUZZ_VER=\"\\\${HARFBUZZ_VER:-$final_harf}\"|" "$file"
+              changed=1
+            fi
+
+            grep -qF "SKIA_VER=\"\${SKIA_VER:-$final_skia}\"" "$file"
+            grep -qF "HARFBUZZ_VER=\"\${HARFBUZZ_VER:-$final_harf}\"" "$file"
+            bash -n "$file"
+
+            [[ "$changed" -eq 1 ]]
+          }
+
+          mapfile -t SKIA < <(extract SkiaSharp)
+          mapfile -t HARF < <(extract HarfBuzzSharp)
+
+          echo "==> SkiaSharp"
+          printf '  %s\n' "${SKIA[@]}"
+          echo "==> HarfBuzzSharp"
+          printf '  %s\n' "${HARF[@]}"
+
+          log_mixed_versions "SkiaSharp" "${SKIA[@]}"
+          log_mixed_versions "HarfBuzzSharp" "${HARF[@]}"
+
+          mapfile -t SKIA < <(filter_mixed_versions "${SKIA[@]}")
+          mapfile -t HARF < <(filter_mixed_versions "${HARF[@]}")
+
+          NEW_SKIA="$(latest "${SKIA[@]}")"
+          NEW_HARF="$(latest "${HARF[@]}")"
+
+          echo "==> selected"
+          echo "  SKIA_VER=$NEW_SKIA"
+          echo "  HARFBUZZ_VER=$NEW_HARF"
+
+          any_changed=0
+          changed_files=()
+
+          for file in "${TARGET_FILES[@]}"; do
+            if update_file "$file"; then
+              any_changed=1
+              changed_files+=("$file")
+            fi
+          done
+
+          if [[ "$any_changed" -eq 0 ]]; then
+            echo "changed=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          {
+            echo "changed=1"
+            echo "changed_files<<EOF"
+            printf '%s\n' "${changed_files[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: commit
+        if: steps.resolve.outputs.changed == '1'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add package-rhel-riscv.sh package-debian-riscv.sh
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: update riscv native dependency versions"
+          git push
