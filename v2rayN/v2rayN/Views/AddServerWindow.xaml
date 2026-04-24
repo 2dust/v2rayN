@@ -1119,7 +1119,7 @@
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
-                                Text="Mtu" />
+                                Text="MTU" />
                             <TextBox
                                 x:Name="txtKcpMtu"
                                 Grid.Row="1"

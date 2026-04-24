@@ -850,7 +850,7 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
-                                Text="Mtu" />
+                                Text="MTU" />
                             <TextBox
                                 x:Name="txtKcpMtu"
                                 Grid.Row="1"
