@@ -13,7 +13,7 @@
     <PackageVersion Include="DialogHost.Avalonia" Version="0.11.0" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.12" />
     <PackageVersion Include="CliWrap" Version="3.10.1" />
-    <PackageVersion Include="Downloader" Version="5.1.0" />
+    <PackageVersion Include="Downloader" Version="5.2.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.1" />
