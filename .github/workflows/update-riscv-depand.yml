@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 10.0.1xx
 
       - run: sudo apt-get update && sudo apt-get install -y jq
 
