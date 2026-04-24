@@ -119,6 +119,10 @@ public class BaseFmt
                 {
                     dicQuery.Add("seed", UrlEncodeSafe(transport.KcpSeed));
                 }
+                if (transport.KcpMtu > 0)
+                {
+                    dicQuery.Add("mtu", transport.KcpMtu.ToString());
+                }
                 break;
 
             case nameof(ETransport.ws):
@@ -279,10 +283,13 @@ public class BaseFmt
 
             case nameof(ETransport.kcp):
                 var kcpSeed = GetQueryDecoded(query, "seed");
+                var kcpMtuStr = GetQueryValue(query, "mtu");
+                var kcpMtu = int.TryParse(kcpMtuStr, out var mtu) ? mtu : 0;
                 transport = transport with
                 {
                     KcpHeaderType = GetQueryValue(query, "headerType", Global.None),
                     KcpSeed = kcpSeed,
+                    KcpMtu = kcpMtu > 0 ? mtu : null,
                 };
                 break;
 

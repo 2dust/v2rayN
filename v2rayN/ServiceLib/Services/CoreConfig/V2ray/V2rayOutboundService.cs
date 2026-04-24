@@ -328,6 +328,7 @@ public partial class CoreConfigV2rayService
             var host = string.Empty;
             var path = string.Empty;
             var kcpSeed = string.Empty;
+            var kcpMtu = 0;
             var headerType = string.Empty;
             var xhttpExtra = string.Empty;
             switch (network)
@@ -341,6 +342,7 @@ public partial class CoreConfigV2rayService
                 case nameof(ETransport.kcp):
                     kcpSeed = transport.KcpSeed?.TrimEx() ?? string.Empty;
                     headerType = transport.KcpHeaderType?.TrimEx() ?? string.Empty;
+                    kcpMtu = transport.KcpMtu > 0 ? transport.KcpMtu!.Value : _config.KcpItem.Mtu;
                     break;
 
                 case nameof(ETransport.ws):
@@ -441,7 +443,7 @@ public partial class CoreConfigV2rayService
                 case nameof(ETransport.kcp):
                     KcpSettings4Ray kcpSettings = new()
                     {
-                        mtu = _config.KcpItem.Mtu,
+                        mtu = kcpMtu,
                         tti = _config.KcpItem.Tti
                     };
 
