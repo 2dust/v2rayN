@@ -375,11 +375,11 @@ download_geo_assets() {
   curl -fsSL -o "$bin_dir/geoip.metadb" "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb"
 
   for f in geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
-    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f"
+    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/lyc8503/sing-box-rules/refs/heads/rule-set-geoip/$f"
   done
 
   for f in geosite-cn.srs geosite-gfw.srs geosite-google.srs geosite-greatfire.srs geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
-    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f"
+    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/lyc8503/sing-box-rules/refs/heads/rule-set-geosite/$f"
   done
 
   unify_geo_layout "$outroot"
