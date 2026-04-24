@@ -4,15 +4,21 @@ set -euo pipefail
 VERSION_ARG=""
 WITH_CORE="both"
 FORCE_NETCORE=0
-ARCH_OVERRIDE=""
 BUILD_FROM=""
 XRAY_VER="${XRAY_VER:-}"
 SING_VER="${SING_VER:-}"
 
-MIN_KERNEL="6.12"
+MIN_KERNEL="5.10"
 PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
-RPM_TOPDIR="${HOME}/rpmbuild"
+OUTPUT_DIR="${HOME}/debbuild"
+DOTNET_TFM="net10.0"
+DOTNET_RISCV_VERSION="10.0.107"
+DOTNET_RISCV_BASE="https://github.com/xujiegb/dotnet-riscv/releases/download"
+DOTNET_RISCV_FILE="dotnet-sdk-${DOTNET_RISCV_VERSION}-linux-riscv64.tar.gz"
+DOTNET_SDK_URL="${DOTNET_RISCV_BASE}/${DOTNET_RISCV_VERSION}/${DOTNET_RISCV_FILE}"
+SKIA_VER="${SKIA_VER:-3.119.2}"
+HARFBUZZ_VER="${HARFBUZZ_VER:-8.3.1.3}"
 
 OS_ID=""
 OS_NAME=""
@@ -23,7 +29,7 @@ PROJECT=""
 VERSION=""
 BUILT_ALL=0
 
-declare -a BUILT_RPMS=()
+declare -a BUILT_DEBS=()
 
 die() {
   echo "$*" >&2
@@ -44,7 +50,6 @@ parse_args() {
       --xray-ver)    XRAY_VER="${2:-}"; shift 2 ;;
       --singbox-ver) SING_VER="${2:-}"; shift 2 ;;
       --netcore)     FORCE_NETCORE=1; shift ;;
-      --arch)        ARCH_OVERRIDE="${2:-}"; shift 2 ;;
       --buildfrom)   BUILD_FROM="${2:-}"; shift 2 ;;
       *)
         [[ -n "${VERSION_ARG:-}" ]] || VERSION_ARG="$1"
@@ -71,18 +76,18 @@ detect_environment() {
   HOST_ARCH="$(uname -m)"
 
   case "$OS_ID" in
-    rhel|rocky|almalinux|fedora|centos)
+    debian)
       echo "Detected supported system: ${OS_NAME:-$OS_ID} ${OS_VERSION_ID:-}"
       ;;
     *)
       die "Unsupported system: ${OS_NAME:-unknown} (${OS_ID:-unknown}).
-This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
+This script only supports: Debian."
       ;;
   esac
 
   case "$HOST_ARCH" in
-    x86_64|aarch64) ;;
-    *) die "Only supports aarch64 / x86_64" ;;
+    riscv64) ;;
+    *) die "Only supports riscv64" ;;
   esac
 
   current_kernel="$(uname -r)"
@@ -94,15 +99,32 @@ This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
 
 install_dependencies() {
   local install_ok=0
+  local tmp_dotnet=""
 
-  if command -v dnf >/dev/null 2>&1; then
-    sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
-      && install_ok=1
+  mkdir -p "$OUTPUT_DIR"
+
+  if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get -y install \
+      curl unzip tar jq rsync ca-certificates git dpkg-dev fakeroot file \
+      desktop-file-utils xdg-utils wget gcc make pkg-config \
+      libicu-dev libssl-dev libfontconfig1 libfreetype6 zlib1g
+
+    mkdir -p "$HOME/.dotnet"
+    tmp_dotnet="$(mktemp -d)"
+    curl -fL "$DOTNET_SDK_URL" -o "$tmp_dotnet/$DOTNET_RISCV_FILE"
+    tar -C "$HOME/.dotnet" -xzf "$tmp_dotnet/$DOTNET_RISCV_FILE"
+    rm -rf "$tmp_dotnet"
+
+    export PATH="$HOME/.dotnet:$PATH"
+    export DOTNET_ROOT="$HOME/.dotnet"
+
+    dotnet --info >/dev/null 2>&1 && install_ok=1
   fi
 
   if [[ "$install_ok" -ne 1 ]]; then
     echo "Could not auto-install dependencies for '$OS_ID'. Make sure these are available:"
-    echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+    echo "dotnet-riscv SDK, curl, unzip, tar, rsync, git, gcc, make, dpkg-deb, fakeroot, libicu-dev, libssl-dev"
     exit 1
   fi
 }
@@ -239,14 +261,106 @@ resolve_version() {
   echo "[*] GUI version resolved as: ${VERSION}"
 }
 
+apply_riscv_patch() {
+  local f=""
+
+  find . -type f \( -name "*.csproj" -o -name "*.props" -o -name "*.targets" \) \
+    -exec sed -Ei 's#<TargetFramework>[^<]+</TargetFramework>#<TargetFramework>'"$DOTNET_TFM"'</TargetFramework>#g' {} +
+
+  while IFS= read -r -d '' f; do
+    sed -i \
+      -e "s#<PackageVersion Include=\"SkiaSharp\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"SkiaSharp\" Version=\"$SKIA_VER\" />#g" \
+      -e "s#<PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"$SKIA_VER\" />#g" \
+      -e "s#<PackageVersion Include=\"HarfBuzzSharp\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"HarfBuzzSharp\" Version=\"$HARFBUZZ_VER\" />#g" \
+      -e "s#<PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"$HARFBUZZ_VER\" />#g" \
+      "$f"
+
+    grep -q 'PackageVersion Include="SkiaSharp"' "$f" || \
+      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"SkiaSharp\" Version=\"$SKIA_VER\" />" "$f"
+
+    grep -q 'PackageVersion Include="SkiaSharp.NativeAssets.Linux"' "$f" || \
+      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"$SKIA_VER\" />" "$f"
+
+    grep -q 'PackageVersion Include="HarfBuzzSharp"' "$f" || \
+      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"HarfBuzzSharp\" Version=\"$HARFBUZZ_VER\" />" "$f"
+
+    grep -q 'PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux"' "$f" || \
+      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"$HARFBUZZ_VER\" />" "$f"
+  done < <(find . -type f -name 'Directory.Packages.props' -print0)
+
+  f="$(find "$DOTNET_ROOT/sdk/$(dotnet --version)" -type f -name 'Microsoft.NETCoreSdk.BundledVersions.props' | head -n1 || true)"
+  if [[ -f "$f" ]] && ! grep -q 'linux-riscv64' "$f"; then
+    sed -i \
+      -e 's/linux-arm64/&;linux-riscv64/g' \
+      -e 's/linux-musl-arm64/&;linux-musl-riscv64/g' \
+      "$f"
+  fi
+}
+
+build_sqlite_native_riscv64() {
+  local outdir="$1"
+  local workdir=""
+  local sqlite_year="2026"
+  local sqlite_ver="3510300"
+  local sqlite_zip="sqlite-amalgamation-${sqlite_ver}.zip"
+  local srcdir=""
+
+  mkdir -p "$outdir"
+  workdir="$(mktemp -d)"
+
+  echo "[+] Download SQLite amalgamation: ${sqlite_zip}"
+  curl -fL "https://www.sqlite.org/${sqlite_year}/${sqlite_zip}" -o "${workdir}/${sqlite_zip}" || { rm -rf "$workdir"; return 1; }
+  unzip -q "${workdir}/${sqlite_zip}" -d "$workdir" || { rm -rf "$workdir"; return 1; }
+
+  srcdir="$(find "$workdir" -maxdepth 1 -type d -name 'sqlite-amalgamation-*' | head -n1 || true)"
+  [[ -n "$srcdir" ]] || { echo "[!] SQLite source unpack failed"; rm -rf "$workdir"; return 1; }
+
+  echo "[+] Build libe_sqlite3.so for riscv64"
+  gcc -shared -fPIC -O2 \
+    -DSQLITE_THREADSAFE=1 \
+    -DSQLITE_ENABLE_FTS5 \
+    -DSQLITE_ENABLE_RTREE \
+    -DSQLITE_ENABLE_JSON1 \
+    -o "${outdir}/libe_sqlite3.so" "${srcdir}/sqlite3.c" -ldl -lpthread || { rm -rf "$workdir"; return 1; }
+
+  rm -rf "$workdir"
+}
+
+copy_skiasharp_native_riscv64() {
+  local outdir="$1"
+  local skia_so=""
+  local harfbuzz_so=""
+
+  mkdir -p "$outdir"
+
+  skia_so="$(find "$HOME/.nuget/packages" -path "*/skiasharp.nativeassets.linux/${SKIA_VER}/runtimes/linux-riscv64/native/libSkiaSharp.so" | head -n1 || true)"
+  [[ -n "$skia_so" ]] || skia_so="$(find "$HOME/.nuget/packages" -path "*/runtimes/linux-riscv64/native/libSkiaSharp.so" | head -n1 || true)"
+
+  harfbuzz_so="$(find "$HOME/.nuget/packages" -path "*/harfbuzzsharp.nativeassets.linux/${HARFBUZZ_VER}/runtimes/linux-riscv64/native/libHarfBuzzSharp.so" | head -n1 || true)"
+  [[ -n "$harfbuzz_so" ]] || harfbuzz_so="$(find "$HOME/.nuget/packages" -path "*/runtimes/linux-riscv64/native/libHarfBuzzSharp.so" | head -n1 || true)"
+
+  if [[ -n "$skia_so" && -f "$skia_so" ]]; then
+    echo "[+] Copy libSkiaSharp.so from NuGet cache"
+    install -m 755 "$skia_so" "$outdir/libSkiaSharp.so"
+  else
+    echo "[WARN] libSkiaSharp.so for linux-riscv64 not found in NuGet cache"
+  fi
+
+  if [[ -n "$harfbuzz_so" && -f "$harfbuzz_so" ]]; then
+    echo "[+] Copy libHarfBuzzSharp.so from NuGet cache"
+    install -m 755 "$harfbuzz_so" "$outdir/libHarfBuzzSharp.so"
+  else
+    echo "[WARN] libHarfBuzzSharp.so for linux-riscv64 not found in NuGet cache"
+  fi
+}
+
 xray_url_for_rid() {
   local rid="$1"
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip" ;;
-    linux-arm64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip" ;;
-    *)           return 1 ;;
+    linux-riscv64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-riscv64.zip" ;;
+    *)             return 1 ;;
   esac
 }
 
@@ -255,9 +369,8 @@ singbox_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz" ;;
-    linux-arm64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz" ;;
-    *)           return 1 ;;
+    linux-riscv64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-riscv64.tar.gz" ;;
+    *)             return 1 ;;
   esac
 }
 
@@ -265,9 +378,8 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-x64)   echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip" ;;
-    linux-arm64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip" ;;
-    *)           return 1 ;;
+    linux-riscv64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-riscv64.zip" ;;
+    *)             return 1 ;;
   esac
 }
 
@@ -463,219 +575,238 @@ describe_target() {
   local short="$1"
 
   case "$short" in
-    x64)   printf '%s\n%s\n%s\n' "linux-x64" "x86_64" "x86_64" ;;
-    arm64) printf '%s\n%s\n%s\n' "linux-arm64" "aarch64" "aarch64" ;;
-    *)     echo "Unknown arch '$short' (use x64|arm64)" >&2; return 1 ;;
+    riscv64) printf '%s\n%s\n' "linux-riscv64" "riscv64" ;;
+    *)       echo "Unknown arch '$short' (use riscv64)" >&2; return 1 ;;
   esac
 }
 
 publish_binary() {
   local rid="$1"
 
-  dotnet clean "$PROJECT" -c Release
-  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
-  dotnet restore "$PROJECT"
-  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
+  dotnet clean "$PROJECT" -c Release -p:TargetFramework="$DOTNET_TFM"
+  rm -rf "$(dirname "$PROJECT")/bin/Release/${DOTNET_TFM}" || true
+  dotnet restore "$PROJECT" -r "$rid" -p:TargetFramework="$DOTNET_TFM"
+  dotnet publish "$PROJECT" -c Release -r "$rid" -p:TargetFramework="$DOTNET_TFM" -p:PublishSingleFile=false -p:SelfContained=true
 }
 
-write_spec_file() {
-  local specfile="$1"
+write_launcher_file() {
+  local stage="$1"
 
-  cat > "$specfile" <<'SPEC'
-%global debug_package %{nil}
-%undefine _debuginfo_subpackages
-%undefine _debugsource_packages
-%global __requires_exclude ^liblttng-ust\.so\..*$
-
-Name:           v2rayN
-Version:        __VERSION__
-Release:        1%{?dist}
-Summary:        v2rayN (Avalonia) GUI client for Linux (x86_64/aarch64)
-License:        GPL-3.0-only
-URL:            https://github.com/2dust/v2rayN
-BugURL:         https://github.com/2dust/v2rayN/issues
-ExclusiveArch:  aarch64 x86_64
-Source0:        __PKGROOT__.tar.gz
-
-Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
-Requires:       glibc >= 2.34
-Requires:       fontconfig >= 2.13.1
-Requires:       desktop-file-utils >= 0.26
-Requires:       xdg-utils >= 1.1.3
-Requires:       coreutils >= 8.32
-Requires:       bash >= 5.1
-Requires:       freetype >= 2.10
-
-%description
-v2rayN Linux for Red Hat Enterprise Linux
-Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
-Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
-For more information, Please visit our website
-https://github.com/2dust/v2rayN
-
-%prep
-%setup -q -n __PKGROOT__
-
-%build
-
-%install
-install -dm0755 %{buildroot}/opt/v2rayN
-cp -a * %{buildroot}/opt/v2rayN/
-
-find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
-find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
-[ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
-
-install -dm0755 %{buildroot}%{_bindir}
-install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
-#!/usr/bin/bash
+  install -m 755 /dev/stdin "$stage/usr/bin/v2rayn" <<'EOF'
+#!/usr/bin/env bash
 set -euo pipefail
 DIR="/opt/v2rayN"
+export LD_LIBRARY_PATH="$DIR:${LD_LIBRARY_PATH:-}"
+cd "$DIR"
 
-if [[ -x "$DIR/v2rayN" ]]; then exec "$DIR/v2rayN" "$@"; fi
+if [[ -x "$DIR/v2rayN" ]]; then
+  exec "$DIR/v2rayN" "$@"
+fi
 
 for dll in v2rayN.Desktop.dll v2rayN.dll; do
-  if [[ -f "$DIR/$dll" ]]; then exec /usr/bin/dotnet "$DIR/$dll" "$@"; fi
+  if [[ -f "$DIR/$dll" ]]; then
+    exec /usr/bin/dotnet "$DIR/$dll" "$@"
+  fi
 done
 
 echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
+}
 
-install -dm0755 %{buildroot}%{_datadir}/applications
-install -m0644 /dev/stdin %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
+write_desktop_file() {
+  local stage="$1"
+
+  install -m 644 /dev/stdin "$stage/usr/share/applications/v2rayn.desktop" <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
-Comment=v2rayN for Red Hat Enterprise Linux
+Comment=v2rayN for Debian GNU Linux
 Exec=v2rayn
 Icon=v2rayn
 Terminal=false
 Categories=Network;
 EOF
+}
 
-install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
-install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
+write_maintainer_scripts() {
+  local debian_dir="$1"
 
-%post
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
+  install -m 755 /dev/stdin "$debian_dir/postinst" <<'EOF'
+#!/bin/sh
+set -e
+update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+exit 0
+EOF
 
-%postun
-/usr/bin/update-desktop-database %{_datadir}/applications >/dev/null 2>&1 || true
-/usr/bin/gtk-update-icon-cache -f %{_datadir}/icons/hicolor >/dev/null 2>&1 || true
-
-%files
-%{_bindir}/v2rayn
-/opt/v2rayN
-%{_datadir}/applications/v2rayn.desktop
-%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
-SPEC
-
-  sed -i "s/__VERSION__/${VERSION}/g" "$specfile"
-  sed -i "s/__PKGROOT__/${PKGROOT}/g" "$specfile"
+  install -m 755 /dev/stdin "$debian_dir/postrm" <<'EOF'
+#!/bin/sh
+set -e
+update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+exit 0
+EOF
 }
 
 package_binary() {
   local short="$1"
   local rid="$2"
-  local rpm_target="$3"
-  local archdir="$4"
+  local deb_arch="$3"
   local pubdir=""
   local workdir=""
-  local specfile=""
-  local sourcedir=""
-  local specdir=""
+  local stage=""
+  local debian_dir=""
   local project_dir=""
   local icon_candidate=""
-  local f=""
+  local shlibs_depends=""
+  local extra_depends=""
+  local final_depends=""
+  local multiarch=""
+  local sys_libdir=""
+  local sys_usrlibdir=""
+  local deb_out=""
 
-  pubdir="$(dirname "$PROJECT")/bin/Release/net10.0/${rid}/publish"
+  pubdir="$(dirname "$PROJECT")/bin/Release/${DOTNET_TFM}/${rid}/publish"
   [[ -d "$pubdir" ]] || { echo "Publish directory not found: $pubdir"; return 1; }
 
   workdir="$(mktemp -d)"
   trap '[[ -n "${workdir:-}" ]] && rm -rf "$workdir"' RETURN
 
-  mkdir -p "$workdir/$PKGROOT"
-  cp -a "$pubdir/." "$workdir/$PKGROOT/"
+  stage="$workdir/${PKGROOT}_${VERSION}_${deb_arch}"
+  debian_dir="$stage/DEBIAN"
+
+  mkdir -p "$stage/opt/v2rayN" "$stage/usr/bin" "$stage/usr/share/applications" "$stage/usr/share/icons/hicolor/256x256/apps" "$debian_dir"
+  cp -a "$pubdir/." "$stage/opt/v2rayN/"
+
+  copy_skiasharp_native_riscv64 "$stage/opt/v2rayN" || echo "[!] SkiaSharp native copy failed (skipped)"
+  build_sqlite_native_riscv64 "$stage/opt/v2rayN" || echo "[!] sqlite native build failed (skipped)"
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
   icon_candidate="$project_dir/v2rayN.png"
-  [[ -f "$icon_candidate" ]] || { echo "Required icon not found: $icon_candidate"; return 1; }
-  cp "$icon_candidate" "$workdir/$PKGROOT/v2rayn.png"
+  [[ -f "$icon_candidate" ]] && cp "$icon_candidate" "$stage/usr/share/icons/hicolor/256x256/apps/v2rayn.png" || true
 
-  stage_runtime_assets "$workdir/$PKGROOT" "$rid"
+  stage_runtime_assets "$stage/opt/v2rayN" "$rid"
+  write_launcher_file "$stage"
+  write_desktop_file "$stage"
+  write_maintainer_scripts "$debian_dir"
 
-  rpmdev-setuptree
-  sourcedir="${RPM_TOPDIR}/SOURCES"
-  specdir="${RPM_TOPDIR}/SPECS"
-  specfile="${specdir}/v2rayN.spec"
+  extra_depends="libc6 (>= 2.34), fontconfig (>= 2.13.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 8.32), bash (>= 5.1), libfreetype6 (>= 2.11)"
 
-  mkdir -p "$sourcedir" "$specdir"
-  tar -C "$workdir" -czf "$sourcedir/$PKGROOT.tar.gz" "$PKGROOT"
+  mkdir -p "$workdir/debian"
+  cat > "$workdir/debian/control" <<EOF
+Source: v2rayn
+Section: net
+Priority: optional
+Maintainer: 2dust <noreply@github.com>
+Standards-Version: 4.7.0
 
-  write_spec_file "$specfile"
-  rpmbuild -ba "$specfile" --target "$rpm_target"
+Package: v2rayn
+Architecture: ${deb_arch}
+Description: v2rayN
+EOF
 
-  echo "Build done for $short. RPM at:"
-  for f in "${RPM_TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
-    [[ -e "$f" ]] || continue
-    echo "  $f"
-    BUILT_RPMS+=("$f")
-  done
+  multiarch="$(dpkg-architecture -a"$deb_arch" -qDEB_HOST_MULTIARCH)"
+  sys_libdir="/lib/$multiarch"
+  sys_usrlibdir="/usr/lib/$multiarch"
+
+  : > "$debian_dir/substvars"
+
+  mapfile -t ELF_FILES < <(
+    find "$stage/opt/v2rayN" -type f \( -name "*.so*" -o -perm -111 \) ! -name 'libcoreclrtraceptprovider.so'
+  )
+
+  if [[ "${#ELF_FILES[@]}" -gt 0 ]]; then
+    (
+      cd "$workdir"
+      dpkg-shlibdeps \
+        -l"$stage/opt/v2rayN" \
+        -l"$sys_libdir" \
+        -l"$sys_usrlibdir" \
+        -T"$debian_dir/substvars" \
+        "${ELF_FILES[@]}"
+    ) >/dev/null 2>&1 || true
+  fi
+
+  shlibs_depends="$(sed -n 's/^shlibs:Depends=//p' "$debian_dir/substvars" | head -n1 || true)"
+
+  if [[ -n "$shlibs_depends" ]]; then
+    shlibs_depends="$(echo "$shlibs_depends" \
+      | sed -E 's/ *\([^)]*\)//g' \
+      | sed -E 's/ *, */, /g' \
+      | sed -E 's/^, *//; s/, *$//')"
+    final_depends="${shlibs_depends}, ${extra_depends}"
+  else
+    final_depends="${extra_depends}"
+  fi
+
+  cat > "$debian_dir/control" <<EOF
+Package: v2rayn
+Version: ${VERSION}
+Architecture: ${deb_arch}
+Maintainer: 2dust <noreply@github.com>
+Homepage: https://github.com/2dust/v2rayN
+Section: net
+Priority: optional
+Depends: ${final_depends}
+Description: v2rayN (Avalonia) GUI client for Linux
+ Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 /
+ Shadowsocks / tuic / WireGuard.
+EOF
+
+  find "$stage/opt/v2rayN" -type d -exec chmod 0755 {} +
+  find "$stage/opt/v2rayN" -type f -exec chmod 0644 {} +
+  [[ -f "$stage/opt/v2rayN/v2rayN" ]] && chmod 0755 "$stage/opt/v2rayN/v2rayN" || true
+  [[ -f "$stage/opt/v2rayN/libSkiaSharp.so" ]] && chmod 0755 "$stage/opt/v2rayN/libSkiaSharp.so" || true
+  [[ -f "$stage/opt/v2rayN/libHarfBuzzSharp.so" ]] && chmod 0755 "$stage/opt/v2rayN/libHarfBuzzSharp.so" || true
+  [[ -f "$stage/opt/v2rayN/libe_sqlite3.so" ]] && chmod 0755 "$stage/opt/v2rayN/libe_sqlite3.so" || true
+
+  deb_out="$OUTPUT_DIR/v2rayn_${VERSION}_${deb_arch}.deb"
+  dpkg-deb --root-owner-group --build "$stage" "$deb_out"
+
+  echo "Build done for $short. DEB at:"
+  echo "  $deb_out"
+  BUILT_DEBS+=("$deb_out")
 }
 
 select_targets() {
-  case "${ARCH_OVERRIDE:-}" in
-    all)           printf '%s\n' x64 arm64 ;;
-    x64|amd64)     printf '%s\n' x64 ;;
-    arm64|aarch64) printf '%s\n' arm64 ;;
-    "")
-      case "$HOST_ARCH" in
-        x86_64)  printf '%s\n' x64 ;;
-        aarch64) printf '%s\n' arm64 ;;
-        *)       return 1 ;;
-      esac
-      ;;
-    *)
-      echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all." >&2
-      return 1
-      ;;
-  esac
+  printf '%s\n' riscv64
 }
 
 build_one_target() {
   local short="$1"
   local meta=()
   local rid=""
-  local rpm_target=""
-  local archdir=""
+  local deb_arch=""
 
   mapfile -t meta < <(describe_target "$short") || return 1
   rid="${meta[0]}"
-  rpm_target="${meta[1]}"
-  archdir="${meta[2]}"
+  deb_arch="${meta[1]}"
 
-  echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
+  echo "[*] Building for target: $short  (RID=$rid, DEB arch=$deb_arch)"
   publish_binary "$rid"
-  package_binary "$short" "$rid" "$rpm_target" "$archdir"
+  package_binary "$short" "$rid" "$deb_arch"
 }
 
 print_summary() {
-  if [[ "$BUILT_ALL" -eq 1 ]]; then
-    local rp=""
-    echo ""
-    echo "================ Build Summary (both architectures) ================"
-    if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
-      for rp in "${BUILT_RPMS[@]}"; do
-        echo "$rp"
-      done
-    else
-      echo "No RPMs detected in summary (check build logs above)."
-    fi
-    echo "===================================================================="
+  local pkg=""
+
+  echo ""
+  echo "================ Build Summary ================="
+  if [[ "${#BUILT_DEBS[@]}" -gt 0 ]]; then
+    echo "Output directory: $OUTPUT_DIR"
+    for pkg in "${BUILT_DEBS[@]}"; do
+      echo "$pkg"
+    done
+  else
+    echo "No DEBs detected in summary (check build logs above)."
   fi
+  echo "==============================================="
 }
 
 main() {
@@ -687,9 +818,9 @@ main() {
   install_dependencies
   prepare_workspace
   resolve_version
+  apply_riscv_patch
 
   mapfile -t targets < <(select_targets)
-  [[ "${ARCH_OVERRIDE:-}" == "all" ]] && BUILT_ALL=1 || BUILT_ALL=0
 
   for arch in "${targets[@]}"; do
     build_one_target "$arch"

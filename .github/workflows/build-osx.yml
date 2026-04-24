@@ -63,7 +63,7 @@ jobs:
       run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
 
     - name: Sleep for race condition between matrix jobs
-      run: sleep $(awk 'BEGIN { srand(); printf "%.3f", rand()*2 }')
+      run: sleep $(awk 'BEGIN { srand(); printf "%.3f", rand()*5 }')
     
     - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
