@@ -63,7 +63,7 @@ jobs:
       run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
 
     - name: Sleep for race condition between matrix jobs
-      run: sleep "$(od -An -N2 -tu2 /dev/urandom|awk '{printf "%.2f",$1/10922}')"
+      run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/8192}')"
     
     - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
