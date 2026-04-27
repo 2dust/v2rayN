@@ -56,7 +56,7 @@ jobs:
       run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
     
     - name: Sleep for race condition between matrix jobs
-      run: sleep "$(od -An -N2 -tu2 /dev/urandom|awk '{printf "%.2f",$1/10922}')"
+      run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/8192}')"
 
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
