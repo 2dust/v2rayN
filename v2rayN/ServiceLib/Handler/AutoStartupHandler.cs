@@ -41,6 +41,7 @@ public static class AutoStartupHandler
 
     #region Windows
 
+    [SupportedOSPlatform("windows")]
     private static async Task ClearTaskWindows()
     {
         var autoRunName = GetAutoRunNameWindows();
@@ -53,6 +54,7 @@ public static class AutoStartupHandler
         await Task.CompletedTask;
     }
 
+    [SupportedOSPlatform("windows")]
     private static async Task SetTaskWindows()
     {
         try
@@ -82,6 +84,7 @@ public static class AutoStartupHandler
     /// <param name="fileName"></param>
     /// <param name="description"></param>
     /// <exception cref="ArgumentNullException"></exception>
+    [SupportedOSPlatform("windows")]
     public static void AutoStartTaskService(string taskName, string fileName, string description)
     {
         if (taskName.IsNullOrEmpty())

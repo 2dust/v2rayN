@@ -8,6 +8,7 @@ public sealed class HotkeyManager
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
     public static HotkeyManager Instance = _instance.Value;
     private readonly Dictionary<int, EGlobalHotkey> _hotkeyTriggerDic = new();
+    [SupportedOSPlatform("windows")]
     private GlobalHotKeys.HotKeyManager? _hotKeyManager;
 
     private Config? _config;
@@ -16,6 +17,7 @@ public sealed class HotkeyManager
 
     public bool IsPause { get; set; } = false;
 
+    [SupportedOSPlatform("windows")]
     public void Init(Config config, Action<EGlobalHotkey> updateFunc)
     {
         _config = config;
@@ -26,9 +28,14 @@ public sealed class HotkeyManager
 
     public void Dispose()
     {
+        if (!Utils.IsWindows())
+        {
+            return;
+        }
         _hotKeyManager?.Dispose();
     }
 
+    [SupportedOSPlatform("windows")]
     private void Register()
     {
         if (_config.GlobalHotkeys.Any(t => t.KeyCode > 0) == false)
