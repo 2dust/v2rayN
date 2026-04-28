@@ -4,6 +4,11 @@ namespace v2rayN.Desktop.Views;
 
 public partial class MessageBoxDialog : Window
 {
+    public MessageBoxDialog()
+        : this(string.Empty, string.Empty)
+    {
+    }
+
     public MessageBoxDialog(string caption, string message)
     {
         InitializeComponent();

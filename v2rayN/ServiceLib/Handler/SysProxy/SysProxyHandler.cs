@@ -88,6 +88,7 @@ public static class SysProxyHandler
         }
     }
 
+    [SupportedOSPlatform("windows")]
     private static async Task SetWindowsProxyPac(int port)
     {
         var portPac = AppManager.Instance.GetLocalPort(EInboundProtocol.pac);

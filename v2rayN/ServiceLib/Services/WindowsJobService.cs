@@ -3,6 +3,7 @@ namespace ServiceLib.Services;
 /// <summary>
 /// http://stackoverflow.com/questions/6266820/working-example-of-createjobobject-setinformationjobobject-pinvoke-in-net
 /// </summary>
+[SupportedOSPlatform("windows")]
 public sealed class WindowsJobService : IDisposable
 {
     private nint handle = nint.Zero;

@@ -23,6 +23,7 @@ public partial class QRCodeAvaloniaUtils
         }
     }
 
+    [SupportedOSPlatform("windows")]
     private static byte[]? CaptureScreenWindows()
     {
         var hdcScreen = IntPtr.Zero;
