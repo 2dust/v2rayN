@@ -1,7 +1,7 @@
+using System.Reflection;
 using ServiceLib.Enums;
 using ServiceLib.Manager;
 using ServiceLib.Models;
-using System.Reflection;
 
 namespace ServiceLib.Tests.CoreConfig;
 
@@ -33,7 +33,10 @@ internal static class CoreConfigTestFactory
             UiItem =
                 new UIItem
                 {
-                    CurrentLanguage = "en", CurrentFontFamily = "sans", MainColumnItem = [], WindowSizeItem = []
+                    CurrentLanguage = "en",
+                    CurrentFontFamily = "sans",
+                    MainColumnItem = [],
+                    WindowSizeItem = []
                 },
             ConstItem = new ConstItem(),
             SpeedTestItem = new SpeedTestItem
@@ -51,7 +54,8 @@ internal static class CoreConfigTestFactory
             SystemProxyItem =
                 new SystemProxyItem
                 {
-                    SystemProxyExceptions = string.Empty, SystemProxyAdvancedProtocol = string.Empty
+                    SystemProxyExceptions = string.Empty,
+                    SystemProxyAdvancedProtocol = string.Empty
                 },
             WebDavItem = new WebDavItem(),
             CheckUpdateItem = new CheckUpdateItem(),
@@ -131,11 +135,15 @@ internal static class CoreConfigTestFactory
     {
         var node = new ProfileItem
         {
-            IndexId = indexId, ConfigType = EConfigType.PolicyGroup, CoreType = coreType, Remarks = remarks,
+            IndexId = indexId,
+            ConfigType = EConfigType.PolicyGroup,
+            CoreType = coreType,
+            Remarks = remarks,
         };
         node.SetProtocolExtra(node.GetProtocolExtra() with
         {
-            GroupType = nameof(EConfigType.PolicyGroup), ChildItems = string.Join(",", childIndexIds),
+            GroupType = nameof(EConfigType.PolicyGroup),
+            ChildItems = string.Join(",", childIndexIds),
         });
 
         return node;
@@ -146,11 +154,15 @@ internal static class CoreConfigTestFactory
     {
         var node = new ProfileItem
         {
-            IndexId = indexId, ConfigType = EConfigType.ProxyChain, CoreType = coreType, Remarks = remarks,
+            IndexId = indexId,
+            ConfigType = EConfigType.ProxyChain,
+            CoreType = coreType,
+            Remarks = remarks,
         };
         node.SetProtocolExtra(node.GetProtocolExtra() with
         {
-            GroupType = nameof(EConfigType.ProxyChain), ChildItems = string.Join(",", childIndexIds),
+            GroupType = nameof(EConfigType.ProxyChain),
+            ChildItems = string.Join(",", childIndexIds),
         });
 
         return node;

@@ -239,7 +239,9 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
         var clientAddrForSocks = new Socks5AddressData
         {
-            AddressType = Socks5AddressData.AddrTypeIPv4, Host = "0.0.0.0", Port = 0
+            AddressType = Socks5AddressData.AddrTypeIPv4,
+            Host = "0.0.0.0",
+            Port = 0
         };
         using var udpAssociateReqMs = new MemoryStream();
         udpAssociateReqMs.WriteByte(Socks5Version);
@@ -267,7 +269,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         return true;
     }
 
-    #endregion
+    #endregion SOCKS5 Connection Handling
 
     #region SOCKS5 Address Handling
 
@@ -298,6 +300,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                     }
 
                     break;
+
                 case AddrTypeDomain:
                     if (string.IsNullOrEmpty(Host))
                     {
@@ -311,6 +314,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                     }
 
                     break;
+
                 case AddrTypeIPv6:
                     if (IPAddress.TryParse(Host, out var ip6) && ip6.AddressFamily == AddressFamily.InterNetworkV6)
                     {
@@ -322,6 +326,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                     }
 
                     break;
+
                 default:
                     throw new NotSupportedException($"SOCKS5 address type {AddressType} not supported.");
             }
@@ -355,6 +360,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
                         addr.Host = new IPAddress(ipv4Bytes).ToString();
                         break;
+
                     case AddrTypeDomain:
                         var lenByte = new byte[1];
                         if (await stream.ReadAsync(lenByte.AsMemory(0, 1), ct).ConfigureAwait(false) < 1)
@@ -379,6 +385,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                         }
 
                         break;
+
                     case AddrTypeIPv6:
                         var ipv6Bytes = new byte[16];
                         if (await stream.ReadAsync(ipv6Bytes.AsMemory(0, 16), ct).ConfigureAwait(false) < 16)
@@ -388,6 +395,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
                         addr.Host = new IPAddress(ipv6Bytes).ToString();
                         break;
+
                     default:
                         return null;
                 }

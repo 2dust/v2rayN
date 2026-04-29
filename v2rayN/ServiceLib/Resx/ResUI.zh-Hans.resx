@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>认证密码</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自定义 DNS (可多个，用逗号 (,) 分隔)</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>解除 Win10 UWP 应用回环代理限制</value>
   </data>
@@ -862,7 +859,7 @@
     <value>规则详细说明文档</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支持填写 DnsObject，JSON 格式，点击查看文档</value>
+    <value>请填写 DnsObject，JSON 格式，点击查看文档</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分组此处请留空</value>
@@ -1589,9 +1586,6 @@
   </data>
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
-  </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>完整证书（链），PEM 格式</value>

@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Hitelesítési jelszó</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>Egyéni DNS (több, vesszővel (,) elválasztva)</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Win10 UWP Loopback beállítása</value>
   </data>
@@ -1583,9 +1580,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
-  </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
   </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Full certificate (chain), PEM format</value>

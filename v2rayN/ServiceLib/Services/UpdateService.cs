@@ -299,7 +299,6 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
 
             return url;
         }
-
         else if (Utils.IsLinux())
         {
             return RuntimeInformation.ProcessArchitecture switch
@@ -310,7 +309,6 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
                 _ => null,
             };
         }
-        
         else if (Utils.IsMacOS())
         {
             return RuntimeInformation.ProcessArchitecture switch

@@ -4,6 +4,7 @@ public class StunService : IUdpTest
 {
     private const int StunDefaultPort = 3478;
     private const string StunDefaultServer = "stun.voztovoice.org";
+
     private static readonly byte[] StunBindingRequestPacket =
     [
         // STUN Binding Request

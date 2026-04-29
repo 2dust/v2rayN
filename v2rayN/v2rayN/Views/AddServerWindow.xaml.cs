@@ -38,11 +38,8 @@ public partial class AddServerWindow
         cmbFingerprint2.ItemsSource = Global.Fingerprints;
         cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
         cmbAlpn.ItemsSource = Global.Alpns;
-        cmbEchForceQuery.ItemsSource = Global.EchForceQuerys;
 
-        var lstStreamSecurity = new List<string>();
-        lstStreamSecurity.Add(string.Empty);
-        lstStreamSecurity.Add(Global.StreamSecurity);
+        var lstStreamSecurity = new List<string> { string.Empty, Global.StreamSecurity };
 
         switch (profileItem.ConfigType)
         {
@@ -247,7 +244,6 @@ public partial class AddServerWindow
                 .BindTo(this, v => v.txtAllowInsecureCertFetchTips.Visibility);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.EchForceQuery, v => v.cmbEchForceQuery.Text).DisposeWith(disposables);
 
             //reality
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI2.Text).DisposeWith(disposables);
@@ -340,21 +336,27 @@ public partial class AddServerWindow
             case nameof(ETransport.raw):
                 gridTransportRaw.Visibility = Visibility.Visible;
                 break;
+
             case nameof(ETransport.kcp):
                 gridTransportKcp.Visibility = Visibility.Visible;
                 break;
+
             case nameof(ETransport.ws):
                 gridTransportWs.Visibility = Visibility.Visible;
                 break;
+
             case nameof(ETransport.httpupgrade):
                 gridTransportHttpupgrade.Visibility = Visibility.Visible;
                 break;
+
             case nameof(ETransport.xhttp):
                 gridTransportXhttp.Visibility = Visibility.Visible;
                 break;
+
             case nameof(ETransport.grpc):
                 gridTransportGrpc.Visibility = Visibility.Visible;
                 break;
+
             default:
                 gridTransportRaw.Visibility = Visibility.Visible;
                 break;

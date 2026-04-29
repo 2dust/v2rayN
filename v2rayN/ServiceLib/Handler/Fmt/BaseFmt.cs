@@ -5,6 +5,7 @@ namespace ServiceLib.Handler.Fmt;
 public class BaseFmt
 {
     private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
+
     private static string UrlEncodeSafe(string? value) => Utils.UrlEncode(value ?? string.Empty);
 
     protected static string GetIpv6(string address)

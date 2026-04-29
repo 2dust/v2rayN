@@ -4,6 +4,7 @@ public class DnsService : IUdpTest
 {
     private const int DnsDefaultPort = 53;
     private const string DnsDefaultServer = "8.8.8.8"; // Google Public DNS
+
     private static readonly byte[] DnsQueryPacket =
     [
         // Header: ID=0x1234, Standard query with RD set, QDCOUNT=1
