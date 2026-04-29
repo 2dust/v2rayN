@@ -103,7 +103,7 @@ install_dependencies() {
     sudo apt-get update
     sudo apt-get -y install \
       curl unzip tar jq rsync ca-certificates git dpkg-dev fakeroot file \
-      desktop-file-utils xdg-utils libicu-dev gcc make
+      desktop-file-utils xdg-utils libicu-dev
 
     mkdir -p "$HOME/.dotnet"
     tmp_dotnet="$(mktemp -d)"
@@ -254,35 +254,6 @@ resolve_version() {
 
   VERSION="${VERSION#v}"
   echo "[*] GUI version resolved as: ${VERSION}"
-}
-
-build_sqlite_native_riscv64() {
-  local outdir="$1"
-  local workdir=""
-  local sqlite_year="2026"
-  local sqlite_ver="3510300"
-  local sqlite_zip="sqlite-amalgamation-${sqlite_ver}.zip"
-  local srcdir=""
-
-  mkdir -p "$outdir"
-  workdir="$(mktemp -d)"
-
-  echo "[+] Download SQLite amalgamation: ${sqlite_zip}"
-  curl -fL "https://www.sqlite.org/${sqlite_year}/${sqlite_zip}" -o "${workdir}/${sqlite_zip}" || { rm -rf "$workdir"; return 1; }
-  unzip -q "${workdir}/${sqlite_zip}" -d "$workdir" || { rm -rf "$workdir"; return 1; }
-
-  srcdir="$(find "$workdir" -maxdepth 1 -type d -name 'sqlite-amalgamation-*' | head -n1 || true)"
-  [[ -n "$srcdir" ]] || { echo "[!] SQLite source unpack failed"; rm -rf "$workdir"; return 1; }
-
-  echo "[+] Build libe_sqlite3.so for riscv64"
-  gcc -shared -fPIC -O2 \
-    -DSQLITE_THREADSAFE=1 \
-    -DSQLITE_ENABLE_FTS5 \
-    -DSQLITE_ENABLE_RTREE \
-    -DSQLITE_ENABLE_JSON1 \
-    -o "${outdir}/libe_sqlite3.so" "${srcdir}/sqlite3.c" -ldl -lpthread || { rm -rf "$workdir"; return 1; }
-
-  rm -rf "$workdir"
 }
 
 xray_url_for_rid() {
@@ -614,8 +585,6 @@ package_binary() {
   mkdir -p "$stage/opt/v2rayN" "$stage/usr/bin" "$stage/usr/share/applications" "$stage/usr/share/icons/hicolor/256x256/apps" "$debian_dir"
   cp -a "$pubdir/." "$stage/opt/v2rayN/"
 
-  build_sqlite_native_riscv64 "$stage/opt/v2rayN" || echo "[!] sqlite native build failed (skipped)"
-
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
   icon_candidate="$project_dir/v2rayN.png"
   [[ -f "$icon_candidate" ]] && cp "$icon_candidate" "$stage/usr/share/icons/hicolor/256x256/apps/v2rayn.png" || true
@@ -691,7 +660,6 @@ EOF
   find "$stage/opt/v2rayN" -type d -exec chmod 0755 {} +
   find "$stage/opt/v2rayN" -type f -exec chmod 0644 {} +
   [[ -f "$stage/opt/v2rayN/v2rayN" ]] && chmod 0755 "$stage/opt/v2rayN/v2rayN" || true
-  [[ -f "$stage/opt/v2rayN/libe_sqlite3.so" ]] && chmod 0755 "$stage/opt/v2rayN/libe_sqlite3.so" || true
 
   deb_out="$OUTPUT_DIR/v2rayn_${VERSION}_${deb_arch}.deb"
   dpkg-deb --root-owner-group --build "$stage" "$deb_out"
