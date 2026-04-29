@@ -10,7 +10,8 @@
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="ReactiveUI.Fody" />
-		<PackageReference Include="sqlite-net-pcl" />
+		<PackageReference Include="sqlite-net-e" />
+        <PackageReference Include="Repobot.SQLite.Unofficial" />
 		<PackageReference Include="NLog" />
 		<PackageReference Include="WebDav.Client" />
 		<PackageReference Include="YamlDotNet" />
