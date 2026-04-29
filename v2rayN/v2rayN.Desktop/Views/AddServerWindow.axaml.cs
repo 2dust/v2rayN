@@ -39,11 +39,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         cmbFingerprint2.ItemsSource = Global.Fingerprints;
         cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
         cmbAlpn.ItemsSource = Global.Alpns;
-        cmbEchForceQuery.ItemsSource = Global.EchForceQuerys;
 
-        var lstStreamSecurity = new List<string>();
-        lstStreamSecurity.Add(string.Empty);
-        lstStreamSecurity.Add(Global.StreamSecurity);
+        var lstStreamSecurity = new List<string> { string.Empty, Global.StreamSecurity };
 
         switch (profileItem.ConfigType)
         {
@@ -246,7 +243,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.togAllowInsecureCertFetch.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.txtAllowInsecureCertFetchTips.IsVisible).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.EchForceQuery, v => v.cmbEchForceQuery.SelectedValue).DisposeWith(disposables);
 
             //reality
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI2.Text).DisposeWith(disposables);

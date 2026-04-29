@@ -383,7 +383,6 @@ public partial class CoreConfigV2rayService
                     alpn = _node.GetAlpn(),
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     echConfigList = _node.EchConfigList.NullIfEmpty(),
-                    echForceQuery = _node.EchForceQuery.NullIfEmpty()
                 };
                 if (sni.IsNotEmpty())
                 {
@@ -392,6 +391,11 @@ public partial class CoreConfigV2rayService
                 else if (host.IsNotEmpty())
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
+                }
+                if (!tlsSettings.echConfigList.IsNullOrEmpty())
+                {
+                    // For legacy xray compatibility, remove this in the future
+                    tlsSettings.echForceQuery = "full";
                 }
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)

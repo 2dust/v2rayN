@@ -2944,15 +2944,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 EchForceQuery 的本地化字符串。
-        /// </summary>
-        public static string TbEchForceQuery {
-            get {
-                return ResourceManager.GetString("TbEchForceQuery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Edit 的本地化字符串。
         /// </summary>
         public static string TbEdit {

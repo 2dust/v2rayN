@@ -415,7 +415,7 @@
                         x:Name="txtSecurity5"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="200"
+                        Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
@@ -1443,21 +1443,6 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
-
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbEchForceQuery}" />
-                    <ComboBox
-                        x:Name="cmbEchForceQuery"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
                         Grid.Row="7"
