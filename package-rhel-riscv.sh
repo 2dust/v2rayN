@@ -99,7 +99,7 @@ install_dependencies() {
 
   if command -v dnf >/dev/null 2>&1; then
     sudo dnf -y install \
-      rpm-build rpmdevtools curl unzip tar jq rsync git ca-certificates libicu gcc make \
+      rpm-build rpmdevtools curl unzip tar jq rsync git ca-certificates libicu \
       && install_ok=1
 
     mkdir -p "$HOME/.dotnet"
@@ -251,35 +251,6 @@ resolve_version() {
 
   VERSION="${VERSION#v}"
   echo "[*] GUI version resolved as: ${VERSION}"
-}
-
-build_sqlite_native_riscv64() {
-  local outdir="$1"
-  local workdir=""
-  local sqlite_year="2026"
-  local sqlite_ver="3510300"
-  local sqlite_zip="sqlite-amalgamation-${sqlite_ver}.zip"
-  local srcdir=""
-
-  mkdir -p "$outdir"
-  workdir="$(mktemp -d)"
-
-  echo "[+] Download SQLite amalgamation: ${sqlite_zip}"
-  curl -fL "https://www.sqlite.org/${sqlite_year}/${sqlite_zip}" -o "${workdir}/${sqlite_zip}" || { rm -rf "$workdir"; return 1; }
-  unzip -q "${workdir}/${sqlite_zip}" -d "$workdir" || { rm -rf "$workdir"; return 1; }
-
-  srcdir="$(find "$workdir" -maxdepth 1 -type d -name 'sqlite-amalgamation-*' | head -n1 || true)"
-  [[ -n "$srcdir" ]] || { echo "[!] SQLite source unpack failed"; rm -rf "$workdir"; return 1; }
-
-  echo "[+] Build libe_sqlite3.so for riscv64"
-  gcc -shared -fPIC -O2 \
-    -DSQLITE_THREADSAFE=1 \
-    -DSQLITE_ENABLE_FTS5 \
-    -DSQLITE_ENABLE_RTREE \
-    -DSQLITE_ENABLE_JSON1 \
-    -o "${outdir}/libe_sqlite3.so" "${srcdir}/sqlite3.c" -ldl -lpthread || { rm -rf "$workdir"; return 1; }
-
-  rm -rf "$workdir"
 }
 
 xray_url_for_rid() {
@@ -564,7 +535,6 @@ cp -a * %{buildroot}/opt/v2rayN/
 find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
 find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
 [ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
-[ -f %{buildroot}/opt/v2rayN/libe_sqlite3.so ] && chmod 0755 %{buildroot}/opt/v2rayN/libe_sqlite3.so || :
 
 install -dm0755 %{buildroot}%{_bindir}
 install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
@@ -639,8 +609,6 @@ package_binary() {
 
   mkdir -p "$workdir/$PKGROOT"
   cp -a "$pubdir/." "$workdir/$PKGROOT/"
-
-  build_sqlite_native_riscv64 "$workdir/$PKGROOT" || echo "[!] sqlite native build failed (skipped)"
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
   icon_candidate="$project_dir/v2rayN.png"
