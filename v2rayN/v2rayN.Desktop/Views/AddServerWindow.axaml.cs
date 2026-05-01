@@ -76,7 +76,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
+                cmbAlpn.IsEnabled = false;
                 break;
 
             case EConfigType.TUIC:
@@ -85,7 +85,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransport.IsVisible = false;
                 cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
                 gridFinalmask.IsVisible = false;
 
                 cmbCongestionControl8.ItemsSource = Global.TuicCongestionControls;
@@ -116,11 +115,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
                 cmbAlpn.IsEnabled = false;
-                cmbAlpn.SelectedValue = string.Empty;
                 cmbAllowInsecure.IsEnabled = false;
-                cmbAllowInsecure.SelectedValue = string.Empty;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
                 break;

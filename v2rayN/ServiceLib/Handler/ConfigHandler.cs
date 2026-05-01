@@ -705,10 +705,12 @@ public static class ConfigHandler
     public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Hysteria2;
-        //profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
+        profileItem.Alpn = string.Empty;
+        //profileItem.Alpn = "h3";
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
@@ -748,6 +750,7 @@ public static class ConfigHandler
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
+        profileItem.Fingerprint = string.Empty;
 
         var congestionControl = profileItem.GetProtocolExtra().CongestionControl;
         if (!Global.TuicCongestionControls.Contains(congestionControl))
@@ -851,8 +854,10 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
         profileItem.Alpn = string.Empty;
         profileItem.Network = string.Empty;
+        profileItem.AllowInsecure = "false";
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
