@@ -7,32 +7,33 @@
   <ItemGroup>
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.13" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.13" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.14" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.14" />
     <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.11.0" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.12" />
     <PackageVersion Include="CliWrap" Version="3.10.1" />
-    <PackageVersion Include="Downloader" Version="5.2.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+    <PackageVersion Include="Downloader" Version="5.4.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
-    <PackageVersion Include="MaterialDesignThemes" Version="5.3.1" />
+    <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
     <PackageVersion Include="QRCoder" Version="1.8.0" />
-    <PackageVersion Include="ReactiveUI" Version="23.2.1" />
-    <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageVersion Include="ReactiveUI.WPF" Version="23.2.1" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.3.7.3" />
+    <PackageVersion Include="ReactiveUI" Version="23.2.19" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="2.6.30" />
+    <PackageVersion Include="ReactiveUI.WPF" Version="23.2.19" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.3.14" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="11.2.0.2" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.3" />
-    <PackageVersion Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
+    <PackageVersion Include="SQLitePCLRaw.config.e_sqlite3" Version="3.0.2" />
+    <PackageVersion Include="SourceGear.sqlite3" Version="3.50.4.5" />
     <PackageVersion Include="NLog" Version="6.1.2" />
-    <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageVersion Include="sqlite-net-base" Version="1.9.172" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.93.0" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
-    <PackageVersion Include="YamlDotNet" Version="16.3.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+    <PackageVersion Include="YamlDotNet" Version="17.1.0" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
   </ItemGroup>
 </Project>

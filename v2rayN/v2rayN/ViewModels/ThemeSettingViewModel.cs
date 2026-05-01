@@ -5,7 +5,7 @@ using Microsoft.Win32;
 
 namespace v2rayN.ViewModels;
 
-public class ThemeSettingViewModel : MyReactiveObject
+public partial class ThemeSettingViewModel : MyReactiveObject
 {
     private readonly PaletteHelper _paletteHelper = new();
 
@@ -13,13 +13,13 @@ public class ThemeSettingViewModel : MyReactiveObject
     public IObservableCollection<Swatch> Swatches => _swatches;
 
     [Reactive]
-    public Swatch SelectedSwatch { get; set; }
+    public partial Swatch SelectedSwatch { get; set; }
 
-    [Reactive] public string CurrentTheme { get; set; }
+    [Reactive] public partial string CurrentTheme { get; set; }
 
-    [Reactive] public int CurrentFontSize { get; set; }
+    [Reactive] public partial int CurrentFontSize { get; set; }
 
-    [Reactive] public string CurrentLanguage { get; set; }
+    [Reactive] public partial string CurrentLanguage { get; set; }
 
     public ThemeSettingViewModel()
     {

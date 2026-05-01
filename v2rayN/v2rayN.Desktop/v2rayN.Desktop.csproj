@@ -26,9 +26,7 @@
 		<PackageReference Include="ReactiveUI">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
-		<PackageReference Include="ReactiveUI.Fody">
-			<TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
+		<PackageReference Include="ReactiveUI.SourceGenerators" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>

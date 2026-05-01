@@ -23,7 +23,7 @@ global using Avalonia.Threading;
 global using DynamicData;
 global using ReactiveUI;
 global using ReactiveUI.Avalonia;
-global using ReactiveUI.Fody.Helpers;
+global using ReactiveUI.SourceGenerators;
 global using ServiceLib;
 global using ServiceLib.Base;
 global using ServiceLib.Common;

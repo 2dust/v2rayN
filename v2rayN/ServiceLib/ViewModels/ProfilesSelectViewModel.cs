@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesSelectViewModel : MyReactiveObject
+public partial class ProfilesSelectViewModel : MyReactiveObject
 {
     #region private prop
 
@@ -22,15 +22,15 @@ public class ProfilesSelectViewModel : MyReactiveObject
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
-    public ProfileItemModel SelectedProfile { get; set; }
+    public partial ProfileItemModel SelectedProfile { get; set; }
 
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
-    public SubItem SelectedSub { get; set; }
+    public partial SubItem SelectedSub { get; set; }
 
     [Reactive]
-    public string ServerFilter { get; set; }
+    public partial string ServerFilter { get; set; }
 
     // Include/Exclude filter for ConfigType
     public List<EConfigType> FilterConfigTypes
@@ -39,7 +39,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
         set => this.RaiseAndSetIfChanged(ref _filterConfigTypes, value);
     }
 
-    [Reactive]
     public bool FilterExclude
     {
         get => _filterExclude;

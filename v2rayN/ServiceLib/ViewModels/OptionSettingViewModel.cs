@@ -1,31 +1,31 @@
 namespace ServiceLib.ViewModels;
 
-public class OptionSettingViewModel : MyReactiveObject
+public partial class OptionSettingViewModel : MyReactiveObject
 {
     #region Core
 
-    [Reactive] public int localPort { get; set; }
-    [Reactive] public bool SecondLocalPortEnabled { get; set; }
-    [Reactive] public bool udpEnabled { get; set; }
-    [Reactive] public bool sniffingEnabled { get; set; }
+    [Reactive] public partial int localPort { get; set; }
+    [Reactive] public partial bool SecondLocalPortEnabled { get; set; }
+    [Reactive] public partial bool udpEnabled { get; set; }
+    [Reactive] public partial bool sniffingEnabled { get; set; }
     public IList<string> destOverride { get; set; }
-    [Reactive] public bool routeOnly { get; set; }
-    [Reactive] public bool allowLANConn { get; set; }
-    [Reactive] public bool newPort4LAN { get; set; }
-    [Reactive] public string user { get; set; }
-    [Reactive] public string pass { get; set; }
-    [Reactive] public bool muxEnabled { get; set; }
-    [Reactive] public bool logEnabled { get; set; }
-    [Reactive] public string loglevel { get; set; }
-    [Reactive] public bool defAllowInsecure { get; set; }
-    [Reactive] public string defFingerprint { get; set; }
-    [Reactive] public string defUserAgent { get; set; }
-    [Reactive] public string sendThrough { get; set; }
-    [Reactive] public string mux4SboxProtocol { get; set; }
-    [Reactive] public bool enableCacheFile4Sbox { get; set; }
-    [Reactive] public int? hyUpMbps { get; set; }
-    [Reactive] public int? hyDownMbps { get; set; }
-    [Reactive] public bool enableFragment { get; set; }
+    [Reactive] public partial bool routeOnly { get; set; }
+    [Reactive] public partial bool allowLANConn { get; set; }
+    [Reactive] public partial bool newPort4LAN { get; set; }
+    [Reactive] public partial string user { get; set; }
+    [Reactive] public partial string pass { get; set; }
+    [Reactive] public partial bool muxEnabled { get; set; }
+    [Reactive] public partial bool logEnabled { get; set; }
+    [Reactive] public partial string loglevel { get; set; }
+    [Reactive] public partial bool defAllowInsecure { get; set; }
+    [Reactive] public partial string defFingerprint { get; set; }
+    [Reactive] public partial string defUserAgent { get; set; }
+    [Reactive] public partial string sendThrough { get; set; }
+    [Reactive] public partial string mux4SboxProtocol { get; set; }
+    [Reactive] public partial bool enableCacheFile4Sbox { get; set; }
+    [Reactive] public partial int? hyUpMbps { get; set; }
+    [Reactive] public partial int? hyDownMbps { get; set; }
+    [Reactive] public partial bool enableFragment { get; set; }
 
     #endregion Core
 
@@ -43,75 +43,75 @@ public class OptionSettingViewModel : MyReactiveObject
 
     #region UI
 
-    [Reactive] public bool AutoRun { get; set; }
-    [Reactive] public bool EnableStatistics { get; set; }
-    [Reactive] public bool KeepOlderDedupl { get; set; }
-    [Reactive] public bool DisplayRealTimeSpeed { get; set; }
-    [Reactive] public bool EnableAutoAdjustMainLvColWidth { get; set; }
-    [Reactive] public bool AutoHideStartup { get; set; }
-    [Reactive] public bool Hide2TrayWhenClose { get; set; }
-    [Reactive] public bool MacOSShowInDock { get; set; }
-    [Reactive] public bool EnableDragDropSort { get; set; }
-    [Reactive] public bool DoubleClick2Activate { get; set; }
-    [Reactive] public int AutoUpdateInterval { get; set; }
-    [Reactive] public int TrayMenuServersLimit { get; set; }
-    [Reactive] public string CurrentFontFamily { get; set; }
-    [Reactive] public int SpeedTestTimeout { get; set; }
-    [Reactive] public string SpeedTestUrl { get; set; }
-    [Reactive] public string SpeedPingTestUrl { get; set; }
-    [Reactive] public string UdpTestTarget { get; set; }
-    [Reactive] public int MixedConcurrencyCount { get; set; }
-    [Reactive] public bool EnableHWA { get; set; }
-    [Reactive] public string SubConvertUrl { get; set; }
-    [Reactive] public int MainGirdOrientation { get; set; }
-    [Reactive] public string GeoFileSourceUrl { get; set; }
-    [Reactive] public string SrsFileSourceUrl { get; set; }
-    [Reactive] public string RoutingRulesSourceUrl { get; set; }
-    [Reactive] public string IPAPIUrl { get; set; }
+    [Reactive] public partial bool AutoRun { get; set; }
+    [Reactive] public partial bool EnableStatistics { get; set; }
+    [Reactive] public partial bool KeepOlderDedupl { get; set; }
+    [Reactive] public partial bool DisplayRealTimeSpeed { get; set; }
+    [Reactive] public partial bool EnableAutoAdjustMainLvColWidth { get; set; }
+    [Reactive] public partial bool AutoHideStartup { get; set; }
+    [Reactive] public partial bool Hide2TrayWhenClose { get; set; }
+    [Reactive] public partial bool MacOSShowInDock { get; set; }
+    [Reactive] public partial bool EnableDragDropSort { get; set; }
+    [Reactive] public partial bool DoubleClick2Activate { get; set; }
+    [Reactive] public partial int AutoUpdateInterval { get; set; }
+    [Reactive] public partial int TrayMenuServersLimit { get; set; }
+    [Reactive] public partial string CurrentFontFamily { get; set; }
+    [Reactive] public partial int SpeedTestTimeout { get; set; }
+    [Reactive] public partial string SpeedTestUrl { get; set; }
+    [Reactive] public partial string SpeedPingTestUrl { get; set; }
+    [Reactive] public partial string UdpTestTarget { get; set; }
+    [Reactive] public partial int MixedConcurrencyCount { get; set; }
+    [Reactive] public partial bool EnableHWA { get; set; }
+    [Reactive] public partial string SubConvertUrl { get; set; }
+    [Reactive] public partial int MainGirdOrientation { get; set; }
+    [Reactive] public partial string GeoFileSourceUrl { get; set; }
+    [Reactive] public partial string SrsFileSourceUrl { get; set; }
+    [Reactive] public partial string RoutingRulesSourceUrl { get; set; }
+    [Reactive] public partial string IPAPIUrl { get; set; }
 
     #endregion UI
 
     #region UI visibility
 
-    [Reactive] public bool BlIsWindows { get; set; }
-    [Reactive] public bool BlIsLinux { get; set; }
-    [Reactive] public bool BlIsIsMacOS { get; set; }
-    [Reactive] public bool BlIsNonWindows { get; set; }
+    [Reactive] public partial bool BlIsWindows { get; set; }
+    [Reactive] public partial bool BlIsLinux { get; set; }
+    [Reactive] public partial bool BlIsIsMacOS { get; set; }
+    [Reactive] public partial bool BlIsNonWindows { get; set; }
 
     #endregion UI visibility
 
     #region System proxy
 
-    [Reactive] public bool notProxyLocalAddress { get; set; }
-    [Reactive] public string systemProxyAdvancedProtocol { get; set; }
-    [Reactive] public string systemProxyExceptions { get; set; }
-    [Reactive] public string CustomSystemProxyPacPath { get; set; }
-    [Reactive] public string CustomSystemProxyScriptPath { get; set; }
+    [Reactive] public partial bool notProxyLocalAddress { get; set; }
+    [Reactive] public partial string systemProxyAdvancedProtocol { get; set; }
+    [Reactive] public partial string systemProxyExceptions { get; set; }
+    [Reactive] public partial string CustomSystemProxyPacPath { get; set; }
+    [Reactive] public partial string CustomSystemProxyScriptPath { get; set; }
 
     #endregion System proxy
 
     #region Tun mode
 
-    [Reactive] public bool TunAutoRoute { get; set; }
-    [Reactive] public bool TunStrictRoute { get; set; }
-    [Reactive] public string TunStack { get; set; }
-    [Reactive] public int TunMtu { get; set; }
-    [Reactive] public bool TunEnableIPv6Address { get; set; }
-    [Reactive] public string TunIcmpRouting { get; set; }
-    [Reactive] public bool TunEnableLegacyProtect { get; set; }
+    [Reactive] public partial bool TunAutoRoute { get; set; }
+    [Reactive] public partial bool TunStrictRoute { get; set; }
+    [Reactive] public partial string TunStack { get; set; }
+    [Reactive] public partial int TunMtu { get; set; }
+    [Reactive] public partial bool TunEnableIPv6Address { get; set; }
+    [Reactive] public partial string TunIcmpRouting { get; set; }
+    [Reactive] public partial bool TunEnableLegacyProtect { get; set; }
 
     #endregion Tun mode
 
     #region CoreType
 
-    [Reactive] public string CoreType1 { get; set; }
-    [Reactive] public string CoreType2 { get; set; }
-    [Reactive] public string CoreType3 { get; set; }
-    [Reactive] public string CoreType4 { get; set; }
-    [Reactive] public string CoreType5 { get; set; }
-    [Reactive] public string CoreType6 { get; set; }
-    [Reactive] public string CoreType7 { get; set; }
-    [Reactive] public string CoreType9 { get; set; }
+    [Reactive] public partial string CoreType1 { get; set; }
+    [Reactive] public partial string CoreType2 { get; set; }
+    [Reactive] public partial string CoreType3 { get; set; }
+    [Reactive] public partial string CoreType4 { get; set; }
+    [Reactive] public partial string CoreType5 { get; set; }
+    [Reactive] public partial string CoreType6 { get; set; }
+    [Reactive] public partial string CoreType7 { get; set; }
+    [Reactive] public partial string CoreType9 { get; set; }
 
     #endregion CoreType
 

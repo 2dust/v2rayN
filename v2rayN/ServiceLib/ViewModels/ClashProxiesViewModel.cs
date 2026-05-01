@@ -4,7 +4,7 @@ using static ServiceLib.Models.ClashProxies;
 
 namespace ServiceLib.ViewModels;
 
-public class ClashProxiesViewModel : MyReactiveObject
+public partial class ClashProxiesViewModel : MyReactiveObject
 {
     private Dictionary<string, ProxiesItem>? _proxies;
     private Dictionary<string, ProvidersItem>? _providers;
@@ -14,10 +14,10 @@ public class ClashProxiesViewModel : MyReactiveObject
     public IObservableCollection<ClashProxyModel> ProxyDetails { get; } = new ObservableCollectionExtended<ClashProxyModel>();
 
     [Reactive]
-    public ClashProxyModel SelectedGroup { get; set; }
+    public partial ClashProxyModel SelectedGroup { get; set; }
 
     [Reactive]
-    public ClashProxyModel SelectedDetail { get; set; }
+    public partial ClashProxyModel SelectedDetail { get; set; }
 
     public ReactiveCommand<Unit, Unit> ProxiesReloadCmd { get; }
     public ReactiveCommand<Unit, Unit> ProxiesDelayTestCmd { get; }
@@ -25,13 +25,13 @@ public class ClashProxiesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> ProxiesSelectActivityCmd { get; }
 
     [Reactive]
-    public int RuleModeSelected { get; set; }
+    public partial int RuleModeSelected { get; set; }
 
     [Reactive]
-    public int SortingSelected { get; set; }
+    public partial int SortingSelected { get; set; }
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    public partial bool AutoRefresh { get; set; }
 
     public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {

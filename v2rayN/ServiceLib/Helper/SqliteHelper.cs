@@ -11,6 +11,11 @@ public sealed class SQLiteHelper
     private SQLiteAsyncConnection _dbAsync;
     private readonly string _configDB = "guiNDB.db";
 
+    static SQLiteHelper()
+    {
+        SQLitePCL.Batteries_V2.Init();
+    }
+
     public SQLiteHelper()
     {
         _connstr = Utils.GetConfigPath(_configDB);

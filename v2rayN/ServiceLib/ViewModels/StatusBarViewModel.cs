@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class StatusBarViewModel : MyReactiveObject
+public partial class StatusBarViewModel : MyReactiveObject
 {
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
     public static StatusBarViewModel Instance => _instance.Value;
@@ -12,13 +12,13 @@ public class StatusBarViewModel : MyReactiveObject
     public IObservableCollection<ComboItem> Servers { get; } = new ObservableCollectionExtended<ComboItem>();
 
     [Reactive]
-    public RoutingItem SelectedRouting { get; set; }
+    public partial RoutingItem SelectedRouting { get; set; }
 
     [Reactive]
-    public ComboItem SelectedServer { get; set; }
+    public partial ComboItem SelectedServer { get; set; }
 
     [Reactive]
-    public bool BlServers { get; set; }
+    public partial bool BlServers { get; set; }
 
     #endregion ObservableCollection
 
@@ -34,16 +34,16 @@ public class StatusBarViewModel : MyReactiveObject
     #region System Proxy
 
     [Reactive]
-    public bool BlSystemProxyClear { get; set; }
+    public partial bool BlSystemProxyClear { get; set; }
 
     [Reactive]
-    public bool BlSystemProxySet { get; set; }
+    public partial bool BlSystemProxySet { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyNothing { get; set; }
+    public partial bool BlSystemProxyNothing { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyPac { get; set; }
+    public partial bool BlSystemProxyPac { get; set; }
 
     public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
     public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
@@ -51,44 +51,44 @@ public class StatusBarViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SystemProxyPacCmd { get; }
 
     [Reactive]
-    public bool BlRouting { get; set; }
+    public partial bool BlRouting { get; set; }
 
     [Reactive]
-    public int SystemProxySelected { get; set; }
+    public partial int SystemProxySelected { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyPacVisible { get; set; }
+    public partial bool BlSystemProxyPacVisible { get; set; }
 
     #endregion System Proxy
 
     #region UI
 
     [Reactive]
-    public string InboundDisplay { get; set; }
+    public partial string InboundDisplay { get; set; }
 
     [Reactive]
-    public string InboundLanDisplay { get; set; }
+    public partial string InboundLanDisplay { get; set; }
 
     [Reactive]
-    public string RunningServerDisplay { get; set; }
+    public partial string RunningServerDisplay { get; set; }
 
     [Reactive]
-    public string RunningServerToolTipText { get; set; }
+    public partial string RunningServerToolTipText { get; set; }
 
     [Reactive]
-    public string RunningInfoDisplay { get; set; }
+    public partial string RunningInfoDisplay { get; set; }
 
     [Reactive]
-    public string SpeedProxyDisplay { get; set; }
+    public partial string SpeedProxyDisplay { get; set; }
 
     [Reactive]
-    public string SpeedDirectDisplay { get; set; }
+    public partial string SpeedDirectDisplay { get; set; }
 
     [Reactive]
-    public bool EnableTun { get; set; }
+    public partial bool EnableTun { get; set; }
 
     [Reactive]
-    public bool BlIsNonWindows { get; set; }
+    public partial bool BlIsNonWindows { get; set; }
 
     #endregion UI
 
