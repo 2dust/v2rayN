@@ -3682,6 +3682,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Bind Interface 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsBindInterface {
+            get {
+                return ResourceManager.GetString("TbSettingsBindInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsBindInterfaceTip {
+            get {
+                return ResourceManager.GetString("TbSettingsBindInterfaceTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Users in China region can ignore this item 的本地化字符串。
         /// </summary>
         public static string TbSettingsChinaUserTip {

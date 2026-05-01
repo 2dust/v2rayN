@@ -65,6 +65,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -398,17 +399,40 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsSendThrough}" />
+                            Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
                         <TextBox
-                            x:Name="txtsendThrough"
+                            x:Name="txtbindInterface"
                             Grid.Row="21"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            Style="{StaticResource DefTextBox}"
-                            materialDesign:HintAssist.Hint="0.0.0.0" />
+                            Style="{StaticResource DefTextBox}" />
                         <TextBlock
                             Grid.Row="21"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsBindInterfaceTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSendThrough}" />
+                        <TextBox
+                            x:Name="txtsendThrough"
+                            Grid.Row="22"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            materialDesign:HintAssist.Hint="0.0.0.0"
+                            Style="{StaticResource DefTextBox}" />
+                        <TextBlock
+                            Grid.Row="22"
                             Grid.Column="2"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"

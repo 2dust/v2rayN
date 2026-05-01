@@ -1311,15 +1311,6 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
     </data>
-  <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Adresse sortante locale (SendThrough)</value>
-  </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale.</value>
-  </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
-  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>Mode XHTTP</value>
   </data>
@@ -1709,5 +1700,20 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Adresse sortante locale (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Lier l'interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>Pour les environnements multi-interfaces, entrez le nom de l'interface à lier. Ne fonctionne que sur les systèmes Windows et en mode TUN</value>
   </data>
 </root>
