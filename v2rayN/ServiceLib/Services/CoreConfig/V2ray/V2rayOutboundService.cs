@@ -576,7 +576,7 @@ public partial class CoreConfigV2rayService
                         : _config.HysteriaItem.UpMbps;
                     int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                         ? sd
-                        : _config.HysteriaItem.UpMbps;
+                        : _config.HysteriaItem.DownMbps;
                     var hopInterval = !protocolExtra.HopInterval.IsNullOrEmpty()
                         ? protocolExtra.HopInterval
                         : (_config.HysteriaItem.HopInterval >= 5
