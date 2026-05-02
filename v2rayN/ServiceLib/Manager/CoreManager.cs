@@ -8,6 +8,11 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
+
+    // WindowsJobService is a Windows-only type. The field-level attribute
+    // narrows the platform context for the analyzer in every read/assign
+    // location. Actual access goes through AddProcessJob, which guards the
+    // usage with Utils.IsWindows() so the field stays null on non-Windows.
     [SupportedOSPlatform("windows")]
     private WindowsJobService? _processJob;
     private ProcessService? _processService;

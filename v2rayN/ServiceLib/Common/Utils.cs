@@ -862,17 +862,34 @@ public class Utils
         return systemHosts;
     }
 
+    /// <summary>
+    /// Reads and merges the system hosts file(s) for the current platform.
+    /// On Windows: <c>C:\Windows\System32\drivers\etc\hosts</c> plus
+    /// <c>hosts.ics</c> (created by Internet Connection Sharing).
+    /// On Linux/macOS: <c>/etc/hosts</c>.
+    /// On any other platform: returns an empty dictionary.
+    /// </summary>
     public static Dictionary<string, string> GetSystemHosts()
     {
-        var hosts = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts");
-        var hostsIcs = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts.ics");
-
-        foreach (var (key, value) in hostsIcs)
+        if (IsWindows())
         {
-            hosts[key] = value;
+            var hosts = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts");
+            var hostsIcs = GetSystemHosts(@"C:\Windows\System32\drivers\etc\hosts.ics");
+
+            foreach (var (key, value) in hostsIcs)
+            {
+                hosts[key] = value;
+            }
+
+            return hosts;
         }
 
-        return hosts;
+        if (IsLinux() || IsMacOS())
+        {
+            return GetSystemHosts("/etc/hosts");
+        }
+
+        return new Dictionary<string, string>();
     }
 
     public static async Task<string?> GetCliWrapOutput(string filePath, string? arg)
@@ -1117,8 +1134,10 @@ public class Utils
     [SupportedOSPlatformGuard("windows")]
     public static bool IsWindows() => OperatingSystem.IsWindows();
 
+    [SupportedOSPlatformGuard("linux")]
     public static bool IsLinux() => OperatingSystem.IsLinux();
 
+    [SupportedOSPlatformGuard("macos")]
     public static bool IsMacOS() => OperatingSystem.IsMacOS();
 
     [UnsupportedOSPlatformGuard("windows")]

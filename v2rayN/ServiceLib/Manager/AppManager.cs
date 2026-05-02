@@ -54,6 +54,13 @@ public sealed class AppManager
 
     public bool InitApp()
     {
+        // Initialize the native SQLite provider explicitly before any database
+        // access. The call is idempotent, so it cooperates with the static
+        // constructor in SQLiteHelper. Having it here as well ensures that any
+        // future code path which reaches the database without going through
+        // SQLiteHelper still works (e.g. background services or tests).
+        SQLitePCL.Batteries_V2.Init();
+
         if (Utils.HasWritePermission() == false)
         {
             Environment.SetEnvironmentVariable(Global.LocalAppData, "1", EnvironmentVariableTarget.Process);

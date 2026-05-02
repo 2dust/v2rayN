@@ -40,6 +40,23 @@ DOTNET_SDK_URL="${DOTNET_RISCV_BASE}/${DOTNET_RISCV_VERSION}/${DOTNET_RISCV_FILE
 SKIA_VER="${SKIA_VER:-3.119.2}"
 HARFBUZZ_VER="${HARFBUZZ_VER:-8.3.1.3}"
 
+# SQLite amalgamation version for the linux-riscv64 native build.
+#
+# Keep in sync with the SourceGear.sqlite3 package referenced from
+# v2rayN/Directory.Packages.props (it pins the SQLite binaries shipped on the
+# x64/arm64/macOS RIDs).
+#
+# Mapping rule:  SourceGear.sqlite3 X.Y.Z.W  ->  SQLite vX.Y.Z
+#   ->  SQLITE_AMALGAMATION_VER  = sprintf("%d%02d%02d00", X, Y, Z)
+#   ->  SQLITE_AMALGAMATION_YEAR = year of the upstream SQLite release
+#
+# Currently: SourceGear.sqlite3 3.50.4.5  ->  SQLite 3.50.4 (released 2025).
+#
+# Override via the environment if you need a different version on RISC-V:
+#   SQLITE_AMALGAMATION_YEAR=2026 SQLITE_AMALGAMATION_VER=3530000 ./package-rhel-riscv.sh
+SQLITE_AMALGAMATION_YEAR="${SQLITE_AMALGAMATION_YEAR:-2025}"
+SQLITE_AMALGAMATION_VER="${SQLITE_AMALGAMATION_VER:-3500400}"
+
 # If the first argument starts with --, do not treat it as a version number
 if [[ "${VERSION_ARG:-}" == --* ]]; then
   VERSION_ARG=""
@@ -111,9 +128,11 @@ build_sqlite_native_riscv64() {
   mkdir -p "$outdir"
   workdir="$(mktemp -d)"
 
-  # SQLite 3.53.0 amalgamation
-  sqlite_year="2026"
-  sqlite_ver="3530000"
+  # SQLite amalgamation. Version is configured at the top of this script
+  # (SQLITE_AMALGAMATION_YEAR / SQLITE_AMALGAMATION_VER) and must be kept in
+  # sync with the SourceGear.sqlite3 package version used on other RIDs.
+  sqlite_year="$SQLITE_AMALGAMATION_YEAR"
+  sqlite_ver="$SQLITE_AMALGAMATION_VER"
   sqlite_zip="sqlite-amalgamation-${sqlite_ver}.zip"
 
   echo "[+] Download SQLite amalgamation: ${sqlite_zip}"
