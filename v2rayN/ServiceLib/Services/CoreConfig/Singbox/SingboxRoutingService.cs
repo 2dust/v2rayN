@@ -329,11 +329,52 @@ public partial class CoreConfigSingboxService
             if (item.Ip?.Count > 0)
             {
                 var countIp = 0;
-                foreach (var it in item.Ip)
+                var negativeIpList = item.Ip.Where(it => it.StartsWith('!')).ToList();
+                if (negativeIpList.Count > 0)
                 {
-                    if (ParseV2Address(it, rule2))
+                    var positiveIpList = item.Ip.Except(negativeIpList).ToList();
+                    var positiveRule = rule2;
+                    positiveRule = JsonUtils.DeepCopy(rule2);
+                    positiveRule.outbound = null;
+                    positiveRule.action = null;
+                    foreach (var it in positiveIpList)
                     {
-                        countIp++;
+                        if (ParseV2Address(it, positiveRule))
+                        {
+                            countIp++;
+                        }
+                    }
+                    var negativeRule = new Rule4Sbox();
+                    foreach (var it in negativeIpList)
+                    {
+                        // Remove first '!' and trim spaces
+                        var ip = it[1..].Trim();
+                        if (ParseV2Address(ip, negativeRule))
+                        {
+                            countIp++;
+                        }
+                    }
+                    negativeRule.invert = true;
+                    rule2 = new Rule4Sbox()
+                    {
+                        outbound = rule2.outbound,
+                        action = rule2.action,
+                        type = "logical",
+                        mode = "or",
+                        rules = [
+                            positiveRule,
+                            negativeRule
+                        ]
+                    };
+                }
+                else
+                {
+                    foreach (var it in item.Ip)
+                    {
+                        if (ParseV2Address(it, rule2))
+                        {
+                            countIp++;
+                        }
                     }
                 }
                 if (countIp > 0)
@@ -406,10 +447,10 @@ public partial class CoreConfigSingboxService
         {
             return false;
         }
-        else if (domain.StartsWith("geosite:"))
+        else if (domain.StartsWith(Global.GeoSitePrefix))
         {
             rule.geosite ??= [];
-            rule.geosite?.Add(domain.Substring(8));
+            rule.geosite?.Add(domain[Global.GeoSitePrefix.Length..]);
         }
         else if (domain.StartsWith("regexp:"))
         {
@@ -450,28 +491,18 @@ public partial class CoreConfigSingboxService
         {
             return false;
         }
-        else if (address.Equals("geoip:private"))
+        else if (address.Equals($"{Global.GeoIPPrefix}private"))
         {
             rule.ip_is_private = true;
         }
-        else if (address.StartsWith("geoip:"))
+        else if (address.StartsWith(Global.GeoIPPrefix))
         {
-            rule.geoip ??= new();
-            rule.geoip?.Add(address.Substring(6));
-        }
-        else if (address.Equals("geoip:!private"))
-        {
-            rule.ip_is_private = false;
-        }
-        else if (address.StartsWith("geoip:!"))
-        {
-            rule.geoip ??= new();
-            rule.geoip?.Add(address.Substring(6));
-            rule.invert = true;
+            rule.geoip ??= [];
+            rule.geoip?.Add(address[Global.GeoIPPrefix.Length..]);
         }
         else
         {
-            rule.ip_cidr ??= new();
+            rule.ip_cidr ??= [];
             rule.ip_cidr?.Add(address);
         }
         return true;

@@ -342,11 +342,6 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock
-                                Margin="{StaticResource Margin4}"
-                                VerticalAlignment="Center"
-                                Text="{x:Static resx:ResUI.TbSettingsRemoteDNS}" />
-
                             <TextBlock Margin="{StaticResource Margin4}" VerticalAlignment="Center">
                                 <HyperlinkButton Classes="WithIcon" Click="linkDnsObjectDoc_Click">
                                     <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />
@@ -494,7 +489,6 @@
                             Header="{x:Static resx:ResUI.TbSettingsTunMode}">
                             <local:JsonEditor Name="txttunDNS2Compatible" VerticalAlignment="Stretch" />
                         </HeaderedContentControl>
-
                     </Grid>
                 </DockPanel>
             </TabItem>

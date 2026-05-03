@@ -84,4 +84,8 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\ServiceLib.UdpTest\ServiceLib.UdpTest.csproj" />
+    </ItemGroup>
+
 </Project>

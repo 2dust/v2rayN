@@ -106,7 +106,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please check the Configuration settings first. 的本地化字符串。
+        ///   查找类似 Invalid configuration, please check or reselect 的本地化字符串。
         /// </summary>
         public static string CheckServerSettings {
             get {
@@ -1861,6 +1861,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Test Configurations UDP Delay 的本地化字符串。
+        /// </summary>
+        public static string menuUdpTestServer {
+            get {
+                return ResourceManager.GetString("menuUdpTestServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0} Website 的本地化字符串。
         /// </summary>
         public static string menuWebsiteItem {
@@ -2872,7 +2881,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Supports DNS Object; Click to view documentation 的本地化字符串。
+        ///   查找类似 Please fill in DNS Object; Click to view documentation 的本地化字符串。
         /// </summary>
         public static string TbDnsObjectDoc {
             get {
@@ -2931,15 +2940,6 @@ namespace ServiceLib.Resx {
         public static string TbEchConfigList {
             get {
                 return ResourceManager.GetString("TbEchConfigList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 EchForceQuery 的本地化字符串。
-        /// </summary>
-        public static string TbEchForceQuery {
-            get {
-                return ResourceManager.GetString("TbEchForceQuery", resourceCulture);
             }
         }
         
@@ -4150,15 +4150,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom DNS (multiple, separated by commas (,)) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsRemoteDNS {
-            get {
-                return ResourceManager.GetString("TbSettingsRemoteDNS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Route Only 的本地化字符串。
         /// </summary>
         public static string TbSettingsRouteOnly {
@@ -4389,6 +4380,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsUdpEnabled {
             get {
                 return ResourceManager.GetString("TbSettingsUdpEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UDP Test Url 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUdpTestUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsUdpTestUrl", resourceCulture);
             }
         }
         

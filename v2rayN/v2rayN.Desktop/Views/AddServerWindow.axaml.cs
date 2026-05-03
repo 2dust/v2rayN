@@ -39,11 +39,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         cmbFingerprint2.ItemsSource = Global.Fingerprints;
         cmbAllowInsecure.ItemsSource = Global.AllowInsecure;
         cmbAlpn.ItemsSource = Global.Alpns;
-        cmbEchForceQuery.ItemsSource = Global.EchForceQuerys;
 
-        var lstStreamSecurity = new List<string>();
-        lstStreamSecurity.Add(string.Empty);
-        lstStreamSecurity.Add(Global.StreamSecurity);
+        var lstStreamSecurity = new List<string> { string.Empty, Global.StreamSecurity };
 
         switch (profileItem.ConfigType)
         {
@@ -79,7 +76,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
+                cmbAlpn.IsEnabled = false;
                 break;
 
             case EConfigType.TUIC:
@@ -88,7 +85,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransport.IsVisible = false;
                 cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
                 gridFinalmask.IsVisible = false;
 
                 cmbCongestionControl8.ItemsSource = Global.TuicCongestionControls;
@@ -119,11 +115,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
-                cmbFingerprint.SelectedValue = string.Empty;
                 cmbAlpn.IsEnabled = false;
-                cmbAlpn.SelectedValue = string.Empty;
                 cmbAllowInsecure.IsEnabled = false;
-                cmbAllowInsecure.SelectedValue = string.Empty;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
                 break;
@@ -218,6 +211,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             this.Bind(ViewModel, vm => vm.KcpHeaderType, v => v.cmbHeaderTypeKcp.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.KcpSeed, v => v.txtKcpSeed.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.KcpMtu, v => v.txtKcpMtu.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostWs.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Path, v => v.txtPathWs.Text).DisposeWith(disposables);
@@ -245,7 +239,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.togAllowInsecureCertFetch.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.txtAllowInsecureCertFetchTips.IsVisible).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.EchForceQuery, v => v.cmbEchForceQuery.SelectedValue).DisposeWith(disposables);
 
             //reality
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI2.Text).DisposeWith(disposables);
@@ -337,21 +330,27 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             case nameof(ETransport.raw):
                 gridTransportRaw.IsVisible = true;
                 break;
+
             case nameof(ETransport.kcp):
                 gridTransportKcp.IsVisible = true;
                 break;
+
             case nameof(ETransport.ws):
                 gridTransportWs.IsVisible = true;
                 break;
+
             case nameof(ETransport.httpupgrade):
                 gridTransportHttpupgrade.IsVisible = true;
                 break;
+
             case nameof(ETransport.xhttp):
                 gridTransportXhttp.IsVisible = true;
                 break;
+
             case nameof(ETransport.grpc):
                 gridTransportGrpc.IsVisible = true;
                 break;
+
             default:
                 gridTransportRaw.IsVisible = true;
                 break;

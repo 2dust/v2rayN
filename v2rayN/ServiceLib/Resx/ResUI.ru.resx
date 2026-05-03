@@ -673,7 +673,7 @@
     <value>Ядро: базовые настройки</value>
   </data>
   <data name="TbCustomDnsRay" xml:space="preserve">
-    <value>Пользовательский DNS для V2ray</value>
+    <value>Пользовательский DNS для v2ray</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
     <value>Ядро: настройки KCP</value>
@@ -719,9 +719,6 @@
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Пароль авторизации</value>
-  </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>Пользовательский DNS (если несколько, то делите запятыми (,))</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Разрешить loopback для приложений UWP (Win10)</value>
@@ -934,7 +931,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
+    <value>Параметр действует только для raw/http, ws, gRPC и xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Шрифт (требуется перезапуск)</value>
@@ -1321,7 +1318,7 @@
     <value>XHTTP-режим</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>Raw JSON, format: { XHTTP Object }</value>
+    <value>Сырой JSON, формат: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Сворачивать в трей при закрытии окна</value>
@@ -1339,7 +1336,7 @@
     <value>Включить второй смешанный порт</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks: локальный порт, socks2: второй локальный порт, socks3: LAN порт</value>
+    <value>socks: локальный порт, socks2: второй локальный порт, socks3: LAN-порт</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>Тема</value>
@@ -1381,7 +1378,7 @@
     <value>Mldsa65Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
-    <value>Добавить сервер [Anytls]</value>
+    <value>Добавить сервер [AnyTLS]</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
     <value>Удалённый DNS</value>
@@ -1584,9 +1581,6 @@
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Полный сертификат (цепочка) в формате PEM</value>
   </data>
@@ -1696,21 +1690,33 @@
     <value>Устаревшая защита TUN (Legacy Protect)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+    <value>Для среды с несколькими сетевыми интерфейсами укажите IPv4-адрес локального компьютера</value>
   </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>Камуфляжный домен</value>
   </data>
   <data name="TbHost" xml:space="preserve">
-    <value>Host</value>
+    <value>Хост</value>
   </data>
   <data name="TransportExtra" xml:space="preserve">
-    <value>XHTTP Extra</value>
+    <value>Дополнительные параметры XHTTP (Extra)</value>
   </data>
   <data name="TbAllowInsecureCertFetch" xml:space="preserve">
-    <value>Allow insecure cert fetch (self-signed)</value>
+    <value>Разрешить небезопасную загрузку сертификата (самоподписанного)</value>
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
-    <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+    <value>Только для загрузки самоподписанных сертификатов. Это может подвергнуть вас риску атаки «человек посередине» (MITM).</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Тест UDP-задержки конфигураций</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>URL для UDP-теста</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Укажите корректный IPv4-адрес для SendThrough.</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Локальный исходящий адрес (SendThrough)</value>
   </data>
 </root>

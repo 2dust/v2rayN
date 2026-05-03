@@ -135,6 +135,10 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.MixedConcurrencyCount = 5;
         }
+        if (config.SpeedTestItem.UdpTestTarget.IsNullOrEmpty())
+        {
+            config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
+        }
 
         config.Mux4RayItem ??= new()
         {
@@ -252,7 +256,6 @@ public static class ConfigHandler
             item.Cert = profileItem.Cert;
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
-            item.EchForceQuery = profileItem.EchForceQuery;
             item.Finalmask = profileItem.Finalmask;
             item.ProtoExtra = profileItem.ProtoExtra;
             item.TransportExtra = profileItem.TransportExtra;
@@ -702,10 +705,12 @@ public static class ConfigHandler
     public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Hysteria2;
-        //profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
+        profileItem.Alpn = string.Empty;
+        //profileItem.Alpn = "h3";
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
@@ -745,6 +750,7 @@ public static class ConfigHandler
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
+        profileItem.Fingerprint = string.Empty;
 
         var congestionControl = profileItem.GetProtocolExtra().CongestionControl;
         if (!Global.TuicCongestionControls.Contains(congestionControl))
@@ -848,8 +854,10 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
         profileItem.Alpn = string.Empty;
         profileItem.Network = string.Empty;
+        profileItem.AllowInsecure = "false";
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
@@ -1037,13 +1045,19 @@ public static class ConfigHandler
 
         foreach (var item in lstProfile)
         {
-            if (!lstKeep.Exists(i => CompareProfileItem(i, item, false)))
+            if (item.IsComplex())
             {
                 lstKeep.Add(item);
+                continue;
+            }
+
+            if (lstKeep.Exists(i => CompareProfileItem(i, item, false)))
+            {
+                lstRemove.Add(item);
             }
             else
             {
-                lstRemove.Add(item);
+                lstKeep.Add(item);
             }
         }
         await RemoveServers(config, lstRemove);

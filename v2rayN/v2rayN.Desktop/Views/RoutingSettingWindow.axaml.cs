@@ -64,7 +64,10 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
 
     private void RoutingSettingWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (_closed) return;
+        if (_closed)
+        {
+            return;
+        }
 
         // DomainStrategy is auto-saved reactively; just ensure the caller knows changes were made
         if (ViewModel?.IsModified == true)

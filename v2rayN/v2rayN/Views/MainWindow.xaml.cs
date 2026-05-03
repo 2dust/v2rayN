@@ -170,10 +170,10 @@ public partial class MainWindow
 
     private void OnProgramStarted(object state, bool timeout)
     {
-        Application.Current?.Dispatcher.Invoke((Action)(() =>
+        Application.Current?.Dispatcher.Invoke(() =>
         {
             ShowHideWindow(true);
-        }));
+        });
     }
 
     private async Task DelegateSnackMsg(string content)

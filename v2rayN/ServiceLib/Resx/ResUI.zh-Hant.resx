@@ -121,7 +121,7 @@
     <value>匯出分享連結至剪貼簿成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>請先檢查設定</value>
+    <value>配置項目無效，請檢查或重新選擇</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>設定格式不正確</value>
@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>認證密碼</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自訂 DNS (可多個，用逗號 (,) 分隔)</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>解除 Win10 UWP 應用回環代理限制</value>
   </data>
@@ -862,7 +859,7 @@
     <value>規則詳細說明檔案</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支援填寫 DnsObject，JSON 格式，點擊查看說明</value>
+    <value>請填寫 DnsObject，JSON 格式，點擊查看說明</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分組此處請留空</value>
@@ -1581,9 +1578,6 @@
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>完整憑證（鏈），PEM 格式</value>
   </data>
@@ -1709,5 +1703,11 @@
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>僅用於抓取自簽證書，存在中間人風險。</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
   </data>
 </root>

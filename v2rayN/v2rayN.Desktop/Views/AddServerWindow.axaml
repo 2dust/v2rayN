@@ -306,7 +306,7 @@
                         x:Name="txtSecurity5"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="200"
+                        Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
@@ -831,7 +831,7 @@
                             x:Name="gridTransportKcp"
                             ColumnDefinitions="300,Auto"
                             IsVisible="False"
-                            RowDefinitions="Auto,Auto">
+                            RowDefinitions="Auto,Auto,Auto">
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
@@ -843,19 +843,34 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Width="200"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
                             <TextBlock
                                 Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="MTU" />
+                            <TextBox
+                                x:Name="txtKcpMtu"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="200"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                            <TextBlock
+                                Grid.Row="2"
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
                                 Text="Seed" />
                             <TextBox
                                 x:Name="txtKcpSeed"
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Width="400"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
                         </Grid>
 
                         <Grid
@@ -1099,19 +1114,6 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
-
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbEchForceQuery}" />
-                    <ComboBox
-                        x:Name="cmbEchForceQuery"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}" />
 
                     <TextBlock
                         Grid.Row="7"

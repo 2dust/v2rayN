@@ -227,7 +227,7 @@ public partial class CoreConfigSingboxService
                             : _config.HysteriaItem.UpMbps;
                         int? downMbps = protocolExtra?.DownMbps is { } sd and >= 0
                             ? sd
-                            : _config.HysteriaItem.UpMbps;
+                            : _config.HysteriaItem.DownMbps;
                         outbound.up_mbps = upMbps > 0 ? upMbps : null;
                         outbound.down_mbps = downMbps > 0 ? downMbps : null;
                         var ports = protocolExtra?.Ports?.IsNullOrEmpty() == false ? protocolExtra.Ports : null;

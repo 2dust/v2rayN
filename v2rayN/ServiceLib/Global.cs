@@ -67,6 +67,8 @@ public class Global
     public const string AsIs = "AsIs";
     public const string IPIfNonMatch = "IPIfNonMatch";
     public const string IPOnDemand = "IPOnDemand";
+    public const string GeoSitePrefix = "geosite:";
+    public const string GeoIPPrefix = "geoip:";
 
     public const string UserEMail = "t@t.tt";
     public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -640,6 +642,24 @@ public class Global
         @""
     ];
 
+    public static readonly List<string> UdpTestTargets =
+    [
+        "ntp:pool.ntp.org",
+        "ntp:time.google.com",
+        "dns:1.1.1.1",
+        "dns:8.8.8.8",
+        "dns:dns.google",
+        "stun:stun.voztovoice.org",
+        "stun:stun.cloudflare.com",
+        "stun:stun.l.google.com:19302",
+        "mcbe:pms.mc-complex.com",
+        "mcbe:bedrock.opblocks.com",
+        "mcbe:opsucht.net",
+        "mcbe:play.craftersmc.net",
+        "mcbe:mps.lemoncloud.net",
+        "mcbe:bedrock.talonmc.net",
+    ];
+
     public static readonly List<string> OutboundTags =
     [
         ProxyTag,
@@ -670,14 +690,6 @@ public class Global
         "geoip:cn",
         "geoip:ir",
         "geoip:ru",
-        ""
-    ];
-
-    public static readonly List<string> EchForceQuerys =
-    [
-        "none",
-        "half",
-        "full",
         ""
     ];
 

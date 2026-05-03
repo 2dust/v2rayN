@@ -1,7 +1,7 @@
 using AwesomeAssertions;
+using ServiceLib.Enums;
 using ServiceLib.Handler.Fmt;
 using ServiceLib.Models;
-using ServiceLib.Enums;
 using Xunit;
 
 namespace ServiceLib.Tests.Fmt;
@@ -92,7 +92,7 @@ public class FmtHandlerTests
         var uri = FmtHandler.GetShareUri(source);
 
         uri.Should().NotBeNullOrWhiteSpace();
-        (uri!.StartsWith(Global.ProtocolShares[source.ConfigType], StringComparison.OrdinalIgnoreCase)).Should()
+        uri!.StartsWith(Global.ProtocolShares[source.ConfigType], StringComparison.OrdinalIgnoreCase).Should()
             .BeTrue();
 
         var resolved = FmtHandler.ResolveConfig(uri, out var msg);
