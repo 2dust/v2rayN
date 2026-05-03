@@ -1,115 +1,138 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Require Red Hat base branch
-. /etc/os-release
+VERSION_ARG=""
+WITH_CORE="both"
+FORCE_NETCORE=0
+ARCH_OVERRIDE=""
+BUILD_FROM=""
+XRAY_VER="${XRAY_VER:-}"
+SING_VER="${SING_VER:-}"
 
-case "${ID:-}" in
-  rhel|rocky|almalinux|fedora|centos)
-    echo "Detected supported system: ${NAME:-$ID} ${VERSION_ID:-}"
-    ;;
-  *)
-    echo "Unsupported system: ${NAME:-unknown} (${ID:-unknown})."
-    echo "This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
-    exit 1
-    ;;
-esac
+MIN_KERNEL="6.12"
+PKGROOT="v2rayN-publish"
+PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
+RPM_TOPDIR="${HOME}/rpmbuild"
 
-# Kernel version
-MIN_KERNEL="6.11"
-CURRENT_KERNEL="$(uname -r)"
+OS_ID=""
+OS_NAME=""
+OS_VERSION_ID=""
+HOST_ARCH=""
+SCRIPT_DIR=""
+PROJECT=""
+VERSION=""
+BUILT_ALL=0
 
-lowest="$(printf '%s\n%s\n' "$MIN_KERNEL" "$CURRENT_KERNEL" | sort -V | head -n1)"
+declare -a BUILT_RPMS=()
 
-if [[ "$lowest" != "$MIN_KERNEL" ]]; then
-    echo "Kernel $CURRENT_KERNEL is below $MIN_KERNEL"
-    exit 1
-fi
-
-echo "[OK] Kernel $CURRENT_KERNEL verified."
-
-# Config & Parse arguments
-VERSION_ARG="${1:-}"     # Pass version number like 7.13.8, or leave empty
-WITH_CORE="both"         # Default: bundle both xray+sing-box
-FORCE_NETCORE=0          # --netcore => skip archive bundle, use separate downloads
-ARCH_OVERRIDE=""         # --arch x64|arm64|all (optional compile target)
-BUILD_FROM=""            # --buildfrom 1|2|3 to select channel non-interactively
-
-# If the first argument starts with --, do not treat it as a version number
-if [[ "${VERSION_ARG:-}" == --* ]]; then
-  VERSION_ARG=""
-fi
-# Take the first non --* argument as version, discard it
-if [[ -n "${VERSION_ARG:-}" ]]; then shift || true; fi
-
-# Parse remaining optional arguments
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --with-core)     WITH_CORE="${2:-both}"; shift 2;;
-    --xray-ver)      XRAY_VER="${2:-}"; shift 2;;
-    --singbox-ver)   SING_VER="${2:-}"; shift 2;;
-    --netcore)       FORCE_NETCORE=1; shift;;
-    --arch)          ARCH_OVERRIDE="${2:-}"; shift 2;;
-    --buildfrom)     BUILD_FROM="${2:-}"; shift 2;;
-    *)
-      if [[ -z "${VERSION_ARG:-}" ]]; then VERSION_ARG="$1"; fi
-      shift;;
-  esac
-done
-
-# Conflict: version number AND --buildfrom cannot be used together
-if [[ -n "${VERSION_ARG:-}" && -n "${BUILD_FROM:-}" ]]; then
-  echo "You cannot specify both an explicit version and --buildfrom at the same time."
-  echo "        Provide either a version (e.g. 7.14.0) OR --buildfrom 1|2|3."
+die() {
+  echo "$*" >&2
   exit 1
-fi
+}
 
-# Check and install dependencies
-host_arch="$(uname -m)"
-[[ "$host_arch" == "aarch64" || "$host_arch" == "x86_64" ]] || { echo "Only supports aarch64 / x86_64"; exit 1; }
+parse_args() {
+  local first_arg="${1:-}"
 
-install_ok=0
-
-if command -v dnf >/dev/null 2>&1; then
-  sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
-    && install_ok=1
-fi
-
-if [[ "$install_ok" -ne 1 ]]; then
-  echo "Could not auto-install dependencies for '$ID'. Make sure these are available:"
-  echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
-fi
-
-# Root directory
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
-
-# Git submodules (best effort)
-if [[ -f .gitmodules ]]; then
-  git submodule sync --recursive || true
-  git submodule update --init --recursive || true
-fi
-
-# Locate project
-PROJECT="v2rayN.Desktop/v2rayN.Desktop.csproj"
-if [[ ! -f "$PROJECT" ]]; then
-  PROJECT="$(find . -maxdepth 3 -name 'v2rayN.Desktop.csproj' | head -n1 || true)"
-fi
-[[ -f "$PROJECT" ]] || { echo "v2rayN.Desktop.csproj not found"; exit 1; }
-
-choose_channel() {
-  # If --buildfrom provided, map it directly and skip interaction.
-  if [[ -n "${BUILD_FROM:-}" ]]; then
-    case "$BUILD_FROM" in
-      1) echo "latest"; return 0;;
-      2) echo "prerelease"; return 0;;
-      3) echo "keep"; return 0;;
-      *) echo "[ERROR] Invalid --buildfrom value: ${BUILD_FROM}. Use 1|2|3." >&2; exit 1;;
-    esac
+  if [[ -n "$first_arg" && "$first_arg" != --* ]]; then
+    VERSION_ARG="$first_arg"
+    shift || true
   fi
 
-  # Print menu to stderr and read from /dev/tty so stdout only carries the token.
-  local ch="latest" sel=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --with-core)   WITH_CORE="${2:-both}"; shift 2 ;;
+      --xray-ver)    XRAY_VER="${2:-}"; shift 2 ;;
+      --singbox-ver) SING_VER="${2:-}"; shift 2 ;;
+      --netcore)     FORCE_NETCORE=1; shift ;;
+      --arch)        ARCH_OVERRIDE="${2:-}"; shift 2 ;;
+      --buildfrom)   BUILD_FROM="${2:-}"; shift 2 ;;
+      *)
+        [[ -n "${VERSION_ARG:-}" ]] || VERSION_ARG="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -n "${VERSION_ARG:-}" && -n "${BUILD_FROM:-}" ]]; then
+    die "You cannot specify both an explicit version and --buildfrom at the same time.
+        Provide either a version (e.g. 7.14.0) OR --buildfrom 1|2|3."
+  fi
+}
+
+detect_environment() {
+  local current_kernel=""
+  local lowest=""
+
+  . /etc/os-release
+
+  OS_ID="${ID:-}"
+  OS_NAME="${NAME:-$OS_ID}"
+  OS_VERSION_ID="${VERSION_ID:-}"
+  HOST_ARCH="$(uname -m)"
+
+  case "$OS_ID" in
+    rhel|rocky|almalinux|fedora|centos)
+      echo "Detected supported system: ${OS_NAME:-$OS_ID} ${OS_VERSION_ID:-}"
+      ;;
+    *)
+      die "Unsupported system: ${OS_NAME:-unknown} (${OS_ID:-unknown}).
+This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
+      ;;
+  esac
+
+  case "$HOST_ARCH" in
+    x86_64|aarch64) ;;
+    *) die "Only supports aarch64 / x86_64" ;;
+  esac
+
+  current_kernel="$(uname -r)"
+  lowest="$(printf '%s\n%s\n' "$MIN_KERNEL" "$current_kernel" | sort -V | head -n1)"
+
+  [[ "$lowest" == "$MIN_KERNEL" ]] || die "Kernel $current_kernel is below $MIN_KERNEL"
+  echo "[OK] Kernel $current_kernel verified."
+}
+
+install_dependencies() {
+  local install_ok=0
+
+  if command -v dnf >/dev/null 2>&1; then
+    sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
+      && install_ok=1
+  fi
+
+  if [[ "$install_ok" -ne 1 ]]; then
+    echo "Could not auto-install dependencies for '$OS_ID'. Make sure these are available:"
+    echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+    exit 1
+  fi
+}
+
+prepare_workspace() {
+  SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+  cd "$SCRIPT_DIR"
+
+  if [[ -f .gitmodules ]]; then
+    git submodule sync --recursive || true
+    git submodule update --init --recursive || true
+  fi
+
+  PROJECT="$PROJECT_HINT"
+  [[ -f "$PROJECT" ]] || PROJECT="$(find . -maxdepth 3 -name 'v2rayN.Desktop.csproj' | head -n1 || true)"
+  [[ -f "$PROJECT" ]] || die "v2rayN.Desktop.csproj not found"
+}
+
+choose_channel() {
+  local ch="latest"
+  local sel=""
+
+  if [[ -n "${BUILD_FROM:-}" ]]; then
+    case "$BUILD_FROM" in
+      1) echo "latest"; return 0 ;;
+      2) echo "prerelease"; return 0 ;;
+      3) echo "keep"; return 0 ;;
+      *) die "[ERROR] Invalid --buildfrom value: ${BUILD_FROM}. Use 1|2|3." ;;
+    esac
+  fi
 
   if [[ -t 0 ]]; then
     echo "[?] Choose v2rayN release channel:" >&2
@@ -141,29 +164,35 @@ get_latest_tag_prerelease() {
     | sed 's/^v//'
 }
 
+sync_submodules() {
+  if [[ -f .gitmodules ]]; then
+    git submodule sync --recursive || true
+    git submodule update --init --recursive || true
+  fi
+}
+
 git_try_checkout() {
-  # Try a series of refs and checkout when found.
-  local want="$1" ref=""
+  local want="$1"
+  local ref=""
+
   if git rev-parse --git-dir >/dev/null 2>&1; then
     git fetch --tags --force --prune --depth=1 || true
-    if git rev-parse "refs/tags/${want}" >/dev/null 2>&1; then
-      ref="${want}"
-    fi
+    git rev-parse "refs/tags/${want}" >/dev/null 2>&1 && ref="$want"
+
     if [[ -n "$ref" ]]; then
       echo "[OK] Found ref '${ref}', checking out..."
-      git checkout -f "${ref}"
-      if [[ -f .gitmodules ]]; then
-        git submodule sync --recursive || true
-        git submodule update --init --recursive || true
-      fi
+      git checkout -f "$ref"
+      sync_submodules
       return 0
     fi
   fi
+
   return 1
 }
 
 apply_channel_or_keep() {
-  local ch="$1" tag
+  local ch="$1"
+  local tag=""
 
   if [[ "$ch" == "keep" ]]; then
     echo "[*] Keep current repository state (no checkout)."
@@ -173,102 +202,154 @@ apply_channel_or_keep() {
   fi
 
   echo "[*] Resolving ${ch} tag from GitHub releases..."
-  if [[ "$ch" == "prerelease" ]]; then
-    tag="$(get_latest_tag_prerelease || true)"
-  else
-    tag="$(get_latest_tag_latest || true)"
-  fi
 
-  [[ -n "$tag" ]] || { echo "Failed to resolve latest tag for channel '${ch}'."; exit 1; }
+  case "$ch" in
+    latest)     tag="$(get_latest_tag_latest || true)" ;;
+    prerelease) tag="$(get_latest_tag_prerelease || true)" ;;
+    *)          die "Failed to resolve latest tag for channel '${ch}'." ;;
+  esac
+
+  [[ -n "$tag" ]] || die "Failed to resolve latest tag for channel '${ch}'."
+
   echo "[*] Latest tag for '${ch}': ${tag}"
-  git_try_checkout "$tag" || { echo "Failed to checkout '${tag}'."; exit 1; }
+  git_try_checkout "$tag" || die "Failed to checkout '${tag}'."
   VERSION="${tag#v}"
 }
 
-if git rev-parse --git-dir >/dev/null 2>&1; then
-  if [[ -n "${VERSION_ARG:-}" ]]; then
-    clean_ver="${VERSION_ARG#v}"
-    if git_try_checkout "$clean_ver"; then
-      VERSION="$clean_ver"
+resolve_version() {
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    if [[ -n "${VERSION_ARG:-}" ]]; then
+      local clean_ver="${VERSION_ARG#v}"
+
+      if git_try_checkout "$clean_ver"; then
+        VERSION="$clean_ver"
+      else
+        echo "[WARN] Tag '${VERSION_ARG}' not found."
+        apply_channel_or_keep "$(choose_channel)"
+      fi
     else
-      echo "[WARN] Tag '${VERSION_ARG}' not found."
-      ch="$(choose_channel)"
-      apply_channel_or_keep "$ch"
+      apply_channel_or_keep "$(choose_channel)"
     fi
   else
-    ch="$(choose_channel)"
-    apply_channel_or_keep "$ch"
+    echo "Current directory is not a git repo; proceeding on current tree."
+    VERSION="${VERSION_ARG:-0.0.0}"
   fi
-else
-  echo "Current directory is not a git repo; proceeding on current tree."
-  VERSION="${VERSION_ARG:-0.0.0}"
-fi
 
-VERSION="${VERSION#v}"
-echo "[*] GUI version resolved as: ${VERSION}"
+  VERSION="${VERSION#v}"
+  echo "[*] GUI version resolved as: ${VERSION}"
+}
 
-# Helpers for core
+xray_url_for_rid() {
+  local rid="$1"
+  local ver="$2"
+
+  case "$rid" in
+    linux-x64)   echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip" ;;
+    linux-arm64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip" ;;
+    *)           return 1 ;;
+  esac
+}
+
+singbox_url_for_rid() {
+  local rid="$1"
+  local ver="$2"
+
+  case "$rid" in
+    linux-x64)   echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz" ;;
+    linux-arm64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz" ;;
+    *)           return 1 ;;
+  esac
+}
+
+bundle_url_for_rid() {
+  local rid="$1"
+
+  case "$rid" in
+    linux-x64)   echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip" ;;
+    linux-arm64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip" ;;
+    *)           return 1 ;;
+  esac
+}
+
 download_xray() {
-  # Download Xray core
-  local outdir="$1" rid="$2" ver="${XRAY_VER:-}" url tmp zipname="xray.zip"
+  local outdir="$1"
+  local rid="$2"
+  local ver="${XRAY_VER:-}"
+  local url=""
+  local tmp=""
+
   mkdir -p "$outdir"
+
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest \
-        | grep -Eo '"tag_name":\s*"v[^"]+"' | sed -E 's/.*"v([^"]+)".*/\1/' | head -n1)" || true
+      | grep -Eo '"tag_name":\s*"v[^"]+"' \
+      | sed -E 's/.*"v([^"]+)".*/\1/' \
+      | head -n1)" || true
   fi
+
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  if [[ "$rid" == "linux-arm64" ]]; then
-    url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip"
-  else
-    url="https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip"
-  fi
+  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID: $rid"; return 1; }
+
   echo "[+] Download xray: $url"
+
   tmp="$(mktemp -d)"
-  curl -fL "$url" -o "$tmp/$zipname"
-  unzip -q "$tmp/$zipname" -d "$tmp"
-  install -m 755 "$tmp/xray" "$outdir/xray"
+  curl -fL "$url" -o "$tmp/xray.zip" || { rm -rf "$tmp"; return 1; }
+  unzip -q "$tmp/xray.zip" -d "$tmp" || { rm -rf "$tmp"; return 1; }
+  install -m 755 "$tmp/xray" "$outdir/xray" || { rm -rf "$tmp"; return 1; }
   rm -rf "$tmp"
 }
 
 download_singbox() {
-  # Download sing-box
-  local outdir="$1" rid="$2" ver="${SING_VER:-}" url tmp tarname="singbox.tar.gz" bin cronet
+  local outdir="$1"
+  local rid="$2"
+  local ver="${SING_VER:-}"
+  local url=""
+  local tmp=""
+  local bin=""
+  local cronet=""
+
   mkdir -p "$outdir"
+
   if [[ -z "$ver" ]]; then
     ver="$(curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest \
       | grep -Eo '"tag_name":\s*"v[^"]+"' \
       | sed -E 's/.*"v([^"]+)".*/\1/' \
       | head -n1)" || true
   fi
+
   [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-  if [[ "$rid" == "linux-arm64" ]]; then
-    url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz"
-  else
-    url="https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz"
-  fi
+  url="$(singbox_url_for_rid "$rid" "$ver")" || { echo "[sing-box] Unsupported RID: $rid"; return 1; }
+
   echo "[+] Download sing-box: $url"
+
   tmp="$(mktemp -d)"
-  curl -fL "$url" -o "$tmp/$tarname"
-  tar -C "$tmp" -xzf "$tmp/$tarname"
+  curl -fL "$url" -o "$tmp/singbox.tar.gz" || { rm -rf "$tmp"; return 1; }
+  tar -C "$tmp" -xzf "$tmp/singbox.tar.gz" || { rm -rf "$tmp"; return 1; }
+
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
   [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
-  install -m 755 "$bin" "$outdir/sing-box"
+
+  install -m 755 "$bin" "$outdir/sing-box" || { rm -rf "$tmp"; return 1; }
+
   cronet="$(find "$tmp" -type f -name 'libcronet*.so*' | head -n1 || true)"
-  [[ -n "$cronet" ]] && install -m 644 "$cronet" "$outdir/libcronet.so"
+  [[ -n "$cronet" ]] && install -m 644 "$cronet" "$outdir/libcronet.so" || true
+
   rm -rf "$tmp"
 }
 
-# Move geo files to outroot/bin
 unify_geo_layout() {
   local outroot="$1"
-  mkdir -p "$outroot/bin"
-  local names=( \
-    "geosite.dat" \
-    "geoip.dat" \
-    "geoip-only-cn-private.dat" \
-    "Country.mmdb" \
-    "geoip.metadb" \
+  local n
+  local names=(
+    geosite.dat
+    geoip.dat
+    geoip-only-cn-private.dat
+    Country.mmdb
+    geoip.metadb
   )
+
+  mkdir -p "$outroot/bin"
+
   for n in "${names[@]}"; do
     if [[ -f "$outroot/bin/xray/$n" ]]; then
       mv -f "$outroot/bin/xray/$n" "$outroot/bin/$n"
@@ -276,58 +357,48 @@ unify_geo_layout() {
   done
 }
 
-# Download geo/rule assets
 download_geo_assets() {
   local outroot="$1"
   local bin_dir="$outroot/bin"
   local srss_dir="$bin_dir/srss"
+  local f=""
+
   mkdir -p "$bin_dir" "$srss_dir"
 
   echo "[+] Download Xray Geo to ${bin_dir}"
-  curl -fsSL -o "$bin_dir/geosite.dat" \
-    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
-  curl -fsSL -o "$bin_dir/geoip.dat" \
-    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
-  curl -fsSL -o "$bin_dir/geoip-only-cn-private.dat" \
-    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
-  curl -fsSL -o "$bin_dir/Country.mmdb" \
-    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
+  curl -fsSL -o "$bin_dir/geosite.dat" "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
+  curl -fsSL -o "$bin_dir/geoip.dat" "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
+  curl -fsSL -o "$bin_dir/geoip-only-cn-private.dat" "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
+  curl -fsSL -o "$bin_dir/Country.mmdb" "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
   echo "[+] Download sing-box rule DB & rule-sets"
-  curl -fsSL -o "$bin_dir/geoip.metadb" \
-    "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" || true
+  curl -fsSL -o "$bin_dir/geoip.metadb" "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb"
 
-  for f in \
-    geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs \
-    geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
-    curl -fsSL -o "$srss_dir/$f" \
-      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geoip/$f" || true
-  done
-  for f in \
-    geosite-cn.srs geosite-gfw.srs geosite-google.srs geosite-greatfire.srs \
-    geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
-    curl -fsSL -o "$srss_dir/$f" \
-      "https://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/$f" || true
+  for f in geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
+    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geoip/$f"
   done
 
-  # Unify to bin
+  for f in geosite-cn.srs geosite-gfw.srs geosite-google.srs geosite-greatfire.srs geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
+    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geosite/$f"
+  done
+
   unify_geo_layout "$outroot"
 }
 
-# Prefer the prebuilt v2rayN core bundle; then unify geo layout
-download_v2rayn_bundle() {
-  local outroot="$1" rid="$2"
+populate_assets_zip_mode() {
+  local outroot="$1"
+  local rid="$2"
   local url=""
-  if [[ "$rid" == "linux-arm64" ]]; then
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip"
-  else
-    url="https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip"
-  fi
+  local tmp=""
+  local nested_dir=""
+
+  url="$(bundle_url_for_rid "$rid")" || { echo "[!] Bundle unsupported RID: $rid"; return 1; }
+
   echo "[+] Try v2rayN bundle archive: $url"
-  local tmp zipname
-  tmp="$(mktemp -d)"; zipname="$tmp/v2rayn.zip"
-  curl -fL "$url" -o "$zipname" || { echo "[!] Bundle download failed"; return 1; }
-  unzip -q "$zipname" -d "$tmp" || { echo "[!] Bundle unzip failed"; return 1; }
+
+  tmp="$(mktemp -d)"
+  curl -fL "$url" -o "$tmp/v2rayn.zip" || { echo "[!] Bundle download failed"; rm -rf "$tmp"; return 1; }
+  unzip -q "$tmp/v2rayn.zip" -d "$tmp" || { echo "[!] Bundle unzip failed"; rm -rf "$tmp"; return 1; }
 
   if [[ -d "$tmp/bin" ]]; then
     mkdir -p "$outroot/bin"
@@ -339,7 +410,6 @@ download_v2rayn_bundle() {
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
-  local nested_dir
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
   if [[ -n "$nested_dir" && -d "$nested_dir/bin" ]]; then
     mkdir -p "$outroot/bin"
@@ -347,109 +417,74 @@ download_v2rayn_bundle() {
     rm -rf "$nested_dir"
   fi
 
-  # Unify to bin/
   unify_geo_layout "$outroot"
+  rm -rf "$tmp"
 
   echo "[+] Bundle extracted to $outroot"
 }
 
-# ===== Build results collection for --arch all ========================================
-BUILT_RPMS=()     # Will collect absolute paths of built RPMs
-BUILT_ALL=0       # Flag to know if we should print the final summary
+populate_assets_netcore_mode() {
+  local outroot="$1"
+  local rid="$2"
 
-# ===== Build (single-arch) function ====================================================
-build_for_arch() {
-  # $1: target short arch: x64 | arm64
-  local short="$1"
-  local rid rpm_target archdir
-  case "$short" in
-    x64)   rid="linux-x64";   rpm_target="x86_64"; archdir="x86_64" ;;
-    arm64) rid="linux-arm64"; rpm_target="aarch64"; archdir="aarch64" ;;
-    *) echo "Unknown arch '$short' (use x64|arm64)"; return 1;;
-  esac
+  mkdir -p "$outroot/bin/xray" "$outroot/bin/sing_box"
 
-  echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
+  if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
+    download_xray "$outroot/bin/xray" "$rid" || echo "[!] xray download failed (skipped)"
+  fi
 
-  # .NET publish (self-contained) for this RID
-  dotnet clean "$PROJECT" -c Release
-  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
+  if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
+    download_singbox "$outroot/bin/sing_box" "$rid" || echo "[!] sing-box download failed (skipped)"
+  fi
 
-  dotnet restore "$PROJECT"
-  dotnet publish "$PROJECT" \
-    -c Release -r "$rid" \
-    -p:PublishSingleFile=false \
-    -p:SelfContained=true
+  download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
+}
 
-  # Per-arch variables (scoped)
-  local RID_DIR="$rid"
-  local PUBDIR
-  PUBDIR="$(dirname "$PROJECT")/bin/Release/net10.0/${RID_DIR}/publish"
-  [[ -d "$PUBDIR" ]] || { echo "Publish directory not found: $PUBDIR"; return 1; }
+stage_runtime_assets() {
+  local outroot="$1"
+  local rid="$2"
 
-  # Per-arch working area
-  local PKGROOT="v2rayN-publish"
-  local WORKDIR
-  WORKDIR="$(mktemp -d)"
-  trap '[[ -n "${WORKDIR:-}" ]] && rm -rf "$WORKDIR"' RETURN
-
-  # rpmbuild topdir selection
-  local TOPDIR SPECDIR SOURCEDIR
-  rpmdev-setuptree
-  TOPDIR="${HOME}/rpmbuild"
-  SPECDIR="${TOPDIR}/SPECS"
-  SOURCEDIR="${TOPDIR}/SOURCES"
-
-  # Stage publish content
-  mkdir -p "$WORKDIR/$PKGROOT"
-  cp -a "$PUBDIR/." "$WORKDIR/$PKGROOT/"
-
-  # Required icon
-  local ICON_CANDIDATE
-  PROJECT_DIR="$(cd "$(dirname "$PROJECT")" && pwd)"
-  ICON_CANDIDATE="$PROJECT_DIR/v2rayN.png"
-  [[ -f "$ICON_CANDIDATE" ]] || { echo "Required icon not found: $ICON_CANDIDATE"; return 1; }
-  cp "$ICON_CANDIDATE" "$WORKDIR/$PKGROOT/v2rayn.png"
-
-  # Prepare bin structure
-  mkdir -p "$WORKDIR/$PKGROOT/bin/xray" "$WORKDIR/$PKGROOT/bin/sing_box"
-
-  # Bundle / cores per-arch
-  fetch_separate_cores_and_rules() {
-    local outroot="$1"
-
-    if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-      download_xray "$outroot/bin/xray" "$RID_DIR" || echo "[!] xray download failed (skipped)"
-    fi
-    if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-      download_singbox "$outroot/bin/sing_box" "$RID_DIR" || echo "[!] sing-box download failed (skipped)"
-    fi
-    download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
-  }
+  mkdir -p "$outroot/bin/xray" "$outroot/bin/sing_box"
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
-    if download_v2rayn_bundle "$WORKDIR/$PKGROOT" "$RID_DIR"; then
+    if populate_assets_zip_mode "$outroot" "$rid"; then
       echo "[*] Using v2rayN bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
-      fetch_separate_cores_and_rules "$WORKDIR/$PKGROOT"
+      populate_assets_netcore_mode "$outroot" "$rid"
     fi
   else
     echo "[*] --netcore specified: use separate core + rules."
-    fetch_separate_cores_and_rules "$WORKDIR/$PKGROOT"
+    populate_assets_netcore_mode "$outroot" "$rid"
   fi
+}
 
-  # Tarball
-  mkdir -p "$SOURCEDIR"
-  tar -C "$WORKDIR" -czf "$SOURCEDIR/$PKGROOT.tar.gz" "$PKGROOT"
+describe_target() {
+  local short="$1"
 
-  # SPEC
-  local SPECFILE="$SPECDIR/v2rayN.spec"
-  mkdir -p "$SPECDIR"
-  cat > "$SPECFILE" <<'SPEC'
+  case "$short" in
+    x64)   printf '%s\n%s\n%s\n' "linux-x64" "x86_64" "x86_64" ;;
+    arm64) printf '%s\n%s\n%s\n' "linux-arm64" "aarch64" "aarch64" ;;
+    *)     echo "Unknown arch '$short' (use x64|arm64)" >&2; return 1 ;;
+  esac
+}
+
+publish_binary() {
+  local rid="$1"
+
+  dotnet clean "$PROJECT" -c Release
+  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
+  dotnet restore "$PROJECT"
+  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
+}
+
+write_spec_file() {
+  local specfile="$1"
+
+  cat > "$specfile" <<'SPEC'
 %global debug_package %{nil}
 %undefine _debuginfo_subpackages
 %undefine _debugsource_packages
-# Ignore outdated LTTng dependencies incorrectly reported by the .NET runtime (to avoid installation failures)
 %global __requires_exclude ^liblttng-ust\.so\..*$
 
 Name:           v2rayN
@@ -462,7 +497,6 @@ BugURL:         https://github.com/2dust/v2rayN/issues
 ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
-# Runtime dependencies (Avalonia / X11 / Fonts / GL)
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.34
 Requires:       fontconfig >= 2.13.1
@@ -483,28 +517,23 @@ https://github.com/2dust/v2rayN
 %setup -q -n __PKGROOT__
 
 %build
-# no build
 
 %install
 install -dm0755 %{buildroot}/opt/v2rayN
 cp -a * %{buildroot}/opt/v2rayN/
 
-# Normalize permissions
 find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
 find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
 [ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
 
-# Launcher (prefer native ELF first, then DLL fallback)
 install -dm0755 %{buildroot}%{_bindir}
 install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
 DIR="/opt/v2rayN"
 
-# Prefer native apphost
 if [[ -x "$DIR/v2rayN" ]]; then exec "$DIR/v2rayN" "$@"; fi
 
-# DLL fallback
 for dll in v2rayN.Desktop.dll v2rayN.dll; do
   if [[ -f "$DIR/$dll" ]]; then exec /usr/bin/dotnet "$DIR/$dll" "$@"; fi
 done
@@ -514,7 +543,6 @@ ls -l "$DIR" >&2 || true
 exit 1
 EOF
 
-# Desktop file
 install -dm0755 %{buildroot}%{_datadir}/applications
 install -m0644 /dev/stdin %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
@@ -527,7 +555,6 @@ Terminal=false
 Categories=Network;
 EOF
 
-# Icon
 install -dm0755 %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
 install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 
@@ -546,45 +573,129 @@ install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 SPEC
 
-  # Replace placeholders
-  sed -i "s/__VERSION__/${VERSION}/g" "$SPECFILE"
-  sed -i "s/__PKGROOT__/${PKGROOT}/g" "$SPECFILE"
+  sed -i "s/__VERSION__/${VERSION}/g" "$specfile"
+  sed -i "s/__PKGROOT__/${PKGROOT}/g" "$specfile"
+}
 
-  # Build RPM for this arch
-  rpmbuild -ba "$SPECFILE" --target "$rpm_target"
+package_binary() {
+  local short="$1"
+  local rid="$2"
+  local rpm_target="$3"
+  local archdir="$4"
+  local pubdir=""
+  local workdir=""
+  local specfile=""
+  local sourcedir=""
+  local specdir=""
+  local project_dir=""
+  local icon_candidate=""
+  local f=""
+
+  pubdir="$(dirname "$PROJECT")/bin/Release/net10.0/${rid}/publish"
+  [[ -d "$pubdir" ]] || { echo "Publish directory not found: $pubdir"; return 1; }
+
+  workdir="$(mktemp -d)"
+  trap '[[ -n "${workdir:-}" ]] && rm -rf "$workdir"' RETURN
+
+  mkdir -p "$workdir/$PKGROOT"
+  cp -a "$pubdir/." "$workdir/$PKGROOT/"
+
+  project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
+  icon_candidate="$project_dir/v2rayN.png"
+  [[ -f "$icon_candidate" ]] || { echo "Required icon not found: $icon_candidate"; return 1; }
+  cp "$icon_candidate" "$workdir/$PKGROOT/v2rayn.png"
+
+  stage_runtime_assets "$workdir/$PKGROOT" "$rid"
+
+  rpmdev-setuptree
+  sourcedir="${RPM_TOPDIR}/SOURCES"
+  specdir="${RPM_TOPDIR}/SPECS"
+  specfile="${specdir}/v2rayN.spec"
+
+  mkdir -p "$sourcedir" "$specdir"
+  tar -C "$workdir" -czf "$sourcedir/$PKGROOT.tar.gz" "$PKGROOT"
+
+  write_spec_file "$specfile"
+  rpmbuild -ba "$specfile" --target "$rpm_target"
 
   echo "Build done for $short. RPM at:"
-  local f
-  for f in "${TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
+  for f in "${RPM_TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
     [[ -e "$f" ]] || continue
     echo "  $f"
     BUILT_RPMS+=("$f")
   done
 }
 
-# ===== Arch selection and build orchestration =========================================
-case "${ARCH_OVERRIDE:-}" in
-  all)           targets=(x64 arm64); BUILT_ALL=1 ;;
-  x64|amd64)     targets=(x64) ;;
-  arm64|aarch64) targets=(arm64) ;;
-  "")            targets=($([[ "$host_arch" == "aarch64" ]] && echo arm64 || echo x64)) ;;
-  *)             echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all."; exit 1 ;;
-esac
+select_targets() {
+  case "${ARCH_OVERRIDE:-}" in
+    all)           printf '%s\n' x64 arm64 ;;
+    x64|amd64)     printf '%s\n' x64 ;;
+    arm64|aarch64) printf '%s\n' arm64 ;;
+    "")
+      case "$HOST_ARCH" in
+        x86_64)  printf '%s\n' x64 ;;
+        aarch64) printf '%s\n' arm64 ;;
+        *)       return 1 ;;
+      esac
+      ;;
+    *)
+      echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all." >&2
+      return 1
+      ;;
+  esac
+}
 
-for arch in "${targets[@]}"; do
-  build_for_arch "$arch"
-done
+build_one_target() {
+  local short="$1"
+  local meta=()
+  local rid=""
+  local rpm_target=""
+  local archdir=""
 
-# Print Both arches information
-if [[ "$BUILT_ALL" -eq 1 ]]; then
-  echo ""
-  echo "================ Build Summary (both architectures) ================"
-  if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
-    for rp in "${BUILT_RPMS[@]}"; do
-      echo "$rp"
-    done
-  else
-    echo "No RPMs detected in summary (check build logs above)."
+  mapfile -t meta < <(describe_target "$short") || return 1
+  rid="${meta[0]}"
+  rpm_target="${meta[1]}"
+  archdir="${meta[2]}"
+
+  echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
+  publish_binary "$rid"
+  package_binary "$short" "$rid" "$rpm_target" "$archdir"
+}
+
+print_summary() {
+  if [[ "$BUILT_ALL" -eq 1 ]]; then
+    local rp=""
+    echo ""
+    echo "================ Build Summary (both architectures) ================"
+    if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
+      for rp in "${BUILT_RPMS[@]}"; do
+        echo "$rp"
+      done
+    else
+      echo "No RPMs detected in summary (check build logs above)."
+    fi
+    echo "===================================================================="
   fi
-  echo "===================================================================="
-fi
+}
+
+main() {
+  local targets=()
+  local arch=""
+
+  parse_args "$@"
+  detect_environment
+  install_dependencies
+  prepare_workspace
+  resolve_version
+
+  mapfile -t targets < <(select_targets)
+  [[ "${ARCH_OVERRIDE:-}" == "all" ]] && BUILT_ALL=1 || BUILT_ALL=0
+
+  for arch in "${targets[@]}"; do
+    build_one_target "$arch"
+  done
+
+  print_summary
+}
+
+main "$@"
