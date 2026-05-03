@@ -54,7 +54,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: '10.0.1xx'
 
     - name: Build v2rayN
       working-directory: ./v2rayN
