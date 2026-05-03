@@ -355,7 +355,8 @@ public partial class CoreConfigSingboxService
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0 && !regionName.IsNullOrEmpty())
                 {
                     var regionGeosite = rule.geosite.Where(g => g.EndsWith($"-{regionName}", StringComparison.OrdinalIgnoreCase)
-                                                     || g.EndsWith($"@{regionName}", StringComparison.OrdinalIgnoreCase)).ToList();
+                                                     || g.EndsWith($"@{regionName}", StringComparison.OrdinalIgnoreCase)
+                                                     || g == regionName).ToList();
                     if (regionGeosite.Count > 0)
                     {
                         rule.geosite.RemoveAll(regionGeosite.Contains);

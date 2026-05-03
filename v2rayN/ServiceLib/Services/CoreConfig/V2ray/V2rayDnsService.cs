@@ -201,7 +201,8 @@ public partial class CoreConfigV2rayService
                     {
                         var isExpectedDomain = !regionName.IsNullOrEmpty()
                             || normalizedDomain.EndsWith($"-{regionName}")
-                            || normalizedDomain.EndsWith($"@{regionName}");
+                            || normalizedDomain.EndsWith($"@{regionName}")
+                            || normalizedDomain == Global.GeoSitePrefix + regionName;
                         var targetList = isExpectedDomain ? expectedDomainList : directGeositeList;
                         targetList.Add(normalizedDomain);
                     }
