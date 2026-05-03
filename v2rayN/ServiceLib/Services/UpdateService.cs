@@ -301,14 +301,10 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         }
         else if (Utils.IsLinux())
         {
-            var arch = RuntimeInformation.ProcessArchitecture;
-            if (arch.ToString().Equals("RiscV64", StringComparison.OrdinalIgnoreCase))
-            {
-                return coreInfo?.DownloadUrlLinuxRiscV64;
-            }
-            return arch switch
+            return RuntimeInformation.ProcessArchitecture switch
             {
                 Architecture.Arm64 => coreInfo?.DownloadUrlLinuxArm64,
+                Architecture.RiscV64 => coreInfo?.DownloadUrlLinuxRiscV64,
                 Architecture.X64 => coreInfo?.DownloadUrlLinux64,
                 _ => null,
             };
@@ -375,8 +371,8 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
             foreach (var item in rules ?? [])
             {
-                AddPrefixedItems(item.Ip, Global.GeoIPPrefix, geoipFiles);
-                AddPrefixedItems(item.Domain, Global.GeoSitePrefix, geoSiteFiles);
+                AddPrefixedItems(item.Ip, "geoip:", geoipFiles);
+                AddPrefixedItems(item.Domain, "geosite:", geoSiteFiles);
             }
         }
 
