@@ -161,8 +161,8 @@ public partial class CoreConfigV2rayService
                 .ToList();
 
             foreach (var region in from ip in expectedIPs
-                                   where ip.StartsWith("geoip:", StringComparison.OrdinalIgnoreCase)
-                                   select ip["geoip:".Length..]
+                                   where ip.StartsWith(Global.GeoIPPrefix, StringComparison.OrdinalIgnoreCase)
+                                   select ip[Global.GeoIPPrefix.Length..]
                                    into region
                                    where !string.IsNullOrEmpty(region)
                                    select region)
@@ -197,7 +197,7 @@ public partial class CoreConfigV2rayService
 
                 if (item.OutboundTag == Global.DirectTag)
                 {
-                    if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
+                    if (normalizedDomain.StartsWith(Global.GeoSitePrefix) || normalizedDomain.StartsWith("ext:"))
                     {
                         var isExpectedDomain = !regionName.IsNullOrEmpty()
                             || normalizedDomain.EndsWith($"-{regionName}")
@@ -212,7 +212,7 @@ public partial class CoreConfigV2rayService
                 }
                 else if (item.OutboundTag != Global.BlockTag)
                 {
-                    if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
+                    if (normalizedDomain.StartsWith(Global.GeoSitePrefix) || normalizedDomain.StartsWith("ext:"))
                     {
                         proxyGeositeList.Add(normalizedDomain);
                     }

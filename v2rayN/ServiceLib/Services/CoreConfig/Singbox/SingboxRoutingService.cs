@@ -406,10 +406,10 @@ public partial class CoreConfigSingboxService
         {
             return false;
         }
-        else if (domain.StartsWith("geosite:"))
+        else if (domain.StartsWith(Global.GeoSitePrefix))
         {
             rule.geosite ??= [];
-            rule.geosite?.Add(domain.Substring(8));
+            rule.geosite?.Add(domain[Global.GeoSitePrefix.Length..]);
         }
         else if (domain.StartsWith("regexp:"))
         {
@@ -450,28 +450,28 @@ public partial class CoreConfigSingboxService
         {
             return false;
         }
-        else if (address.Equals("geoip:private"))
+        else if (address.Equals($"{Global.GeoIPPrefix}private"))
         {
             rule.ip_is_private = true;
         }
-        else if (address.StartsWith("geoip:"))
+        else if (address.StartsWith(Global.GeoIPPrefix))
         {
-            rule.geoip ??= new();
-            rule.geoip?.Add(address.Substring(6));
+            rule.geoip ??= [];
+            rule.geoip?.Add(address[Global.GeoIPPrefix.Length..]);
         }
-        else if (address.Equals("geoip:!private"))
+        else if (address.Equals($"{Global.GeoIPPrefix}!private"))
         {
             rule.ip_is_private = false;
         }
-        else if (address.StartsWith("geoip:!"))
+        else if (address.StartsWith($"{Global.GeoIPPrefix}!"))
         {
-            rule.geoip ??= new();
-            rule.geoip?.Add(address.Substring(6));
+            rule.geoip ??= [];
+            rule.geoip?.Add(address.Substring($"{Global.GeoIPPrefix}!".Length));
             rule.invert = true;
         }
         else
         {
-            rule.ip_cidr ??= new();
+            rule.ip_cidr ??= [];
             rule.ip_cidr?.Add(address);
         }
         return true;

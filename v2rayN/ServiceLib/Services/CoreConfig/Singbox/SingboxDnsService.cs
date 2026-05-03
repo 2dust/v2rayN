@@ -310,9 +310,9 @@ public partial class CoreConfigSingboxService
 
             foreach (var ip in ipItems)
             {
-                if (ip.StartsWith("geoip:", StringComparison.OrdinalIgnoreCase))
+                if (ip.StartsWith(Global.GeoIPPrefix, StringComparison.OrdinalIgnoreCase))
                 {
-                    var region = ip["geoip:".Length..];
+                    var region = ip[Global.GeoIPPrefix.Length..];
                     if (string.IsNullOrEmpty(region))
                     {
                         continue;

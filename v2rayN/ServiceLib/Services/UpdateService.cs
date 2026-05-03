@@ -375,8 +375,8 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
             foreach (var item in rules ?? [])
             {
-                AddPrefixedItems(item.Ip, "geoip:", geoipFiles);
-                AddPrefixedItems(item.Domain, "geosite:", geoSiteFiles);
+                AddPrefixedItems(item.Ip, Global.GeoIPPrefix, geoipFiles);
+                AddPrefixedItems(item.Domain, Global.GeoSitePrefix, geoSiteFiles);
             }
         }
 
