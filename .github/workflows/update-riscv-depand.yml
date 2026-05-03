@@ -2,8 +2,6 @@ name: update riscv dependent versions
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 2 * * *'
   push:
     branches: 
       - master
