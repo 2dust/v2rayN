@@ -76,7 +76,6 @@ public class WireguardFmt : BaseFmt
 
     public static List<ProfileItem>? ResolveConfig(string strData)
     {
-        //var dic = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var interfaceDic = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var peerDicList = new List<Dictionary<string, string>>();
         var currentDicRef = interfaceDic;
@@ -117,17 +116,7 @@ public class WireguardFmt : BaseFmt
 
                 var key = line[..idx].Trim();
                 var value = line[(idx + 1)..].Trim();
-                // Remove inline comments starting with # or ;
-                var commentPos = -1;
-                var commentChars = new[] { '#', ';' };
-                foreach (var cc in commentChars)
-                {
-                    var p = value.IndexOf(cc);
-                    if (p >= 0 && (commentPos < 0 || p < commentPos))
-                    {
-                        commentPos = p;
-                    }
-                }
+                var commentPos = value.IndexOfAny(['#', ';']);
                 if (commentPos >= 0)
                 {
                     value = value[..commentPos].TrimEnd();
@@ -155,20 +144,17 @@ public class WireguardFmt : BaseFmt
                 continue;
             }
 
-            var endpointParts = endpoint.Split(':');
-            var peerAddress = endpointParts[0].Trim();
-            if (peerAddress.StartsWith('[')) // IPv6 address
+            if (!TryParseEndpoint(endpoint, out var peerAddress, out var peerPort))
             {
-                peerAddress = peerAddress.Trim('[', ']');
+                continue;
             }
-            var peerPort = endpointParts.Length > 1 && int.TryParse(endpointParts[1].Trim(), out var portVal) && portVal is > 0 and <= 65535 ? portVal : 2408;
 
             var protoExtra = new ProtocolExtraItem
             {
                 WgPublicKey = (peerDic.TryGetValue("PublicKey", out var publicKey) ? publicKey : string.Empty).NullIfEmpty(),
                 WgPresharedKey = (peerDic.TryGetValue("PresharedKey", out var presharedKey) ? presharedKey : string.Empty).NullIfEmpty(),
                 WgInterfaceAddress = wgInterfaceAddress,
-                WgReserved = (peerDic.TryGetValue("Reserved", out var reserved) ? reserved : string.Empty).Replace(", ", ",").NullIfEmpty(),
+                WgReserved = (peerDic.TryGetValue("Reserved", out var reserved) ? reserved : string.Empty).NullIfEmpty(),
                 WgMtu = wgMtu > 0 ? wgMtu : null,
             };
 
@@ -187,5 +173,59 @@ public class WireguardFmt : BaseFmt
         }
 
         return resultList;
+    }
+
+    private static bool TryParseEndpoint(string endpoint, out string address, out int port)
+    {
+        address = string.Empty;
+        port = 2408;
+
+        var trimmedEndpoint = endpoint.Trim();
+        if (trimmedEndpoint.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        if (trimmedEndpoint[0] == '[')
+        {
+            var closeIndex = trimmedEndpoint.IndexOf(']');
+            if (closeIndex <= 1)
+            {
+                return false;
+            }
+
+            address = trimmedEndpoint[1..closeIndex].Trim();
+            var portIndex = closeIndex + 1;
+            if (portIndex < trimmedEndpoint.Length && trimmedEndpoint[portIndex] == ':' &&
+                int.TryParse(trimmedEndpoint[(portIndex + 1)..].Trim(), out var bracketedPort) && bracketedPort is > 0 and <= 65535)
+            {
+                port = bracketedPort;
+            }
+
+            return address.IsNotEmpty();
+        }
+
+        var lastColonIndex = trimmedEndpoint.LastIndexOf(':');
+        if (lastColonIndex <= 0)
+        {
+            address = trimmedEndpoint;
+            return true;
+        }
+
+        address = trimmedEndpoint[..lastColonIndex].Trim();
+        var portText = trimmedEndpoint[(lastColonIndex + 1)..].Trim();
+        if (address.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        if (int.TryParse(portText, out var parsedPortValue) && parsedPortValue is > 0 and <= 65535)
+        {
+            port = parsedPortValue;
+            return true;
+        }
+
+        address = trimmedEndpoint;
+        return true;
     }
 }

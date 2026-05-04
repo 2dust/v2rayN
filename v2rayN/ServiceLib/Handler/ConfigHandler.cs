@@ -790,12 +790,17 @@ public static class ConfigHandler
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        var wgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx();
+        if (!wgReserved.IsNullOrEmpty())
+        {
+            wgReserved = wgReserved.Replace(", ", ",");
+        }
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
             WgPublicKey = profileItem.GetProtocolExtra().WgPublicKey?.TrimEx(),
             WgPresharedKey = profileItem.GetProtocolExtra().WgPresharedKey?.TrimEx(),
             WgInterfaceAddress = profileItem.GetProtocolExtra().WgInterfaceAddress?.TrimEx(),
-            WgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx(),
+            WgReserved = wgReserved,
             WgMtu = profileItem.GetProtocolExtra().WgMtu is null or <= 0 ? Global.TunMtus.First() : profileItem.GetProtocolExtra().WgMtu,
         });
 
