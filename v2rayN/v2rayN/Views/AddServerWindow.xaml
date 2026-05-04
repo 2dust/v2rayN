@@ -678,6 +678,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
@@ -721,10 +722,26 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbPreSharedKey}" />
+                    <TextBox
+                        x:Name="txtPreSharedKey9"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbReserved}" />
                     <TextBox
                         x:Name="txtPath9"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
@@ -732,7 +749,7 @@
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
@@ -740,7 +757,7 @@
                         Text="{x:Static resx:ResUI.TbLocalAddress}" />
                     <TextBox
                         x:Name="txtRequestHost9"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
@@ -748,7 +765,7 @@
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
@@ -756,7 +773,7 @@
                         Text="{x:Static resx:ResUI.TbMtu}" />
                     <TextBox
                         x:Name="txtShortId9"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"

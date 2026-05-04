@@ -1725,4 +1725,7 @@
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
     <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для привязки. Работает только в Windows и режиме TUN</value>
   </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
 </root>

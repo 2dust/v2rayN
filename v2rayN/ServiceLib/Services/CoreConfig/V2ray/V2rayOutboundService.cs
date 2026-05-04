@@ -258,7 +258,8 @@ public partial class CoreConfigV2rayService
                         var peer = new WireguardPeer4Ray
                         {
                             publicKey = protocolExtra.WgPublicKey ?? "",
-                            endpoint = address + ":" + _node.Port.ToString()
+                            endpoint = address + ":" + _node.Port.ToString(),
+                            preSharedKey = protocolExtra.WgPresharedKey,
                         };
                         var setting = new Outboundsettings4Ray
                         {

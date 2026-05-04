@@ -27,6 +27,7 @@ public class WireguardFmt : BaseFmt
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             WgPublicKey = GetQueryDecoded(query, "publickey"),
+            WgPresharedKey = GetQueryDecoded(query, "presharedkey"),
             WgReserved = GetQueryDecoded(query, "reserved"),
             WgInterfaceAddress = GetQueryDecoded(query, "address"),
             WgMtu = int.TryParse(GetQueryDecoded(query, "mtu"), out var mtuVal) ? mtuVal : 1280,
@@ -48,20 +49,25 @@ public class WireguardFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
 
+        var protoExtra = item.GetProtocolExtra();
         var dicQuery = new Dictionary<string, string>();
-        if (!item.GetProtocolExtra().WgPublicKey.IsNullOrEmpty())
+        if (!protoExtra.WgPublicKey.IsNullOrEmpty())
         {
-            dicQuery.Add("publickey", Utils.UrlEncode(item.GetProtocolExtra().WgPublicKey));
+            dicQuery.Add("publickey", Utils.UrlEncode(protoExtra.WgPublicKey));
         }
-        if (!item.GetProtocolExtra().WgReserved.IsNullOrEmpty())
+        if (!protoExtra.WgPresharedKey.IsNullOrEmpty())
         {
-            dicQuery.Add("reserved", Utils.UrlEncode(item.GetProtocolExtra().WgReserved));
+            dicQuery.Add("presharedkey", Utils.UrlEncode(protoExtra.WgPresharedKey));
         }
-        if (!item.GetProtocolExtra().WgInterfaceAddress.IsNullOrEmpty())
+        if (!protoExtra.WgReserved.IsNullOrEmpty())
         {
-            dicQuery.Add("address", Utils.UrlEncode(item.GetProtocolExtra().WgInterfaceAddress));
+            dicQuery.Add("reserved", Utils.UrlEncode(protoExtra.WgReserved));
         }
-        dicQuery.Add("mtu", Utils.UrlEncode(item.GetProtocolExtra().WgMtu > 0 ? item.GetProtocolExtra().WgMtu.ToString() : "1280"));
+        if (!protoExtra.WgInterfaceAddress.IsNullOrEmpty())
+        {
+            dicQuery.Add("address", Utils.UrlEncode(protoExtra.WgInterfaceAddress));
+        }
+        dicQuery.Add("mtu", Utils.UrlEncode(protoExtra.WgMtu > 0 ? protoExtra.WgMtu.ToString() : "1280"));
         return ToUri(EConfigType.WireGuard, item.Address, item.Port, item.Password, dicQuery, remark);
     }
 }

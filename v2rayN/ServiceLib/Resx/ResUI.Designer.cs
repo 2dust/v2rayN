@@ -3322,6 +3322,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 PreSharedKey 的本地化字符串。
+        /// </summary>
+        public static string TbPreSharedKey {
+            get {
+                return ResourceManager.GetString("TbPreSharedKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Socks port 的本地化字符串。
         /// </summary>
         public static string TbPreSocksPort {
