@@ -753,7 +753,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
+                        Text="{x:Static resx:ResUI.TbMtu}" />
                     <TextBox
                         x:Name="txtShortId9"
                         Grid.Row="5"
@@ -761,7 +761,7 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        materialDesign:HintAssist.Hint="1500"
+                        materialDesign:HintAssist.Hint="1280"
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
                 <Grid
@@ -1119,7 +1119,7 @@
                                 Margin="{StaticResource Margin4}"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}"
-                                Text="MTU" />
+                                Text="{x:Static resx:ResUI.TbMtu}" />
                             <TextBox
                                 x:Name="txtKcpMtu"
                                 Grid.Row="1"

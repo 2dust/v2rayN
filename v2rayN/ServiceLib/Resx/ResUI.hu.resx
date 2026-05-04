@@ -1062,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Hálózati verem</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">

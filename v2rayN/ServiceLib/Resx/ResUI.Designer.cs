@@ -3223,6 +3223,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 MTU 的本地化字符串。
+        /// </summary>
+        public static string TbMtu {
+            get {
+                return ResourceManager.GetString("TbMtu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Transport protocol(network) 的本地化字符串。
         /// </summary>
         public static string TbNetwork {
@@ -4362,15 +4371,6 @@ namespace ServiceLib.Resx {
         public static string TbSettingsTunMode {
             get {
                 return ResourceManager.GetString("TbSettingsTunMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 MTU 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTunMtu {
-            get {
-                return ResourceManager.GetString("TbSettingsTunMtu", resourceCulture);
             }
         }
         

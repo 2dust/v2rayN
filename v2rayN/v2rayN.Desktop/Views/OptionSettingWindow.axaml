@@ -869,7 +869,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
+                        Text="{x:Static resx:ResUI.TbMtu}" />
                     <ComboBox
                         x:Name="cmbMtu"
                         Grid.Row="5"

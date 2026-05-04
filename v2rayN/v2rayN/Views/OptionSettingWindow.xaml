@@ -469,7 +469,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
+                        Text="{x:Static resx:ResUI.TbMtu}" />
                     <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpmtu"
                         Grid.Row="1"
@@ -1133,7 +1133,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
+                        Text="{x:Static resx:ResUI.TbMtu}" />
                     <ComboBox
                         x:Name="cmbMtu"
                         Grid.Row="5"

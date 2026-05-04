@@ -1062,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>پشته شبکه</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
