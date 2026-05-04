@@ -3448,7 +3448,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Reserved (2,3,4) 的本地化字符串。
+        ///   查找类似 Reserved 的本地化字符串。
         /// </summary>
         public static string TbReserved {
             get {

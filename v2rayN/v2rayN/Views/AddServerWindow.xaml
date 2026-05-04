@@ -745,7 +745,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        materialDesign:HintAssist.Hint="2,3,4"
+                        materialDesign:HintAssist.Hint="0, 0, 0"
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock

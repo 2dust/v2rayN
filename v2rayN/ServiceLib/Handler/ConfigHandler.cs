@@ -791,9 +791,22 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         var wgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx();
-        if (!wgReserved.IsNullOrEmpty())
+        if (!wgReserved.IsNullOrEmpty()
+            && !wgReserved.Contains(','))
         {
-            wgReserved = wgReserved.Replace(", ", ",");
+            // Base64 format, convert to standard format
+            try
+            {
+                var bytes = Convert.FromBase64String(wgReserved);
+                var reserved = new byte[3];
+                Array.Copy(bytes, reserved, Math.Min(bytes.Length, 3));
+
+                wgReserved = string.Join(", ", reserved);
+            }
+            catch
+            {
+                // If conversion fails, keep the original value
+            }
         }
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
@@ -1735,15 +1748,15 @@ public static class ConfigHandler
         {
             await RemoveServersViaSubid(config, subid, isSub);
         }
-        var lstSsServer = WireguardFmt.ResolveConfig(strData);
-        if (lstSsServer?.Count > 0)
+        var lstServer = WireguardFmt.ResolveConfig(strData);
+        if (lstServer?.Count > 0)
         {
             var counter = 0;
-            foreach (var ssItem in lstSsServer)
+            foreach (var item in lstServer)
             {
-                ssItem.Subid = subid;
-                ssItem.IsSub = isSub;
-                if (await AddWireguardServer(config, ssItem) == 0)
+                item.Subid = subid;
+                item.IsSub = isSub;
+                if (await AddWireguardServer(config, item) == 0)
                 {
                     counter++;
                 }

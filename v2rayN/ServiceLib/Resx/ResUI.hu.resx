@@ -1075,7 +1075,7 @@
     <value>Privát kulcs</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Fenntartott (2,3,4)</value>
+    <value>Fenntartott</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Cím (IPv4, IPv6)</value>

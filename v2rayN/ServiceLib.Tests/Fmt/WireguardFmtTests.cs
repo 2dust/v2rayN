@@ -9,22 +9,23 @@ public class WireguardFmtTests
     [Fact]
     public void ResolveConfig_ShouldParsePeersAndIgnoreInlineComments()
     {
-        var config = """
-        [Interface]
-        PrivateKey = interface-private-key
-        Address = 10.0.0.2/32, fd00::2/128 ; inline comment
-        MTU = 1420
+        const string config =
+            """
+            [Interface]
+            PrivateKey = interface-private-key
+            Address = 10.0.0.2/32, fd00::2/128 ; inline comment
+            MTU = 1420
 
-        [Peer]
-        PublicKey = peer-public-key
-        PresharedKey = peer-preshared-key
-        Reserved = 1, 2, 3 # inline comment
-        Endpoint = [2001:db8::1]:51820 # inline comment
+            [Peer]
+            PublicKey = peer-public-key
+            PresharedKey = peer-preshared-key
+            Reserved = 1, 2, 3 # inline comment
+            Endpoint = [2001:db8::1]:51820 # inline comment
 
-        [Peer]
-        PublicKey = peer-public-key-2
-        Endpoint = example.com:12345
-        """;
+            [Peer]
+            PublicKey = peer-public-key-2
+            Endpoint = example.com:12345
+            """;
 
         var resolved = WireguardFmt.ResolveConfig(config);
 

@@ -563,7 +563,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="2,3,4" />
+                        Watermark="0, 0, 0" />
 
                     <TextBlock
                         Grid.Row="5"
