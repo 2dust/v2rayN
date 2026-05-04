@@ -134,22 +134,59 @@ public partial class CoreConfigV2rayService
         return JsonUtils.Serialize(fullConfigTemplateNode);
     }
 
-    private void ApplyOutboundSendThrough()
+    private void ApplyOutboundBindInterface()
     {
-        var sendThrough = _config.CoreBasicItem.SendThrough?.TrimEx();
+        var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+        if (bindInterface.IsNullOrEmpty())
+        {
+            return;
+        }
+        if (!(context.IsTunEnabled || context.IsWindows))
+        {
+            return;
+        }
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
-            outbound.sendThrough = ShouldApplySendThrough(outbound, sendThrough) ? sendThrough : null;
+            if (!ShouldBindNet(outbound))
+            {
+                continue;
+            }
+            outbound.streamSettings ??= new();
+            outbound.streamSettings.sockopt ??= new();
+            outbound.streamSettings.sockopt.Interface = bindInterface;
+            // xhttp download bind interface
+            if (outbound?.streamSettings?.xhttpSettings?.extra is null)
+            {
+                continue;
+            }
+            var xhttpExtra = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings.xhttpSettings!.extra));
+            if (xhttpExtra is not JsonObject xhttpExtraObject
+                || xhttpExtraObject["downloadSettings"] is not JsonObject downloadSettings)
+            {
+                continue;
+            }
+            var sockopt = downloadSettings["sockopt"] as JsonObject ?? new JsonObject();
+            sockopt["interface"] = bindInterface;
+            downloadSettings["sockopt"] = sockopt;
+            outbound.streamSettings.xhttpSettings.extra = xhttpExtraObject;
         }
     }
 
-    private static bool ShouldApplySendThrough(Outbounds4Ray outbound, string? sendThrough)
+    private void ApplyOutboundSendThrough()
     {
+        var sendThrough = _config.CoreBasicItem.SendThrough?.TrimEx();
         if (sendThrough.IsNullOrEmpty())
         {
-            return false;
+            return;
         }
+        foreach (var outbound in _coreConfig.outbounds ?? [])
+        {
+            outbound.sendThrough = ShouldBindNet(outbound) ? sendThrough : null;
+        }
+    }
 
+    private static bool ShouldBindNet(Outbounds4Ray outbound)
+    {
         if (outbound.protocol is "freedom" or "blackhole" or "dns" or "loopback")
         {
             return false;

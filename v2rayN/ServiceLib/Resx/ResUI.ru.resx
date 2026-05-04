@@ -1689,9 +1689,6 @@
   <data name="TbLegacyProtect" xml:space="preserve">
     <value>Устаревшая защита TUN (Legacy Protect)</value>
   </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>Для среды с несколькими сетевыми интерфейсами укажите IPv4-адрес локального компьютера</value>
-  </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>Камуфляжный домен</value>
   </data>
@@ -1713,10 +1710,19 @@
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>URL для UDP-теста</value>
   </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Локальный исходящий адрес (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Для среды с несколькими сетевыми интерфейсами укажите IPv4-адрес локального компьютера</value>
+  </data>
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
     <value>Укажите корректный IPv4-адрес для SendThrough.</value>
   </data>
-  <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Локальный исходящий адрес (SendThrough)</value>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Привязать интерфейс</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для привязки. Работает только в Windows и режиме TUN</value>
   </data>
 </root>

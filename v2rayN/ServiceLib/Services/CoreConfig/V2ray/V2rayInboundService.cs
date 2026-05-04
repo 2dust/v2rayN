@@ -60,6 +60,11 @@ public partial class CoreConfigV2rayService
                 {
                     tunInbound.settings.gateway = ["172.18.0.1/30"];
                 }
+                var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+                if (!bindInterface.IsNullOrEmpty())
+                {
+                    tunInbound.settings.autoOutboundsInterface = bindInterface;
+                }
                 tunInbound.sniffing = inbound.sniffing;
                 _coreConfig.inbounds.Add(tunInbound);
             }

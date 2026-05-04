@@ -17,6 +17,8 @@ public class CoreBasicItem
 
     public string? SendThrough { get; set; }
 
+    public string? BindInterface { get; set; }
+
     public bool EnableFragment { get; set; }
 
     public bool EnableCacheFile4Sbox { get; set; } = true;

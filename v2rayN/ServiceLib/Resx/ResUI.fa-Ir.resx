@@ -1689,9 +1689,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbLegacyProtect" xml:space="preserve">
     <value>Legacy TUN Protect</value>
   </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
-  </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>Camouflage domain</value>
   </data>
@@ -1712,5 +1709,20 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>UDP Test Url</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Local outbound address (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bind Interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode</value>
   </data>
 </root>

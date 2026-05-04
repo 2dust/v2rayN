@@ -60,6 +60,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyOutboundFragment();
             }
+            ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
 
             var finalRule = BuildFinalRule();
@@ -203,6 +204,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyOutboundFragment();
             }
+            ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
             //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
             ret.Success = true;
@@ -274,6 +276,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyOutboundFragment();
             }
+            ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
