@@ -68,7 +68,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
@@ -99,7 +99,7 @@
                                     Classes="TextArea"
                                     MinLines="4"
                                     TextWrapping="Wrap"
-                                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>
@@ -128,7 +128,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Right"
-                        Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                        PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                     <TextBlock
                         Margin="{StaticResource Margin4}"
@@ -149,7 +149,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="6"
@@ -178,7 +178,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="8"
@@ -206,7 +206,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     Grid.Row="9"
                     Grid.Column="2"
@@ -226,7 +226,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     Grid.Row="10"
                     Grid.Column="2"
@@ -248,7 +248,7 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}"
-                    Watermark="{x:Static resx:ResUI.TipPreSocksPort}" />
+                    PlaceholderText="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
                     Grid.Row="12"

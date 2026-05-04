@@ -317,7 +317,7 @@
                             BorderThickness="1"
                             Classes="TextArea"
                             TextWrapping="Wrap"
-                            Watermark="{x:Static resx:ResUI.TbDNSHostsConfig}" />
+                            PlaceholderText="{x:Static resx:ResUI.TbDNSHostsConfig}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

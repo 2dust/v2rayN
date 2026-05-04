@@ -414,7 +414,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="1000-2000,3000,4000" />
+                        PlaceholderText="1000-2000,3000,4000" />
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
@@ -449,12 +449,12 @@
                             x:Name="txtUpMbps7"
                             Width="90"
                             Margin="{StaticResource Margin4}"
-                            Watermark="Up" />
+                            PlaceholderText="Up" />
                         <TextBox
                             x:Name="txtDownMbps7"
                             Width="90"
                             Margin="{StaticResource Margin4}"
-                            Watermark="Down" />
+                            PlaceholderText="Down" />
                     </StackPanel>
                 </Grid>
                 <Grid
@@ -549,7 +549,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="2,3,4" />
+                        PlaceholderText="2,3,4" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -563,7 +563,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="Ipv4,Ipv6" />
+                        PlaceholderText="Ipv4,Ipv6" />
 
                     <TextBlock
                         Grid.Row="5"
@@ -578,7 +578,7 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        Watermark="1500" />
+                        PlaceholderText="1500" />
                 </Grid>
                 <Grid
                     x:Name="gridAnytls"
