@@ -26,4 +26,4 @@ jobs:
 
     - name: Test Code
       working-directory: ./v2rayN
-      run: dotnet test ./ServiceLib.Tests --logger GitHubActions
+      run: dotnet test ./ServiceLib.Tests
