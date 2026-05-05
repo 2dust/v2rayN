@@ -32,10 +32,6 @@ public class InnerFmt
                     // Unsupported, also to avoid possible sources of attacks, skip it
                     continue;
                 }
-                if (profileItem.ConfigVersion != 4)
-                {
-                    continue;
-                }
                 // overwrite indexId
                 var newIndexId = Utils.GetGuid(false);
                 if (!profileItem.IndexId.IsNullOrEmpty())
@@ -48,6 +44,7 @@ public class InnerFmt
             }
         }
         // For group-type profile items, also overwrite the ChildItems and ChildSubId
+        var emptyGroupProfileList = new List<ProfileItem>();
         foreach (var item in list.Where(i => i.ConfigType.IsGroupType()))
         {
             var protocolExtra = item.GetProtocolExtra();
@@ -87,7 +84,14 @@ public class InnerFmt
                 };
             }
             item.SetProtocolExtra(protocolExtra);
+            if (protocolExtra.SubChildItems.IsNullOrEmpty()
+                && protocolExtra.ChildItems.IsNullOrEmpty())
+            {
+                emptyGroupProfileList.Add(item);
+            }
         }
+        // Remove empty group profile items
+        list.RemoveAll(emptyGroupProfileList.Contains);
         return list;
     }
 
@@ -172,6 +176,29 @@ public class InnerFmt
             jsonObj.Remove("TransportExtraObj");
         }
         var profileItem = JsonUtils.Deserialize<ProfileItem>(JsonUtils.Serialize(jsonObj, false));
+        if (profileItem is null)
+        {
+            return null;
+        }
+        if (profileItem.ConfigVersion != 4)
+        {
+            return null;
+        }
+        // Check Enum.IsDefined
+        if (!Enum.IsDefined(typeof(EConfigType), profileItem.ConfigType))
+        {
+            return null;
+        }
+        if (profileItem.CoreType is not (null or ECoreType.Xray or ECoreType.sing_box))
+        {
+            return null;
+        }
+        var protocolExtra = profileItem.GetProtocolExtra();
+        var multipleLoad = protocolExtra.MultipleLoad;
+        if (multipleLoad is not null && !Enum.IsDefined(typeof(EMultipleLoad), multipleLoad))
+        {
+            return null;
+        }
         return profileItem;
     }
 

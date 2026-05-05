@@ -1792,6 +1792,7 @@ public static class ConfigHandler
                 {
                     EConfigType.VMess => await AddVMessServer(config, profileItem),
                     EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem),
+                    EConfigType.HTTP => await AddHttpServer(config, profileItem),
                     EConfigType.SOCKS => await AddSocksServer(config, profileItem),
                     EConfigType.Trojan => await AddTrojanServer(config, profileItem),
                     EConfigType.VLESS => await AddVlessServer(config, profileItem),
@@ -1800,6 +1801,7 @@ public static class ConfigHandler
                     EConfigType.WireGuard => await AddWireguardServer(config, profileItem),
                     EConfigType.Anytls => await AddAnytlsServer(config, profileItem),
                     EConfigType.Naive => await AddNaiveServer(config, profileItem),
+                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem),
                     _ => -1,
                 };
                 if (addStatus == 0)
@@ -1862,9 +1864,18 @@ public static class ConfigHandler
             counter = await AddBatchServers4Wireguard(config, strData, subid, isSub);
         }
 
-        if (counter < 1)
+        //May be standard uri mixed with internal uri
+        var innerUriCount = await AddBatchServers4InnerUri(config, strData, subid, isSub);
+        if (innerUriCount > 0)
         {
-            counter = await AddBatchServers4InnerUri(config, strData, subid, isSub);
+            if (counter > 0)
+            {
+                counter += innerUriCount;
+            }
+            else
+            {
+                counter = innerUriCount;
+            }
         }
 
         //maybe other sub

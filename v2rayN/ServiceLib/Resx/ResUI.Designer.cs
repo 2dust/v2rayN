@@ -1024,6 +1024,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Export v2rayN Internal Share Link to Clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport2InnerUri {
+            get {
+                return ResourceManager.GetString("menuExport2InnerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export Share Link to Clipboard 的本地化字符串。
         /// </summary>
         public static string menuExport2ShareUrl {
@@ -1038,15 +1047,6 @@ namespace ServiceLib.Resx {
         public static string menuExport2ShareUrlBase64 {
             get {
                 return ResourceManager.GetString("menuExport2ShareUrlBase64", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Backup to Clipboard 的本地化字符串。
-        /// </summary>
-        public static string menuExport4Backup {
-            get {
-                return ResourceManager.GetString("menuExport4Backup", resourceCulture);
             }
         }
         

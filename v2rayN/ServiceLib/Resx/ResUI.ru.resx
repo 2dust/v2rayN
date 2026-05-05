@@ -1728,7 +1728,7 @@
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
-  <data name="menuExport4Backup" xml:space="preserve">
-    <value>Backup to Clipboard</value>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
   </data>
 </root>
