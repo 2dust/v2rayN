@@ -33,7 +33,8 @@ public static class ProcUtils
                     UseShellExecute = true,
                     FileName = fileName,
                     Arguments = arguments,
-                    WorkingDirectory = dir ?? string.Empty
+                    WorkingDirectory = dir ?? string.Empty,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
             _ = proc.Start();
@@ -57,6 +58,7 @@ public static class ProcUtils
                 WorkingDirectory = Utils.StartupPath(),
                 FileName = Utils.GetExePath().AppendQuotes(),
                 Verb = blAdmin ? "runas" : null,
+                WindowStyle = ProcessWindowStyle.Hidden
             };
             return Process.Start(startInfo) != null;
         }
