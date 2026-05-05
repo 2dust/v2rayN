@@ -72,6 +72,7 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> Export2ClientConfigClipboardCmd { get; }
     public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
     public ReactiveCommand<Unit, Unit> Export2ShareUrlBase64Cmd { get; }
+    public ReactiveCommand<Unit, Unit> Export2InnerUriCmd { get; }
 
     public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
     public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
@@ -211,6 +212,10 @@ public class ProfilesViewModel : MyReactiveObject
         Export2ShareUrlBase64Cmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await Export2ShareUrlAsync(true);
+        }, canEditRemove);
+        Export2InnerUriCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await Export2InnerUrlAsync();
         }, canEditRemove);
 
         //Subscription
@@ -837,6 +842,32 @@ public class ProfilesViewModel : MyReactiveObject
                 await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
             }
             NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
+        }
+    }
+
+    public async Task Export2InnerUrlAsync()
+    {
+        var lstSelected = await GetProfileItems(true);
+        if (lstSelected == null)
+        {
+            return;
+        }
+
+        var result = string.Empty;
+
+        await Task.Run(() =>
+        {
+            result = InnerFmt.ToUri(lstSelected);
+        });
+
+        if (!result.IsNullOrEmpty())
+        {
+            await _updateView?.Invoke(EViewAction.SetClipboardData, result);
+            NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
+        }
+        else
+        {
+            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
     }
 

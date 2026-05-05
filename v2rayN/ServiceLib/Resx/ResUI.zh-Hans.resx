@@ -1725,4 +1725,7 @@
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
+  <data name="menuExport4Backup" xml:space="preserve">
+    <value>备份至剪贴板 (多选)</value>
+  </data>
 </root>

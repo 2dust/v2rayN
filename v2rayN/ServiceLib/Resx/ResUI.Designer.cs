@@ -1042,6 +1042,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Backup to Clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport4Backup {
+            get {
+                return ResourceManager.GetString("menuExport4Backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export 的本地化字符串。
         /// </summary>
         public static string menuExportConfig {
