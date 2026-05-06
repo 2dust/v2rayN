@@ -1062,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Сетевой стек</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1075,7 +1075,7 @@
     <value>Приватный ключ</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Зарезервировано (2, 3, 4)</value>
+    <value>Зарезервировано</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Адрес (IPv4, IPv6)</value>
@@ -1724,5 +1724,8 @@
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
     <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для привязки. Работает только в Windows и режиме TUN</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
   </data>
 </root>

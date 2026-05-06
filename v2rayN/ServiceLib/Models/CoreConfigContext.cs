@@ -19,4 +19,5 @@ public record CoreConfigContext
     public HashSet<string> ProtectDomainList { get; init; } = [];
 
     public bool IsWindows { get; init; }
+    public bool IsMacOS { get; init; }
 }

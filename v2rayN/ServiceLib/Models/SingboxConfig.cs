@@ -173,7 +173,7 @@ public class Peer4Sbox
     public string? pre_shared_key { get; set; }
     public List<string> allowed_ips { get; set; }
     public int? persistent_keepalive_interval { get; set; }
-    public List<int> reserved { get; set; }
+    public List<int>? reserved { get; set; }
 }
 
 public class Tls4Sbox

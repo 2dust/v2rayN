@@ -790,12 +790,30 @@ public static class ConfigHandler
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        var wgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx();
+        if (!wgReserved.IsNullOrEmpty()
+            && !wgReserved.Contains(','))
+        {
+            // Base64 format, convert to standard format
+            try
+            {
+                var bytes = Convert.FromBase64String(wgReserved);
+                var reserved = new byte[3];
+                Array.Copy(bytes, reserved, Math.Min(bytes.Length, 3));
+
+                wgReserved = string.Join(", ", reserved);
+            }
+            catch
+            {
+                // If conversion fails, keep the original value
+            }
+        }
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
             WgPublicKey = profileItem.GetProtocolExtra().WgPublicKey?.TrimEx(),
             WgPresharedKey = profileItem.GetProtocolExtra().WgPresharedKey?.TrimEx(),
             WgInterfaceAddress = profileItem.GetProtocolExtra().WgInterfaceAddress?.TrimEx(),
-            WgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx(),
+            WgReserved = wgReserved,
             WgMtu = profileItem.GetProtocolExtra().WgMtu is null or <= 0 ? Global.TunMtus.First() : profileItem.GetProtocolExtra().WgMtu,
         });
 
@@ -1639,30 +1657,18 @@ public static class ConfigHandler
 
         ProfileItem? profileItem = null;
         //Is sing-box configuration
-        if (profileItem is null)
-        {
-            profileItem = SingboxFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= SingboxFmt.ResolveFull(strData, subRemarks);
         //Is v2ray configuration
-        if (profileItem is null)
-        {
-            profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= V2rayFmt.ResolveFull(strData, subRemarks);
         //Is Html Page
         if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
         {
             return -1;
         }
         //Is Clash configuration
-        if (profileItem is null)
-        {
-            profileItem = ClashFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= ClashFmt.ResolveFull(strData, subRemarks);
         //Is hysteria configuration
-        if (profileItem is null)
-        {
-            profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        }
+        profileItem ??= Hysteria2Fmt.ResolveFull2(strData, subRemarks);
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
             return -1;
@@ -1727,6 +1733,40 @@ public static class ConfigHandler
         return -1;
     }
 
+    private static async Task<int> AddBatchServers4Wireguard(Config config, string strData, string subid, bool isSub)
+    {
+        if (strData.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        if (!(strData.Contains("[Interface]", StringComparison.OrdinalIgnoreCase)
+              && strData.Contains("[Peer]", StringComparison.OrdinalIgnoreCase)))
+        {
+            return -1;
+        }
+        if (isSub && subid.IsNotEmpty())
+        {
+            await RemoveServersViaSubid(config, subid, isSub);
+        }
+        var lstServer = WireguardFmt.ResolveConfig(strData);
+        if (lstServer?.Count > 0)
+        {
+            var counter = 0;
+            foreach (var item in lstServer)
+            {
+                item.Subid = subid;
+                item.IsSub = isSub;
+                if (await AddWireguardServer(config, item) == 0)
+                {
+                    counter++;
+                }
+            }
+            await SaveConfig(config);
+            return counter;
+        }
+        return -1;
+    }
+
     /// <summary>
     /// Main entry point for adding batch servers from various formats
     /// Tries different parsing methods to import as many servers as possible
@@ -1767,6 +1807,12 @@ public static class ConfigHandler
         if (counter < 1)
         {
             counter = await AddBatchServers4SsSIP008(config, strData, subid, isSub);
+        }
+
+        //maybe wireguard config
+        if (counter < 1)
+        {
+            counter = await AddBatchServers4Wireguard(config, strData, subid, isSub);
         }
 
         //maybe other sub

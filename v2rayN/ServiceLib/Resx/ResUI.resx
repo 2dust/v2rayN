@@ -1062,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Stack</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1075,7 +1075,7 @@
     <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (IPv4, IPv6)</value>
@@ -1724,5 +1724,8 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
     <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
   </data>
 </root>

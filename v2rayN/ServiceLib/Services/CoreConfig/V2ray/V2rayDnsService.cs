@@ -200,9 +200,9 @@ public partial class CoreConfigV2rayService
                     if (normalizedDomain.StartsWith(Global.GeoSitePrefix) || normalizedDomain.StartsWith("ext:"))
                     {
                         var isExpectedDomain = !regionName.IsNullOrEmpty()
-                            || normalizedDomain.EndsWith($"-{regionName}")
+                            && (normalizedDomain.EndsWith($"-{regionName}")
                             || normalizedDomain.EndsWith($"@{regionName}")
-                            || normalizedDomain == Global.GeoSitePrefix + regionName;
+                            || normalizedDomain == Global.GeoSitePrefix + regionName);
                         var targetList = isExpectedDomain ? expectedDomainList : directGeositeList;
                         targetList.Add(normalizedDomain);
                     }

@@ -184,6 +184,7 @@ public partial class AddServerWindow
                 case EConfigType.WireGuard:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.WgPublicKey, v => v.txtPublicKey9.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.WgPresharedKey, v => v.txtPreSharedKey9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.WgReserved, v => v.txtPath9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.WgInterfaceAddress, v => v.txtRequestHost9.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.WgMtu, v => v.txtShortId9.Text).DisposeWith(disposables);

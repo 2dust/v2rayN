@@ -309,7 +309,7 @@ public partial class CoreConfigSingboxService
         {
             var protocolExtra = _node.GetProtocolExtra();
 
-            endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress);
+            endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress)?.Select(s => s.Trim()).ToList() ?? ["172.16.0.2/32"];
             endpoint.type = Global.ProtocolTypes[_node.ConfigType];
 
             switch (_node.ConfigType)
@@ -318,13 +318,12 @@ public partial class CoreConfigSingboxService
                     {
                         var peer = new Peer4Sbox
                         {
-                            public_key = protocolExtra.WgPublicKey,
+                            public_key = protocolExtra.WgPublicKey ?? string.Empty,
                             pre_shared_key = protocolExtra.WgPresharedKey,
-                            reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(int.Parse).ToList(),
+                            reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(s => s.Trim()).Select(int.Parse).ToList(),
                             address = _node.Address,
                             port = _node.Port,
-                            // TODO default ["0.0.0.0/0", "::/0"]
-                            allowed_ips = new() { "0.0.0.0/0", "::/0" },
+                            allowed_ips = ["0.0.0.0/0", "::/0"],
                         };
                         endpoint.private_key = _node.Password;
                         endpoint.mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First();

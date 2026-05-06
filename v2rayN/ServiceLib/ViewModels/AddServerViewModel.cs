@@ -53,8 +53,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string WgPublicKey { get; set; }
 
-    //[Reactive]
-    //public string WgPresharedKey { get; set; }
+    [Reactive]
+    public string WgPresharedKey { get; set; }
+
     [Reactive]
     public string WgInterfaceAddress { get; set; }
 
@@ -159,17 +160,8 @@ public class AddServerViewModel : MyReactiveObject
             switch (SelectedSource.GetNetwork())
             {
                 case nameof(ETransport.raw):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.ws):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.httpupgrade):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.xhttp):
                     Host = value;
                     break;
@@ -202,13 +194,7 @@ public class AddServerViewModel : MyReactiveObject
                     break;
 
                 case nameof(ETransport.ws):
-                    Path = value;
-                    break;
-
                 case nameof(ETransport.httpupgrade):
-                    Path = value;
-                    break;
-
                 case nameof(ETransport.xhttp):
                     Path = value;
                     break;
@@ -303,6 +289,7 @@ public class AddServerViewModel : MyReactiveObject
         VlessEncryption = protocolExtra.VlessEncryption?.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
         SsMethod = protocolExtra.SsMethod ?? string.Empty;
         WgPublicKey = protocolExtra.WgPublicKey ?? string.Empty;
+        WgPresharedKey = protocolExtra.WgPresharedKey ?? string.Empty;
         WgInterfaceAddress = protocolExtra.WgInterfaceAddress ?? string.Empty;
         WgReserved = protocolExtra.WgReserved ?? string.Empty;
         WgMtu = protocolExtra.WgMtu ?? 1280;
@@ -401,6 +388,7 @@ public class AddServerViewModel : MyReactiveObject
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
             WgPublicKey = WgPublicKey.NullIfEmpty(),
+            WgPresharedKey = WgPresharedKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
             WgReserved = WgReserved.NullIfEmpty(),
             WgMtu = WgMtu >= 576 ? WgMtu : null,

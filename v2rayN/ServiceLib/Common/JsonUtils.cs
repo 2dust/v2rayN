@@ -17,9 +17,23 @@ public class JsonUtils
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
+    private static readonly JsonSerializerOptions _defaultSerializeNoIndentedOptions = new()
+    {
+        WriteIndented = false,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
     private static readonly JsonSerializerOptions _nullValueSerializeOptions = new()
     {
         WriteIndented = true,
+        DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
+    private static readonly JsonSerializerOptions _nullValueSerializeNoIndentedOptions = new()
+    {
+        WriteIndented = false,
         DefaultIgnoreCondition = JsonIgnoreCondition.Never,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
@@ -104,7 +118,13 @@ public class JsonUtils
             {
                 return result;
             }
-            var options = nullValue ? _nullValueSerializeOptions : _defaultSerializeOptions;
+            var options = (nullValue, indented) switch
+            {
+                (true, true) => _nullValueSerializeOptions,
+                (true, false) => _nullValueSerializeNoIndentedOptions,
+                (false, true) => _defaultSerializeOptions,
+                _ => _defaultSerializeNoIndentedOptions
+            };
             result = JsonSerializer.Serialize(obj, options);
         }
         catch (Exception ex)
