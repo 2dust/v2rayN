@@ -230,6 +230,8 @@ public class InnerFmt
             jsonObj["TransportExtraObj"] = transportExtraObj;
             jsonObj.Remove("TransportExtra");
         }
+        // Remove empty properties to reduce the length of the exported string
+        RemoveEmptyJson(jsonObj);
         var jsonStr = JsonUtils.Serialize(jsonObj, false);
         var encodedStr = Utils.Base64Encode(jsonStr).Replace('+', '-').Replace('/', '_').Replace("=", "");
         return $"{Global.InnerUriProtocol}{item.ConfigType.ToString().ToLower()}/{encodedStr}";
@@ -245,5 +247,53 @@ public class InnerFmt
         var hash = HashCode.Combine(SessionSalt.Value, originalIndexId) & 0x7FFFFFFF;
         var bytes = BitConverter.GetBytes(hash);
         return Convert.ToBase64String(bytes).Replace("=", "");
+    }
+
+    private static void RemoveEmptyJson(JsonNode? node)
+    {
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (node is JsonObject jsonObject)
+        {
+            var propertiesToRemove = new List<string>();
+
+            foreach (var property in jsonObject)
+            {
+                RemoveEmptyJson(property.Value);
+
+                if (IsEmpty(property.Value))
+                {
+                    propertiesToRemove.Add(property.Key);
+                }
+            }
+
+            foreach (var key in propertiesToRemove)
+            {
+                jsonObject.Remove(key);
+            }
+        }
+        else if (node is JsonArray jsonArray)
+        {
+            for (var i = jsonArray.Count - 1; i >= 0; i--)
+            {
+                RemoveEmptyJson(jsonArray[i]);
+
+                if (IsEmpty(jsonArray[i]))
+                {
+                    jsonArray.RemoveAt(i);
+                }
+            }
+        }
+    }
+
+    private static bool IsEmpty(JsonNode? node)
+    {
+        return node switch
+        {
+            null => true,
+            JsonValue value when value.TryGetValue<string>(out var str) => string.IsNullOrEmpty(str),
+            JsonObject obj => obj.Count == 0,
+            JsonArray arr => arr.Count == 0,
+            _ => false
+        };
     }
 }
