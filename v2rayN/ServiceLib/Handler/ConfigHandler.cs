@@ -1528,10 +1528,8 @@ public static class ConfigHandler
         }
 
         var subFilter = string.Empty;
-        //remove sub items
         if (isSub && subid.IsNotEmpty())
         {
-            await RemoveServersViaSubid(config, subid, isSub);
             subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
         }
 
@@ -1634,10 +1632,6 @@ public static class ConfigHandler
         }
         if (lstProfiles != null && lstProfiles.Count > 0)
         {
-            if (isSub && subid.IsNotEmpty())
-            {
-                await RemoveServersViaSubid(config, subid, isSub);
-            }
             var count = 0;
             foreach (var it in lstProfiles)
             {
@@ -1674,11 +1668,6 @@ public static class ConfigHandler
             return -1;
         }
 
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
-        }
-
         profileItem.Subid = subid;
         profileItem.IsSub = isSub;
         profileItem.PreSocksPort = preSocksPort;
@@ -1706,11 +1695,6 @@ public static class ConfigHandler
         if (strData.IsNullOrEmpty())
         {
             return -1;
-        }
-
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
         }
 
         var lstSsServer = ShadowsocksFmt.ResolveSip008(strData);
@@ -1744,10 +1728,6 @@ public static class ConfigHandler
         {
             return -1;
         }
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
-        }
         var lstServer = WireguardFmt.ResolveConfig(strData);
         if (lstServer?.Count > 0)
         {
@@ -1774,15 +1754,11 @@ public static class ConfigHandler
             return -1;
         }
 
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
-        }
-
         var lstServer = InnerFmt.Resolve(strData, subid);
         if (lstServer?.Count > 0)
         {
             var counter = 0;
+            List<ProfileItem> lstAdd = [];
             foreach (var profileItem in lstServer)
             {
                 profileItem.Subid = subid;
@@ -1790,24 +1766,29 @@ public static class ConfigHandler
 
                 var addStatus = profileItem.ConfigType switch
                 {
-                    EConfigType.VMess => await AddVMessServer(config, profileItem),
-                    EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem),
-                    EConfigType.HTTP => await AddHttpServer(config, profileItem),
-                    EConfigType.SOCKS => await AddSocksServer(config, profileItem),
-                    EConfigType.Trojan => await AddTrojanServer(config, profileItem),
-                    EConfigType.VLESS => await AddVlessServer(config, profileItem),
-                    EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem),
-                    EConfigType.TUIC => await AddTuicServer(config, profileItem),
-                    EConfigType.WireGuard => await AddWireguardServer(config, profileItem),
-                    EConfigType.Anytls => await AddAnytlsServer(config, profileItem),
-                    EConfigType.Naive => await AddNaiveServer(config, profileItem),
-                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem),
+                    EConfigType.VMess => await AddVMessServer(config, profileItem, false),
+                    EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
+                    EConfigType.HTTP => await AddHttpServer(config, profileItem, false),
+                    EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
+                    EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
+                    EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
+                    EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
+                    EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
+                    EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
+                    EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
+                    EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
+                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem, false),
                     _ => -1,
                 };
                 if (addStatus == 0)
                 {
                     counter++;
+                    lstAdd.Add(profileItem);
                 }
+            }
+            if (lstAdd.Count > 0)
+            {
+                await SQLiteHelper.Instance.InsertAllAsync(lstAdd);
             }
             await SaveConfig(config);
             return counter;
@@ -1835,6 +1816,7 @@ public static class ConfigHandler
         ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
+            await RemoveServersViaSubid(config, subid, true);
             lstOriSub = await AppManager.Instance.ProfileItems(subid);
             activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
         }
