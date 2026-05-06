@@ -1728,4 +1728,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
+  </data>
 </root>

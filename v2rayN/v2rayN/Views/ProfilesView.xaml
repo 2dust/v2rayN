@@ -242,6 +242,10 @@
                                 x:Name="menuExport2ShareUrlBase64"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                            <MenuItem
+                                x:Name="menuExport2InnerUri"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2InnerUri}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">

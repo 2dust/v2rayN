@@ -1767,6 +1767,55 @@ public static class ConfigHandler
         return -1;
     }
 
+    private static async Task<int> AddBatchServers4InnerUri(Config config, string strData, string subid, bool isSub)
+    {
+        if (strData.IsNullOrEmpty())
+        {
+            return -1;
+        }
+
+        if (isSub && subid.IsNotEmpty())
+        {
+            await RemoveServersViaSubid(config, subid, isSub);
+        }
+
+        var lstServer = InnerFmt.Resolve(strData, subid);
+        if (lstServer?.Count > 0)
+        {
+            var counter = 0;
+            foreach (var profileItem in lstServer)
+            {
+                profileItem.Subid = subid;
+                profileItem.IsSub = isSub;
+
+                var addStatus = profileItem.ConfigType switch
+                {
+                    EConfigType.VMess => await AddVMessServer(config, profileItem),
+                    EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem),
+                    EConfigType.HTTP => await AddHttpServer(config, profileItem),
+                    EConfigType.SOCKS => await AddSocksServer(config, profileItem),
+                    EConfigType.Trojan => await AddTrojanServer(config, profileItem),
+                    EConfigType.VLESS => await AddVlessServer(config, profileItem),
+                    EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem),
+                    EConfigType.TUIC => await AddTuicServer(config, profileItem),
+                    EConfigType.WireGuard => await AddWireguardServer(config, profileItem),
+                    EConfigType.Anytls => await AddAnytlsServer(config, profileItem),
+                    EConfigType.Naive => await AddNaiveServer(config, profileItem),
+                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem),
+                    _ => -1,
+                };
+                if (addStatus == 0)
+                {
+                    counter++;
+                }
+            }
+            await SaveConfig(config);
+            return counter;
+        }
+
+        return -1;
+    }
+
     /// <summary>
     /// Main entry point for adding batch servers from various formats
     /// Tries different parsing methods to import as many servers as possible
@@ -1813,6 +1862,20 @@ public static class ConfigHandler
         if (counter < 1)
         {
             counter = await AddBatchServers4Wireguard(config, strData, subid, isSub);
+        }
+
+        //May be standard uri mixed with internal uri
+        var innerUriCount = await AddBatchServers4InnerUri(config, strData, subid, isSub);
+        if (innerUriCount > 0)
+        {
+            if (counter > 0)
+            {
+                counter += innerUriCount;
+            }
+            else
+            {
+                counter = innerUriCount;
+            }
         }
 
         //maybe other sub
