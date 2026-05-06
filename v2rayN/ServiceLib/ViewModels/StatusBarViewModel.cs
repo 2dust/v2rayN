@@ -503,7 +503,27 @@ public class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
+            if (AppManager.Instance.LinuxSudoPwd.IsNotEmpty())
+                return true;
+            // Check if sudo is configured with NOPASSWD
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "/usr/bin/sudo",
+                    Arguments = "-n true",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                };
+                using var proc = Process.Start(psi);
+                proc?.WaitForExit();
+                return proc?.ExitCode == 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
         else if (Utils.IsMacOS())
         {
