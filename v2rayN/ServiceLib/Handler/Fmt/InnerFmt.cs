@@ -18,7 +18,7 @@ public class InnerFmt
                     continue;
                 }
                 var trimmedLine = line.Trim();
-                if (!line.StartsWith(Global.InnerUriProtocol, StringComparison.OrdinalIgnoreCase))
+                if (!trimmedLine.StartsWith(Global.InnerUriProtocol, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
