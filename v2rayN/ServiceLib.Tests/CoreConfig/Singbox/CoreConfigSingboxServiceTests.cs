@@ -55,6 +55,29 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Fact]
+    public void GenerateClientConfigContent_BindInterface_ShouldUseDialBindInterface()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.CoreBasicItem.BindInterface = "eth0";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var proxy = cfg.outbounds.First(o => o.tag == Global.ProxyTag);
+
+        proxy.bind_interface.Should().Be("eth0");
+        proxy.detour.Should().BeNullOrEmpty();
+    }
+
+    [Fact]
     public void GenerateClientConfigContent_PolicyGroup_ShouldExpandChildrenAndBuildSelector()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
