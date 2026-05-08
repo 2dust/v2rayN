@@ -72,7 +72,7 @@ public partial class CoreConfigSingboxService
         }
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
-            outbound.detour = ShouldBindNet(outbound) ? bindInterface : null;
+            outbound.bind_interface = ShouldBindNet(outbound) ? bindInterface : null;
         }
     }
 
