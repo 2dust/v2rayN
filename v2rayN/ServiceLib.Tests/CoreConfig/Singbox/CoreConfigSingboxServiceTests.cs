@@ -1,6 +1,7 @@
 using AwesomeAssertions;
 using ServiceLib.Common;
 using ServiceLib.Enums;
+using ServiceLib.Manager;
 using ServiceLib.Models;
 using ServiceLib.Services.CoreConfig;
 using Xunit;
@@ -26,6 +27,31 @@ public class CoreConfigSingboxServiceTests
         singboxConfig.Should().NotBeNull();
         singboxConfig!.outbounds.Should().Contain(o => o.tag == Global.ProxyTag && o.type == "socks");
         singboxConfig.inbounds.Should().Contain(i => i.type == nameof(EInboundProtocol.mixed));
+    }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunWithLoopbackPreSocks_ShouldKeepMixedInbound()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box);
+        node.Address = Global.Loopback;
+        node.Port = 1080;
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+
+        cfg.inbounds.Should().Contain(i =>
+            i.type == nameof(EInboundProtocol.mixed)
+            && i.listen == Global.Loopback
+            && i.listen_port == AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
+        cfg.inbounds.Should().Contain(i => i.type == "tun");
     }
 
     [Fact]
