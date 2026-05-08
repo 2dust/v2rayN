@@ -8,10 +8,10 @@ public partial class CoreConfigSingboxService
         {
             var listen = "0.0.0.0";
             var listenPort = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+            var isUsingLocalMixedPort = _node.Address == Global.Loopback && _node.Port == listenPort;
             _coreConfig.inbounds = [];
 
-            if (!context.IsTunEnabled
-                || (context.IsTunEnabled && _node.Address != Global.Loopback && _node.Port != listenPort))
+            if (!context.IsTunEnabled || !isUsingLocalMixedPort)
             {
                 var inbound = new Inbound4Sbox()
                 {

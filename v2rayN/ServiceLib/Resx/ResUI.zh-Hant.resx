@@ -1684,7 +1684,7 @@
     <value>ICMP 路由策略</value>
   </data>
   <data name="TbLegacyProtect" xml:space="preserve">
-    <value>Legacy TUN Protect</value>
+    <value>舊版 TUN 保護</value>
   </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>偽裝域名</value>
@@ -1702,30 +1702,30 @@
     <value>僅用於抓取自簽證書，存在中間人風險。</value>
   </data>
   <data name="menuUdpTestServer" xml:space="preserve">
-    <value>Test Configurations UDP Delay</value>
+    <value>測試 UDP 延遲（多選）</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
-    <value>UDP Test Url</value>
+    <value>UDP 測試網址</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Local outbound address (SendThrough)</value>
+    <value>本機出站位址 (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+    <value>適用於多網路介面環境，請填寫本機 IPv4 位址</value>
   </data>
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+    <value>請填寫正確的 SendThrough IPv4 位址。</value>
   </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
-    <value>Bind Interface</value>
+    <value>綁定網路介面</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode</value>
+    <value>適用於多網路介面環境，請填寫要綁定的介面名稱；Windows 系統有效，其他系統僅在 TUN 模式下生效。</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
   <data name="menuExport2InnerUri" xml:space="preserve">
-    <value>Export v2rayN Internal Share Link to Clipboard</value>
+    <value>匯出 v2rayN 內部分享連結至剪貼簿（多選）</value>
   </data>
 </root>
