@@ -8,6 +8,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     private static Config _config;
     private Window? _window;
     private static readonly string _tag = "ProfilesView";
+    private const int MinRestoredColumnWidth = 20;
 
     public ProfilesView()
     {
@@ -420,9 +421,13 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                         {
                             item2.IsVisible = false;
                         }
-                        else
+                        else if (item.Width >= MinRestoredColumnWidth)
                         {
                             item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
+                            item2.DisplayIndex = displayIndex++;
+                        }
+                        else
+                        {
                             item2.DisplayIndex = displayIndex++;
                         }
                         if (item.Name.ToLower().StartsWith("to"))
