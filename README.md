@@ -1,18 +1,48 @@
-# v2rayN
+<div align="center">
 
-A GUI client for Windows, Linux and macOS, support [Xray](https://github.com/XTLS/Xray-core)
-and [sing-box](https://github.com/SagerNet/sing-box)
-and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
+# ⚡ v2rayN - Unofficial Branch
 
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/2dust/v2rayN)](https://github.com/2dust/v2rayN/commits/master)
-[![CodeFactor](https://www.codefactor.io/repository/github/2dust/v2rayn/badge)](https://www.codefactor.io/repository/github/2dust/v2rayn)
-[![GitHub Releases](https://img.shields.io/github/downloads/2dust/v2rayN/latest/total?logo=github)](https://github.com/2dust/v2rayN/releases)
-[![Chat on Telegram](https://img.shields.io/badge/Chat%20on-Telegram-brightgreen.svg)](https://t.me/v2rayn)
+### Custom build / experimental branch of v2rayN
 
-## How to use
+![GitHub repo size](https://img.shields.io/github/repo-size/vinnythefemboy/v2rayN?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/vinnythefemboy/v2rayN/V2rayN-Branch?style=for-the-badge)
+![License](https://img.shields.io/github/license/vinnythefemboy/v2rayN?style=for-the-badge)
 
-Read the [Wiki](https://github.com/2dust/v2rayN/wiki) for details.
+</div>
 
-## Telegram Channel
+---
 
-[github_2dust](https://t.me/github_2dust)
+## 🧪 What is this?
+
+This is an **unofficial branch** of `v2rayN`.
+
+It is not the official release, not the upstream stable build, and not pretending to be.  
+This branch exists for custom changes, experiments, tweaks, builds, fixes, and whatever else needs testing before it becomes useful.
+
+Use it like a lab build, not a polished product.
+
+---
+
+## ⚠️ Disclaimer
+
+This branch may include:
+
+- unfinished changes
+- broken features
+- random experiments
+- custom patches
+- unstable builds
+- things that worked once and then decided not to
+
+No promises. No warranty. No corporate nonsense.
+
+If something breaks, check the code, open an issue, or go back to the official version.
+
+---
+
+## 🚀 Based On
+
+This project is based on the original:
+
+```txt
+2dust/v2rayN
