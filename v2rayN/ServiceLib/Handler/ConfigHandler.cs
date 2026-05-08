@@ -41,7 +41,6 @@ public static class ConfigHandler
             Loglevel = "warning",
             MuxEnabled = false,
         };
-        config.CoreBasicItem.SendThrough = config.CoreBasicItem.SendThrough?.TrimEx();
 
         if (config.Inbound == null)
         {
@@ -134,6 +133,10 @@ public static class ConfigHandler
         if (config.SpeedTestItem.MixedConcurrencyCount < 1)
         {
             config.SpeedTestItem.MixedConcurrencyCount = 5;
+        }
+        if (config.SpeedTestItem.UdpTestTarget.IsNullOrEmpty())
+        {
+            config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
         }
 
         config.Mux4RayItem ??= new()
@@ -252,7 +255,6 @@ public static class ConfigHandler
             item.Cert = profileItem.Cert;
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
-            item.EchForceQuery = profileItem.EchForceQuery;
             item.Finalmask = profileItem.Finalmask;
             item.ProtoExtra = profileItem.ProtoExtra;
             item.TransportExtra = profileItem.TransportExtra;
@@ -702,10 +704,12 @@ public static class ConfigHandler
     public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Hysteria2;
-        //profileItem.CoreType = ECoreType.sing_box;
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
+        profileItem.Alpn = string.Empty;
+        //profileItem.Alpn = "h3";
         profileItem.Network = string.Empty;
 
         if (profileItem.StreamSecurity.IsNullOrEmpty())
@@ -745,6 +749,7 @@ public static class ConfigHandler
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
         profileItem.Network = string.Empty;
+        profileItem.Fingerprint = string.Empty;
 
         var congestionControl = profileItem.GetProtocolExtra().CongestionControl;
         if (!Global.TuicCongestionControls.Contains(congestionControl))
@@ -785,12 +790,30 @@ public static class ConfigHandler
 
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        var wgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx();
+        if (!wgReserved.IsNullOrEmpty()
+            && !wgReserved.Contains(','))
+        {
+            // Base64 format, convert to standard format
+            try
+            {
+                var bytes = Convert.FromBase64String(wgReserved);
+                var reserved = new byte[3];
+                Array.Copy(bytes, reserved, Math.Min(bytes.Length, 3));
+
+                wgReserved = string.Join(", ", reserved);
+            }
+            catch
+            {
+                // If conversion fails, keep the original value
+            }
+        }
         profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
         {
             WgPublicKey = profileItem.GetProtocolExtra().WgPublicKey?.TrimEx(),
             WgPresharedKey = profileItem.GetProtocolExtra().WgPresharedKey?.TrimEx(),
             WgInterfaceAddress = profileItem.GetProtocolExtra().WgInterfaceAddress?.TrimEx(),
-            WgReserved = profileItem.GetProtocolExtra().WgReserved?.TrimEx(),
+            WgReserved = wgReserved,
             WgMtu = profileItem.GetProtocolExtra().WgMtu is null or <= 0 ? Global.TunMtus.First() : profileItem.GetProtocolExtra().WgMtu,
         });
 
@@ -848,8 +871,10 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
+        profileItem.Fingerprint = string.Empty;
         profileItem.Alpn = string.Empty;
         profileItem.Network = string.Empty;
+        profileItem.AllowInsecure = "false";
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
@@ -1037,13 +1062,19 @@ public static class ConfigHandler
 
         foreach (var item in lstProfile)
         {
-            if (!lstKeep.Exists(i => CompareProfileItem(i, item, false)))
+            if (item.IsComplex())
             {
                 lstKeep.Add(item);
+                continue;
+            }
+
+            if (lstKeep.Exists(i => CompareProfileItem(i, item, false)))
+            {
+                lstRemove.Add(item);
             }
             else
             {
-                lstRemove.Add(item);
+                lstKeep.Add(item);
             }
         }
         await RemoveServers(config, lstRemove);
@@ -1497,10 +1528,8 @@ public static class ConfigHandler
         }
 
         var subFilter = string.Empty;
-        //remove sub items
         if (isSub && subid.IsNotEmpty())
         {
-            await RemoveServersViaSubid(config, subid, isSub);
             subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
         }
 
@@ -1603,10 +1632,6 @@ public static class ConfigHandler
         }
         if (lstProfiles != null && lstProfiles.Count > 0)
         {
-            if (isSub && subid.IsNotEmpty())
-            {
-                await RemoveServersViaSubid(config, subid, isSub);
-            }
             var count = 0;
             foreach (var it in lstProfiles)
             {
@@ -1626,38 +1651,21 @@ public static class ConfigHandler
 
         ProfileItem? profileItem = null;
         //Is sing-box configuration
-        if (profileItem is null)
-        {
-            profileItem = SingboxFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= SingboxFmt.ResolveFull(strData, subRemarks);
         //Is v2ray configuration
-        if (profileItem is null)
-        {
-            profileItem = V2rayFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= V2rayFmt.ResolveFull(strData, subRemarks);
         //Is Html Page
         if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
         {
             return -1;
         }
         //Is Clash configuration
-        if (profileItem is null)
-        {
-            profileItem = ClashFmt.ResolveFull(strData, subRemarks);
-        }
+        profileItem ??= ClashFmt.ResolveFull(strData, subRemarks);
         //Is hysteria configuration
-        if (profileItem is null)
-        {
-            profileItem = Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        }
+        profileItem ??= Hysteria2Fmt.ResolveFull2(strData, subRemarks);
         if (profileItem is null || profileItem.Address.IsNullOrEmpty())
         {
             return -1;
-        }
-
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
         }
 
         profileItem.Subid = subid;
@@ -1689,11 +1697,6 @@ public static class ConfigHandler
             return -1;
         }
 
-        if (isSub && subid.IsNotEmpty())
-        {
-            await RemoveServersViaSubid(config, subid, isSub);
-        }
-
         var lstSsServer = ShadowsocksFmt.ResolveSip008(strData);
         if (lstSsServer?.Count > 0)
         {
@@ -1706,6 +1709,86 @@ public static class ConfigHandler
                 {
                     counter++;
                 }
+            }
+            await SaveConfig(config);
+            return counter;
+        }
+
+        return -1;
+    }
+
+    private static async Task<int> AddBatchServers4Wireguard(Config config, string strData, string subid, bool isSub)
+    {
+        if (strData.IsNullOrEmpty())
+        {
+            return -1;
+        }
+        if (!(strData.Contains("[Interface]", StringComparison.OrdinalIgnoreCase)
+              && strData.Contains("[Peer]", StringComparison.OrdinalIgnoreCase)))
+        {
+            return -1;
+        }
+        var lstServer = WireguardFmt.ResolveConfig(strData);
+        if (lstServer?.Count > 0)
+        {
+            var counter = 0;
+            foreach (var item in lstServer)
+            {
+                item.Subid = subid;
+                item.IsSub = isSub;
+                if (await AddWireguardServer(config, item) == 0)
+                {
+                    counter++;
+                }
+            }
+            await SaveConfig(config);
+            return counter;
+        }
+        return -1;
+    }
+
+    private static async Task<int> AddBatchServers4InnerUri(Config config, string strData, string subid, bool isSub)
+    {
+        if (strData.IsNullOrEmpty())
+        {
+            return -1;
+        }
+
+        var lstServer = InnerFmt.Resolve(strData, subid);
+        if (lstServer?.Count > 0)
+        {
+            var counter = 0;
+            List<ProfileItem> lstAdd = [];
+            foreach (var profileItem in lstServer)
+            {
+                profileItem.Subid = subid;
+                profileItem.IsSub = isSub;
+
+                var addStatus = profileItem.ConfigType switch
+                {
+                    EConfigType.VMess => await AddVMessServer(config, profileItem, false),
+                    EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
+                    EConfigType.HTTP => await AddHttpServer(config, profileItem, false),
+                    EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
+                    EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
+                    EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
+                    EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
+                    EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
+                    EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
+                    EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
+                    EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
+                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem, false),
+                    _ => -1,
+                };
+                if (addStatus == 0)
+                {
+                    counter++;
+                    lstAdd.Add(profileItem);
+                }
+            }
+            if (lstAdd.Count > 0)
+            {
+                await SQLiteHelper.Instance.InsertAllAsync(lstAdd);
             }
             await SaveConfig(config);
             return counter;
@@ -1733,6 +1816,7 @@ public static class ConfigHandler
         ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
+            await RemoveServersViaSubid(config, subid, true);
             lstOriSub = await AppManager.Instance.ProfileItems(subid);
             activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
         }
@@ -1754,6 +1838,26 @@ public static class ConfigHandler
         if (counter < 1)
         {
             counter = await AddBatchServers4SsSIP008(config, strData, subid, isSub);
+        }
+
+        //maybe wireguard config
+        if (counter < 1)
+        {
+            counter = await AddBatchServers4Wireguard(config, strData, subid, isSub);
+        }
+
+        //May be standard uri mixed with internal uri
+        var innerUriCount = await AddBatchServers4InnerUri(config, strData, subid, isSub);
+        if (innerUriCount > 0)
+        {
+            if (counter > 0)
+            {
+                counter += innerUriCount;
+            }
+            else
+            {
+                counter = innerUriCount;
+            }
         }
 
         //maybe other sub

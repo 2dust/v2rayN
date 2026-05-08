@@ -298,7 +298,7 @@ public partial class CoreConfigSingboxService
         var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet) ?? [];
         var expectedIPCidr = new List<string>();
         var expectedIPsRegions = new List<string>();
-        var regionNames = new HashSet<string>();
+        var regionName = string.Empty;
 
         if (!string.IsNullOrEmpty(simpleDnsItem?.DirectExpectedIPs))
         {
@@ -310,16 +310,16 @@ public partial class CoreConfigSingboxService
 
             foreach (var ip in ipItems)
             {
-                if (ip.StartsWith("geoip:", StringComparison.OrdinalIgnoreCase))
+                if (ip.StartsWith(Global.GeoIPPrefix, StringComparison.OrdinalIgnoreCase))
                 {
-                    var region = ip["geoip:".Length..];
-                    if (!string.IsNullOrEmpty(region))
+                    var region = ip[Global.GeoIPPrefix.Length..];
+                    if (string.IsNullOrEmpty(region))
                     {
-                        expectedIPsRegions.Add(region);
-                        regionNames.Add(region);
-                        regionNames.Add($"geolocation-{region}");
-                        regionNames.Add($"tld-{region}");
+                        continue;
                     }
+
+                    expectedIPsRegions.Add(region);
+                    regionName = region;
                 }
                 else
                 {
@@ -352,19 +352,25 @@ public partial class CoreConfigSingboxService
                 rule.server = Global.SingboxDirectDNSTag;
                 rule.strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom);
 
-                if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0)
+                if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0 && !regionName.IsNullOrEmpty())
                 {
-                    var geositeSet = new HashSet<string>(rule.geosite);
-                    if (regionNames.Intersect(geositeSet).Any())
+                    var regionGeosite = rule.geosite.Where(g => g.EndsWith($"-{regionName}", StringComparison.OrdinalIgnoreCase)
+                                                     || g.EndsWith($"@{regionName}", StringComparison.OrdinalIgnoreCase)
+                                                     || g == regionName).ToList();
+                    if (regionGeosite.Count > 0)
                     {
+                        rule.geosite.RemoveAll(regionGeosite.Contains);
+                        var rule4ExpectedIPs = JsonUtils.DeepCopy(rule);
+                        rule4ExpectedIPs.geosite = regionGeosite;
                         if (expectedIPsRegions.Count > 0)
                         {
-                            rule.geoip = expectedIPsRegions;
+                            rule4ExpectedIPs.geoip = expectedIPsRegions;
                         }
                         if (expectedIPCidr.Count > 0)
                         {
-                            rule.ip_cidr = expectedIPCidr;
+                            rule4ExpectedIPs.ip_cidr = expectedIPCidr;
                         }
+                        _coreConfig.dns.rules.Add(rule4ExpectedIPs);
                     }
                 }
             }

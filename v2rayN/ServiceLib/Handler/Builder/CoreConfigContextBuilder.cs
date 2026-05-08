@@ -47,6 +47,8 @@ public class CoreConfigContextBuilder
             ProtectDomainList = [],
             RawDnsItem = await AppManager.Instance.GetDNSItem(coreType),
             RoutingItem = await ConfigHandler.GetDefaultRouting(config),
+            IsWindows = Utils.IsWindows(),
+            IsMacOS = Utils.IsMacOS(),
         };
         var validatorResult = NodeValidatorResult.Empty();
         var (actNode, nodeValidatorResult) = await ResolveNodeAsync(context, node);

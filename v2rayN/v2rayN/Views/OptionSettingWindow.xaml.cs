@@ -46,6 +46,7 @@ public partial class OptionSettingWindow
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
         cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
         cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
+        cmbUdpTestTarget.ItemsSource = Global.UdpTestTargets;
         cmbSubConvertUrl.ItemsSource = Global.SubConvertUrls;
         cmbGetFilesSourceUrl.ItemsSource = Global.GeoFilesSources;
         cmbSrsFilesSourceUrl.ItemsSource = Global.SingboxRulesetSources;
@@ -79,6 +80,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.defFingerprint, v => v.cmbdefFingerprint.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.defUserAgent, v => v.cmbdefUserAgent.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.sendThrough, v => v.txtsendThrough.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.bindInterface, v => v.txtbindInterface.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.mux4SboxProtocol, v => v.cmbmux4SboxProtocol.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.enableCacheFile4Sbox, v => v.togenableCacheFile4Sbox.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.hyUpMbps, v => v.txtUpMbps.Text).DisposeWith(disposables);
@@ -107,6 +109,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableHWA, v => v.togEnableHWA.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);

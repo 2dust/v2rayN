@@ -5,6 +5,7 @@ namespace ServiceLib.Handler.Fmt;
 public class BaseFmt
 {
     private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
+
     private static string UrlEncodeSafe(string? value) => Utils.UrlEncode(value ?? string.Empty);
 
     protected static string GetIpv6(string address)
@@ -118,6 +119,10 @@ public class BaseFmt
                 if (transport.KcpSeed.IsNotEmpty())
                 {
                     dicQuery.Add("seed", UrlEncodeSafe(transport.KcpSeed));
+                }
+                if (transport.KcpMtu > 0)
+                {
+                    dicQuery.Add("mtu", transport.KcpMtu.ToString());
                 }
                 break;
 
@@ -279,10 +284,13 @@ public class BaseFmt
 
             case nameof(ETransport.kcp):
                 var kcpSeed = GetQueryDecoded(query, "seed");
+                var kcpMtuStr = GetQueryValue(query, "mtu");
+                var kcpMtu = int.TryParse(kcpMtuStr, out var mtu) ? mtu : 0;
                 transport = transport with
                 {
                     KcpHeaderType = GetQueryValue(query, "headerType", Global.None),
                     KcpSeed = kcpSeed,
+                    KcpMtu = kcpMtu > 0 ? mtu : null,
                 };
                 break;
 

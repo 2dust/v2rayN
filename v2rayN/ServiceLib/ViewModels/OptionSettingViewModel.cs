@@ -24,6 +24,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string defFingerprint { get; set; }
     [Reactive] public string defUserAgent { get; set; }
     [Reactive] public string sendThrough { get; set; }
+    [Reactive] public string bindInterface { get; set; }
     [Reactive] public string mux4SboxProtocol { get; set; }
     [Reactive] public bool enableCacheFile4Sbox { get; set; }
     [Reactive] public int? hyUpMbps { get; set; }
@@ -62,6 +63,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int SpeedTestTimeout { get; set; }
     [Reactive] public string SpeedTestUrl { get; set; }
     [Reactive] public string SpeedPingTestUrl { get; set; }
+    [Reactive] public string UdpTestTarget { get; set; }
     [Reactive] public int MixedConcurrencyCount { get; set; }
     [Reactive] public bool EnableHWA { get; set; }
     [Reactive] public string SubConvertUrl { get; set; }
@@ -161,7 +163,8 @@ public class OptionSettingViewModel : MyReactiveObject
         defAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
         defFingerprint = _config.CoreBasicItem.DefFingerprint;
         defUserAgent = _config.CoreBasicItem.DefUserAgent;
-        sendThrough = _config.CoreBasicItem.SendThrough;
+        sendThrough = _config.CoreBasicItem.SendThrough ?? string.Empty;
+        bindInterface = _config.CoreBasicItem.BindInterface ?? string.Empty;
         mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
         enableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
         hyUpMbps = _config.HysteriaItem.UpMbps;
@@ -201,6 +204,7 @@ public class OptionSettingViewModel : MyReactiveObject
         SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
         MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
+        UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
         EnableHWA = _config.GuiItem.EnableHWA;
         SubConvertUrl = _config.ConstItem.SubConvertUrl;
         MainGirdOrientation = (int)_config.UiItem.MainGirdOrientation;
@@ -305,7 +309,7 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
-        var sendThroughValue = sendThrough?.TrimEx();
+        var sendThroughValue = sendThrough.TrimEx();
         if (sendThroughValue.IsNotEmpty() && !Utils.IsIpv4(sendThroughValue))
         {
             NoticeManager.Instance.Enqueue(ResUI.FillCorrectSendThroughIPv4);
@@ -353,7 +357,8 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.DefAllowInsecure = defAllowInsecure;
         _config.CoreBasicItem.DefFingerprint = defFingerprint;
         _config.CoreBasicItem.DefUserAgent = defUserAgent;
-        _config.CoreBasicItem.SendThrough = sendThrough?.TrimEx();
+        _config.CoreBasicItem.SendThrough = sendThrough.TrimEx();
+        _config.CoreBasicItem.BindInterface = bindInterface.TrimEx();
         _config.Mux4SboxItem.Protocol = mux4SboxProtocol;
         _config.CoreBasicItem.EnableCacheFile4Sbox = enableCacheFile4Sbox;
         _config.HysteriaItem.UpMbps = hyUpMbps ?? 0;
@@ -377,6 +382,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
         _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
+        _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
         _config.GuiItem.EnableHWA = EnableHWA;
         _config.ConstItem.SubConvertUrl = SubConvertUrl;
         _config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;

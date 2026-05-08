@@ -121,7 +121,7 @@
     <value>匯出分享連結至剪貼簿成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>請先檢查設定</value>
+    <value>配置項目無效，請檢查或重新選擇</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>設定格式不正確</value>
@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>認證密碼</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自訂 DNS (可多個，用逗號 (,) 分隔)</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>解除 Win10 UWP 應用回環代理限制</value>
   </data>
@@ -862,7 +859,7 @@
     <value>規則詳細說明檔案</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支援填寫 DnsObject，JSON 格式，點擊查看說明</value>
+    <value>請填寫 DnsObject，JSON 格式，點擊查看說明</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分組此處請留空</value>
@@ -1062,7 +1059,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>協定堆疊</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1075,7 +1072,7 @@
     <value>PrivateKey</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (Ipv4,Ipv6)</value>
@@ -1590,9 +1587,6 @@
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>完整憑證（鏈），PEM 格式</value>
   </data>
@@ -1699,10 +1693,7 @@
     <value>ICMP 路由策略</value>
   </data>
   <data name="TbLegacyProtect" xml:space="preserve">
-    <value>Legacy TUN Protect</value>
-  </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+    <value>舊版 TUN 保護</value>
   </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>偽裝域名</value>
@@ -1718,5 +1709,32 @@
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>僅用於抓取自簽證書，存在中間人風險。</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>測試 UDP 延遲（多選）</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP 測試網址</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>本機出站位址 (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>適用於多網路介面環境，請填寫本機 IPv4 位址</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>請填寫正確的 SendThrough IPv4 位址。</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>綁定網路介面</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>適用於多網路介面環境，請填寫要綁定的介面名稱；Windows 系統有效，其他系統僅在 TUN 模式下生效。</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>匯出 v2rayN 內部分享連結至剪貼簿（多選）</value>
   </data>
 </root>

@@ -15,4 +15,5 @@ public record TransportExtraItem
 
     public string? KcpHeaderType { get; init; }
     public string? KcpSeed { get; init; }
+    public int? KcpMtu { get; init; }
 }

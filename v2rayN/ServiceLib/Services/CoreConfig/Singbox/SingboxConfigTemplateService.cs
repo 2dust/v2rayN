@@ -59,22 +59,38 @@ public partial class CoreConfigSingboxService
         return JsonUtils.Serialize(fullConfigTemplateNode);
     }
 
-    private void ApplyOutboundSendThrough()
+    private void ApplyOutboundBindInterface()
     {
-        var sendThrough = _config.CoreBasicItem.SendThrough?.TrimEx();
+        var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+        if (bindInterface.IsNullOrEmpty())
+        {
+            return;
+        }
+        if (!(context.IsTunEnabled || context.IsWindows))
+        {
+            return;
+        }
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
-            outbound.inet4_bind_address = ShouldApplySendThrough(outbound, sendThrough) ? sendThrough : null;
+            outbound.bind_interface = ShouldBindNet(outbound) ? bindInterface : null;
         }
     }
 
-    private static bool ShouldApplySendThrough(Outbound4Sbox outbound, string? sendThrough)
+    private void ApplyOutboundSendThrough()
     {
+        var sendThrough = _config.CoreBasicItem.SendThrough?.TrimEx();
         if (sendThrough.IsNullOrEmpty())
         {
-            return false;
+            return;
         }
+        foreach (var outbound in _coreConfig.outbounds ?? [])
+        {
+            outbound.inet4_bind_address = ShouldBindNet(outbound) ? sendThrough : null;
+        }
+    }
 
+    private static bool ShouldBindNet(Outbound4Sbox outbound)
+    {
         if (outbound.type is "direct" or "block" or "dns" or "selector" or "urltest")
         {
             return false;

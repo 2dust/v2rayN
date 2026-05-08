@@ -393,11 +393,6 @@
                             <TextBlock
                                 Margin="{StaticResource Margin8}"
                                 VerticalAlignment="Center"
-                                Style="{StaticResource ToolbarTextBlock}"
-                                Text="{x:Static resx:ResUI.TbSettingsRemoteDNS}" />
-                            <TextBlock
-                                Margin="{StaticResource Margin8}"
-                                VerticalAlignment="Center"
                                 Style="{StaticResource ToolbarTextBlock}">
                                 <Hyperlink Click="linkDnsObjectDoc_Click">
                                     <TextBlock Text="{x:Static resx:ResUI.TbDnsObjectDoc}" />

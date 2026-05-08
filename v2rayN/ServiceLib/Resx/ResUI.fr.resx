@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Mot de passe d’authentification</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>DNS perso (plusieurs configurables, séparés par virgules)</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Lever la restriction de proxy en boucle locale pour les applications Win10 UWP</value>
   </data>
@@ -1062,7 +1059,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Pile de protocoles</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1075,7 +1072,7 @@
     <value>PrivateKey</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (IPv4,IPv6)</value>
@@ -1314,15 +1311,6 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
     </data>
-  <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Adresse sortante locale (SendThrough)</value>
-  </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale.</value>
-  </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
-  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>Mode XHTTP</value>
   </data>
@@ -1599,9 +1587,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Certificat complet (chaîne), format PEM</value>
   </data>
@@ -1724,5 +1709,32 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Adresse sortante locale (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Lier l'interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>Pour les environnements multi-interfaces, entrez le nom de l'interface à lier. Ne fonctionne que sur les systèmes Windows et en mode TUN</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
   </data>
 </root>

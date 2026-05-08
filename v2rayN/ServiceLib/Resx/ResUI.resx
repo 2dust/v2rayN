@@ -121,7 +121,7 @@
     <value>Export share link to clipboard successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the Configuration settings first.</value>
+    <value>Invalid configuration, please check or reselect</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>Invalid configuration format.</value>
@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Auth pass</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>Custom DNS (multiple, separated by commas (,))</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Set Win10 UWP Loopback</value>
   </data>
@@ -862,7 +859,7 @@
     <value>Rule object Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Supports DNS Object; Click to view documentation</value>
+    <value>Please fill in DNS Object; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
@@ -1065,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Stack</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1078,7 +1075,7 @@
     <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (IPv4, IPv6)</value>
@@ -1316,15 +1313,6 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
-  </data>
-  <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Local outbound address (SendThrough)</value>
-  </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
-  </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Please fill in the correct IPv4 address for SendThrough.</value>
   </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>xhttp mode</value>
@@ -1602,9 +1590,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Full certificate (chain), PEM format</value>
   </data>
@@ -1727,5 +1712,32 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Local outbound address (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bind Interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
   </data>
 </root>

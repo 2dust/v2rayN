@@ -163,6 +163,7 @@ public class WireguardPeer4Ray
 {
     public string endpoint { get; set; }
     public string publicKey { get; set; }
+    public string? preSharedKey { get; set; }
 }
 
 public class VnextItem4Ray
@@ -500,12 +501,16 @@ public class MaskSettings4Ray
 {
     public string? password { get; set; }
     public string? domain { get; set; }
+
     // fragment
     public string? packets { get; set; }
+
     public string? length { get; set; }
     public string? delay { get; set; }
+
     // noise
     public int? reset { get; set; }
+
     public List<NoiseMask4Ray>? noise { get; set; }
 }
 
@@ -533,6 +538,7 @@ public class AccountsItem4Ray
 public class Sockopt4Ray
 {
     public string? dialerProxy { get; set; }
+
     [JsonPropertyName("interface")]
     public string? Interface { get; set; }
 }

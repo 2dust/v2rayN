@@ -720,9 +720,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>مجوز احراز هویت</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>سفارشی DNS (multiple, separated by commas (,))</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>تنظیم کردن Win10 UWP Loopback</value>
   </data>
@@ -1065,7 +1062,7 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>پشته شبکه</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
@@ -1078,7 +1075,7 @@
     <value>کلید خصوصی</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>آدرس (IPv4, IPv6)</value>
@@ -1593,9 +1590,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
-  <data name="TbEchForceQuery" xml:space="preserve">
-    <value>EchForceQuery</value>
-  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Full certificate (chain), PEM format</value>
   </data>
@@ -1704,9 +1698,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbLegacyProtect" xml:space="preserve">
     <value>Legacy TUN Protect</value>
   </data>
-  <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
-  </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
     <value>Camouflage domain</value>
   </data>
@@ -1721,5 +1712,32 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
     <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Local outbound address (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bind Interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
   </data>
 </root>

@@ -17,6 +17,8 @@ public class CoreBasicItem
 
     public string? SendThrough { get; set; }
 
+    public string? BindInterface { get; set; }
+
     public bool EnableFragment { get; set; }
 
     public bool EnableCacheFile4Sbox { get; set; } = true;
@@ -159,6 +161,7 @@ public class SpeedTestItem
     public string SpeedPingTestUrl { get; set; }
     public int MixedConcurrencyCount { get; set; }
     public string IPAPIUrl { get; set; }
+    public string UdpTestTarget { get; set; }
 }
 
 [Serializable]

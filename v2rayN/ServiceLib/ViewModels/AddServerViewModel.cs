@@ -53,8 +53,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string WgPublicKey { get; set; }
 
-    //[Reactive]
-    //public string WgPresharedKey { get; set; }
+    [Reactive]
+    public string WgPresharedKey { get; set; }
+
     [Reactive]
     public string WgInterfaceAddress { get; set; }
 
@@ -106,6 +107,9 @@ public class AddServerViewModel : MyReactiveObject
     [Reactive]
     public string KcpSeed { get; set; }
 
+    [Reactive]
+    public int? KcpMtu { get; set; }
+
     public string TransportHeaderType
     {
         get => SelectedSource.GetNetwork() switch
@@ -156,17 +160,8 @@ public class AddServerViewModel : MyReactiveObject
             switch (SelectedSource.GetNetwork())
             {
                 case nameof(ETransport.raw):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.ws):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.httpupgrade):
-                    Host = value;
-                    break;
-
                 case nameof(ETransport.xhttp):
                     Host = value;
                     break;
@@ -199,13 +194,7 @@ public class AddServerViewModel : MyReactiveObject
                     break;
 
                 case nameof(ETransport.ws):
-                    Path = value;
-                    break;
-
                 case nameof(ETransport.httpupgrade):
-                    Path = value;
-                    break;
-
                 case nameof(ETransport.xhttp):
                     Path = value;
                     break;
@@ -287,26 +276,27 @@ public class AddServerViewModel : MyReactiveObject
         Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
         CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
 
-        var protocolExtra = SelectedSource?.GetProtocolExtra();
-        var transport = SelectedSource?.GetTransportExtra();
-        Ports = protocolExtra?.Ports ?? string.Empty;
-        AlterId = int.TryParse(protocolExtra?.AlterId, out var result) ? result : 0;
-        Flow = protocolExtra?.Flow ?? string.Empty;
-        SalamanderPass = protocolExtra?.SalamanderPass ?? string.Empty;
-        UpMbps = protocolExtra?.UpMbps;
-        DownMbps = protocolExtra?.DownMbps;
-        HopInterval = protocolExtra?.HopInterval ?? string.Empty;
-        VmessSecurity = protocolExtra?.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
-        VlessEncryption = protocolExtra?.VlessEncryption.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
-        SsMethod = protocolExtra?.SsMethod ?? string.Empty;
-        WgPublicKey = protocolExtra?.WgPublicKey ?? string.Empty;
-        WgInterfaceAddress = protocolExtra?.WgInterfaceAddress ?? string.Empty;
-        WgReserved = protocolExtra?.WgReserved ?? string.Empty;
-        WgMtu = protocolExtra?.WgMtu ?? 1280;
-        Uot = protocolExtra?.Uot ?? false;
-        CongestionControl = protocolExtra?.CongestionControl ?? string.Empty;
-        InsecureConcurrency = protocolExtra?.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
-        NaiveQuic = protocolExtra?.NaiveQuic ?? false;
+        var protocolExtra = SelectedSource?.GetProtocolExtra() ?? new();
+        var transport = SelectedSource?.GetTransportExtra() ?? new();
+        Ports = protocolExtra.Ports ?? string.Empty;
+        AlterId = int.TryParse(protocolExtra.AlterId, out var result) ? result : 0;
+        Flow = protocolExtra.Flow ?? string.Empty;
+        SalamanderPass = protocolExtra.SalamanderPass ?? string.Empty;
+        UpMbps = protocolExtra.UpMbps;
+        DownMbps = protocolExtra.DownMbps;
+        HopInterval = protocolExtra.HopInterval ?? string.Empty;
+        VmessSecurity = protocolExtra.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
+        VlessEncryption = protocolExtra.VlessEncryption?.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
+        SsMethod = protocolExtra.SsMethod ?? string.Empty;
+        WgPublicKey = protocolExtra.WgPublicKey ?? string.Empty;
+        WgPresharedKey = protocolExtra.WgPresharedKey ?? string.Empty;
+        WgInterfaceAddress = protocolExtra.WgInterfaceAddress ?? string.Empty;
+        WgReserved = protocolExtra.WgReserved ?? string.Empty;
+        WgMtu = protocolExtra.WgMtu ?? 1280;
+        Uot = protocolExtra.Uot ?? false;
+        CongestionControl = protocolExtra.CongestionControl ?? string.Empty;
+        InsecureConcurrency = protocolExtra.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
+        NaiveQuic = protocolExtra.NaiveQuic ?? false;
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         Host = transport.Host ?? string.Empty;
@@ -318,6 +308,7 @@ public class AddServerViewModel : MyReactiveObject
         GrpcMode = transport.GrpcMode.IsNullOrEmpty() ? Global.GrpcGunMode : transport.GrpcMode;
         KcpHeaderType = transport.KcpHeaderType.IsNullOrEmpty() ? Global.None : transport.KcpHeaderType;
         KcpSeed = transport.KcpSeed ?? string.Empty;
+        KcpMtu = transport.KcpMtu;
     }
 
     private async Task SaveServerAsync()
@@ -381,6 +372,7 @@ public class AddServerViewModel : MyReactiveObject
             GrpcMode = GrpcMode.NullIfEmpty(),
             KcpHeaderType = KcpHeaderType.NullIfEmpty(),
             KcpSeed = KcpSeed.NullIfEmpty(),
+            KcpMtu = KcpMtu > 0 ? KcpMtu : null,
         };
 
         SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
@@ -396,6 +388,7 @@ public class AddServerViewModel : MyReactiveObject
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
             WgPublicKey = WgPublicKey.NullIfEmpty(),
+            WgPresharedKey = WgPresharedKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
             WgReserved = WgReserved.NullIfEmpty(),
             WgMtu = WgMtu >= 576 ? WgMtu : null,

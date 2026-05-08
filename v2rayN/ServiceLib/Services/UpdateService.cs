@@ -299,7 +299,6 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
 
             return url;
         }
-
         else if (Utils.IsLinux())
         {
             var arch = RuntimeInformation.ProcessArchitecture;
@@ -314,7 +313,6 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
                 _ => null,
             };
         }
-        
         else if (Utils.IsMacOS())
         {
             return RuntimeInformation.ProcessArchitecture switch
@@ -377,8 +375,8 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
             foreach (var item in rules ?? [])
             {
-                AddPrefixedItems(item.Ip, "geoip:", geoipFiles);
-                AddPrefixedItems(item.Domain, "geosite:", geoSiteFiles);
+                AddPrefixedItems(item.Ip, Global.GeoIPPrefix, geoipFiles);
+                AddPrefixedItems(item.Domain, Global.GeoSitePrefix, geoSiteFiles);
             }
         }
 

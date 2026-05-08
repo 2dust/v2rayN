@@ -137,7 +137,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void ModifyFontSize()
     {
-        double size = (long)CurrentFontSize;
+        double size = CurrentFontSize;
         if (size < Global.MinFontSize)
         {
             return;

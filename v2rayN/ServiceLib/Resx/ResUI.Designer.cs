@@ -106,7 +106,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please check the Configuration settings first. 的本地化字符串。
+        ///   查找类似 Invalid configuration, please check or reselect 的本地化字符串。
         /// </summary>
         public static string CheckServerSettings {
             get {
@@ -1024,6 +1024,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Export v2rayN Internal Share Link to Clipboard 的本地化字符串。
+        /// </summary>
+        public static string menuExport2InnerUri {
+            get {
+                return ResourceManager.GetString("menuExport2InnerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export Share Link to Clipboard 的本地化字符串。
         /// </summary>
         public static string menuExport2ShareUrl {
@@ -1857,6 +1866,15 @@ namespace ServiceLib.Resx {
         public static string menuTestServerResult {
             get {
                 return ResourceManager.GetString("menuTestServerResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test Configurations UDP Delay 的本地化字符串。
+        /// </summary>
+        public static string menuUdpTestServer {
+            get {
+                return ResourceManager.GetString("menuUdpTestServer", resourceCulture);
             }
         }
         
@@ -2872,7 +2890,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Supports DNS Object; Click to view documentation 的本地化字符串。
+        ///   查找类似 Please fill in DNS Object; Click to view documentation 的本地化字符串。
         /// </summary>
         public static string TbDnsObjectDoc {
             get {
@@ -2931,15 +2949,6 @@ namespace ServiceLib.Resx {
         public static string TbEchConfigList {
             get {
                 return ResourceManager.GetString("TbEchConfigList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 EchForceQuery 的本地化字符串。
-        /// </summary>
-        public static string TbEchForceQuery {
-            get {
-                return ResourceManager.GetString("TbEchForceQuery", resourceCulture);
             }
         }
         
@@ -3223,6 +3232,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 MTU 的本地化字符串。
+        /// </summary>
+        public static string TbMtu {
+            get {
+                return ResourceManager.GetString("TbMtu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Transport protocol(network) 的本地化字符串。
         /// </summary>
         public static string TbNetwork {
@@ -3309,6 +3327,15 @@ namespace ServiceLib.Resx {
         public static string TbPorts7Tips {
             get {
                 return ResourceManager.GetString("TbPorts7Tips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PreSharedKey 的本地化字符串。
+        /// </summary>
+        public static string TbPreSharedKey {
+            get {
+                return ResourceManager.GetString("TbPreSharedKey", resourceCulture);
             }
         }
         
@@ -3430,7 +3457,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Reserved (2,3,4) 的本地化字符串。
+        ///   查找类似 Reserved 的本地化字符串。
         /// </summary>
         public static string TbReserved {
             get {
@@ -3678,6 +3705,24 @@ namespace ServiceLib.Resx {
         public static string TbSettingsAutoUpdateInterval {
             get {
                 return ResourceManager.GetString("TbSettingsAutoUpdateInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Bind Interface 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsBindInterface {
+            get {
+                return ResourceManager.GetString("TbSettingsBindInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsBindInterfaceTip {
+            get {
+                return ResourceManager.GetString("TbSettingsBindInterfaceTip", resourceCulture);
             }
         }
         
@@ -4177,15 +4222,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom DNS (multiple, separated by commas (,)) 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsRemoteDNS {
-            get {
-                return ResourceManager.GetString("TbSettingsRemoteDNS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Route Only 的本地化字符串。
         /// </summary>
         public static string TbSettingsRouteOnly {
@@ -4384,15 +4420,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 MTU 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTunMtu {
-            get {
-                return ResourceManager.GetString("TbSettingsTunMtu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Stack 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunStack {
@@ -4416,6 +4443,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsUdpEnabled {
             get {
                 return ResourceManager.GetString("TbSettingsUdpEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UDP Test Url 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsUdpTestUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsUdpTestUrl", resourceCulture);
             }
         }
         

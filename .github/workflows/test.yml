@@ -1,0 +1,29 @@
+name: Code Test
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'v2rayN/ServiceLib/Services/CoreConfig/**'
+      - 'v2rayN/ServiceLib/Handler/Fmt/**'
+      - '.github/workflows/test.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6.0.2
+      with:
+        submodules: 'recursive'
+        fetch-depth: '0'
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5.2.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Test Code
+      working-directory: ./v2rayN
+      run: dotnet test ./ServiceLib.Tests

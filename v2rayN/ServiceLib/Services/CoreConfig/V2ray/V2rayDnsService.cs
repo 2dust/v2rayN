@@ -121,7 +121,7 @@ public partial class CoreConfigV2rayService
         var proxyGeositeList = new List<string>();
         var expectedDomainList = new List<string>();
         var expectedIPs = new List<string>();
-        var regionNames = new HashSet<string>();
+        var regionName = string.Empty;
 
         var bootstrapDNSAddress = ParseDnsAddresses(simpleDNSItem?.BootstrapDNS, Global.DomainPureIPDNSAddress.First());
         var dnsServerDomains = new List<string>();
@@ -160,18 +160,14 @@ public partial class CoreConfigV2rayService
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
 
-            foreach (var ip in expectedIPs)
+            foreach (var region in from ip in expectedIPs
+                                   where ip.StartsWith(Global.GeoIPPrefix, StringComparison.OrdinalIgnoreCase)
+                                   select ip[Global.GeoIPPrefix.Length..]
+                                   into region
+                                   where !string.IsNullOrEmpty(region)
+                                   select region)
             {
-                if (ip.StartsWith("geoip:", StringComparison.OrdinalIgnoreCase))
-                {
-                    var region = ip["geoip:".Length..];
-                    if (!string.IsNullOrEmpty(region))
-                    {
-                        regionNames.Add($"geosite:{region}");
-                        regionNames.Add($"geosite:geolocation-{region}");
-                        regionNames.Add($"geosite:tld-{region}");
-                    }
-                }
+                regionName = region;
             }
         }
 
@@ -201,9 +197,14 @@ public partial class CoreConfigV2rayService
 
                 if (item.OutboundTag == Global.DirectTag)
                 {
-                    if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
+                    if (normalizedDomain.StartsWith(Global.GeoSitePrefix) || normalizedDomain.StartsWith("ext:"))
                     {
-                        (regionNames.Contains(normalizedDomain) ? expectedDomainList : directGeositeList).Add(normalizedDomain);
+                        var isExpectedDomain = !regionName.IsNullOrEmpty()
+                            && (normalizedDomain.EndsWith($"-{regionName}")
+                            || normalizedDomain.EndsWith($"@{regionName}")
+                            || normalizedDomain == Global.GeoSitePrefix + regionName);
+                        var targetList = isExpectedDomain ? expectedDomainList : directGeositeList;
+                        targetList.Add(normalizedDomain);
                     }
                     else
                     {
@@ -212,7 +213,7 @@ public partial class CoreConfigV2rayService
                 }
                 else if (item.OutboundTag != Global.BlockTag)
                 {
-                    if (normalizedDomain.StartsWith("geosite:") || normalizedDomain.StartsWith("ext:"))
+                    if (normalizedDomain.StartsWith(Global.GeoSitePrefix) || normalizedDomain.StartsWith("ext:"))
                     {
                         proxyGeositeList.Add(normalizedDomain);
                     }

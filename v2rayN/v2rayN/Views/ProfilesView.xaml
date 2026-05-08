@@ -159,6 +159,10 @@
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGestureText="Ctrl+R" />
                         <MenuItem
+                            x:Name="menuUdpTestServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuUdpTestServer}" />
+                        <MenuItem
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
@@ -238,6 +242,10 @@
                                 x:Name="menuExport2ShareUrlBase64"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                            <MenuItem
+                                x:Name="menuExport2InnerUri"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2InnerUri}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
