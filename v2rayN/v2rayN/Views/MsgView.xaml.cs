@@ -12,6 +12,7 @@ public partial class MsgView
         {
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoScrollToEnd, v => v.togScrollToEnd.IsChecked).DisposeWith(disposables);
         });
 
         btnCopy.Click += menuMsgViewCopyAll_Click;
@@ -51,7 +52,7 @@ public partial class MsgView
         }
 
         txtMsg.AppendText(msg.ToString());
-        if (togScrollToEnd.IsChecked ?? true)
+        if (ViewModel?.AutoScrollToEnd == true)
         {
             txtMsg.ScrollToEnd();
         }

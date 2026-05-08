@@ -83,6 +83,7 @@ public class MsgUIItem
 {
     public string? MainMsgFilter { get; set; }
     public bool? AutoRefresh { get; set; }
+    public bool? AutoScrollToEnd { get; set; }
 }
 
 [Serializable]

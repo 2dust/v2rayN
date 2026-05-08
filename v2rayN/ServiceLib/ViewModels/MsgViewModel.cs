@@ -13,21 +13,30 @@ public class MsgViewModel : MyReactiveObject
     [Reactive]
     public bool AutoRefresh { get; set; }
 
+    [Reactive]
+    public bool AutoScrollToEnd { get; set; }
+
     public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
     {
         _config = AppManager.Instance.Config;
         _updateView = updateView;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
+        AutoScrollToEnd = _config.MsgUIItem.AutoScrollToEnd ?? true;
 
         this.WhenAnyValue(
            x => x.MsgFilter)
                .Subscribe(c => DoMsgFilter());
 
         this.WhenAnyValue(
-          x => x.AutoRefresh,
-          y => y == true)
-              .Subscribe(c => _config.MsgUIItem.AutoRefresh = AutoRefresh);
+           x => x.AutoRefresh,
+           y => y == true)
+               .Subscribe(c => _config.MsgUIItem.AutoRefresh = AutoRefresh);
+
+        this.WhenAnyValue(
+           x => x.AutoScrollToEnd,
+           y => y == true)
+               .Subscribe(c => _config.MsgUIItem.AutoScrollToEnd = AutoScrollToEnd);
 
         AppEvents.SendMsgViewRequested
          .AsObservable()
