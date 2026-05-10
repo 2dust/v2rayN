@@ -1720,7 +1720,7 @@
     <value>綁定網路介面</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>適用於多網路介面環境，請填寫要綁定的介面名稱；Windows 系統有效，其他系統僅在 TUN 模式下生效。</value>
+    <value>適用於多網路介面環境，請填寫要綁定的介面名稱；Windows 系統有效，其他系統僅在 TUN 模式下生效</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>

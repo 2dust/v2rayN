@@ -230,6 +230,9 @@ public class InnerFmt
             jsonObj["TransportExtraObj"] = transportExtraObj;
             jsonObj.Remove("TransportExtra");
         }
+        // remove subid and isSub
+        jsonObj.Remove("Subid");
+        jsonObj.Remove("IsSub");
         // Remove empty properties to reduce the length of the exported string
         RemoveEmptyJson(jsonObj);
         var jsonStr = JsonUtils.Serialize(jsonObj, false);

@@ -10,9 +10,9 @@ public partial class CoreConfigV2rayService
             var listenPort = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
             _coreConfig.inbounds = [];
             var inbound = BuildInbound(_config.Inbound.First(), EInboundProtocol.socks, true);
+            var isUsingLocalMixedPort = _node.Address == Global.Loopback && _node.Port == listenPort;
 
-            if (!context.IsTunEnabled
-                || (context.IsTunEnabled && _node.Address != Global.Loopback && _node.Port != listenPort))
+            if (!context.IsTunEnabled || !isUsingLocalMixedPort)
             {
                 _coreConfig.inbounds.Add(inbound);
 

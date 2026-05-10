@@ -3718,7 +3718,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems and TUN mode 的本地化字符串。
+        ///   查找类似 For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems or TUN mode 的本地化字符串。
         /// </summary>
         public static string TbSettingsBindInterfaceTip {
             get {

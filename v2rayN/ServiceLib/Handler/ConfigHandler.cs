@@ -1816,9 +1816,9 @@ public static class ConfigHandler
         ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
-            await RemoveServersViaSubid(config, subid, true);
             lstOriSub = await AppManager.Instance.ProfileItems(subid);
             activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
+            await RemoveServersViaSubid(config, subid, true);
         }
 
         var counter = 0;

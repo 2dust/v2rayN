@@ -1720,7 +1720,7 @@
     <value>绑定网口</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>用于多网口环境，填写要绑定的网口名称，仅生效于 Windows 系统和 TUN 模式</value>
+    <value>用于多网口环境，填写要绑定的网口名称，仅生效于 Windows 系统或 TUN 模式</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
