@@ -1,4 +1,4 @@
-using static ServiceLib.Models.ClashProxies;
+using static ServiceLib.Models.Dto.ClashProxies;
 
 namespace ServiceLib.Manager;
 

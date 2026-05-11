@@ -1,6 +1,6 @@
 using System.Reactive.Concurrency;
-using static ServiceLib.Models.ClashProviders;
-using static ServiceLib.Models.ClashProxies;
+using static ServiceLib.Models.Dto.ClashProviders;
+using static ServiceLib.Models.Dto.ClashProxies;
 
 namespace ServiceLib.ViewModels;
 
