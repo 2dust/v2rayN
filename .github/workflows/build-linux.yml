@@ -49,7 +49,7 @@ jobs:
                            libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
 
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v6.0.2
+      uses: actions/checkout@v6
       with:
         submodules: 'recursive'
         fetch-depth: '0'
@@ -151,7 +151,7 @@ jobs:
         dnf repolist | grep -i epel || true
 
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v6.0.2
+      uses: actions/checkout@v6
       with:
         submodules: 'recursive'
         fetch-depth: '0'

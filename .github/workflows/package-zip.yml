@@ -37,7 +37,7 @@ jobs:
         }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v6.0.2
+      uses: actions/checkout@v6
 
     - name: Restore build artifacts
       uses: actions/download-artifact@v8
