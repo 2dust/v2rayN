@@ -8,6 +8,7 @@ global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 global using System.Reflection;
 global using System.Runtime.InteropServices;
+global using System.Runtime.Versioning;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Encodings.Web;

@@ -2,6 +2,7 @@ using Microsoft.Win32;
 
 namespace ServiceLib.Common;
 
+[SupportedOSPlatform("windows")]
 internal static class WindowsUtils
 {
     private static readonly string _tag = "WindowsUtils";

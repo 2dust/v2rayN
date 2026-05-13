@@ -1114,12 +1114,14 @@ public class Utils
 
     #region Platform
 
+    [SupportedOSPlatformGuard("windows")]
     public static bool IsWindows() => OperatingSystem.IsWindows();
 
     public static bool IsLinux() => OperatingSystem.IsLinux();
 
     public static bool IsMacOS() => OperatingSystem.IsMacOS();
 
+    [UnsupportedOSPlatformGuard("windows")]
     public static bool IsNonWindows() => !OperatingSystem.IsWindows();
 
     public static string GetExeName(string name)
@@ -1214,6 +1216,16 @@ public class Utils
     }
 
     public static bool SetUnixFileMode(string? fileName)
+    {
+        if (IsWindows())
+        {
+            return false;
+        }
+        return SetUnixFileModeInternal(fileName);
+    }
+
+    [UnsupportedOSPlatform("windows")]
+    private static bool SetUnixFileModeInternal(string? fileName)
     {
         try
         {
