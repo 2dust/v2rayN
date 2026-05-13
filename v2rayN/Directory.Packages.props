@@ -33,6 +33,6 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="YamlDotNet" Version="17.1.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
   </ItemGroup>
 </Project>
