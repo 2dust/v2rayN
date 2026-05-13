@@ -127,6 +127,7 @@ public static class AutoStartupHandler
 
     #region Linux
 
+    [SupportedOSPlatform("linux")]
     private static async Task ClearTaskLinux()
     {
         try
@@ -140,6 +141,7 @@ public static class AutoStartupHandler
         await Task.CompletedTask;
     }
 
+    [SupportedOSPlatform("linux")]
     private static async Task SetTaskLinux()
     {
         try
@@ -160,6 +162,7 @@ public static class AutoStartupHandler
         }
     }
 
+    [SupportedOSPlatform("linux")]
     private static string GetHomePathLinux()
     {
         var homePath = Path.Combine(Utils.GetHomePath(), ".config", "autostart", $"{Global.AppName}.desktop");
@@ -171,6 +174,7 @@ public static class AutoStartupHandler
 
     #region macOS
 
+    [SupportedOSPlatform("macos")]
     private static async Task ClearTaskOSX()
     {
         try
@@ -190,6 +194,7 @@ public static class AutoStartupHandler
         }
     }
 
+    [SupportedOSPlatform("macos")]
     private static async Task SetTaskOSX()
     {
         try
@@ -207,6 +212,7 @@ public static class AutoStartupHandler
         }
     }
 
+    [SupportedOSPlatform("macos")]
     private static string GetLaunchAgentPathMacOS()
     {
         var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -215,6 +221,7 @@ public static class AutoStartupHandler
         return launchAgentPath;
     }
 
+    [SupportedOSPlatform("macos")]
     private static string GenerateLaunchAgentPlist()
     {
         var exePath = Utils.GetExePath();
