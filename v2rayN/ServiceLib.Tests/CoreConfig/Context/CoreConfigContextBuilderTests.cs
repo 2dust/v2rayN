@@ -99,7 +99,8 @@ public class CoreConfigContextBuilderTests
     {
         return message.Contains("cycle dependency", StringComparison.OrdinalIgnoreCase)
                || message.Contains("循环依赖", StringComparison.Ordinal)
-               || message.Contains("循環依賴", StringComparison.Ordinal);
+               || message.Contains("循環依賴", StringComparison.Ordinal)
+               || message.Contains("циклическую зависимость", StringComparison.OrdinalIgnoreCase);
     }
 
     private static async Task UpsertProfilesAsync(params ProfileItem[] profiles)
