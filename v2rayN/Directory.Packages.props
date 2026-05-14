@@ -34,6 +34,6 @@
         <PackageVersion Include="xunit.v3" Version="3.2.2" />
         <PackageVersion Include="YamlDotNet" Version="17.1.0" />
         <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
-        <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4-preview.1.1" />
     </ItemGroup>
 </Project>
