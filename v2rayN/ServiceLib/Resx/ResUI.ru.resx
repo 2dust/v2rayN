@@ -1726,9 +1726,9 @@
     <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для привязки. Работает только в Windows и режиме TUN</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
-    <value>PreSharedKey</value>
+    <value>Общий ключ (PSK)</value>
   </data>
   <data name="menuExport2InnerUri" xml:space="preserve">
-    <value>Export v2rayN Internal Share Link to Clipboard</value>
+    <value>Экспорт внутренней ссылки v2rayN в буфер обмена</value>
   </data>
 </root>
