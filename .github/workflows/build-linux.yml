@@ -428,7 +428,7 @@ jobs:
           -machine virt \
           -accel tcg,thread=multi,tb-size=2048 \
           -cpu la464 \
-          -m 8192 \
+          -m 9216 \
           -smp 4 \
           -drive if=pflash,format=raw,unit=0,file=$efi_code,readonly=on \
           -drive if=pflash,format=raw,unit=1,file=$efi_vars \
