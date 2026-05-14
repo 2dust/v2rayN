@@ -5,8 +5,8 @@ VERSION_ARG=""
 WITH_CORE="both"
 FORCE_NETCORE=0
 BUILD_FROM=""
-XRAY_VER="${XRAY_VER:-26.5.9}"
-SING_VER="${SING_VER:-1.13.11}"
+XRAY_VER="${XRAY_VER:-}"
+SING_VER="${SING_VER:-}"
 
 MIN_KERNEL="5.10"
 PKGROOT="v2rayN-publish"
@@ -18,8 +18,6 @@ DOTNET_LOONGARCH_TAG="v10.0.108-loongarch64"
 DOTNET_LOONGARCH_BASE="https://github.com/loongson/dotnet/releases/download"
 DOTNET_LOONGARCH_FILE="dotnet-sdk-${DOTNET_LOONGARCH_VERSION}-linux-loongarch64.tar.gz"
 DOTNET_SDK_URL="${DOTNET_LOONGARCH_BASE}/${DOTNET_LOONGARCH_TAG}/${DOTNET_LOONGARCH_FILE}"
-SKIA_VER="${SKIA_VER:-3.119.4-preview.1.1}"
-HARFBUZZ_VER="${HARFBUZZ_VER:-8.3.1.3}"
 
 OS_ID=""
 OS_NAME=""
@@ -28,7 +26,6 @@ HOST_ARCH=""
 SCRIPT_DIR=""
 PROJECT=""
 VERSION=""
-BUILT_ALL=0
 
 declare -a BUILT_DEBS=()
 
@@ -275,70 +272,6 @@ resolve_version() {
   echo "[*] GUI version resolved as: ${VERSION}"
 }
 
-apply_loongarch_patch() {
-  local f=""
-
-  find . -type f \( -name "*.csproj" -o -name "*.props" -o -name "*.targets" \) \
-    -exec sed -Ei 's#<TargetFramework>[^<]+</TargetFramework>#<TargetFramework>'"$DOTNET_TFM"'</TargetFramework>#g' {} +
-
-  while IFS= read -r -d '' f; do
-    sed -i \
-      -e "s#<PackageVersion Include=\"SkiaSharp\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"SkiaSharp\" Version=\"$SKIA_VER\" />#g" \
-      -e "s#<PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"$SKIA_VER\" />#g" \
-      -e "s#<PackageVersion Include=\"HarfBuzzSharp\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"HarfBuzzSharp\" Version=\"$HARFBUZZ_VER\" />#g" \
-      -e "s#<PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"[^\"]*\" */>#<PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"$HARFBUZZ_VER\" />#g" \
-      "$f"
-
-    grep -q 'PackageVersion Include="SkiaSharp"' "$f" || \
-      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"SkiaSharp\" Version=\"$SKIA_VER\" />" "$f"
-
-    grep -q 'PackageVersion Include="SkiaSharp.NativeAssets.Linux"' "$f" || \
-      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"SkiaSharp.NativeAssets.Linux\" Version=\"$SKIA_VER\" />" "$f"
-
-    grep -q 'PackageVersion Include="HarfBuzzSharp"' "$f" || \
-      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"HarfBuzzSharp\" Version=\"$HARFBUZZ_VER\" />" "$f"
-
-    grep -q 'PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux"' "$f" || \
-      sed -i "/<\/ItemGroup>/i\    <PackageVersion Include=\"HarfBuzzSharp.NativeAssets.Linux\" Version=\"$HARFBUZZ_VER\" />" "$f"
-  done < <(find . -type f -name 'Directory.Packages.props' -print0)
-
-  f="$(find "$DOTNET_ROOT/sdk/$(dotnet --version)" -type f -name 'Microsoft.NETCoreSdk.BundledVersions.props' | head -n1 || true)"
-  if [[ -f "$f" ]] && ! grep -q 'linux-loongarch64' "$f"; then
-    sed -i \
-      -e 's/linux-arm64/&;linux-loongarch64/g' \
-      -e 's/linux-musl-arm64/&;linux-musl-loongarch64/g' \
-      "$f"
-  fi
-}
-
-copy_skiasharp_native_loongarch64() {
-  local outdir="$1"
-  local skia_so=""
-  local harfbuzz_so=""
-
-  mkdir -p "$outdir"
-
-  skia_so="$(find "$HOME/.nuget/packages" -path "*/skiasharp.nativeassets.linux/${SKIA_VER}/runtimes/linux-loongarch64/native/libSkiaSharp.so" | head -n1 || true)"
-  [[ -n "$skia_so" ]] || skia_so="$(find "$HOME/.nuget/packages" -path "*/runtimes/linux-loongarch64/native/libSkiaSharp.so" | head -n1 || true)"
-
-  harfbuzz_so="$(find "$HOME/.nuget/packages" -path "*/harfbuzzsharp.nativeassets.linux/${HARFBUZZ_VER}/runtimes/linux-loongarch64/native/libHarfBuzzSharp.so" | head -n1 || true)"
-  [[ -n "$harfbuzz_so" ]] || harfbuzz_so="$(find "$HOME/.nuget/packages" -path "*/runtimes/linux-loongarch64/native/libHarfBuzzSharp.so" | head -n1 || true)"
-
-  if [[ -n "$skia_so" && -f "$skia_so" ]]; then
-    echo "[+] Copy libSkiaSharp.so from NuGet cache"
-    install -m 755 "$skia_so" "$outdir/libSkiaSharp.so"
-  else
-    echo "[WARN] libSkiaSharp.so for linux-loongarch64 not found in NuGet cache"
-  fi
-
-  if [[ -n "$harfbuzz_so" && -f "$harfbuzz_so" ]]; then
-    echo "[+] Copy libHarfBuzzSharp.so from NuGet cache"
-    install -m 755 "$harfbuzz_so" "$outdir/libHarfBuzzSharp.so"
-  else
-    echo "[WARN] libHarfBuzzSharp.so for linux-loongarch64 not found in NuGet cache"
-  fi
-}
-
 xray_url_for_rid() {
   local rid="$1"
   local ver="$2"
@@ -568,27 +501,10 @@ describe_target() {
 publish_binary() {
   local rid="$1"
 
-  dotnet clean "$PROJECT" \
-    -c Release \
-    -p:TargetFramework="$DOTNET_TFM"
-
-  rm -rf "$(dirname "$PROJECT")/bin/Release/${DOTNET_TFM}" || true
-
-  echo "[*] Restore packages..."
-
-  dotnet restore "$PROJECT" \
-    -r "$rid" \
-    -p:TargetFramework="$DOTNET_TFM"
-
-  echo "[*] Publish binary..."
-
-  dotnet publish "$PROJECT" \
-    -c Release \
-    -r "$rid" \
-    -p:TargetFramework="$DOTNET_TFM" \
-    -p:PublishSingleFile=false \
-    -p:SelfContained=true \
-    --no-restore
+  dotnet clean "$PROJECT" -c Release
+  rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
+  dotnet restore "$PROJECT"
+  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
 }
 
 write_launcher_file() {
@@ -598,7 +514,6 @@ write_launcher_file() {
 #!/usr/bin/env bash
 set -euo pipefail
 DIR="/opt/v2rayN"
-export LD_LIBRARY_PATH="$DIR:${LD_LIBRARY_PATH:-}"
 cd "$DIR"
 
 if [[ -x "$DIR/v2rayN" ]]; then
@@ -674,7 +589,7 @@ package_binary() {
   local sys_usrlibdir=""
   local deb_out=""
 
-  pubdir="$(dirname "$PROJECT")/bin/Release/${DOTNET_TFM}/${rid}/publish"
+  pubdir="$(dirname "$PROJECT")/bin/Release/net10.0/${rid}/publish"
   [[ -d "$pubdir" ]] || { echo "Publish directory not found: $pubdir"; return 1; }
 
   workdir="$(mktemp -d)"
@@ -685,8 +600,6 @@ package_binary() {
 
   mkdir -p "$stage/opt/v2rayN" "$stage/usr/bin" "$stage/usr/share/applications" "$stage/usr/share/icons/hicolor/256x256/apps" "$debian_dir"
   cp -a "$pubdir/." "$stage/opt/v2rayN/"
-
-  copy_skiasharp_native_loongarch64 "$stage/opt/v2rayN" || echo "[!] SkiaSharp native copy failed (skipped)"
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
   icon_candidate="$project_dir/v2rayN.png"
@@ -763,9 +676,7 @@ EOF
   find "$stage/opt/v2rayN" -type d -exec chmod 0755 {} +
   find "$stage/opt/v2rayN" -type f -exec chmod 0644 {} +
   [[ -f "$stage/opt/v2rayN/v2rayN" ]] && chmod 0755 "$stage/opt/v2rayN/v2rayN" || true
-  [[ -f "$stage/opt/v2rayN/libSkiaSharp.so" ]] && chmod 0755 "$stage/opt/v2rayN/libSkiaSharp.so" || true
-  [[ -f "$stage/opt/v2rayN/libHarfBuzzSharp.so" ]] && chmod 0755 "$stage/opt/v2rayN/libHarfBuzzSharp.so" || true
-  
+
   deb_out="$OUTPUT_DIR/v2rayn_${VERSION}_${deb_arch}.deb"
   dpkg-deb --root-owner-group --build "$stage" "$deb_out"
 
@@ -818,7 +729,6 @@ main() {
   install_dependencies
   prepare_workspace
   resolve_version
-  apply_loongarch_patch
 
   mapfile -t targets < <(select_targets)
 
