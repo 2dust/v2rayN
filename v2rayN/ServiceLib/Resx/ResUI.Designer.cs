@@ -3493,7 +3493,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 socks: local port, socks2: second local port, socks3: LAN port 的本地化字符串。
+        ///   查找类似 tun: TUN inbound, socks: local port, socks2: second local port, socks3: LAN port 的本地化字符串。
         /// </summary>
         public static string TbRoutingInboundTagTips {
             get {

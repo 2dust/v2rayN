@@ -1333,7 +1333,7 @@
     <value>开启第二个本地监听端口</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>Socks：本地端口，Socks2：第二个本地端口，Socks3：局域网端口</value>
+    <value>Tun：TUN 入站，Socks：本地端口，Socks2：第二个本地端口，Socks3：局域网端口</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主题</value>

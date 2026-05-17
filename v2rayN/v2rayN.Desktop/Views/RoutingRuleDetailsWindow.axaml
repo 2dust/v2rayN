@@ -16,7 +16,7 @@
     <DockPanel>
         <Grid
             Margin="{StaticResource Margin4}"
-            ColumnDefinitions="Auto,Auto,Auto"
+            ColumnDefinitions="Auto,Auto,*"
             DockPanel.Dock="Top"
             RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
@@ -66,7 +66,8 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbRuleTypeTips}" />
+                Text="{x:Static resx:ResUI.TbRuleTypeTips}"
+                TextWrapping="Wrap" />
 
             <TextBlock
                 Grid.Row="2"
@@ -93,7 +94,10 @@
                     Margin="0,0,8,0"
                     Click="BtnSelectProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
-                <TextBlock VerticalAlignment="Center" Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}"
+                    TextWrapping="Wrap" />
             </StackPanel>
 
             <TextBlock
@@ -115,7 +119,8 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbRuleMatchingTips}" />
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}"
+                TextWrapping="Wrap" />
 
             <TextBlock
                 Grid.Row="4"
@@ -135,7 +140,8 @@
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                TextWrapping="Wrap">
                 <HyperlinkButton Classes="WithIcon" Click="linkRuleobjectDoc_Click">
                     <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
                 </HyperlinkButton>
@@ -160,7 +166,8 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}" />
+                Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}"
+                TextWrapping="Wrap" />
 
             <TextBlock
                 Grid.Row="6"
@@ -181,7 +188,8 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="{x:Static resx:ResUI.TbRoutingTips}" />
+                Text="{x:Static resx:ResUI.TbRoutingTips}"
+                TextWrapping="Wrap" />
         </Grid>
 
         <StackPanel

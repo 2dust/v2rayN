@@ -505,6 +505,7 @@ public class Global
 
     public static readonly List<string> InboundTags =
     [
+        "tun",
         "socks",
         "socks2",
         "socks3"
