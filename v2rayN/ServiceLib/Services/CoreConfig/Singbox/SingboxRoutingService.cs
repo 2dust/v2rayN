@@ -87,8 +87,14 @@ public partial class CoreConfigSingboxService
                 });
                 _coreConfig.route.rules.Add(new()
                 {
-                    protocol = ["dns"],
-                    action = "hijack-dns"
+                    type = "logical",
+                    mode = "or",
+                    action = "hijack-dns",
+                    rules =
+                    [
+                        new() { port = [53] },
+                        new() { protocol = ["dns"] },
+                    ],
                 });
             }
             else
@@ -96,7 +102,7 @@ public partial class CoreConfigSingboxService
                 _coreConfig.route.rules.Add(new()
                 {
                     port = [53],
-                    action = "hijack-dns"
+                    action = "hijack-dns",
                 });
             }
 

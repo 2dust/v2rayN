@@ -1,5 +1,5 @@
 {
-  "tag": "tun",
+  "tag": "tun-in",
   "protocol": "tun",
   "settings": {
     "name": "xray_tun",

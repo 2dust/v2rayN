@@ -27,6 +27,7 @@ public partial class CoreConfigV2rayService
                 });
                 _coreConfig.routing.rules.Add(new()
                 {
+                    inboundTag = ["tun-in"],
                     port = "53",
                     outboundTag = Global.DnsOutboundTag,
                 });
