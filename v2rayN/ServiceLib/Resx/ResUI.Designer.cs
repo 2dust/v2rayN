@@ -2059,6 +2059,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Not Support 的本地化字符串。
+        /// </summary>
+        public static string MsgNotSupport {
+            get {
+                return ResourceManager.GetString("MsgNotSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not support protocol &apos;{0}&apos; 的本地化字符串。
         /// </summary>
         public static string MsgNotSupportProtocol {

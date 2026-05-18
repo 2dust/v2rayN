@@ -104,7 +104,7 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
     {
         if (!CoreInfoManager.Instance.IsCheckUpdateSupported(type))
         {
-            return new UpdateResult(false, "Not Support");
+            return new UpdateResult(false, ResUI.MsgNotSupport);
         }
 
         var downloadHandle = new DownloadService();
@@ -120,7 +120,13 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
             var result = await CheckHasUpdateOnly(type, preRelease);
             if (result.Success && result.Version != null)
             {
-                msgs.Add(string.Format(ResUI.MsgCheckUpdateHasNewVersion, type, result.Version));
+                var msg = string.Format(ResUI.MsgCheckUpdateHasNewVersion, type, result.Version);
+                msgs.Add(msg);
+                AppManager.Instance.SetLastCheckUpdateResult(type, msg);
+            }
+            else
+            {
+                AppManager.Instance.SetLastCheckUpdateResult(type, result.Msg);
             }
         }
         return msgs;

@@ -84,7 +84,7 @@
                                 <TextBlock
                                     Grid.Column="1"
                                     Style="{StaticResource ListItemTitle}"
-                                    Text="{Binding CoreType}" />
+                                    Text="{Binding CoreTypeForStorage}" />
                                 <TextBlock
                                     Grid.Column="2"
                                     Style="{StaticResource ListItemSubTitle}"

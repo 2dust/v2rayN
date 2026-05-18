@@ -1737,4 +1737,7 @@
   <data name="menuCheckOnly" xml:space="preserve">
     <value>Only Check</value>
   </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>Not Support</value>
+  </data>
 </root>

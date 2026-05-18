@@ -1734,4 +1734,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuCheckOnly" xml:space="preserve">
     <value>Only Check</value>
   </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>Not Support</value>
+  </data>
 </root>
