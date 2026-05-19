@@ -335,9 +335,9 @@ jobs:
 
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-      QCOW2_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.4/debian13-loong64.qcow2
-      EFI_CODE_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.4/edk2-loongarch64-code.fd
-      EFI_VARS_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.4/edk2-loongarch64-vars.fd
+      QCOW2_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/debian13-loong64.qcow2
+      EFI_CODE_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/edk2-loongarch64-code.fd
+      EFI_VARS_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/edk2-loongarch64-vars.fd
       QCOW2_IMAGE: debian13-loong64.qcow2
       EFI_CODE: edk2-loongarch64-code.fd
       EFI_VARS: edk2-loongarch64-vars.fd
