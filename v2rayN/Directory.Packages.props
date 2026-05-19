@@ -7,8 +7,8 @@
     <ItemGroup>
         <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
         <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
-        <PackageVersion Include="Avalonia.Desktop" Version="11.3.15" />
-        <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.15" />
+        <PackageVersion Include="Avalonia.Desktop" Version="11.3.16" />
+        <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.16" />
         <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
         <PackageVersion Include="DialogHost.Avalonia" Version="0.11.0" />
         <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.12" />
