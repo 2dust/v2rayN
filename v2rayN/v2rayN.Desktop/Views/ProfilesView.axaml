@@ -279,6 +279,12 @@
 
                     <DataGridTextColumn
                         Width="100"
+                        Binding="{Binding IpInfo}"
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}"
+                        Tag="IpInfo" />
+
+                    <DataGridTextColumn
+                        Width="100"
                         Binding="{Binding TodayUp}"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
                         Tag="TodayUp" />

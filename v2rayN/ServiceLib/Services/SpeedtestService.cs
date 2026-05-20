@@ -392,10 +392,23 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<int> DoRealPing(ServerTestItem it)
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await ConnectionHandler.GetRealPingTime(_config.SpeedTestItem.SpeedPingTestUrl, webProxy, 10);
+        var responseTime = await ConnectionHandler.GetRealPingTime(webProxy, 10);
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());
+
+        if (responseTime > 0)
+        {
+            var ipInfo = await ConnectionHandler.GetIPInfo(webProxy);
+            var ipStr = ipInfo?.ToString() ?? Global.None;
+            ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
+            await UpdateIpInfoFunc(it.IndexId, ipStr);
+        }
+        else
+        {
+            await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip);
+        }
+
         return responseTime;
     }
 
@@ -490,5 +503,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             ProfileExManager.Instance.SetTestMessage(indexId, speed);
         }
+    }
+
+    private async Task UpdateIpInfoFunc(string indexId, string ip)
+    {
+        await _updateFunc?.Invoke(new() { IndexId = indexId, IpInfo = ip });
     }
 }

@@ -150,6 +150,14 @@ public class ProfileExManager
         IndexIdEnqueue(indexId);
     }
 
+    public void SetTestIpInfo(string indexId, string ipInfo)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.IpInfo = ipInfo;
+        IndexIdEnqueue(indexId);
+    }
+
     public void SetSort(string indexId, int sort)
     {
         var profileEx = GetProfileExItem(indexId);

@@ -10,7 +10,7 @@ public static class ConnectionHandler
     public static async Task<string> RunAvailabilityCheck()
     {
         var time = await GetRealPingTimeInfo();
-        var ip = time > 0 ? await GetIPInfo() ?? Global.None : Global.None;
+        var ip = time > 0 ? await GetIPInfo() : Global.None;
 
         return string.Format(ResUI.TestMeOutput, time, ip);
     }
@@ -21,7 +21,9 @@ public static class ConnectionHandler
     private static async Task<string?> GetIPInfo()
     {
         var webProxy = await GetWebProxy();
-        return await GetIPInfo(webProxy);
+
+        var ipInfo = await GetIPInfo(webProxy);
+        return ipInfo?.ToString() ?? Global.None;
     }
 
     /// <summary>
@@ -33,11 +35,10 @@ public static class ConnectionHandler
         try
         {
             var webProxy = await GetWebProxy();
-            var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
 
             for (var i = 0; i < 2; i++)
             {
-                responseTime = await GetRealPingTime(url, webProxy, 10);
+                responseTime = await GetRealPingTime(webProxy, 10);
                 if (responseTime > 0)
                 {
                     break;
@@ -65,8 +66,9 @@ public static class ConnectionHandler
     /// <summary>
     /// Measures response time by sending HTTP requests through proxy.
     /// </summary>
-    public static async Task<int> GetRealPingTime(string url, IWebProxy? webProxy, int downloadTimeout)
+    public static async Task<int> GetRealPingTime(IWebProxy? webProxy, int downloadTimeout)
     {
+        var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
         var responseTime = -1;
         try
         {
@@ -98,30 +100,37 @@ public static class ConnectionHandler
     /// <summary>
     /// Gets IP and country information through specified proxy.
     /// </summary>
-    public static async Task<string?> GetIPInfo(IWebProxy? webProxy)
+    public static async Task<IpInfoResult?> GetIPInfo(IWebProxy? webProxy)
     {
-        var url = AppManager.Instance.Config.SpeedTestItem.IPAPIUrl;
-        if (url.IsNullOrEmpty())
+        try
+        {
+            var url = AppManager.Instance.Config.SpeedTestItem.IPAPIUrl;
+            if (url.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var downloadHandle = new DownloadService();
+            var result = await downloadHandle.TryDownloadString(url, webProxy, "");
+            if (result == null)
+            {
+                return null;
+            }
+
+            var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
+            if (ipInfo == null)
+            {
+                return null;
+            }
+
+            var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
+            var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
+
+            return new IpInfoResult(country, ip);
+        }
+        catch
         {
             return null;
         }
-
-        var downloadHandle = new DownloadService();
-        var result = await downloadHandle.TryDownloadString(url, webProxy, "");
-        if (result == null)
-        {
-            return null;
-        }
-
-        var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-        if (ipInfo == null)
-        {
-            return null;
-        }
-
-        var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
-        var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code;
-
-        return $"({country ?? "unknown"}) {ip}";
     }
 }

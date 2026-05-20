@@ -8,4 +8,6 @@ public class SpeedTestResult
     public string? Delay { get; set; }
 
     public string? Speed { get; set; }
+
+    public string? IpInfo { get; set; }
 }

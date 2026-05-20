@@ -1740,4 +1740,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgNotSupport" xml:space="preserve">
     <value>Not Support</value>
   </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>IP Info</value>
+  </data>
 </root>

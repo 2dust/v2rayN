@@ -1737,4 +1737,7 @@
   <data name="MsgNotSupport" xml:space="preserve">
     <value>不支持</value>
   </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>IP 信息</value>
+  </data>
 </root>

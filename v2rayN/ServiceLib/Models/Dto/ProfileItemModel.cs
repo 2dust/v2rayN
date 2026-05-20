@@ -27,6 +27,9 @@ public class ProfileItemModel : ReactiveObject
     public string SpeedVal { get; set; }
 
     [Reactive]
+    public string IpInfo { get; set; }
+
+    [Reactive]
     public string TodayUp { get; set; }
 
     [Reactive]
