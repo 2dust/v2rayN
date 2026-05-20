@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 namespace ServiceLib.Services;
 
 /// <summary>
-///Download
+/// Download
 /// </summary>
 public class DownloadService
 {
@@ -13,7 +13,10 @@ public class DownloadService
 
     private static readonly string _tag = "DownloadService";
 
-    public async Task<int> DownloadDataAsync(string url, WebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    /// <summary>
+    /// Downloads data with the specified proxy and reports progress messages.
+    /// </summary>
+    public async Task<int> DownloadDataAsync(string url, IWebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
     {
         try
         {
@@ -36,6 +39,9 @@ public class DownloadService
         return 0;
     }
 
+    /// <summary>
+    /// Downloads a file and reports progress through events.
+    /// </summary>
     public async Task DownloadFileAsync(string url, string fileName, bool blProxy, int downloadTimeout)
     {
         try
@@ -64,6 +70,9 @@ public class DownloadService
         }
     }
 
+    /// <summary>
+    /// Gets redirect target URL without following redirects automatically.
+    /// </summary>
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
         var webRequestHandler = new SocketsHttpHandler
@@ -86,11 +95,23 @@ public class DownloadService
         }
     }
 
+    /// <summary>
+    /// Tries to download string content using proxy switch setting.
+    /// </summary>
     public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent)
+    {
+        var webProxy = await GetWebProxy(blProxy);
+        return await TryDownloadString(url, webProxy, userAgent);
+    }
+
+    /// <summary>
+    /// Tries to download string content with a specified proxy.
+    /// </summary>
+    public async Task<string?> TryDownloadString(string url, IWebProxy? webProxy, string userAgent)
     {
         try
         {
-            var result1 = await DownloadStringAsync(url, blProxy, userAgent, 15);
+            var result1 = await DownloadStringAsync(url, webProxy, userAgent, 15);
             if (result1.IsNotEmpty())
             {
                 return result1;
@@ -108,7 +129,7 @@ public class DownloadService
 
         try
         {
-            var result2 = await DownloadStringViaDownloader(url, blProxy, userAgent, 15);
+            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, 15);
             if (result2.IsNotEmpty())
             {
                 return result2;
@@ -128,14 +149,12 @@ public class DownloadService
     }
 
     /// <summary>
-    /// DownloadString
+    /// Downloads string content via HttpClient.
     /// </summary>
-    /// <param name="url"></param>
-    private async Task<string?> DownloadStringAsync(string url, bool blProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringAsync(string url, IWebProxy? webProxy, string userAgent, int timeout)
     {
         try
         {
-            var webProxy = await GetWebProxy(blProxy);
             var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
@@ -172,15 +191,12 @@ public class DownloadService
     }
 
     /// <summary>
-    /// DownloadString
+    /// Downloads string content via DownloaderHelper.
     /// </summary>
-    /// <param name="url"></param>
-    private async Task<string?> DownloadStringViaDownloader(string url, bool blProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringViaDownloader(string url, IWebProxy? webProxy, string userAgent, int timeout)
     {
         try
         {
-            var webProxy = await GetWebProxy(blProxy);
-
             if (userAgent.IsNullOrEmpty())
             {
                 userAgent = Utils.GetVersion(false);
@@ -200,6 +216,9 @@ public class DownloadService
         return null;
     }
 
+    /// <summary>
+    /// Creates local SOCKS proxy when proxy switch is enabled.
+    /// </summary>
     private async Task<WebProxy?> GetWebProxy(bool blProxy)
     {
         if (!blProxy)
@@ -215,6 +234,9 @@ public class DownloadService
         return new WebProxy($"socks5://{Global.Loopback}:{port}");
     }
 
+    /// <summary>
+    /// Checks whether the specified TCP endpoint is reachable.
+    /// </summary>
     private async Task<bool> SocketCheck(string ip, int port)
     {
         try
