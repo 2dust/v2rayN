@@ -99,12 +99,17 @@ public class SocksFmt : BaseFmt
         };
         // parse base64 UserInfo
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
-        var userInfo = Utils.Base64Decode(rawUserInfo);
-        var userInfoParts = userInfo.Split([':'], 2);
-        if (userInfoParts.Length == 2)
+        if (rawUserInfo.IsNotEmpty())
         {
-            item.Username = userInfoParts.First();
-            item.Password = userInfoParts[1];
+            var userInfoParts = rawUserInfo.Contains(':')
+                ? rawUserInfo.Split(":", 2)
+                : Utils.Base64Decode(rawUserInfo).Split(":", 2);
+
+            if (userInfoParts.Length == 2)
+            {
+                item.Username = userInfoParts.First();
+                item.Password = userInfoParts.Last();
+            }
         }
 
         return item;

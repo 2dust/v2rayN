@@ -53,7 +53,9 @@ public class FmtHandler
             {
                 return ShadowsocksFmt.Resolve(str, out msg);
             }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS]))
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS])
+                    || str.StartsWith(Global.SOCKS5Protocol)
+                    || str.StartsWith(Global.SOCKS4Protocol))
             {
                 return SocksFmt.Resolve(str, out msg);
             }
@@ -65,7 +67,8 @@ public class FmtHandler
             {
                 return VLESSFmt.Resolve(str, out msg);
             }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2]) || str.StartsWith(Global.Hysteria2ProtocolShare))
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2])
+                    || str.StartsWith(Global.Hysteria2ProtocolShare))
             {
                 return Hysteria2Fmt.Resolve(str, out msg);
             }
