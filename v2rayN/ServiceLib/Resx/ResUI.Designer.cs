@@ -1321,6 +1321,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 New Update 的本地化字符串。
+        /// </summary>
+        public static string menuNewUpdate {
+            get {
+                return ResourceManager.GetString("menuNewUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open the storage location 的本地化字符串。
         /// </summary>
         public static string menuOpenTheFileLocation {

@@ -1743,4 +1743,7 @@
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP Info</value>
   </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>New Update</value>
+  </data>
 </root>

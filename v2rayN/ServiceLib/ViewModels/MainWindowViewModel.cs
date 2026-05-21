@@ -65,6 +65,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     [Reactive] public bool BlIsWindows { get; set; }
 
+    [Reactive] public bool BlNewUpdate { get; set; }
+
     #endregion Menu
 
     #region Init
@@ -250,6 +252,11 @@ public class MainWindowViewModel : MyReactiveObject
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async blProxy => await UpdateSubscriptionProcess("", blProxy));
+
+        AppEvents.HasUpdateNotified
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async bl => BlNewUpdate = bl);
 
         #endregion AppEvents
 

@@ -1740,4 +1740,7 @@
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP 資訊</value>
   </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>有更新</value>
+  </data>
 </root>

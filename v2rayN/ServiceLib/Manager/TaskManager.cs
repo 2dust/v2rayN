@@ -142,5 +142,10 @@ public class TaskManager
             await _updateFunc?.Invoke(false, msg);
         }
         NoticeManager.Instance.Enqueue(string.Join("\n", msgs));
+
+        if (msgs.Count > 0)
+        {
+            AppEvents.HasUpdateNotified.Publish(true);
+        }
     }
 }

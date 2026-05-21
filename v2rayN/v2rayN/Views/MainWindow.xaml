@@ -313,6 +313,13 @@
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                             <ContentControl x:Name="pbTheme" />
                         </materialDesign:PopupBox>
+
+                        <Button
+                            x:Name="btnNewUpdate"
+                            Margin="{StaticResource MarginLeftRight8}"
+                            Content="{x:Static resx:ResUI.menuNewUpdate}"
+                            Style="{StaticResource DefButton}"
+                            Visibility="Hidden" />
                     </ToolBar>
                 </ToolBarTray>
 

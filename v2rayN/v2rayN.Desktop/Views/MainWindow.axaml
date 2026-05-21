@@ -102,6 +102,13 @@
 
                     <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}" />
                 </Menu>
+
+                <Button
+                    x:Name="btnNewUpdate"
+                    Margin="{StaticResource MarginLr8}"
+                    HorizontalAlignment="Left"
+                    Content="{x:Static resx:ResUI.menuNewUpdate}"
+                    IsVisible="False" />
             </DockPanel>
 
             <view:StatusBarView DockPanel.Dock="Bottom" />
