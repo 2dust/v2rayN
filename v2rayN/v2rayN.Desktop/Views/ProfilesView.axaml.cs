@@ -425,9 +425,13 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                             item2.Width = new DataGridLength(item.Width, DataGridLengthUnitType.Pixel);
                             item2.DisplayIndex = displayIndex++;
                         }
-                        if (item.Name.ToLower().StartsWith("to"))
+                        if (item.Name.StartsWith("to", StringComparison.CurrentCultureIgnoreCase))
                         {
                             item2.IsVisible = _config.GuiItem.EnableStatistics;
+                        }
+                        if (item.Name.Equals("IpInfo", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            item2.IsVisible = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty();
                         }
                     }
                 }

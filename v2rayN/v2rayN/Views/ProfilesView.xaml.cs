@@ -378,9 +378,13 @@ public partial class ProfilesView
                             item2.Width = item.Width;
                             item2.DisplayIndex = displayIndex++;
                         }
-                        if (item.Name.ToLower().StartsWith("to"))
+                        if (item.Name.StartsWith("to", StringComparison.CurrentCultureIgnoreCase))
                         {
                             item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                        }
+                        if (item.Name.Equals("IpInfo", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            item2.Visibility = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() ? Visibility.Visible : Visibility.Hidden;
                         }
                     }
                 }
