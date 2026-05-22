@@ -19,6 +19,7 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> AddWireguardServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddAnytlsServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddNaiveServerCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddSshServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddPolicyGroupServerCmd { get; }
     public ReactiveCommand<Unit, Unit> AddProxyChainServerCmd { get; }
@@ -123,6 +124,10 @@ public class MainWindowViewModel : MyReactiveObject
         AddNaiveServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(EConfigType.Naive);
+        });
+        AddSshServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(EConfigType.SSH);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {

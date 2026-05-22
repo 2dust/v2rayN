@@ -14,6 +14,7 @@ public enum EConfigType
     HTTP = 10,
     Anytls = 11,
     Naive = 12,
+    SSH = 13,
     PolicyGroup = 101,
     ProxyChain = 102,
 }

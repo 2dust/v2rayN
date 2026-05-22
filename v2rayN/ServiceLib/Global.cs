@@ -237,7 +237,8 @@ public class Global
         { EConfigType.TUIC, "tuic" },
         { EConfigType.WireGuard, "wireguard" },
         { EConfigType.Anytls, "anytls" },
-        { EConfigType.Naive, "naive" }
+        { EConfigType.Naive, "naive" },
+        { EConfigType.SSH, "ssh" }
     };
 
     public static readonly List<string> VmessSecurities =
@@ -361,6 +362,7 @@ public class Global
         EConfigType.TUIC,
         EConfigType.Anytls,
         EConfigType.Naive,
+        EConfigType.SSH,
         EConfigType.WireGuard,
         EConfigType.SOCKS,
         EConfigType.HTTP,

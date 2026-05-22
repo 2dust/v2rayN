@@ -1677,6 +1677,33 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuAddNaiveServer" xml:space="preserve">
     <value>Add [NaïveProxy]</value>
   </data>
+  <data name="menuAddSshServer" xml:space="preserve">
+    <value>Add [SSH]</value>
+  </data>
+  <data name="TbSshPrivateKey" xml:space="preserve">
+    <value>Private key (PEM)</value>
+  </data>
+  <data name="TbSshPrivateKeyPath" xml:space="preserve">
+    <value>Private key path</value>
+  </data>
+  <data name="TbSshPassphrase" xml:space="preserve">
+    <value>Passphrase</value>
+  </data>
+  <data name="TbSshHostKey" xml:space="preserve">
+    <value>Host key(s) (comma-separated)</value>
+  </data>
+  <data name="TbSshHostKeyAlgorithms" xml:space="preserve">
+    <value>Host key algorithms (comma-separated)</value>
+  </data>
+  <data name="TbSshClientVersion" xml:space="preserve">
+    <value>Client version</value>
+  </data>
+  <data name="FillSshAuth" xml:space="preserve">
+    <value>Provide either a password or a private key (inline or path, not both).</value>
+  </data>
+  <data name="PleaseFillUsername" xml:space="preserve">
+    <value>Please fill in the username.</value>
+  </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
     <value>Insecure Concurrency</value>
   </data>

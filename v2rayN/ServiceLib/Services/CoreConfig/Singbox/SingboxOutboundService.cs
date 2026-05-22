@@ -293,6 +293,27 @@ public partial class CoreConfigSingboxService
                         outbound.udp_over_tcp = protocolExtra.Uot == true ? true : null;
                         break;
                     }
+                case EConfigType.SSH:
+                    {
+                        outbound.user = _node.Username.NullIfEmpty();
+                        outbound.password = _node.Password.NullIfEmpty();
+
+                        var inlineKey = protocolExtra.SshPrivateKey;
+                        if (inlineKey.IsNotEmpty())
+                        {
+                            outbound.private_key = inlineKey
+                                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
+                                .Select(l => l.TrimEnd())
+                                .Where(l => l.Length > 0)
+                                .ToList();
+                        }
+                        outbound.private_key_path = protocolExtra.SshPrivateKeyPath.NullIfEmpty();
+                        outbound.private_key_passphrase = protocolExtra.SshPrivateKeyPassphrase.NullIfEmpty();
+                        outbound.host_key = SplitCsv(protocolExtra.SshHostKey);
+                        outbound.host_key_algorithms = SplitCsv(protocolExtra.SshHostKeyAlgorithms);
+                        outbound.client_version = protocolExtra.SshClientVersion.NullIfEmpty();
+                        break;
+                    }
             }
 
             FillOutboundTls(outbound);
@@ -338,6 +359,20 @@ public partial class CoreConfigSingboxService
         }
     }
 
+    private static List<string>? SplitCsv(string? value)
+    {
+        if (value.IsNullOrEmpty())
+        {
+            return null;
+        }
+        var list = value!
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(s => s.Trim())
+            .Where(s => s.Length > 0)
+            .ToList();
+        return list.Count > 0 ? list : null;
+    }
+
     private void FillOutboundMux(Outbound4Sbox outbound)
     {
         try
@@ -369,7 +404,7 @@ public partial class CoreConfigSingboxService
             {
                 return;
             }
-            if (_node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard)
+            if (_node.ConfigType is EConfigType.Shadowsocks or EConfigType.SOCKS or EConfigType.WireGuard or EConfigType.SSH)
             {
                 return;
             }

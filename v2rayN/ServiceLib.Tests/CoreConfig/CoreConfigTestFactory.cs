@@ -130,6 +130,36 @@ internal static class CoreConfigTestFactory
         };
     }
 
+    public static ProfileItem CreateSshNode(ECoreType coreType = ECoreType.sing_box,
+        string indexId = "node-ssh-1", string remarks = "demo-ssh",
+        string? privateKeyPem = null, string? privateKeyPath = null,
+        string? hostKey = null, string? hostKeyAlgorithms = null,
+        string password = "secret", string username = "root")
+    {
+        var node = new ProfileItem
+        {
+            IndexId = indexId,
+            ConfigType = EConfigType.SSH,
+            CoreType = coreType,
+            Remarks = remarks,
+            Address = "ssh.example.com",
+            Port = 22,
+            Username = username,
+            Password = password,
+            Network = string.Empty,
+            StreamSecurity = string.Empty,
+            Subid = string.Empty,
+        };
+        node.SetProtocolExtra(node.GetProtocolExtra() with
+        {
+            SshPrivateKey = privateKeyPem,
+            SshPrivateKeyPath = privateKeyPath,
+            SshHostKey = hostKey,
+            SshHostKeyAlgorithms = hostKeyAlgorithms,
+        });
+        return node;
+    }
+
     public static ProfileItem CreatePolicyGroupNode(ECoreType coreType, string indexId, string remarks,
         IEnumerable<string> childIndexIds)
     {

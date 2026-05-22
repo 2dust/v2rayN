@@ -120,6 +120,15 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
                 break;
+
+            case EConfigType.SSH:
+                gridSsh.IsVisible = true;
+                sepa2.IsVisible = false;
+                gridTransport.IsVisible = false;
+                gridTls.IsVisible = false;
+                cmbCoreType.IsEnabled = false;
+                gridFinalmask.IsVisible = false;
+                break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
 
@@ -203,6 +212,17 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.CongestionControl, v => v.cmbCongestionControl12.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.InsecureConcurrency, v => v.txtInsecureConcurrency12.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled12.IsChecked).DisposeWith(disposables);
+                    break;
+
+                case EConfigType.SSH:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtUsernameSsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtPasswordSsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshPrivateKey, v => v.txtPrivateKeySsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshPrivateKeyPath, v => v.txtPrivateKeyPathSsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshPrivateKeyPassphrase, v => v.txtPassphraseSsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshHostKey, v => v.txtHostKeySsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshHostKeyAlgorithms, v => v.txtHostKeyAlgoSsh.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SshClientVersion, v => v.txtClientVersionSsh.Text).DisposeWith(disposables);
                     break;
             }
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.SelectedValue).DisposeWith(disposables);

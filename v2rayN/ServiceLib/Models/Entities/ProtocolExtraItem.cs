@@ -36,6 +36,14 @@ public record ProtocolExtraItem
     public int? InsecureConcurrency { get; init; }
     public bool? NaiveQuic { get; init; }
 
+    // ssh
+    public string? SshPrivateKey { get; init; }
+    public string? SshPrivateKeyPath { get; init; }
+    public string? SshPrivateKeyPassphrase { get; init; }
+    public string? SshHostKey { get; init; }
+    public string? SshHostKeyAlgorithms { get; init; }
+    public string? SshClientVersion { get; init; }
+
     // group profile
     public string? GroupType { get; init; }
     public string? ChildItems { get; init; }

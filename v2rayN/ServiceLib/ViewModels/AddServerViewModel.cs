@@ -78,6 +78,24 @@ public class AddServerViewModel : MyReactiveObject
     public bool NaiveQuic { get; set; }
 
     [Reactive]
+    public string SshPrivateKey { get; set; }
+
+    [Reactive]
+    public string SshPrivateKeyPath { get; set; }
+
+    [Reactive]
+    public string SshPrivateKeyPassphrase { get; set; }
+
+    [Reactive]
+    public string SshHostKey { get; set; }
+
+    [Reactive]
+    public string SshHostKeyAlgorithms { get; set; }
+
+    [Reactive]
+    public string SshClientVersion { get; set; }
+
+    [Reactive]
     public string RawHeaderType { get; set; }
 
     [Reactive]
@@ -297,6 +315,12 @@ public class AddServerViewModel : MyReactiveObject
         CongestionControl = protocolExtra.CongestionControl ?? string.Empty;
         InsecureConcurrency = protocolExtra.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra.NaiveQuic ?? false;
+        SshPrivateKey = protocolExtra.SshPrivateKey ?? string.Empty;
+        SshPrivateKeyPath = protocolExtra.SshPrivateKeyPath ?? string.Empty;
+        SshPrivateKeyPassphrase = protocolExtra.SshPrivateKeyPassphrase ?? string.Empty;
+        SshHostKey = protocolExtra.SshHostKey ?? string.Empty;
+        SshHostKeyAlgorithms = protocolExtra.SshHostKeyAlgorithms ?? string.Empty;
+        SshClientVersion = protocolExtra.SshClientVersion ?? string.Empty;
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         Host = transport.Host ?? string.Empty;
@@ -344,7 +368,27 @@ public class AddServerViewModel : MyReactiveObject
                 return;
             }
         }
-        if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP)
+        if (SelectedSource.ConfigType == EConfigType.SSH)
+        {
+            if (SelectedSource.Username.IsNullOrEmpty())
+            {
+                NoticeManager.Instance.Enqueue(ResUI.PleaseFillUsername);
+                return;
+            }
+            var hasInlineKey = SshPrivateKey.IsNotEmpty();
+            var hasKeyPath = SshPrivateKeyPath.IsNotEmpty();
+            if (hasInlineKey && hasKeyPath)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillSshAuth);
+                return;
+            }
+            if (SelectedSource.Password.IsNullOrEmpty() && !hasInlineKey && !hasKeyPath)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillSshAuth);
+                return;
+            }
+        }
+        else if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP)
         {
             if (SelectedSource.Password.IsNullOrEmpty())
             {
@@ -396,6 +440,12 @@ public class AddServerViewModel : MyReactiveObject
             CongestionControl = CongestionControl.NullIfEmpty(),
             InsecureConcurrency = InsecureConcurrency > 0 ? InsecureConcurrency : null,
             NaiveQuic = NaiveQuic ? true : null,
+            SshPrivateKey = SshPrivateKey.NullIfEmpty(),
+            SshPrivateKeyPath = SshPrivateKeyPath.NullIfEmpty(),
+            SshPrivateKeyPassphrase = SshPrivateKeyPassphrase.NullIfEmpty(),
+            SshHostKey = SshHostKey.NullIfEmpty(),
+            SshHostKeyAlgorithms = SshHostKeyAlgorithms.NullIfEmpty(),
+            SshClientVersion = SshClientVersion.NullIfEmpty(),
         });
         SelectedSource.SetTransportExtra(transport);
 

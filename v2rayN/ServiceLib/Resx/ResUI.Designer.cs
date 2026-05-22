@@ -752,7 +752,61 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("menuAddNaiveServer", resourceCulture);
             }
         }
-        
+
+        public static string menuAddSshServer {
+            get {
+                return ResourceManager.GetString("menuAddSshServer", resourceCulture);
+            }
+        }
+
+        public static string TbSshPrivateKey {
+            get {
+                return ResourceManager.GetString("TbSshPrivateKey", resourceCulture);
+            }
+        }
+
+        public static string TbSshPrivateKeyPath {
+            get {
+                return ResourceManager.GetString("TbSshPrivateKeyPath", resourceCulture);
+            }
+        }
+
+        public static string TbSshPassphrase {
+            get {
+                return ResourceManager.GetString("TbSshPassphrase", resourceCulture);
+            }
+        }
+
+        public static string TbSshHostKey {
+            get {
+                return ResourceManager.GetString("TbSshHostKey", resourceCulture);
+            }
+        }
+
+        public static string TbSshHostKeyAlgorithms {
+            get {
+                return ResourceManager.GetString("TbSshHostKeyAlgorithms", resourceCulture);
+            }
+        }
+
+        public static string TbSshClientVersion {
+            get {
+                return ResourceManager.GetString("TbSshClientVersion", resourceCulture);
+            }
+        }
+
+        public static string FillSshAuth {
+            get {
+                return ResourceManager.GetString("FillSshAuth", resourceCulture);
+            }
+        }
+
+        public static string PleaseFillUsername {
+            get {
+                return ResourceManager.GetString("PleaseFillUsername", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Add Policy Group 的本地化字符串。
         /// </summary>

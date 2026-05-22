@@ -695,6 +695,120 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
                 </Grid>
+                <Grid
+                    x:Name="gridSsh"
+                    Grid.Row="2"
+                    ColumnDefinitions="300,Auto"
+                    IsVisible="False"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbUsername}" />
+                    <TextBox
+                        x:Name="txtUsernameSsh"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbId3}" />
+                    <TextBox
+                        x:Name="txtPasswordSsh"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Top"
+                        Text="{x:Static resx:ResUI.TbSshPrivateKey}" />
+                    <TextBox
+                        x:Name="txtPrivateKeySsh"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="400"
+                        Height="120"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        FontFamily="Consolas,Menlo,monospace"
+                        TextWrapping="NoWrap" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSshPrivateKeyPath}" />
+                    <TextBox
+                        x:Name="txtPrivateKeyPathSsh"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSshPassphrase}" />
+                    <TextBox
+                        x:Name="txtPassphraseSsh"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSshHostKey}" />
+                    <TextBox
+                        x:Name="txtHostKeySsh"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSshHostKeyAlgorithms}" />
+                    <TextBox
+                        x:Name="txtHostKeyAlgoSsh"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbSshClientVersion}" />
+                    <TextBox
+                        x:Name="txtClientVersionSsh"
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+                </Grid>
 
                 <Separator
                     x:Name="sepa2"

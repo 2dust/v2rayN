@@ -150,6 +150,15 @@ public class Outbound4Sbox : BaseServer4Sbox
     public List<string>? outbounds { get; set; }
     public bool? interrupt_exist_connections { get; set; }
     public int? tolerance { get; set; }
+
+    // ssh
+    public string? user { get; set; }
+    public List<string>? private_key { get; set; }
+    public string? private_key_path { get; set; }
+    public string? private_key_passphrase { get; set; }
+    public List<string>? host_key { get; set; }
+    public List<string>? host_key_algorithms { get; set; }
+    public string? client_version { get; set; }
 }
 
 public class Endpoints4Sbox : BaseServer4Sbox
