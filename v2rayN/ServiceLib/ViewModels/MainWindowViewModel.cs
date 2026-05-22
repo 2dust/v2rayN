@@ -304,10 +304,22 @@ public class MainWindowViewModel : MyReactiveObject
         {
             var indexIdOld = _config.IndexId;
             await RefreshServers();
-            if (indexIdOld != _config.IndexId)
+
+            // If indexId changed or subIndexId is empty, directly reload.
+            if (indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
             {
                 await Reload();
             }
+            else
+            {
+                // The activity config belongs to the current group.
+                var profile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+                if (profile != null && profile.Subid == _config.SubIndexId)
+                {
+                    await Reload();
+                }
+            }
+
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
                 AppEvents.AdjustMainLvColWidthRequested.Publish();
