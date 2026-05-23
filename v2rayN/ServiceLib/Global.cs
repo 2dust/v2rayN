@@ -688,7 +688,7 @@ public class Global
         { "dns.sb", ["185.222.222.222", "2a09::"] },
         { "dns.umbrella.com", ["208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53"] },
         { "dns.sse.cisco.com", ["208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53"] },
-        { "engage.cloudflareclient.com", ["162.159.192.1"] }
+        { "engage.cloudflareclient.com", ["162.159.192.1", "2606:4700:d0::a29f:c001"] }
     };
 
     public static readonly List<string> ExpectedIPs =
