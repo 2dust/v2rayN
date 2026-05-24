@@ -148,6 +148,8 @@ public class Global
 
     public static readonly List<string> SpeedTestUrls =
     [
+        @"https://cachefly.cachefly.net/1mb.test",
+        @"https://cachefly.cachefly.net/10mb.test",
         @"https://cachefly.cachefly.net/50mb.test",
         @"https://speed.cloudflare.com/__down?bytes=10000000",
         @"https://speed.cloudflare.com/__down?bytes=50000000",
@@ -157,6 +159,8 @@ public class Global
     public static readonly List<string> SpeedPingTestUrls =
     [
         @"https://www.google.com/generate_204",
+        @"https://www.youtube.com/generate_204",
+        @"https://www.googlevideo.com/generate_204",
         @"https://www.gstatic.com/generate_204",
         @"https://www.apple.com/library/test/success.html",
         @"http://www.msftconnecttest.com/connecttest.txt"
