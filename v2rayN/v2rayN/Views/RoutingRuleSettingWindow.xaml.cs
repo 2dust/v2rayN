@@ -110,6 +110,15 @@ public partial class RoutingRuleSettingWindow
                     ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
                 }
                 break;
+
+            case EViewAction.ShowMessage:
+                if (obj is null)
+                {
+                    return false;
+                }
+
+                UI.Show(obj.ToString() ?? string.Empty);
+                break;
         }
 
         return await Task.FromResult(true);

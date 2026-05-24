@@ -33,4 +33,5 @@ public enum EViewAction
     DispatcherRefreshServersBiz,
     DispatcherRefreshIcon,
     DispatcherShowMsg,
+    ShowMessage,
 }

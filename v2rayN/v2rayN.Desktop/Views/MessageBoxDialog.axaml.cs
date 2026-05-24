@@ -9,12 +9,17 @@ public partial class MessageBoxDialog : Window
     {
     }
 
-    public MessageBoxDialog(string caption, string message)
+    public MessageBoxDialog(string caption, string message, bool okOnly = false)
     {
         InitializeComponent();
 
         Title = caption;
         txtMessage.Text = message;
+
+        if (okOnly)
+        {
+            btnNo.IsVisible = false;
+        }
 
         btnYes.Click += BtnYes_Click;
         btnNo.Click += BtnNo_Click;

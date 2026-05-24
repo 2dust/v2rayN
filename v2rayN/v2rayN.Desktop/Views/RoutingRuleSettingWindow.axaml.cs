@@ -115,6 +115,15 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
                 }
 
                 break;
+
+            case EViewAction.ShowMessage:
+                if (obj is null)
+                {
+                    return false;
+                }
+
+                await UI.Show(this, obj.ToString() ?? string.Empty);
+                break;
         }
 
         return await Task.FromResult(true);

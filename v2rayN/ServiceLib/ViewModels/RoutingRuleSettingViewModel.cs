@@ -305,13 +305,16 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         }
         if (clipboardData.IsNullOrEmpty())
         {
+            await ShowImportErrorAsync($"{ResUI.OperationFailed}: {ResUI.FailedReadConfiguration}");
             return -1;
         }
-        var lstRules = JsonUtils.Deserialize<List<RulesItem>>(clipboardData);
-        if (lstRules == null)
+
+        if (!TryDeserializeRoutingRules(clipboardData, out var lstRules, out var errorMsg))
         {
+            await ShowImportErrorAsync($"{ResUI.OperationFailed}: {errorMsg}");
             return -1;
         }
+
         foreach (var rule in lstRules)
         {
             rule.Id = Utils.GetGuid(false);
@@ -326,6 +329,75 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             _rules.AddRange(lstRules);
         }
         return 0;
+    }
+
+    private async Task ShowImportErrorAsync(string message)
+    {
+        if (_updateView != null)
+        {
+            await _updateView.Invoke(EViewAction.ShowMessage, message);
+            return;
+        }
+
+        NoticeManager.Instance.Enqueue(message);
+    }
+
+    private static bool TryDeserializeRoutingRules(string clipboardData, out List<RulesItem> rules, out string errorMsg)
+    {
+        rules = [];
+        errorMsg = string.Empty;
+
+        var trimmed = clipboardData.Trim();
+        if (trimmed.IsNullOrEmpty())
+        {
+            errorMsg = ResUI.FailedReadConfiguration;
+            return false;
+        }
+
+        if (trimmed.StartsWith('{'))
+        {
+            if (trimmed.Contains("\"routing\"", StringComparison.OrdinalIgnoreCase)
+                || trimmed.Contains("\"route\"", StringComparison.OrdinalIgnoreCase))
+            {
+                errorMsg = "你粘贴的是完整配置文件，不是路由规则数组。请只粘贴 routing.rules 或 route.rules 的 JSON 数组。";
+            }
+            else
+            {
+                errorMsg = "当前内容是 JSON 对象。路由规则导入需要顶层 JSON 数组，例如 [ { \"outboundTag\": \"proxy\" } ]。";
+            }
+            return false;
+        }
+
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+            };
+
+            rules = JsonSerializer.Deserialize<List<RulesItem>>(trimmed, options) ?? [];
+            if (rules.Count == 0)
+            {
+                errorMsg = "未解析到任何路由规则，请确认内容是非空 JSON 数组。";
+                return false;
+            }
+
+            return true;
+        }
+        catch (JsonException ex)
+        {
+            var location = ex.LineNumber is not null && ex.BytePositionInLine is not null
+                ? $"第 {ex.LineNumber + 1} 行，第 {ex.BytePositionInLine + 1} 列"
+                : "未知位置";
+            errorMsg = $"JSON 解析错误，{location}。{ex.Message}";
+            return false;
+        }
+        catch (Exception ex)
+        {
+            errorMsg = ex.Message;
+            return false;
+        }
     }
 
     #endregion Import rules

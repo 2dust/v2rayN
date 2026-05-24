@@ -242,6 +242,15 @@ public partial class MainWindow
             case EViewAction.AddServerViaClipboard:
                 await AddServerViaClipboardAsync();
                 break;
+
+            case EViewAction.ShowMessage:
+                if (obj is null)
+                {
+                    return false;
+                }
+
+                UI.Show(obj.ToString() ?? string.Empty);
+                break;
         }
 
         return await Task.FromResult(true);
