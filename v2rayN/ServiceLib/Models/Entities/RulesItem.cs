@@ -5,6 +5,7 @@ public class RulesItem
 {
     public string Id { get; set; }
     public string? Type { get; set; }
+    [JsonConverter(typeof(JsonStringOrNumberConverter))]
     public string? Port { get; set; }
     public string? Network { get; set; }
     public List<string>? InboundTag { get; set; }
