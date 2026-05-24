@@ -876,7 +876,8 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        IsEditable="True" />
 
                     <TextBlock
                         Grid.Row="6"

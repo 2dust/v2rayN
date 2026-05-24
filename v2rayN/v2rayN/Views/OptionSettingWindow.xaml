@@ -1141,6 +1141,7 @@
                         Width="200"
                         Margin="{StaticResource Margin8}"
                         HorizontalAlignment="Left"
+                        IsEditable="True"
                         Style="{StaticResource DefComboBox}" />
 
                     <TextBlock
