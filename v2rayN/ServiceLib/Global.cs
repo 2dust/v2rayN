@@ -151,6 +151,7 @@ public class Global
         @"https://cachefly.cachefly.net/1mb.test",
         @"https://cachefly.cachefly.net/10mb.test",
         @"https://cachefly.cachefly.net/50mb.test",
+        @"https://cachefly.cachefly.net/100mb.test",
         @"https://speed.cloudflare.com/__down?bytes=10000000",
         @"https://speed.cloudflare.com/__down?bytes=50000000",
         @"https://speed.cloudflare.com/__down?bytes=99999999",
