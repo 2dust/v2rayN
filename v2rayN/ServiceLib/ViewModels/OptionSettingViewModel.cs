@@ -62,6 +62,8 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string SpeedPingTestUrl { get; set; }
     [Reactive] public string UdpTestTarget { get; set; }
     [Reactive] public int MixedConcurrencyCount { get; set; }
+    [Reactive] public string BatchTesting { get; set; }
+    [Reactive] public string DelayInterval { get; set; }
     [Reactive] public bool EnableHWA { get; set; }
     [Reactive] public string SubConvertUrl { get; set; }
     [Reactive] public int MainGirdOrientation { get; set; }
@@ -197,6 +199,8 @@ public class OptionSettingViewModel : MyReactiveObject
         SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
         SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
         MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
+        BatchTesting = _config.SpeedTestItem.BatchTesting.ToString();
+        DelayInterval = _config.SpeedTestItem.DelayInterval.ToString();
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
         EnableHWA = _config.GuiItem.EnableHWA;
@@ -371,6 +375,10 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.UiItem.CurrentFontFamily = CurrentFontFamily;
         _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
         _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
+        int.TryParse(BatchTesting, out var batchTesting);
+        int.TryParse(DelayInterval, out var delayInterval);
+        _config.SpeedTestItem.BatchTesting = batchTesting;
+        _config.SpeedTestItem.DelayInterval = delayInterval;
         _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;

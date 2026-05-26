@@ -949,10 +949,10 @@
     <value>اندازه فونت</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>یمقدار تاخیر تست سرعت منفرد</value>
+    <value>مقدار تاخیر تست سرعت منفرد</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>/آدرس اینترنتی SpeedTest</value>
+    <value>آدرس اینترنتی SpeedTest</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>بالا و پایین حرکت کنید</value>
@@ -1261,7 +1261,7 @@
     <value>فیلتر هسته</value>
   </data>
   <data name="TipActiveServer" xml:space="preserve">
-    <value>فعال سازی</value>
+    <value>فعال</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
     <value>منبع فایل های جغرافیایی (اختیاری)</value>
@@ -1705,10 +1705,22 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
   </data>
   <data name="menuUdpTestServer" xml:space="preserve">
-    <value>Test Configurations UDP Delay</value>
+    <value>تست تاخیر کانفیگ ها از طریق UDP</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
-    <value>UDP Test Url</value>
+    <value>آدرس تست تاخیر UDP</value>
+  </data>
+  <data name="TbSettingsBatchTesting" xml:space="preserve">
+    <value>تعداد تست همزمان در هر دسته</value>
+  </data>
+  <data name="TbSettingsBatchTestingTip" xml:space="preserve">
+    <value>تعداد کانفیگ هایی که به صورت همزمان در هر دسته تست می شوند. مقدار 0 یعنی بدون محدودیت</value>
+  </data>
+  <data name="TbSettingsDelayInterval" xml:space="preserve">
+    <value>تأخیر بین دسته ها بر حسب ثانیه</value>
+  </data>
+  <data name="TbSettingsDelayIntervalTip" xml:space="preserve">
+    <value>مدت زمان انتظار قبل از شروع دسته بعدی. مقدار 0 یعنی بدون تأخیر</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
     <value>Local outbound address (SendThrough)</value>

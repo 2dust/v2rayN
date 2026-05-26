@@ -8,7 +8,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = new();
-
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         Task.Run(async () =>
@@ -44,7 +43,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         switch (actionType)
         {
             case ESpeedActionType.Tcping:
-                await RunTcpingAsync(lstSelected);
+                await RunTcpingAsync(lstSelected, exitLoopKey);
                 break;
 
             case ESpeedActionType.Realping:
@@ -133,27 +132,67 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return lstSelected;
     }
 
-    private async Task RunTcpingAsync(List<ServerTestItem> selecteds)
+    private async Task RunTcpingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        List<Task> tasks = [];
-        foreach (var it in selecteds)
+        int batchSize = _config.SpeedTestItem.BatchTesting;
+        int delay = _config.SpeedTestItem.DelayInterval;
+    
+        if (batchSize <= 0)
         {
-            tasks.Add(Task.Run(async () =>
-            {
-                try
-                {
-                    var responseTime = await GetTcpingTime(it.Address, it.Port);
-
-                    ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-                    await UpdateFunc(it.IndexId, responseTime.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Logging.SaveLog(_tag, ex);
-                }
-            }));
+            batchSize = selecteds.Count;
         }
-        await Task.WhenAll(tasks);
+    
+        for (int i = 0; i < selecteds.Count; i += batchSize)
+        {
+            if (ShouldStopTest(exitLoopKey))
+            {
+                return;
+            }
+        
+            var batch = selecteds.Skip(i).Take(batchSize).ToList();
+        
+            List<Task> tasks = [];
+        
+            foreach (var it in batch)
+            {
+                if (ShouldStopTest(exitLoopKey))
+                {
+                    return;
+                }
+        
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (ShouldStopTest(exitLoopKey))
+                        {
+                            return;
+                        }
+        
+                        var responseTime = await GetTcpingTime(it.Address, it.Port);
+        
+                        if (ShouldStopTest(exitLoopKey))
+                        {
+                            return;
+                        }
+        
+                        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
+                        await UpdateFunc(it.IndexId, responseTime.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.SaveLog(_tag, ex);
+                    }
+                }));
+            }
+        
+            await Task.WhenAll(tasks);
+        
+            if (delay > 0 && i + batchSize < selecteds.Count)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(delay));
+            }
+        }
     }
 
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
@@ -210,26 +249,46 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             await Task.Delay(1000);
 
-            List<Task> tasks = new();
-            foreach (var it in selecteds)
+            int batchSize = _config.SpeedTestItem.BatchTesting;
+            int delay = _config.SpeedTestItem.DelayInterval;
+            
+            if (batchSize <= 0)
             {
-                if (!it.AllowTest)
-                {
-                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
-                    continue;
-                }
-
-                if (ShouldStopTest(exitLoopKey))
-                {
-                    return false;
-                }
-
-                tasks.Add(Task.Run(async () =>
-                {
-                    await DoRealPing(it);
-                }));
+                batchSize = selecteds.Count;
             }
-            await Task.WhenAll(tasks);
+            
+            for (int i = 0; i < selecteds.Count; i += batchSize)
+            {
+                var batch = selecteds.Skip(i).Take(batchSize).ToList();
+            
+                List<Task> tasks = new();
+            
+                foreach (var it in batch)
+                {
+                    if (!it.AllowTest)
+                    {
+                        await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                        continue;
+                    }
+            
+                    if (ShouldStopTest(exitLoopKey))
+                    {
+                        return false;
+                    }
+            
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        await DoRealPing(it);
+                    }));
+                }
+            
+                await Task.WhenAll(tasks);
+            
+                if (delay > 0 && i + batchSize < selecteds.Count)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(delay));
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -291,25 +350,45 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             await Task.Delay(1000);
 
-            List<Task> tasks = new();
-            foreach (var it in selecteds)
+            int batchSize = _config.SpeedTestItem.BatchTesting;
+            int delay = _config.SpeedTestItem.DelayInterval;
+            
+            if (batchSize <= 0)
             {
-                if (!it.AllowTest)
-                {
-                    continue;
-                }
-
-                if (ShouldStopTest(exitLoopKey))
-                {
-                    return false;
-                }
-
-                tasks.Add(Task.Run(async () =>
-                {
-                    await DoUdpTest(it);
-                }));
+                batchSize = selecteds.Count;
             }
-            await Task.WhenAll(tasks);
+            
+            for (int i = 0; i < selecteds.Count; i += batchSize)
+            {
+                var batch = selecteds.Skip(i).Take(batchSize).ToList();
+            
+                List<Task> tasks = new();
+            
+                foreach (var it in batch)
+                {
+                    if (!it.AllowTest)
+                    {
+                        continue;
+                    }
+            
+                    if (ShouldStopTest(exitLoopKey))
+                    {
+                        return false;
+                    }
+            
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        await DoUdpTest(it);
+                    }));
+                }
+            
+                await Task.WhenAll(tasks);
+            
+                if (delay > 0 && i + batchSize < selecteds.Count)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(delay));
+                }
+            }
         }
         catch (Exception ex)
         {

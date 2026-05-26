@@ -1710,6 +1710,18 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>UDP Test Url</value>
   </data>
+  <data name="TbSettingsBatchTesting" xml:space="preserve">
+    <value>Concurrent Tests Per Batch</value>
+  </data>
+  <data name="TbSettingsBatchTestingTip" xml:space="preserve">
+    <value>Number of configurations tested simultaneously in each batch. Set 0 for unlimited.</value>
+  </data>
+  <data name="TbSettingsDelayInterval" xml:space="preserve">
+    <value>Delay Between Batches (seconds)</value>
+  </data>
+  <data name="TbSettingsDelayIntervalTip" xml:space="preserve">
+    <value>Wait time before starting the next batch. Set 0 to disable delay.</value>
+  </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
     <value>Local outbound address (SendThrough)</value>
   </data>

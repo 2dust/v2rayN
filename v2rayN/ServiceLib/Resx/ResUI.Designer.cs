@@ -4472,7 +4472,47 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsUdpTestUrl", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Batch Testing 的本地化字符串。
+        /// </summary>
+
+        public static string TbSettingsBatchTesting {
+            get {
+                return ResourceManager.GetString("TbSettingsBatchTesting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Batch Testing Tip 的本地化字符串。
+        /// </summary>
         
+        public static string TbSettingsBatchTestingTip {
+            get {
+                return ResourceManager.GetString("TbSettingsBatchTestingTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Delay Interval 的本地化字符串。
+        /// </summary>
+        
+        public static string TbSettingsDelayInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsDelayInterval", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Delay Interval Tip 的本地化字符串。
+        /// </summary>
+        
+        public static string TbSettingsDelayIntervalTip {
+            get {
+                return ResourceManager.GetString("TbSettingsDelayIntervalTip", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Auth user 的本地化字符串。
         /// </summary>

@@ -159,6 +159,8 @@ public class SpeedTestItem
     public int MixedConcurrencyCount { get; set; }
     public string IPAPIUrl { get; set; }
     public string UdpTestTarget { get; set; }
+    public int BatchTesting { get; set; }
+    public int DelayInterval { get; set; }
 }
 
 [Serializable]
