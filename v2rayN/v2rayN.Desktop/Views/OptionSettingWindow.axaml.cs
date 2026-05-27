@@ -155,35 +155,30 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
     {
         var lstFonts = await GetFonts();
 
-        lstFonts.Add(string.Empty);
+        lstFonts.Insert(0, string.Empty);
         cmbcurrentFontFamily.ItemsSource = lstFonts;
+
+        if (ViewModel?.CurrentFontFamily.IsNullOrEmpty() == true)
+        {
+            cmbcurrentFontFamily.SelectedIndex = 0;
+            cmbcurrentFontFamily.Text = string.Empty;
+        }
     }
 
     private async Task<List<string>> GetFonts()
     {
+        await Task.CompletedTask;
+
         var lstFonts = new List<string>();
         try
         {
-            if (Utils.IsWindows())
-            {
-                return lstFonts;
-            }
-            else if (Utils.IsNonWindows())
-            {
-                var result = await Utils.GetLinuxFontFamily("zh");
-                if (result.IsNullOrEmpty())
-                {
-                    return lstFonts;
-                }
-
-                var lst = result.Split(Environment.NewLine)
-                    .Where(t => t.IsNotEmpty())
-                    .ToList()
-                    .Select(t => t.Split(",").FirstOrDefault() ?? "")
-                    .OrderBy(t => t)
-                    .ToList();
-                return lst;
-            }
+            var lst = Avalonia.Media.FontManager.Current.SystemFonts
+                .Select(t => t.Name)
+                .Where(t => t.IsNotEmpty())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(t => t)
+                .ToList();
+            return lst;
         }
         catch (Exception ex)
         {
