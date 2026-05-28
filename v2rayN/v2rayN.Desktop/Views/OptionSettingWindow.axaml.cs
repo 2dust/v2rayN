@@ -155,14 +155,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
     {
         var lstFonts = await GetFonts();
 
-        lstFonts.Insert(0, string.Empty);
+        lstFonts.Add(string.Empty);
         cmbcurrentFontFamily.ItemsSource = lstFonts;
-
-        if (ViewModel?.CurrentFontFamily.IsNullOrEmpty() == true)
-        {
-            cmbcurrentFontFamily.SelectedIndex = 0;
-            cmbcurrentFontFamily.Text = string.Empty;
-        }
     }
 
     private async Task<List<string>> GetFonts()
