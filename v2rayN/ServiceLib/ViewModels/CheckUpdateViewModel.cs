@@ -36,7 +36,7 @@ public class CheckUpdateViewModel : MyReactiveObject
         this.WhenAnyValue(
         x => x.EnableCheckPreReleaseUpdate,
         y => y == true)
-            .Subscribe(c => _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate);
+            .Subscribe(c => _ = OnCheckPreReleaseUpdateChanged());
 
         RefreshCheckUpdateItems();
     }
@@ -87,12 +87,23 @@ public class CheckUpdateViewModel : MyReactiveObject
         };
     }
 
+    private async Task OnCheckPreReleaseUpdateChanged()
+    {
+        if (_config.CheckUpdateItem.CheckPreReleaseUpdate == EnableCheckPreReleaseUpdate)
+        {
+            return;
+        }
+        _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate;
+        await SaveSelectedCoreTypes();
+    }
+
     private async Task SaveSelectedCoreTypes()
     {
-        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels
-            .Where(t => t.IsSelected == true)
-            .Select(t => t.CoreTypeForStorage)
-            .ToList();
+        _config.CheckUpdateItem.SelectedCoreTypes =
+            CheckUpdateModels.Where(t => t.IsSelected == true)
+                            .Select(t => t.CoreTypeForStorage)
+                            .ToList();
+
         await ConfigHandler.SaveConfig(_config);
     }
 

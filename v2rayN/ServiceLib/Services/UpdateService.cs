@@ -117,6 +117,11 @@ public class UpdateService(Config config, Func<bool, string, Task> updateFunc)
         var msgs = new List<string>();
         foreach (var type in CoreInfoManager.Instance.GetCheckUpdateCoreTypes())
         {
+            if (!(_config.CheckUpdateItem.SelectedCoreTypes?.Contains(type.ToString()) ?? true))
+            {
+                continue;
+            }
+
             var result = await CheckHasUpdateOnly(type, preRelease);
             if (result.Success && result.Version != null)
             {
