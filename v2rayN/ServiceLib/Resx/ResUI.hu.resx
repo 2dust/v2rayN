@@ -417,9 +417,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>Opció beállítás</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>Promóció</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>Újratöltés</value>
   </data>

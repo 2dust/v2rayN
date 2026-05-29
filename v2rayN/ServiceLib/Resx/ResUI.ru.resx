@@ -417,9 +417,6 @@
   <data name="menuOptionSetting" xml:space="preserve">
     <value>Настройки</value>
   </data>
-  <data name="menuPromotion" xml:space="preserve">
-    <value>Продвижение</value>
-  </data>
   <data name="menuReload" xml:space="preserve">
     <value>Перезагрузить</value>
   </data>
