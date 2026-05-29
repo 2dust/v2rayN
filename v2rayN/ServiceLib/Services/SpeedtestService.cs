@@ -8,6 +8,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = new();
+    private readonly int _speedTestPageSize = config.SpeedTestItem.SpeedTestPageSize ?? Global.SpeedTestPageSize;
+    private readonly TimeSpan _delayInterval = TimeSpan.FromSeconds(config.SpeedTestItem.SpeedTestDelayInterval ?? 1);
 
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
@@ -135,32 +137,39 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunTcpingAsync(List<ServerTestItem> selecteds)
     {
-        List<Task> tasks = [];
-        foreach (var it in selecteds)
-        {
-            tasks.Add(Task.Run(async () =>
-            {
-                try
-                {
-                    var responseTime = await GetTcpingTime(it.Address, it.Port);
+        var pageSize = Math.Min(selecteds.Count, _speedTestPageSize);
+        var lstBatch = GetTestBatchItem(selecteds, pageSize);
 
-                    ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-                    await UpdateFunc(it.IndexId, responseTime.ToString());
-                }
-                catch (Exception ex)
+        foreach (var lst in lstBatch)
+        {
+            List<Task> tasks = [];
+            foreach (var it in lst)
+            {
+                tasks.Add(Task.Run(async () =>
                 {
-                    Logging.SaveLog(_tag, ex);
-                }
-            }));
+                    try
+                    {
+                        var responseTime = await GetTcpingTime(it.Address, it.Port);
+
+                        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
+                        await UpdateFunc(it.IndexId, responseTime.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.SaveLog(_tag, ex);
+                    }
+                }));
+            }
+            await Task.WhenAll(tasks);
+            await Task.Delay(_delayInterval);
         }
-        await Task.WhenAll(tasks);
     }
 
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
     {
         if (pageSize <= 0)
         {
-            pageSize = lstSelected.Count < Global.SpeedTestPageSize ? lstSelected.Count : Global.SpeedTestPageSize;
+            pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
@@ -172,7 +181,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(100);
+            await Task.Delay(_delayInterval);
         }
 
         //Retest the failed part
@@ -249,7 +258,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (pageSize <= 0)
         {
-            pageSize = lstSelected.Count < Global.SpeedTestPageSize ? lstSelected.Count : Global.SpeedTestPageSize;
+            pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
@@ -261,7 +270,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(100);
+            await Task.Delay(_delayInterval);
         }
 
         //Retest the failed part
