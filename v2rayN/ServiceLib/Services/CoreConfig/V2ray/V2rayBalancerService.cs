@@ -104,6 +104,7 @@ public partial class CoreConfigV2rayService
                 },
             },
             tag = balancerTag,
+            fallbackTag = multipleLoad == EMultipleLoad.Fallback ? Global.DirectTag : null,
         };
         _coreConfig.routing.balancers ??= new();
         _coreConfig.routing.balancers.Add(balancer);

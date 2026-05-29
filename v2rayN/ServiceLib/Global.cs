@@ -55,7 +55,7 @@ public class Global
     public const string DnsOutboundTag = "dns";
     public const string DnsTag = "dns-module";
     public const string DirectDnsTag = "direct-dns";
-    public const string BalancerTagSuffix = "-round";
+    public const string BalancerTagSuffix = "-balancer";
     public const string StreamSecurity = "tls";
     public const string StreamSecurityReality = "reality";
     public const string Loopback = "127.0.0.1";
