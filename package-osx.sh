@@ -28,7 +28,7 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
     <string>zh-Hans</string>
     <string>zh-Hant</string>
     <string>en</string>
-    <string>fa-IR</string>
+    <string>fa</string>
     <string>fr</string>
     <string>ru</string>
     <string>hu</string>
