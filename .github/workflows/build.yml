@@ -1,4 +1,4 @@
-name: build
+﻿name: build
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ on:
       project:
         required: false
         type: string
-        default: './v2rayN.Desktop/v2rayN.Desktop.csproj'
+        default: './KNcloud.Desktop/KNcloud.Desktop.csproj'
 
 jobs:
   build:
@@ -56,12 +56,12 @@ jobs:
       with:
         dotnet-version: '10.0.1xx'
 
-    - name: Build v2rayN
-      working-directory: ./v2rayN
+    - name: Build KNcloud
+      working-directory: ./KNcloud
       run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt -o $Output
 
     - name: Build AmazTool
-      working-directory: ./v2rayN
+      working-directory: ./KNcloud
       run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $Output
 
     - name: Upload build artifacts

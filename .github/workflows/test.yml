@@ -1,12 +1,12 @@
-name: Code Test
+﻿name: Code Test
 
 on:
   pull_request:
     branches:
       - master
     paths:
-      - 'v2rayN/ServiceLib/Services/CoreConfig/**'
-      - 'v2rayN/ServiceLib/Handler/Fmt/**'
+      - 'KNcloud/ServiceLib/Services/CoreConfig/**'
+      - 'KNcloud/ServiceLib/Handler/Fmt/**'
       - '.github/workflows/test.yml'
 
 jobs:
@@ -25,5 +25,5 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Test Code
-      working-directory: ./v2rayN
+      working-directory: ./KNcloud
       run: dotnet test ./ServiceLib.Tests

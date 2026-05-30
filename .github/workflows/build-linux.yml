@@ -1,4 +1,4 @@
-name: release Linux
+﻿name: release Linux
 
 on:
   workflow_dispatch:
@@ -65,9 +65,9 @@ jobs:
         mkdir -p "$GITHUB_WORKSPACE/dist/deb"
         rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb/" || true
         find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_amd64.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-64.deb" \; || true
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/KNcloud-linux-64.deb" \; || true
         find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/KNcloud-linux-arm64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
 
@@ -166,8 +166,8 @@ jobs:
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/rpm"
         rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm/" || true
-        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.x86_64.rpm"  -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-64.rpm" \;  || true
-        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "KNcloud-*-1*.x86_64.rpm"  -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/KNcloud-linux-rhel-64.rpm" \;  || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "KNcloud-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/KNcloud-linux-rhel-arm64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
 
@@ -224,7 +224,7 @@ jobs:
         mkdir -p "$GITHUB_WORKSPACE/dist/rpm-riscv64"
         rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm-riscv64/" || true
         find "$GITHUB_WORKSPACE/dist/rpm-riscv64" -name "*.riscv64.rpm" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/v2rayN-linux-rhel-riscv64.rpm" \; || true
+          -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/KNcloud-linux-rhel-riscv64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-riscv64" || true
 
@@ -298,7 +298,7 @@ jobs:
         mkdir -p "$GITHUB_WORKSPACE/dist/deb-riscv64"
         rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-riscv64/" || true
         find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/KNcloud-linux-riscv64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
 
@@ -463,12 +463,12 @@ jobs:
         run_cmd "printf 'nameserver 10.0.2.3\nnameserver 1.1.1.1\n' >/etc/resolv.conf"
         run_cmd "apt-get update || apt-get update || apt-get update"
         run_cmd "DEBIAN_FRONTEND=noninteractive apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1"
-        run_cmd "rm -rf /root/v2rayN-src"
-        run_cmd "git clone --recursive https://github.com/$repo.git /root/v2rayN-src"
-        run_cmd "cd /root/v2rayN-src && git fetch --depth=1 origin $sha && git checkout FETCH_HEAD && git submodule update --init --recursive"
-        run_cmd "cd /root/v2rayN-src && chmod 755 package-debian-loong.sh"
+        run_cmd "rm -rf /root/KNcloud-src"
+        run_cmd "git clone --recursive https://github.com/$repo.git /root/KNcloud-src"
+        run_cmd "cd /root/KNcloud-src && git fetch --depth=1 origin $sha && git checkout FETCH_HEAD && git submodule update --init --recursive"
+        run_cmd "cd /root/KNcloud-src && chmod 755 package-debian-loong.sh"
 
-        send -- "cd /root/v2rayN-src; cat >/tmp/run-loong-build.sh <<'SCRIPT'\nset +e\nset -o pipefail\nbash -x ./package-debian-loong.sh \"\$RELEASE_TAG\" 2>&1 | tee /tmp/build.log\nrc=\$?\nmkdir -p /workspace/dist/deb-loong64\ncp -av /root/debbuild/*.deb /workspace/dist/deb-loong64/ 2>/dev/null || true\necho __BUILD_DONE__\$rc\nSCRIPT\nRELEASE_TAG=\"$release_tag\" bash /tmp/run-loong-build.sh\r"
+        send -- "cd /root/KNcloud-src; cat >/tmp/run-loong-build.sh <<'SCRIPT'\nset +e\nset -o pipefail\nbash -x ./package-debian-loong.sh \"\$RELEASE_TAG\" 2>&1 | tee /tmp/build.log\nrc=\$?\nmkdir -p /workspace/dist/deb-loong64\ncp -av /root/debbuild/*.deb /workspace/dist/deb-loong64/ 2>/dev/null || true\necho __BUILD_DONE__\$rc\nSCRIPT\nRELEASE_TAG=\"$release_tag\" bash /tmp/run-loong-build.sh\r"
 
         expect {
           -re "__BUILD_DONE__0" {
@@ -488,7 +488,7 @@ jobs:
         mkdir -p "$GITHUB_WORKSPACE/dist/deb-loong64"
 
         find "$GITHUB_WORKSPACE/dist/deb-loong64" -name "*.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/v2rayN-linux-loong64.deb" \; || true
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/KNcloud-linux-loong64.deb" \; || true
 
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-loong64"

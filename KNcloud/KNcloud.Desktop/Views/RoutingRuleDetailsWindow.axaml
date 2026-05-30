@@ -1,0 +1,262 @@
+﻿<Window
+    x:Class="KNcloud.Desktop.Views.RoutingRuleDetailsWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuRoutingRuleDetailsSetting}"
+    Width="900"
+    Height="600"
+    x:DataType="vms:RoutingRuleDetailsViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid
+            Margin="{StaticResource Margin4}"
+            ColumnDefinitions="Auto,Auto,*"
+            DockPanel.Dock="Top"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.LvRemarks}" />
+            <TextBox
+                x:Name="txtRemarks"
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left" />
+            <StackPanel
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <ToggleSwitch
+                    x:Name="togEnabled"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRuleType}" />
+            <ComboBox
+                x:Name="cmbRuleType"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                MaxDropDownHeight="1000" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRuleTypeTips}"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="outboundTag" />
+            <ComboBox
+                Name="cmbOutboundTag"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                IsEditable="True" />
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="btnSelectProfile"
+                    Margin="0,0,8,0"
+                    Click="BtnSelectProfile_Click"
+                    Content="{x:Static resx:ResUI.TbSelectProfile}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="port" />
+            <TextBox
+                x:Name="txtPort"
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRuleMatchingTips}"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="protocol" />
+            <ListBox
+                x:Name="clbProtocol"
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                SelectionMode="Multiple,Toggle"
+                Theme="{DynamicResource CardCheckGroupListBox}" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                TextWrapping="Wrap">
+                <HyperlinkButton Classes="WithIcon" Click="linkRuleobjectDoc_Click">
+                    <TextBlock Text="{x:Static resx:ResUI.TbRuleobjectDoc}" />
+                </HyperlinkButton>
+            </TextBlock>
+
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="inboundTag" />
+            <ListBox
+                x:Name="clbInboundTag"
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="{StaticResource Margin4}"
+                SelectionMode="Multiple,Toggle"
+                Theme="{DynamicResource CardCheckGroupListBox}" />
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRoutingInboundTagTips}"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="network" />
+            <ComboBox
+                x:Name="cmbNetwork"
+                Grid.Row="6"
+                Grid.Column="1"
+                Width="300"
+                Margin="{StaticResource Margin4}"
+                MaxDropDownHeight="1000" />
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="2"
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbRoutingTips}"
+                TextWrapping="Wrap" />
+        </Grid>
+
+        <StackPanel
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Right"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <StackPanel
+                Width="600"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <CheckBox x:Name="chkAutoSort">
+                    <TextBlock Text="{x:Static resx:ResUI.TbAutoSort}" />
+                </CheckBox>
+            </StackPanel>
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
+        </StackPanel>
+
+        <Grid Margin="{StaticResource Margin4}" ColumnDefinitions="1*,10,1*,10,1*">
+            <HeaderedContentControl
+                Grid.Column="0"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleDomain}">
+                <TextBox
+                    Name="txtDomain"
+                    VerticalAlignment="Stretch"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <HeaderedContentControl
+                Grid.Column="2"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleIP}">
+                <TextBox
+                    Name="txtIP"
+                    VerticalAlignment="Stretch"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
+            <HeaderedContentControl
+                Grid.Column="4"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Header="{x:Static resx:ResUI.TbRoutingRuleProcess}">
+                <TextBox
+                    Name="txtProcess"
+                    VerticalAlignment="Stretch"
+                    Classes="TextArea"
+                    MinLines="10"
+                    TextWrapping="Wrap" />
+            </HeaderedContentControl>
+        </Grid>
+    </DockPanel>
+</Window>

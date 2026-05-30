@@ -43,17 +43,17 @@ jobs:
       uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.arch }}
-        path: v2rayN-${{ env.Target }}-${{ env.Arch }}
+        path: KNcloud-${{ env.Target }}-${{ env.Arch }}
     
     - name: Get v2rayN-core-bin
-      run: wget -nv -O v2rayN-$Target-$Arch.zip "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-$Target-$Arch.zip"
+      run: wget -nv -O KNcloud-$Target-$Arch.zip "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-$Target-$Arch.zip"
     
     - name: Package zip archive
-      run: 7z a -tZip v2rayN-$Target-$Arch.zip v2rayN-$Target-$Arch -mx1
+      run: 7z a -tZip KNcloud-$Target-$Arch.zip KNcloud-$Target-$Arch -mx1
 
     - name: Rename windows-desktop 
       if: inputs.target == 'windows-desktop'
-      run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
+      run: mv "KNcloud-$Target-$Arch.zip" "KNcloud-$Target-$Arch-desktop.zip"
     
     - name: Sleep for race condition between matrix jobs
       run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/5461}')"
@@ -61,7 +61,7 @@ jobs:
     - name: Upload zip archive to release
       uses: svenstaro/upload-release-action@v2
       with:
-        file: ${{ github.workspace }}/v2rayN*.zip
+        file: ${{ github.workspace }}/KNcloud*.zip
         tag: ${{ inputs.release_tag }}
         file_glob: true
         prerelease: true

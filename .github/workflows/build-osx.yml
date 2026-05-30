@@ -1,4 +1,4 @@
-name: release macOS
+﻿name: release macOS
 
 on:
   workflow_dispatch:
@@ -51,7 +51,7 @@ jobs:
       uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.arch }}
-        path: v2rayN-macos-${{ env.Arch }}
+        path: KNcloud-macos-${{ env.Arch }}
     
     - name: Setup create-dmg
       run: brew install create-dmg
@@ -60,7 +60,7 @@ jobs:
       run: chmod 755 package-osx.sh
 
     - name: Package dmg
-      run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
+      run: ./package-osx.sh macos-$Arch KNcloud-macos-$Arch ${{ inputs.release_tag }}
 
     - name: Sleep for race condition between matrix jobs
       run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/5461}')"
@@ -68,7 +68,7 @@ jobs:
     - name: Upload dmg to release
       uses: svenstaro/upload-release-action@v2
       with:
-        file: ${{ github.workspace }}/v2rayN*.dmg
+        file: ${{ github.workspace }}/KNcloud*.dmg
         tag: ${{ inputs.release_tag }}
         file_glob: true
         prerelease: true

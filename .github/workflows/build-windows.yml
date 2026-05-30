@@ -1,4 +1,4 @@
-name: release Windows
+﻿name: release Windows
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       target: windows
-      project: ./v2rayN/v2rayN.csproj
+      project: ./KNcloud/KNcloud.csproj
 
   release-zip:
     if: inputs.release_tag != ''

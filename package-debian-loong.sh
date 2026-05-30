@@ -9,8 +9,8 @@ XRAY_VER="${XRAY_VER:-}"
 SING_VER="${SING_VER:-}"
 
 MIN_KERNEL="5.10"
-PKGROOT="v2rayN-publish"
-PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
+PKGROOT="KNcloud-publish"
+PROJECT_HINT="KNcloud.Desktop/KNcloud.Desktop.csproj"
 OUTPUT_DIR="${HOME}/debbuild"
 DOTNET_TFM="net10.0"
 DOTNET_LOONGARCH_VERSION="10.0.108"
@@ -150,8 +150,8 @@ prepare_workspace() {
   fi
 
   PROJECT="$PROJECT_HINT"
-  [[ -f "$PROJECT" ]] || PROJECT="$(find . -maxdepth 3 -name 'v2rayN.Desktop.csproj' | head -n1 || true)"
-  [[ -f "$PROJECT" ]] || die "v2rayN.Desktop.csproj not found"
+  [[ -f "$PROJECT" ]] || PROJECT="$(find . -maxdepth 3 -name 'KNcloud.Desktop.csproj' | head -n1 || true)"
+  [[ -f "$PROJECT" ]] || die "KNcloud.Desktop.csproj not found"
 }
 
 choose_channel() {
@@ -168,7 +168,7 @@ choose_channel() {
   fi
 
   if [[ -t 0 ]]; then
-    echo "[?] Choose v2rayN release channel:" >&2
+    echo "[?] Choose KNcloud release channel:" >&2
     echo "    1) Latest (stable)  [default]" >&2
     echo "    2) Pre-release (preview)" >&2
     echo "    3) Keep current (do nothing)" >&2
@@ -424,7 +424,7 @@ populate_assets_zip_mode() {
 
   url="$(bundle_url_for_rid "$rid")" || { echo "[!] Bundle unsupported RID: $rid"; return 1; }
 
-  echo "[+] Try v2rayN bundle archive: $url"
+  echo "[+] Try KNcloud bundle archive: $url"
 
   tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/v2rayn.zip" || { echo "[!] Bundle download failed"; rm -rf "$tmp"; return 1; }
@@ -440,7 +440,7 @@ populate_assets_zip_mode() {
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
-  nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
+  nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'KNcloud-linux-*' | head -n1 || true)"
   if [[ -n "$nested_dir" && -d "$nested_dir/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$nested_dir/bin/" "$outroot/bin/"
@@ -478,7 +478,7 @@ stage_runtime_assets() {
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
     if populate_assets_zip_mode "$outroot" "$rid"; then
-      echo "[*] Using v2rayN bundle archive."
+      echo "[*] Using KNcloud bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
       populate_assets_netcore_mode "$outroot" "$rid"
@@ -513,20 +513,20 @@ write_launcher_file() {
   install -m 755 /dev/stdin "$stage/usr/bin/v2rayn" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-DIR="/opt/v2rayN"
+DIR="/opt/KNcloud"
 cd "$DIR"
 
-if [[ -x "$DIR/v2rayN" ]]; then
-  exec "$DIR/v2rayN" "$@"
+if [[ -x "$DIR/KNcloud" ]]; then
+  exec "$DIR/KNcloud" "$@"
 fi
 
-for dll in v2rayN.Desktop.dll v2rayN.dll; do
+for dll in KNcloud.Desktop.dll KNcloud.dll; do
   if [[ -f "$DIR/$dll" ]]; then
     exec /usr/bin/dotnet "$DIR/$dll" "$@"
   fi
 done
 
-echo "v2rayN launcher: no executable found in $DIR" >&2
+echo "KNcloud launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
@@ -538,8 +538,8 @@ write_desktop_file() {
   install -m 644 /dev/stdin "$stage/usr/share/applications/v2rayn.desktop" <<'EOF'
 [Desktop Entry]
 Type=Application
-Name=v2rayN
-Comment=v2rayN for Debian GNU Linux
+Name=KNcloud
+Comment=KNcloud for Debian GNU Linux
 Exec=v2rayn
 Icon=v2rayn
 Terminal=false
@@ -598,14 +598,14 @@ package_binary() {
   stage="$workdir/${PKGROOT}_${VERSION}_${deb_arch}"
   debian_dir="$stage/DEBIAN"
 
-  mkdir -p "$stage/opt/v2rayN" "$stage/usr/bin" "$stage/usr/share/applications" "$stage/usr/share/icons/hicolor/256x256/apps" "$debian_dir"
-  cp -a "$pubdir/." "$stage/opt/v2rayN/"
+  mkdir -p "$stage/opt/KNcloud" "$stage/usr/bin" "$stage/usr/share/applications" "$stage/usr/share/icons/hicolor/256x256/apps" "$debian_dir"
+  cp -a "$pubdir/." "$stage/opt/KNcloud/"
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
-  icon_candidate="$project_dir/v2rayN.png"
+  icon_candidate="$project_dir/KNcloud.png"
   [[ -f "$icon_candidate" ]] && cp "$icon_candidate" "$stage/usr/share/icons/hicolor/256x256/apps/v2rayn.png" || true
 
-  stage_runtime_assets "$stage/opt/v2rayN" "$rid"
+  stage_runtime_assets "$stage/opt/KNcloud" "$rid"
   write_launcher_file "$stage"
   write_desktop_file "$stage"
   write_maintainer_scripts "$debian_dir"
@@ -622,7 +622,7 @@ Standards-Version: 4.7.0
 
 Package: v2rayn
 Architecture: ${deb_arch}
-Description: v2rayN
+Description: KNcloud
 EOF
 
   multiarch="$(dpkg-architecture -a"$deb_arch" -qDEB_HOST_MULTIARCH)"
@@ -632,14 +632,14 @@ EOF
   : > "$debian_dir/substvars"
 
   mapfile -t ELF_FILES < <(
-    find "$stage/opt/v2rayN" -type f \( -name "*.so*" -o -perm -111 \) ! -name 'libcoreclrtraceptprovider.so'
+    find "$stage/opt/KNcloud" -type f \( -name "*.so*" -o -perm -111 \) ! -name 'libcoreclrtraceptprovider.so'
   )
 
   if [[ "${#ELF_FILES[@]}" -gt 0 ]]; then
     (
       cd "$workdir"
       dpkg-shlibdeps \
-        -l"$stage/opt/v2rayN" \
+        -l"$stage/opt/KNcloud" \
         -l"$sys_libdir" \
         -l"$sys_usrlibdir" \
         -T"$debian_dir/substvars" \
@@ -668,14 +668,14 @@ Homepage: https://github.com/2dust/v2rayN
 Section: net
 Priority: optional
 Depends: ${final_depends}
-Description: v2rayN (Avalonia) GUI client for Linux
+Description: KNcloud (Avalonia) GUI client for Linux
  Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 /
  Shadowsocks / tuic / WireGuard.
 EOF
 
-  find "$stage/opt/v2rayN" -type d -exec chmod 0755 {} +
-  find "$stage/opt/v2rayN" -type f -exec chmod 0644 {} +
-  [[ -f "$stage/opt/v2rayN/v2rayN" ]] && chmod 0755 "$stage/opt/v2rayN/v2rayN" || true
+  find "$stage/opt/KNcloud" -type d -exec chmod 0755 {} +
+  find "$stage/opt/KNcloud" -type f -exec chmod 0644 {} +
+  [[ -f "$stage/opt/KNcloud/KNcloud" ]] && chmod 0755 "$stage/opt/KNcloud/KNcloud" || true
 
   deb_out="$OUTPUT_DIR/v2rayn_${VERSION}_${deb_arch}.deb"
   dpkg-deb --root-owner-group --build "$stage" "$deb_out"

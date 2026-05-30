@@ -10,8 +10,8 @@ XRAY_VER="${XRAY_VER:-}"
 SING_VER="${SING_VER:-}"
 
 MIN_KERNEL="6.12"
-PKGROOT="v2rayN-publish"
-PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
+PKGROOT="KNcloud-publish"
+PROJECT_HINT="KNcloud.Desktop/KNcloud.Desktop.csproj"
 RPM_TOPDIR="${HOME}/rpmbuild"
 
 OS_ID=""
@@ -117,8 +117,8 @@ prepare_workspace() {
   fi
 
   PROJECT="$PROJECT_HINT"
-  [[ -f "$PROJECT" ]] || PROJECT="$(find . -maxdepth 3 -name 'v2rayN.Desktop.csproj' | head -n1 || true)"
-  [[ -f "$PROJECT" ]] || die "v2rayN.Desktop.csproj not found"
+  [[ -f "$PROJECT" ]] || PROJECT="$(find . -maxdepth 3 -name 'KNcloud.Desktop.csproj' | head -n1 || true)"
+  [[ -f "$PROJECT" ]] || die "KNcloud.Desktop.csproj not found"
 }
 
 choose_channel() {
@@ -135,7 +135,7 @@ choose_channel() {
   fi
 
   if [[ -t 0 ]]; then
-    echo "[?] Choose v2rayN release channel:" >&2
+    echo "[?] Choose KNcloud release channel:" >&2
     echo "    1) Latest (stable)  [default]" >&2
     echo "    2) Pre-release (preview)" >&2
     echo "    3) Keep current (do nothing)" >&2
@@ -394,7 +394,7 @@ populate_assets_zip_mode() {
 
   url="$(bundle_url_for_rid "$rid")" || { echo "[!] Bundle unsupported RID: $rid"; return 1; }
 
-  echo "[+] Try v2rayN bundle archive: $url"
+  echo "[+] Try KNcloud bundle archive: $url"
 
   tmp="$(mktemp -d)"
   curl -fL "$url" -o "$tmp/v2rayn.zip" || { echo "[!] Bundle download failed"; rm -rf "$tmp"; return 1; }
@@ -410,7 +410,7 @@ populate_assets_zip_mode() {
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
-  nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
+  nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'KNcloud-linux-*' | head -n1 || true)"
   if [[ -n "$nested_dir" && -d "$nested_dir/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$nested_dir/bin/" "$outroot/bin/"
@@ -448,7 +448,7 @@ stage_runtime_assets() {
 
   if [[ "$FORCE_NETCORE" -eq 0 ]]; then
     if populate_assets_zip_mode "$outroot" "$rid"; then
-      echo "[*] Using v2rayN bundle archive."
+      echo "[*] Using KNcloud bundle archive."
     else
       echo "[*] Bundle failed, fallback to separate core + rules."
       populate_assets_netcore_mode "$outroot" "$rid"
@@ -487,10 +487,10 @@ write_spec_file() {
 %undefine _debugsource_packages
 %global __requires_exclude ^liblttng-ust\.so\..*$
 
-Name:           v2rayN
+Name:           KNcloud
 Version:        __VERSION__
 Release:        1%{?dist}
-Summary:        v2rayN (Avalonia) GUI client for Linux (x86_64/aarch64)
+Summary:        KNcloud (Avalonia) GUI client for Linux (x86_64/aarch64)
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 BugURL:         https://github.com/2dust/v2rayN/issues
@@ -507,7 +507,7 @@ Requires:       bash >= 5.1
 Requires:       freetype >= 2.10
 
 %description
-v2rayN Linux for Red Hat Enterprise Linux
+KNcloud Linux for Red Hat Enterprise Linux
 Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
 Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
 For more information, Please visit our website
@@ -519,26 +519,26 @@ https://github.com/2dust/v2rayN
 %build
 
 %install
-install -dm0755 %{buildroot}/opt/v2rayN
-cp -a * %{buildroot}/opt/v2rayN/
+install -dm0755 %{buildroot}/opt/KNcloud
+cp -a * %{buildroot}/opt/KNcloud/
 
-find %{buildroot}/opt/v2rayN -type d -exec chmod 0755 {} +
-find %{buildroot}/opt/v2rayN -type f -exec chmod 0644 {} +
-[ -f %{buildroot}/opt/v2rayN/v2rayN ] && chmod 0755 %{buildroot}/opt/v2rayN/v2rayN || :
+find %{buildroot}/opt/KNcloud -type d -exec chmod 0755 {} +
+find %{buildroot}/opt/KNcloud -type f -exec chmod 0644 {} +
+[ -f %{buildroot}/opt/KNcloud/KNcloud ] && chmod 0755 %{buildroot}/opt/KNcloud/KNcloud || :
 
 install -dm0755 %{buildroot}%{_bindir}
 install -m0755 /dev/stdin %{buildroot}%{_bindir}/v2rayn << 'EOF'
 #!/usr/bin/bash
 set -euo pipefail
-DIR="/opt/v2rayN"
+DIR="/opt/KNcloud"
 
-if [[ -x "$DIR/v2rayN" ]]; then exec "$DIR/v2rayN" "$@"; fi
+if [[ -x "$DIR/KNcloud" ]]; then exec "$DIR/KNcloud" "$@"; fi
 
-for dll in v2rayN.Desktop.dll v2rayN.dll; do
+for dll in KNcloud.Desktop.dll KNcloud.dll; do
   if [[ -f "$DIR/$dll" ]]; then exec /usr/bin/dotnet "$DIR/$dll" "$@"; fi
 done
 
-echo "v2rayN launcher: no executable found in $DIR" >&2
+echo "KNcloud launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
 EOF
@@ -547,8 +547,8 @@ install -dm0755 %{buildroot}%{_datadir}/applications
 install -m0644 /dev/stdin %{buildroot}%{_datadir}/applications/v2rayn.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
-Name=v2rayN
-Comment=v2rayN for Red Hat Enterprise Linux
+Name=KNcloud
+Comment=KNcloud for Red Hat Enterprise Linux
 Exec=v2rayn
 Icon=v2rayn
 Terminal=false
@@ -568,7 +568,7 @@ install -m0644 %{_builddir}/__PKGROOT__/v2rayn.png %{buildroot}%{_datadir}/icons
 
 %files
 %{_bindir}/v2rayn
-/opt/v2rayN
+/opt/KNcloud
 %{_datadir}/applications/v2rayn.desktop
 %{_datadir}/icons/hicolor/256x256/apps/v2rayn.png
 SPEC
@@ -601,7 +601,7 @@ package_binary() {
   cp -a "$pubdir/." "$workdir/$PKGROOT/"
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
-  icon_candidate="$project_dir/v2rayN.png"
+  icon_candidate="$project_dir/KNcloud.png"
   [[ -f "$icon_candidate" ]] || { echo "Required icon not found: $icon_candidate"; return 1; }
   cp "$icon_candidate" "$workdir/$PKGROOT/v2rayn.png"
 
@@ -610,7 +610,7 @@ package_binary() {
   rpmdev-setuptree
   sourcedir="${RPM_TOPDIR}/SOURCES"
   specdir="${RPM_TOPDIR}/SPECS"
-  specfile="${specdir}/v2rayN.spec"
+  specfile="${specdir}/KNcloud.spec"
 
   mkdir -p "$sourcedir" "$specdir"
   tar -C "$workdir" -czf "$sourcedir/$PKGROOT.tar.gz" "$PKGROOT"
@@ -619,7 +619,7 @@ package_binary() {
   rpmbuild -ba "$specfile" --target "$rpm_target"
 
   echo "Build done for $short. RPM at:"
-  for f in "${RPM_TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
+  for f in "${RPM_TOPDIR}/RPMS/${archdir}/KNcloud-${VERSION}-1"*.rpm; do
     [[ -e "$f" ]] || continue
     echo "  $f"
     BUILT_RPMS+=("$f")
