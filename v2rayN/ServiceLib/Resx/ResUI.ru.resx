@@ -400,7 +400,7 @@
     <value>Фильтр, нажмите Enter для выполнения</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
-    <value>Проверить обновления</value>
+    <value>Обновить</value>
   </data>
   <data name="menuClose" xml:space="preserve">
     <value>Закрыть</value>
@@ -1735,7 +1735,7 @@
     <value>Доступна новая версия {0}: {1}</value>
   </data>
   <data name="menuCheckOnly" xml:space="preserve">
-    <value>Только проверить</value>
+    <value>Проверить</value>
   </data>
   <data name="MsgNotSupport" xml:space="preserve">
     <value>Не поддерживается</value>
