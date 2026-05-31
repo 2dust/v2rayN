@@ -31,25 +31,29 @@ public partial class App : Application
 
             if (OperatingSystem.IsMacOS())
             {
-                Current?.TryGetFeature<IActivatableLifetime>()?.Activated += (_, args) =>
-                {
-                    if (args.Kind == ActivationKind.Reopen)
-                    {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            (desktop.MainWindow as MainWindow)?.ShowHideWindow(true);
-
-                            if (!AppManager.Instance.Config.UiItem.MacOSShowInDock)
-                            {
-                                SetActivationPolicyAccessory();
-                            }
-                        });
-                    }
-                };
+                Current?.TryGetFeature<IActivatableLifetime>()?.Activated += OnMacOSActivated;
             }
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void OnMacOSActivated(object? sender, ActivatedEventArgs args)
+    {
+        if (args.Kind != ActivationKind.Reopen)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            ((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow as MainWindow)?.ShowHideWindow(true);
+
+            if (!AppManager.Instance.Config.UiItem.MacOSShowInDock)
+            {
+                SetActivationPolicyAccessory();
+            }
+        });
     }
 
     private static void SetActivationPolicyAccessory()
