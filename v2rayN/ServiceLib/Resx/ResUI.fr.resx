@@ -1720,27 +1720,27 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Test Configurations UDP Delay</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
-    <value>UDP Test Url</value>
+    <value>URL de test UDP</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
   <data name="menuExport2InnerUri" xml:space="preserve">
-    <value>Export v2rayN Internal Share Link to Clipboard</value>
+    <value>Exporter le lien interne v2rayN vers le presse-papiers</value>
   </data>
   <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
-    <value>{0} has a new version available: {1}</value>
+    <value>{0} a une nouvelle version disponible: {1}</value>
   </data>
   <data name="menuCheckOnly" xml:space="preserve">
-    <value>Only Check</value>
+    <value>Uniquement vérifier</value>
   </data>
   <data name="MsgNotSupport" xml:space="preserve">
-    <value>Not Support</value>
+    <value>Non supporté</value>
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
-    <value>IP Info</value>
+    <value>Détails IP</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
-    <value>New Update</value>
+    <value>Nouvelle MAJ</value>
   </data>
 </root>
