@@ -48,7 +48,7 @@ public partial class App : Application
 
             if (!AppManager.Instance.Config.UiItem.MacOSShowInDock)
             {
-                MacOSAppHelper.SetActivationPolicyAccessory();
+                MacAppUtils.SetActivationPolicyAccessory();
             }
         });
     }
