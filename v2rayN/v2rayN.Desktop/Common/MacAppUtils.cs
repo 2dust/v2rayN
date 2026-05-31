@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace v2rayN.Desktop.Common;
 
-internal static class MacOSAppHelper
+internal static class MacAppUtils
 {
     private const string LibObjC = "/usr/lib/libobjc.dylib";
     private const nint ActivationPolicyAccessory = 1;
