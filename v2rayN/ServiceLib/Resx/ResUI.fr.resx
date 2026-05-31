@@ -1675,7 +1675,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Ajouter [NaïveProxy]</value>
   </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
-    <value>Insecure Concurrency</value>
+    <value>Concurrence non sûre</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
     <value>Nom d’utilisateur</value>
@@ -1717,7 +1717,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Pour les environnements multi-interfaces, entrez le nom de l'interface à lier. Ne fonctionne que sur les systèmes Windows et en mode TUN</value>
   </data>
   <data name="menuUdpTestServer" xml:space="preserve">
-    <value>Test Configurations UDP Delay</value>
+    <value>Tester la latence UDP des profils</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>URL de test UDP</value>
