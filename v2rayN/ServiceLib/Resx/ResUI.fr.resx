@@ -1699,10 +1699,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Allow insecure cert fetch (self-signed)</value>
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
-    <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+    <value>Pour obtenir des certificats auto-signés uniquement. Risque MITM.</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Adresse sortante locale (SendThrough)</value>
+    <value>Adresse de sortie locale (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale</value>
