@@ -54,7 +54,7 @@ internal static class WindowsUtils
 
     public static async Task RemoveTunDevice()
     {
-        var tunNameList = new List<string> { "wintunsingbox_tun", "xray_tun" };
+        var tunNameList = new List<string> { "singbox_tun", "wintunsingbox_tun", "xray_tun" };
         foreach (var tunName in tunNameList)
         {
             try

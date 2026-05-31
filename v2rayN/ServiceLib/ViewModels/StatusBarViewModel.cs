@@ -491,6 +491,15 @@ public class StatusBarViewModel : MyReactiveObject
             }
         }
 
+        if (EnableTun && Utils.IsWindows())
+        {
+            WindowsTunCompatibility.ApplyAffectedBuildDefaults(_config.TunModeItem, out var message);
+            if (message.IsNotEmpty())
+            {
+                NoticeManager.Instance.SendMessageAndEnqueue(message);
+            }
+        }
+
         await ConfigHandler.SaveConfig(_config);
         AppEvents.ReloadRequested.Publish();
     }

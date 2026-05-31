@@ -52,6 +52,11 @@ public partial class CoreConfigSingboxService
 
             if (context.IsTunEnabled)
             {
+                if (Utils.IsWindows())
+                {
+                    WindowsTunCompatibility.ApplyAffectedBuildDefaults(_config.TunModeItem, out _);
+                }
+
                 if (_config.TunModeItem.Mtu <= 0)
                 {
                     _config.TunModeItem.Mtu = Global.TunMtus.First();

@@ -60,12 +60,12 @@ public class CoreManager
 
     /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
-    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    public async Task<bool> LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
         if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
-            return;
+            return false;
         }
 
         var node = mainContext.Node;
@@ -74,7 +74,7 @@ public class CoreManager
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
-            return;
+            return false;
         }
 
         await UpdateFunc(false, $"{node.GetSummary()}");
@@ -90,7 +90,19 @@ public class CoreManager
         }
 
         await CoreStart(mainContext);
+        if (_processService is null or { HasExited: true })
+        {
+            await SysProxyHandler.UpdateSysProxy(_config, true);
+            return false;
+        }
+
         await CoreStartPreService(preContext);
+        if (preContext != null && (_processPreService is null or { HasExited: true }))
+        {
+            await CoreStop();
+            await SysProxyHandler.UpdateSysProxy(_config, true);
+            return false;
+        }
 
         AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
 
@@ -98,6 +110,7 @@ public class CoreManager
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
+        return true;
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
@@ -268,7 +281,7 @@ public class CoreManager
 
         await procService.StartAsync();
 
-        await Task.Delay(100);
+        await Task.Delay(_config.TunModeItem.EnableTun && Utils.IsWindows() ? 1500 : 100);
 
         if (procService is null or { HasExited: true })
         {

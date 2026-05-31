@@ -578,8 +578,8 @@ public class MainWindowViewModel : MyReactiveObject
 
             await Task.Run(async () =>
             {
-                await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
-                await SysProxyHandler.UpdateSysProxy(_config, false);
+                var coreStarted = await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
+                await SysProxyHandler.UpdateSysProxy(_config, !coreStarted);
                 await Task.Delay(1000);
             });
             AppEvents.TestServerRequested.Publish();
@@ -619,9 +619,9 @@ public class MainWindowViewModel : MyReactiveObject
         RxSchedulers.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
     }
 
-    private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    private async Task<bool> LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
-        await CoreManager.Instance.LoadCore(mainContext, preContext);
+        return await CoreManager.Instance.LoadCore(mainContext, preContext);
     }
 
     #endregion core job
