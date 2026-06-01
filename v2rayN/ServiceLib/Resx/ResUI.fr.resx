@@ -1675,7 +1675,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Ajouter [NaïveProxy]</value>
   </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
-    <value>Insecure Concurrency</value>
+    <value>Concurrence non sûre</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
     <value>Nom d’utilisateur</value>
@@ -1699,10 +1699,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Allow insecure cert fetch (self-signed)</value>
   </data>
   <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
-    <value>Only for fetching self-signed certificates. This may expose you to MITM risks.</value>
+    <value>Pour obtenir des certificats auto-signés uniquement. Risque MITM.</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Adresse sortante locale (SendThrough)</value>
+    <value>Adresse de sortie locale (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale</value>
@@ -1717,30 +1717,30 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Pour les environnements multi-interfaces, entrez le nom de l'interface à lier. Ne fonctionne que sur les systèmes Windows et en mode TUN</value>
   </data>
   <data name="menuUdpTestServer" xml:space="preserve">
-    <value>Test Configurations UDP Delay</value>
+    <value>Tester la latence UDP des profils</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
-    <value>UDP Test Url</value>
+    <value>URL de test UDP</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
   <data name="menuExport2InnerUri" xml:space="preserve">
-    <value>Export v2rayN Internal Share Link to Clipboard</value>
+    <value>Exporter le lien interne v2rayN vers le presse-papiers</value>
   </data>
   <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
-    <value>{0} has a new version available: {1}</value>
+    <value>{0} a une nouvelle version disponible: {1}</value>
   </data>
   <data name="menuCheckOnly" xml:space="preserve">
-    <value>Only Check</value>
+    <value>Uniquement vérifier</value>
   </data>
   <data name="MsgNotSupport" xml:space="preserve">
-    <value>Not Support</value>
+    <value>Non supporté</value>
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
-    <value>IP Info</value>
+    <value>Détails IP</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
-    <value>New Update</value>
+    <value>Nouvelle MAJ</value>
   </data>
 </root>
