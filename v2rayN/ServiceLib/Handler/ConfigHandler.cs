@@ -133,6 +133,10 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.MixedConcurrencyCount = 5;
         }
+        if (config.SpeedTestItem.IPAPIUrl == null)
+        {
+            config.SpeedTestItem.IPAPIUrl = Global.IPAPIUrls.First();
+        }
         if (config.SpeedTestItem.UdpTestTarget.IsNullOrEmpty())
         {
             config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();

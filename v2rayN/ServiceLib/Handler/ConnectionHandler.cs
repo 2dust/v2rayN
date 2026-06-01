@@ -98,7 +98,7 @@ public static class ConnectionHandler
     }
 
     /// <summary>
-    /// Gets IP and country information through specified proxy.
+    /// Gets IP and geolocation information through specified proxy.
     /// </summary>
     public static async Task<IpInfoResult?> GetIPInfo(IWebProxy? webProxy)
     {
@@ -117,20 +117,47 @@ public static class ConnectionHandler
                 return null;
             }
 
-            var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
-            if (ipInfo == null)
-            {
-                return null;
-            }
-
-            var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
-            var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
-
-            return new IpInfoResult(country, ip);
+            return ParseIPInfo(result);
         }
         catch
         {
             return null;
         }
+    }
+
+    /// <summary>
+    /// Parses IP API responses from supported providers.
+    /// </summary>
+    public static IpInfoResult? ParseIPInfo(string? result)
+    {
+        var ipInfo = JsonUtils.Deserialize<IPAPIInfo>(result);
+        if (ipInfo == null)
+        {
+            return null;
+        }
+
+        var ip = FirstNonEmpty(ipInfo.ip, ipInfo.clientIp, ipInfo.ip_addr, ipInfo.query);
+        var country = FirstNonEmpty(
+            ipInfo.country_code,
+            ipInfo.countryCode,
+            ipInfo.location?.country_code,
+            ipInfo.country,
+            ipInfo.country_name,
+            ipInfo.location?.country) ?? "unknown";
+        var region = FirstNonEmpty(
+            ipInfo.region,
+            ipInfo.regionName,
+            ipInfo.region_name,
+            ipInfo.location?.state,
+            ipInfo.location?.region,
+            ipInfo.location?.region_name);
+        var city = FirstNonEmpty(ipInfo.city, ipInfo.location?.city);
+
+        return new IpInfoResult(country, ip, region, city);
+    }
+
+    private static string? FirstNonEmpty(params string?[] values)
+    {
+        return values.Select(t => t?.Trim()).FirstOrDefault(t => t.IsNotEmpty());
     }
 }
