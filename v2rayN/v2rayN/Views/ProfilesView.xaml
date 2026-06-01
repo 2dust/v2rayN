@@ -17,6 +17,8 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <conv:CountryCodeToFlagDrawingConverter x:Key="CountryCodeToFlagDrawingConverter" />
+        <conv:CountryCodeToFlagVisibilityConverter x:Key="CountryCodeToFlagVisibilityConverter" />
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
     </UserControl.Resources>
     <Grid>
@@ -346,12 +348,29 @@
                         ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
 
-                    <base:MyDGTextColumn
+                    <base:MyDGTemplateColumn
                         x:Name="colIpInfo"
                         Width="100"
-                        Binding="{Binding IpInfo}"
                         ExName="IpInfo"
-                        Header="{x:Static resx:ResUI.LvTestIpInfo}" />
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}"
+                        SortMemberPath="IpInfo">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--  Country flag: cached SVG DrawingImage; hidden when no asset matches the code, leaving only the text.  -->
+                                    <Image
+                                        Width="20"
+                                        Height="15"
+                                        Margin="0,0,4,0"
+                                        VerticalAlignment="Center"
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        Source="{Binding IpInfoCountryCode, Converter={StaticResource CountryCodeToFlagDrawingConverter}}"
+                                        Visibility="{Binding IpInfoCountryCode, Converter={StaticResource CountryCodeToFlagVisibilityConverter}}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding IpInfo}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </base:MyDGTemplateColumn>
 
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"

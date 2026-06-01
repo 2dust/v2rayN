@@ -30,11 +30,20 @@
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux" />
+		<PackageReference Include="Svg.Controls.Skia.Avalonia" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectCapability Include="Avalonia" />
 		<AvaloniaResource Include="Assets\**" />
+		<AvaloniaResource Include="..\Assets\Flags\4x3\*.svg">
+			<Link>Assets\Flags\%(Filename)%(Extension)</Link>
+		</AvaloniaResource>
+		<None Include="..\Assets\Flags\LICENSE.flag-icons">
+			<Link>LICENSE.flag-icons</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</None>
 		<ProjectReference Include="..\GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj" />
 		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>

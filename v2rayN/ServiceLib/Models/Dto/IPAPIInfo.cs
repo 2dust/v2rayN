@@ -20,9 +20,18 @@ public class LocationInfo
 
 public readonly record struct IpInfoResult(string Country, string? Ip)
 {
+    public string? CountryCode => Country.NormalizeCountryCode();
+
     public override string ToString()
     {
-        var emoji = Country.CountryToEmoji();
-        return $"{emoji}({Country}) {Ip}";
+        // The country flag is rendered separately as an SVG image,
+        // so the text contains only the country code and the IP address.
+        return $"({CountryCode ?? Country}) {Ip}";
     }
 }
+
+/// <summary>
+/// Result of an availability check: the ready-to-display string and the normalized two-letter
+/// country code used for the flag (typically ISO 3166-1 alpha-2; <c>null</c> when unknown).
+/// </summary>
+public readonly record struct AvailabilityResult(string Message, string? CountryCode);

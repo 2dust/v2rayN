@@ -410,12 +410,13 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             var ipInfo = await ConnectionHandler.GetIPInfo(webProxy);
             var ipStr = ipInfo?.ToString() ?? Global.None;
-            ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
-            await UpdateIpInfoFunc(it.IndexId, ipStr);
+            var countryCode = ipInfo?.CountryCode;
+            ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr, countryCode);
+            await UpdateIpInfoFunc(it.IndexId, ipStr, countryCode);
         }
         else
         {
-            await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip);
+            await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip, null);
         }
 
         return responseTime;
@@ -514,8 +515,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
-    private async Task UpdateIpInfoFunc(string indexId, string ip)
+    private async Task UpdateIpInfoFunc(string indexId, string ip, string? countryCode)
     {
-        await _updateFunc?.Invoke(new() { IndexId = indexId, IpInfo = ip });
+        await _updateFunc?.Invoke(new() { IndexId = indexId, IpInfo = ip, IpInfoCountryCode = countryCode });
     }
 }

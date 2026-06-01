@@ -1,92 +1,56 @@
 namespace ServiceLib.Common;
 
 /// <summary>
-/// Extension methods for country code utilities
+/// Helpers for working with two-letter country codes (typically ISO 3166-1 alpha-2).
 /// </summary>
 public static class CountryExtension
 {
     /// <summary>
-    /// Country code to emoji flag mapping for common countries
+    /// Normalizes a value to an upper-case two-letter country code. Returns the normalized code
+    /// (for example "DE") for any two ASCII letters, or <c>null</c> for anything else (empty,
+    /// "unknown", non-letter characters, wrong length). Note: this is a shape check only; it does
+    /// not verify the code against the official ISO 3166-1 list (for example "ZZ" is accepted).
     /// </summary>
-    private static readonly Dictionary<string, string> CountryEmojiMap = new(StringComparer.OrdinalIgnoreCase)
+    public static string? NormalizeCountryCode(this string? value)
     {
-        // Asia
-        { "CN", "🇨🇳" }, // China
-        { "HK", "🇭🇰" }, // Hong Kong
-        { "TW", "🇹🇼" }, // Taiwan
-        { "JP", "🇯🇵" }, // Japan
-        { "SG", "🇸🇬" }, // Singapore
-        { "KR", "🇰🇷" }, // South Korea
-        { "TH", "🇹🇭" }, // Thailand
-        { "VN", "🇻🇳" }, // Vietnam
-        { "ID", "🇮🇩" }, // Indonesia
-        { "PH", "🇵🇭" }, // Philippines
-        { "MY", "🇲🇾" }, // Malaysia
-        { "IN", "🇮🇳" }, // India
-        { "PK", "🇵🇰" }, // Pakistan
-        { "BD", "🇧🇩" }, // Bangladesh
-        { "LK", "🇱🇰" }, // Sri Lanka
-        { "KH", "🇰🇭" }, // Cambodia
-        { "LA", "🇱🇦" }, // Laos
-        { "MM", "🇲🇲" }, // Myanmar
-
-        // Americas
-        { "US", "🇺🇸" }, // United States
-        { "CA", "🇨🇦" }, // Canada
-        { "MX", "🇲🇽" }, // Mexico
-        { "BR", "🇧🇷" }, // Brazil
-        { "AR", "🇦🇷" }, // Argentina
-        { "CL", "🇨🇱" }, // Chile
-        { "CO", "🇨🇴" }, // Colombia
-
-        // Europe
-        { "GB", "🇬🇧" }, // United Kingdom
-        { "DE", "🇩🇪" }, // Germany
-        { "FR", "🇫🇷" }, // France
-        { "IT", "🇮🇹" }, // Italy
-        { "ES", "🇪🇸" }, // Spain
-        { "RU", "🇷🇺" }, // Russia
-        { "NL", "🇳🇱" }, // Netherlands
-        { "CH", "🇨🇭" }, // Switzerland
-        { "SE", "🇸🇪" }, // Sweden
-        { "NO", "🇳🇴" }, // Norway
-        { "DK", "🇩🇰" }, // Denmark
-        { "FI", "🇫🇮" }, // Finland
-        { "PL", "🇵🇱" }, // Poland
-        { "CZ", "🇨🇿" }, // Czech Republic
-        { "AT", "🇦🇹" }, // Austria
-        { "GR", "🇬🇷" }, // Greece
-        { "PT", "🇵🇹" }, // Portugal
-        { "TR", "🇹🇷" }, // Turkey
-        { "UA", "🇺🇦" }, // Ukraine
-        { "RO", "🇷🇴" }, // Romania
-
-        // Middle East & Central Asia
-        { "AE", "🇦🇪" }, // United Arab Emirates
-        { "SA", "🇸🇦" }, // Saudi Arabia
-        { "IL", "🇮🇱" }, // Israel
-        { "KZ", "🇰🇿" }, // Kazakhstan
-
-        // Oceania
-        { "AU", "🇦🇺" }, // Australia
-        { "NZ", "🇳🇿" }, // New Zealand
-
-        // Africa
-        { "ZA", "🇿🇦" }, // South Africa
-        { "EG", "🇪🇬" }, // Egypt
-    };
+        return value is { Length: 2 } && char.IsAsciiLetter(value[0]) && char.IsAsciiLetter(value[1])
+            ? value.ToUpperInvariant()
+            : null;
+    }
 
     /// <summary>
-    /// Converts country code to flag emoji using predefined mapping
-    /// Example: "US" -> "🇺🇸", "CN" -> "🇨🇳"
+    /// Extracts a normalized country code from a stored IP information string and removes the
+    /// legacy regional-indicator emoji prefix when present.
     /// </summary>
-    public static string? CountryToEmoji(this string? countryCode)
+    public static string NormalizeStoredIpInfo(this string? value, out string? countryCode)
     {
-        if (countryCode.IsNullOrEmpty())
+        countryCode = null;
+        if (value.IsNullOrEmpty())
         {
-            return null;
+            return value ?? string.Empty;
         }
 
-        return CountryEmojiMap.TryGetValue(countryCode, out var emoji) ? emoji : null;
+        var openingParenthesis = value.IndexOf('(');
+        if (openingParenthesis is not (0 or 4)
+            || value.Length < openingParenthesis + 4
+            || value[openingParenthesis + 3] != ')')
+        {
+            return value;
+        }
+
+        if (openingParenthesis == 4 && !IsRegionalIndicatorFlag(value[..4]))
+        {
+            return value;
+        }
+
+        countryCode = value.Substring(openingParenthesis + 1, 2).NormalizeCountryCode();
+        return countryCode is null ? value : value[openingParenthesis..];
+    }
+
+    private static bool IsRegionalIndicatorFlag(string value)
+    {
+        return value.Length == 4
+            && char.ConvertToUtf32(value, 0) is >= 0x1F1E6 and <= 0x1F1FF
+            && char.ConvertToUtf32(value, 2) is >= 0x1F1E6 and <= 0x1F1FF;
     }
 }

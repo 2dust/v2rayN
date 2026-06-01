@@ -30,6 +30,9 @@ public class ProfileItemModel : ReactiveObject
     public string IpInfo { get; set; }
 
     [Reactive]
+    public string IpInfoCountryCode { get; set; }
+
+    [Reactive]
     public string TodayUp { get; set; }
 
     [Reactive]

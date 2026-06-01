@@ -306,6 +306,7 @@ public class ProfilesViewModel : MyReactiveObject
         if (result.IpInfo.IsNotEmpty())
         {
             item.IpInfo = result.IpInfo ?? string.Empty;
+            item.IpInfoCountryCode = result.IpInfoCountryCode ?? string.Empty;
         }
         await Task.CompletedTask;
     }
@@ -442,6 +443,7 @@ public class ProfilesViewModel : MyReactiveObject
                         DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
                         SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
                         IpInfo = t33?.IpInfo ?? string.Empty,
+                        IpInfoCountryCode = t33?.IpInfoCountryCode ?? string.Empty,
                         TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
                         TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
                         TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),

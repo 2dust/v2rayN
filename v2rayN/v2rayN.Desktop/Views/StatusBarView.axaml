@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Svg.Controls.Skia.Avalonia"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -75,7 +76,17 @@
             <StackPanel VerticalAlignment="Center" Margin="{StaticResource MarginLr8}">
                 <TextBlock x:Name="txtRunningServerDisplay" />
                 <Border Margin="1" />
-                <TextBlock x:Name="txtRunningInfoDisplay" />
+                <StackPanel Orientation="Horizontal">
+                    <!--  Country flag: SVG asset by ISO code; hidden when no matching asset exists.  -->
+                    <svg:Svg
+                        x:Name="imgRunningInfoFlag"
+                        Width="20"
+                        Height="15"
+                        Margin="0,0,4,0"
+                        VerticalAlignment="Center"
+                        Stretch="Uniform" />
+                    <TextBlock x:Name="txtRunningInfoDisplay" VerticalAlignment="Center" />
+                </StackPanel>
             </StackPanel>
         </DockPanel>
     </Grid>

@@ -15,6 +15,7 @@
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" />
 		<PackageReference Include="H.NotifyIcon.Wpf" />
+		<PackageReference Include="DotNetProjects.SVGImage" />
 		<PackageReference Include="ReactiveUI.Fody">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
@@ -31,6 +32,14 @@
 		<Resource Include="Resources\NotifyIcon3.ico" />
 		<Resource Include="Resources\NotifyIcon4.ico" />
 		<Resource Include="Resources\v2rayN.ico" />
+		<Resource Include="..\Assets\Flags\4x3\*.svg">
+			<Link>Resources\Flags\%(Filename)%(Extension)</Link>
+		</Resource>
+		<None Include="..\Assets\Flags\LICENSE.flag-icons">
+			<Link>LICENSE.flag-icons</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>

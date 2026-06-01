@@ -1,3 +1,4 @@
+using v2rayN.Converters;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;
@@ -16,6 +17,7 @@ public partial class StatusBarView
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
         txtRunningInfoDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
+        imgRunningInfoFlag.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
 
         this.WhenActivated(disposables =>
         {
@@ -55,6 +57,8 @@ public partial class StatusBarView
             this.OneWayBind(ViewModel, vm => vm.InboundLanDisplay, v => v.txtInboundLanDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningServerDisplay, v => v.txtRunningServerDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningInfoDisplay, v => v.txtRunningInfoDisplay.Text).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.RunningInfoCountryCode, v => v.imgRunningInfoFlag.Source, CountryCodeToFlagDrawingConverter.GetFlagImage).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.RunningInfoCountryCode, v => v.imgRunningInfoFlag.Visibility, code => CountryCodeToFlagDrawingConverter.GetFlagImage(code) is null ? Visibility.Collapsed : Visibility.Visible).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
@@ -100,4 +104,5 @@ public partial class StatusBarView
     {
         ViewModel?.TestServerAvailability();
     }
+
 }

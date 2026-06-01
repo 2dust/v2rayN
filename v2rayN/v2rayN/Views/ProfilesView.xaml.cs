@@ -235,13 +235,12 @@ public partial class ProfilesView
 
     private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column == null)
+        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column is not IMyDGColumn dgColumn)
         {
             return;
         }
 
-        var colName = ((MyDGTextColumn)colHeader.Column).ExName;
-        ViewModel?.SortServer(colName);
+        ViewModel?.SortServer(dgColumn.ExName);
     }
 
     private void menuSelectAll_Click(object sender, RoutedEventArgs e)
@@ -365,9 +364,9 @@ public partial class ProfilesView
             var displayIndex = 0;
             foreach (var item in lvColumnItem)
             {
-                foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
+                foreach (var item2 in lstProfiles.Columns.Where(t => t is IMyDGColumn))
                 {
-                    if (item2.ExName == item.Name)
+                    if (((IMyDGColumn)item2).ExName == item.Name)
                     {
                         if (item.Width < 0)
                         {
@@ -401,11 +400,11 @@ public partial class ProfilesView
         try
         {
             List<ColumnItem> lvColumnItem = new();
-            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
+            foreach (var item2 in lstProfiles.Columns.Where(t => t is IMyDGColumn))
             {
                 lvColumnItem.Add(new()
                 {
-                    Name = item2.ExName,
+                    Name = ((IMyDGColumn)item2).ExName,
                     Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
                     Index = item2.DisplayIndex
                 });

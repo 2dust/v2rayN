@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Svg.Controls.Skia.Avalonia"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     x:Name="Root"
     d:DesignHeight="450"
@@ -14,6 +15,8 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
+        <conv:CountryCodeToFlagPathConverter x:Key="CountryCodeToFlagPathConverter" />
+        <conv:CountryCodeToFlagVisibilityConverter x:Key="CountryCodeToFlagVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -277,11 +280,28 @@
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
                         Tag="SpeedVal" />
 
-                    <DataGridTextColumn
+                    <DataGridTemplateColumn
                         Width="100"
-                        Binding="{Binding IpInfo}"
                         Header="{x:Static resx:ResUI.LvTestIpInfo}"
-                        Tag="IpInfo" />
+                        SortMemberPath="IpInfo"
+                        Tag="IpInfo">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--  Country flag: SVG asset by ISO code; hidden when no matching asset exists, leaving only the text.  -->
+                                    <svg:Svg
+                                        Width="20"
+                                        Height="15"
+                                        Margin="0,0,4,0"
+                                        VerticalAlignment="Center"
+                                        IsVisible="{Binding IpInfoCountryCode, Converter={StaticResource CountryCodeToFlagVisibilityConverter}}"
+                                        Path="{Binding IpInfoCountryCode, Converter={StaticResource CountryCodeToFlagPathConverter}}"
+                                        Stretch="Uniform" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding IpInfo}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTextColumn
                         Width="100"

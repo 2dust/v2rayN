@@ -79,6 +79,9 @@ public class StatusBarViewModel : MyReactiveObject
     public string RunningInfoDisplay { get; set; }
 
     [Reactive]
+    public string RunningInfoCountryCode { get; set; }
+
+    [Reactive]
     public string SpeedProxyDisplay { get; set; }
 
     [Reactive]
@@ -98,6 +101,7 @@ public class StatusBarViewModel : MyReactiveObject
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = "-";
+        RunningInfoCountryCode = string.Empty;
         BlSystemProxyPacVisible = Utils.IsWindows();
         BlIsNonWindows = Utils.IsNonWindows();
 
@@ -352,27 +356,28 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        await TestServerAvailabilitySub(ResUI.Speedtesting);
+        await TestServerAvailabilitySub(ResUI.Speedtesting, null);
 
-        var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
+        var result = await Task.Run(ConnectionHandler.RunAvailabilityCheckResult);
 
-        NoticeManager.Instance.SendMessageEx(msg);
-        await TestServerAvailabilitySub(msg);
+        NoticeManager.Instance.SendMessageEx(result.Message);
+        await TestServerAvailabilitySub(result.Message, result.CountryCode);
     }
 
-    private async Task TestServerAvailabilitySub(string msg)
+    private async Task TestServerAvailabilitySub(string msg, string? countryCode)
     {
-        RxSchedulers.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        RxSchedulers.MainThreadScheduler.Schedule((msg, countryCode), (scheduler, state) =>
         {
-            _ = TestServerAvailabilityResult(msg);
+            _ = TestServerAvailabilityResult(state.msg, state.countryCode);
             return Disposable.Empty;
         });
         await Task.CompletedTask;
     }
 
-    public async Task TestServerAvailabilityResult(string msg)
+    public async Task TestServerAvailabilityResult(string msg, string? countryCode)
     {
         RunningInfoDisplay = msg;
+        RunningInfoCountryCode = countryCode ?? string.Empty;
         await Task.CompletedTask;
     }
 

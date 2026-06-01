@@ -98,7 +98,20 @@
                 <StackPanel Margin="{StaticResource MarginLeftRight8}" VerticalAlignment="Center">
                     <TextBlock x:Name="txtRunningServerDisplay" Style="{StaticResource StatusbarItem}" />
                     <Border Margin="1" />
-                    <TextBlock x:Name="txtRunningInfoDisplay" Style="{StaticResource StatusbarItem}" />
+                    <StackPanel Orientation="Horizontal">
+                        <!--  Country flag: bound to a cached SVG DrawingImage; hidden when no asset matches the code.  -->
+                        <Image
+                            x:Name="imgRunningInfoFlag"
+                            Width="20"
+                            Height="15"
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            RenderOptions.BitmapScalingMode="HighQuality" />
+                        <TextBlock
+                            x:Name="txtRunningInfoDisplay"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource StatusbarItem}" />
+                    </StackPanel>
                 </StackPanel>
             </DockPanel>
         </materialDesign:ColorZone>

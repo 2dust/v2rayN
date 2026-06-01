@@ -9,21 +9,27 @@ public static class ConnectionHandler
     /// </summary>
     public static async Task<string> RunAvailabilityCheck()
     {
-        var time = await GetRealPingTimeInfo();
-        var ip = time > 0 ? await GetIPInfo() : Global.None;
-
-        return string.Format(ResUI.TestMeOutput, time, ip);
+        var result = await RunAvailabilityCheckResult();
+        return result.Message;
     }
 
     /// <summary>
-    /// Gets IP information using the default local proxy.
+    /// Runs ping and IP checks and returns the result string together with the ISO country code
+    /// (the UI needs the country code to render the flag as a separate element).
     /// </summary>
-    private static async Task<string?> GetIPInfo()
+    public static async Task<AvailabilityResult> RunAvailabilityCheckResult()
     {
-        var webProxy = await GetWebProxy();
+        var time = await GetRealPingTimeInfo();
+        if (time <= 0)
+        {
+            return new AvailabilityResult(string.Format(ResUI.TestMeOutput, time, Global.None), null);
+        }
 
+        var webProxy = await GetWebProxy();
         var ipInfo = await GetIPInfo(webProxy);
-        return ipInfo?.ToString() ?? Global.None;
+        var info = ipInfo?.ToString() ?? Global.None;
+
+        return new AvailabilityResult(string.Format(ResUI.TestMeOutput, time, info), ipInfo?.CountryCode);
     }
 
     /// <summary>
@@ -124,7 +130,9 @@ public static class ConnectionHandler
             }
 
             var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
-            var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
+            // Prefer fields that carry a two-letter code so the flag can be shown; fall back to the
+            // textual country name only for display (it cannot be normalized into a flag code).
+            var country = ipInfo.country_code ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? ipInfo.country ?? ipInfo.country_name ?? "unknown";
 
             return new IpInfoResult(country, ip);
         }

@@ -11,4 +11,5 @@ public class ProfileExItem
     public int Sort { get; set; }
     public string? Message { get; set; }
     public string? IpInfo { get; set; }
+    public string? IpInfoCountryCode { get; set; }
 }

@@ -1,5 +1,6 @@
 using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Converters;
 
 namespace v2rayN.Desktop.Views;
 
@@ -18,6 +19,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
         txtRunningServerDisplay.Tapped += TxtRunningServerDisplay_Tapped;
         txtRunningInfoDisplay.Tapped += TxtRunningServerDisplay_Tapped;
+        imgRunningInfoFlag.Tapped += TxtRunningServerDisplay_Tapped;
 
         this.WhenActivated(disposables =>
         {
@@ -26,6 +28,8 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             this.OneWayBind(ViewModel, vm => vm.InboundLanDisplay, v => v.txtInboundLanDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningServerDisplay, v => v.txtRunningServerDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningInfoDisplay, v => v.txtRunningInfoDisplay.Text).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.RunningInfoCountryCode, v => v.imgRunningInfoFlag.Path, CountryCodeToFlagPathConverter.GetFlagPath).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.RunningInfoCountryCode, v => v.imgRunningInfoFlag.IsVisible, code => CountryCodeToFlagPathConverter.GetFlagPath(code) is not null).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
@@ -100,4 +104,5 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
     {
         ViewModel?.TestServerAvailability();
     }
+
 }

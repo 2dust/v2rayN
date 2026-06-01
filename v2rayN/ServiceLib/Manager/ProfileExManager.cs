@@ -30,6 +30,22 @@ public class ProfileExManager
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
         _lstProfileEx = new(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
+        // Startup migration: strip the legacy regional-indicator emoji prefix from saved IP info
+        // and backfill the separate country code column, so flags appear for already-tested
+        // servers without re-testing. Only rows that actually change are queued for an update.
+        foreach (var profileEx in _lstProfileEx)
+        {
+            var ipInfo = profileEx.IpInfo.NormalizeStoredIpInfo(out var countryCode);
+            if (profileEx.IpInfo == ipInfo && profileEx.IpInfoCountryCode == countryCode)
+            {
+                continue;
+            }
+
+            profileEx.IpInfo = ipInfo;
+            profileEx.IpInfoCountryCode = countryCode;
+            IndexIdEnqueue(profileEx.IndexId);
+        }
+        await SaveQueueIndexIds();
     }
 
     private void IndexIdEnqueue(string indexId)
@@ -150,11 +166,12 @@ public class ProfileExManager
         IndexIdEnqueue(indexId);
     }
 
-    public void SetTestIpInfo(string indexId, string ipInfo)
+    public void SetTestIpInfo(string indexId, string ipInfo, string? countryCode)
     {
         var profileEx = GetProfileExItem(indexId);
 
         profileEx.IpInfo = ipInfo;
+        profileEx.IpInfoCountryCode = countryCode.NormalizeCountryCode();
         IndexIdEnqueue(indexId);
     }
 
