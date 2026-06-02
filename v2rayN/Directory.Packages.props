@@ -35,7 +35,8 @@
         <PackageVersion Include="YamlDotNet" Version="18.0.0" />
         <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
         <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
-        <PackageVersion Include="DotNetProjects.SVGImage" Version="5.2.13" />
         <PackageVersion Include="Svg.Controls.Skia.Avalonia" Version="11.3.9.5" />
+        <PackageVersion Include="Flags.Icons.WPF" Version="3.1.0" />
+        <PackageVersion Include="Lipis.Flags.Avalonia" Version="11.3.2" />
     </ItemGroup>
 </Project>

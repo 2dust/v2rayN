@@ -1,77 +1,35 @@
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
+using Flags.Icons;
 
 namespace v2rayN.Converters;
 
 /// <summary>
-/// Converts a two-letter country code into a cached <see cref="DrawingImage"/> of the matching SVG
-/// flag bundled as a WPF resource. A standard <see cref="System.Windows.Controls.Image"/> renders
-/// the result: the third-party <c>SVGImage</c> control did not reliably draw the vector image in a
-/// single-file build, so the SVG is rasterized to a <see cref="Drawing"/> once and reused.
+/// Converts a two-letter country code into a <see cref="LipisFlag"/> value for the
+/// <c>Flags.Icons.WPF</c> FlagIcon control. Parsing is case-insensitive and returns
+/// <see cref="LipisFlag.None"/> when the code is empty or not a recognized flag, so the
+/// control renders nothing for unknown codes.
 /// </summary>
-public class CountryCodeToFlagDrawingConverter : IValueConverter
+public class CountryCodeToLipisFlagConverter : IValueConverter
 {
-    // Successful lookups: normalized code -> frozen DrawingImage (safe to share across threads).
-    private static readonly ConcurrentDictionary<string, DrawingImage> FlagImages = new(StringComparer.OrdinalIgnoreCase);
-
-    // Negative cache: codes with no bundled asset, so we probe the resource only once per code.
-    private static readonly ConcurrentDictionary<string, byte> MissingFlags = new(StringComparer.OrdinalIgnoreCase);
-
     /// <summary>
-    /// Returns the flag image for the given country code, or <c>null</c> when the code is invalid
-    /// or no matching SVG asset is bundled.
+    /// Resolves the <see cref="LipisFlag"/> for the given country code, or
+    /// <see cref="LipisFlag.None"/> when it is empty or unrecognized.
     /// </summary>
-    public static DrawingImage? GetFlagImage(string? countryCode)
+    public static LipisFlag GetFlag(string? countryCode)
     {
         var normalizedCode = countryCode.NormalizeCountryCode();
-        if (normalizedCode is null)
+        if (normalizedCode is not null && Enum.TryParse<LipisFlag>(normalizedCode, ignoreCase: true, out var flag))
         {
-            return null;
+            return flag;
         }
-
-        if (FlagImages.TryGetValue(normalizedCode, out var cachedImage))
-        {
-            return cachedImage;
-        }
-        if (MissingFlags.ContainsKey(normalizedCode))
-        {
-            return null;
-        }
-
-        // The "v2rayN;component" form makes the pack URI resolve reliably from this assembly,
-        // including in a single-file published build.
-        var uri = new Uri($"pack://application:,,,/v2rayN;component/Resources/Flags/{normalizedCode.ToLowerInvariant()}.svg", UriKind.Absolute);
-        try
-        {
-            using var stream = Application.GetResourceStream(uri)?.Stream;
-            if (stream is null)
-            {
-                MissingFlags.TryAdd(normalizedCode, 0);
-                return null;
-            }
-
-            // Rasterize the SVG into a WPF Drawing, then freeze it so it can be cached and shared.
-            var drawing = new SVGImage.SVG.SVGRender().LoadDrawing(stream);
-            var image = new DrawingImage(drawing);
-            if (image.CanFreeze)
-            {
-                image.Freeze();
-            }
-            return FlagImages.GetOrAdd(normalizedCode, image);
-        }
-        catch
-        {
-            MissingFlags.TryAdd(normalizedCode, 0);
-            return null;
-        }
+        return LipisFlag.None;
     }
 
-    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return GetFlagImage(value?.ToString());
+        return GetFlag(value?.ToString());
     }
 
     public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -81,16 +39,25 @@ public class CountryCodeToFlagDrawingConverter : IValueConverter
 }
 
 /// <summary>
-/// Maps a country code to <see cref="Visibility"/>: visible only when a flag asset exists, so the
-/// image is hidden (without leaving an empty gap) for missing or unknown codes.
+/// Maps a country code to <see cref="Visibility"/>: visible only when it resolves to a real flag,
+/// so the flag is hidden (without leaving an empty gap) for missing or unknown codes.
 /// </summary>
 public class CountryCodeToFlagVisibilityConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    /// <summary>
+    /// Returns <see cref="Visibility.Visible"/> when the code resolves to a real flag, otherwise
+    /// <see cref="Visibility.Collapsed"/> so no empty gap is left for missing or unknown codes.
+    /// </summary>
+    public static Visibility GetVisibility(string? countryCode)
     {
-        return CountryCodeToFlagDrawingConverter.GetFlagImage(value?.ToString()) is null
+        return CountryCodeToLipisFlagConverter.GetFlag(countryCode) == LipisFlag.None
             ? Visibility.Collapsed
             : Visibility.Visible;
+    }
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return GetVisibility(value?.ToString());
     }
 
     public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

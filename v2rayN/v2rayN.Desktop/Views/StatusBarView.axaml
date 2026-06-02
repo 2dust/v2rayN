@@ -77,7 +77,7 @@
                 <TextBlock x:Name="txtRunningServerDisplay" />
                 <Border Margin="1" />
                 <StackPanel Orientation="Horizontal">
-                    <!--  Country flag: SVG asset by ISO code; hidden when no matching asset exists.  -->
+                    <!--  Country flag from the embedded Lipis.Flags.Avalonia assets; hidden when no matching asset exists.  -->
                     <svg:Svg
                         x:Name="imgRunningInfoFlag"
                         Width="20"

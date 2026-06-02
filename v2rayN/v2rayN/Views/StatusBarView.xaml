@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:flag="clr-namespace:Flags.Icons.WPF;assembly=Flags.Icons.WPF"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
@@ -99,14 +100,13 @@
                     <TextBlock x:Name="txtRunningServerDisplay" Style="{StaticResource StatusbarItem}" />
                     <Border Margin="1" />
                     <StackPanel Orientation="Horizontal">
-                        <!--  Country flag: bound to a cached SVG DrawingImage; hidden when no asset matches the code.  -->
-                        <Image
+                        <!--  Country flag from the bundled Flags.Icons (Lipis set); hidden when the code is unknown.  -->
+                        <flag:FlagIcon
                             x:Name="imgRunningInfoFlag"
                             Width="20"
                             Height="15"
                             Margin="0,0,4,0"
-                            VerticalAlignment="Center"
-                            RenderOptions.BitmapScalingMode="HighQuality" />
+                            VerticalAlignment="Center" />
                         <TextBlock
                             x:Name="txtRunningInfoDisplay"
                             VerticalAlignment="Center"

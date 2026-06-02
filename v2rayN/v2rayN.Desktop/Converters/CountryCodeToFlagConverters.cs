@@ -25,7 +25,12 @@ public class CountryCodeToFlagPathConverter : IValueConverter
             return null;
         }
 
-        var uri = new Uri($"avares://v2rayN/Assets/Flags/{normalizedCode.ToLowerInvariant()}.svg");
+        // The flags ship as embedded resources inside the Lipis.Flags.Avalonia package. Note that
+        // this avares path targets the package's internal resource layout (Assets/4x3/<iso>.svg),
+        // not a documented public API: a future package version that reorganizes its resources could
+        // silently break flag lookup (AssetLoader.Exists returns false -> flag hidden) while the
+        // version bump still succeeds. Revisit this path when upgrading the package.
+        var uri = new Uri($"avares://Lipis.Flags.Avalonia/Assets/4x3/{normalizedCode.ToLowerInvariant()}.svg");
         // AssetLoader.Exists avoids handing the Svg control a path that would fail to load.
         return FlagAvailability.GetOrAdd(normalizedCode, _ => AssetLoader.Exists(uri)) ? uri.ToString() : null;
     }
