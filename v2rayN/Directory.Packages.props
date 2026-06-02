@@ -7,14 +7,14 @@
     <ItemGroup>
         <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
         <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
-        <PackageVersion Include="Avalonia.Desktop" Version="11.3.16" />
-        <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.16" />
+        <PackageVersion Include="Avalonia.Desktop" Version="11.3.17" />
+        <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.17" />
         <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
         <PackageVersion Include="DialogHost.Avalonia" Version="0.11.0" />
         <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.12" />
         <PackageVersion Include="CliWrap" Version="3.10.1" />
-        <PackageVersion Include="Downloader" Version="5.5.0" />
-        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+        <PackageVersion Include="Downloader" Version="5.7.0" />
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
         <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
         <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
         <PackageVersion Include="QRCoder" Version="1.8.0" />
@@ -28,11 +28,11 @@
         <PackageVersion Include="sqlite-net-e" Version="1.11.0" />
         <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.1.7" />
         <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-        <PackageVersion Include="Tmds.DBus.Protocol" Version="0.21.3" />
+        <PackageVersion Include="Tmds.DBus.Protocol" Version="0.94.1" />
         <PackageVersion Include="WebDav.Client" Version="2.9.0" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
         <PackageVersion Include="xunit.v3" Version="3.2.2" />
-        <PackageVersion Include="YamlDotNet" Version="17.1.0" />
+        <PackageVersion Include="YamlDotNet" Version="18.0.0" />
         <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
         <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
     </ItemGroup>
