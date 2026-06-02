@@ -1743,4 +1743,7 @@
   <data name="menuNewUpdate" xml:space="preserve">
     <value>有更新</value>
   </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>警告：Xray 中已移除 "allowInsecure" 。请改用证书固定 "pinnedPeerCertSha256" </value>
+  </data>
 </root>

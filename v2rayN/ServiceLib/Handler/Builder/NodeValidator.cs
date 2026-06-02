@@ -134,6 +134,12 @@ public class NodeValidator
             {
                 v.Error(string.Format(ResUI.MsgInvalidProperty, "TLS Certificate"));
             }
+
+            // Check for deprecated allowInsecure property when TLS is enabled
+            if (item.AllowInsecure == "true")
+            {
+                v.Warning(ResUI.MsgAllowInsecureDeprecated);
+            }
         }
 
         if (item.StreamSecurity == Global.StreamSecurityReality)

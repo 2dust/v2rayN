@@ -1746,4 +1746,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
   </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Warning: "allowInsecure" has been removed from Xray. Please use "pinnedPeerCertSha256" certificate instead.</value>
+  </data>
 </root>

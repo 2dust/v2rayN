@@ -1915,6 +1915,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Warning: &quot;allowInsecure&quot; has been removed from Xray. Please use &quot;pinnedPeerCertSha256&quot; certificate instead. 的本地化字符串。
+        /// </summary>
+        public static string MsgAllowInsecureDeprecated {
+            get {
+                return ResourceManager.GetString("MsgAllowInsecureDeprecated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0} has a new version available: {1} 的本地化字符串。
         /// </summary>
         public static string MsgCheckUpdateHasNewVersion {
