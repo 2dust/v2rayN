@@ -1744,6 +1744,6 @@
     <value>有更新</value>
   </data>
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
-    <value>警告：Xray 中已移除 "allowInsecure" 。請改用憑證固定 "pinnedPeerCertSha256"</value>
+    <value>警告：Xray 將在 2026.8.1 停用跳過憑證驗證 allowInsecure ，請盡快改用憑證固定指紋 pinnedPeerCertSha256。到期後無法使用 allowInsecure。</value>
   </data>
 </root>
