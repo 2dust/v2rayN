@@ -4,16 +4,15 @@ using System.Security.Cryptography.X509Certificates;
 namespace ServiceLib.Manager;
 
 /// <summary>
-/// Manager for certificate operations with CA pinning to prevent MITM attacks
+///     Manager for certificate operations with CA pinning to prevent MITM attacks
 /// </summary>
 public class CertPemManager
 {
     private static readonly string _tag = "CertPemManager";
     private static readonly Lazy<CertPemManager> _instance = new(() => new());
-    public static CertPemManager Instance => _instance.Value;
 
     /// <summary>
-    /// Trusted CA certificate thumbprints (SHA256) to prevent MITM attacks
+    ///     Trusted CA certificate thumbprints (SHA256) to prevent MITM attacks
     /// </summary>
     private static readonly HashSet<string> TrustedCaThumbprints = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -186,10 +185,13 @@ public class CertPemManager
         "B49141502D00663D740F2E7EC340C52800962666121A36D09CF7DD2B90384FB4", // e-Szigno TLS Root CA 2023
     };
 
+    public static CertPemManager Instance => _instance.Value;
+
     /// <summary>
-    /// Get certificate in PEM format from a server with CA pinning validation
+    ///     Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4, bool allowInsecure = false)
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4,
+        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
     {
         try
         {
@@ -202,13 +204,14 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
+                    allowInsecure));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
                 TargetHost = serverName,
-                RemoteCertificateValidationCallback = callback
+                RemoteCertificateValidationCallback = callback,
             };
 
             await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
@@ -235,9 +238,10 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Get certificate chain in PEM format from a server with CA pinning validation
+    ///     Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4, bool allowInsecure = false)
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4,
+        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
     {
         var pemList = new List<string>();
         try
@@ -251,13 +255,14 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
+                    allowInsecure));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
                 TargetHost = serverName,
-                RemoteCertificateValidationCallback = callback
+                RemoteCertificateValidationCallback = callback,
             };
 
             await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
@@ -287,13 +292,14 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Validate server certificate with CA pinning
+    ///     Validate server certificate with CA pinning
     /// </summary>
-    private bool ValidateServerCertificate(
+    private static bool ValidateServerCertificate(
         object _,
         X509Certificate? certificate,
         X509Chain? chain,
         SslPolicyErrors sslPolicyErrors,
+        List<string> verifyPeerCertByName,
         bool allowInsecure)
     {
         if (certificate == null)
@@ -307,22 +313,21 @@ public class CertPemManager
             return true;
         }
 
-        // Check certificate name mismatch
-        if (sslPolicyErrors.HasFlag(SslPolicyErrors.RemoteCertificateNameMismatch))
-        {
-            return false;
-        }
-
         // Build certificate chain
         var cert2 = certificate as X509Certificate2 ?? new X509Certificate2(certificate);
         var certChain = chain ?? new X509Chain();
 
-        certChain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-        certChain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
-        certChain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
-        certChain.ChainPolicy.VerificationTime = DateTime.Now;
+        if (chain == null)
+        {
+            certChain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+            certChain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+            certChain.ChainPolicy.VerificationTime = DateTime.UtcNow;
 
-        certChain.Build(cert2);
+            if (!certChain.Build(cert2))
+            {
+                return false;
+            }
+        }
 
         // Find root CA
         if (certChain.ChainElements.Count == 0)
@@ -330,10 +335,37 @@ public class CertPemManager
             return false;
         }
 
-        var rootCert = certChain.ChainElements[certChain.ChainElements.Count - 1].Certificate;
+        var rootCert = certChain.ChainElements[^1].Certificate;
         var rootThumbprint = rootCert.GetCertHashString(HashAlgorithmName.SHA256);
 
-        return TrustedCaThumbprints.Contains(rootThumbprint);
+        if (!TrustedCaThumbprints.Contains(rootThumbprint))
+        {
+            return false;
+        }
+
+        if (!sslPolicyErrors.HasFlag(
+                SslPolicyErrors.RemoteCertificateNameMismatch))
+        {
+            return true;
+        }
+
+        if (verifyPeerCertByName.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var ext in cert2.Extensions)
+        {
+            if (ext is not X509SubjectAlternativeNameExtension san)
+            {
+                continue;
+            }
+
+            return san.EnumerateDnsNames().Any(dnsName =>
+                verifyPeerCertByName.Contains(dnsName, StringComparer.OrdinalIgnoreCase));
+        }
+
+        return false;
     }
 
     public static string ExportCertToPem(X509Certificate2 cert)
@@ -344,8 +376,8 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Parse concatenated PEM certificates string into a list of individual certificates
-    /// Normalizes format: removes line breaks from base64 content for better compatibility
+    ///     Parse concatenated PEM certificates string into a list of individual certificates
+    ///     Normalizes format: removes line breaks from base64 content for better compatibility
     /// </summary>
     /// <param name="pemChain">Concatenated PEM certificates string (supports both \r\n and \n line endings)</param>
     /// <returns>List of individual PEM certificate strings with normalized format</returns>
@@ -397,18 +429,13 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Concatenate a list of PEM certificates into a single string
+    ///     Concatenate a list of PEM certificates into a single string
     /// </summary>
     /// <param name="pemList">List of individual PEM certificate strings</param>
     /// <returns>Concatenated PEM certificates string</returns>
-    public static string ConcatenatePemChain(IEnumerable<string> pemList)
+    public static string ConcatenatePemChain(IEnumerable<string>? pemList)
     {
-        if (pemList == null)
-        {
-            return string.Empty;
-        }
-
-        return string.Concat(pemList);
+        return pemList == null ? string.Empty : string.Concat(pemList);
     }
 
     public static string GetCertSha256Thumbprint(string pemCert, bool includeColon = false)
@@ -417,11 +444,7 @@ public class CertPemManager
         {
             var cert = X509Certificate2.CreateFromPem(pemCert);
             var thumbprint = cert.GetCertHashString(HashAlgorithmName.SHA256);
-            if (includeColon)
-            {
-                return string.Join(":", thumbprint.Chunk(2).Select(c => new string(c)));
-            }
-            return thumbprint;
+            return includeColon ? string.Join(":", thumbprint.Chunk(2).Select(c => new string(c))) : thumbprint;
         }
         catch
         {
