@@ -1746,4 +1746,7 @@
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
     <value>警告：Xray 将在 2026.8.1 禁用跳过证书验证 allowInsecure ，请尽快改用证书固定指纹 pinnedPeerCertSha256。到期后无法使用 </value>
   </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Verify Peer Cert By Name</value>
+  </data>
 </root>

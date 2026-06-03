@@ -73,6 +73,10 @@ public class BaseFmt
         {
             dicQuery.Add("ech", Utils.UrlEncode(item.EchConfigList));
         }
+        if (item.VerifyPeerCertByName.IsNotEmpty())
+        {
+            dicQuery.Add("vcn", Utils.UrlEncode(item.VerifyPeerCertByName));
+        }
         if (item.CertSha.IsNotEmpty())
         {
             dicQuery.Add("pcs", Utils.UrlEncode(item.CertSha));
@@ -227,6 +231,7 @@ public class BaseFmt
         item.SpiderX = GetQueryDecoded(query, "spx");
         item.Mldsa65Verify = GetQueryDecoded(query, "pqv");
         item.EchConfigList = GetQueryDecoded(query, "ech");
+        item.VerifyPeerCertByName = GetQueryDecoded(query, "vcn");
         item.CertSha = GetQueryDecoded(query, "pcs");
 
         var finalmaskDecoded = GetQueryDecoded(query, "fm");

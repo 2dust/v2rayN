@@ -384,6 +384,7 @@ public partial class CoreConfigV2rayService
                     alpn = _node.GetAlpn(),
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     echConfigList = _node.EchConfigList.NullIfEmpty(),
+                    verifyPeerCertByName = _node.VerifyPeerCertByName.NullIfEmpty(),
                 };
                 if (sni.IsNotEmpty())
                 {

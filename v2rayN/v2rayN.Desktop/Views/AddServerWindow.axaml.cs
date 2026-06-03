@@ -240,6 +240,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.togAllowInsecureCertFetch.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecureCertFetch, v => v.txtAllowInsecureCertFetchTips.IsVisible).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.VerifyPeerCertByName, v => v.txtVerifyPeerCertByName.Text).DisposeWith(disposables);
 
             //reality
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI2.Text).DisposeWith(disposables);
