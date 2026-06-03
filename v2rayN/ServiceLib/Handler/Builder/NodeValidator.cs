@@ -136,7 +136,9 @@ public class NodeValidator
             }
 
             // Check for deprecated allowInsecure property when TLS is enabled
-            if (item.AllowInsecure == "true")
+            if (item.AllowInsecure == "true"
+                && item.Cert.IsNullOrEmpty()
+                && item.CertSha.IsNullOrEmpty())
             {
                 v.Warning(ResUI.MsgAllowInsecureDeprecated);
             }

@@ -4,16 +4,15 @@ using System.Security.Cryptography.X509Certificates;
 namespace ServiceLib.Manager;
 
 /// <summary>
-/// Manager for certificate operations with CA pinning to prevent MITM attacks
+///     Manager for certificate operations with CA pinning to prevent MITM attacks
 /// </summary>
 public class CertPemManager
 {
     private static readonly string _tag = "CertPemManager";
     private static readonly Lazy<CertPemManager> _instance = new(() => new());
-    public static CertPemManager Instance => _instance.Value;
 
     /// <summary>
-    /// Trusted CA certificate thumbprints (SHA256) to prevent MITM attacks
+    ///     Trusted CA certificate thumbprints (SHA256) to prevent MITM attacks
     /// </summary>
     private static readonly HashSet<string> TrustedCaThumbprints = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -24,21 +23,17 @@ public class CertPemManager
         "D7A7A0FB5D7E2731D771E9484EBCDEF71D5F0C3E0A2948782BC83EE0EA699EF4", // Comodo AAA Services root
         "85A0DD7DD720ADB7FF05F83D542B209DC7FF4528F7D677B18389FEA5E5C49E86", // QuoVadis Root CA 2
         "18F1FC7F205DF8ADDDEB7FE007DD57E3AF375A9C4D8D73546BF4F1FED1E18D35", // QuoVadis Root CA 3
-        "CECDDC905099D8DADFC5B1D209B737CBE2C18CFB2C10C0FF0BCF0D3286FC1AA2", // XRamp Global CA Root
         "C3846BF24B9E93CA64274C0EC67C1ECC5E024FFCACD2D74019350E81FE546AE4", // Go Daddy Class 2 CA
         "1465FA205397B876FAA6F0A9958E5590E40FCC7FAA4FB7C2C8677521FB5FB658", // Starfield Class 2 CA
         "3E9099B5015E8F486C00BCEA9D111EE721FABA355A89BCF1DF69561E3DC6325C", // DigiCert Assured ID Root CA
         "4348A0E9444C78CB265E058D5E8944B4D84F9662BD26DB257F8934A443C70161", // DigiCert Global Root CA
         "7431E5F4C3C1CE4690774F0B61E05440883BA9A01ED00BA6ABD7806ED3B118CF", // DigiCert High Assurance EV Root CA
         "62DD0BE9B9F50A163EA0F8E75C053B1ECA57EA55C8688F647C6881F2C8357B95", // SwissSign Gold CA - G2
-        "F1C1B50AE5A20DD8030EC9F6BC24823DD367B5255759B4E71B61FCE9F7375D73", // SecureTrust CA
-        "4200F5043AC8590EBB527D209ED1503029FBCBD41CA1B506EC27F15ADE7DAC69", // Secure Global CA
         "0C2CD63DF7806FA399EDE809116B575BF87989F06518F9808C860503178BAF66", // COMODO Certification Authority
         "1793927A0614549789ADCE2F8F34F7F0B66D0F3AE3A3B84D21EC15DBBA4FADC7", // COMODO ECC Certification Authority
         "41C923866AB4CAD6B7AD578081582E020797A6CBDF4FFF78CE8396B38937D7F5", // OISTE WISeKey Global Root GA CA
         "E3B6A2DB2ED7CE48842F7AC53241C7B71D54144BFB40C11F3F1D0B42F5EEA12D", // Certigna
         "C0A6F4DC63A24BFDCF54EF2A6A082A0A72DE35803E2FF5FF527AE5D87206DFD5", // ePKI Root Certification Authority
-        "EAA962C4FA4A6BAFEBE415196D351CCD888D4F53F3FA8AE6D7C466A94E6042BB", // certSIGN ROOT CA
         "6C61DAC3A2DEF031506BE036D2A6FE401994FBD13DF9C8D466599274C446EC98", // NetLock Arany (Class Gold) Főtanúsítvány
         "3C5F81FEA5FAB82C64BFA2EAECAFCDE8E077FC8620A7CAE537163DF36EDBF378", // Microsec e-Szigno Root CA 2009
         "CBB522D7B7F127AD6A0113865BDF1CD4102E7D0759AF635A7CF4720DC963C53B", // GlobalSign Root CA - R3
@@ -46,10 +41,6 @@ public class CertPemManager
         "45140B3247EB9CC8C5B4F0D7B53091F73292089E6E5A63E2749DD3ACA9198EDA", // Go Daddy Root Certificate Authority - G2
         "2CE1CB0BF9D2F9E102993FBE215152C3B2DD0CABDE1C68E5319B839154DBB7F5", // Starfield Root Certificate Authority - G2
         "568D6905A2C88708A4B3025190EDCFEDB1974A606A13C6E5290FCB2AE63EDAB5", // Starfield Services Root Certificate Authority - G2
-        "0376AB1D54C5F9803CE4B2E201A0EE7EEF7B57B636E8A93C9B8D4860C96F5FA7", // AffirmTrust Commercial
-        "0A81EC5A929777F145904AF38D5D509F66B5E2C58FCDB531058B0E17F3F0B41B", // AffirmTrust Networking
-        "70A73F7F376B60074248904534B11482D5BF0E698ECC498DF52577EBF2E93B9A", // AffirmTrust Premium
-        "BD71FDF6DA97E4CF62D1647ADD2581B07D79ADF8397EB4ECBA9C5E8488821423", // AffirmTrust Premium ECC
         "5C58468D55F58E497E743982D2B50010B6D165374ACF83A7D4A32DB768C4408E", // Certum Trusted Network CA
         "BFD88FE1101C41AE3E801BF8BE56350EE9BAD1A6B9BD515EDC5C6D5B8711AC44", // TWCA Root Certification Authority
         "513B2CECB810D4CDE5DD85391ADFC6C2DD60D87BB736D2B521484AA47A0EBEF6", // Security Communication RootCA2
@@ -62,7 +53,6 @@ public class CertPemManager
         "E23D4A036D7B70E9F595B1422079D2B91EDFBB1FB651A0633EAA8A9DC5F80703", // CA Disig Root R2
         "9A6EC012E1A7DA9DBE34194D478AD7C0DB1822FB071DF12981496ED104384113", // ACCVRAIZ1
         "59769007F7685D0FCD50872F9F95D5755A5B2B457D81F3692B610A98672F0E1B", // TWCA Global Root CA
-        "DD6936FE21F8F077C123A1A521C12224F72255B73E03A7260693E8A24B0FA389", // TeliaSonera Root CA v1
         "91E2F5788D5810EBA7BA58737DE1548A8ECACD014598BC0B143E041B17052552", // T-TeleSec GlobalRoot Class 2
         "F356BEA244B7A91EB35D53CA9AD7864ACE018E2D35D5F8F96DDF68A6F41AA474", // Atos TrustedRoot 2011
         "8A866FD1B276B57E578E921C65828A2BED58E9F2F288054134B7F1F4BFC9CC74", // QuoVadis Root CA 1 G3
@@ -116,16 +106,12 @@ public class CertPemManager
         "C741F70F4B2A8D88BF2E71C14122EF53EF10EBA0CFA5E64CFA20F418853073E0", // Microsoft RSA Root Certificate Authority 2017
         "BEB00B30839B9BC32C32E4447905950641F26421B15ED089198B518AE2EA1B99", // e-Szigno Root CA 2017
         "657CFE2FA73FAA38462571F332A2363A46FCE7020951710702CDFBB6EEDA3305", // certSIGN Root CA G2
-        "97552015F5DDFC3C8788C006944555408894450084F100867086BC1A2BB58DC8", // Trustwave Global Certification Authority
-        "945BBC825EA554F489D1FD51A73DDF2EA624AC7019A05205225C22A78CCFA8B4", // Trustwave Global ECC P256 Certification Authority
-        "55903859C8C0C3EBB8759ECE4E2557225FF5758BBD38EBD48276601E1BD58097", // Trustwave Global ECC P384 Certification Authority
         "88F438DCF8FFD1FA8F429115FFE5F82AE1E06E0C70C375FAAD717B34A49E7265", // NAVER Global Root Certification Authority
         "554153B13D2CF9DDB753BFBE1A4E0AE08D0AA4187058FE60A2B862B2E4B87BCB", // AC RAIZ FNMT-RCM SERVIDORES SEGUROS
         "319AF0A7729E6F89269C131EA6A3A16FCD86389FDCAB3C47A4A675C161A3F974", // GlobalSign Secure Mail Root R45
         "5CBF6FB81FD417EA4128CD6F8172A3C9402094F74AB2ED3A06B4405D04F30B19", // GlobalSign Secure Mail Root E45
         "4FA3126D8D3A11D1C4855A4F807CBAD6CF919D3A5A88B03BEA2C6372D93C40C9", // GlobalSign Root R46
         "CBB9C44D84B8043E1050EA31A69F514955D7BFD2E2C6B49301019AD61D9F5058", // GlobalSign Root E46
-        "9A296A5182D1D451A2E37F439B74DAAFA267523329F90F9A0D2007C334E23C9A", // GLOBALTRUST 2020
         "FB8FEC759169B9106B1E511644C618C51304373F6C0643088D8BEFFD1B997599", // ANF Secure Server Root CA
         "6B328085625318AA50D173C98D8BDA09D57E27413D114CF787A0F5D06C030CF6", // Certum EC-384 CA
         "FE7696573855773E37A95E7AD4D9CC96C30157C15D31765BA9B15704E1AE78FD", // Certum Trusted Root CA
@@ -179,7 +165,6 @@ public class CertPemManager
         "578AF4DED0853F4E5998DB4AEAF9CBEA8D945F60B620A38D1A3C13B2BC7BA8E1", // Telekom Security TLS ECC Root 2020
         "78A656344F947E9CC0F734D9053D32F6742086B6B9CD2CAE4FAE1A2E4EFDE048", // Telekom Security SMIME RSA Root 2023
         "EFC65CADBB59ADB6EFE84DA22311B35624B71B3B1EA0DA8B6655174EC8978646", // Telekom Security TLS RSA Root 2023
-        "BEF256DAF26E9C69BDEC1602359798F3CAF71821A03E018257C53C65617F3D4A", // FIRMAPROFESIONAL CA ROOT-A WEB
         "3F63BB2814BE174EC8B6439CF08D6D56F0B7C405883A5648A334424D6B3EC558", // TWCA CYBER Root CA
         "3A0072D49FFC04E996C59AEB75991D3C340F3615D6FD4DCE90AC0B3D88EAD4F4", // TWCA Global Root CA G2
         "3F034BB5704D44B2D08545A02057DE93EBF3905FCE721ACBC730C06DDAEE904E", // SecureSign Root CA12
@@ -200,10 +185,13 @@ public class CertPemManager
         "B49141502D00663D740F2E7EC340C52800962666121A36D09CF7DD2B90384FB4", // e-Szigno TLS Root CA 2023
     };
 
+    public static CertPemManager Instance => _instance.Value;
+
     /// <summary>
-    /// Get certificate in PEM format from a server with CA pinning validation
+    ///     Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4, bool allowInsecure = false)
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4,
+        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
     {
         try
         {
@@ -216,13 +204,14 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
+                    allowInsecure));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
                 TargetHost = serverName,
-                RemoteCertificateValidationCallback = callback
+                RemoteCertificateValidationCallback = callback,
             };
 
             await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
@@ -249,9 +238,10 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Get certificate chain in PEM format from a server with CA pinning validation
+    ///     Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4, bool allowInsecure = false)
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4,
+        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
     {
         var pemList = new List<string>();
         try
@@ -265,13 +255,14 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
+                    allowInsecure));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
             {
                 TargetHost = serverName,
-                RemoteCertificateValidationCallback = callback
+                RemoteCertificateValidationCallback = callback,
             };
 
             await ssl.AuthenticateAsClientAsync(sslOptions, cts.Token);
@@ -301,13 +292,14 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Validate server certificate with CA pinning
+    ///     Validate server certificate with CA pinning
     /// </summary>
-    private bool ValidateServerCertificate(
+    private static bool ValidateServerCertificate(
         object _,
         X509Certificate? certificate,
         X509Chain? chain,
         SslPolicyErrors sslPolicyErrors,
+        List<string> verifyPeerCertByName,
         bool allowInsecure)
     {
         if (certificate == null)
@@ -321,22 +313,21 @@ public class CertPemManager
             return true;
         }
 
-        // Check certificate name mismatch
-        if (sslPolicyErrors.HasFlag(SslPolicyErrors.RemoteCertificateNameMismatch))
-        {
-            return false;
-        }
-
         // Build certificate chain
         var cert2 = certificate as X509Certificate2 ?? new X509Certificate2(certificate);
         var certChain = chain ?? new X509Chain();
 
-        certChain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-        certChain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
-        certChain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
-        certChain.ChainPolicy.VerificationTime = DateTime.Now;
+        if (chain == null)
+        {
+            certChain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+            certChain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+            certChain.ChainPolicy.VerificationTime = DateTime.UtcNow;
 
-        certChain.Build(cert2);
+            if (!certChain.Build(cert2))
+            {
+                return false;
+            }
+        }
 
         // Find root CA
         if (certChain.ChainElements.Count == 0)
@@ -344,10 +335,37 @@ public class CertPemManager
             return false;
         }
 
-        var rootCert = certChain.ChainElements[certChain.ChainElements.Count - 1].Certificate;
+        var rootCert = certChain.ChainElements[^1].Certificate;
         var rootThumbprint = rootCert.GetCertHashString(HashAlgorithmName.SHA256);
 
-        return TrustedCaThumbprints.Contains(rootThumbprint);
+        if (!TrustedCaThumbprints.Contains(rootThumbprint))
+        {
+            return false;
+        }
+
+        if (!sslPolicyErrors.HasFlag(
+                SslPolicyErrors.RemoteCertificateNameMismatch))
+        {
+            return true;
+        }
+
+        if (verifyPeerCertByName.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var ext in cert2.Extensions)
+        {
+            if (ext is not X509SubjectAlternativeNameExtension san)
+            {
+                continue;
+            }
+
+            return san.EnumerateDnsNames().Any(dnsName =>
+                verifyPeerCertByName.Contains(dnsName, StringComparer.OrdinalIgnoreCase));
+        }
+
+        return false;
     }
 
     public static string ExportCertToPem(X509Certificate2 cert)
@@ -358,8 +376,8 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Parse concatenated PEM certificates string into a list of individual certificates
-    /// Normalizes format: removes line breaks from base64 content for better compatibility
+    ///     Parse concatenated PEM certificates string into a list of individual certificates
+    ///     Normalizes format: removes line breaks from base64 content for better compatibility
     /// </summary>
     /// <param name="pemChain">Concatenated PEM certificates string (supports both \r\n and \n line endings)</param>
     /// <returns>List of individual PEM certificate strings with normalized format</returns>
@@ -411,18 +429,13 @@ public class CertPemManager
     }
 
     /// <summary>
-    /// Concatenate a list of PEM certificates into a single string
+    ///     Concatenate a list of PEM certificates into a single string
     /// </summary>
     /// <param name="pemList">List of individual PEM certificate strings</param>
     /// <returns>Concatenated PEM certificates string</returns>
-    public static string ConcatenatePemChain(IEnumerable<string> pemList)
+    public static string ConcatenatePemChain(IEnumerable<string>? pemList)
     {
-        if (pemList == null)
-        {
-            return string.Empty;
-        }
-
-        return string.Concat(pemList);
+        return pemList == null ? string.Empty : string.Concat(pemList);
     }
 
     public static string GetCertSha256Thumbprint(string pemCert, bool includeColon = false)
@@ -431,11 +444,7 @@ public class CertPemManager
         {
             var cert = X509Certificate2.CreateFromPem(pemCert);
             var thumbprint = cert.GetCertHashString(HashAlgorithmName.SHA256);
-            if (includeColon)
-            {
-                return string.Join(":", thumbprint.Chunk(2).Select(c => new string(c)));
-            }
-            return thumbprint;
+            return includeColon ? string.Join(":", thumbprint.Chunk(2).Select(c => new string(c))) : thumbprint;
         }
         catch
         {
