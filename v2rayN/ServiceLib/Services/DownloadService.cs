@@ -1,4 +1,7 @@
+using System.IO.Compression;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace ServiceLib.Services;
 
@@ -158,7 +161,8 @@ public class DownloadService
             var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
-                UseProxy = webProxy != null
+                UseProxy = webProxy != null,
+                AutomaticDecompression = DecompressionMethods.All
             });
 
             if (userAgent.IsNullOrEmpty())
@@ -175,8 +179,8 @@ public class DownloadService
             }
 
             using var cts = new CancellationTokenSource();
-            var result = await client.GetStringAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
-            return result;
+            var bytes = await client.GetByteArrayAsync(url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+            return Utils.DecodeDownloadedContent(bytes);
         }
         catch (Exception ex)
         {

@@ -1,3 +1,4 @@
+using System.Text;
 using Downloader;
 
 namespace ServiceLib.Helper;
@@ -46,11 +47,12 @@ public class DownloaderHelper
 
         using var cts = new CancellationTokenSource();
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
-        using StreamReader reader = new(stream);
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream, cts.Token);
 
         downloadOpt = null;
 
-        return await reader.ReadToEndAsync(cts.Token);
+        return Utils.DecodeDownloadedContent(memoryStream.ToArray());
     }
 
     public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)

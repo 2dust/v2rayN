@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.IO.Compression;
 using System.Security.Principal;
 using CliWrap;
 using CliWrap.Buffered;
@@ -104,6 +105,33 @@ public class Utils
     /// </summary>
     /// <param name="plainText"></param>
     /// <returns></returns>
+    public static byte[] DecompressContentIfNeeded(byte[] data)
+    {
+        if (data.Length < 2 || data[0] != 0x1F || data[1] != 0x8B)
+        {
+            return data;
+        }
+
+        try
+        {
+            using var input = new MemoryStream(data);
+            using var gzip = new GZipStream(input, CompressionMode.Decompress);
+            using var output = new MemoryStream();
+            gzip.CopyTo(output);
+            return output.ToArray();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return data;
+        }
+    }
+
+    public static string DecodeDownloadedContent(byte[] data)
+    {
+        return Encoding.UTF8.GetString(DecompressContentIfNeeded(data));
+    }
+
     public static string Base64Decode(string? plainText)
     {
         try
