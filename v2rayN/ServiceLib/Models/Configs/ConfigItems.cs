@@ -9,8 +9,6 @@ public class CoreBasicItem
 
     public bool MuxEnabled { get; set; }
 
-    public bool DefAllowInsecure { get; set; }
-
     public string DefFingerprint { get; set; }
 
     public string DefUserAgent { get; set; }

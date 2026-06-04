@@ -1107,10 +1107,6 @@ public static class ConfigHandler
             }
             else
             {
-                if (profileItem.AllowInsecure.IsNullOrEmpty())
-                {
-                    profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
-                }
                 if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == Global.StreamSecurityReality)
                 {
                     profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;

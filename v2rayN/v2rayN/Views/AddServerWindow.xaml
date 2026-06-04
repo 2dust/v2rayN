@@ -1438,13 +1438,12 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAllowInsecure}" />
-                    <ComboBox
-                        x:Name="cmbAllowInsecure"
+                    <ToggleButton
+                        x:Name="togAllowInsecure"
                         Grid.Row="4"
                         Grid.Column="1"
-                        Width="200"
                         Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefComboBox}" />
+                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="5"

@@ -1108,12 +1108,12 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbAllowInsecure}" />
-                    <ComboBox
-                        x:Name="cmbAllowInsecure"
+                    <ToggleSwitch
+                        x:Name="togAllowInsecure"
                         Grid.Row="4"
                         Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="5"

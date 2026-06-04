@@ -9,6 +9,9 @@ public class AddServerViewModel : MyReactiveObject
     public string? CoreType { get; set; }
 
     [Reactive]
+    public bool AllowInsecure { get; set; }
+
+    [Reactive]
     public string Cert { get; set; }
 
     [Reactive]
@@ -273,8 +276,9 @@ public class AddServerViewModel : MyReactiveObject
             SelectedSource = JsonUtils.DeepCopy(profileItem);
         }
         CoreType = SelectedSource?.CoreType?.ToString();
-        Cert = SelectedSource?.Cert?.ToString() ?? string.Empty;
-        CertSha = SelectedSource?.CertSha?.ToString() ?? string.Empty;
+        AllowInsecure = SelectedSource?.AllowInsecure == "true";
+        Cert = SelectedSource?.Cert ?? string.Empty;
+        CertSha = SelectedSource?.CertSha ?? string.Empty;
 
         var protocolExtra = SelectedSource?.GetProtocolExtra() ?? new();
         var transport = SelectedSource?.GetTransportExtra() ?? new();
@@ -352,7 +356,8 @@ public class AddServerViewModel : MyReactiveObject
                 return;
             }
         }
-        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
+        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
+        SelectedSource.AllowInsecure = AllowInsecure ? "true" : "false";
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         if (!Global.Networks.Contains(SelectedSource.Network))

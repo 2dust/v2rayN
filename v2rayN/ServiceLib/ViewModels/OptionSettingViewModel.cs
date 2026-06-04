@@ -17,7 +17,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool MuxEnabled { get; set; }
     [Reactive] public bool LogEnabled { get; set; }
     [Reactive] public string Loglevel { get; set; }
-    [Reactive] public bool DefAllowInsecure { get; set; }
     [Reactive] public string DefFingerprint { get; set; }
     [Reactive] public string DefUserAgent { get; set; }
     [Reactive] public string SendThrough { get; set; }
@@ -155,7 +154,6 @@ public class OptionSettingViewModel : MyReactiveObject
         MuxEnabled = _config.CoreBasicItem.MuxEnabled;
         LogEnabled = _config.CoreBasicItem.LogEnabled;
         Loglevel = _config.CoreBasicItem.Loglevel;
-        DefAllowInsecure = _config.CoreBasicItem.DefAllowInsecure;
         DefFingerprint = _config.CoreBasicItem.DefFingerprint;
         DefUserAgent = _config.CoreBasicItem.DefUserAgent;
         SendThrough = _config.CoreBasicItem.SendThrough ?? string.Empty;
@@ -347,7 +345,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.LogEnabled = LogEnabled;
         _config.CoreBasicItem.Loglevel = Loglevel;
         _config.CoreBasicItem.MuxEnabled = MuxEnabled;
-        _config.CoreBasicItem.DefAllowInsecure = DefAllowInsecure;
         _config.CoreBasicItem.DefFingerprint = DefFingerprint;
         _config.CoreBasicItem.DefUserAgent = DefUserAgent;
         _config.CoreBasicItem.SendThrough = SendThrough.TrimEx();
