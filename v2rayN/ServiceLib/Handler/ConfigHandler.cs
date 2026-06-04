@@ -39,7 +39,6 @@ public static class ConfigHandler
         {
             LogEnabled = false,
             Loglevel = "warning",
-            MuxEnabled = false,
         };
 
         if (config.Inbound == null)

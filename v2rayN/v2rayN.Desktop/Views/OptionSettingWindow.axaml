@@ -181,19 +181,6 @@
                             Margin="{StaticResource Margin4}" />
 
                         <TextBlock
-                            Grid.Row="11"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                        <ToggleSwitch
-                            x:Name="togmuxEnabled"
-                            Grid.Row="11"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
                             Grid.Row="12"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"

@@ -62,7 +62,7 @@ public partial class CoreConfigV2rayService
         try
         {
             var protocolExtra = _node.GetProtocolExtra();
-            var muxEnabled = _node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
+            var muxEnabled = _node.MuxEnabled ?? false;
             switch (_node.ConfigType)
             {
                 case EConfigType.VMess:

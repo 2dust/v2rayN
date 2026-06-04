@@ -12,6 +12,9 @@ public class AddServerViewModel : MyReactiveObject
     public bool AllowInsecure { get; set; }
 
     [Reactive]
+    public bool MuxEnabled { get; set; }
+
+    [Reactive]
     public string Cert { get; set; }
 
     [Reactive]
@@ -277,6 +280,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         CoreType = SelectedSource?.CoreType?.ToString();
         AllowInsecure = SelectedSource?.AllowInsecure == "true";
+        MuxEnabled = SelectedSource?.MuxEnabled == true;
         Cert = SelectedSource?.Cert ?? string.Empty;
         CertSha = SelectedSource?.CertSha ?? string.Empty;
 
@@ -358,6 +362,7 @@ public class AddServerViewModel : MyReactiveObject
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
         SelectedSource.AllowInsecure = AllowInsecure ? "true" : "false";
+        SelectedSource.MuxEnabled = MuxEnabled;
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         if (!Global.Networks.Contains(SelectedSource.Network))

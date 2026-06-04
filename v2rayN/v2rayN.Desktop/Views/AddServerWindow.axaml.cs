@@ -137,14 +137,14 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.AlterId, v => v.txtAlterId.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.VmessSecurity, v => v.cmbSecurity.SelectedValue).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled.IsChecked).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Shadowsocks:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId3.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SsMethod, v => v.cmbSecurity3.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled3.IsChecked).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.SOCKS:
@@ -157,13 +157,13 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId5.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Flow, v => v.cmbFlow5.SelectedValue).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.VlessEncryption, v => v.txtSecurity5.Text).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled5.IsChecked).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled5.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Trojan:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId6.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.Flow, v => v.cmbFlow6.SelectedValue).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.SelectedSource.MuxEnabled, v => v.togmuxEnabled6.IsChecked).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled6.IsChecked).DisposeWith(disposables);
                     break;
 
                 case EConfigType.Hysteria2:

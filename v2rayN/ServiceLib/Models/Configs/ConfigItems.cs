@@ -7,8 +7,6 @@ public class CoreBasicItem
 
     public string Loglevel { get; set; }
 
-    public bool MuxEnabled { get; set; }
-
     public string DefFingerprint { get; set; }
 
     public string DefUserAgent { get; set; }
