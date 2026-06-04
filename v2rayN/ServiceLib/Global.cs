@@ -330,12 +330,12 @@ public class Global
 
     public static readonly Dictionary<string, string> KcpHeaderMaskMap = new()
     {
-        { "srtp", "header-srtp" },
-        { "utp", "header-utp" },
-        { "wechat-video", "header-wechat" },
-        { "dtls", "header-dtls" },
-        { "wireguard", "header-wireguard" },
-        { "dns", "header-dns" }
+        { "srtp", "srtp" },
+        { "utp", "utp" },
+        { "wechat-video", "wechat" },
+        { "dtls", "dtls" },
+        { "wireguard", "wireguard" },
+        { "dns", "dns" }
     };
 
     public static readonly List<string> CoreTypes =

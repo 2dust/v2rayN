@@ -465,8 +465,8 @@ public partial class CoreConfigV2rayService
                         [
                             new Mask4Ray
                             {
-                                type = header,
-                                settings = null
+                                type = "mkcp-legacy",
+                                settings = new MaskSettings4Ray { header = header },
                             }
                         ];
                     }
@@ -475,15 +475,15 @@ public partial class CoreConfigV2rayService
                     {
                         kcpFinalmask.udp.Add(new Mask4Ray
                         {
-                            type = "mkcp-original"
+                            type = "mkcp-legacy",
                         });
                     }
                     else
                     {
                         kcpFinalmask.udp.Add(new Mask4Ray
                         {
-                            type = "mkcp-aes128gcm",
-                            settings = new MaskSettings4Ray { password = kcpSeed }
+                            type = "mkcp-legacy",
+                            settings = new MaskSettings4Ray { value = kcpSeed },
                         });
                     }
                     streamSettings.kcpSettings = kcpSettings;
