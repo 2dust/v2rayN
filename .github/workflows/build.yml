@@ -26,6 +26,7 @@ jobs:
         )
       }}
     env:
+      NUGET_CERT_REVOCATION_MODE: offline
       Output: "${{ github.workspace }}/${{ matrix.arch }}"
       RID: |-
         ${{
