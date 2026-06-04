@@ -86,7 +86,7 @@ public class Inboundsettings4Ray
 
     public string? autoOutboundsInterface { get; set; }
 
-    // public List<string>? dns { get; set; }
+    public List<string>? dns { get; set; }
 }
 
 public class UsersItem4Ray
