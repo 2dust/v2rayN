@@ -190,15 +190,16 @@ public partial class CoreConfigSingboxService
 
                         outbound.packet_encoding = "xudp";
 
-                        if (!protocolExtra.Flow.IsNullOrEmpty())
+                        if (protocolExtra.Flow is "xtls-rprx-vision" or "xtls-rprx-vision-udp443")
+                        {
+                            outbound.flow = "xtls-rprx-vision";
+                        }
+                        else if (!protocolExtra.Flow.IsNullOrEmpty())
                         {
                             outbound.flow = protocolExtra.Flow;
                         }
-                        else
-                        {
-                            FillOutboundMux(outbound);
-                        }
 
+                        FillOutboundMux(outbound);
                         FillOutboundTransport(outbound);
                         break;
                     }
