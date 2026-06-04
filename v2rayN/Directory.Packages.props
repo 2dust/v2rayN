@@ -28,7 +28,6 @@
         <PackageVersion Include="sqlite-net-e" Version="1.11.0" />
         <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.2" />
         <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-        <PackageVersion Include="Tmds.DBus.Protocol" Version="0.94.1" />
         <PackageVersion Include="WebDav.Client" Version="2.9.0" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
         <PackageVersion Include="xunit.v3" Version="3.2.2" />
