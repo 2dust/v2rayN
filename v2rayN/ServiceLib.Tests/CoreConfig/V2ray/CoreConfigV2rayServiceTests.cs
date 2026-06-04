@@ -536,4 +536,27 @@ public class CoreConfigV2rayServiceTests
         directOutbound.Should().NotBeNull();
         directOutbound!.settings.domainStrategy.Should().Be("UseIPv4");
     }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunRouteExcludeAddress()
+    {
+        var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue();
+
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        tunInbound.Should().NotBeNull();
+
+        tunInbound!.settings.autoSystemRoutingTable.Should().NotContain("0.0.0.0/0");
+        tunInbound!.settings.autoSystemRoutingTable.Should().Contain("10.0.0.0/32");
+        tunInbound!.settings.autoSystemRoutingTable.Should().Contain("10.0.0.2/31");
+    }
 }

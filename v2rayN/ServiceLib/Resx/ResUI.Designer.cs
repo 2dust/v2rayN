@@ -2230,6 +2230,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Invalid address in TUN route exclude list: {0} 的本地化字符串。
+        /// </summary>
+        public static string MsgTunRouteExcludeInvalidAddress {
+            get {
+                return ResourceManager.GetString("MsgTunRouteExcludeInvalidAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Unpacking... 的本地化字符串。
         /// </summary>
         public static string MsgUnpacking {

@@ -187,7 +187,7 @@ internal static class CoreConfigTestFactory
             SimpleDnsItem = config.SimpleDNSItem,
             AllProxiesMap = new Dictionary<string, ProfileItem> { [node.IndexId] = node },
             FullConfigTemplate = null,
-            IsTunEnabled = false,
+            IsTunEnabled = config.TunModeItem.EnableTun,
             ProtectDomainList = [],
         };
     }
@@ -204,6 +204,14 @@ internal static class CoreConfigTestFactory
     {
         var config = CreateConfig(coreType);
         config.SimpleDNSItem.BootstrapDNS = bootstrapDns;
+        return config;
+    }
+
+    public static Config CreateConfigWithTunRouteExcludeAddress(ECoreType coreType)
+    {
+        var config = CreateConfig(coreType);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.RouteExcludeAddress = ["10.0.0.1/32", "192.168.1.0/24", "fc00::/7"];
         return config;
     }
 }
