@@ -96,6 +96,15 @@ public partial class CoreConfigSingboxService
                         new() { protocol = ["dns"] },
                     ],
                 });
+                if (_config.CoreBasicItem.EnableFinalFragment)
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        protocol = ["tls"],
+                        action = "route-options",
+                        tls_record_fragment = true,
+                    });
+                }
             }
             else
             {
@@ -104,6 +113,14 @@ public partial class CoreConfigSingboxService
                     port = [53],
                     action = "hijack-dns",
                 });
+                if (_config.CoreBasicItem.EnableFinalFragment)
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        action = "route-options",
+                        tls_record_fragment = true,
+                    });
+                }
             }
 
             var hostsDomains = new List<string>();

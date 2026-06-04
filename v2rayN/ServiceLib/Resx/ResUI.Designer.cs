@@ -3034,6 +3034,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Final Fragment 的本地化字符串。
+        /// </summary>
+        public static string TbEnableFinalFragment {
+            get {
+                return ResourceManager.GetString("TbEnableFinalFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Split the tail of packets into smaller fragments. This may affect throughput and latency. 的本地化字符串。
+        /// </summary>
+        public static string TbEnableFinalFragmentTip {
+            get {
+                return ResourceManager.GetString("TbEnableFinalFragmentTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Enable Tun 的本地化字符串。
         /// </summary>
         public static string TbEnableTunAs {

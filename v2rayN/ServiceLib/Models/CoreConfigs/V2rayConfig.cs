@@ -489,6 +489,7 @@ public class UdpHop4Ray
 
 public class Finalmask4Ray
 {
+    public List<Mask4Ray>? tcp { get; set; }
     public List<Mask4Ray>? udp { get; set; }
     public QuicParams4Ray? quicParams { get; set; }
 }
