@@ -71,6 +71,7 @@ public partial class CoreConfigSingboxService
                 {
                     tunInbound.address = ["172.18.0.1/30"];
                 }
+                tunInbound.route_exclude_address = _config.TunModeItem.RouteExcludeAddress;
 
                 _coreConfig.inbounds.Add(tunInbound);
             }

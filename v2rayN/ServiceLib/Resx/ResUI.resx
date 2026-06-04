@@ -1752,4 +1752,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
     <value>Warning: Xray will disable allowInsecure (skip certificate verification) in August 2026. Please switch to pinnedPeerCertSha256 (fixed certificate fingerprint) as soon as possible. allowInsecure will not be usable after its expiration.</value>
   </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Route Exclude Address</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Use commas (,) to separate.</value>
+  </data>
 </root>

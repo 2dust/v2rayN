@@ -1749,4 +1749,10 @@
   <data name="TbVerifyPeerCertByName" xml:space="preserve">
     <value>Verify Peer Cert By Name</value>
   </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>路由排除地址</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>使用逗号 (,) 分隔</value>
+  </data>
 </root>
