@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export NUGET_CERT_REVOCATION_MODE="${NUGET_CERT_REVOCATION_MODE:-offline}"
-
 VERSION_ARG=""
 WITH_CORE="both"
 FORCE_NETCORE=0
