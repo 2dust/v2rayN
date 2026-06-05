@@ -91,6 +91,20 @@ public class CoreConfigContextBuilder
                 context.AllProxiesMap[$"remark:{ruleItem.OutboundTag}"] = actRuleNode;
             }
         }
+        if (context.IsTunEnabled && context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
+        {
+            foreach (var addr in context.AppConfig.TunModeItem.RouteExcludeAddress)
+            {
+                try
+                {
+                    IPNetwork2.Parse(addr);
+                }
+                catch
+                {
+                    validatorResult.Errors.Add(string.Format(ResUI.MsgTunRouteExcludeInvalidAddress, addr));
+                }
+            }
+        }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);
     }

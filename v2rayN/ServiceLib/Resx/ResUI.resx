@@ -1758,4 +1758,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbRouteExcludeAddressTip" xml:space="preserve">
     <value>Use commas (,) to separate.</value>
   </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>Invalid address in TUN route exclude list: {0}</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Downloader" />
+		<PackageReference Include="IPNetwork2" />
 		<PackageReference Include="ReactiveUI">
 			<TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>

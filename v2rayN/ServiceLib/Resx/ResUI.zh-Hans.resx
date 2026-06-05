@@ -1755,4 +1755,7 @@
   <data name="TbRouteExcludeAddressTip" xml:space="preserve">
     <value>使用逗号 (,) 分隔</value>
   </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>TUN 路由排除列表包含无效地址：{0}</value>
+  </data>
 </root>
