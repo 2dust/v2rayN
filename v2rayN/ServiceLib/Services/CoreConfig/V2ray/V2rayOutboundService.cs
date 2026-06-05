@@ -243,9 +243,9 @@ public partial class CoreConfigV2rayService
                             version = 2,
                             address = _node.Address,
                             port = _node.Port,
+                            vnext = null,
+                            servers = null,
                         };
-                        outbound.settings.vnext = null;
-                        outbound.settings.servers = null;
                         break;
                     }
                 case EConfigType.WireGuard:
@@ -450,14 +450,13 @@ public partial class CoreConfigV2rayService
                     KcpSettings4Ray kcpSettings = new()
                     {
                         mtu = kcpMtu,
-                        tti = _config.KcpItem.Tti
+                        tti = _config.KcpItem.Tti,
+                        uplinkCapacity = _config.KcpItem.UplinkCapacity,
+                        downlinkCapacity = _config.KcpItem.DownlinkCapacity,
+                        cwndMultiplier = _config.KcpItem.CwndMultiplier,
+                        maxSendingWindow = _config.KcpItem.MaxSendingWindow,
                     };
 
-                    kcpSettings.uplinkCapacity = _config.KcpItem.UplinkCapacity;
-                    kcpSettings.downlinkCapacity = _config.KcpItem.DownlinkCapacity;
-
-                    kcpSettings.cwndMultiplier = _config.KcpItem.CwndMultiplier;
-                    kcpSettings.maxSendingWindow = _config.KcpItem.MaxSendingWindow;
                     var kcpFinalmask = new Finalmask4Ray();
                     if (Global.KcpHeaderMaskMap.TryGetValue(headerType, out var header))
                     {
@@ -531,7 +530,7 @@ public partial class CoreConfigV2rayService
                     break;
                 //xhttp
                 case nameof(ETransport.xhttp):
-                    streamSettings.network = ETransport.xhttp.ToString();
+                    streamSettings.network = nameof(ETransport.xhttp);
                     XhttpSettings4Ray xhttpSettings = new();
 
                     if (path.IsNotEmpty())

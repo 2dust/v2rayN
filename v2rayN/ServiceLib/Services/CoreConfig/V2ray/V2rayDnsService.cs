@@ -34,7 +34,7 @@ public partial class CoreConfigV2rayService
                 return;
             }
             var simpleDnsItem = context.SimpleDnsItem;
-            var dnsItem = _coreConfig.dns is Dns4Ray dns4Ray ? dns4Ray : new Dns4Ray();
+            var dnsItem = _coreConfig.dns as Dns4Ray ?? new Dns4Ray();
 
             var strategy4Freedom = simpleDnsItem?.Strategy4Freedom ?? Global.AsIs;
             //Outbound Freedom domainStrategy
@@ -246,7 +246,7 @@ public partial class CoreConfigV2rayService
 
         var useDirectDns = false;
 
-        if (rules?.LastOrDefault() is { } lastRule && lastRule.OutboundTag == Global.DirectTag)
+        if (rules?.LastOrDefault() is { OutboundTag: Global.DirectTag } lastRule)
         {
             var noDomain = lastRule.Domain == null || lastRule.Domain.Count == 0;
             var noProcess = lastRule.Process == null || lastRule.Process.Count == 0;
@@ -384,9 +384,11 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.settings = new();
-                    outbound.settings.domainStrategy = domainStrategy4Freedom;
-                    outbound.settings.userLevel = 0;
+                    outbound.settings = new()
+                    {
+                        domainStrategy = domainStrategy4Freedom,
+                        userLevel = 0,
+                    };
                 }
             }
 

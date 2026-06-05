@@ -730,8 +730,8 @@ public partial class CoreConfigSingboxService
             {
                 return;
             }
-            var outbounds = servers.Where(s => s is Outbound4Sbox).Cast<Outbound4Sbox>().ToList();
-            var endpoints = servers.Where(s => s is Endpoints4Sbox).Cast<Endpoints4Sbox>().ToList();
+            var outbounds = servers.OfType<Outbound4Sbox>().ToList();
+            var endpoints = servers.OfType<Endpoints4Sbox>().ToList();
             singboxConfig.endpoints ??= [];
             if (prepend)
             {

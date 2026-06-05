@@ -15,8 +15,8 @@ public partial class CoreConfigSingboxService
             {
                 var inbound = new Inbound4Sbox()
                 {
-                    type = EInboundProtocol.mixed.ToString(),
-                    tag = EInboundProtocol.socks.ToString(),
+                    type = nameof(EInboundProtocol.mixed),
+                    tag = nameof(EInboundProtocol.socks),
                     listen = Global.Loopback,
                 };
                 _coreConfig.inbounds.Add(inbound);
@@ -87,7 +87,7 @@ public partial class CoreConfigSingboxService
         var inbound = JsonUtils.DeepCopy(inItem);
         inbound.tag = protocol.ToString();
         inbound.listen_port = inItem.listen_port + (int)protocol;
-        inbound.type = EInboundProtocol.mixed.ToString();
+        inbound.type = nameof(EInboundProtocol.mixed);
         return inbound;
     }
 }

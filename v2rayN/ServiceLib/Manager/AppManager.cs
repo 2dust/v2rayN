@@ -268,7 +268,7 @@ public sealed class AppManager
             .ToListAsync();
         var itemMap = items.ToDictionary(it => it.IndexId);
 
-        return idList.Select(id => itemMap.GetValueOrDefault(id))
+        return idList.Select(itemMap.GetValueOrDefault)
             .Where(item => item != null)
             .ToList();
     }

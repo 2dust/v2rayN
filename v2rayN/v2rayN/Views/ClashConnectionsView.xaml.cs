@@ -111,7 +111,7 @@ public partial class ClashConnectionsView
     {
         try
         {
-            List<ColumnItem> lvColumnItem = new();
+            List<ColumnItem> lvColumnItem = [];
             foreach (var col in lstConnections.Columns.Cast<MyDGTextColumn>())
             {
                 var name = col.ExName;

@@ -9,7 +9,7 @@ public class GroupProfileManager
 
     public static async Task<bool> HasCycle(string? indexId, ProtocolExtraItem? extraInfo)
     {
-        return await HasCycle(indexId, extraInfo, new HashSet<string>(), new HashSet<string>());
+        return await HasCycle(indexId, extraInfo, [], []);
     }
 
     private static async Task<bool> HasCycle(string? indexId, ProtocolExtraItem? extraInfo, HashSet<string> visited, HashSet<string> stack)
@@ -55,7 +55,7 @@ public class GroupProfileManager
             var childItems = await AppManager.Instance.GetProfileItemsByIndexIds(childIds);
             foreach (var childItem in childItems)
             {
-                if (await HasCycle(childItem.IndexId, childItem?.GetProtocolExtra(), visited, stack))
+                if (await HasCycle(childItem.IndexId, childItem.GetProtocolExtra(), visited, stack))
                 {
                     return true;
                 }
@@ -71,7 +71,7 @@ public class GroupProfileManager
 
     public static async Task<(List<ProfileItem> Items, ProtocolExtraItem? Extra)> GetChildProfileItems(ProfileItem profileItem)
     {
-        var protocolExtra = profileItem?.GetProtocolExtra();
+        var protocolExtra = profileItem.GetProtocolExtra();
         return (await GetChildProfileItemsByProtocolExtra(protocolExtra), protocolExtra);
     }
 

@@ -23,7 +23,7 @@ public partial class CoreConfigSingboxService
         }
 
         // Process outbounds
-        var customOutboundsNode = fullConfigTemplateNode["outbounds"] is JsonArray outbounds ? outbounds : [];
+        var customOutboundsNode = fullConfigTemplateNode["outbounds"] as JsonArray ?? [];
         foreach (var outbound in _coreConfig.outbounds)
         {
             if (outbound.type.ToLower() is "direct" or "block")
@@ -42,9 +42,9 @@ public partial class CoreConfigSingboxService
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         // Process endpoints
-        if (_coreConfig.endpoints != null && _coreConfig.endpoints.Count > 0)
+        if (_coreConfig.endpoints is { Count: > 0 })
         {
-            var customEndpointsNode = fullConfigTemplateNode["endpoints"] is JsonArray endpoints ? endpoints : [];
+            var customEndpointsNode = fullConfigTemplateNode["endpoints"] as JsonArray ?? [];
             foreach (var endpoint in _coreConfig.endpoints)
             {
                 if (endpoint.detour.IsNullOrEmpty() && !fullConfigTemplate.ProxyDetour.IsNullOrEmpty())

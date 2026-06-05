@@ -133,12 +133,12 @@ public static class SubscriptionHandler
 
             if (!url.Contains("target="))
             {
-                url += string.Format("&target={0}", item.ConvertTarget);
+                url += $"&target={item.ConvertTarget}";
             }
 
             if (!url.Contains("config="))
             {
-                url += string.Format("&config={0}", Global.SubConvertConfig.FirstOrDefault());
+                url += $"&config={Global.SubConvertConfig.FirstOrDefault()}";
             }
         }
 

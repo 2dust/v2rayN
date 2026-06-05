@@ -38,9 +38,7 @@ public class ThemeSettingViewModel : MyReactiveObject
         if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
             var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
-            if (swatch != null
-               && swatch.ExemplarHue != null
-               && swatch.ExemplarHue?.Color != null)
+            if (swatch?.ExemplarHue?.Color is not null)
             {
                 ChangePrimaryColor(swatch.ExemplarHue.Color);
             }
@@ -67,7 +65,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                  {
                      _config.UiItem.CurrentTheme = CurrentTheme;
                      ModifyTheme();
-                     ConfigHandler.SaveConfig(_config);
+                     _ = ConfigHandler.SaveConfig(_config);
                  }
              });
 
@@ -87,7 +85,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                  {
                      _config.UiItem.ColorPrimaryName = SelectedSwatch?.Name;
                      ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
-                     ConfigHandler.SaveConfig(_config);
+                     _ = ConfigHandler.SaveConfig(_config);
                  }
              });
 
@@ -100,7 +98,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                   {
                       _config.UiItem.CurrentFontSize = CurrentFontSize;
                       ModifyFontSize();
-                      ConfigHandler.SaveConfig(_config);
+                      _ = ConfigHandler.SaveConfig(_config);
                   }
               });
 
@@ -113,7 +111,7 @@ public class ThemeSettingViewModel : MyReactiveObject
                 {
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    ConfigHandler.SaveConfig(_config);
+                    _ = ConfigHandler.SaveConfig(_config);
                     NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });

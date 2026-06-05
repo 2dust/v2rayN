@@ -45,19 +45,14 @@ public sealed class ClashApiManager
                 {
                     await GetClashProxiesAsync();
                 }
-                lstProxy = new List<ClashProxyModel>();
-                foreach (var kv in _proxies ?? [])
-                {
-                    if (Global.notAllowTestType.Contains(kv.Value.type?.ToLower()))
-                    {
-                        continue;
-                    }
-                    lstProxy.Add(new ClashProxyModel()
-                    {
-                        Name = kv.Value.name,
-                        Type = kv.Value.type?.ToLower(),
-                    });
-                }
+                lstProxy = [];
+                lstProxy.AddRange(from kv in _proxies ?? []
+                                  where !Global.notAllowTestType.Contains(kv.Value.type?.ToLower())
+                                  select new ClashProxyModel()
+                                  {
+                                      Name = kv.Value.name,
+                                      Type = kv.Value.type?.ToLower(),
+                                  });
             }
 
             if (lstProxy is not { Count: > 0 })

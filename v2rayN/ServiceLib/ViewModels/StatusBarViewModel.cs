@@ -313,9 +313,8 @@ public class StatusBarViewModel : MyReactiveObject
         }
 
         BlServers = true;
-        for (var k = 0; k < lstModel.Count; k++)
+        foreach (var it in lstModel)
         {
-            var it = lstModel[k];
             var name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };

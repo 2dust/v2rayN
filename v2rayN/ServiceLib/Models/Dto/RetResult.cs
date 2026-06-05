@@ -1,26 +1,16 @@
 namespace ServiceLib.Models.Dto;
 
-public class RetResult
+public class RetResult(bool success, string? msg, object? data)
 {
-    public bool Success { get; set; }
-    public string? Msg { get; set; }
-    public object? Data { get; set; }
-
-    public RetResult(bool success = false)
+    public RetResult(bool success = false) : this(success, null, null)
     {
-        Success = success;
     }
 
-    public RetResult(bool success, string? msg)
+    public RetResult(bool success, string? msg) : this(success, msg, null)
     {
-        Success = success;
-        Msg = msg;
     }
 
-    public RetResult(bool success, string? msg, object? data)
-    {
-        Success = success;
-        Msg = msg;
-        Data = data;
-    }
+    public bool Success { get; set; } = success;
+    public string? Msg { get; set; } = msg;
+    public object? Data { get; set; } = data;
 }

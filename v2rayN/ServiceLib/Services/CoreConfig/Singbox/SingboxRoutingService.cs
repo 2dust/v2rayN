@@ -176,12 +176,12 @@ public partial class CoreConfigSingboxService
             _coreConfig.route.rules.Add(new()
             {
                 outbound = Global.DirectTag,
-                clash_mode = ERuleMode.Direct.ToString()
+                clash_mode = nameof(ERuleMode.Direct)
             });
             _coreConfig.route.rules.Add(new()
             {
                 outbound = Global.ProxyTag,
-                clash_mode = ERuleMode.Global.ToString()
+                clash_mode = nameof(ERuleMode.Global)
             });
 
             var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();

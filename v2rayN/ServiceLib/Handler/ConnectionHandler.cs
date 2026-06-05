@@ -80,14 +80,14 @@ public static class ConnectionHandler
                 UseProxy = webProxy != null
             });
 
-            List<int> oneTime = new();
+            List<int> oneTime = [];
             for (var i = 0; i < 2; i++)
             {
                 var timer = Stopwatch.StartNew();
                 await client.GetAsync(url, cts.Token).ConfigureAwait(false);
                 timer.Stop();
                 oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
-                await Task.Delay(100);
+                await Task.Delay(100, cts.Token);
             }
             responseTime = oneTime.Where(x => x > 0).OrderBy(x => x).FirstOrDefault();
         }

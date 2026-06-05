@@ -6,7 +6,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private List<ProfileItem> _lstProfile;
     private string _serverFilter = string.Empty;
-    private Dictionary<string, bool> _dicHeaderSort = new();
+    private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
     private string? _pendingSelectIndexId;
 
@@ -190,7 +190,7 @@ public class ProfilesViewModel : MyReactiveObject
         }, canEditRemove);
         SortServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await SortServer(EServerColName.DelayVal.ToString());
+            await SortServer(nameof(EServerColName.DelayVal));
         });
         RemoveInvalidServerResultCmd = ReactiveCommand.CreateFromTask(async () =>
         {
