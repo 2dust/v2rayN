@@ -1764,4 +1764,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgOptionsConflict" xml:space="preserve">
     <value>Conflict between {0} and {1}</value>
   </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Enable Final Fragment</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Split the tail of packets into smaller fragments. This may affect throughput and latency.</value>
+  </data>
 </root>

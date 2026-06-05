@@ -17,6 +17,8 @@ public class CoreBasicItem
 
     public bool EnableFragment { get; set; }
 
+    public bool EnableFinalFragment { get; set; }
+
     public bool EnableCacheFile4Sbox { get; set; } = true;
 }
 

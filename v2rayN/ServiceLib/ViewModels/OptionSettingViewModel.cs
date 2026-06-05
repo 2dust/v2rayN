@@ -25,6 +25,7 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int? HyUpMbps { get; set; }
     [Reactive] public int? HyDownMbps { get; set; }
     [Reactive] public bool EnableFragment { get; set; }
+    [Reactive] public bool EnableFinalFragment { get; set; }
 
     #endregion Core
 
@@ -161,6 +162,7 @@ public class OptionSettingViewModel : MyReactiveObject
         HyUpMbps = _config.HysteriaItem.UpMbps;
         HyDownMbps = _config.HysteriaItem.DownMbps;
         EnableFragment = _config.CoreBasicItem.EnableFragment;
+        EnableFinalFragment = _config.CoreBasicItem.EnableFinalFragment;
 
         #endregion Core
 
@@ -351,6 +353,7 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.HysteriaItem.UpMbps = HyUpMbps ?? 0;
         _config.HysteriaItem.DownMbps = HyDownMbps ?? 0;
         _config.CoreBasicItem.EnableFragment = EnableFragment;
+        _config.CoreBasicItem.EnableFinalFragment = EnableFinalFragment;
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;

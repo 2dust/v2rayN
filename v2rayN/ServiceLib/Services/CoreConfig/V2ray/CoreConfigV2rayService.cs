@@ -60,6 +60,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyOutboundFragment();
             }
+            if (_config.CoreBasicItem.EnableFinalFragment)
+            {
+                ApplyFinalFragment();
+            }
             ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
 
@@ -204,6 +208,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyOutboundFragment();
             }
+            if (_config.CoreBasicItem.EnableFinalFragment)
+            {
+                ApplyFinalFragment();
+            }
             ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
             //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
@@ -275,6 +283,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             if (_config.CoreBasicItem.EnableFragment)
             {
                 ApplyOutboundFragment();
+            }
+            if (_config.CoreBasicItem.EnableFinalFragment)
+            {
+                ApplyFinalFragment();
             }
             ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
