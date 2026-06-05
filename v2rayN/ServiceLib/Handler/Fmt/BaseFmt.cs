@@ -203,7 +203,7 @@ public class BaseFmt
 
     private static int ToUriQueryAllowInsecure(ProfileItem item, ref Dictionary<string, string> dicQuery)
     {
-        if (item.AllowInsecure.Equals(Global.AllowInsecure.First()))
+        if (item.GetAllowInsecure())
         {
             // Add two for compatibility
             dicQuery.Add("insecure", "1");
@@ -254,11 +254,11 @@ public class BaseFmt
 
         if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "1"))
         {
-            item.AllowInsecure = Global.AllowInsecure.First();
+            item.AllowInsecure = Global.StringTrue;
         }
         else if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "0"))
         {
-            item.AllowInsecure = Global.AllowInsecure.Skip(1).First();
+            item.AllowInsecure = Global.StringFalse;
         }
         else
         {

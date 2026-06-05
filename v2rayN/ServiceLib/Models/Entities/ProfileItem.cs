@@ -146,6 +146,11 @@ public class ProfileItem
         TransportExtra = JsonUtils.Serialize(transportExtra, false);
     }
 
+    public bool GetAllowInsecure()
+    {
+        return AllowInsecure == Global.StringTrue;
+    }
+
     #endregion function
 
     [PrimaryKey]

@@ -397,7 +397,7 @@ public partial class CoreConfigSingboxService
                 enabled = true,
                 record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
-                insecure = _node.AllowInsecure == "true" ? true : null,
+                insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
             if (_node.Fingerprint.IsNotEmpty())

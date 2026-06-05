@@ -90,6 +90,8 @@ public class Global
     public const string XrayLocalCert = "XRAY_LOCATION_CERT";
     public const int SpeedTestPageSize = 1000;
     public const string LinuxBash = "/bin/bash";
+    public const string StringTrue = "true";
+    public const string StringFalse = "false";
 
     public const string SingboxDirectDNSTag = "direct_dns";
     public const string SingboxRemoteDNSTag = "remote_dns";
@@ -419,13 +421,6 @@ public class Global
         "packet-up",
         "stream-up",
         "stream-one"
-    ];
-
-    public static readonly List<string> AllowInsecure =
-    [
-        "true",
-        "false",
-        ""
     ];
 
     public static readonly List<string> DomainStrategy =
