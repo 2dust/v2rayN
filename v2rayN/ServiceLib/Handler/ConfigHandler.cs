@@ -39,7 +39,6 @@ public static class ConfigHandler
         {
             LogEnabled = false,
             Loglevel = "warning",
-            MuxEnabled = false,
         };
 
         if (config.Inbound == null)
@@ -875,7 +874,7 @@ public static class ConfigHandler
         profileItem.Fingerprint = string.Empty;
         profileItem.Alpn = string.Empty;
         profileItem.Network = string.Empty;
-        profileItem.AllowInsecure = "false";
+        profileItem.AllowInsecure = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
@@ -1107,10 +1106,6 @@ public static class ConfigHandler
             }
             else
             {
-                if (profileItem.AllowInsecure.IsNullOrEmpty())
-                {
-                    profileItem.AllowInsecure = config.CoreBasicItem.DefAllowInsecure.ToString().ToLower();
-                }
                 if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == Global.StreamSecurityReality)
                 {
                     profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;

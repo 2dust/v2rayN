@@ -190,15 +190,16 @@ public partial class CoreConfigSingboxService
 
                         outbound.packet_encoding = "xudp";
 
-                        if (!protocolExtra.Flow.IsNullOrEmpty())
+                        if (protocolExtra.Flow is "xtls-rprx-vision" or "xtls-rprx-vision-udp443")
+                        {
+                            outbound.flow = "xtls-rprx-vision";
+                        }
+                        else if (!protocolExtra.Flow.IsNullOrEmpty())
                         {
                             outbound.flow = protocolExtra.Flow;
                         }
-                        else
-                        {
-                            FillOutboundMux(outbound);
-                        }
 
+                        FillOutboundMux(outbound);
                         FillOutboundTransport(outbound);
                         break;
                     }
@@ -342,7 +343,7 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var muxEnabled = _node.MuxEnabled ?? _config.CoreBasicItem.MuxEnabled;
+            var muxEnabled = _node.MuxEnabled ?? false;
             if (muxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
             {
                 var mux = new Multiplex4Sbox()
@@ -396,7 +397,7 @@ public partial class CoreConfigSingboxService
                 enabled = true,
                 record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
-                insecure = Utils.ToBool(_node.AllowInsecure.IsNullOrEmpty() ? _config.CoreBasicItem.DefAllowInsecure.ToString().ToLower() : _node.AllowInsecure),
+                insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
             if (_node.Fingerprint.IsNotEmpty())

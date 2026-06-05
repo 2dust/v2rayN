@@ -29,35 +29,6 @@ public class NodeValidator
         return v.ToResult();
     }
 
-    private class ValidationContext
-    {
-        public List<string> Errors { get; } = [];
-        public List<string> Warnings { get; } = [];
-
-        public void Error(string message)
-        {
-            Errors.Add(message);
-        }
-
-        public void Warning(string message)
-        {
-            Warnings.Add(message);
-        }
-
-        public void Assert(bool condition, string errorMsg)
-        {
-            if (!condition)
-            {
-                Error(errorMsg);
-            }
-        }
-
-        public NodeValidatorResult ToResult()
-        {
-            return new NodeValidatorResult(Errors, Warnings);
-        }
-    }
-
     private static void ValidateNodeAndCoreSupport(ProfileItem item, ECoreType coreType, ValidationContext v)
     {
         if (item.ConfigType is EConfigType.Custom)
@@ -126,6 +97,21 @@ public class NodeValidator
                 break;
         }
 
+        if (coreType is ECoreType.Xray
+            && (protocolExtra.Flow ?? string.Empty).StartsWith("xtls", StringComparison.OrdinalIgnoreCase)
+            && item.MuxEnabled == true)
+        {
+            v.Warning(string.Format(ResUI.MsgOptionsConflict, "XTLS", "Mux.Cool"));
+        }
+
+        if (item.GetNetwork() is nameof(ETransport.ws)
+            && item.EchConfigList.IsNullOrEmpty()
+            && item.GetAlpn()?.FirstOrDefault() == "h3")
+        {
+            v.Warning(
+                "WebSocket but ALPN is set to h3, the core may ignore the ALPN setting or cause unexpected issues.");
+        }
+
         // TLS & Security
         if (item.StreamSecurity == Global.StreamSecurity)
         {
@@ -136,11 +122,22 @@ public class NodeValidator
             }
 
             // Check for deprecated allowInsecure property when TLS is enabled
-            if (item.AllowInsecure == "true"
+            if (item.GetAllowInsecure()
                 && item.Cert.IsNullOrEmpty()
                 && item.CertSha.IsNullOrEmpty())
             {
                 v.Warning(ResUI.MsgAllowInsecureDeprecated);
+            }
+
+            if ((coreType == ECoreType.Xray
+                && item.GetAllowInsecure()
+                && item.Cert.IsNullOrEmpty()
+                && item.CertSha.IsNullOrEmpty())
+                || (coreType == ECoreType.sing_box
+                    && item.GetAllowInsecure()
+                    && item.Cert.IsNullOrEmpty()))
+            {
+                v.Warning("Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks.");
             }
         }
 
@@ -190,5 +187,34 @@ public class NodeValidator
         }
 
         return null;
+    }
+
+    private class ValidationContext
+    {
+        public List<string> Errors { get; } = [];
+        public List<string> Warnings { get; } = [];
+
+        public void Error(string message)
+        {
+            Errors.Add(message);
+        }
+
+        public void Warning(string message)
+        {
+            Warnings.Add(message);
+        }
+
+        public void Assert(bool condition, string errorMsg)
+        {
+            if (!condition)
+            {
+                Error(errorMsg);
+            }
+        }
+
+        public NodeValidatorResult ToResult()
+        {
+            return new NodeValidatorResult(Errors, Warnings);
+        }
     }
 }

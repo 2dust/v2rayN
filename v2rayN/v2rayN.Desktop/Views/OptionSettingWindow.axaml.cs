@@ -71,10 +71,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.NewPort4LAN, v => v.txtpass.IsEnabled).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.User, v => v.txtuser.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Pass, v => v.txtpass.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.LogEnabled, v => v.toglogEnabled.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Loglevel, v => v.cmbloglevel.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.DefAllowInsecure, v => v.togdefAllowInsecure.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DefFingerprint, v => v.cmbdefFingerprint.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DefUserAgent, v => v.cmbdefUserAgent.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.BindInterface, v => v.txtbindInterface.Text).DisposeWith(disposables);

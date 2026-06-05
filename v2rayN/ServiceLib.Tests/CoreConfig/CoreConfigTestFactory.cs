@@ -17,7 +17,7 @@ internal static class CoreConfigTestFactory
     {
         return new Config
         {
-            CoreBasicItem = new CoreBasicItem { Loglevel = "warning", MuxEnabled = false },
+            CoreBasicItem = new CoreBasicItem { Loglevel = "warning" },
             TunModeItem = new TunModeItem { EnableTun = false, IcmpRouting = "default" },
             KcpItem = new KcpItem(),
             GrpcItem = new GrpcItem(),
