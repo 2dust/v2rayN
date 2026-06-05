@@ -128,6 +128,17 @@ public class NodeValidator
             {
                 v.Warning(ResUI.MsgAllowInsecureDeprecated);
             }
+
+            if ((coreType == ECoreType.Xray
+                && item.GetAllowInsecure()
+                && item.Cert.IsNullOrEmpty()
+                && item.CertSha.IsNullOrEmpty())
+                || (coreType == ECoreType.sing_box
+                    && item.GetAllowInsecure()
+                    && item.Cert.IsNullOrEmpty()))
+            {
+                v.Warning("Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks.");
+            }
         }
 
         if (item.StreamSecurity == Global.StreamSecurityReality)
