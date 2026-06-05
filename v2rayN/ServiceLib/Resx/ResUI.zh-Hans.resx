@@ -1761,4 +1761,10 @@
   <data name="MsgOptionsConflict" xml:space="preserve">
     <value>{0} 与 {1} 冲突</value>
   </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>启用末端分片</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>将数据包末端拆分为更小片段发送，可能影响吞吐与延迟。</value>
+  </data>
 </root>
