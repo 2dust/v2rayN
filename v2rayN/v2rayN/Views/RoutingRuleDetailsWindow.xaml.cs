@@ -13,7 +13,6 @@ public partial class RoutingRuleDetailsWindow
 
         ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
 
-        cmbOutboundTag.ItemsSource = Global.OutboundTags;
         clbProtocol.ItemsSource = Global.RuleProtocols;
         clbInboundTag.ItemsSource = Global.InboundTags;
         cmbNetwork.ItemsSource = Global.RuleNetworks;
@@ -34,6 +33,7 @@ public partial class RoutingRuleDetailsWindow
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.OutboundTagItems, v => v.cmbOutboundTag.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Port, v => v.txtPort.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
@@ -96,6 +96,7 @@ public partial class RoutingRuleDetailsWindow
             if (profile != null)
             {
                 cmbOutboundTag.Text = profile.Remarks;
+                await ViewModel.CheckOutboundProfileRemarkDuplicate(profile.Remarks);
             }
         }
     }

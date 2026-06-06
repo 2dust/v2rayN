@@ -196,84 +196,128 @@
             </TabItem>
 
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerList2}">
-                <DataGrid
-                    x:Name="lstChild"
-                    AutoGenerateColumns="False"
-                    BorderThickness="1"
-                    CanUserAddRows="False"
-                    CanUserResizeRows="False"
-                    CanUserSortColumns="False"
-                    EnableRowVirtualization="True"
-                    GridLinesVisibility="All"
-                    HeadersVisibility="Column"
-                    IsReadOnly="True"
-                    Style="{StaticResource DefDataGrid}">
-                    <DataGrid.ContextMenu>
-                        <ContextMenu Style="{StaticResource DefContextMenu}">
-                            <MenuItem
-                                x:Name="menuAddChildServer"
-                                Height="{StaticResource MenuItemHeight}"
-                                Click="MenuAddChild_Click"
-                                Header="{x:Static resx:ResUI.menuAddChildServer}" />
-                            <MenuItem
-                                x:Name="menuRemoveChildServer"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
-                            <MenuItem
-                                x:Name="menuSelectAllChild"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuSelectAll}"
-                                InputGestureText="Ctrl+A" />
-                            <Separator />
-                            <MenuItem
-                                x:Name="menuMoveTop"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveTop}"
-                                InputGestureText="T" />
-                            <MenuItem
-                                x:Name="menuMoveUp"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveUp}"
-                                InputGestureText="U" />
-                            <MenuItem
-                                x:Name="menuMoveDown"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveDown}"
-                                InputGestureText="D" />
-                            <MenuItem
-                                x:Name="menuMoveBottom"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuMoveBottom}"
-                                InputGestureText="B" />
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="150"
-                            Binding="{Binding ConfigType}"
-                            Header="{x:Static resx:ResUI.LvServiceType}" />
-                        <DataGridTextColumn
-                            Width="200"
-                            Binding="{Binding Remarks}"
-                            Header="{x:Static resx:ResUI.LvRemarks}" />
-                        <DataGridTextColumn
-                            Width="200"
-                            Binding="{Binding Address}"
-                            Header="{x:Static resx:ResUI.LvAddress}" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding Port}"
-                            Header="{x:Static resx:ResUI.LvPort}" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding Network}"
-                            Header="{x:Static resx:ResUI.LvTransportProtocol}" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding StreamSecurity}"
-                            Header="{x:Static resx:ResUI.LvTLS}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel Margin="{StaticResource Margin8}">
+                    <TextBlock
+                        x:Name="txtChildListTip"
+                        Margin="{StaticResource Margin4}"
+                        DockPanel.Dock="Top"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        TextWrapping="Wrap" />
+                    <StackPanel
+                        Margin="{StaticResource Margin4}"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="btnAddChildServer"
+                            Margin="{StaticResource Margin4}"
+                            Click="MenuAddChild_Click"
+                            Content="{x:Static resx:ResUI.menuAddChildServer}"
+                            Style="{StaticResource DefButton}" />
+                        <Button
+                            x:Name="btnRemoveChildServer"
+                            Margin="{StaticResource Margin4}"
+                            Content="{x:Static resx:ResUI.menuRemoveChildServer}"
+                            Style="{StaticResource DefButton}" />
+                        <Button
+                            x:Name="btnMoveTop"
+                            Margin="{StaticResource Margin4}"
+                            Content="{x:Static resx:ResUI.menuMoveTop}"
+                            Style="{StaticResource DefButton}" />
+                        <Button
+                            x:Name="btnMoveUp"
+                            Margin="{StaticResource Margin4}"
+                            Content="{x:Static resx:ResUI.menuMoveUp}"
+                            Style="{StaticResource DefButton}" />
+                        <Button
+                            x:Name="btnMoveDown"
+                            Margin="{StaticResource Margin4}"
+                            Content="{x:Static resx:ResUI.menuMoveDown}"
+                            Style="{StaticResource DefButton}" />
+                        <Button
+                            x:Name="btnMoveBottom"
+                            Margin="{StaticResource Margin4}"
+                            Content="{x:Static resx:ResUI.menuMoveBottom}"
+                            Style="{StaticResource DefButton}" />
+                    </StackPanel>
+                    <DataGrid
+                        x:Name="lstChild"
+                        AutoGenerateColumns="False"
+                        BorderThickness="1"
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserSortColumns="False"
+                        EnableRowVirtualization="True"
+                        GridLinesVisibility="All"
+                        HeadersVisibility="All"
+                        IsReadOnly="True"
+                        Style="{StaticResource DefDataGrid}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu Style="{StaticResource DefContextMenu}">
+                                <MenuItem
+                                    x:Name="menuAddChildServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Click="MenuAddChild_Click"
+                                    Header="{x:Static resx:ResUI.menuAddChildServer}" />
+                                <MenuItem
+                                    x:Name="menuRemoveChildServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
+                                <MenuItem
+                                    x:Name="menuSelectAllChild"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuSelectAll}"
+                                    InputGestureText="Ctrl+A" />
+                                <Separator />
+                                <MenuItem
+                                    x:Name="menuMoveTop"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuMoveTop}"
+                                    InputGestureText="T" />
+                                <MenuItem
+                                    x:Name="menuMoveUp"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuMoveUp}"
+                                    InputGestureText="U" />
+                                <MenuItem
+                                    x:Name="menuMoveDown"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuMoveDown}"
+                                    InputGestureText="D" />
+                                <MenuItem
+                                    x:Name="menuMoveBottom"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuMoveBottom}"
+                                    InputGestureText="B" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="150"
+                                Binding="{Binding ConfigType}"
+                                Header="{x:Static resx:ResUI.LvServiceType}" />
+                            <DataGridTextColumn
+                                Width="200"
+                                Binding="{Binding Remarks}"
+                                Header="{x:Static resx:ResUI.LvRemarks}" />
+                            <DataGridTextColumn
+                                Width="200"
+                                Binding="{Binding Address}"
+                                Header="{x:Static resx:ResUI.LvAddress}" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Port}"
+                                Header="{x:Static resx:ResUI.LvPort}" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Network}"
+                                Header="{x:Static resx:ResUI.LvTransportProtocol}" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding StreamSecurity}"
+                                Header="{x:Static resx:ResUI.LvTLS}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem HorizontalAlignment="Left" Header="{x:Static resx:ResUI.menuServerListPreview}">
                 <DataGrid

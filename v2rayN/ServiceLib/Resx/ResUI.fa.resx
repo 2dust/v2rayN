@@ -1614,6 +1614,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
   </data>
+  <data name="MsgRoutingRuleOutboundNodeRemarkDuplicate" xml:space="preserve">
+    <value>Routing rules reference profiles by remarks. Multiple profiles named "{0}" exist; please use unique remarks to avoid routing to an unexpected node.</value>
+  </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
     <value>Routing rule {0} outbound node {1} warning: {2}</value>
   </data>

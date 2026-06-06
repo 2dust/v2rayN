@@ -43,6 +43,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                 if (tabControl.Items.Count > 0)
                 {
                     tabControl.Items.RemoveAt(0);
+                    tabControl.SelectedIndex = 0;
                 }
                 break;
         }
@@ -59,15 +60,21 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.btnRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.btnMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.btnMoveUp).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.menuMoveDown).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.btnMoveDown).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.btnMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
+        btnAddChildServer.Click += MenuAddChild_Click;
         menuAddChildServer.Click += MenuAddChild_Click;
         menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
 

@@ -29,6 +29,12 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public IObservableCollection<ProfileItem> AllProfilePreviewItemsObs { get; } = new ObservableCollectionExtended<ProfileItem>();
 
+    public bool IsProxyChain => SelectedSource?.ConfigType == EConfigType.ProxyChain;
+
+    public bool IsPolicyGroup => SelectedSource?.ConfigType == EConfigType.PolicyGroup;
+
+    public string ChildListTip => IsProxyChain ? ResUI.TbProxyChainChildTip : ResUI.TbPolicyGroupChildTip;
+
     //public ReactiveCommand<Unit, Unit> AddCmd { get; }
     public ReactiveCommand<Unit, Unit> RemoveCmd { get; }
 

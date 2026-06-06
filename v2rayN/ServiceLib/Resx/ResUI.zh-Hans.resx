@@ -1611,6 +1611,9 @@
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
   </data>
+  <data name="MsgRoutingRuleOutboundNodeRemarkDuplicate" xml:space="preserve">
+    <value>路由规则按备注名引用 Profile。当前存在多个名为“{0}”的 Profile，请使用唯一备注名，避免流量走到非预期节点。</value>
+  </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
     <value>路由规则 {0} 出站节点 {1} 警告：{2}</value>
   </data>

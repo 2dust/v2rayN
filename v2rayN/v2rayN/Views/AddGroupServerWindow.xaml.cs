@@ -10,6 +10,7 @@ public partial class AddGroupServerWindow
         Loaded += Window_Loaded;
         PreviewKeyDown += AddGroupServerWindow_PreviewKeyDown;
         lstChild.SelectionChanged += LstChild_SelectionChanged;
+        lstChild.LoadingRow += LstChild_LoadingRow;
         menuSelectAllChild.Click += MenuSelectAllChild_Click;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
 
@@ -38,6 +39,7 @@ public partial class AddGroupServerWindow
                 if (tabControl.Items.Count > 0)
                 {
                     tabControl.Items.RemoveAt(0);
+                    tabControl.SelectedIndex = 0;
                 }
                 break;
         }
@@ -51,16 +53,22 @@ public partial class AddGroupServerWindow
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm => vm.ChildListTip, v => v.txtChildListTip.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.AllProfilePreviewItemsObs, v => v.lstPreviewChild.ItemsSource).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.btnRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.btnMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.btnMoveUp).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.menuMoveDown).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.btnMoveDown).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.btnMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
@@ -143,6 +151,11 @@ public partial class AddGroupServerWindow
         {
             ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
         }
+    }
+
+    private void LstChild_LoadingRow(object? sender, System.Windows.Controls.DataGridRowEventArgs e)
+    {
+        e.Row.Header = $" {e.Row.GetIndex() + 1}";
     }
 
     private void MenuSelectAllChild_Click(object sender, RoutedEventArgs e)

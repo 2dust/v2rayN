@@ -93,7 +93,7 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Style="{StaticResource ToolbarTextBlock}"
-                Text="outboundTag" />
+                Text="{x:Static resx:ResUI.TbRuleOutbound}" />
             <ComboBox
                 x:Name="cmbOutboundTag"
                 Grid.Row="2"
@@ -119,7 +119,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
-                    Text="{x:Static resx:ResUI.TbRuleOutboundTagTip}" />
+                    Text="{x:Static resx:ResUI.TbRuleOutboundProfileTip}" />
             </StackPanel>
 
             <TextBlock

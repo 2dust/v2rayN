@@ -2165,7 +2165,16 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("MsgRoutingRuleOutboundNodeWarning", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Routing rules reference profiles by remarks. Multiple profiles named "{0}" exist. 的本地化字符串。
+        /// </summary>
+        public static string MsgRoutingRuleOutboundNodeRemarkDuplicate {
+            get {
+                return ResourceManager.GetString("MsgRoutingRuleOutboundNodeRemarkDuplicate", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Filter, press Enter to execute 的本地化字符串。
         /// </summary>
@@ -3383,7 +3392,25 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbPolicyGroupSubChildTip", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Select child configurations manually. Use the buttons or context menu to add, remove, and adjust order. 的本地化字符串。
+        /// </summary>
+        public static string TbPolicyGroupChildTip {
+            get {
+                return ResourceManager.GetString("TbPolicyGroupChildTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Proxy chain order: traffic enters the first child and exits through the last child. Use Move Up/Down to adjust the chain. 的本地化字符串。
+        /// </summary>
+        public static string TbProxyChainChildTip {
+            get {
+                return ResourceManager.GetString("TbProxyChainChildTip", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Policy Group Type 的本地化字符串。
         /// </summary>
@@ -3671,7 +3698,25 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbRuleOutboundTagTip", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Outbound 的本地化字符串。
+        /// </summary>
+        public static string TbRuleOutbound {
+            get {
+                return ResourceManager.GetString("TbRuleOutbound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Use proxy/direct/block, or click Select Profile to route this rule to a node, policy group, or proxy chain. 的本地化字符串。
+        /// </summary>
+        public static string TbRuleOutboundProfileTip {
+            get {
+                return ResourceManager.GetString("TbRuleOutboundProfileTip", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Rule Type 的本地化字符串。
         /// </summary>

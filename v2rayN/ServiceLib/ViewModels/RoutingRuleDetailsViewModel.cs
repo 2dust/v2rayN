@@ -23,6 +23,8 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
     [Reactive]
     public bool AutoSort { get; set; }
 
+    public IObservableCollection<string> OutboundTagItems { get; } = new ObservableCollectionExtended<string>();
+
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
@@ -51,6 +53,32 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         IP = Utils.List2String(SelectedSource.Ip, true);
         Process = Utils.List2String(SelectedSource.Process, true);
         RuleType = SelectedSource.RuleType?.ToString();
+
+        _ = InitOutboundTagItems();
+    }
+
+    public async Task CheckOutboundProfileRemarkDuplicate(string? remarks)
+    {
+        var profileItems = await AppManager.Instance.GetProfileItemsViaRemarks(remarks);
+        if (profileItems.Count > 1)
+        {
+            NoticeManager.Instance.Enqueue(string.Format(ResUI.MsgRoutingRuleOutboundNodeRemarkDuplicate, remarks));
+        }
+    }
+
+    private async Task InitOutboundTagItems()
+    {
+        OutboundTagItems.Clear();
+        OutboundTagItems.AddRange(Global.OutboundTags);
+
+        var profileItems = await AppManager.Instance.ProfileItems(string.Empty) ?? [];
+        var groupRemarks = profileItems
+            .Where(t => t.ConfigType.IsGroupType() && t.Remarks.IsNotEmpty())
+            .Select(t => t.Remarks)
+            .Distinct()
+            .OrderBy(t => t)
+            .ToList();
+        OutboundTagItems.AddRange(groupRemarks);
     }
 
     private async Task SaveRulesAsync()

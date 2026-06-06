@@ -282,6 +282,15 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
     }
 
+    public async Task<List<ProfileItem>> GetProfileItemsViaRemarks(string? remarks)
+    {
+        if (remarks.IsNullOrEmpty())
+        {
+            return [];
+        }
+        return await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(it => it.Remarks == remarks).ToListAsync();
+    }
+
     public async Task<List<RoutingItem>?> RoutingItems()
     {
         return await SQLiteHelper.Instance.TableAsync<RoutingItem>().OrderBy(t => t.Sort).ToListAsync();

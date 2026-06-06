@@ -305,6 +305,61 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Fact]
+    public void GenerateClientConfigContent_RoutingSplit_ClaudeDomainsToProxyChain_ShouldKeepDefaultTrafficOnMainProxy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-main", "main");
+        var hop1 = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-hop-1", "hop-1");
+        var hop2 = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-hop-2", "hop-2");
+        var chain = CoreConfigTestFactory.CreateProxyChainNode(ECoreType.sing_box, "c-claude", "claude-chain",
+            [hop1.IndexId, hop2.IndexId]);
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            RoutingItem = new RoutingItem
+            {
+                Id = "r-claude-chain",
+                Remarks = "claude-chain-routing",
+                RuleSet = JsonUtils.Serialize(new List<RulesItem>
+                {
+                    new()
+                    {
+                        Enabled = true,
+                        RuleType = ERuleType.Routing,
+                        OutboundTag = chain.Remarks,
+                        Domain = ["domain:anthropic.com", "domain:claude.ai"],
+                    }
+                }),
+                DomainStrategy = Global.AsIs,
+                DomainStrategy4Singbox = string.Empty,
+            }
+        };
+        context.AllProxiesMap[hop1.IndexId] = hop1;
+        context.AllProxiesMap[hop2.IndexId] = hop2;
+        context.AllProxiesMap[chain.IndexId] = chain;
+        context.AllProxiesMap[$"remark:{chain.Remarks}"] = chain;
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var expectedPrefix = $"{chain.IndexId}-{Global.ProxyTag}-{chain.Remarks}";
+
+        cfg.route.final.Should().Be(Global.ProxyTag);
+        cfg.outbounds.Should().Contain(o => o.tag == Global.ProxyTag && o.type == "socks");
+        cfg.outbounds.Should().Contain(o => o.tag.StartsWith(expectedPrefix, StringComparison.Ordinal));
+        cfg.outbounds.Should().Contain(o => o.tag.StartsWith($"chain-{expectedPrefix}-", StringComparison.Ordinal));
+
+        var hasClaudeRouteRule = cfg.route.rules.Any(r =>
+            r.domain_suffix != null
+            && r.domain_suffix.Contains("claude.ai")
+            && (r.outbound ?? string.Empty).StartsWith(expectedPrefix, StringComparison.Ordinal));
+        hasClaudeRouteRule.Should().BeTrue();
+    }
+
+    [Fact]
     public void GenerateClientConfigContent_DirectExpectedIPs_ShouldApplyGeoipAndCidrToDirectDnsRule()
     {
         var config = CoreConfigTestFactory.CreateConfigWithDirectExpectedIPs(

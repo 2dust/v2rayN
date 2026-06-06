@@ -258,6 +258,60 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Fact]
+    public void GenerateClientConfigContent_RoutingSplit_ClaudeDomainsToProxyChain_ShouldKeepDefaultTrafficOnMainProxy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var hop1 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n-hop-1", "hop-1");
+        var hop2 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n-hop-2", "hop-2");
+        var chain = CoreConfigTestFactory.CreateProxyChainNode(ECoreType.Xray, "c-claude", "claude-chain",
+            [hop1.IndexId, hop2.IndexId]);
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray) with
+        {
+            RoutingItem = new RoutingItem
+            {
+                Id = "r-claude-chain",
+                Remarks = "claude-chain-routing",
+                RuleSet = JsonUtils.Serialize(new List<RulesItem>
+                {
+                    new()
+                    {
+                        Enabled = true,
+                        RuleType = ERuleType.Routing,
+                        OutboundTag = chain.Remarks,
+                        Domain = ["domain:anthropic.com", "domain:claude.ai"],
+                    }
+                }),
+                DomainStrategy = Global.AsIs,
+                DomainStrategy4Singbox = string.Empty,
+            }
+        };
+        context.AllProxiesMap[hop1.IndexId] = hop1;
+        context.AllProxiesMap[hop2.IndexId] = hop2;
+        context.AllProxiesMap[chain.IndexId] = chain;
+        context.AllProxiesMap[$"remark:{chain.Remarks}"] = chain;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var expectedPrefix = $"{chain.IndexId}-{Global.ProxyTag}-{chain.Remarks}";
+
+        cfg.outbounds.Should().Contain(o => o.tag == Global.ProxyTag && o.protocol == "vmess");
+        cfg.outbounds.Should().Contain(o => o.tag.StartsWith(expectedPrefix, StringComparison.Ordinal));
+        cfg.outbounds.Should().Contain(o => o.tag.StartsWith($"chain-{expectedPrefix}-", StringComparison.Ordinal));
+
+        var hasClaudeRouteRule = cfg.routing.rules.Any(r =>
+            r.domain != null
+            && r.domain.Contains("domain:claude.ai")
+            && (r.outboundTag ?? string.Empty).StartsWith(expectedPrefix, StringComparison.Ordinal));
+        hasClaudeRouteRule.Should().BeTrue();
+    }
+
+    [Fact]
     public void GenerateClientConfigContent_DirectExpectedIPs_ShouldApplyExpectedIPsToDirectDnsServer()
     {
         var config = CoreConfigTestFactory.CreateConfigWithDirectExpectedIPs(ECoreType.Xray, "192.168.0.0/16,geoip:cn");
