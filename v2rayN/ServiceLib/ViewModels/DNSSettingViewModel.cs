@@ -56,7 +56,7 @@ public class DNSSettingViewModel : MyReactiveObject
         });
 
         this.WhenAnyValue(x => x.RayCustomDNSEnableCompatible, x => x.SBCustomDNSEnableCompatible)
-            .Select(x => !(x.Item1 && x.Item2))
+            .Select(x => x is not { Item1: true, Item2: true })
             .ToPropertyEx(this, x => x.IsSimpleDNSEnabled);
 
         _ = Init();

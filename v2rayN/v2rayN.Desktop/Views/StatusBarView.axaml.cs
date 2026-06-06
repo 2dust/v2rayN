@@ -47,10 +47,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         switch (action)
         {
             case EViewAction.DispatcherRefreshIcon:
-                Dispatcher.UIThread.Post(() =>
-                {
-                    RefreshIcon();
-                },
+                Dispatcher.UIThread.Post(RefreshIcon,
                 DispatcherPriority.Default);
                 break;
 

@@ -136,7 +136,7 @@ public class Outboundsettings4Ray
 
     public Response4Ray? response { get; set; }
 
-    public string domainStrategy { get; set; }
+    public string? domainStrategy { get; set; }
 
     public int? userLevel { get; set; }
 

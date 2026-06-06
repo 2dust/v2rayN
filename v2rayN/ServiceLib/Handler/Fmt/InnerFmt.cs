@@ -185,7 +185,7 @@ public class InnerFmt
             return null;
         }
         // Check Enum.IsDefined
-        if (!Enum.IsDefined(typeof(EConfigType), profileItem.ConfigType))
+        if (!Enum.IsDefined(profileItem.ConfigType))
         {
             return null;
         }

@@ -144,13 +144,13 @@ public partial class MainWindow
             AppEvents.ShutdownRequested
              .AsObservable()
              .ObserveOn(RxSchedulers.MainThreadScheduler)
-             .Subscribe(content => Shutdown(content))
+             .Subscribe(Shutdown)
              .DisposeWith(disposables);
 
             AppEvents.ShowHideWindowRequested
              .AsObservable()
              .ObserveOn(RxSchedulers.MainThreadScheduler)
-             .Subscribe(blShow => ShowHideWindow(blShow))
+             .Subscribe(ShowHideWindow)
              .DisposeWith(disposables);
         });
 

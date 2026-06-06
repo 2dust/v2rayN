@@ -71,7 +71,7 @@ public class SocksFmt : BaseFmt
             return null;
         }
         var arr21 = arr1.First().Split(':');
-        var indexPort = arr1.Last().LastIndexOf(":");
+        var indexPort = arr1.Last().LastIndexOf(':');
         if (arr21.Length != 2 || indexPort < 0)
         {
             return null;

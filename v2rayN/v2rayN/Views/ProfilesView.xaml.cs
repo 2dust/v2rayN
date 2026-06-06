@@ -400,7 +400,7 @@ public partial class ProfilesView
     {
         try
         {
-            List<ColumnItem> lvColumnItem = new();
+            List<ColumnItem> lvColumnItem = [];
             foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
             {
                 lvColumnItem.Add(new()

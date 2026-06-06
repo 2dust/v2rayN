@@ -5,7 +5,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingViewModel>
 {
-    private readonly List<object> _textBoxKeyEventItem = new();
+    private readonly List<object> _textBoxKeyEventItem = [];
 
     public GlobalHotkeySettingWindow()
     {

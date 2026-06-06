@@ -86,7 +86,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
         SelectedSource = new();
         SelectedRouting = routingItem;
-        _rules = routingItem.Id.IsNullOrEmpty() ? new() : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.RuleSet);
+        _rules = routingItem.Id.IsNullOrEmpty() ? [] : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.RuleSet);
 
         RefreshRulesItems();
     }

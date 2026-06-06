@@ -165,7 +165,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 {
                     listen = Global.Loopback,
                     port = port,
-                    protocol = EInboundProtocol.mixed.ToString(),
+                    protocol = nameof(EInboundProtocol.mixed),
                     settings = new Inboundsettings4Ray()
                     {
                         udp = true,
@@ -270,7 +270,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 tag = $"{EInboundProtocol.socks}{port}",
                 listen = Global.Loopback,
                 port = port,
-                protocol = EInboundProtocol.mixed.ToString(),
+                protocol = nameof(EInboundProtocol.mixed),
                 settings = new Inboundsettings4Ray()
                 {
                     udp = true,

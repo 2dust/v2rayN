@@ -72,13 +72,17 @@ public partial class App : Application
 
     private async void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        try
         {
-            if (desktop.MainWindow != null)
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
             {
                 AppEvents.AddServerViaClipboardRequested.Publish();
                 await Task.Delay(1000);
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("MenuAddServerViaClipboardClick", ex);
         }
     }
 

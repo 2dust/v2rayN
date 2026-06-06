@@ -50,7 +50,7 @@ public class AddServer2ViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillServerAddressCustom);
             return;
         }
-        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : (ECoreType)Enum.Parse(typeof(ECoreType), CoreType);
+        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
 
         if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
         {

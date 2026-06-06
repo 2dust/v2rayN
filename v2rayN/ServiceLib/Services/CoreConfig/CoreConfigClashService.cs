@@ -3,15 +3,9 @@ namespace ServiceLib.Services.CoreConfig;
 /// <summary>
 /// Core configuration file processing class
 /// </summary>
-public class CoreConfigClashService
+public class CoreConfigClashService(Config config)
 {
-    private Config _config;
     private static readonly string _tag = "CoreConfigClashService";
-
-    public CoreConfigClashService(Config config)
-    {
-        _config = config;
-    }
 
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
@@ -56,7 +50,7 @@ public class CoreConfigClashService
             var tagYamlStr1 = "!<str>";
             var tagYamlStr2 = "__strn__";
             var tagYamlStr3 = "!!str";
-            var txtFile = File.ReadAllText(addressFileName);
+            var txtFile = await File.ReadAllTextAsync(addressFileName);
             txtFile = txtFile.Replace(tagYamlStr1, tagYamlStr2);
 
             //YAML anchors
@@ -75,13 +69,13 @@ public class CoreConfigClashService
             //mixed-port
             fileContent["mixed-port"] = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
             //log-level
-            fileContent["log-level"] = GetLogLevel(_config.CoreBasicItem.Loglevel);
+            fileContent["log-level"] = GetLogLevel(config.CoreBasicItem.Loglevel);
 
             //external-controller
             fileContent["external-controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}";
             fileContent.Remove("secret");
             //allow-lan
-            if (_config.Inbound.First().AllowLANConn)
+            if (config.Inbound.First().AllowLANConn)
             {
                 fileContent["allow-lan"] = "true";
                 fileContent["bind-address"] = "*";
@@ -92,23 +86,23 @@ public class CoreConfigClashService
             }
 
             //ipv6
-            fileContent["ipv6"] = _config.ClashUIItem.EnableIPv6;
+            fileContent["ipv6"] = config.ClashUIItem.EnableIPv6;
 
             //mode
             if (!fileContent.ContainsKey("mode"))
             {
-                fileContent["mode"] = ERuleMode.Rule.ToString().ToLower();
+                fileContent["mode"] = nameof(ERuleMode.Rule).ToLower();
             }
             else
             {
-                if (_config.ClashUIItem.RuleMode != ERuleMode.Unchanged)
+                if (config.ClashUIItem.RuleMode != ERuleMode.Unchanged)
                 {
-                    fileContent["mode"] = _config.ClashUIItem.RuleMode.ToString().ToLower();
+                    fileContent["mode"] = config.ClashUIItem.RuleMode.ToString().ToLower();
                 }
             }
 
             //enable tun mode
-            if (_config.TunModeItem.EnableTun)
+            if (config.TunModeItem.EnableTun)
             {
                 var tun = EmbedUtils.GetEmbedText(Global.ClashTunYaml);
                 if (tun.IsNotEmpty())
@@ -156,7 +150,7 @@ public class CoreConfigClashService
 
     private async Task MixinContent(Dictionary<string, object> fileContent, ProfileItem node)
     {
-        if (!_config.ClashUIItem.EnableMixinContent)
+        if (!config.ClashUIItem.EnableMixinContent)
         {
             return;
         }
@@ -177,7 +171,7 @@ public class CoreConfigClashService
         }
         foreach (var item in mixinContent)
         {
-            if (!_config.TunModeItem.EnableTun && item.Key == "tun")
+            if (!config.TunModeItem.EnableTun && item.Key == "tun")
             {
                 continue;
             }
@@ -220,9 +214,8 @@ public class CoreConfigClashService
             return;
         }
 
-        if (!blRemoved && !fileContent.ContainsKey(key))
+        if (!blRemoved && fileContent.TryAdd(key, value))
         {
-            fileContent.Add(key, value);
             return;
         }
         var lstOri = (List<object>)fileContent[key];
@@ -244,7 +237,7 @@ public class CoreConfigClashService
         }
         else
         {
-            lstValue.ForEach(item => lstOri.Add(item));
+            lstValue.ForEach(lstOri.Add);
         }
     }
 

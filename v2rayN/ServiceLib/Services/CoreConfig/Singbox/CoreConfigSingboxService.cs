@@ -153,7 +153,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 {
                     listen = Global.Loopback,
                     listen_port = port,
-                    type = EInboundProtocol.mixed.ToString(),
+                    type = nameof(EInboundProtocol.mixed),
                 };
                 inbound.tag = inbound.type + inbound.listen_port.ToString();
                 _coreConfig.inbounds.Add(inbound);
@@ -229,7 +229,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 tag = $"{EInboundProtocol.mixed}{port}",
                 listen = Global.Loopback,
                 listen_port = port,
-                type = EInboundProtocol.mixed.ToString(),
+                type = nameof(EInboundProtocol.mixed),
             });
             ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();

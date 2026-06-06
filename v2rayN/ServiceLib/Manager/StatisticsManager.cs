@@ -45,7 +45,7 @@ public class StatisticsManager
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem ");
         _serverStatItem = null;
-        _lstServerStat = new();
+        _lstServerStat = [];
     }
 
     public async Task SaveTo()

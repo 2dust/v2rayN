@@ -236,12 +236,9 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task InitCoreType()
     {
-        if (_config.CoreTypeItem == null)
-        {
-            _config.CoreTypeItem = new List<CoreTypeItem>();
-        }
+        _config.CoreTypeItem ??= [];
 
-        foreach (EConfigType it in Enum.GetValues(typeof(EConfigType)))
+        foreach (var it in Enum.GetValues<EConfigType>())
         {
             if (_config.CoreTypeItem.FindIndex(t => t.ConfigType == it) >= 0)
             {
@@ -458,7 +455,7 @@ public class OptionSettingViewModel : MyReactiveObject
                 default:
                     continue;
             }
-            item.CoreType = (ECoreType)Enum.Parse(typeof(ECoreType), type);
+            item.CoreType = Enum.Parse<ECoreType>(type);
         }
         await Task.CompletedTask;
     }

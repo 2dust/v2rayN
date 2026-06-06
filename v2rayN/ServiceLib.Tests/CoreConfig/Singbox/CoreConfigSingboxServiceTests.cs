@@ -554,7 +554,7 @@ public class CoreConfigSingboxServiceTests
 
         cfg.dns.servers.Should().Contain(s => s.tag == "remote" && s.type == "udp" && s.server == "8.8.8.8");
         cfg.dns.servers.Should().Contain(s => s.tag == Global.SingboxLocalDNSTag);
-        cfg.dns.rules.Should().Contain(r => r.clash_mode == ERuleMode.Global.ToString());
-        cfg.dns.rules.Should().Contain(r => r.clash_mode == ERuleMode.Direct.ToString());
+        cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Global));
+        cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Direct));
     }
 }

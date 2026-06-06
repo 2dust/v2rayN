@@ -18,7 +18,7 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
         btnCancel.Click += (s, e) => Close();
         ViewModel = new AddServer2ViewModel(profileItem, UpdateViewHandler);
 
-        cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != ECoreType.v2rayN.ToString()).ToList().AppendEmpty();
+        cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 
         this.WhenActivated(disposables =>
         {

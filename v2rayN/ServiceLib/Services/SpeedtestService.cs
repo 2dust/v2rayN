@@ -7,7 +7,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private static readonly string _tag = "SpeedtestService";
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
-    private static readonly ConcurrentBag<string> _lstExitLoop = new();
+    private static readonly ConcurrentBag<string> _lstExitLoop = [];
     private readonly int _speedTestPageSize = config.SpeedTestItem.SpeedTestPageSize ?? Global.SpeedTestPageSize;
     private readonly TimeSpan _delayInterval = TimeSpan.FromSeconds(config.SpeedTestItem.SpeedTestDelayInterval ?? 1);
 
@@ -33,7 +33,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private static bool ShouldStopTest(string exitLoopKey)
     {
-        return !_lstExitLoop.Any(p => p == exitLoopKey);
+        return _lstExitLoop.All(p => p != exitLoopKey);
     }
 
     private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
@@ -173,7 +173,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
-        List<ServerTestItem> lstFailed = new();
+        List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
             var ret = await RunRealPingAsync(lst, exitLoopKey);
@@ -219,7 +219,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             await Task.Delay(1000);
 
-            List<Task> tasks = new();
+            List<Task> tasks = [];
             foreach (var it in selecteds)
             {
                 if (!it.AllowTest)
@@ -262,7 +262,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
-        List<ServerTestItem> lstFailed = new();
+        List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
             var ret = await RunUdpTestAsync(lst, exitLoopKey);
@@ -300,7 +300,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             await Task.Delay(1000);
 
-            List<Task> tasks = new();
+            List<Task> tasks = [];
             foreach (var it in selecteds)
             {
                 if (!it.AllowTest)
@@ -338,7 +338,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
         var downloadHandle = new DownloadService();
-        List<Task> tasks = new();
+        List<Task> tasks = [];
         foreach (var it in selecteds)
         {
             if (ShouldStopTest(exitLoopKey))
@@ -489,7 +489,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
-        List<List<ServerTestItem>> lstTest = new();
+        List<List<ServerTestItem>> lstTest = [];
         var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
         var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
 

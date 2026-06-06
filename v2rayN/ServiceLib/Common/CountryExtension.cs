@@ -87,6 +87,6 @@ public static class CountryExtension
             return null;
         }
 
-        return CountryEmojiMap.TryGetValue(countryCode, out var emoji) ? emoji : null;
+        return CountryEmojiMap.GetValueOrDefault(countryCode);
     }
 }

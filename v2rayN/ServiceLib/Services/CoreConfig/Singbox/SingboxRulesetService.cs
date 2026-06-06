@@ -18,15 +18,15 @@ public partial class CoreConfigSingboxService
         //convert route geosite & geoip to ruleset
         foreach (var rule in _coreConfig.route.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
         {
-            rule.rule_set ??= new List<string>();
-            rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList());
+            rule.rule_set ??= [];
+            rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList() ?? []);
             rule.geosite = null;
             AddRuleSets(ruleSets, rule.rule_set);
         }
         foreach (var rule in _coreConfig.route.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
         {
-            rule.rule_set ??= new List<string>();
-            rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList());
+            rule.rule_set ??= [];
+            rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList() ?? []);
             rule.geoip = null;
             AddRuleSets(ruleSets, rule.rule_set);
         }
@@ -34,14 +34,14 @@ public partial class CoreConfigSingboxService
         //convert dns geosite & geoip to ruleset
         foreach (var rule in _coreConfig.dns?.rules.Where(t => t.geosite?.Count > 0).ToList() ?? [])
         {
-            rule.rule_set ??= new List<string>();
-            rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList());
+            rule.rule_set ??= [];
+            rule.rule_set.AddRange(rule?.geosite?.Select(t => $"{geosite}-{t}").ToList() ?? []);
             rule.geosite = null;
         }
         foreach (var rule in _coreConfig.dns?.rules.Where(t => t.geoip?.Count > 0).ToList() ?? [])
         {
-            rule.rule_set ??= new List<string>();
-            rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList());
+            rule.rule_set ??= [];
+            rule.rule_set.AddRange(rule?.geoip?.Select(t => $"{geoip}-{t}").ToList() ?? []);
             rule.geoip = null;
         }
         foreach (var dnsRule in _coreConfig.dns?.rules.Where(t => t.rule_set?.Count > 0).ToList() ?? [])

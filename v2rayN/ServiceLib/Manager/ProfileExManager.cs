@@ -111,7 +111,7 @@ public class ProfileExManager
     public async Task ClearAll()
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
-        _lstProfileEx = new();
+        _lstProfileEx = [];
     }
 
     public async Task SaveTo()
@@ -182,6 +182,6 @@ public class ProfileExManager
         {
             return 0;
         }
-        return _lstProfileEx.Max(t => t == null ? 0 : t.Sort);
+        return _lstProfileEx.Max(t => t?.Sort ?? 0);
     }
 }

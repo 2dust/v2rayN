@@ -46,10 +46,7 @@ public partial class CoreConfigV2rayService
             }
 
             // Ensure routing node exists
-            if (fullConfigTemplateNode["routing"] == null)
-            {
-                fullConfigTemplateNode["routing"] = new JsonObject();
-            }
+            fullConfigTemplateNode["routing"] ??= new JsonObject();
 
             // Handle balancers - append instead of override
             if (fullConfigTemplateNode["routing"]["balancers"] is JsonArray customBalancersNode)

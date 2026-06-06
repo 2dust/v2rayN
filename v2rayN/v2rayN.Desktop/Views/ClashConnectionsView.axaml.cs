@@ -112,7 +112,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
     {
         try
         {
-            List<ColumnItem> lvColumnItem = new();
+            List<ColumnItem> lvColumnItem = [];
             foreach (var item2 in lstConnections.Columns)
             {
                 if (item2.Tag == null)

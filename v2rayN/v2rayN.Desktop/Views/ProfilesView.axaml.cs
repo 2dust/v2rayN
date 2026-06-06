@@ -447,7 +447,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         try
         {
-            List<ColumnItem> lvColumnItem = new();
+            List<ColumnItem> lvColumnItem = [];
             foreach (var item2 in lstProfiles.Columns)
             {
                 if (item2.Tag == null)

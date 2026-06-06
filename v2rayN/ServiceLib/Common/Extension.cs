@@ -47,7 +47,7 @@ public static class Extension
 
     public static string TrimEx(this string? value)
     {
-        return value == null ? string.Empty : value.Trim();
+        return value?.Trim() ?? string.Empty;
     }
 
     public static string RemovePrefix(this string value, char prefix)
