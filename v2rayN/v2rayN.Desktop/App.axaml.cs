@@ -48,6 +48,7 @@ public partial class App : Application
             {
                 MacAppUtils.SetActivationPolicyAccessory();
             }
+            
             ((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow as MainWindow)?.ShowHideWindow(true);
         });
     }
