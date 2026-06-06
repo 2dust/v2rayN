@@ -1333,7 +1333,7 @@
     <value>開啟第二個本機監聽埠</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks：本地埠，socks2：第二個本地埠，socks3：區域網路埠</value>
+    <value>Tun：TUN 入站，Socks：本機連接埠，Socks2：第二個本機連接埠，Socks3：區域網路連接埠</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主題</value>
@@ -1754,5 +1754,17 @@
   </data>
   <data name="TbRouteExcludeAddressTip" xml:space="preserve">
     <value>使用逗號 (,) 分隔</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>TUN 路由排除清單中的位址無效: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>{0} 與 {1} 發生衝突</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>啟用末端分片</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>將封包末端拆分為更小的片段進行傳送，可能會影響吞吐量與延遲</value>
   </data>
 </root>
