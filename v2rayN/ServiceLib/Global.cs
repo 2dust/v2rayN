@@ -473,7 +473,7 @@ public class Global
         "zh-Hans",
         "zh-Hant",
         "en",
-        "fa-Ir",
+        "fa",
         "fr",
         "ru",
         "hu"
