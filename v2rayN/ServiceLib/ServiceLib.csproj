@@ -57,7 +57,7 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<EmbeddedResource Update="Resx\ResUI.fa-Ir.resx">
+		<EmbeddedResource Update="Resx\ResUI.fa.resx">
 			<SubType>Designer</SubType>
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
