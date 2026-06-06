@@ -1770,4 +1770,16 @@
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
     <value>将数据包末端拆分为更小片段发送，可能影响吞吐与延迟。</value>
   </data>
+  <data name="TbPolicyGroupChildTip" xml:space="preserve">
+    <value>手动选择子配置项。使用按钮或右键菜单来添加、删除和调整顺序。</value>
+  </data>
+  <data name="TbProxyChainChildTip" xml:space="preserve">
+    <value>代理链顺序：流量从第一个子节点进入，从最后一个子节点流出。使用上移/下移调整链路。</value>
+  </data>
+  <data name="TbRuleOutbound" xml:space="preserve">
+    <value>出站目标</value>
+  </data>
+  <data name="TbRuleOutboundProfileTip" xml:space="preserve">
+    <value>可使用 proxy/direct/block，或点击“选择 Profile”将本规则指向某个节点、策略组或链式代理。</value>
+  </data>
 </root>

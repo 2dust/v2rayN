@@ -1749,4 +1749,16 @@
   <data name="menuNewUpdate" xml:space="preserve">
     <value>Доступно обновление</value>
   </data>
+  <data name="TbPolicyGroupChildTip" xml:space="preserve">
+    <value>Select child configurations manually. Use the buttons or context menu to add, remove, and adjust order.</value>
+  </data>
+  <data name="TbProxyChainChildTip" xml:space="preserve">
+    <value>Proxy chain order: traffic enters the first child and exits through the last child. Use Move Up/Down to adjust the chain.</value>
+  </data>
+  <data name="TbRuleOutbound" xml:space="preserve">
+    <value>Outbound</value>
+  </data>
+  <data name="TbRuleOutboundProfileTip" xml:space="preserve">
+    <value>Use proxy/direct/block, or click Select Profile to route this rule to a node, policy group, or proxy chain.</value>
+  </data>
 </root>
