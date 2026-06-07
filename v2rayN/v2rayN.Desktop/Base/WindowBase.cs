@@ -4,6 +4,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 {
     public WindowBase()
     {
+        Initialized += OnWindowInitialized;
         Loaded += OnLoaded;
     }
 
@@ -12,28 +13,31 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
         throw new NotImplementedException();
     }
 
-    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
+    private void OnWindowInitialized(object? sender, EventArgs e)
     {
         try
         {
             var sizeItem = ConfigHandler.GetWindowSizeItem(AppManager.Instance.Config, GetType().Name);
-            if (sizeItem == null)
+            if (sizeItem is null)
             {
                 return;
             }
 
-            Width = sizeItem.Width;
-            Height = sizeItem.Height;
+            if (sizeItem.Width > 0 && !Width.Equals(sizeItem.Width))
+            {
+                Width = sizeItem.Width;
+            }
 
-            var workingArea = (Screens.ScreenFromWindow(this) ?? Screens.Primary).WorkingArea;
-            var scaling = (Utils.IsMacOS() ? null : VisualRoot?.RenderScaling) ?? 1.0;
-
-            var x = workingArea.X + ((workingArea.Width - (Width * scaling)) / 2);
-            var y = workingArea.Y + ((workingArea.Height - (Height * scaling)) / 2);
-
-            Position = new PixelPoint((int)x, (int)y);
+            if (sizeItem.Height > 0 && !Height.Equals(sizeItem.Height))
+            {
+                Height = sizeItem.Height;
+            }
         }
         catch { }
+    }
+
+    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
+    {
     }
 
     protected override void OnClosed(EventArgs e)
