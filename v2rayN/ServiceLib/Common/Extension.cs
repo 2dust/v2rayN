@@ -118,4 +118,20 @@ public static class Extension
             destination.Add(item);
         }
     }
+
+    /// <summary>
+    /// Replace all cross-platform newline characters with the specified string
+    /// </summary>
+    public static string ReplaceLineBreaks(this string input, string replacement)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        // You must replace \r\n first, and then replace the single characters \r and \n.
+        return input.Replace("\r\n", replacement)
+                    .Replace("\r", replacement)
+                    .Replace("\n", replacement);
+    }
 }

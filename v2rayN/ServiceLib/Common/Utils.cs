@@ -51,7 +51,7 @@ public class Utils
 
         try
         {
-            str = str.Replace(Environment.NewLine, string.Empty);
+            str = str.ReplaceLineBreaks(string.Empty);
             return new List<string>(str.Split(',', StringSplitOptions.RemoveEmptyEntries));
         }
         catch (Exception ex)
@@ -114,9 +114,7 @@ public class Utils
             }
 
             plainText = plainText.Trim()
-                .Replace(Environment.NewLine, "")
-                .Replace("\n", "")
-                .Replace("\r", "")
+                .ReplaceLineBreaks("")
                 .Replace('_', '/')
                 .Replace('-', '+')
                 .Replace(" ", "");
@@ -321,7 +319,7 @@ public class Utils
             return text;
         }
 
-        return text.Replace("，", ",").Replace(Environment.NewLine, ",");
+        return text.Replace(" ", "").ReplaceLineBreaks(",");
     }
 
     public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
