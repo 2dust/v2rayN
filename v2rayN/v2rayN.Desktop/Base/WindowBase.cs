@@ -18,9 +18,18 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
         try
         {
             var sizeItem = ConfigHandler.GetWindowSizeItem(AppManager.Instance.Config, GetType().Name);
-            if (sizeItem != null)
+            if (sizeItem is null)
+            {
+                return;
+            }
+
+            if (sizeItem.Width > 0 && !Width.Equals(sizeItem.Width))
             {
                 Width = sizeItem.Width;
+            }
+
+            if (sizeItem.Height > 0 && !Height.Equals(sizeItem.Height))
+            {
                 Height = sizeItem.Height;
             }
         }
