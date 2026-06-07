@@ -319,7 +319,9 @@ public class Utils
             return text;
         }
 
-        return text.Replace(" ", "").ReplaceLineBreaks(",");
+        return text.Replace("，", ",")
+                    .Replace(" ", "")
+                    .ReplaceLineBreaks(",");
     }
 
     public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
