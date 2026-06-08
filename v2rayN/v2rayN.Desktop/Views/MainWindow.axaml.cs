@@ -413,7 +413,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     public void ShowHideWindow(bool? blShow)
     {
         var bl = blShow ??
-                    (Utils.IsLinux()
+                    (Utils.IsLinux() || Utils.IsMacOS()
                     ? (!AppManager.Instance.ShowInTaskbar ^ (WindowState == WindowState.Minimized))
                     : !AppManager.Instance.ShowInTaskbar);
         if (bl)
