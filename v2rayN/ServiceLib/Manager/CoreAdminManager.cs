@@ -31,9 +31,14 @@ public class CoreAdminManager
 
     public async Task<ProcessService?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
     {
+        var absoluteConfigPath = Utils.GetBinConfigPath(configPath);
+        var manageMacOSTunDns = Utils.IsMacOS()
+            && coreInfo.CoreType == ECoreType.sing_box
+            && HasDnsHijackAction(absoluteConfigPath);
+
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
-        var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
+        var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, absoluteConfigPath.AppendQuotes())}";
         sb.AppendLine($"exec sudo -S -- {cmdLine}");
         var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
@@ -47,21 +52,41 @@ public class CoreAdminManager
             updateFunc: _updateFunc
         );
 
-        await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
-
-        if (procService is null or { HasExited: true })
+        try
         {
-            throw new Exception(ResUI.FailedToRunCore);
-        }
-        _linuxSudoPid = procService.Id;
+            await procService.StartAsync(AppManager.Instance.LinuxSudoPwd);
 
-        return procService;
+            if (procService is null or { HasExited: true })
+            {
+                throw new Exception(ResUI.FailedToRunCore);
+            }
+            _linuxSudoPid = procService.Id;
+
+            if (manageMacOSTunDns)
+            {
+                await RunMacOSTunDnsScript("set");
+            }
+
+            return procService;
+        }
+        catch
+        {
+            if (Utils.IsMacOS())
+            {
+                await RunMacOSTunDnsScript("restore");
+            }
+            throw;
+        }
     }
 
     public async Task KillProcessAsLinuxSudo()
     {
         if (_linuxSudoPid < 0)
         {
+            if (Utils.IsMacOS())
+            {
+                await RunMacOSTunDnsScript("restore");
+            }
             return;
         }
 
@@ -87,5 +112,49 @@ public class CoreAdminManager
         }
 
         _linuxSudoPid = -1;
+        if (Utils.IsMacOS())
+        {
+            await RunMacOSTunDnsScript("restore");
+        }
+    }
+
+    private static bool HasDnsHijackAction(string configPath)
+    {
+        try
+        {
+            var rules = JsonNode.Parse(File.ReadAllText(configPath))?["route"]?["rules"]?.AsArray();
+            return rules?.Any(rule =>
+                string.Equals(rule?["action"]?.GetValue<string>(), "hijack-dns", StringComparison.Ordinal)) == true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static async Task RunMacOSTunDnsScript(string action)
+    {
+        try
+        {
+            var scriptPath = await FileUtils.CreateLinuxShellFile(
+                "tun_dns_osx.sh",
+                EmbedUtils.GetEmbedText(Global.TunDnsOSXShellFileName),
+                false);
+            var statePath = Utils.GetConfigPath("macos_tun_dns_state");
+            var result = await Cli.Wrap("/usr/bin/sudo")
+                .WithArguments(["-S", "--", scriptPath, action, statePath])
+                .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd + Environment.NewLine))
+                .WithValidation(CommandResultValidation.None)
+                .ExecuteBufferedAsync();
+
+            if (result.ExitCode != 0)
+            {
+                Logging.SaveLog($"macOS TUN DNS script failed: {result.StandardError}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
     }
 }
