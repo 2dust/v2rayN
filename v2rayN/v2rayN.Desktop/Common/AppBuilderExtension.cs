@@ -18,18 +18,18 @@ public static class AppBuilderExtension
 
         if (OperatingSystem.IsWindows())
         {
-            AddFontFallback(fallbacks, "Segoe UI Symbol");
             AddFontFallback(fallbacks, "Segoe UI Emoji");
+            AddFontFallback(fallbacks, "Segoe UI Symbol");
         }
         else if (OperatingSystem.IsMacOS())
         {
-            AddFontFallback(fallbacks, "Apple Symbols");
             AddFontFallback(fallbacks, "Apple Color Emoji");
+            AddFontFallback(fallbacks, "Apple Symbols");
         }
         else if (OperatingSystem.IsLinux())
         {
-            AddFontFallback(fallbacks, "Noto Sans Symbols");
             AddFontFallback(fallbacks, "Noto Color Emoji");
+            AddFontFallback(fallbacks, "Noto Sans Symbols");
         }
 
         return appBuilder.With(new FontManagerOptions
