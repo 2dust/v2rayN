@@ -23,8 +23,8 @@ public partial class App : Application
                 DataContext = StatusBarViewModel.Instance;
             }
 
-            desktop.Exit += OnExit;
-            desktop.MainWindow = new MainWindow();
+            var mainWindow = new MainWindow();
+            desktop.MainWindow = mainWindow;
 
             if (OperatingSystem.IsMacOS())
             {
@@ -42,17 +42,65 @@ public partial class App : Application
             return;
         }
 
+        if ((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow is not MainWindow mainWindow)
+        {
+            return;
+        }
+
+        var isMiniaturized = MacAppUtils.IsWindowMiniaturized(mainWindow);
+        
         Dispatcher.UIThread.Post(() =>
         {
+            if (isMiniaturized)
+            {
+                RestoreMacOSAccessoryPolicyAfterMiniaturize(mainWindow);
+                mainWindow.ShowHideWindow(true);
+                return;
+            }
+            
             if (!AppManager.Instance.Config.UiItem.MacOSShowInDock)
             {
                 MacAppUtils.SetActivationPolicyAccessory();
             }
-            
-            ((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow as MainWindow)?.ShowHideWindow(true);
+
+            mainWindow.ShowHideWindow(true);
         });
     }
 
+    private static void RestoreMacOSAccessoryPolicyAfterMiniaturize(MainWindow mainWindow)
+    {
+        if (AppManager.Instance.Config.UiItem.MacOSShowInDock)
+        {
+            return;
+        }
+
+        mainWindow
+            .GetObservable(Window.WindowStateProperty)
+            .Skip(1)
+            .Where(state => state != WindowState.Minimized)
+            .Take(1)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(_ => QueueMacOSAccessoryPolicyRestore(mainWindow));
+    }
+
+    private static void QueueMacOSAccessoryPolicyRestore(MainWindow mainWindow)
+    {
+        // AppKit may keep isMiniaturized set until the Dock restore animation finishes.
+        DispatcherTimer.RunOnce(() => RestoreMacOSAccessoryPolicy(mainWindow), TimeSpan.FromMilliseconds(300));
+    }
+
+    private static void RestoreMacOSAccessoryPolicy(MainWindow mainWindow)
+    {
+        if (AppManager.Instance.Config.UiItem.MacOSShowInDock || MacAppUtils.IsWindowMiniaturized(mainWindow))
+        {
+            return;
+        }
+
+        MacAppUtils.SetActivationPolicyAccessory();
+        mainWindow.Activate();
+        mainWindow.Focus();
+    }
+    
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         if (e.ExceptionObject != null)
@@ -64,10 +112,6 @@ public partial class App : Application
     private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
-    }
-
-    private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
     }
 
     private async void MenuAddServerViaClipboardClick(object? sender, EventArgs e)
