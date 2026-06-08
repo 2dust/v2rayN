@@ -7,6 +7,7 @@
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<AssemblyName>v2rayN</AssemblyName>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<CETCompat>false</CETCompat>
 	</PropertyGroup>
 
 	<ItemGroup>
