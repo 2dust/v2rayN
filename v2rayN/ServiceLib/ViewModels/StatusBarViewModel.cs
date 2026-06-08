@@ -4,6 +4,7 @@ public class StatusBarViewModel : MyReactiveObject
 {
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
     public static StatusBarViewModel Instance => _instance.Value;
+    private bool _updatingSystemProxySelection;
 
     #region ObservableCollection
 
@@ -109,6 +110,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             _config.TunModeItem.EnableTun = EnableTun = false;
         }
+        AppManager.Instance.IsSystemProxySuppressedByTun = EnableTun;
 
         #region WhenAnyValue && ReactiveCommand
 
@@ -222,6 +224,11 @@ public class StatusBarViewModel : MyReactiveObject
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await SetListenerType(result));
+
+        AppEvents.TunStateChanged
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true));
 
         #endregion AppEvents
 
@@ -379,15 +386,21 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task SetListenerType(ESysProxyType type)
     {
-        if (_config.SystemProxyItem.SysProxyType == type)
+        var releaseTunSuppression = AppManager.Instance.IsTunActive
+            && AppManager.Instance.IsSystemProxySuppressedByTun;
+        if (_config.SystemProxyItem.SysProxyType == type && !releaseTunSuppression)
         {
             return;
+        }
+
+        if (AppManager.Instance.IsTunActive)
+        {
+            AppManager.Instance.IsSystemProxySuppressedByTun = false;
         }
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
         NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
-        SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
     }
 
@@ -395,10 +408,18 @@ public class StatusBarViewModel : MyReactiveObject
     {
         await SysProxyHandler.UpdateSysProxy(_config, false);
 
-        BlSystemProxyClear = type == ESysProxyType.ForcedClear;
-        BlSystemProxySet = type == ESysProxyType.ForcedChange;
-        BlSystemProxyNothing = type == ESysProxyType.Unchanged;
-        BlSystemProxyPac = type == ESysProxyType.Pac;
+        var effectiveType = SysProxyHandler.GetEffectiveProxyType(
+            type,
+            false,
+            AppManager.Instance.IsTunActive,
+            AppManager.Instance.IsSystemProxySuppressedByTun);
+        BlSystemProxyClear = effectiveType == ESysProxyType.ForcedClear;
+        BlSystemProxySet = effectiveType == ESysProxyType.ForcedChange;
+        BlSystemProxyNothing = effectiveType == ESysProxyType.Unchanged;
+        BlSystemProxyPac = effectiveType == ESysProxyType.Pac;
+        _updatingSystemProxySelection = true;
+        SystemProxySelected = (int)effectiveType;
+        _updatingSystemProxySelection = false;
 
         if (blChange)
         {
@@ -450,11 +471,12 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task DoSystemProxySelected(bool c)
     {
-        if (!c)
+        if (!c || _updatingSystemProxySelection)
         {
             return;
         }
-        if (_config.SystemProxyItem.SysProxyType == (ESysProxyType)SystemProxySelected)
+        if (_config.SystemProxyItem.SysProxyType == (ESysProxyType)SystemProxySelected
+            && !(AppManager.Instance.IsTunActive && AppManager.Instance.IsSystemProxySuppressedByTun))
         {
             return;
         }
@@ -490,6 +512,7 @@ public class StatusBarViewModel : MyReactiveObject
             }
         }
 
+        AppManager.Instance.IsSystemProxySuppressedByTun = EnableTun;
         await ConfigHandler.SaveConfig(_config);
         AppEvents.ReloadRequested.Publish();
     }

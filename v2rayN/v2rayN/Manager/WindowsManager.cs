@@ -13,6 +13,22 @@ public sealed class WindowsManager
     {
         try
         {
+            if (AppManager.Instance.IsTunActive)
+            {
+                var iconIndex = !AppManager.Instance.IsSystemProxySuppressedByTun
+                    && config.SystemProxyItem.SysProxyType is ESysProxyType.ForcedChange or ESysProxyType.Pac
+                        ? 6
+                        : 5;
+                var tunIconFileName = Utils.GetPath($"NotifyIcon{iconIndex}.ico");
+                if (File.Exists(tunIconFileName))
+                {
+                    return new Icon(tunIconFileName);
+                }
+                return iconIndex == 6
+                    ? Properties.Resources.NotifyIcon6
+                    : Properties.Resources.NotifyIcon5;
+            }
+
             var index = (int)config.SystemProxyItem.SysProxyType;
 
             //Load from routing setting
@@ -46,7 +62,12 @@ public sealed class WindowsManager
 
     public System.Windows.Media.ImageSource GetAppIcon(Config config)
     {
-        var index = (int)config.SystemProxyItem.SysProxyType + 1;
+        var index = AppManager.Instance.IsTunActive
+            ? !AppManager.Instance.IsSystemProxySuppressedByTun
+                && config.SystemProxyItem.SysProxyType is ESysProxyType.ForcedChange or ESysProxyType.Pac
+                    ? 6
+                    : 5
+            : (int)config.SystemProxyItem.SysProxyType + 1;
         return BitmapFrame.Create(new Uri($"pack://application:,,,/Resources/NotifyIcon{index}.ico", UriKind.RelativeOrAbsolute));
     }
 

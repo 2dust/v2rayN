@@ -39,9 +39,16 @@ internal class AvaUtils
         }
     }
 
-    public static WindowIcon GetAppIcon(ESysProxyType sysProxyType)
+    public static WindowIcon GetAppIcon(
+        ESysProxyType sysProxyType,
+        bool isTunActive,
+        bool isSystemProxySuppressedByTun)
     {
-        var index = (int)sysProxyType + 1;
+        var index = isTunActive
+            ? !isSystemProxySuppressedByTun && sysProxyType is ESysProxyType.ForcedChange or ESysProxyType.Pac
+                ? 6
+                : 5
+            : (int)sysProxyType + 1;
         var fileName = Utils.GetPath($"NotifyIcon{index}.ico");
         if (File.Exists(fileName))
         {

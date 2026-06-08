@@ -6,12 +6,11 @@ public static class SysProxyHandler
 
     public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
     {
-        var type = config.SystemProxyItem.SysProxyType;
-
-        if (forceDisable && type != ESysProxyType.Unchanged)
-        {
-            type = ESysProxyType.ForcedClear;
-        }
+        var type = GetEffectiveProxyType(
+            config.SystemProxyItem.SysProxyType,
+            forceDisable,
+            AppManager.Instance.IsTunActive,
+            AppManager.Instance.IsSystemProxySuppressedByTun);
 
         try
         {
@@ -64,6 +63,20 @@ public static class SysProxyHandler
             Logging.SaveLog(_tag, ex);
         }
         return true;
+    }
+
+    public static ESysProxyType GetEffectiveProxyType(
+        ESysProxyType configuredType,
+        bool forceDisable,
+        bool isTunActive,
+        bool isSystemProxySuppressedByTun)
+    {
+        if ((forceDisable || (isTunActive && isSystemProxySuppressedByTun))
+            && configuredType != ESysProxyType.Unchanged)
+        {
+            return ESysProxyType.ForcedClear;
+        }
+        return configuredType;
     }
 
     private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)

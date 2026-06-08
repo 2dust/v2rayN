@@ -35,6 +35,10 @@ public sealed class AppManager
 
     public ECoreType RunningCoreType { get; set; }
 
+    public bool IsTunActive { get; set; }
+
+    public bool IsSystemProxySuppressedByTun { get; set; }
+
     public bool IsRunningCore(ECoreType type)
     {
         switch (type)

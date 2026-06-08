@@ -580,6 +580,7 @@ public class MainWindowViewModel : MyReactiveObject
             {
                 await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
                 await SysProxyHandler.UpdateSysProxy(_config, false);
+                AppEvents.TunStateChanged.Publish(AppManager.Instance.IsTunActive);
                 await Task.Delay(1000);
             });
             AppEvents.TestServerRequested.Publish();

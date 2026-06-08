@@ -93,6 +93,10 @@ public class CoreManager
         await CoreStartPreService(preContext);
 
         AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
+        AppManager.Instance.IsTunActive = _config.TunModeItem.EnableTun
+            && (preContext is null
+                ? _processService is { HasExited: false }
+                : _processPreService is { HasExited: false });
 
         if (_processService != null)
         {
@@ -168,6 +172,10 @@ public class CoreManager
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
+        }
+        finally
+        {
+            AppManager.Instance.IsTunActive = false;
         }
     }
 
