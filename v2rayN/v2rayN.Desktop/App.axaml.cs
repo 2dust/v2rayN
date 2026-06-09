@@ -35,6 +35,8 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
+    #region MacOS Activation
+
     private void OnMacOSActivated(object? sender, ActivatedEventArgs args)
     {
         if (args.Kind != ActivationKind.Reopen)
@@ -48,7 +50,7 @@ public partial class App : Application
         }
 
         var isMiniaturized = MacAppUtils.IsWindowMiniaturized(mainWindow);
-        
+
         Dispatcher.UIThread.Post(() =>
         {
             if (isMiniaturized)
@@ -57,7 +59,7 @@ public partial class App : Application
                 mainWindow.ShowHideWindow(true);
                 return;
             }
-            
+
             if (!AppManager.Instance.Config.UiItem.MacOSShowInDock)
             {
                 MacAppUtils.SetActivationPolicyAccessory();
@@ -100,7 +102,11 @@ public partial class App : Application
         mainWindow.Activate();
         mainWindow.Focus();
     }
-    
+
+    #endregion MacOS Activation
+
+    #region App Event
+
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         if (e.ExceptionObject != null)
@@ -135,4 +141,6 @@ public partial class App : Application
         await AppManager.Instance.AppExitAsync(false);
         AppManager.Instance.Shutdown(true);
     }
+
+    #endregion App Event
 }
