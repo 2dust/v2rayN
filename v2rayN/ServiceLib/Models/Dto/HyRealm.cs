@@ -15,9 +15,13 @@ public record HyRealm(
 {
     public string RendezvousHostPort => RendezvousPort > 0 ? $"{RendezvousHost}:{RendezvousPort}" : RendezvousHost;
 
-    public static bool TryParse(string str, out HyRealm? realm)
+    public static bool TryParse(string? str, out HyRealm? realm)
     {
         realm = null;
+        if (str == null)
+        {
+            return false;
+        }
         try
         {
             var isHttp = str.StartsWith("realm+http://");
@@ -85,5 +89,18 @@ public record HyRealm(
         }
         return prefix + uriBuilder.Uri.GetComponents(
             UriComponents.UserInfo | UriComponents.HostAndPort | UriComponents.PathAndQuery, UriFormat.UriEscaped);
+    }
+
+    public string ToUriForFinalmask()
+    {
+        var prefix = IsHttp ? "realm+http://" : "realm://";
+        var uriBuilder = new StringBuilder();
+        uriBuilder.Append(prefix);
+        uriBuilder.Append(Utils.UrlEncode(Token));
+        uriBuilder.Append('@');
+        uriBuilder.Append(RendezvousHostPort);
+        uriBuilder.Append('/');
+        uriBuilder.Append(Utils.UrlEncode(RealmName));
+        return uriBuilder.ToString();
     }
 }

@@ -264,6 +264,21 @@ public partial class CoreConfigSingboxService
                             }
                         }
 
+                        if (HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm)
+                            && realm is not null)
+                        {
+                            var realm4Sbox = new HyRealm4Sbox()
+                            {
+                                server_url = realm.RendezvousHostPort,
+                                token = realm.Token,
+                                realm_id = realm.RealmName,
+                            };
+                            outbound.realm = realm4Sbox;
+                            outbound.server = null;
+                            outbound.server_port = null;
+                            outbound.server_ports = null;
+                        }
+
                         break;
                     }
                 case EConfigType.TUIC:

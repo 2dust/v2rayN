@@ -48,7 +48,7 @@ public class HyRealmTests
         var resolved = Hysteria2Fmt.ResolveRealm(str, out var msg);
         resolved.Should().NotBeNull();
         resolved.Password.Should().Be("your_password");
-        var result = HyRealm.TryParse(resolved.GetProtocolExtra().Hy2RealmUrl ?? "", out var realm);
+        var result = HyRealm.TryParse(resolved.GetProtocolExtra().Hy2RealmUrl, out var realm);
         result.Should().BeTrue();
         realm.Should().NotBeNull();
         realm.Token.Should().Be("mytoken");

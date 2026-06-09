@@ -250,6 +250,13 @@ public class HyObfs4Sbox
     public string? password { get; set; }
 }
 
+public class HyRealm4Sbox
+{
+    public string? server_url { get; set; }
+    public string? token { get; set; }
+    public string? realm_id { get; set; }
+}
+
 public class Server4Sbox : BaseServer4Sbox
 {
     public string? inet4_range { get; set; }
@@ -334,6 +341,7 @@ public abstract class DialFields4Sbox
     public Multiplex4Sbox? multiplex { get; set; }
     public Transport4Sbox? transport { get; set; }
     public HyObfs4Sbox? obfs { get; set; }
+    public HyRealm4Sbox? realm { get; set; }
 }
 
 public abstract class BaseServer4Sbox : DialFields4Sbox
