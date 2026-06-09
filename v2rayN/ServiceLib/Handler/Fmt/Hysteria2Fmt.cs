@@ -42,8 +42,11 @@ public class Hysteria2Fmt : BaseFmt
         {
             return null;
         }
-
-        var url = string.Empty;
+        var protocolExtraItem = item.GetProtocolExtra();
+        if (!protocolExtraItem.Hy2RealmUrl.TrimEx().IsNullOrEmpty())
+        {
+            return ToUriForRealm(item);
+        }
 
         var remark = string.Empty;
         if (item.Remarks.IsNotEmpty())
@@ -52,7 +55,6 @@ public class Hysteria2Fmt : BaseFmt
         }
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
-        var protocolExtraItem = item.GetProtocolExtra();
 
         if (!protocolExtraItem.SalamanderPass.IsNullOrEmpty())
         {
@@ -93,5 +95,122 @@ public class Hysteria2Fmt : BaseFmt
         }
 
         return null;
+    }
+
+    public static ProfileItem? ResolveRealm(string str, out string msg)
+    {
+        msg = ResUI.ConfigurationFormatIncorrect;
+        ProfileItem item = new()
+        {
+            ConfigType = EConfigType.Hysteria2
+        };
+        var realmStr = str["hysteria2+".Length..];
+        var result = HyRealm.TryParse(realmStr, out var realm);
+        if (!result || realm == null)
+        {
+            return null;
+        }
+        if (realm.StunList.Count == 0)
+        {
+            realm = realm with
+            {
+                StunList = Global.DefaultRealmStunList,
+            };
+        }
+
+        var url = Utils.TryUri(str);
+        if (url == null)
+        {
+            return null;
+        }
+
+        item.Address = realm.RendezvousHost;
+        item.Port = realm.RendezvousPort;
+        item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
+
+        var query = Utils.ParseQueryString(url.Query);
+        ResolveUriQuery(query, ref item);
+        var authPassword = GetQueryDecoded(query, "auth");
+        if (authPassword.IsNullOrEmpty())
+        {
+            return null;
+        }
+        item.Password = authPassword;
+        if (item.CertSha.IsNullOrEmpty())
+        {
+            item.CertSha = GetQueryDecoded(query, "pinSHA256");
+        }
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            Ports = GetQueryDecoded(query, "mport"),
+            SalamanderPass = GetQueryDecoded(query, "obfs-password"),
+            Hy2RealmUrl = realm.ToUri(),
+        });
+
+        return item;
+    }
+
+    public static string? ToUriForRealm(ProfileItem? item)
+    {
+        if (item == null)
+        {
+            return null;
+        }
+        var protocolExtraItem = item.GetProtocolExtra();
+        var result = HyRealm.TryParse(protocolExtraItem.Hy2RealmUrl ?? "", out var realm);
+        if (!result || realm == null)
+        {
+            return null;
+        }
+
+        var remark = string.Empty;
+        if (item.Remarks.IsNotEmpty())
+        {
+            remark = "#" + Utils.UrlEncode(item.Remarks);
+        }
+        var dicQuery = new Dictionary<string, string>();
+        ToUriQueryLite(item, ref dicQuery);
+
+        if (!protocolExtraItem.SalamanderPass.IsNullOrEmpty())
+        {
+            dicQuery.Add("obfs", "salamander");
+            dicQuery.Add("obfs-password", Utils.UrlEncode(protocolExtraItem.SalamanderPass));
+        }
+        if (!protocolExtraItem.Ports.IsNullOrEmpty())
+        {
+            dicQuery.Add("mport", Utils.UrlEncode(protocolExtraItem.Ports.Replace(':', '-')));
+        }
+        if (!item.CertSha.IsNullOrEmpty())
+        {
+            var sha = item.CertSha;
+            var idx = sha.IndexOf(',');
+            if (idx > 0)
+            {
+                sha = sha[..idx];
+            }
+            dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
+        }
+        dicQuery.Add("auth", Utils.UrlEncode(item.Password));
+
+        var queryBuilder = new StringBuilder();
+        queryBuilder.Append('?');
+        foreach (var kv in dicQuery)
+        {
+            queryBuilder.Append(kv.Key);
+            queryBuilder.Append('=');
+            queryBuilder.Append(kv.Value);
+            queryBuilder.Append('&');
+        }
+        foreach (var stun in realm.StunList)
+        {
+            queryBuilder.Append("stun=");
+            queryBuilder.Append(Utils.UrlEncode(stun));
+            queryBuilder.Append('&');
+        }
+        var query = queryBuilder.ToString().TrimEnd('&');
+
+        var url = $"{Utils.UrlEncode(realm.Token)}@{GetIpv6(realm.RendezvousHost)}:{realm.RendezvousPort}";
+        var scheme = realm.IsHttp ? Global.Hysteria2HttpRealmProtocolShare : Global.Hysteria2RealmProtocolShare;
+        return $"{scheme}{url}/{realm.RealmName}{query}{remark}";
     }
 }

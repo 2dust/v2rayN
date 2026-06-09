@@ -1812,4 +1812,13 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgInsecureConfiguration" xml:space="preserve">
     <value>Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks.</value>
   </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>Invalid Realm URL.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
 </root>

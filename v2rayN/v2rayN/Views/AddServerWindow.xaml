@@ -505,6 +505,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
@@ -561,10 +562,12 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbPorts7Tips}" />
+                        Text="{x:Static resx:ResUI.TbPorts7Tips}"
+                        TextWrapping="Wrap" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -606,6 +609,30 @@
                             materialDesign:HintAssist.Hint="Down"
                             Style="{StaticResource DefTextBox}" />
                     </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
+                    <TextBox
+                        x:Name="txtHy2RealmUrl"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        Style="{StaticResource DefTextBox}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Width="200"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
+                        TextWrapping="Wrap" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"
