@@ -1,0 +1,79 @@
+<reactiveui:ReactiveUserControl
+    x:Class="v2rayN.Views.NetBridgeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:v2rayN.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveui="http://reactiveui.net"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Height="400"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
+    x:TypeArguments="vms:NetBridgeViewModel"
+    Style="{StaticResource ViewGlobal}"
+    mc:Ignorable="d">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <StackPanel
+            Margin="{StaticResource Margin8}"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <ToggleButton
+                x:Name="togEnableNetBridge"
+                Margin="{StaticResource Margin8}"
+                HorizontalAlignment="Left" />
+
+            <TextBlock
+                Width="500"
+                Margin="{StaticResource Margin8}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbEnableNetBridge}"
+                TextWrapping="Wrap" />
+        </StackPanel>
+
+        <DockPanel>
+            <StackPanel
+                Margin="{StaticResource Margin8}"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+
+                <TextBlock
+                    Width="500"
+                    Margin="{StaticResource Margin8}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.NetBridgeRuleTips}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel
+                Margin="{StaticResource Margin8}"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal">
+
+                <Button
+                    x:Name="btnSave"
+                    Width="100"
+                    Content="{x:Static resx:ResUI.TbConfirm}"
+                    IsDefault="True"
+                    Style="{StaticResource DefButton}" />
+            </StackPanel>
+
+            <TextBox
+                x:Name="txtRuleProcess"
+                Margin="{StaticResource Margin8}"
+                VerticalAlignment="Stretch"
+                AcceptsReturn="True"
+                BorderThickness="1"
+                Style="{StaticResource DefTextBox}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+
+        </DockPanel>
+    </DockPanel>
+</reactiveui:ReactiveUserControl>

@@ -1,0 +1,75 @@
+<UserControl
+    x:Class="v2rayN.Desktop.Views.NetBridgeView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
+    x:DataType="vms:NetBridgeViewModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="{StaticResource Margin8}"
+        VerticalAlignment="Center"
+        Theme="{DynamicResource CardBorder}">
+
+        <DockPanel Margin="{StaticResource Margin8}">
+            <StackPanel
+                Margin="{StaticResource Margin8}"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+
+                <ToggleSwitch
+                    x:Name="togEnableNetBridge"
+                    Margin="{StaticResource Margin8}"
+                    HorizontalAlignment="Left" />
+
+                <TextBlock
+                    Width="500"
+                    Margin="{StaticResource Margin8}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.TbEnableNetBridge}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+
+            <DockPanel>
+                <StackPanel
+                    Margin="{StaticResource Margin8}"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal">
+
+                    <TextBlock
+                        Width="500"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.NetBridgeRuleTips}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel
+                    Margin="{StaticResource Margin8}"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+
+                    <Button
+                        x:Name="btnSave"
+                        Width="100"
+                        Content="{x:Static resx:ResUI.TbConfirm}"
+                        IsDefault="True" />
+                </StackPanel>
+
+                <TextBox
+                    x:Name="txtRuleProcess"
+                    Margin="{StaticResource Margin8}"
+                    VerticalAlignment="Stretch"
+                    AcceptsReturn="True"
+                    BorderThickness="1"
+                    Classes="TextArea"
+                    TextWrapping="Wrap" />
+            </DockPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

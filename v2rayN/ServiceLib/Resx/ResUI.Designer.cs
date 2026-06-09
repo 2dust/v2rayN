@@ -1321,6 +1321,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Process traffic hijacking (experimental) 的本地化字符串。
+        /// </summary>
+        public static string menuNetBridge {
+            get {
+                return ResourceManager.GetString("menuNetBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 New Update 的本地化字符串。
         /// </summary>
         public static string menuNewUpdate {
@@ -2302,6 +2311,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 The process names that need to be proxied; separate multiple processes with commas. Processes not in the list will also be hijacked, but will connect directly. 的本地化字符串。
+        /// </summary>
+        public static string NetBridgeRuleTips {
+            get {
+                return ResourceManager.GetString("NetBridgeRuleTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Non-VMess or SS protocol 的本地化字符串。
         /// </summary>
         public static string NonvmessOrssProtocol {
@@ -3048,6 +3066,15 @@ namespace ServiceLib.Resx {
         public static string TbEnableFinalFragmentTip {
             get {
                 return ResourceManager.GetString("TbEnableFinalFragmentTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enables process traffic hijacking (experimental), similar to Proxifer; can coexist with system proxy; conflicts with TUN mode, please do not enable them simultaneously; 的本地化字符串。
+        /// </summary>
+        public static string TbEnableNetBridge {
+            get {
+                return ResourceManager.GetString("TbEnableNetBridge", resourceCulture);
             }
         }
         

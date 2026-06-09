@@ -277,3 +277,9 @@ public class SimpleDNSItem
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
 }
+
+[Serializable]
+public class NetBridgeItem
+{
+    public string? RuleProcess { get; set; }
+}

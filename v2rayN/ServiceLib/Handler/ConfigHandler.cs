@@ -161,6 +161,10 @@ public static class ConfigHandler
         config.SystemProxyItem ??= new();
         config.WebDavItem ??= new();
         config.CheckUpdateItem ??= new();
+        config.NetBridgeItem ??= new()
+        {
+            RuleProcess = string.Empty
+        };
         config.Fragment4RayItem ??= new()
         {
             Packets = "tlshello",

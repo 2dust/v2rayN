@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.5.11709.299 stable
+VisualStudioVersion = 18.5.11709.299
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "v2rayN", "v2rayN\v2rayN.csproj", "{6DE127CA-1763-4236-B297-D2EF9CB2EC9B}"
 EndProject
@@ -35,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLib.Tests", "ServiceLib.Tests\ServiceLib.Tests.csproj", "{E0B6C5C7-ED48-42EB-947A-877779E9F555}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLib.UdpTest", "ServiceLib.UdpTest\ServiceLib.UdpTest.csproj", "{CE9D9298-0289-4718-2522-B236489F2912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBridgeLib", "NetBridge\src\NetBridgeLib\NetBridgeLib.csproj", "{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +71,10 @@ Global
 		{CE9D9298-0289-4718-2522-B236489F2912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9D9298-0289-4718-2522-B236489F2912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9D9298-0289-4718-2522-B236489F2912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

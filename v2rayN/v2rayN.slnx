@@ -16,6 +16,7 @@
   </Folder>
   <Project Path="AmazTool/AmazTool.csproj" />
   <Project Path="GlobalHotKeys/src/GlobalHotKeys/GlobalHotKeys.csproj" />
+  <Project Path="NetBridge/src/NetBridgeLib/NetBridgeLib.csproj" />
   <Project Path="ServiceLib.Tests/ServiceLib.Tests.csproj" />
   <Project Path="ServiceLib.UdpTest/ServiceLib.UdpTest.csproj" Id="77930428-4dc4-4130-9031-6b9e714f5d20" />
   <Project Path="ServiceLib/ServiceLib.csproj" />
