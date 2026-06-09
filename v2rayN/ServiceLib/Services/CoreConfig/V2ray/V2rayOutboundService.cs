@@ -607,16 +607,23 @@ public partial class CoreConfigV2rayService
                         quicParams.congestion = "bbr";
                     }
                     hy2Finalmask.quicParams = quicParams;
+                    hy2Finalmask.udp ??= [];
+                    if (HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm)
+                        && realm is not null)
+                    {
+                        hy2Finalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "realm",
+                            settings = new MaskSettings4Ray { url = realm.ToUriForFinalmask(), stunServers = realm.StunList },
+                        });
+                    }
                     if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                     {
-                        hy2Finalmask.udp =
-                            [
-                                new Mask4Ray
-                                {
-                                    type = "salamander",
-                                    settings = new MaskSettings4Ray { password = protocolExtra.SalamanderPass.TrimEx(), }
-                                }
-                            ];
+                        hy2Finalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "salamander",
+                            settings = new MaskSettings4Ray { password = protocolExtra.SalamanderPass.TrimEx(), },
+                        });
                     }
                     streamSettings.hysteriaSettings = new()
                     {

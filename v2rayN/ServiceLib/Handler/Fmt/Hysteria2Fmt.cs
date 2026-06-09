@@ -157,7 +157,7 @@ public class Hysteria2Fmt : BaseFmt
             return null;
         }
         var protocolExtraItem = item.GetProtocolExtra();
-        var result = HyRealm.TryParse(protocolExtraItem.Hy2RealmUrl ?? "", out var realm);
+        var result = HyRealm.TryParse(protocolExtraItem.Hy2RealmUrl, out var realm);
         if (!result || realm == null)
         {
             return null;
