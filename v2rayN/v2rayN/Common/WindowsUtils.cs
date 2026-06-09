@@ -80,7 +80,36 @@ internal static partial class WindowsUtils
         return value == 0;
     }
 
+    [LibraryImport("user32.dll")]
+    private static partial int GetWindowLongW(nint hWnd, int nIndex);
+
+    [LibraryImport("user32.dll")]
+    private static partial int SetWindowLongW(nint hWnd, int nIndex, int dwNewLong);
+
+    [LibraryImport("user32.dll")]
+    private static partial int SetWindowPos(nint hWnd, nint hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+    public static void RemoveMinMaxButtons(Window window)
+    {
+        var hWnd = new WindowInteropHelper(window).EnsureHandle();
+        var style = GetWindowLongW(hWnd, GWL_STYLE);
+        if ((style & (WS_MINIMIZEBOX | WS_MAXIMIZEBOX)) != 0)
+        {
+            SetWindowLongW(hWnd, GWL_STYLE, style & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX));
+            SetWindowPos(hWnd, 0, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+        }
+    }
+
     #region Windows API
+
+    private const int GWL_STYLE = -16;
+    private const int WS_MINIMIZEBOX = 0x00020000;
+    private const int WS_MAXIMIZEBOX = 0x00010000;
+    private const int SWP_NOSIZE = 0x0001;
+    private const int SWP_NOMOVE = 0x0002;
+    private const int SWP_NOZORDER = 0x0004;
+    private const int SWP_NOACTIVATE = 0x0010;
+    private const int SWP_FRAMECHANGED = 0x0020;
 
     [Flags]
     public enum DWMWINDOWATTRIBUTE : uint

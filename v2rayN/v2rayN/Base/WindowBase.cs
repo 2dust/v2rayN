@@ -4,7 +4,16 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 {
     public WindowBase()
     {
+        SourceInitialized += OnSourceInitialized;
         Loaded += OnLoaded;
+    }
+
+    private void OnSourceInitialized(object? sender, EventArgs e)
+    {
+        if (Owner != null && !ShowInTaskbar)
+        {
+            WindowsUtils.RemoveMinMaxButtons(this);
+        }
     }
 
     protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
