@@ -374,7 +374,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="300,Auto,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -418,9 +418,11 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="2"
+                        Width="200"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbPorts7Tips}" />
+                        Text="{x:Static resx:ResUI.TbPorts7Tips}"
+                        TextWrapping="Wrap" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -456,6 +458,27 @@
                             Margin="{StaticResource Margin4}"
                             Watermark="Down" />
                     </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
+                    <TextBox
+                        x:Name="txtHy2RealmUrl"
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Width="200"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
+                        TextWrapping="Wrap" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"

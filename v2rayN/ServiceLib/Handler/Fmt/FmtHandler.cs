@@ -72,6 +72,11 @@ public class FmtHandler
             {
                 return Hysteria2Fmt.Resolve(str, out msg);
             }
+            else if (str.StartsWith(Global.Hysteria2RealmProtocolShare)
+                || str.StartsWith(Global.Hysteria2HttpRealmProtocolShare))
+            {
+                return Hysteria2Fmt.ResolveRealm(str, out msg);
+            }
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.TUIC]))
             {
                 return TuicFmt.Resolve(str, out msg);

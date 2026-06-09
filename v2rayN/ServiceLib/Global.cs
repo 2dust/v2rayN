@@ -210,6 +210,10 @@ public class Global
 
     public const string Hysteria2ProtocolShare = "hy2://";
 
+    public const string Hysteria2RealmProtocolShare = "hysteria2+realm://";
+
+    public const string Hysteria2HttpRealmProtocolShare = "hysteria2+realm+http://";
+
     public const string NaiveHttpsProtocolShare = "naive+https://";
 
     public const string NaiveQuicProtocolShare = "naive+quic://";
@@ -664,6 +668,14 @@ public class Global
         "mcbe:play.craftersmc.net",
         "mcbe:mps.lemoncloud.net",
         "mcbe:bedrock.talonmc.net",
+    ];
+
+    public static readonly List<string> DefaultRealmStunList =
+    [
+        "turn.cloudflare.com:3478",
+        "stun.nextcloud.com:3478",
+        "stun.sip.us:3478",
+        "global.stun.twilio.com:3478",
     ];
 
     public static readonly List<string> OutboundTags =

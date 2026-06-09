@@ -1767,4 +1767,13 @@
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
     <value>将数据包末端拆分为更小片段发送，可能影响吞吐与延迟。</value>
   </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL 不正确。</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>格式：realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
 </root>

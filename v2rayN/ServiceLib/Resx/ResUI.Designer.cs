@@ -322,6 +322,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Invalid Realm URL. 的本地化字符串。
+        /// </summary>
+        public static string InvalidHy2RealmUrl {
+            get {
+                return ResourceManager.GetString("InvalidHy2RealmUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid address (URL) 的本地化字符串。
         /// </summary>
         public static string InvalidUrlTip {
@@ -3219,6 +3228,24 @@ namespace ServiceLib.Resx {
         public static string TbHost {
             get {
                 return ResourceManager.GetString("TbHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Realm URL 的本地化字符串。
+        /// </summary>
+        public static string TbHy2RealmUrl {
+            get {
+                return ResourceManager.GetString("TbHy2RealmUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port] 的本地化字符串。
+        /// </summary>
+        public static string TbHy2RealmUrlTip {
+            get {
+                return ResourceManager.GetString("TbHy2RealmUrlTip", resourceCulture);
             }
         }
         
