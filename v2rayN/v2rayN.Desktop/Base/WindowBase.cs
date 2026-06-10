@@ -6,6 +6,13 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
     {
         Initialized += OnWindowInitialized;
         Loaded += OnLoaded;
+        Loaded += (s, e) =>
+        {
+            if (Owner != null && !ShowInTaskbar)
+            {
+                CanMinimize = false;
+            }
+        };
     }
 
     private void ReactiveWindowBase_Closed(object? sender, EventArgs e)
