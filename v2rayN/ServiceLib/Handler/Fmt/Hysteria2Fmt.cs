@@ -110,13 +110,6 @@ public class Hysteria2Fmt : BaseFmt
         {
             return null;
         }
-        if (realm.StunList.Count == 0)
-        {
-            realm = realm with
-            {
-                StunList = Global.DefaultRealmStunList,
-            };
-        }
 
         var url = Utils.TryUri(str);
         if (url == null)
