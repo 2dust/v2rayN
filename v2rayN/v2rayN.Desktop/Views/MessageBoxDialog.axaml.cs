@@ -18,6 +18,8 @@ public partial class MessageBoxDialog : Window
 
         btnYes.Click += BtnYes_Click;
         btnNo.Click += BtnNo_Click;
+
+        CanMinimize = false;
     }
 
     private void BtnYes_Click(object? sender, RoutedEventArgs e)
