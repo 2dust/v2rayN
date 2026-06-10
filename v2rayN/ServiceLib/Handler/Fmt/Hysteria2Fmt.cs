@@ -65,14 +65,10 @@ public class Hysteria2Fmt : BaseFmt
         {
             dicQuery.Add("mport", Utils.UrlEncode(protocolExtraItem.Ports.Replace(':', '-')));
         }
-        if (!item.CertSha.IsNullOrEmpty())
+        if (!item.CertSha.IsNullOrEmpty()
+            && !item.CertSha.Contains(','))
         {
             var sha = item.CertSha;
-            var idx = sha.IndexOf(',');
-            if (idx > 0)
-            {
-                sha = sha[..idx];
-            }
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
 
@@ -173,14 +169,10 @@ public class Hysteria2Fmt : BaseFmt
         {
             dicQuery.Add("mport", Utils.UrlEncode(protocolExtraItem.Ports.Replace(':', '-')));
         }
-        if (!item.CertSha.IsNullOrEmpty())
+        if (!item.CertSha.IsNullOrEmpty()
+            && !item.CertSha.Contains(','))
         {
             var sha = item.CertSha;
-            var idx = sha.IndexOf(',');
-            if (idx > 0)
-            {
-                sha = sha[..idx];
-            }
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
         dicQuery.Add("auth", Utils.UrlEncode(item.Password));
