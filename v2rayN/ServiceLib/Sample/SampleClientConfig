@@ -17,14 +17,6 @@
 	],
 	"routing": {
 		"domainStrategy": "IPIfNonMatch",
-		"rules": [
-			{
-				"inboundTag": [
-					"api"
-				],
-				"outboundTag": "api",
-				"type": "field"
-			}
-		]
+		"rules": []
 	}
 }

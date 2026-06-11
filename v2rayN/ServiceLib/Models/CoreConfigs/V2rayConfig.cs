@@ -20,7 +20,7 @@ public class Stats4Ray
 
 public class Metrics4Ray
 {
-    public string tag { get; set; }
+    public string listen { get; set; }
 }
 
 public class Policy4Ray
