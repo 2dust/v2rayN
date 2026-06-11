@@ -73,12 +73,12 @@ detect_environment() {
   HOST_ARCH="$(uname -m)"
 
   case "$OS_ID" in
-    rhel|rocky|almalinux|fedora|centos)
+    rhel|rocky|almalinux|fedora|centos|anolis)
       echo "Detected supported system: ${OS_NAME:-$OS_ID} ${OS_VERSION_ID:-}"
       ;;
     *)
       die "Unsupported system: ${OS_NAME:-unknown} (${OS_ID:-unknown}).
-This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
+This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS / Anolis OS."
       ;;
   esac
 
@@ -216,6 +216,8 @@ apply_channel_or_keep() {
     VERSION="${VERSION#v}"
     return 0
   fi
+  git remote add upstream https://github.com/2dust/v2rayN
+  git fetch upstream
 
   echo "[*] Resolving ${ch} tag from GitHub releases..."
 
@@ -521,7 +523,7 @@ Requires:       freetype >= 2.13
 %description
 v2rayN Linux for Red Hat Enterprise Linux
 Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
-Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
+Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS / Anolis OS
 For more information, Please visit our website
 https://github.com/2dust/v2rayN
 
