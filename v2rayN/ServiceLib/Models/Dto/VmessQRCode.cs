@@ -40,4 +40,8 @@ public class VmessQRCode
     public string fp { get; set; } = string.Empty;
 
     public string insecure { get; set; } = string.Empty;
+
+    public string vcn { get; set; } = string.Empty;
+
+    public string pcs { get; set; } = string.Empty;
 }
