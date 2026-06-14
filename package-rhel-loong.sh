@@ -4,15 +4,19 @@ set -euo pipefail
 VERSION_ARG=""
 WITH_CORE="both"
 FORCE_NETCORE=0
-ARCH_OVERRIDE=""
 BUILD_FROM=""
 XRAY_VER="${XRAY_VER:-}"
 SING_VER="${SING_VER:-}"
 
-MIN_KERNEL="6.12"
+MIN_KERNEL="5.10"
 PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 RPM_TOPDIR="${HOME}/rpmbuild"
+DOTNET_LOONGARCH_VERSION="10.0.108"
+DOTNET_LOONGARCH_TAG="v10.0.108-loongarch64"
+DOTNET_LOONGARCH_BASE="https://github.com/loongson/dotnet/releases/download"
+DOTNET_LOONGARCH_FILE="dotnet-sdk-${DOTNET_LOONGARCH_VERSION}-linux-loongarch64.tar.gz"
+DOTNET_SDK_URL="${DOTNET_LOONGARCH_BASE}/${DOTNET_LOONGARCH_TAG}/${DOTNET_LOONGARCH_FILE}"
 
 OS_ID=""
 OS_NAME=""
@@ -21,7 +25,6 @@ HOST_ARCH=""
 SCRIPT_DIR=""
 PROJECT=""
 VERSION=""
-BUILT_ALL=0
 
 declare -a BUILT_RPMS=()
 
@@ -44,7 +47,6 @@ parse_args() {
       --xray-ver)    XRAY_VER="${2:-}"; shift 2 ;;
       --singbox-ver) SING_VER="${2:-}"; shift 2 ;;
       --netcore)     FORCE_NETCORE=1; shift ;;
-      --arch)        ARCH_OVERRIDE="${2:-}"; shift 2 ;;
       --buildfrom)   BUILD_FROM="${2:-}"; shift 2 ;;
       *)
         [[ -n "${VERSION_ARG:-}" ]] || VERSION_ARG="$1"
@@ -81,8 +83,8 @@ This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
   esac
 
   case "$HOST_ARCH" in
-    x86_64|aarch64) ;;
-    *) die "Only supports aarch64 / x86_64" ;;
+    loongarch64) ;;
+    *) die "Only supports loongarch64" ;;
   esac
 
   current_kernel="$(uname -r)"
@@ -94,15 +96,42 @@ This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
 
 install_dependencies() {
   local install_ok=0
+  local tmp_dotnet=""
 
   if command -v dnf >/dev/null 2>&1; then
-    sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
+    sudo dnf -y --nogpgcheck install \
+      rpm-build rpmdevtools curl unzip tar jq rsync git python3 \
+      glibc-devel kernel-headers libatomic file ca-certificates libicu \
       && install_ok=1
+
+    mkdir -p "$HOME/.dotnet"
+    tmp_dotnet="$(mktemp -d)"
+    curl -fL "$DOTNET_SDK_URL" -o "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
+    tar -C "$HOME/.dotnet" -xzf "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
+    rm -rf "$tmp_dotnet"
+
+    export PATH="$HOME/.dotnet:$PATH"
+    export DOTNET_ROOT="$HOME/.dotnet"
+
+    mkdir -p "$HOME/.nuget/NuGet"
+
+    cat > "$HOME/.nuget/NuGet/NuGet.Config" <<EOF
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+    <add key="loongnix" value="https://lnuget.loongnix.cn/v3/index.json" allowInsecureConnections="true" />
+  </packageSources>
+</configuration>
+EOF
+
+    dotnet --info >/dev/null 2>&1 || install_ok=0
   fi
 
   if [[ "$install_ok" -ne 1 ]]; then
     echo "Could not auto-install dependencies for '$OS_ID'. Make sure these are available:"
-    echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+    echo "dotnet-loongarch SDK, curl, unzip, tar, rsync, git, python3, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
     exit 1
   fi
 }
@@ -244,9 +273,8 @@ xray_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip" ;;
-    linux-arm64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip" ;;
-    *)           return 1 ;;
+    linux-loongarch64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-loong64.zip" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -255,9 +283,8 @@ singbox_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz" ;;
-    linux-arm64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz" ;;
-    *)           return 1 ;;
+    linux-loongarch64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-loong64.tar.gz" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -265,9 +292,8 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-x64)   echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip" ;;
-    linux-arm64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip" ;;
-    *)           return 1 ;;
+    linux-loongarch64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-loong64.zip" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -463,9 +489,8 @@ describe_target() {
   local short="$1"
 
   case "$short" in
-    x64)   printf '%s\n%s\n%s\n' "linux-x64" "x86_64" "x86_64" ;;
-    arm64) printf '%s\n%s\n%s\n' "linux-arm64" "aarch64" "aarch64" ;;
-    *)     echo "Unknown arch '$short' (use x64|arm64)" >&2; return 1 ;;
+    loongarch64) printf '%s\n%s\n%s\n' "linux-loongarch64" "loongarch64" "loongarch64" ;;
+    *)           echo "Unknown arch '$short' (use loongarch64)" >&2; return 1 ;;
   esac
 }
 
@@ -494,7 +519,7 @@ Summary:        v2rayN (Avalonia) GUI client for Linux
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 BugURL:         https://github.com/2dust/v2rayN/issues
-ExclusiveArch:  aarch64 x86_64
+ExclusiveArch:  loongarch64
 Source0:        __PKGROOT__.tar.gz
 
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
@@ -627,22 +652,7 @@ package_binary() {
 }
 
 select_targets() {
-  case "${ARCH_OVERRIDE:-}" in
-    all)           printf '%s\n' x64 arm64 ;;
-    x64|amd64)     printf '%s\n' x64 ;;
-    arm64|aarch64) printf '%s\n' arm64 ;;
-    "")
-      case "$HOST_ARCH" in
-        x86_64)  printf '%s\n' x64 ;;
-        aarch64) printf '%s\n' arm64 ;;
-        *)       return 1 ;;
-      esac
-      ;;
-    *)
-      echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all." >&2
-      return 1
-      ;;
-  esac
+  printf '%s\n' loongarch64
 }
 
 build_one_target() {
@@ -663,19 +673,18 @@ build_one_target() {
 }
 
 print_summary() {
-  if [[ "$BUILT_ALL" -eq 1 ]]; then
-    local rp=""
-    echo ""
-    echo "================ Build Summary (both architectures) ================"
-    if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
-      for rp in "${BUILT_RPMS[@]}"; do
-        echo "$rp"
-      done
-    else
-      echo "No RPMs detected in summary (check build logs above)."
-    fi
-    echo "===================================================================="
+  local rp=""
+
+  echo ""
+  echo "================ Build Summary ================"
+  if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
+    for rp in "${BUILT_RPMS[@]}"; do
+      echo "$rp"
+    done
+  else
+    echo "No RPMs detected in summary (check build logs above)."
   fi
+  echo "=============================================="
 }
 
 main() {
@@ -689,7 +698,6 @@ main() {
   resolve_version
 
   mapfile -t targets < <(select_targets)
-  [[ "${ARCH_OVERRIDE:-}" == "all" ]] && BUILT_ALL=1 || BUILT_ALL=0
 
   for arch in "${targets[@]}"; do
     build_one_target "$arch"
