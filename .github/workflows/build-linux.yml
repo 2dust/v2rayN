@@ -174,7 +174,7 @@ jobs:
             --data-binary @"$f" \
             "${upload_url}?name=${f##*/}"
         done
-        
+
   deb-riscv64:
     name: build and release deb riscv64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
