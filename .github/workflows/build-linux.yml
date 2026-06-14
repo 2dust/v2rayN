@@ -3,21 +3,29 @@ name: release Linux
 on:
   workflow_dispatch:
     inputs:
-      release_tag: { required: false, type: string }
-  push: { branches: [master] }
+      release_tag:
+        required: false
+        type: string
+  push:
+    branches:
+      - master
 
-permissions: { contents: write }
+permissions:
+  contents: write
 
 jobs:
   build:
     uses: ./.github/workflows/build.yml
-    with: { target: linux }
+    with:
+      target: linux
 
   release-zip:
     if: inputs.release_tag != ''
     needs: build
     uses: ./.github/workflows/package-zip.yml
-    with: { target: linux, release_tag: "${{ inputs.release_tag }}" }
+    with:
+      target: linux
+      release_tag: ${{ inputs.release_tag }}
 
   deb:
     name: build and release deb x64 & arm64
