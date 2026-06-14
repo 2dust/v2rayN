@@ -3,40 +3,28 @@ name: release Linux
 on:
   workflow_dispatch:
     inputs:
-      release_tag:
-        required: false
-        type: string
-  push:
-    branches:
-      - master
+      release_tag: { required: false, type: string }
+  push: { branches: [master] }
 
-permissions:
-  contents: write
+permissions: { contents: write }
 
 jobs:
   build:
     uses: ./.github/workflows/build.yml
-    with:
-      target: linux
+    with: { target: linux }
 
   release-zip:
     if: inputs.release_tag != ''
     needs: build
     uses: ./.github/workflows/package-zip.yml
-    with:
-      target: linux
-      release_tag: ${{ inputs.release_tag }}
+    with: { target: linux, release_tag: "${{ inputs.release_tag }}" }
 
   deb:
     name: build and release deb x64 & arm64
-    if: |
-      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-26.04
     container: debian:13
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-
+    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
     - name: Prepare tools (Debian)
       shell: bash
@@ -44,124 +32,73 @@ jobs:
         set -euo pipefail
         export DEBIAN_FRONTEND=noninteractive
         apt-get update
-        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file \
-                           ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev \
-                           libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
-
+        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
     - name: Checkout repo (for scripts)
       uses: actions/checkout@v6
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
-
+      with: { submodules: 'recursive', fetch-depth: '0' }
     - name: Ensure script permissions
       run: chmod 755 package-debian.sh
-
     - name: Package DEB (Debian-family)
       run: ./package-debian.sh "${RELEASE_TAG}" --arch all
-
     - name: Collect DEBs into workspace
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/deb"
         rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb/" || true
-        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_amd64.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-64.deb" \; || true
-        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_amd64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
-
     - name: Upload DEBs to release
       uses: svenstaro/upload-release-action@v2
-      with:
-        file: dist/deb/**/*.deb
-        tag: ${{ env.RELEASE_TAG }}
-        file_glob: true
-        prerelease: true
+      with: { file: "dist/deb/**/*.deb", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
 
   rpm:
     name: build and release rpm x64 & arm64
-    if: |
-      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-26.04
     container: registry.access.redhat.com/ubi10/ubi
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-
+    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
     - name: Prepare tools (Red Hat)
       shell: bash
       run: |
         set -euo pipefail
-
         . /etc/os-release
         EL_MAJOR="${VERSION_ID%%.*}"
         echo "EL_MAJOR=${EL_MAJOR}"
-
         dnf -y makecache || true
         command -v curl >/dev/null || dnf -y install curl ca-certificates
-
         ARCH="$(uname -m)"
         case "$ARCH" in x86_64|aarch64) ;; *) echo "Unsupported arch: $ARCH"; exit 1 ;; esac
 
         install_epel_from_dir() {
           local base="$1" rpm
           echo "Try: $base"
-
-          rpm="$(
-            {
-              curl -fsSL "$base/Packages/"   2>/dev/null
-              curl -fsSL "$base/Packages/e/" 2>/dev/null | sed 's|href="|href="e/|'
-            } |
-            sed -n 's/.*href="\([^"]*epel-release-[^"]*\.noarch\.rpm\)".*/\1/p' |
-            sort -V | tail -n1
-          )" || true
-
-          if [[ -n "$rpm" ]]; then
-            dnf -y install "$base/Packages/$rpm"
-            return 0
-          fi
-          return 1
+          rpm="$({ curl -fsSL "$base/Packages/" 2>/dev/null; curl -fsSL "$base/Packages/e/" 2>/dev/null | sed 's|href="|href="e/|'; } |
+            sed -n 's/.*href="\([^"]*epel-release-[^"]*\.noarch\.rpm\)".*/\1/p' | sort -V | tail -n1)" || true
+          [[ -n "$rpm" ]] || return 1
+          dnf -y install "$base/Packages/$rpm"
         }
 
         FEDORA="https://dl.fedoraproject.org/pub/epel/epel-release-latest-${EL_MAJOR}.noarch.rpm"
+        ROCKY="https://dl.rockylinux.org/pub/rocky/${EL_MAJOR}/extras/${ARCH}/os"
+        ALMA="https://repo.almalinux.org/almalinux/${EL_MAJOR}/extras/${ARCH}/os"
+
         echo "Try Fedora: $FEDORA"
+        curl -fsSLI "$FEDORA" >/dev/null && dnf -y install "$FEDORA" ||
+          install_epel_from_dir "$ROCKY" ||
+          install_epel_from_dir "$ALMA" ||
+          { echo "EPEL bootstrap failed (Fedora/Rocky/Alma)"; exit 1; }
 
-        if curl -fsSLI "$FEDORA" >/dev/null; then
-          dnf -y install "$FEDORA"
-        else
-          ROCKY="https://dl.rockylinux.org/pub/rocky/${EL_MAJOR}/extras/${ARCH}/os"
-          if install_epel_from_dir "$ROCKY"; then
-            :
-          else
-            ALMA="https://repo.almalinux.org/almalinux/${EL_MAJOR}/extras/${ARCH}/os"
-            if install_epel_from_dir "$ALMA"; then
-              :
-            else
-              echo "EPEL bootstrap failed (Fedora/Rocky/Alma)"
-              exit 1
-            fi
-          fi
-        fi
-
-        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core \
-                       rsync findutils tar gzip unzip which
-
+        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
         dnf repolist | grep -i epel || true
-
     - name: Checkout repo (for scripts)
       uses: actions/checkout@v6
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
-
+      with: { submodules: 'recursive', fetch-depth: '0' }
     - name: Ensure script permissions
       run: chmod 755 package-rhel.sh
-
     - name: Package RPM (RHEL-family)
       run: ./package-rhel.sh "${RELEASE_TAG}" --arch all
-
     - name: Collect RPMs into workspace
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/rpm"
@@ -170,39 +107,26 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
-
     - name: Upload RPMs to release
       uses: svenstaro/upload-release-action@v2
-      with:
-        file: dist/rpm/**/*.rpm
-        tag: ${{ env.RELEASE_TAG }}
-        file_glob: true
-        prerelease: true
+      with: { file: "dist/rpm/**/*.rpm", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
 
   rpm-riscv64:
     name: build and release rpm riscv64
-    if: |
-      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-24.04-riscv
     container: rockylinux/rockylinux:10
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-
+    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
     - name: Prepare tools (Red Hat)
       shell: bash
       run: |
         set -euo pipefail
         dnf -y makecache
-        dnf -y install \
-          sudo git rpm-build rpmdevtools dnf-plugins-core \
-          rsync findutils tar gzip unzip which jq
-
+        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which jq
     - name: Checkout repo (for scripts)
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
       run: |
         set -euo pipefail
         rm -rf ./*
@@ -212,37 +136,28 @@ jobs:
         git fetch --depth=1 origin "${GITHUB_SHA}"
         git checkout FETCH_HEAD
         git submodule update --init --recursive
-
     - name: Ensure script permissions
       run: chmod 755 package-rhel-riscv.sh
-
     - name: Package RPM (RHEL-family)
       run: ./package-rhel-riscv.sh "${RELEASE_TAG}"
-
     - name: Collect RPMs into workspace
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/rpm-riscv64"
         rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm-riscv64/" || true
-        find "$GITHUB_WORKSPACE/dist/rpm-riscv64" -name "*.riscv64.rpm" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/v2rayN-linux-rhel-riscv64.rpm" \; || true
+        find "$GITHUB_WORKSPACE/dist/rpm-riscv64" -name "*.riscv64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/v2rayN-linux-rhel-riscv64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-riscv64" || true
-
     - name: Upload RPMs to release
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
       run: |
         set -euo pipefail
         shopt -s globstar nullglob
-
         files=(dist/rpm-riscv64/**/*.rpm)
         (( ${#files[@]} )) || { echo "No RPMs found."; exit 1; }
-
         api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
         upload_url="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$api" | jq -r '.upload_url // empty' | sed 's/{?name,label}//')"
         [[ "$upload_url" ]] || { echo "Release upload URL not found: ${RELEASE_TAG}"; exit 1; }
-
         for f in "${files[@]}"; do
           echo "Uploading ${f##*/}"
           curl -fsSL -X POST \
@@ -251,17 +166,13 @@ jobs:
             --data-binary @"$f" \
             "${upload_url}?name=${f##*/}"
         done
-
+        
   deb-riscv64:
     name: build and release deb riscv64
-    if: |
-      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-24.04-riscv
     container: debian:13
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-
+    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
     - name: Prepare tools (Debian)
       shell: bash
@@ -269,14 +180,10 @@ jobs:
         set -euo pipefail
         export DEBIAN_FRONTEND=noninteractive
         apt-get update
-        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file \
-                           ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev \
-                           gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1
-
+        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1
     - name: Checkout repo (for scripts)
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
       run: |
         set -euo pipefail
         rm -rf ./*
@@ -286,37 +193,28 @@ jobs:
         git fetch --depth=1 origin "${GITHUB_SHA}"
         git checkout FETCH_HEAD
         git submodule update --init --recursive
-
     - name: Ensure script permissions
       run: chmod 755 package-debian-riscv.sh
-
     - name: Package DEB (Debian-family)
       run: ./package-debian-riscv.sh "${RELEASE_TAG}"
-
     - name: Collect DEBs into workspace
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/deb-riscv64"
         rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-riscv64/" || true
-        find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
-
     - name: Upload DEBs to release
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
       run: |
         set -euo pipefail
         shopt -s globstar nullglob
-
         files=(dist/deb-riscv64/**/*.deb)
         (( ${#files[@]} )) || { echo "No DEBs found."; exit 1; }
-
         api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
         upload_url="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$api" | jq -r '.upload_url // empty' | sed 's/{?name,label}//')"
         [[ "$upload_url" ]] || { echo "Release upload URL not found: ${RELEASE_TAG}"; exit 1; }
-
         for f in "${files[@]}"; do
           echo "Uploading ${f##*/}"
           curl -fsSL -X POST \
@@ -328,11 +226,8 @@ jobs:
 
   deb-loong64:
     name: build and release deb loong64
-    if: |
-      (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04
-
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-26.04
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
       QCOW2_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/debian13-loong64.qcow2
@@ -342,74 +237,72 @@ jobs:
       EFI_CODE: edk2-loongarch64-code.fd
       EFI_VARS: edk2-loongarch64-vars.fd
       QEMU_VERSION: 10.2.3
-
     steps:
     - name: Prepare host tools
       shell: bash
       run: |
         set -euo pipefail
-
         sudo apt-get update
-        sudo apt-get install -y rsync qemu-utils expect wget curl ca-certificates libfdt1 libglib2.0-0 libpixman-1-0 libslirp0
-
-    - name: Checkout repo
-      uses: actions/checkout@v6
-      with:
-        submodules: recursive
-        fetch-depth: 0
-
+        sudo apt-get install -y git rsync qemu-utils qemu-system-common expect wget curl ca-certificates libfdt1 libglib2.0-0 libpixman-1-0 libslirp0 virtiofsd
+        sudo ln -sf /usr/libexec/virtiofsd /usr/local/bin/virtiofsd
+        virtiofsd --version || virtiofsd --help | head
+    - name: Host clone repo
+      shell: bash
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
+      run: |
+        set -euo pipefail
+        rm -rf repo
+        git clone --no-single-branch --tags "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
     - name: Download QEMU prebuild
       run: |
         set -euo pipefail
-
-        wget -O qemu-linux-x64.tar.gz \
-          "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-x64.tar.gz"
-
-        tar -xzf qemu-linux-x64.tar.gz
-
+        wget -O qemu-linux-x64-v3.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-x64-v3.tar.gz"
+        tar -xzf qemu-linux-x64-v3.tar.gz
         mkdir -p "$HOME/qemu-install"
-
-        rsync -a qemu-linux-x64/ "$HOME/qemu-install/"
-
+        rsync -a qemu-linux-x64-v3/ "$HOME/qemu-install/"
         "$HOME/qemu-install/bin/qemu-system-loongarch64" --version
-
     - name: Download loong64 qcow2 and EFI firmware
       shell: bash
       run: |
         set -euo pipefail
-
         wget -O "$QCOW2_IMAGE" "$QCOW2_URL"
         wget -O "$EFI_CODE" "$EFI_CODE_URL"
         wget -O "$EFI_VARS" "$EFI_VARS_URL"
-
         qemu-img info "$QCOW2_IMAGE"
-
     - name: Build loong64 DEB in VM through serial console
       shell: bash
       timeout-minutes: 180
-      env:
-        RELEASE_TAG: ${{ env.RELEASE_TAG }}
+      env: { RELEASE_TAG: "${{ env.RELEASE_TAG }}" }
       run: |
         set -euo pipefail
-
         mkdir -p "$GITHUB_WORKSPACE/dist/deb-loong64"
 
+        export VIRTIOFSD_SOCKET="$RUNNER_TEMP/virtiofs-deb-loong64.sock"
+        rm -f "$VIRTIOFSD_SOCKET"
+
+        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" -o source="$GITHUB_WORKSPACE" -o cache=auto &
+
+        VIRTIOFSD_PID=$!
+        trap 'sudo kill "$VIRTIOFSD_PID" 2>/dev/null || true; rm -f "$VIRTIOFSD_SOCKET"' EXIT
+
+        for i in {1..100}; do
+          [[ -S "$VIRTIOFSD_SOCKET" ]] && break
+          sleep 0.1
+        done
+
+        [[ -S "$VIRTIOFSD_SOCKET" ]] || { echo "virtiofsd socket not created"; exit 1; }
+        sudo chown "$USER:$(id -gn)" "$VIRTIOFSD_SOCKET" || true
+        sudo chmod 660 "$VIRTIOFSD_SOCKET" || true
         expect <<'EOF'
         log_user 1
         set timeout -1
-
         set release_tag $env(RELEASE_TAG)
         set qemu_bin "$env(HOME)/qemu-install/bin/qemu-system-loongarch64"
         set qemu_rom_dir "$env(HOME)/qemu-install/share/qemu"
-
-        set workspace $env(GITHUB_WORKSPACE)
-        set repo $env(GITHUB_REPOSITORY)
-        set sha $env(GITHUB_SHA)
-
+        set virtiofs_socket $env(VIRTIOFSD_SOCKET)
         set qcow2 $env(QCOW2_IMAGE)
         set efi_code $env(EFI_CODE)
         set efi_vars $env(EFI_VARS)
-
         proc wait_prompt {} {
           expect {
             -re "__CI_PROMPT__# " {}
@@ -417,86 +310,216 @@ jobs:
             eof { exit 1 }
           }
         }
-
         proc run_cmd {cmd} {
           send -- "$cmd\r"
           wait_prompt
         }
-
         spawn $qemu_bin \
           -L $qemu_rom_dir \
           -machine virt \
           -accel tcg,thread=multi,tb-size=2048 \
           -cpu la464 \
           -m 9216 \
+          -object memory-backend-memfd,id=mem0,size=9216M,share=on \
+          -numa node,memdev=mem0 \
           -smp 4 \
           -drive if=pflash,format=raw,unit=0,file=$efi_code,readonly=on \
           -drive if=pflash,format=raw,unit=1,file=$efi_vars \
           -device virtio-blk-pci,drive=hd0,bootindex=1 \
           -drive if=none,media=disk,id=hd0,file=$qcow2,format=qcow2 \
           -netdev user,id=net0 \
-          -device virtio-net-pci,netdev=net0 \
-          -virtfs local,path=$workspace,mount_tag=workspace,security_model=none,id=workspace \
+          -device virtio-net-pci-non-transitional,netdev=net0 \
+          -chardev socket,id=charfs0,path=$virtiofs_socket \
+          -device vhost-user-fs-pci,chardev=charfs0,tag=workspace \
           -display none \
           -serial stdio \
           -monitor none
-
         expect -re "login:|debian login:"
         send -- "root\r"
-
         expect -re "Password:|密码:|密码："
         send -- "password\r"
-
         expect {
           -re "# " {}
           timeout { exit 1 }
           eof { exit 1 }
         }
-
         send -- "export TERM=dumb; export PS1='__CI_PROMPT__# '\r"
         wait_prompt
-
         run_cmd "mkdir -p /workspace"
-        run_cmd "mount -t 9p -o trans=virtio,version=9p2000.L workspace /workspace || mount -t 9p -o trans=virtio workspace /workspace"
+        run_cmd "mount -t virtiofs workspace /workspace"
         run_cmd "IFACE=\$(ip -o link show | awk -F': ' '\$2 != \"lo\" {print \$2; exit}') ; ip link set \$IFACE up || true"
         run_cmd "dhclient \$IFACE || true"
         run_cmd "printf 'nameserver 10.0.2.3\nnameserver 1.1.1.1\n' >/etc/resolv.conf"
         run_cmd "apt-get update || apt-get update || apt-get update"
-        run_cmd "DEBIAN_FRONTEND=noninteractive apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1"
+        run_cmd "DEBIAN_FRONTEND=noninteractive apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1 fuse3"
         run_cmd "rm -rf /root/v2rayN-src"
-        run_cmd "git clone --recursive https://github.com/$repo.git /root/v2rayN-src"
-        run_cmd "cd /root/v2rayN-src && git fetch --depth=1 origin $sha && git checkout FETCH_HEAD && git submodule update --init --recursive"
+        run_cmd "rsync -a --info=progress2 /workspace/repo/ /root/v2rayN-src/"
+        run_cmd "cd /root/v2rayN-src && git config --global --add safe.directory /root/v2rayN-src"
         run_cmd "cd /root/v2rayN-src && chmod 755 package-debian-loong.sh"
-
         send -- "cd /root/v2rayN-src; cat >/tmp/run-loong-build.sh <<'SCRIPT'\nset +e\nset -o pipefail\nbash -x ./package-debian-loong.sh \"\$RELEASE_TAG\" 2>&1 | tee /tmp/build.log\nrc=\$?\nmkdir -p /workspace/dist/deb-loong64\ncp -av /root/debbuild/*.deb /workspace/dist/deb-loong64/ 2>/dev/null || true\necho __BUILD_DONE__\$rc\nSCRIPT\nRELEASE_TAG=\"$release_tag\" bash /tmp/run-loong-build.sh\r"
-
         expect {
-          -re "__BUILD_DONE__0" {
-            send -- "poweroff\r"
-          }
-          default {
-            exit 1
-          }
+          -re "__BUILD_DONE__0" { send -- "poweroff\r" }
+          default { exit 1 }
         }
         EOF
-
     - name: Collect DEBs
       shell: bash
       run: |
         set -euo pipefail
-
         mkdir -p "$GITHUB_WORKSPACE/dist/deb-loong64"
-
-        find "$GITHUB_WORKSPACE/dist/deb-loong64" -name "*.deb" \
-          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/v2rayN-linux-loong64.deb" \; || true
-
+        find "$GITHUB_WORKSPACE/dist/deb-loong64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/v2rayN-linux-loong64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-loong64"
-
     - name: Upload DEBs to release
       uses: svenstaro/upload-release-action@v2
-      with:
-        file: dist/deb-loong64/**/*.deb
-        tag: ${{ env.RELEASE_TAG }}
-        file_glob: true
-        prerelease: true
+      with: { file: "dist/deb-loong64/**/*.deb", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
+
+  rpm-loong64:
+    name: build and release rpm loong64
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-26.04
+    env:
+      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
+      QCOW2_URL: https://github.com/xujiegb/fedora-loong64-qcow2/releases/download/43/fedora43-loong64.qcow2
+      EFI_CODE_URL: https://github.com/xujiegb/fedora-loong64-qcow2/releases/download/43/edk2-loongarch64-code.fd
+      EFI_VARS_URL: https://github.com/xujiegb/fedora-loong64-qcow2/releases/download/43/edk2-loongarch64-vars.fd
+      QCOW2_IMAGE: fedora43-loong64.qcow2
+      EFI_CODE: edk2-loongarch64-code.fd
+      EFI_VARS: edk2-loongarch64-vars.fd
+      QEMU_VERSION: 10.2.3
+    steps:
+    - name: Prepare host tools
+      shell: bash
+      run: |
+        set -euo pipefail
+        sudo apt-get update
+        sudo apt-get install -y git rsync qemu-utils qemu-system-common expect wget curl ca-certificates libfdt1 libglib2.0-0 libpixman-1-0 libslirp0 virtiofsd
+        sudo ln -sf /usr/libexec/virtiofsd /usr/local/bin/virtiofsd
+        virtiofsd --version || virtiofsd --help | head
+    - name: Host clone repo
+      shell: bash
+      env: { GITHUB_TOKEN: "${{ github.token }}" }
+      run: |
+        set -euo pipefail
+        rm -rf repo
+        git clone --no-single-branch --tags "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+    - name: Download QEMU prebuild
+      run: |
+        set -euo pipefail
+        wget -O qemu-linux-x64-v3.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-x64-v3.tar.gz"
+        tar -xzf qemu-linux-x64-v3.tar.gz
+        mkdir -p "$HOME/qemu-install"
+        rsync -a qemu-linux-x64-v3/ "$HOME/qemu-install/"
+        "$HOME/qemu-install/bin/qemu-system-loongarch64" --version
+    - name: Download loong64 qcow2 and EFI firmware
+      shell: bash
+      run: |
+        set -euo pipefail
+        wget -O "$QCOW2_IMAGE" "$QCOW2_URL"
+        wget -O "$EFI_CODE" "$EFI_CODE_URL"
+        wget -O "$EFI_VARS" "$EFI_VARS_URL"
+        qemu-img info "$QCOW2_IMAGE"
+    - name: Build loong64 RPM in VM through serial console
+      shell: bash
+      timeout-minutes: 180
+      env: { RELEASE_TAG: "${{ env.RELEASE_TAG }}" }
+      run: |
+        set -euo pipefail
+        mkdir -p "$GITHUB_WORKSPACE/dist/rpm-loong64"
+
+        export VIRTIOFSD_SOCKET="$RUNNER_TEMP/virtiofs-rpm-loong64.sock"
+        rm -f "$VIRTIOFSD_SOCKET"
+
+        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" -o source="$GITHUB_WORKSPACE" -o cache=auto &
+
+        VIRTIOFSD_PID=$!
+        trap 'sudo kill "$VIRTIOFSD_PID" 2>/dev/null || true; rm -f "$VIRTIOFSD_SOCKET"' EXIT
+
+        for i in {1..100}; do
+          [[ -S "$VIRTIOFSD_SOCKET" ]] && break
+          sleep 0.1
+        done
+
+        [[ -S "$VIRTIOFSD_SOCKET" ]] || { echo "virtiofsd socket not created"; exit 1; }
+        sudo chown "$USER:$(id -gn)" "$VIRTIOFSD_SOCKET" || true
+        sudo chmod 660 "$VIRTIOFSD_SOCKET" || true
+        expect <<'EOF'
+        log_user 1
+        set timeout -1
+        set release_tag $env(RELEASE_TAG)
+        set qemu_bin "$env(HOME)/qemu-install/bin/qemu-system-loongarch64"
+        set qemu_rom_dir "$env(HOME)/qemu-install/share/qemu"
+        set virtiofs_socket $env(VIRTIOFSD_SOCKET)
+        set qcow2 $env(QCOW2_IMAGE)
+        set efi_code $env(EFI_CODE)
+        set efi_vars $env(EFI_VARS)
+        proc wait_prompt {} {
+          expect {
+            -re "__CI_PROMPT__# " {}
+            timeout { exit 1 }
+            eof { exit 1 }
+          }
+        }
+        proc run_cmd {cmd} {
+          send -- "$cmd\r"
+          wait_prompt
+        }
+        spawn $qemu_bin \
+          -L $qemu_rom_dir \
+          -machine virt \
+          -accel tcg,thread=multi,tb-size=2048 \
+          -cpu la464 \
+          -m 9216 \
+          -object memory-backend-memfd,id=mem0,size=9216M,share=on \
+          -numa node,memdev=mem0 \
+          -smp 4 \
+          -drive if=pflash,format=raw,unit=0,file=$efi_code,readonly=on \
+          -drive if=pflash,format=raw,unit=1,file=$efi_vars \
+          -device virtio-blk-pci,drive=hd0,bootindex=1 \
+          -drive if=none,media=disk,id=hd0,file=$qcow2,format=qcow2 \
+          -netdev user,id=net0 \
+          -device virtio-net-pci-non-transitional,netdev=net0 \
+          -chardev socket,id=charfs0,path=$virtiofs_socket \
+          -device vhost-user-fs-pci,chardev=charfs0,tag=workspace \
+          -display none \
+          -serial stdio \
+          -monitor none
+        expect -re "login:|fedora login:"
+        send -- "root\r"
+        expect -re "Password:|密码:|密码："
+        send -- "password\r"
+        expect {
+          -re "# " {}
+          timeout { exit 1 }
+          eof { exit 1 }
+        }
+        send -- "export TERM=dumb; export PS1='__CI_PROMPT__# '\r"
+        wait_prompt
+        run_cmd "mkdir -p /workspace"
+        run_cmd "mount -t virtiofs workspace /workspace"
+        run_cmd "IFACE=\$(ip -o link show | awk -F': ' '\$2 != \"lo\" {print \$2; exit}') ; ip link set \$IFACE up || true"
+        run_cmd "dhclient \$IFACE || true"
+        run_cmd "printf 'nameserver 10.0.2.3\nnameserver 1.1.1.1\n' >/etc/resolv.conf"
+        run_cmd "dnf -y makecache || dnf -y makecache || dnf -y makecache"
+        run_cmd "dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which curl jq file ca-certificates fuse3 --nogpgcheck"
+        run_cmd "rm -rf /root/v2rayN-src"
+        run_cmd "rsync -a --info=progress2 /workspace/repo/ /root/v2rayN-src/"
+        run_cmd "cd /root/v2rayN-src && git config --global --add safe.directory /root/v2rayN-src"
+        run_cmd "cd /root/v2rayN-src && chmod 755 package-rhel-loong.sh"
+        send -- "cd /root/v2rayN-src; cat >/tmp/run-loong-rpm-build.sh <<'SCRIPT'\nset +e\nset -o pipefail\nbash -x ./package-rhel-loong.sh \"\$RELEASE_TAG\" 2>&1 | tee /tmp/build.log\nrc=\$?\nmkdir -p /workspace/dist/rpm-loong64\nfind /root/rpmbuild/RPMS -name '*.rpm' -exec cp -av {} /workspace/dist/rpm-loong64/ \\; 2>/dev/null || true\necho __BUILD_DONE__\$rc\nSCRIPT\nRELEASE_TAG=\"$release_tag\" bash /tmp/run-loong-rpm-build.sh\r"
+        expect {
+          -re "__BUILD_DONE__0" { send -- "poweroff\r" }
+          default { exit 1 }
+        }
+        EOF
+    - name: Collect RPMs
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p "$GITHUB_WORKSPACE/dist/rpm-loong64"
+        find "$GITHUB_WORKSPACE/dist/rpm-loong64" -name "*.loongarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-loong64/v2rayN-linux-rhel-loong64.rpm" \; || true
+        echo "==== Dist tree ===="
+        ls -R "$GITHUB_WORKSPACE/dist/rpm-loong64"
+    - name: Upload RPMs to release
+      uses: svenstaro/upload-release-action@v2
+      with: { file: "dist/rpm-loong64/**/*.rpm", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
