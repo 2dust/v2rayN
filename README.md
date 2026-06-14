@@ -13,6 +13,8 @@ and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
 
 Read the [Wiki](https://github.com/2dust/v2rayN/wiki) for details.
 
+See [routing troubleshooting](docs/troubleshooting-routing.md) for common routing issues and diagnostics.
+
 ## Telegram Channel
 
 [github_2dust](https://t.me/github_2dust)
