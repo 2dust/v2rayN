@@ -501,7 +501,7 @@ write_spec_file() {
 Name:           v2rayN
 Version:        __VERSION__
 Release:        1%{?dist}
-Summary:        v2rayN (Avalonia) GUI client for Linux (riscv64)
+Summary:        v2rayN (Avalonia) GUI client for Linux
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 BugURL:         https://github.com/2dust/v2rayN/issues
