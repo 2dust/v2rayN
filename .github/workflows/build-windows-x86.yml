@@ -1,0 +1,215 @@
+name: release Windows x86
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package-x86:
+    name: build and release windows x86 WPF & Avalonia
+    if: inputs.release_tag != ''
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - flavor: wpf
+            project: ./v2rayN/v2rayN/v2rayN.csproj
+            zip_name: v2rayN-windows-86.zip
+          - flavor: desktop
+            project: ./v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj
+            zip_name: v2rayN-windows-86-desktop.zip
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup .NET 10.0.1xx
+        uses: actions/setup-dotnet@v5.2.0
+        with:
+          dotnet-version: 10.0.1xx
+
+      - name: Publish ${{ matrix.flavor }} win-x86
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          dotnet restore "${{ matrix.project }}" -r win-x86
+
+          dotnet publish "${{ matrix.project }}" `
+            -c Release `
+            -r win-x86 `
+            -p:SelfContained=true `
+            -p:EnableWindowsTargeting=true `
+            -o "publish/${{ matrix.flavor }}"
+
+      - name: Publish AmazTool win-x86
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          dotnet publish "./v2rayN/AmazTool/AmazTool.csproj" `
+            -c Release `
+            -r win-x86 `
+            -p:SelfContained=true `
+            -p:PublishTrimmed=true `
+            -p:EnableWindowsTargeting=true `
+            -o "publish/${{ matrix.flavor }}"
+
+      - name: Detect bundled core versions
+        id: detect-core
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          New-Item -ItemType Directory -Force -Path "tmp/probe" | Out-Null
+
+          Invoke-WebRequest -Uri "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-windows-64/bin/xray/xray.exe" -OutFile "tmp/probe/xray.exe"
+          $xrayOutput = (& "tmp/probe/xray.exe" version) -join "`n"
+          Write-Host $xrayOutput
+
+          $xrayMatch = [regex]::Match($xrayOutput, 'Xray\s+([0-9.]+)')
+          if ($xrayMatch.Success) {
+            $xrayVer = $xrayMatch.Groups[1].Value
+          } else {
+            throw "Failed to detect Xray version"
+          }
+
+          Invoke-WebRequest -Uri "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-windows-64/bin/sing_box/sing-box.exe" -OutFile "tmp/probe/sing-box.exe"
+          $singOutput = (& "tmp/probe/sing-box.exe" version) -join "`n"
+          Write-Host $singOutput
+
+          $singMatch = [regex]::Match($singOutput, 'sing-box version\s+([0-9.]+)')
+          if ($singMatch.Success) {
+            $singVer = $singMatch.Groups[1].Value
+          } else {
+            throw "Failed to detect sing-box version"
+          }
+
+          Write-Host "Bundled Xray version: $xrayVer"
+          Write-Host "Bundled sing-box version: $singVer"
+
+          "xray_version=$xrayVer" >> $env:GITHUB_OUTPUT
+          "sing_version=$singVer" >> $env:GITHUB_OUTPUT
+
+      - name: Download x86 cores and rule assets
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $headers = @{
+            Authorization = "Bearer $env:GH_TOKEN"
+            Accept = "application/vnd.github+json"
+            "X-GitHub-Api-Version" = "2022-11-28"
+          }
+
+          $root = "publish/${{ matrix.flavor }}"
+          $bin = Join-Path $root "bin"
+          $xrayDir = Join-Path $bin "xray"
+          $singDir = Join-Path $bin "sing_box"
+          $srssDir = Join-Path $bin "srss"
+
+          New-Item -ItemType Directory -Force -Path $xrayDir, $singDir, $srssDir | Out-Null
+
+          $xrayVer = "${{ steps.detect-core.outputs.xray_version }}"
+          $singVer = "${{ steps.detect-core.outputs.sing_version }}"
+
+          $xrayTag = "v$xrayVer"
+          $singTag = "v$singVer"
+
+          $xrayUrl = "https://github.com/autorepobot/Xray-core/releases/download/$xrayTag/Xray-windows-32.zip"
+          $singUrl = "https://github.com/SagerNet/sing-box/releases/download/$singTag/sing-box-$singVer-windows-386.zip"
+
+          Write-Host "Bundled Xray version: $xrayVer"
+          Write-Host "Bundled sing-box version: $singVer"
+          Write-Host "Xray: $xrayUrl"
+          Write-Host "sing-box: $singUrl"
+
+          New-Item -ItemType Directory -Force -Path "tmp" | Out-Null
+
+          Invoke-WebRequest -Uri $xrayUrl -OutFile "tmp/xray.zip"
+          Expand-Archive -Force "tmp/xray.zip" "tmp/xray"
+
+          Get-ChildItem "tmp/xray" -Recurse -Include "*.exe","*.dll" | ForEach-Object {
+            Copy-Item $_.FullName (Join-Path $xrayDir $_.Name) -Force
+          }
+
+          Invoke-WebRequest -Uri $singUrl -OutFile "tmp/sing-box.zip"
+          Expand-Archive -Force "tmp/sing-box.zip" "tmp/sing-box"
+
+          $singExe = Get-ChildItem "tmp/sing-box" -Recurse -Filter "sing-box.exe" | Select-Object -First 1
+          if (-not $singExe) {
+            throw "sing-box.exe not found"
+          }
+
+          Copy-Item $singExe.FullName "$singDir/sing-box.exe" -Force
+
+          $cronet = Get-ChildItem "tmp/sing-box" -Recurse -Filter "libcronet*.dll" | Select-Object -First 1
+          if ($cronet) {
+            Copy-Item $cronet.FullName "$singDir/libcronet.dll" -Force
+          }
+
+          Invoke-WebRequest -Uri "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat" -OutFile "$bin/geosite.dat"
+          Invoke-WebRequest -Uri "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat" -OutFile "$bin/geoip.dat"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat" -OutFile "$bin/geoip-only-cn-private.dat"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb" -OutFile "$bin/Country.mmdb"
+          Invoke-WebRequest -Uri "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb" -OutFile "$bin/geoip.metadb"
+
+          $geoipRules = @(
+            "geoip-private.srs",
+            "geoip-cn.srs",
+            "geoip-facebook.srs",
+            "geoip-fastly.srs",
+            "geoip-google.srs",
+            "geoip-netflix.srs",
+            "geoip-telegram.srs",
+            "geoip-twitter.srs"
+          )
+
+          foreach ($f in $geoipRules) {
+            Invoke-WebRequest -Uri "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geoip/$f" -OutFile "$srssDir/$f"
+          }
+
+          $geositeRules = @(
+            "geosite-cn.srs",
+            "geosite-gfw.srs",
+            "geosite-google.srs",
+            "geosite-greatfire.srs",
+            "geosite-geolocation-cn.srs",
+            "geosite-category-ads-all.srs",
+            "geosite-private.srs"
+          )
+
+          foreach ($f in $geositeRules) {
+            Invoke-WebRequest -Uri "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geosite/$f" -OutFile "$srssDir/$f"
+          }
+
+      - name: Package zip
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          Compress-Archive `
+            -Path "publish/${{ matrix.flavor }}/*" `
+            -DestinationPath "${{ matrix.zip_name }}" `
+            -Force
+
+      - name: Upload zip archive to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: ${{ matrix.zip_name }}
+          tag: ${{ inputs.release_tag }}
+          prerelease: true
+          overwrite: true
