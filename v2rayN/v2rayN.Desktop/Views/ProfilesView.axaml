@@ -277,11 +277,19 @@
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
                         Tag="SpeedVal" />
 
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding IpInfo}"
-                        Header="{x:Static resx:ResUI.LvTestIpInfo}"
-                        Tag="IpInfo" />
+                    <DataGridTemplateColumn SortMemberPath="IpInfo" Tag="IpInfo">
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="{x:Static resx:ResUI.LvTestIpInfo}" />
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <SelectableTextBlock
+                                    Margin="{StaticResource MarginLr8}"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Path=IpInfo, Mode=OneWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTextColumn
                         Width="100"
