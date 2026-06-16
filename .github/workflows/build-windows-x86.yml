@@ -37,12 +37,18 @@ jobs:
       - name: Purge SDKs
         shell: pwsh
         run: |
+          echo "Before:"
+          dotnet --list-sdks
+          
           dotnet --list-sdks | % {
             $_ -match '^\S+\s+\[(.+)\]$' > $null
             $d = Join-Path $Matches[1] $_.Split()[0]
             Write-Host "Removing $d"
             if ($IsWindows) { rm $d -r -fo } else { sudo rm -rf "$d" }
           }
+
+          echo "After:"
+          dotnet --list-sdks
 
       - name: Setup .NET 10.0.1xx
         uses: actions/setup-dotnet@v5.2.0
