@@ -51,6 +51,16 @@ jobs:
         submodules: 'recursive'
         fetch-depth: '0'
 
+    - name: Purge SDKs
+      shell: pwsh
+      run: |
+        dotnet --list-sdks | % {
+          $_ -match '^\S+\s+\[(.+)\]$' > $null
+          $d = Join-Path $Matches[1] $_.Split()[0]
+          Write-Host "Removing $d"
+          if ($IsWindows) { rm $d -r -fo } else { sudo rm -rf "$d" }
+        }
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v5.3.0
       with:
