@@ -65,7 +65,7 @@ jobs:
         }
         
         echo "After:"
-        dotnet --list-sdk
+        dotnet --list-sdk 2>$null || $true
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v5.3.0
