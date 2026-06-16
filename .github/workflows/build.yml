@@ -65,7 +65,7 @@ jobs:
         }
         
         echo "After:"
-        dotnet --list-sdk 2>$null || $true
+        dotnet --list-sdks 2>$null; $LASTEXITCODE=0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v5.3.0
