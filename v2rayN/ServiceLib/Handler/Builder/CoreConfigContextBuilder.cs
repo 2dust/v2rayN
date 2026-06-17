@@ -6,8 +6,8 @@ public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeVali
 }
 
 /// <summary>
-/// Holds the results of a full context build, including the main context and an optional
-/// pre-socks context (e.g. for TUN protection or pre-socks chaining).
+///     Holds the results of a full context build, including the main context and an optional
+///     pre-socks context (e.g. for TUN protection or pre-socks chaining).
 /// </summary>
 public record CoreConfigContextBuilderAllResult(
     CoreConfigContextBuilderResult MainResult,
@@ -17,8 +17,8 @@ public record CoreConfigContextBuilderAllResult(
     public bool Success => MainResult.Success && (PreSocksResult?.Success ?? true);
 
     /// <summary>
-    /// Merges all errors and warnings from the main result and the optional pre-socks result
-    /// into a single <see cref="NodeValidatorResult"/> for unified notification.
+    ///     Merges all errors and warnings from the main result and the optional pre-socks result
+    ///     into a single <see cref="NodeValidatorResult" /> for unified notification.
     /// </summary>
     public NodeValidatorResult CombinedValidatorResult => new(
         [.. MainResult.ValidatorResult.Errors, .. PreSocksResult?.ValidatorResult.Errors ?? []],
@@ -28,14 +28,14 @@ public record CoreConfigContextBuilderAllResult(
 public class CoreConfigContextBuilder
 {
     /// <summary>
-    /// Builds a <see cref="CoreConfigContext"/> for the given node, resolves its proxy map,
-    /// and processes outbound nodes referenced by routing rules.
+    ///     Builds a <see cref="CoreConfigContext" /> for the given node, resolves its proxy map,
+    ///     and processes outbound nodes referenced by routing rules.
     /// </summary>
     public static async Task<CoreConfigContextBuilderResult> Build(Config config, ProfileItem node)
     {
         var runCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
         var coreType = runCoreType == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
-        var context = new CoreConfigContext()
+        var context = new CoreConfigContext
         {
             Node = node,
             RunCoreType = runCoreType,
@@ -61,7 +61,8 @@ public class CoreConfigContextBuilder
         if (!(context.RoutingItem?.RuleSet.IsNullOrEmpty() ?? true))
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet) ?? [];
-            foreach (var ruleItem in rules.Where(ruleItem => ruleItem.Enabled && !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
+            foreach (var ruleItem in rules.Where(ruleItem =>
+                         ruleItem.Enabled && !Global.OutboundTags.Contains(ruleItem.OutboundTag)))
             {
                 if (ruleItem.OutboundTag.IsNullOrEmpty())
                 {
@@ -72,7 +73,8 @@ public class CoreConfigContextBuilder
                 var ruleOutboundNode = await AppManager.Instance.GetProfileItemViaRemarks(ruleItem.OutboundTag);
                 if (ruleOutboundNode == null)
                 {
-                    validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleOutboundNodeNotFound, ruleItem.Remarks, ruleItem.OutboundTag));
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleOutboundNodeNotFound,
+                        ruleItem.Remarks, ruleItem.OutboundTag));
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
@@ -83,7 +85,8 @@ public class CoreConfigContextBuilder
                 if (!ruleNodeValidatorResult.Success)
                 {
                     validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Errors.Select(e =>
-                        string.Format(ResUI.MsgRoutingRuleOutboundNodeError, ruleItem.Remarks, ruleItem.OutboundTag, e)));
+                        string.Format(ResUI.MsgRoutingRuleOutboundNodeError, ruleItem.Remarks, ruleItem.OutboundTag,
+                            e)));
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
@@ -110,9 +113,9 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// Builds the main <see cref="CoreConfigContext"/> for <paramref name="node"/> and, when
-    /// the main build succeeds, also builds the optional pre-socks context required for TUN
-    /// protection or pre-socks proxy chaining.
+    ///     Builds the main <see cref="CoreConfigContext" /> for <paramref name="node" /> and, when
+    ///     the main build succeeds, also builds the optional pre-socks context required for TUN
+    ///     protection or pre-socks proxy chaining.
     /// </summary>
     public static async Task<CoreConfigContextBuilderAllResult> BuildAll(Config config, ProfileItem node)
     {
@@ -132,9 +135,10 @@ public class CoreConfigContextBuilder
         {
             Context = mainResult.Context with
             {
-                IsTunEnabled = false, // main core doesn't handle tun directly when pre-socks is used
+                IsTunEnabled = false,
+                // main core doesn't handle tun directly when pre-socks is used
                 ProtectDomainList = [.. mainResult.Context.ProtectDomainList, .. preResult.Context.ProtectDomainList],
-            }
+            },
         };
         if (mainResult.Context.IsTunEnabled
             && mainResult.Context.AppConfig.TunModeItem.StrictRoute)
@@ -146,16 +150,16 @@ public class CoreConfigContextBuilder
             {
                 Context = resolvedMainResult.Context with
                 {
-                    AppConfig = appConfig
-                }
+                    AppConfig = appConfig,
+                },
             };
         }
         return new CoreConfigContextBuilderAllResult(resolvedMainResult, preResult);
     }
 
     /// <summary>
-    /// Determines whether a pre-socks context is required for <paramref name="nodeContext"/>
-    /// and, if so, builds and returns it. Returns <c>null</c> when no pre-socks core is needed.
+    ///     Determines whether a pre-socks context is required for <paramref name="nodeContext" />
+    ///     and, if so, builds and returns it. Returns <c>null</c> when no pre-socks core is needed.
     /// </summary>
     private static async Task<CoreConfigContextBuilderResult?> BuildPreSocksIfNeeded(CoreConfigContext nodeContext)
     {
@@ -171,8 +175,9 @@ public class CoreConfigContextBuilder
             {
                 Context = preSocksResult.Context with
                 {
-                    ProtectDomainList = [.. nodeContext.ProtectDomainList ?? [], .. preSocksResult.Context.ProtectDomainList ?? []],
-                }
+                    ProtectDomainList =
+                    [.. nodeContext.ProtectDomainList ?? [], .. preSocksResult.Context.ProtectDomainList ?? []],
+                },
             };
         }
 
@@ -180,8 +185,8 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// Resolves a node into the context, optionally wrapping it in a subscription-level proxy chain.
-    /// Returns the effective (possibly replaced) node and the validation result.
+    ///     Resolves a node into the context, optionally wrapping it in a subscription-level proxy chain.
+    ///     Returns the effective (possibly replaced) node and the validation result.
     /// </summary>
     public static async Task<(ProfileItem, NodeValidatorResult)> ResolveNodeAsync(CoreConfigContext context,
         ProfileItem node,
@@ -216,12 +221,13 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// If the node's subscription defines prev/next profiles, creates a virtual
-    /// <see cref="EConfigType.ProxyChain"/> node that wraps them together.
-    /// Returns <c>null</c> as the chain item when no chain is needed.
-    /// Any warnings (e.g. missing prev/next profile) are returned in the validator result.
+    ///     If the node's subscription defines prev/next profiles, creates a virtual
+    ///     <see cref="EConfigType.ProxyChain" /> node that wraps them together.
+    ///     Returns <c>null</c> as the chain item when no chain is needed.
+    ///     Any warnings (e.g. missing prev/next profile) are returned in the validator result.
     /// </summary>
-    private static async Task<(ProfileItem? ChainNode, NodeValidatorResult ValidatorResult)> BuildSubscriptionChainNodeAsync(ProfileItem node)
+    private static async Task<(ProfileItem? ChainNode, NodeValidatorResult ValidatorResult)>
+        BuildSubscriptionChainNodeAsync(ProfileItem node)
     {
         var result = NodeValidatorResult.Empty();
 
@@ -262,7 +268,7 @@ public class CoreConfigContextBuilder
         }
 
         // Build new proxy chain node
-        var chainNode = new ProfileItem()
+        var chainNode = new ProfileItem
         {
             IndexId = $"inner-{Utils.GetGuid(false)}",
             ConfigType = EConfigType.ProxyChain,
@@ -280,8 +286,8 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// Dispatches registration to either <see cref="RegisterGroupNodeAsync"/> or
-    /// <see cref="RegisterSingleNodeAsync"/> based on the node's config type.
+    ///     Dispatches registration to either <see cref="RegisterGroupNodeAsync" /> or
+    ///     <see cref="RegisterSingleNodeAsync" /> based on the node's config type.
     /// </summary>
     private static async Task<NodeValidatorResult> RegisterNodeAsync(CoreConfigContext context, ProfileItem node)
     {
@@ -289,15 +295,12 @@ public class CoreConfigContextBuilder
         {
             return await RegisterGroupNodeAsync(context, node);
         }
-        else
-        {
-            return RegisterSingleNodeAsync(context, node);
-        }
+        return RegisterSingleNodeAsync(context, node);
     }
 
     /// <summary>
-    /// Validates a single (non-group) node and, on success, adds it to the proxy map
-    /// and records any domain addresses that should bypass the proxy.
+    ///     Validates a single (non-group) node and, on success, adds it to the proxy map
+    ///     and records any domain addresses that should bypass the proxy.
     /// </summary>
     private static NodeValidatorResult RegisterSingleNodeAsync(CoreConfigContext context, ProfileItem node)
     {
@@ -361,8 +364,8 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// Entry point for registering a group node. Initialises the visited/ancestor sets
-    /// and delegates to <see cref="TraverseGroupNodeAsync"/>.
+    ///     Entry point for registering a group node. Initialises the visited/ancestor sets
+    ///     and delegates to <see cref="TraverseGroupNodeAsync" />.
     /// </summary>
     private static async Task<NodeValidatorResult> RegisterGroupNodeAsync(CoreConfigContext context,
         ProfileItem node)
@@ -378,9 +381,9 @@ public class CoreConfigContextBuilder
     }
 
     /// <summary>
-    /// Recursively walks the children of a group node, registering valid leaf nodes
-    /// and nested groups. Detects cycles via <paramref name="ancestorsGroup"/> and
-    /// deduplicates shared nodes via <paramref name="globalVisitedGroup"/>.
+    ///     Recursively walks the children of a group node, registering valid leaf nodes
+    ///     and nested groups. Detects cycles via <paramref name="ancestorsGroup" /> and
+    ///     deduplicates shared nodes via <paramref name="globalVisitedGroup" />.
     /// </summary>
     private static async Task<NodeValidatorResult> TraverseGroupNodeAsync(
         CoreConfigContext context,
@@ -444,13 +447,10 @@ public class CoreConfigContextBuilder
             childNodeValidatorResult.Errors.Add(string.Format(ResUI.MsgGroupNoValidChildNode, node.Remarks));
             return childNodeValidatorResult;
         }
-        else
-        {
-            childNodeValidatorResult.Warnings.AddRange(childNodeValidatorResult.Errors);
-            childNodeValidatorResult.Errors.Clear();
-        }
+        childNodeValidatorResult.Warnings.AddRange(childNodeValidatorResult.Errors);
+        childNodeValidatorResult.Errors.Clear();
 
-        node.SetProtocolExtra(node.GetProtocolExtra() with { ChildItems = Utils.List2String(childIndexIdList), });
+        node.SetProtocolExtra(node.GetProtocolExtra() with { ChildItems = Utils.List2String(childIndexIdList) });
         context.AllProxiesMap[node.IndexId] = node;
         return childNodeValidatorResult;
     }
