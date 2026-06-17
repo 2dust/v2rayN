@@ -18,8 +18,8 @@ body:
   - type: input
     id: "os-version"
     attributes:
-      label: "操作系统和版本"
-      description: "操作系统和版本"
+      label: "操作系统 / v2rayN / Core 版本"
+      description: "操作系统 / v2rayN / Core 版本"
     validations:
       required: true
 
