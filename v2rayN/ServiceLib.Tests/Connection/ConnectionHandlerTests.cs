@@ -1,4 +1,5 @@
 using AwesomeAssertions;
+using System.Globalization;
 using Xunit;
 
 namespace ServiceLib.Tests.Connection;
@@ -70,6 +71,35 @@ public class ConnectionHandlerTests
     }
 
     [Theory]
+    [InlineData("https://ipwho.is/", "192.0.2.10", "https://ipwho.is/192.0.2.10")]
+    [InlineData("https://api.ip.sb/geoip", "192.0.2.10", "https://api.ip.sb/geoip/192.0.2.10")]
+    [InlineData("https://example.test/geo/{ip}", "192.0.2.10", "https://example.test/geo/192.0.2.10")]
+    [InlineData("https://example.test/geo/{0}", "192.0.2.10", "https://example.test/geo/192.0.2.10")]
+    [InlineData("https://api.ipapi.is", "192.0.2.10", "https://api.ipapi.is/?q=192.0.2.10")]
+    public void BuildIPInfoUrlForAddress_ShouldTargetSpecificIp(string apiUrl, string ip, string expected)
+    {
+        var result = ConnectionHandler.BuildIPInfoUrlForAddress(apiUrl, ip);
+
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public async Task ResolveAddressForIPInfo_PublicIp_ShouldReturnIp()
+    {
+        var result = await ConnectionHandler.ResolveAddressForIPInfo("192.0.2.10");
+
+        result.Should().Be("192.0.2.10");
+    }
+
+    [Fact]
+    public async Task ResolveAddressForIPInfo_PrivateIp_ShouldReturnNull()
+    {
+        var result = await ConnectionHandler.ResolveAddressForIPInfo("127.0.0.1");
+
+        result.Should().BeNull();
+    }
+
+    [Theory]
     [InlineData(42, true)]
     [InlineData(0, false)]
     [InlineData(-1, false)]
@@ -78,5 +108,24 @@ public class ConnectionHandlerTests
         var result = new AvailabilityCheckResult(responseTime, Global.None);
 
         result.IsAvailable.Should().Be(expected);
+    }
+
+    [Fact]
+    public void SubItem_FormatUpdateTimeAgo_ShouldShowChineseRelativeTime()
+    {
+        var oldCulture = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("zh-Hans");
+            var now = DateTimeOffset.FromUnixTimeSeconds(1_700_000_000);
+            var updateTime = now.AddMinutes(-5).ToUnixTimeSeconds();
+
+            SubItem.FormatUpdateTimeAgo(updateTime, now).Should().Be("5 分钟前");
+            SubItem.FormatUpdateTimeAgo(0, now).Should().Be("未更新");
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = oldCulture;
+        }
     }
 }

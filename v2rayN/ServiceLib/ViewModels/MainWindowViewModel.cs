@@ -303,6 +303,7 @@ public class MainWindowViewModel : MyReactiveObject
         if (success)
         {
             var indexIdOld = _config.IndexId;
+            RefreshSubscriptions();
             await RefreshServers();
 
             // If indexId changed or subIndexId is empty, directly reload.

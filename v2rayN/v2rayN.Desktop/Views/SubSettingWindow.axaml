@@ -62,6 +62,10 @@
                         Binding="{Binding Enabled}"
                         Header="{x:Static resx:ResUI.LvEnabled}" />
                     <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding UpdateTimeAgo}"
+                        Header="上次更新" />
+                    <DataGridTextColumn
                         Width="150"
                         Binding="{Binding AutoUpdateInterval}"
                         Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />

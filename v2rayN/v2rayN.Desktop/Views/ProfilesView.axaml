@@ -21,7 +21,7 @@
                 <ListBox
                     x:Name="lstGroup"
                     Margin="{StaticResource MarginLr4}"
-                    DisplayMemberBinding="{Binding Remarks}"
+                    DisplayMemberBinding="{Binding RemarksWithUpdateTime}"
                     ItemsSource="{Binding SubItems}"
                     Theme="{DynamicResource PureCardRadioGroupListBox}">
                     <ListBox.ItemsPanel>

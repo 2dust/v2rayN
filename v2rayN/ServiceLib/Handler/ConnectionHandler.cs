@@ -134,6 +134,121 @@ public static class ConnectionHandler
     }
 
     /// <summary>
+    /// Gets IP and geolocation information for a server address.
+    /// </summary>
+    public static async Task<IpInfoResult?> GetIPInfoForAddress(string? address, bool blProxy)
+    {
+        try
+        {
+            var ip = await ResolveAddressForIPInfo(address);
+            if (ip.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var url = BuildIPInfoUrlForAddress(AppManager.Instance.Config.SpeedTestItem.IPAPIUrl, ip);
+            if (url.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var downloadHandle = new DownloadService();
+            var result = await downloadHandle.TryDownloadString(url, blProxy, Global.AppName);
+            if (result == null)
+            {
+                return null;
+            }
+
+            return ParseIPInfo(result);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Builds an IP API URL that targets a specific server IP.
+    /// </summary>
+    public static string? BuildIPInfoUrlForAddress(string? apiUrl, string? ip)
+    {
+        if (apiUrl.IsNullOrEmpty() || ip.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        var escapedIp = Uri.EscapeDataString(ip.TrimEx());
+        if (apiUrl.Contains("{0}", StringComparison.Ordinal))
+        {
+            return string.Format(apiUrl, escapedIp);
+        }
+        if (apiUrl.Contains("{ip}", StringComparison.OrdinalIgnoreCase))
+        {
+            return apiUrl.Replace("{ip}", escapedIp, StringComparison.OrdinalIgnoreCase);
+        }
+
+        var normalizedUrl = apiUrl.TrimEx().TrimEnd('/');
+        if (normalizedUrl.Contains("api.ipapi.is", StringComparison.OrdinalIgnoreCase))
+        {
+            return normalizedUrl.Contains('?', StringComparison.Ordinal)
+                ? $"{normalizedUrl}&q={escapedIp}"
+                : $"{normalizedUrl}/?q={escapedIp}";
+        }
+
+        return $"{normalizedUrl}/{escapedIp}";
+    }
+
+    /// <summary>
+    /// Resolves a server address to a public IP address for geolocation lookup.
+    /// </summary>
+    public static async Task<string?> ResolveAddressForIPInfo(string? address)
+    {
+        var host = NormalizeAddressForIPInfo(address);
+        if (host.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        if (IPAddress.TryParse(host, out var parsedAddress))
+        {
+            return Utils.IsPrivateNetwork(parsedAddress.ToString()) ? null : parsedAddress.ToString();
+        }
+
+        try
+        {
+            var addresses = await Dns.GetHostAddressesAsync(host);
+            return addresses
+                .Select(t => t.ToString())
+                .FirstOrDefault(t => !Utils.IsPrivateNetwork(t));
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string? NormalizeAddressForIPInfo(string? address)
+    {
+        var host = address?.Trim();
+        if (host.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        if (Uri.TryCreate(host, UriKind.Absolute, out var uri))
+        {
+            host = uri.Host;
+        }
+
+        if (host.StartsWith('[') && host.EndsWith(']'))
+        {
+            host = host[1..^1];
+        }
+
+        return host;
+    }
+
+    /// <summary>
     /// Parses IP API responses from supported providers.
     /// </summary>
     public static IpInfoResult? ParseIPInfo(string? result)

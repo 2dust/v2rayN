@@ -40,6 +40,8 @@ public static class SubscriptionHandler
                 // Process download result
                 if (await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc))
                 {
+                    item.UpdateTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    await ConfigHandler.AddSubItem(config, item);
                     successCount++;
                 }
 
@@ -54,7 +56,60 @@ public static class SubscriptionHandler
             }
         }
 
+        if (successCount > 0)
+        {
+            await updateFunc?.Invoke(false, "正在刷新节点 IP 信息...");
+            var ipInfoCount = await RefreshServerIPInfoAfterSubscriptionUpdate(config, blProxy);
+            await updateFunc?.Invoke(false, $"已刷新节点 IP 信息: {ipInfoCount}");
+        }
+
         await updateFunc?.Invoke(successCount > 0, $"{ResUI.MsgUpdateSubscriptionEnd}");
+    }
+
+    private static async Task<int> RefreshServerIPInfoAfterSubscriptionUpdate(Config config, bool blProxy)
+    {
+        var profileItems = await AppManager.Instance.ProfileItems(string.Empty);
+        if (profileItems is not { Count: > 0 })
+        {
+            return 0;
+        }
+
+        var candidates = profileItems
+            .Where(t => !t.ConfigType.IsComplexType() && t.IsValid() && t.Address.IsNotEmpty())
+            .ToList();
+        if (candidates.Count == 0)
+        {
+            return 0;
+        }
+
+        var ipInfoTasks = new ConcurrentDictionary<string, Task<string>>();
+        using var semaphore = new SemaphoreSlim(Math.Max(1, config.SpeedTestItem.MixedConcurrencyCount));
+        var refreshedCount = 0;
+
+        var tasks = candidates.Select(async item =>
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                var ipInfo = await ipInfoTasks.GetOrAdd(item.Address.TrimEx(), address => GetServerIPInfoString(address, blProxy));
+                ProfileExManager.Instance.SetTestIpInfo(item.IndexId, ipInfo);
+                Interlocked.Increment(ref refreshedCount);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        });
+
+        await Task.WhenAll(tasks);
+        await ProfileExManager.Instance.SaveTo();
+        return refreshedCount;
+    }
+
+    private static async Task<string> GetServerIPInfoString(string address, bool blProxy)
+    {
+        var ipInfo = await ConnectionHandler.GetIPInfoForAddress(address, blProxy);
+        return ipInfo?.ToString() ?? Global.None;
     }
 
     private static bool IsValidSubscription(SubItem item, string subId)
