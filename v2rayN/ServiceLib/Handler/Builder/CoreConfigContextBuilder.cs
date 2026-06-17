@@ -136,6 +136,20 @@ public class CoreConfigContextBuilder
                 ProtectDomainList = [.. mainResult.Context.ProtectDomainList, .. preResult.Context.ProtectDomainList],
             }
         };
+        if (mainResult.Context.IsTunEnabled
+            && mainResult.Context.AppConfig.TunModeItem.StrictRoute)
+        {
+            var appConfig = JsonUtils.DeepCopy(mainResult.Context.AppConfig);
+            appConfig.CoreBasicItem.BindInterface = string.Empty;
+            appConfig.CoreBasicItem.SendThrough = string.Empty;
+            resolvedMainResult = resolvedMainResult with
+            {
+                Context = resolvedMainResult.Context with
+                {
+                    AppConfig = appConfig
+                }
+            };
+        }
         return new CoreConfigContextBuilderAllResult(resolvedMainResult, preResult);
     }
 
