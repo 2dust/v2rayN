@@ -4,6 +4,9 @@ public class StatusBarViewModel : MyReactiveObject
 {
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
     public static StatusBarViewModel Instance => _instance.Value;
+    private static readonly TimeSpan _autoSubscriptionRecoveryCooldown = TimeSpan.FromMinutes(10);
+    private readonly SemaphoreSlim _autoSubscriptionRecoverySemaphore = new(1, 1);
+    private DateTimeOffset _lastAutoSubscriptionRecoveryTime = DateTimeOffset.MinValue;
 
     #region ObservableCollection
 
@@ -353,10 +356,59 @@ public class StatusBarViewModel : MyReactiveObject
 
         await TestServerAvailabilitySub(ResUI.Speedtesting);
 
-        var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
+        var result = await Task.Run(ConnectionHandler.RunAvailabilityCheckResult);
+        var msg = result.ToString();
 
         NoticeManager.Instance.SendMessageEx(msg);
         await TestServerAvailabilitySub(msg);
+        await TryUpdateSubscriptionsDirectlyAfterProxyFailure(result);
+    }
+
+    private async Task TryUpdateSubscriptionsDirectlyAfterProxyFailure(AvailabilityCheckResult result)
+    {
+        if (result.IsAvailable)
+        {
+            return;
+        }
+
+        if (!await _autoSubscriptionRecoverySemaphore.WaitAsync(0))
+        {
+            return;
+        }
+
+        try
+        {
+            var now = DateTimeOffset.UtcNow;
+            if (now - _lastAutoSubscriptionRecoveryTime < _autoSubscriptionRecoveryCooldown)
+            {
+                return;
+            }
+
+            var subItems = await AppManager.Instance.SubItems();
+            if (subItems?.Any(IsAutoRecoverySubscription) != true)
+            {
+                return;
+            }
+
+            _lastAutoSubscriptionRecoveryTime = now;
+            Logging.SaveLog("Proxy availability check failed; updating all subscriptions without proxy.");
+            NoticeManager.Instance.SendMessageEx($"{ResUI.MsgUpdateSubscriptionStart} ({Global.DirectTag})");
+            AppEvents.SubscriptionsUpdateRequested.Publish(false);
+        }
+        finally
+        {
+            _autoSubscriptionRecoverySemaphore.Release();
+        }
+    }
+
+    private static bool IsAutoRecoverySubscription(SubItem item)
+    {
+        var id = item.Id.TrimEx();
+        var url = item.Url.TrimEx();
+
+        return item.Enabled
+            && id.IsNotEmpty()
+            && (url.StartsWith(Global.HttpsProtocol) || url.StartsWith(Global.HttpProtocol));
     }
 
     private async Task TestServerAvailabilitySub(string msg)

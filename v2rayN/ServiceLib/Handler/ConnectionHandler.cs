@@ -9,10 +9,18 @@ public static class ConnectionHandler
     /// </summary>
     public static async Task<string> RunAvailabilityCheck()
     {
+        return (await RunAvailabilityCheckResult()).ToString();
+    }
+
+    /// <summary>
+    /// Runs ping and IP checks and returns a structured result.
+    /// </summary>
+    public static async Task<AvailabilityCheckResult> RunAvailabilityCheckResult()
+    {
         var time = await GetRealPingTimeInfo();
         var ip = time > 0 ? await GetIPInfo() : Global.None;
 
-        return string.Format(ResUI.TestMeOutput, time, ip);
+        return new(time, ip);
     }
 
     /// <summary>

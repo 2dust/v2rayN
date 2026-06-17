@@ -68,4 +68,15 @@ public class ConnectionHandlerTests
 
         result.Should().BeNull();
     }
+
+    [Theory]
+    [InlineData(42, true)]
+    [InlineData(0, false)]
+    [InlineData(-1, false)]
+    public void AvailabilityCheckResult_IsAvailable_ShouldReflectPositiveResponseTime(int responseTime, bool expected)
+    {
+        var result = new AvailabilityCheckResult(responseTime, Global.None);
+
+        result.IsAvailable.Should().Be(expected);
+    }
 }
