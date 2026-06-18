@@ -1698,12 +1698,6 @@
   <data name="TransportExtra" xml:space="preserve">
     <value>Дополнительные параметры XHTTP (Extra)</value>
   </data>
-  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
-    <value>Разрешить небезопасную загрузку сертификата (самоподписанного)</value>
-  </data>
-  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
-    <value>Только для загрузки самоподписанных сертификатов. Это может подвергнуть вас риску атаки «человек посередине» (MITM).</value>
-  </data>
   <data name="menuUdpTestServer" xml:space="preserve">
     <value>Тест UDP-задержки конфигураций</value>
   </data>
