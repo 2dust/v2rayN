@@ -51,7 +51,7 @@ jobs:
           dotnet --list-sdks 2>$null; $LASTEXITCODE=0
 
       - name: Setup .NET 10.0.1xx
-        uses: actions/setup-dotnet@v5.2.0
+        uses: actions/setup-dotnet@v5.3.0
         with:
           dotnet-version: 10.0.1xx
 

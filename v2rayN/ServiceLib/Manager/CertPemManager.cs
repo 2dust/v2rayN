@@ -190,8 +190,8 @@ public class CertPemManager
     /// <summary>
     ///     Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName, int timeout = 4,
-        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
+    public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName,
+        List<string>? verifyPeerCertByName = null, int timeout = 4)
     {
         try
         {
@@ -204,8 +204,7 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
-                    allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? []));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
@@ -240,8 +239,8 @@ public class CertPemManager
     /// <summary>
     ///     Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
-    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName, int timeout = 4,
-        List<string>? verifyPeerCertByName = null, bool allowInsecure = false)
+    public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName,
+        List<string>? verifyPeerCertByName = null, int timeout = 4)
     {
         var pemList = new List<string>();
         try
@@ -255,8 +254,7 @@ public class CertPemManager
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
 
             var callback = new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) =>
-                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? [],
-                    allowInsecure));
+                ValidateServerCertificate(sender, certificate, chain, sslPolicyErrors, verifyPeerCertByName ?? []));
             await using var ssl = new SslStream(client.GetStream(), false, callback);
 
             var sslOptions = new SslClientAuthenticationOptions
@@ -299,18 +297,11 @@ public class CertPemManager
         X509Certificate? certificate,
         X509Chain? chain,
         SslPolicyErrors sslPolicyErrors,
-        List<string> verifyPeerCertByName,
-        bool allowInsecure)
+        List<string> verifyPeerCertByName)
     {
         if (certificate == null)
         {
             return false;
-        }
-
-        // In insecure mode, accept any certificate so self-signed certs can be fetched.
-        if (allowInsecure)
-        {
-            return true;
         }
 
         // Build certificate chain

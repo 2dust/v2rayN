@@ -118,466 +118,466 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchExportURLSuccessfully" xml:space="preserve">
-    <value>Sikeresen exportálta a megosztási linket a vágólapra</value>
+    <value>Berhasil mengekspor tautan berbagi ke papan klip</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Kérjük, először ellenőrizze a konfigurációs beállításokat.</value>
+    <value>Konfigurasi tidak valid, silakan periksa atau pilih ulang</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
-    <value>Érvénytelen konfigurációs formátum.</value>
+    <value>Format konfigurasi tidak valid.</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>Ne feledje, hogy az egyéni konfiguráció teljes mértékben a saját konfigurációjától függ, és nem működik minden beállítással. Ha a rendszerproxyt szeretné használni, kérjük, manuálisan módosítsa a figyelő portot.</value>
+    <value>Perhatian: konfigurasi kustom sepenuhnya bergantung pada pengaturan Anda sendiri dan tidak berlaku untuk semua fitur. Jika ingin menggunakan proxy sistem, ubah port listening secara manual.</value>
   </data>
   <data name="Downloading" xml:space="preserve">
-    <value>Letöltés...</value>
+    <value>Mengunduh...</value>
   </data>
   <data name="FailedConversionConfiguration" xml:space="preserve">
-    <value>Nem sikerült a konfigurációs fájl konvertálása</value>
+    <value>Gagal mengonversi file konfigurasi</value>
   </data>
   <data name="FailedGenDefaultConfiguration" xml:space="preserve">
-    <value>Nem sikerült az alapértelmezett konfigurációs fájl generálása</value>
+    <value>Gagal membuat file konfigurasi default</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value>Nem sikerült lekérni az alapértelmezett konfigurációt</value>
+    <value>Gagal mendapatkan konfigurasi default</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Nem sikerült importálni az egyéni konfigurációt</value>
+    <value>Gagal mengimpor konfigurasi kustom</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
-    <value>Nem sikerült olvasni a konfigurációs fájlt</value>
+    <value>Gagal membaca file konfigurasi</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>Kérjük, adja meg a helyes port formátumot.</value>
+    <value>Masukkan format port yang benar.</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
-    <value>Kérjük, adja meg a helyi figyelő portot.</value>
+    <value>Masukkan port listening lokal.</value>
   </data>
   <data name="FillPassword" xml:space="preserve">
-    <value>Kérjük, adja meg a jelszót.</value>
+    <value>Masukkan kata sandi.</value>
   </data>
   <data name="FillServerAddress" xml:space="preserve">
-    <value>Kérjük, adja meg a címet.</value>
+    <value>Masukkan alamat.</value>
   </data>
   <data name="FillUUID" xml:space="preserve">
-    <value>Kérjük, adja meg a felhasználói azonosítót.</value>
+    <value>Masukkan UUID.</value>
   </data>
   <data name="Incorrectconfiguration" xml:space="preserve">
-    <value>Ez nem a megfelelő konfiguráció, kérjük, ellenőrizze</value>
+    <value>Konfigurasi tidak benar, silakan periksa</value>
   </data>
   <data name="InitialConfiguration" xml:space="preserve">
-    <value>Kezdeti konfiguráció</value>
+    <value>Konfigurasi Awal</value>
   </data>
   <data name="IsLatestCore" xml:space="preserve">
-    <value>{0} {1} már naprakész.</value>
+    <value>{0} {1} sudah versi terbaru.</value>
   </data>
   <data name="IsLatestN" xml:space="preserve">
-    <value>{0} {1} már naprakész.</value>
+    <value>{0} {1} sudah versi terbaru.</value>
   </data>
   <data name="LvAddress" xml:space="preserve">
-    <value>Cím</value>
+    <value>Alamat</value>
   </data>
   <data name="LvEncryptionMethod" xml:space="preserve">
-    <value>Biztonság</value>
+    <value>Keamanan</value>
   </data>
   <data name="LvPort" xml:space="preserve">
     <value>Port</value>
   </data>
   <data name="LvServiceType" xml:space="preserve">
-    <value>Típus</value>
+    <value>Tipe</value>
   </data>
   <data name="LvSubscription" xml:space="preserve">
-    <value>Előfizetés csoport</value>
+    <value>Grup langganan</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
-    <value>Mai letöltési forgalom</value>
+    <value>Lalu lintas unduh hari ini</value>
   </data>
   <data name="LvTodayUploadDataAmount" xml:space="preserve">
-    <value>Mai feltöltési forgalom</value>
+    <value>Lalu lintas unggah hari ini</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
-    <value>Összes letöltési forgalom</value>
+    <value>Total lalu lintas unduh</value>
   </data>
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
-    <value>Összes feltöltési forgalom</value>
+    <value>Total lalu lintas unggah</value>
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
-    <value>Szállítás</value>
+    <value>Transport</value>
   </data>
   <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
-    <value>A Core sikeresen letöltve</value>
+    <value>Core berhasil diunduh</value>
   </data>
   <data name="MsgFailedImportSubscription" xml:space="preserve">
-    <value>Nem sikerült importálni az előfizetés tartalmát</value>
+    <value>Gagal mengimpor konten langganan</value>
   </data>
   <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
-    <value>Az előfizetés tartalma sikeresen lekérve</value>
+    <value>Berhasil mendapatkan konten langganan</value>
   </data>
   <data name="MsgNoValidSubscription" xml:space="preserve">
-    <value>Nincs érvényes előfizetés beállítva</value>
+    <value>Tidak ada langganan yang valid</value>
   </data>
   <data name="MsgParsingSuccessfully" xml:space="preserve">
-    <value>Resolved {0} successfully</value>
+    <value>Berhasil memproses {0}</value>
   </data>
   <data name="MsgStartGettingSubscriptions" xml:space="preserve">
-    <value>Előfizetések lekérdezése elindult</value>
+    <value>Mulai mengambil langganan</value>
   </data>
   <data name="MsgStartUpdating" xml:space="preserve">
-    <value>Frissítés indítása: {0}...</value>
+    <value>Mulai memperbarui {0}...</value>
   </data>
   <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
-    <value>Érvénytelen előfizetés tartalom</value>
+    <value>Konten langganan tidak valid</value>
   </data>
   <data name="MsgUnpacking" xml:space="preserve">
-    <value>Kicsomagolás...</value>
+    <value>Mengekstrak...</value>
   </data>
   <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
-    <value>Előfizetés frissítése befejeződött</value>
+    <value>Pembaruan langganan selesai</value>
   </data>
   <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
-    <value>Előfizetés frissítése elindult</value>
+    <value>Pembaruan langganan dimulai</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
-    <value>A Core sikeresen frissítve</value>
+    <value>Core berhasil diperbarui</value>
   </data>
   <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
-    <value>A Core sikeresen frissítve! Szolgáltatás újraindítása...</value>
+    <value>Core berhasil diperbarui! Memulai ulang layanan...</value>
   </data>
   <data name="NonvmessOrssProtocol" xml:space="preserve">
-    <value>Nem VMess vagy SS protokoll</value>
+    <value>Bukan protokol VMess atau SS</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>A Core fájl (fájlnév: {1}) nem található a mappában ({0}), kérjük, töltse le és helyezze a mappába, letöltési cím: {2}</value>
+    <value>File Core (nama file: {1}) tidak ditemukan di folder ({0}). Silakan unduh dan letakkan di folder tersebut. Alamat unduh: {2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
-    <value>Szkennelés befejeződött, nem található érvényes QR kód</value>
+    <value>Pemindaian selesai, tidak ada kode QR yang valid</value>
   </data>
   <data name="OperationFailed" xml:space="preserve">
-    <value>Művelet sikertelen, kérjük, ellenőrizze és próbálja újra</value>
+    <value>Operasi gagal, silakan periksa dan coba lagi</value>
   </data>
   <data name="PleaseFillRemarks" xml:space="preserve">
-    <value>Kérjük, töltse ki a megjegyzéseket</value>
+    <value>Silakan isi keterangan</value>
   </data>
   <data name="PleaseSelectEncryption" xml:space="preserve">
-    <value>Kérjük, válassza ki a titkosítási módszert</value>
+    <value>Silakan pilih metode enkripsi</value>
   </data>
   <data name="PleaseSelectProtocol" xml:space="preserve">
-    <value>Kérjük, válassza ki a protokollt</value>
+    <value>Silakan pilih protokol</value>
   </data>
   <data name="PleaseSelectServer" xml:space="preserve">
-    <value>Kérjük, először válassza ki a konfigurációt</value>
+    <value>Silakan pilih konfigurasi terlebih dahulu</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Konfigurációk deduplikálása befejeződött. Régi: {0}, Új: {1}.</value>
+    <value>Penghapusan duplikat konfigurasi selesai. Lama: {0}, Baru: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>Biztosan eltávolítja a konfigurációt?</value>
+    <value>Yakin ingin menghapus?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
-    <value>Az ügyfélkonfigurációs fájl mentése itt: {0}</value>
+    <value>File konfigurasi klien disimpan di: {0}</value>
   </data>
   <data name="StartService" xml:space="preserve">
-    <value>Szolgáltatás indítása ({0})...</value>
+    <value>Memulai layanan ({0})...</value>
   </data>
   <data name="SuccessfulConfiguration" xml:space="preserve">
-    <value>Konfiguráció sikeres. {0}</value>
+    <value>Konfigurasi berhasil. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Egyéni konfiguráció sikeresen importálva</value>
+    <value>Konfigurasi kustom berhasil diimpor</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
-    <value>{0} konfiguráció importálva a vágólapról</value>
+    <value>{0} konfigurasi berhasil diimpor dari papan klip</value>
   </data>
   <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
-    <value>Sikeresen beolvasta és importálta a megosztott linket</value>
+    <value>Berhasil memindai dan mengimpor tautan berbagi</value>
   </data>
   <data name="TestMeOutput" xml:space="preserve">
-    <value>A késleltetés: {0} ms, {1}</value>
+    <value>Latensi: {0} ms, {1}</value>
   </data>
   <data name="OperationSuccess" xml:space="preserve">
-    <value>Művelet sikeres</value>
+    <value>Operasi berhasil</value>
   </data>
   <data name="PleaseSelectRules" xml:space="preserve">
-    <value>Kérjük, válasszon szabályokat</value>
+    <value>Silakan pilih aturan</value>
   </data>
   <data name="RemoveRules" xml:space="preserve">
-    <value>Biztosan eltávolítja a szabályokat?</value>
+    <value>Yakin ingin menghapus aturan?</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0}, az egyik kötelező mező.</value>
+    <value>{0}, salah satu kolom wajib diisi.</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
-    <value>Megjegyzések</value>
+    <value>Keterangan</value>
   </data>
   <data name="LvUrl" xml:space="preserve">
-    <value>URL (opcionális)</value>
+    <value>URL (opsional)</value>
   </data>
   <data name="LvCount" xml:space="preserve">
-    <value>Darabszám</value>
+    <value>Jumlah</value>
   </data>
   <data name="MsgNeedUrl" xml:space="preserve">
-    <value>Kérjük, adja meg az URL-t</value>
+    <value>Silakan masukkan URL</value>
   </data>
   <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
-    <value>Hozzá szeretne fűzni szabályokat? Igen a hozzáfűzéshez, nem a cseréhez.</value>
+    <value>Tambahkan aturan? Pilih Ya untuk menambahkan, Tidak untuk mengganti.</value>
   </data>
   <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
-    <value>A GeoFile: {0} sikeresen letöltve</value>
+    <value>GeoFile: {0} berhasil diunduh</value>
   </data>
   <data name="MsgInformationTitle" xml:space="preserve">
-    <value>Információ</value>
+    <value>Informasi</value>
   </data>
   <data name="LvCustomIcon" xml:space="preserve">
-    <value>Egyéni ikon</value>
+    <value>Ikon kustom</value>
   </data>
   <data name="FillCorrectDNSText" xml:space="preserve">
-    <value>Kérjük, töltse ki a helyes egyéni DNS-t</value>
+    <value>Isi DNS kustom yang benar</value>
   </data>
   <data name="TransportPathTip1" xml:space="preserve">
-    <value>*ws/http upgrade/xhttp elérési út</value>
+    <value>*path ws/http upgrade/xhttp</value>
   </data>
   <data name="TransportPathTip2" xml:space="preserve">
-    <value>*h2 elérési út</value>
+    <value>*path h2</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
-    <value>*QUIC kulcs/KCP seed</value>
+    <value>*kunci QUIC/seed KCP</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>gRPC szolgáltatásnév</value>
+    <value>nama layanan gRPC</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
-    <value>*http host vesszővel elválasztva (,)</value>
+    <value>*host http, pisahkan dengan koma (,)</value>
   </data>
   <data name="TransportRequestHostTip2" xml:space="preserve">
-    <value>*ws/http upgrade/xhttp host</value>
+    <value>*host ws/http upgrade/xhttp</value>
   </data>
   <data name="TransportRequestHostTip3" xml:space="preserve">
-    <value>*h2 host vesszővel elválasztva (,)</value>
+    <value>*host h2, pisahkan dengan koma (,)</value>
   </data>
   <data name="TransportRequestHostTip4" xml:space="preserve">
-    <value>*QUIC biztonság</value>
+    <value>*keamanan QUIC</value>
   </data>
   <data name="TransportHeaderType1" xml:space="preserve">
-    <value>raw álcázási típus</value>
+    <value>tipe kamuflase raw</value>
   </data>
   <data name="TransportHeaderType2" xml:space="preserve">
-    <value>kcp álcázási típus</value>
+    <value>tipe kamuflase kcp</value>
   </data>
   <data name="TransportHeaderType3" xml:space="preserve">
-    <value>QUIC álcázási típus</value>
+    <value>tipe kamuflase QUIC</value>
   </data>
   <data name="TransportHeaderType4" xml:space="preserve">
-    <value>gRPC mód</value>
+    <value>mode gRPC</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
   </data>
   <data name="TransportPathTip5" xml:space="preserve">
-    <value>*kcp seed</value>
+    <value>*seed kcp</value>
   </data>
   <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>Globális gyorsbillentyű {0} regisztrációja sikertelen, ok: {1}</value>
+    <value>Pendaftaran hotkey global {0} gagal, alasan: {1}</value>
   </data>
   <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
-    <value>Globális gyorsbillentyű {0} sikeresen regisztrálva</value>
+    <value>Hotkey global {0} berhasil didaftarkan</value>
   </data>
   <data name="AllGroupServers" xml:space="preserve">
-    <value>Összes</value>
+    <value>Semua</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Kérjük, tallózzon a konfiguráció importálásához</value>
+    <value>Silakan telusuri untuk mengimpor konfigurasi</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
-    <value>Tesztelés...</value>
+    <value>Menguji...</value>
   </data>
   <data name="LabLAN" xml:space="preserve">
     <value>LAN</value>
   </data>
   <data name="LabLocal" xml:space="preserve">
-    <value>Helyi</value>
+    <value>Lokal</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Konfigurációs szűrő, Enter billentyűvel végrehajtható</value>
+    <value>Filter, tekan Enter untuk menjalankan</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
-    <value>Frissítés ellenőrzése</value>
+    <value>Periksa pembaruan</value>
   </data>
   <data name="menuClose" xml:space="preserve">
-    <value>Bezárás</value>
+    <value>Tutup</value>
   </data>
   <data name="menuExit" xml:space="preserve">
-    <value>Kilépés</value>
+    <value>Keluar</value>
   </data>
   <data name="menuGlobalHotkeySetting" xml:space="preserve">
-    <value>Globális gyorsbillentyű beállítás</value>
+    <value>Pengaturan hotkey global</value>
   </data>
   <data name="menuHelp" xml:space="preserve">
-    <value>Súgó</value>
+    <value>Bantuan</value>
   </data>
   <data name="menuOptionSetting" xml:space="preserve">
-    <value>Opció beállítás</value>
+    <value>Pengaturan opsi</value>
   </data>
   <data name="menuPromotion" xml:space="preserve">
-    <value>Promóció</value>
+    <value>Promosi</value>
   </data>
   <data name="menuReload" xml:space="preserve">
-    <value>Újratöltés</value>
+    <value>Muat ulang layanan</value>
   </data>
   <data name="menuRoutingSetting" xml:space="preserve">
-    <value>Útválasztási beállítás</value>
+    <value>Pengaturan routing</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>Konfigurációk</value>
+    <value>Konfigurasi</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
-    <value>Beállítások</value>
+    <value>Pengaturan</value>
   </data>
   <data name="menuSubGroupUpdate" xml:space="preserve">
-    <value>Aktuális előfizetés frissítése proxy nélkül</value>
+    <value>Perbarui langganan saat ini (tanpa proxy)</value>
   </data>
   <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
-    <value>Aktuális előfizetés frissítése proxyval</value>
+    <value>Perbarui langganan saat ini (melalui proxy)</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
-    <value>Előfizetési csoport</value>
+    <value>Grup langganan</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
-    <value>Előfizetési csoport beállításai</value>
+    <value>Pengaturan grup langganan</value>
   </data>
   <data name="menuSubUpdate" xml:space="preserve">
-    <value>Előfizetések frissítése proxy nélkül</value>
+    <value>Perbarui semua langganan (tanpa proxy)</value>
   </data>
   <data name="menuSubUpdateViaProxy" xml:space="preserve">
-    <value>Előfizetések frissítése proxyval</value>
+    <value>Perbarui semua langganan (melalui proxy)</value>
   </data>
   <data name="menuSystemproxy" xml:space="preserve">
-    <value>Rendszerproxy</value>
+    <value>Proxy sistem</value>
   </data>
   <data name="menuSystemProxyClear" xml:space="preserve">
-    <value>Rendszerproxy törlése</value>
+    <value>Hapus proxy sistem</value>
   </data>
   <data name="menuSystemProxyNothing" xml:space="preserve">
-    <value>Ne változtassa meg a rendszerproxyt</value>
+    <value>Jangan ubah proxy sistem</value>
   </data>
   <data name="menuSystemProxyPac" xml:space="preserve">
-    <value>PAC mód</value>
+    <value>Mode PAC</value>
   </data>
   <data name="menuSystemProxySet" xml:space="preserve">
-    <value>Rendszerproxy beállítása</value>
+    <value>Atur proxy sistem</value>
   </data>
   <data name="TbSettingsColor" xml:space="preserve">
-    <value>Szín</value>
+    <value>Warna</value>
   </data>
   <data name="TbSettingsLanguage" xml:space="preserve">
-    <value>Nyelv (Újraindítás)</value>
+    <value>Bahasa (perlu mulai ulang)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>Megosztási linkek importálása vágólapról</value>
+    <value>Impor tautan berbagi dari papan klip</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
-    <value>QR kód beolvasása a képernyőről</value>
+    <value>Pindai kode QR di layar</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>Kijelölt konfiguráció klónozása</value>
+    <value>Gandakan yang dipilih</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>Ismétlődő konfigurációk eltávolítása</value>
+    <value>Hapus duplikat</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Kijelölt konfigurációk eltávolítása</value>
+    <value>Hapus yang dipilih</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Beállítás aktív konfigurációként</value>
+    <value>Tetapkan sebagai aktif</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
-    <value>Összes szolgáltatás statisztika törlése</value>
+    <value>Hapus semua statistik layanan</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Konfigurációk valós késleltetésének tesztelése</value>
+    <value>Uji latensi nyata</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
-    <value>Rendezés teszteredmény szerint</value>
+    <value>Urutkan berdasarkan hasil uji</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Konfigurációk letöltési sebességének tesztelése</value>
+    <value>Uji kecepatan unduh</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Konfigurációk tesztelése tcpinggel</value>
+    <value>Uji tcping</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Kijelölt konfiguráció exportálása teljes konfigurációként</value>
+    <value>Ekspor yang dipilih sebagai konfigurasi lengkap</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
-    <value>Megosztási link exportálása vágólapra</value>
+    <value>Ekspor tautan berbagi ke papan klip</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Egyéni konfiguráció hozzáadása</value>
+    <value>Tambah konfigurasi kustom</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>[Shadowsocks] konfiguráció hozzáadása</value>
+    <value>Tambah [Shadowsocks]</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>[SOCKS] konfiguráció hozzáadása</value>
+    <value>Tambah [SOCKS]</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>[Trojan] konfiguráció hozzáadása</value>
+    <value>Tambah [Trojan]</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>[VLESS] konfiguráció hozzáadása</value>
+    <value>Tambah [VLESS]</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>[VMess] konfiguráció hozzáadása</value>
+    <value>Tambah [VMess]</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
-    <value>Összes kijelölése</value>
+    <value>Pilih semua</value>
   </data>
   <data name="menuMsgViewClear" xml:space="preserve">
-    <value>Összes törlése</value>
+    <value>Hapus semua</value>
   </data>
   <data name="menuMsgViewCopy" xml:space="preserve">
-    <value>Másolás</value>
+    <value>Salin</value>
   </data>
   <data name="menuMsgViewCopyAll" xml:space="preserve">
-    <value>Összes másolása</value>
+    <value>Salin semua</value>
   </data>
   <data name="menuMsgViewSelectAll" xml:space="preserve">
-    <value>Összes kijelölése</value>
+    <value>Pilih semua</value>
   </data>
   <data name="menuSubAdd" xml:space="preserve">
-    <value>Hozzáadás</value>
+    <value>Tambah</value>
   </data>
   <data name="menuSubDelete" xml:space="preserve">
-    <value>Törlés</value>
+    <value>Hapus</value>
   </data>
   <data name="menuSubEdit" xml:space="preserve">
-    <value>Szerkesztés</value>
+    <value>Ubah</value>
   </data>
   <data name="menuSubShare" xml:space="preserve">
-    <value>Megosztás</value>
+    <value>Bagikan</value>
   </data>
   <data name="LvEnabled" xml:space="preserve">
-    <value>Frissítés engedélyezése</value>
+    <value>Aktifkan pembaruan</value>
   </data>
   <data name="LvSort" xml:space="preserve">
-    <value>Rendezés</value>
+    <value>Urutan</value>
   </data>
   <data name="LvUserAgent" xml:space="preserve">
     <value>User Agent</value>
   </data>
   <data name="TbCancel" xml:space="preserve">
-    <value>Mégsem</value>
+    <value>Batal</value>
   </data>
   <data name="TbConfirm" xml:space="preserve">
-    <value>Megerősítés</value>
+    <value>Konfirmasi</value>
   </data>
   <data name="GbTransport" xml:space="preserve">
-    <value>Szállítás</value>
+    <value>Transport</value>
   </data>
   <data name="TbAddress" xml:space="preserve">
-    <value>Cím</value>
+    <value>Alamat</value>
   </data>
   <data name="TbAllowInsecure" xml:space="preserve">
-    <value>Nem biztonságos engedélyezése</value>
+    <value>Lewati verifikasi sertifikat (allowInsecure)</value>
   </data>
   <data name="TbAlpn" xml:space="preserve">
     <value>ALPN</value>
@@ -586,28 +586,28 @@
     <value>Alter ID</value>
   </data>
   <data name="TbFingerprint" xml:space="preserve">
-    <value>Ujjlenyomat</value>
+    <value>Sidik jari</value>
   </data>
   <data name="TbHeaderType" xml:space="preserve">
-    <value>Álcázási típus</value>
+    <value>Tipe kamuflase</value>
   </data>
   <data name="TbId" xml:space="preserve">
     <value>UUID(id)</value>
   </data>
   <data name="TbNetwork" xml:space="preserve">
-    <value>Szállítási protokoll(hálózat)</value>
+    <value>Protokol transport (network)</value>
   </data>
   <data name="TbPath" xml:space="preserve">
-    <value>Elérési út</value>
+    <value>Path</value>
   </data>
   <data name="TbPort" xml:space="preserve">
     <value>Port</value>
   </data>
   <data name="TbRemarks" xml:space="preserve">
-    <value>Alias (megjegyzések)</value>
+    <value>Alias (keterangan)</value>
   </data>
   <data name="TbSecurity" xml:space="preserve">
-    <value>Titkosítási módszer (biztonság)</value>
+    <value>Metode enkripsi (security)</value>
   </data>
   <data name="TbSNI" xml:space="preserve">
     <value>SNI</value>
@@ -616,856 +616,856 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*Alapértelmezett érték raw</value>
+    <value>*Nilai default raw</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
-    <value>Core Típus</value>
+    <value>Tipe Core</value>
   </data>
   <data name="TbFlow5" xml:space="preserve">
     <value>Flow</value>
   </data>
   <data name="TbGUID" xml:space="preserve">
-    <value>Generálás</value>
+    <value>Buat</value>
   </data>
   <data name="TbId3" xml:space="preserve">
-    <value>Jelszó</value>
+    <value>Kata sandi</value>
   </data>
   <data name="TbId4" xml:space="preserve">
-    <value>Jelszó(Opcionális)</value>
+    <value>Kata sandi (opsional)</value>
   </data>
   <data name="TbId5" xml:space="preserve">
     <value>UUID(id)</value>
   </data>
   <data name="TbSecurity3" xml:space="preserve">
-    <value>Titkosítás</value>
+    <value>Enkripsi</value>
   </data>
   <data name="TbSecurity4" xml:space="preserve">
-    <value>Felhasználó(Opcionális)</value>
+    <value>Pengguna (opsional)</value>
   </data>
   <data name="TbSecurity5" xml:space="preserve">
-    <value>Titkosítás</value>
+    <value>Enkripsi</value>
   </data>
   <data name="TbPreSocksPort" xml:space="preserve">
-    <value>Socks port</value>
+    <value>Port Socks</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>* A beállítás után egy socks szolgáltatás indul az Xray/sing-box(Tun) segítségével, hogy olyan funkciókat biztosítson, mint a sebességkijelzés</value>
+    <value>* Setelah diatur, layanan socks akan dijalankan melalui Xray/sing-box (Tun) untuk fungsi seperti tampilan kecepatan</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
-    <value>Tallózás</value>
+    <value>Telusuri</value>
   </data>
   <data name="TbEdit" xml:space="preserve">
-    <value>Szerkesztés</value>
+    <value>Ubah</value>
   </data>
   <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
-    <value>Haladó proxy beállítások, protokoll kiválasztása (opcionális)</value>
+    <value>Pengaturan proxy lanjutan, pemilihan protokol (opsional)</value>
   </data>
   <data name="TbSettingsAllowLAN" xml:space="preserve">
-    <value>Kapcsolatok engedélyezése a LAN-ról</value>
+    <value>Izinkan koneksi dari LAN</value>
   </data>
   <data name="TbSettingsAutoHideStartup" xml:space="preserve">
-    <value>Automatikus elrejtés indításkor</value>
+    <value>Sembunyikan otomatis saat startup</value>
   </data>
   <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
-    <value>Geo fájlok automatikus frissítési intervalluma (órák)</value>
+    <value>Interval pembaruan otomatis file Geo (jam)</value>
   </data>
   <data name="TbSettingsCore" xml:space="preserve">
-    <value>Core: alapbeállítások</value>
+    <value>Core: pengaturan dasar</value>
   </data>
   <data name="TbCustomDnsRay" xml:space="preserve">
-    <value>V2ray Custom DNS</value>
+    <value>DNS kustom V2ray</value>
   </data>
   <data name="TbSettingsCoreKcp" xml:space="preserve">
-    <value>Core: KCP beállítások</value>
+    <value>Core: pengaturan KCP</value>
   </data>
   <data name="TbSettingsCoreType" xml:space="preserve">
-    <value>Core Típus beállítások</value>
+    <value>Pengaturan tipe Core</value>
   </data>
   <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
-    <value>Nem biztonságos engedélyezése</value>
+    <value>Lewati verifikasi sertifikat (allowInsecure)</value>
   </data>
   <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
-    <value>Kimenő Freedom tartomány stratégia</value>
+    <value>Strategi domain Outbound Freedom</value>
   </data>
   <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
-    <value>Oszlopszélesség automatikus beállítása előfizetés frissítése után</value>
+    <value>Sesuaikan lebar kolom otomatis setelah pembaruan langganan</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
-    <value>Előzetes kiadás frissítések ellenőrzése</value>
+    <value>Periksa versi pra-rilis</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
-    <value>Kivétel</value>
+    <value>Pengecualian</value>
   </data>
   <data name="TbSettingsExceptionTip" xml:space="preserve">
-    <value>Kivételek: Ne használjon proxy szervert a következő címmel kezdődő címekhez. Pontosvesszővel (;) válassza el a bejegyzéseket.</value>
+    <value>Pengecualian: jangan gunakan server proxy untuk alamat yang cocok dengan entri berikut. Pisahkan dengan titik koma (;).</value>
   </data>
   <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
-    <value>Valós idejű sebesség megjelenítése (újraindítást igényel)</value>
+    <value>Tampilkan kecepatan waktu nyata (perlu mulai ulang)</value>
   </data>
   <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
-    <value>Régebbi bejegyzések megtartása deduplikáláskor</value>
+    <value>Pertahankan entri lama saat deduplikasi</value>
   </data>
   <data name="TbSettingsLogEnabled" xml:space="preserve">
-    <value>Naplózás engedélyezése</value>
+    <value>Aktifkan log</value>
   </data>
   <data name="TbSettingsLogLevel" xml:space="preserve">
-    <value>Naplózási szint</value>
+    <value>Level log</value>
   </data>
   <data name="TbSettingsMuxEnabled" xml:space="preserve">
-    <value>Mux Multiplexing bekapcsolása</value>
+    <value>Aktifkan Mux Multiplexing</value>
   </data>
   <data name="TbSettingsN" xml:space="preserve">
-    <value>v2rayN beállítások</value>
+    <value>Pengaturan v2rayN</value>
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
-    <value>Hitelesítési jelszó</value>
+    <value>Kata sandi autentikasi</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
-    <value>Win10 UWP Loopback beállítása</value>
+    <value>Atur UWP Loopback Win10</value>
   </data>
   <data name="TbSettingsSniffingEnabled" xml:space="preserve">
-    <value>Sniffing bekapcsolása</value>
+    <value>Aktifkan Sniffing</value>
   </data>
   <data name="TbSettingsSocksPort" xml:space="preserve">
-    <value>Vegyes port</value>
+    <value>Mixed Port</value>
   </data>
   <data name="TbSettingsStartBoot" xml:space="preserve">
-    <value>Indítás rendszerindításkor</value>
+    <value>Jalankan saat boot</value>
   </data>
   <data name="TbSettingsStatistics" xml:space="preserve">
-    <value>Forgalmi statisztikák engedélyezése (újraindítást igényel)</value>
+    <value>Aktifkan statistik lalu lintas (perlu mulai ulang)</value>
   </data>
   <data name="TbSettingsSubConvert" xml:space="preserve">
-    <value>Előfizetés konverziós URL</value>
+    <value>URL konversi langganan</value>
   </data>
   <data name="TbSettingsSystemproxy" xml:space="preserve">
-    <value>Rendszerproxy beállítások</value>
+    <value>Pengaturan proxy sistem</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tálca jobb egérgombos menü konfigurációk megjelenítési limitje</value>
+    <value>Batas item pada menu klik kanan tray</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
-    <value>UDP engedélyezése</value>
+    <value>Aktifkan UDP</value>
   </data>
   <data name="TbSettingsUser" xml:space="preserve">
-    <value>Hitelesítési felhasználó</value>
+    <value>Pengguna autentikasi</value>
   </data>
   <data name="TbClearSystemProxy" xml:space="preserve">
-    <value>Rendszerproxy törlése</value>
+    <value>Hapus proxy sistem</value>
   </data>
   <data name="TbDisplayGUI" xml:space="preserve">
-    <value>GUI megjelenítése</value>
+    <value>Tampilkan GUI</value>
   </data>
   <data name="TbGlobalHotkeySetting" xml:space="preserve">
-    <value>Globális gyorsbillentyű beállítások</value>
+    <value>Pengaturan hotkey global</value>
   </data>
   <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
-    <value>Közvetlenül beállítható billentyűnyomással; újraindítás után lép életbe</value>
+    <value>Atur langsung dengan menekan keyboard; berlaku setelah mulai ulang</value>
   </data>
   <data name="TbNotChangeSystemProxy" xml:space="preserve">
-    <value>Ne változtassa meg a rendszerproxyt</value>
+    <value>Jangan ubah proxy sistem</value>
   </data>
   <data name="TbReset" xml:space="preserve">
-    <value>Visszaállítás</value>
+    <value>Reset</value>
   </data>
   <data name="TbSetSystemProxy" xml:space="preserve">
-    <value>Rendszerproxy beállítása</value>
+    <value>Atur proxy sistem</value>
   </data>
   <data name="TbSystemProxyPac" xml:space="preserve">
-    <value>PAC mód</value>
+    <value>Mode PAC</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Konfiguráció megosztása</value>
+    <value>Bagikan</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
-    <value>Útválasztás</value>
+    <value>Perutean</value>
   </data>
   <data name="NotRunAsAdmin" xml:space="preserve">
-    <value>Nem rendszergazdaként fut</value>
+    <value>Tidak dijalankan sebagai Admin</value>
   </data>
   <data name="RunAsAdmin" xml:space="preserve">
-    <value>Futtatás rendszergazdaként</value>
+    <value>Jalankan sebagai Admin</value>
   </data>
   <data name="menuMoveBottom" xml:space="preserve">
-    <value>Mozgatás alulra</value>
+    <value>Pindah ke bawah</value>
   </data>
   <data name="menuMoveDown" xml:space="preserve">
-    <value>Le</value>
+    <value>Geser ke bawah</value>
   </data>
   <data name="menuMoveTop" xml:space="preserve">
-    <value>Mozgatás felülre</value>
+    <value>Pindah ke atas</value>
   </data>
   <data name="menuMoveUp" xml:space="preserve">
-    <value>Fel</value>
+    <value>Geser ke atas</value>
   </data>
   <data name="MsgFilterTitle" xml:space="preserve">
-    <value>Szűrő, támogatja a reguláris kifejezéseket</value>
+    <value>Filter, mendukung ekspresi reguler</value>
   </data>
   <data name="menuWebsiteItem" xml:space="preserve">
-    <value>{0} Weboldal</value>
+    <value>Situs web {0}</value>
   </data>
   <data name="menuRoutingAdvancedAdd" xml:space="preserve">
-    <value>Hozzáadás</value>
+    <value>Tambah</value>
   </data>
   <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
-    <value>Szabályok importálása</value>
+    <value>Impor aturan</value>
   </data>
   <data name="menuRoutingAdvancedRemove" xml:space="preserve">
-    <value>Kijelölt eltávolítása</value>
+    <value>Hapus yang dipilih</value>
   </data>
   <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
-    <value>Beállítás aktív szabályként</value>
+    <value>Tetapkan sebagai aturan aktif</value>
   </data>
   <data name="TbdomainStrategy" xml:space="preserve">
-    <value>Tartomány stratégia</value>
+    <value>Strategi domain</value>
   </data>
   <data name="TbRoutingTabRuleList" xml:space="preserve">
-    <value>Előre definiált szabálykészlet lista</value>
+    <value>Daftar aturan bawaan</value>
   </data>
   <data name="TbRoutingTips" xml:space="preserve">
-    <value>*Szabályok elválasztása vesszővel (,); Szó szerinti vesszőhöz használja a &lt;COMMA&gt;-t; Előtag # a szabály figyelmen kívül hagyásához</value>
+    <value>*Pisahkan aturan dengan koma (,); untuk koma literal gunakan &lt;COMMA&gt;; awali dengan # untuk mengabaikan aturan</value>
   </data>
   <data name="menuImportRulesFromClipboard" xml:space="preserve">
-    <value>Szabályok importálása vágólapról</value>
+    <value>Impor aturan dari papan klip</value>
   </data>
   <data name="menuImportRulesFromFile" xml:space="preserve">
-    <value>Szabályok importálása fájlból</value>
+    <value>Impor aturan dari file</value>
   </data>
   <data name="menuImportRulesFromUrl" xml:space="preserve">
-    <value>Szabályok importálása előfizetési URL-ből</value>
+    <value>Impor aturan dari URL langganan</value>
   </data>
   <data name="menuRoutingRuleSetting" xml:space="preserve">
-    <value>Szabály beállítások</value>
+    <value>Pengaturan aturan</value>
   </data>
   <data name="menuRuleAdd" xml:space="preserve">
-    <value>Szabály hozzáadása</value>
+    <value>Tambah aturan</value>
   </data>
   <data name="menuRuleExportSelected" xml:space="preserve">
-    <value>Kijelölt szabályok exportálása</value>
+    <value>Ekspor aturan yang dipilih</value>
   </data>
   <data name="menuRuleList" xml:space="preserve">
-    <value>Szabálylista</value>
+    <value>Daftar aturan</value>
   </data>
   <data name="menuRuleRemove" xml:space="preserve">
-    <value>Szabály eltávolítása</value>
+    <value>Hapus aturan</value>
   </data>
   <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
-    <value>Útválasztási szabály részleteinek beállítása</value>
+    <value>Pengaturan detail aturan routing</value>
   </data>
   <data name="TbAutoSort" xml:space="preserve">
-    <value>Tartomány, IP, folyamat automatikusan rendeződik mentéskor</value>
+    <value>Domain, IP, proses diurutkan otomatis saat menyimpan</value>
   </data>
   <data name="TbRuleobjectDoc" xml:space="preserve">
-    <value>Szabály objektum dokumentum</value>
+    <value>Dokumentasi objek aturan</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Támogatja a DNS objektumot; Kattintson a dokumentáció megtekintéséhez</value>
+    <value>Isi objek DNS; klik untuk melihat dokumentasi</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
-    <value>Csoport esetén hagyja üresen</value>
+    <value>Untuk grup, biarkan kosong di sini</value>
   </data>
   <data name="TipChangeRouting" xml:space="preserve">
-    <value>Útválasztási beállítás megváltozott</value>
+    <value>Pengaturan routing telah berubah</value>
   </data>
   <data name="TipChangeSystemProxy" xml:space="preserve">
-    <value>Rendszerproxy beállítás megváltozott</value>
+    <value>Pengaturan proxy sistem telah berubah</value>
   </data>
   <data name="TbSettingsRouteOnly" xml:space="preserve">
-    <value>Csak útválasztás</value>
+    <value>Hanya routing (routeOnly)</value>
   </data>
   <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
-    <value>Ne használjon proxy szervert helyi (intranet) címekhez</value>
+    <value>Jangan gunakan server proxy untuk alamat lokal (intranet)</value>
   </data>
   <data name="menuMixedTestServer" xml:space="preserve">
-    <value>Egykattintásos többszörös késleltetés és sebesség teszt (Ctrl+E)</value>
+    <value>Uji latensi dan kecepatan multi-thread sekali klik (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>Késleltetés (ms)</value>
+    <value>Latensi (ms)</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
-    <value>Sebesség (MB/s)</value>
+    <value>Kecepatan (MB/s)</value>
   </data>
   <data name="FailedToRunCore" xml:space="preserve">
-    <value>Nem sikerült futtatni a Core-t, kérjük, ellenőrizze a prompt információt</value>
+    <value>Gagal menjalankan Core, silakan periksa pesan yang ditampilkan</value>
   </data>
   <data name="LvFilter" xml:space="preserve">
-    <value>Megjegyzések reguláris szűrője</value>
+    <value>Filter keterangan (regex)</value>
   </data>
   <data name="TbDisplayLog" xml:space="preserve">
-    <value>Napló megjelenítése</value>
+    <value>Tampilkan log</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>Tun engedélyezése</value>
+    <value>Aktifkan Tun</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
-    <value>Új port a LAN-hoz</value>
+    <value>Port baru untuk LAN</value>
   </data>
   <data name="TbSettingsTunMode" xml:space="preserve">
-    <value>Tun mód beállítások</value>
+    <value>Pengaturan Tun Mode</value>
   </data>
   <data name="menuMoveToGroup" xml:space="preserve">
-    <value>Mozgatás csoportba</value>
+    <value>Pindah ke grup</value>
   </data>
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
-    <value>Konfigurációk rendezésének engedélyezése húzással (újraindítást igényel)</value>
+    <value>Aktifkan pengurutan konfigurasi dengan seret dan lepas (perlu mulai ulang)</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
-    <value>Automatikus frissítés</value>
+    <value>Muat ulang otomatis</value>
   </data>
   <data name="SpeedtestingSkip" xml:space="preserve">
-    <value>Teszt kihagyása</value>
+    <value>Lewati pengujian</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Konfiguráció szerkesztése</value>
+    <value>Ubah</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
-    <value>Dupla kattintás a konfigurációra aktiválja</value>
+    <value>Klik ganda konfigurasi untuk mengaktifkan</value>
   </data>
   <data name="SpeedtestingCompleted" xml:space="preserve">
-    <value>Teszt befejeződött</value>
+    <value>Pengujian selesai</value>
   </data>
   <data name="TbSettingsDefFingerprint" xml:space="preserve">
-    <value>Alapértelmezett TLS ujjlenyomat</value>
+    <value>Sidik jari TLS default</value>
   </data>
   <data name="TbSettingsDefUserAgent" xml:space="preserve">
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
+    <value>Parameter ini hanya berlaku untuk raw/http, ws, gRPC, dan xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
-    <value>Betűtípus (újraindítást igényel)</value>
+    <value>Jenis huruf (perlu mulai ulang)</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
-    <value>Másolja a TTF/TTC betűtípus fájlt a gui Fonts könyvtárba; Nyissa meg újra a beállítások ablakot</value>
+    <value>Salin file font TTF/TTC ke folder gui Fonts, lalu buka kembali jendela pengaturan.</value>
   </data>
   <data name="TbSettingsSocksPortTip" xml:space="preserve">
-    <value>Pac port = +3; Xray API port = +4; mihomo API port = +5;</value>
+    <value>Port Pac = +3; Port API Xray = +4; Port API mihomo = +5;</value>
   </data>
   <data name="TbSettingsStartBootTip" xml:space="preserve">
-    <value>Rendszergazdai jogosultságokkal állítsa be, indítás után szerezzen rendszergazdai jogosultságokat</value>
+    <value>Atur opsi ini dengan hak administrator; hak admin akan diperoleh setelah startup.</value>
   </data>
   <data name="TbSettingsFontSize" xml:space="preserve">
-    <value>Betűméret</value>
+    <value>Ukuran huruf</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
-    <value>Sebességteszt egyszeri időtúllépési érték</value>
+    <value>Batas waktu tunggal uji kecepatan</value>
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
-    <value>Sebességteszt URL</value>
+    <value>URL uji kecepatan</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
-    <value>Mozgatás fel és le</value>
+    <value>Geser naik/turun</value>
   </data>
   <data name="TbPublicKey" xml:space="preserve">
-    <value>Nyilvános kulcs</value>
+    <value>Public Key</value>
   </data>
   <data name="TbShortId" xml:space="preserve">
-    <value>Rövid azonosító</value>
+    <value>Short Id</value>
   </data>
   <data name="TbSpiderX" xml:space="preserve">
     <value>Spider X</value>
   </data>
   <data name="TbSettingsEnableHWA" xml:space="preserve">
-    <value>Hardveres gyorsítás engedélyezése (újraindítást igényel)</value>
+    <value>Aktifkan akselerasi perangkat keras (perlu mulai ulang)</value>
   </data>
   <data name="SpeedtestingWait" xml:space="preserve">
-    <value>Tesztelésre vár...</value>
+    <value>Menunggu...</value>
   </data>
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
-    <value>ESC megnyomásával megszakítható</value>
+    <value>Tekan ESC untuk menghentikan pengujian</value>
   </data>
   <data name="TipDisplayLog" xml:space="preserve">
-    <value>Kérjük, kapcsolja ki rendellenes megszakadás esetén</value>
+    <value>Matikan jika terjadi pemutusan tidak normal</value>
   </data>
   <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
-    <value>A frissítések nincsenek engedélyezve, kihagyja ezt az előfizetést</value>
+    <value>Pembaruan tidak diaktifkan, lewati langganan ini</value>
   </data>
   <data name="menuRebootAsAdmin" xml:space="preserve">
-    <value>Újraindítás rendszergazdaként</value>
+    <value>Mulai ulang sebagai Administrator</value>
   </data>
   <data name="LvMoreUrl" xml:space="preserve">
-    <value>További URL-ek, vesszővel elválasztva; Az előfizetés konverzió érvénytelen lesz</value>
+    <value>URL tambahan, pisahkan dengan koma; konversi langganan tidak berlaku</value>
   </data>
   <data name="SpeedDisplayText" xml:space="preserve">
     <value>{0} : {1}/s↑ | {2}/s↓</value>
   </data>
   <data name="LvAutoUpdateInterval" xml:space="preserve">
-    <value>Automatikus frissítési intervallum (percek)</value>
+    <value>Interval pembaruan otomatis (menit)</value>
   </data>
   <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
-    <value>Naplózás engedélyezése fájlba</value>
+    <value>Aktifkan pencatatan log ke file</value>
   </data>
   <data name="LvConvertTarget" xml:space="preserve">
-    <value>Konverziós cél típus</value>
+    <value>Tipe target konversi</value>
   </data>
   <data name="LvConvertTargetTip" xml:space="preserve">
-    <value>Kérjük, hagyja üresen, ha nincs szükség konverzióra</value>
+    <value>Biarkan kosong jika konversi tidak diperlukan</value>
   </data>
   <data name="menuDNSSetting" xml:space="preserve">
-    <value>DNS beállítások</value>
+    <value>Pengaturan DNS</value>
   </data>
   <data name="TbCustomDnsSingbox" xml:space="preserve">
-    <value>sing-box Custom DNS</value>
+    <value>DNS kustom sing-box</value>
   </data>
   <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
-    <value>Kérjük, töltse ki a DNS struktúrát, kattintson a dokumentum megtekintéséhez</value>
+    <value>Isi struktur DNS, klik untuk melihat dokumentasi</value>
   </data>
   <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
-    <value>Kattintson az alapértelmezett DNS konfiguráció importálásához</value>
+    <value>Klik untuk mengimpor konfigurasi DNS default</value>
   </data>
   <data name="TbdomainStrategy4Singbox" xml:space="preserve">
-    <value>sing-box tartomány stratégia</value>
+    <value>Strategi domain sing-box</value>
   </data>
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
-    <value>sing-box Mux protokoll</value>
+    <value>Protokol Mux sing-box</value>
   </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Process (Linux/Windows)</value>
+    <value>Proses (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
-    <value>IP vagy IP CIDR</value>
+    <value>IP atau IP CIDR</value>
   </data>
   <data name="TbRoutingRuleDomain" xml:space="preserve">
-    <value>Tartomány</value>
+    <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Hysteria2 konfiguráció hozzáadása</value>
+    <value>Tambah [Hysteria2]</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria Max sávszélesség (Fel/Le)</value>
+    <value>Bandwidth maks Hysteria (Unggah/Unduh)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
-    <value>Rendszer Hosts használata</value>
+    <value>Gunakan System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>TUIC konfiguráció hozzáadása</value>
+    <value>Tambah [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
-    <value>Torlódásvezérlés</value>
+    <value>Kontrol kemacetan</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Előző proxy konfiguráció megjegyzései</value>
+    <value>Keterangan proxy sebelumnya</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Következő proxy konfiguráció megjegyzései</value>
+    <value>Keterangan proxy berikutnya</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
-    <value>Kérjük, győződjön meg arról, hogy a konfigurációs megjegyzések léteznek és egyediek</value>
+    <value>Pastikan keterangan konfigurasi ada dan unik.</value>
   </data>
   <data name="TbSettingsTunAutoRoute" xml:space="preserve">
-    <value>Automatikus útválasztás</value>
+    <value>Auto Route</value>
   </data>
   <data name="TbSettingsTunStrictRoute" xml:space="preserve">
-    <value>Szigorú útválasztás</value>
+    <value>Strict Route</value>
   </data>
   <data name="TbSettingsTunStack" xml:space="preserve">
-    <value>Hálózati verem</value>
+    <value>Stack</value>
   </data>
   <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
-    <value>IPv6 cím engedélyezése</value>
+    <value>Aktifkan alamat IPv6</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>WireGuard konfiguráció hozzáadása</value>
+    <value>Tambah [WireGuard]</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
-    <value>Privát kulcs</value>
+    <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Fenntartott</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
-    <value>Cím (IPv4, IPv6)</value>
+    <value>Alamat (IPv4, IPv6)</value>
   </data>
   <data name="TbPath7" xml:space="preserve">
-    <value>obfs jelszó</value>
+    <value>Kata sandi obfs</value>
   </data>
   <data name="TbRuleMatchingTips" xml:space="preserve">
-    <value>(Tartomány vagy IP vagy folyamatnév) és port és protokoll és bejövő címke =&gt; kimenő címke</value>
+    <value>(Domain atau IP atau Nama Proses) dan Port dan Protokol dan Tag Inbound =&gt; Tag Outbound</value>
   </data>
   <data name="TbAutoScrollToEnd" xml:space="preserve">
-    <value>Automatikus görgetés a végére</value>
+    <value>Gulir otomatis ke akhir</value>
   </data>
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
-    <value>Sebesség Ping Teszt URL</value>
+    <value>URL uji ping kecepatan</value>
   </data>
   <data name="SpeedtestingStop" xml:space="preserve">
-    <value>Teszt megszakítása...</value>
+    <value>Menghentikan pengujian...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
     <value>gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>HTTP konfiguráció hozzáadása</value>
+    <value>Tambah [HTTP]</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
-    <value>Fragment engedélyezése</value>
+    <value>Aktifkan fragment</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
-    <value>Gyorsítótár fájl engedélyezése sing-boxhoz (szabálykészlet fájlok)</value>
+    <value>Aktifkan file cache untuk sing-box (file ruleset)</value>
   </data>
   <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
-    <value>A sing-box szabálykészletének testreszabása</value>
+    <value>Kustomisasi rule-set sing-box</value>
   </data>
   <data name="NeedRebootTips" xml:space="preserve">
-    <value>Sikeres művelet. Kattintson a beállítások menüre az alkalmazás újraindításához.</value>
+    <value>Operasi berhasil. Silakan mulai ulang aplikasi melalui menu Pengaturan.</value>
   </data>
   <data name="menuOpenTheFileLocation" xml:space="preserve">
-    <value>Fájl helyének megnyitása</value>
+    <value>Buka lokasi penyimpanan</value>
   </data>
   <data name="TbSorting" xml:space="preserve">
-    <value>Rendezés</value>
+    <value>Pengurutan</value>
   </data>
   <data name="TbSortingChain" xml:space="preserve">
-    <value>Lánc</value>
+    <value>Chain</value>
   </data>
   <data name="TbSortingDefault" xml:space="preserve">
-    <value>Alapértelmezett</value>
+    <value>Default</value>
   </data>
   <data name="TbSortingDelay" xml:space="preserve">
-    <value>Késleltetés</value>
+    <value>Latensi</value>
   </data>
   <data name="TbSortingDownSpeed" xml:space="preserve">
-    <value>Letöltési sebesség</value>
+    <value>Kecepatan unduh</value>
   </data>
   <data name="TbSortingDownTraffic" xml:space="preserve">
-    <value>Letöltési forgalom</value>
+    <value>Lalu lintas unduh</value>
   </data>
   <data name="TbSortingHost" xml:space="preserve">
     <value>Host</value>
   </data>
   <data name="TbSortingName" xml:space="preserve">
-    <value>Név</value>
+    <value>Nama</value>
   </data>
   <data name="TbSortingNetwork" xml:space="preserve">
-    <value>Hálózat</value>
+    <value>Jaringan</value>
   </data>
   <data name="TbSortingTime" xml:space="preserve">
-    <value>Idő</value>
+    <value>Waktu</value>
   </data>
   <data name="TbSortingType" xml:space="preserve">
-    <value>Típus</value>
+    <value>Tipe</value>
   </data>
   <data name="TbSortingUpSpeed" xml:space="preserve">
-    <value>Feltöltési sebesség</value>
+    <value>Kecepatan unggah</value>
   </data>
   <data name="TbSortingUpTraffic" xml:space="preserve">
-    <value>Feltöltési forgalom</value>
+    <value>Lalu lintas unggah</value>
   </data>
   <data name="TbConnections" xml:space="preserve">
-    <value>Kapcsolatok</value>
+    <value>Koneksi</value>
   </data>
   <data name="menuConnectionClose" xml:space="preserve">
-    <value>Kapcsolat bezárása</value>
+    <value>Tutup koneksi</value>
   </data>
   <data name="menuConnectionCloseAll" xml:space="preserve">
-    <value>Összes kapcsolat bezárása</value>
+    <value>Tutup semua koneksi</value>
   </data>
   <data name="TbProxies" xml:space="preserve">
-    <value>Proxyk</value>
+    <value>Proxy</value>
   </data>
   <data name="menuRulemode" xml:space="preserve">
-    <value>Szabály mód</value>
+    <value>Mode aturan</value>
   </data>
   <data name="menuModeDirect" xml:space="preserve">
-    <value>Közvetlen</value>
+    <value>Langsung</value>
   </data>
   <data name="menuModeGlobal" xml:space="preserve">
-    <value>Globális</value>
+    <value>Global</value>
   </data>
   <data name="menuModeNothing" xml:space="preserve">
-    <value>Ne változtassa meg</value>
+    <value>Jangan ubah</value>
   </data>
   <data name="menuModeRule" xml:space="preserve">
-    <value>Szabály</value>
+    <value>Aturan</value>
   </data>
   <data name="menuProxiesDelaytest" xml:space="preserve">
-    <value>Késleltetés teszt</value>
+    <value>Uji latensi</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
-    <value>Részleges csomópont késleltetés teszt</value>
+    <value>Uji latensi sebagian node</value>
   </data>
   <data name="menuProxiesReload" xml:space="preserve">
-    <value>Proxyk frissítése</value>
+    <value>Muat ulang proxy</value>
   </data>
   <data name="menuProxiesSelectActivity" xml:space="preserve">
-    <value>Aktív csomópont kiválasztása</value>
+    <value>Pilih node aktif</value>
   </data>
   <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
-    <value>Alapértelmezett tartomány stratégia kimenő forgalomhoz</value>
+    <value>Strategi domain default untuk outbound</value>
   </data>
   <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
-    <value>Fő elrendezés iránya (újraindítást igényel)</value>
+    <value>Orientasi tata letak utama (perlu mulai ulang)</value>
   </data>
   <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
-    <value>Kimenő DNS cím</value>
+    <value>Alamat DNS outbound</value>
   </data>
   <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
-    <value>Oszlopszélesség automatikus beállítása</value>
+    <value>Penyesuaian lebar kolom otomatis</value>
   </data>
   <data name="menuExport2ShareUrlBase64" xml:space="preserve">
-    <value>Base64-kódolt megosztási linkek exportálása vágólapra</value>
+    <value>Ekspor tautan berbagi Base64 ke papan klip</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Kijelölt konfiguráció exportálása teljes konfigurációként a vágólapra</value>
+    <value>Ekspor konfigurasi lengkap yang dipilih ke papan klip</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
-    <value>Főablak megjelenítése vagy elrejtése</value>
+    <value>Tampilkan atau sembunyikan jendela utama</value>
   </data>
   <data name="TbPreSocksPort4Sub" xml:space="preserve">
-    <value>Egyéni konfiguráció socks portja</value>
+    <value>Port socks konfigurasi kustom</value>
   </data>
   <data name="menuBackupAndRestore" xml:space="preserve">
-    <value>Biztonsági mentés és visszaállítás</value>
+    <value>Cadangkan dan pulihkan</value>
   </data>
   <data name="menuLocalBackup" xml:space="preserve">
-    <value>Biztonsági mentés helyi tárolóba</value>
+    <value>Cadangkan ke lokal</value>
   </data>
   <data name="menuLocalRestore" xml:space="preserve">
-    <value>Visszaállítás helyi tárolóból</value>
+    <value>Pulihkan dari lokal</value>
   </data>
   <data name="menuRemoteBackup" xml:space="preserve">
-    <value>Biztonsági mentés távoli helyre (WebDAV)</value>
+    <value>Cadangkan ke remote (WebDAV)</value>
   </data>
   <data name="menuRemoteRestore" xml:space="preserve">
-    <value>Visszaállítás távoli helyről (WebDAV)</value>
+    <value>Pulihkan dari remote (WebDAV)</value>
   </data>
   <data name="menuLocalBackupAndRestore" xml:space="preserve">
-    <value>Helyi</value>
+    <value>Lokal</value>
   </data>
   <data name="menuRemoteBackupAndRestore" xml:space="preserve">
-    <value>Távoli (WebDAV)</value>
+    <value>Remote (WebDAV)</value>
   </data>
   <data name="LvWebDavUrl" xml:space="preserve">
-    <value>WebDAV URL</value>
+    <value>URL WebDAV</value>
   </data>
   <data name="LvWebDavUserName" xml:space="preserve">
-    <value>WebDAV felhasználónév</value>
+    <value>Nama pengguna WebDAV</value>
   </data>
   <data name="LvWebDavPassword" xml:space="preserve">
-    <value>WebDAV jelszó</value>
+    <value>Kata sandi WebDAV</value>
   </data>
   <data name="LvWebDavCheck" xml:space="preserve">
-    <value>WebDAV ellenőrzés</value>
+    <value>Periksa WebDAV</value>
   </data>
   <data name="LvWebDavDirName" xml:space="preserve">
-    <value>Távoli mappa neve (opcionális)</value>
+    <value>Nama folder remote (opsional)</value>
   </data>
   <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
-    <value>Érvénytelen biztonsági mentés fájl</value>
+    <value>File cadangan tidak valid</value>
   </data>
   <data name="ConnectionsHostFilterTitle" xml:space="preserve">
-    <value>Host szűrő</value>
+    <value>Filter host</value>
   </data>
   <data name="TipActiveServer" xml:space="preserve">
-    <value>Aktív</value>
+    <value>Aktif</value>
   </data>
   <data name="TbSettingsGeoFilesSource" xml:space="preserve">
-    <value>Geo fájlok forrása (opcionális)</value>
+    <value>Sumber file Geo (opsional)</value>
   </data>
   <data name="TbSettingsSrsFilesSource" xml:space="preserve">
-    <value>sing-box szabálykészlet fájlok forrása (opcionális)</value>
+    <value>Sumber file ruleset sing-box (opsional)</value>
   </data>
   <data name="UpgradeAppNotExistTip" xml:space="preserve">
-    <value>Frissítő alkalmazás nem létezik</value>
+    <value>Aplikasi pembaruan tidak ditemukan</value>
   </data>
   <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
-    <value>Útválasztási szabályok forrása (opcionális)</value>
+    <value>Sumber aturan routing (opsional)</value>
   </data>
   <data name="menuRegionalPresets" xml:space="preserve">
-    <value>Regionális előbeállítások</value>
+    <value>Pengaturan preset regional</value>
   </data>
   <data name="menuRegionalPresetsDefault" xml:space="preserve">
-    <value>Alapértelmezett</value>
+    <value>Default</value>
   </data>
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
-    <value>Oroszország</value>
+    <value>Rusia</value>
   </data>
   <data name="menuRegionalPresetsIran" xml:space="preserve">
-    <value>Irán</value>
+    <value>Iran</value>
   </data>
   <data name="TbSettingsChinaUserTip" xml:space="preserve">
-    <value>Kínai régióban lévő felhasználók figyelmen kívül hagyhatják ezt az elemet</value>
+    <value>Pengguna di wilayah Tiongkok dapat mengabaikan item ini</value>
   </data>
   <data name="menuAddServerViaImage" xml:space="preserve">
-    <value>QR kód beolvasása a képből</value>
+    <value>Pindai kode QR dari gambar</value>
   </data>
   <data name="InvalidUrlTip" xml:space="preserve">
-    <value>Érvénytelen cím (URL)</value>
+    <value>Alamat (URL) tidak valid</value>
   </data>
   <data name="InsecureUrlProtocol" xml:space="preserve">
-    <value>Kérjük, ne használjon nem biztonságos HTTP protokoll előfizetési címet</value>
+    <value>Jangan gunakan alamat langganan dengan protokol HTTP yang tidak aman</value>
   </data>
   <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
-    <value>Telepítse a betűtípust a rendszerbe, válassza ki vagy töltse ki a betűtípus nevét, indítsa újra a beállításokat</value>
+    <value>Instal font ke sistem, pilih atau isi nama font, mulai ulang pengaturan</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
-    <value>Biztosan ki akar lépni?</value>
+    <value>Yakin ingin keluar?</value>
   </data>
   <data name="LvMemo" xml:space="preserve">
-    <value>Megjegyzések</value>
+    <value>Catatan</value>
   </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
-    <value>Rendszer sudo jelszó</value>
+    <value>Kata sandi sudo sistem</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>A jelszót a parancssoron keresztül ellenőrizzük. Ha egy érvényesítési hiba miatt az alkalmazás hibásan működik, indítsa újra az alkalmazást. A jelszó nem kerül tárolásra, és minden újraindítás után újra meg kell adni.</value>
+    <value>Kata sandi akan divalidasi melalui baris perintah. Jika kesalahan validasi menyebabkan aplikasi bermasalah, mulai ulang aplikasi. Kata sandi tidak disimpan dan harus dimasukkan lagi setelah setiap mulai ulang.</value>
   </data>
   <data name="TransportHeaderType5" xml:space="preserve">
-    <value>xhttp mód</value>
+    <value>Mode xhttp</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>Raw JSON, format: { XHTTP Object }</value>
+    <value>JSON mentah, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
-    <value>Ablak bezárásakor a tálcára rejtés</value>
+    <value>Sembunyikan ke tray saat menutup jendela</value>
   </data>
   <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
-    <value>A párhuzamos tesztek száma több teszt során</value>
+    <value>Jumlah pengujian bersamaan saat uji multi</value>
   </data>
   <data name="TbSettingsExceptionTip2" xml:space="preserve">
-    <value>Kivételek: Ne használjon proxy szervert a következő címekhez. Vesszővel (,) válassza el a bejegyzéseket.</value>
+    <value>Pengecualian: jangan gunakan server proxy untuk alamat berikut. Pisahkan dengan koma (,).</value>
   </data>
   <data name="TbSettingsDestOverride" xml:space="preserve">
-    <value>Sniffing típus</value>
+    <value>Tipe Sniffing</value>
   </data>
   <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
-    <value>Második vegyes port engedélyezése</value>
+    <value>Aktifkan Mixed Port kedua</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks: helyi port, socks2: második helyi port, socks3: LAN port</value>
+    <value>tun: inbound TUN, socks: port lokal, socks2: port lokal kedua, socks3: port LAN</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
-    <value>Téma</value>
+    <value>Tema</value>
   </data>
   <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
-    <value>Proxy parancs másolása vágólapra</value>
+    <value>Salin perintah proxy ke papan klip</value>
   </data>
   <data name="SpeedtestingTestFailedPart" xml:space="preserve">
-    <value>Sikertelen részek újratesztelése elindult, {0} maradt. ESC megnyomásával megszakítható...</value>
+    <value>Memulai pengujian ulang bagian yang gagal, tersisa {0}. Tekan ESC untuk menghentikan...</value>
   </data>
   <data name="menuTestServerResult" xml:space="preserve">
-    <value>Teszt eredmény szerint</value>
+    <value>Berdasarkan hasil uji</value>
   </data>
   <data name="menuRemoveInvalidServerResult" xml:space="preserve">
-    <value>Érvénytelenek eltávolítása teszteredmények alapján</value>
+    <value>Hapus tidak valid berdasarkan hasil uji</value>
   </data>
   <data name="RemoveInvalidServerResultTip" xml:space="preserve">
-    <value>Eltávolítva {0} érvénytelen teszteredmény.</value>
+    <value>Menghapus {0} hasil uji yang tidak valid.</value>
   </data>
   <data name="TbPorts7" xml:space="preserve">
-    <value>Konfigurációs port tartomány</value>
+    <value>Rentang port konfigurasi</value>
   </data>
   <data name="TbPorts7Tips" xml:space="preserve">
-    <value>A portot lefedi, vesszővel (,) elválasztva</value>
+    <value>Akan menimpa port. Pisahkan dengan koma (,).</value>
   </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>Konfiguráció exportálása</value>
+    <value>Ekspor</value>
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
-    <value>Aktuális kapcsolat info teszt URL</value>
+    <value>URL uji info koneksi saat ini</value>
   </data>
   <data name="TbRuleOutboundTagTip" xml:space="preserve">
-    <value>Kitöltheti a konfigurációs megjegyzéseket, kérjük, győződjön meg róla, hogy létezik és egyedi</value>
+    <value>Dapat diisi dengan keterangan konfigurasi. Pastikan nilainya ada dan unik.</value>
   </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
-    <value>Helytelen jelszó, próbálja újra.</value>
+    <value>Kata sandi salah, silakan coba lagi.</value>
   </data>
   <data name="TbMldsa65Verify" xml:space="preserve">
     <value>Mldsa65Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
-    <value>[Anytls] konfiguráció hozzáadása</value>
+    <value>Tambah [Anytls]</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
-    <value>Remote DNS</value>
+    <value>DNS remote</value>
   </data>
   <data name="TbDomesticDNS" xml:space="preserve">
-    <value>Domestic DNS</value>
+    <value>DNS domestik</value>
   </data>
   <data name="TbDirectResolveStrategy" xml:space="preserve">
-    <value>Direct Target Resolution Strategy</value>
+    <value>Strategi resolusi target langsung</value>
   </data>
   <data name="TbRemoteResolveStrategy" xml:space="preserve">
-    <value>Proxy Target Resolution Strategy</value>
+    <value>Strategi resolusi target proxy</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
-    <value>Add Common DNS Hosts</value>
+    <value>Tambah DNS Hosts umum</value>
   </data>
   <data name="TbFakeIP" xml:space="preserve">
     <value>FakeIP</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
-    <value>Block SVCB and HTTPS Queries</value>
+    <value>Blokir kueri SVCB dan HTTPS</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS Hosts: ("domain1 ip1 ip2" per line)</value>
+    <value>DNS Hosts: ("domain1 ip1 ip2" per baris)</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
-    <value>Basic DNS Settings</value>
+    <value>Pengaturan DNS dasar</value>
   </data>
   <data name="ThAdvancedDNSSettings" xml:space="preserve">
-    <value>Advanced DNS Settings</value>
+    <value>Pengaturan DNS lanjutan</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>Validate Regional Domain IPs</value>
+    <value>Validasi IP domain regional</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn - geoip:cn), returning only expected IPs</value>
+    <value>Jika dikonfigurasi, memvalidasi IP yang dikembalikan untuk domain regional (mis. geosite:cn - geoip:cn) dan hanya mengembalikan IP yang diharapkan</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
-    <value>Enable Custom DNS</value>
+    <value>Aktifkan DNS kustom</value>
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
-    <value>Custom DNS Enabled, This Page's Settings Invalid</value>
+    <value>DNS kustom diaktifkan, pengaturan halaman ini tidak berlaku</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Block ECH and HTTP/3 availability checks when enabled</value>
+    <value>Blokir pemeriksaan ketersediaan ECH dan HTTP/3 saat diaktifkan</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
-    <value>Please fill in the correct config template</value>
+    <value>Isi template konfigurasi yang benar</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>Full Config Template Setting</value>
+    <value>Pengaturan template konfigurasi lengkap</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>Enable Full Config Template</value>
+    <value>Aktifkan template konfigurasi lengkap</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
-    <value>v2ray Full Config Template</value>
+    <value>Template konfigurasi lengkap v2ray</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound Config Only, routing.balancers and routing.rules.outboundTag, Click to view the document</value>
+    <value>Hanya menambahkan konfigurasi Outbound, routing.balancers, dan routing.rules.outboundTag. Klik untuk melihat dokumentasi</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>Do Not Add Non-Proxy Protocol Outbound</value>
+    <value>Jangan tambahkan Outbound protokol non-proxy</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>Set Upstream Proxy Tag</value>
+    <value>Atur tag proxy upstream</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
-    <value>sing-box Full Config Template</value>
+    <value>Template konfigurasi lengkap sing-box</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>Add Outbound and Endpoint Config Only, Click to view the document</value>
+    <value>Hanya menambahkan konfigurasi Outbound dan Endpoint. Klik untuk melihat dokumentasi</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>This feature is intended for advanced users and those with special requirements. Once enabled, it will ignore the Core's basic settings, DNS settings, and routing settings. You must ensure that the system proxy port, traffic statistics, and other related configurations are set correctly — everything will be configured by you.</value>
+    <value>Fitur ini ditujukan untuk pengguna lanjutan dan kebutuhan khusus. Setelah diaktifkan, pengaturan dasar Core, DNS, dan routing diabaikan. Pastikan port proxy sistem, statistik lalu lintas, dan konfigurasi terkait diatur dengan benar — semuanya menjadi tanggung jawab Anda.</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
-    <value>Start parsing and processing subscription content</value>
+    <value>Mulai mengurai dan memproses konten langganan</value>
   </data>
   <data name="TbSelectProfile" xml:space="preserve">
-    <value>Select Profile</value>
+    <value>Pilih profil</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
+    <value>Berlaku secara global secara default, dengan filter FakeIP bawaan (hanya sing-box).</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
-    <value>Please Add At Least One Configuration</value>
+    <value>Silakan tambahkan setidaknya satu konfigurasi.</value>
   </data>
   <data name="TbConfigTypePolicyGroup" xml:space="preserve">
     <value>Policy Group</value>
@@ -1474,199 +1474,202 @@
     <value>Proxy Chain</value>
   </data>
   <data name="TbLeastPing" xml:space="preserve">
-    <value>Lowest Latency</value>
+    <value>Latensi terendah</value>
   </data>
   <data name="TbRandom" xml:space="preserve">
-    <value>Random</value>
+    <value>Acak</value>
   </data>
   <data name="TbRoundRobin" xml:space="preserve">
     <value>Round Robin</value>
   </data>
   <data name="TbLeastLoad" xml:space="preserve">
-    <value>Most Stable</value>
+    <value>Paling stabil</value>
   </data>
   <data name="TbPolicyGroupType" xml:space="preserve">
-    <value>Policy Group Type</value>
+    <value>Tipe Policy Group</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>Add Policy Group Configuration</value>
+    <value>Tambah Policy Group</value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>Add Proxy Chain Configuration</value>
+    <value>Tambah Proxy Chain</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>Add Child Configuration</value>
+    <value>Tambah sub-konfigurasi</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>Remove Child Configuration</value>
+    <value>Hapus sub-konfigurasi</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Configuration item 1, Auto add from subscription group</value>
+    <value>Item konfigurasi 1, tambah otomatis dari grup langganan</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
-    <value>Fallback</value>
+    <value>Failover (Fallback)</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
-    <value>Core '{0}' does not support network type '{1}'</value>
+    <value>Core '{0}' tidak mendukung tipe jaringan '{1}'</value>
   </data>
   <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'</value>
+    <value>Core '{0}' tidak mendukung protokol '{1}' saat menggunakan transport '{2}'</value>
   </data>
   <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}'</value>
+    <value>Core '{0}' tidak mendukung protokol '{1}'</value>
   </data>
   <data name="MsgInvalidProperty" xml:space="preserve">
-    <value>The {0} property is invalid, please check</value>
+    <value>Properti {0} tidak valid, silakan periksa</value>
   </data>
   <data name="MsgNotSupportProtocol" xml:space="preserve">
-    <value>Not support protocol '{0}'</value>
+    <value>Protokol '{0}' tidak didukung</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
-    <value>If the system does not have a tray function, please do not enable it</value>
+    <value>Jika sistem tidak memiliki fungsi system tray, jangan aktifkan opsi ini.</value>
   </data>
   <data name="TbRuleTypeTips" xml:space="preserve">
-    <value>You can set separate rules for Routing and DNS, or select "ALL" to apply to both</value>
+    <value>Anda dapat menetapkan aturan terpisah untuk Routing dan DNS, atau pilih "ALL" untuk menerapkan ke keduanya</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
-    <value>Rule Type</value>
+    <value>Tipe aturan</value>
   </data>
   <data name="TbBootstrapDNS" xml:space="preserve">
     <value>Bootstrap DNS</value>
   </data>
   <data name="TbBootstrapDNSTips" xml:space="preserve">
-    <value>Resolve DNS server domains, requires IP</value>
+    <value>Untuk me-resolve domain server DNS, diperlukan alamat IP.</value>
   </data>
   <data name="menuFastRealPing" xml:space="preserve">
-    <value>Test real delay</value>
+    <value>Uji latensi nyata</value>
   </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
-    <value>Auto add filtered configuration from subscription groups</value>
+    <value>Tambahkan otomatis konfigurasi yang difilter dari grup langganan</value>
   </data>
   <data name="TbCertPinning" xml:space="preserve">
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Pinned certificate (fill in either one)
-When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
+    <value>Sertifikat yang dipin (isi salah satu)
+Jika ditentukan, sertifikat akan dipin, dan opsi "Lewati verifikasi sertifikat (allowInsecure)" akan dinonaktifkan.
 
-The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
+Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan atau sistem memiliki CA yang tidak tepercaya.</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
-    <value>Fetch Certificate</value>
+    <value>Ambil sertifikat</value>
   </data>
   <data name="TbFetchCertChain" xml:space="preserve">
-    <value>Fetch Certificate Chain</value>
+    <value>Ambil rantai sertifikat</value>
   </data>
   <data name="ServerNameMustBeValidDomain" xml:space="preserve">
-    <value>Please set a valid domain</value>
+    <value>Tetapkan domain yang valid</value>
   </data>
   <data name="CertNotSet" xml:space="preserve">
-    <value>Certificate not set</value>
+    <value>Sertifikat belum diatur</value>
   </data>
   <data name="CertSet" xml:space="preserve">
-    <value>Certificate set</value>
+    <value>Sertifikat sudah diatur</value>
   </data>
   <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
-    <value>Custom PAC file path</value>
+    <value>Path file PAC kustom</value>
   </data>
   <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
-    <value>Custom system proxy script file path</value>
+    <value>Path file skrip proxy sistem kustom</value>
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
-    <value>macOS displays this in the Dock (requires restart)</value>
+    <value>macOS menampilkan ini di Dock (perlu mulai ulang)</value>
   </data>
   <data name="menuServerList2" xml:space="preserve">
-    <value>Configuration Item 2, Select and add from self-built</value>
+    <value>Item konfigurasi 2, pilih dan tambah dari konfigurasi buatan sendiri</value>
   </data>
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Verifikasi sertifikat peer berdasarkan nama</value>
+  </data>
   <data name="TbFullCertTips" xml:space="preserve">
-    <value>Full certificate (chain), PEM format</value>
+    <value>Sertifikat lengkap (rantai), format PEM</value>
   </data>
   <data name="TbCertSha256Tips" xml:space="preserve">
-    <value>Certificate fingerprint (SHA-256)</value>
+    <value>Sidik jari sertifikat (SHA-256)</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
-    <value>Serve Stale</value>
+    <value>Kirim entri kedaluwarsa (Serve Stale)</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>Parallel Query</value>
+    <value>Kueri paralel (Parallel Query)</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution</value>
+    <value>Secara default, hanya dipanggil saat routing untuk keperluan resolusi.</value>
   </data>
   <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+    <value>Secara default, hanya dipanggil saat routing untuk keperluan resolusi. Pastikan server remote dapat mengakses DNS ini.</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+    <value>Jika tidak diatur atau bernilai "AsIs", resolusi DNS memakai DNS sistem; jika tidak, modul DNS internal yang digunakan.</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+    <value>Jika tidak diatur atau bernilai "AsIs", resolusi DNS dilakukan oleh DNS server remote; jika tidak, modul DNS internal yang digunakan.</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
-    <value>Port hopping interval</value>
+    <value>Interval port hopping</value>
   </data>
   <data name="menuServerListPreview" xml:space="preserve">
-    <value>Configuration item preview</value>
+    <value>Pratinjau item konfigurasi</value>
   </data>
   <data name="TbFinalmask" xml:space="preserve">
     <value>Finalmask</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+    <value>Peringatan pada node outbound {1} di aturan routing {0}: {2}</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+    <value>Kesalahan pada node outbound {1} di aturan routing {0}: {2}. Beralih ke node proxy saja.</value>
   </data>
   <data name="MsgGroupCycleDependency" xml:space="preserve">
-    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+    <value>Grup {0} memiliki ketergantungan siklus pada node turunan {1}. Node ini dilewati.</value>
   </data>
   <data name="MsgGroupChildNodeWarning" xml:space="preserve">
-    <value>Group {0} child node {1} warning: {2}</value>
+    <value>Peringatan pada node turunan {1} di grup {0}: {2}</value>
   </data>
   <data name="MsgGroupChildNodeError" xml:space="preserve">
-    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+    <value>Kesalahan pada node turunan {1} di grup {0}: {2}. Node ini dilewati.</value>
   </data>
   <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
-    <value>Group {0} child group node {1} warning: {2}</value>
+    <value>Peringatan pada node grup turunan {1} di grup {0}: {2}</value>
   </data>
   <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
-    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+    <value>Kesalahan pada node grup turunan {1} di grup {0}: {2}. Node ini dilewati.</value>
   </data>
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
-    <value>Group {0} has no valid child node.</value>
+    <value>Grup {0} tidak memiliki node turunan yang valid.</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
-    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+    <value>Aturan routing {0} memiliki tag outbound kosong. Beralih ke node proxy saja.</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
-    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+    <value>Node outbound {1} di aturan routing {0} tidak ditemukan. Beralih ke node proxy saja.</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
-    <value>Subscription previous proxy {0} not found. Skipping.</value>
+    <value>Proxy sebelumnya {0} pada langganan tidak ditemukan. Dilewati.</value>
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
-    <value>Subscription next proxy {0} not found. Skipping.</value>
+    <value>Proxy berikutnya {0} pada langganan tidak ditemukan. Dilewati.</value>
   </data>
   <data name="menuGenGroupServer" xml:space="preserve">
-    <value>Generate Policy Group</value>
+    <value>Buat Policy Group</value>
   </data>
   <data name="menuAllServers" xml:space="preserve">
-    <value>All configurations</value>
+    <value>Semua konfigurasi</value>
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
-    <value>Group by Region</value>
+    <value>Grup berdasarkan wilayah</value>
   </data>
   <data name="menuEditCopy" xml:space="preserve">
-    <value>Másolás</value>
+    <value>Salin</value>
   </data>
   <data name="menuEditSelectAll" xml:space="preserve">
-    <value>Összes kijelölése</value>
+    <value>Pilih semua</value>
   </data>
   <data name="menuEditPaste" xml:space="preserve">
-    <value>Paste</value>
+    <value>Tempel</value>
   </data>
   <data name="menuEditFormat" xml:space="preserve">
     <value>Format</value>
@@ -1675,22 +1678,22 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>UDP over TCP</value>
   </data>
   <data name="menuAddNaiveServer" xml:space="preserve">
-    <value>[NaïveProxy] konfiguráció hozzáadása</value>
+    <value>Tambah [NaïveProxy]</value>
   </data>
   <data name="TbInsecureConcurrency" xml:space="preserve">
     <value>Insecure Concurrency</value>
   </data>
   <data name="TbUsername" xml:space="preserve">
-    <value>Username</value>
+    <value>Nama pengguna</value>
   </data>
   <data name="TbIcmpRoutingPolicy" xml:space="preserve">
-    <value>ICMP routing policy</value>
+    <value>Kebijakan routing ICMP</value>
   </data>
   <data name="TbLegacyProtect" xml:space="preserve">
     <value>Legacy TUN Protect</value>
   </data>
   <data name="TbCamouflageDomain" xml:space="preserve">
-    <value>Álcázási tartomány</value>
+    <value>Domain kamuflase</value>
   </data>
   <data name="TbHost" xml:space="preserve">
     <value>Host</value>
@@ -1698,46 +1701,73 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TransportExtra" xml:space="preserve">
     <value>XHTTP Extra</value>
   </data>
+  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
+    <value>Izinkan pengambilan sertifikat tidak aman (self-signed)</value>
+  </data>
+  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
+    <value>Hanya untuk mengambil sertifikat self-signed. Fitur ini dapat mengekspos Anda pada risiko MITM.</value>
+  </data>
   <data name="menuUdpTestServer" xml:space="preserve">
-    <value>Test Configurations UDP Delay</value>
+    <value>Uji latensi UDP konfigurasi</value>
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
-    <value>UDP Test Url</value>
+    <value>URL uji UDP</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
-    <value>Local outbound address (SendThrough)</value>
+    <value>Alamat outbound lokal (SendThrough)</value>
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+    <value>Untuk lingkungan multi-antarmuka, masukkan alamat IPv4 mesin lokal.</value>
   </data>
   <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Please fill in the correct IPv4 address for SendThrough.</value>
+    <value>Isi alamat IPv4 yang benar untuk SendThrough.</value>
   </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>Bind Interface</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>For multi-interface environments, enter the name of the interface to bind. Only effective on Windows systems or TUN mode</value>
+    <value>Untuk lingkungan multi-antarmuka, masukkan nama antarmuka yang akan diikat. Hanya berlaku di Windows atau mode TUN.</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>PreSharedKey</value>
   </data>
   <data name="menuExport2InnerUri" xml:space="preserve">
-    <value>Export v2rayN Internal Share Link to Clipboard</value>
+    <value>Ekspor tautan berbagi internal v2rayN ke papan klip</value>
   </data>
   <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
-    <value>{0} has a new version available: {1}</value>
+    <value>{0} memiliki versi baru: {1}</value>
   </data>
   <data name="menuCheckOnly" xml:space="preserve">
-    <value>Only Check</value>
+    <value>Hanya periksa</value>
   </data>
   <data name="MsgNotSupport" xml:space="preserve">
-    <value>Not Support</value>
+    <value>Tidak didukung</value>
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
-    <value>IP Info</value>
+    <value>Info IP</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
-    <value>New Update</value>
+    <value>Pembaruan baru</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Peringatan: Xray akan menonaktifkan allowInsecure (lewati verifikasi sertifikat) pada Agustus 2026. Silakan beralih ke pinnedPeerCertSha256 (sidik jari sertifikat tetap) sesegera mungkin. allowInsecure tidak dapat digunakan setelah masa berlakunya berakhir.</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Alamat pengecualian rute</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Pisahkan dengan koma (,).</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>Alamat tidak valid dalam daftar pengecualian rute TUN: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>Konflik antara {0} dan {1}</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Aktifkan Final Fragment</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Memecah bagian akhir paket menjadi fragmen yang lebih kecil. Hal ini dapat memengaruhi throughput dan latensi.</value>
   </data>
 </root>

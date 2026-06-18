@@ -67,6 +67,9 @@
 		<EmbeddedResource Update="Resx\ResUI.hu.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
+        <EmbeddedResource Update="Resx\ResUI.id.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resx\ResUI.resx">
 			<SubType>Designer</SubType>
 			<LastGenOutput>ResUI.Designer.cs</LastGenOutput>
