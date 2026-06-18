@@ -361,7 +361,7 @@ public partial class ProfilesView
     {
         try
         {
-            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+            var lvColumnItem = GetMainColumnItemsForRestore();
             var displayIndex = 0;
             foreach (var item in lvColumnItem)
             {
@@ -394,6 +394,46 @@ public partial class ProfilesView
         {
             Logging.SaveLog(_tag, ex);
         }
+    }
+
+    private static List<ColumnItem> GetMainColumnItemsForRestore()
+    {
+        var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+        if (lvColumnItem.Count == 0)
+        {
+            return lvColumnItem;
+        }
+
+        var ipInfoIndex = FindColumnIndex(lvColumnItem, "IpInfo");
+        if (ipInfoIndex < 0)
+        {
+            lvColumnItem.Insert(0, new() { Name = "IpInfo", Width = 100, Index = 0 });
+            return lvColumnItem;
+        }
+
+        if (ShouldPromoteIpInfoColumn(lvColumnItem, ipInfoIndex))
+        {
+            var ipInfoItem = lvColumnItem[ipInfoIndex];
+            lvColumnItem.RemoveAt(ipInfoIndex);
+            lvColumnItem.Insert(0, ipInfoItem);
+        }
+
+        return lvColumnItem;
+    }
+
+    private static bool ShouldPromoteIpInfoColumn(List<ColumnItem> lvColumnItem, int ipInfoIndex)
+    {
+        var speedValIndex = FindColumnIndex(lvColumnItem, "SpeedVal");
+        var todayUpIndex = FindColumnIndex(lvColumnItem, "TodayUp");
+
+        return ipInfoIndex > 0
+               && ((speedValIndex >= 0 && ipInfoIndex == speedValIndex + 1)
+                   || (todayUpIndex >= 0 && ipInfoIndex == todayUpIndex + 1));
+    }
+
+    private static int FindColumnIndex(List<ColumnItem> lvColumnItem, string name)
+    {
+        return lvColumnItem.FindIndex(t => t.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
     }
 
     private void StorageUI()

@@ -280,6 +280,13 @@
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <base:MyDGTextColumn
+                        x:Name="colIpInfo"
+                        Width="100"
+                        Binding="{Binding IpInfo}"
+                        ExName="IpInfo"
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}" />
+
+                    <base:MyDGTextColumn
                         Width="80"
                         Binding="{Binding ConfigType}"
                         ExName="ConfigType"
@@ -345,13 +352,6 @@
                         Binding="{Binding TodayUp}"
                         ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
-
-                    <base:MyDGTextColumn
-                        x:Name="colIpInfo"
-                        Width="100"
-                        Binding="{Binding IpInfo}"
-                        ExName="IpInfo"
-                        Header="{x:Static resx:ResUI.LvTestIpInfo}" />
 
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"
