@@ -1,0 +1,1773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>Berhasil mengekspor tautan berbagi ke papan klip</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Konfigurasi tidak valid, silakan periksa atau pilih ulang</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value>Format konfigurasi tidak valid.</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Perhatian: konfigurasi kustom sepenuhnya bergantung pada pengaturan Anda sendiri dan tidak berlaku untuk semua fitur. Jika ingin menggunakan proxy sistem, ubah port listening secara manual.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Mengunduh...</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Gagal mengonversi file konfigurasi</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Gagal membuat file konfigurasi default</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value>Gagal mendapatkan konfigurasi default</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Gagal mengimpor konfigurasi kustom</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Gagal membaca file konfigurasi</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Masukkan format port yang benar.</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Masukkan port listening lokal.</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Masukkan kata sandi.</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Masukkan alamat.</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>Masukkan UUID.</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value>Konfigurasi tidak benar, silakan periksa</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>Konfigurasi Awal</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} {1} sudah versi terbaru.</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} {1} sudah versi terbaru.</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Alamat</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Keamanan</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Tipe</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Grup langganan</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Lalu lintas unduh hari ini</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Lalu lintas unggah hari ini</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Total lalu lintas unduh</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Total lalu lintas unggah</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Core berhasil diunduh</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Gagal mengimpor konten langganan</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Berhasil mendapatkan konten langganan</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>Tidak ada langganan yang valid</value>
+  </data>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>Berhasil memproses {0}</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Mulai mengambil langganan</value>
+  </data>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>Mulai memperbarui {0}...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Konten langganan tidak valid</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>Mengekstrak...</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Pembaruan langganan selesai</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Pembaruan langganan dimulai</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Core berhasil diperbarui</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>Core berhasil diperbarui! Memulai ulang layanan...</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>Bukan protokol VMess atau SS</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>File Core (nama file: {1}) tidak ditemukan di folder ({0}). Silakan unduh dan letakkan di folder tersebut. Alamat unduh: {2}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Pemindaian selesai, tidak ada kode QR yang valid</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Operasi gagal, silakan periksa dan coba lagi</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Silakan isi keterangan</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Silakan pilih metode enkripsi</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Silakan pilih protokol</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Silakan pilih konfigurasi terlebih dahulu</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Penghapusan duplikat konfigurasi selesai. Lama: {0}, Baru: {1}.</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Yakin ingin menghapus?</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>File konfigurasi klien disimpan di: {0}</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Memulai layanan ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Konfigurasi berhasil. {0}</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Konfigurasi kustom berhasil diimpor</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>{0} konfigurasi berhasil diimpor dari papan klip</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Berhasil memindai dan mengimpor tautan berbagi</value>
+  </data>
+  <data name="TestMeOutput" xml:space="preserve">
+    <value>Latensi: {0} ms, {1}</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operasi berhasil</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>Silakan pilih aturan</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>Yakin ingin menghapus aturan?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0}, salah satu kolom wajib diisi.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>Keterangan</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>URL (opsional)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Jumlah</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>Silakan masukkan URL</value>
+  </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Tambahkan aturan? Pilih Ya untuk menambahkan, Tidak untuk mengganti.</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>GeoFile: {0} berhasil diunduh</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>Informasi</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>Ikon kustom</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>Isi DNS kustom yang benar</value>
+  </data>
+  <data name="TransportPathTip1" xml:space="preserve">
+    <value>*path ws/http upgrade/xhttp</value>
+  </data>
+  <data name="TransportPathTip2" xml:space="preserve">
+    <value>*path h2</value>
+  </data>
+  <data name="TransportPathTip3" xml:space="preserve">
+    <value>*kunci QUIC/seed KCP</value>
+  </data>
+  <data name="TransportPathTip4" xml:space="preserve">
+    <value>nama layanan gRPC</value>
+  </data>
+  <data name="TransportRequestHostTip1" xml:space="preserve">
+    <value>*host http, pisahkan dengan koma (,)</value>
+  </data>
+  <data name="TransportRequestHostTip2" xml:space="preserve">
+    <value>*host ws/http upgrade/xhttp</value>
+  </data>
+  <data name="TransportRequestHostTip3" xml:space="preserve">
+    <value>*host h2, pisahkan dengan koma (,)</value>
+  </data>
+  <data name="TransportRequestHostTip4" xml:space="preserve">
+    <value>*keamanan QUIC</value>
+  </data>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>tipe kamuflase raw</value>
+  </data>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>tipe kamuflase kcp</value>
+  </data>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>tipe kamuflase QUIC</value>
+  </data>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>mode gRPC</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*seed kcp</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>Pendaftaran hotkey global {0} gagal, alasan: {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>Hotkey global {0} berhasil didaftarkan</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>Semua</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Silakan telusuri untuk mengimpor konfigurasi</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Menguji...</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>LAN</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Lokal</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Filter, tekan Enter untuk menjalankan</value>
+  </data>
+  <data name="menuCheckUpdate" xml:space="preserve">
+    <value>Periksa pembaruan</value>
+  </data>
+  <data name="menuClose" xml:space="preserve">
+    <value>Tutup</value>
+  </data>
+  <data name="menuExit" xml:space="preserve">
+    <value>Keluar</value>
+  </data>
+  <data name="menuGlobalHotkeySetting" xml:space="preserve">
+    <value>Pengaturan hotkey global</value>
+  </data>
+  <data name="menuHelp" xml:space="preserve">
+    <value>Bantuan</value>
+  </data>
+  <data name="menuOptionSetting" xml:space="preserve">
+    <value>Pengaturan opsi</value>
+  </data>
+  <data name="menuPromotion" xml:space="preserve">
+    <value>Promosi</value>
+  </data>
+  <data name="menuReload" xml:space="preserve">
+    <value>Muat ulang layanan</value>
+  </data>
+  <data name="menuRoutingSetting" xml:space="preserve">
+    <value>Pengaturan routing</value>
+  </data>
+  <data name="menuServers" xml:space="preserve">
+    <value>Konfigurasi</value>
+  </data>
+  <data name="menuSetting" xml:space="preserve">
+    <value>Pengaturan</value>
+  </data>
+  <data name="menuSubGroupUpdate" xml:space="preserve">
+    <value>Perbarui langganan saat ini (tanpa proxy)</value>
+  </data>
+  <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
+    <value>Perbarui langganan saat ini (melalui proxy)</value>
+  </data>
+  <data name="menuSubscription" xml:space="preserve">
+    <value>Grup langganan</value>
+  </data>
+  <data name="menuSubSetting" xml:space="preserve">
+    <value>Pengaturan grup langganan</value>
+  </data>
+  <data name="menuSubUpdate" xml:space="preserve">
+    <value>Perbarui semua langganan (tanpa proxy)</value>
+  </data>
+  <data name="menuSubUpdateViaProxy" xml:space="preserve">
+    <value>Perbarui semua langganan (melalui proxy)</value>
+  </data>
+  <data name="menuSystemproxy" xml:space="preserve">
+    <value>Proxy sistem</value>
+  </data>
+  <data name="menuSystemProxyClear" xml:space="preserve">
+    <value>Hapus proxy sistem</value>
+  </data>
+  <data name="menuSystemProxyNothing" xml:space="preserve">
+    <value>Jangan ubah proxy sistem</value>
+  </data>
+  <data name="menuSystemProxyPac" xml:space="preserve">
+    <value>Mode PAC</value>
+  </data>
+  <data name="menuSystemProxySet" xml:space="preserve">
+    <value>Atur proxy sistem</value>
+  </data>
+  <data name="TbSettingsColor" xml:space="preserve">
+    <value>Warna</value>
+  </data>
+  <data name="TbSettingsLanguage" xml:space="preserve">
+    <value>Bahasa (perlu mulai ulang)</value>
+  </data>
+  <data name="menuAddServerViaClipboard" xml:space="preserve">
+    <value>Impor tautan berbagi dari papan klip</value>
+  </data>
+  <data name="menuAddServerViaScan" xml:space="preserve">
+    <value>Pindai kode QR di layar</value>
+  </data>
+  <data name="menuCopyServer" xml:space="preserve">
+    <value>Gandakan yang dipilih</value>
+  </data>
+  <data name="menuRemoveDuplicateServer" xml:space="preserve">
+    <value>Hapus duplikat</value>
+  </data>
+  <data name="menuRemoveServer" xml:space="preserve">
+    <value>Hapus yang dipilih</value>
+  </data>
+  <data name="menuSetDefaultServer" xml:space="preserve">
+    <value>Tetapkan sebagai aktif</value>
+  </data>
+  <data name="menuClearServerStatistics" xml:space="preserve">
+    <value>Hapus semua statistik layanan</value>
+  </data>
+  <data name="menuRealPingServer" xml:space="preserve">
+    <value>Uji latensi nyata</value>
+  </data>
+  <data name="menuSortServerResult" xml:space="preserve">
+    <value>Urutkan berdasarkan hasil uji</value>
+  </data>
+  <data name="menuSpeedServer" xml:space="preserve">
+    <value>Uji kecepatan unduh</value>
+  </data>
+  <data name="menuTcpingServer" xml:space="preserve">
+    <value>Uji tcping</value>
+  </data>
+  <data name="menuExport2ClientConfig" xml:space="preserve">
+    <value>Ekspor yang dipilih sebagai konfigurasi lengkap</value>
+  </data>
+  <data name="menuExport2ShareUrl" xml:space="preserve">
+    <value>Ekspor tautan berbagi ke papan klip</value>
+  </data>
+  <data name="menuAddCustomServer" xml:space="preserve">
+    <value>Tambah konfigurasi kustom</value>
+  </data>
+  <data name="menuAddShadowsocksServer" xml:space="preserve">
+    <value>Tambah [Shadowsocks]</value>
+  </data>
+  <data name="menuAddSocksServer" xml:space="preserve">
+    <value>Tambah [SOCKS]</value>
+  </data>
+  <data name="menuAddTrojanServer" xml:space="preserve">
+    <value>Tambah [Trojan]</value>
+  </data>
+  <data name="menuAddVlessServer" xml:space="preserve">
+    <value>Tambah [VLESS]</value>
+  </data>
+  <data name="menuAddVmessServer" xml:space="preserve">
+    <value>Tambah [VMess]</value>
+  </data>
+  <data name="menuSelectAll" xml:space="preserve">
+    <value>Pilih semua</value>
+  </data>
+  <data name="menuMsgViewClear" xml:space="preserve">
+    <value>Hapus semua</value>
+  </data>
+  <data name="menuMsgViewCopy" xml:space="preserve">
+    <value>Salin</value>
+  </data>
+  <data name="menuMsgViewCopyAll" xml:space="preserve">
+    <value>Salin semua</value>
+  </data>
+  <data name="menuMsgViewSelectAll" xml:space="preserve">
+    <value>Pilih semua</value>
+  </data>
+  <data name="menuSubAdd" xml:space="preserve">
+    <value>Tambah</value>
+  </data>
+  <data name="menuSubDelete" xml:space="preserve">
+    <value>Hapus</value>
+  </data>
+  <data name="menuSubEdit" xml:space="preserve">
+    <value>Ubah</value>
+  </data>
+  <data name="menuSubShare" xml:space="preserve">
+    <value>Bagikan</value>
+  </data>
+  <data name="LvEnabled" xml:space="preserve">
+    <value>Aktifkan pembaruan</value>
+  </data>
+  <data name="LvSort" xml:space="preserve">
+    <value>Urutan</value>
+  </data>
+  <data name="LvUserAgent" xml:space="preserve">
+    <value>User Agent</value>
+  </data>
+  <data name="TbCancel" xml:space="preserve">
+    <value>Batal</value>
+  </data>
+  <data name="TbConfirm" xml:space="preserve">
+    <value>Konfirmasi</value>
+  </data>
+  <data name="GbTransport" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="TbAddress" xml:space="preserve">
+    <value>Alamat</value>
+  </data>
+  <data name="TbAllowInsecure" xml:space="preserve">
+    <value>Lewati verifikasi sertifikat (allowInsecure)</value>
+  </data>
+  <data name="TbAlpn" xml:space="preserve">
+    <value>ALPN</value>
+  </data>
+  <data name="TbAlterId" xml:space="preserve">
+    <value>Alter ID</value>
+  </data>
+  <data name="TbFingerprint" xml:space="preserve">
+    <value>Sidik jari</value>
+  </data>
+  <data name="TbHeaderType" xml:space="preserve">
+    <value>Tipe kamuflase</value>
+  </data>
+  <data name="TbId" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbNetwork" xml:space="preserve">
+    <value>Protokol transport (network)</value>
+  </data>
+  <data name="TbPath" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="TbPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="TbRemarks" xml:space="preserve">
+    <value>Alias (keterangan)</value>
+  </data>
+  <data name="TbSecurity" xml:space="preserve">
+    <value>Metode enkripsi (security)</value>
+  </data>
+  <data name="TbSNI" xml:space="preserve">
+    <value>SNI</value>
+  </data>
+  <data name="TbStreamSecurity" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TipNetwork" xml:space="preserve">
+    <value>*Nilai default raw</value>
+  </data>
+  <data name="TbCoreType" xml:space="preserve">
+    <value>Tipe Core</value>
+  </data>
+  <data name="TbFlow5" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="TbGUID" xml:space="preserve">
+    <value>Buat</value>
+  </data>
+  <data name="TbId3" xml:space="preserve">
+    <value>Kata sandi</value>
+  </data>
+  <data name="TbId4" xml:space="preserve">
+    <value>Kata sandi (opsional)</value>
+  </data>
+  <data name="TbId5" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbSecurity3" xml:space="preserve">
+    <value>Enkripsi</value>
+  </data>
+  <data name="TbSecurity4" xml:space="preserve">
+    <value>Pengguna (opsional)</value>
+  </data>
+  <data name="TbSecurity5" xml:space="preserve">
+    <value>Enkripsi</value>
+  </data>
+  <data name="TbPreSocksPort" xml:space="preserve">
+    <value>Port Socks</value>
+  </data>
+  <data name="TipPreSocksPort" xml:space="preserve">
+    <value>* Setelah diatur, layanan socks akan dijalankan melalui Xray/sing-box (Tun) untuk fungsi seperti tampilan kecepatan</value>
+  </data>
+  <data name="TbBrowse" xml:space="preserve">
+    <value>Telusuri</value>
+  </data>
+  <data name="TbEdit" xml:space="preserve">
+    <value>Ubah</value>
+  </data>
+  <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
+    <value>Pengaturan proxy lanjutan, pemilihan protokol (opsional)</value>
+  </data>
+  <data name="TbSettingsAllowLAN" xml:space="preserve">
+    <value>Izinkan koneksi dari LAN</value>
+  </data>
+  <data name="TbSettingsAutoHideStartup" xml:space="preserve">
+    <value>Sembunyikan otomatis saat startup</value>
+  </data>
+  <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
+    <value>Interval pembaruan otomatis file Geo (jam)</value>
+  </data>
+  <data name="TbSettingsCore" xml:space="preserve">
+    <value>Core: pengaturan dasar</value>
+  </data>
+  <data name="TbCustomDnsRay" xml:space="preserve">
+    <value>DNS kustom V2ray</value>
+  </data>
+  <data name="TbSettingsCoreKcp" xml:space="preserve">
+    <value>Core: pengaturan KCP</value>
+  </data>
+  <data name="TbSettingsCoreType" xml:space="preserve">
+    <value>Pengaturan tipe Core</value>
+  </data>
+  <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
+    <value>Lewati verifikasi sertifikat (allowInsecure)</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
+    <value>Strategi domain Outbound Freedom</value>
+  </data>
+  <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
+    <value>Sesuaikan lebar kolom otomatis setelah pembaruan langganan</value>
+  </data>
+  <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
+    <value>Periksa versi pra-rilis</value>
+  </data>
+  <data name="TbSettingsException" xml:space="preserve">
+    <value>Pengecualian</value>
+  </data>
+  <data name="TbSettingsExceptionTip" xml:space="preserve">
+    <value>Pengecualian: jangan gunakan server proxy untuk alamat yang cocok dengan entri berikut. Pisahkan dengan titik koma (;).</value>
+  </data>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Tampilkan kecepatan waktu nyata (perlu mulai ulang)</value>
+  </data>
+  <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
+    <value>Pertahankan entri lama saat deduplikasi</value>
+  </data>
+  <data name="TbSettingsLogEnabled" xml:space="preserve">
+    <value>Aktifkan log</value>
+  </data>
+  <data name="TbSettingsLogLevel" xml:space="preserve">
+    <value>Level log</value>
+  </data>
+  <data name="TbSettingsMuxEnabled" xml:space="preserve">
+    <value>Aktifkan Mux Multiplexing</value>
+  </data>
+  <data name="TbSettingsN" xml:space="preserve">
+    <value>Pengaturan v2rayN</value>
+  </data>
+  <data name="TbSettingsPass" xml:space="preserve">
+    <value>Kata sandi autentikasi</value>
+  </data>
+  <data name="TbSettingsSetUWP" xml:space="preserve">
+    <value>Atur UWP Loopback Win10</value>
+  </data>
+  <data name="TbSettingsSniffingEnabled" xml:space="preserve">
+    <value>Aktifkan Sniffing</value>
+  </data>
+  <data name="TbSettingsSocksPort" xml:space="preserve">
+    <value>Mixed Port</value>
+  </data>
+  <data name="TbSettingsStartBoot" xml:space="preserve">
+    <value>Jalankan saat boot</value>
+  </data>
+  <data name="TbSettingsStatistics" xml:space="preserve">
+    <value>Aktifkan statistik lalu lintas (perlu mulai ulang)</value>
+  </data>
+  <data name="TbSettingsSubConvert" xml:space="preserve">
+    <value>URL konversi langganan</value>
+  </data>
+  <data name="TbSettingsSystemproxy" xml:space="preserve">
+    <value>Pengaturan proxy sistem</value>
+  </data>
+  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
+    <value>Batas item pada menu klik kanan tray</value>
+  </data>
+  <data name="TbSettingsUdpEnabled" xml:space="preserve">
+    <value>Aktifkan UDP</value>
+  </data>
+  <data name="TbSettingsUser" xml:space="preserve">
+    <value>Pengguna autentikasi</value>
+  </data>
+  <data name="TbClearSystemProxy" xml:space="preserve">
+    <value>Hapus proxy sistem</value>
+  </data>
+  <data name="TbDisplayGUI" xml:space="preserve">
+    <value>Tampilkan GUI</value>
+  </data>
+  <data name="TbGlobalHotkeySetting" xml:space="preserve">
+    <value>Pengaturan hotkey global</value>
+  </data>
+  <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
+    <value>Atur langsung dengan menekan keyboard; berlaku setelah mulai ulang</value>
+  </data>
+  <data name="TbNotChangeSystemProxy" xml:space="preserve">
+    <value>Jangan ubah proxy sistem</value>
+  </data>
+  <data name="TbReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="TbSetSystemProxy" xml:space="preserve">
+    <value>Atur proxy sistem</value>
+  </data>
+  <data name="TbSystemProxyPac" xml:space="preserve">
+    <value>Mode PAC</value>
+  </data>
+  <data name="menuShareServer" xml:space="preserve">
+    <value>Bagikan</value>
+  </data>
+  <data name="menuRouting" xml:space="preserve">
+    <value>Perutean</value>
+  </data>
+  <data name="NotRunAsAdmin" xml:space="preserve">
+    <value>Tidak dijalankan sebagai Admin</value>
+  </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>Jalankan sebagai Admin</value>
+  </data>
+  <data name="menuMoveBottom" xml:space="preserve">
+    <value>Pindah ke bawah</value>
+  </data>
+  <data name="menuMoveDown" xml:space="preserve">
+    <value>Geser ke bawah</value>
+  </data>
+  <data name="menuMoveTop" xml:space="preserve">
+    <value>Pindah ke atas</value>
+  </data>
+  <data name="menuMoveUp" xml:space="preserve">
+    <value>Geser ke atas</value>
+  </data>
+  <data name="MsgFilterTitle" xml:space="preserve">
+    <value>Filter, mendukung ekspresi reguler</value>
+  </data>
+  <data name="menuWebsiteItem" xml:space="preserve">
+    <value>Situs web {0}</value>
+  </data>
+  <data name="menuRoutingAdvancedAdd" xml:space="preserve">
+    <value>Tambah</value>
+  </data>
+  <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
+    <value>Impor aturan</value>
+  </data>
+  <data name="menuRoutingAdvancedRemove" xml:space="preserve">
+    <value>Hapus yang dipilih</value>
+  </data>
+  <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
+    <value>Tetapkan sebagai aturan aktif</value>
+  </data>
+  <data name="TbdomainStrategy" xml:space="preserve">
+    <value>Strategi domain</value>
+  </data>
+  <data name="TbRoutingTabRuleList" xml:space="preserve">
+    <value>Daftar aturan bawaan</value>
+  </data>
+  <data name="TbRoutingTips" xml:space="preserve">
+    <value>*Pisahkan aturan dengan koma (,); untuk koma literal gunakan &lt;COMMA&gt;; awali dengan # untuk mengabaikan aturan</value>
+  </data>
+  <data name="menuImportRulesFromClipboard" xml:space="preserve">
+    <value>Impor aturan dari papan klip</value>
+  </data>
+  <data name="menuImportRulesFromFile" xml:space="preserve">
+    <value>Impor aturan dari file</value>
+  </data>
+  <data name="menuImportRulesFromUrl" xml:space="preserve">
+    <value>Impor aturan dari URL langganan</value>
+  </data>
+  <data name="menuRoutingRuleSetting" xml:space="preserve">
+    <value>Pengaturan aturan</value>
+  </data>
+  <data name="menuRuleAdd" xml:space="preserve">
+    <value>Tambah aturan</value>
+  </data>
+  <data name="menuRuleExportSelected" xml:space="preserve">
+    <value>Ekspor aturan yang dipilih</value>
+  </data>
+  <data name="menuRuleList" xml:space="preserve">
+    <value>Daftar aturan</value>
+  </data>
+  <data name="menuRuleRemove" xml:space="preserve">
+    <value>Hapus aturan</value>
+  </data>
+  <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
+    <value>Pengaturan detail aturan routing</value>
+  </data>
+  <data name="TbAutoSort" xml:space="preserve">
+    <value>Domain, IP, proses diurutkan otomatis saat menyimpan</value>
+  </data>
+  <data name="TbRuleobjectDoc" xml:space="preserve">
+    <value>Dokumentasi objek aturan</value>
+  </data>
+  <data name="TbDnsObjectDoc" xml:space="preserve">
+    <value>Isi objek DNS; klik untuk melihat dokumentasi</value>
+  </data>
+  <data name="SubUrlTips" xml:space="preserve">
+    <value>Untuk grup, biarkan kosong di sini</value>
+  </data>
+  <data name="TipChangeRouting" xml:space="preserve">
+    <value>Pengaturan routing telah berubah</value>
+  </data>
+  <data name="TipChangeSystemProxy" xml:space="preserve">
+    <value>Pengaturan proxy sistem telah berubah</value>
+  </data>
+  <data name="TbSettingsRouteOnly" xml:space="preserve">
+    <value>Hanya routing (routeOnly)</value>
+  </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Jangan gunakan server proxy untuk alamat lokal (intranet)</value>
+  </data>
+  <data name="menuMixedTestServer" xml:space="preserve">
+    <value>Uji latensi dan kecepatan multi-thread sekali klik (Ctrl+E)</value>
+  </data>
+  <data name="LvTestDelay" xml:space="preserve">
+    <value>Latensi (ms)</value>
+  </data>
+  <data name="LvTestSpeed" xml:space="preserve">
+    <value>Kecepatan (MB/s)</value>
+  </data>
+  <data name="FailedToRunCore" xml:space="preserve">
+    <value>Gagal menjalankan Core, silakan periksa pesan yang ditampilkan</value>
+  </data>
+  <data name="LvFilter" xml:space="preserve">
+    <value>Filter keterangan (regex)</value>
+  </data>
+  <data name="TbDisplayLog" xml:space="preserve">
+    <value>Tampilkan log</value>
+  </data>
+  <data name="TbEnableTunAs" xml:space="preserve">
+    <value>Aktifkan Tun</value>
+  </data>
+  <data name="TbSettingsNewPort4LAN" xml:space="preserve">
+    <value>Port baru untuk LAN</value>
+  </data>
+  <data name="TbSettingsTunMode" xml:space="preserve">
+    <value>Pengaturan Tun Mode</value>
+  </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>Pindah ke grup</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>Aktifkan pengurutan konfigurasi dengan seret dan lepas (perlu mulai ulang)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>Muat ulang otomatis</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>Lewati pengujian</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>Ubah</value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>Klik ganda konfigurasi untuk mengaktifkan</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>Pengujian selesai</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>Sidik jari TLS default</value>
+  </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>User-Agent</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>Parameter ini hanya berlaku untuk raw/http, ws, gRPC, dan xhttp</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>Jenis huruf (perlu mulai ulang)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>Salin file font TTF/TTC ke folder gui Fonts, lalu buka kembali jendela pengaturan.</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>Port Pac = +3; Port API Xray = +4; Port API mihomo = +5;</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>Atur opsi ini dengan hak administrator; hak admin akan diperoleh setelah startup.</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>Ukuran huruf</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>Batas waktu tunggal uji kecepatan</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>URL uji kecepatan</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Geser naik/turun</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>Public Key</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>Short Id</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>Spider X</value>
+  </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Aktifkan akselerasi perangkat keras (perlu mulai ulang)</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Menunggu...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>Tekan ESC untuk menghentikan pengujian</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Matikan jika terjadi pemutusan tidak normal</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Pembaruan tidak diaktifkan, lewati langganan ini</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Mulai ulang sebagai Administrator</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>URL tambahan, pisahkan dengan koma; konversi langganan tidak berlaku</value>
+  </data>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Interval pembaruan otomatis (menit)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Aktifkan pencatatan log ke file</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Tipe target konversi</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Biarkan kosong jika konversi tidak diperlukan</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>Pengaturan DNS</value>
+  </data>
+  <data name="TbCustomDnsSingbox" xml:space="preserve">
+    <value>DNS kustom sing-box</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>Isi struktur DNS, klik untuk melihat dokumentasi</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Klik untuk mengimpor konfigurasi DNS default</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>Strategi domain sing-box</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>Protokol Mux sing-box</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Proses (Linux/Windows)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP atau IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>Tambah [Hysteria2]</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Bandwidth maks Hysteria (Unggah/Unduh)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Gunakan System Hosts</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>Tambah [TUIC]</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>Kontrol kemacetan</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Keterangan proxy sebelumnya</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Keterangan proxy berikutnya</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Pastikan keterangan konfigurasi ada dan unik.</value>
+  </data>
+  <data name="TbSettingsTunAutoRoute" xml:space="preserve">
+    <value>Auto Route</value>
+  </data>
+  <data name="TbSettingsTunStrictRoute" xml:space="preserve">
+    <value>Strict Route</value>
+  </data>
+  <data name="TbSettingsTunStack" xml:space="preserve">
+    <value>Stack</value>
+  </data>
+  <data name="TbMtu" xml:space="preserve">
+    <value>MTU</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>Aktifkan alamat IPv6</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>Tambah [WireGuard]</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>Private Key</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Reserved</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Alamat (IPv4, IPv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>Kata sandi obfs</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domain atau IP atau Nama Proses) dan Port dan Protokol dan Tag Inbound =&gt; Tag Outbound</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Gulir otomatis ke akhir</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>URL uji ping kecepatan</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>Menghentikan pengujian...</value>
+  </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>gRPC Authority</value>
+  </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>Tambah [HTTP]</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>Aktifkan fragment</value>
+  </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>Aktifkan file cache untuk sing-box (file ruleset)</value>
+  </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>Kustomisasi rule-set sing-box</value>
+  </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>Operasi berhasil. Silakan mulai ulang aplikasi melalui menu Pengaturan.</value>
+  </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Buka lokasi penyimpanan</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Pengurutan</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Chain</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Latensi</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Kecepatan unduh</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>Lalu lintas unduh</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>Nama</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>Jaringan</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>Waktu</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>Tipe</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>Kecepatan unggah</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>Lalu lintas unggah</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>Koneksi</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>Tutup koneksi</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>Tutup semua koneksi</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>Mode aturan</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Langsung</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>Jangan ubah</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>Aturan</value>
+  </data>
+  <data name="menuProxiesDelaytest" xml:space="preserve">
+    <value>Uji latensi</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Uji latensi sebagian node</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Muat ulang proxy</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Pilih node aktif</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Strategi domain default untuk outbound</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Orientasi tata letak utama (perlu mulai ulang)</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Alamat DNS outbound</value>
+  </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Penyesuaian lebar kolom otomatis</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Ekspor tautan berbagi Base64 ke papan klip</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Ekspor konfigurasi lengkap yang dipilih ke papan klip</value>
+  </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Tampilkan atau sembunyikan jendela utama</value>
+  </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>Port socks konfigurasi kustom</value>
+  </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Cadangkan dan pulihkan</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Cadangkan ke lokal</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Pulihkan dari lokal</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Cadangkan ke remote (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Pulihkan dari remote (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Lokal</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Remote (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>URL WebDAV</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>Nama pengguna WebDAV</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>Kata sandi WebDAV</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>Periksa WebDAV</value>
+  </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Nama folder remote (opsional)</value>
+  </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>File cadangan tidak valid</value>
+  </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>Filter host</value>
+  </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>Aktif</value>
+  </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Sumber file Geo (opsional)</value>
+  </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>Sumber file ruleset sing-box (opsional)</value>
+  </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>Aplikasi pembaruan tidak ditemukan</value>
+  </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Sumber aturan routing (opsional)</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Pengaturan preset regional</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Rusia</value>
+  </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>Iran</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Pengguna di wilayah Tiongkok dapat mengabaikan item ini</value>
+  </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>Pindai kode QR dari gambar</value>
+  </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>Alamat (URL) tidak valid</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>Jangan gunakan alamat langganan dengan protokol HTTP yang tidak aman</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
+    <value>Instal font ke sistem, pilih atau isi nama font, mulai ulang pengaturan</value>
+  </data>
+  <data name="menuExitTips" xml:space="preserve">
+    <value>Yakin ingin keluar?</value>
+  </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Catatan</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Kata sandi sudo sistem</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>Kata sandi akan divalidasi melalui baris perintah. Jika kesalahan validasi menyebabkan aplikasi bermasalah, mulai ulang aplikasi. Kata sandi tidak disimpan dan harus dimasukkan lagi setelah setiap mulai ulang.</value>
+  </data>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>Mode xhttp</value>
+  </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>JSON mentah, format: { XHTTP Object }</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>Sembunyikan ke tray saat menutup jendela</value>
+  </data>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>Jumlah pengujian bersamaan saat uji multi</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>Pengecualian: jangan gunakan server proxy untuk alamat berikut. Pisahkan dengan koma (,).</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Tipe Sniffing</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>Aktifkan Mixed Port kedua</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>tun: inbound TUN, socks: port lokal, socks2: port lokal kedua, socks3: port LAN</value>
+  </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Salin perintah proxy ke papan klip</value>
+  </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Memulai pengujian ulang bagian yang gagal, tersisa {0}. Tekan ESC untuk menghentikan...</value>
+  </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>Berdasarkan hasil uji</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Hapus tidak valid berdasarkan hasil uji</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>Menghapus {0} hasil uji yang tidak valid.</value>
+  </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Rentang port konfigurasi</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Akan menimpa port. Pisahkan dengan koma (,).</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>Ekspor</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>URL uji info koneksi saat ini</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Dapat diisi dengan keterangan konfigurasi. Pastikan nilainya ada dan unik.</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Kata sandi salah, silakan coba lagi.</value>
+  </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>Tambah [Anytls]</value>
+  </data>
+  <data name="TbRemoteDNS" xml:space="preserve">
+    <value>DNS remote</value>
+  </data>
+  <data name="TbDomesticDNS" xml:space="preserve">
+    <value>DNS domestik</value>
+  </data>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Strategi resolusi target langsung</value>
+  </data>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Strategi resolusi target proxy</value>
+  </data>
+  <data name="TbAddCommonDNSHosts" xml:space="preserve">
+    <value>Tambah DNS Hosts umum</value>
+  </data>
+  <data name="TbFakeIP" xml:space="preserve">
+    <value>FakeIP</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
+    <value>Blokir kueri SVCB dan HTTPS</value>
+  </data>
+  <data name="TbDNSHostsConfig" xml:space="preserve">
+    <value>DNS Hosts: ("domain1 ip1 ip2" per baris)</value>
+  </data>
+  <data name="ThBasicDNSSettings" xml:space="preserve">
+    <value>Pengaturan DNS dasar</value>
+  </data>
+  <data name="ThAdvancedDNSSettings" xml:space="preserve">
+    <value>Pengaturan DNS lanjutan</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
+    <value>Validasi IP domain regional</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
+    <value>Jika dikonfigurasi, memvalidasi IP yang dikembalikan untuk domain regional (mis. geosite:cn - geoip:cn) dan hanya mengembalikan IP yang diharapkan</value>
+  </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>Aktifkan DNS kustom</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>DNS kustom diaktifkan, pengaturan halaman ini tidak berlaku</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>Blokir pemeriksaan ketersediaan ECH dan HTTP/3 saat diaktifkan</value>
+  </data>
+  <data name="FillCorrectConfigTemplateText" xml:space="preserve">
+    <value>Isi template konfigurasi yang benar</value>
+  </data>
+  <data name="menuFullConfigTemplate" xml:space="preserve">
+    <value>Pengaturan template konfigurasi lengkap</value>
+  </data>
+  <data name="TbFullConfigTemplateEnable" xml:space="preserve">
+    <value>Aktifkan template konfigurasi lengkap</value>
+  </data>
+  <data name="TbRayFullConfigTemplate" xml:space="preserve">
+    <value>Template konfigurasi lengkap v2ray</value>
+  </data>
+  <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
+    <value>Hanya menambahkan konfigurasi Outbound, routing.balancers, dan routing.rules.outboundTag. Klik untuk melihat dokumentasi</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>Jangan tambahkan Outbound protokol non-proxy</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>Atur tag proxy upstream</value>
+  </data>
+  <data name="TbSBFullConfigTemplate" xml:space="preserve">
+    <value>Template konfigurasi lengkap sing-box</value>
+  </data>
+  <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
+    <value>Hanya menambahkan konfigurasi Outbound dan Endpoint. Klik untuk melihat dokumentasi</value>
+  </data>
+  <data name="TbFullConfigTemplateDesc" xml:space="preserve">
+    <value>Fitur ini ditujukan untuk pengguna lanjutan dan kebutuhan khusus. Setelah diaktifkan, pengaturan dasar Core, DNS, dan routing diabaikan. Pastikan port proxy sistem, statistik lalu lintas, dan konfigurasi terkait diatur dengan benar — semuanya menjadi tanggung jawab Anda.</value>
+  </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>Mulai mengurai dan memproses konten langganan</value>
+  </data>
+  <data name="TbSelectProfile" xml:space="preserve">
+    <value>Pilih profil</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>Berlaku secara global secara default, dengan filter FakeIP bawaan (hanya sing-box).</value>
+  </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>Silakan tambahkan setidaknya satu konfigurasi.</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>Policy Group</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>Proxy Chain</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>Latensi terendah</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>Acak</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>Round Robin</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>Paling stabil</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>Tipe Policy Group</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>Tambah Policy Group</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>Tambah Proxy Chain</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>Tambah sub-konfigurasi</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>Hapus sub-konfigurasi</value>
+  </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>Item konfigurasi 1, tambah otomatis dari grup langganan</value>
+  </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>Failover (Fallback)</value>
+  </data>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>Core '{0}' tidak mendukung tipe jaringan '{1}'</value>
+  </data>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Core '{0}' tidak mendukung protokol '{1}' saat menggunakan transport '{2}'</value>
+  </data>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>Core '{0}' tidak mendukung protokol '{1}'</value>
+  </data>
+  <data name="MsgInvalidProperty" xml:space="preserve">
+    <value>Properti {0} tidak valid, silakan periksa</value>
+  </data>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>Protokol '{0}' tidak didukung</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
+    <value>Jika sistem tidak memiliki fungsi system tray, jangan aktifkan opsi ini.</value>
+  </data>
+  <data name="TbRuleTypeTips" xml:space="preserve">
+    <value>Anda dapat menetapkan aturan terpisah untuk Routing dan DNS, atau pilih "ALL" untuk menerapkan ke keduanya</value>
+  </data>
+  <data name="TbRuleType" xml:space="preserve">
+    <value>Tipe aturan</value>
+  </data>
+  <data name="TbBootstrapDNS" xml:space="preserve">
+    <value>Bootstrap DNS</value>
+  </data>
+  <data name="TbBootstrapDNSTips" xml:space="preserve">
+    <value>Untuk me-resolve domain server DNS, diperlukan alamat IP.</value>
+  </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>Uji latensi nyata</value>
+  </data>
+  <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
+    <value>Tambahkan otomatis konfigurasi yang difilter dari grup langganan</value>
+  </data>
+  <data name="TbCertPinning" xml:space="preserve">
+    <value>Certificate Pinning</value>
+  </data>
+  <data name="TbCertPinningTips" xml:space="preserve">
+    <value>Sertifikat yang dipin (isi salah satu)
+Jika ditentukan, sertifikat akan dipin, dan opsi "Lewati verifikasi sertifikat (allowInsecure)" akan dinonaktifkan.
+
+Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan atau sistem memiliki CA yang tidak tepercaya.</value>
+  </data>
+  <data name="TbFetchCert" xml:space="preserve">
+    <value>Ambil sertifikat</value>
+  </data>
+  <data name="TbFetchCertChain" xml:space="preserve">
+    <value>Ambil rantai sertifikat</value>
+  </data>
+  <data name="ServerNameMustBeValidDomain" xml:space="preserve">
+    <value>Tetapkan domain yang valid</value>
+  </data>
+  <data name="CertNotSet" xml:space="preserve">
+    <value>Sertifikat belum diatur</value>
+  </data>
+  <data name="CertSet" xml:space="preserve">
+    <value>Sertifikat sudah diatur</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
+    <value>Path file PAC kustom</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
+    <value>Path file skrip proxy sistem kustom</value>
+  </data>
+  <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
+    <value>macOS menampilkan ini di Dock (perlu mulai ulang)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>Item konfigurasi 2, pilih dan tambah dari konfigurasi buatan sendiri</value>
+  </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Verifikasi sertifikat peer berdasarkan nama</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>Sertifikat lengkap (rantai), format PEM</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Sidik jari sertifikat (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Kirim entri kedaluwarsa (Serve Stale)</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Kueri paralel (Parallel Query)</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>Secara default, hanya dipanggil saat routing untuk keperluan resolusi.</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>Secara default, hanya dipanggil saat routing untuk keperluan resolusi. Pastikan server remote dapat mengakses DNS ini.</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>Jika tidak diatur atau bernilai "AsIs", resolusi DNS memakai DNS sistem; jika tidak, modul DNS internal yang digunakan.</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>Jika tidak diatur atau bernilai "AsIs", resolusi DNS dilakukan oleh DNS server remote; jika tidak, modul DNS internal yang digunakan.</value>
+  </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>Interval port hopping</value>
+  </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>Pratinjau item konfigurasi</value>
+  </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Peringatan pada node outbound {1} di aturan routing {0}: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Kesalahan pada node outbound {1} di aturan routing {0}: {2}. Beralih ke node proxy saja.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>Grup {0} memiliki ketergantungan siklus pada node turunan {1}. Node ini dilewati.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>Peringatan pada node turunan {1} di grup {0}: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>Kesalahan pada node turunan {1} di grup {0}: {2}. Node ini dilewati.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>Peringatan pada node grup turunan {1} di grup {0}: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>Kesalahan pada node grup turunan {1} di grup {0}: {2}. Node ini dilewati.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>Grup {0} tidak memiliki node turunan yang valid.</value>
+  </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>Aturan routing {0} memiliki tag outbound kosong. Beralih ke node proxy saja.</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>Node outbound {1} di aturan routing {0} tidak ditemukan. Beralih ke node proxy saja.</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>Proxy sebelumnya {0} pada langganan tidak ditemukan. Dilewati.</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>Proxy berikutnya {0} pada langganan tidak ditemukan. Dilewati.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Buat Policy Group</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>Semua konfigurasi</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Grup berdasarkan wilayah</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>Salin</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>Pilih semua</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Tempel</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>Tambah [NaïveProxy]</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Insecure Concurrency</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>Nama pengguna</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>Kebijakan routing ICMP</value>
+  </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>Legacy TUN Protect</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Domain kamuflase</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
+  </data>
+  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
+    <value>Izinkan pengambilan sertifikat tidak aman (self-signed)</value>
+  </data>
+  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
+    <value>Hanya untuk mengambil sertifikat self-signed. Fitur ini dapat mengekspos Anda pada risiko MITM.</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Uji latensi UDP konfigurasi</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>URL uji UDP</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Alamat outbound lokal (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Untuk lingkungan multi-antarmuka, masukkan alamat IPv4 mesin lokal.</value>
+  </data>
+  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
+    <value>Isi alamat IPv4 yang benar untuk SendThrough.</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bind Interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>Untuk lingkungan multi-antarmuka, masukkan nama antarmuka yang akan diikat. Hanya berlaku di Windows atau mode TUN.</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Ekspor tautan berbagi internal v2rayN ke papan klip</value>
+  </data>
+  <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
+    <value>{0} memiliki versi baru: {1}</value>
+  </data>
+  <data name="menuCheckOnly" xml:space="preserve">
+    <value>Hanya periksa</value>
+  </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>Tidak didukung</value>
+  </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>Info IP</value>
+  </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>Pembaruan baru</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Peringatan: Xray akan menonaktifkan allowInsecure (lewati verifikasi sertifikat) pada Agustus 2026. Silakan beralih ke pinnedPeerCertSha256 (sidik jari sertifikat tetap) sesegera mungkin. allowInsecure tidak dapat digunakan setelah masa berlakunya berakhir.</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Alamat pengecualian rute</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Pisahkan dengan koma (,).</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>Alamat tidak valid dalam daftar pengecualian rute TUN: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>Konflik antara {0} dan {1}</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Aktifkan Final Fragment</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Memecah bagian akhir paket menjadi fragmen yang lebih kecil. Hal ini dapat memengaruhi throughput dan latensi.</value>
+  </data>
+</root>
