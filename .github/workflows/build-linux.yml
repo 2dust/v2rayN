@@ -42,7 +42,7 @@ jobs:
         apt-get update
         apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with: { submodules: 'recursive', fetch-depth: '0' }
     - name: Ensure script permissions
       run: chmod 755 package-debian.sh
@@ -101,7 +101,7 @@ jobs:
         dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which
         dnf repolist | grep -i epel || true
     - name: Checkout repo (for scripts)
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with: { submodules: 'recursive', fetch-depth: '0' }
     - name: Ensure script permissions
       run: chmod 755 package-rhel.sh
