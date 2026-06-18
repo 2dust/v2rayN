@@ -256,6 +256,10 @@ public class ProfilesViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async indexId => await SetDefaultServer(indexId));
 
+        Observable.Interval(TimeSpan.FromMinutes(1))
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(_ => RefreshSubscriptionUpdateTimeText());
+
         #endregion AppEvents
 
         _ = Init();
@@ -408,6 +412,14 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedSub = (_config.SubIndexId.IsNotEmpty()
                         ? SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
                         : null) ?? SubItems.FirstOrDefault();
+    }
+
+    private void RefreshSubscriptionUpdateTimeText()
+    {
+        foreach (var item in SubItems)
+        {
+            item.RefreshUpdateTimeAgo();
+        }
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)

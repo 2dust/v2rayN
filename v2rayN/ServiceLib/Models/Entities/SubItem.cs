@@ -3,8 +3,11 @@ using System.Globalization;
 namespace ServiceLib.Models.Entities;
 
 [Serializable]
-public class SubItem
+public class SubItem : System.ComponentModel.INotifyPropertyChanged
 {
+    [field: NonSerialized]
+    public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+
     [PrimaryKey]
     public string Id { get; set; }
 
@@ -52,6 +55,17 @@ public class SubItem
 
     [Ignore]
     public string UpdateTimeAgo => FormatUpdateTimeAgo(UpdateTime);
+
+    public void RefreshUpdateTimeAgo()
+    {
+        OnPropertyChanged(nameof(UpdateTimeAgo));
+        OnPropertyChanged(nameof(RemarksWithUpdateTime));
+    }
+
+    private void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+    }
 
     public static string FormatUpdateTimeAgo(long updateTime, DateTimeOffset? now = null)
     {

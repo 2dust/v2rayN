@@ -41,6 +41,10 @@ public class SubSettingViewModel : MyReactiveObject
             await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
         }, canEditRemove);
 
+        Observable.Interval(TimeSpan.FromMinutes(1))
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(_ => RefreshSubscriptionUpdateTimeText());
+
         _ = Init();
     }
 
@@ -93,5 +97,13 @@ public class SubSettingViewModel : MyReactiveObject
         await RefreshSubItems();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         IsModified = true;
+    }
+
+    private void RefreshSubscriptionUpdateTimeText()
+    {
+        foreach (var item in SubItems)
+        {
+            item.RefreshUpdateTimeAgo();
+        }
     }
 }
