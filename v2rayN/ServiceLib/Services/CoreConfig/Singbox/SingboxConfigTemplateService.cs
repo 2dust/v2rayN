@@ -83,6 +83,11 @@ public partial class CoreConfigSingboxService
         {
             return;
         }
+        if (!Utils.IsLocalIP(sendThrough))
+        {
+            return;
+        }
+
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
             outbound.inet4_bind_address = ShouldBindNet(outbound) ? sendThrough : null;

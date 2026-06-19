@@ -176,6 +176,11 @@ public partial class CoreConfigV2rayService
         {
             return;
         }
+        if (!Utils.IsLocalIP(sendThrough))
+        {
+            return;
+        }
+
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
             outbound.sendThrough = ShouldBindNet(outbound) ? sendThrough : null;
