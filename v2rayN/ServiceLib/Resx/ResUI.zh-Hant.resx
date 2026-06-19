@@ -1761,4 +1761,13 @@
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
     <value>將封包末端拆分為更小的片段進行傳送，可能會影響吞吐量與延遲</value>
   </data>
+  <data name="TbEnableNetBridge" xml:space="preserve">
+    <value>啟用進程流量劫持（實驗性），類似 Proxifer 功能；可以和系統代理並存；和 TUN 模式衝突，請不要同時開啟；</value>
+  </data>
+  <data name="NetBridgeRuleTips" xml:space="preserve">
+    <value>需要代理程式的進程名，多個進程請用逗號分隔；不在清單中的進程也會被劫持，但是會直連</value>
+  </data>
+  <data name="menuNetBridge" xml:space="preserve">
+    <value>進程流量劫持（實驗性）</value>
+  </data>
 </root>
