@@ -35,6 +35,25 @@
                 TextWrapping="Wrap" />
         </StackPanel>
 
+        <StackPanel
+            Margin="{StaticResource Margin8}"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <ToggleButton
+                x:Name="togEnabletDnsViaProxy"
+                Margin="{StaticResource Margin8}"
+                HorizontalAlignment="Left" />
+
+            <TextBlock
+                Width="500"
+                Margin="{StaticResource Margin8}"
+                VerticalAlignment="Center"
+                Style="{StaticResource ToolbarTextBlock}"
+                Text="{x:Static resx:ResUI.TbEnabletDnsViaProxy}"
+                TextWrapping="Wrap" />
+        </StackPanel>
+
         <DockPanel>
             <StackPanel
                 Margin="{StaticResource Margin8}"
@@ -59,7 +78,7 @@
                 <Button
                     x:Name="btnSave"
                     Width="100"
-                    Content="{x:Static resx:ResUI.TbConfirm}"
+                    Content="{x:Static resx:ResUI.TbSaveNetBridgeRule}"
                     IsDefault="True"
                     Style="{StaticResource DefButton}" />
             </StackPanel>

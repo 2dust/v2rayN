@@ -1765,12 +1765,18 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Split the tail of packets into smaller fragments. This may affect throughput and latency.</value>
   </data>
   <data name="TbEnableNetBridge" xml:space="preserve">
-    <value>Enables process traffic hijacking (experimental), similar to Proxifer; can coexist with system proxy; conflicts with TUN mode, please do not enable them simultaneously;</value>
+    <value>Enables process traffic hijacking (experimental), similar to Proxifer; can coexist with system proxy; conflicts with TUN mode, please do not enable them simultaneously;please allow v2rayN to use a private network in your firewall.</value>
   </data>
   <data name="NetBridgeRuleTips" xml:space="preserve">
     <value>The process names that need to be proxied; separate multiple processes with commas. Processes not in the list will also be hijacked, but will connect directly.</value>
   </data>
   <data name="menuNetBridge" xml:space="preserve">
     <value>Process traffic hijacking (experimental)</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>DNS via Bridge</value>
+  </data>
+  <data name="TbSaveNetBridgeRule" xml:space="preserve">
+    <value>Save rules</value>
   </data>
 </root>

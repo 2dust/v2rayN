@@ -166,6 +166,18 @@ public sealed class NetBridgeManager
         }
     }
 
+    public async Task<bool> SetDnsViaProxy(bool enable)
+    {
+        if (_netBridgeService == null)
+        {
+            return false;
+        }
+
+        _netBridgeService.SetDnsViaProxy(enable);
+
+        return await Task.FromResult(true);
+    }
+
     private async Task<bool> ApplyRoutesInternal()
     {
         if (_netBridgeService == null)
@@ -208,6 +220,11 @@ public sealed class NetBridgeManager
 
     private static List<NetBridgeRuleConfig> BuildRuleConfigs(string? ruleProcess)
     {
+        if (ruleProcess.IsNullOrEmpty())
+        {
+            return new();
+        }
+
         var processNames = Utils.String2List(Utils.Convert2Comma(ruleProcess));
         return processNames.Select(processName => new NetBridgeRuleConfig
         {

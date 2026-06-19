@@ -1762,12 +1762,18 @@
     <value>将数据包末端拆分为更小片段发送，可能影响吞吐与延迟。</value>
   </data>
   <data name="TbEnableNetBridge" xml:space="preserve">
-    <value>启用进程流量劫持（实验性），类似 Proxifer 功能；可以和系统代理并存；和 TUN 模式冲突，请不要同时开启；</value>
+    <value>启用进程流量劫持（实验性），类似 Proxifer 功能；可以和系统代理并存；和 TUN 模式冲突，请不要同时开启；请在防火墙中允许 v2rayN 使用专用网络</value>
   </data>
   <data name="NetBridgeRuleTips" xml:space="preserve">
     <value>需要代理的进程名，多个进程请用逗号分隔；不在列表中的进程也会被劫持，但是会直连</value>
   </data>
   <data name="menuNetBridge" xml:space="preserve">
     <value>进程流量劫持（实验性）</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>DNS 通过 Bridge</value>
+  </data>
+  <data name="TbSaveNetBridgeRule" xml:space="preserve">
+    <value>保存规则</value>
   </data>
 </root>

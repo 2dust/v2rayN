@@ -282,4 +282,5 @@ public class SimpleDNSItem
 public class NetBridgeItem
 {
     public string? RuleProcess { get; set; }
+    public bool EnableDnsViaProxy { get; set; }
 }

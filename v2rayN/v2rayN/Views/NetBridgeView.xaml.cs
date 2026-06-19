@@ -13,6 +13,7 @@ public partial class NetBridgeView
             this.BindCommand(ViewModel, vm => vm.SaveRulesCmd, v => v.btnSave).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.EnableNetBridge, v => v.togEnableNetBridge.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.EnabletDnsViaProxy, v => v.togEnabletDnsViaProxy.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RuleProcess, v => v.txtRuleProcess.Text).DisposeWith(disposables);
 
         });

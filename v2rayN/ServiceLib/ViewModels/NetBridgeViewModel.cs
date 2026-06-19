@@ -6,6 +6,9 @@ public class NetBridgeViewModel : MyReactiveObject
     public bool EnableNetBridge { get; set; }
 
     [Reactive]
+    public bool EnabletDnsViaProxy { get; set; }
+
+    [Reactive]
     public string RuleProcess { get; set; }
 
     public ReactiveCommand<Unit, Unit> SaveRulesCmd { get; }
@@ -27,22 +30,31 @@ public class NetBridgeViewModel : MyReactiveObject
                 await ToggleNetBridgeAsync(enabled);
             });
 
+        this.WhenAnyValue(x => x.EnabletDnsViaProxy)
+        .Skip(1)
+        .Subscribe(async enabled =>
+        {
+            await ToggleDnsViaProxyAsync(enabled);
+        });
+
         _ = Init();
     }
 
     private async Task Init()
     {
+        EnabletDnsViaProxy = _config.NetBridgeItem.EnableDnsViaProxy;
+
         _config.NetBridgeItem ??= new()
         {
             RuleProcess = string.Empty
         };
 
         EnableNetBridge = false;
-        RuleProcess = _config.NetBridgeItem.RuleProcess;
-        if (RuleProcess.IsNullOrEmpty())
+        if (_config.NetBridgeItem.RuleProcess.IsNullOrEmpty())
         {
-            RuleProcess = "Chrome.exe";
+            _config.NetBridgeItem.RuleProcess = "Chrome.exe";
         }
+        RuleProcess = _config.NetBridgeItem.RuleProcess;
 
         await Task.CompletedTask;
     }
@@ -58,6 +70,7 @@ public class NetBridgeViewModel : MyReactiveObject
             {
                 await NetBridgeManager.Instance.UpdateProxyConfig(Global.Loopback, AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
                 await NetBridgeManager.Instance.UpdateRoutes(RuleProcess);
+                await NetBridgeManager.Instance.SetDnsViaProxy(EnabletDnsViaProxy);
             }
             NoticeManager.Instance.Enqueue(succeed ? ResUI.OperationSuccess : ResUI.OperationFailed);
         }
@@ -66,6 +79,13 @@ public class NetBridgeViewModel : MyReactiveObject
             var succeed = await NetBridgeManager.Instance.Stop();
             NoticeManager.Instance.Enqueue(succeed ? ResUI.OperationSuccess : ResUI.OperationFailed);
         }
+    }
+
+    private async Task ToggleDnsViaProxyAsync(bool enabled)
+    {
+        _config.NetBridgeItem.EnableDnsViaProxy = enabled;
+
+        await NetBridgeManager.Instance.SetDnsViaProxy(enabled);
     }
 
     /// </summary>

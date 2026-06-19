@@ -3052,11 +3052,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Enables process traffic hijacking (experimental), similar to Proxifer; can coexist with system proxy; conflicts with TUN mode, please do not enable them simultaneously; 的本地化字符串。
+        ///   查找类似 Enables process traffic hijacking (experimental), similar to Proxifer; can coexist with system proxy; conflicts with TUN mode, please do not enable them simultaneously;please allow v2rayN to use a private network in your firewall. 的本地化字符串。
         /// </summary>
         public static string TbEnableNetBridge {
             get {
                 return ResourceManager.GetString("TbEnableNetBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DNS via Bridge 的本地化字符串。
+        /// </summary>
+        public static string TbEnabletDnsViaProxy {
+            get {
+                return ResourceManager.GetString("TbEnabletDnsViaProxy", resourceCulture);
             }
         }
         
@@ -3696,6 +3705,15 @@ namespace ServiceLib.Resx {
         public static string TbRuleTypeTips {
             get {
                 return ResourceManager.GetString("TbRuleTypeTips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save rules 的本地化字符串。
+        /// </summary>
+        public static string TbSaveNetBridgeRule {
+            get {
+                return ResourceManager.GetString("TbSaveNetBridgeRule", resourceCulture);
             }
         }
         
