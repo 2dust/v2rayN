@@ -26,6 +26,12 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int? HyDownMbps { get; set; }
     [Reactive] public bool EnableFragment { get; set; }
     [Reactive] public bool EnableFinalFragment { get; set; }
+    [Reactive] public string FragmentPackets { get; set; } = "tlshello";
+    [Reactive] public string FragmentLength { get; set; } = "50-100";
+    [Reactive] public string FragmentInterval { get; set; } = "10-20";
+    [Reactive] public string FragmentMaxSplit { get; set; } = "0";
+    [Reactive] public bool FragmentRecordFragment { get; set; } = false;
+    [Reactive] public string FragmentFallbackDelay { get; set; } = "500ms";
 
     #endregion Core
 
@@ -163,6 +169,12 @@ public class OptionSettingViewModel : MyReactiveObject
         HyDownMbps = _config.HysteriaItem.DownMbps;
         EnableFragment = _config.CoreBasicItem.EnableFragment;
         EnableFinalFragment = _config.CoreBasicItem.EnableFinalFragment;
+        FragmentPackets = _config.Fragment4RayItem?.Packets ?? "tlshello";
+        FragmentLength = _config.Fragment4RayItem?.Length ?? "50-100";
+        FragmentInterval = _config.Fragment4RayItem?.Interval ?? "10-20";
+        FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit ?? "0";
+        FragmentRecordFragment = _config.Fragment4RayItem?.RecordFragment ?? false;
+        FragmentFallbackDelay = _config.Fragment4RayItem?.FallbackDelay ?? "1000ms";
 
         #endregion Core
 
@@ -349,8 +361,34 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.EnableCacheFile4Sbox = EnableCacheFile4Sbox;
         _config.HysteriaItem.UpMbps = HyUpMbps ?? 0;
         _config.HysteriaItem.DownMbps = HyDownMbps ?? 0;
+        if (EnableFragment)
+        {
+            if (!Utils.TryParseRange(FragmentLength, 0, int.MaxValue, out _, out _))
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                return;
+            }
+            if (!Utils.TryParseRange(FragmentInterval, 1, 100, out _, out _))
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                return;
+            }
+            if (FragmentMaxSplit.IsNotEmpty()
+                && (!int.TryParse(FragmentMaxSplit, out var ms) || ms < 0 || ms > 10000))
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                return;
+            }
+        }
         _config.CoreBasicItem.EnableFragment = EnableFragment;
         _config.CoreBasicItem.EnableFinalFragment = EnableFinalFragment;
+        _config.Fragment4RayItem ??= new();
+        _config.Fragment4RayItem.Packets = FragmentPackets.NullIfEmpty() ?? "tlshello";
+        _config.Fragment4RayItem.Length = FragmentLength.NullIfEmpty() ?? "50-100";
+        _config.Fragment4RayItem.Interval = FragmentInterval.NullIfEmpty() ?? "10-20";
+        _config.Fragment4RayItem.MaxSplit = FragmentMaxSplit.NullIfEmpty() ?? "0";
+        _config.Fragment4RayItem.RecordFragment = FragmentRecordFragment;
+        _config.Fragment4RayItem.FallbackDelay = FragmentFallbackDelay.NullIfEmpty() ?? "500ms";
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;

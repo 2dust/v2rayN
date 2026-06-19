@@ -899,6 +899,7 @@ public partial class CoreConfigV2rayService
         var configPackets = _config.Fragment4RayItem?.Packets ?? "tlshello";
         var configLength = _config.Fragment4RayItem?.Length ?? "50-100";
         var configDelay = _config.Fragment4RayItem?.Interval ?? "10-20";
+        var configMaxSplit = _config.Fragment4RayItem?.MaxSplit ?? "0";
 
         var fragmentMask = new Mask4Ray
         {
@@ -908,6 +909,7 @@ public partial class CoreConfigV2rayService
                 packets = configPackets,
                 length = configLength,
                 delay = configDelay,
+                maxSplit = int.TryParse(configMaxSplit, out var ms) ? ms : null,
             }
         };
         var noiseMask = new Mask4Ray

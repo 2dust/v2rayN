@@ -395,7 +395,10 @@ public partial class CoreConfigSingboxService
             var tls = new Tls4Sbox()
             {
                 enabled = true,
-                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
+                record_fragment = _config.CoreBasicItem.EnableFragment
+                    ? _config.Fragment4RayItem?.RecordFragment : null,
+                fragment_fallback_delay = _config.CoreBasicItem.EnableFragment
+                    ? (_config.Fragment4RayItem?.FallbackDelay ?? "500ms") : null,
                 server_name = serverName,
                 insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),

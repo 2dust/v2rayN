@@ -38,7 +38,7 @@
                     <Grid
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="0"
@@ -300,20 +300,175 @@
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
 
+                        <!-- Fragment Settings (visible when EnableFragment is checked) -->
                         <TextBlock
                             Grid.Row="21"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}" />
+                        <ComboBox
+                            Grid.Row="21"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            SelectedItem="{Binding FragmentPackets, Mode=TwoWay}">
+                            <ComboBoxItem Content="tlshello" />
+                            <ComboBoxItem Content="1-1" />
+                            <ComboBoxItem Content="1-2" />
+                            <ComboBoxItem Content="1-3" />
+                            <ComboBoxItem Content="1-4" />
+                            <ComboBoxItem Content="1-5" />
+                        </ComboBox>
+                        <TextBlock
+                            Grid.Row="21"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentPacketsTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentLength}" />
+                        <TextBox
+                            Grid.Row="22"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            Watermark="50-100"
+                            Text="{Binding FragmentLength, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentLengthTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}" />
+                        <TextBox
+                            Grid.Row="23"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            Watermark="10-20"
+                            Text="{Binding FragmentInterval, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentIntervalTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="24"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentMaxSplit}" />
+                        <TextBox
+                            Grid.Row="24"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            Watermark="0"
+                            Text="{Binding FragmentMaxSplit, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="24"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentMaxSplitTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="25"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentRecordFragment}" />
+                        <ToggleSwitch
+                            Grid.Row="25"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            IsChecked="{Binding FragmentRecordFragment, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="25"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentRecordFragmentTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="26"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentFallbackDelay}" />
+                        <TextBox
+                            Grid.Row="26"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding EnableFragment}"
+                            Watermark="500ms"
+                            Text="{Binding FragmentFallbackDelay, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="26"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding EnableFragment}"
+                            Text="{x:Static resx:ResUI.TbSettingsFragmentFallbackDelayTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="27"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbEnableFinalFragment}" />
                         <ToggleSwitch
                             x:Name="togenableFinalFragment"
-                            Grid.Row="21"
+                            Grid.Row="27"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
                         <TextBlock
-                            Grid.Row="21"
+                            Grid.Row="27"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -321,19 +476,19 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="22"
+                            Grid.Row="28"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
                         <TextBox
                             x:Name="txtbindInterface"
-                            Grid.Row="22"
+                            Grid.Row="28"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}" />
                         <TextBlock
-                            Grid.Row="22"
+                            Grid.Row="28"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -341,20 +496,20 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="23"
+                            Grid.Row="29"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsSendThrough}" />
                         <TextBox
                             x:Name="txtsendThrough"
-                            Grid.Row="23"
+                            Grid.Row="29"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             Watermark="0.0.0.0" />
                         <TextBlock
-                            Grid.Row="23"
+                            Grid.Row="29"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"

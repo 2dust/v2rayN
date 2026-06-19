@@ -241,6 +241,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fragment parameter format error. Please check Length (e.g. 50-100), Interval (1-100 range), and MaxSplit (0-10000). 的本地化字符串。
+        /// </summary>
+        public static string FillFragmentParameterError {
+            get {
+                return ResourceManager.GetString("FillFragmentParameterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please enter the local listening port. 的本地化字符串。
         /// </summary>
         public static string FillLocalListeningPort {
@@ -4083,6 +4092,114 @@ namespace ServiceLib.Resx {
         public static string TbSettingsEnableFragment {
             get {
                 return ResourceManager.GetString("TbSettingsEnableFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fragment Length 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentLength {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fragment size range in bytes (e.g., 50-100). First value must be &lt;= second. Empty = default. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentLengthTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentLengthTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fragment Interval 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delay between fragments in ms (e.g., 10-20). Range 1-100. First value must be &lt;= second. Empty = default. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentIntervalTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentIntervalTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Max Split 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentMaxSplit {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentMaxSplit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Maximum number of splits (0 = unlimited, 0-10000). Only effective for Xray-core. Empty = default. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentMaxSplitTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentMaxSplitTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fragment Packets 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentPackets {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentPackets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Packets to fragment: tlshello (TLS ClientHello) or 1-1 to 1-5 (first N TCP packets) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentPacketsTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentPacketsTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Record Fragment 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentRecordFragment {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentRecordFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Record TLS fragment flag. Only effective for sing-box. Empty = default. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentRecordFragmentTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentRecordFragmentTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fallback Delay 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentFallbackDelay {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentFallbackDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fallback delay for TLS fragment. Only effective for sing-box. Empty = default. 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsFragmentFallbackDelayTip {
+            get {
+                return ResourceManager.GetString("TbSettingsFragmentFallbackDelayTip", resourceCulture);
             }
         }
         
