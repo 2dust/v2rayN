@@ -480,6 +480,12 @@
   <data name="menuCopyServer" xml:space="preserve">
     <value>سرور انتخاب شده را شبیه سازی کنید</value>
   </data>
+  <data name="menuCopyServerIp" xml:space="preserve">
+    <value>کپی IP</value>
+  </data>
+  <data name="NoServerIpToCopy" xml:space="preserve">
+    <value>اطلاعات IP برای کپی موجود نیست</value>
+  </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
     <value>سرورهای تکراری را حذف کنید</value>
   </data>

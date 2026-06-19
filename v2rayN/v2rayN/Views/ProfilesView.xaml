@@ -171,6 +171,10 @@
                             x:Name="menuSortServerResult"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                        <MenuItem
+                            x:Name="menuCopyServerIp"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuCopyServerIp}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuMoveToGroup"

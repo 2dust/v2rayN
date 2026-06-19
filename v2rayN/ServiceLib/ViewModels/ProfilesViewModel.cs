@@ -65,6 +65,7 @@ public class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
     public ReactiveCommand<Unit, Unit> RemoveInvalidServerResultCmd { get; }
     public ReactiveCommand<Unit, Unit> FastRealPingCmd { get; }
+    public ReactiveCommand<Unit, Unit> CopyServerIpCmd { get; }
 
     //servers export
     public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
@@ -196,6 +197,10 @@ public class ProfilesViewModel : MyReactiveObject
         {
             await RemoveInvalidServerResult();
         });
+        CopyServerIpCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await CopyServerIpAsync();
+        }, canEditRemove);
         //servers export
         Export2ClientConfigCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -874,6 +879,40 @@ public class ProfilesViewModel : MyReactiveObject
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
+
+    public async Task CopyServerIpAsync()
+    {
+        if (SelectedProfiles == null || SelectedProfiles.Count == 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
+            return;
+        }
+
+        var sb = new StringBuilder();
+        foreach (var profile in SelectedProfiles.OrderBy(t => t.Sort))
+        {
+            var ip = Utils.ExtractIpFromIpInfo(profile.IpInfo);
+            if (ip.IsNullOrEmpty())
+            {
+                continue;
+            }
+
+            if (sb.Length > 0)
+            {
+                sb.AppendLine();
+            }
+            sb.Append(ip);
+        }
+
+        if (sb.Length == 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.NoServerIpToCopy);
+            return;
+        }
+
+        await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+        NoticeManager.Instance.SendMessage(ResUI.OperationSuccess);
     }
 
     #endregion Add Servers

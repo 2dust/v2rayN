@@ -480,6 +480,12 @@
   <data name="menuCopyServer" xml:space="preserve">
     <value>Clone selected</value>
   </data>
+  <data name="menuCopyServerIp" xml:space="preserve">
+    <value>Copy IP</value>
+  </data>
+  <data name="NoServerIpToCopy" xml:space="preserve">
+    <value>No IP information available to copy</value>
+  </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
     <value>Remove duplicate</value>
   </data>

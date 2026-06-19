@@ -142,6 +142,7 @@
                             InputGesture="Ctrl+T" />
                         <MenuItem x:Name="menuUdpTestServer" Header="{x:Static resx:ResUI.menuUdpTestServer}" />
                         <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
+                        <MenuItem x:Name="menuCopyServerIp" Header="{x:Static resx:ResUI.menuCopyServerIp}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuMoveToGroup"

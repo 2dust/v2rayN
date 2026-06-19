@@ -480,6 +480,12 @@
   <data name="menuCopyServer" xml:space="preserve">
     <value>Kijelölt konfiguráció klónozása</value>
   </data>
+  <data name="menuCopyServerIp" xml:space="preserve">
+    <value>IP másolása</value>
+  </data>
+  <data name="NoServerIpToCopy" xml:space="preserve">
+    <value>Nincs másolható IP-információ</value>
+  </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
     <value>Ismétlődő konfigurációk eltávolítása</value>
   </data>

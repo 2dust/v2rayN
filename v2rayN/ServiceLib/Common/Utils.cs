@@ -564,6 +564,32 @@ public class Utils
         return address.AddressFamily == AddressFamily.InterNetworkV6;
     }
 
+    public static string? ExtractIpFromIpInfo(string? ipInfo)
+    {
+        if (ipInfo.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        ipInfo = ipInfo.Trim();
+        if (IsIpAddress(ipInfo))
+        {
+            return ipInfo;
+        }
+
+        var parts = ipInfo.Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries);
+        for (var i = parts.Length - 1; i >= 0; i--)
+        {
+            var part = parts[i].Trim('(', ')', '[', ']');
+            if (IsIpAddress(part))
+            {
+                return part;
+            }
+        }
+
+        return null;
+    }
+
     public static Uri? TryUri(string url)
     {
         try
