@@ -214,7 +214,13 @@ public partial class ProfilesView
         if (ViewModel != null)
         {
             ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
+            ViewModel.RefreshCopyServerIpCanExecute();
         }
+    }
+
+    private void LstProfiles_ContextMenu_Opened(object sender, RoutedEventArgs e)
+    {
+        ViewModel?.RefreshCopyServerIpCanExecute();
     }
 
     private void LstProfiles_LoadingRow(object? sender, DataGridRowEventArgs e)

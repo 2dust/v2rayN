@@ -481,7 +481,7 @@
     <value>Клонировать выбранное</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>Копировать IP</value>
+    <value>Копировать выбранные IP</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>Нет IP-информации для копирования</value>

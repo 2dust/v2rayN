@@ -481,7 +481,7 @@
     <value>克隆所选</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>复制 IP</value>
+    <value>复制所选 IP</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>没有可复制的 IP 信息，请先测试真实延迟</value>

@@ -119,7 +119,7 @@
                     <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Enter" />
                 </DataGrid.InputBindings>
                 <DataGrid.ContextMenu>
-                    <ContextMenu Style="{StaticResource DefContextMenu}">
+                    <ContextMenu Opened="LstProfiles_ContextMenu_Opened" Style="{StaticResource DefContextMenu}">
                         <MenuItem
                             x:Name="menuSetDefaultServer"
                             Height="{StaticResource MenuItemHeight}"

@@ -481,7 +481,7 @@
     <value>Clone selected</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>Copy IP</value>
+    <value>Copy selected IP</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>No IP information available to copy</value>

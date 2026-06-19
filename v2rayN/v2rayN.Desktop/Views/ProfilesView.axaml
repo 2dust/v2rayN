@@ -111,7 +111,7 @@
                     <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
                 </DataGrid.KeyBindings>
                 <DataGrid.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu Opening="LstProfiles_ContextMenu_Opening">
                         <MenuItem
                             x:Name="menuSetDefaultServer"
                             Header="{x:Static resx:ResUI.menuSetDefaultServer}"

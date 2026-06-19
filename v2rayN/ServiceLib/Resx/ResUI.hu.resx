@@ -481,7 +481,7 @@
     <value>Kijelölt konfiguráció klónozása</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>IP másolása</value>
+    <value>Kijelölt IP másolása</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>Nincs másolható IP-információ</value>

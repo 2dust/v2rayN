@@ -481,7 +481,7 @@
     <value>複製所選</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>複製 IP</value>
+    <value>複製所選 IP</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>沒有可複製的 IP 資訊，請先測試真實延遲</value>

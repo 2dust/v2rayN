@@ -232,7 +232,13 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         if (ViewModel != null)
         {
             ViewModel.SelectedProfiles = lstProfiles.SelectedItems.Cast<ProfileItemModel>().ToList();
+            ViewModel.RefreshCopyServerIpCanExecute();
         }
+    }
+
+    private void LstProfiles_ContextMenu_Opening(object? sender, EventArgs e)
+    {
+        ViewModel?.RefreshCopyServerIpCanExecute();
     }
 
     private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)

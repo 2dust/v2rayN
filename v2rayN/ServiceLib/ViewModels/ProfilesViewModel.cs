@@ -1,5 +1,7 @@
 namespace ServiceLib.ViewModels;
 
+using System.Reactive.Subjects;
+
 public class ProfilesViewModel : MyReactiveObject
 {
     #region private prop
@@ -9,6 +11,7 @@ public class ProfilesViewModel : MyReactiveObject
     private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
     private string? _pendingSelectIndexId;
+    private readonly Subject<Unit> _refreshCopyServerIpCanExecute = new();
 
     #endregion private prop
 
@@ -21,6 +24,7 @@ public class ProfilesViewModel : MyReactiveObject
     [Reactive]
     public ProfileItemModel SelectedProfile { get; set; }
 
+    [Reactive]
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
@@ -93,6 +97,14 @@ public class ProfilesViewModel : MyReactiveObject
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedProfile,
            selectedSource => selectedSource != null && !selectedSource.IndexId.IsNullOrEmpty());
+
+        var canCopyServerIp = Observable.Merge(
+            this.WhenAnyValue(x => x.SelectedProfile).Select(_ => Unit.Default),
+            this.WhenAnyValue(x => x.SelectedProfiles).Select(_ => Unit.Default),
+            _refreshCopyServerIpCanExecute)
+            .Select(_ => HasCopyableServerIp())
+            .CombineLatest(canEditRemove, (hasIp, canEdit) => hasIp && canEdit)
+            .DistinctUntilChanged();
 
         this.WhenAnyValue(
             x => x.SelectedSub,
@@ -200,7 +212,7 @@ public class ProfilesViewModel : MyReactiveObject
         CopyServerIpCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await CopyServerIpAsync();
-        }, canEditRemove);
+        }, canCopyServerIp);
         //servers export
         Export2ClientConfigCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -312,7 +324,26 @@ public class ProfilesViewModel : MyReactiveObject
         {
             item.IpInfo = result.IpInfo ?? string.Empty;
         }
+        RefreshCopyServerIpCanExecute();
         await Task.CompletedTask;
+    }
+
+    public void RefreshCopyServerIpCanExecute()
+    {
+        _refreshCopyServerIpCanExecute.OnNext(Unit.Default);
+    }
+
+    private bool HasCopyableServerIp()
+    {
+        var profiles = SelectedProfiles;
+        if (profiles != null && profiles.Count > 0)
+        {
+            return profiles.Any(p => Utils.ExtractIpFromIpInfo(p.IpInfo).IsNotEmpty());
+        }
+
+        return SelectedProfile != null
+            && !SelectedProfile.IndexId.IsNullOrEmpty()
+            && Utils.ExtractIpFromIpInfo(SelectedProfile.IpInfo).IsNotEmpty();
     }
 
     public async Task UpdateStatistics(ServerSpeedItem update)
@@ -885,7 +916,6 @@ public class ProfilesViewModel : MyReactiveObject
     {
         if (SelectedProfiles == null || SelectedProfiles.Count == 0)
         {
-            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
 
@@ -907,7 +937,6 @@ public class ProfilesViewModel : MyReactiveObject
 
         if (sb.Length == 0)
         {
-            NoticeManager.Instance.Enqueue(ResUI.NoServerIpToCopy);
             return;
         }
 

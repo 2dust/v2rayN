@@ -481,7 +481,7 @@
     <value>Gandakan yang dipilih</value>
   </data>
   <data name="menuCopyServerIp" xml:space="preserve">
-    <value>Salin IP</value>
+    <value>Salin IP yang dipilih</value>
   </data>
   <data name="NoServerIpToCopy" xml:space="preserve">
     <value>Tidak ada informasi IP yang dapat disalin</value>
