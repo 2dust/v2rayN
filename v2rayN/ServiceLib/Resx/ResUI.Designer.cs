@@ -223,15 +223,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please fill in the correct IPv4 address for SendThrough. 的本地化字符串。
-        /// </summary>
-        public static string FillCorrectSendThroughIPv4 {
-            get {
-                return ResourceManager.GetString("FillCorrectSendThroughIPv4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Please enter the correct port format. 的本地化字符串。
         /// </summary>
         public static string FillCorrectServerPort {
@@ -2073,6 +2064,15 @@ namespace ServiceLib.Resx {
         public static string MsgInformationTitle {
             get {
                 return ResourceManager.GetString("MsgInformationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks. 的本地化字符串。
+        /// </summary>
+        public static string MsgInsecureConfiguration {
+            get {
+                return ResourceManager.GetString("MsgInsecureConfiguration", resourceCulture);
             }
         }
         

@@ -728,6 +728,12 @@ public class Utils
                .Any(ua => ua.Address.Equals(targetAddress));
     }
 
+    public static bool ContainsInterfaceName(string inInterfaceName)
+    {
+        return NetworkInterface.GetAllNetworkInterfaces()
+            .Any(ni => ni.Name.Equals(inInterfaceName, StringComparison.OrdinalIgnoreCase));
+    }
+
     #endregion Speed Test
 
     #region Miscellaneous

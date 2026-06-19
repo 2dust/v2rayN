@@ -1707,9 +1707,6 @@
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>適用於多網路介面環境，請填寫本機 IPv4 位址</value>
   </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>請填寫正確的 SendThrough IPv4 位址。</value>
-  </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>綁定網路介面</value>
   </data>
