@@ -391,14 +391,8 @@
                                 <TextBlock Grid.Column="0" VerticalAlignment="Center" Style="{StaticResource ToolbarTextBlock}"
                                            Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}" />
                                 <ComboBox Grid.Column="1" Width="120" Margin="8,0,0,0" VerticalAlignment="Center"
-                                          SelectedItem="{Binding FragmentPackets, Mode=TwoWay}">
-                                    <ComboBoxItem Content="tlshello" />
-                                    <ComboBoxItem Content="1-1" />
-                                    <ComboBoxItem Content="1-2" />
-                                    <ComboBoxItem Content="1-3" />
-                                    <ComboBoxItem Content="1-4" />
-                                    <ComboBoxItem Content="1-5" />
-                                </ComboBox>
+                                          ItemsSource="{Binding FragmentPacketsOptions}"
+                                          SelectedItem="{Binding FragmentPackets, Mode=TwoWay}" />
                                 <TextBlock Grid.Column="2" VerticalAlignment="Center" Style="{StaticResource ToolbarTextBlock}"
                                            Text="{x:Static resx:ResUI.TbSettingsFragmentPacketsTip}" TextWrapping="Wrap" />
                             </Grid>
