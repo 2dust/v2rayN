@@ -1701,9 +1701,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Pour environnements multi-interfaces, entrez l'adresse IPv4 de la machine locale</value>
   </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Veuillez saisir l’adresse IPv4 correcte de SendThrough.</value>
-  </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>Lier l'interface</value>
   </data>

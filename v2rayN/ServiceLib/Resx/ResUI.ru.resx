@@ -1710,9 +1710,6 @@
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Для среды с несколькими сетевыми интерфейсами укажите IPv4-адрес локального компьютера</value>
   </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Укажите корректный IPv4-адрес для SendThrough.</value>
-  </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>Привязать интерфейс</value>
   </data>

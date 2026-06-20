@@ -1701,12 +1701,6 @@ Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan 
   <data name="TransportExtra" xml:space="preserve">
     <value>XHTTP Extra</value>
   </data>
-  <data name="TbAllowInsecureCertFetch" xml:space="preserve">
-    <value>Izinkan pengambilan sertifikat tidak aman (self-signed)</value>
-  </data>
-  <data name="TbAllowInsecureCertFetchTips" xml:space="preserve">
-    <value>Hanya untuk mengambil sertifikat self-signed. Fitur ini dapat mengekspos Anda pada risiko MITM.</value>
-  </data>
   <data name="menuUdpTestServer" xml:space="preserve">
     <value>Uji latensi UDP konfigurasi</value>
   </data>
@@ -1718,9 +1712,6 @@ Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan 
   </data>
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>Untuk lingkungan multi-antarmuka, masukkan alamat IPv4 mesin lokal.</value>
-  </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Isi alamat IPv4 yang benar untuk SendThrough.</value>
   </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>Bind Interface</value>

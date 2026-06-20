@@ -300,12 +300,6 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
-        var sendThroughValue = SendThrough.TrimEx();
-        if (sendThroughValue.IsNotEmpty() && !Utils.IsIpv4(sendThroughValue))
-        {
-            NoticeManager.Instance.Enqueue(ResUI.FillCorrectSendThroughIPv4);
-            return;
-        }
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort

@@ -1707,9 +1707,6 @@
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>用于多网口环境，请填写本机 IPv4 地址</value>
   </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>请填写正确的 SendThrough IPv4 地址。</value>
-  </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>绑定网口</value>
   </data>
@@ -1775,5 +1772,8 @@
   </data>
   <data name="TbSaveNetBridgeRule" xml:space="preserve">
     <value>保存规则</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>检测到不安全配置：AllowInsecure 已启用，但未提供证书。这可能会导致中间人攻击。</value>
   </data>
 </root>

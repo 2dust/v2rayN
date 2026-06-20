@@ -96,17 +96,39 @@ public class CoreConfigContextBuilder
         }
         if (context.IsTunEnabled && context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
         {
+            var appConfig = JsonUtils.DeepCopy(config);
+            var routeExcludeAddressList = new List<string>();
             foreach (var addr in context.AppConfig.TunModeItem.RouteExcludeAddress)
             {
                 try
                 {
                     IPNetwork2.Parse(addr);
+                    routeExcludeAddressList.Add(addr);
                 }
                 catch
                 {
-                    validatorResult.Errors.Add(string.Format(ResUI.MsgTunRouteExcludeInvalidAddress, addr));
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgTunRouteExcludeInvalidAddress, addr));
                 }
             }
+            appConfig.TunModeItem.RouteExcludeAddress = routeExcludeAddressList;
+            context = context with { AppConfig = appConfig };
+        }
+        if (!context.AppConfig.CoreBasicItem.SendThrough.IsNullOrEmpty()
+            && !Utils.IsLocalIP(context.AppConfig.CoreBasicItem.SendThrough))
+        {
+            validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsSendThrough));
+            var appConfig = JsonUtils.DeepCopy(config);
+            appConfig.CoreBasicItem.SendThrough = string.Empty;
+            context = context with { AppConfig = appConfig };
+        }
+        if (!context.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty()
+            && (!Utils.ContainsInterfaceName(context.AppConfig.CoreBasicItem.BindInterface)
+            || !(context.IsTunEnabled || context.IsWindows)))
+        {
+            validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
+            var appConfig = JsonUtils.DeepCopy(config);
+            appConfig.CoreBasicItem.BindInterface = string.Empty;
+            context = context with { AppConfig = appConfig };
         }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);

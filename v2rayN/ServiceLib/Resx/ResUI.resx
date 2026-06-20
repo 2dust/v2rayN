@@ -1713,9 +1713,6 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsSendThroughTip" xml:space="preserve">
     <value>For multi-interface environments, enter the local machine's IPv4 address</value>
   </data>
-  <data name="FillCorrectSendThroughIPv4" xml:space="preserve">
-    <value>Please fill in the correct IPv4 address for SendThrough.</value>
-  </data>
   <data name="TbSettingsBindInterface" xml:space="preserve">
     <value>Bind Interface</value>
   </data>
@@ -1778,5 +1775,8 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSaveNetBridgeRule" xml:space="preserve">
     <value>Save rules</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks.</value>
   </data>
 </root>

@@ -138,10 +138,6 @@ public partial class CoreConfigV2rayService
         {
             return;
         }
-        if (!(context.IsTunEnabled || context.IsWindows))
-        {
-            return;
-        }
         foreach (var outbound in _coreConfig.outbounds ?? [])
         {
             if (!ShouldBindNet(outbound))
@@ -173,10 +169,6 @@ public partial class CoreConfigV2rayService
     {
         var sendThrough = _config.CoreBasicItem.SendThrough?.TrimEx();
         if (sendThrough.IsNullOrEmpty())
-        {
-            return;
-        }
-        if (!Utils.IsLocalIP(sendThrough))
         {
             return;
         }
