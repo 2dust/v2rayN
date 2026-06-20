@@ -1104,6 +1104,39 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>فعال کردن فرگمنت</value>
   </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>پکت‌های فرگمنت</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>پکت‌های قابل فرگمنت: tlshello (TLS ClientHello) یا 1-1 تا 1-5 (N اول پکت TCP)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>طول فرگمنت</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>محدوده اندازه فرگمنت بایت (مثلا 50-100). اول ≤ دوم. خالی = پیش‌فرض.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>فاصله فرگمنت</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>تأخیر بین فرگمنت‌ها میلی‌ثانیه (مثلا 10-20). بازه 1-100. اول ≤ دوم. خالی = پیش‌فرض.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>حداکثر تقسیم</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>مکسیمم تعداد تقسیم (0 = نامحدود، 0-10000). فقط Xray-core. خالی = پیش‌فرض.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>تأخیر فول‌بک</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>تأخیر فول‌بک فرگمنت TLS. فقط sing-box. خالی = پیش‌فرض.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>فرمت محدوده نامعتبر. از 'from-to' استفاده کنید (مثلا 50-100).</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>فعال کردن کش فایل مجموعه قوانین برای sing-box</value>
   </data>

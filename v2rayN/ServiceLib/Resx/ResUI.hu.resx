@@ -1104,6 +1104,39 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Fragment engedélyezése</value>
   </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Fragmentált csomagok</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Fragmentálandó csomagok: tlshello (TLS ClientHello) vagy 1-1 – 1-5 (az első N TCP csomag)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Fragment hossz</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Fragment méret tartománya bájtokban (pl. 50-100). Az első érték ≤ második. Üres = alapértelmezett.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Fragment intervallum</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Késleltetés a fragmented csomagok között ms-ben (pl. 10-20). Tartomány 1-100. Az első érték ≤ második. Üres = alapértelmezett.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Max darabolás</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Maximális darabolások száma (0 = korlátlan, 0-10000). Csak Xray-core. Üres = alapértelmezett.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Fallback késleltetés</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>TLS fragment fallback késleltetés. Csak sing-box. Üres = alapértelmezett.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Érvénytelen tartomány formátum. Használja 'from-to' (pl. 50-100).</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Gyorsítótár fájl engedélyezése sing-boxhoz (szabálykészlet fájlok)</value>
   </data>

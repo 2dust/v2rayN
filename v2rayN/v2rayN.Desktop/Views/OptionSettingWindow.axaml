@@ -402,54 +402,6 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="25"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding EnableFragment}"
-                            Text="{x:Static resx:ResUI.TbSettingsFragmentRecordFragment}" />
-                        <ToggleSwitch
-                            Grid.Row="25"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left"
-                            IsVisible="{Binding EnableFragment}"
-                            IsChecked="{Binding FragmentRecordFragment, Mode=TwoWay}" />
-                        <TextBlock
-                            Grid.Row="25"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding EnableFragment}"
-                            Text="{x:Static resx:ResUI.TbSettingsFragmentRecordFragmentTip}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            Grid.Row="26"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding EnableFragment}"
-                            Text="{x:Static resx:ResUI.TbSettingsFragmentFallbackDelay}" />
-                        <TextBox
-                            Grid.Row="26"
-                            Grid.Column="1"
-                            Width="120"
-                            Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left"
-                            IsVisible="{Binding EnableFragment}"
-                            Watermark="500ms"
-                            Text="{Binding FragmentFallbackDelay, Mode=TwoWay}" />
-                        <TextBlock
-                            Grid.Row="26"
-                            Grid.Column="2"
-                            Margin="{StaticResource Margin4}"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding EnableFragment}"
-                            Text="{x:Static resx:ResUI.TbSettingsFragmentFallbackDelayTip}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
                             Grid.Row="27"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"

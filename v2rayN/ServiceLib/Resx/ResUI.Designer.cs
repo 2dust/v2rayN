@@ -4168,20 +4168,20 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Record Fragment 的本地化字符串。
+        ///   查找类似 Sing-box Fragment Strategy 的本地化字符串。
         /// </summary>
-        public static string TbSettingsFragmentRecordFragment {
+        public static string TbSettingsFragmentSingboxStrategy {
             get {
-                return ResourceManager.GetString("TbSettingsFragmentRecordFragment", resourceCulture);
+                return ResourceManager.GetString("TbSettingsFragmentSingboxStrategy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Record TLS fragment flag. Only effective for sing-box. Empty = default. 的本地化字符串。
+        ///   查找类似 TLS Fragment: standard TLS record splitting. TCP Bypass: fragment TCP packets. Double: both modes combined. sing-box only. 的本地化字符串。
         /// </summary>
-        public static string TbSettingsFragmentRecordFragmentTip {
+        public static string TbSettingsFragmentSingboxStrategyTip {
             get {
-                return ResourceManager.GetString("TbSettingsFragmentRecordFragmentTip", resourceCulture);
+                return ResourceManager.GetString("TbSettingsFragmentSingboxStrategyTip", resourceCulture);
             }
         }
         

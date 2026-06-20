@@ -1128,17 +1128,14 @@
   <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
     <value>Maximum number of fragments per packet (0-10000, 0 = unlimited). Xray only. Empty = default.</value>
   </data>
-  <data name="TbSettingsFragmentRecordFragment" xml:space="preserve">
-    <value>Record Fragment</value>
-  </data>
-  <data name="TbSettingsFragmentRecordFragmentTip" xml:space="preserve">
-    <value>Enable TLS record fragmentation (splitRecord mode). sing-box only.</value>
-  </data>
   <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
     <value>Fallback Delay</value>
   </data>
   <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
     <value>Fallback delay when ACK detection unavailable (e.g., 500ms). sing-box only. Empty = default.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Invalid range format. Use 'from-to' (e.g., 50-100).</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Enable cache file for sing-box (ruleset files)</value>

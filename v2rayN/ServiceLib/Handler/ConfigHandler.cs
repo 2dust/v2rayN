@@ -170,9 +170,7 @@ public static class ConfigHandler
             Packets = "tlshello",
             Length = "50-100",
             Interval = "10-20",
-            MaxSplit = "0",
-            RecordFragment = false,
-            FallbackDelay = "500ms"
+            MaxSplit = "0"
         };
         config.GlobalHotkeys ??= [];
 

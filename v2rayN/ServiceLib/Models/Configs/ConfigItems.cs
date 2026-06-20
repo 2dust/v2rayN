@@ -250,8 +250,6 @@ public class Fragment4RayItem
     public string? Length { get; set; } = "50-100";
     public string? Interval { get; set; } = "10-20";
     public string? MaxSplit { get; set; } = "0";
-    public bool? RecordFragment { get; set; } = true;
-    public string? FallbackDelay { get; set; } = "500ms";
 }
 
 [Serializable]

@@ -1104,6 +1104,39 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Aktifkan fragment</value>
   </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Paket Fragment</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Paket untuk difragmentasikan: tlshello (TLS ClientHello) atau 1-1 s.d. 1-5 (N paket TCP pertama)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Panjang Fragment</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Rentang ukuran fragment (byte), cth: 50-100. Nilai pertama harus ≤ kedua. Kosong = default.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Interval Fragment</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Jeda antar fragment (ms), cth: 10-20. Rentang 1-100. Nilai pertama harus ≤ kedua. Kosong = default.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Maks Split</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Maks jumlah split (0 = unlimited, 0-10000). Hanya Xray-core. Kosong = default.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Fallback Delay</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>Delay fallback untuk TLS fragment. Hanya sing-box. Kosong = default.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Format range tidak valid. Gunakan 'from-to' (cth: 50-100).</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Aktifkan file cache untuk sing-box (file ruleset)</value>
   </data>

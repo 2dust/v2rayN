@@ -1125,17 +1125,14 @@
   <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
     <value>每個封包最大分片數 (0-10000, 0=無限制)。僅 Xray。留空使用預設值。</value>
   </data>
-  <data name="TbSettingsFragmentRecordFragment" xml:space="preserve">
-    <value>記錄分片</value>
-  </data>
-  <data name="TbSettingsFragmentRecordFragmentTip" xml:space="preserve">
-    <value>啟用 TLS 記錄分片 (splitRecord 模式)。僅 sing-box。</value>
-  </data>
   <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
     <value>回退延遲</value>
   </data>
   <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
     <value>ACK 偵測不可用時的回退延遲 (如 500ms)。僅 sing-box。留空使用預設值。</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>無效的範圍格式。請使用 'from-to' (如 50-100)。</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>啟用 sing-box（規則集檔案）的快取檔案</value>

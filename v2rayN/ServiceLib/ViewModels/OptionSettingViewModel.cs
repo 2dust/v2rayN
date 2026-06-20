@@ -31,8 +31,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string FragmentLength { get; set; } = "50-100";
     [Reactive] public string FragmentInterval { get; set; } = "10-20";
     [Reactive] public string FragmentMaxSplit { get; set; } = "0";
-    [Reactive] public bool FragmentRecordFragment { get; set; } = false;
-    [Reactive] public string FragmentFallbackDelay { get; set; } = "500ms";
 
     #endregion Core
 
@@ -174,8 +172,6 @@ public class OptionSettingViewModel : MyReactiveObject
         FragmentLength = _config.Fragment4RayItem?.Length ?? "50-100";
         FragmentInterval = _config.Fragment4RayItem?.Interval ?? "10-20";
         FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit ?? "0";
-        FragmentRecordFragment = _config.Fragment4RayItem?.RecordFragment ?? false;
-        FragmentFallbackDelay = _config.Fragment4RayItem?.FallbackDelay ?? "1000ms";
 
         #endregion Core
 
@@ -366,18 +362,18 @@ public class OptionSettingViewModel : MyReactiveObject
         {
             if (!Utils.TryParseRange(FragmentLength, 0, int.MaxValue, out _, out _))
             {
-                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
                 return;
             }
             if (!Utils.TryParseRange(FragmentInterval, 1, 100, out _, out _))
             {
-                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
                 return;
             }
             if (FragmentMaxSplit.IsNotEmpty()
-                && (!int.TryParse(FragmentMaxSplit, out var ms) || ms < 0 || ms > 10000))
+                && !Utils.TryParseMaxSplit(FragmentMaxSplit, 0, 10000, out _, out _))
             {
-                NoticeManager.Instance.Enqueue(ResUI.FillCorrectServerPort);
+                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
                 return;
             }
         }
@@ -388,8 +384,6 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.Fragment4RayItem.Length = FragmentLength.NullIfEmpty() ?? "50-100";
         _config.Fragment4RayItem.Interval = FragmentInterval.NullIfEmpty() ?? "10-20";
         _config.Fragment4RayItem.MaxSplit = FragmentMaxSplit.NullIfEmpty() ?? "0";
-        _config.Fragment4RayItem.RecordFragment = FragmentRecordFragment;
-        _config.Fragment4RayItem.FallbackDelay = FragmentFallbackDelay.NullIfEmpty() ?? "500ms";
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;

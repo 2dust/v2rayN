@@ -584,6 +584,41 @@ public class Utils
             return true;
         }
         var parts = input.Split('-');
+        if (parts.Length == 1)
+        {
+            if (!int.TryParse(parts[0], out from))
+            {
+                return false;
+            }
+            to = from;
+            return from >= min && to <= max;
+        }
+        if (parts.Length != 2
+            || !int.TryParse(parts[0], out from)
+            || !int.TryParse(parts[1], out to))
+        {
+            return false;
+        }
+        return from >= min && to <= max && from <= to;
+    }
+
+    public static bool TryParseMaxSplit(string? input, int min, int max, out int from, out int to)
+    {
+        from = to = 0;
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return true;
+        }
+        var parts = input.Split('-');
+        if (parts.Length == 1)
+        {
+            if (!int.TryParse(parts[0], out from))
+            {
+                return false;
+            }
+            to = from;
+            return from >= min && to <= max;
+        }
         if (parts.Length != 2
             || !int.TryParse(parts[0], out from)
             || !int.TryParse(parts[1], out to))
