@@ -59,7 +59,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
     - name: Upload DEB artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-deb, path: "dist/deb/**/*.deb", if-no-files-found: error }
 
   rpm:
@@ -118,7 +118,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
     - name: Upload RPM artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-rpm, path: "dist/rpm/**/*.rpm", if-no-files-found: error }
 
   rpm-riscv64:
@@ -158,7 +158,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-riscv64" || true
     - name: Upload RPM artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-rpm-riscv64, path: "dist/rpm-riscv64/**/*.rpm", if-no-files-found: error }
 
   deb-riscv64:
@@ -199,7 +199,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
     - name: Upload DEB artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-deb-riscv64, path: "dist/deb-riscv64/**/*.deb", if-no-files-found: error }
 
   deb-loong64:
@@ -349,7 +349,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-loong64"
     - name: Upload DEB artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-deb-loong64, path: "dist/deb-loong64/**/*.deb", if-no-files-found: error }
 
   rpm-loong64:
@@ -499,7 +499,7 @@ jobs:
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-loong64"
     - name: Upload RPM artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: { name: release-rpm-loong64, path: "dist/rpm-loong64/**/*.rpm", if-no-files-found: error }
 
   release-deb:
