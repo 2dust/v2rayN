@@ -1,0 +1,48 @@
+name: publish GPG public key
+
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: true
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Import GPG private key
+      shell: bash
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      run: |
+        set -euo pipefail
+        install -m 700 -d ~/.gnupg
+        printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import
+
+    - name: Export GPG public key
+      shell: bash
+      run: |
+        set -euo pipefail
+        fingerprint="$(gpg --batch --list-secret-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')"
+        [[ -n "$fingerprint" ]] || { echo "No GPG secret key found."; exit 1; }
+        gpg --batch --armor --export "$fingerprint" > v2rayN-public-key.asc
+
+    - name: Upload GPG public key to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        file: v2rayN-public-key.asc
+        tag: ${{ inputs.release_tag }}
+        prerelease: true
+        overwrite: true
