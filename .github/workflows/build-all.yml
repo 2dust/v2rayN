@@ -9,8 +9,17 @@ on:
 
 permissions: 
   actions: write
+  contents: write
 
 jobs:
+  public-key:
+    if: inputs.release_tag != ''
+    uses: ./.github/workflows/pub-key.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+    secrets:
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
   update:
     runs-on: ubuntu-latest
     steps:
