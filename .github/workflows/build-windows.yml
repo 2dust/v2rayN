@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   build:
@@ -27,3 +28,4 @@ jobs:
     with:
       target: windows
       release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
