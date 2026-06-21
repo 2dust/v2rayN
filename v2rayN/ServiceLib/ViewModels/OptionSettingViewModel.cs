@@ -26,11 +26,11 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public int? HyDownMbps { get; set; }
     [Reactive] public bool EnableFragment { get; set; }
     [Reactive] public bool EnableFinalFragment { get; set; }
-    [Reactive] public string FragmentPackets { get; set; } = "tlshello";
-    public List<string> FragmentPacketsOptions { get; } = ["tlshello", "1-1", "1-2", "1-3", "1-4", "1-5"];
-    [Reactive] public string FragmentLength { get; set; } = "50-100";
-    [Reactive] public string FragmentInterval { get; set; } = "10-20";
-    [Reactive] public string FragmentMaxSplit { get; set; } = "0";
+    [Reactive] public string FragmentPackets { get; set; }
+    [Reactive] public string FragmentLength { get; set; }
+    [Reactive] public string FragmentInterval { get; set; }
+    [Reactive] public string FragmentMaxSplit { get; set; }
+    public List<string> FragmentPacketsOptions { get; } = Global.FragmentPacketsOptions;
 
     #endregion Core
 

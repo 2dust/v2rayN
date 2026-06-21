@@ -246,10 +246,10 @@ public class CheckUpdateItem
 [Serializable]
 public class Fragment4RayItem
 {
-    public string? Packets { get; set; } = "tlshello";
-    public string? Length { get; set; } = "50-100";
-    public string? Interval { get; set; } = "10-20";
-    public string? MaxSplit { get; set; } = "0";
+    public string? Packets { get; set; }
+    public string? Length { get; set; }
+    public string? Interval { get; set; }
+    public string? MaxSplit { get; set; }
 }
 
 [Serializable]

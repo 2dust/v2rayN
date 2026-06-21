@@ -309,14 +309,13 @@
                             IsVisible="{Binding EnableFragment}"
                             Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}" />
                         <ComboBox
+                            x:Name="cmbFragmentPackets"
                             Grid.Row="21"
                             Grid.Column="1"
                             Width="120"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            IsVisible="{Binding EnableFragment}"
-                            ItemsSource="{Binding FragmentPacketsOptions}"
-                            SelectedItem="{Binding FragmentPackets, Mode=TwoWay}" />
+                            IsVisible="{Binding EnableFragment}" />
                         <TextBlock
                             Grid.Row="21"
                             Grid.Column="2"
