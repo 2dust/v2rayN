@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   build:
@@ -26,6 +27,7 @@ jobs:
     with:
       target: linux
       release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
 
   deb:
     name: build and release deb x64 & arm64
@@ -56,9 +58,9 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
-    - name: Upload DEBs to release
-      uses: svenstaro/upload-release-action@v2
-      with: { file: "dist/deb/**/*.deb", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
+    - name: Upload DEB artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-deb, path: "dist/deb/**/*.deb", if-no-files-found: error }
 
   rpm:
     name: build and release rpm x64 & arm64
@@ -115,9 +117,9 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
-    - name: Upload RPMs to release
-      uses: svenstaro/upload-release-action@v2
-      with: { file: "dist/rpm/**/*.rpm", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-rpm, path: "dist/rpm/**/*.rpm", if-no-files-found: error }
 
   rpm-riscv64:
     name: build and release rpm riscv64
@@ -155,25 +157,9 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/rpm-riscv64" -name "*.riscv64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/v2rayN-linux-rhel-riscv64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-riscv64" || true
-    - name: Upload RPMs to release
-      shell: bash
-      env: { GITHUB_TOKEN: "${{ github.token }}" }
-      run: |
-        set -euo pipefail
-        shopt -s globstar nullglob
-        files=(dist/rpm-riscv64/**/*.rpm)
-        (( ${#files[@]} )) || { echo "No RPMs found."; exit 1; }
-        api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
-        upload_url="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$api" | jq -r '.upload_url // empty' | sed 's/{?name,label}//')"
-        [[ "$upload_url" ]] || { echo "Release upload URL not found: ${RELEASE_TAG}"; exit 1; }
-        for f in "${files[@]}"; do
-          echo "Uploading ${f##*/}"
-          curl -fsSL -X POST \
-            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            -H "Content-Type: application/x-rpm" \
-            --data-binary @"$f" \
-            "${upload_url}?name=${f##*/}"
-        done
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-rpm-riscv64, path: "dist/rpm-riscv64/**/*.rpm", if-no-files-found: error }
 
   deb-riscv64:
     name: build and release deb riscv64
@@ -212,25 +198,9 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
-    - name: Upload DEBs to release
-      shell: bash
-      env: { GITHUB_TOKEN: "${{ github.token }}" }
-      run: |
-        set -euo pipefail
-        shopt -s globstar nullglob
-        files=(dist/deb-riscv64/**/*.deb)
-        (( ${#files[@]} )) || { echo "No DEBs found."; exit 1; }
-        api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
-        upload_url="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$api" | jq -r '.upload_url // empty' | sed 's/{?name,label}//')"
-        [[ "$upload_url" ]] || { echo "Release upload URL not found: ${RELEASE_TAG}"; exit 1; }
-        for f in "${files[@]}"; do
-          echo "Uploading ${f##*/}"
-          curl -fsSL -X POST \
-            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            -H "Content-Type: application/vnd.debian.binary-package" \
-            --data-binary @"$f" \
-            "${upload_url}?name=${f##*/}"
-        done
+    - name: Upload DEB artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-deb-riscv64, path: "dist/deb-riscv64/**/*.deb", if-no-files-found: error }
 
   deb-loong64:
     name: build and release deb loong64
@@ -378,9 +348,9 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/deb-loong64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/v2rayN-linux-loong64.deb" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb-loong64"
-    - name: Upload DEBs to release
-      uses: svenstaro/upload-release-action@v2
-      with: { file: "dist/deb-loong64/**/*.deb", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
+    - name: Upload DEB artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-deb-loong64, path: "dist/deb-loong64/**/*.deb", if-no-files-found: error }
 
   rpm-loong64:
     name: build and release rpm loong64
@@ -528,6 +498,48 @@ jobs:
         find "$GITHUB_WORKSPACE/dist/rpm-loong64" -name "*.loongarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-loong64/v2rayN-linux-rhel-loong64.rpm" \; || true
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm-loong64"
-    - name: Upload RPMs to release
-      uses: svenstaro/upload-release-action@v2
-      with: { file: "dist/rpm-loong64/**/*.rpm", tag: "${{ env.RELEASE_TAG }}", file_glob: true, prerelease: true }
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v4
+      with: { name: release-rpm-loong64, path: "dist/rpm-loong64/**/*.rpm", if-no-files-found: error }
+
+  release-deb:
+    name: sign and upload deb x64 arm64
+    needs: deb
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb, file_pattern: "*.deb" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-rpm:
+    name: sign and upload rpm x64 arm64
+    needs: rpm
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm, file_pattern: "*.rpm" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-rpm-riscv64:
+    name: sign and upload rpm riscv64
+    needs: rpm-riscv64
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm-riscv64, file_pattern: "*.rpm" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-deb-riscv64:
+    name: sign and upload deb riscv64
+    needs: deb-riscv64
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb-riscv64, file_pattern: "*.deb" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-deb-loong64:
+    name: sign and upload deb loong64
+    needs: deb-loong64
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb-loong64, file_pattern: "*.deb" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-rpm-loong64:
+    name: sign and upload rpm loong64
+    needs: rpm-loong64
+    uses: ./.github/workflows/upload-sign.yml
+    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm-loong64, file_pattern: "*.rpm" }
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
