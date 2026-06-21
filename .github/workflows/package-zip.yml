@@ -60,7 +60,7 @@ jobs:
       run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
     
     - name: Upload zip artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: release-${{ inputs.target }}-${{ matrix.arch }}
         path: v2rayN*.zip
