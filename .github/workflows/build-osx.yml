@@ -65,7 +65,7 @@ jobs:
       run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
 
     - name: Upload dmg artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: release-dmg-${{ matrix.arch }}
         path: v2rayN*.dmg
