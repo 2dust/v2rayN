@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   upload:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
     - name: Download release artifact
       uses: actions/download-artifact@v8
