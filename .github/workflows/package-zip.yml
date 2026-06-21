@@ -9,9 +9,13 @@ on:
       target: # windows linux macos windows-desktop
         required: true
         type: string
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: true
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   package:
@@ -55,13 +59,23 @@ jobs:
       if: inputs.target == 'windows-desktop'
       run: mv "v2rayN-$Target-$Arch.zip" "v2rayN-$Target-$Arch-desktop.zip"
     
-    - name: Sleep for race condition between matrix jobs
-      run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/5461}')"
-      
-    - name: Upload zip archive to release
-      uses: svenstaro/upload-release-action@v2
+    - name: Upload zip artifact
+      uses: actions/upload-artifact@v4
       with:
-        file: ${{ github.workspace }}/v2rayN*.zip
-        tag: ${{ inputs.release_tag }}
-        file_glob: true
-        prerelease: true
+        name: release-${{ inputs.target }}-${{ matrix.arch }}
+        path: v2rayN*.zip
+        if-no-files-found: error
+
+  release:
+    name: sign and upload zip x64 arm64
+    needs: package
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: release-${{ inputs.target }}-${{ matrix.arch }}
+      file_pattern: '*.zip'
+    secrets:
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
