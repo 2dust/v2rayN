@@ -619,10 +619,19 @@ public partial class CoreConfigV2rayService
                     }
                     if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                     {
+                        var isGecko = !protocolExtra.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtra.GeckoMaxPacketSize.IsNullOrEmpty();
+                        var salamanderSettings = new MaskSettings4Ray
+                        {
+                            password = protocolExtra.SalamanderPass.TrimEx(),
+                        };
+                        if (isGecko)
+                        {
+                            salamanderSettings.packetSize = $"{protocolExtra.GeckoMinPacketSize}-{protocolExtra.GeckoMaxPacketSize}";
+                        }
                         hy2Finalmask.udp.Add(new Mask4Ray
                         {
                             type = "salamander",
-                            settings = new MaskSettings4Ray { password = protocolExtra.SalamanderPass.TrimEx(), },
+                            settings = salamanderSettings,
                         });
                     }
                     streamSettings.hysteriaSettings = new()

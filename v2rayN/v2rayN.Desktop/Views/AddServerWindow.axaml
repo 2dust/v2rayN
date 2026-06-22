@@ -374,7 +374,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="300,Auto,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
                     <TextBlock
                         Grid.Row="1"
@@ -388,35 +388,81 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
-
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="{StaticResource MarginLr4}"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbPath7}" />
-                    <TextBox
-                        x:Name="txtPath7"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}" />
+                        Classes="IconButton">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconMore}">
+                                <PathIcon.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </PathIcon.RenderTransform>
+                            </PathIcon>
+                        </Button.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbPath7}" />
+                                    <TextBox
+                                        x:Name="txtPath7"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbGeckoPacketSize}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox
+                                            x:Name="txtMinGeckoPacketSize"
+                                            Width="90"
+                                            Margin="{StaticResource Margin4}"
+                                            Watermark="Min" />
+                                        <TextBox
+                                            x:Name="txtMaxGeckoPacketSize"
+                                            Width="90"
+                                            Margin="{StaticResource Margin4}"
+                                            Watermark="Max" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
+                                    <TextBox
+                                        x:Name="txtHy2RealmUrl"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}" />
+                                    <TextBlock
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
 
                     <TextBlock
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbPorts7}" />
                     <TextBox
                         x:Name="txtPorts7"
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         Watermark="1000-2000,3000,4000" />
                     <TextBlock
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="2"
                         Width="200"
                         Margin="{StaticResource Margin4}"
@@ -425,26 +471,26 @@
                         TextWrapping="Wrap" />
 
                     <TextBlock
-                        Grid.Row="4"
+                        Grid.Row="3"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbHopInt7}" />
                     <TextBox
                         x:Name="txtHopInt7"
-                        Grid.Row="4"
+                        Grid.Row="3"
                         Grid.Column="1"
-                        Width="400"
+                        Width="200"
                         Margin="{StaticResource Margin4}" />
 
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="4"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}" />
                     <StackPanel
-                        Grid.Row="5"
+                        Grid.Row="4"
                         Grid.Column="1"
                         Orientation="Horizontal">
                         <TextBox
@@ -458,27 +504,6 @@
                             Margin="{StaticResource Margin4}"
                             Watermark="Down" />
                     </StackPanel>
-
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
-                    <TextBox
-                        x:Name="txtHy2RealmUrl"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}" />
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="2"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
-                        TextWrapping="Wrap" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"

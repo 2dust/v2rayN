@@ -35,6 +35,8 @@ public record ProtocolExtraItem
     // example:
     // realm://public@realm.hy2.io/57f9be7c-2810-4f5b-8cb9-260bc84d6c90?stun=example.stun:3478&stun=example2.stun:3478
     public string? Hy2RealmUrl { get; init; }
+    public string? GeckoMinPacketSize { get; init; }
+    public string? GeckoMaxPacketSize { get; init; }
 
     // naiveproxy
     public int? InsecureConcurrency { get; init; }

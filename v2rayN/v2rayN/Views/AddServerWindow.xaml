@@ -527,21 +527,62 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
-
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
+                    <materialDesign:PopupBox
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbPath7}" />
-                    <TextBox
-                        x:Name="txtPath7"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefTextBox}" />
+                        StaysOpen="True"
+                        Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbPath7}" />
+                            <TextBox
+                                x:Name="txtPath7"
+                                Width="400"
+                                Margin="{StaticResource Margin4}"
+                                Style="{StaticResource DefTextBox}" />
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbGeckoPacketSize}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox
+                                    x:Name="txtMinGeckoPacketSize"
+                                    Width="90"
+                                    Margin="{StaticResource Margin4}"
+                                    materialDesign:HintAssist.Hint="Min"
+                                    Style="{StaticResource DefTextBox}" />
+                                <TextBox
+                                    x:Name="txtMaxGeckoPacketSize"
+                                    Width="90"
+                                    Margin="{StaticResource Margin4}"
+                                    materialDesign:HintAssist.Hint="Max"
+                                    Style="{StaticResource DefTextBox}" />
+                            </StackPanel>
+                            <TextBlock
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
+                            <TextBox
+                                x:Name="txtHy2RealmUrl"
+                                Width="400"
+                                Margin="{StaticResource Margin4}"
+                                Style="{StaticResource DefTextBox}" />
+                            <TextBlock
+                                Width="400"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource ToolbarTextBlock}"
+                                Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
 
                     <TextBlock
                         Grid.Row="3"
@@ -609,30 +650,6 @@
                             materialDesign:HintAssist.Hint="Down"
                             Style="{StaticResource DefTextBox}" />
                     </StackPanel>
-
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbHy2RealmUrl}" />
-                    <TextBox
-                        x:Name="txtHy2RealmUrl"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}"
-                        Style="{StaticResource DefTextBox}" />
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="2"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbHy2RealmUrlTip}"
-                        TextWrapping="Wrap" />
                 </Grid>
                 <Grid
                     x:Name="gridTuic"

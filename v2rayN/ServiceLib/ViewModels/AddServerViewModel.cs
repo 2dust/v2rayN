@@ -84,6 +84,12 @@ public class AddServerViewModel : MyReactiveObject
     public string Hy2RealmUrl { get; set; }
 
     [Reactive]
+    public int GeckoMinPacketSize { get; set; }
+
+    [Reactive]
+    public int GeckoMaxPacketSize { get; set; }
+
+    [Reactive]
     public string RawHeaderType { get; set; }
 
     [Reactive]
@@ -306,6 +312,8 @@ public class AddServerViewModel : MyReactiveObject
         InsecureConcurrency = protocolExtra.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra.NaiveQuic ?? false;
         Hy2RealmUrl = protocolExtra.Hy2RealmUrl ?? string.Empty;
+        GeckoMinPacketSize = protocolExtra.GeckoMinPacketSize.ToInt();
+        GeckoMaxPacketSize = protocolExtra.GeckoMaxPacketSize.ToInt();
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         Host = transport.Host ?? string.Empty;
@@ -418,6 +426,8 @@ public class AddServerViewModel : MyReactiveObject
             InsecureConcurrency = InsecureConcurrency > 0 ? InsecureConcurrency : null,
             NaiveQuic = NaiveQuic ? true : null,
             Hy2RealmUrl = realm?.ToUri().NullIfEmpty(),
+            GeckoMinPacketSize = GeckoMinPacketSize > 0 ? GeckoMinPacketSize.ToString() : null,
+            GeckoMaxPacketSize = GeckoMaxPacketSize > 0 ? GeckoMaxPacketSize.ToString() : null,
         });
         SelectedSource.SetTransportExtra(transport);
 

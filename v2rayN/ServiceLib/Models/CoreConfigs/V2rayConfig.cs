@@ -509,6 +509,7 @@ public class MaskSettings4Ray
 
     public string? url { get; set; }
     public List<string>? stunServers { get; set; }
+    public string? packetSize { get; set; }
 
     // fragment
     public string? packets { get; set; }

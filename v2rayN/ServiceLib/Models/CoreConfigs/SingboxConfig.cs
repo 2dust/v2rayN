@@ -248,6 +248,8 @@ public class HyObfs4Sbox
 {
     public string? type { get; set; }
     public string? password { get; set; }
+    public int? min_packet_size { get; set; }
+    public int? max_packet_size { get; set; }
 }
 
 public class HyRealm4Sbox

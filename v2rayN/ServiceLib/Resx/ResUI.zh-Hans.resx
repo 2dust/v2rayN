@@ -1030,7 +1030,7 @@
     <value>添加 [Hysteria2]</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
-    <value>Hysteria 最大带宽 (Up/Dw)</value>
+    <value>Hysteria 最大带宽 (上传/下载)</value>
   </data>
   <data name="TbSettingsUseSystemHosts" xml:space="preserve">
     <value>使用系统 hosts</value>
@@ -1817,5 +1817,8 @@
   </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>格式：realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Gecko 包大小 (最小/最大)</value>
   </data>
 </root>

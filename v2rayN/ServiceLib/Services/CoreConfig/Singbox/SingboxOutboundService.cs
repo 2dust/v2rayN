@@ -217,11 +217,17 @@ public partial class CoreConfigSingboxService
 
                         if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                         {
+                            var isGecko = !protocolExtra.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtra.GeckoMaxPacketSize.IsNullOrEmpty();
                             outbound.obfs = new()
                             {
-                                type = "salamander",
+                                type = isGecko ? "gecko" : "salamander",
                                 password = protocolExtra.SalamanderPass.TrimEx(),
                             };
+                            if (isGecko)
+                            {
+                                outbound.obfs.min_packet_size = protocolExtra.GeckoMinPacketSize.ToInt();
+                                outbound.obfs.max_packet_size = protocolExtra.GeckoMaxPacketSize.ToInt();
+                            }
                         }
                         int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
