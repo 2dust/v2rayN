@@ -324,6 +324,29 @@ public class Utils
                     .ReplaceLineBreaks(",");
     }
 
+    public static string ParseProcess(string text)
+    {
+        if (text.IsNullOrEmpty())
+        {
+            return string.Empty;
+        }
+        if (text.StartsWith('"'))
+        {
+            text = text[1..];
+        }
+        if (text.EndsWith('"'))
+        {
+            text = text[..^1];
+        }
+        return List2String(text.Replace("，", ",")
+            .Replace("\\", "/")
+            .ReplaceLineBreaks(",")
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.TrimEx())
+            .Where(x => x.IsNotEmpty())
+            .ToList());
+    }
+
     public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
     {
         return Enum.GetValues(typeof(TEnum))
