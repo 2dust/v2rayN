@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   package-x86:
@@ -222,10 +223,25 @@ jobs:
             -DestinationPath "${{ matrix.zip_name }}" `
             -Force
 
-      - name: Upload zip archive to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v7
         with:
-          file: ${{ matrix.zip_name }}
-          tag: ${{ inputs.release_tag }}
-          prerelease: true
-          overwrite: true
+          name: release-windows-x86-${{ matrix.flavor }}
+          path: ${{ matrix.zip_name }}
+          if-no-files-found: error
+
+  release-x86:
+    name: sign and upload windows x86
+    if: inputs.release_tag != ''
+    needs: package-x86
+    strategy:
+      fail-fast: false
+      matrix:
+        flavor: [ wpf, desktop ]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: release-windows-x86-${{ matrix.flavor }}
+      file_pattern: '*.zip'
+    secrets:
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}

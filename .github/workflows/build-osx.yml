@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   build:
@@ -26,6 +27,7 @@ jobs:
     with:
       target: macos
       release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
     
   dmg:
     name: package and release macOS dmg
@@ -62,13 +64,24 @@ jobs:
     - name: Package dmg
       run: ./package-osx.sh macos-$Arch v2rayN-macos-$Arch ${{ inputs.release_tag }}
 
-    - name: Sleep for race condition between matrix jobs
-      run: sleep "$(od -An -N2 -tu2 /dev/urandom | awk 'NR==1{printf "%.2f", $1/5461}')"
-    
-    - name: Upload dmg to release
-      uses: svenstaro/upload-release-action@v2
+    - name: Upload dmg artifact
+      uses: actions/upload-artifact@v7
       with:
-        file: ${{ github.workspace }}/v2rayN*.dmg
-        tag: ${{ inputs.release_tag }}
-        file_glob: true
-        prerelease: true
+        name: release-dmg-${{ matrix.arch }}
+        path: v2rayN*.dmg
+        if-no-files-found: error
+
+  release-dmg:
+    name: sign and upload macOS dmg
+    if: inputs.release_tag != ''
+    needs: dmg
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: release-dmg-${{ matrix.arch }}
+      file_pattern: '*.dmg'
+    secrets:
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
