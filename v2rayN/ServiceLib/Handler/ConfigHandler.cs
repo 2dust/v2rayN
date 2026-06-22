@@ -725,11 +725,50 @@ public static class ConfigHandler
         {
             return -1;
         }
-        profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+        var protocolExtra = profileItem.GetProtocolExtra();
+        profileItem.SetProtocolExtra(protocolExtra with
         {
-            SalamanderPass = profileItem.GetProtocolExtra().SalamanderPass?.TrimEx(),
-            HopInterval = profileItem.GetProtocolExtra().HopInterval?.TrimEx(),
+            SalamanderPass = protocolExtra.SalamanderPass?.TrimEx(),
+            HopInterval = protocolExtra.HopInterval?.TrimEx(),
         });
+
+        if (!protocolExtra.Hy2RealmUrl.IsNullOrEmpty())
+        {
+            var realmResult = HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm);
+            if (!realmResult || realm is null)
+            {
+                return -1;
+            }
+            if (realm.StunList.Count == 0)
+            {
+                realm = realm with
+                {
+                    StunList = Global.DefaultRealmStunList,
+                };
+            }
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+            {
+                Hy2RealmUrl = realm.ToUri(),
+            });
+        }
+        var isGecko = !protocolExtra.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtra.GeckoMaxPacketSize.IsNullOrEmpty();
+        if (isGecko)
+        {
+            var minPacketSize = protocolExtra.GeckoMinPacketSize.ToInt();
+            var maxPacketSize = protocolExtra.GeckoMaxPacketSize.ToInt();
+            if (minPacketSize <= 0
+                || minPacketSize > maxPacketSize
+                || maxPacketSize > 2048)
+            {
+                minPacketSize = 512;
+                maxPacketSize = 1200;
+            }
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra() with
+            {
+                GeckoMinPacketSize = minPacketSize.ToString(),
+                GeckoMaxPacketSize = maxPacketSize.ToString(),
+            });
+        }
 
         await AddServerCommon(config, profileItem, toFile);
 

@@ -217,11 +217,17 @@ public partial class CoreConfigSingboxService
 
                         if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                         {
+                            var isGecko = !protocolExtra.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtra.GeckoMaxPacketSize.IsNullOrEmpty();
                             outbound.obfs = new()
                             {
-                                type = "salamander",
+                                type = isGecko ? "gecko" : "salamander",
                                 password = protocolExtra.SalamanderPass.TrimEx(),
                             };
+                            if (isGecko)
+                            {
+                                outbound.obfs.min_packet_size = protocolExtra.GeckoMinPacketSize.ToInt();
+                                outbound.obfs.max_packet_size = protocolExtra.GeckoMaxPacketSize.ToInt();
+                            }
                         }
                         int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                             ? su
@@ -262,6 +268,21 @@ public partial class CoreConfigSingboxService
                                     outbound.hop_interval = hi >= 5 ? $"{hi}s" : outbound.hop_interval;
                                 }
                             }
+                        }
+
+                        if (HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm)
+                            && realm is not null)
+                        {
+                            var realm4Sbox = new HyRealm4Sbox()
+                            {
+                                server_url = realm.RendezvousHostPort,
+                                token = realm.Token,
+                                realm_id = realm.RealmName,
+                            };
+                            outbound.realm = realm4Sbox;
+                            outbound.server = null;
+                            outbound.server_port = null;
+                            outbound.server_ports = null;
                         }
 
                         break;
