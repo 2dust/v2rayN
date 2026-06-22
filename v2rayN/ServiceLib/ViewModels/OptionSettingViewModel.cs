@@ -30,7 +30,6 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public string FragmentLength { get; set; }
     [Reactive] public string FragmentInterval { get; set; }
     [Reactive] public string FragmentMaxSplit { get; set; }
-    public List<string> FragmentPacketsOptions { get; } = Global.FragmentPacketsOptions;
 
     #endregion Core
 
@@ -168,10 +167,10 @@ public class OptionSettingViewModel : MyReactiveObject
         HyDownMbps = _config.HysteriaItem.DownMbps;
         EnableFragment = _config.CoreBasicItem.EnableFragment;
         EnableFinalFragment = _config.CoreBasicItem.EnableFinalFragment;
-        FragmentPackets = _config.Fragment4RayItem?.Packets ?? "tlshello";
-        FragmentLength = _config.Fragment4RayItem?.Length ?? "50-100";
-        FragmentInterval = _config.Fragment4RayItem?.Interval ?? "10-20";
-        FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit ?? "0";
+        FragmentPackets = _config.Fragment4RayItem?.Packets;
+        FragmentLength = _config.Fragment4RayItem?.Length;
+        FragmentInterval = _config.Fragment4RayItem?.Interval;
+        FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit;
 
         #endregion Core
 
@@ -379,11 +378,10 @@ public class OptionSettingViewModel : MyReactiveObject
         }
         _config.CoreBasicItem.EnableFragment = EnableFragment;
         _config.CoreBasicItem.EnableFinalFragment = EnableFinalFragment;
-        _config.Fragment4RayItem ??= new();
-        _config.Fragment4RayItem.Packets = FragmentPackets.NullIfEmpty() ?? "tlshello";
-        _config.Fragment4RayItem.Length = FragmentLength.NullIfEmpty() ?? "50-100";
-        _config.Fragment4RayItem.Interval = FragmentInterval.NullIfEmpty() ?? "10-20";
-        _config.Fragment4RayItem.MaxSplit = FragmentMaxSplit.NullIfEmpty() ?? "0";
+        _config.Fragment4RayItem.Packets = FragmentPackets;
+        _config.Fragment4RayItem.Length = FragmentLength;
+        _config.Fragment4RayItem.Interval = FragmentInterval;
+        _config.Fragment4RayItem.MaxSplit = FragmentMaxSplit;
 
         _config.GuiItem.AutoRun = AutoRun;
         _config.GuiItem.EnableStatistics = EnableStatistics;

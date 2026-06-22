@@ -896,10 +896,10 @@ public partial class CoreConfigV2rayService
 
     private (Mask4Ray tcpFragment, Mask4Ray udpNoise) BuildFragmentsMasks()
     {
-        var configPackets = _config.Fragment4RayItem?.Packets ?? "tlshello";
-        var configLength = _config.Fragment4RayItem?.Length ?? "50-100";
-        var configDelay = _config.Fragment4RayItem?.Interval ?? "10-20";
-        var configMaxSplit = _config.Fragment4RayItem?.MaxSplit ?? "0";
+        var configPackets = _config.Fragment4RayItem?.Packets.NullIfEmpty() ?? "tlshello";
+        var configLength = _config.Fragment4RayItem?.Length.NullIfEmpty() ?? "50-100";
+        var configDelay = _config.Fragment4RayItem?.Interval.NullIfEmpty() ?? "10-20";
+        var configMaxSplit = _config.Fragment4RayItem?.MaxSplit.NullIfEmpty() ?? "0";
 
         var maxSplit = 0;
         var parts = configMaxSplit.Split('-');

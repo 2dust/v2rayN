@@ -9,7 +9,6 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="{x:Static resx:ResUI.menuSetting}"
     Width="1000"
     Height="700"
@@ -18,9 +17,13 @@
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <base:WindowBase.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
-    </base:WindowBase.Resources>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
@@ -46,15 +49,7 @@
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCore}">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid Margin="{StaticResource Margin8}">
-<Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                        <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -378,65 +373,102 @@
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
-                        <!-- Fragment Settings (PopupBox - visible when EnableFragment is checked) -->
-                        <StackPanel Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource Margin8}"
-                                    Visibility="{Binding EnableFragment, Converter={StaticResource BoolToVisConverter}}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <materialDesign:PopupBox
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    StaysOpen="True"
-                                    Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
-                                    <StackPanel Width="400">
-                                        <TextBlock
-                                            Margin="{StaticResource Margin4}"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource ToolbarTextBlock}"
-                                            Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}"
-                                            TextWrapping="Wrap" />
-                                        <ComboBox Width="120" Margin="{StaticResource Margin4}" VerticalAlignment="Center"
-                                                  ItemsSource="{Binding FragmentPacketsOptions}"
-                                                  SelectedItem="{Binding FragmentPackets, Mode=TwoWay}" />
+                        <materialDesign:PopupBox
+                            Grid.Row="20"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            StaysOpen="True"
+                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                            <StackPanel Margin="{StaticResource Margin8}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="400" />
+                                    </Grid.ColumnDefinitions>
 
-                                        <TextBlock
-                                            Margin="{StaticResource Margin4}"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource ToolbarTextBlock}"
-                                            Text="{x:Static resx:ResUI.TbSettingsFragmentLength}"
-                                            TextWrapping="Wrap" />
-                                        <TextBox Width="120" Margin="{StaticResource Margin4}" VerticalAlignment="Center"
-                                                 Style="{StaticResource DefTextBox}"
-                                                 Text="{Binding FragmentLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 materialDesign:HintAssist.Hint="50-100" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}"
+                                        TextWrapping="Wrap" />
+                                    <ComboBox
+                                        x:Name="cmbFragmentPackets"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center" />
 
-                                        <TextBlock
-                                            Margin="{StaticResource Margin4}"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource ToolbarTextBlock}"
-                                            Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}"
-                                            TextWrapping="Wrap" />
-                                        <TextBox Width="120" Margin="{StaticResource Margin4}" VerticalAlignment="Center"
-                                                 Style="{StaticResource DefTextBox}"
-                                                 Text="{Binding FragmentInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 materialDesign:HintAssist.Hint="10-20" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentLength}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentLength"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="50-100"
+                                        Style="{StaticResource DefTextBox}" />
 
-                                        <TextBlock
-                                            Margin="{StaticResource Margin4}"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource ToolbarTextBlock}"
-                                            Text="{x:Static resx:ResUI.TbSettingsFragmentMaxSplit}"
-                                            TextWrapping="Wrap" />
-                                        <TextBox Width="120" Margin="{StaticResource Margin4}" VerticalAlignment="Center"
-                                              Style="{StaticResource DefTextBox}"
-                                              Text="{Binding FragmentMaxSplit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              materialDesign:HintAssist.Hint="0" />
-                                       </StackPanel>
-                                </materialDesign:PopupBox>
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentInterval"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="10-20"
+                                        Style="{StaticResource DefTextBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentMaxSplit}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentMaxSplit"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="0"
+                                        Style="{StaticResource DefTextBox}" />
+                                </Grid>
                             </StackPanel>
-                        </StackPanel>
+                        </materialDesign:PopupBox>
 
                         <TextBlock
-                            Grid.Row="27"
+                            Grid.Row="21"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -444,12 +476,12 @@
                             Text="{x:Static resx:ResUI.TbEnableFinalFragment}" />
                         <ToggleButton
                             x:Name="togenableFinalFragment"
-                            Grid.Row="27"
+                            Grid.Row="21"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
                         <TextBlock
-                            Grid.Row="27"
+                            Grid.Row="21"
                             Grid.Column="2"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -458,7 +490,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="28"
+                            Grid.Row="22"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -466,13 +498,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
                         <TextBox
                             x:Name="txtbindInterface"
-                            Grid.Row="28"
+                            Grid.Row="22"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefTextBox}" />
                         <TextBlock
-                            Grid.Row="28"
+                            Grid.Row="22"
                             Grid.Column="2"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -481,7 +513,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="29"
+                            Grid.Row="23"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -489,14 +521,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsSendThrough}" />
                         <TextBox
                             x:Name="txtsendThrough"
-                            Grid.Row="29"
+                            Grid.Row="23"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="0.0.0.0"
                             Style="{StaticResource DefTextBox}" />
                         <TextBlock
-                            Grid.Row="29"
+                            Grid.Row="23"
                             Grid.Column="2"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
