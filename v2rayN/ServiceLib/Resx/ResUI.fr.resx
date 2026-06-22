@@ -1101,6 +1101,39 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Activer le fragmentation (Fragment)</value>
   </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Paquets fragmentés</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Paquets à fragmenter : tlshello (TLS ClientHello) ou 1-1 à 1-5 (premiers N paquets TCP)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Longueur fragment</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Plage de taille fragment (ex: 50-100). Première valeur ≤ seconde. Vide = défaut.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Intervalle fragment</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Délai entre fragments en ms (ex: 10-20). Plage 1-100. Première valeur ≤ seconde. Vide = défaut.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Max Split</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Nb max de splits (0 = illimité, 0-10000). Xray-core seulement. Vide = défaut.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Délai fallback</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>Délai fallback pour fragment TLS. sing-box seulement. Vide = défaut.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Format de plage invalide. Utilisez 'from-to' (ex: 50-100).</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Activer le fichier de cache de sing-box (fichiers règles)</value>
   </data>

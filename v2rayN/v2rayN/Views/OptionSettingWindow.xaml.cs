@@ -32,6 +32,7 @@ public partial class OptionSettingWindow
         cmbMtu.ItemsSource = Global.TunMtus;
         cmbStack.ItemsSource = Global.TunStacks;
         cmbIcmpRoutingPolicy.ItemsSource = Global.TunIcmpRoutingPolicies;
+        cmbFragmentPackets.ItemsSource = Global.FragmentPacketsOptions;
 
         cmbCoreType1.ItemsSource = Global.CoreTypes;
         cmbCoreType2.ItemsSource = Global.CoreTypes;
@@ -80,6 +81,10 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.HyDownMbps, v => v.txtDownMbps.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableFragment, v => v.togenableFragment.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableFinalFragment, v => v.togenableFinalFragment.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentPackets, v => v.cmbFragmentPackets.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentLength, v => v.txtFragmentLength.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentInterval, v => v.txtFragmentInterval.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentMaxSplit, v => v.txtFragmentMaxSplit.Text).DisposeWith(disposables);
 
             //this.Bind(ViewModel, vm => vm.Kcpmtu, v => v.txtKcpmtu.Text).DisposeWith(disposables);
             //this.Bind(ViewModel, vm => vm.Kcptti, v => v.txtKcptti.Text).DisposeWith(disposables);

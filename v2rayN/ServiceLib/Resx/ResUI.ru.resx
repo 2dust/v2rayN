@@ -1104,6 +1104,39 @@
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Включить фрагментацию (Fragment)</value>
   </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Пакеты для фрагментации</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Пакеты для фрагментации: tlshello (TLS ClientHello) или 1-1 — 1-5 (первые N TCP-пакетов)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Длина фрагмента</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Диапазон размера фрагмента в байтах (например, 50-100). Первое значение не больше второго. Пусто = по умолчанию.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Интервал фрагментации</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Задержка между фрагментами в мс (например, 10-20). Диапазон 1-100. Первое значение не больше второго. Пусто = по умолчанию.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Макс. разделение</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Максимальное число разделений (0 = без лимита, 0-10000). Только для Xray-core. Пусто = по умолчанию.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Резервная задержка</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>Резервная задержка для TLS-фрагмента. Только для sing-box. Пусто = по умолчанию.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Неверный формат диапазона. Используйте 'from-to' (например, 50-100).</value>
+  </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Включить файл кэша для sing-box (файлы наборов правил)</value>
   </data>
