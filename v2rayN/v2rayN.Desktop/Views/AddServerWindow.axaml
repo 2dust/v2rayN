@@ -481,7 +481,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
 
                     <TextBlock
                         Grid.Row="4"
