@@ -5,7 +5,7 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
     public ClashProxiesView()
     {
         InitializeComponent();
-        ViewModel = new ClashProxiesViewModel(UpdateViewHandler);
+        ViewModel = new ClashProxiesViewModel();
         lstProxyDetails.DoubleTapped += LstProxyDetails_DoubleTapped;
         KeyDown += ClashProxiesView_KeyDown;
 
@@ -26,6 +26,13 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
             this.Bind(ViewModel, vm => vm.RuleModeSelected, v => v.cmbRulemode.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SortingSelected, v => v.cmbSorting.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

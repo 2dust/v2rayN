@@ -13,7 +13,7 @@ public partial class GlobalHotkeySettingWindow
 
         Owner = Application.Current.MainWindow;
 
-        ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
+        ViewModel = new GlobalHotkeySettingViewModel();
 
         btnReset.Click += btnReset_Click;
 
@@ -23,6 +23,13 @@ public partial class GlobalHotkeySettingWindow
         this.WhenActivated(disposables =>
         {
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
 

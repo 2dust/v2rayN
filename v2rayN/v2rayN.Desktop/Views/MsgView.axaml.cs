@@ -10,12 +10,19 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
         InitializeComponent();
         txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
-        ViewModel = new MsgViewModel(UpdateViewHandler);
+        ViewModel = new MsgViewModel();
 
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(

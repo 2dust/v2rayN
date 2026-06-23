@@ -21,7 +21,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         btnGUID.Click += btnGUID_Click;
         btnGUID5.Click += btnGUID_Click;
 
-        ViewModel = new AddServerViewModel(profileItem, UpdateViewHandler);
+        ViewModel = new AddServerViewModel(profileItem);
 
         cmbCoreType.ItemsSource = Global.CoreTypes.AppendEmpty();
         cmbNetwork.ItemsSource = Global.Networks;
@@ -255,6 +255,13 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.BindCommand(ViewModel, vm => vm.FetchCertCmd, v => v.btnFetchCert).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCertChainCmd, v => v.btnFetchCertChain).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         Title = $"{profileItem.ConfigType}";
