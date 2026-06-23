@@ -1,44 +1,17 @@
 # v2rayN
 
-<p align="center">
-  <a href="https://github.com/2dust/v2rayN">
-    <img src="https://github.com/user-attachments/assets/c220cb7d-cc55-421a-83a1-4e26ae11fa2f" width="98" height="98" alt="v2rayN">
-  </a>
-</p>
+### A GUI client for Windows, Linux and macOS. Support [Xray](https://github.com/XTLS/Xray-core) and [sing-box](https://github.com/SagerNet/sing-box) and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
 
-<p align="center">
-  <strong>A GUI client for Windows, Linux and macOS.</strong>
-</p>
+[![CodeFactor](https://www.codefactor.io/repository/github/2dust/v2rayn/badge)](https://www.codefactor.io/repository/github/2dust/v2rayn)
+[![Release](https://img.shields.io/github/v/release/2dust/v2rayN?logo=github&label=Release)](https://github.com/2dust/v2rayN/releases)
+[![Downloads](https://img.shields.io/github/downloads/2dust/v2rayN/latest/total?logo=github&label=Downloads)](https://github.com/2dust/v2rayN/releases)
+[![Telegram](https://img.shields.io/badge/Telegram-Chat-26A5E4?logo=telegram)](https://t.me/v2rayn)
+ 
+[![Windows](https://img.shields.io/badge/Windows-supported-0078D6?logo=windows)](https://github.com/2dust/v2rayN) 
+[![Linux](https://img.shields.io/badge/Linux-supported-FCC624?logo=linux&logoColor=000)](https://github.com/2dust/v2rayN) 
+[![macOS](https://img.shields.io/badge/macOS-supported-000000?logo=apple)](https://github.com/2dust/v2rayN) 
+[![GPG Signed](https://img.shields.io/badge/GPG-signed-4B32C3?logo=gnuprivacyguard)](https://github.com/2dust/v2rayN)
 
-<p align="center">
-  Supports <a href="https://github.com/XTLS/Xray-core">Xray</a>,
-  <a href="https://github.com/SagerNet/sing-box">sing-box</a>
-  and <a href="https://github.com/2dust/v2rayN/wiki/List-of-supported-cores">other cores</a>.
-</p>
-
-<p align="center">
-  <strong>Author:</strong>
-  <a href="https://github.com/2dust">2dust</a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/2dust/v2rayN/releases">
-    <img src="https://img.shields.io/github/v/release/2dust/v2rayN?logo=github&label=Release" alt="Release">
-  </a>
-  <a href="https://github.com/2dust/v2rayN/releases">
-    <img src="https://img.shields.io/github/downloads/2dust/v2rayN/latest/total?logo=github&label=Downloads" alt="Downloads">
-  </a>
-  <a href="https://t.me/v2rayn">
-    <img src="https://img.shields.io/badge/Telegram-Chat-26A5E4?logo=telegram" alt="Telegram">
-  </a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Windows-supported-0078D6?logo=windows" alt="Windows">
-  <img src="https://img.shields.io/badge/Linux-supported-FCC624?logo=linux&logoColor=000" alt="Linux">
-  <img src="https://img.shields.io/badge/macOS-supported-000000?logo=apple" alt="macOS">
-  <img src="https://img.shields.io/badge/GPG-signed-4B32C3?logo=gnuprivacyguard" alt="GPG Signed">
-</p>
 
 ---
 
