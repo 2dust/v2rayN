@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/2dust/v2rayN">
-    <img src="https://github.com/user-attachments/assets/c220cb7d-cc55-421a-83a1-4e26ae11fa2f" width="100" height="100" alt="v2rayN">
+    <img src="https://github.com/user-attachments/assets/c220cb7d-cc55-421a-83a1-4e26ae11fa2f" width="98" height="98" alt="v2rayN">
   </a>
 </p>
 
