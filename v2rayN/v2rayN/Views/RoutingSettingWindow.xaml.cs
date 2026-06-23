@@ -13,7 +13,7 @@ public partial class RoutingSettingWindow
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
 
-        ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
+        ViewModel = new RoutingSettingViewModel();
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -32,6 +32,13 @@ public partial class RoutingSettingWindow
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedSetDefaultCmd, v => v.menuRoutingAdvancedSetDefault).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

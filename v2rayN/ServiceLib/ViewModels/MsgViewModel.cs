@@ -13,10 +13,9 @@ public class MsgViewModel : MyReactiveObject
     [Reactive]
     public bool AutoRefresh { get; set; }
 
-    public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public MsgViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
 
@@ -64,7 +63,7 @@ public class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
+            await Interaction.Handle((EViewAction.DispatcherShowMsg, sb.ToString()));
         }
         finally
         {

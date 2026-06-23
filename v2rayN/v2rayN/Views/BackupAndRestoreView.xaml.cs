@@ -8,7 +8,7 @@ public partial class BackupAndRestoreView
         menuLocalBackup.Click += MenuLocalBackup_Click;
         menuLocalRestore.Click += MenuLocalRestore_Click;
 
-        ViewModel = new BackupAndRestoreViewModel(UpdateViewHandler);
+        ViewModel = new BackupAndRestoreViewModel();
 
         this.WhenActivated(disposables =>
         {
@@ -23,6 +23,13 @@ public partial class BackupAndRestoreView
 
             this.BindCommand(ViewModel, vm => vm.RemoteBackupCmd, v => v.menuRemoteBackup).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoteRestoreCmd, v => v.menuRemoteRestore).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

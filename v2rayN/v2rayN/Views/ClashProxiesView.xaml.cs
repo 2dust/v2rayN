@@ -8,7 +8,7 @@ public partial class ClashProxiesView
     public ClashProxiesView()
     {
         InitializeComponent();
-        ViewModel = new ClashProxiesViewModel(UpdateViewHandler);
+        ViewModel = new ClashProxiesViewModel();
         lstProxyDetails.PreviewMouseDoubleClick += lstProxyDetails_PreviewMouseDoubleClick;
 
         this.WhenActivated(disposables =>
@@ -28,6 +28,13 @@ public partial class ClashProxiesView
             this.Bind(ViewModel, vm => vm.RuleModeSelected, v => v.cmbRulemode.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SortingSelected, v => v.cmbSorting.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

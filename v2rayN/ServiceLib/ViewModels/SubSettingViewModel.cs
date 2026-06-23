@@ -15,10 +15,9 @@ public class SubSettingViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
     public bool IsModified { get; set; }
 
-    public SubSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public SubSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedSource,
@@ -38,7 +37,7 @@ public class SubSettingViewModel : MyReactiveObject
         }, canEditRemove);
         SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
+            await Interaction.Handle((EViewAction.ShareSub, SelectedSource?.Url));
         }, canEditRemove);
 
         _ = Init();
@@ -72,7 +71,7 @@ public class SubSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await _updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
+        if (await Interaction.Handle((EViewAction.SubEditWindow, item)) == true)
         {
             await RefreshSubItems();
             IsModified = true;
@@ -81,7 +80,7 @@ public class SubSettingViewModel : MyReactiveObject
 
     private async Task DeleteSubAsync()
     {
-        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
         {
             return;
         }

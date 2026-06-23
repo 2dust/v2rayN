@@ -9,7 +9,7 @@ public partial class SubEditWindow
         Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
 
-        ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
+        ViewModel = new SubEditViewModel(subItem);
 
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 
@@ -30,6 +30,13 @@ public partial class SubEditWindow
             this.Bind(ViewModel, vm => vm.SelectedSource.Memo, v => v.txtMemo.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

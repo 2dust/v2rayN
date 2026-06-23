@@ -38,7 +38,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         //    lstProfiles.Drop += LstProfiles_Drop;
         //}
 
-        ViewModel = new ProfilesViewModel(UpdateViewHandler);
+        ViewModel = new ProfilesViewModel();
 
         this.WhenActivated(disposables =>
         {
@@ -89,6 +89,13 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2InnerUriCmd, v => v.menuExport2InnerUri).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
 
             AppEvents.AppExitRequested
               .AsObservable()

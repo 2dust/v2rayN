@@ -6,12 +6,19 @@ public partial class MsgView
     {
         InitializeComponent();
 
-        ViewModel = new MsgViewModel(UpdateViewHandler);
+        ViewModel = new MsgViewModel();
 
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         btnCopy.Click += menuMsgViewCopyAll_Click;

@@ -18,7 +18,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
 
-        ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
+        ViewModel = new AddGroupServerViewModel(profileItem);
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -65,6 +65,13 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)

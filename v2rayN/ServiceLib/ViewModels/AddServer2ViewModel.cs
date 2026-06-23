@@ -13,14 +13,13 @@ public class AddServer2ViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
     public bool IsModified { get; set; }
 
-    public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public AddServer2ViewModel(ProfileItem profileItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _updateView?.Invoke(EViewAction.BrowseServer, null);
+            await Interaction.Handle((EViewAction.BrowseServer, null));
             await Task.CompletedTask;
         });
         EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -55,7 +54,7 @@ public class AddServer2ViewModel : MyReactiveObject
         if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            await Interaction.Handle((EViewAction.CloseWindow, null));
         }
         else
         {

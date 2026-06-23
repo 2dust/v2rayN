@@ -16,7 +16,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
         Loaded += Window_Loaded;
         Closing += SubSettingWindow_Closing;
         KeyDown += SubSettingWindow_KeyDown;
-        ViewModel = new SubSettingViewModel(UpdateViewHandler);
+        ViewModel = new SubSettingViewModel();
         lstSubscription.DoubleTapped += LstSubscription_DoubleTapped;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
 
@@ -34,6 +34,13 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.SubDeleteCmd, v => v.menuSubDelete2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare2).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

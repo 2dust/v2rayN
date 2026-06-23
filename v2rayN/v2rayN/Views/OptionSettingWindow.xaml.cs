@@ -13,7 +13,7 @@ public partial class OptionSettingWindow
         Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
-        ViewModel = new OptionSettingViewModel(UpdateViewHandler);
+        ViewModel = new OptionSettingViewModel();
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
@@ -56,6 +56,8 @@ public partial class OptionSettingWindow
         cmbRootCertificateProvider.ItemsSource = Global.RootCertProviders;
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
+
+        _ = InitSettingFont();
 
         this.WhenActivated(disposables =>
         {
@@ -144,6 +146,13 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
@@ -154,10 +163,6 @@ public partial class OptionSettingWindow
         {
             case EViewAction.CloseWindow:
                 DialogResult = true;
-                break;
-
-            case EViewAction.InitSettingFont:
-                await InitSettingFont();
                 break;
         }
         return await Task.FromResult(true);

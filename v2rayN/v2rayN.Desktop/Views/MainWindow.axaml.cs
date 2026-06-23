@@ -29,7 +29,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
 
-        ViewModel = new MainWindowViewModel(UpdateViewHandler);
+        ViewModel = new MainWindowViewModel();
 
         switch (_config.UiItem.MainGirdOrientation)
         {
@@ -128,6 +128,13 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                     this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
                     break;
             }
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
 
             AppEvents.SendSnackMsgRequested
               .AsObservable()

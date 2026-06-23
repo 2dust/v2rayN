@@ -11,7 +11,7 @@ public partial class FullConfigTemplateWindow
         Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
-        ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
+        ViewModel = new FullConfigTemplateViewModel();
 
         this.WhenActivated(disposables =>
         {
@@ -27,6 +27,13 @@ public partial class FullConfigTemplateWindow
             this.Bind(ViewModel, vm => vm.ProxyDetour4Singbox, v => v.txtProxyDetour4Singbox.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

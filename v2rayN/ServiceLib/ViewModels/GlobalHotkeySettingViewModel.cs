@@ -6,10 +6,9 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public GlobalHotkeySettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public GlobalHotkeySettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
 
@@ -51,7 +50,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            await Interaction.Handle((EViewAction.CloseWindow, null));
         }
         else
         {

@@ -7,10 +7,9 @@ public class SubEditViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public SubEditViewModel(SubItem subItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -49,7 +48,7 @@ public class SubEditViewModel : MyReactiveObject
         if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            await Interaction.Handle((EViewAction.CloseWindow, null));
         }
         else
         {

@@ -6,7 +6,7 @@ public partial class CheckUpdateView
     {
         InitializeComponent();
 
-        ViewModel = new CheckUpdateViewModel(UpdateViewHandler);
+        ViewModel = new CheckUpdateViewModel();
 
         this.WhenActivated(disposables =>
         {
@@ -15,6 +15,13 @@ public partial class CheckUpdateView
             this.Bind(ViewModel, vm => vm.EnableCheckPreReleaseUpdate, v => v.togEnableCheckPreReleaseUpdate.IsChecked).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.CheckOnlyCmd, v => v.btnCheckOnly).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.CheckUpdateCmd, v => v.btnCheckUpdate).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 
