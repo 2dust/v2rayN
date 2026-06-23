@@ -15,7 +15,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         btnCancel.Click += (s, e) => Close();
         _config = AppManager.Instance.Config;
 
-        ViewModel = new OptionSettingViewModel(UpdateViewHandler);
+        ViewModel = new OptionSettingViewModel();
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
@@ -58,6 +58,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
+
+        _ = InitSettingFont();
 
         this.WhenActivated(disposables =>
         {
@@ -137,6 +139,13 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 
@@ -146,10 +155,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         {
             case EViewAction.CloseWindow:
                 Close(true);
-                break;
-
-            case EViewAction.InitSettingFont:
-                await InitSettingFont();
                 break;
         }
         return await Task.FromResult(true);

@@ -11,7 +11,7 @@ public partial class DNSSettingWindow
         Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
 
-        ViewModel = new DNSSettingViewModel(UpdateViewHandler);
+        ViewModel = new DNSSettingViewModel();
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;
@@ -59,6 +59,13 @@ public partial class DNSSettingWindow
 
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
 
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
                 .Select(b => b ? Visibility.Collapsed : Visibility.Visible)

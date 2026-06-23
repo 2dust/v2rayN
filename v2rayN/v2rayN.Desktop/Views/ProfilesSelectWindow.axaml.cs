@@ -25,7 +25,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         lstProfiles.Sorting += LstProfiles_Sorting;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
 
-        ViewModel = new ProfilesSelectViewModel(UpdateViewHandler);
+        ViewModel = new ProfilesSelectViewModel();
         DataContext = ViewModel;
 
         this.WhenActivated(disposables =>
@@ -35,6 +35,13 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         btnCancel.Click += (s, e) => Close(false);

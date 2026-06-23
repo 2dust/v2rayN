@@ -18,7 +18,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
 
-        ViewModel = new RoutingRuleDetailsViewModel(rulesItem, UpdateViewHandler);
+        ViewModel = new RoutingRuleDetailsViewModel(rulesItem);
 
         cmbOutboundTag.ItemsSource = Global.OutboundTags;
         clbProtocol.ItemsSource = Global.RuleProtocols;
@@ -53,6 +53,13 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
             this.Bind(ViewModel, vm => vm.RuleType, v => v.cmbRuleType.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

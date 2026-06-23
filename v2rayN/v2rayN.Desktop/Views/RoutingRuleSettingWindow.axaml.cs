@@ -23,7 +23,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
         //btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_ClickAsync;
 
-        ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
+        ViewModel = new RoutingRuleSettingViewModel(routingItem);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -56,6 +56,13 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
     }
 

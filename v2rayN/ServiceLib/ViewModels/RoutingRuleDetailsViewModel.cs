@@ -25,10 +25,9 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -88,6 +87,6 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await _updateView?.Invoke(EViewAction.CloseWindow, null);
+        await Interaction.Handle((EViewAction.CloseWindow, null));
     }
 }

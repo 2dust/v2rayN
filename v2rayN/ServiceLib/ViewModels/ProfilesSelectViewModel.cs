@@ -40,10 +40,9 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
     #region Init
 
-    public ProfilesSelectViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public ProfilesSelectViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         _subIndexId = _config.SubIndexId ?? string.Empty;
 
         #region WhenAnyValue && ReactiveCommand
@@ -107,7 +106,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             return false;
         }
-        _updateView?.Invoke(EViewAction.CloseWindow, null);
+        Interaction.Handle((EViewAction.CloseWindow, null));
         return true;
     }
 
@@ -125,7 +124,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await _updateView?.Invoke(EViewAction.ProfilesFocus, null);
+        await Interaction.Handle((EViewAction.ProfilesFocus, null));
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -158,7 +157,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
             SelectedProfile = selected ?? lstModel.First();
         }
 
-        await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
+        await Interaction.Handle((EViewAction.DispatcherRefreshServersBiz, null));
     }
 
     private async Task RefreshSubscriptions()

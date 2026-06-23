@@ -71,10 +71,9 @@ public class MainWindowViewModel : MyReactiveObject
 
     #region Init
 
-    public MainWindowViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public MainWindowViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         BlIsWindows = Utils.IsWindows();
 
         #region WhenAnyValue && ReactiveCommand
@@ -191,7 +190,7 @@ public class MainWindowViewModel : MyReactiveObject
         });
         GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (await _updateView?.Invoke(EViewAction.GlobalHotkeySettingWindow, null) == true)
+            if (await Interaction.Handle((EViewAction.GlobalHotkeySettingWindow, null)) == true)
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             }
@@ -369,15 +368,15 @@ public class MainWindowViewModel : MyReactiveObject
         bool? ret = false;
         if (eConfigType == EConfigType.Custom)
         {
-            ret = await _updateView?.Invoke(EViewAction.AddServer2Window, item);
+            ret = await Interaction.Handle((EViewAction.AddServer2Window, item));
         }
         else if (eConfigType.IsGroupType())
         {
-            ret = await _updateView?.Invoke(EViewAction.AddGroupServerWindow, item);
+            ret = await Interaction.Handle((EViewAction.AddGroupServerWindow, item));
         }
         else
         {
-            ret = await _updateView?.Invoke(EViewAction.AddServerWindow, item);
+            ret = await Interaction.Handle((EViewAction.AddServerWindow, item));
         }
         if (ret == true)
         {
@@ -393,7 +392,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         if (clipboardData == null)
         {
-            await _updateView?.Invoke(EViewAction.AddServerViaClipboard, null);
+            await Interaction.Handle((EViewAction.AddServerViaClipboard, null));
             return;
         }
         var ret = await ConfigHandler.AddBatchServers(_config, clipboardData, _config.SubIndexId, false);
@@ -411,8 +410,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaScanAsync()
     {
-        _updateView?.Invoke(EViewAction.ScanScreenTask, null);
-        await Task.CompletedTask;
+        await Interaction.Handle((EViewAction.ScanScreenTask, null));
     }
 
     public async Task ScanScreenResult(byte[]? bytes)
@@ -423,8 +421,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaImageAsync()
     {
-        _updateView?.Invoke(EViewAction.ScanImageTask, null);
-        await Task.CompletedTask;
+        await Interaction.Handle((EViewAction.ScanImageTask, null));
     }
 
     public async Task ScanImageResult(string fileName)
@@ -466,7 +463,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task SubSettingAsync()
     {
-        if (await _updateView?.Invoke(EViewAction.SubSettingWindow, null) == true)
+        if (await Interaction.Handle((EViewAction.SubSettingWindow, null)) == true)
         {
             RefreshSubscriptions();
         }
@@ -483,7 +480,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task OptionSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.OptionSettingWindow, null);
+        var ret = await Interaction.Handle((EViewAction.OptionSettingWindow, null));
         if (ret == true)
         {
             AppEvents.InboundDisplayRequested.Publish();
@@ -493,7 +490,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RoutingSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.RoutingSettingWindow, null);
+        var ret = await Interaction.Handle((EViewAction.RoutingSettingWindow, null));
         if (ret == true)
         {
             await ConfigHandler.InitBuiltinRouting(_config);
@@ -504,7 +501,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task DNSSettingAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.DNSSettingWindow, null);
+        var ret = await Interaction.Handle((EViewAction.DNSSettingWindow, null));
         if (ret == true)
         {
             await Reload();
@@ -513,7 +510,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task FullConfigTemplateAsync()
     {
-        var ret = await _updateView?.Invoke(EViewAction.FullConfigTemplateWindow, null);
+        var ret = await Interaction.Handle((EViewAction.FullConfigTemplateWindow, null));
         if (ret == true)
         {
             await Reload();

@@ -2,7 +2,7 @@ namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject
 {
-    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
+    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
     #region ObservableCollection
@@ -92,7 +92,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     #endregion UI
 
-    public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public StatusBarViewModel()
     {
         _config = AppManager.Instance.Config;
         SelectedRouting = new();
@@ -193,11 +193,6 @@ public class StatusBarViewModel : MyReactiveObject
 
         #region AppEvents
 
-        if (updateView != null)
-        {
-            InitUpdateView(updateView);
-        }
-
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -223,6 +218,11 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await SetListenerType(result));
 
+        AppEvents.ProfilesRefreshRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await RefreshServersBiz());
+
         #endregion AppEvents
 
         _ = Init();
@@ -236,18 +236,6 @@ public class StatusBarViewModel : MyReactiveObject
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
 
         BlRouting = true;
-    }
-
-    public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
-    {
-        _updateView = updateView;
-        if (_updateView != null)
-        {
-            AppEvents.ProfilesRefreshRequested
-              .AsObservable()
-              .ObserveOn(RxSchedulers.MainThreadScheduler)
-              .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
-        }
     }
 
     private async Task CopyProxyCmdToClipboard()
@@ -264,7 +252,7 @@ public class StatusBarViewModel : MyReactiveObject
         sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
         sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
-        await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+        await Interaction.Handle((EViewAction.SetClipboardData, sb.ToString()));
     }
 
     private async Task AddServerViaClipboard()
@@ -406,7 +394,14 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (blChange)
         {
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            try
+            {
+                await Interaction.Handle((EViewAction.DispatcherRefreshIcon, null));
+            }
+            catch
+            {
+                // Ignore
+            }
         }
     }
 
@@ -442,7 +437,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             AppEvents.ReloadRequested.Publish();
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            await Interaction.Handle((EViewAction.DispatcherRefreshIcon, null));
         }
     }
 
@@ -479,7 +474,7 @@ public class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
+                bool? passwordResult = await Interaction.Handle((EViewAction.PasswordInput, null));
                 if (passwordResult == false)
                 {
                     _config.TunModeItem.EnableTun = false;

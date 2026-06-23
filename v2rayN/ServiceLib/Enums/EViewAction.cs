@@ -16,7 +16,6 @@ public enum EViewAction
     ScanImageTask,
     BrowseServer,
     ImportRulesFromFile,
-    InitSettingFont,
     PasswordInput,
     SubEditWindow,
     RoutingRuleSettingWindow,

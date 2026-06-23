@@ -10,7 +10,7 @@ public partial class SubSettingWindow
 
         Owner = Application.Current.MainWindow;
 
-        ViewModel = new SubSettingViewModel(UpdateViewHandler);
+        ViewModel = new SubSettingViewModel();
         Closing += SubSettingWindow_Closing;
         lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
@@ -30,6 +30,13 @@ public partial class SubSettingWindow
             this.BindCommand(ViewModel, vm => vm.SubDeleteCmd, v => v.menuSubDelete2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare2).DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

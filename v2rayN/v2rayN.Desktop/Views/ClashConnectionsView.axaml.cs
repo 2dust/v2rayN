@@ -11,7 +11,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
 
         _config = AppManager.Instance.Config;
 
-        ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
+        ViewModel = new ClashConnectionsViewModel();
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
         this.WhenActivated(disposables =>
@@ -31,6 +31,13 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
               .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
+
+            ViewModel.Interaction.RegisterHandler(async interaction =>
+            {
+                var (action, obj) = interaction.Input;
+                var result = await UpdateViewHandler(action, obj);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
 
         RestoreUI();
