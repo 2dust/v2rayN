@@ -57,7 +57,7 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
     {
         Domain = Utils.Convert2Comma(Domain);
         IP = Utils.Convert2Comma(IP);
-        Process = Utils.Convert2Comma(Process);
+        Process = Utils.ParseProcess(Process);
 
         if (AutoSort)
         {
