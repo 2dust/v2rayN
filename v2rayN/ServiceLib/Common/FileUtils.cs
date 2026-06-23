@@ -241,6 +241,7 @@ public static class FileUtils
         // Check if the file already exists and if we should overwrite it
         if (!overwrite && File.Exists(shFilePath))
         {
+            await Utils.SetLinuxChmod(shFilePath);
             return shFilePath;
         }
 
