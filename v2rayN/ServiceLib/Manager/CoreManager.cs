@@ -15,6 +15,8 @@ public class CoreManager
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
+    private const int SocksProxyReadyAttempts = 10;
+    private static readonly TimeSpan SocksProxyReadyRetryDelay = TimeSpan.FromMilliseconds(500);
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -90,9 +92,9 @@ public class CoreManager
         }
 
         await CoreStart(mainContext);
-        await CoreStartPreService(preContext);
+        var preServiceStarted = await CoreStartPreService(preContext);
 
-        AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
+        AppManager.Instance.RunningCoreType = preServiceStarted ? preContext!.RunCoreType : mainContext.RunCoreType;
 
         if (_processService != null)
         {
@@ -188,10 +190,15 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(CoreConfigContext? preContext)
+    private async Task<bool> CoreStartPreService(CoreConfigContext? preContext)
     {
         if (_processService is { HasExited: false } && preContext != null)
         {
+            if (!await WaitForPreServiceDependencyReady(preContext))
+            {
+                return false;
+            }
+
             var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
             var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
             var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
@@ -201,10 +208,76 @@ public class CoreManager
                 var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
                 if (proc is null)
                 {
-                    return;
+                    return false;
                 }
                 _processPreService = proc;
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private async Task<bool> WaitForPreServiceDependencyReady(CoreConfigContext preContext)
+    {
+        if (!ShouldWaitForSocksPreServiceDependency(preContext, out var address, out var port))
+        {
+            return true;
+        }
+
+        var endpoint = $"{address}:{port}";
+        await UpdateFunc(false, $"Waiting for SOCKS proxy {endpoint} before starting TUN pre-service...");
+
+        for (var attempt = 1; attempt <= SocksProxyReadyAttempts; attempt++)
+        {
+            if (_processService is null or { HasExited: true })
+            {
+                var msg = $"Main core exited before SOCKS proxy {endpoint} became ready.";
+                Logging.SaveLog($"{_tag}: {msg}");
+                await UpdateFunc(true, msg);
+                return false;
+            }
+
+            if (await CanConnectTcp(address!, port!.Value, TimeSpan.FromMilliseconds(300)))
+            {
+                await UpdateFunc(false, $"SOCKS proxy port {endpoint} is ready.");
+                return true;
+            }
+
+            await Task.Delay(SocksProxyReadyRetryDelay);
+        }
+
+        var timeoutMsg = $"SOCKS proxy {endpoint} is not ready; skip starting TUN pre-service.";
+        Logging.SaveLog($"{_tag}: {timeoutMsg}");
+        await UpdateFunc(true, timeoutMsg);
+        return false;
+    }
+
+    private static bool ShouldWaitForSocksPreServiceDependency(CoreConfigContext preContext, out string? address, out int? port)
+    {
+        address = preContext.Node.Address;
+        if (address.IsNullOrEmpty())
+        {
+            address = Global.Loopback;
+        }
+        port = preContext.Node.Port;
+
+        return preContext.Node.ConfigType == EConfigType.SOCKS
+            && port is > 0 and <= Global.MaxPort;
+    }
+
+    private static async Task<bool> CanConnectTcp(string address, int port, TimeSpan timeout)
+    {
+        try
+        {
+            using var cts = new CancellationTokenSource(timeout);
+            using var client = new TcpClient();
+            await client.ConnectAsync(address, port, cts.Token);
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 
