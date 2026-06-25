@@ -2,6 +2,9 @@ namespace ServiceLib.ViewModels;
 
 public class RoutingSettingViewModel : MyReactiveObject
 {
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+    public Interaction<RoutingItem, bool> ShowRoutingRuleSettingInteraction { get; } = new();
+
     #region Reactive
 
     public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
@@ -130,7 +133,7 @@ public class RoutingSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await Interaction.Handle((EViewAction.RoutingRuleSettingWindow, item)) == true)
+        if (await ShowRoutingRuleSettingInteraction.Handle(item) == true)
         {
             await RefreshRoutingItems();
             IsModified = true;
@@ -144,7 +147,7 @@ public class RoutingSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }

@@ -2,6 +2,17 @@ namespace ServiceLib.ViewModels;
 
 public class ProfilesViewModel : MyReactiveObject
 {
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+    public Interaction<ProfileItem, bool> SaveFileDialogInteraction { get; } = new();
+    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
+    public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
+    public Interaction<string, Unit> ShareServerInteraction { get; } = new();
+    public Interaction<SubItem, bool> EditSubInteraction { get; } = new();
+    public Interaction<Unit, Unit> DispatcherRefreshServersBizInteraction { get; } = new();
+    public Interaction<ProfileItem, bool> AddServerInteraction { get; } = new();
+    public Interaction<ProfileItem, bool> AddServer2Interaction { get; } = new();
+    public Interaction<ProfileItem, bool> AddServerGroupInteraction { get; } = new();
+
     #region private prop
 
     private List<ProfileItem> _lstProfile;
@@ -349,7 +360,7 @@ public class ProfilesViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await Interaction.Handle((EViewAction.ProfilesFocus, null));
+        await ProfilesFocusInteraction.Handle(Unit.Default);
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -391,7 +402,7 @@ public class ProfilesViewModel : MyReactiveObject
             SelectedProfile = selected ?? lstModel.First();
         }
 
-        await Interaction.Handle((EViewAction.DispatcherRefreshServersBiz, null));
+        await DispatcherRefreshServersBizInteraction.Handle(Unit.Default);
     }
 
     private async Task RefreshSubscriptions()
@@ -490,15 +501,15 @@ public class ProfilesViewModel : MyReactiveObject
         bool? ret = false;
         if (eConfigType == EConfigType.Custom)
         {
-            ret = await Interaction.Handle((EViewAction.AddServer2Window, item));
+            ret = await AddServer2Interaction.Handle(item);
         }
         else if (eConfigType.IsGroupType())
         {
-            ret = await Interaction.Handle((EViewAction.AddGroupServerWindow, item));
+            ret = await AddServerGroupInteraction.Handle(item);
         }
         else
         {
-            ret = await Interaction.Handle((EViewAction.AddServerWindow, item));
+            ret = await AddServerInteraction.Handle(item);
         }
         if (ret == true)
         {
@@ -517,7 +528,7 @@ public class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -538,7 +549,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private async Task RemoveDuplicateServer()
     {
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -613,7 +624,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        await Interaction.Handle((EViewAction.ShareServer, url));
+        await ShareServerInteraction.Handle(url);
     }
 
     private async Task GenGroupAllServer()
@@ -782,13 +793,13 @@ public class ProfilesViewModel : MyReactiveObject
             }
             else
             {
-                await Interaction.Handle((EViewAction.SetClipboardData, result.Data));
+                await SetClipboardDataInteraction.Handle((string)result.Data);
                 NoticeManager.Instance.SendMessage(ResUI.OperationSuccess);
             }
         }
         else
         {
-            await Interaction.Handle((EViewAction.SaveFileDialog, item));
+            await SaveFileDialogInteraction.Handle(item);
         }
     }
 
@@ -837,11 +848,11 @@ public class ProfilesViewModel : MyReactiveObject
         {
             if (blEncode)
             {
-                await Interaction.Handle((EViewAction.SetClipboardData, Utils.Base64Encode(sb.ToString())));
+                await SetClipboardDataInteraction.Handle(Utils.Base64Encode(sb.ToString()));
             }
             else
             {
-                await Interaction.Handle((EViewAction.SetClipboardData, sb.ToString()));
+                await SetClipboardDataInteraction.Handle(sb.ToString());
             }
             NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
         }
@@ -864,7 +875,7 @@ public class ProfilesViewModel : MyReactiveObject
 
         if (!result.IsNullOrEmpty())
         {
-            await Interaction.Handle((EViewAction.SetClipboardData, result));
+            await SetClipboardDataInteraction.Handle(result);
             NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
         }
         else
@@ -892,7 +903,7 @@ public class ProfilesViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await Interaction.Handle((EViewAction.SubEditWindow, item)) == true)
+        if (await EditSubInteraction.Handle(item) == true)
         {
             await RefreshSubscriptions();
             await SubSelectedChangedAsync(true);
@@ -907,7 +918,7 @@ public class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }

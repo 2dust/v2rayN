@@ -2,6 +2,10 @@ namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject
 {
+    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
+    public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
+    public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
@@ -252,7 +256,7 @@ public class StatusBarViewModel : MyReactiveObject
         sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
         sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
-        await Interaction.Handle((EViewAction.SetClipboardData, sb.ToString()));
+        await SetClipboardDataInteraction.Handle(sb.ToString());
     }
 
     private async Task AddServerViaClipboard()
@@ -396,7 +400,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             try
             {
-                await Interaction.Handle((EViewAction.DispatcherRefreshIcon, null));
+                await DispatcherRefreshIconInteraction.Handle(Unit.Default);
             }
             catch
             {
@@ -437,7 +441,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             AppEvents.ReloadRequested.Publish();
-            await Interaction.Handle((EViewAction.DispatcherRefreshIcon, null));
+            await DispatcherRefreshIconInteraction.Handle(Unit.Default);
         }
     }
 
@@ -474,8 +478,8 @@ public class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                bool? passwordResult = await Interaction.Handle((EViewAction.PasswordInput, null));
-                if (passwordResult == false)
+                var password = await PasswordInputInteraction.Handle(Unit.Default);
+                if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;
                     return;

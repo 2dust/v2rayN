@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class AddGroupServerViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -229,7 +231,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {

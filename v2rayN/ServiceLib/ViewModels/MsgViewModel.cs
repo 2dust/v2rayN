@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class MsgViewModel : MyReactiveObject
 {
+    public Interaction<string, Unit> DispatcherShowMsgInteraction { get; } = new();
+
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
     private int _showLock = 0; // 0 = unlocked, 1 = locked
@@ -63,7 +65,7 @@ public class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await Interaction.Handle((EViewAction.DispatcherShowMsg, sb.ToString()));
+            await DispatcherShowMsgInteraction.Handle(sb.ToString());
         }
         finally
         {

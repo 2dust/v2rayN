@@ -31,13 +31,6 @@ public partial class ClashConnectionsView
             this.BindCommand(ViewModel, vm => vm.ConnectionCloseAllCmd, v => v.btnConnectionCloseAll).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
-            {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
             AppEvents.AppExitRequested
                 .AsObservable()
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -46,11 +39,6 @@ public partial class ClashConnectionsView
         });
 
         RestoreUI();
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        return await Task.FromResult(true);
     }
 
     private void BtnAutofitColumnWidth_Click(object sender, RoutedEventArgs e)

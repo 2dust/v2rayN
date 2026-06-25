@@ -32,34 +32,18 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
             this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
+                Close(true);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.BrowseConfigFileInteraction.RegisterHandler(async interaction =>
+            {
+                var fileName = await UI.OpenFileDialog(this, null);
+                interaction.SetOutput(fileName);
             }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-
-            case EViewAction.BrowseServer:
-                var fileName = await UI.OpenFileDialog(this, null);
-                if (fileName.IsNullOrEmpty())
-                {
-                    return false;
-                }
-                ViewModel?.BrowseServer(fileName);
-                break;
-        }
-
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
