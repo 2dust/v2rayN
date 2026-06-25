@@ -62,11 +62,10 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
+                Close(true);
+                interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
 
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
@@ -78,17 +77,6 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkDnsObjectDoc_Click(object? sender, RoutedEventArgs e)

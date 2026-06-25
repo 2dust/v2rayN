@@ -35,50 +35,37 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare2).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var message = interaction.Input;
+                var result = await UI.ShowYesNo(this, message);
+                interaction.SetOutput(result == ButtonResult.Yes);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareSubInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(Unit.Default);
+                    return;
+                }
+                await ShareSub(url);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.EditSubInteraction.RegisterHandler(async interaction =>
+            {
+                var subItem = interaction.Input;
+                if (subItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new SubEditWindow(subItem).ShowDialog<bool>(this);
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close();
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveServer) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                var window = new SubEditWindow((SubItem)obj);
-                await window.ShowDialog(this);
-                break;
-
-            case EViewAction.ShareSub:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                await ShareSub((string)obj);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private async Task ShareSub(string url)

@@ -129,10 +129,96 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                     break;
             }
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var result = await AvaUtils.GetClipboardData(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ScanScreenInteraction.RegisterHandler(async interaction =>
+            {
+                ShowHideWindow(false);
+                await Task.Delay(200);
+                var result = QRCodeAvaloniaUtils.CaptureScreen();
+                ShowHideWindow(true);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.BrowseImageFileInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await UI.OpenFileDialog(this, null);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServerInteraction.RegisterHandler(async interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new AddServerWindow(profileItem).ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServer2Interaction.RegisterHandler(async interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new AddServer2Window(profileItem).ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServerGroupInteraction.RegisterHandler(async interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new AddGroupServerWindow(profileItem).ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowDNSSettingInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new DNSSettingWindow().ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowRoutingSettingInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new RoutingSettingWindow().ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowOptionSettingInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new OptionSettingWindow().ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowFullConfigTemplateInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new FullConfigTemplateWindow().ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowGlobalHotkeySettingInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new GlobalHotkeySettingWindow().ShowDialog<bool>(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowSubSettingInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await new SubSettingWindow().ShowDialog<bool>(this);
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
@@ -193,70 +279,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private async Task DelegateSnackMsg(string content)
     {
-        _manager?.Show(new Notification(null, content, NotificationType.Information));
+        _manager?.Show(new Avalonia.Controls.Notifications.Notification(null, content, NotificationType.Information));
         await Task.CompletedTask;
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.AddServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
-
-            case EViewAction.AddServer2Window:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(this);
-
-            case EViewAction.AddGroupServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(this);
-
-            case EViewAction.DNSSettingWindow:
-                return await new DNSSettingWindow().ShowDialog<bool>(this);
-
-            case EViewAction.FullConfigTemplateWindow:
-                return await new FullConfigTemplateWindow().ShowDialog<bool>(this);
-
-            case EViewAction.RoutingSettingWindow:
-                return await new RoutingSettingWindow().ShowDialog<bool>(this);
-
-            case EViewAction.OptionSettingWindow:
-                return await new OptionSettingWindow().ShowDialog<bool>(this);
-
-            case EViewAction.GlobalHotkeySettingWindow:
-                return await new GlobalHotkeySettingWindow().ShowDialog<bool>(this);
-
-            case EViewAction.SubSettingWindow:
-                return await new SubSettingWindow().ShowDialog<bool>(this);
-
-            case EViewAction.ScanScreenTask:
-                await ScanScreenTaskAsync();
-                break;
-
-            case EViewAction.ScanImageTask:
-                await ScanImageTaskAsync();
-                break;
-
-            case EViewAction.AddServerViaClipboard:
-                await AddServerViaClipboardAsync();
-                break;
-        }
-
-        return await Task.FromResult(true);
     }
 
     private void OnHotkeyHandler(EGlobalHotkey e)
@@ -356,20 +380,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
 
         ShowHideWindow(true);
-    }
-
-    private async Task ScanImageTaskAsync()
-    {
-        var fileName = await UI.OpenFileDialog(this, null);
-        if (fileName.IsNullOrEmpty())
-        {
-            return;
-        }
-
-        if (ViewModel != null)
-        {
-            await ViewModel.ScanImageResult(fileName);
-        }
     }
 
     private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)

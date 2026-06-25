@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class OptionSettingViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     #region Core
 
     [Reactive] public int LocalPort { get; set; }
@@ -426,7 +428,7 @@ public class OptionSettingViewModel : MyReactiveObject
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {

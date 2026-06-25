@@ -129,10 +129,102 @@ public partial class MainWindow
                     break;
             }
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var clipboardData = WindowsUtils.GetClipboardData();
+                interaction.SetOutput(clipboardData);
+            }).DisposeWith(disposables);
+
+            ViewModel.ScanScreenInteraction.RegisterHandler(interaction =>
+            {
+                ShowHideWindow(false);
+                if (Application.Current?.MainWindow is { } window)
+                {
+                    var bytes = QRCodeWindowsUtils.CaptureScreen(window);
+                    interaction.SetOutput(bytes);
+                }
+                ShowHideWindow(true);
+            }).DisposeWith(disposables);
+
+            ViewModel.BrowseImageFileInteraction.RegisterHandler(interaction =>
+            {
+                if (UI.OpenFileDialog(out var fileName, "PNG|*.png|All|*.*") != true)
+                {
+                    interaction.SetOutput(null);
+                    return;
+                }
+                interaction.SetOutput(fileName);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServerInteraction.RegisterHandler(interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = new AddServerWindow(profileItem).ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServer2Interaction.RegisterHandler(interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = new AddServer2Window(profileItem).ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.AddServerGroupInteraction.RegisterHandler(interaction =>
+            {
+                var profileItem = interaction.Input;
+                if (profileItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = new AddGroupServerWindow(profileItem).ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowDNSSettingInteraction.RegisterHandler(interaction =>
+            {
+                var result = new DNSSettingWindow().ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowRoutingSettingInteraction.RegisterHandler(interaction =>
+            {
+                var result = new RoutingSettingWindow().ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowOptionSettingInteraction.RegisterHandler(interaction =>
+            {
+                var result = new OptionSettingWindow().ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowFullConfigTemplateInteraction.RegisterHandler(interaction =>
+            {
+                var result = new FullConfigTemplateWindow().ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowGlobalHotkeySettingInteraction.RegisterHandler(interaction =>
+            {
+                var result = new GlobalHotkeySettingWindow().ShowDialog() ?? false;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowSubSettingInteraction.RegisterHandler(interaction =>
+            {
+                var result = new SubSettingWindow().ShowDialog() ?? false;
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
@@ -190,68 +282,6 @@ public partial class MainWindow
     {
         MainSnackbar.MessageQueue?.Enqueue(content);
         await Task.CompletedTask;
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.AddServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddServer2Window:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddGroupServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.DNSSettingWindow:
-                return new DNSSettingWindow().ShowDialog() ?? false;
-
-            case EViewAction.RoutingSettingWindow:
-                return new RoutingSettingWindow().ShowDialog() ?? false;
-
-            case EViewAction.OptionSettingWindow:
-                return new OptionSettingWindow().ShowDialog() ?? false;
-
-            case EViewAction.FullConfigTemplateWindow:
-                return new FullConfigTemplateWindow().ShowDialog() ?? false;
-
-            case EViewAction.GlobalHotkeySettingWindow:
-                return new GlobalHotkeySettingWindow().ShowDialog() ?? false;
-
-            case EViewAction.SubSettingWindow:
-                return new SubSettingWindow().ShowDialog() ?? false;
-
-            case EViewAction.ScanScreenTask:
-                await ScanScreenTaskAsync();
-                break;
-
-            case EViewAction.ScanImageTask:
-                await ScanImageTaskAsync();
-                break;
-
-            case EViewAction.AddServerViaClipboard:
-                await AddServerViaClipboardAsync();
-                break;
-        }
-
-        return await Task.FromResult(true);
     }
 
     private void OnHotkeyHandler(EGlobalHotkey e)
@@ -354,19 +384,6 @@ public partial class MainWindow
         }
 
         ShowHideWindow(true);
-    }
-
-    private async Task ScanImageTaskAsync()
-    {
-        if (UI.OpenFileDialog(out var fileName, "PNG|*.png|All|*.*") != true)
-        {
-            return;
-        }
-        if (fileName.IsNullOrEmpty())
-        {
-            return;
-        }
-        await ViewModel?.ScanImageResult(fileName);
     }
 
     private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)

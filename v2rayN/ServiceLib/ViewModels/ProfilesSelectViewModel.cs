@@ -2,6 +2,9 @@ namespace ServiceLib.ViewModels;
 
 public class ProfilesSelectViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
+
     #region private prop
 
     private string _serverFilter = string.Empty;
@@ -106,7 +109,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             return false;
         }
-        Interaction.Handle((EViewAction.CloseWindow, null));
+        _ = CloseWindowInteraction.Handle(Unit.Default);
         return true;
     }
 
@@ -124,7 +127,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await Interaction.Handle((EViewAction.ProfilesFocus, null));
+        await ProfilesFocusInteraction.Handle(Unit.Default);
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -156,8 +159,6 @@ public class ProfilesSelectViewModel : MyReactiveObject
             var selected = lstModel.FirstOrDefault(t => t.IndexId == _config.IndexId);
             SelectedProfile = selected ?? lstModel.First();
         }
-
-        await Interaction.Handle((EViewAction.DispatcherRefreshServersBiz, null));
     }
 
     private async Task RefreshSubscriptions()

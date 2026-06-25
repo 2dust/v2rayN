@@ -66,11 +66,10 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
+                Close(true);
+                interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
 
@@ -86,17 +85,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)
     {
         e.Row.Header = $" {e.Row.Index + 1}";
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

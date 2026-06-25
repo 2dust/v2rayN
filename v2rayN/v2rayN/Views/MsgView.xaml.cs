@@ -13,11 +13,14 @@ public partial class MsgView
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.DispatcherShowMsgInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
+                var msg = interaction.Input;
+                Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    ShowMsg(msg);
+                }, DispatcherPriority.ApplicationIdle);
+                interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
 
@@ -29,25 +32,6 @@ public partial class MsgView
         menuMsgViewClear.Click += menuMsgViewClear_Click;
 
         cmbMsgFilter.ItemsSource = Global.PresetMsgFilters;
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.DispatcherShowMsg:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                Application.Current?.Dispatcher.Invoke(() =>
-                {
-                    ShowMsg(obj);
-                }, DispatcherPriority.ApplicationIdle);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void ShowMsg(object msg)
