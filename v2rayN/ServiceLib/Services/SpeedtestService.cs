@@ -46,7 +46,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         switch (actionType)
         {
             case ESpeedActionType.Tcping:
-                await RunTcpingAsync(lstSelected);
+                await RunTcpingAsync(lstSelected, exitLoopKey);
                 break;
 
             case ESpeedActionType.Realping:
@@ -135,16 +135,28 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return lstSelected;
     }
 
-    private async Task RunTcpingAsync(List<ServerTestItem> selecteds)
+    private async Task RunTcpingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
         var pageSize = Math.Min(selecteds.Count, _speedTestPageSize);
         var lstBatch = GetTestBatchItem(selecteds, pageSize);
 
         foreach (var lst in lstBatch)
         {
+            if (ShouldStopTest(exitLoopKey))
+            {
+                await UpdateFunc("", ResUI.SpeedtestingSkip);
+                return;
+            }
+
             List<Task> tasks = [];
+
             foreach (var it in lst)
             {
+                if (ShouldStopTest(exitLoopKey))
+                {
+                    return;
+                }
+
                 tasks.Add(Task.Run(async () =>
                 {
                     try
@@ -160,7 +172,14 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     }
                 }));
             }
+
             await Task.WhenAll(tasks);
+
+            if (ShouldStopTest(exitLoopKey))
+            {
+                return;
+            }
+
             await Task.Delay(_delayInterval);
         }
     }
