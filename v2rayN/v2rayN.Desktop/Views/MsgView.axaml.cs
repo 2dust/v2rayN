@@ -17,11 +17,12 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.DispatcherShowMsgInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
+                var msg = interaction.Input;
+                Dispatcher.UIThread.Post(() => ShowMsg(msg),
+                    DispatcherPriority.ApplicationIdle);
+                interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
 
@@ -29,23 +30,6 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                 kv => kv.Key,
                 kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
             ));
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.DispatcherShowMsg:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                Dispatcher.UIThread.Post(() => ShowMsg(obj),
-                    DispatcherPriority.ApplicationIdle);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void ShowMsg(object msg)

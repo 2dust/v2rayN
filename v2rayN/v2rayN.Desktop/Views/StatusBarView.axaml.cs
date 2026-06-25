@@ -32,11 +32,24 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             this.Bind(ViewModel, vm => vm.SystemProxySelected, v => v.cmbSystemProxy.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(async interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var strData = interaction.Input;
+                await AvaUtils.SetClipboardData(this, strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.PasswordInputInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await PasswordInputAsync();
                 interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshIconInteraction.RegisterHandler(interaction =>
+            {
+                Dispatcher.UIThread.Post(RefreshIcon,
+                    DispatcherPriority.Default);
+                interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
 
@@ -46,30 +59,6 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         {
             cmbSystemProxy.Items.RemoveAt(cmbSystemProxy.Items.Count - 1);
         }
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshIcon:
-                Dispatcher.UIThread.Post(RefreshIcon,
-                DispatcherPriority.Default);
-                break;
-
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
-
-            case EViewAction.PasswordInput:
-                return await PasswordInputAsync();
-        }
-        return await Task.FromResult(true);
     }
 
     private void RefreshIcon()
@@ -83,7 +72,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         }
     }
 
-    private async Task<bool> PasswordInputAsync()
+    private async Task<string?> PasswordInputAsync()
     {
         var dialog = new SudoPasswordInputView();
         var obj = await DialogHost.Show(dialog);
@@ -92,11 +81,11 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         if (password.IsNullOrEmpty())
         {
             togEnableTun.IsChecked = false;
-            return false;
+            return password;
         }
 
         AppManager.Instance.LinuxSudoPwd = password;
-        return true;
+        return password;
     }
 
     private void TxtRunningServerDisplay_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)

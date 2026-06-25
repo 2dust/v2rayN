@@ -57,74 +57,50 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                Close(true);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
+            {
+                var message = interaction.Input;
+                var result = await UI.ShowYesNo(this, message);
+                interaction.SetOutput(result == ButtonResult.Yes);
+            }).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(async interaction =>
+            {
+                var strData = interaction.Input;
+                await AvaUtils.SetClipboardData(this, strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
+            {
+                var result = await AvaUtils.GetClipboardData(this);
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.BrowseRulesFileInteraction.RegisterHandler(async interaction =>
+            {
+                var fileName = await UI.OpenFileDialog(this, null);
+                interaction.SetOutput(fileName);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowRoutingRuleDetailsInteraction.RegisterHandler(async interaction =>
+            {
+                var rulesItem = interaction.Input;
+                if (rulesItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new RoutingRuleDetailsWindow(rulesItem).ShowDialog<bool>(this);
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveServer) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.AddBatchRoutingRulesYesNo:
-                if (await UI.ShowYesNo(this, ResUI.AddBatchRoutingRulesYesNo) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleDetailsWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog<bool>(this);
-
-            case EViewAction.ImportRulesFromFile:
-                var fileName = await UI.OpenFileDialog(this, null);
-                if (fileName.IsNullOrEmpty())
-                {
-                    return false;
-                }
-                ViewModel?.ImportRulesFromFileAsync(fileName);
-                break;
-
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
-
-            case EViewAction.ImportRulesFromClipboard:
-                var clipboardData = await AvaUtils.GetClipboardData(this);
-                if (clipboardData.IsNotEmpty())
-                {
-                    ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
-                }
-
-                break;
-        }
-
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

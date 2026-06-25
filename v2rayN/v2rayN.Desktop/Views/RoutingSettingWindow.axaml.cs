@@ -36,35 +36,25 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var message = interaction.Input;
+                var result = await UI.ShowYesNo(this, message);
+                interaction.SetOutput(result == ButtonResult.Yes);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShowRoutingRuleSettingInteraction.RegisterHandler(async interaction =>
+            {
+                var routingItem = interaction.Input;
+                if (routingItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = await new RoutingRuleSettingWindow(routingItem).ShowDialog<bool>(this);
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveRules) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleSettingWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog<bool>(this);
-        }
-        return await Task.FromResult(true);
     }
 
     private bool _closed = false;

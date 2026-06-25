@@ -31,52 +31,41 @@ public partial class SubSettingWindow
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare2).DisposeWith(disposables);
 
-            ViewModel.Interaction.RegisterHandler(async interaction =>
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
             {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareSubInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(Unit.Default);
+                    return;
+                }
+                await ShareSub(url);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.EditSubInteraction.RegisterHandler(interaction =>
+            {
+                var subItem = interaction.Input;
+                if (subItem is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var result = new SubEditWindow(subItem).ShowDialog() ?? false;
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.ShareSub:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                ShareSub((string)obj);
-                break;
-        }
-        return await Task.FromResult(true);
-    }
-
-    private async void ShareSub(string url)
+    private async Task ShareSub(string url)
     {
         if (url.IsNullOrEmpty())
         {

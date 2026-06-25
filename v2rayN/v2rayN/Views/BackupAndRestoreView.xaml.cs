@@ -23,13 +23,6 @@ public partial class BackupAndRestoreView
 
             this.BindCommand(ViewModel, vm => vm.RemoteBackupCmd, v => v.menuRemoteBackup).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoteRestoreCmd, v => v.menuRemoteRestore).DisposeWith(disposables);
-
-            ViewModel.Interaction.RegisterHandler(async interaction =>
-            {
-                var (action, obj) = interaction.Input;
-                var result = await UpdateViewHandler(action, obj);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
         });
     }
 
@@ -49,10 +42,5 @@ public partial class BackupAndRestoreView
             return;
         }
         ViewModel?.LocalRestore(fileName);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        return await Task.FromResult(true);
     }
 }

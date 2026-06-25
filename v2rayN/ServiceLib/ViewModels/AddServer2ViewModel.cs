@@ -2,6 +2,9 @@ namespace ServiceLib.ViewModels;
 
 public class AddServer2ViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public Interaction<Unit, string?> BrowseConfigFileInteraction { get; } = new();
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -19,8 +22,12 @@ public class AddServer2ViewModel : MyReactiveObject
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Interaction.Handle((EViewAction.BrowseServer, null));
-            await Task.CompletedTask;
+            var fileName = await BrowseConfigFileInteraction.Handle(Unit.Default);
+            if (fileName.IsNullOrEmpty())
+            {
+                return;
+            }
+            await BrowseServer(fileName);
         });
         EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -54,7 +61,7 @@ public class AddServer2ViewModel : MyReactiveObject
         if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {

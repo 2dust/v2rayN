@@ -2,6 +2,10 @@ namespace ServiceLib.ViewModels;
 
 public class SubSettingViewModel : MyReactiveObject
 {
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+    public Interaction<string, Unit> ShareSubInteraction { get; } = new();
+    public Interaction<SubItem, bool> EditSubInteraction { get; } = new();
+
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
     [Reactive]
@@ -37,7 +41,7 @@ public class SubSettingViewModel : MyReactiveObject
         }, canEditRemove);
         SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Interaction.Handle((EViewAction.ShareSub, SelectedSource?.Url));
+            await ShareSubInteraction.Handle(SelectedSource?.Url);
         }, canEditRemove);
 
         _ = Init();
@@ -71,7 +75,7 @@ public class SubSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await Interaction.Handle((EViewAction.SubEditWindow, item)) == true)
+        if (await EditSubInteraction.Handle(item) == true)
         {
             await RefreshSubItems();
             IsModified = true;
@@ -80,7 +84,7 @@ public class SubSettingViewModel : MyReactiveObject
 
     private async Task DeleteSubAsync()
     {
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }

@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class SubEditViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     [Reactive]
     public SubItem SelectedSource { get; set; }
 
@@ -48,7 +50,7 @@ public class SubEditViewModel : MyReactiveObject
         if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {

@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class GlobalHotkeySettingViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     private readonly List<KeyEventItem> _globalHotkeys;
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
@@ -50,7 +52,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject
 
         if (await ConfigHandler.SaveConfig(_config) == 0)
         {
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {

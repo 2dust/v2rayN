@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class DNSSettingViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     [Reactive] public bool? UseSystemHosts { get; set; }
     [Reactive] public bool? AddCommonHosts { get; set; }
     [Reactive] public bool? FakeIP { get; set; }
@@ -182,6 +184,6 @@ public class DNSSettingViewModel : MyReactiveObject
         await ConfigHandler.SaveDNSItems(_config, item2);
 
         await ConfigHandler.SaveConfig(_config);
-        await Interaction.Handle((EViewAction.CloseWindow, null));
+        await CloseWindowInteraction.Handle(Unit.Default);
     }
 }

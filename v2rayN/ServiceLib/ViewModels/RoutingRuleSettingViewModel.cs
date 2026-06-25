@@ -2,6 +2,13 @@ namespace ServiceLib.ViewModels;
 
 public class RoutingRuleSettingViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
+    public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
+    public Interaction<Unit, string?> BrowseRulesFileInteraction { get; } = new();
+    public Interaction<RulesItem, bool> ShowRoutingRuleDetailsInteraction { get; } = new();
+
     private List<RulesItem> _rules;
 
     [Reactive]
@@ -41,7 +48,8 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         });
         ImportRulesFromFileCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Interaction.Handle((EViewAction.ImportRulesFromFile, null));
+            var fileName = await BrowseRulesFileInteraction.Handle(Unit.Default);
+            await ImportRulesFromFileAsync(fileName);
         });
         ImportRulesFromClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -130,7 +138,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await Interaction.Handle((EViewAction.RoutingRuleDetailsWindow, item)) == true)
+        if (await ShowRoutingRuleDetailsInteraction.Handle(item) == true)
         {
             if (blNew)
             {
@@ -147,7 +155,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
-        if (await Interaction.Handle((EViewAction.ShowYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -190,7 +198,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            await Interaction.Handle((EViewAction.SetClipboardData, JsonUtils.Serialize(lst, options)));
+            await SetClipboardDataInteraction.Handle(JsonUtils.Serialize(lst, options));
         }
     }
 
@@ -233,7 +241,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await Interaction.Handle((EViewAction.CloseWindow, null));
+            await CloseWindowInteraction.Handle(Unit.Default);
         }
         else
         {
@@ -265,12 +273,18 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
 
     public async Task ImportRulesFromClipboardAsync(string? clipboardData)
     {
+        var stringData = clipboardData;
         if (clipboardData == null)
         {
-            await Interaction.Handle((EViewAction.ImportRulesFromClipboard, null));
-            return;
+            var result = await ReadTextFromClipboardInteraction.Handle(Unit.Default);
+            if (result.IsNullOrEmpty())
+            {
+                NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+                return;
+            }
+            stringData = result;
         }
-        var ret = await AddBatchRoutingRulesAsync(SelectedRouting, clipboardData);
+        var ret = await AddBatchRoutingRulesAsync(SelectedRouting, stringData);
         if (ret == 0)
         {
             RefreshRulesItems();
@@ -300,7 +314,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     private async Task<int> AddBatchRoutingRulesAsync(RoutingItem routingItem, string? clipboardData)
     {
         var blReplace = false;
-        if (await Interaction.Handle((EViewAction.AddBatchRoutingRulesYesNo, null)) == false)
+        if (await ShowYesNoInteraction.Handle(ResUI.AddBatchRoutingRulesYesNo) == false)
         {
             blReplace = true;
         }

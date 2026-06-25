@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class RoutingRuleDetailsViewModel : MyReactiveObject
 {
+    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
 
@@ -87,6 +89,6 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await Interaction.Handle((EViewAction.CloseWindow, null));
+        await CloseWindowInteraction.Handle(Unit.Default);
     }
 }
