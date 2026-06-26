@@ -248,7 +248,13 @@ public partial class CoreConfigV2rayService
 
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                if (coreConfig.CoreType != ECoreType.Xray)
+                // Mirror SingboxRoutingService.BuildRoutingDirectExe: exclude the running core (Xray)
+                // AND any standalone external core from DNS hijacking, to avoid the helper-loops-on-itself
+                // deadlock when DNS is detoured through the proxy outbound under TUN.
+                // Note: GetPreSocksItem currently never produces an Xray-as-TUN-owner config, so this
+                // branch is unreachable today; the guard is kept symmetric with the sing-box service.
+                if (coreConfig.CoreType != ECoreType.Xray
+                    && !Global.StandaloneExternalCores.Contains(coreConfig.CoreType))
                 {
                     dnsExeSet.Add(Utils.GetExeName(baseExeName));
                 }

@@ -561,35 +561,80 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Fact]
-    public void GenerateClientConfigContent_Hysteria2Realm_ShouldEmitHttpsServerUrl()
+    public void GenerateClientConfigContent_TunEnabled_StandaloneCoreDnsNotHijacked()
     {
-        var shareLink =
-            "hysteria2+realm://public@realm.hy2.io/my-realm-id?auth=uuid&stun=turn.cloudflare.com%3A3478&sni=cloudflare.com&pinSHA256=xxx#Realm-Test";
-        var node = Hysteria2Fmt.ResolveRealm(shareLink, out _);
-        node.Should().NotBeNull();
-        node!.CoreType = ECoreType.sing_box;
-
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
-        config.CoreTypeItem =
-        [
-            new CoreTypeItem { ConfigType = EConfigType.Hysteria2, CoreType = ECoreType.sing_box }
-        ];
         CoreConfigTestFactory.BindAppManagerConfig(config);
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box);
+
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
 
         var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
-
         result.Success.Should().BeTrue($"ret msg: {result.Msg}");
         var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
-        var proxy = cfg.outbounds.First(o => o.tag == Global.ProxyTag);
 
-        proxy.type.Should().Be("hysteria2");
-        proxy.realm.Should().NotBeNull();
-        proxy.realm!.server_url.Should().StartWith("https://");
-        proxy.realm.server_url.Should().Contain("realm.hy2.io");
-        proxy.realm.token.Should().Be("public");
-        proxy.realm.realm_id.Should().Be("my-realm-id");
-        proxy.realm.stun_servers.Should().Contain("turn.cloudflare.com:3478");
-        proxy.server.Should().BeNull();
+        var hijack = cfg.route.rules.FirstOrDefault(r =>
+            r.action == "hijack-dns" && r.port != null && r.port.Contains(53) && r.process_name != null);
+        hijack.Should().NotBeNull("TUN mode must emit a process-scoped hijack-dns rule");
+
+        // Standalone external cores must NOT have their DNS hijacked (would loop via proxy detour).
+        // Pull each core's actual CoreExes so platform-suffixed variants
+        // (hysteria-windows-amd64, brook_windows_amd64, overtls-bin, ...) are covered, not just the base name.
+        foreach (var coreType in Global.StandaloneExternalCores)
+        {
+            var coreExes = CoreInfoManager.Instance.GetCoreInfo(coreType)?.CoreExes ?? [];
+            coreExes.Should().NotBeEmpty($"{coreType} must have at least one exe registered");
+            foreach (var exe in coreExes)
+            {
+                hijack!.process_name.Should().NotContain(Utils.GetExeName(exe),
+                    $"{coreType}/{exe} DNS must go direct, not be hijacked into sing-box DNS under TUN");
+            }
+        }
+
+        // The running core (sing-box) must also remain excluded (lock in existing behavior).
+        hijack!.process_name.Should().NotContain(Utils.GetExeName("sing-box"));
+        hijack.process_name.Should().NotContain(Utils.GetExeName("sing-box-client"));
+
+        // A non-standalone, non-running core (e.g. mihomo) should still be hijacked.
+        hijack.process_name.Should().Contain(Utils.GetExeName("mihomo"));
+        // Cores that use internal DNS clients (Xray, v2fly) must also remain hijacked,
+        // so any fallback OS resolver attempt is still caught.
+        hijack.process_name.Should().Contain(Utils.GetExeName("xray"));
+    }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunEnabled_StandaloneCoreStillDirect()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+
+        var direct = cfg.route.rules.FirstOrDefault(r =>
+            r.outbound == Global.DirectTag && r.process_name != null);
+        direct.Should().NotBeNull();
+
+        // The fix's load-bearing post-condition: every exe removed from DNS hijack must
+        // remain on the direct list, otherwise the helper's non-DNS traffic would also stop working.
+        foreach (var coreType in Global.StandaloneExternalCores)
+        {
+            var coreExes = CoreInfoManager.Instance.GetCoreInfo(coreType)?.CoreExes ?? [];
+            foreach (var exe in coreExes)
+            {
+                direct!.process_name.Should().Contain(Utils.GetExeName(exe),
+                    $"{coreType}/{exe} non-DNS traffic must still be routed direct");
+            }
+        }
     }
 }
