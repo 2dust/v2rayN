@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class FullConfigTemplateViewModel : MyReactiveObject
+public class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
 
     #region Reactive
 
@@ -85,7 +85,7 @@ public class FullConfigTemplateViewModel : MyReactiveObject
         }
 
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-        await CloseWindowInteraction.Handle(Unit.Default);
+        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
     private async Task<bool> SaveXrayConfigAsync()

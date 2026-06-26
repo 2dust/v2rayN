@@ -19,12 +19,6 @@ public partial class GlobalHotkeySettingWindow
         this.WhenActivated(disposables =>
         {
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                DialogResult = true;
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
 

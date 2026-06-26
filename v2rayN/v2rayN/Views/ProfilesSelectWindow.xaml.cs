@@ -34,12 +34,6 @@ public partial class ProfilesSelectWindow
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
 
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                DialogResult = true;
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
             ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
             {
                 lstProfiles.Focus();

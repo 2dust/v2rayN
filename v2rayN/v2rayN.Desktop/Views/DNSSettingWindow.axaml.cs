@@ -61,12 +61,6 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
                 .Select(b => !b)
                 .BindTo(this.FindControl<TextBlock>("txtBasicDNSSettingsInvalid"), t => t.IsVisible);

@@ -27,12 +27,6 @@ public partial class SubEditWindow
             this.Bind(ViewModel, vm => vm.SelectedSource.Memo, v => v.txtMemo.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                DialogResult = true;
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

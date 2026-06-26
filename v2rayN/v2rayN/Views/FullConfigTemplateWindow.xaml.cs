@@ -24,12 +24,6 @@ public partial class FullConfigTemplateWindow
             this.Bind(ViewModel, vm => vm.ProxyDetour4Singbox, v => v.txtProxyDetour4Singbox.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                DialogResult = true;
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

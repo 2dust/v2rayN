@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleSettingViewModel : MyReactiveObject
+public class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
     public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
@@ -241,7 +241,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
         if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await CloseWindowInteraction.Handle(Unit.Default);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

@@ -46,12 +46,6 @@ public partial class RoutingRuleSettingWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                DialogResult = true;
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
             ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
             {
                 var message = interaction.Input;

@@ -193,12 +193,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 .WhereNotNull()
                 .Subscribe(InitializeData)
                 .DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
 
     }
