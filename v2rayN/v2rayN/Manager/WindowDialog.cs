@@ -2,7 +2,7 @@ using v2rayN.Base;
 
 namespace v2rayN.Manager;
 
-public class WindowDialog: IWindowDialog
+public class WindowDialog : IWindowDialog
 {
     public Task<bool> ShowDialogAsync<TViewModel>(TViewModel vm)
         where TViewModel : class
@@ -22,11 +22,16 @@ public class WindowDialog: IWindowDialog
 
         if (vm is ServiceLib.Base.ICloseable closeable)
         {
-            closeable.RequestClose += (_, _) => window.Close();
+            closeable.RequestClose += (_, _) => Dispatch(window.Close);
         }
 
         var result = window.ShowDialog();
 
         return Task.FromResult(result ?? false);
+    }
+
+    private static void Dispatch(Action action)
+    {
+        Application.Current.Dispatcher.Invoke(action);
     }
 }

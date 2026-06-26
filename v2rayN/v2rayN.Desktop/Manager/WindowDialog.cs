@@ -21,7 +21,7 @@ public class WindowDialog : IWindowDialog
 
         if (vm is ServiceLib.Base.ICloseable closeable)
         {
-            closeable.RequestClose += (_, _) => window.Close();
+            closeable.RequestClose += (_, _) => Dispatch(window.Close);
         }
 
         var result = await window.ShowDialog<bool>(owner);
@@ -59,5 +59,10 @@ public class WindowDialog : IWindowDialog
                    ?? desktop.MainWindow
                    ?? openWindows[0];
         }
+    }
+
+    private static void Dispatch(Action action)
+    {
+        Dispatcher.UIThread.InvokeAsync(action);
     }
 }
