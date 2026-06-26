@@ -7,15 +7,14 @@ public class MainWindowViewModel : MyReactiveObject
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
     public Interaction<Unit, byte[]?> ScanScreenInteraction { get; } = new();
     public Interaction<Unit, string?> BrowseImageFileInteraction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServerInteraction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServer2Interaction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServerGroupInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowDNSSettingInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowRoutingSettingInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowOptionSettingInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowFullConfigTemplateInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowGlobalHotkeySettingInteraction { get; } = new();
-    public Interaction<Unit, bool> ShowSubSettingInteraction { get; } = new();
+
+    public ProfilesViewModel ProfilesViewModel { get; } = new();
+    public MsgViewModel MsgViewModel { get; } = new();
+    public ClashProxiesViewModel ClashProxiesViewModel { get; } = new();
+    public ClashConnectionsViewModel ClashConnectionsViewModel { get; } = new();
+    public CheckUpdateViewModel CheckUpdateViewModel { get; } = new();
+    public BackupAndRestoreViewModel BackupAndRestoreViewModel { get; } = new();
+    public StatusBarViewModel StatusBarViewModel { get; } = StatusBarViewModel.Instance;
 
     #region Menu
 
@@ -203,7 +202,8 @@ public class MainWindowViewModel : MyReactiveObject
         });
         GlobalHotkeySettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (await ShowGlobalHotkeySettingInteraction.Handle(Unit.Default) == true)
+            var globalHotkeySettingViewModel = new GlobalHotkeySettingViewModel();
+            if (await AppManager.Instance.WindowDialog.ShowDialogAsync(globalHotkeySettingViewModel) == true)
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             }
@@ -381,15 +381,18 @@ public class MainWindowViewModel : MyReactiveObject
         bool? ret = false;
         if (eConfigType == EConfigType.Custom)
         {
-            ret = await AddServer2Interaction.Handle(item);
+            var addServer2ViewModel = new AddServer2ViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServer2ViewModel);
         }
         else if (eConfigType.IsGroupType())
         {
-            ret = await AddServerGroupInteraction.Handle(item);
+            var addGroupServerViewModel = new AddGroupServerViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addGroupServerViewModel);
         }
         else
         {
-            ret = await AddServerInteraction.Handle(item);
+            var addServerViewModel = new AddServerViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServerViewModel);
         }
         if (ret == true)
         {
@@ -484,7 +487,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task SubSettingAsync()
     {
-        if (await ShowSubSettingInteraction.Handle(Unit.Default) == true)
+        var subSettingViewModel = new SubSettingViewModel();
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subSettingViewModel) == true)
         {
             RefreshSubscriptions();
         }
@@ -501,7 +505,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task OptionSettingAsync()
     {
-        var ret = await ShowOptionSettingInteraction.Handle(Unit.Default);
+        var settingViewModel = new OptionSettingViewModel();
+        var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(settingViewModel);
         if (ret == true)
         {
             AppEvents.InboundDisplayRequested.Publish();
@@ -511,7 +516,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RoutingSettingAsync()
     {
-        var ret = await ShowRoutingSettingInteraction.Handle(Unit.Default);
+        var routingSettingViewModel = new RoutingSettingViewModel();
+        var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(routingSettingViewModel);
         if (ret == true)
         {
             await ConfigHandler.InitBuiltinRouting(_config);
@@ -522,7 +528,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task DNSSettingAsync()
     {
-        var ret = await ShowDNSSettingInteraction.Handle(Unit.Default);
+        var dnsSettingViewModel = new DNSSettingViewModel();
+        var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(dnsSettingViewModel);
         if (ret == true)
         {
             await Reload();
@@ -531,7 +538,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task FullConfigTemplateAsync()
     {
-        var ret = await ShowFullConfigTemplateInteraction.Handle(Unit.Default);
+        var fullConfigTemplateViewModel = new FullConfigTemplateViewModel();
+        var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(fullConfigTemplateViewModel);
         if (ret == true)
         {
             await Reload();

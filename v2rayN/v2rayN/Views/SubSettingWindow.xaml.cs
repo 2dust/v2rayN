@@ -8,9 +8,6 @@ public partial class SubSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
-
-        ViewModel = new SubSettingViewModel();
         Closing += SubSettingWindow_Closing;
         lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
@@ -48,18 +45,6 @@ public partial class SubSettingWindow
                 }
                 await ShareSub(url);
                 interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
-            ViewModel.EditSubInteraction.RegisterHandler(interaction =>
-            {
-                var subItem = interaction.Input;
-                if (subItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new SubEditWindow(subItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);

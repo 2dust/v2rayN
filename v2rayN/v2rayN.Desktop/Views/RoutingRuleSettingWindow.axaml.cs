@@ -8,11 +8,6 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
     public RoutingRuleSettingWindow()
     {
         InitializeComponent();
-    }
-
-    public RoutingRuleSettingWindow(RoutingItem routingItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
@@ -22,8 +17,6 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
         //btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_ClickAsync;
-
-        ViewModel = new RoutingRuleSettingViewModel(routingItem);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -66,7 +59,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
             ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
                 var message = interaction.Input;
-                var result = await UI.ShowYesNo(this, message);
+                var result = await UI.ShowYesNo(message);
                 interaction.SetOutput(result == ButtonResult.Yes);
             }).DisposeWith(disposables);
 
@@ -85,20 +78,8 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
             ViewModel.BrowseRulesFileInteraction.RegisterHandler(async interaction =>
             {
-                var fileName = await UI.OpenFileDialog(this, null);
+                var fileName = await UI.OpenFileDialog(null);
                 interaction.SetOutput(fileName);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingRuleDetailsInteraction.RegisterHandler(async interaction =>
-            {
-                var rulesItem = interaction.Input;
-                if (rulesItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new RoutingRuleDetailsWindow(rulesItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
     }
@@ -180,7 +161,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
     private async void btnBrowseCustomRulesetPath4Singbox_ClickAsync(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(this, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;

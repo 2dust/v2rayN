@@ -8,7 +8,6 @@ public partial class ClashProxiesView
     public ClashProxiesView()
     {
         InitializeComponent();
-        ViewModel = new ClashProxiesViewModel();
         lstProxyDetails.PreviewMouseDoubleClick += lstProxyDetails_PreviewMouseDoubleClick;
 
         this.WhenActivated(disposables =>

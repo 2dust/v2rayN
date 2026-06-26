@@ -6,8 +6,6 @@ public partial class MsgView
     {
         InitializeComponent();
 
-        ViewModel = new MsgViewModel();
-
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);

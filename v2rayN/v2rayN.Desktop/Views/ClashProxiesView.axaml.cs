@@ -5,7 +5,6 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
     public ClashProxiesView()
     {
         InitializeComponent();
-        ViewModel = new ClashProxiesViewModel();
         lstProxyDetails.DoubleTapped += LstProxyDetails_DoubleTapped;
         KeyDown += ClashProxiesView_KeyDown;
 

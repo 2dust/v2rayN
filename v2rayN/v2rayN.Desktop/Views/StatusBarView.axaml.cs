@@ -13,8 +13,6 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
         _config = AppManager.Instance.Config;
 
-        ViewModel = StatusBarViewModel.Instance;
-
         txtRunningServerDisplay.Tapped += TxtRunningServerDisplay_Tapped;
         txtRunningInfoDisplay.Tapped += TxtRunningServerDisplay_Tapped;
 

@@ -7,18 +7,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     public AddGroupServerWindow()
     {
         InitializeComponent();
-    }
-
-    public AddGroupServerWindow(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
-
-        ViewModel = new AddGroupServerViewModel(profileItem);
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -30,22 +23,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ResUI.TbLeastLoad,
         };
         cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
-
-        switch (profileItem.ConfigType)
-        {
-            case EConfigType.PolicyGroup:
-                Title = ResUI.TbConfigTypePolicyGroup;
-                break;
-
-            case EConfigType.ProxyChain:
-                Title = ResUI.TbConfigTypeProxyChain;
-                gridPolicyGroup.IsVisible = false;
-                if (tabControl.Items.Count > 0)
-                {
-                    tabControl.Items.RemoveAt(0);
-                }
-                break;
-        }
 
         this.WhenActivated(disposables =>
         {
@@ -66,6 +43,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
                 Close(true);
@@ -80,6 +62,25 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         // Keyboard shortcuts when focus is within grid
         AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
         lstChild.LoadingRow += LstChild_LoadingRow;
+    }
+
+    private void InitializeData(ProfileItem profileItem)
+    {
+        switch (profileItem.ConfigType)
+        {
+            case EConfigType.PolicyGroup:
+                Title = ResUI.TbConfigTypePolicyGroup;
+                break;
+
+            case EConfigType.ProxyChain:
+                Title = ResUI.TbConfigTypeProxyChain;
+                gridPolicyGroup.IsVisible = false;
+                if (tabControl.Items.Count > 0)
+                {
+                    tabControl.Items.RemoveAt(0);
+                }
+                break;
+        }
     }
 
     private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)

@@ -127,7 +127,13 @@ public class ProfilesSelectViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await ProfilesFocusInteraction.Handle(Unit.Default);
+        try
+        {
+            await ProfilesFocusInteraction.Handle(Unit.Default);
+        }
+        catch (UnhandledInteractionException<Unit, Unit>)
+        {
+        }
     }
 
     private async Task ServerFilterChanged(bool c)
