@@ -272,7 +272,12 @@ public partial class CoreConfigSingboxService
 
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                if (coreConfig.CoreType != ECoreType.sing_box)
+                // Exclude the running core (sing-box) AND any standalone external core
+                // (naive/tuic/juicity/hysteria/...) from DNS hijacking. Their DNS must go
+                // direct; hijacking it routes remote DNS back through the proxy outbound,
+                // which loops into the same helper process and deadlocks under TUN.
+                if (coreConfig.CoreType != ECoreType.sing_box
+                    && !Global.StandaloneExternalCores.Contains(coreConfig.CoreType))
                 {
                     dnsExeSet.Add(Utils.GetExeName(baseExeName));
                 }
