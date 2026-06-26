@@ -234,6 +234,8 @@ public class StatusBarViewModel : MyReactiveObject
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
+
+        BlRouting = true;
     }
 
     public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
@@ -312,18 +314,20 @@ public class StatusBarViewModel : MyReactiveObject
             return;
         }
 
+        var models = new List<ComboItem>();
         BlServers = true;
         foreach (var it in lstModel)
         {
             var name = it.GetSummary();
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
-            Servers.Add(item);
+            models.Add(item);
             if (_config.IndexId == it.IndexId)
             {
                 SelectedServer = item;
             }
         }
+        Servers.AddRange(models);
     }
 
     private void ServerSelectedChanged(bool c)
@@ -408,18 +412,12 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshRoutingsMenu()
     {
-        RoutingItems.Clear();
-
-        BlRouting = true;
         var routings = await AppManager.Instance.RoutingItems();
-        foreach (var item in routings)
-        {
-            RoutingItems.Add(item);
-            if (item.IsActive)
-            {
-                SelectedRouting = item;
-            }
-        }
+
+        RoutingItems.Clear();
+        RoutingItems.AddRange(routings);
+
+        SelectedRouting = routings.FirstOrDefault(t => t.IsActive == true);
     }
 
     private async Task RoutingSelectedChangedAsync(bool c)

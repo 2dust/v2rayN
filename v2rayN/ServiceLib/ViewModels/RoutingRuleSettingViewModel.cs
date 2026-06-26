@@ -95,6 +95,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     {
         RulesItems.Clear();
 
+        var models = new List<RulesItemModel>();
         foreach (var item in _rules)
         {
             var it = new RulesItemModel()
@@ -110,8 +111,9 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
                 Enabled = item.Enabled,
                 Remarks = item.Remarks,
             };
-            RulesItems.Add(it);
+            models.Add(it);
         }
+        RulesItems.AddRange(models);
     }
 
     public async Task RuleEditAsync(bool blNew)

@@ -43,14 +43,14 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private void RefreshCheckUpdateItems()
     {
+        var models = CoreInfoManager.Instance.GetCheckUpdateCoreTypes()
+                        .Select(t => GetCheckUpdateModel(t))
+                        .ToList();
+
+        models.Add(GetGeoFileCheckUpdateModel());
+
         CheckUpdateModels.Clear();
-
-        foreach (var type in CoreInfoManager.Instance.GetCheckUpdateCoreTypes())
-        {
-            CheckUpdateModels.Add(GetCheckUpdateModel(type));
-        }
-
-        CheckUpdateModels.Add(GetGeoFileCheckUpdateModel());
+        CheckUpdateModels.AddRange(models);
     }
 
     private CheckUpdateModel GetCheckUpdateModel(ECoreType coreType)

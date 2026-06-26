@@ -187,6 +187,7 @@ public class ClashProxiesViewModel : MyReactiveObject
         var selectedName = SelectedGroup?.Name;
         ProxyGroups.Clear();
 
+        var lstProxyGroups = new List<ClashProxyModel>();
         var proxyGroups = ClashApiManager.Instance.GetClashProxyGroups();
         if (proxyGroups is { Count: > 0 })
         {
@@ -200,7 +201,7 @@ public class ClashProxiesViewModel : MyReactiveObject
                 {
                     continue;
                 }
-                ProxyGroups.Add(new ClashProxyModel()
+                lstProxyGroups.Add(new ClashProxyModel()
                 {
                     Now = item.now,
                     Name = item.name,
@@ -216,18 +217,20 @@ public class ClashProxiesViewModel : MyReactiveObject
             {
                 continue;
             }
-            var item = ProxyGroups.FirstOrDefault(t => t.Name == kv.Key);
+            var item = lstProxyGroups.FirstOrDefault(t => t.Name == kv.Key);
             if (item != null && item.Name.IsNotEmpty())
             {
                 continue;
             }
-            ProxyGroups.Add(new ClashProxyModel()
+            lstProxyGroups.Add(new ClashProxyModel()
             {
                 Now = kv.Value.now,
                 Name = kv.Key,
                 Type = kv.Value.type
             });
         }
+
+        ProxyGroups.AddRange(lstProxyGroups);
 
         if (ProxyGroups is { Count: > 0 })
         {

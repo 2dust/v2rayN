@@ -161,19 +161,17 @@ public class ProfilesSelectViewModel : MyReactiveObject
         await _updateView?.Invoke(EViewAction.DispatcherRefreshServersBiz, null);
     }
 
-    public async Task RefreshSubscriptions()
+    private async Task RefreshSubscriptions()
     {
+        var subItems = await AppManager.Instance.SubItems();
+        subItems.Insert(0, new SubItem { Remarks = ResUI.AllGroupServers });
+
         SubItems.Clear();
+        SubItems.AddRange(subItems);
 
-        SubItems.Add(new SubItem { Remarks = ResUI.AllGroupServers });
-
-        foreach (var item in await AppManager.Instance.SubItems())
-        {
-            SubItems.Add(item);
-        }
         SelectedSub = (_config.SubIndexId.IsNotEmpty()
-                        ? SubItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
-                        : null) ?? SubItems.FirstOrDefault();
+                        ? subItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
+                        : null) ?? subItems.FirstOrDefault();
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)

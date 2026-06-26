@@ -83,6 +83,7 @@ public class RoutingSettingViewModel : MyReactiveObject
     public async Task RefreshRoutingItems()
     {
         RoutingItems.Clear();
+        var models = new List<RoutingItemModel>();
 
         var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
@@ -98,8 +99,9 @@ public class RoutingSettingViewModel : MyReactiveObject
                 CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
                 Sort = item.Sort,
             };
-            RoutingItems.Add(it);
+            models.Add(it);
         }
+        RoutingItems.AddRange(models);
     }
 
     /// <summary>
