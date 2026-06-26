@@ -270,6 +270,7 @@ public partial class AddServerWindow
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
+        cmbStreamSecurity.SelectedItem = profileItem.StreamSecurity;
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
