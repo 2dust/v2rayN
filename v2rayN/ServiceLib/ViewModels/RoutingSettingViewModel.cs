@@ -3,7 +3,6 @@ namespace ServiceLib.ViewModels;
 public class RoutingSettingViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
-    public Interaction<RoutingItem, bool> ShowRoutingRuleSettingInteraction { get; } = new();
 
     #region Reactive
 
@@ -133,7 +132,8 @@ public class RoutingSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await ShowRoutingRuleSettingInteraction.Handle(item) == true)
+        var routingRuleSettingViewModel = new RoutingRuleSettingViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(routingRuleSettingViewModel) == true)
         {
             await RefreshRoutingItems();
             IsModified = true;

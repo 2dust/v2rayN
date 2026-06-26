@@ -4,7 +4,6 @@ public class SubSettingViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
     public Interaction<string, Unit> ShareSubInteraction { get; } = new();
-    public Interaction<SubItem, bool> EditSubInteraction { get; } = new();
 
     public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
 
@@ -75,7 +74,8 @@ public class SubSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await EditSubInteraction.Handle(item) == true)
+        var subEditViewModel = new SubEditViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subEditViewModel) == true)
         {
             await RefreshSubItems();
             IsModified = true;

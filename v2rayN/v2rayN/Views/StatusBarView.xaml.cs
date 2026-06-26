@@ -10,7 +10,6 @@ public partial class StatusBarView
     {
         InitializeComponent();
         _config = AppManager.Instance.Config;
-        ViewModel = StatusBarViewModel.Instance;
 
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;

@@ -2,34 +2,19 @@ namespace v2rayN.Views;
 
 public partial class RoutingRuleDetailsWindow
 {
-    public RoutingRuleDetailsWindow(RulesItem rulesItem)
+    public RoutingRuleDetailsWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
         clbProtocol.SelectionChanged += ClbProtocol_SelectionChanged;
         clbInboundTag.SelectionChanged += ClbInboundTag_SelectionChanged;
-
-        ViewModel = new RoutingRuleDetailsViewModel(rulesItem);
 
         cmbOutboundTag.ItemsSource = Global.OutboundTags;
         clbProtocol.ItemsSource = Global.RuleProtocols;
         clbInboundTag.ItemsSource = Global.InboundTags;
         cmbNetwork.ItemsSource = Global.RuleNetworks;
         cmbRuleType.ItemsSource = Utils.GetEnumNames<ERuleType>().AppendEmpty();
-
-        if (!rulesItem.Id.IsNullOrEmpty())
-        {
-            rulesItem.Protocol?.ForEach(it =>
-            {
-                clbProtocol.SelectedItems.Add(it);
-            });
-            rulesItem.InboundTag?.ForEach(it =>
-            {
-                clbInboundTag.SelectedItems.Add(it);
-            });
-        }
 
         this.WhenActivated(disposables =>
         {
@@ -46,6 +31,11 @@ public partial class RoutingRuleDetailsWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
             {
                 DialogResult = true;
@@ -53,6 +43,22 @@ public partial class RoutingRuleDetailsWindow
             }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+    }
+
+    private void InitializeData(RulesItem rulesItem)
+    {
+        if (rulesItem.Id.IsNullOrEmpty())
+        {
+            return;
+        }
+        rulesItem.Protocol?.ForEach(it =>
+        {
+            clbProtocol.SelectedItems.Add(it);
+        });
+        rulesItem.InboundTag?.ForEach(it =>
+        {
+            clbInboundTag.SelectedItems.Add(it);
+        });
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

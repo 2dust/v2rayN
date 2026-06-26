@@ -16,7 +16,6 @@ public partial class ClashConnectionsView
         InitializeComponent();
         _config = AppManager.Instance.Config;
 
-        ViewModel = new ClashConnectionsViewModel();
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
         this.WhenActivated(disposables =>

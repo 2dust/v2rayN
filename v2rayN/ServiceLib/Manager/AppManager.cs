@@ -10,6 +10,7 @@ public sealed class AppManager
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
     public Config Config => _config;
+    public IWindowDialog WindowDialog { get; set; } = null!;
 
     public int StatePort
     {

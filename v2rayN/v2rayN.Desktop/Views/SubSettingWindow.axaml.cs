@@ -16,7 +16,6 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
         Loaded += Window_Loaded;
         Closing += SubSettingWindow_Closing;
         KeyDown += SubSettingWindow_KeyDown;
-        ViewModel = new SubSettingViewModel();
         lstSubscription.DoubleTapped += LstSubscription_DoubleTapped;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
 
@@ -38,7 +37,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
             ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
                 var message = interaction.Input;
-                var result = await UI.ShowYesNo(this, message);
+                var result = await UI.ShowYesNo(message);
                 interaction.SetOutput(result == ButtonResult.Yes);
             }).DisposeWith(disposables);
 
@@ -52,18 +51,6 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
                 }
                 await ShareSub(url);
                 interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
-            ViewModel.EditSubInteraction.RegisterHandler(async interaction =>
-            {
-                var subItem = interaction.Input;
-                if (subItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new SubEditWindow(subItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
     }

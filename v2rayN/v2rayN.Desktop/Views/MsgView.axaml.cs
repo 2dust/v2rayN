@@ -10,7 +10,6 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
         InitializeComponent();
         txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
-        ViewModel = new MsgViewModel();
 
         this.WhenActivated(disposables =>
         {

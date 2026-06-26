@@ -8,10 +8,7 @@ public partial class FullConfigTemplateWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
-
-        ViewModel = new FullConfigTemplateViewModel();
 
         this.WhenActivated(disposables =>
         {

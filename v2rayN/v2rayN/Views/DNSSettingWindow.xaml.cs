@@ -8,10 +8,7 @@ public partial class DNSSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
-
-        ViewModel = new DNSSettingViewModel();
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;

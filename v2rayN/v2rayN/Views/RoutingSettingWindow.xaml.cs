@@ -6,14 +6,11 @@ public partial class RoutingSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Closing += RoutingSettingWindow_Closing;
         PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
-
-        ViewModel = new RoutingSettingViewModel();
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -37,18 +34,6 @@ public partial class RoutingSettingWindow
             {
                 var message = interaction.Input;
                 var result = UI.ShowYesNo(message) != MessageBoxResult.No;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingRuleSettingInteraction.RegisterHandler(interaction =>
-            {
-                var routingItem = interaction.Input;
-                if (routingItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new RoutingRuleSettingWindow(routingItem).ShowDialog() ?? false;
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });

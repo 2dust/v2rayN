@@ -323,7 +323,7 @@
                     </ToolBar>
                 </ToolBarTray>
 
-                <view:StatusBarView DockPanel.Dock="Bottom" />
+                <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
 
                 <Grid>
                     <Grid x:Name="gridMain" Visibility="Collapsed">

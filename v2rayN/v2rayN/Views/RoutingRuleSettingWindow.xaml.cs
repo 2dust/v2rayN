@@ -2,11 +2,10 @@ namespace v2rayN.Views;
 
 public partial class RoutingRuleSettingWindow
 {
-    public RoutingRuleSettingWindow(RoutingItem routingItem)
+    public RoutingRuleSettingWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
         PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
         lstRules.SelectionChanged += lstRules_SelectionChanged;
@@ -14,8 +13,6 @@ public partial class RoutingRuleSettingWindow
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
         btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
-
-        ViewModel = new RoutingRuleSettingViewModel(routingItem);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -83,18 +80,6 @@ public partial class RoutingRuleSettingWindow
                     return;
                 }
                 interaction.SetOutput(fileName);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingRuleDetailsInteraction.RegisterHandler(interaction =>
-            {
-                var rulesItem = interaction.Input;
-                if (rulesItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new RoutingRuleDetailsWindow(rulesItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);

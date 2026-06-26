@@ -7,7 +7,6 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
     public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
     public Interaction<Unit, string?> BrowseRulesFileInteraction { get; } = new();
-    public Interaction<RulesItem, bool> ShowRoutingRuleDetailsInteraction { get; } = new();
 
     private List<RulesItem> _rules;
 
@@ -138,7 +137,8 @@ public class RoutingRuleSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await ShowRoutingRuleDetailsInteraction.Handle(item) == true)
+        var routingRuleDetailsViewModel = new RoutingRuleDetailsViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(routingRuleDetailsViewModel) == true)
         {
             if (blNew)
             {

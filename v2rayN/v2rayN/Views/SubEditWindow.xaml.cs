@@ -2,14 +2,11 @@ namespace v2rayN.Views;
 
 public partial class SubEditWindow
 {
-    public SubEditWindow(SubItem subItem)
+    public SubEditWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
-
-        ViewModel = new SubEditViewModel(subItem);
 
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 

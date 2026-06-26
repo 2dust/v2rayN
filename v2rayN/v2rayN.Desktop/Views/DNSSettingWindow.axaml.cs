@@ -13,7 +13,6 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        ViewModel = new DNSSettingViewModel();
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;

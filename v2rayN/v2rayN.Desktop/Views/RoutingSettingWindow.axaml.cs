@@ -16,8 +16,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         lstRoutings.DoubleTapped += LstRoutings_DoubleTapped;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
 
-        ViewModel = new RoutingSettingViewModel();
-
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
 
@@ -39,20 +37,8 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
                 var message = interaction.Input;
-                var result = await UI.ShowYesNo(this, message);
+                var result = await UI.ShowYesNo(message);
                 interaction.SetOutput(result == ButtonResult.Yes);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingRuleSettingInteraction.RegisterHandler(async interaction =>
-            {
-                var routingItem = interaction.Input;
-                if (routingItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new RoutingRuleSettingWindow(routingItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
     }
