@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class DNSSettingViewModel : MyReactiveObject
+public class DNSSettingViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
 
     [Reactive] public bool? UseSystemHosts { get; set; }
     [Reactive] public bool? AddCommonHosts { get; set; }
@@ -184,6 +184,6 @@ public class DNSSettingViewModel : MyReactiveObject
         await ConfigHandler.SaveDNSItems(_config, item2);
 
         await ConfigHandler.SaveConfig(_config);
-        await CloseWindowInteraction.Handle(Unit.Default);
+        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServerViewModel : MyReactiveObject
+public class AddServerViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
 
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
@@ -435,7 +435,7 @@ public class AddServerViewModel : MyReactiveObject
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            await CloseWindowInteraction.Handle(Unit.Default);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

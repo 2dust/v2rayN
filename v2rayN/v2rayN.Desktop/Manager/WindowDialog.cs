@@ -18,6 +18,12 @@ public class WindowDialog : IWindowDialog
         }
 
         window.ViewModel = vm;
+
+        if (vm is ServiceLib.Base.ICloseable closeable)
+        {
+            closeable.RequestClose += (_, _) => window.Close();
+        }
+
         var result = await window.ShowDialog<bool>(owner);
         return result;
     }

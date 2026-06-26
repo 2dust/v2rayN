@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesSelectViewModel : MyReactiveObject
+public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
     public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
 
     #region private prop
@@ -109,7 +109,7 @@ public class ProfilesSelectViewModel : MyReactiveObject
         {
             return false;
         }
-        _ = CloseWindowInteraction.Handle(Unit.Default);
+        RequestClose?.Invoke(this, EventArgs.Empty);
         return true;
     }
 

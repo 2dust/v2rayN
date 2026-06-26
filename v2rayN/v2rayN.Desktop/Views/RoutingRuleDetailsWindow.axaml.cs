@@ -39,12 +39,6 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
                 .WhereNotNull()
                 .Subscribe(InitializeData)
                 .DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
     }
 

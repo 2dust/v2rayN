@@ -47,12 +47,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                 .WhereNotNull()
                 .Subscribe(InitializeData)
                 .DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
