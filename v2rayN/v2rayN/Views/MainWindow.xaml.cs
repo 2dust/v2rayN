@@ -1,3 +1,4 @@
+using System.Reactive.Disposables;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
@@ -9,7 +10,7 @@ namespace v2rayN.Views;
 public partial class MainWindow
 {
     private static Config _config;
-    private readonly EGirdOrientation _mainGirdOrientation;
+    private readonly SerialDisposable _layoutBindingsDisposable = new();
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
 
@@ -30,23 +31,6 @@ public partial class MainWindow
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-        _mainGirdOrientation = _config.UiItem.MainGirdOrientation;
-
-        switch (_mainGirdOrientation)
-        {
-            case EGirdOrientation.Horizontal:
-                gridMain.Visibility = Visibility.Visible;
-                break;
-
-            case EGirdOrientation.Vertical:
-                gridMain1.Visibility = Visibility.Visible;
-                break;
-
-            case EGirdOrientation.Tab:
-            default:
-                gridMain2.Visibility = Visibility.Visible;
-                break;
-        }
         pbTheme.Content ??= new ThemeSettingView();
 
         this.WhenActivated(disposables =>
@@ -95,65 +79,12 @@ public partial class MainWindow
 
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.Visibility).DisposeWith(disposables);
 
-            switch (_mainGirdOrientation)
-            {
-                case EGirdOrientation.Horizontal:
-                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabProfiles, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabMsgView, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashProxies, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashConnections, vm))
-                        .DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(disposables);
-                    break;
+            _layoutBindingsDisposable.DisposeWith(disposables);
 
-                case EGirdOrientation.Vertical:
-                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabProfiles1, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabMsgView1, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashProxies1, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashConnections1, vm))
-                        .DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(disposables);
-                    break;
-
-                case EGirdOrientation.Tab:
-                default:
-                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabProfiles2, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabMsgView2, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashProxies2, vm))
-                        .DisposeWith(disposables);
-                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
-                        .Subscribe(vm => ViewHost.Show(tabClashConnections2, vm))
-                        .DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
-                    this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
-                    this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
-                    break;
-            }
+            this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(UpdateLayout)
+                .DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.StatusBarViewModel)
                 .Subscribe(vm => ViewHost.Show(contentStatusBarView, vm))
@@ -423,6 +354,78 @@ public partial class MainWindow
         {
             ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
+    }
+
+    private void UpdateLayout(EGirdOrientation orientation)
+    {
+        var currentLayoutDisposables = new CompositeDisposable();
+        _layoutBindingsDisposable.Disposable = currentLayoutDisposables;
+
+        gridMain.Visibility = orientation == EGirdOrientation.Horizontal ? Visibility.Visible : Visibility.Collapsed;
+        gridMain1.Visibility = orientation == EGirdOrientation.Vertical ? Visibility.Visible : Visibility.Collapsed;
+        gridMain2.Visibility = orientation == EGirdOrientation.Tab ? Visibility.Visible : Visibility.Collapsed;
+
+        switch (orientation)
+        {
+            case EGirdOrientation.Horizontal:
+                this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabProfiles, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabMsgView, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashProxies, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashConnections, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(currentLayoutDisposables);
+                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(currentLayoutDisposables);
+                break;
+
+            case EGirdOrientation.Vertical:
+                this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabProfiles1, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabMsgView1, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashProxies1, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashConnections1, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(currentLayoutDisposables);
+                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(currentLayoutDisposables);
+                break;
+
+            case EGirdOrientation.Tab:
+            default:
+                this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabProfiles2, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabMsgView2, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashProxies2, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                    .Subscribe(vm => ViewHost.Show(tabClashConnections2, vm))
+                    .DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(currentLayoutDisposables);
+                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(currentLayoutDisposables);
+                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(currentLayoutDisposables);
+                break;
+        }
+
+        RestoreUI();
     }
 
     private void AddHelpMenuItem()

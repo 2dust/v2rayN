@@ -311,8 +311,7 @@ public class OptionSettingViewModel : MyReactiveObject
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
-                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
+                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
