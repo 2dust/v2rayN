@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class OptionSettingViewModel : MyReactiveObject
+public class OptionSettingViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
 
     #region Core
 
@@ -427,7 +427,7 @@ public class OptionSettingViewModel : MyReactiveObject
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
-            await CloseWindowInteraction.Handle(Unit.Default);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

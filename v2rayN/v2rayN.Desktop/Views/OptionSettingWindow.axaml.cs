@@ -137,12 +137,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.CoreType9, v => v.cmbCoreType9.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
     }
 

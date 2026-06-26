@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleDetailsViewModel : MyReactiveObject
+public class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
 {
-    public Interaction<Unit, Unit> CloseWindowInteraction { get; } = new();
+    public event EventHandler? RequestClose;
 
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
@@ -89,6 +89,6 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await CloseWindowInteraction.Handle(Unit.Default);
+        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }

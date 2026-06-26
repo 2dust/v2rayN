@@ -20,6 +20,11 @@ public class WindowDialog: IWindowDialog
         window.Owner = owner;
         window.ViewModel = vm;
 
+        if (vm is ServiceLib.Base.ICloseable closeable)
+        {
+            closeable.RequestClose += (_, _) => window.Close();
+        }
+
         var result = window.ShowDialog();
 
         return Task.FromResult(result ?? false);

@@ -26,12 +26,6 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
             this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
 
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
             ViewModel.BrowseConfigFileInteraction.RegisterHandler(async interaction =>
             {
                 var fileName = await UI.OpenFileDialog(null);

@@ -28,12 +28,6 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
             this.Bind(ViewModel, vm => vm.ProxyDetour4Singbox, v => v.txtProxyDetour4Singbox.Text).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            ViewModel.CloseWindowInteraction.RegisterHandler(interaction =>
-            {
-                Close(true);
-                interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
         });
     }
 
