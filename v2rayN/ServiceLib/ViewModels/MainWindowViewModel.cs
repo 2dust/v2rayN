@@ -79,6 +79,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     [Reactive] public bool BlNewUpdate { get; set; }
 
+    [Reactive] public EGirdOrientation MainGirdOrientation { get; set; }
+
     #endregion Menu
 
     #region Init
@@ -87,6 +89,7 @@ public class MainWindowViewModel : MyReactiveObject
     {
         _config = AppManager.Instance.Config;
         BlIsWindows = Utils.IsWindows();
+        MainGirdOrientation = _config.UiItem.MainGirdOrientation;
 
         #region WhenAnyValue && ReactiveCommand
 
@@ -637,6 +640,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             ShowClashUI = showClashUI;
             TabMainSelectedIndex = showClashUI ? TabMainSelectedIndex : 0;
+            MainGirdOrientation = _config.UiItem.MainGirdOrientation;
         });
     }
 
