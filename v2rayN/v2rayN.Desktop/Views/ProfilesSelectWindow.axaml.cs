@@ -25,9 +25,6 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         lstProfiles.Sorting += LstProfiles_Sorting;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
 
-        ViewModel = new ProfilesSelectViewModel();
-        DataContext = ViewModel;
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);

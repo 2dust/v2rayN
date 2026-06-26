@@ -8,8 +8,6 @@ public partial class BackupAndRestoreView
         menuLocalBackup.Click += MenuLocalBackup_Click;
         menuLocalRestore.Click += MenuLocalRestore_Click;
 
-        ViewModel = new BackupAndRestoreViewModel();
-
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.OperationMsg, v => v.txtMsg.Text).DisposeWith(disposables);

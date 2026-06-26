@@ -15,8 +15,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         btnCancel.Click += (s, e) => Close();
         _config = AppManager.Instance.Config;
 
-        ViewModel = new OptionSettingViewModel();
-
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
         btnBrowseCustomSystemProxyScriptPath.Click += BtnBrowseCustomSystemProxyScriptPath_Click;
@@ -203,7 +201,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
     private async void BtnBrowseCustomSystemProxyPacPath_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(this, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;
@@ -214,7 +212,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
     private async void BtnBrowseCustomSystemProxyScriptPath_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(this, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;

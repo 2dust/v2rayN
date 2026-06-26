@@ -1,6 +1,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
+using v2rayN.Base;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;
@@ -8,6 +9,7 @@ namespace v2rayN.Views;
 public partial class MainWindow
 {
     private static Config _config;
+    private readonly EGirdOrientation _mainGirdOrientation;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
 
@@ -28,32 +30,20 @@ public partial class MainWindow
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
 
-        ViewModel = new MainWindowViewModel();
+        _mainGirdOrientation = _config.UiItem.MainGirdOrientation;
 
-        switch (_config.UiItem.MainGirdOrientation)
+        switch (_mainGirdOrientation)
         {
             case EGirdOrientation.Horizontal:
-                tabProfiles.Content ??= new ProfilesView();
-                tabMsgView.Content ??= new MsgView();
-                tabClashProxies.Content ??= new ClashProxiesView();
-                tabClashConnections.Content ??= new ClashConnectionsView();
                 gridMain.Visibility = Visibility.Visible;
                 break;
 
             case EGirdOrientation.Vertical:
-                tabProfiles1.Content ??= new ProfilesView();
-                tabMsgView1.Content ??= new MsgView();
-                tabClashProxies1.Content ??= new ClashProxiesView();
-                tabClashConnections1.Content ??= new ClashConnectionsView();
                 gridMain1.Visibility = Visibility.Visible;
                 break;
 
             case EGirdOrientation.Tab:
             default:
-                tabProfiles2.Content ??= new ProfilesView();
-                tabMsgView2.Content ??= new MsgView();
-                tabClashProxies2.Content ??= new ClashProxiesView();
-                tabClashConnections2.Content ??= new ClashConnectionsView();
                 gridMain2.Visibility = Visibility.Visible;
                 break;
         }
@@ -105,9 +95,21 @@ public partial class MainWindow
 
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.Visibility).DisposeWith(disposables);
 
-            switch (_config.UiItem.MainGirdOrientation)
+            switch (_mainGirdOrientation)
             {
                 case EGirdOrientation.Horizontal:
+                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabProfiles, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabMsgView, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashProxies, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashConnections, vm))
+                        .DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(disposables);
@@ -115,6 +117,18 @@ public partial class MainWindow
                     break;
 
                 case EGirdOrientation.Vertical:
+                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabProfiles1, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabMsgView1, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashProxies1, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashConnections1, vm))
+                        .DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(disposables);
@@ -123,11 +137,27 @@ public partial class MainWindow
 
                 case EGirdOrientation.Tab:
                 default:
+                    this.WhenAnyValue(v => v.ViewModel.ProfilesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabProfiles2, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.MsgViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabMsgView2, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashProxiesViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashProxies2, vm))
+                        .DisposeWith(disposables);
+                    this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
+                        .Subscribe(vm => ViewHost.Show(tabClashConnections2, vm))
+                        .DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.Visibility).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.Visibility).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
                     break;
             }
+
+            this.WhenAnyValue(v => v.ViewModel.StatusBarViewModel)
+                .Subscribe(vm => ViewHost.Show(contentStatusBarView, vm))
+                .DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(interaction =>
             {
@@ -154,78 +184,6 @@ public partial class MainWindow
                     return;
                 }
                 interaction.SetOutput(fileName);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerInteraction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddServerWindow(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServer2Interaction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddServer2Window(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerGroupInteraction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddGroupServerWindow(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowDNSSettingInteraction.RegisterHandler(interaction =>
-            {
-                var result = new DNSSettingWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingSettingInteraction.RegisterHandler(interaction =>
-            {
-                var result = new RoutingSettingWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowOptionSettingInteraction.RegisterHandler(interaction =>
-            {
-                var result = new OptionSettingWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowFullConfigTemplateInteraction.RegisterHandler(interaction =>
-            {
-                var result = new FullConfigTemplateWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowGlobalHotkeySettingInteraction.RegisterHandler(interaction =>
-            {
-                var result = new GlobalHotkeySettingWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowSubSettingInteraction.RegisterHandler(interaction =>
-            {
-                var result = new SubSettingWindow().ShowDialog() ?? false;
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
             AppEvents.SendSnackMsgRequested
@@ -389,6 +347,7 @@ public partial class MainWindow
     private void MenuCheckUpdate_Click(object sender, RoutedEventArgs e)
     {
         _checkUpdateView ??= new CheckUpdateView();
+        _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
         DialogHost.Show(_checkUpdateView, "RootDialog");
 
         AppEvents.HasUpdateNotified.Publish(false);
@@ -397,6 +356,7 @@ public partial class MainWindow
     private void MenuBackupAndRestore_Click(object sender, RoutedEventArgs e)
     {
         _backupAndRestoreView ??= new BackupAndRestoreView();
+        _backupAndRestoreView.ViewModel = ViewModel?.BackupAndRestoreViewModel;
         DialogHost.Show(_backupAndRestoreView, "RootDialog");
     }
 

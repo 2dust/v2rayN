@@ -11,8 +11,6 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
     {
         InitializeComponent();
 
-        ViewModel = new GlobalHotkeySettingViewModel();
-
         btnReset.Click += btnReset_Click;
 
         HotkeyManager.Instance.IsPause = true;

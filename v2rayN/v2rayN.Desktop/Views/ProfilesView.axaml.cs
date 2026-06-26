@@ -6,20 +6,13 @@ namespace v2rayN.Desktop.Views;
 public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
-    private Window? _window;
     private static readonly string _tag = "ProfilesView";
 
     public ProfilesView()
     {
         InitializeComponent();
-    }
-
-    public ProfilesView(Window window)
-    {
-        InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        _window = window;
 
         menuSelectAll.Click += menuSelectAll_Click;
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
@@ -37,8 +30,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         //    lstProfiles.DragEnter += LstProfiles_DragEnter;
         //    lstProfiles.Drop += LstProfiles_Drop;
         //}
-
-        ViewModel = new ProfilesViewModel();
 
         this.WhenActivated(disposables =>
         {
@@ -93,7 +84,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
                 var message = interaction.Input;
-                var result = await UI.ShowYesNo(_window, message);
+                var result = await UI.ShowYesNo(message);
                 interaction.SetOutput(result == ButtonResult.Yes);
             }).DisposeWith(disposables);
 
@@ -106,7 +97,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     return;
                 }    
                 var profileItem = interaction.Input;
-                var fileName = await UI.SaveFileDialog(_window, "");
+                var fileName = await UI.SaveFileDialog("");
                 if (fileName.IsNullOrEmpty())
                 {
                     interaction.SetOutput(false);
@@ -139,54 +130,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 }
                 await ShareServer(url);
                 interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
-            ViewModel.EditSubInteraction.RegisterHandler(async interaction =>
-            {
-                var subItem = interaction.Input;
-                if (subItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new SubEditWindow(subItem).ShowDialog<bool>(_window);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerInteraction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddServerWindow(profileItem).ShowDialog<bool>(_window);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServer2Interaction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddServer2Window(profileItem).ShowDialog<bool>(_window);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerGroupInteraction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddGroupServerWindow(profileItem).ShowDialog<bool>(_window);
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>

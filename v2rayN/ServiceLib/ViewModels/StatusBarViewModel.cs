@@ -402,7 +402,7 @@ public class StatusBarViewModel : MyReactiveObject
             {
                 await DispatcherRefreshIconInteraction.Handle(Unit.Default);
             }
-            catch
+            catch (UnhandledInteractionException<Unit, Unit>)
             {
                 // Ignore
             }

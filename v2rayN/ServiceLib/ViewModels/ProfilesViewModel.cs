@@ -7,11 +7,7 @@ public class ProfilesViewModel : MyReactiveObject
     public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
     public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
     public Interaction<string, Unit> ShareServerInteraction { get; } = new();
-    public Interaction<SubItem, bool> EditSubInteraction { get; } = new();
     public Interaction<Unit, Unit> DispatcherRefreshServersBizInteraction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServerInteraction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServer2Interaction { get; } = new();
-    public Interaction<ProfileItem, bool> AddServerGroupInteraction { get; } = new();
 
     #region private prop
 
@@ -360,7 +356,13 @@ public class ProfilesViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        await ProfilesFocusInteraction.Handle(Unit.Default);
+        try
+        {
+            await ProfilesFocusInteraction.Handle(Unit.Default);
+        }
+        catch (UnhandledInteractionException<Unit, Unit>)
+        {
+        }
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -402,7 +404,13 @@ public class ProfilesViewModel : MyReactiveObject
             SelectedProfile = selected ?? lstModel.First();
         }
 
-        await DispatcherRefreshServersBizInteraction.Handle(Unit.Default);
+        try
+        {
+            await DispatcherRefreshServersBizInteraction.Handle(Unit.Default);
+        }
+        catch (UnhandledInteractionException<Unit, Unit>)
+        {
+        }
     }
 
     private async Task RefreshSubscriptions()
@@ -501,15 +509,18 @@ public class ProfilesViewModel : MyReactiveObject
         bool? ret = false;
         if (eConfigType == EConfigType.Custom)
         {
-            ret = await AddServer2Interaction.Handle(item);
+            var addServer2ViewModel = new AddServer2ViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServer2ViewModel);
         }
         else if (eConfigType.IsGroupType())
         {
-            ret = await AddServerGroupInteraction.Handle(item);
+            var addGroupServerViewModel = new AddGroupServerViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addGroupServerViewModel);
         }
         else
         {
-            ret = await AddServerInteraction.Handle(item);
+            var addServerViewModel = new AddServerViewModel(item);
+            ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServerViewModel);
         }
         if (ret == true)
         {
@@ -903,7 +914,8 @@ public class ProfilesViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await EditSubInteraction.Handle(item) == true)
+        var subEditViewModel = new SubEditViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subEditViewModel) == true)
         {
             await RefreshSubscriptions();
             await SubSelectedChangedAsync(true);

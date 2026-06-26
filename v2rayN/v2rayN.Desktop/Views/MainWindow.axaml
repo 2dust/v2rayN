@@ -111,7 +111,7 @@
                     IsVisible="False" />
             </DockPanel>
 
-            <view:StatusBarView DockPanel.Dock="Bottom" />
+            <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
 
             <Grid>
                 <Grid

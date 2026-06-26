@@ -7,16 +7,9 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     public SubEditWindow()
     {
         InitializeComponent();
-    }
-
-    public SubEditWindow(SubItem subItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-
-        ViewModel = new SubEditViewModel(subItem);
 
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 

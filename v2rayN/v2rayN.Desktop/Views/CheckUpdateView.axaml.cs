@@ -6,8 +6,6 @@ public partial class CheckUpdateView : ReactiveUserControl<CheckUpdateViewModel>
     {
         InitializeComponent();
 
-        ViewModel = new CheckUpdateViewModel();
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.CheckUpdateModels, v => v.lstCheckUpdates.ItemsSource).DisposeWith(disposables);

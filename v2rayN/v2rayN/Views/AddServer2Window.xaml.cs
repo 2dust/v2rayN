@@ -2,13 +2,11 @@ namespace v2rayN.Views;
 
 public partial class AddServer2Window
 {
-    public AddServer2Window(ProfileItem profileItem)
+    public AddServer2Window()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
-        ViewModel = new AddServer2ViewModel(profileItem);
 
         cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 

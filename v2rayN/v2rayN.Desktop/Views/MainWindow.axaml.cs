@@ -9,6 +9,7 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
+    private readonly EGirdOrientation _mainGirdOrientation;
     private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
@@ -29,32 +30,19 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
         menuClose.Click += MenuClose_Click;
 
-        ViewModel = new MainWindowViewModel();
-
-        switch (_config.UiItem.MainGirdOrientation)
+        _mainGirdOrientation = _config.UiItem.MainGirdOrientation;
+        switch (_mainGirdOrientation)
         {
             case EGirdOrientation.Horizontal:
-                tabProfiles.Content ??= new ProfilesView(this);
-                tabMsgView.Content ??= new MsgView();
-                tabClashProxies.Content ??= new ClashProxiesView();
-                tabClashConnections.Content ??= new ClashConnectionsView();
                 gridMain.IsVisible = true;
                 break;
 
             case EGirdOrientation.Vertical:
-                tabProfiles1.Content ??= new ProfilesView(this);
-                tabMsgView1.Content ??= new MsgView();
-                tabClashProxies1.Content ??= new ClashProxiesView();
-                tabClashConnections1.Content ??= new ClashConnectionsView();
                 gridMain1.IsVisible = true;
                 break;
 
             case EGirdOrientation.Tab:
             default:
-                tabProfiles2.Content ??= new ProfilesView(this);
-                tabMsgView2.Content ??= new MsgView();
-                tabClashProxies2.Content ??= new ClashProxiesView();
-                tabClashConnections2.Content ??= new ClashConnectionsView();
                 gridMain2.IsVisible = true;
                 break;
         }
@@ -105,9 +93,15 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             this.OneWayBind(ViewModel, vm => vm.BlReloadEnabled, v => v.menuReload.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.IsVisible).DisposeWith(disposables);
 
-            switch (_config.UiItem.MainGirdOrientation)
+            this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
+
+            switch (_mainGirdOrientation)
             {
                 case EGirdOrientation.Horizontal:
+                    this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.IsVisible).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(disposables);
@@ -115,6 +109,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                     break;
 
                 case EGirdOrientation.Vertical:
+                    this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles1.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView1.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies1.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections1.Content).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.IsVisible).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(disposables);
@@ -123,6 +121,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
                 case EGirdOrientation.Tab:
                 default:
+                    this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles2.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView2.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies2.Content).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections2.Content).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(disposables);
                     this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(disposables);
@@ -146,79 +148,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             ViewModel.BrowseImageFileInteraction.RegisterHandler(async interaction =>
             {
-                var result = await UI.OpenFileDialog(this, null);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerInteraction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddServerWindow(profileItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServer2Interaction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddServer2Window(profileItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerGroupInteraction.RegisterHandler(async interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = await new AddGroupServerWindow(profileItem).ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowDNSSettingInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new DNSSettingWindow().ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowRoutingSettingInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new RoutingSettingWindow().ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowOptionSettingInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new OptionSettingWindow().ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowFullConfigTemplateInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new FullConfigTemplateWindow().ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowGlobalHotkeySettingInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new GlobalHotkeySettingWindow().ShowDialog<bool>(this);
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.ShowSubSettingInteraction.RegisterHandler(async interaction =>
-            {
-                var result = await new SubSettingWindow().ShowDialog<bool>(this);
+                var result = await UI.OpenFileDialog(null);
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
@@ -385,6 +315,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private void MenuCheckUpdate_Click(object? sender, RoutedEventArgs e)
     {
         _checkUpdateView ??= new CheckUpdateView();
+        _checkUpdateView.ViewModel = ViewModel?.CheckUpdateViewModel;
         DialogHost.Show(_checkUpdateView);
 
         AppEvents.HasUpdateNotified.Publish(false);
@@ -392,21 +323,29 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void MenuBackupAndRestore_Click(object? sender, RoutedEventArgs e)
     {
-        _backupAndRestoreView ??= new BackupAndRestoreView(this);
+        _backupAndRestoreView ??= new BackupAndRestoreView();
+        _backupAndRestoreView.ViewModel = ViewModel?.BackupAndRestoreViewModel;
         DialogHost.Show(_backupAndRestoreView);
     }
 
     private async void MenuClose_Click(object? sender, RoutedEventArgs e)
     {
-        if (await UI.ShowYesNo(this, ResUI.menuExitTips) != ButtonResult.Yes)
+        try
         {
-            return;
+            if (await UI.ShowYesNo(ResUI.menuExitTips) != ButtonResult.Yes)
+            {
+                return;
+            }
+
+            _blCloseByUser = true;
+            StorageUI();
+
+            await AppManager.Instance.AppExitAsync(true);
         }
-
-        _blCloseByUser = true;
-        StorageUI();
-
-        await AppManager.Instance.AppExitAsync(true);
+        catch
+        {
+            // Ignore
+        }
     }
 
     private void Shutdown(bool obj)

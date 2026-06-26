@@ -35,8 +35,6 @@ public partial class ProfilesView
             lstProfiles.Drop += LstProfiles_Drop;
         }
 
-        ViewModel = new ProfilesViewModel();
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -132,54 +130,6 @@ public partial class ProfilesView
                 }
                 await ShareServer(url);
                 interaction.SetOutput(Unit.Default);
-            }).DisposeWith(disposables);
-
-            ViewModel.EditSubInteraction.RegisterHandler(interaction =>
-            {
-                var subItem = interaction.Input;
-                if (subItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new SubEditWindow(subItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerInteraction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddServerWindow(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServer2Interaction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddServer2Window(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
-            }).DisposeWith(disposables);
-
-            ViewModel.AddServerGroupInteraction.RegisterHandler(interaction =>
-            {
-                var profileItem = interaction.Input;
-                if (profileItem is null)
-                {
-                    interaction.SetOutput(false);
-                    return;
-                }
-                var result = new AddGroupServerWindow(profileItem).ShowDialog() ?? false;
-                interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>

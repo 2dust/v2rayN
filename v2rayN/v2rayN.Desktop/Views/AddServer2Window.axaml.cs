@@ -8,15 +8,9 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
     public AddServer2Window()
     {
         InitializeComponent();
-    }
-
-    public AddServer2Window(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        ViewModel = new AddServer2ViewModel(profileItem);
 
         cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 
@@ -40,7 +34,7 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
 
             ViewModel.BrowseConfigFileInteraction.RegisterHandler(async interaction =>
             {
-                var fileName = await UI.OpenFileDialog(this, null);
+                var fileName = await UI.OpenFileDialog(null);
                 interaction.SetOutput(fileName);
             }).DisposeWith(disposables);
         });
