@@ -3,12 +3,14 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"
     Height="600"
+    Design.DataContext="{x:Static dd:DesignData.SubEdit}"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -72,11 +74,11 @@
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
-                    Classes="IconButton"
+                    Margin="{StaticResource MarginLr8}"
                     HorizontalAlignment="Left"
-                    Margin="{StaticResource MarginLr8}">
+                    Classes="IconButton">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconMore}" >
+                        <PathIcon Data="{StaticResource SemiIconMore}">
                             <PathIcon.RenderTransform>
                                 <RotateTransform Angle="90" />
                             </PathIcon.RenderTransform>
