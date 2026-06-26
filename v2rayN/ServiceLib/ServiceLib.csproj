@@ -90,7 +90,6 @@
 	</ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\NetBridge\src\NetBridgeLib\NetBridgeLib.csproj" />
         <ProjectReference Include="..\ServiceLib.UdpTest\ServiceLib.UdpTest.csproj" />
     </ItemGroup>
 

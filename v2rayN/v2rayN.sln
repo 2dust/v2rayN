@@ -35,8 +35,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLib.Tests", "Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLib.UdpTest", "ServiceLib.UdpTest\ServiceLib.UdpTest.csproj", "{CE9D9298-0289-4718-2522-B236489F2912}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBridgeLib", "NetBridge\src\NetBridgeLib\NetBridgeLib.csproj", "{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,10 +69,6 @@ Global
 		{CE9D9298-0289-4718-2522-B236489F2912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9D9298-0289-4718-2522-B236489F2912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9D9298-0289-4718-2522-B236489F2912}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AF81950-DD4E-A636-6BD5-B4A7839D87B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

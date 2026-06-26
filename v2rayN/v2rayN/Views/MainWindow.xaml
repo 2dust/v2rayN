@@ -233,10 +233,6 @@
                                     x:Name="menuOpenTheFileLocation"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
-                                <MenuItem
-                                    x:Name="menuNetBridge"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuNetBridge}" />
                             </MenuItem>
                         </Menu>
                         <Separator />

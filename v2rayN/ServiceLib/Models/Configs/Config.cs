@@ -29,7 +29,6 @@ public class Config
     public SystemProxyItem SystemProxyItem { get; set; }
     public WebDavItem WebDavItem { get; set; }
     public CheckUpdateItem CheckUpdateItem { get; set; }
-    public NetBridgeItem NetBridgeItem { get; set; }
     public Fragment4RayItem? Fragment4RayItem { get; set; }
     public List<InItem> Inbound { get; set; }
     public List<KeyEventItem> GlobalHotkeys { get; set; }

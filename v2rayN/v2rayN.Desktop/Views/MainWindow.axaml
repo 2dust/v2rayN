@@ -89,7 +89,6 @@
                         </MenuItem>
                         <MenuItem x:Name="menuBackupAndRestore" Header="{x:Static resx:ResUI.menuBackupAndRestore}" />
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
-                        <MenuItem x:Name="menuNetBridge" Header="{x:Static resx:ResUI.menuNetBridge}" />
                     </MenuItem>
 
                     <MenuItem x:Name="menuHelp" Header="{x:Static resx:ResUI.menuHelp}">

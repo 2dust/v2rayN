@@ -10,7 +10,6 @@ public partial class MainWindow
     private static Config _config;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
-    private NetBridgeView? _netBridgeView;
 
     public MainWindow()
     {
@@ -28,7 +27,6 @@ public partial class MainWindow
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
-        menuNetBridge.Click += MenuNetBridge_Click;
 
         ViewModel = new MainWindowViewModel(UpdateViewHandler);
 
@@ -376,19 +374,6 @@ public partial class MainWindow
     {
         _backupAndRestoreView ??= new BackupAndRestoreView();
         DialogHost.Show(_backupAndRestoreView, "RootDialog");
-    }
-
-    private void MenuNetBridge_Click(object sender, RoutedEventArgs e)
-    {
-        if (Utils.IsAdministrator())
-        {
-            _netBridgeView ??= new NetBridgeView();
-            DialogHost.Show(_netBridgeView, "RootDialog");
-        }
-        else
-        {
-            NoticeManager.Instance.SendMessageAndEnqueue(ResUI.RunAsAdmin);
-        }
     }
 
     #endregion Event
