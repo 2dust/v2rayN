@@ -1,4 +1,6 @@
 using AwesomeAssertions;
+using ServiceLib.Handler.Fmt;
+using ServiceLib.Models.Dto;
 using Xunit;
 
 namespace ServiceLib.Tests.Fmt;
@@ -57,5 +59,33 @@ public class HyRealmTests
         var uri = Hysteria2Fmt.ToUri(resolved);
         uri.Should().Contain("hysteria2+realm://mytoken@rendezvous.example.com");
         uri.Should().EndWith("#remark");
+    }
+
+    [Fact]
+    public void ToServerUrl_ShouldIncludeSchemeForSingbox()
+    {
+        var realm = new HyRealm(
+            IsHttp: false,
+            Token: "public",
+            RendezvousHost: "realm.hy2.io",
+            RendezvousPort: 443,
+            RealmName: "my-realm-id",
+            StunList: ["turn.cloudflare.com:3478"]
+        );
+
+        realm.ToServerUrl().Should().Be("https://realm.hy2.io:443");
+    }
+
+    [Fact]
+    public void ResolveRealm_Issue9635_ShouldProduceHttpsServerUrl()
+    {
+        var str = "hysteria2+realm://public@realm.hy2.io/my-realm-id?auth=uuid&stun=turn.cloudflare.com%3A3478&sni=cloudflare.com&pinSHA256=xxx#Realm-Test";
+        var resolved = Hysteria2Fmt.ResolveRealm(str, out _);
+        resolved.Should().NotBeNull();
+
+        HyRealm.TryParse(resolved!.GetProtocolExtra().Hy2RealmUrl, out var realm).Should().BeTrue();
+        realm!.ToServerUrl().Should().StartWith("https://");
+        realm.ToServerUrl().Should().Contain("realm.hy2.io");
+        realm.StunList.Should().Contain("turn.cloudflare.com:3478");
     }
 }

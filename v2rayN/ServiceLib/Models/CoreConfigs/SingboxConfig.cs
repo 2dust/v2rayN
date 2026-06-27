@@ -257,6 +257,7 @@ public class HyRealm4Sbox
     public string? server_url { get; set; }
     public string? token { get; set; }
     public string? realm_id { get; set; }
+    public List<string>? stun_servers { get; set; }
 }
 
 public class Server4Sbox : BaseServer4Sbox

@@ -275,9 +275,10 @@ public partial class CoreConfigSingboxService
                         {
                             var realm4Sbox = new HyRealm4Sbox()
                             {
-                                server_url = realm.RendezvousHostPort,
+                                server_url = realm.ToServerUrl(),
                                 token = realm.Token,
                                 realm_id = realm.RealmName,
+                                stun_servers = realm.StunList?.Count > 0 ? realm.StunList : null,
                             };
                             outbound.realm = realm4Sbox;
                             outbound.server = null;
