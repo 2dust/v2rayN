@@ -809,6 +809,109 @@ public class Utils
             .Any(ni => ni.Name.Equals(inInterfaceName, StringComparison.OrdinalIgnoreCase));
     }
 
+    public static bool IsLoopbackAddress(string? address)
+    {
+        if (address.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        return IPAddress.TryParse(address, out var ipAddress)
+            ? IPAddress.IsLoopback(ipAddress)
+            : address.Equals(Global.Loopback, StringComparison.OrdinalIgnoreCase)
+              || address.Equals("localhost", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static string GetPreferredRealNetworkInterface(string? configuredInterface)
+    {
+        var interfaceName = configuredInterface?.TrimEx();
+        if (!interfaceName.IsNullOrEmpty() && IsUsableRealNetworkInterface(interfaceName))
+        {
+            return interfaceName;
+        }
+
+        return NetworkInterface.GetAllNetworkInterfaces()
+            .Where(IsUsableRealNetworkInterface)
+            .OrderByDescending(GetRealNetworkInterfacePriority)
+            .ThenByDescending(ni => ni.Speed)
+            .Select(ni => ni.Name)
+            .FirstOrDefault() ?? string.Empty;
+    }
+
+    public static bool IsUsableRealNetworkInterface(string interfaceName)
+    {
+        if (interfaceName.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        return NetworkInterface.GetAllNetworkInterfaces()
+            .Any(ni => ni.Name.Equals(interfaceName, StringComparison.OrdinalIgnoreCase)
+                       && IsUsableRealNetworkInterface(ni));
+    }
+
+    private static bool IsUsableRealNetworkInterface(NetworkInterface networkInterface)
+    {
+        if (networkInterface.OperationalStatus != OperationalStatus.Up
+            || networkInterface.NetworkInterfaceType is NetworkInterfaceType.Loopback or NetworkInterfaceType.Tunnel)
+        {
+            return false;
+        }
+
+        var name = networkInterface.Name ?? string.Empty;
+        var description = networkInterface.Description ?? string.Empty;
+        if (IsVirtualOrTunInterfaceName(name) || IsVirtualOrTunInterfaceName(description))
+        {
+            return false;
+        }
+
+        var ipProperties = networkInterface.GetIPProperties();
+        return ipProperties.GatewayAddresses.Any(g => IsUsableGatewayAddress(g.Address))
+               && ipProperties.UnicastAddresses.Any(ua => IsUsableUnicastAddress(ua.Address));
+    }
+
+    private static bool IsUsableGatewayAddress(IPAddress address)
+    {
+        return address.AddressFamily == AddressFamily.InterNetwork
+               && !address.Equals(IPAddress.Any)
+               && !IPAddress.IsLoopback(address);
+    }
+
+    private static bool IsUsableUnicastAddress(IPAddress address)
+    {
+        return address.AddressFamily == AddressFamily.InterNetwork
+               && !address.Equals(IPAddress.Any)
+               && !IPAddress.IsLoopback(address);
+    }
+
+    private static int GetRealNetworkInterfacePriority(NetworkInterface networkInterface)
+    {
+        return networkInterface.NetworkInterfaceType switch
+        {
+            NetworkInterfaceType.Wireless80211 => 3,
+            NetworkInterfaceType.Ethernet => 2,
+            NetworkInterfaceType.GigabitEthernet => 2,
+            NetworkInterfaceType.FastEthernetFx => 2,
+            NetworkInterfaceType.FastEthernetT => 2,
+            NetworkInterfaceType.Ppp => 1,
+            _ => 0,
+        };
+    }
+
+    private static bool IsVirtualOrTunInterfaceName(string name)
+    {
+        return name.Contains("singbox_tun", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("xray_tun", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("wintun", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("wireguard", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("tap", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("tun", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("vethernet", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("virtualbox", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("vmware", StringComparison.OrdinalIgnoreCase)
+               || name.Contains("hyper-v", StringComparison.OrdinalIgnoreCase);
+    }
+
     #endregion Speed Test
 
     #region Miscellaneous
