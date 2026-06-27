@@ -822,7 +822,7 @@ public class Utils
               || address.Equals("localhost", StringComparison.OrdinalIgnoreCase);
     }
 
-    public static string GetPreferredRealNetworkInterface(string? configuredInterface)
+    public static string GetPreferredRealNetworkInterface(string? configuredInterface, string? destinationAddress = null)
     {
         var interfaceName = configuredInterface?.TrimEx();
         if (!interfaceName.IsNullOrEmpty() && IsUsableRealNetworkInterface(interfaceName))
@@ -830,10 +830,22 @@ public class Utils
             return interfaceName;
         }
 
-        return NetworkInterface.GetAllNetworkInterfaces()
-            .Where(IsUsableRealNetworkInterface)
-            .OrderByDescending(GetRealNetworkInterfacePriority)
-            .ThenByDescending(ni => ni.Speed)
+        // 旧版 TUN 保护需要让主 Xray 连接代理服务器时避开 TUN 回灌；这里按 sing-box 的默认接口思路取真实出口。
+        // Legacy TUN protect needs main Xray's own proxy-server connection to bypass TUN capture; mirror sing-box's default-interface selection idea.
+        interfaceName = GetLocalAddressMatchedRealNetworkInterface(destinationAddress);
+        if (!interfaceName.IsNullOrEmpty())
+        {
+            return interfaceName;
+        }
+
+        interfaceName = GetWindowsDefaultRealNetworkInterface();
+        if (!interfaceName.IsNullOrEmpty())
+        {
+            return interfaceName;
+        }
+
+        return GetUsableRealNetworkInterfaces()
+            .OrderByDescending(ni => ni.Speed)
             .Select(ni => ni.Name)
             .FirstOrDefault() ?? string.Empty;
     }
@@ -845,9 +857,117 @@ public class Utils
             return false;
         }
 
+        return GetUsableRealNetworkInterfaces()
+            .Any(ni => ni.Name.Equals(interfaceName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static string GetLocalAddressMatchedRealNetworkInterface(string? destinationAddress)
+    {
+        if (!IPAddress.TryParse(destinationAddress, out var address)
+            || address.AddressFamily != AddressFamily.InterNetwork)
+        {
+            return string.Empty;
+        }
+
+        var interfaces = GetUsableRealNetworkInterfaces();
+
+        foreach (var networkInterface in interfaces)
+        {
+            if (GetUsableIPv4UnicastAddresses(networkInterface)
+                .Any(unicast => unicast.Address.Equals(address)))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        foreach (var networkInterface in interfaces)
+        {
+            if (GetUsableIPv4UnicastAddresses(networkInterface)
+                .Any(unicast => IsInIPv4Prefix(address, unicast.Address, unicast.PrefixLength)))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static string GetWindowsDefaultRealNetworkInterface()
+    {
+        var interfacesByIndex = GetUsableRealNetworkInterfaces()
+            .Select(ni => new
+            {
+                Interface = ni,
+                Index = TryGetIPv4InterfaceIndex(ni, out var index) ? (uint?)index : null,
+            })
+            .Where(item => item.Index.HasValue)
+            .GroupBy(item => item.Index!.Value)
+            .ToDictionary(group => group.Key, group => group.First().Interface);
+
+        foreach (var candidate in WindowsNetworkUtils.GetDefaultIPv4RouteCandidates())
+        {
+            if (interfacesByIndex.TryGetValue(candidate.InterfaceIndex, out var networkInterface))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static List<NetworkInterface> GetUsableRealNetworkInterfaces()
+    {
         return NetworkInterface.GetAllNetworkInterfaces()
-            .Any(ni => ni.Name.Equals(interfaceName, StringComparison.OrdinalIgnoreCase)
-                       && IsUsableRealNetworkInterface(ni));
+            .Where(IsUsableRealNetworkInterface)
+            .ToList();
+    }
+
+    private static IEnumerable<UnicastIPAddressInformation> GetUsableIPv4UnicastAddresses(NetworkInterface networkInterface)
+    {
+        return networkInterface.GetIPProperties().UnicastAddresses
+            .Where(ua => IsUsableUnicastAddress(ua.Address));
+    }
+
+    private static bool TryGetIPv4InterfaceIndex(NetworkInterface networkInterface, out uint interfaceIndex)
+    {
+        interfaceIndex = 0;
+        try
+        {
+            var properties = networkInterface.GetIPProperties().GetIPv4Properties();
+            if (properties == null)
+            {
+                return false;
+            }
+
+            interfaceIndex = (uint)properties.Index;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool IsInIPv4Prefix(IPAddress address, IPAddress prefixAddress, int prefixLength)
+    {
+        if (prefixLength is <= 0 or > 32)
+        {
+            return false;
+        }
+
+        var addressValue = ToUInt32BigEndian(address);
+        var prefixValue = ToUInt32BigEndian(prefixAddress);
+        var mask = uint.MaxValue << (32 - prefixLength);
+        return (addressValue & mask) == (prefixValue & mask);
+    }
+
+    private static uint ToUInt32BigEndian(IPAddress address)
+    {
+        var bytes = address.GetAddressBytes();
+        return ((uint)bytes[0] << 24)
+               | ((uint)bytes[1] << 16)
+               | ((uint)bytes[2] << 8)
+               | bytes[3];
     }
 
     private static bool IsUsableRealNetworkInterface(NetworkInterface networkInterface)
@@ -882,20 +1002,6 @@ public class Utils
         return address.AddressFamily == AddressFamily.InterNetwork
                && !address.Equals(IPAddress.Any)
                && !IPAddress.IsLoopback(address);
-    }
-
-    private static int GetRealNetworkInterfacePriority(NetworkInterface networkInterface)
-    {
-        return networkInterface.NetworkInterfaceType switch
-        {
-            NetworkInterfaceType.Wireless80211 => 3,
-            NetworkInterfaceType.Ethernet => 2,
-            NetworkInterfaceType.GigabitEthernet => 2,
-            NetworkInterfaceType.FastEthernetFx => 2,
-            NetworkInterfaceType.FastEthernetT => 2,
-            NetworkInterfaceType.Ppp => 1,
-            _ => 0,
-        };
     }
 
     private static bool IsVirtualOrTunInterfaceName(string name)

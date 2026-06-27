@@ -162,6 +162,8 @@ public class CoreConfigContextBuilder
                 ProtectDomainList = [.. mainResult.Context.ProtectDomainList, .. preResult.Context.ProtectDomainList],
             },
         };
+        // 旧版 TUN 保护链路是 sing-box TUN -> 本地 Xray SOCKS；主 Xray 自身连接节点时也要避免被 TUN 回灌。
+        // Legacy TUN protect forwards traffic through sing-box TUN -> local Xray SOCKS; bind main Xray so its own server connection is not captured by TUN.
         var shouldBindMainXray = ShouldBindMainXrayForLegacyTunProtect(mainResult.Context, preResult.Context);
         if (mainResult.Context.IsTunEnabled
             && (mainResult.Context.AppConfig.TunModeItem.StrictRoute || shouldBindMainXray))
@@ -199,7 +201,9 @@ public class CoreConfigContextBuilder
 
     private static string ResolveMainCoreBindInterface(CoreConfigContext mainContext)
     {
-        var interfaceName = Utils.GetPreferredRealNetworkInterface(mainContext.AppConfig.CoreBasicItem.BindInterface);
+        var interfaceName = Utils.GetPreferredRealNetworkInterface(
+            mainContext.AppConfig.CoreBasicItem.BindInterface,
+            mainContext.Node.Address);
         if (!interfaceName.IsNullOrEmpty())
         {
             Logging.SaveLog($"Auto bind main Xray outbound interface for legacy TUN protect: {interfaceName}");

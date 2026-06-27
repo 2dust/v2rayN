@@ -70,6 +70,7 @@ public class MainWindowViewModel : MyReactiveObject
     private const int LegacyTunProtectNetworkChangeDelayMs = 6000;
     private bool _legacyTunProtectBindInterfaceTracked;
     private string _legacyTunProtectBindInterface = string.Empty;
+    private string _legacyTunProtectBindDestination = string.Empty;
     private bool _networkChangeMonitorRegistered;
     private int _networkChangeVersion;
 
@@ -698,6 +699,9 @@ public class MainWindowViewModel : MyReactiveObject
         _legacyTunProtectBindInterface = _legacyTunProtectBindInterfaceTracked
             ? mainContext.AppConfig.CoreBasicItem.BindInterface ?? string.Empty
             : string.Empty;
+        _legacyTunProtectBindDestination = _legacyTunProtectBindInterfaceTracked
+            ? mainContext.Node.Address ?? string.Empty
+            : string.Empty;
     }
 
     private bool IsLegacyTunProtectXrayBindContext(CoreConfigContext mainContext, CoreConfigContext? preContext)
@@ -714,7 +718,9 @@ public class MainWindowViewModel : MyReactiveObject
 
     private string ResolvePreferredMainCoreBindInterface()
     {
-        return Utils.GetPreferredRealNetworkInterface(_config.CoreBasicItem.BindInterface);
+        return Utils.GetPreferredRealNetworkInterface(
+            _config.CoreBasicItem.BindInterface,
+            _legacyTunProtectBindDestination);
     }
 
     #endregion core job
