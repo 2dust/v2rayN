@@ -1,8 +1,10 @@
 using AwesomeAssertions;
 using ServiceLib.Common;
 using ServiceLib.Enums;
+using ServiceLib.Handler.Fmt;
 using ServiceLib.Manager;
 using ServiceLib.Models;
+using ServiceLib.Models.Dto;
 using ServiceLib.Services.CoreConfig;
 using Xunit;
 
@@ -556,5 +558,38 @@ public class CoreConfigSingboxServiceTests
         cfg.dns.servers.Should().Contain(s => s.tag == Global.SingboxLocalDNSTag);
         cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Global));
         cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Direct));
+    }
+
+    [Fact]
+    public void GenerateClientConfigContent_Hysteria2Realm_ShouldEmitHttpsServerUrl()
+    {
+        var shareLink =
+            "hysteria2+realm://public@realm.hy2.io/my-realm-id?auth=uuid&stun=turn.cloudflare.com%3A3478&sni=cloudflare.com&pinSHA256=xxx#Realm-Test";
+        var node = Hysteria2Fmt.ResolveRealm(shareLink, out _);
+        node.Should().NotBeNull();
+        node!.CoreType = ECoreType.sing_box;
+
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.CoreTypeItem =
+        [
+            new CoreTypeItem { ConfigType = EConfigType.Hysteria2, CoreType = ECoreType.sing_box }
+        ];
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box);
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var proxy = cfg.outbounds.First(o => o.tag == Global.ProxyTag);
+
+        proxy.type.Should().Be("hysteria2");
+        proxy.realm.Should().NotBeNull();
+        proxy.realm!.server_url.Should().StartWith("https://");
+        proxy.realm.server_url.Should().Contain("realm.hy2.io");
+        proxy.realm.token.Should().Be("public");
+        proxy.realm.realm_id.Should().Be("my-realm-id");
+        proxy.realm.stun_servers.Should().Contain("turn.cloudflare.com:3478");
+        proxy.server.Should().BeNull();
     }
 }

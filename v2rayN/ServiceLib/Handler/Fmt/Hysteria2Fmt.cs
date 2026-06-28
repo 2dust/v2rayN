@@ -110,6 +110,7 @@ public class Hysteria2Fmt : BaseFmt
             Hy2RealmUrl = realm.ToUri(),
         });
 
+        msg = string.Empty;
         return item;
     }
 
