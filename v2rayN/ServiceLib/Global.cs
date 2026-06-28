@@ -647,6 +647,25 @@ public class Global
         { ECoreType.v2rayN, "2dust/v2rayN" },
     };
 
+    // Cores that run as a SEPARATE process while sing-box owns the TUN pre-service,
+    // reached via a loopback SOCKS pre-socks port. Their own DNS must NOT be hijacked into
+    // sing-box's DNS module (whose remote-DNS server detours through the proxy outbound,
+    // i.e. back into this very helper process), otherwise DNS resolution deadlocks under TUN.
+    // Xray/v2fly/mihomo are intentionally omitted: they ship internal DNS clients and do not
+    // depend on the OS resolver for proxy lookups, so the loop never forms for them.
+    public static readonly HashSet<ECoreType> StandaloneExternalCores =
+    [
+        ECoreType.naiveproxy,
+        ECoreType.tuic,
+        ECoreType.juicity,
+        ECoreType.hysteria,
+        ECoreType.hysteria2,
+        ECoreType.brook,
+        ECoreType.overtls,
+        ECoreType.shadowquic,
+        ECoreType.mieru,
+    ];
+
     public static readonly List<string> OtherGeoUrls =
     [
         @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat",
