@@ -422,12 +422,12 @@
                                             x:Name="txtMinGeckoPacketSize"
                                             Width="90"
                                             Margin="{StaticResource Margin4}"
-                                            Watermark="Min" />
+                                            PlaceholderText="Min" />
                                         <TextBox
                                             x:Name="txtMaxGeckoPacketSize"
                                             Width="90"
                                             Margin="{StaticResource Margin4}"
-                                            Watermark="Max" />
+                                            PlaceholderText="Max" />
                                     </StackPanel>
                                     <TextBlock
                                         Margin="{StaticResource Margin4}"
@@ -460,7 +460,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="1000-2000,3000,4000" />
+                        PlaceholderText="1000-2000,3000,4000" />
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="2"
@@ -498,12 +498,12 @@
                             x:Name="txtUpMbps7"
                             Width="90"
                             Margin="{StaticResource Margin4}"
-                            Watermark="Up" />
+                            PlaceholderText="Up" />
                         <TextBox
                             x:Name="txtDownMbps7"
                             Width="90"
                             Margin="{StaticResource Margin4}"
-                            Watermark="Down" />
+                            PlaceholderText="Down" />
                     </StackPanel>
                 </Grid>
                 <Grid
@@ -612,7 +612,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="0, 0, 0" />
+                        PlaceholderText="0, 0, 0" />
 
                     <TextBlock
                         Grid.Row="5"
@@ -626,7 +626,7 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
-                        Watermark="Ipv4,Ipv6" />
+                        PlaceholderText="Ipv4,Ipv6" />
 
                     <TextBlock
                         Grid.Row="6"
@@ -641,7 +641,7 @@
                         Width="200"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        Watermark="1280" />
+                        PlaceholderText="1280" />
                 </Grid>
                 <Grid
                     x:Name="gridAnytls"

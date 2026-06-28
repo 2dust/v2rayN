@@ -21,7 +21,7 @@
                 Width="200"
                 Margin="{StaticResource MarginLr8}"
                 VerticalContentAlignment="Center"
-                Watermark="{x:Static resx:ResUI.MsgFilterTitle}" />
+                PlaceholderText="{x:Static resx:ResUI.MsgFilterTitle}" />
 
             <Button
                 x:Name="btnCopy"
