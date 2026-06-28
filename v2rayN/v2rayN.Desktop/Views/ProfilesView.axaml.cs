@@ -6,20 +6,13 @@ namespace v2rayN.Desktop.Views;
 public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
-    private Window? _window;
     private static readonly string _tag = "ProfilesView";
 
     public ProfilesView()
     {
         InitializeComponent();
-    }
-
-    public ProfilesView(Window window)
-    {
-        InitializeComponent();
 
         _config = AppManager.Instance.Config;
-        _window = window;
 
         menuSelectAll.Click += menuSelectAll_Click;
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
@@ -37,8 +30,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         //    lstProfiles.DragEnter += LstProfiles_DragEnter;
         //    lstProfiles.Drop += LstProfiles_Drop;
         //}
-
-        ViewModel = new ProfilesViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
@@ -90,6 +81,63 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2InnerUriCmd, v => v.menuExport2InnerUri).DisposeWith(disposables);
 
+            ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
+            {
+                var message = interaction.Input;
+                var result = await UI.ShowYesNo(message);
+                interaction.SetOutput(result == ButtonResult.Yes);
+            }).DisposeWith(disposables);
+
+            ViewModel.SaveFileDialogInteraction.RegisterHandler(async interaction =>
+            {
+                var viewModel = ViewModel;
+                if (viewModel is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }    
+                var profileItem = interaction.Input;
+                var fileName = await UI.SaveFileDialog("");
+                if (fileName.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                await viewModel.Export2ClientConfigResult(fileName, profileItem);
+                interaction.SetOutput(true);
+            }).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(async interaction =>
+            {
+                var strData = interaction.Input;
+                await AvaUtils.SetClipboardData(this, strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareServerInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(Unit.Default);
+                    return;
+                }
+                await ShareServer(url);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
+            {
+                Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
             AppEvents.AppExitRequested
               .AsObservable()
               .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -119,93 +167,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     }
 
     #region Event
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
-
-            case EViewAction.ProfilesFocus:
-                lstProfiles.Focus();
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(_window, ResUI.RemoveServer) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SaveFileDialog:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                var fileName = await UI.SaveFileDialog(_window, "");
-                if (fileName.IsNullOrEmpty())
-                {
-                    return false;
-                }
-                ViewModel?.Export2ClientConfigResult(fileName, (ProfileItem)obj);
-                break;
-
-            case EViewAction.AddServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
-
-            case EViewAction.AddServer2Window:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddServer2Window((ProfileItem)obj).ShowDialog<bool>(_window);
-
-            case EViewAction.AddGroupServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new AddGroupServerWindow((ProfileItem)obj).ShowDialog<bool>(_window);
-
-            case EViewAction.ShareServer:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                await ShareServer((string)obj);
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new SubEditWindow((SubItem)obj).ShowDialog<bool>(_window);
-
-            case EViewAction.DispatcherRefreshServersBiz:
-                Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
-                break;
-        }
-
-        return await Task.FromResult(true);
-    }
 
     public async Task ShareServer(string url)
     {

@@ -7,18 +7,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     public AddGroupServerWindow()
     {
         InitializeComponent();
-    }
-
-    public AddGroupServerWindow(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
-
-        ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -30,22 +23,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ResUI.TbLeastLoad,
         };
         cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
-
-        switch (profileItem.ConfigType)
-        {
-            case EConfigType.PolicyGroup:
-                Title = ResUI.TbConfigTypePolicyGroup;
-                break;
-
-            case EConfigType.ProxyChain:
-                Title = ResUI.TbConfigTypeProxyChain;
-                gridPolicyGroup.IsVisible = false;
-                if (tabControl.Items.Count > 0)
-                {
-                    tabControl.Items.RemoveAt(0);
-                }
-                break;
-        }
 
         this.WhenActivated(disposables =>
         {
@@ -65,6 +42,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
@@ -76,20 +58,28 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         lstChild.LoadingRow += LstChild_LoadingRow;
     }
 
+    private void InitializeData(ProfileItem profileItem)
+    {
+        switch (profileItem.ConfigType)
+        {
+            case EConfigType.PolicyGroup:
+                Title = ResUI.TbConfigTypePolicyGroup;
+                break;
+
+            case EConfigType.ProxyChain:
+                Title = ResUI.TbConfigTypeProxyChain;
+                gridPolicyGroup.IsVisible = false;
+                if (tabControl.Items.Count > 0)
+                {
+                    tabControl.Items.RemoveAt(0);
+                }
+                break;
+        }
+    }
+
     private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)
     {
         e.Row.Header = $" {e.Row.Index + 1}";
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

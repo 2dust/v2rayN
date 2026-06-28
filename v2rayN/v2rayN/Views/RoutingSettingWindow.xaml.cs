@@ -6,14 +6,11 @@ public partial class RoutingSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Closing += RoutingSettingWindow_Closing;
         PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
-
-        ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -32,31 +29,15 @@ public partial class RoutingSettingWindow
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedSetDefaultCmd, v => v.menuRoutingAdvancedSetDefault).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
+
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleSettingWindow:
-
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog() ?? false;
-        }
-        return await Task.FromResult(true);
     }
 
     private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

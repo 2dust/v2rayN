@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class OptionSettingViewModel : MyReactiveObject
+public class OptionSettingViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     #region Core
 
     [Reactive] public int LocalPort { get; set; }
@@ -122,10 +124,9 @@ public class OptionSettingViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public OptionSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -141,8 +142,6 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await _updateView?.Invoke(EViewAction.InitSettingFont, null);
-
         #region Core
 
         var inbound = _config.Inbound.First();
@@ -312,8 +311,7 @@ public class OptionSettingViewModel : MyReactiveObject
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
-                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
+                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -429,7 +427,7 @@ public class OptionSettingViewModel : MyReactiveObject
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

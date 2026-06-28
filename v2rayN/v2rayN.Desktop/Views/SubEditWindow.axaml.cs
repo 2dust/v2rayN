@@ -7,16 +7,9 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     public SubEditWindow()
     {
         InitializeComponent();
-    }
-
-    public SubEditWindow(SubItem subItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-
-        ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 
@@ -38,17 +31,6 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

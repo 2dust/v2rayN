@@ -11,8 +11,6 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
     {
         InitializeComponent();
 
-        ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
-
         btnReset.Click += btnReset_Click;
 
         HotkeyManager.Instance.IsPause = true;
@@ -27,17 +25,6 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         Init();
         BindingData();
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Init()

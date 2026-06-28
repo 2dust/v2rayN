@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleDetailsViewModel : MyReactiveObject
+public class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
 
@@ -25,10 +27,9 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -88,6 +89,6 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await _updateView?.Invoke(EViewAction.CloseWindow, null);
+        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }

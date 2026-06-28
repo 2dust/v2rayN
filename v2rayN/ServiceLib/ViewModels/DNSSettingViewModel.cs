@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class DNSSettingViewModel : MyReactiveObject
+public class DNSSettingViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     [Reactive] public bool? UseSystemHosts { get; set; }
     [Reactive] public bool? AddCommonHosts { get; set; }
     [Reactive] public bool? FakeIP { get; set; }
@@ -17,15 +19,15 @@ public class DNSSettingViewModel : MyReactiveObject
     [Reactive] public bool? ServeStale { get; set; }
 
     [Reactive] public bool UseSystemHostsCompatible { get; set; }
-    [Reactive] public string DomainStrategy4FreedomCompatible { get; set; }
-    [Reactive] public string DomainDNSAddressCompatible { get; set; }
-    [Reactive] public string NormalDNSCompatible { get; set; }
-    [Reactive] public string TunDNSCompatible { get; set; }
+    [Reactive] public string DomainStrategy4FreedomCompatible { get; set; } = string.Empty;
+    [Reactive] public string DomainDNSAddressCompatible { get; set; } = string.Empty;
+    [Reactive] public string NormalDNSCompatible { get; set; } = string.Empty;
+    [Reactive] public string TunDNSCompatible { get; set; } = string.Empty;
 
-    [Reactive] public string DomainStrategy4Freedom2Compatible { get; set; }
-    [Reactive] public string DomainDNSAddress2Compatible { get; set; }
-    [Reactive] public string NormalDNS2Compatible { get; set; }
-    [Reactive] public string TunDNS2Compatible { get; set; }
+    [Reactive] public string DomainStrategy4Freedom2Compatible { get; set; } = string.Empty;
+    [Reactive] public string DomainDNSAddress2Compatible { get; set; } = string.Empty;
+    [Reactive] public string NormalDNS2Compatible { get; set; } = string.Empty;
+    [Reactive] public string TunDNS2Compatible { get; set; } = string.Empty;
     [Reactive] public bool RayCustomDNSEnableCompatible { get; set; }
     [Reactive] public bool SBCustomDNSEnableCompatible { get; set; }
 
@@ -35,10 +37,9 @@ public class DNSSettingViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
     public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCompatibleCmd { get; }
 
-    public DNSSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public DNSSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         SaveCmd = ReactiveCommand.CreateFromTask(SaveSettingAsync);
 
         ImportDefConfig4V2rayCompatibleCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -183,9 +184,6 @@ public class DNSSettingViewModel : MyReactiveObject
         await ConfigHandler.SaveDNSItems(_config, item2);
 
         await ConfigHandler.SaveConfig(_config);
-        if (_updateView != null)
-        {
-            await _updateView(EViewAction.CloseWindow, null);
-        }
+        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }

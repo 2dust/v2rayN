@@ -17,13 +17,18 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var viewLocator = SimpleViewLocator.Instance;
+            DataTemplates.Add(viewLocator);
+
             if (!Design.IsDesignMode)
             {
                 AppManager.Instance.InitComponents();
                 DataContext = StatusBarViewModel.Instance;
             }
 
-            var mainWindow = new MainWindow();
+            var mainWindowViewModel = new MainWindowViewModel();
+            var mainWindow = (MainWindow)viewLocator.Build(mainWindowViewModel);
+            mainWindow.ViewModel = mainWindowViewModel;
             desktop.MainWindow = mainWindow;
 
             if (OperatingSystem.IsMacOS())

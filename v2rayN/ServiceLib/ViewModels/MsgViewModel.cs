@@ -2,6 +2,8 @@ namespace ServiceLib.ViewModels;
 
 public class MsgViewModel : MyReactiveObject
 {
+    public Interaction<string, Unit> DispatcherShowMsgInteraction { get; } = new();
+
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
     private int _showLock = 0; // 0 = unlocked, 1 = locked
@@ -13,10 +15,9 @@ public class MsgViewModel : MyReactiveObject
     [Reactive]
     public bool AutoRefresh { get; set; }
 
-    public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public MsgViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
 
@@ -64,7 +65,7 @@ public class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
+            await DispatcherShowMsgInteraction.Handle(sb.ToString());
         }
         finally
         {

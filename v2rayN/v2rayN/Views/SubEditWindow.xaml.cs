@@ -2,14 +2,11 @@ namespace v2rayN.Views;
 
 public partial class SubEditWindow
 {
-    public SubEditWindow(SubItem subItem)
+    public SubEditWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
-
-        ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
 
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
 
@@ -32,17 +29,6 @@ public partial class SubEditWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

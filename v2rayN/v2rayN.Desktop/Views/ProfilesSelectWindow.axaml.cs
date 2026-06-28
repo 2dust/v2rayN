@@ -25,9 +25,6 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         lstProfiles.Sorting += LstProfiles_Sorting;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
 
-        ViewModel = new ProfilesSelectViewModel(UpdateViewHandler);
-        DataContext = ViewModel;
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -35,6 +32,12 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
         });
 
         btnCancel.Click += (s, e) => Close(false);
@@ -63,17 +66,6 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
     // Expose ConfigType filter controls to callers
     public void SetConfigTypeFilter(IEnumerable<EConfigType> types, bool exclude = false)
         => ViewModel?.SetConfigTypeFilter(types, exclude);
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
-    }
 
     private void LstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {

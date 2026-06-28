@@ -1,16 +1,17 @@
 namespace ServiceLib.ViewModels;
 
-public class SubEditViewModel : MyReactiveObject
+public class SubEditViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     [Reactive]
     public SubItem SelectedSource { get; set; }
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public SubEditViewModel(SubItem subItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -49,7 +50,7 @@ public class SubEditViewModel : MyReactiveObject
         if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

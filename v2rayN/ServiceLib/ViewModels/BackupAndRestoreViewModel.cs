@@ -13,12 +13,11 @@ public class BackupAndRestoreViewModel : MyReactiveObject
     public WebDavItem SelectedSource { get; set; }
 
     [Reactive]
-    public string OperationMsg { get; set; }
+    public string OperationMsg { get; set; } = string.Empty;
 
-    public BackupAndRestoreViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public BackupAndRestoreViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         WebDavCheckCmd = ReactiveCommand.CreateFromTask(async () =>
         {

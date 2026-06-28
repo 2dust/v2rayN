@@ -2,13 +2,11 @@ namespace v2rayN.Views;
 
 public partial class AddServer2Window
 {
-    public AddServer2Window(ProfileItem profileItem)
+    public AddServer2Window()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
-        ViewModel = new AddServer2ViewModel(profileItem, UpdateViewHandler);
 
         cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 
@@ -23,28 +21,18 @@ public partial class AddServer2Window
             this.BindCommand(ViewModel, vm => vm.BrowseServerCmd, v => v.btnBrowse).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
-        });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
-            case EViewAction.BrowseServer:
+            ViewModel.BrowseConfigFileInteraction.RegisterHandler(interaction =>
+            {
                 if (UI.OpenFileDialog(out var fileName, "Config|*.json|YAML|*.yaml;*.yml|All|*.*") != true)
                 {
-                    return false;
+                    interaction.SetOutput(null);
+                    return;
                 }
-                ViewModel?.BrowseServer(fileName);
-                break;
-        }
-
-        return await Task.FromResult(true);
+                interaction.SetOutput(fileName);
+            }).DisposeWith(disposables);
+        });
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
