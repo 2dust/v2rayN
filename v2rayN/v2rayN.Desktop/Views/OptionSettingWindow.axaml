@@ -279,12 +279,12 @@
                                 x:Name="txtUpMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
-                                Watermark="Up" />
+                                PlaceholderText="Up" />
                             <TextBox
                                 x:Name="txtDownMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
-                                Watermark="Down" />
+                                PlaceholderText="Down" />
                         </StackPanel>
 
                         <TextBlock
@@ -351,7 +351,7 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
-                                                Watermark="50-100" />
+                                                PlaceholderText="50-100" />
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Grid.Column="2"
@@ -373,7 +373,7 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
-                                                Watermark="10-20" />
+                                                PlaceholderText="10-20" />
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Grid.Column="2"
@@ -395,7 +395,7 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
-                                                Watermark="0" />
+                                                PlaceholderText="0" />
                                             <TextBlock
                                                 Grid.Row="3"
                                                 Grid.Column="2"
@@ -461,7 +461,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            Watermark="0.0.0.0" />
+                            PlaceholderText="0.0.0.0" />
                         <TextBlock
                             Grid.Row="23"
                             Grid.Column="2"
@@ -845,7 +845,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="proxy_set.sh" />
+                                PlaceholderText="proxy_set.sh" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyScriptPath"
                                 Margin="{StaticResource Margin4}"
@@ -890,7 +890,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 TextWrapping="Wrap"
-                                Watermark="pac.txt" />
+                                PlaceholderText="pac.txt" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyPacPath"
                                 Margin="{StaticResource Margin4}"
