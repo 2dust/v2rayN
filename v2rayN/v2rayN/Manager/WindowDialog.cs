@@ -22,7 +22,7 @@ public class WindowDialog : IWindowDialog
 
         if (vm is ServiceLib.Base.ICloseable closeable)
         {
-            closeable.RequestClose += (_, _) => Dispatch(window.Close);
+            closeable.RequestClose += (_, _) => Dispatch(() => window.DialogResult = true);
         }
 
         var result = window.ShowDialog();

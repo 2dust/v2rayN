@@ -512,6 +512,7 @@ public class MainWindowViewModel : MyReactiveObject
         var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(settingViewModel);
         if (ret == true)
         {
+            MainGirdOrientation = _config.UiItem.MainGirdOrientation;
             AppEvents.InboundDisplayRequested.Publish();
             await Reload();
         }
@@ -640,7 +641,6 @@ public class MainWindowViewModel : MyReactiveObject
         {
             ShowClashUI = showClashUI;
             TabMainSelectedIndex = showClashUI ? TabMainSelectedIndex : 0;
-            MainGirdOrientation = _config.UiItem.MainGirdOrientation;
         });
     }
 
