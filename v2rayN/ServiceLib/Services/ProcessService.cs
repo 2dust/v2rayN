@@ -2,6 +2,7 @@ namespace ServiceLib.Services;
 
 public class ProcessService : IDisposable
 {
+    private static readonly TimeSpan StopExitTimeout = TimeSpan.FromSeconds(2);
     private readonly Process _process;
     private readonly Func<bool, string, Task>? _updateFunc;
     private bool _isDisposed;
@@ -108,11 +109,31 @@ public class ProcessService : IDisposable
             }
             catch { }
 
-            await Task.Delay(100);
+            await WaitForExitAsync();
         }
         catch (Exception ex)
         {
             await _updateFunc?.Invoke(true, ex.Message);
+        }
+    }
+
+    private async Task WaitForExitAsync()
+    {
+        if (_process.HasExited)
+        {
+            return;
+        }
+
+        try
+        {
+            using var cts = new CancellationTokenSource(StopExitTimeout);
+            await _process.WaitForExitAsync(cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (InvalidOperationException)
+        {
         }
     }
 

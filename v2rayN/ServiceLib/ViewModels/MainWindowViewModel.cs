@@ -67,6 +67,13 @@ public class MainWindowViewModel : MyReactiveObject
 
     [Reactive] public bool BlNewUpdate { get; set; }
 
+    private const int LegacyTunProtectNetworkChangeDelayMs = 2000;
+    private bool _legacyTunProtectBindInterfaceTracked;
+    private string _legacyTunProtectBindInterface = string.Empty;
+    private string _legacyTunProtectBindDestination = string.Empty;
+    private bool _networkChangeMonitorRegistered;
+    private int _networkChangeVersion;
+
     #endregion Menu
 
     #region Init
@@ -273,6 +280,7 @@ public class MainWindowViewModel : MyReactiveObject
         await ProfileExManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        RegisterNetworkChangeMonitor();
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {
@@ -575,6 +583,7 @@ public class MainWindowViewModel : MyReactiveObject
             {
                 return;
             }
+            UpdateLegacyTunProtectBindInterfaceSnapshot(allResult);
 
             await Task.Run(async () =>
             {
@@ -622,6 +631,121 @@ public class MainWindowViewModel : MyReactiveObject
     private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
         await CoreManager.Instance.LoadCore(mainContext, preContext);
+    }
+
+    private void RegisterNetworkChangeMonitor()
+    {
+        if (!Utils.IsWindows() || _networkChangeMonitorRegistered)
+        {
+            return;
+        }
+
+        if (!WindowsNetworkUtils.TryStartNetworkChangeMonitor())
+        {
+            return;
+        }
+
+        WindowsNetworkUtils.NetworkChanged += OnNetworkChanged;
+        _networkChangeMonitorRegistered = true;
+    }
+
+    private void OnNetworkChanged(object? sender, EventArgs e)
+    {
+        _ = ScheduleLegacyTunProtectNetworkChangeCheck();
+    }
+
+    private async Task ScheduleLegacyTunProtectNetworkChangeCheck()
+    {
+        try
+        {
+            var version = Interlocked.Increment(ref _networkChangeVersion);
+            await Task.Delay(LegacyTunProtectNetworkChangeDelayMs);
+            if (version != _networkChangeVersion)
+            {
+                return;
+            }
+
+            await ReloadIfLegacyTunProtectBindInterfaceChanged();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("Legacy TUN protect network change check failed", ex);
+        }
+    }
+
+    private async Task ReloadIfLegacyTunProtectBindInterfaceChanged()
+    {
+        if (!_legacyTunProtectBindInterfaceTracked
+            || !_config.TunModeItem.EnableTun
+            || !_config.TunModeItem.EnableLegacyProtect)
+        {
+            return;
+        }
+
+        var currentInterface = ResolvePreferredMainCoreBindInterface();
+        if (currentInterface.IsNullOrEmpty())
+        {
+            Logging.SaveLog("Network changed; no usable interface found for legacy TUN protect Xray binding.");
+            return;
+        }
+
+        if (currentInterface.Equals(_legacyTunProtectBindInterface, StringComparison.OrdinalIgnoreCase)
+            && Utils.IsUsableRealNetworkInterface(_legacyTunProtectBindInterface))
+        {
+            return;
+        }
+
+        var msg =
+            $"Network changed; reload legacy TUN protect Xray binding: {_legacyTunProtectBindInterface} -> {currentInterface}";
+        Logging.SaveLog(msg);
+        NoticeManager.Instance.SendMessage(msg);
+        await Reload();
+    }
+
+    private void UpdateLegacyTunProtectBindInterfaceSnapshot(CoreConfigContextBuilderAllResult allResult)
+    {
+        var mainContext = allResult.MainResult.Context;
+        var preContext = allResult.PreSocksResult?.Context;
+        _legacyTunProtectBindInterfaceTracked = IsLegacyTunProtectXrayBindContext(mainContext, preContext);
+        _legacyTunProtectBindInterface = _legacyTunProtectBindInterfaceTracked
+            ? mainContext.AppConfig.CoreBasicItem.BindInterface ?? string.Empty
+            : string.Empty;
+        _legacyTunProtectBindDestination = _legacyTunProtectBindInterfaceTracked
+            ? mainContext.Node.Address ?? string.Empty
+            : string.Empty;
+    }
+
+    private bool IsLegacyTunProtectXrayBindContext(CoreConfigContext mainContext, CoreConfigContext? preContext)
+    {
+        return Utils.IsWindows()
+               && _config.TunModeItem.EnableTun
+               && _config.TunModeItem.EnableLegacyProtect
+               && IsLegacyTunProtectBindInterfaceAutoResolved()
+               && mainContext.RunCoreType == ECoreType.Xray
+               && preContext?.RunCoreType == ECoreType.sing_box
+               && preContext.Node.ConfigType == EConfigType.SOCKS
+               && Utils.IsLoopbackAddress(preContext.Node.Address)
+               && preContext.Node.Port == AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+    }
+
+    private bool IsLegacyTunProtectBindInterfaceAutoResolved()
+    {
+        var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+        if (!bindInterface.IsNullOrEmpty() && Utils.ContainsInterfaceName(bindInterface))
+        {
+            return false;
+        }
+
+        return !Utils.HasEffectiveSendThrough(
+            _config.CoreBasicItem.SendThrough,
+            _config.TunModeItem.StrictRoute);
+    }
+
+    private string ResolvePreferredMainCoreBindInterface()
+    {
+        return Utils.GetPreferredRealNetworkInterface(
+            _config.CoreBasicItem.BindInterface,
+            _legacyTunProtectBindDestination);
     }
 
     #endregion core job

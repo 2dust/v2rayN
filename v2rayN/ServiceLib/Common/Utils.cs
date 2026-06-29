@@ -803,10 +803,230 @@ public class Utils
                .Any(ua => ua.Address.Equals(targetAddress));
     }
 
+    public static bool HasEffectiveSendThrough(string? sendThrough, bool strictRoute)
+    {
+        // strict_route clears SendThrough in generated TUN configs, so it should not suppress automatic interface binding.
+        // strict_route 会在生成 TUN 配置时清空 SendThrough，因此不应阻止自动绑定网口。
+        if (strictRoute)
+        {
+            return false;
+        }
+
+        sendThrough = sendThrough?.TrimEx();
+        return !sendThrough.IsNullOrEmpty() && IsLocalIP(sendThrough);
+    }
+
     public static bool ContainsInterfaceName(string inInterfaceName)
     {
+        inInterfaceName = inInterfaceName.TrimEx();
         return NetworkInterface.GetAllNetworkInterfaces()
             .Any(ni => ni.Name.Equals(inInterfaceName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public static bool IsLoopbackAddress(string? address)
+    {
+        if (address.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        address = address.TrimEx();
+        return IPAddress.TryParse(address, out var ipAddress)
+            ? IPAddress.IsLoopback(ipAddress)
+            : address.Equals(Global.Loopback, StringComparison.OrdinalIgnoreCase)
+              || address.Equals("localhost", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static string GetPreferredRealNetworkInterface(string? configuredInterface, string? destinationAddress = null)
+    {
+        var interfaceName = configuredInterface?.TrimEx();
+        if (!interfaceName.IsNullOrEmpty() && ContainsInterfaceName(interfaceName))
+        {
+            return interfaceName;
+        }
+
+        if (IsLoopbackAddress(destinationAddress))
+        {
+            // Loopback targets do not route through the TUN default route; avoid binding to a physical default interface.
+            // Loopback 目标不会被 TUN 默认路由回灌，因此不要回退绑定到物理默认出口。
+            return string.Empty;
+        }
+
+        interfaceName = GetLocalAddressMatchedRealNetworkInterface(destinationAddress);
+        if (!interfaceName.IsNullOrEmpty())
+        {
+            return interfaceName;
+        }
+
+        interfaceName = GetWindowsDefaultRealNetworkInterface();
+        if (!interfaceName.IsNullOrEmpty())
+        {
+            return interfaceName;
+        }
+
+        // Match sing-tun: do not guess an interface when the default route cannot be resolved.
+        // 与 sing-tun 对齐：无法解析默认出口时不猜测网卡。
+        return string.Empty;
+    }
+
+    public static bool IsUsableRealNetworkInterface(string interfaceName)
+    {
+        if (interfaceName.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        return GetUsableRealNetworkInterfaces()
+            .Any(ni => ni.Name.Equals(interfaceName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static string GetLocalAddressMatchedRealNetworkInterface(string? destinationAddress)
+    {
+        if (!IPAddress.TryParse(destinationAddress, out var address)
+            || !IsUsableUnicastAddress(address))
+        {
+            return string.Empty;
+        }
+
+        var interfaces = GetRunningNetworkInterfaces();
+
+        foreach (var networkInterface in interfaces)
+        {
+            if (GetUsableUnicastAddresses(networkInterface)
+                .Any(unicast => unicast.Address.Equals(address)))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        foreach (var networkInterface in interfaces)
+        {
+            if (GetUsableUnicastAddresses(networkInterface)
+                .Any(unicast => IsInPrefix(address, unicast.Address, unicast.PrefixLength)))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static string GetWindowsDefaultRealNetworkInterface()
+    {
+        var interfacesByIndex = NetworkInterface.GetAllNetworkInterfaces()
+            .Select(ni => new
+            {
+                Interface = ni,
+                Index = TryGetIPv4InterfaceIndex(ni, out var index) ? (uint?)index : null,
+            })
+            .Where(item => item.Index.HasValue)
+            .GroupBy(item => item.Index!.Value)
+            .ToDictionary(group => group.Key, group => group.First().Interface);
+
+        foreach (var candidate in WindowsNetworkUtils.GetDefaultIPv4RouteCandidates())
+        {
+            if (interfacesByIndex.TryGetValue(candidate.InterfaceIndex, out var networkInterface))
+            {
+                return networkInterface.Name;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static List<NetworkInterface> GetUsableRealNetworkInterfaces()
+    {
+        return NetworkInterface.GetAllNetworkInterfaces()
+            .Where(IsUsableRealNetworkInterface)
+            .ToList();
+    }
+
+    private static List<NetworkInterface> GetRunningNetworkInterfaces()
+    {
+        return NetworkInterface.GetAllNetworkInterfaces()
+            .Where(ni => ni.OperationalStatus == OperationalStatus.Up)
+            .ToList();
+    }
+
+    private static IEnumerable<UnicastIPAddressInformation> GetUsableUnicastAddresses(NetworkInterface networkInterface)
+    {
+        return networkInterface.GetIPProperties().UnicastAddresses
+            .Where(ua => IsUsableUnicastAddress(ua.Address));
+    }
+
+    private static bool TryGetIPv4InterfaceIndex(NetworkInterface networkInterface, out uint interfaceIndex)
+    {
+        interfaceIndex = 0;
+        try
+        {
+            var properties = networkInterface.GetIPProperties().GetIPv4Properties();
+            if (properties == null)
+            {
+                return false;
+            }
+
+            interfaceIndex = (uint)properties.Index;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool IsInPrefix(IPAddress address, IPAddress prefixAddress, int prefixLength)
+    {
+        if (address.AddressFamily != prefixAddress.AddressFamily)
+        {
+            return false;
+        }
+
+        var addressBytes = address.GetAddressBytes();
+        var prefixBytes = prefixAddress.GetAddressBytes();
+        var bitLength = addressBytes.Length * 8;
+        if (prefixLength < 0 || prefixLength > bitLength)
+        {
+            return false;
+        }
+
+        var fullBytes = prefixLength / 8;
+        var remainingBits = prefixLength % 8;
+        for (var i = 0; i < fullBytes; i++)
+        {
+            if (addressBytes[i] != prefixBytes[i])
+            {
+                return false;
+            }
+        }
+
+        if (remainingBits == 0)
+        {
+            return true;
+        }
+
+        var mask = (byte)(0xFF << (8 - remainingBits));
+        return (addressBytes[fullBytes] & mask) == (prefixBytes[fullBytes] & mask);
+    }
+
+    private static bool IsUsableRealNetworkInterface(NetworkInterface networkInterface)
+    {
+        if (networkInterface.OperationalStatus != OperationalStatus.Up
+            || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+        {
+            return false;
+        }
+
+        var ipProperties = networkInterface.GetIPProperties();
+        return ipProperties.UnicastAddresses.Any(ua => IsUsableUnicastAddress(ua.Address));
+    }
+
+    private static bool IsUsableUnicastAddress(IPAddress address)
+    {
+        return address.AddressFamily is AddressFamily.InterNetwork or AddressFamily.InterNetworkV6
+               && !address.Equals(IPAddress.Any)
+               && !address.Equals(IPAddress.IPv6Any)
+               && !address.Equals(IPAddress.IPv6None)
+               && !IPAddress.IsLoopback(address);
     }
 
     #endregion Speed Test

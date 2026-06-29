@@ -162,12 +162,20 @@ public class CoreConfigContextBuilder
                 ProtectDomainList = [.. mainResult.Context.ProtectDomainList, .. preResult.Context.ProtectDomainList],
             },
         };
+        // Legacy TUN protect forwards traffic through sing-box TUN -> local Xray SOCKS.
+        // 旧版 TUN 保护链路为 sing-box TUN -> 本地 Xray SOCKS，主 Xray 自身连接节点时也要避免被 TUN 回灌。
+        var shouldBindMainXray = ShouldBindMainXrayForLegacyTunProtect(mainResult.Context, preResult.Context);
         if (mainResult.Context.IsTunEnabled
-            && mainResult.Context.AppConfig.TunModeItem.StrictRoute)
+            && (mainResult.Context.AppConfig.TunModeItem.StrictRoute || shouldBindMainXray))
         {
             var appConfig = JsonUtils.DeepCopy(mainResult.Context.AppConfig);
-            appConfig.CoreBasicItem.BindInterface = string.Empty;
-            appConfig.CoreBasicItem.SendThrough = string.Empty;
+            appConfig.CoreBasicItem.BindInterface = shouldBindMainXray
+                ? ResolveMainCoreBindInterface(mainResult.Context)
+                : string.Empty;
+            if (mainResult.Context.AppConfig.TunModeItem.StrictRoute)
+            {
+                appConfig.CoreBasicItem.SendThrough = string.Empty;
+            }
             resolvedMainResult = resolvedMainResult with
             {
                 Context = resolvedMainResult.Context with
@@ -177,6 +185,47 @@ public class CoreConfigContextBuilder
             };
         }
         return new CoreConfigContextBuilderAllResult(resolvedMainResult, preResult);
+    }
+
+    private static bool ShouldBindMainXrayForLegacyTunProtect(
+        CoreConfigContext mainContext,
+        CoreConfigContext preContext)
+    {
+        return Utils.IsWindows()
+               && mainContext.AppConfig.TunModeItem.EnableLegacyProtect
+               && mainContext.RunCoreType == ECoreType.Xray
+               && preContext.RunCoreType == ECoreType.sing_box
+               && preContext.Node.ConfigType == EConfigType.SOCKS
+               && Utils.IsLoopbackAddress(preContext.Node.Address)
+               && preContext.Node.Port == AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+    }
+
+    private static string ResolveMainCoreBindInterface(CoreConfigContext mainContext)
+    {
+        if (!HasValidBindInterface(mainContext)
+            && Utils.HasEffectiveSendThrough(
+                mainContext.AppConfig.CoreBasicItem.SendThrough,
+                mainContext.AppConfig.TunModeItem.StrictRoute))
+        {
+            Logging.SaveLog("Skip auto binding main Xray outbound interface for legacy TUN protect: SendThrough is set.");
+            return string.Empty;
+        }
+
+        var interfaceName = Utils.GetPreferredRealNetworkInterface(
+            mainContext.AppConfig.CoreBasicItem.BindInterface,
+            mainContext.Node.Address);
+        if (!interfaceName.IsNullOrEmpty())
+        {
+            var action = mainContext.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty() ? "Auto bind" : "Bind";
+            Logging.SaveLog($"{action} main Xray outbound interface for legacy TUN protect: {interfaceName}");
+        }
+        return interfaceName;
+    }
+
+    private static bool HasValidBindInterface(CoreConfigContext mainContext)
+    {
+        var bindInterface = mainContext.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
+        return !bindInterface.IsNullOrEmpty() && Utils.ContainsInterfaceName(bindInterface);
     }
 
     /// <summary>
