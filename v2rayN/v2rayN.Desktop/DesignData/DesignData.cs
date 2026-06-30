@@ -1,5 +1,7 @@
 using ServiceLib.Models.Entities;
 using System.Diagnostics;
+using v2rayN.Desktop.Manager;
+using v2rayN.Desktop.ViewModels;
 
 namespace v2rayN.Desktop.DesignData;
 
@@ -12,9 +14,9 @@ public static class DesignData
 {
     // ── Parameterless-constructor ViewModels ───────────────────────────────
 
-    public static MainWindowViewModel? MainWindow { get; } = SafeCreate(() => new MainWindowViewModel());
+    public static MainWindowViewModel? MainWindow { get; } = SafeCreate(CreateMainWindow);
 
-    public static ProfilesViewModel? Profiles { get; } = SafeCreate(CreateProfiles);
+    public static ProfilesViewModel? Profiles { get; } = SafeCreate(() => new ProfilesViewModel());
 
     public static StatusBarViewModel? StatusBar { get; } = SafeCreate(CreateStatusBar);
 
@@ -42,6 +44,8 @@ public static class DesignData
 
     public static BackupAndRestoreViewModel? BackupAndRestore { get; } = SafeCreate(() => new BackupAndRestoreViewModel());
 
+    public static ThemeSettingViewModel? ThemeSetting { get; } = SafeCreate(() => new ThemeSettingViewModel());
+
     // ── ViewModels that require constructor parameters ─────────────────────
 
     public static AddGroupServerViewModel? AddGroupServer { get; } = SafeCreate(() => new AddGroupServerViewModel(new ProfileItem { Remarks = "Design Group", ConfigType = EConfigType.PolicyGroup }));
@@ -58,41 +62,9 @@ public static class DesignData
 
     // ── Helper factories ───────────────────────────────────────────────────
 
-    private static ProfilesViewModel CreateProfiles()
+    private static MainWindowViewModel CreateMainWindow()
     {
-        var vm = new ProfilesViewModel();
-        vm.ProfileItems.Add(new ProfileItemModel
-        {
-            Remarks = "🚀 Design Server (Active)",
-            ConfigType = EConfigType.VMess,
-            Address = "design.example.com",
-            Port = 443,
-            Network = "ws",
-            StreamSecurity = "tls",
-            IsActive = true,
-            DelayVal = "120ms",
-        });
-        vm.ProfileItems.Add(new ProfileItemModel
-        {
-            Remarks = "🔒 VLESS Server",
-            ConfigType = EConfigType.VLESS,
-            Address = "vless.example.com",
-            Port = 443,
-            Network = "grpc",
-            StreamSecurity = "tls",
-            DelayVal = "256ms",
-        });
-        vm.ProfileItems.Add(new ProfileItemModel
-        {
-            Remarks = "💧 Shadowsocks",
-            ConfigType = EConfigType.Shadowsocks,
-            Address = "ss.example.com",
-            Port = 8388,
-            Network = "tcp",
-            DelayVal = "80ms",
-        });
-        vm.SubItems.Add(new SubItem { Remarks = "Default" });
-        vm.SubItems.Add(new SubItem { Remarks = "My Subscription" });
+        var vm = new MainWindowViewModel { DesignMode = true };
         return vm;
     }
 
@@ -114,6 +86,8 @@ public static class DesignData
     {
         try
         {
+            AppManager.Instance.InitApp();
+            AppManager.Instance.WindowDialog = new WindowDialog();
             return factory();
         }
         catch (Exception ex)

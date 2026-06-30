@@ -8,6 +8,8 @@ public class MainWindowViewModel : MyReactiveObject
     public Interaction<Unit, byte[]?> ScanScreenInteraction { get; } = new();
     public Interaction<Unit, string?> BrowseImageFileInteraction { get; } = new();
 
+    public bool DesignMode { get; set; }
+
     public ProfilesViewModel ProfilesViewModel { get; } = new();
     public MsgViewModel MsgViewModel { get; } = new();
     public ClashProxiesViewModel ClashProxiesViewModel { get; } = new();
@@ -281,6 +283,11 @@ public class MainWindowViewModel : MyReactiveObject
     private async Task Init()
     {
         AppManager.Instance.ShowInTaskbar = true;
+
+        if (DesignMode)
+        {
+            return;
+        }
 
         //await ConfigHandler.InitBuiltinRouting(_config);
         await ConfigHandler.InitBuiltinDNS(_config);
@@ -588,6 +595,12 @@ public class MainWindowViewModel : MyReactiveObject
         if (!await _reloadSemaphore.WaitAsync(0))
         {
             _hasNextReloadJob = true;
+            return;
+        }
+
+        if (DesignMode)
+        {
+            _reloadSemaphore.Release();
             return;
         }
 
