@@ -1747,7 +1747,7 @@
     <value>Привязать интерфейс</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для привязки. Работает только в Windows и режиме TUN</value>
+    <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для исходящих подключений. На Linux/macOS работает только при включённом TUN.</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>Общий ключ (PSK)</value>
