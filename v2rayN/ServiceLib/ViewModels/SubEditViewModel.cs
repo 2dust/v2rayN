@@ -7,12 +7,32 @@ public class SubEditViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public SubItem SelectedSource { get; set; }
 
+    public ReactiveCommand<Unit, Unit> SelectPrevProfileCmd { get; }
+    public ReactiveCommand<Unit, Unit> SelectNextProfileCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
     public SubEditViewModel(SubItem subItem)
     {
         _config = AppManager.Instance.Config;
 
+        SelectPrevProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var profileItem = await SelectProfileAsync();
+            if (profileItem != null)
+            {
+                SelectedSource?.PrevProfile = profileItem.Remarks;
+                SelectedSource = JsonUtils.DeepCopy(SelectedSource);
+            }
+        });
+        SelectNextProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var profileItem = await SelectProfileAsync();
+            if (profileItem != null)
+            {
+                SelectedSource?.NextProfile = profileItem.Remarks;
+                SelectedSource = JsonUtils.DeepCopy(SelectedSource);
+            }
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSubAsync();
@@ -56,5 +76,18 @@ public class SubEditViewModel : MyReactiveObject, ICloseable
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
+
+    private async Task<ProfileItem?> SelectProfileAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return null;
+        }
+        var profileItem = await profileSelectViewModel.GetProfileItem();
+        return profileItem;
     }
 }
