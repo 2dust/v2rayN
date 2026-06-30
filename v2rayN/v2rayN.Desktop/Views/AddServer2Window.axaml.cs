@@ -8,15 +8,9 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
     public AddServer2Window()
     {
         InitializeComponent();
-    }
-
-    public AddServer2Window(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        ViewModel = new AddServer2ViewModel(profileItem, UpdateViewHandler);
 
         cmbCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 
@@ -31,28 +25,13 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
             this.BindCommand(ViewModel, vm => vm.BrowseServerCmd, v => v.btnBrowse).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.EditServerCmd, v => v.btnEdit).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveServerCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.BrowseConfigFileInteraction.RegisterHandler(async interaction =>
+            {
+                var fileName = await UI.OpenFileDialog(null);
+                interaction.SetOutput(fileName);
+            }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-
-            case EViewAction.BrowseServer:
-                var fileName = await UI.OpenFileDialog(this, null);
-                if (fileName.IsNullOrEmpty())
-                {
-                    return false;
-                }
-                ViewModel?.BrowseServer(fileName);
-                break;
-        }
-
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

@@ -12,10 +12,9 @@ public class CheckUpdateViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> CheckOnlyCmd { get; }
     [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
 
-    public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public CheckUpdateViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>

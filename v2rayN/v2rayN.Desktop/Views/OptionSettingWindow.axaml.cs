@@ -15,8 +15,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         btnCancel.Click += (s, e) => Close();
         _config = AppManager.Instance.Config;
 
-        ViewModel = new OptionSettingViewModel(UpdateViewHandler);
-
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
         btnBrowseCustomSystemProxyScriptPath.Click += BtnBrowseCustomSystemProxyScriptPath_Click;
@@ -58,6 +56,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
+
+        _ = InitSettingFont();
 
         this.WhenActivated(disposables =>
         {
@@ -140,21 +140,6 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         });
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-
-            case EViewAction.InitSettingFont:
-                await InitSettingFont();
-                break;
-        }
-        return await Task.FromResult(true);
-    }
-
     private async Task InitSettingFont()
     {
         var lstFonts = await GetFonts();
@@ -210,7 +195,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
     private async void BtnBrowseCustomSystemProxyPacPath_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(this, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;
@@ -221,7 +206,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
     private async void BtnBrowseCustomSystemProxyScriptPath_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(this, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;

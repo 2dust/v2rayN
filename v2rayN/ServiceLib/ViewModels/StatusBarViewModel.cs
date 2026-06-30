@@ -2,7 +2,11 @@ namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject
 {
-    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
+    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
+    public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
+    public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+
+    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
     #region ObservableCollection
@@ -92,7 +96,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     #endregion UI
 
-    public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public StatusBarViewModel()
     {
         _config = AppManager.Instance.Config;
         SelectedRouting = new();
@@ -193,11 +197,6 @@ public class StatusBarViewModel : MyReactiveObject
 
         #region AppEvents
 
-        if (updateView != null)
-        {
-            InitUpdateView(updateView);
-        }
-
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -223,6 +222,11 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await SetListenerType(result));
 
+        AppEvents.ProfilesRefreshRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await RefreshServersBiz());
+
         #endregion AppEvents
 
         _ = Init();
@@ -236,18 +240,6 @@ public class StatusBarViewModel : MyReactiveObject
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
 
         BlRouting = true;
-    }
-
-    public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
-    {
-        _updateView = updateView;
-        if (_updateView != null)
-        {
-            AppEvents.ProfilesRefreshRequested
-              .AsObservable()
-              .ObserveOn(RxSchedulers.MainThreadScheduler)
-              .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
-        }
     }
 
     private async Task CopyProxyCmdToClipboard()
@@ -264,7 +256,7 @@ public class StatusBarViewModel : MyReactiveObject
         sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
         sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
-        await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+        await SetClipboardDataInteraction.Handle(sb.ToString());
     }
 
     private async Task AddServerViaClipboard()
@@ -406,7 +398,14 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (blChange)
         {
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            try
+            {
+                await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+            }
+            catch (UnhandledInteractionException<Unit, Unit>)
+            {
+                // Ignore
+            }
         }
     }
 
@@ -442,7 +441,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             AppEvents.ReloadRequested.Publish();
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            await DispatcherRefreshIconInteraction.Handle(Unit.Default);
         }
     }
 
@@ -479,8 +478,8 @@ public class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
-                if (passwordResult == false)
+                var password = await PasswordInputInteraction.Handle(Unit.Default);
+                if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;
                     return;

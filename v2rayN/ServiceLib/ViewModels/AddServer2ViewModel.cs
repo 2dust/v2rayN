@@ -1,7 +1,10 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServer2ViewModel : MyReactiveObject
+public class AddServer2ViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+    public Interaction<Unit, string?> BrowseConfigFileInteraction { get; } = new();
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -13,15 +16,18 @@ public class AddServer2ViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
     public bool IsModified { get; set; }
 
-    public AddServer2ViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public AddServer2ViewModel(ProfileItem profileItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            _updateView?.Invoke(EViewAction.BrowseServer, null);
-            await Task.CompletedTask;
+            var fileName = await BrowseConfigFileInteraction.Handle(Unit.Default);
+            if (fileName.IsNullOrEmpty())
+            {
+                return;
+            }
+            await BrowseServer(fileName);
         });
         EditServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -55,7 +61,7 @@ public class AddServer2ViewModel : MyReactiveObject
         if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

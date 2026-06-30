@@ -2,11 +2,10 @@ namespace v2rayN.Views;
 
 public partial class RoutingRuleSettingWindow
 {
-    public RoutingRuleSettingWindow(RoutingItem routingItem)
+    public RoutingRuleSettingWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
         PreviewKeyDown += RoutingRuleSettingWindow_PreviewKeyDown;
         lstRules.SelectionChanged += lstRules_SelectionChanged;
@@ -14,8 +13,6 @@ public partial class RoutingRuleSettingWindow
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
         btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_Click;
-
-        ViewModel = new RoutingRuleSettingViewModel(routingItem, UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies.AppendEmpty();
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
@@ -48,71 +45,38 @@ public partial class RoutingRuleSettingWindow
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-        });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
 
-            case EViewAction.ShowYesNo:
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(interaction =>
+            {
+                var strData = interaction.Input;
+                WindowsUtils.SetClipboardData(strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
 
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
+            ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(interaction =>
+            {
+                var clipboardData = WindowsUtils.GetClipboardData();
+                interaction.SetOutput(clipboardData);
+            }).DisposeWith(disposables);
 
-            case EViewAction.AddBatchRoutingRulesYesNo:
-
-                if (UI.ShowYesNo(ResUI.AddBatchRoutingRulesYesNo) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleDetailsWindow:
-
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new RoutingRuleDetailsWindow((RulesItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.ImportRulesFromFile:
-
+            ViewModel.BrowseRulesFileInteraction.RegisterHandler(interaction =>
+            {
                 if (UI.OpenFileDialog(out var fileName, "Rules|*.json|All|*.*") != true)
                 {
-                    return false;
+                    interaction.SetOutput(null);
+                    return;
                 }
-                ViewModel?.ImportRulesFromFileAsync(fileName);
-                break;
-
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
-
-            case EViewAction.ImportRulesFromClipboard:
-                var clipboardData = WindowsUtils.GetClipboardData();
-                if (clipboardData.IsNotEmpty())
-                {
-                    ViewModel?.ImportRulesFromClipboardAsync(clipboardData);
-                }
-                break;
-        }
-
-        return await Task.FromResult(true);
+                interaction.SetOutput(fileName);
+            }).DisposeWith(disposables);
+        });
+        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

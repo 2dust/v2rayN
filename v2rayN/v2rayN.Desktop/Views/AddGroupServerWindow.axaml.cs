@@ -7,18 +7,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     public AddGroupServerWindow()
     {
         InitializeComponent();
-    }
-
-    public AddGroupServerWindow(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
-
-        ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -31,6 +24,42 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         };
         cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
 
+        this.WhenActivated(disposables =>
+        {
+            this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
+            //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.menuMoveDown).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+        });
+
+        // Context menu actions that require custom logic (Add, SelectAll)
+        menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
+
+        // Keyboard shortcuts when focus is within grid
+        AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
+        lstChild.LoadingRow += LstChild_LoadingRow;
+    }
+
+    private void InitializeData(ProfileItem profileItem)
+    {
         switch (profileItem.ConfigType)
         {
             case EConfigType.PolicyGroup:
@@ -46,50 +75,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                 }
                 break;
         }
-
-        this.WhenActivated(disposables =>
-        {
-            this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
-            //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
-
-            this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.MoveDownCmd, v => v.menuMoveDown).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-        });
-
-        // Context menu actions that require custom logic (Add, SelectAll)
-        menuAddChildServer.Click += MenuAddChild_Click;
-        menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
-
-        // Keyboard shortcuts when focus is within grid
-        AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
-        lstChild.LoadingRow += LstChild_LoadingRow;
     }
 
     private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)
     {
         e.Row.Header = $" {e.Row.Index + 1}";
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
@@ -142,19 +132,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                     e.Handled = true;
                     break;
             }
-        }
-    }
-
-    private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
-        selectWindow.AllowMultiSelect(true);
-        var result = await selectWindow.ShowDialog<bool?>(this);
-        if (result == true)
-        {
-            var profiles = await selectWindow.ProfileItems;
-            ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
 

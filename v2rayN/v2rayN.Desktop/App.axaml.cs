@@ -15,6 +15,9 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var viewLocator = SimpleViewLocator.Instance;
+        DataTemplates.Add(viewLocator);
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             if (!Design.IsDesignMode)
@@ -23,7 +26,9 @@ public partial class App : Application
                 DataContext = StatusBarViewModel.Instance;
             }
 
-            var mainWindow = new MainWindow();
+            var mainWindowViewModel = new MainWindowViewModel();
+            var mainWindow = (MainWindow)viewLocator.Build(mainWindowViewModel);
+            mainWindow.ViewModel = mainWindowViewModel;
             desktop.MainWindow = mainWindow;
 
             if (OperatingSystem.IsMacOS())

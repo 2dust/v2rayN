@@ -213,7 +213,6 @@
                             <MenuItem
                                 x:Name="menuAddChildServer"
                                 Height="{StaticResource MenuItemHeight}"
-                                Click="MenuAddChild_Click"
                                 Header="{x:Static resx:ResUI.menuAddChildServer}" />
                             <MenuItem
                                 x:Name="menuRemoveChildServer"
