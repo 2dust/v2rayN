@@ -95,7 +95,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 {
                     interaction.SetOutput(false);
                     return;
-                }    
+                }
                 var profileItem = interaction.Input;
                 var fileName = await UI.SaveFileDialog("");
                 if (fileName.IsNullOrEmpty())

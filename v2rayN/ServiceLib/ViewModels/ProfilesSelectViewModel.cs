@@ -15,6 +15,8 @@ public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
     #endregion private prop
 
+    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+
     #region ObservableCollection
 
     public IObservableCollection<ProfileItemModel> ProfileItems { get; } = new ObservableCollectionExtended<ProfileItemModel>();
@@ -39,6 +41,9 @@ public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public bool FilterExclude { get; set; }
 
+    [Reactive]
+    public bool MultiSelect { get; set; }
+
     #endregion ObservableCollection
 
     #region Init
@@ -49,6 +54,11 @@ public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
         _subIndexId = _config.SubIndexId ?? string.Empty;
 
         #region WhenAnyValue && ReactiveCommand
+
+        SaveCmd = ReactiveCommand.Create(() =>
+        {
+            SelectFinish();
+        });
 
         this.WhenAnyValue(
             x => x.SelectedSub,

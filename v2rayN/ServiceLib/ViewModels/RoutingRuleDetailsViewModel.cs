@@ -25,12 +25,17 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public bool AutoSort { get; set; }
 
+    public ReactiveCommand<Unit, Unit> SelectProfileCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
         _config = AppManager.Instance.Config;
 
+        SelectProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await SelectProfileAsync();
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveRulesAsync();
@@ -90,5 +95,23 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
         RequestClose?.Invoke(this, EventArgs.Empty);
+        await Task.CompletedTask;
+    }
+
+    private async Task SelectProfileAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return;
+        }
+        var profileItem = await profileSelectViewModel.GetProfileItem();
+        if (profileItem != null)
+        {
+            SelectedSource.OutboundTag = profileItem.Remarks;
+            SelectedSource = JsonUtils.DeepCopy(SelectedSource);
+        }
     }
 }

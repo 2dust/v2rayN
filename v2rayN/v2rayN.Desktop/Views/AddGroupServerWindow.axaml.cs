@@ -35,6 +35,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
@@ -50,7 +51,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
-        menuAddChildServer.Click += MenuAddChild_Click;
         menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
 
         // Keyboard shortcuts when focus is within grid
@@ -132,19 +132,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                     e.Handled = true;
                     break;
             }
-        }
-    }
-
-    private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
-        selectWindow.AllowMultiSelect(true);
-        var result = await selectWindow.ShowDialog<bool?>(this);
-        if (result == true)
-        {
-            var profiles = await selectWindow.ProfileItems;
-            ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
 

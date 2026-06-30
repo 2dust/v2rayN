@@ -210,10 +210,10 @@
                     VerticalAlignment="Center"
                     Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
+                    x:Name="btnSelectPrevProfile"
                     Grid.Row="9"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectPrevProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
@@ -230,10 +230,10 @@
                     VerticalAlignment="Center"
                     Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
+                    x:Name="btnSelectNextProfile"
                     Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectNextProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock

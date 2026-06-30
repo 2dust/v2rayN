@@ -29,6 +29,7 @@ public partial class RoutingRuleDetailsWindow
             this.Bind(ViewModel, vm => vm.AutoSort, v => v.chkAutoSort.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RuleType, v => v.cmbRuleType.Text).DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.SelectProfileCmd, v => v.btnSelectProfile).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.SelectedSource)
@@ -79,19 +80,5 @@ public partial class RoutingRuleDetailsWindow
     private void linkRuleobjectDoc_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://xtls.github.io/config/routing.html#ruleobject");
-    }
-
-    private async void BtnSelectProfile_Click(object sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
-        if (selectWindow.ShowDialog() == true)
-        {
-            var profile = await selectWindow.ProfileItem;
-            if (profile != null)
-            {
-                cmbOutboundTag.Text = profile.Remarks;
-            }
-        }
     }
 }

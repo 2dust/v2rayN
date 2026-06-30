@@ -37,6 +37,7 @@ public partial class AddGroupServerWindow
 
             this.OneWayBind(ViewModel, vm => vm.AllProfilePreviewItemsObs, v => v.lstPreviewChild.ItemsSource).DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
@@ -116,18 +117,6 @@ public partial class AddGroupServerWindow
                     ViewModel?.ChildRemoveAsync();
                     break;
             }
-        }
-    }
-
-    private async void MenuAddChild_Click(object sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
-        selectWindow.AllowMultiSelect(true);
-        if (selectWindow.ShowDialog() == true)
-        {
-            var profiles = await selectWindow.ProfileItems;
-            ViewModel?.ChildItemsObs.AddRange(profiles);
         }
     }
 
