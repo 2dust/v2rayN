@@ -137,8 +137,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             Title = $"{Utils.GetVersion()} - {(Utils.IsAdministrator() ? ResUI.RunAsAdmin : ResUI.NotRunAsAdmin)}";
 
-            ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
-            HotkeyManager.Instance.Init(_config, OnHotkeyHandler);
+            if (!Design.IsDesignMode)
+            {
+                ThreadPool.RegisterWaitForSingleObject(Program.ProgramStarted, OnProgramStarted, null, -1, false);
+                HotkeyManager.Instance.Init(_config, OnHotkeyHandler);
+            }
         }
         else
         {

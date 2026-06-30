@@ -27,6 +27,7 @@ public partial class JsonEditor : UserControl
     public JsonEditor()
     {
         InitializeComponent();
+
         var isDark = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
         Editor.SyntaxHighlighting = isDark ? SHighlightingDark.Value : SHighlightingLight.Value;
         Editor.TextArea.TextView.Options.EnableHyperlinks = false;
@@ -46,6 +47,11 @@ public partial class JsonEditor : UserControl
                 Editor.Text = text ?? string.Empty;
             }
         });
+
+        if (Design.IsDesignMode)
+        {
+            Text = "{\n  \"key\": \"value\",\n  \"number\": 123,\n  \"boolean\": true,\n  \"nullValue\": null\n}";
+        }
     }
 
     private static IHighlightingDefinition BuildHighlighting(bool dark)

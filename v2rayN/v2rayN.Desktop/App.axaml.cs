@@ -15,11 +15,11 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var viewLocator = SimpleViewLocator.Instance;
+        DataTemplates.Add(viewLocator);
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var viewLocator = SimpleViewLocator.Instance;
-            DataTemplates.Add(viewLocator);
-
             if (!Design.IsDesignMode)
             {
                 AppManager.Instance.InitComponents();

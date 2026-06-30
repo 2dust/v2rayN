@@ -1,5 +1,7 @@
 using ServiceLib.Models.Entities;
 using System.Diagnostics;
+using v2rayN.Desktop.Manager;
+using v2rayN.Desktop.ViewModels;
 
 namespace v2rayN.Desktop.DesignData;
 
@@ -41,6 +43,8 @@ public static class DesignData
     public static ProfilesSelectViewModel? ProfilesSelect { get; } = SafeCreate(() => new ProfilesSelectViewModel());
 
     public static BackupAndRestoreViewModel? BackupAndRestore { get; } = SafeCreate(() => new BackupAndRestoreViewModel());
+
+    public static ThemeSettingViewModel? ThemeSetting { get; } = SafeCreate(() => new ThemeSettingViewModel());
 
     // ── ViewModels that require constructor parameters ─────────────────────
 
@@ -114,6 +118,8 @@ public static class DesignData
     {
         try
         {
+            AppManager.Instance.InitApp();
+            AppManager.Instance.WindowDialog = new WindowDialog();
             return factory();
         }
         catch (Exception ex)
