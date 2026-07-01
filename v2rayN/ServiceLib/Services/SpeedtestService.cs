@@ -1,4 +1,6 @@
 using ServiceLib.UdpTest;
+using System.Text.Json.Nodes;
+using YamlDotNet.Serialization;
 
 namespace ServiceLib.Services;
 
@@ -50,19 +52,34 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 break;
 
             case ESpeedActionType.Realping:
-                await RunRealPingBatchAsync(lstSelected, exitLoopKey);
+                var regularForRealping = lstSelected.Where(it => it.ConfigType != EConfigType.Custom).ToList();
+                var customForRealping = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+                await RunRealPingBatchAsync(regularForRealping, exitLoopKey);
+                await RunMixedTestAsync(customForRealping, Math.Max(1, customForRealping.Count), false, exitLoopKey);
                 break;
 
             case ESpeedActionType.UdpTest:
-                await RunUdpTestBatchAsync(lstSelected, exitLoopKey);
+                var regularForUdp = lstSelected.Where(it => it.ConfigType != EConfigType.Custom).ToList();
+                var customForUdp = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+                await RunUdpTestBatchAsync(regularForUdp, exitLoopKey);
+                foreach (var it in customForUdp)
+                {
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip, "");
+                }
                 break;
 
             case ESpeedActionType.Speedtest:
-                await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey);
+                var regularForSpeed = lstSelected.Where(it => it.ConfigType != EConfigType.Custom).ToList();
+                var customForSpeed = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+                await RunMixedTestAsync(regularForSpeed, 1, true, exitLoopKey);
+                await RunMixedTestAsync(customForSpeed, 1, true, exitLoopKey);
                 break;
 
             case ESpeedActionType.Mixedtest:
-                await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
+                var regularForMixed = lstSelected.Where(it => it.ConfigType != EConfigType.Custom).ToList();
+                var customForMixed = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+                await RunMixedTestAsync(regularForMixed, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
+                await RunMixedTestAsync(customForMixed, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
                 break;
         }
     }
@@ -70,17 +87,25 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         var lstSelected = new List<ServerTestItem>(selecteds.Count);
-        var ids = selecteds.Where(it => !it.IndexId.IsNullOrEmpty()
-            && it.ConfigType != EConfigType.Custom
-            && (it.ConfigType.IsComplexType() || it.Port > 0))
+
+        var ids = selecteds
+            .Where(it => !it.IndexId.IsNullOrEmpty()
+                && (it.ConfigType == EConfigType.Custom
+                    || it.ConfigType.IsComplexType()
+                    || it.Port > 0))
             .Select(it => it.IndexId)
             .ToList();
+
         var profileMap = await AppManager.Instance.GetProfileItemsByIndexIdsAsMap(ids);
+
         for (var i = 0; i < selecteds.Count; i++)
         {
             var it = selecteds[i];
+            var profile = profileMap.GetValueOrDefault(it.IndexId, it);
+
             if (it.ConfigType == EConfigType.Custom)
             {
+                await AddCustomTestItem(actionType, it, profile, i, lstSelected);
                 continue;
             }
 
@@ -89,7 +114,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 continue;
             }
 
-            var profile = profileMap.GetValueOrDefault(it.IndexId, it);
             lstSelected.Add(new ServerTestItem()
             {
                 IndexId = it.IndexId,
@@ -127,7 +151,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
         }
 
-        if (lstSelected.Count > 1 && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.Mixedtest))
+        if (lstSelected.Count > 1
+            && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.Mixedtest))
         {
             NoticeManager.Instance.Enqueue(ResUI.SpeedtestingPressEscToExit);
         }
@@ -135,9 +160,79 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return lstSelected;
     }
 
+    private async Task AddCustomTestItem(
+        ESpeedActionType actionType,
+        ProfileItem it,
+        ProfileItem profile,
+        int index,
+        List<ServerTestItem> lstSelected)
+    {
+        switch (actionType)
+        {
+            case ESpeedActionType.Tcping:
+            {
+                var (address, port) = await TryGetCustomTcpingEndpoint(profile);
+                if (address.IsNotEmpty() && port > 0)
+                {
+                    lstSelected.Add(new ServerTestItem()
+                    {
+                        IndexId = it.IndexId,
+                        Address = address,
+                        Port = port,
+                        ConfigType = it.ConfigType,
+                        QueueNum = index,
+                        Profile = profile,
+                        CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
+                    });
+                }
+                else
+                {
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip, "");
+                }
+                break;
+            }
+
+            case ESpeedActionType.Realping:
+            case ESpeedActionType.Speedtest:
+            case ESpeedActionType.Mixedtest:
+            {
+                var configFile = profile.Address;
+                if (!File.Exists(configFile))
+                {
+                    configFile = Utils.GetConfigPath(configFile);
+                }
+                if (!File.Exists(configFile))
+                {
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip, "");
+                    break;
+                }
+
+                lstSelected.Add(new ServerTestItem()
+                {
+                    IndexId = it.IndexId,
+                    Address = it.Address,
+                    Port = 0,
+                    ConfigType = it.ConfigType,
+                    QueueNum = index,
+                    Profile = profile,
+                    CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
+                });
+                break;
+            }
+
+            case ESpeedActionType.UdpTest:
+                await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip, "");
+                break;
+        }
+    }
+
     private async Task RunTcpingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
         var pageSize = Math.Min(selecteds.Count, _speedTestPageSize);
+        if (pageSize <= 0)
+        {
+            return;
+        }
         var lstBatch = GetTestBatchItem(selecteds, pageSize);
 
         foreach (var lst in lstBatch)
@@ -162,7 +257,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     try
                     {
                         var responseTime = await GetTcpingTime(it.Address, it.Port);
-
+                        
                         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
                         await UpdateFunc(it.IndexId, responseTime.ToString());
                     }
@@ -186,6 +281,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
     {
+        if (lstSelected.Count == 0)
+        {
+            return;
+        }
         if (pageSize <= 0)
         {
             pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
@@ -228,7 +327,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        ProcessService processService = null;
+        ProcessService? processService = null;
         try
         {
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
@@ -267,7 +366,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             if (processService != null)
             {
-                await processService?.StopAsync();
+                await processService.StopAsync();
             }
         }
         return true;
@@ -275,6 +374,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
     {
+        if (lstSelected.Count == 0)
+        {
+            return;
+        }
         if (pageSize <= 0)
         {
             pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
@@ -309,7 +412,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        ProcessService processService = null;
+        ProcessService? processService = null;
         try
         {
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
@@ -347,7 +450,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             if (processService != null)
             {
-                await processService?.StopAsync();
+                await processService.StopAsync();
             }
         }
         return true;
@@ -355,9 +458,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
     {
+        if (selecteds.Count == 0)
+        {
+            return;
+        }
+
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
         var downloadHandle = new DownloadService();
         List<Task> tasks = [];
+
         foreach (var it in selecteds)
         {
             if (ShouldStopTest(exitLoopKey))
@@ -369,7 +478,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             tasks.Add(Task.Run(async () =>
             {
-                ProcessService processService = null;
+                ProcessService? processService = null;
                 try
                 {
                     processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
@@ -408,7 +517,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 {
                     if (processService != null)
                     {
-                        await processService?.StopAsync();
+                        await processService.StopAsync();
                     }
                     concurrencySemaphore.Release();
                 }
@@ -509,8 +618,13 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = [];
-        var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
-        var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
+
+        var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray
+                                          && t.ConfigType != EConfigType.Custom).ToList();
+        var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box
+                                          && t.ConfigType != EConfigType.Custom).ToList();
+
+        var lstCustomTcping = lstSelected.Where(t => t.ConfigType == EConfigType.Custom).ToList();
 
         for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
         {
@@ -520,9 +634,187 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         {
             lstTest.Add(lst2.Skip(num * pageSize).Take(pageSize).ToList());
         }
+        if (lstCustomTcping.Count > 0)
+        {
+            for (var num = 0; num < (int)Math.Ceiling(lstCustomTcping.Count * 1.0 / pageSize); num++)
+            {
+                lstTest.Add(lstCustomTcping.Skip(num * pageSize).Take(pageSize).ToList());
+            }
+        }
 
         return lstTest;
     }
+
+    private async Task<(string Address, int Port)> TryGetCustomTcpingEndpoint(ProfileItem node)
+    {
+        try
+        {
+            var fileName = node.Address;
+            if (!File.Exists(fileName))
+            {
+                fileName = Utils.GetConfigPath(fileName);
+            }
+            if (!File.Exists(fileName))
+            {
+                return (string.Empty, 0);
+            }
+
+            var content = await File.ReadAllTextAsync(fileName);
+            if (content.IsNullOrWhiteSpace())
+            {
+                return (string.Empty, 0);
+            }
+
+            var json = JsonUtils.ParseJson(content);
+            if (json != null)
+            {
+                return TryGetEndpointFromJson(json);
+            }
+
+            return TryGetEndpointFromYaml(content);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return (string.Empty, 0);
+        }
+    }
+
+    private static (string Address, int Port) TryGetEndpointFromJson(JsonNode root)
+    {
+        if (root["outbounds"] is not JsonArray outbounds)
+        {
+            return (string.Empty, 0);
+        }
+
+        foreach (var outbound in outbounds)
+        {
+            if (TryReadJsonEndpoint(outbound, out var address, out var port))
+            {
+                return (address, port);
+            }
+        }
+
+        return (string.Empty, 0);
+    }
+
+    private static bool TryReadJsonEndpoint(JsonNode? outbound, out string address, out int port)
+    {
+        address = string.Empty;
+        port = 0;
+
+        if (TryReadString(outbound, "server", out address)
+            && (TryReadInt(outbound, "server_port", out port) || TryReadInt(outbound, "port", out port)))
+        {
+            return true;
+        }
+
+        if (TryReadString(outbound, "address", out address)
+            && TryReadInt(outbound, "port", out port))
+        {
+            return true;
+        }
+
+        var settings = outbound?["settings"];
+        if (settings != null)
+        {
+            if (settings["vnext"] is JsonArray vnext)
+            {
+                foreach (var server in vnext)
+                {
+                    if (TryReadString(server, "address", out address)
+                        && TryReadInt(server, "port", out port))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (settings["servers"] is JsonArray servers)
+            {
+                foreach (var server in servers)
+                {
+                    if (TryReadString(server, "address", out address)
+                        && TryReadInt(server, "port", out port))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (TryReadString(settings, "address", out address)
+                && TryReadInt(settings, "port", out port))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static (string Address, int Port) TryGetEndpointFromYaml(string yaml)
+    {
+        try
+        {
+            var root = new DeserializerBuilder()
+                .Build()
+                .Deserialize<Dictionary<object, object>>(yaml);
+
+            if (root == null
+                || !TryGetMapValue(root, "proxies", out var proxiesObj)
+                || proxiesObj is not IEnumerable<object> proxies)
+            {
+                return (string.Empty, 0);
+            }
+
+            foreach (var proxy in proxies.OfType<Dictionary<object, object>>())
+            {
+                if (TryGetMapValue(proxy, "server", out var serverObj)
+                    && TryGetMapValue(proxy, "port", out var portObj)
+                    && serverObj?.ToString().IsNotEmpty() == true
+                    && int.TryParse(portObj?.ToString(), out var port)
+                    && port > 0)
+                {
+                    return (serverObj.ToString()!, port);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return (string.Empty, 0);
+    }
+
+    private static bool TryGetMapValue(Dictionary<object, object> map, string key, out object? value)
+    {
+        foreach (var kv in map)
+        {
+            if (string.Equals(kv.Key?.ToString(), key, StringComparison.OrdinalIgnoreCase))
+            {
+                value = kv.Value;
+                return true;
+            }
+        }
+
+        value = null;
+        return false;
+    }
+
+    private static bool TryReadString(JsonNode? node, string name, out string value)
+    {
+        value = node?[name]?.ToString()?.Trim() ?? string.Empty;
+        return value.IsNotEmpty();
+    }
+
+    private static bool TryReadInt(JsonNode? node, string name, out int value)
+    {
+        value = 0;
+        return int.TryParse(node?[name]?.ToString(), out value) && value > 0;
+    }
+
+    #endregion Custom config endpoint parsing
 
     private async Task UpdateFunc(string indexId, string delay, string speed = "")
     {
