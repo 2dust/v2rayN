@@ -244,9 +244,26 @@ public sealed class AppManager
         {
             return [];
         }
-        return await SQLiteHelper.Instance.TableAsync<ProfileItem>()
-            .Where(it => ids.Contains(it.IndexId))
-            .ToListAsync();
+
+        if (ids.Count <= Global.SqliteMaxBatchSize)
+        {
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+                .Where(it => ids.Contains(it.IndexId))
+                .ToListAsync();
+        }
+
+        var items = new List<ProfileItem>();
+        for (var size = 0; size < ids.Count; size += Global.SqliteMaxBatchSize)
+        {
+            var chunk = ids.Skip(size).Take(Global.SqliteMaxBatchSize).ToList();
+            var chunkItems = await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+                .Where(it => chunk.Contains(it.IndexId))
+                .ToListAsync();
+
+            items.AddRange(chunkItems);
+        }
+
+        return items;
     }
 
     public async Task<Dictionary<string, ProfileItem>> GetProfileItemsByIndexIdsAsMap(IEnumerable<string> indexIds)
@@ -257,18 +274,11 @@ public sealed class AppManager
 
     public async Task<List<ProfileItem>> GetProfileItemsOrderedByIndexIds(IEnumerable<string> indexIds)
     {
-        var idList = indexIds.Where(id => !id.IsNullOrEmpty()).Distinct().ToList();
-        if (idList.Count == 0)
-        {
-            return [];
-        }
-
-        var items = await SQLiteHelper.Instance.TableAsync<ProfileItem>()
-            .Where(it => idList.Contains(it.IndexId))
-            .ToListAsync();
+        var ids = indexIds.Where(id => !id.IsNullOrEmpty()).Distinct().ToList();
+        var items = await GetProfileItemsByIndexIds(ids);
         var itemMap = items.ToDictionary(it => it.IndexId);
 
-        return idList.Select(itemMap.GetValueOrDefault)
+        return ids.Select(itemMap.GetValueOrDefault)
             .Where(item => item != null)
             .ToList();
     }
