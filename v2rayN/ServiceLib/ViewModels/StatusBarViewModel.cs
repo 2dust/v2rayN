@@ -5,6 +5,7 @@ public class StatusBarViewModel : MyReactiveObject
     public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
     public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
     public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+    public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
 
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
@@ -255,7 +256,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task UpdateSubscriptionProcess(bool blProxy)
     {
-        AppEvents.SubscriptionsUpdateRequested.Publish(blProxy);
+        SubscriptionsUpdateRequested.Publish(blProxy);
         await Task.Delay(1000);
     }
 

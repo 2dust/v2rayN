@@ -265,7 +265,7 @@ public class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await AddServerViaClipboardAsync(null));
 
-        AppEvents.SubscriptionsUpdateRequested
+        StatusBarViewModel.SubscriptionsUpdateRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async blProxy => await UpdateSubscriptionProcess("", blProxy));
