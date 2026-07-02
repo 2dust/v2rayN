@@ -221,6 +221,10 @@
                                         Height="{StaticResource MenuItemHeight}"
                                         Header="{x:Static resx:ResUI.menuRegionalPresetsRussia}" />
                                     <MenuItem
+                                        x:Name="menuRegionalPresetsRussiaLite"
+                                        Height="{StaticResource MenuItemHeight}"
+                                        Header="{x:Static resx:ResUI.menuRegionalPresetsRussiaLite}" />
+                                    <MenuItem
                                         x:Name="menuRegionalPresetsIran"
                                         Height="{StaticResource MenuItemHeight}"
                                         Header="{x:Static resx:ResUI.menuRegionalPresetsIran}" />

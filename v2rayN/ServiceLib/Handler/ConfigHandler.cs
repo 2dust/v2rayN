@@ -2697,7 +2697,7 @@ public static class ConfigHandler
     /// Sets up geo files, routing rules, and DNS for specific regions
     /// </summary>
     /// <param name="config">Current configuration</param>
-    /// <param name="type">Type of preset (Default, Russia, Iran)</param>
+    /// <param name="type">Type of preset (Default, Russia, Iran, RussiaLite)</param>
     /// <returns>True if successful</returns>
     public static async Task<bool> ApplyRegionalPreset(Config config, EPresetType type)
     {
@@ -2758,6 +2758,29 @@ public static class ConfigHandler
                 }
                 await SaveDNSItems(config, xrayDnsIran);
                 await SaveDNSItems(config, singboxDnsIran);
+                break;
+
+            case EPresetType.RussiaLite:
+                config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[3];
+                config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[3];
+                config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[3];
+
+                var xrayDnsRussiaLite = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[3] + "v2ray.json");
+                var singboxDnsRussiaLite = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[3] + "sing_box.json");
+                var simpleDnsRussiaLite = await GetExternalSimpleDNSItem(Global.DNSTemplateSources[3] + "simple_dns.json");
+
+                if (simpleDnsRussiaLite == null)
+                {
+                    xrayDnsRussiaLite.Enabled = true;
+                    singboxDnsRussiaLite.Enabled = true;
+                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                }
+                else
+                {
+                    config.SimpleDNSItem = simpleDnsRussiaLite;
+                }
+                await SaveDNSItems(config, xrayDnsRussiaLite);
+                await SaveDNSItems(config, singboxDnsRussiaLite);
                 break;
         }
 

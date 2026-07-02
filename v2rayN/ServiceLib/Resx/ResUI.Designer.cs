@@ -1465,6 +1465,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Russia (Lite) 的本地化字符串。
+        /// </summary>
+        public static string menuRegionalPresetsRussiaLite {
+            get {
+                return ResourceManager.GetString("menuRegionalPresetsRussiaLite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Reload 的本地化字符串。
         /// </summary>
         public static string menuReload {

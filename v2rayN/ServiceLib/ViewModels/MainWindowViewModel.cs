@@ -52,6 +52,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> RegionalPresetIranCmd { get; }
 
+    public ReactiveCommand<Unit, Unit> RegionalPresetRussiaLiteCmd { get; }
+
     public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
     [Reactive]
@@ -227,6 +229,11 @@ public class MainWindowViewModel : MyReactiveObject
         RegionalPresetIranCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ApplyRegionalPreset(EPresetType.Iran);
+        });
+
+        RegionalPresetRussiaLiteCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await ApplyRegionalPreset(EPresetType.RussiaLite);
         });
 
         #endregion WhenAnyValue && ReactiveCommand

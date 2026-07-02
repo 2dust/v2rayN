@@ -174,28 +174,32 @@ public class Global
     [
         "",
         @"https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/{0}.dat",
-        @"https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/{0}.dat"
+        @"https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/{0}.dat",
+        @"https://github.com/golukon/russia-v2ray-rules-lite/releases/latest/download/{0}.dat"
     ];
 
     public static readonly List<string> SingboxRulesetSources =
     [
         "",
         @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/release/sing-box/rule-set-{0}/{1}.srs",
-        @"https://raw.githubusercontent.com/chocolate4u/Iran-sing-box-rules/rule-set/{1}.srs"
+        @"https://raw.githubusercontent.com/chocolate4u/Iran-sing-box-rules/rule-set/{1}.srs",
+        @"https://raw.githubusercontent.com/golukon/russia-v2ray-rules-lite/release/sing-box/rule-set-{0}/{1}.srs"
     ];
 
     public static readonly List<string> RoutingRulesSources =
     [
         "",
         @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/template.json",
-        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/template.json"
+        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/template.json",
+        @"https://raw.githubusercontent.com/golukon/russia-v2ray-lite-routing-list/main/v2rayN/template.json"
     ];
 
     public static readonly List<string> DNSTemplateSources =
     [
         "",
         @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/",
-        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
+        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/",
+        @"https://raw.githubusercontent.com/golukon/russia-v2ray-lite-routing-list/main/v2rayN/"
     ];
 
     public static readonly Dictionary<string, string> RawHttpUserAgentTexts = new()

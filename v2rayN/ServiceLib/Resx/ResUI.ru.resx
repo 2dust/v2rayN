@@ -1317,6 +1317,9 @@
   <data name="menuRegionalPresetsRussia" xml:space="preserve">
     <value>Россия</value>
   </data>
+  <data name="menuRegionalPresetsRussiaLite" xml:space="preserve">
+    <value>Россия (Lite)</value>
+  </data>
   <data name="menuRegionalPresetsIran" xml:space="preserve">
     <value>Иран</value>
   </data>
