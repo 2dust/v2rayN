@@ -158,7 +158,42 @@ public class DownloadService
             var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
-                UseProxy = webProxy != null
+                UseProxy = webProxy != null,
+                ConnectCallback = async (context, cancellationToken) =>
+                {
+                    async Task<Socket> GetSocket(bool isIpv4, CancellationToken ct, int startDelayMilliseconds = 0)
+                    {
+                        if (startDelayMilliseconds > 0)
+                        {
+                            await Task.Delay(startDelayMilliseconds, ct);
+                        }
+
+                        var entry = await Dns.GetHostEntryAsync(context.DnsEndPoint.Host, isIpv4 ? AddressFamily.InterNetwork : AddressFamily.InterNetworkV6, ct);
+                        var socket = new Socket(SocketType.Stream, ProtocolType.Tcp)
+                        { NoDelay = true };
+
+                        try
+                        {
+                            await socket.ConnectAsync(entry.AddressList, context.DnsEndPoint.Port, ct).ConfigureAwait(false);
+                            return socket;
+                        }
+                        catch
+                        {
+                            socket.Dispose();
+                            throw;
+                        }
+                    }
+
+                    var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                    // implement a simple version of "Happy Eyeballs" algorithm to prefer IPv6 but fallback to IPv4 if it takes too long
+                    // Microsoft will add official support for this in [.NET 11](https://github.com/dotnet/runtime/issues/87932) and [.NET 12](https://github.com/dotnet/runtime/issues/117548), then we can remove this custom implementation
+                    var socket = await Task.WhenAny(
+                        GetSocket(false, cts.Token), // prefer ipv6
+                        GetSocket(true, cts.Token, 250) // start ipv4 after delay
+                    );
+                    cts.Cancel(); // one completed, cancel the other
+                    return new NetworkStream(await socket, ownsSocket: true);
+                }
             });
 
             if (userAgent.IsNullOrEmpty())
