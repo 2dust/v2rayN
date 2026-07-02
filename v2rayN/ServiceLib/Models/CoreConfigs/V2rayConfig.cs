@@ -289,16 +289,7 @@ public class BalancersStrategySettings4Ray
 {
     public int? expected { get; set; }
     public string? maxRTT { get; set; }
-    public float? tolerance { get; set; }
-    public List<string>? baselines { get; set; }
-    public List<BalancersStrategySettingsCosts4Ray>? costs { get; set; }
-}
-
-public class BalancersStrategySettingsCosts4Ray
-{
-    public bool? regexp { get; set; }
-    public string? match { get; set; }
-    public float? value { get; set; }
+    public double? tolerance { get; set; }
 }
 
 public class Observatory4Ray
