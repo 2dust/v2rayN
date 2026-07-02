@@ -640,7 +640,10 @@ public class MainWindowViewModel : MyReactiveObject
                 await SysProxyHandler.UpdateSysProxy(_config, false);
                 await Task.Delay(1000);
             });
-            AppEvents.TestServerRequested.Publish();
+            RxSchedulers.MainThreadScheduler.Schedule(async () =>
+            {
+                await StatusBarViewModel.TestServerAvailability();
+            });
 
             var showClashUI = AppManager.Instance.IsRunningCore(ECoreType.sing_box);
             if (showClashUI)

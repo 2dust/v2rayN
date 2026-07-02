@@ -204,11 +204,6 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
-        AppEvents.TestServerRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await TestServerAvailability());
-
         AppEvents.InboundDisplayRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)

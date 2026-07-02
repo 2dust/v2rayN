@@ -17,7 +17,6 @@ public static class AppEvents
     public static readonly EventChannel<Unit> AppExitRequested = new();
     public static readonly EventChannel<bool> ShutdownRequested = new();
 
-    public static readonly EventChannel<Unit> TestServerRequested = new();
     public static readonly EventChannel<Unit> InboundDisplayRequested = new();
     public static readonly EventChannel<ESysProxyType> SysProxyChangeRequested = new();
 }
