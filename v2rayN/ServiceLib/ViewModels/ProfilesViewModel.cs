@@ -8,6 +8,7 @@ public class ProfilesViewModel : MyReactiveObject
     public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
     public Interaction<string, Unit> ShareServerInteraction { get; } = new();
     public Interaction<Unit, Unit> DispatcherRefreshServersBizInteraction { get; } = new();
+    public Interaction<Unit, Unit> AdjustMainLvColWidthInteraction { get; } = new();
 
     #region private prop
 
@@ -414,6 +415,11 @@ public class ProfilesViewModel : MyReactiveObject
         SelectedSub = (_config.SubIndexId.IsNotEmpty()
                         ? subItems.FirstOrDefault(t => t.Id == _config.SubIndexId)
                         : null) ?? subItems.FirstOrDefault();
+    }
+
+    public async Task AdjustMainLvColWidth()
+    {
+        await AdjustMainLvColWidthInteraction.Handle(Unit.Default);
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)

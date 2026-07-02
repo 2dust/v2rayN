@@ -138,17 +138,17 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
 
+            ViewModel.AdjustMainLvColWidthInteraction.RegisterHandler(interaction =>
+            {
+                //AutofitColumnWidth();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
             AppEvents.AppExitRequested
               .AsObservable()
               .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
-
-            //AppEvents.AdjustMainLvColWidthRequested
-            //    .AsObservable()
-            //    .ObserveOn(RxSchedulers.MainThreadScheduler)
-            //    .Subscribe(_ => AutofitColumnWidth())
-            //    .DisposeWith(disposables);
         });
 
         RestoreUI();

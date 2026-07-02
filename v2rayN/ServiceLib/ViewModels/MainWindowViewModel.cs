@@ -345,7 +345,7 @@ public class MainWindowViewModel : MyReactiveObject
 
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
-                AppEvents.AdjustMainLvColWidthRequested.Publish();
+                await ProfilesViewModel.AdjustMainLvColWidth();
             }
         }
     }
