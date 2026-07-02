@@ -204,11 +204,6 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
-        AppEvents.RoutingsMenuRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshRoutingsMenu());
-
         AppEvents.TestServerRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -416,7 +411,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
     }
 
-    private async Task RefreshRoutingsMenu()
+    public async Task RefreshRoutingsMenu()
     {
         var routings = await AppManager.Instance.RoutingItems();
 

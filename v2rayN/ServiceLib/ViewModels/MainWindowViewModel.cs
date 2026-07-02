@@ -544,7 +544,10 @@ public class MainWindowViewModel : MyReactiveObject
         if (ret == true)
         {
             await ConfigHandler.InitBuiltinRouting(_config);
-            AppEvents.RoutingsMenuRefreshRequested.Publish();
+            RxSchedulers.MainThreadScheduler.Schedule(async () =>
+            {
+                await StatusBarViewModel.RefreshRoutingsMenu();
+            });
             await Reload();
         }
     }
@@ -694,7 +697,10 @@ public class MainWindowViewModel : MyReactiveObject
     {
         await ConfigHandler.ApplyRegionalPreset(_config, type);
         await ConfigHandler.InitRouting(_config);
-        AppEvents.RoutingsMenuRefreshRequested.Publish();
+        RxSchedulers.MainThreadScheduler.Schedule(async () =>
+        {
+            await StatusBarViewModel.RefreshRoutingsMenu();
+        });
 
         await ConfigHandler.SaveConfig(_config);
         await new UpdateService(_config, UpdateTaskHandler).UpdateGeoFileAll();
