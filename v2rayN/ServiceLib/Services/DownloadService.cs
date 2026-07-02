@@ -188,8 +188,8 @@ public class DownloadService
                     // implement a simple version of "Happy Eyeballs" algorithm to prefer IPv6 but fallback to IPv4 if it takes too long
                     // Microsoft will add official support for this in [.NET 11](https://github.com/dotnet/runtime/issues/87932) and [.NET 12](https://github.com/dotnet/runtime/issues/117548), then we can remove this custom implementation
                     var socket = await Task.WhenAny(
-                        GetSocket(false, cts.Token), // prefer ipv6
-                        GetSocket(true, cts.Token, 250) // start ipv4 after delay
+                        GetSocket(isIpv4: false, cts.Token), // prefer ipv6
+                        GetSocket(isIpv4: true, cts.Token, startDelayMilliseconds: 250) // start ipv4 after delay
                     );
                     cts.Cancel(); // one completed, cancel the other
                     return new NetworkStream(await socket, ownsSocket: true);
