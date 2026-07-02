@@ -9,6 +9,8 @@ public class StatusBarViewModel : MyReactiveObject
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
+    public EventChannel<string> SetDefaultServerRequested { get; } = new();
+
     #region ObservableCollection
 
     public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
@@ -341,7 +343,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        AppEvents.SetDefaultServerRequested.Publish(SelectedServer.ID);
+        SetDefaultServerRequested.Publish(SelectedServer.ID);
     }
 
     public async Task TestServerAvailability()

@@ -248,11 +248,6 @@ public class ProfilesViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
 
-        AppEvents.SetDefaultServerRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async indexId => await SetDefaultServer(indexId));
-
         #endregion AppEvents
 
         _ = Init();
@@ -593,7 +588,7 @@ public class ProfilesViewModel : MyReactiveObject
         await SetDefaultServer(SelectedProfile.IndexId);
     }
 
-    private async Task SetDefaultServer(string? indexId)
+    public async Task SetDefaultServer(string? indexId)
     {
         if (indexId.IsNullOrEmpty())
         {

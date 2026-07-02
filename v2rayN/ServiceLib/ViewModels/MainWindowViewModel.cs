@@ -277,6 +277,11 @@ public class MainWindowViewModel : MyReactiveObject
 
         #endregion AppEvents
 
+        StatusBarViewModel.SetDefaultServerRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async indexId => await ProfilesViewModel.SetDefaultServer(indexId));
+
         _ = Init();
     }
 
