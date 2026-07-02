@@ -2,7 +2,6 @@ namespace ServiceLib.Events;
 
 public static class AppEvents
 {
-    public static readonly EventChannel<Unit> ReloadRequested = new();
     public static readonly EventChannel<Unit> AddServerViaScanRequested = new();
     public static readonly EventChannel<Unit> AddServerViaClipboardRequested = new();
     public static readonly EventChannel<bool> HasUpdateNotified = new();

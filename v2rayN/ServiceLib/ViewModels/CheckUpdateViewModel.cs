@@ -7,6 +7,8 @@ public class CheckUpdateViewModel : MyReactiveObject
     private List<CheckUpdateModel> _lstUpdated = [];
     private static readonly string _tag = "CheckUpdateViewModel";
 
+    public EventChannel<Unit> ReloadRequested { get; } = new();
+
     public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
     public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
     public ReactiveCommand<Unit, Unit> CheckOnlyCmd { get; }
@@ -298,7 +300,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (blReload)
         {
-            AppEvents.ReloadRequested.Publish();
+            ReloadRequested.Publish();
         }
         else
         {

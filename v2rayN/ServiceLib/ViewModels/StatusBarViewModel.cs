@@ -12,6 +12,7 @@ public class StatusBarViewModel : MyReactiveObject
     public static StatusBarViewModel Instance => _instance.Value;
 
     public EventChannel<string> SetDefaultServerRequested { get; } = new();
+    public EventChannel<Unit> ReloadRequested { get; } = new();
 
     #region ObservableCollection
 
@@ -434,7 +435,7 @@ public class StatusBarViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
-            AppEvents.ReloadRequested.Publish();
+            ReloadRequested.Publish();
             await DispatcherRefreshIconInteraction.Handle(Unit.Default);
         }
     }
@@ -482,7 +483,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
 
         await ConfigHandler.SaveConfig(_config);
-        AppEvents.ReloadRequested.Publish();
+        ReloadRequested.Publish();
     }
 
     private bool AllowEnableTun()

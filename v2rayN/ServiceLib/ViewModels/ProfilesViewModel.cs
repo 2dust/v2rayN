@@ -10,6 +10,8 @@ public class ProfilesViewModel : MyReactiveObject
     public Interaction<Unit, Unit> DispatcherRefreshServersBizInteraction { get; } = new();
     public Interaction<Unit, Unit> AdjustMainLvColWidthInteraction { get; } = new();
 
+    public EventChannel<Unit> ReloadRequested { get; } = new();
+
     #region private prop
 
     private List<ProfileItem> _lstProfile;
@@ -269,7 +271,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     private void Reload()
     {
-        AppEvents.ReloadRequested.Publish();
+        ReloadRequested.Publish();
     }
 
     public async Task SetSpeedTestResult(SpeedTestResult result)

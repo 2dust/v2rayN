@@ -251,11 +251,6 @@ public class MainWindowViewModel : MyReactiveObject
 
         #region AppEvents
 
-        AppEvents.ReloadRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await Reload());
-
         AppEvents.AddServerViaScanRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -272,6 +267,20 @@ public class MainWindowViewModel : MyReactiveObject
             .Subscribe(async bl => BlNewUpdate = bl);
 
         #endregion AppEvents
+
+        var vmReloadRequestedList = new List<IObservable<Unit>>
+        {
+            ProfilesViewModel.ReloadRequested.AsObservable(),
+            StatusBarViewModel.ReloadRequested.AsObservable(),
+            CheckUpdateViewModel.ReloadRequested.AsObservable(),
+        };
+
+        foreach (var reloadRequested in vmReloadRequestedList)
+        {
+            reloadRequested
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(async _ => await Reload());
+        }
 
         StatusBarViewModel.ShowHideWindowRequested
             .AsObservable()
