@@ -242,11 +242,6 @@ public class ProfilesViewModel : MyReactiveObject
 
         #region AppEvents
 
-        AppEvents.SubscriptionsRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshSubscriptions());
-
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -408,7 +403,7 @@ public class ProfilesViewModel : MyReactiveObject
         }
     }
 
-    private async Task RefreshSubscriptions()
+    public async Task RefreshSubscriptions()
     {
         var subItems = await AppManager.Instance.SubItems();
         subItems.Insert(0, new SubItem { Remarks = ResUI.AllGroupServers });

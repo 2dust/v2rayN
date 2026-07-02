@@ -377,9 +377,9 @@ public class MainWindowViewModel : MyReactiveObject
         await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
     }
 
-    private void RefreshSubscriptions()
+    private async Task RefreshSubscriptions()
     {
-        AppEvents.SubscriptionsRefreshRequested.Publish();
+        await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
     }
 
     #endregion Servers && Groups
@@ -437,7 +437,7 @@ public class MainWindowViewModel : MyReactiveObject
         var ret = await ConfigHandler.AddBatchServers(_config, stringData, _config.SubIndexId, false);
         if (ret > 0)
         {
-            RefreshSubscriptions();
+            await RefreshSubscriptions();
             await RefreshServersDispatcherAsync();
             NoticeManager.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
         }
@@ -487,7 +487,7 @@ public class MainWindowViewModel : MyReactiveObject
             var ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
             if (ret > 0)
             {
-                RefreshSubscriptions();
+                await RefreshSubscriptions();
                 await RefreshServersDispatcherAsync();
                 NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
             }
@@ -507,7 +507,7 @@ public class MainWindowViewModel : MyReactiveObject
         var subSettingViewModel = new SubSettingViewModel();
         if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subSettingViewModel) == true)
         {
-            RefreshSubscriptions();
+            await RefreshSubscriptions();
         }
     }
 
