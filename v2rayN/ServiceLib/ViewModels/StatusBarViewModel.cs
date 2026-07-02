@@ -6,6 +6,7 @@ public class StatusBarViewModel : MyReactiveObject
     public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
     public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
     public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
+    public EventChannel<bool?> ShowHideWindowRequested { get; } = new();
 
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
@@ -147,17 +148,17 @@ public class StatusBarViewModel : MyReactiveObject
 
         NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(null);
+            ShowHideWindowRequested.Publish(null);
             await Task.CompletedTask;
         });
         ShowWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(true);
+            ShowHideWindowRequested.Publish(true);
             await Task.CompletedTask;
         });
         HideWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(false);
+            ShowHideWindowRequested.Publish(false);
             await Task.CompletedTask;
         });
 

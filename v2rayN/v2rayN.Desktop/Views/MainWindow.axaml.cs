@@ -108,6 +108,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
+            ViewModel.ShowHideWindowInteraction.RegisterHandler(interaction =>
+            {
+                ShowHideWindow(interaction.Input);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
             AppEvents.SendSnackMsgRequested
               .AsObservable()
               .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -125,12 +131,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
               .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(Shutdown)
               .DisposeWith(disposables);
-
-            AppEvents.ShowHideWindowRequested
-             .AsObservable()
-             .ObserveOn(RxSchedulers.MainThreadScheduler)
-             .Subscribe(ShowHideWindow)
-             .DisposeWith(disposables);
         });
 
         if (Utils.IsWindows())

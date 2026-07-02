@@ -7,6 +7,7 @@ public class MainWindowViewModel : MyReactiveObject
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
     public Interaction<Unit, byte[]?> ScanScreenInteraction { get; } = new();
     public Interaction<Unit, string?> BrowseImageFileInteraction { get; } = new();
+    public Interaction<bool?, Unit> ShowHideWindowInteraction { get; } = new();
 
     public bool DesignMode { get; set; }
 
@@ -265,11 +266,6 @@ public class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await AddServerViaClipboardAsync(null));
 
-        StatusBarViewModel.SubscriptionsUpdateRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async blProxy => await UpdateSubscriptionProcess("", blProxy));
-
         AppEvents.HasUpdateNotified
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -277,10 +273,23 @@ public class MainWindowViewModel : MyReactiveObject
 
         #endregion AppEvents
 
+        StatusBarViewModel.ShowHideWindowRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async blShow =>
+            {
+                await ShowHideWindowInteraction.Handle(blShow);
+            });
+
         StatusBarViewModel.SetDefaultServerRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async indexId => await ProfilesViewModel.SetDefaultServer(indexId));
+
+        StatusBarViewModel.SubscriptionsUpdateRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async blProxy => await UpdateSubscriptionProcess("", blProxy));
 
         _ = Init();
     }

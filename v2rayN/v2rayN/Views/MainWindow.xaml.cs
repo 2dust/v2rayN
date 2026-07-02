@@ -117,6 +117,12 @@ public partial class MainWindow
                 interaction.SetOutput(fileName);
             }).DisposeWith(disposables);
 
+            ViewModel.ShowHideWindowInteraction.RegisterHandler(interaction =>
+            {
+                ShowHideWindow(interaction.Input);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
             AppEvents.SendSnackMsgRequested
               .AsObservable()
               .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -133,12 +139,6 @@ public partial class MainWindow
              .AsObservable()
              .ObserveOn(RxSchedulers.MainThreadScheduler)
              .Subscribe(Shutdown)
-             .DisposeWith(disposables);
-
-            AppEvents.ShowHideWindowRequested
-             .AsObservable()
-             .ObserveOn(RxSchedulers.MainThreadScheduler)
-             .Subscribe(ShowHideWindow)
              .DisposeWith(disposables);
         });
 
