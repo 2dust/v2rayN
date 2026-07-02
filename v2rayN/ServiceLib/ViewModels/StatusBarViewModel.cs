@@ -222,11 +222,6 @@ public class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await SetListenerType(result));
 
-        AppEvents.ProfilesRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshServersBiz());
-
         #endregion AppEvents
 
         _ = Init();
@@ -277,6 +272,11 @@ public class StatusBarViewModel : MyReactiveObject
         await Task.Delay(1000);
     }
 
+    public async Task RefreshServers()
+    {
+        await RefreshServersBiz();
+    }
+
     private async Task RefreshServersBiz()
     {
         await RefreshServersMenu();
@@ -304,8 +304,7 @@ public class StatusBarViewModel : MyReactiveObject
     {
         var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, "");
 
-        Servers.Clear();
-        if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
+        if (lstModel?.Count > _config.GuiItem.TrayMenuServersLimit)
         {
             BlServers = false;
             return;
@@ -324,6 +323,7 @@ public class StatusBarViewModel : MyReactiveObject
                 SelectedServer = item;
             }
         }
+        Servers.Clear();
         Servers.AddRange(models);
     }
 

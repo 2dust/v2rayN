@@ -242,11 +242,6 @@ public class ProfilesViewModel : MyReactiveObject
 
         #region AppEvents
 
-        AppEvents.ProfilesRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshServersBiz());
-
         AppEvents.SubscriptionsRefreshRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -380,9 +375,9 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task RefreshServers()
     {
-        AppEvents.ProfilesRefreshRequested.Publish();
+        await RefreshServersBiz();
 
-        await Task.Delay(200);
+        // await Task.Delay(200);
     }
 
     private async Task RefreshServersBiz()
@@ -391,8 +386,8 @@ public class ProfilesViewModel : MyReactiveObject
         _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
         ProfileItems.Clear();
-        ProfileItems.AddRange(lstModel);
-        if (lstModel.Count > 0)
+        ProfileItems.AddRange(lstModel ?? []);
+        if (lstModel?.Count > 0)
         {
             ProfileItemModel? selected = null;
             if (!_pendingSelectIndexId.IsNullOrEmpty())

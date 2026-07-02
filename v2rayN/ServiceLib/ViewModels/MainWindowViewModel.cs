@@ -301,7 +301,7 @@ public class MainWindowViewModel : MyReactiveObject
         {
             await StatisticsManager.Instance.Init(_config, UpdateStatisticsHandler);
         }
-        await RefreshServers();
+        await RefreshServersDispatcherAsync();
 
         await Reload();
     }
@@ -326,7 +326,7 @@ public class MainWindowViewModel : MyReactiveObject
         if (success)
         {
             var indexIdOld = _config.IndexId;
-            await RefreshServers();
+            await RefreshServersDispatcherAsync();
 
             // If indexId changed or subIndexId is empty, directly reload.
             if (indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
@@ -366,9 +366,15 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RefreshServers()
     {
-        AppEvents.ProfilesRefreshRequested.Publish();
+        await ProfilesViewModel.RefreshServers();
+        await StatusBarViewModel.RefreshServers();
 
-        await Task.Delay(200);
+        // await Task.Delay(200);
+    }
+
+    private async Task RefreshServersDispatcherAsync()
+    {
+        await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
     }
 
     private void RefreshSubscriptions()
@@ -407,7 +413,7 @@ public class MainWindowViewModel : MyReactiveObject
         }
         if (ret == true)
         {
-            await RefreshServers();
+            await RefreshServersDispatcherAsync();
             if (item.IndexId == _config.IndexId)
             {
                 await Reload();
@@ -432,7 +438,7 @@ public class MainWindowViewModel : MyReactiveObject
         if (ret > 0)
         {
             RefreshSubscriptions();
-            await RefreshServers();
+            await RefreshServersDispatcherAsync();
             NoticeManager.Instance.Enqueue(string.Format(ResUI.SuccessfullyImportedServerViaClipboard, ret));
         }
         else
@@ -482,7 +488,7 @@ public class MainWindowViewModel : MyReactiveObject
             if (ret > 0)
             {
                 RefreshSubscriptions();
-                await RefreshServers();
+                await RefreshServersDispatcherAsync();
                 NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedServerViaScan);
             }
             else
@@ -561,7 +567,7 @@ public class MainWindowViewModel : MyReactiveObject
     private async Task ClearServerStatistics()
     {
         await StatisticsManager.Instance.ClearAllServerStatistics();
-        await RefreshServers();
+        await RefreshServersDispatcherAsync();
     }
 
     private async Task OpenTheFileLocation()
