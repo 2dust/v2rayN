@@ -13,6 +13,8 @@ public class StatusBarViewModel : MyReactiveObject
 
     public EventChannel<string> SetDefaultServerRequested { get; } = new();
     public EventChannel<Unit> ReloadRequested { get; } = new();
+    public EventChannel<Unit> AddServerViaScanRequested { get; } = new();
+    public EventChannel<Unit> AddServerViaClipboardRequested { get; } = new();
 
     #region ObservableCollection
 
@@ -246,13 +248,13 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task AddServerViaClipboard()
     {
-        AppEvents.AddServerViaClipboardRequested.Publish();
+        AddServerViaClipboardRequested.Publish();
         await Task.Delay(1000);
     }
 
     private async Task AddServerViaScan()
     {
-        AppEvents.AddServerViaScanRequested.Publish();
+        AddServerViaScanRequested.Publish();
         await Task.Delay(1000);
     }
 

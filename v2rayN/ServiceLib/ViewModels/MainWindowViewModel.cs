@@ -251,16 +251,6 @@ public class MainWindowViewModel : MyReactiveObject
 
         #region AppEvents
 
-        AppEvents.AddServerViaScanRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await AddServerViaScanAsync());
-
-        AppEvents.AddServerViaClipboardRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await AddServerViaClipboardAsync(null));
-
         AppEvents.HasUpdateNotified
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -281,6 +271,16 @@ public class MainWindowViewModel : MyReactiveObject
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(async _ => await Reload());
         }
+
+        StatusBarViewModel.AddServerViaScanRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await AddServerViaScanAsync());
+
+        StatusBarViewModel.AddServerViaClipboardRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await AddServerViaClipboardAsync(null));
 
         StatusBarViewModel.ShowHideWindowRequested
             .AsObservable()
