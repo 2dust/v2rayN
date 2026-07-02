@@ -637,7 +637,14 @@ public class MainWindowViewModel : MyReactiveObject
             var showClashUI = AppManager.Instance.IsRunningCore(ECoreType.sing_box);
             if (showClashUI)
             {
-                AppEvents.ProxiesReloadRequested.Publish();
+                //await Observable.Start(async () =>
+                //{
+                //    await ClashProxiesViewModel.ProxiesReload();
+                //}, RxSchedulers.MainThreadScheduler);
+                RxSchedulers.MainThreadScheduler.Schedule(async () =>
+                {
+                    await ClashProxiesViewModel.ProxiesReload();
+                });
             }
 
             ReloadResult(showClashUI);

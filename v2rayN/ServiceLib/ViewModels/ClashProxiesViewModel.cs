@@ -85,15 +85,6 @@ public class ClashProxiesViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
-        #region AppEvents
-
-        AppEvents.ProxiesReloadRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await ProxiesReload());
-
-        #endregion AppEvents
-
         _ = Init();
     }
 

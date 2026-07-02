@@ -9,7 +9,6 @@ public static class AppEvents
     public static readonly EventChannel<bool> SubscriptionsUpdateRequested = new();
     public static readonly EventChannel<bool> HasUpdateNotified = new();
 
-    public static readonly EventChannel<Unit> ProxiesReloadRequested = new();
     public static readonly EventChannel<ServerSpeedItem> DispatcherStatisticsRequested = new();
 
     public static readonly EventChannel<string> SendSnackMsgRequested = new();
