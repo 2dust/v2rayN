@@ -532,7 +532,10 @@ public class MainWindowViewModel : MyReactiveObject
         if (ret == true)
         {
             MainGirdOrientation = _config.UiItem.MainGirdOrientation;
-            AppEvents.InboundDisplayRequested.Publish();
+            RxSchedulers.MainThreadScheduler.Schedule(async () =>
+            {
+                await StatusBarViewModel.InboundDisplayStatus();
+            });
             await Reload();
         }
     }
