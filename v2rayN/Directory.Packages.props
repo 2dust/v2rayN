@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.17" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.17" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.18" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.18" />
     <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.11.0" />
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
@@ -27,7 +27,7 @@
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.3" />
     <PackageVersion Include="NLog" Version="6.1.3" />
     <PackageVersion Include="sqlite-net-e" Version="1.11.0" />
-    <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.2" />
+    <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.3" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />

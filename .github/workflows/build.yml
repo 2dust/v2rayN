@@ -22,6 +22,7 @@ jobs:
         case(
           inputs.target == 'macos', 'macos-latest',
           inputs.target == 'linux', 'ubuntu-24.04',
+          inputs.target == 'windows', 'windows-latest',
           'ubuntu-latest'
         )
       }}
@@ -73,10 +74,12 @@ jobs:
         dotnet-version: '10.0.1xx'
 
     - name: Build v2rayN
+      shell: bash
       working-directory: ./v2rayN
       run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt -o $Output
 
     - name: Build AmazTool
+      shell: bash
       working-directory: ./v2rayN
       run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $Output
 
