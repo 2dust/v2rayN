@@ -251,6 +251,11 @@ public class MainWindowViewModel : MyReactiveObject
 
         #region AppEvents
 
+        AppEvents.AddServerViaClipboardRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await AddServerViaClipboardAsync(null));
+
         AppEvents.HasUpdateNotified
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)

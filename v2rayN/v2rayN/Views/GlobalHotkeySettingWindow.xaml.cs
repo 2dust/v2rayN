@@ -19,11 +19,11 @@ public partial class GlobalHotkeySettingWindow
         this.WhenActivated(disposables =>
         {
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            BindingData();
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
 
         Init();
-        BindingData();
     }
 
     private void Init()
@@ -53,9 +53,13 @@ public partial class GlobalHotkeySettingWindow
         {
             return;
         }
+        if (ViewModel == null)
+        {
+            return;
+        }
 
-        var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
-        var modifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
+        var item = ViewModel.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
+        var modifierKeys = new[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
 
         item.KeyCode = (int)(e.Key == Key.System ? (modifierKeys.Contains(e.SystemKey) ? Key.None : e.SystemKey) : (modifierKeys.Contains(e.Key) ? Key.None : e.Key));
         item.Alt = (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt;
@@ -95,17 +99,17 @@ public partial class GlobalHotkeySettingWindow
 
         if (item.Control)
         {
-            res.Append($"{ModifierKeys.Control} +");
+            res.Append($"{ModifierKeys.Control} + ");
         }
 
         if (item.Shift)
         {
-            res.Append($"{ModifierKeys.Shift} +");
+            res.Append($"{ModifierKeys.Shift} + ");
         }
 
         if (item.Alt)
         {
-            res.Append($"{ModifierKeys.Alt} +");
+            res.Append($"{ModifierKeys.Alt} + ");
         }
 
         if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
