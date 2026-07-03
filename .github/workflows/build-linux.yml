@@ -214,7 +214,7 @@ jobs:
       QCOW2_IMAGE: debian13-loong64.qcow2
       EFI_CODE: edk2-loongarch64-code.fd
       EFI_VARS: edk2-loongarch64-vars.fd
-      QEMU_VERSION: 10.2.3
+      QEMU_VERSION: 10.2.4
     steps:
     - name: Prepare host tools
       shell: bash
@@ -364,7 +364,7 @@ jobs:
       QCOW2_IMAGE: fedora43-loong64.qcow2
       EFI_CODE: edk2-loongarch64-code.fd
       EFI_VARS: edk2-loongarch64-vars.fd
-      QEMU_VERSION: 10.2.3
+      QEMU_VERSION: 10.2.4
     steps:
     - name: Prepare host tools
       shell: bash

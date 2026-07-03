@@ -92,6 +92,7 @@ public class Global
     public const string LinuxBash = "/bin/bash";
     public const string StringTrue = "true";
     public const string StringFalse = "false";
+    public const int SqliteMaxBatchSize = 10000;
 
     public const string SingboxDirectDNSTag = "direct_dns";
     public const string SingboxRemoteDNSTag = "remote_dns";
