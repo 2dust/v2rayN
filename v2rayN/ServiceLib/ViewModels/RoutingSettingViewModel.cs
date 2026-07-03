@@ -1,6 +1,6 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingSettingViewModel : MyReactiveObject
+public partial class RoutingSettingViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
 
@@ -9,15 +9,15 @@ public class RoutingSettingViewModel : MyReactiveObject
     public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
 
     [Reactive]
-    public RoutingItemModel SelectedSource { get; set; }
+    public partial RoutingItemModel SelectedSource { get; set; }
 
     public IList<RoutingItemModel> SelectedSources { get; set; }
 
     [Reactive]
-    public string DomainStrategy { get; set; }
+    public partial string DomainStrategy { get; set; }
 
     [Reactive]
-    public string DomainStrategy4Singbox { get; set; }
+    public partial string DomainStrategy4Singbox { get; set; }
 
     public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
     public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }

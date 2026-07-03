@@ -1,131 +1,131 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServerViewModel : MyReactiveObject, ICloseable
+public partial class AddServerViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public ProfileItem SelectedSource { get; set; }
+    public partial ProfileItem SelectedSource { get; set; }
 
     [Reactive]
-    public string? CoreType { get; set; }
+    public partial string? CoreType { get; set; }
 
     [Reactive]
-    public bool AllowInsecure { get; set; }
+    public partial bool AllowInsecure { get; set; }
 
     [Reactive]
-    public bool MuxEnabled { get; set; }
+    public partial bool MuxEnabled { get; set; }
 
     [Reactive]
-    public string Cert { get; set; }
+    public partial string Cert { get; set; }
 
     [Reactive]
-    public string CertTip { get; set; }
+    public partial string CertTip { get; set; }
 
     [Reactive]
-    public string CertSha { get; set; }
+    public partial string CertSha { get; set; }
 
     [Reactive]
-    public string SalamanderPass { get; set; }
+    public partial string SalamanderPass { get; set; }
 
     [Reactive]
-    public int AlterId { get; set; }
+    public partial int AlterId { get; set; }
 
     [Reactive]
-    public string Ports { get; set; }
+    public partial string Ports { get; set; }
 
     [Reactive]
-    public int? UpMbps { get; set; }
+    public partial int? UpMbps { get; set; }
 
     [Reactive]
-    public int? DownMbps { get; set; }
+    public partial int? DownMbps { get; set; }
 
     [Reactive]
-    public string HopInterval { get; set; }
+    public partial string HopInterval { get; set; }
 
     [Reactive]
-    public string Flow { get; set; }
+    public partial string Flow { get; set; }
 
     [Reactive]
-    public string VmessSecurity { get; set; }
+    public partial string VmessSecurity { get; set; }
 
     [Reactive]
-    public string VlessEncryption { get; set; }
+    public partial string VlessEncryption { get; set; }
 
     [Reactive]
-    public string SsMethod { get; set; }
+    public partial string SsMethod { get; set; }
 
     [Reactive]
-    public string WgPublicKey { get; set; }
+    public partial string WgPublicKey { get; set; }
 
     [Reactive]
-    public string WgPresharedKey { get; set; }
+    public partial string WgPresharedKey { get; set; }
 
     [Reactive]
-    public string WgInterfaceAddress { get; set; }
+    public partial string WgInterfaceAddress { get; set; }
 
     [Reactive]
-    public string WgReserved { get; set; }
+    public partial string WgReserved { get; set; }
 
     [Reactive]
-    public int WgMtu { get; set; }
+    public partial int WgMtu { get; set; }
 
     [Reactive]
-    public bool Uot { get; set; }
+    public partial bool Uot { get; set; }
 
     [Reactive]
-    public string CongestionControl { get; set; }
+    public partial string CongestionControl { get; set; }
 
     [Reactive]
-    public int? InsecureConcurrency { get; set; }
+    public partial int? InsecureConcurrency { get; set; }
 
     [Reactive]
-    public bool NaiveQuic { get; set; }
+    public partial bool NaiveQuic { get; set; }
 
     [Reactive]
-    public string HttpHeadersJson { get; set; }
+    public partial string HttpHeadersJson { get; set; }
 
     [Reactive]
-    public string Hy2RealmUrl { get; set; }
+    public partial string Hy2RealmUrl { get; set; }
 
     [Reactive]
-    public int GeckoMinPacketSize { get; set; }
+    public partial int GeckoMinPacketSize { get; set; }
 
     [Reactive]
-    public int GeckoMaxPacketSize { get; set; }
+    public partial int GeckoMaxPacketSize { get; set; }
 
     [Reactive]
-    public string RawHeaderType { get; set; }
+    public partial string RawHeaderType { get; set; }
 
     [Reactive]
-    public string Host { get; set; }
+    public partial string Host { get; set; }
 
     [Reactive]
-    public string Path { get; set; }
+    public partial string Path { get; set; }
 
     [Reactive]
-    public string XhttpMode { get; set; }
+    public partial string XhttpMode { get; set; }
 
     [Reactive]
-    public string XhttpExtra { get; set; }
+    public partial string XhttpExtra { get; set; }
 
     [Reactive]
-    public string GrpcAuthority { get; set; }
+    public partial string GrpcAuthority { get; set; }
 
     [Reactive]
-    public string GrpcServiceName { get; set; }
+    public partial string GrpcServiceName { get; set; }
 
     [Reactive]
-    public string GrpcMode { get; set; }
+    public partial string GrpcMode { get; set; }
 
     [Reactive]
-    public string KcpHeaderType { get; set; }
+    public partial string KcpHeaderType { get; set; }
 
     [Reactive]
-    public string KcpSeed { get; set; }
+    public partial string KcpSeed { get; set; }
 
     [Reactive]
-    public int? KcpMtu { get; set; }
+    public partial int? KcpMtu { get; set; }
 
     public string TransportHeaderType
     {

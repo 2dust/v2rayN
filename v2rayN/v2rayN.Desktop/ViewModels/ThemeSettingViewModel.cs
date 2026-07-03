@@ -5,13 +5,13 @@ using Semi.Avalonia;
 
 namespace v2rayN.Desktop.ViewModels;
 
-public class ThemeSettingViewModel : MyReactiveObject
+public partial class ThemeSettingViewModel : MyReactiveObject
 {
-    [Reactive] public string CurrentTheme { get; set; }
+    [Reactive] public partial string CurrentTheme { get; set; }
 
-    [Reactive] public int CurrentFontSize { get; set; }
+    [Reactive] public partial int CurrentFontSize { get; set; }
 
-    [Reactive] public string CurrentLanguage { get; set; }
+    [Reactive] public partial string CurrentLanguage { get; set; }
 
     public ThemeSettingViewModel()
     {
