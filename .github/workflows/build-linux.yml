@@ -258,7 +258,7 @@ jobs:
         export VIRTIOFSD_SOCKET="$RUNNER_TEMP/virtiofs-deb-loong64.sock"
         rm -f "$VIRTIOFSD_SOCKET"
 
-        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" -o source="$GITHUB_WORKSPACE" -o cache=auto &
+        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" --shared-dir="$GITHUB_WORKSPACE" --cache=auto &
 
         VIRTIOFSD_PID=$!
         trap 'sudo kill "$VIRTIOFSD_PID" 2>/dev/null || true; rm -f "$VIRTIOFSD_SOCKET"' EXIT
@@ -408,7 +408,7 @@ jobs:
         export VIRTIOFSD_SOCKET="$RUNNER_TEMP/virtiofs-rpm-loong64.sock"
         rm -f "$VIRTIOFSD_SOCKET"
 
-        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" -o source="$GITHUB_WORKSPACE" -o cache=auto &
+        sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" --shared-dir="$GITHUB_WORKSPACE" --cache=auto &
 
         VIRTIOFSD_PID=$!
         trap 'sudo kill "$VIRTIOFSD_PID" 2>/dev/null || true; rm -f "$VIRTIOFSD_SOCKET"' EXIT
