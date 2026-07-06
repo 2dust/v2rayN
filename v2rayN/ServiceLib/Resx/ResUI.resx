@@ -1812,4 +1812,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbGeckoPacketSize" xml:space="preserve">
     <value>Gecko Packet Size (min/max)</value>
   </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>If enabled, use sing-box TUN; otherwise, use xray TUN.</value>
+  </data>
 </root>

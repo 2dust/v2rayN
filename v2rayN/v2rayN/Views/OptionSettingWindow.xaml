@@ -1285,6 +1285,14 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbLegacyProtectTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="9"

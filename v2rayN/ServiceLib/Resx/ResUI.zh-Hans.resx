@@ -1809,4 +1809,7 @@
   <data name="TbGeckoPacketSize" xml:space="preserve">
     <value>Gecko 包大小 (最小/最大)</value>
   </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>启用则使用 sing-box TUN ,否则使用 xray TUN</value>
+  </data>
 </root>

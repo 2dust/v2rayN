@@ -1794,4 +1794,7 @@
   <data name="TbEnabletDnsViaProxy" xml:space="preserve">
     <value>DNS 透過 Bridge</value>
   </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
+  </data>
 </root>

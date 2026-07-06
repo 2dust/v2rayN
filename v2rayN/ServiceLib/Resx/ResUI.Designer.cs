@@ -3340,6 +3340,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 If enabled, use sing-box TUN; otherwise, use xray TUN. 的本地化字符串。
+        /// </summary>
+        public static string TbLegacyProtectTip {
+            get {
+                return ResourceManager.GetString("TbLegacyProtectTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Address (IPv4, IPv6) 的本地化字符串。
         /// </summary>
         public static string TbLocalAddress {
