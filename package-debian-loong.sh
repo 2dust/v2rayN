@@ -116,20 +116,7 @@ install_dependencies() {
 
     export PATH="$HOME/.dotnet:$PATH"
     export DOTNET_ROOT="$HOME/.dotnet"
-
-    mkdir -p "$HOME/.nuget/NuGet"
-
-    cat > "$HOME/.nuget/NuGet/NuGet.Config" <<EOF
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <packageSources>
-    <clear />
-    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
-    <add key="loongnix" value="https://lnuget.loongnix.cn/v3/index.json" allowInsecureConnections="true" />
-  </packageSources>
-</configuration>
-EOF
-
+    
     dotnet --info >/dev/null 2>&1 && install_ok=1
   fi
 
