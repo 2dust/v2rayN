@@ -1041,6 +1041,36 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>擁塞控制算法</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP 請求頭</value>
+  </data>
+  <data name="TbHttpOutboundHeadersTabKeyValue" xml:space="preserve">
+    <value>請求頭</value>
+  </data>
+  <data name="TbHttpOutboundHeadersTabJson" xml:space="preserve">
+    <value>JSON</value>
+  </data>
+  <data name="TbHttpOutboundHeaderName" xml:space="preserve">
+    <value>請求頭</value>
+  </data>
+  <data name="TbHttpOutboundHeaderValue" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="TbHttpOutboundAddHeader" xml:space="preserve">
+    <value>新增請求頭</value>
+  </data>
+  <data name="TbHttpOutboundRemoveHeader" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="TbHttpOutboundCopyJson" xml:space="preserve">
+    <value>複製 JSON</value>
+  </data>
+  <data name="DuplicateHttpOutboundHeaderName" xml:space="preserve">
+    <value>請求頭名稱重複，每個請求頭只能儲存一個值。</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>自訂 HTTP 出站請求頭，可編輯鍵值對或查看生成的 JSON 物件。</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理節點別名</value>
   </data>
@@ -1796,5 +1826,8 @@
   </data>
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP 出站請求頭必須是鍵和值均為字串的 JSON 物件。</value>
   </data>
 </root>

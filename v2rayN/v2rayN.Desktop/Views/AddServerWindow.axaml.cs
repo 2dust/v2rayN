@@ -1,4 +1,5 @@
 using v2rayN.Desktop.Base;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
@@ -54,8 +55,13 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 break;
 
             case EConfigType.SOCKS:
+                gridSocks.IsVisible = true;
+                break;
+
             case EConfigType.HTTP:
                 gridSocks.IsVisible = true;
+                tbHttpHeaders.IsVisible = true;
+                tabHttpHeaders.IsVisible = true;
                 break;
 
             case EConfigType.VLESS:
@@ -148,9 +154,17 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                     break;
 
                 case EConfigType.SOCKS:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
+                    break;
+
                 case EConfigType.HTTP:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.HttpHeaderItems, v => v.lstHttpHeaders.ItemsSource).DisposeWith(disposables);
+                    this.OneWayBind(ViewModel, vm => vm.HttpHeadersJson, v => v.txtHttpHeadersJson.Text).DisposeWith(disposables);
+                    this.BindCommand(ViewModel, vm => vm.AddHttpHeaderCmd, v => v.btnAddHttpHeader).DisposeWith(disposables);
+                    this.BindCommand(ViewModel, vm => vm.CopyHttpHeadersJsonCmd, v => v.btnCopyHttpHeadersJson).DisposeWith(disposables);
                     break;
 
                 case EConfigType.VLESS:
@@ -267,8 +281,20 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             case EViewAction.CloseWindow:
                 Close(true);
                 break;
+
+            case EViewAction.SetClipboardData:
+                await AvaUtils.SetClipboardData(this, (string)obj);
+                break;
         }
         return await Task.FromResult(true);
+    }
+
+    private void RemoveHttpHeader_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: HttpHeaderItem item })
+        {
+            ViewModel?.RemoveHttpHeaderCmd.Execute(item).Subscribe();
+        }
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)

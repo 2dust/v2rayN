@@ -1044,6 +1044,36 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP headers</value>
+  </data>
+  <data name="TbHttpOutboundHeadersTabKeyValue" xml:space="preserve">
+    <value>Headers</value>
+  </data>
+  <data name="TbHttpOutboundHeadersTabJson" xml:space="preserve">
+    <value>JSON</value>
+  </data>
+  <data name="TbHttpOutboundHeaderName" xml:space="preserve">
+    <value>Header</value>
+  </data>
+  <data name="TbHttpOutboundHeaderValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="TbHttpOutboundAddHeader" xml:space="preserve">
+    <value>Add header</value>
+  </data>
+  <data name="TbHttpOutboundRemoveHeader" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="TbHttpOutboundCopyJson" xml:space="preserve">
+    <value>Copy JSON</value>
+  </data>
+  <data name="DuplicateHttpOutboundHeaderName" xml:space="preserve">
+    <value>Duplicate header name. Only one value can be saved for each header.</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>Custom HTTP outbound request headers. Edit key/value pairs or view the generated JSON object.</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Previous proxy remarks</value>
   </data>
@@ -1806,6 +1836,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="InvalidHy2RealmUrl" xml:space="preserve">
     <value>Invalid Realm URL.</value>
   </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP outbound headers must be a JSON object whose keys and values are strings.</value>
+  </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
   </data>
@@ -1821,4 +1854,5 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>Only applies to the v2rayN GUI's downloads and network requests. Does not affect the core's certificate validation.</value>
   </data>
+</root>
 </root>

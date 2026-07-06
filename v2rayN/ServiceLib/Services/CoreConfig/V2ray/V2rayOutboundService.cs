@@ -136,7 +136,6 @@ public partial class CoreConfigV2rayService
                         break;
                     }
                 case EConfigType.SOCKS:
-                case EConfigType.HTTP:
                     {
                         ServersItem4Ray serversItem;
                         if (outbound.settings.servers.Count <= 0)
@@ -169,6 +168,29 @@ public partial class CoreConfigV2rayService
                         FillOutboundMux(outbound);
 
                         outbound.settings.vnext = null;
+                        break;
+                    }
+                case EConfigType.HTTP:
+                    {
+                        outbound.settings.address = _node.Address;
+                        outbound.settings.port = _node.Port;
+                        outbound.settings.headers = protocolExtra.HttpHeaders?.Count > 0
+                            ? protocolExtra.HttpHeaders
+                            : null;
+
+                        if (_node.Username.IsNotEmpty()
+                            && _node.Password.IsNotEmpty())
+                        {
+                            outbound.settings.user = _node.Username;
+                            outbound.settings.pass = _node.Password;
+                            outbound.settings.level = 1;
+                            outbound.settings.email = Global.UserEMail;
+                        }
+
+                        FillOutboundMux(outbound);
+
+                        outbound.settings.vnext = null;
+                        outbound.settings.servers = null;
                         break;
                     }
                 case EConfigType.VLESS:

@@ -81,6 +81,11 @@ public class AddServerViewModel : MyReactiveObject
     public bool NaiveQuic { get; set; }
 
     [Reactive]
+    public string HttpHeadersJson { get; set; }
+
+    public IObservableCollection<HttpHeaderItem> HttpHeaderItems { get; } = new ObservableCollectionExtended<HttpHeaderItem>();
+
+    [Reactive]
     public string Hy2RealmUrl { get; set; }
 
     [Reactive]
@@ -237,6 +242,9 @@ public class AddServerViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddHttpHeaderCmd { get; }
+    public ReactiveCommand<HttpHeaderItem, Unit> RemoveHttpHeaderCmd { get; }
+    public ReactiveCommand<Unit, Unit> CopyHttpHeadersJsonCmd { get; }
 
     public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
     {
@@ -255,6 +263,9 @@ public class AddServerViewModel : MyReactiveObject
         {
             await SaveServerAsync();
         });
+        AddHttpHeaderCmd = ReactiveCommand.Create(AddHttpHeader);
+        RemoveHttpHeaderCmd = ReactiveCommand.Create<HttpHeaderItem>(RemoveHttpHeader);
+        CopyHttpHeadersJsonCmd = ReactiveCommand.CreateFromTask(CopyHttpHeadersJsonAsync);
 
         this.WhenAnyValue(x => x.Cert)
             .Subscribe(_ => UpdateCertTip());
@@ -311,6 +322,7 @@ public class AddServerViewModel : MyReactiveObject
         CongestionControl = protocolExtra.CongestionControl ?? string.Empty;
         InsecureConcurrency = protocolExtra.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra.NaiveQuic ?? false;
+        LoadHttpHeaders(protocolExtra.HttpHeaders);
         Hy2RealmUrl = protocolExtra.Hy2RealmUrl ?? string.Empty;
         GeckoMinPacketSize = protocolExtra.GeckoMinPacketSize.ToInt();
         GeckoMaxPacketSize = protocolExtra.GeckoMaxPacketSize.ToInt();
@@ -379,6 +391,13 @@ public class AddServerViewModel : MyReactiveObject
                 return;
             }
         }
+        Dictionary<string, string>? httpHeaders = null;
+        if (SelectedSource.ConfigType == EConfigType.HTTP
+            && !TryBuildHttpHeaders(out httpHeaders))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
+            return;
+        }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
         SelectedSource.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
         SelectedSource.MuxEnabled = MuxEnabled;
@@ -416,6 +435,7 @@ public class AddServerViewModel : MyReactiveObject
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
+            HttpHeaders = SelectedSource.ConfigType == EConfigType.HTTP ? httpHeaders : null,
             WgPublicKey = WgPublicKey.NullIfEmpty(),
             WgPresharedKey = WgPresharedKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
@@ -440,6 +460,125 @@ public class AddServerViewModel : MyReactiveObject
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
+
+    private void LoadHttpHeaders(Dictionary<string, string>? headers)
+    {
+        HttpHeaderItems.Clear();
+        if (headers?.Count > 0)
+        {
+            foreach (var item in headers)
+            {
+                AddHttpHeaderItem(item.Key, item.Value);
+            }
+        }
+
+        if (HttpHeaderItems.Count == 0)
+        {
+            AddHttpHeaderItem();
+        }
+        RefreshHttpHeadersJson();
+    }
+
+    private void AddHttpHeader()
+    {
+        AddHttpHeaderItem();
+        RefreshHttpHeadersJson();
+    }
+
+    private void AddHttpHeaderItem(string key = "", string value = "")
+    {
+        var item = new HttpHeaderItem
+        {
+            Key = key,
+            Value = value
+        };
+        item.WhenAnyValue(x => x.Key, x => x.Value)
+            .Subscribe(_ => RefreshHttpHeadersJson());
+        HttpHeaderItems.Add(item);
+    }
+
+    private void RemoveHttpHeader(HttpHeaderItem item)
+    {
+        HttpHeaderItems.Remove(item);
+        if (HttpHeaderItems.Count == 0)
+        {
+            AddHttpHeaderItem();
+        }
+        RefreshHttpHeadersJson();
+    }
+
+    private async Task CopyHttpHeadersJsonAsync()
+    {
+        RefreshHttpHeadersJson();
+        if (_updateView != null)
+        {
+            await _updateView.Invoke(EViewAction.SetClipboardData, HttpHeadersJson);
+            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
+        }
+    }
+
+    private void RefreshHttpHeadersJson()
+    {
+        RefreshHttpHeaderWarnings();
+        HttpHeadersJson = TryBuildHttpHeaders(out var headers, false) && headers?.Count > 0
+            ? JsonUtils.Serialize(headers)
+            : "{}";
+    }
+
+    private void RefreshHttpHeaderWarnings()
+    {
+        var keyCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var item in HttpHeaderItems)
+        {
+            var key = item.Key?.Trim();
+            if (key.IsNullOrEmpty())
+            {
+                continue;
+            }
+
+            keyCounts.TryGetValue(key, out var count);
+            keyCounts[key] = count + 1;
+        }
+
+        foreach (var item in HttpHeaderItems)
+        {
+            var key = item.Key?.Trim();
+            var hasDuplicateKey = !key.IsNullOrEmpty()
+                                  && keyCounts.TryGetValue(key, out var count)
+                                  && count > 1;
+            item.HasWarning = hasDuplicateKey;
+            item.WarningText = hasDuplicateKey ? ResUI.DuplicateHttpOutboundHeaderName : string.Empty;
+        }
+    }
+
+    private bool TryBuildHttpHeaders(out Dictionary<string, string>? headers, bool validate = true)
+    {
+        headers = null;
+        var parsedHeaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var item in HttpHeaderItems)
+        {
+            var key = item.Key?.Trim();
+            var value = item.Value ?? string.Empty;
+            if (key.IsNullOrEmpty())
+            {
+                if (value.IsNullOrEmpty())
+                {
+                    continue;
+                }
+                return !validate;
+            }
+
+            if (parsedHeaders.ContainsKey(key))
+            {
+                return !validate;
+            }
+
+            parsedHeaders[key] = value;
+        }
+
+        headers = parsedHeaders.Count > 0 ? parsedHeaders : null;
+        return true;
     }
 
     private void UpdateCertTip(string? errorMessage = null)
@@ -540,4 +679,19 @@ public class AddServerViewModel : MyReactiveObject
             _ => string.Empty,
         };
     }
+}
+
+public class HttpHeaderItem : MyReactiveObject
+{
+    [Reactive]
+    public string Key { get; set; } = string.Empty;
+
+    [Reactive]
+    public string Value { get; set; } = string.Empty;
+
+    [Reactive]
+    public bool HasWarning { get; set; }
+
+    [Reactive]
+    public string WarningText { get; set; } = string.Empty;
 }

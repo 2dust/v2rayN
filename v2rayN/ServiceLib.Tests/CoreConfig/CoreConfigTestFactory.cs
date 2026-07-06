@@ -130,6 +130,25 @@ internal static class CoreConfigTestFactory
         };
     }
 
+    public static ProfileItem CreateHttpNode(ECoreType coreType, string indexId = "node-http-1",
+        string remarks = "demo-http")
+    {
+        return new ProfileItem
+        {
+            IndexId = indexId,
+            ConfigType = EConfigType.HTTP,
+            CoreType = coreType,
+            Remarks = remarks,
+            Address = "proxy.example.com",
+            Port = 8080,
+            Password = "pass",
+            Username = "user",
+            Network = nameof(ETransport.raw),
+            StreamSecurity = string.Empty,
+            Subid = string.Empty,
+        };
+    }
+
     public static ProfileItem CreatePolicyGroupNode(ECoreType coreType, string indexId, string remarks,
         IEnumerable<string> childIndexIds)
     {
