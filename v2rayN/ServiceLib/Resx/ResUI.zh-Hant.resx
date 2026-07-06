@@ -1768,7 +1768,7 @@
     <value>有更新</value>
   </data>
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
-    <value>警告：Xray 將在 2026.8.1 停用跳過憑證驗證 allowInsecure ，請盡快改用憑證固定指紋 pinnedPeerCertSha256。到期後無法使用 allowInsecure。</value>
+    <value>警告：allowInsecure 已在 Xray v26.2.6+（2026.6.1 起）中被完全移除。設定中包含此欄位會導致 Xray 拒絕啟動。請立即遷移到 pinnedPeerCertSha256（憑證 SHA256 指紋）或提供完整 PEM 憑證。</value>
   </data>
   <data name="TbVerifyPeerCertByName" xml:space="preserve">
     <value>Verify Peer Cert By Name</value>
@@ -1797,4 +1797,9 @@
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
   </data>
-</root>
+  <data name="MsgAllowInsecureRemovedXray" xml:space="preserve">
+    <value>Error: allowInsecure is no longer supported by Xray v26.2.6+. The connection will fail. Migration: 1. Fill Certificate SHA256 field, 2. Fill Full Certificate (PEM), 3. Switch to sing-box core.</value>
+  </data>
+  <data name="MsgAllowInsecureAutoMigratedXray" xml:space="preserve">
+    <value>Notice: allowInsecure is removed in Xray v26.2.6+. CertSha256 is provided so pinnedPeerCertSha256 will be used automatically. Please uncheck Allow Insecure to suppress this warning.</value>
+  </data></root>

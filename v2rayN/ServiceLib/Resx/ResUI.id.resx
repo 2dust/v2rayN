@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -1794,4 +1794,9 @@ Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan 
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
     <value>Memecah bagian akhir paket menjadi fragmen yang lebih kecil. Hal ini dapat memengaruhi throughput dan latensi.</value>
   </data>
-</root>
+  <data name="MsgAllowInsecureRemovedXray" xml:space="preserve">
+    <value>Error: allowInsecure is no longer supported by Xray v26.2.6+. The connection will fail. Migration: 1. Fill Certificate SHA256 field, 2. Fill Full Certificate (PEM), 3. Switch to sing-box core.</value>
+  </data>
+  <data name="MsgAllowInsecureAutoMigratedXray" xml:space="preserve">
+    <value>Notice: allowInsecure is removed in Xray v26.2.6+. CertSha256 is provided so pinnedPeerCertSha256 will be used automatically. Please uncheck Allow Insecure to suppress this warning.</value>
+  </data></root>

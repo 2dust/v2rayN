@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
 	<!-- Enable themes for Windows common controls and dialogs (Windows XP and later) -->
 	<dependency>
@@ -13,4 +13,14 @@
         />
 		</dependentAssembly>
 	</dependency>
+
+	<!-- High DPI support -->
+	<asmv3:application>
+		<asmv3:windowsSettings>
+			<!-- WPF and WinForms DPI Awareness -->
+			<dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/PM</dpiAware>
+			<!-- Modern DPI Awareness (Windows 10 v1607+) -->
+			<dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, PerMonitor</dpiAwareness>
+		</asmv3:windowsSettings>
+	</asmv3:application>
 </assembly>

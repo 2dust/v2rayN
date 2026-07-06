@@ -112,7 +112,13 @@ public class NodeValidator
                 "WebSocket but ALPN is set to h3, the core may ignore the ALPN setting or cause unexpected issues.");
         }
 
-        // TLS & Security
+        // TLS 与安全性验证
+        // 注意：Xray v26.2.6+（2026.6.1 起）已完全移除 allowInsecure 字段。
+        // 继续使用该字段会导致 Xray 核心拒绝启动。
+        // 迁移方案：
+        //   - 已知证书 SHA256 → 使用 pinnedPeerCertSha256（UI 中「证书 SHA256」字段）
+        //   - 已知完整证书 PEM → 使用 certificates + disableSystemRoot
+        //   - sing-box：继续使用 insecure=true（sing-box 仍支持，保持兼容）
         if (item.StreamSecurity == Global.StreamSecurity)
         {
             var isCertProvided = !item.Cert.IsNullOrEmpty();
@@ -122,21 +128,24 @@ public class NodeValidator
                 isCertProvided = false;
             }
 
-            // Check for deprecated allowInsecure property when TLS is enabled
-            if (item.GetAllowInsecure()
-                && item.Cert.IsNullOrEmpty()
-                && item.CertSha.IsNullOrEmpty())
+            // 当 Xray 核心使用 allowInsecure=true 且未提供任何证书固定方式时，
+            // 这在 Xray v26.2.6+ 中会导致核心拒绝运行，升级为错误。
+            if (coreType == ECoreType.Xray && item.GetAllowInsecure() && !isCertProvided)
             {
-                v.Warning(ResUI.MsgAllowInsecureDeprecated);
+                if (item.CertSha.IsNullOrEmpty())
+                {
+                    // 无任何证书固定：直接报错，并提示迁移方式
+                    v.Error(ResUI.MsgAllowInsecureRemovedXray);
+                }
+                else
+                {
+                    // 已有 CertSha：自动迁移到 pinnedPeerCertSha256，降为警告
+                    v.Warning(ResUI.MsgAllowInsecureAutoMigratedXray);
+                }
             }
 
-            if ((coreType == ECoreType.Xray
-                && item.GetAllowInsecure()
-                && !isCertProvided
-                && item.CertSha.IsNullOrEmpty())
-                || (coreType == ECoreType.sing_box
-                    && item.GetAllowInsecure()
-                    && !isCertProvided))
+            // sing-box 的 insecure 字段仍受支持，保持原有警告逻辑（兼容性保留）
+            if (coreType == ECoreType.sing_box && item.GetAllowInsecure() && !isCertProvided)
             {
                 v.Warning(ResUI.MsgInsecureConfiguration);
             }

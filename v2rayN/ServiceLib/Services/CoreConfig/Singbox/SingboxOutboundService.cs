@@ -414,11 +414,18 @@ public partial class CoreConfigSingboxService
                 };
                 serverName = Utils.String2List(host)?.First();
             }
+
+            // 构建 sing-box TLS 配置块
+            // 注意：sing-box 与 Xray 的证书验证机制不同：
+            //   - sing-box 使用 insecure=true/false 控制是否跳过证书验证（该字段仍受支持，保持兼容）
+            //   - sing-box 使用 certificate[] 列表指定完整 PEM 证书，无独立的 pinnedPeerCertSha256 字段
+            //   - Xray v26.2.6+ 已完全移除 allowInsecure，但 sing-box 的 insecure 字段仍正常工作
             var tls = new Tls4Sbox()
             {
                 enabled = true,
                 record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
+                // sing-box 的 insecure 字段与 Xray 的 allowInsecure 不同，仍受支持
                 insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
@@ -435,12 +442,16 @@ public partial class CoreConfigSingboxService
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
+                    // 方案一：用户提供了完整 PEM 证书链 — sing-box 支持 certificate[] 字段
+                    // 设置证书列表同时将 insecure 设为 false（已提供证书，无需跳过验证）
                     tls.certificate = certs;
                     tls.insecure = false;
                 }
             }
             else if (_node.StreamSecurity == Global.StreamSecurityReality)
             {
+                // Reality 协议设置：使用公钥 + 短 ID 进行身份验证
+                // Reality 不需要也不支持 insecure 模式
                 tls.reality = new Reality4Sbox()
                 {
                     enabled = true,

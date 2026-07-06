@@ -201,7 +201,17 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left">
+                            <ToggleButton.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Run FontWeight="Bold" Text="Parallel Query (并发查询)" />
+                                        <LineBreak />
+                                        <Run Text="向所有配置的远程 DNS 服务器同时发起查询，并使用最快返回的结果。可显著降低 DNS 解析延迟。" />
+                                    </TextBlock>
+                                </ToolTip>
+                            </ToggleButton.ToolTip>
+                        </ToggleButton>
 
                         <TextBlock
                             Grid.Row="8"
@@ -215,7 +225,17 @@
                             Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left">
+                            <ToggleButton.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Run FontWeight="Bold" Text="Serve Stale (乐观缓存)" />
+                                        <LineBreak />
+                                        <Run Text="当 DNS 缓存过期时，立即返回过期的缓存结果给客户端，同时在后台异步更新 DNS 记录。极大提升网页加载速度。" />
+                                    </TextBlock>
+                                </ToolTip>
+                            </ToggleButton.ToolTip>
+                        </ToggleButton>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

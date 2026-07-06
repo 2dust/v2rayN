@@ -1774,7 +1774,16 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>New Update</value>
   </data>
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
-    <value>Warning: Xray will disable allowInsecure (skip certificate verification) in August 2026. Please switch to pinnedPeerCertSha256 (fixed certificate fingerprint) as soon as possible. allowInsecure will not be usable after its expiration.</value>
+    <value>Warning: allowInsecure has been completely removed in Xray v26.2.6+ (since 2026.6.1). Configurations containing this field will cause Xray to refuse to start. Please migrate to pinnedPeerCertSha256 (SHA256 certificate fingerprint) or provide the full PEM certificate immediately.</value>
+  </data>
+  <data name="MsgAllowInsecureRemovedXray" xml:space="preserve">
+    <value>Error: allowInsecure is no longer supported by Xray v26.2.6+. The connection will fail. Migration options:
+  1. Fill in the "Certificate SHA256" field (pinnedPeerCertSha256)
+  2. Fill in the "Full Certificate" field (PEM format)
+  3. Switch to sing-box core (which still supports insecure=true)</value>
+  </data>
+  <data name="MsgAllowInsecureAutoMigratedXray" xml:space="preserve">
+    <value>Notice: allowInsecure is removed in Xray v26.2.6+. Because a CertSha256 is provided, it will automatically use pinnedPeerCertSha256 instead. Please uncheck "Allow Insecure" to suppress this warning.</value>
   </data>
   <data name="TbRouteExcludeAddress" xml:space="preserve">
     <value>Route Exclude Address</value>

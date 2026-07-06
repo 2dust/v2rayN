@@ -373,14 +373,20 @@ public partial class CoreConfigV2rayService
             var sni = _node.Sni.TrimEx();
             var useragent = _config.CoreBasicItem.DefUserAgent ?? string.Empty;
 
-            //if tls
+            // 构建 TLS 安全层配置（仅在 security=tls 时生效）
+            // 重要：Xray v26.2.6+（2026.6.1）已完全移除 allowInsecure 字段。
+            // 该字段不再被接受，包含它会导致 Xray 核心拒绝启动。
+            // 迁移路径：
+            //   1. 已有完整 PEM 证书 → 使用 certificates[] + disableSystemRoot=true
+            //   2. 已知证书 SHA256 (CertSha 字段) → 使用 pinnedPeerCertSha256
+            //   3. 无任何证书信息 → NodeValidator 将上报错误，此处不生成 allowInsecure
             if (_node.StreamSecurity == Global.StreamSecurity)
             {
                 streamSettings.security = _node.StreamSecurity;
 
                 TlsSettings4Ray tlsSettings = new()
                 {
-                    allowInsecure = _node.GetAllowInsecure(),
+                    // allowInsecure 已废弃：Xray v26.2.6+ 不再接受此字段，不生成它
                     alpn = _node.GetAlpn(),
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     echConfigList = _node.EchConfigList.NullIfEmpty(),
@@ -402,6 +408,8 @@ public partial class CoreConfigV2rayService
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
+                    // 方案一：用户提供了完整 PEM 证书链
+                    // 使用 certificates + disableSystemRoot 进行证书固定
                     var certsettings = new List<CertificateSettings4Ray>();
                     foreach (var cert in certs)
                     {
@@ -414,13 +422,17 @@ public partial class CoreConfigV2rayService
                     }
                     tlsSettings.certificates = certsettings;
                     tlsSettings.disableSystemRoot = true;
-                    tlsSettings.allowInsecure = false;
+                    // allowInsecure 已废弃：保持为 null，不输出该字段
                 }
                 else if (!_node.CertSha.IsNullOrEmpty())
                 {
+                    // 方案二：用户提供了证书 SHA256 指纹（支持多个，以 ~ 分隔）
+                    // 使用 pinnedPeerCertSha256 替代已废弃的 allowInsecure
                     tlsSettings.pinnedPeerCertSha256 = _node.CertSha;
-                    tlsSettings.allowInsecure = false;
+                    // allowInsecure 已废弃：保持为 null，不输出该字段
                 }
+                // 方案三：无任何证书信息 — NodeValidator 已在上游阶段上报错误，
+                // 此处不再特殊处理，不生成 allowInsecure 字段。
                 streamSettings.tlsSettings = tlsSettings;
             }
 

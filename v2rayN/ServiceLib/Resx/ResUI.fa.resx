@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -1770,4 +1770,12 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
   </data>
-</root>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Warning: allowInsecure has been completely removed in Xray v26.2.6+ (since 2026.6.1). Configurations containing this field will cause Xray to refuse to start. Please migrate to pinnedPeerCertSha256 or provide PEM certificate immediately.</value>
+  </data>
+  <data name="MsgAllowInsecureRemovedXray" xml:space="preserve">
+    <value>Error: allowInsecure is no longer supported by Xray v26.2.6+. The connection will fail. Migration: 1. Fill Certificate SHA256 field, 2. Fill Full Certificate (PEM), 3. Switch to sing-box core.</value>
+  </data>
+  <data name="MsgAllowInsecureAutoMigratedXray" xml:space="preserve">
+    <value>Notice: allowInsecure is removed in Xray v26.2.6+. CertSha256 is provided so pinnedPeerCertSha256 will be used automatically. Please uncheck Allow Insecure to suppress this warning.</value>
+  </data></root>

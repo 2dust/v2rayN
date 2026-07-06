@@ -350,6 +350,12 @@ public class StreamSettings4Ray
 
 public class TlsSettings4Ray
 {
+    /// <summary>
+    /// [已废弃] allowInsecure 字段在 Xray v26.2.6+（2026.6.1）中已被完全移除。
+    /// 设置此字段会导致 Xray 核心拒绝启动。
+    /// 迁移方案：使用 <see cref="pinnedPeerCertSha256"/> 或 <see cref="certificates"/> 代替。
+    /// </summary>
+    [Obsolete("allowInsecure has been removed in Xray v26.2.6+. Use pinnedPeerCertSha256 or certificates instead.")]
     public bool? allowInsecure { get; set; }
 
     public string? serverName { get; set; }

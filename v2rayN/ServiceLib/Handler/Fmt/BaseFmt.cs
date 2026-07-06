@@ -4,6 +4,10 @@ namespace ServiceLib.Handler.Fmt;
 
 public class BaseFmt
 {
+    // URL 分享链接中用于识别 allowInsecure 旱参数的字段名列表（兼容旧格式）
+    // 注意：Xray v26.2.6+（2026.6.1）已完全移除对 allowInsecure 的支持。
+    // 新的证书验证方式应使用 pcs 参数（pinnedPeerCertSha256）
+    // 此列表仅保留用于导入时的向后兼容
     private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
 
     private static string UrlEncodeSafe(string? value) => Utils.UrlEncode(value ?? string.Empty);
@@ -201,11 +205,18 @@ public class BaseFmt
         return 0;
     }
 
+    /// <summary>
+    /// 将 allowInsecure 状态写入 URL 参数。
+    /// 警告：Xray v26.2.6+ 已完全移除对 allowInsecure 的支持。
+    /// 对于 Xray 节点，请优先使用 pcs 参数（通过 CertSha 字段设置）替代。
+    /// 此方法主要保留为向后兼容和 sing-box 支持使用。
+    /// </summary>
     private static int ToUriQueryAllowInsecure(ProfileItem item, ref Dictionary<string, string> dicQuery)
     {
         if (item.GetAllowInsecure())
         {
-            // Add two for compatibility
+            // 同时写入 insecure 和 allowInsecure 以兼容旧版本客户端和 sing-box
+            // 注意：Xray v26.2.6+ 已不再识别这些参数，但导入时为它们进行限制
             dicQuery.Add("insecure", "1");
             dicQuery.Add("allowInsecure", "1");
         }

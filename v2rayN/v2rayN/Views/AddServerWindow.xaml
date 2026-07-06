@@ -1475,19 +1475,49 @@
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
 
+                    <!-- AllowInsecure 已废弃警告标签 -->
                     <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbAllowInsecure}" />
-                    <ToggleButton
-                        x:Name="togAllowInsecure"
+                        Style="{StaticResource ToolbarTextBlock}">
+                        <!-- 标签文本 -->
+                        <Run Text="{x:Static resx:ResUI.TbAllowInsecure}" />
+                        <!-- 废弃警告图标：指向 Xray 已移除说明 -->
+                        <Run
+                            FontWeight="Bold"
+                            Foreground="#FFE57373"
+                            Text=" ⚠" />
+                    </TextBlock>
+                    <StackPanel
                         Grid.Row="4"
                         Grid.Column="1"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        Orientation="Horizontal">
+                        <ToggleButton
+                            x:Name="togAllowInsecure"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left">
+                            <!-- ToolTip 说明 allowInsecure 在 Xray v26.2.6+ 已被移除 -->
+                            <ToggleButton.ToolTip>
+                                <ToolTip MaxWidth="420">
+                                    <TextBlock TextWrapping="Wrap">
+                                        <Run FontWeight="Bold" Text="[Xray] 已移除警告" />
+                                        <LineBreak />
+                                        <Run Text="allowInsecure 已在 Xray v26.2.6+（2026.6.1）中被完全移除。" />
+                                        <LineBreak />
+                                        <Run Text="请改用以下方式之一：" />
+                                        <LineBreak />
+                                        <Run Text="  1. 填写「证书 SHA256」字段（点击锁形图标展开）" />
+                                        <LineBreak />
+                                        <Run Text="  2. 填写「完整证书」字段（PEM 格式）" />
+                                        <LineBreak />
+                                        <Run Text="  3. 切换核心类型为 sing-box（sing-box 仍支持 insecure）" />
+                                    </TextBlock>
+                                </ToolTip>
+                            </ToggleButton.ToolTip>
+                        </ToggleButton>
+                    </StackPanel>
 
                     <TextBlock
                         Grid.Row="5"
@@ -1695,6 +1725,7 @@
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
+                    <!-- Mldsa65Verify: Reality 后量子密码公鑰验证参数 -->
                     <TextBlock
                         Grid.Row="5"
                         Grid.Column="0"
@@ -1709,7 +1740,22 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left"
-                        Style="{StaticResource DefTextBox}" />
+                        Style="{StaticResource DefTextBox}">
+                        <!-- 说明 ML-DSA65 的用途和格式：后量子密码中的身份验证，防止量子计算机攻击 -->
+                        <TextBox.ToolTip>
+                            <ToolTip MaxWidth="440">
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run FontWeight="Bold" Text="ML-DSA65 后量子签名验证" />
+                                    <LineBreak />
+                                    <Run Text="对应 Xray Reality 的 mldsa65Verify 参数，用于验证服务端的 ML-DSA65 后量子键签名。" />
+                                    <LineBreak />
+                                    <Run Text="格式：Base64 编码的 ML-DSA65 公鑰指纹。" />
+                                    <LineBreak />
+                                    <Run Foreground="#88AAAAAA" Text="不填则不进行后量子验证。" />
+                                </TextBlock>
+                            </ToolTip>
+                        </TextBox.ToolTip>
+                    </TextBox>
                 </Grid>
                 <Separator
                     Grid.Row="9"
