@@ -51,6 +51,13 @@ public class CheckUpdateViewModel : MyReactiveObject
 
         CheckUpdateModels.Clear();
         CheckUpdateModels.AddRange(models);
+
+        foreach (var model in models)
+        {
+            model.WhenAnyValue(x => x.IsSelected)
+                .Skip(1)
+                .Subscribe(c => _ = SaveSelectedCoreTypes());
+        }
     }
 
     private CheckUpdateModel GetCheckUpdateModel(ECoreType coreType)
