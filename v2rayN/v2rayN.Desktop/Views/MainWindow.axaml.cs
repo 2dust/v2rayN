@@ -257,7 +257,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         switch (e)
         {
             case EGlobalHotkey.ShowForm:
-                ShowHideWindow(null);
+                Dispatcher.UIThread.Post(() => ShowHideWindow(null));
                 break;
 
             case EGlobalHotkey.SystemProxyClear:

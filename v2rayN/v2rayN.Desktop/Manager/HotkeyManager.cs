@@ -8,6 +8,7 @@ public sealed class HotkeyManager
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
     public static HotkeyManager Instance = _instance.Value;
     private readonly Dictionary<int, EGlobalHotkey> _hotkeyTriggerDic = new();
+
     [SupportedOSPlatform("windows")]
     private GlobalHotKeys.HotKeyManager? _hotKeyManager;
 
@@ -74,9 +75,7 @@ public sealed class HotkeyManager
             }
         }
 
-        _hotKeyManager?.HotKeyPressed
-            .ObserveOn(AvaloniaScheduler.Instance)
-            .Subscribe(OnNext);
+        _hotKeyManager.HotKeyPressed += OnNext;
     }
 
     private void OnNext(HotKey key)
