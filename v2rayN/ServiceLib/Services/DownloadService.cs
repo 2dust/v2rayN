@@ -30,11 +30,8 @@ public class DownloadService
         }
         catch (Exception ex)
         {
-            await updateFunc?.Invoke(false, ex.Message);
-            if (ex.InnerException != null)
-            {
-                await updateFunc?.Invoke(false, ex.InnerException.Message);
-            }
+            Logging.SaveLog(_tag, ex);
+            await updateFunc?.Invoke(false, ResUI.SpeedtestingSkip);
         }
         return 0;
     }

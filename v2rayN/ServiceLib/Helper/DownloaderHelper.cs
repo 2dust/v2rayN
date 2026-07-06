@@ -111,7 +111,8 @@ public class DownloaderHelper
                 }
                 else if (value.Error != null)
                 {
-                    progress.Report(value.Error?.Message);
+                    Logging.SaveLog("DownloaderHelper", value.Error);
+                    progress.Report(ResUI.SpeedtestingSkip);
                 }
                 else
                 {
