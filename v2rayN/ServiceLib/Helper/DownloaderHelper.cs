@@ -14,6 +14,8 @@ public class DownloaderHelper
             return null;
         }
 
+        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+
         Uri uri = new(url);
         //Authorization Header
         var headers = new WebHeaderCollection();
@@ -27,12 +29,12 @@ public class DownloaderHelper
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
-                {
-                    Headers = headers,
-                    UserAgent = userAgent,
-                    ConnectTimeout = timeout * 1000,
-                    Proxy = webProxy
-                }
+            {
+                Headers = headers,
+                UserAgent = userAgent,
+                ConnectTimeout = connectTimeout * 1000,
+                Proxy = webProxy
+            }
         };
 
         await using var downloader = new Downloader.DownloadService(downloadOpt);
@@ -45,7 +47,9 @@ public class DownloaderHelper
         };
 
         using var cts = new CancellationTokenSource();
-        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token).WaitAsync(TimeSpan.FromSeconds(timeout), cts.Token);
+        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
+        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
         using StreamReader reader = new(stream);
 
         downloadOpt = null;
@@ -60,15 +64,16 @@ public class DownloaderHelper
             throw new ArgumentNullException(nameof(url));
         }
 
+        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
         var downloadOpt = new DownloadConfiguration()
         {
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
-                {
-                    ConnectTimeout= timeout * 1000,
-                    Proxy = webProxy
-                }
+            {
+                ConnectTimeout= connectTimeout * 1000,
+                Proxy = webProxy
+            }
         };
 
         var lastUpdateTime = DateTime.Now;
@@ -116,7 +121,7 @@ public class DownloaderHelper
         };
         //progress.Report("......");
         using var cts = new CancellationTokenSource();
-        cts.CancelAfter(timeout * 1000);
+        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
 
         downloadOpt = null;
@@ -137,15 +142,16 @@ public class DownloaderHelper
             File.Delete(fileName);
         }
 
+        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
         var downloadOpt = new DownloadConfiguration()
         {
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration =
-                {
-                    ConnectTimeout= timeout * 1000,
-                    Proxy = webProxy
-                }
+            {
+                ConnectTimeout= connectTimeout * 1000,
+                Proxy = webProxy
+            }
         };
 
         var progressPercentage = 0;
