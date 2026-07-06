@@ -15,8 +15,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         Task.Run(async () =>
         {
-            await RunAsync(actionType, selecteds);
+            var wasStopped = await RunAsync(actionType, selecteds);
             await ProfileExManager.Instance.SaveTo();
+
+            //Refresh the UI from the saved test results when the test was terminated,
+            //so that the remaining "Testing..." placeholders are cleared
+            if (wasStopped)
+            {
+                AppEvents.ProfilesRefreshRequested.Publish();
+            }
             await UpdateFunc("", ResUI.SpeedtestingCompleted);
         });
     }
@@ -36,7 +43,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return _lstExitLoop.All(p => p != exitLoopKey);
     }
 
-    private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
+    private async Task<bool> RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         var exitLoopKey = Utils.GetGuid(false);
         _lstExitLoop.Add(exitLoopKey);
@@ -65,6 +72,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
                 break;
         }
+
+        return ShouldStopTest(exitLoopKey);
     }
 
     private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
