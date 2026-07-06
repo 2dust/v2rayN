@@ -375,7 +375,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
                     if (processService is null)
                     {
-                        await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                        ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                        await UpdateFunc(it.IndexId, "-1", ResUI.FailedToRunCore);
                         return;
                     }
 
