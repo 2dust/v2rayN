@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using Downloader;
 
 namespace ServiceLib.Helper;
@@ -24,17 +25,19 @@ public class DownloaderHelper
             headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
         }
 
+        var requestConfiguration = new RequestConfiguration()
+        {
+            Headers = headers,
+            UserAgent = userAgent,
+            ConnectTimeout = connectTimeout * 1000,
+            Proxy = webProxy
+        };
         var downloadOpt = new DownloadConfiguration()
         {
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
-            RequestConfiguration =
-            {
-                Headers = headers,
-                UserAgent = userAgent,
-                ConnectTimeout = connectTimeout * 1000,
-                Proxy = webProxy
-            }
+            RequestConfiguration = requestConfiguration,
+            CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
         };
 
         await using var downloader = new Downloader.DownloadService(downloadOpt);
@@ -65,15 +68,17 @@ public class DownloaderHelper
         }
 
         var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+        var requestConfiguration = new RequestConfiguration()
+        {
+            ConnectTimeout = connectTimeout * 1000,
+            Proxy = webProxy
+        };
         var downloadOpt = new DownloadConfiguration()
         {
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
-            RequestConfiguration =
-            {
-                ConnectTimeout= connectTimeout * 1000,
-                Proxy = webProxy
-            }
+            RequestConfiguration = requestConfiguration,
+            CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
         };
 
         var lastUpdateTime = DateTime.Now;
@@ -143,15 +148,17 @@ public class DownloaderHelper
         }
 
         var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+        var requestConfiguration = new RequestConfiguration()
+        {
+            ConnectTimeout = connectTimeout * 1000,
+            Proxy = webProxy
+        };
         var downloadOpt = new DownloadConfiguration()
         {
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
-            RequestConfiguration =
-            {
-                ConnectTimeout= connectTimeout * 1000,
-                Proxy = webProxy
-            }
+            RequestConfiguration = requestConfiguration,
+            CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
         };
 
         var progressPercentage = 0;
@@ -187,5 +194,76 @@ public class DownloaderHelper
         await downloader.DownloadFileTaskAsync(url, fileName, cts.Token);
 
         downloadOpt = null;
+    }
+
+    // https://github.com/bezzad/Downloader/blob/a75a6e431acd6cbba6293f7afdcf676544a09174/src/Downloader/SocketClient.cs#L45
+    // There is a risk of MITM attacks
+    // https://github.com/bezzad/Downloader/blob/a75a6e431acd6cbba6293f7afdcf676544a09174/src/Downloader/Extensions/ExceptionHelper.cs#L111
+    private static SocketsHttpHandler GetSocketsHttpHandler(RequestConfiguration config)
+    {
+        SocketsHttpHandler handler = new()
+        {
+            AllowAutoRedirect = config.AllowAutoRedirect,
+            MaxAutomaticRedirections = config.MaximumAutomaticRedirections,
+            AutomaticDecompression = config.AutomaticDecompression,
+            PreAuthenticate = config.PreAuthenticate,
+            UseCookies = config.CookieContainer != null,
+            UseProxy = config.Proxy != null,
+            MaxConnectionsPerServer = 1000,
+            PooledConnectionIdleTimeout = config.KeepAliveTimeout,
+            PooledConnectionLifetime = Timeout.InfiniteTimeSpan,
+            EnableMultipleHttp2Connections = true,
+            ConnectTimeout = TimeSpan.FromMilliseconds(config.ConnectTimeout)
+        };
+
+        // Set up the SslClientAuthenticationOptions for custom certificate validation
+        if (config.ClientCertificates?.Count > 0)
+        {
+            handler.SslOptions.ClientCertificates = config.ClientCertificates;
+        }
+
+        handler.SslOptions.EnabledSslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12;
+        //handler.SslOptions.RemoteCertificateValidationCallback = ExceptionHelper.CertificateValidationCallBack;
+
+        var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
+        if (certificateChainPolicy != null)
+        {
+            handler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+            handler.SslOptions.RemoteCertificateValidationCallback = null;
+        }
+
+        // Configure keep-alive
+        if (config.KeepAlive)
+        {
+            handler.KeepAlivePingTimeout = config.KeepAliveTimeout;
+            handler.KeepAlivePingPolicy = HttpKeepAlivePingPolicy.WithActiveRequests;
+        }
+
+        // Configure credentials
+        if (config.Credentials != null)
+        {
+            handler.Credentials = config.Credentials;
+            handler.PreAuthenticate = config.PreAuthenticate;
+        }
+
+        // Configure cookies
+        if (handler.UseCookies && config.CookieContainer != null)
+        {
+            handler.CookieContainer = config.CookieContainer;
+        }
+
+        // Configure proxy
+        if (handler.UseProxy && config.Proxy != null)
+        {
+            handler.Proxy = config.Proxy;
+        }
+
+        // Add expect header
+        if (!string.IsNullOrWhiteSpace(config.Expect))
+        {
+            handler.Expect100ContinueTimeout = TimeSpan.FromSeconds(1);
+        }
+
+        return handler;
     }
 }

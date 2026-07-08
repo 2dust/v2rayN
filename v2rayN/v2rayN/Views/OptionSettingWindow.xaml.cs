@@ -53,6 +53,7 @@ public partial class OptionSettingWindow
         cmbSrsFilesSourceUrl.ItemsSource = Global.SingboxRulesetSources;
         cmbRoutingRulesSourceUrl.ItemsSource = Global.RoutingRulesSources;
         cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
+        cmbRootCertificateProvider.ItemsSource = Global.RootCertProviders;
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
 
@@ -117,6 +118,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RoutingRulesSourceUrl, v => v.cmbRoutingRulesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.RootCertProvider, v => v.cmbRootCertificateProvider.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.NotProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SystemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.Text).DisposeWith(disposables);

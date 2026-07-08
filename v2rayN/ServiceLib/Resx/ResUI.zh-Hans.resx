@@ -1812,4 +1812,10 @@
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>启用则使用 sing-box TUN ,否则使用 xray TUN</value>
   </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>根证书提供者</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>仅用于 v2rayN 界面程序的下载及网络请求，不影响核心的证书验证。</value>
+  </data>
 </root>

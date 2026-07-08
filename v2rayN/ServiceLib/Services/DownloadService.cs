@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 
 namespace ServiceLib.Services;
 
@@ -80,7 +81,13 @@ public class DownloadService
             AllowAutoRedirect = false,
             Proxy = await GetWebProxy(blProxy)
         };
-        var client = new HttpClient(webRequestHandler);
+        var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
+        if (certificateChainPolicy != null)
+        {
+            webRequestHandler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+            webRequestHandler.SslOptions.RemoteCertificateValidationCallback = null;
+        }
+        using var client = new HttpClient(webRequestHandler);
 
         var response = await client.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
@@ -163,6 +170,12 @@ public class DownloadService
                 UseProxy = webProxy != null,
                 ConnectTimeout = TimeSpan.FromSeconds(connectTimeout)
             };
+            var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
+            if (certificateChainPolicy != null)
+            {
+                handler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+                handler.SslOptions.RemoteCertificateValidationCallback = null;
+            }
 
             using var client = new HttpClient(handler)
             {

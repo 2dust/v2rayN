@@ -3610,6 +3610,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Root Certificate Provider 的本地化字符串。
+        /// </summary>
+        public static string TbRootCertificateProvider {
+            get {
+                return ResourceManager.GetString("TbRootCertificateProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Only applies to the v2rayN GUI&apos;s downloads and network requests. Does not affect the core&apos;s certificate validation. 的本地化字符串。
+        /// </summary>
+        public static string TbRootCertificateProviderTip {
+            get {
+                return ResourceManager.GetString("TbRootCertificateProviderTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Round Robin 的本地化字符串。
         /// </summary>
         public static string TbRoundRobin {

@@ -777,7 +777,7 @@
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="8"
+                            Grid.Row="6"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -785,13 +785,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsAutoHideStartup}" />
                         <ToggleButton
                             x:Name="togAutoHideStartup"
-                            Grid.Row="8"
+                            Grid.Row="6"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="10"
+                            Grid.Row="7"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -799,13 +799,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
                         <ToggleButton
                             x:Name="togEnableDragDropSort"
-                            Grid.Row="10"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="11"
+                            Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -813,13 +813,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
                         <ToggleButton
                             x:Name="togDoubleClick2Activate"
-                            Grid.Row="11"
+                            Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="12"
+                            Grid.Row="9"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -827,10 +827,34 @@
                             Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
                         <ToggleButton
                             x:Name="togEnableHWA"
-                            Grid.Row="12"
+                            Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRootCertificateProvider}" />
+                        <ComboBox
+                            x:Name="cmbRootCertificateProvider"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin8}"
+                            MaxDropDownHeight="1000"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRootCertificateProviderTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="13"
