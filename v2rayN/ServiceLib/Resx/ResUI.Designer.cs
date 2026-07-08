@@ -3529,6 +3529,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Proxy Dial Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbProxyDialResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbProxyDialResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not recommended; may cause routing loops. 的本地化字符串。
+        /// </summary>
+        public static string TbProxyDialResolveStrategyTip {
+            get {
+                return ResourceManager.GetString("TbProxyDialResolveStrategyTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Public Key 的本地化字符串。
         /// </summary>
         public static string TbPublicKey {

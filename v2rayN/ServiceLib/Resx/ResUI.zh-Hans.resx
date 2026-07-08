@@ -1827,4 +1827,10 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>仅用于 v2rayN 界面程序的下载及网络请求，不影响核心的证书验证。</value>
   </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>连接代理解析策略</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>不建议开启，特殊情况可能回环。</value>
+  </data>
 </root>

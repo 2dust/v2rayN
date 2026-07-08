@@ -171,7 +171,7 @@ public partial class CoreConfigSingboxService
             _coreConfig.dns.rules.Add(new()
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom),
+                strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4ProxyDial),
                 domain = context.ProtectDomainList.ToList(),
             });
         }

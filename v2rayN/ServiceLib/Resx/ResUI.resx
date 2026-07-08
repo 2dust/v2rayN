@@ -1830,4 +1830,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>Only applies to the v2rayN GUI's downloads and network requests. Does not affect the core's certificate validation.</value>
   </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>Proxy Dial Resolution Strategy</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>Not recommended; may cause routing loops.</value>
+  </data>
 </root>

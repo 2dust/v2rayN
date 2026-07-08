@@ -62,6 +62,24 @@ public partial class CoreConfigV2rayService
                     .ForEach(outbound => outbound.targetStrategy = strategy4Proxy);
             }
 
+            var strategy4DialProxy = simpleDnsItem?.Strategy4ProxyDial ?? Global.AsIs;
+            //Outbound DialProxy domainStrategy
+            if (strategy4DialProxy.IsNotEmpty() && strategy4DialProxy != Global.AsIs)
+            {
+                var xraySupportConfigTypeNames = Global.XraySupportConfigType
+                        .Select(x => x == EConfigType.Hysteria2 ? "hysteria" : Global.ProtocolTypes[x])
+                        .ToHashSet();
+                _coreConfig.outbounds
+                    .Where(t => xraySupportConfigTypeNames.Contains(t.protocol))
+                    .ToList()
+                    .ForEach(outbound =>
+                    {
+                        outbound.streamSettings ??= new();
+                        outbound.streamSettings.sockopt ??= new();
+                        outbound.streamSettings.sockopt.domainStrategy = strategy4DialProxy;
+                    });
+            }
+
             FillDnsServers(dnsItem);
             FillDnsHosts(dnsItem);
 

@@ -42,7 +42,7 @@
                         x:Name="gridBasicDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             x:Name="txtBasicDNSSettingsInvalid"
@@ -167,24 +167,46 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbParallelQuery}" />
-                        <ToggleSwitch
-                            x:Name="togParallelQuery"
+                            Text="{x:Static resx:ResUI.TbProxyDialResolveStrategy}" />
+                        <ComboBox
+                            x:Name="cmbProxyDialDNSStrategy"
                             Grid.Row="7"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            PlaceholderText="Default" />
+                        <TextBlock
+                            Grid.Row="7"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbProxyDialResolveStrategyTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbParallelQuery}" />
+                        <ToggleSwitch
+                            x:Name="togParallelQuery"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbServeStale}" />
                         <ToggleSwitch
                             x:Name="togServeStale"
-                            Grid.Row="8"
+                            Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"

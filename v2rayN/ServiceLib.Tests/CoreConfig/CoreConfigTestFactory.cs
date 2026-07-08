@@ -84,6 +84,7 @@ internal static class CoreConfigTestFactory
                 ParallelQuery = false,
                 Strategy4Freedom = Global.AsIs,
                 Strategy4Proxy = Global.AsIs,
+                Strategy4ProxyDial = Global.AsIs,
             },
             IndexId = string.Empty,
             SubIndexId = string.Empty,
