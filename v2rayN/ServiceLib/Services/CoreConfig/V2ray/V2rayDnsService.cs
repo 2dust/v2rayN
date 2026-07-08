@@ -43,11 +43,9 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.settings = new()
-                    {
-                        domainStrategy = strategy4Freedom,
-                        userLevel = 0
-                    };
+                    outbound.streamSettings ??= new();
+                    outbound.streamSettings.sockopt ??= new();
+                    outbound.streamSettings.sockopt.domainStrategy = strategy4Freedom;
                 }
             }
 
@@ -384,11 +382,9 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.settings = new()
-                    {
-                        domainStrategy = domainStrategy4Freedom,
-                        userLevel = 0,
-                    };
+                    outbound.streamSettings ??= new();
+                    outbound.streamSettings.sockopt ??= new();
+                    outbound.streamSettings.sockopt.domainStrategy = domainStrategy4Freedom;
                 }
             }
 
