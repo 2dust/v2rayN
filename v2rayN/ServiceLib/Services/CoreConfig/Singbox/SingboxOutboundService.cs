@@ -417,11 +417,15 @@ public partial class CoreConfigSingboxService
             var tls = new Tls4Sbox()
             {
                 enabled = true,
-                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
                 insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
+            if (_config.CoreBasicItem.EnableFragment == true)
+            {
+                tls.fragment = true;
+                tls.record_fragment = true;
+            }
             if (_node.Fingerprint.IsNotEmpty())
             {
                 tls.utls = new Utls4Sbox()

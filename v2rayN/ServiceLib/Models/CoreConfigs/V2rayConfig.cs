@@ -516,6 +516,8 @@ public class MaskSettings4Ray
 
     public string? length { get; set; }
     public string? delay { get; set; }
+    public List<string>? lengths { get; set; }
+    public List<string>? delays { get; set; }
     public int? maxSplit { get; set; }
 
     // noise

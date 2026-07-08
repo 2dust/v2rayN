@@ -86,8 +86,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.EnableFragment, v => v.togenableFragment.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableFinalFragment, v => v.togenableFinalFragment.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.FragmentPackets, v => v.cmbFragmentPackets.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.FragmentLength, v => v.txtFragmentLength.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.FragmentInterval, v => v.txtFragmentInterval.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentLengths, v => v.txtFragmentLengths.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentDelays, v => v.txtFragmentDelays.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.FragmentMaxSplit, v => v.txtFragmentMaxSplit.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.AutoRun, v => v.togAutoRun.IsChecked).DisposeWith(disposables);

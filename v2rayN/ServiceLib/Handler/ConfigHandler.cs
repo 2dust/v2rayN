@@ -168,10 +168,16 @@ public static class ConfigHandler
         config.Fragment4RayItem ??= new()
         {
             Packets = "tlshello",
-            Length = "50-100",
-            Interval = "10-20",
-            MaxSplit = "0"
         };
+        config.Fragment4RayItem.MaxSplit ??= "0";
+        if ((config.Fragment4RayItem.Lengths ?? []).Count == 0)
+        {
+            config.Fragment4RayItem.Lengths = [config.Fragment4RayItem.Length ?? "50-100"];
+        }
+        if ((config.Fragment4RayItem.Delays ?? []).Count == 0)
+        {
+            config.Fragment4RayItem.Delays = [config.Fragment4RayItem.Interval ?? "10-20"];
+        }
         config.GlobalHotkeys ??= [];
 
         if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())

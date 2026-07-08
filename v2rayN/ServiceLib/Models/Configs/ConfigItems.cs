@@ -249,9 +249,14 @@ public class CheckUpdateItem
 public class Fragment4RayItem
 {
     public string? Packets { get; set; }
+    public List<string>? Lengths { get; set; }
+    public List<string>? Delays { get; set; }
+    public string? MaxSplit { get; set; }
+
+    // For migration from old version, remove those properties in the future
     public string? Length { get; set; }
     public string? Interval { get; set; }
-    public string? MaxSplit { get; set; }
+    // migration end
 }
 
 [Serializable]

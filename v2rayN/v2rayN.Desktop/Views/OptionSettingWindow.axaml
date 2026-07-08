@@ -347,7 +347,7 @@
                                                 VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.TbSettingsFragmentLength}" />
                                             <TextBox
-                                                x:Name="txtFragmentLength"
+                                                x:Name="txtFragmentLengths"
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 Width="120"
@@ -369,7 +369,7 @@
                                                 VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}" />
                                             <TextBox
-                                                x:Name="txtFragmentInterval"
+                                                x:Name="txtFragmentDelays"
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 Width="120"

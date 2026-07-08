@@ -59,7 +59,7 @@ internal static class CoreConfigTestFactory
                 },
             WebDavItem = new WebDavItem(),
             CheckUpdateItem = new CheckUpdateItem(),
-            Fragment4RayItem = new Fragment4RayItem { Packets = "tlshello", Length = "100-200", Interval = "10-20" },
+            Fragment4RayItem = new Fragment4RayItem { Packets = "tlshello", Lengths = ["100-200"], Delays = ["10-20"] },
             Inbound =
             [
                 new InItem
