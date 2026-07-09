@@ -95,6 +95,10 @@ public static class ConfigHandler
             EnableLegacyProtect = false,
         };
         config.GuiItem ??= new();
+        if (!Global.RootCertProviders.Contains(config.GuiItem.RootCertProvider))
+        {
+            config.GuiItem.RootCertProvider = Global.RootCertProviders.First();
+        }
         config.MsgUIItem ??= new();
 
         config.UiItem ??= new();

@@ -23,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+        <EmbeddedResource Include="Sample\chrome_roots_pem" />
 		<EmbeddedResource Include="Sample\clash_mixin_yaml" />
 		<EmbeddedResource Include="Sample\clash_tun_yaml" />
 		<EmbeddedResource Include="Sample\custom_routing_black" />
@@ -32,6 +33,7 @@
 		<EmbeddedResource Include="Sample\dns_v2ray_normal" />
 		<EmbeddedResource Include="Sample\kill_as_sudo_linux_sh" />
 		<EmbeddedResource Include="Sample\kill_as_sudo_osx_sh" />
+        <EmbeddedResource Include="Sample\mozilla_roots_pem" />
 		<EmbeddedResource Include="Sample\pac" />
 		<EmbeddedResource Include="Sample\proxy_set_linux_sh" /> 
 		<EmbeddedResource Include="Sample\proxy_set_osx_sh" />
