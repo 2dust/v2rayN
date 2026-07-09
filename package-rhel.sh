@@ -498,13 +498,13 @@ ExclusiveArch:  aarch64 x86_64
 Source0:        __PKGROOT__.tar.gz
 
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
-Requires:       glibc >= 2.34
-Requires:       fontconfig >= 2.13.1
+Requires:       glibc >= 2.39
+Requires:       fontconfig >= 2.15.0
 Requires:       desktop-file-utils >= 0.26
-Requires:       xdg-utils >= 1.1.3
-Requires:       coreutils >= 8.32
-Requires:       bash >= 5.1
-Requires:       freetype >= 2.10
+Requires:       xdg-utils >= 1.2.0
+Requires:       coreutils >= 9.5
+Requires:       bash >= 5.2.26
+Requires:       freetype >= 2.13
 
 %description
 v2rayN Linux for Red Hat Enterprise Linux
