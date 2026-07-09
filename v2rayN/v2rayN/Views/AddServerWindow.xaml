@@ -360,114 +360,19 @@
                         Text="{x:Static resx:ResUI.TbHttpOutboundHeaders}"
                         ToolTip="{x:Static resx:ResUI.TipHttpOutboundHeaders}"
                         Visibility="Collapsed" />
-                    <TabControl
-                        x:Name="tabHttpHeaders"
+                    <TextBox
+                        x:Name="txtHttpHeadersJson"
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="520"
+                        MinHeight="120"
                         Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        Style="{StaticResource DefTextBox}"
                         ToolTip="{x:Static resx:ResUI.TipHttpOutboundHeaders}"
-                        Visibility="Collapsed">
-                        <TabItem Header="{x:Static resx:ResUI.TbHttpOutboundHeadersTabKeyValue}">
-                            <StackPanel Margin="{StaticResource Margin4}">
-                                <Grid Margin="{StaticResource Margin4}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="24" />
-                                        <ColumnDefinition Width="170" />
-                                        <ColumnDefinition Width="230" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Text="{x:Static resx:ResUI.TbHttpOutboundHeaderName}" />
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        Margin="{StaticResource MarginLeftRight4}"
-                                        Text="{x:Static resx:ResUI.TbHttpOutboundHeaderValue}" />
-                                </Grid>
-                                <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl x:Name="lstHttpHeaders">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Margin="{StaticResource Margin4}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="24" />
-                                                        <ColumnDefinition Width="170" />
-                                                        <ColumnDefinition Width="230" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock
-                                                        Grid.Column="0"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        FontWeight="Bold"
-                                                        Foreground="#D97706"
-                                                        Text="!"
-                                                        ToolTip="{Binding WarningText}">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="{x:Type TextBlock}">
-                                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding HasWarning}" Value="True">
-                                                                        <Setter Property="Visibility" Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                    <TextBox
-                                                        Grid.Column="1"
-                                                        Margin="{StaticResource MarginLeftRight4}"
-                                                        Style="{StaticResource DefTextBox}"
-                                                        Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox
-                                                        Grid.Column="2"
-                                                        Margin="{StaticResource MarginLeftRight4}"
-                                                        Style="{StaticResource DefTextBox}"
-                                                        Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <Button
-                                                        Grid.Column="3"
-                                                        MinWidth="80"
-                                                        Click="RemoveHttpHeader_Click"
-                                                        Content="{x:Static resx:ResUI.TbHttpOutboundRemoveHeader}"
-                                                        Style="{StaticResource DefButton}"
-                                                        Tag="{Binding}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
-                                <Button
-                                    x:Name="btnAddHttpHeader"
-                                    Width="120"
-                                    Margin="{StaticResource Margin4}"
-                                    HorizontalAlignment="Left"
-                                    Content="{x:Static resx:ResUI.TbHttpOutboundAddHeader}"
-                                    Style="{StaticResource DefButton}" />
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="{x:Static resx:ResUI.TbHttpOutboundHeadersTabJson}">
-                            <DockPanel Margin="{StaticResource Margin4}">
-                                <Button
-                                    x:Name="btnCopyHttpHeadersJson"
-                                    Width="120"
-                                    Margin="{StaticResource Margin4}"
-                                    HorizontalAlignment="Left"
-                                    Content="{x:Static resx:ResUI.TbHttpOutboundCopyJson}"
-                                    DockPanel.Dock="Top"
-                                    Style="{StaticResource DefButton}" />
-                                <TextBox
-                                    x:Name="txtHttpHeadersJson"
-                                    MinHeight="120"
-                                    Margin="{StaticResource Margin4}"
-                                    AcceptsReturn="True"
-                                    IsReadOnly="True"
-                                    Style="{StaticResource DefTextBox}"
-                                    TextWrapping="NoWrap"
-                                    VerticalScrollBarVisibility="Auto" />
-                            </DockPanel>
-                        </TabItem>
-                    </TabControl>
+                        TextWrapping="NoWrap"
+                        VerticalScrollBarVisibility="Auto"
+                        Visibility="Collapsed" />
                 </Grid>
                 <Grid
                     x:Name="gridVLESS"

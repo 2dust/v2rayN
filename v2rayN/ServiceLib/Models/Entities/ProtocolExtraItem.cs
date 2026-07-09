@@ -6,7 +6,32 @@ public record ProtocolExtraItem
     public string? CongestionControl { get; init; }
 
     // http outbound
-    public Dictionary<string, string>? HttpHeaders { get; init; }
+    public string? HttpHeaders { get; init; }
+
+    public static bool TryParseHttpHeaders(string? httpHeaders, out JsonObject? headers)
+    {
+        headers = null;
+        if (httpHeaders.IsNullOrEmpty())
+        {
+            return true;
+        }
+
+        if (JsonUtils.ParseJson(httpHeaders) is not JsonObject headersObject)
+        {
+            return false;
+        }
+
+        foreach (var item in headersObject)
+        {
+            if (item.Value is not JsonValue value || !value.TryGetValue<string>(out _))
+            {
+                return false;
+            }
+        }
+
+        headers = headersObject.Count > 0 ? headersObject : null;
+        return true;
+    }
 
     // vmess
     public string? AlterId { get; init; }

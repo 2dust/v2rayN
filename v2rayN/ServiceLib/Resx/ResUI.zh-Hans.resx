@@ -1044,32 +1044,8 @@
   <data name="TbHttpOutboundHeaders" xml:space="preserve">
     <value>HTTP 请求头</value>
   </data>
-  <data name="TbHttpOutboundHeadersTabKeyValue" xml:space="preserve">
-    <value>请求头</value>
-  </data>
-  <data name="TbHttpOutboundHeadersTabJson" xml:space="preserve">
-    <value>JSON</value>
-  </data>
-  <data name="TbHttpOutboundHeaderName" xml:space="preserve">
-    <value>请求头</value>
-  </data>
-  <data name="TbHttpOutboundHeaderValue" xml:space="preserve">
-    <value>值</value>
-  </data>
-  <data name="TbHttpOutboundAddHeader" xml:space="preserve">
-    <value>添加请求头</value>
-  </data>
-  <data name="TbHttpOutboundRemoveHeader" xml:space="preserve">
-    <value>删除</value>
-  </data>
-  <data name="TbHttpOutboundCopyJson" xml:space="preserve">
-    <value>复制 JSON</value>
-  </data>
-  <data name="DuplicateHttpOutboundHeaderName" xml:space="preserve">
-    <value>请求头名称重复，每个请求头只能保存一个值。</value>
-  </data>
   <data name="TipHttpOutboundHeaders" xml:space="preserve">
-    <value>自定义 HTTP 出站请求头，可编辑键值对或查看生成的 JSON 对象。</value>
+    <value>自定义 HTTP 出站请求头，请输入值为字符串的 JSON 对象。</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理配置别名</value>
@@ -1834,7 +1810,7 @@
     <value>Realm URL 不正确。</value>
   </data>
   <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
-    <value>HTTP 出站请求头必须是键和值均为字符串的 JSON 对象。</value>
+    <value>HTTP 出站请求头必须是值为字符串的 JSON 对象。</value>
   </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>格式：realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
@@ -1851,5 +1827,4 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>仅用于 v2rayN 界面程序的下载及网络请求，不影响核心的证书验证。</value>
   </data>
-</root>
 </root>

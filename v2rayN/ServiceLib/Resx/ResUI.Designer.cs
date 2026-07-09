@@ -151,15 +151,6 @@ namespace ServiceLib.Resx {
         }
 
         /// <summary>
-        ///   查找类似 Duplicate header name. Only one value can be saved for each header. 的本地化字符串。
-        /// </summary>
-        public static string DuplicateHttpOutboundHeaderName {
-            get {
-                return ResourceManager.GetString("DuplicateHttpOutboundHeaderName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Failed to convert configuration file 的本地化字符串。
         /// </summary>
         public static string FailedConversionConfiguration {
@@ -340,7 +331,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 HTTP outbound headers must be a JSON object whose keys and values are strings. 的本地化字符串。
+        ///   查找类似 HTTP outbound headers must be a JSON object with string values. 的本地化字符串。
         /// </summary>
         public static string InvalidHttpOutboundHeaders {
             get {
@@ -3250,69 +3241,6 @@ namespace ServiceLib.Resx {
         }
 
         /// <summary>
-        ///   查找类似 Add header 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundAddHeader {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundAddHeader", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 Copy JSON 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundCopyJson {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundCopyJson", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 Header 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundHeaderName {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundHeaderName", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 Value 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundHeaderValue {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundHeaderValue", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 JSON 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundHeadersTabJson {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundHeadersTabJson", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 Headers 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundHeadersTabKeyValue {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundHeadersTabKeyValue", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 Remove 的本地化字符串。
-        /// </summary>
-        public static string TbHttpOutboundRemoveHeader {
-            get {
-                return ResourceManager.GetString("TbHttpOutboundRemoveHeader", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   查找类似 Port hopping interval 的本地化字符串。
         /// </summary>
         public static string TbHopInt7 {
@@ -5077,7 +5005,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom HTTP outbound request headers, JSON object. Example: {"User-Agent":"v2rayN","Accept-Language":"en-US"} 的本地化字符串。
+        ///   查找类似 Custom HTTP outbound request headers as a JSON object with string values. 的本地化字符串。
         /// </summary>
         public static string TipHttpOutboundHeaders {
             get {

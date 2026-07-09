@@ -154,7 +154,7 @@ public class Outboundsettings4Ray
 
     public string? email { get; set; }
 
-    public Dictionary<string, string>? headers { get; set; }
+    public JsonObject? headers { get; set; }
 
     public List<WireguardPeer4Ray>? peers { get; set; }
 

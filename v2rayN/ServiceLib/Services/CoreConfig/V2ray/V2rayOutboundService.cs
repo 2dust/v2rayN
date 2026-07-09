@@ -174,8 +174,8 @@ public partial class CoreConfigV2rayService
                     {
                         outbound.settings.address = _node.Address;
                         outbound.settings.port = _node.Port;
-                        outbound.settings.headers = protocolExtra.HttpHeaders?.Count > 0
-                            ? protocolExtra.HttpHeaders
+                        outbound.settings.headers = ProtocolExtraItem.TryParseHttpHeaders(protocolExtra.HttpHeaders, out var headers)
+                            ? headers
                             : null;
 
                         if (_node.Username.IsNotEmpty()
