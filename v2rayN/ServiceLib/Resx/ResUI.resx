@@ -1048,7 +1048,7 @@
     <value>HTTP headers</value>
   </data>
   <data name="TipHttpOutboundHeaders" xml:space="preserve">
-    <value>Custom HTTP outbound request headers as a JSON object with string values.</value>
+    <value>Custom HTTP outbound request headers as a JSON object with string or string array values.</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Previous proxy remarks</value>
@@ -1813,7 +1813,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>Invalid Realm URL.</value>
   </data>
   <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
-    <value>HTTP outbound headers must be a JSON object with string values.</value>
+    <value>Please enter valid HTTP request headers JSON.</value>
   </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>

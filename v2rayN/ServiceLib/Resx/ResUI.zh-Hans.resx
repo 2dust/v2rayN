@@ -1045,7 +1045,7 @@
     <value>HTTP 请求头</value>
   </data>
   <data name="TipHttpOutboundHeaders" xml:space="preserve">
-    <value>自定义 HTTP 出站请求头，请输入值为字符串的 JSON 对象。</value>
+    <value>自定义 HTTP 出站请求头，请输入值为字符串或字符串数组的 JSON 对象。</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理配置别名</value>
@@ -1810,7 +1810,7 @@
     <value>Realm URL 不正确。</value>
   </data>
   <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
-    <value>HTTP 出站请求头必须是值为字符串的 JSON 对象。</value>
+    <value>请填写合法的HTTP请求头JSON。</value>
   </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>格式：realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>

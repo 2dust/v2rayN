@@ -331,7 +331,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 HTTP outbound headers must be a JSON object with string values. 的本地化字符串。
+        ///   查找类似 Please enter valid HTTP request headers JSON. 的本地化字符串。
         /// </summary>
         public static string InvalidHttpOutboundHeaders {
             get {
@@ -5005,7 +5005,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom HTTP outbound request headers as a JSON object with string values. 的本地化字符串。
+        ///   查找类似 Custom HTTP outbound request headers as a JSON object with string or string array values. 的本地化字符串。
         /// </summary>
         public static string TipHttpOutboundHeaders {
             get {

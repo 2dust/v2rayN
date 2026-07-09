@@ -16,21 +16,83 @@ public record ProtocolExtraItem
             return true;
         }
 
+        try
+        {
+            using var document = JsonDocument.Parse(httpHeaders, new JsonDocumentOptions
+            {
+                CommentHandling = JsonCommentHandling.Skip
+            });
+
+            if (document.RootElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            var headerNames = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in document.RootElement.EnumerateObject())
+            {
+                if (!headerNames.Add(item.Name)
+                    || !IsHttpHeaderName(item.Name)
+                    || !IsHttpHeaderValue(item.Value))
+                {
+                    return false;
+                }
+            }
+        }
+        catch
+        {
+            return false;
+        }
+
         if (JsonUtils.ParseJson(httpHeaders) is not JsonObject headersObject)
         {
             return false;
         }
 
-        foreach (var item in headersObject)
-        {
-            if (item.Value is not JsonValue value || !value.TryGetValue<string>(out _))
-            {
-                return false;
-            }
-        }
-
         headers = headersObject.Count > 0 ? headersObject : null;
         return true;
+    }
+
+    private static bool IsHttpHeaderName(string name)
+    {
+        return name.Length > 0 && name.All(IsHttpHeaderNameChar);
+    }
+
+    private static bool IsHttpHeaderNameChar(char c)
+    {
+        return char.IsAsciiLetterOrDigit(c)
+               || c is '!' or '#' or '$' or '%' or '&' or '\'' or '*' or '+' or '-' or '.' or '^' or '_' or '`'
+                   or '|' or '~';
+    }
+
+    private static bool IsHttpHeaderValue(JsonElement element)
+    {
+        if (element.ValueKind == JsonValueKind.String)
+        {
+            return IsHttpHeaderValueString(element.GetString());
+        }
+
+        return element.ValueKind == JsonValueKind.Array
+               && element.EnumerateArray().All(item => item.ValueKind == JsonValueKind.String
+                                                      && IsHttpHeaderValueString(item.GetString()));
+    }
+
+    private static bool IsHttpHeaderValueString(string? value)
+    {
+        if (value is null)
+        {
+            return false;
+        }
+
+        return value.Length == 0
+               || IsHttpFieldVChar(value[0])
+               && IsHttpFieldVChar(value[^1])
+               && value.All(c => IsHttpFieldVChar(c) || c is ' ' or '\t');
+    }
+
+    private static bool IsHttpFieldVChar(char c)
+    {
+        return c is >= '\u0021' and <= '\u007E' or >= '\u0080';
     }
 
     // vmess

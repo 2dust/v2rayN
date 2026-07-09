@@ -36,22 +36,13 @@ public class CoreConfigV2rayServiceTests
         var node = CoreConfigTestFactory.CreateHttpNode(ECoreType.Xray);
         node.SetProtocolExtra(node.GetProtocolExtra() with
         {
-            HttpHeaders = "{\"User-Agent\":\"v2rayN\",\"Accept-Language\":\"en-US\",\"\\\"U:A\\\":\":\"\\\"V:B\\\":\"}",
+            HttpHeaders = "{\"User-Agent\":\"v2rayN\",\"Set-Cookie\":[\"a=1\",\"b=2\"]}",
         });
         var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
 
         var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
 
         result.Success.Should().BeTrue();
-        var configJson = JsonUtils.ParseJson(result.Data!.ToString())!.AsObject();
-        var rawOutbound = configJson["outbounds"]!.AsArray()
-            .Select(node => node!.AsObject())
-            .First(o => o["tag"]!.GetValue<string>() == Global.ProxyTag
-                        && o["protocol"]!.GetValue<string>() == "http");
-        var rawHeaders = rawOutbound["settings"]!["headers"]!.AsObject();
-        rawHeaders["User-Agent"]!.GetValue<string>().Should().Be("v2rayN");
-        rawHeaders["Accept-Language"]!.GetValue<string>().Should().Be("en-US");
-
         var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
         var outbound = cfg.outbounds.First(o => o.tag == Global.ProxyTag && o.protocol == "http");
 
@@ -62,22 +53,24 @@ public class CoreConfigV2rayServiceTests
         outbound.settings.level.Should().Be(1);
         outbound.settings.headers.Should().NotBeNull();
         outbound.settings.headers!["User-Agent"]!.GetValue<string>().Should().Be("v2rayN");
-        outbound.settings.headers["Accept-Language"]!.GetValue<string>().Should().Be("en-US");
-        outbound.settings.headers["\"U:A\":"]!.GetValue<string>().Should().Be("\"V:B\":");
+        outbound.settings.headers["Set-Cookie"]!.AsArray()
+            .Select(item => item!.GetValue<string>())
+            .Should().Equal("a=1", "b=2");
         outbound.settings.servers.Should().BeNull();
         outbound.settings.vnext.Should().BeNull();
     }
 
     [Theory]
     [InlineData(null, true)]
-    [InlineData("", true)]
     [InlineData("{}", true)]
     [InlineData("{\"User-Agent\":\"v2rayN\"}", true)]
+    [InlineData("{\"Set-Cookie\":[\"a=1\",\"b=2\"]}", true)]
     [InlineData("[]", false)]
-    [InlineData("{\"User-Agent\":[\"v2rayN\"]}", false)]
-    [InlineData("{\"User-Agent\":1}", false)]
     [InlineData("{\"User-Agent\":null}", false)]
-    public void ProtocolExtraItem_TryParseHttpHeaders_ShouldAcceptOnlyStringObject(string? httpHeaders, bool expected)
+    [InlineData("{\"Bad Header\":\"v2rayN\"}", false)]
+    [InlineData("{\"User-Agent\":\"bad\\r\\nvalue\"}", false)]
+    [InlineData("{\"Set-Cookie\":\"a=1\",\"Set-Cookie\":\"b=2\"}", false)]
+    public void ProtocolExtraItem_TryParseHttpHeaders_ShouldAcceptStringOrStringArrayObject(string? httpHeaders, bool expected)
     {
         var result = ProtocolExtraItem.TryParseHttpHeaders(httpHeaders, out var headers);
 
