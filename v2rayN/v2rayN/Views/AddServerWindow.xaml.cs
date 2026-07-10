@@ -75,6 +75,7 @@ public partial class AddServerWindow
                 gridTransport.Visibility = Visibility.Collapsed;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
                 break;
 
             case EConfigType.TUIC:
@@ -114,6 +115,7 @@ public partial class AddServerWindow
                 gridFinalmask.Visibility = Visibility.Collapsed;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
                 togAllowInsecure.IsEnabled = false;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
@@ -234,6 +236,7 @@ public partial class AddServerWindow
             this.Bind(ViewModel, vm => vm.AllowInsecure, v => v.togAllowInsecure.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Fingerprint, v => v.cmbFingerprint.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Alpn, v => v.cmbAlpn.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.CipherSuites, v => v.txtCipherSuites.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CertSha, v => v.txtCertSha256Pinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CertTip, v => v.labCertPinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
