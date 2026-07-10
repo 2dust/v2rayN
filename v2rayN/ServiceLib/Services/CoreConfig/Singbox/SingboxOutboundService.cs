@@ -422,7 +422,8 @@ public partial class CoreConfigSingboxService
                 insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
-            if (_node.Fingerprint.IsNotEmpty())
+            // "unsafe" is an Xray-only fingerprint; sing-box's uTLS rejects it, so fall back to plain TLS
+            if (_node.Fingerprint.IsNotEmpty() && _node.Fingerprint != "unsafe")
             {
                 tls.utls = new Utls4Sbox()
                 {
