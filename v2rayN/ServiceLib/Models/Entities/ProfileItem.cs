@@ -183,6 +183,7 @@ public class ProfileItem
     public string AllowInsecure { get; set; }
     public string Sni { get; set; }
     public string Alpn { get; set; } = string.Empty;
+    public string CipherSuites { get; set; }
     public string Fingerprint { get; set; }
     public string PublicKey { get; set; }
     public string ShortId { get; set; }

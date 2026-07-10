@@ -2797,6 +2797,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Cipher Suites 的本地化字符串。
+        /// </summary>
+        public static string TbCipherSuites {
+            get {
+                return ResourceManager.GetString("TbCipherSuites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Certificate Pinning 的本地化字符串。
         /// </summary>
         public static string TbCertPinning {
