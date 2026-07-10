@@ -21,7 +21,7 @@ public partial class SudoPasswordInputView : UserControl
 
     private async Task SavePasswordAsync()
     {
-        if (txtPassword.Text.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(txtPassword.Text))
         {
             txtPassword.Focus();
             return;
