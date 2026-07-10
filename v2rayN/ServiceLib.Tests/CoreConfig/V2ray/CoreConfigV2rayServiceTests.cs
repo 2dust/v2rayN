@@ -70,9 +70,9 @@ public class CoreConfigV2rayServiceTests
     [InlineData("{\"Bad Header\":\"v2rayN\"}", false)]
     [InlineData("{\"User-Agent\":\"bad\\r\\nvalue\"}", false)]
     [InlineData("{\"Set-Cookie\":\"a=1\",\"Set-Cookie\":\"b=2\"}", false)]
-    public void ProtocolExtraItem_TryParseHttpHeaders_ShouldAcceptStringOrStringArrayObject(string? httpHeaders, bool expected)
+    public void HttpHeaderUtils_TryParse_ShouldAcceptStringOrStringArrayObject(string? httpHeaders, bool expected)
     {
-        var result = ProtocolExtraItem.TryParseHttpHeaders(httpHeaders, out var headers);
+        var result = HttpHeaderUtils.TryParse(httpHeaders, out var headers);
 
         result.Should().Be(expected);
         if (expected && !httpHeaders.IsNullOrEmpty() && httpHeaders != "{}")

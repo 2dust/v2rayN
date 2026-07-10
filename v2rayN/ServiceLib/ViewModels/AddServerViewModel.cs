@@ -383,7 +383,7 @@ public class AddServerViewModel : MyReactiveObject
             }
         }
         if (SelectedSource.ConfigType == EConfigType.HTTP
-            && !ProtocolExtraItem.TryParseHttpHeaders(HttpHeadersJson, out _))
+            && !HttpHeaderUtils.TryParse(HttpHeadersJson, out _))
         {
             NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
             return;
