@@ -356,7 +356,7 @@ public class TlsSettings4Ray
 
     public List<string>? alpn { get; set; }
 
-    public List<string>? cipherSuites { get; set; }
+    public string? cipherSuites { get; set; }
 
     public string? fingerprint { get; set; }
 
