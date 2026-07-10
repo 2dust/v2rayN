@@ -76,6 +76,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransport.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
                 break;
 
             case EConfigType.TUIC:
@@ -115,6 +116,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridFinalmask.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
                 togAllowInsecure.IsEnabled = false;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
