@@ -37,10 +37,7 @@ public partial class CoreConfigV2rayService
         }
 
         // Case 3: need to create or insert based on multipleLoad type
-        if (multipleLoad is EMultipleLoad.LeastLoad
-                     or EMultipleLoad.Fallback
-                     or EMultipleLoad.Random
-                     or EMultipleLoad.RoundRobin)
+        if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
         {
             if (_coreConfig.burstObservatory is null)
             {
