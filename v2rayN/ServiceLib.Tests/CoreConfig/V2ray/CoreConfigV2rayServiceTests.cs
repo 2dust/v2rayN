@@ -59,28 +59,7 @@ public class CoreConfigV2rayServiceTests
         outbound.settings.servers.Should().BeNull();
         outbound.settings.vnext.Should().BeNull();
     }
-
-    [Theory]
-    [InlineData(null, true)]
-    [InlineData("{}", true)]
-    [InlineData("{\"User-Agent\":\"v2rayN\"}", true)]
-    [InlineData("{\"Set-Cookie\":[\"a=1\",\"b=2\"]}", true)]
-    [InlineData("[]", false)]
-    [InlineData("{\"User-Agent\":null}", false)]
-    [InlineData("{\"Bad Header\":\"v2rayN\"}", false)]
-    [InlineData("{\"User-Agent\":\"bad\\r\\nvalue\"}", false)]
-    [InlineData("{\"Set-Cookie\":\"a=1\",\"Set-Cookie\":\"b=2\"}", false)]
-    public void HttpHeaderUtils_TryParse_ShouldAcceptStringOrStringArrayObject(string? httpHeaders, bool expected)
-    {
-        var result = HttpHeaderUtils.TryParse(httpHeaders, out var headers);
-
-        result.Should().Be(expected);
-        if (expected && !httpHeaders.IsNullOrEmpty() && httpHeaders != "{}")
-        {
-            headers.Should().NotBeNull();
-        }
-    }
-
+ 
     [Fact]
     public void GenerateClientConfigContent_PolicyGroup_ShouldExpandChildrenAndBuildBalancer()
     {

@@ -382,8 +382,7 @@ public class AddServerViewModel : MyReactiveObject
                 return;
             }
         }
-        if (SelectedSource.ConfigType == EConfigType.HTTP
-            && !HttpHeaderUtils.TryParse(HttpHeadersJson, out _))
+        if (HttpHeadersJson.IsNotEmpty() && JsonUtils.ParseJson(HttpHeadersJson) == null)
         {
             NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
             return;

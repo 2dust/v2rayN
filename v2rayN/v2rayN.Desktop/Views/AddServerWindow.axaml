@@ -262,20 +262,20 @@
                         Grid.Row="3"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         IsVisible="False"
                         Text="{x:Static resx:ResUI.TbHttpOutboundHeaders}"
                         ToolTip.Tip="{x:Static resx:ResUI.TipHttpOutboundHeaders}" />
-                    <TextBox
+                    <views:JsonEditor
                         x:Name="txtHttpHeadersJson"
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="520"
-                        MinHeight="120"
+                        Width="400"
+                        MinHeight="100"
                         Margin="{StaticResource Margin4}"
-                        AcceptsReturn="True"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         IsVisible="False"
-                        TextWrapping="NoWrap"
                         ToolTip.Tip="{x:Static resx:ResUI.TipHttpOutboundHeaders}" />
                 </Grid>
                 <Grid
