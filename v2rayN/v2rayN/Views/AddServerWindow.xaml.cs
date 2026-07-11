@@ -277,10 +277,6 @@ public partial class AddServerWindow
             case EViewAction.CloseWindow:
                 DialogResult = true;
                 break;
-
-            case EViewAction.SetClipboardData:
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
         }
         return await Task.FromResult(true);
     }

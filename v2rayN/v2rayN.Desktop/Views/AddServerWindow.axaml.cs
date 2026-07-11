@@ -278,10 +278,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             case EViewAction.CloseWindow:
                 Close(true);
                 break;
-
-            case EViewAction.SetClipboardData:
-                await AvaUtils.SetClipboardData(this, (string)obj);
-                break;
         }
         return await Task.FromResult(true);
     }
