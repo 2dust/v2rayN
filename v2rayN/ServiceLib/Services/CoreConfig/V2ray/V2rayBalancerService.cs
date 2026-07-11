@@ -109,7 +109,6 @@ public partial class CoreConfigV2rayService
                     : null,
             },
             tag = balancerTag,
-            fallbackTag = _coreConfig.outbounds?.FirstOrDefault(o => o.tag.StartsWith(selector))?.tag,
         };
         _coreConfig.routing.balancers ??= [];
         _coreConfig.routing.balancers.Add(balancer);
