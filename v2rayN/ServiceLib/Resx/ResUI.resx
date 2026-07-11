@@ -1815,4 +1815,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>If enabled, use sing-box TUN; otherwise, use xray TUN.</value>
   </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>Root Certificate Provider</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>Only applies to the v2rayN GUI's downloads and network requests. Does not affect the core's certificate validation.</value>
+  </data>
 </root>
