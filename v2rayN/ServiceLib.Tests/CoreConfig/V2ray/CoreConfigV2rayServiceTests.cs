@@ -52,8 +52,9 @@ public class CoreConfigV2rayServiceTests
         outbound.settings.pass.Should().Be("pass");
         outbound.settings.level.Should().Be(1);
         outbound.settings.headers.Should().NotBeNull();
-        outbound.settings.headers!["User-Agent"]!.GetValue<string>().Should().Be("v2rayN");
-        outbound.settings.headers["Set-Cookie"]!.AsArray()
+        var headers = JsonUtils.ParseJson(outbound.settings.headers.ToString());
+        headers["User-Agent"]!.GetValue<string>().Should().Be("v2rayN");
+        headers["Set-Cookie"]!.AsArray()
             .Select(item => item!.GetValue<string>())
             .Should().Equal("a=1", "b=2");
         outbound.settings.servers.Should().BeNull();
