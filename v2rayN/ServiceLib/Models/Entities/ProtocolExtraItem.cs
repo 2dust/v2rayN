@@ -5,6 +5,9 @@ public record ProtocolExtraItem
     public bool? Uot { get; init; }
     public string? CongestionControl { get; init; }
 
+    // http outbound
+    public string? HttpHeaders { get; init; }
+
     // vmess
     public string? AlterId { get; init; }
     public string? VmessSecurity { get; init; }

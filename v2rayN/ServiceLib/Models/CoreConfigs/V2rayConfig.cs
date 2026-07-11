@@ -146,6 +146,16 @@ public class Outboundsettings4Ray
 
     public int? port { get; set; }
 
+    public string? user { get; set; }
+
+    public string? pass { get; set; }
+
+    public int? level { get; set; }
+
+    public string? email { get; set; }
+
+    public object? headers { get; set; }
+
     public List<WireguardPeer4Ray>? peers { get; set; }
 
     public bool? noKernelTun { get; set; }

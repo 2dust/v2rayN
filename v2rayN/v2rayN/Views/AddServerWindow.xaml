@@ -349,6 +349,31 @@
                         Width="400"
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        x:Name="tbHttpHeaders"
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbHttpOutboundHeaders}"
+                        Visibility="Collapsed" />
+                    <TextBox
+                        x:Name="txtHttpHeadersJson"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        materialDesign:HintAssist.Hint="{x:Static resx:ResUI.TipHttpOutboundHeaders}"
+                        AcceptsReturn="True"
+                        HorizontalScrollBarVisibility="Auto"
+                        MaxLines="8"
+                        MinLines="4"
+                        Style="{StaticResource MyOutlinedTextBox}"
+                        TextWrapping="NoWrap"
+                        VerticalScrollBarVisibility="Auto"
+                        Visibility="Collapsed" />
                 </Grid>
                 <Grid
                     x:Name="gridVLESS"

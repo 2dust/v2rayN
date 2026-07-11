@@ -149,7 +149,7 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("Downloading", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   查找类似 Failed to convert configuration file 的本地化字符串。
         /// </summary>
@@ -330,6 +330,15 @@ namespace ServiceLib.Resx {
             }
         }
         
+        /// <summary>
+        ///   查找类似 Please enter valid HTTP request headers JSON. 的本地化字符串。
+        /// </summary>
+        public static string InvalidHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("InvalidHttpOutboundHeaders", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Invalid address (URL) 的本地化字符串。
         /// </summary>
@@ -3223,6 +3232,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 HTTP headers 的本地化字符串。
+        /// </summary>
+        public static string TbHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("TbHttpOutboundHeaders", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Port hopping interval 的本地化字符串。
         /// </summary>
         public static string TbHopInt7 {
@@ -4986,6 +5004,15 @@ namespace ServiceLib.Resx {
             }
         }
         
+        /// <summary>
+        ///   查找类似 Custom HTTP outbound request headers as a JSON object with string or string array values. 的本地化字符串。
+        /// </summary>
+        public static string TipHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("TipHttpOutboundHeaders", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 *Default value raw 的本地化字符串。
         /// </summary>

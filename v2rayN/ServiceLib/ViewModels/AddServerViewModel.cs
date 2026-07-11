@@ -81,6 +81,9 @@ public class AddServerViewModel : MyReactiveObject
     public bool NaiveQuic { get; set; }
 
     [Reactive]
+    public string HttpHeadersJson { get; set; }
+
+    [Reactive]
     public string Hy2RealmUrl { get; set; }
 
     [Reactive]
@@ -255,7 +258,6 @@ public class AddServerViewModel : MyReactiveObject
         {
             await SaveServerAsync();
         });
-
         this.WhenAnyValue(x => x.Cert)
             .Subscribe(_ => UpdateCertTip());
 
@@ -311,6 +313,7 @@ public class AddServerViewModel : MyReactiveObject
         CongestionControl = protocolExtra.CongestionControl ?? string.Empty;
         InsecureConcurrency = protocolExtra.InsecureConcurrency > 0 ? protocolExtra.InsecureConcurrency : null;
         NaiveQuic = protocolExtra.NaiveQuic ?? false;
+        HttpHeadersJson = protocolExtra.HttpHeaders ?? string.Empty;
         Hy2RealmUrl = protocolExtra.Hy2RealmUrl ?? string.Empty;
         GeckoMinPacketSize = protocolExtra.GeckoMinPacketSize.ToInt();
         GeckoMaxPacketSize = protocolExtra.GeckoMaxPacketSize.ToInt();
@@ -379,6 +382,11 @@ public class AddServerViewModel : MyReactiveObject
                 return;
             }
         }
+        if (HttpHeadersJson.IsNotEmpty() && JsonUtils.ParseJson(HttpHeadersJson) == null)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
+            return;
+        }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
         SelectedSource.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
         SelectedSource.MuxEnabled = MuxEnabled;
@@ -416,6 +424,7 @@ public class AddServerViewModel : MyReactiveObject
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
+            HttpHeaders = SelectedSource.ConfigType == EConfigType.HTTP ? HttpHeadersJson.NullIfEmpty() : null,
             WgPublicKey = WgPublicKey.NullIfEmpty(),
             WgPresharedKey = WgPresharedKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),

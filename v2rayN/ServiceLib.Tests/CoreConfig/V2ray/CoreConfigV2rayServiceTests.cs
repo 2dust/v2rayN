@@ -29,6 +29,39 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Fact]
+    public void GenerateClientConfigContent_HttpOutbound_ShouldEmitHeadersInSettings()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateHttpNode(ECoreType.Xray);
+        node.SetProtocolExtra(node.GetProtocolExtra() with
+        {
+            HttpHeaders = "{\"User-Agent\":\"v2rayN\",\"Set-Cookie\":[\"a=1\",\"b=2\"]}",
+        });
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var outbound = cfg.outbounds.First(o => o.tag == Global.ProxyTag && o.protocol == "http");
+
+        outbound.settings.address?.ToString().Should().Be("proxy.example.com");
+        outbound.settings.port.Should().Be(8080);
+        outbound.settings.user.Should().Be("user");
+        outbound.settings.pass.Should().Be("pass");
+        outbound.settings.level.Should().Be(1);
+        outbound.settings.headers.Should().NotBeNull();
+        var headers = JsonUtils.ParseJson(outbound.settings.headers.ToString());
+        headers["User-Agent"]!.GetValue<string>().Should().Be("v2rayN");
+        headers["Set-Cookie"]!.AsArray()
+            .Select(item => item!.GetValue<string>())
+            .Should().Equal("a=1", "b=2");
+        outbound.settings.servers.Should().BeNull();
+        outbound.settings.vnext.Should().BeNull();
+    }
+ 
+    [Fact]
     public void GenerateClientConfigContent_PolicyGroup_ShouldExpandChildrenAndBuildBalancer()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);

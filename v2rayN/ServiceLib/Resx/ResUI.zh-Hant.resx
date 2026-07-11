@@ -1041,6 +1041,12 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>擁塞控制算法</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP 請求頭</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>自訂 HTTP 出站請求頭，請輸入值為字串或字串陣列的 JSON 物件。</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理節點別名</value>
   </data>
@@ -1796,5 +1802,8 @@
   </data>
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>請填寫合法的HTTP請求頭JSON。</value>
   </data>
 </root>

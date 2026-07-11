@@ -256,6 +256,27 @@
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        x:Name="tbHttpHeaders"
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        IsVisible="False"
+                        Text="{x:Static resx:ResUI.TbHttpOutboundHeaders}"
+                        ToolTip.Tip="{x:Static resx:ResUI.TipHttpOutboundHeaders}" />
+                    <views:JsonEditor
+                        x:Name="txtHttpHeadersJson"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        MinHeight="100"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        IsVisible="False"
+                        ToolTip.Tip="{x:Static resx:ResUI.TipHttpOutboundHeaders}" />
                 </Grid>
                 <Grid
                     x:Name="gridVLESS"

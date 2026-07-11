@@ -53,8 +53,13 @@ public partial class AddServerWindow
                 break;
 
             case EConfigType.SOCKS:
+                gridSocks.Visibility = Visibility.Visible;
+                break;
+
             case EConfigType.HTTP:
                 gridSocks.Visibility = Visibility.Visible;
+                tbHttpHeaders.Visibility = Visibility.Visible;
+                txtHttpHeadersJson.Visibility = Visibility.Visible;
                 break;
 
             case EConfigType.VLESS:
@@ -147,9 +152,14 @@ public partial class AddServerWindow
                     break;
 
                 case EConfigType.SOCKS:
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
+                    break;
+
                 case EConfigType.HTTP:
                     this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text).DisposeWith(disposables);
                     this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtSecurity4.Text).DisposeWith(disposables);
+                    this.Bind(ViewModel, vm => vm.HttpHeadersJson, v => v.txtHttpHeadersJson.Text).DisposeWith(disposables);
                     break;
 
                 case EConfigType.VLESS:
