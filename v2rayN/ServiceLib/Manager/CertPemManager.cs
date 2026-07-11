@@ -288,6 +288,7 @@ public class CertPemManager
         collection.ImportFromPem(pemText);
         return collection;
     });
+
     private static readonly Lazy<X509Certificate2Collection> _mozillaRootCerts = new(() =>
     {
         var pemText = EmbedUtils.GetEmbedText(Global.MozillaRootCertFileName);
@@ -295,6 +296,7 @@ public class CertPemManager
         collection.ImportFromPem(pemText);
         return collection;
     });
+
     private X509Certificate2Collection BuildTrustedCertificateCollection()
     {
         if (_config.GuiItem.RootCertProvider == Global.ChromeRootProvider)

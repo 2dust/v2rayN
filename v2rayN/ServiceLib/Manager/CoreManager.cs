@@ -8,8 +8,10 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
+
     [SupportedOSPlatform("windows")]
     private WindowsJobService? _processJob;
+
     private ProcessService? _processService;
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
