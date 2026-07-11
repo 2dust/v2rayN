@@ -37,10 +37,7 @@ public partial class CoreConfigV2rayService
         }
 
         // Case 3: need to create or insert based on multipleLoad type
-        if (multipleLoad is EMultipleLoad.LeastLoad
-                     or EMultipleLoad.Fallback
-                     or EMultipleLoad.Random
-                     or EMultipleLoad.RoundRobin)
+        if (multipleLoad is EMultipleLoad.LeastLoad or EMultipleLoad.Fallback)
         {
             if (_coreConfig.burstObservatory is null)
             {
@@ -99,16 +96,18 @@ public partial class CoreConfigV2rayService
         var balancer = new BalancersItem4Ray
         {
             selector = [selector],
-            strategy = strategyType == "leastLoad" ? new()
+            strategy = new()
             {
                 type = strategyType,
-                settings = new()
-                {
-                    expected = 1,
-                    tolerance = multipleLoad == EMultipleLoad.Fallback ? 0.2 : null,
-                    maxRTT = multipleLoad == EMultipleLoad.Fallback ? "5000ms" : null,
-                },
-            } : null,
+                settings = strategyType == "leastLoad"
+                    ? new()
+                    {
+                        expected = 1,
+                        tolerance = multipleLoad == EMultipleLoad.Fallback ? 0.2 : null,
+                        maxRTT = multipleLoad == EMultipleLoad.Fallback ? "5000ms" : null,
+                    }
+                    : null,
+            },
             tag = balancerTag,
             fallbackTag = _coreConfig.outbounds?.FirstOrDefault(o => o.tag.StartsWith(selector))?.tag,
         };
