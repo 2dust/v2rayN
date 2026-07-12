@@ -1,4 +1,6 @@
+using Avalonia.VisualTree;
 using DialogHostAvalonia;
+using DynamicData.Binding;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -29,14 +31,14 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         lstProfiles.Sorting += LstProfiles_Sorting;
-        //if (_config.uiItem.enableDragDropSort)
-        //{
-        //    lstProfiles.AllowDrop = true;
-        //    lstProfiles.PreviewMouseLeftButtonDown += LstProfiles_PreviewMouseLeftButtonDown;
-        //    lstProfiles.MouseMove += LstProfiles_MouseMove;
-        //    lstProfiles.DragEnter += LstProfiles_DragEnter;
-        //    lstProfiles.Drop += LstProfiles_Drop;
-        //}
+        if (_config.UiItem.EnableDragDropSort)
+        {
+            lstProfiles.SetValue(DragDrop.AllowDropProperty, true);
+
+            lstProfiles.AddHandler(PointerPressedEvent, LstProfiles_PointerPressed, RoutingStrategies.Bubble, true);
+            lstProfiles.AddHandler(DragDrop.DragOverEvent, LstProfiles_DragOver, RoutingStrategies.Bubble);
+            lstProfiles.AddHandler(DragDrop.DropEvent, LstProfiles_Drop, RoutingStrategies.Bubble);
+        }
 
         ViewModel = new ProfilesViewModel(UpdateViewHandler);
 
@@ -473,93 +475,97 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     #region Drag and Drop
 
-    //private Point startPoint = new();
-    //private int startIndex = -1;
-    //private string formatData = "ProfileItemModel";
+    private static readonly DataFormat<object> LstProfilesRowFormat =
+        DataFormat.CreateInProcessFormat<object>("LstProfilesRow");
 
-    ///// <summary>
-    ///// Helper to search up the VisualTree
-    ///// </summary>
-    ///// <typeparam name="T"></typeparam>
-    ///// <param name="current"></param>
-    ///// <returns></returns>
-    //private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
-    //{
-    //    do
-    //    {
-    //        if (current is T)
-    //        {
-    //            return (T)current;
-    //        }
-    //        current = VisualTreeHelper.GetParent(current);
-    //    }
-    //    while (current != null);
-    //    return null;
-    //}
+    private async void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        try
+        {
+            if (e.Source is not Visual visualSource)
+            {
+                return;
+            }
 
-    //private void LstProfiles_PreviewMouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
-    //{
-    //    // Get current mouse position
-    //    startPoint = e.GetPosition(null);
-    //}
+            var row = visualSource.FindAncestorOfType<DataGridRow>(true);
+            if (row?.DataContext == null)
+            {
+                return;
+            }
 
-    //private void LstProfiles_MouseMove(object? sender, MouseEventArgs e)
-    //{
-    //    // Get the current mouse position
-    //    Point mousePos = e.GetPosition(null);
-    //    Vector diff = startPoint - mousePos;
+            if (e.GetCurrentPoint(row).Properties.IsLeftButtonPressed)
+            {
+                var dragData = new DataTransfer();
+                var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext);
+                dragData.Add(item);
+                await DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move);
+            }
+        }
+        catch
+        {
+            // Ignore
+        }
+    }
 
-    //    if (e.LeftButton == MouseButtonState.Pressed &&
-    //        (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-    //               Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
-    //    {
-    //        // Get the dragged Item
-    //        if (sender is not DataGrid listView) return;
-    //        var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
-    //        if (listViewItem == null) return;           // Abort
-    //                                                    // Find the data behind the ListViewItem
-    //        ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-    //        if (item == null) return;                   // Abort
-    //                                                    // Initialize the drag & drop operation
-    //        startIndex = lstProfiles.SelectedIndex;
-    //        DataObject dragData = new(formatData, item);
-    //        DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
-    //    }
-    //}
+    private void LstProfiles_DragOver(object? sender, DragEventArgs e)
+    {
+        if (!e.DataTransfer.Contains(LstProfilesRowFormat))
+        {
+            e.DragEffects = DragDropEffects.None;
+            return;
+        }
+        e.DragEffects = DragDropEffects.Move;
+    }
 
-    //private void LstProfiles_DragEnter(object? sender, DragEventArgs e)
-    //{
-    //    if (!e.Data.GetDataPresent(formatData) || sender != e.Source)
-    //    {
-    //        e.Effects = DragDropEffects.None;
-    //    }
-    //}
+    private void LstProfiles_Drop(object? sender, DragEventArgs e)
+    {
+        if (!e.DataTransfer.Contains(LstProfilesRowFormat))
+        {
+            return;
+        }
+        ProfileItemModel? sourceItem = null;
+        foreach (var item in e.DataTransfer.Items)
+        {
+            if (!item.Formats.Contains(LstProfilesRowFormat))
+            {
+                continue;
+            }
+            if (item.TryGetRaw(LstProfilesRowFormat) is not ProfileItemModel model)
+            {
+                continue;
+            }
+            sourceItem = model;
+            break;
+        }
+        if (sourceItem == null)
+        {
+            return;
+        }
+        if (e.Source is not Visual visualTarget)
+        {
+            return;
+        }
 
-    //private void LstProfiles_Drop(object? sender, DragEventArgs e)
-    //{
-    //    if (e.Data.GetDataPresent(formatData) && sender == e.Source)
-    //    {
-    //        // Get the drop Item destination
-    //        if (sender is not DataGrid listView) return;
-    //        var listViewItem = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
-    //        if (listViewItem == null)
-    //        {
-    //            // Abort
-    //            e.Effects = DragDropEffects.None;
-    //            return;
-    //        }
-    //        // Find the data behind the Item
-    //        ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
-    //        if (item == null) return;
-    //        // Move item into observable collection
-    //        // (this will be automatically reflected to lstView.ItemsSource)
-    //        e.Effects = DragDropEffects.Move;
-
-    //        ViewModel?.MoveServerTo(startIndex, item);
-
-    //        startIndex = -1;
-    //    }
-    //}
+        var targetRow = visualTarget.FindAncestorOfType<DataGridRow>(true);
+        if (targetRow is not { DataContext: ProfileItemModel targetItem })
+        {
+            return;
+        }
+        if (ReferenceEquals(sourceItem, targetItem))
+        {
+            return;
+        }
+        if (lstProfiles.ItemsSource is not IList<ProfileItemModel> items)
+        {
+            return;
+        }
+        var oldIndex = items.IndexOf(sourceItem);
+        var newIndex = items.IndexOf(targetItem);
+        if (oldIndex >= 0 && newIndex >= 0)
+        {
+            ViewModel?.MoveServerTo(oldIndex, targetItem);
+        }
+    }
 
     #endregion Drag and Drop
 }

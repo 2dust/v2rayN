@@ -609,9 +609,9 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
-                            Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
+                            Text="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
                         <ToggleSwitch
-                            x:Name="togDoubleClick2Activate"
+                            x:Name="togEnableDragDropSort"
                             Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
@@ -622,15 +622,28 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
+                        <ToggleSwitch
+                            x:Name="togDoubleClick2Activate"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbRootCertificateProvider}" />
                         <ComboBox
                             x:Name="cmbRootCertificateProvider"
-                            Grid.Row="10"
+                            Grid.Row="11"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}" />
                         <TextBlock
-                            Grid.Row="10"
+                            Grid.Row="11"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -864,8 +877,8 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                TextWrapping="Wrap"
-                                PlaceholderText="proxy_set.sh" />
+                                PlaceholderText="proxy_set.sh"
+                                TextWrapping="Wrap" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyScriptPath"
                                 Margin="{StaticResource Margin4}"
@@ -909,8 +922,8 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                TextWrapping="Wrap"
-                                PlaceholderText="pac.txt" />
+                                PlaceholderText="pac.txt"
+                                TextWrapping="Wrap" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyPacPath"
                                 Margin="{StaticResource Margin4}"
