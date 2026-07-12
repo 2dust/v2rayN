@@ -17,7 +17,6 @@ public partial class CoreConfigSingboxService
             GenDnsRules();
 
             _coreConfig.dns ??= new Dns4Sbox();
-            _coreConfig.dns.independent_cache = true;
 
             // final dns
             var routing = context.RoutingItem;
@@ -164,33 +163,29 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns ??= new Dns4Sbox();
         _coreConfig.dns.rules ??= [];
 
-        _coreConfig.dns.rules.Add(new() { ip_accept_any = true, server = Global.SingboxHostsDNSTag });
+        _coreConfig.dns.rules.Add(new() { preferred_by = Global.SingboxHostsDNSTag, server = Global.SingboxHostsDNSTag });
 
         if (context.ProtectDomainList.Count > 0)
         {
             _coreConfig.dns.rules.Add(new()
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4ProxyDial),
                 domain = context.ProtectDomainList.ToList(),
             });
         }
 
-        _coreConfig.dns.rules.AddRange(new[]
-        {
+        _coreConfig.dns.rules.AddRange([
             new Rule4Sbox
             {
                 server = Global.SingboxRemoteDNSTag,
-                strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Proxy),
-                clash_mode = nameof(ERuleMode.Global)
+                clash_mode = nameof(ERuleMode.Global),
             },
             new Rule4Sbox
             {
                 server = Global.SingboxDirectDNSTag,
-                strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom),
-                clash_mode = nameof(ERuleMode.Direct)
-            }
-        });
+                clash_mode = nameof(ERuleMode.Direct),
+            },
+        ]);
 
         foreach (var kvp in Utils.ParseHostsToDictionary(simpleDnsItem.Hosts))
         {
@@ -350,7 +345,6 @@ public partial class CoreConfigSingboxService
             if (item.OutboundTag == Global.DirectTag)
             {
                 rule.server = Global.SingboxDirectDNSTag;
-                rule.strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Freedom);
 
                 if (expectedIPsRegions.Count > 0 && rule.geosite?.Count > 0 && !regionName.IsNullOrEmpty())
                 {
@@ -362,15 +356,24 @@ public partial class CoreConfigSingboxService
                         rule.geosite.RemoveAll(regionGeosite.Contains);
                         var rule4ExpectedIPs = JsonUtils.DeepCopy(rule);
                         rule4ExpectedIPs.geosite = regionGeosite;
+                        var rule4ExpectedEvaluate = JsonUtils.DeepCopy(rule4ExpectedIPs);
+                        rule4ExpectedEvaluate.action = "evaluate";
+                        var rule4ExpectedMatch = JsonUtils.DeepCopy(rule4ExpectedIPs);
+                        rule4ExpectedMatch.match_response = true;
                         if (expectedIPsRegions.Count > 0)
                         {
-                            rule4ExpectedIPs.geoip = expectedIPsRegions;
+                            rule4ExpectedMatch.geoip = expectedIPsRegions;
                         }
                         if (expectedIPCidr.Count > 0)
                         {
-                            rule4ExpectedIPs.ip_cidr = expectedIPCidr;
+                            rule4ExpectedMatch.ip_cidr = expectedIPCidr;
                         }
-                        _coreConfig.dns.rules.Add(rule4ExpectedIPs);
+                        var rule4ExpectedNotMatch = JsonUtils.DeepCopy(rule4ExpectedIPs);
+                        rule4ExpectedNotMatch.server = Global.SingboxRemoteDNSTag;
+                        _coreConfig.dns.rules.Add(rule4ExpectedEvaluate);
+                        _coreConfig.dns.rules.Add(rule4ExpectedMatch);
+                        //_coreConfig.dns.rules.Add(rule4ExpectedNotMatch);
+                        rule = rule4ExpectedNotMatch;
                     }
                 }
             }
@@ -390,7 +393,6 @@ public partial class CoreConfigSingboxService
                     _coreConfig.dns.rules.Add(rule4Fake);
                 }
                 rule.server = Global.SingboxRemoteDNSTag;
-                rule.strategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4Proxy);
             }
 
             _coreConfig.dns.rules.Add(rule);
