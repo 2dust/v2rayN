@@ -570,11 +570,26 @@
   <data name="LvKeepAliveInterval" xml:space="preserve">
     <value>Keep Alive Interval (minutes)</value>
   </data>
+  <data name="TipKeepAlive" xml:space="preserve">
+    <value>启用后，系统会定期检测当前活动节点的可用性。当当前节点不可用时，自动在该订阅分组内寻找延迟最小的可用节点并切换；若全部分组节点均不可用，则触发订阅更新。</value>
+  </data>
+  <data name="MsgKeepAliveStartCheck" xml:space="preserve">
+    <value>Keep Alive: checking current node</value>
+  </data>
+  <data name="MsgKeepAliveCurrentNodeAlive" xml:space="preserve">
+    <value>Keep Alive: current node is alive, delay {0}ms</value>
+  </data>
+  <data name="MsgKeepAliveCurrentNodeFailed" xml:space="preserve">
+    <value>Keep Alive: current node failed, testing all nodes in subscription {0}</value>
+  </data>
   <data name="MsgKeepAliveSwitched" xml:space="preserve">
-    <value>Keep Alive: switched to {0}</value>
+    <value>Keep Alive: switched to {0}, delay {1}ms</value>
+  </data>
+  <data name="MsgKeepAliveUpdateTriggered" xml:space="preserve">
+    <value>Keep Alive: all nodes in {0} unavailable, triggering subscription update</value>
   </data>
   <data name="MsgKeepAliveAllFailed" xml:space="preserve">
-    <value>Keep Alive: all nodes in {0} are unavailable, will try update subscription next check</value>
+    <value>Keep Alive: all nodes in {0} unavailable, will try update next check</value>
   </data>
   <data name="TbCancel" xml:space="preserve">
     <value>Cancel</value>

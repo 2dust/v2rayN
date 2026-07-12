@@ -691,6 +691,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 启用后，系统会定期检测当前活动节点的可用性。当当前节点不可用时，自动在该订阅分组内寻找延迟最小的可用节点并切换；若全部分组节点均不可用，则触发订阅更新。 的本地化字符串。
+        /// </summary>
+        public static string TipKeepAlive {
+            get {
+                return ResourceManager.GetString("TipKeepAlive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 WebDAV Check 的本地化字符串。
         /// </summary>
         public static string LvWebDavCheck {
@@ -2122,7 +2131,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Keep Alive: switched to {0} 的本地化字符串。
+        ///   查找类似 Keep Alive: switched to {0}, delay {1}ms 的本地化字符串。
         /// </summary>
         public static string MsgKeepAliveSwitched {
             get {
@@ -2131,7 +2140,43 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Keep Alive: all nodes in {0} are unavailable, will try update subscription next check 的本地化字符串。
+        ///   查找类似 Keep Alive: checking current node 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveStartCheck {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveStartCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: current node is alive, delay {0}ms 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveCurrentNodeAlive {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveCurrentNodeAlive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: current node failed, testing all nodes in subscription {0} 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveCurrentNodeFailed {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveCurrentNodeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: all nodes in {0} unavailable, triggering subscription update 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveUpdateTriggered {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveUpdateTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: all nodes in {0} unavailable, will try update next check 的本地化字符串。
         /// </summary>
         public static string MsgKeepAliveAllFailed {
             get {

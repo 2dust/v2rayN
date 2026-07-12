@@ -87,25 +87,27 @@ public class KeepAliveManager
         subItem.KeepAliveLastCheck = now;
         await ConfigHandler.AddSubItem(_config, subItem);
 
+        SendLog(ResUI.MsgKeepAliveStartCheck);
+
         var delay = await ConnectionHandler.GetCurrentRealPingAsync();
         if (delay > 0)
         {
-            Logging.SaveLog($"{_tag}: current node {activeProfile.Remarks} is alive, delay {delay}");
+            SendLog(string.Format(ResUI.MsgKeepAliveCurrentNodeAlive, delay));
             return;
         }
 
-        Logging.SaveLog($"{_tag}: current node {activeProfile.Remarks} failed, testing all nodes in subscription {subItem.Remarks}");
+        SendLog(string.Format(ResUI.MsgKeepAliveCurrentNodeFailed, subItem.Remarks));
 
-        var bestIndexId = await FindBestNodeAsync(subId);
+        var (bestIndexId, bestDelay) = await FindBestNodeAsync(subId);
         if (bestIndexId.IsNotEmpty())
         {
-            await SwitchToBestNodeAsync(bestIndexId);
+            await SwitchToBestNodeAsync(bestIndexId, bestDelay);
             return;
         }
 
         if (now - subItem.KeepAliveLastUpdate >= subItem.KeepAliveInterval * 60)
         {
-            Logging.SaveLog($"{_tag}: all nodes in subscription {subItem.Remarks} failed, triggering subscription update");
+            SendLog(string.Format(ResUI.MsgKeepAliveUpdateTriggered, subItem.Remarks));
             subItem.KeepAliveLastUpdate = now;
             await ConfigHandler.AddSubItem(_config, subItem);
             await SubscriptionHandler.UpdateProcess(_config, subId, true, _updateFunc);
@@ -113,8 +115,8 @@ public class KeepAliveManager
         else
         {
             var message = string.Format(ResUI.MsgKeepAliveAllFailed, subItem.Remarks);
+            SendLog(message);
             NoticeManager.Instance.Enqueue(message);
-            Logging.SaveLog($"{_tag}: {message}");
         }
     }
 
@@ -131,26 +133,26 @@ public class KeepAliveManager
             return;
         }
 
-        Logging.SaveLog($"{_tag}: running post-update fallback for subscription {subItem.Remarks}");
+        SendLog(string.Format(ResUI.MsgKeepAliveCurrentNodeFailed, subItem.Remarks));
 
-        var bestIndexId = await FindBestNodeAsync(subId);
+        var (bestIndexId, bestDelay) = await FindBestNodeAsync(subId);
         if (bestIndexId.IsNotEmpty())
         {
-            await SwitchToBestNodeAsync(bestIndexId);
+            await SwitchToBestNodeAsync(bestIndexId, bestDelay);
             return;
         }
 
         var message = string.Format(ResUI.MsgKeepAliveAllFailed, subItem.Remarks);
+        SendLog(message);
         NoticeManager.Instance.Enqueue(message);
-        Logging.SaveLog($"{_tag}: {message}");
     }
 
-    private async Task<string> FindBestNodeAsync(string subId)
+    private async Task<(string IndexId, int Delay)> FindBestNodeAsync(string subId)
     {
         var nodes = await AppManager.Instance.ProfileItems(subId);
         if (nodes == null || nodes.Count == 0)
         {
-            return string.Empty;
+            return (string.Empty, 0);
         }
 
         foreach (var node in nodes)
@@ -174,17 +176,23 @@ public class KeepAliveManager
             }
         }
 
-        return bestIndexId;
+        return (bestIndexId, bestDelay == int.MaxValue ? 0 : bestDelay);
     }
 
-    private async Task SwitchToBestNodeAsync(string indexId)
+    private async Task SwitchToBestNodeAsync(string indexId, int delay)
     {
         var profile = await AppManager.Instance.GetProfileItem(indexId);
         await ConfigHandler.SetDefaultServerIndex(_config, indexId);
         await _reloadFunc();
 
-        var message = string.Format(ResUI.MsgKeepAliveSwitched, profile?.Remarks ?? indexId);
+        var message = string.Format(ResUI.MsgKeepAliveSwitched, profile?.Remarks ?? indexId, delay);
+        SendLog(message);
         NoticeManager.Instance.Enqueue(message);
+    }
+
+    private void SendLog(string message)
+    {
+        NoticeManager.Instance.SendMessageEx(message);
         Logging.SaveLog($"{_tag}: {message}");
     }
 }

@@ -137,12 +137,21 @@
                         Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
                 </DockPanel>
 
-                <TextBlock
+                <StackPanel
                     Grid.Row="4"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.LvKeepAlive}" />
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.LvKeepAlive}" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="?"
+                        ToolTip.Tip="{x:Static resx:ResUI.TipKeepAlive}" />
+                </StackPanel>
 
                 <DockPanel
                     Grid.Row="4"

@@ -570,8 +570,23 @@
   <data name="LvKeepAliveInterval" xml:space="preserve">
     <value>保活间隔（分钟）</value>
   </data>
+  <data name="TipKeepAlive" xml:space="preserve">
+    <value>启用后，系统会定期检测当前活动节点的可用性。当当前节点不可用时，自动在该订阅分组内寻找延迟最小的可用节点并切换；若全部分组节点均不可用，则触发订阅更新。</value>
+  </data>
+  <data name="MsgKeepAliveStartCheck" xml:space="preserve">
+    <value>保活：开始检测当前节点</value>
+  </data>
+  <data name="MsgKeepAliveCurrentNodeAlive" xml:space="preserve">
+    <value>保活：当前节点可用，延迟 {0}ms</value>
+  </data>
+  <data name="MsgKeepAliveCurrentNodeFailed" xml:space="preserve">
+    <value>保活：当前节点不可用，开始检测订阅 {0} 下所有节点</value>
+  </data>
   <data name="MsgKeepAliveSwitched" xml:space="preserve">
-    <value>保活：已切换至节点 {0}</value>
+    <value>保活：已切换至节点 {0}，延迟 {1}ms</value>
+  </data>
+  <data name="MsgKeepAliveUpdateTriggered" xml:space="preserve">
+    <value>保活：订阅 {0} 全部节点不可用，触发订阅更新</value>
   </data>
   <data name="MsgKeepAliveAllFailed" xml:space="preserve">
     <value>保活：订阅 {0} 全部节点不可用，下次检查将尝试更新</value>
