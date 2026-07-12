@@ -130,6 +130,14 @@
                         Width="150"
                         Binding="{Binding AutoUpdateInterval}"
                         Header="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                    <DataGridCheckBoxColumn
+                        Width="100"
+                        Binding="{Binding KeepAlive}"
+                        Header="{x:Static resx:ResUI.LvKeepAlive}" />
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding KeepAliveInterval}"
+                        Header="{x:Static resx:ResUI.LvKeepAliveInterval}" />
                     <DataGridTextColumn
                         Width="150"
                         Binding="{Binding UserAgent}"

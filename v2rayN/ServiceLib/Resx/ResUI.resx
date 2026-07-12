@@ -564,6 +564,18 @@
   <data name="LvUserAgent" xml:space="preserve">
     <value>User Agent</value>
   </data>
+  <data name="LvKeepAlive" xml:space="preserve">
+    <value>Keep Alive</value>
+  </data>
+  <data name="LvKeepAliveInterval" xml:space="preserve">
+    <value>Keep Alive Interval (minutes)</value>
+  </data>
+  <data name="MsgKeepAliveSwitched" xml:space="preserve">
+    <value>Keep Alive: switched to {0}</value>
+  </data>
+  <data name="MsgKeepAliveAllFailed" xml:space="preserve">
+    <value>Keep Alive: all nodes in {0} are unavailable, will try update subscription next check</value>
+  </data>
   <data name="TbCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

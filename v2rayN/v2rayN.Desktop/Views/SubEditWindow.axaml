@@ -138,6 +138,38 @@
                 </DockPanel>
 
                 <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvKeepAlive}" />
+
+                <DockPanel
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}">
+                    <ToggleSwitch
+                        x:Name="togKeepAlive"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Center"
+                        DockPanel.Dock="Left" />
+
+                    <TextBox
+                        x:Name="txtKeepAliveInterval"
+                        Width="100"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Right"
+                        Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+
+                    <TextBlock
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.LvKeepAliveInterval}" />
+                </DockPanel>
+
+                <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"

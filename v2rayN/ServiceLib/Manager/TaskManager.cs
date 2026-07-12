@@ -35,6 +35,15 @@ public class TaskManager
                 Logging.SaveLog("ScheduledTasks - UpdateTaskRunSubscription", ex);
             }
 
+            try
+            {
+                await KeepAliveManager.Instance.RunKeepAliveAsync();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("ScheduledTasks - KeepAlive", ex);
+            }
+
             //Execute once 20 minute
             if (numOfExecuted % 20 == 0)
             {
@@ -103,12 +112,24 @@ public class TaskManager
 
         foreach (var item in lstSubs)
         {
+            var activeProfile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+            var activeSubId = activeProfile?.Subid;
+
             await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(success, msg);
                 if (success)
                 {
                     Logging.SaveLog($"Update subscription end. {msg}");
+
+                    if (activeSubId == item.Id)
+                    {
+                        var profile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+                        if (profile == null)
+                        {
+                            await KeepAliveManager.Instance.RunPostUpdateFallbackAsync(item.Id);
+                        }
+                    }
                 }
             });
             item.UpdateTime = updateTime;

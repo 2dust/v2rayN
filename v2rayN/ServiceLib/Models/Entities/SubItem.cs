@@ -14,6 +14,14 @@ public class SubItem
 
     public bool Enabled { get; set; } = true;
 
+    public bool KeepAlive { get; set; }
+
+    public int KeepAliveInterval { get; set; } = 10;
+
+    public long KeepAliveLastCheck { get; set; }
+
+    public long KeepAliveLastUpdate { get; set; }
+
     public string UserAgent { get; set; } = string.Empty;
 
     public int Sort { get; set; }

@@ -673,6 +673,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Keep Alive 的本地化字符串。
+        /// </summary>
+        public static string LvKeepAlive {
+            get {
+                return ResourceManager.GetString("LvKeepAlive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive Interval (minutes) 的本地化字符串。
+        /// </summary>
+        public static string LvKeepAliveInterval {
+            get {
+                return ResourceManager.GetString("LvKeepAliveInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 WebDAV Check 的本地化字符串。
         /// </summary>
         public static string LvWebDavCheck {
@@ -2100,6 +2118,24 @@ namespace ServiceLib.Resx {
         public static string MsgInvalidProperty {
             get {
                 return ResourceManager.GetString("MsgInvalidProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: switched to {0} 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveSwitched {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveSwitched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Alive: all nodes in {0} are unavailable, will try update subscription next check 的本地化字符串。
+        /// </summary>
+        public static string MsgKeepAliveAllFailed {
+            get {
+                return ResourceManager.GetString("MsgKeepAliveAllFailed", resourceCulture);
             }
         }
         

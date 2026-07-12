@@ -273,6 +273,7 @@ public class MainWindowViewModel : MyReactiveObject
         await ProfileExManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
+        KeepAliveManager.Instance.Init(_config, Reload, UpdateTaskHandler);
         TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
@@ -475,7 +476,21 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler));
+        var activeProfile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+        var activeSubId = activeProfile?.Subid;
+
+        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, async (success, msg) =>
+        {
+            await UpdateTaskHandler(success, msg);
+            if (success && activeSubId.IsNotEmpty())
+            {
+                var profile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+                if (profile == null)
+                {
+                    await KeepAliveManager.Instance.RunPostUpdateFallbackAsync(activeSubId);
+                }
+            }
+        }));
     }
 
     #endregion Subscription

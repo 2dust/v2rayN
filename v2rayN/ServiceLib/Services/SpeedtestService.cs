@@ -13,12 +13,14 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
-        Task.Run(async () =>
-        {
-            await RunAsync(actionType, selecteds);
-            await ProfileExManager.Instance.SaveTo();
-            await UpdateFunc("", ResUI.SpeedtestingCompleted);
-        });
+        Task.Run(async () => await RunAsync(actionType, selecteds));
+    }
+
+    public async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
+    {
+        await RunInternalAsync(actionType, selecteds);
+        await ProfileExManager.Instance.SaveTo();
+        await UpdateFunc("", ResUI.SpeedtestingCompleted);
     }
 
     public void ExitLoop()
@@ -36,7 +38,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return _lstExitLoop.All(p => p != exitLoopKey);
     }
 
-    private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
+    private async Task RunInternalAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
         var exitLoopKey = Utils.GetGuid(false);
         _lstExitLoop.Add(exitLoopKey);

@@ -2011,6 +2011,10 @@ public static class ConfigHandler
             item.Url = subItem.Url;
             item.MoreUrl = subItem.MoreUrl;
             item.Enabled = subItem.Enabled;
+            item.KeepAlive = subItem.KeepAlive;
+            item.KeepAliveInterval = subItem.KeepAliveInterval;
+            item.KeepAliveLastCheck = subItem.KeepAliveLastCheck;
+            item.KeepAliveLastUpdate = subItem.KeepAliveLastUpdate;
             item.AutoUpdateInterval = subItem.AutoUpdateInterval;
             item.UserAgent = subItem.UserAgent;
             item.Sort = subItem.Sort;

@@ -16,6 +16,14 @@ public static class ConnectionHandler
     }
 
     /// <summary>
+    /// Gets real ping time for the currently active proxy connection.
+    /// </summary>
+    public static async Task<int> GetCurrentRealPingAsync()
+    {
+        return await GetRealPingTimeInfo();
+    }
+
+    /// <summary>
     /// Gets IP information using the default local proxy.
     /// </summary>
     private static async Task<string?> GetIPInfo()

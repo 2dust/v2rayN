@@ -564,6 +564,18 @@
   <data name="LvUserAgent" xml:space="preserve">
     <value>User Agent (可选)</value>
   </data>
+  <data name="LvKeepAlive" xml:space="preserve">
+    <value>连接保活</value>
+  </data>
+  <data name="LvKeepAliveInterval" xml:space="preserve">
+    <value>保活间隔（分钟）</value>
+  </data>
+  <data name="MsgKeepAliveSwitched" xml:space="preserve">
+    <value>保活：已切换至节点 {0}</value>
+  </data>
+  <data name="MsgKeepAliveAllFailed" xml:space="preserve">
+    <value>保活：订阅 {0} 全部节点不可用，下次检查将尝试更新</value>
+  </data>
   <data name="TbCancel" xml:space="preserve">
     <value>取消</value>
   </data>
