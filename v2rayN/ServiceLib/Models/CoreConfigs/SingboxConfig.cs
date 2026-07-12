@@ -94,6 +94,8 @@ public class Rule4Sbox
     public bool? rule_set_ip_cidr_match_source { get; set; }
     public bool? rule_set_ip_cidr_accept_empty { get; set; }
     public bool? tls_record_fragment { get; set; }
+    public string? preferred_by { get; set; }
+    public bool? match_response { get; set; }
 }
 
 [Serializable]
@@ -108,7 +110,6 @@ public class Inbound4Sbox
     public int? mtu { get; set; }
     public bool? auto_route { get; set; }
     public bool? strict_route { get; set; }
-    public bool? endpoint_independent_nat { get; set; }
     public string? stack { get; set; }
     public List<User4Sbox> users { get; set; }
     public List<string>? route_exclude_address { get; set; }
