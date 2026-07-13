@@ -1800,10 +1800,31 @@
   <data name="TbEnabletDnsViaProxy" xml:space="preserve">
     <value>DNS 透過 Bridge</value>
   </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>偵測到不安全的設定：已啟用 AllowInsecure，但未提供憑證。這可能導致中間人攻擊（MITM）</value>
+  </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>無效的 Realm URL.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>格式: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Gecko 封包大小 (min/max)</value>
+  </data>
   <data name="TbLegacyProtectTip" xml:space="preserve">
     <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
   </data>
   <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
     <value>請填寫合法的HTTP請求頭JSON。</value>
+  </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>根憑證提供者</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>僅適用於 v2rayN GUI 的下載與網路請求，不影響核心的憑證驗證</value>
   </data>
 </root>
