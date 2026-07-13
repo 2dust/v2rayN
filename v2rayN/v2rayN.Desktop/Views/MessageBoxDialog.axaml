@@ -11,7 +11,7 @@
     CanResize="False"
     ShowInTaskbar="False"
     SizeToContent="Height"
-    SystemDecorations="Full"
+    WindowDecorations="Full"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
 
