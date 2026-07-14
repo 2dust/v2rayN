@@ -64,6 +64,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -324,6 +325,24 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Grid.Row="13"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvPostUpdateScript}" />
+                <TextBox
+                    x:Name="txtPostUpdateScript"
+                    Grid.Row="13"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPostUpdateScriptTip}"
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}"
                     TextWrapping="Wrap" />
