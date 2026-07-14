@@ -1044,6 +1044,12 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Управление перегрузками</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP-заголовки</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>Пользовательские заголовки исходящего HTTP-запроса. Введите JSON-объект, значения которого — строка или массив строк.</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Псевдоним предыдущего прокси</value>
   </data>
@@ -1614,6 +1620,9 @@
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>
   </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Проверять сертификат узла по имени</value>
+  </data>
   <data name="TbFullCertTips" xml:space="preserve">
     <value>Полный сертификат (цепочка) в формате PEM</value>
   </data>
@@ -1769,5 +1778,56 @@
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>Доступно обновление</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Предупреждение: 1 августа 2026 г. Xray отключит пропуск проверки сертификата (allowInsecure). Как можно скорее перейдите на привязанный отпечаток сертификата (pinnedPeerCertSha256). После этой даты allowInsecure использовать будет нельзя.</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Адреса, исключаемые из маршрутизации</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Разделяйте запятыми (,).</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>Недопустимый адрес в списке исключений маршрутизации TUN: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>Конфликт между {0} и {1}</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Включить финальную фрагментацию (Final Fragment)</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Разбивать конец пакетов на более мелкие фрагменты при отправке. Это может влиять на пропускную способность и задержку.</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>DNS через Bridge</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>Обнаружена небезопасная конфигурация: AllowInsecure включён, но сертификат не предоставлен. Это может привести к атаке «человек посередине» (MITM).</value>
+  </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>Некорректный Realm URL.</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>Введите корректный JSON заголовков HTTP-запроса.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>Формат: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Размер пакета Gecko (мин/макс)</value>
+  </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>Если включено, используется sing-box TUN; иначе — xray TUN.</value>
+  </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>Поставщик корневых сертификатов</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>Применяется только к загрузкам и сетевым запросам графического интерфейса v2rayN. Не влияет на проверку сертификатов ядром.</value>
   </data>
 </root>
