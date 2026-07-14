@@ -1344,6 +1344,21 @@
   <data name="LvMemo" xml:space="preserve">
     <value>备注备忘</value>
   </data>
+  <data name="LvPostUpdateScript" xml:space="preserve">
+    <value>更新后脚本</value>
+  </data>
+  <data name="LvPostUpdateScriptTip" xml:space="preserve">
+    <value>订阅更新成功后执行的脚本（如 powershell -File C:\script.ps1）</value>
+  </data>
+  <data name="MsgStartPostUpdateScript" xml:space="preserve">
+    <value>开始执行更新后脚本</value>
+  </data>
+  <data name="MsgPostUpdateScriptDone" xml:space="preserve">
+    <value>更新后脚本执行完成</value>
+  </data>
+  <data name="MsgPostUpdateScriptFailed" xml:space="preserve">
+    <value>更新后脚本执行失败</value>
+  </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>系统的 sudo 密码</value>
   </data>
