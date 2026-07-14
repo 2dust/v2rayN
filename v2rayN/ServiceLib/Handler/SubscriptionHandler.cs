@@ -41,6 +41,7 @@ public static class SubscriptionHandler
                 if (await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc))
                 {
                     successCount++;
+                    await ExecutePostUpdateScript(item, hashCode, updateFunc);
                 }
 
                 await updateFunc?.Invoke(false, "-------------------------------------------------------");
@@ -218,4 +219,59 @@ public static class SubscriptionHandler
 
         return ret > 0;
     }
+    private static async Task ExecutePostUpdateScript(SubItem item, string hashCode, Func<bool, string, Task> updateFunc)
+    {
+        var script = item.PostUpdateScript?.Trim();
+        if (script.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartPostUpdateScript}: {script}");
+
+            var fileName = script;
+            var arguments = string.Empty;
+            var parts = script.Split(' ', 2);
+            if (parts.Length == 2)
+            {
+                fileName = parts[0];
+                arguments = parts[1];
+            }
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+
+            using var process = Process.Start(psi);
+            if (process != null)
+            {
+                await process.WaitForExitAsync();
+                var output = await process.StandardOutput.ReadToEndAsync();
+                var error = await process.StandardError.ReadToEndAsync();
+                if (output.IsNotEmpty())
+                {
+                    await updateFunc?.Invoke(false, $"{hashCode}{output}");
+                }
+                if (error.IsNotEmpty())
+                {
+                    await updateFunc?.Invoke(false, $"{hashCode}{error}");
+                }
+                await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgPostUpdateScriptDone}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("PostUpdateScript", ex);
+            await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgPostUpdateScriptFailed}: {ex.Message}");
+        }
+    }
+
 }
