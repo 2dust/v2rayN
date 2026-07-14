@@ -8,8 +8,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private static readonly ConcurrentBag<string> _lstExitLoop = [];
-    private readonly int _speedTestPageSize = config.SpeedTestItem.SpeedTestPageSize ?? Global.SpeedTestPageSize;
-    private readonly TimeSpan _delayInterval = TimeSpan.FromSeconds(config.SpeedTestItem.SpeedTestDelayInterval ?? 1);
+    private int SpeedTestPageSize => _config.SpeedTestItem.SpeedTestPageSize is > 0 ? _config.SpeedTestItem.SpeedTestPageSize.Value : Global.SpeedTestPageSize;
+    private TimeSpan DelayInterval => TimeSpan.FromSeconds(_config.SpeedTestItem.SpeedTestDelayInterval is > 0 ? _config.SpeedTestItem.SpeedTestDelayInterval.Value : 1);
 
     public void RunLoop(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
@@ -137,7 +137,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunTcpingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
-        var pageSize = Math.Min(selecteds.Count, _speedTestPageSize);
+        var pageSize = Math.Min(selecteds.Count, SpeedTestPageSize);
         var lstBatch = GetTestBatchItem(selecteds, pageSize);
 
         foreach (var lst in lstBatch)
@@ -180,7 +180,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 return;
             }
 
-            await Task.Delay(_delayInterval);
+            await Task.Delay(DelayInterval);
         }
     }
 
@@ -188,7 +188,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (pageSize <= 0)
         {
-            pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
+            pageSize = Math.Min(lstSelected.Count, SpeedTestPageSize);
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
@@ -200,7 +200,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(_delayInterval);
+            await Task.Delay(DelayInterval);
         }
 
         //Retest the failed part
@@ -277,7 +277,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         if (pageSize <= 0)
         {
-            pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
+            pageSize = Math.Min(lstSelected.Count, SpeedTestPageSize);
         }
         var lstTest = GetTestBatchItem(lstSelected, pageSize);
 
@@ -289,7 +289,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(_delayInterval);
+            await Task.Delay(DelayInterval);
         }
 
         //Retest the failed part

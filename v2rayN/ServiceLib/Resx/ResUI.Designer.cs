@@ -4708,6 +4708,46 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Speed Test Page Size 的本地化字符串。
+        /// </summary>
+
+        public static string TbSettingsSpeedTestPageSize {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestPageSize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Speed Test Page Size Tip 的本地化字符串。
+        /// </summary>
+        
+        public static string TbSettingsSpeedTestPageSizeTip {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestPageSizeTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Speed Test Delay Interval 的本地化字符串。
+        /// </summary>
+        
+        public static string TbSettingsSpeedTestDelayInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestDelayInterval", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Speed Test Delay Interval Tip 的本地化字符串。
+        /// </summary>
+
+        public static string TbSettingsSpeedTestDelayIntervalTip {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedTestDelayIntervalTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Auth user 的本地化字符串。
         /// </summary>
         public static string TbSettingsUser {
