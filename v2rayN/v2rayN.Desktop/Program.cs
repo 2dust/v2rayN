@@ -1,4 +1,5 @@
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Manager;
 
 namespace v2rayN.Desktop;
 
@@ -48,6 +49,8 @@ internal class Program
         {
             return false;
         }
+
+        AppManager.Instance.WindowDialog = new WindowDialog();
         return true;
     }
 

@@ -260,11 +260,11 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
+                    x:Name="btnSelectPrevProfile"
                     Grid.Row="9"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Click="BtnSelectPrevProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}"
                     Style="{StaticResource DefButton}" />
 
@@ -285,11 +285,11 @@
                     AcceptsReturn="True"
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
+                    x:Name="btnSelectNextProfile"
                     Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Click="BtnSelectNextProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}"
                     Style="{StaticResource DefButton}" />
 

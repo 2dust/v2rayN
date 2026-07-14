@@ -13,6 +13,12 @@ public partial class MessageBoxDialog : Window
     {
         InitializeComponent();
 
+        if (Design.IsDesignMode)
+        {
+            caption = "Design Caption";
+            message = "Design Message";
+        }
+
         Title = caption;
         txtMessage.Text = message;
 

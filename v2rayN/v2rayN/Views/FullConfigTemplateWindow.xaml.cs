@@ -8,10 +8,7 @@ public partial class FullConfigTemplateWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
-
-        ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
@@ -29,17 +26,6 @@ public partial class FullConfigTemplateWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkFullConfigTemplateDoc_Click(object sender, RoutedEventArgs e)

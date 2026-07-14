@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleDetailsViewModel : MyReactiveObject
+public class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
 
@@ -23,13 +25,17 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
     [Reactive]
     public bool AutoSort { get; set; }
 
+    public ReactiveCommand<Unit, Unit> SelectProfileCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
+        SelectProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await SelectProfileAsync();
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveRulesAsync();
@@ -88,6 +94,24 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await _updateView?.Invoke(EViewAction.CloseWindow, null);
+        RequestClose?.Invoke(this, EventArgs.Empty);
+        await Task.CompletedTask;
+    }
+
+    private async Task SelectProfileAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return;
+        }
+        var profileItem = await profileSelectViewModel.GetProfileItem();
+        if (profileItem != null)
+        {
+            SelectedSource.OutboundTag = profileItem.Remarks;
+            SelectedSource = JsonUtils.DeepCopy(SelectedSource);
+        }
     }
 }

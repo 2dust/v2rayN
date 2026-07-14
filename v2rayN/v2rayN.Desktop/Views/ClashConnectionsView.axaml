@@ -3,32 +3,34 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vms:ClashConnectionsViewModel"
+    Design.DataContext="{x:Static dd:DesignData.ClashConnections}"
     mc:Ignorable="d">
 
     <DockPanel Margin="2">
         <WrapPanel
-            VerticalAlignment="Center"
             Margin="{StaticResource Margin4}"
+            VerticalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
 
             <TextBox
                 x:Name="txtHostFilter"
                 Width="200"
-                VerticalContentAlignment="Center"
                 Margin="{StaticResource MarginLr8}"
+                VerticalContentAlignment="Center"
                 PlaceholderText="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
 
             <Button
                 x:Name="btnConnectionCloseAll"
-                Classes="IconButton Success"
                 Margin="{StaticResource MarginLr8}"
+                Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <Button.Content>
                     <PathIcon Data="{StaticResource SemiIconClose}" />
@@ -37,8 +39,8 @@
 
             <Button
                 x:Name="btnAutofitColumnWidth"
-                Classes="IconButton Success"
                 Margin="{StaticResource MarginLr8}"
+                Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                 <Button.Content>
                     <PathIcon Data="{StaticResource SemiIconExpand}" />
@@ -46,13 +48,13 @@
             </Button>
 
             <TextBlock
-                VerticalAlignment="Center"
                 Margin="{StaticResource MarginLr8}"
+                VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbAutoRefresh}" />
             <ToggleSwitch
                 x:Name="togAutoRefresh"
-                HorizontalAlignment="Left"
-                Margin="{StaticResource MarginLr8}" />
+                Margin="{StaticResource MarginLr8}"
+                HorizontalAlignment="Left" />
         </WrapPanel>
 
         <DataGrid

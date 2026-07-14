@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServerViewModel : MyReactiveObject
+public class AddServerViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -241,10 +243,9 @@ public class AddServerViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public AddServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public AddServerViewModel(ProfileItem profileItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -443,7 +444,7 @@ public class AddServerViewModel : MyReactiveObject
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

@@ -13,7 +13,6 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
         btnCancel.Click += (_, _) => Close();
-        ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
@@ -30,17 +29,6 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkFullConfigTemplateDoc_Click(object sender, RoutedEventArgs e)

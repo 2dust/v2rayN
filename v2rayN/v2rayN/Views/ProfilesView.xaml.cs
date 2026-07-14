@@ -35,8 +35,6 @@ public partial class ProfilesView
             lstProfiles.Drop += LstProfiles_Drop;
         }
 
-        ViewModel = new ProfilesViewModel(UpdateViewHandler);
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -84,17 +82,73 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2InnerUriCmd, v => v.menuExport2InnerUri).DisposeWith(disposables);
 
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.SaveFileDialogInteraction.RegisterHandler(async interaction =>
+            {
+                var viewModel = ViewModel;
+                if (viewModel is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var profileItem = interaction.Input;
+                if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                await viewModel.Export2ClientConfigResult(fileName, profileItem);
+                interaction.SetOutput(true);
+            }).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(interaction =>
+            {
+                var strData = interaction.Input;
+                WindowsUtils.SetClipboardData(strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareServerInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(Unit.Default);
+                    return;
+                }
+                await ShareServer(url);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
+            {
+                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.AdjustMainLvColWidthInteraction.RegisterHandler(interaction =>
+            {
+                AutofitColumnWidth();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
             AppEvents.AppExitRequested
               .AsObservable()
               .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
-
-            AppEvents.AdjustMainLvColWidthRequested
-                .AsObservable()
-                .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(_ => AutofitColumnWidth())
-                .DisposeWith(disposables);
         });
 
         RestoreUI();
@@ -102,93 +156,7 @@ public partial class ProfilesView
 
     #region Event
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
-
-            case EViewAction.ProfilesFocus:
-                lstProfiles.Focus();
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SaveFileDialog:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
-                {
-                    return false;
-                }
-                ViewModel?.Export2ClientConfigResult(fileName, (ProfileItem)obj);
-                break;
-
-            case EViewAction.AddServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddServer2Window:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddGroupServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.ShareServer:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                ShareServer((string)obj);
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.DispatcherRefreshServersBiz:
-                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
-                break;
-        }
-
-        return await Task.FromResult(true);
-    }
-
-    public async void ShareServer(string url)
+    public async Task ShareServer(string url)
     {
         var img = QRCodeWindowsUtils.GetQRCode(url);
         var dialog = new QrcodeView()

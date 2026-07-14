@@ -2,8 +2,19 @@ namespace ServiceLib.ViewModels;
 
 public class StatusBarViewModel : MyReactiveObject
 {
-    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new(null));
+    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
+    public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
+    public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+    public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
+    public EventChannel<bool?> ShowHideWindowRequested { get; } = new();
+
+    private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
+
+    public EventChannel<string> SetDefaultServerRequested { get; } = new();
+    public EventChannel<Unit> ReloadRequested { get; } = new();
+    public EventChannel<Unit> AddServerViaScanRequested { get; } = new();
+    public EventChannel<Unit> AddServerViaClipboardRequested { get; } = new();
 
     #region ObservableCollection
 
@@ -92,7 +103,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     #endregion UI
 
-    public StatusBarViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public StatusBarViewModel()
     {
         _config = AppManager.Instance.Config;
         SelectedRouting = new();
@@ -140,17 +151,17 @@ public class StatusBarViewModel : MyReactiveObject
 
         NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(null);
+            ShowHideWindowRequested.Publish(null);
             await Task.CompletedTask;
         });
         ShowWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(true);
+            ShowHideWindowRequested.Publish(true);
             await Task.CompletedTask;
         });
         HideWindowCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            AppEvents.ShowHideWindowRequested.Publish(false);
+            ShowHideWindowRequested.Publish(false);
             await Task.CompletedTask;
         });
 
@@ -193,30 +204,10 @@ public class StatusBarViewModel : MyReactiveObject
 
         #region AppEvents
 
-        if (updateView != null)
-        {
-            InitUpdateView(updateView);
-        }
-
         AppEvents.DispatcherStatisticsRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
-
-        AppEvents.RoutingsMenuRefreshRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await RefreshRoutingsMenu());
-
-        AppEvents.TestServerRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await TestServerAvailability());
-
-        AppEvents.InboundDisplayRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await InboundDisplayStatus());
 
         AppEvents.SysProxyChangeRequested
             .AsObservable()
@@ -238,18 +229,6 @@ public class StatusBarViewModel : MyReactiveObject
         BlRouting = true;
     }
 
-    public void InitUpdateView(Func<EViewAction, object?, Task<bool>>? updateView)
-    {
-        _updateView = updateView;
-        if (_updateView != null)
-        {
-            AppEvents.ProfilesRefreshRequested
-              .AsObservable()
-              .ObserveOn(RxSchedulers.MainThreadScheduler)
-              .Subscribe(async _ => await RefreshServersBiz()); //.DisposeWith(_disposables);
-        }
-    }
-
     private async Task CopyProxyCmdToClipboard()
     {
         var cmd = Utils.IsWindows() ? "set" : "export";
@@ -264,25 +243,30 @@ public class StatusBarViewModel : MyReactiveObject
         sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
         sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
-        await _updateView?.Invoke(EViewAction.SetClipboardData, sb.ToString());
+        await SetClipboardDataInteraction.Handle(sb.ToString());
     }
 
     private async Task AddServerViaClipboard()
     {
-        AppEvents.AddServerViaClipboardRequested.Publish();
+        AddServerViaClipboardRequested.Publish();
         await Task.Delay(1000);
     }
 
     private async Task AddServerViaScan()
     {
-        AppEvents.AddServerViaScanRequested.Publish();
+        AddServerViaScanRequested.Publish();
         await Task.Delay(1000);
     }
 
     private async Task UpdateSubscriptionProcess(bool blProxy)
     {
-        AppEvents.SubscriptionsUpdateRequested.Publish(blProxy);
+        SubscriptionsUpdateRequested.Publish(blProxy);
         await Task.Delay(1000);
+    }
+
+    public async Task RefreshServers()
+    {
+        await RefreshServersBiz();
     }
 
     private async Task RefreshServersBiz()
@@ -312,8 +296,7 @@ public class StatusBarViewModel : MyReactiveObject
     {
         var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, "");
 
-        Servers.Clear();
-        if (lstModel.Count > _config.GuiItem.TrayMenuServersLimit)
+        if (lstModel?.Count > _config.GuiItem.TrayMenuServersLimit)
         {
             BlServers = false;
             return;
@@ -332,6 +315,7 @@ public class StatusBarViewModel : MyReactiveObject
                 SelectedServer = item;
             }
         }
+        Servers.Clear();
         Servers.AddRange(models);
     }
 
@@ -349,7 +333,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             return;
         }
-        AppEvents.SetDefaultServerRequested.Publish(SelectedServer.ID);
+        SetDefaultServerRequested.Publish(SelectedServer.ID);
     }
 
     public async Task TestServerAvailability()
@@ -411,11 +395,18 @@ public class StatusBarViewModel : MyReactiveObject
 
         if (blChange)
         {
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            try
+            {
+                await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+            }
+            catch (UnhandledInteractionException<Unit, Unit>)
+            {
+                // Ignore
+            }
         }
     }
 
-    private async Task RefreshRoutingsMenu()
+    public async Task RefreshRoutingsMenu()
     {
         var routings = await AppManager.Instance.RoutingItems();
 
@@ -446,8 +437,8 @@ public class StatusBarViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
-            AppEvents.ReloadRequested.Publish();
-            _updateView?.Invoke(EViewAction.DispatcherRefreshIcon, null);
+            ReloadRequested.Publish();
+            await DispatcherRefreshIconInteraction.Handle(Unit.Default);
         }
     }
 
@@ -484,8 +475,8 @@ public class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                bool? passwordResult = await _updateView?.Invoke(EViewAction.PasswordInput, null);
-                if (passwordResult == false)
+                var password = await PasswordInputInteraction.Handle(Unit.Default);
+                if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;
                     return;
@@ -494,7 +485,7 @@ public class StatusBarViewModel : MyReactiveObject
         }
 
         await ConfigHandler.SaveConfig(_config);
-        AppEvents.ReloadRequested.Publish();
+        ReloadRequested.Publish();
     }
 
     private bool AllowEnableTun()
@@ -518,7 +509,7 @@ public class StatusBarViewModel : MyReactiveObject
 
     #region UI
 
-    private async Task InboundDisplayStatus()
+    public async Task InboundDisplayStatus()
     {
         StringBuilder sb = new();
         sb.Append($"[{EInboundProtocol.mixed}:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}");

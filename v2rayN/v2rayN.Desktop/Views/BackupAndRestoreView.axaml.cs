@@ -4,22 +4,11 @@ namespace v2rayN.Desktop.Views;
 
 public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestoreViewModel>
 {
-    private Window? _window;
-
     public BackupAndRestoreView()
     {
         InitializeComponent();
-    }
-
-    public BackupAndRestoreView(Window window)
-    {
-        _window = window;
-
-        InitializeComponent();
         menuLocalBackup.Click += MenuLocalBackup_Click;
         menuLocalRestore.Click += MenuLocalRestore_Click;
-
-        ViewModel = new BackupAndRestoreViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
@@ -39,7 +28,7 @@ public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestore
 
     private async void MenuLocalBackup_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.SaveFileDialog(_window, "Zip|*.zip");
+        var fileName = await UI.SaveFileDialog("Zip|*.zip");
         if (fileName.IsNullOrEmpty())
         {
             return;
@@ -50,17 +39,12 @@ public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestore
 
     private async void MenuLocalRestore_Click(object? sender, RoutedEventArgs e)
     {
-        var fileName = await UI.OpenFileDialog(_window, null);
+        var fileName = await UI.OpenFileDialog(null);
         if (fileName.IsNullOrEmpty())
         {
             return;
         }
 
         ViewModel?.LocalRestore(fileName);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        return await Task.FromResult(true);
     }
 }

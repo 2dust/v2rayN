@@ -5,18 +5,11 @@ namespace v2rayN.Desktop.Views;
 
 public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 {
-    private static Config _config;
-
-    public Task<ProfileItem?> ProfileItem => GetProfileItem();
-    public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
-    private bool _allowMultiSelect = false;
-
     public ProfilesSelectWindow()
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
-
+        btnCancel.Click += (_, _) => Close();
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
@@ -25,9 +18,6 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         lstProfiles.Sorting += LstProfiles_Sorting;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
 
-        ViewModel = new ProfilesSelectViewModel(UpdateViewHandler);
-        DataContext = ViewModel;
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -35,14 +25,23 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
-        });
 
-        btnCancel.Click += (s, e) => Close(false);
+            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            this.WhenAnyValue(x => x.ViewModel.MultiSelect)
+                .Subscribe(AllowMultiSelect)
+                .DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+        });
     }
 
-    public void AllowMultiSelect(bool allow)
+    private void AllowMultiSelect(bool allow)
     {
-        _allowMultiSelect = allow;
         if (allow)
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
@@ -51,28 +50,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         else
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Single;
-            if (lstProfiles.SelectedItems.Count > 0)
-            {
-                var first = lstProfiles.SelectedItems[0];
-                lstProfiles.SelectedItems.Clear();
-                lstProfiles.SelectedItem = first;
-            }
         }
-    }
-
-    // Expose ConfigType filter controls to callers
-    public void SetConfigTypeFilter(IEnumerable<EConfigType> types, bool exclude = false)
-        => ViewModel?.SetConfigTypeFilter(types, exclude);
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void LstProfiles_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -124,7 +102,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         {
             if (e.Key == Key.A)
             {
-                if (_allowMultiSelect)
+                if (ViewModel?.MultiSelect == true)
                 {
                     lstProfiles.SelectAll();
                 }
@@ -166,23 +144,5 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
         {
             ViewModel?.RefreshServers();
         }
-    }
-
-    public async Task<ProfileItem?> GetProfileItem()
-    {
-        var item = await ViewModel?.GetProfileItem();
-        return item;
-    }
-
-    public async Task<List<ProfileItem>?> GetProfileItems()
-    {
-        var item = await ViewModel?.GetProfileItems();
-        return item;
-    }
-
-    private void BtnSave_Click(object sender, RoutedEventArgs e)
-    {
-        // Trigger selection finalize when Confirm is clicked
-        ViewModel?.SelectFinish();
     }
 }

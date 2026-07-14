@@ -6,26 +6,16 @@ namespace v2rayN.Views;
 
 public partial class ProfilesSelectWindow
 {
-    private static Config _config;
-
-    public Task<ProfileItem?> ProfileItem => GetProfileItem();
-    public Task<List<ProfileItem>?> ProfileItems => GetProfileItems();
-    private bool _allowMultiSelect = false;
-
     public ProfilesSelectWindow()
     {
         InitializeComponent();
         lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
-
-        _config = AppManager.Instance.Config;
 
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;
         lstProfiles.PreviewKeyDown += LstProfiles_PreviewKeyDown;
         lstProfiles.SelectionChanged += LstProfiles_SelectionChanged;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
-
-        ViewModel = new ProfilesSelectViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
@@ -35,14 +25,25 @@ public partial class ProfilesSelectWindow
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.lstGroup.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            this.WhenAnyValue(x => x.ViewModel.MultiSelect)
+                .Subscribe(AllowMultiSelect)
+                .DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
         });
 
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
-    public void AllowMultiSelect(bool allow)
+    private void AllowMultiSelect(bool allow)
     {
-        _allowMultiSelect = allow;
         if (allow)
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Extended;
@@ -51,12 +52,6 @@ public partial class ProfilesSelectWindow
         else
         {
             lstProfiles.SelectionMode = DataGridSelectionMode.Single;
-            if (lstProfiles.SelectedItems.Count > 0)
-            {
-                var first = lstProfiles.SelectedItems[0];
-                lstProfiles.SelectedItems.Clear();
-                lstProfiles.SelectedItem = first;
-            }
         }
     }
 
@@ -66,18 +61,7 @@ public partial class ProfilesSelectWindow
 
     #region Event
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-        }
-        return await Task.FromResult(true);
-    }
-
-    private void LstProfiles_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void LstProfiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ViewModel != null)
         {
@@ -108,7 +92,7 @@ public partial class ProfilesSelectWindow
 
     private void menuSelectAll_Click(object sender, RoutedEventArgs e)
     {
-        if (!_allowMultiSelect)
+        if (ViewModel?.MultiSelect != true)
         {
             return;
         }
@@ -165,24 +149,5 @@ public partial class ProfilesSelectWindow
             e.Handled = true;
         }
     }
-
-    public async Task<ProfileItem?> GetProfileItem()
-    {
-        var item = await ViewModel?.GetProfileItem();
-        return item;
-    }
-
-    public async Task<List<ProfileItem>?> GetProfileItems()
-    {
-        var item = await ViewModel?.GetProfileItems();
-        return item;
-    }
-
-    private void BtnSave_Click(object sender, RoutedEventArgs e)
-    {
-        // Trigger selection finalize when Confirm is clicked
-        ViewModel?.SelectFinish();
-    }
-
     #endregion Event
 }

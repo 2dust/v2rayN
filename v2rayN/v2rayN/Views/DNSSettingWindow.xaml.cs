@@ -8,10 +8,7 @@ public partial class DNSSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
-
-        ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;
@@ -72,17 +69,6 @@ public partial class DNSSettingWindow
             this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)

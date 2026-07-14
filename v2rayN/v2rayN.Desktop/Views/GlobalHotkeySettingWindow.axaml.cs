@@ -11,8 +11,6 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
     {
         InitializeComponent();
 
-        ViewModel = new GlobalHotkeySettingViewModel(UpdateViewHandler);
-
         btnReset.Click += btnReset_Click;
 
         HotkeyManager.Instance.IsPause = true;
@@ -23,21 +21,10 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         this.WhenActivated(disposables =>
         {
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            BindingData();
         });
 
         Init();
-        BindingData();
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Init()
@@ -67,9 +54,13 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
         {
             return;
         }
+        if (ViewModel == null)
+        {
+            return;
+        }
 
-        var item = ViewModel?.GetKeyEventItem((EGlobalHotkey)txtBox.Tag);
-        var modifierKeys = new Key[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
+        var item = ViewModel.GetKeyEventItem((EGlobalHotkey)txtBox.Tag!);
+        var modifierKeys = new[] { Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt, Key.LWin, Key.RWin };
 
         item.KeyCode = (int)(e.Key == Key.System ? modifierKeys.Contains(Key.System) ? Key.None : Key.System : modifierKeys.Contains(e.Key) ? Key.None : e.Key);
         item.Alt = (e.KeyModifiers & KeyModifiers.Alt) == KeyModifiers.Alt;
@@ -109,17 +100,17 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
         if (item.Control)
         {
-            res.Append($"{KeyModifiers.Control} +");
+            res.Append($"{KeyModifiers.Control} + ");
         }
 
         if (item.Shift)
         {
-            res.Append($"{KeyModifiers.Shift} +");
+            res.Append($"{KeyModifiers.Shift} + ");
         }
 
         if (item.Alt)
         {
-            res.Append($"{KeyModifiers.Alt} +");
+            res.Append($"{KeyModifiers.Alt} + ");
         }
 
         if (item.KeyCode != null && (Key)item.KeyCode != Key.None)

@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class AddGroupServerViewModel : MyReactiveObject
+public class AddGroupServerViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     [Reactive]
     public ProfileItem SelectedSource { get; set; }
 
@@ -29,7 +31,7 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public IObservableCollection<ProfileItem> AllProfilePreviewItemsObs { get; } = new ObservableCollectionExtended<ProfileItem>();
 
-    //public ReactiveCommand<Unit, Unit> AddCmd { get; }
+    public ReactiveCommand<Unit, Unit> AddCmd { get; }
     public ReactiveCommand<Unit, Unit> RemoveCmd { get; }
 
     public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
@@ -39,15 +41,18 @@ public class AddGroupServerViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public AddGroupServerViewModel(ProfileItem profileItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    public AddGroupServerViewModel(ProfileItem profileItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedChild,
-            SelectedChild => SelectedChild != null && !SelectedChild.Remarks.IsNullOrEmpty());
+            selectedChild => selectedChild != null && !selectedChild.Remarks.IsNullOrEmpty());
 
+        AddCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddChildAsync();
+        });
         RemoveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ChildRemoveAsync();
@@ -101,6 +106,20 @@ public class AddGroupServerViewModel : MyReactiveObject
         var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
         var childItemList = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childIndexIds);
         ChildItemsObs.AddRange(childItemList);
+    }
+
+    public async Task AddChildAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        profileSelectViewModel.MultiSelect = true;
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return;
+        }
+        var profiles = await profileSelectViewModel.GetProfileItems() ?? [];
+        ChildItemsObs.AddRange(profiles);
     }
 
     public async Task ChildRemoveAsync()
@@ -230,7 +249,7 @@ public class AddGroupServerViewModel : MyReactiveObject
         if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {
