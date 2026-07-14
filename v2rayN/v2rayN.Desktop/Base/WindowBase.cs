@@ -2,10 +2,12 @@ namespace v2rayN.Desktop.Base;
 
 public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewModel : class
 {
+    private bool _firstOpen = true;
+
     public WindowBase()
     {
-        Initialized += OnWindowInitialized;
         Loaded += OnLoaded;
+
         Loaded += (s, e) =>
         {
             if (Owner != null && !ShowInTaskbar)
@@ -15,44 +17,48 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
         };
     }
 
-    private void ReactiveWindowBase_Closed(object? sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void OnWindowInitialized(object? sender, EventArgs e)
+    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
     {
         try
         {
             var sizeItem = ConfigHandler.GetWindowSizeItem(AppManager.Instance.Config, GetType().Name);
-            if (sizeItem is null)
+            if (sizeItem != null)
             {
-                return;
+                if (sizeItem.Width > 0)
+                    Width = sizeItem.Width;
+
+                if (sizeItem.Height > 0)
+                    Height = sizeItem.Height;
             }
 
-            if (sizeItem.Width > 0 && !Width.Equals(sizeItem.Width))
+            if (_firstOpen)
             {
-                Width = sizeItem.Width;
-            }
+                var screen = Screens.ScreenFromWindow(this) ?? Screens.Primary;
+                if (screen != null)
+                {
+                    var x = (screen.WorkingArea.Width - Width) / 2;
+                    var y = (screen.WorkingArea.Height - Height) / 2;
+                    Position = new PixelPoint((int)x, (int)y);
+                }
 
-            if (sizeItem.Height > 0 && !Height.Equals(sizeItem.Height))
-            {
-                Height = sizeItem.Height;
+                _firstOpen = false;
             }
         }
         catch { }
     }
 
-    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
-    {
-    }
-
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
+
         try
         {
-            ConfigHandler.SaveWindowSizeItem(AppManager.Instance.Config, GetType().Name, Width, Height);
+            ConfigHandler.SaveWindowSizeItem(
+                AppManager.Instance.Config,
+                GetType().Name,
+                Bounds.Width,
+                Bounds.Height
+            );
         }
         catch { }
     }
