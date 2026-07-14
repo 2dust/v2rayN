@@ -71,14 +71,16 @@ public partial class StatusBarView
 
             ViewModel.DispatcherRefreshIconInteraction.RegisterHandler(interaction =>
             {
-                Application.Current?.Dispatcher.Invoke(async () =>
-                {
-                    tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
-                    Application.Current.MainWindow?.Icon = WindowsManager.Instance.GetAppIcon(_config);
-                }, DispatcherPriority.Normal);
+                Application.Current?.Dispatcher.Invoke(async () => await RefreshIcon(), DispatcherPriority.Normal);
                 interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
+    }
+
+    private async Task RefreshIcon()
+    {
+        tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
+        Application.Current.MainWindow?.Icon = WindowsManager.Instance.GetAppIcon(_config);
     }
 
     private async void menuExit_Click(object sender, RoutedEventArgs e)

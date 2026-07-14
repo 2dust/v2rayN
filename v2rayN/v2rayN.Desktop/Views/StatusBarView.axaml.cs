@@ -45,8 +45,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
             ViewModel.DispatcherRefreshIconInteraction.RegisterHandler(interaction =>
             {
-                Dispatcher.UIThread.Post(RefreshIcon,
-                    DispatcherPriority.Default);
+                Dispatcher.UIThread.Post(RefreshIcon, DispatcherPriority.Default);
                 interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
@@ -57,6 +56,9 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
         {
             cmbSystemProxy.Items.RemoveAt(cmbSystemProxy.Items.Count - 1);
         }
+
+        // Because this view has not yet been initialized when DispatcherRefreshIconInteraction is first called.
+        RefreshIcon();
     }
 
     private void RefreshIcon()
