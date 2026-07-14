@@ -2021,6 +2021,7 @@ public static class ConfigHandler
             item.NextProfile = subItem.NextProfile;
             item.PreSocksPort = subItem.PreSocksPort;
             item.Memo = subItem.Memo;
+            item.PostUpdateScript = subItem.PostUpdateScript;
         }
 
         if (item.Id.IsNullOrEmpty())
