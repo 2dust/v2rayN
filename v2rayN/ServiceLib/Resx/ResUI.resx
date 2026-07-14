@@ -1347,6 +1347,21 @@
   <data name="LvMemo" xml:space="preserve">
     <value>Remarks Memo</value>
   </data>
+  <data name="LvPostUpdateScript" xml:space="preserve">
+    <value>Post-update script</value>
+  </data>
+  <data name="LvPostUpdateScriptTip" xml:space="preserve">
+    <value>Execute this script after a successful subscription update (e.g. powershell -File C:\script.ps1)</value>
+  </data>
+  <data name="MsgStartPostUpdateScript" xml:space="preserve">
+    <value>Starting post-update script</value>
+  </data>
+  <data name="MsgPostUpdateScriptDone" xml:space="preserve">
+    <value>Post-update script completed</value>
+  </data>
+  <data name="MsgPostUpdateScriptFailed" xml:space="preserve">
+    <value>Post-update script failed</value>
+  </data>
   <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
     <value>System sudo password</value>
   </data>
