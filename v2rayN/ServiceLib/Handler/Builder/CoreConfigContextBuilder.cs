@@ -194,8 +194,7 @@ public class CoreConfigContextBuilder
         {
             var preSocksResult = await Build(nodeContext.AppConfig, preSocksItem);
 
-            var protectCoreTypeList = nodeContext.ProtectCoreTypeList;
-            protectCoreTypeList.Add(nodeContext.RunCoreType);
+            var protectCoreTypeList = new HashSet<ECoreType>(nodeContext.ProtectCoreTypeList) { nodeContext.RunCoreType };
 
             return preSocksResult with
             {
