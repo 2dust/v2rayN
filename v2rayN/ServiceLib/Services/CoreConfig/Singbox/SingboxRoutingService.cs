@@ -34,12 +34,12 @@ public partial class CoreConfigSingboxService
                     _coreConfig.route.rules.AddRange(tunRules);
                 }
 
-                var (lstDnsExe, lstDirectExe) = BuildRoutingDirectExe();
+                var lstDirectExe = BuildRoutingDirectExe();
                 _coreConfig.route.rules.Add(new()
                 {
                     port = [53],
                     action = "hijack-dns",
-                    process_name = lstDnsExe
+                    process_name = lstDirectExe
                 });
 
                 _coreConfig.route.rules.Add(new()
@@ -256,34 +256,33 @@ public partial class CoreConfigSingboxService
         }
     }
 
-    private static (List<string> lstDnsExe, List<string> lstDirectExe) BuildRoutingDirectExe()
+    private List<string> BuildRoutingDirectExe()
     {
-        var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        var coreInfoResult = CoreInfoManager.Instance.GetCoreInfo();
+        var allCoreInfo = CoreInfoManager.Instance.GetCoreInfo();
 
-        foreach (var coreConfig in coreInfoResult)
+        foreach (var coreConfig in allCoreInfo)
         {
+            if (!context.ProtectCoreTypeList.Contains(coreConfig.CoreType))
+            {
+                continue;
+            }
             if (coreConfig.CoreType == ECoreType.v2rayN)
             {
                 continue;
             }
-
+            if (coreConfig.CoreExes == null)
+            {
+                continue;
+            }
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                if (coreConfig.CoreType != ECoreType.sing_box)
-                {
-                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
-                }
                 directExeSet.Add(Utils.GetExeName(baseExeName));
             }
         }
 
-        var lstDnsExe = new List<string>(dnsExeSet);
-        var lstDirectExe = new List<string>(directExeSet);
-
-        return (lstDnsExe, lstDirectExe);
+        return directExeSet.ToList();
     }
 
     private void GenRoutingUserRule(RulesItem? item)
