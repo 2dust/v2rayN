@@ -259,7 +259,12 @@ public partial class CoreConfigV2rayService
             }
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                directExeSet.Add(Utils.GetExeName(baseExeName));
+                //directExeSet.Add(Utils.GetExeName(baseExeName));
+                var exePath = CoreInfoManager.Instance.GetCoreExecFile(coreConfig, out _);
+                if (!exePath.IsNullOrEmpty())
+                {
+                    directExeSet.Add(exePath);
+                }
             }
         }
         //directExeSet.Add("xray/");

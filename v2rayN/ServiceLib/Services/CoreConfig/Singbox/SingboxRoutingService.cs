@@ -39,13 +39,13 @@ public partial class CoreConfigSingboxService
                 {
                     port = [53],
                     action = "hijack-dns",
-                    process_name = lstDirectExe
+                    process_path = lstDirectExe
                 });
 
                 _coreConfig.route.rules.Add(new()
                 {
                     outbound = Global.DirectTag,
-                    process_name = lstDirectExe
+                    process_path = lstDirectExe
                 });
 
                 // ICMP Routing
@@ -278,7 +278,12 @@ public partial class CoreConfigSingboxService
             }
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                directExeSet.Add(Utils.GetExeName(baseExeName));
+                //directExeSet.Add(Utils.GetExeName(baseExeName));
+                var exePath = CoreInfoManager.Instance.GetCoreExecFile(coreConfig, out _);
+                if (!exePath.IsNullOrEmpty())
+                {
+                    directExeSet.Add(exePath);
+                }
             }
         }
 
