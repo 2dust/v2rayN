@@ -663,7 +663,7 @@ public sealed class AppManager
         return Global.SsSecuritiesInSingbox;
     }
 
-    public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
+    public ECoreType GetCoreType(ProfileItem? profileItem, EConfigType eConfigType)
     {
         if (profileItem?.CoreType != null)
         {
