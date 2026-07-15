@@ -1114,7 +1114,7 @@
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
-                        Text="Custom" />
+                        Text="Custom Pre" />
                     <ComboBox
                         x:Name="cmbCoreType2"
                         Grid.Row="2"

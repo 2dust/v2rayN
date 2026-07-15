@@ -1388,7 +1388,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Custom" />
+                        Text="Custom Pre" />
                     <ComboBox
                         x:Name="cmbCoreType2"
                         Grid.Row="2"
