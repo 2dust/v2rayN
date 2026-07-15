@@ -1511,7 +1511,7 @@ public static class ConfigHandler
         else if (node.ConfigType == EConfigType.Custom
             && node.PreSocksPort is > 0 and <= 65535)
         {
-            var preCoreType = config.TunModeItem.EnableTun ? ECoreType.sing_box : ECoreType.Xray;
+            var preCoreType = (enableLegacyProtect && config.TunModeItem.EnableTun) ? ECoreType.sing_box : coreType;
             itemSocks = new ProfileItem()
             {
                 CoreType = preCoreType,
