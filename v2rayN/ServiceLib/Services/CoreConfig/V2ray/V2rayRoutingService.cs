@@ -13,11 +13,11 @@ public partial class CoreConfigV2rayService
                 {
                     _coreConfig.routing.rules.AddRange(tunRules);
                 }
-                var (lstDnsExe, lstDirectExe) = BuildRoutingDirectExe();
+                var lstDirectExe = BuildRoutingDirectExe();
                 _coreConfig.routing.rules.Add(new()
                 {
                     port = "53",
-                    process = lstDnsExe,
+                    process = lstDirectExe,
                     outboundTag = Global.DnsOutboundTag,
                 });
                 _coreConfig.routing.rules.Add(new()
@@ -232,36 +232,44 @@ public partial class CoreConfigV2rayService
         return finalRule;
     }
 
-    private static (List<string> lstDnsExe, List<string> lstDirectExe) BuildRoutingDirectExe()
+    private List<string> BuildRoutingDirectExe()
     {
-        var dnsExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var directExeSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        var coreInfoResult = CoreInfoManager.Instance.GetCoreInfo();
+        var allCoreInfo = CoreInfoManager.Instance.GetCoreInfo();
 
-        foreach (var coreConfig in coreInfoResult)
+        foreach (var coreConfig in allCoreInfo)
         {
+            if (!context.ProtectCoreTypeList.Contains(coreConfig.CoreType))
+            {
+                continue;
+            }
             if (coreConfig.CoreType == ECoreType.v2rayN)
             {
                 continue;
             }
-
+            if (coreConfig.CoreExes == null)
+            {
+                continue;
+            }
+            if (coreConfig.CoreType == ECoreType.Xray)
+            {
+                directExeSet.Add("xray/");
+                continue;
+            }
             foreach (var baseExeName in coreConfig.CoreExes)
             {
-                if (coreConfig.CoreType != ECoreType.Xray)
+                //directExeSet.Add(Utils.GetExeName(baseExeName));
+                var exePath = CoreInfoManager.Instance.GetCoreExecFile(coreConfig, out _);
+                if (!exePath.IsNullOrEmpty())
                 {
-                    dnsExeSet.Add(Utils.GetExeName(baseExeName));
+                    directExeSet.Add(exePath);
                 }
-                directExeSet.Add(Utils.GetExeName(baseExeName));
             }
         }
-
-        directExeSet.Add("xray/");
+        //directExeSet.Add("xray/");
         directExeSet.Add("self/");
 
-        var lstDnsExe = new List<string>(dnsExeSet);
-        var lstDirectExe = new List<string>(directExeSet);
-
-        return (lstDnsExe, lstDirectExe);
+        return directExeSet.ToList();
     }
 }
