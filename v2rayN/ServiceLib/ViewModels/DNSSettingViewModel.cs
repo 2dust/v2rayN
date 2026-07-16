@@ -13,6 +13,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public string? BootstrapDNS { get; set; }
     [Reactive] public string? Strategy4Freedom { get; set; }
     [Reactive] public string? Strategy4Proxy { get; set; }
+    [Reactive] public string? Strategy4ProxyDial { get; set; }
     [Reactive] public string? Hosts { get; set; }
     [Reactive] public string? DirectExpectedIPs { get; set; }
     [Reactive] public bool? ParallelQuery { get; set; }
@@ -76,6 +77,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         BootstrapDNS = item.BootstrapDNS;
         Strategy4Freedom = item.Strategy4Freedom;
         Strategy4Proxy = item.Strategy4Proxy;
+        Strategy4ProxyDial = item.Strategy4ProxyDial;
         Hosts = item.Hosts;
         DirectExpectedIPs = item.DirectExpectedIPs;
         ParallelQuery = item.ParallelQuery;
@@ -108,6 +110,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         _config.SimpleDNSItem.BootstrapDNS = BootstrapDNS;
         _config.SimpleDNSItem.Strategy4Freedom = Strategy4Freedom;
         _config.SimpleDNSItem.Strategy4Proxy = Strategy4Proxy;
+        _config.SimpleDNSItem.Strategy4ProxyDial = Strategy4ProxyDial;
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
         _config.SimpleDNSItem.ParallelQuery = ParallelQuery;

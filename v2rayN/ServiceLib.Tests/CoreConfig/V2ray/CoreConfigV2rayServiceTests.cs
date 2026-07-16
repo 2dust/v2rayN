@@ -567,7 +567,7 @@ public class CoreConfigV2rayServiceTests
 
         var directOutbound = cfg.outbounds.FirstOrDefault(o => o.tag == Global.DirectTag && o.protocol == "freedom");
         directOutbound.Should().NotBeNull();
-        directOutbound!.settings.domainStrategy.Should().Be("UseIPv4");
+        directOutbound!.streamSettings.sockopt!.domainStrategy.Should().Be("UseIPv4");
     }
 
     [Fact]

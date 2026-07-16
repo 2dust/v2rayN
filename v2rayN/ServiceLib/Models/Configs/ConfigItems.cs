@@ -249,9 +249,14 @@ public class CheckUpdateItem
 public class Fragment4RayItem
 {
     public string? Packets { get; set; }
+    public List<string>? Lengths { get; set; }
+    public List<string>? Delays { get; set; }
+    public string? MaxSplit { get; set; }
+
+    // For migration from old version, remove those properties in the future
     public string? Length { get; set; }
     public string? Interval { get; set; }
-    public string? MaxSplit { get; set; }
+    // migration end
 }
 
 [Serializable]
@@ -275,6 +280,7 @@ public class SimpleDNSItem
     public string? BootstrapDNS { get; set; }
     public string? Strategy4Freedom { get; set; }
     public string? Strategy4Proxy { get; set; }
+    public string? Strategy4ProxyDial { get; set; }
     public bool? ServeStale { get; set; }
     public bool? ParallelQuery { get; set; }
     public string? Hosts { get; set; }
