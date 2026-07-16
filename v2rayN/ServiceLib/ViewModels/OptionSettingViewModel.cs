@@ -150,6 +150,7 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
         UdpEnabled = inbound.UdpEnabled;
         SniffingEnabled = inbound.SniffingEnabled;
+        DestOverride = inbound.DestOverride ?? [];
         RouteOnly = inbound.RouteOnly;
         AllowLANConn = inbound.AllowLANConn;
         NewPort4LAN = inbound.NewPort4LAN;
