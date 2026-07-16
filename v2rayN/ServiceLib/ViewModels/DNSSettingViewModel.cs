@@ -18,6 +18,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public string? DirectExpectedIPs { get; set; }
     [Reactive] public bool? ParallelQuery { get; set; }
     [Reactive] public bool? ServeStale { get; set; }
+    [Reactive] public bool? EnableHappyEyeballs { get; set; }
 
     [Reactive] public bool UseSystemHostsCompatible { get; set; }
     [Reactive] public string DomainStrategy4FreedomCompatible { get; set; } = string.Empty;
@@ -82,7 +83,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         DirectExpectedIPs = item.DirectExpectedIPs;
         ParallelQuery = item.ParallelQuery;
         ServeStale = item.ServeStale;
-
+        EnableHappyEyeballs = item.EnableHappyEyeballs;
         var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
         RayCustomDNSEnableCompatible = item1.Enabled;
         UseSystemHostsCompatible = item1.UseSystemHosts;
@@ -115,7 +116,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
         _config.SimpleDNSItem.ParallelQuery = ParallelQuery;
         _config.SimpleDNSItem.ServeStale = ServeStale;
-
+        _config.SimpleDNSItem.EnableHappyEyeballs = EnableHappyEyeballs;
         if (NormalDNSCompatible.IsNotEmpty())
         {
             var obj = JsonUtils.ParseJson(NormalDNSCompatible);

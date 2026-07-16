@@ -553,6 +553,15 @@ public class Sockopt4Ray
 
     [JsonPropertyName("interface")]
     public string? Interface { get; set; }
+    public HappyEyeballs4Ray? happyEyeballs { get; set; }
+}
+
+public class HappyEyeballs4Ray
+{
+    public int? tryDelayMs { get; set; }
+    public bool? prioritizeIPv6 { get; set; }
+    public int? interleave { get; set; }
+    public int? maxConcurrentTry { get; set; }
 }
 
 public class FragmentItem4Ray
