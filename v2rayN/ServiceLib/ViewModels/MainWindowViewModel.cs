@@ -263,6 +263,11 @@ public class MainWindowViewModel : MyReactiveObject
 
         #endregion AppEvents
 
+        ProfilesViewModel.RefreshServersRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(async _ => await RefreshServers());
+
         var vmReloadRequestedList = new List<IObservable<Unit>>
         {
             ProfilesViewModel.ReloadRequested.AsObservable(),
@@ -394,8 +399,8 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RefreshServers()
     {
-        await ProfilesViewModel.RefreshServers();
-        await StatusBarViewModel.RefreshServers();
+        await ProfilesViewModel.RefreshServersBiz();
+        await StatusBarViewModel.RefreshServersBiz();
 
         // await Task.Delay(200);
     }
