@@ -174,7 +174,7 @@ public static class ConfigHandler
 
         config.HappyEyeballs4RayItem ??= new()
         {
-            TryDelayMs = 0,
+            TryDelayMs = 250,
             PrioritizeIPv6 = false,
             Interleave = 1,
             MaxConcurrentTry = 4,
