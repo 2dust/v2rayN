@@ -597,8 +597,8 @@ package_binary() {
   write_desktop_file "$stage"
   write_maintainer_scripts "$debian_dir"
 
-  extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.2.0), coreutils (>= 9.5), bash (>= 5.2.26), libfreetype6 (>= 2.13)"
-
+  extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.4), bash (>= 5.2.21), libfreetype6 (>= 2.13)"
+  
   mkdir -p "$workdir/debian"
   cat > "$workdir/debian/control" <<EOF
 Source: v2rayn
