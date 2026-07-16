@@ -1,7 +1,9 @@
 namespace ServiceLib.ViewModels;
 
-public class OptionSettingViewModel : MyReactiveObject
+public class OptionSettingViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     #region Core
 
     [Reactive] public int LocalPort { get; set; }
@@ -27,8 +29,8 @@ public class OptionSettingViewModel : MyReactiveObject
     [Reactive] public bool EnableFragment { get; set; }
     [Reactive] public bool EnableFinalFragment { get; set; }
     [Reactive] public string FragmentPackets { get; set; }
-    [Reactive] public string FragmentLength { get; set; }
-    [Reactive] public string FragmentInterval { get; set; }
+    [Reactive] public string FragmentLengths { get; set; }
+    [Reactive] public string FragmentDelays { get; set; }
     [Reactive] public string FragmentMaxSplit { get; set; }
 
     #endregion Core
@@ -123,10 +125,9 @@ public class OptionSettingViewModel : MyReactiveObject
 
     public ReactiveCommand<Unit, Unit> SaveCmd { get; }
 
-    public OptionSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public OptionSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -142,8 +143,6 @@ public class OptionSettingViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await _updateView?.Invoke(EViewAction.InitSettingFont, null);
-
         #region Core
 
         var inbound = _config.Inbound.First();
@@ -169,8 +168,8 @@ public class OptionSettingViewModel : MyReactiveObject
         EnableFragment = _config.CoreBasicItem.EnableFragment;
         EnableFinalFragment = _config.CoreBasicItem.EnableFinalFragment;
         FragmentPackets = _config.Fragment4RayItem?.Packets;
-        FragmentLength = _config.Fragment4RayItem?.Length;
-        FragmentInterval = _config.Fragment4RayItem?.Interval;
+        FragmentLengths = Utils.List2String(_config.Fragment4RayItem?.Lengths);
+        FragmentDelays = Utils.List2String(_config.Fragment4RayItem?.Delays);
         FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit;
 
         #endregion Core
@@ -310,12 +309,20 @@ public class OptionSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.FillLocalListeningPort);
             return;
         }
+        var fragmentLengths = Utils.String2List(FragmentLengths) ?? [];
+        var fragmentDelays = Utils.String2List(FragmentDelays) ?? [];
+        if (fragmentLengths.Any(item => !Utils.TryParseRange(item, 0, int.MaxValue, out _, out _))
+            || fragmentDelays.Any(item => !Utils.TryParseRange(item, 0, int.MaxValue, out _, out _))
+            || (FragmentMaxSplit.IsNotEmpty() && !Utils.TryParseMaxSplit(FragmentMaxSplit, 0, 10000, out _, out _)))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
+            return;
+        }
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
-                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily
-                        || MainGirdOrientation != (int)_config.UiItem.MainGirdOrientation;
+                        || CurrentFontFamily != _config.UiItem.CurrentFontFamily;
 
         //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
         //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
@@ -353,30 +360,12 @@ public class OptionSettingViewModel : MyReactiveObject
         _config.CoreBasicItem.EnableCacheFile4Sbox = EnableCacheFile4Sbox;
         _config.HysteriaItem.UpMbps = HyUpMbps ?? 0;
         _config.HysteriaItem.DownMbps = HyDownMbps ?? 0;
-        if (EnableFragment)
-        {
-            if (!Utils.TryParseRange(FragmentLength, 0, int.MaxValue, out _, out _))
-            {
-                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
-                return;
-            }
-            if (!Utils.TryParseRange(FragmentInterval, 1, 100, out _, out _))
-            {
-                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
-                return;
-            }
-            if (FragmentMaxSplit.IsNotEmpty()
-                && !Utils.TryParseMaxSplit(FragmentMaxSplit, 0, 10000, out _, out _))
-            {
-                NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
-                return;
-            }
-        }
         _config.CoreBasicItem.EnableFragment = EnableFragment;
         _config.CoreBasicItem.EnableFinalFragment = EnableFinalFragment;
+        _config.Fragment4RayItem ??= new();
         _config.Fragment4RayItem.Packets = FragmentPackets;
-        _config.Fragment4RayItem.Length = FragmentLength;
-        _config.Fragment4RayItem.Interval = FragmentInterval;
+        _config.Fragment4RayItem.Lengths = fragmentLengths;
+        _config.Fragment4RayItem.Delays = fragmentDelays;
         _config.Fragment4RayItem.MaxSplit = FragmentMaxSplit;
 
         _config.GuiItem.AutoRun = AutoRun;
@@ -432,7 +421,7 @@ public class OptionSettingViewModel : MyReactiveObject
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {

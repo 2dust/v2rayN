@@ -322,6 +322,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please enter valid HTTP request headers JSON. 的本地化字符串。
+        /// </summary>
+        public static string InvalidHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("InvalidHttpOutboundHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid Realm URL. 的本地化字符串。
         /// </summary>
         public static string InvalidHy2RealmUrl {
@@ -3250,6 +3259,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 HTTP headers 的本地化字符串。
+        /// </summary>
+        public static string TbHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("TbHttpOutboundHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Realm URL 的本地化字符串。
         /// </summary>
         public static string TbHy2RealmUrl {
@@ -3516,6 +3534,24 @@ namespace ServiceLib.Resx {
         public static string TbProxies {
             get {
                 return ResourceManager.GetString("TbProxies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy Dial Resolution Strategy 的本地化字符串。
+        /// </summary>
+        public static string TbProxyDialResolveStrategy {
+            get {
+                return ResourceManager.GetString("TbProxyDialResolveStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not recommended; may cause routing loops. 的本地化字符串。
+        /// </summary>
+        public static string TbProxyDialResolveStrategyTip {
+            get {
+                return ResourceManager.GetString("TbProxyDialResolveStrategyTip", resourceCulture);
             }
         }
         
@@ -4992,6 +5028,15 @@ namespace ServiceLib.Resx {
         public static string TipDisplayLog {
             get {
                 return ResourceManager.GetString("TipDisplayLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom HTTP outbound request headers as a JSON object with string or string array values. 的本地化字符串。
+        /// </summary>
+        public static string TipHttpOutboundHeaders {
+            get {
+                return ResourceManager.GetString("TipHttpOutboundHeaders", resourceCulture);
             }
         }
         

@@ -6,8 +6,6 @@ public partial class CheckUpdateView : ReactiveUserControl<CheckUpdateViewModel>
     {
         InitializeComponent();
 
-        ViewModel = new CheckUpdateViewModel(UpdateViewHandler);
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.CheckUpdateModels, v => v.lstCheckUpdates.ItemsSource).DisposeWith(disposables);
@@ -16,10 +14,5 @@ public partial class CheckUpdateView : ReactiveUserControl<CheckUpdateViewModel>
             this.BindCommand(ViewModel, vm => vm.CheckOnlyCmd, v => v.btnCheckOnly).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.CheckUpdateCmd, v => v.btnCheckUpdate).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        return await Task.FromResult(true);
     }
 }

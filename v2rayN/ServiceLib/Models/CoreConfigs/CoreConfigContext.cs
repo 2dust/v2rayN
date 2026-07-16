@@ -17,6 +17,8 @@ public record CoreConfigContext
     // TUN Compatibility
     public bool IsTunEnabled { get; init; } = false;
     public HashSet<string> ProtectDomainList { get; init; } = [];
+    // Typically, it is the core of the outbound chain
+    public HashSet<ECoreType> ProtectCoreTypeList { get; init; } = [];
 
     public bool IsWindows { get; init; }
     public bool IsMacOS { get; init; }

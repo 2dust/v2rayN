@@ -7,15 +7,16 @@ public class CheckUpdateViewModel : MyReactiveObject
     private List<CheckUpdateModel> _lstUpdated = [];
     private static readonly string _tag = "CheckUpdateViewModel";
 
+    public EventChannel<Unit> ReloadRequested { get; } = new();
+
     public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
     public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
     public ReactiveCommand<Unit, Unit> CheckOnlyCmd { get; }
     [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
 
-    public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public CheckUpdateViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
@@ -299,7 +300,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (blReload)
         {
-            AppEvents.ReloadRequested.Publish();
+            ReloadRequested.Publish();
         }
         else
         {

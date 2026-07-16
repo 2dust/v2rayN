@@ -485,12 +485,17 @@ public class Utils
 
     public static string? DomainStrategy4Sbox(string? strategy)
     {
+        if (strategy is null)
+        {
+            return null;
+        }
+
         return strategy switch
         {
-            not null when strategy.StartsWith("UseIPv4") => "prefer_ipv4",
-            not null when strategy.StartsWith("UseIPv6") => "prefer_ipv6",
-            not null when strategy.StartsWith("ForceIPv4") => "ipv4_only",
-            not null when strategy.StartsWith("ForceIPv6") => "ipv6_only",
+            _ when strategy.StartsWith("UseIPv6") => "prefer_ipv6",
+            _ when strategy.StartsWith("UseIP") => "prefer_ipv4",
+            _ when strategy.StartsWith("ForceIPv6") => "ipv6_only",
+            _ when strategy.StartsWith("ForceIP") => "ipv4_only",
             _ => null
         };
     }

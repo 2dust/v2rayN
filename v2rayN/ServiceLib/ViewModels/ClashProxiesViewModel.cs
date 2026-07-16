@@ -33,10 +33,9 @@ public class ClashProxiesViewModel : MyReactiveObject
     [Reactive]
     public bool AutoRefresh { get; set; }
 
-    public ClashProxiesViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public ClashProxiesViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -85,15 +84,6 @@ public class ClashProxiesViewModel : MyReactiveObject
             .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
 
         #endregion WhenAnyValue && ReactiveCommand
-
-        #region AppEvents
-
-        AppEvents.ProxiesReloadRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .Subscribe(async _ => await ProxiesReload());
-
-        #endregion AppEvents
 
         _ = Init();
     }

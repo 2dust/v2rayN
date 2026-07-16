@@ -10,10 +10,7 @@ public partial class OptionSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         _config = AppManager.Instance.Config;
-
-        ViewModel = new OptionSettingViewModel(UpdateViewHandler);
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
@@ -57,6 +54,8 @@ public partial class OptionSettingWindow
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
 
+        _ = InitSettingFont();
+
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.LocalPort, v => v.txtlocalPort.Text).DisposeWith(disposables);
@@ -83,8 +82,8 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.EnableFragment, v => v.togenableFragment.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableFinalFragment, v => v.togenableFinalFragment.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.FragmentPackets, v => v.cmbFragmentPackets.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.FragmentLength, v => v.txtFragmentLength.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.FragmentInterval, v => v.txtFragmentInterval.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentLengths, v => v.txtFragmentLengths.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FragmentDelays, v => v.txtFragmentDelays.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.FragmentMaxSplit, v => v.txtFragmentMaxSplit.Text).DisposeWith(disposables);
 
             //this.Bind(ViewModel, vm => vm.Kcpmtu, v => v.txtKcpmtu.Text).DisposeWith(disposables);
@@ -146,21 +145,6 @@ public partial class OptionSettingWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
-            case EViewAction.InitSettingFont:
-                await InitSettingFont();
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private async Task InitSettingFont()

@@ -34,7 +34,18 @@ public class CoreAdminManager
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
-        sb.AppendLine($"exec sudo -S -- {cmdLine}");
+
+        // Passing environment variables to the sudo command, here it only xray or sing-box.
+        if (coreInfo.Environment.Count > 0)
+        {
+            var envArgs = string.Join(" ", coreInfo.Environment.Where(kv => kv.Value.IsNotEmpty()).Select(kv => $"{kv.Key}={kv.Value.AppendQuotes()}"));
+            sb.AppendLine($"exec sudo -S -- env {envArgs} {cmdLine}");
+        }
+        else
+        {
+            sb.AppendLine($"exec sudo -S -- {cmdLine}");
+        }
+
         var shFilePath = await FileUtils.CreateLinuxShellFile("run_as_sudo.sh", sb.ToString(), true);
 
         var procService = new ProcessService(

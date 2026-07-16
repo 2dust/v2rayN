@@ -136,8 +136,6 @@ public class Outboundsettings4Ray
 
     public Response4Ray? response { get; set; }
 
-    public string? domainStrategy { get; set; }
-
     public int? userLevel { get; set; }
 
     public string? secretKey { get; set; }
@@ -145,6 +143,16 @@ public class Outboundsettings4Ray
     public object? address { get; set; }
 
     public int? port { get; set; }
+
+    public string? user { get; set; }
+
+    public string? pass { get; set; }
+
+    public int? level { get; set; }
+
+    public string? email { get; set; }
+
+    public object? headers { get; set; }
 
     public List<WireguardPeer4Ray>? peers { get; set; }
 
@@ -276,7 +284,6 @@ public class BalancersItem4Ray
     public List<string>? selector { get; set; }
     public BalancersStrategy4Ray? strategy { get; set; }
     public string? tag { get; set; }
-    public string? fallbackTag { get; set; }
 }
 
 public class BalancersStrategy4Ray
@@ -509,6 +516,8 @@ public class MaskSettings4Ray
 
     public string? length { get; set; }
     public string? delay { get; set; }
+    public List<string>? lengths { get; set; }
+    public List<string>? delays { get; set; }
     public int? maxSplit { get; set; }
 
     // noise
@@ -540,6 +549,8 @@ public class AccountsItem4Ray
 
 public class Sockopt4Ray
 {
+    public string? domainStrategy { get; set; }
+
     public string? dialerProxy { get; set; }
 
     [JsonPropertyName("interface")]

@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    ShutdownMode="OnExplicitShutdown"
-    StartupUri="Views/MainWindow.xaml">
+    ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
             <ResourceDictionary.MergedDictionaries>

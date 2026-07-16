@@ -4,7 +4,6 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 {
     public WindowBase()
     {
-        Initialized += OnWindowInitialized;
         Loaded += OnLoaded;
         Loaded += (s, e) =>
         {
@@ -20,7 +19,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
         throw new NotImplementedException();
     }
 
-    private void OnWindowInitialized(object? sender, EventArgs e)
+    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -30,21 +29,20 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
                 return;
             }
 
-            if (sizeItem.Width > 0 && !Width.Equals(sizeItem.Width))
-            {
-                Width = sizeItem.Width;
-            }
+            var screen = Screens.ScreenFromWindow(this) ?? Screens.Primary;
+            var scaling = screen.Scaling > 0 ? screen.Scaling : 1.0;
+            var workingArea = screen.WorkingArea;
 
-            if (sizeItem.Height > 0 && !Height.Equals(sizeItem.Height))
-            {
-                Height = sizeItem.Height;
-            }
+            var width = Math.Min(sizeItem.Width, workingArea.Width / scaling);
+            var height = Math.Min(sizeItem.Height, workingArea.Height / scaling);
+            var x = workingArea.X + ((workingArea.Width - (width * scaling)) / 2);
+            var y = workingArea.Y + ((workingArea.Height - (height * scaling)) / 2);
+
+            Width = width;
+            Height = height;
+            Position = new PixelPoint((int)x, (int)y);
         }
         catch { }
-    }
-
-    protected virtual void OnLoaded(object? sender, RoutedEventArgs e)
-    {
     }
 
     protected override void OnClosed(EventArgs e)

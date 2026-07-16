@@ -417,11 +417,15 @@ public partial class CoreConfigSingboxService
             var tls = new Tls4Sbox()
             {
                 enabled = true,
-                record_fragment = _config.CoreBasicItem.EnableFragment ? true : null,
                 server_name = serverName,
                 insecure = _node.GetAllowInsecure(),
                 alpn = _node.GetAlpn(),
             };
+            if (_config.CoreBasicItem.EnableFragment == true)
+            {
+                tls.fragment = true;
+                tls.record_fragment = true;
+            }
             // "unsafe" is an Xray-only fingerprint; sing-box's uTLS rejects it, so fall back to plain TLS
             if (_node.Fingerprint.IsNotEmpty() && _node.Fingerprint != "unsafe")
             {

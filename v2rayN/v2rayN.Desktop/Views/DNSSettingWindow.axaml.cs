@@ -13,10 +13,10 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        ViewModel = new DNSSettingViewModel(UpdateViewHandler);
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;
+        cmbProxyDialDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbDirectDNS.ItemsSource = Global.DomainDirectDNSAddress;
         cmbRemoteDNS.ItemsSource = Global.DomainRemoteDNSAddress;
         cmbBootstrapDNS.ItemsSource = Global.DomainPureIPDNSAddress;
@@ -38,6 +38,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
             this.Bind(ViewModel, vm => vm.BootstrapDNS, v => v.cmbBootstrapDNS.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Strategy4Freedom, v => v.cmbDirectDNSStrategy.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Strategy4Proxy, v => v.cmbRemoteDNSStrategy.SelectedItem).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Strategy4ProxyDial, v => v.cmbProxyDialDNSStrategy.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Hosts, v => v.txtHosts.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DirectExpectedIPs, v => v.cmbDirectExpectedIPs.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ParallelQuery, v => v.togParallelQuery.IsChecked).DisposeWith(disposables);
@@ -64,24 +65,13 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
 
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
                 .Select(b => !b)
-                .BindTo(this.FindControl<TextBlock>("txtBasicDNSSettingsInvalid"), t => t.IsVisible);
+                .BindTo(txtBasicDNSSettingsInvalid, t => t.IsVisible);
             this.WhenAnyValue(x => x.ViewModel.IsSimpleDNSEnabled)
                 .Select(b => !b)
-                .BindTo(this.FindControl<TextBlock>("txtAdvancedDNSSettingsInvalid"), t => t.IsVisible);
+                .BindTo(txtAdvancedDNSSettingsInvalid, t => t.IsVisible);
             this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkDnsObjectDoc_Click(object? sender, RoutedEventArgs e)

@@ -83,6 +83,11 @@ jobs:
       working-directory: ./v2rayN
       run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $Output
 
+    - name: Remove Debug Symbols
+      shell: bash
+      run: |
+        find ${{ matrix.arch }} -type f -name '*.pdb' -delete
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7.0.1
       with:

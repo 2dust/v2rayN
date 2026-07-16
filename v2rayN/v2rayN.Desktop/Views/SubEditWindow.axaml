@@ -3,12 +3,14 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"
     Height="600"
+    Design.DataContext="{x:Static dd:DesignData.SubEdit}"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -68,15 +70,15 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
-                    Classes="IconButton"
+                    Margin="{StaticResource MarginLr8}"
                     HorizontalAlignment="Left"
-                    Margin="{StaticResource MarginLr8}">
+                    Classes="IconButton">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconMore}" >
+                        <PathIcon Data="{StaticResource SemiIconMore}">
                             <PathIcon.RenderTransform>
                                 <RotateTransform Angle="90" />
                             </PathIcon.RenderTransform>
@@ -99,7 +101,7 @@
                                     Classes="TextArea"
                                     MinLines="4"
                                     TextWrapping="Wrap"
-                                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>
@@ -128,7 +130,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Right"
-                        Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                        PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                     <TextBlock
                         Margin="{StaticResource Margin4}"
@@ -149,7 +151,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="6"
@@ -178,7 +180,7 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="8"
@@ -206,12 +208,12 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
+                    x:Name="btnSelectPrevProfile"
                     Grid.Row="9"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectPrevProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
@@ -226,12 +228,12 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
+                    x:Name="btnSelectNextProfile"
                     Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectNextProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
@@ -248,7 +250,7 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}"
-                    Watermark="{x:Static resx:ResUI.TipPreSocksPort}" />
+                    PlaceholderText="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
                     Grid.Row="12"

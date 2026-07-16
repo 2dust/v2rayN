@@ -10,6 +10,7 @@ public sealed class AppManager
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
     public Config Config => _config;
+    public IWindowDialog WindowDialog { get; set; } = null!;
 
     public int StatePort
     {
@@ -662,7 +663,7 @@ public sealed class AppManager
         return Global.SsSecuritiesInSingbox;
     }
 
-    public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
+    public ECoreType GetCoreType(ProfileItem? profileItem, EConfigType eConfigType)
     {
         if (profileItem?.CoreType != null)
         {

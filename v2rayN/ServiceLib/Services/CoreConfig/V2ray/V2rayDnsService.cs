@@ -43,11 +43,9 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.settings = new()
-                    {
-                        domainStrategy = strategy4Freedom,
-                        userLevel = 0
-                    };
+                    outbound.streamSettings ??= new();
+                    outbound.streamSettings.sockopt ??= new();
+                    outbound.streamSettings.sockopt.domainStrategy = strategy4Freedom;
                 }
             }
 
@@ -62,6 +60,24 @@ public partial class CoreConfigV2rayService
                     .Where(t => xraySupportConfigTypeNames.Contains(t.protocol))
                     .ToList()
                     .ForEach(outbound => outbound.targetStrategy = strategy4Proxy);
+            }
+
+            var strategy4DialProxy = simpleDnsItem?.Strategy4ProxyDial ?? Global.AsIs;
+            //Outbound DialProxy domainStrategy
+            if (strategy4DialProxy.IsNotEmpty() && strategy4DialProxy != Global.AsIs)
+            {
+                var xraySupportConfigTypeNames = Global.XraySupportConfigType
+                        .Select(x => x == EConfigType.Hysteria2 ? "hysteria" : Global.ProtocolTypes[x])
+                        .ToHashSet();
+                _coreConfig.outbounds
+                    .Where(t => xraySupportConfigTypeNames.Contains(t.protocol))
+                    .ToList()
+                    .ForEach(outbound =>
+                    {
+                        outbound.streamSettings ??= new();
+                        outbound.streamSettings.sockopt ??= new();
+                        outbound.streamSettings.sockopt.domainStrategy = strategy4DialProxy;
+                    });
             }
 
             FillDnsServers(dnsItem);
@@ -384,11 +400,9 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.settings = new()
-                    {
-                        domainStrategy = domainStrategy4Freedom,
-                        userLevel = 0,
-                    };
+                    outbound.streamSettings ??= new();
+                    outbound.streamSettings.sockopt ??= new();
+                    outbound.streamSettings.sockopt.domainStrategy = domainStrategy4Freedom;
                 }
             }
 

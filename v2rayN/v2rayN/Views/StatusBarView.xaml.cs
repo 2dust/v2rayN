@@ -10,8 +10,6 @@ public partial class StatusBarView
     {
         InitializeComponent();
         _config = AppManager.Instance.Config;
-        ViewModel = StatusBarViewModel.Instance;
-        ViewModel?.InitUpdateView(UpdateViewHandler);
 
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
@@ -63,31 +61,28 @@ public partial class StatusBarView
             this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings2.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.cmbRoutings2.Visibility).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(interaction =>
+            {
+                var strData = interaction.Input;
+                WindowsUtils.SetClipboardData(strData);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshIconInteraction.RegisterHandler(interaction =>
+            {
+                Application.Current?.Dispatcher.Invoke(async () => await RefreshIcon(), DispatcherPriority.Normal);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
         });
+
+        _ = RefreshIcon();
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
+    private async Task RefreshIcon()
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshIcon:
-                Application.Current?.Dispatcher.Invoke(async () =>
-                {
-                    tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
-                    Application.Current.MainWindow.Icon = WindowsManager.Instance.GetAppIcon(_config);
-                }, DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
-        }
-        return await Task.FromResult(true);
+        tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
+        Application.Current.MainWindow?.Icon = WindowsManager.Instance.GetAppIcon(_config);
     }
 
     private async void menuExit_Click(object sender, RoutedEventArgs e)

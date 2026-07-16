@@ -16,8 +16,6 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
         lstRoutings.DoubleTapped += LstRoutings_DoubleTapped;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
 
-        ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
-
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
         cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
 
@@ -35,29 +33,14 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedSetDefaultCmd, v => v.menuRoutingAdvancedSetDefault).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
+
+            ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
+            {
+                var message = interaction.Input;
+                var result = await UI.ShowYesNo(message);
+                interaction.SetOutput(result == ButtonResult.Yes);
+            }).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.ShowYesNo:
-                if (await UI.ShowYesNo(this, ResUI.RemoveRules) != ButtonResult.Yes)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleSettingWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return await new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog<bool>(this);
-        }
-        return await Task.FromResult(true);
     }
 
     private bool _closed = false;

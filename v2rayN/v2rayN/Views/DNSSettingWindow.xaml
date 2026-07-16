@@ -52,6 +52,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -195,13 +196,23 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbParallelQuery}" />
-                        <ToggleButton
-                            x:Name="togParallelQuery"
+                            Text="{x:Static resx:ResUI.TbProxyDialResolveStrategy}" />
+                        <ComboBox
+                            x:Name="cmbProxyDialDNSStrategy"
                             Grid.Row="7"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
+                            materialDesign:HintAssist.Hint="Default"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="7"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbProxyDialResolveStrategyTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="8"
@@ -209,10 +220,24 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbParallelQuery}" />
+                        <ToggleButton
+                            x:Name="togParallelQuery"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbServeStale}" />
                         <ToggleButton
                             x:Name="togServeStale"
-                            Grid.Row="8"
+                            Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />

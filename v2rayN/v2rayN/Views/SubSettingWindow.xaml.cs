@@ -8,9 +8,6 @@ public partial class SubSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
-
-        ViewModel = new SubSettingViewModel(UpdateViewHandler);
         Closing += SubSettingWindow_Closing;
         lstSubscription.MouseDoubleClick += LstSubscription_MouseDoubleClick;
         lstSubscription.SelectionChanged += LstSubscription_SelectionChanged;
@@ -30,46 +27,30 @@ public partial class SubSettingWindow
             this.BindCommand(ViewModel, vm => vm.SubDeleteCmd, v => v.menuSubDelete2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubEditCmd, v => v.menuSubEdit2).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SubShareCmd, v => v.menuSubShare2).DisposeWith(disposables);
+
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareSubInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(Unit.Default);
+                    return;
+                }
+                await ShareSub(url);
+                interaction.SetOutput(Unit.Default);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.ShareSub:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                ShareSub((string)obj);
-                break;
-        }
-        return await Task.FromResult(true);
-    }
-
-    private async void ShareSub(string url)
+    private async Task ShareSub(string url)
     {
         if (url.IsNullOrEmpty())
         {

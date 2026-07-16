@@ -16,10 +16,9 @@ public class ClashConnectionsViewModel : MyReactiveObject
     [Reactive]
     public bool AutoRefresh { get; set; }
 
-    public ClashConnectionsViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public ClashConnectionsViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
 
         var canEditRemove = this.WhenAnyValue(

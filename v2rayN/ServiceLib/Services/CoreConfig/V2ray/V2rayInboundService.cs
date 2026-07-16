@@ -74,6 +74,7 @@ public partial class CoreConfigV2rayService
                     tunInbound.settings.autoOutboundsInterface = bindInterface;
                 }
                 tunInbound.sniffing = inbound.sniffing;
+                tunInbound.sniffing.routeOnly = true;
 
                 if (_config.TunModeItem.RouteExcludeAddress is { Count: > 0 })
                 {

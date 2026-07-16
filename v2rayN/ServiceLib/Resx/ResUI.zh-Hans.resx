@@ -1044,6 +1044,12 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>拥塞控制算法</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP 请求头</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>自定义 HTTP 出站请求头，请输入值为字符串或字符串数组的 JSON 对象。</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理配置别名</value>
   </data>
@@ -1806,6 +1812,9 @@
   <data name="InvalidHy2RealmUrl" xml:space="preserve">
     <value>Realm URL 不正确。</value>
   </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>请填写合法的HTTP请求头JSON。</value>
+  </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>格式：realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
   </data>
@@ -1820,5 +1829,11 @@
   </data>
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>仅用于 v2rayN 界面程序的下载及网络请求，不影响核心的证书验证。</value>
+  </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>连接代理解析策略</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>不建议开启，特殊情况可能回环。</value>
   </data>
 </root>
