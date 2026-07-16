@@ -75,6 +75,8 @@ public partial class StatusBarView
                 interaction.SetOutput(Unit.Default);
             }).DisposeWith(disposables);
         });
+
+        _ = RefreshIcon();
     }
 
     private async Task RefreshIcon()
