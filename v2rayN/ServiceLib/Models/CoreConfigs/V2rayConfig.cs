@@ -563,10 +563,3 @@ public class HappyEyeballs4Ray
     public int? interleave { get; set; }
     public int? maxConcurrentTry { get; set; }
 }
-
-public class FragmentItem4Ray
-{
-    public string? packets { get; set; }
-    public string? length { get; set; }
-    public string? interval { get; set; }
-}
