@@ -27,7 +27,7 @@
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="12.1.0" />
     <PackageVersion Include="NLog" Version="6.1.4" />
     <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
-    <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.3.8" />
+    <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.3" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
