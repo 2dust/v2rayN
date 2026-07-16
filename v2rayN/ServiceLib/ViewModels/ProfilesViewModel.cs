@@ -11,6 +11,7 @@ public class ProfilesViewModel : MyReactiveObject
     public Interaction<Unit, Unit> AdjustMainLvColWidthInteraction { get; } = new();
 
     public EventChannel<Unit> ReloadRequested { get; } = new();
+    public EventChannel<Unit> RefreshServersRequested { get; } = new();
 
     #region private prop
 
@@ -368,12 +369,14 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task RefreshServers()
     {
-        await RefreshServersBiz();
+        RefreshServersRequested.Publish();
 
         // await Task.Delay(200);
+
+        await Task.CompletedTask;
     }
 
-    private async Task RefreshServersBiz()
+    public async Task RefreshServersBiz()
     {
         var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
         _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];

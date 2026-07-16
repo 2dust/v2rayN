@@ -264,12 +264,7 @@ public class StatusBarViewModel : MyReactiveObject
         await Task.Delay(1000);
     }
 
-    public async Task RefreshServers()
-    {
-        await RefreshServersBiz();
-    }
-
-    private async Task RefreshServersBiz()
+    public async Task RefreshServersBiz()
     {
         await RefreshServersMenu();
 
