@@ -42,7 +42,7 @@
                         x:Name="gridBasicDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             x:Name="txtBasicDNSSettingsInvalid"
@@ -211,6 +211,27 @@
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center" />
+
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbEnableHappyEyeballs}" />
+                        <ToggleSwitch
+                            x:Name="togEnableHappyEyeballs"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbEnableHappyEyeballsTip}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -340,8 +361,8 @@
                             VerticalAlignment="Stretch"
                             BorderThickness="1"
                             Classes="TextArea"
-                            TextWrapping="Wrap"
-                            PlaceholderText="{x:Static resx:ResUI.TbDNSHostsConfig}" />
+                            PlaceholderText="{x:Static resx:ResUI.TbDNSHostsConfig}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

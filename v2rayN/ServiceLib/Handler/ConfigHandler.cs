@@ -119,6 +119,7 @@ public static class ConfigHandler
         config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
         config.SimpleDNSItem.ServeStale ??= false;
         config.SimpleDNSItem.ParallelQuery ??= false;
+        config.SimpleDNSItem.EnableHappyEyeballs ??= false;
 
         config.SpeedTestItem ??= new();
         if (config.SpeedTestItem.SpeedTestTimeout < 10)
@@ -170,6 +171,14 @@ public static class ConfigHandler
             Packets = "tlshello",
         };
         config.Fragment4RayItem.MaxSplit ??= "0";
+
+        config.HappyEyeballs4RayItem ??= new()
+        {
+            TryDelayMs = 250,
+            PrioritizeIPv6 = false,
+            Interleave = 1,
+            MaxConcurrentTry = 4,
+        };
         if ((config.Fragment4RayItem.Lengths ?? []).Count == 0)
         {
             config.Fragment4RayItem.Lengths = [config.Fragment4RayItem.Length ?? "50-100"];

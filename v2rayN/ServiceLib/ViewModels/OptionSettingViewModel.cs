@@ -35,18 +35,6 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     #endregion Core
 
-    #region Core KCP
-
-    //[Reactive] public int Kcpmtu { get; set; }
-    //[Reactive] public int Kcptti { get; set; }
-    //[Reactive] public int KcpuplinkCapacity { get; set; }
-    //[Reactive] public int KcpdownlinkCapacity { get; set; }
-    //[Reactive] public int KcpreadBufferSize { get; set; }
-    //[Reactive] public int KcpwriteBufferSize { get; set; }
-    //[Reactive] public bool Kcpcongestion { get; set; }
-
-    #endregion Core KCP
-
     #region UI
 
     [Reactive] public bool AutoRun { get; set; }
@@ -150,6 +138,7 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         SecondLocalPortEnabled = inbound.SecondLocalPortEnabled;
         UdpEnabled = inbound.UdpEnabled;
         SniffingEnabled = inbound.SniffingEnabled;
+        DestOverride = inbound.DestOverride ?? [];
         RouteOnly = inbound.RouteOnly;
         AllowLANConn = inbound.AllowLANConn;
         NewPort4LAN = inbound.NewPort4LAN;
@@ -173,18 +162,6 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         FragmentMaxSplit = _config.Fragment4RayItem?.MaxSplit;
 
         #endregion Core
-
-        #region Core KCP
-
-        //Kcpmtu = _config.kcpItem.mtu;
-        //Kcptti = _config.kcpItem.tti;
-        //KcpuplinkCapacity = _config.kcpItem.uplinkCapacity;
-        //KcpdownlinkCapacity = _config.kcpItem.downlinkCapacity;
-        //KcpreadBufferSize = _config.kcpItem.readBufferSize;
-        //KcpwriteBufferSize = _config.kcpItem.writeBufferSize;
-        //Kcpcongestion = _config.kcpItem.congestion;
-
-        #endregion Core KCP
 
         #region UI
 
@@ -324,28 +301,18 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
                         || EnableHWA != _config.GuiItem.EnableHWA
                         || CurrentFontFamily != _config.UiItem.CurrentFontFamily;
 
-        //if (Utile.IsNullOrEmpty(Kcpmtu.ToString()) || !Utile.IsNumeric(Kcpmtu.ToString())
-        //       || Utile.IsNullOrEmpty(Kcptti.ToString()) || !Utile.IsNumeric(Kcptti.ToString())
-        //       || Utile.IsNullOrEmpty(KcpuplinkCapacity.ToString()) || !Utile.IsNumeric(KcpuplinkCapacity.ToString())
-        //       || Utile.IsNullOrEmpty(KcpdownlinkCapacity.ToString()) || !Utile.IsNumeric(KcpdownlinkCapacity.ToString())
-        //       || Utile.IsNullOrEmpty(KcpreadBufferSize.ToString()) || !Utile.IsNumeric(KcpreadBufferSize.ToString())
-        //       || Utile.IsNullOrEmpty(KcpwriteBufferSize.ToString()) || !Utile.IsNumeric(KcpwriteBufferSize.ToString()))
-        //{
-        //    NoticeHandler.Instance.Enqueue(ResUI.FillKcpParameters);
-        //    return;
-        //}
-
         //Core
-        _config.Inbound.First().LocalPort = LocalPort;
-        _config.Inbound.First().SecondLocalPortEnabled = SecondLocalPortEnabled;
-        _config.Inbound.First().UdpEnabled = UdpEnabled;
-        _config.Inbound.First().SniffingEnabled = SniffingEnabled;
-        _config.Inbound.First().DestOverride = DestOverride?.ToList();
-        _config.Inbound.First().RouteOnly = RouteOnly;
-        _config.Inbound.First().AllowLANConn = AllowLANConn;
-        _config.Inbound.First().NewPort4LAN = NewPort4LAN;
-        _config.Inbound.First().User = User;
-        _config.Inbound.First().Pass = Pass;
+        var inbound = _config.Inbound.First();
+        inbound.LocalPort = LocalPort;
+        inbound.SecondLocalPortEnabled = SecondLocalPortEnabled;
+        inbound.UdpEnabled = UdpEnabled;
+        inbound.SniffingEnabled = SniffingEnabled;
+        inbound.DestOverride = DestOverride?.ToList();
+        inbound.RouteOnly = RouteOnly;
+        inbound.AllowLANConn = AllowLANConn;
+        inbound.NewPort4LAN = NewPort4LAN;
+        inbound.User = User;
+        inbound.Pass = Pass;
         if (_config.Inbound.Count > 1)
         {
             _config.Inbound.RemoveAt(1);
