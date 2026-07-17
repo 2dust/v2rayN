@@ -3061,6 +3061,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enable Happy Eyeballs 的本地化字符串。
+        /// </summary>
+        public static string TbEnableHappyEyeballs {
+            get {
+                return ResourceManager.GetString("TbEnableHappyEyeballs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Requires the UseIP Strategy. When enabled, it attempts IPv4 and IPv6 connections simultaneously and automatically selects the faster available path. 的本地化字符串。
+        /// </summary>
+        public static string TbEnableHappyEyeballsTip {
+            get {
+                return ResourceManager.GetString("TbEnableHappyEyeballsTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DNS via Bridge 的本地化字符串。
         /// </summary>
         public static string TbEnabletDnsViaProxy {

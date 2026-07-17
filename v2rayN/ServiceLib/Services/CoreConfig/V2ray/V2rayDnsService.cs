@@ -43,9 +43,7 @@ public partial class CoreConfigV2rayService
                 var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
                 if (outbound != null)
                 {
-                    outbound.streamSettings ??= new();
-                    outbound.streamSettings.sockopt ??= new();
-                    outbound.streamSettings.sockopt.domainStrategy = strategy4Freedom;
+                    FillSockoptDomainStrategy(outbound, strategy4Freedom);
                 }
             }
 
@@ -74,9 +72,7 @@ public partial class CoreConfigV2rayService
                     .ToList()
                     .ForEach(outbound =>
                     {
-                        outbound.streamSettings ??= new();
-                        outbound.streamSettings.sockopt ??= new();
-                        outbound.streamSettings.sockopt.domainStrategy = strategy4DialProxy;
+                        FillSockoptDomainStrategy(outbound, strategy4DialProxy);
                     });
             }
 
@@ -484,5 +480,29 @@ public partial class CoreConfigV2rayService
             domains = domainList.ToList(),
         };
         servers.AsArray().Add(JsonUtils.SerializeToNode(dnsServer));
+    }
+
+    private void FillSockoptDomainStrategy(Outbounds4Ray outbound, string? domainStrategy, bool skipHappyEyeballs = false)
+    {
+        if (domainStrategy.IsNullOrEmpty())
+        {
+            return;
+        }
+        outbound.streamSettings ??= new();
+        outbound.streamSettings.sockopt ??= new();
+        var sockopt = outbound.streamSettings.sockopt;
+        sockopt.domainStrategy = domainStrategy;
+
+        if (skipHappyEyeballs || _config.SimpleDNSItem.EnableHappyEyeballs != true)
+        {
+            return;
+        }
+        var happyEyeballsItem = _config.HappyEyeballs4RayItem;
+        sockopt.happyEyeballs ??= new();
+        var happyEyeballs = sockopt.happyEyeballs;
+        happyEyeballs.tryDelayMs = happyEyeballsItem.TryDelayMs;
+        happyEyeballs.prioritizeIPv6 = happyEyeballsItem.PrioritizeIPv6;
+        happyEyeballs.interleave = happyEyeballsItem.Interleave;
+        happyEyeballs.maxConcurrentTry = happyEyeballsItem.MaxConcurrentTry;
     }
 }

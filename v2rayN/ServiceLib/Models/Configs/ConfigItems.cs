@@ -285,4 +285,14 @@ public class SimpleDNSItem
     public bool? ParallelQuery { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
+    public bool? EnableHappyEyeballs { get; set; }
+}
+
+[Serializable]
+public class HappyEyeballs4RayItem
+{
+    public int? TryDelayMs { get; set; }
+    public bool? PrioritizeIPv6 { get; set; }
+    public int? Interleave { get; set; }
+    public int? MaxConcurrentTry { get; set; }
 }
