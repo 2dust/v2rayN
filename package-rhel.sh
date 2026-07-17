@@ -501,9 +501,9 @@ Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.39
 Requires:       fontconfig >= 2.15.0
 Requires:       desktop-file-utils >= 0.26
-Requires:       xdg-utils >= 1.2.0
-Requires:       coreutils >= 9.5
-Requires:       bash >= 5.2.26
+Requires:       xdg-utils >= 1.1.3
+Requires:       coreutils >= 9.4
+Requires:       bash >= 5.2.21
 Requires:       freetype >= 2.13
 
 %description

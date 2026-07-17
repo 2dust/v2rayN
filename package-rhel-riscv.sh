@@ -12,7 +12,7 @@ MIN_KERNEL="5.10"
 PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 RPM_TOPDIR="${HOME}/rpmbuild"
-DOTNET_RISCV_VERSION="10.0.109"
+DOTNET_RISCV_VERSION="10.0.110"
 DOTNET_RISCV_BASE="https://github.com/xujiegb/dotnet-riscv/releases/download"
 DOTNET_RISCV_FILE="dotnet-sdk-${DOTNET_RISCV_VERSION}-linux-riscv64.tar.gz"
 DOTNET_SDK_URL="${DOTNET_RISCV_BASE}/${DOTNET_RISCV_VERSION}/${DOTNET_RISCV_FILE}"
@@ -512,9 +512,9 @@ Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
 Requires:       glibc >= 2.39
 Requires:       fontconfig >= 2.15.0
 Requires:       desktop-file-utils >= 0.26
-Requires:       xdg-utils >= 1.2.0
-Requires:       coreutils >= 9.5
-Requires:       bash >= 5.2.26
+Requires:       xdg-utils >= 1.1.3
+Requires:       coreutils >= 9.4
+Requires:       bash >= 5.2.21
 Requires:       freetype >= 2.13
 
 %description
