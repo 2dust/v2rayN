@@ -18,6 +18,11 @@ public partial class RoutingRuleDetailsWindow
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.OutboundTag, v => v.cmbOutboundTag.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Port, v => v.txtPort.Text).DisposeWith(disposables);
@@ -31,11 +36,6 @@ public partial class RoutingRuleDetailsWindow
 
             this.BindCommand(ViewModel, vm => vm.SelectProfileCmd, v => v.btnSelectProfile).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
-                .Subscribe(InitializeData)
-                .DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
