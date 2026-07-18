@@ -557,7 +557,6 @@ public class Global
         "http",
         "tls",
         "quic",
-        "fakedns",
     ];
 
     public static readonly List<int> TunMtus =

@@ -266,7 +266,7 @@ public partial class CoreConfigSingboxService
             });
         }
 
-        if (simpleDnsItem.FakeIP == true && simpleDnsItem.GlobalFakeIp == true)
+        if (simpleDnsItem.FakeIP == true && simpleDnsItem.GlobalFakeIp != false)
         {
             var fakeipFilterRule = JsonUtils.Deserialize<Rule4Sbox>(EmbedUtils.GetEmbedText(Global.SingboxFakeIPFilterFileName));
             fakeipFilterRule.invert = true;
