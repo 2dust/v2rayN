@@ -25,6 +25,11 @@ public partial class AddGroupServerWindow
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.Text).DisposeWith(disposables);
@@ -45,11 +50,6 @@ public partial class AddGroupServerWindow
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
-                .Subscribe(InitializeData)
-                .DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }

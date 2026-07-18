@@ -26,6 +26,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
@@ -43,11 +48,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
-                .Subscribe(InitializeData)
-                .DisposeWith(disposables);
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
