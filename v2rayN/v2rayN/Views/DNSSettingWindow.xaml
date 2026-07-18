@@ -331,12 +331,25 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbFakeIP}" />
-                        <ToggleButton
-                            x:Name="togFakeIP"
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
+                        <Grid Grid.Row="3" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ToggleButton
+                                x:Name="togFakeIP"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin8}"
+                                HorizontalAlignment="Left" />
+                            <ComboBox
+                                x:Name="cmbFakeIPRange"
+                                Grid.Column="1"
+                                Margin="{StaticResource Margin8}"
+                                HorizontalAlignment="Stretch"
+                                IsEditable="True"
+                                Style="{StaticResource DefComboBox}" />
+                        </Grid>
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="2"

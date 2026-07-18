@@ -7,6 +7,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public bool UseSystemHosts { get; set; }
     [Reactive] public bool AddCommonHosts { get; set; }
     [Reactive] public bool FakeIP { get; set; }
+    [Reactive] public string FakeIPRange { get; set; }
     [Reactive] public bool BlockBindingQuery { get; set; }
     [Reactive] public string DirectDNS { get; set; }
     [Reactive] public string RemoteDNS { get; set; }
@@ -72,6 +73,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         UseSystemHosts = item.UseSystemHosts ?? false;
         AddCommonHosts = item.AddCommonHosts ?? false;
         FakeIP = item.FakeIP ?? false;
+        FakeIPRange = item.FakeIPRange ?? string.Empty;
         BlockBindingQuery = item.BlockBindingQuery ?? false;
         DirectDNS = item.DirectDNS ?? string.Empty;
         RemoteDNS = item.RemoteDNS ?? string.Empty;
@@ -105,6 +107,7 @@ public class DNSSettingViewModel : MyReactiveObject, ICloseable
         _config.SimpleDNSItem.UseSystemHosts = UseSystemHosts;
         _config.SimpleDNSItem.AddCommonHosts = AddCommonHosts;
         _config.SimpleDNSItem.FakeIP = FakeIP;
+        _config.SimpleDNSItem.FakeIPRange = FakeIPRange;
         _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
         _config.SimpleDNSItem.DirectDNS = DirectDNS;
         _config.SimpleDNSItem.RemoteDNS = RemoteDNS;

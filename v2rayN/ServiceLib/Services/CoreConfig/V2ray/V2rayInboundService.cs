@@ -152,6 +152,16 @@ public partial class CoreConfigV2rayService
         inbound.sniffing.destOverride = inItem.DestOverride;
         inbound.sniffing.routeOnly = inItem.RouteOnly;
 
+        if (_config.SimpleDNSItem.FakeIP == true)
+        {
+            // Ensure destOverride contains "fakedns" if FakeIP is enabled
+            inbound.sniffing.destOverride ??= [];
+            if (!inbound.sniffing.destOverride.Contains("fakedns"))
+            {
+                inbound.sniffing.destOverride.Add("fakedns");
+            }
+        }
+
         return inbound;
     }
 }

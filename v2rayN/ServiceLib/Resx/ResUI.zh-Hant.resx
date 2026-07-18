@@ -1498,7 +1498,7 @@
     <value>選擇節點</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>默認全域生效，內置 FakeIP 過濾，僅在 sing-box 中生效</value>
+    <value>默認全局生效，僅在 sing-box 中內置 FakeIP 過濾。</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>請至少添加一個節點</value>

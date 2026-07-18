@@ -274,6 +274,7 @@ public class SimpleDNSItem
     public bool? AddCommonHosts { get; set; }
     public bool? FakeIP { get; set; }
     public bool? GlobalFakeIp { get; set; }
+    public string? FakeIPRange { get; set; }
     public bool? BlockBindingQuery { get; set; }
     public string? DirectDNS { get; set; }
     public string? RemoteDNS { get; set; }
