@@ -1491,7 +1491,7 @@ public static class ConfigHandler
     {
         ProfileItem? itemSocks = null;
         var enableLegacyProtect = config.TunModeItem.EnableLegacyProtect
-                                  || Utils.IsNonWindows();
+                                  || (Utils.IsNonWindows() && Utils.IsNonOSX());
         if (node.ConfigType != EConfigType.Custom
             && coreType != ECoreType.sing_box
             && config.TunModeItem.EnableTun
