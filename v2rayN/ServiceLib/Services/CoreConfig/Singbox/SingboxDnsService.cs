@@ -137,12 +137,12 @@ public partial class CoreConfigSingboxService
         // fake ip
         if (simpleDnsItem.FakeIP == true)
         {
+            var fakeipRange = simpleDnsItem.FakeIPRange.IsNullOrEmpty() ? Global.FakeIPRanges.First() : simpleDnsItem.FakeIPRange;
             var fakeip = new Server4Sbox
             {
                 tag = Global.SingboxFakeDNSTag,
                 type = "fakeip",
-                inet4_range = "198.18.0.0/15",
-                inet6_range = "fc00::/18",
+                inet4_range = fakeipRange,
             };
             _coreConfig.dns.servers.Add(fakeip);
         }

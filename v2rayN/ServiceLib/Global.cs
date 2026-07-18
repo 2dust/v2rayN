@@ -737,6 +737,12 @@ public class Global
         "reply",
     ];
 
+    public static readonly List<string> FakeIPRanges =
+    [
+        "198.18.0.0/15",
+        "11.0.0.0/8",
+    ];
+
     public static readonly List<string> RootCertProviders =
     [
         "system",
