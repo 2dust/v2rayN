@@ -18,7 +18,6 @@ global using System.Text.RegularExpressions;
 global using DynamicData;
 global using DynamicData.Binding;
 global using ReactiveUI;
-global using ReactiveUI.Fody.Helpers;
 global using ServiceLib.Base;
 global using ServiceLib.Common;
 global using ServiceLib.Enums;

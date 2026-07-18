@@ -2,7 +2,7 @@ using System.Reactive.Concurrency;
 
 namespace ServiceLib.ViewModels;
 
-public class MainWindowViewModel : MyReactiveObject
+public partial class MainWindowViewModel : MyReactiveObject
 {
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
     public Interaction<Unit, byte[]?> ScanScreenInteraction { get; } = new();
@@ -70,19 +70,19 @@ public class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
 
     [Reactive]
-    public bool BlReloadEnabled { get; set; }
+    public partial bool BlReloadEnabled { get; set; }
 
     [Reactive]
-    public bool ShowClashUI { get; set; }
+    public partial bool ShowClashUI { get; set; }
 
     [Reactive]
-    public int TabMainSelectedIndex { get; set; }
+    public partial int TabMainSelectedIndex { get; set; }
 
-    [Reactive] public bool BlIsWindows { get; set; }
+    [Reactive] public partial bool BlIsWindows { get; set; }
 
-    [Reactive] public bool BlNewUpdate { get; set; }
+    [Reactive] public partial bool BlNewUpdate { get; set; }
 
-    [Reactive] public EGirdOrientation MainGirdOrientation { get; set; }
+    [Reactive] public partial EGirdOrientation MainGirdOrientation { get; set; }
 
     #endregion Menu
 
@@ -664,6 +664,9 @@ public class MainWindowViewModel : MyReactiveObject
             {
                 return;
             }
+
+            // add fork description
+            NoticeManager.Instance.SendMessage("This is a forked version.");
 
             await Task.Run(async () =>
             {

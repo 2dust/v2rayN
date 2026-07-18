@@ -1830,4 +1830,5 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>Применяется только к загрузкам и сетевым запросам графического интерфейса v2rayN. Не влияет на проверку сертификатов ядром.</value>
   </data>
+  <!-- Forked version, additional resx go here -->
 </root>

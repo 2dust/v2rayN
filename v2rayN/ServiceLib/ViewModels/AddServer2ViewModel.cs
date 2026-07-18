@@ -1,15 +1,15 @@
 namespace ServiceLib.ViewModels;
 
-public class AddServer2ViewModel : MyReactiveObject, ICloseable
+public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
     public Interaction<Unit, string?> BrowseConfigFileInteraction { get; } = new();
 
     [Reactive]
-    public ProfileItem SelectedSource { get; set; }
+    public partial ProfileItem SelectedSource { get; set; }
 
     [Reactive]
-    public string? CoreType { get; set; }
+    public partial string? CoreType { get; set; }
 
     public ReactiveCommand<Unit, Unit> BrowseServerCmd { get; }
     public ReactiveCommand<Unit, Unit> EditServerCmd { get; }

@@ -1839,4 +1839,5 @@
   <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
     <value>需配合 UseIP 策略使用。启用后将同时尝试 IPv4 和 IPv6 连接，并自动选择更快可用的路径。</value>
   </data>
+  <!-- Forked version, additional resx go here -->
 </root>
