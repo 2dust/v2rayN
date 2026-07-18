@@ -115,6 +115,7 @@ public static class ConfigHandler
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
+        config.SimpleDNSItem.FakeIPRange ??= Global.FakeIPRanges.FirstOrDefault();
         config.SimpleDNSItem.GlobalFakeIp ??= true;
         config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
         config.SimpleDNSItem.ServeStale ??= false;

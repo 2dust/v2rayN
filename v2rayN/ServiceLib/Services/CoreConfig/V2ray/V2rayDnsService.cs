@@ -28,7 +28,7 @@ public partial class CoreConfigV2rayService
                 _coreConfig.routing.rules.Add(new RulesItem4Ray
                 {
                     type = "field",
-                    inboundTag = new List<string> { Global.DnsTag },
+                    inboundTag = [Global.DnsTag],
                     outboundTag = Global.ProxyTag,
                 });
                 return;
@@ -118,6 +118,33 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
+    }
+
+    private void GenFakeDns()
+    {
+        var fakeipRange = _config.SimpleDNSItem.FakeIPRange.IsNullOrEmpty() ? Global.FakeIPRanges.First() : _config.SimpleDNSItem.FakeIPRange;
+        var poolSize = 65535L;
+        try
+        {
+            var fakeipNetwork = IPNetwork2.Parse(fakeipRange);
+            var totalIPs = fakeipNetwork.Total;
+            // see https://github.com/XTLS/Xray-core/blob/6e3322d219140a025285ded1114fe17a5edb74d8/app/dns/fakedns/fake.go#L88
+            // if math.Log2(float64(lruSize)) >= float64(rooms) { return errors.New("LRU size is bigger than subnet size").AtError() }
+            totalIPs -= 1;
+            if (totalIPs > 0)
+            {
+                poolSize = (totalIPs >= long.MaxValue) ? long.MaxValue : (long)totalIPs;
+            }
+        }
+        catch
+        {
+            // Ignore
+        }
+        _coreConfig.fakedns = new()
+        {
+            ipPool = fakeipRange,
+            poolSize = poolSize,
+        };
     }
 
     private void FillDnsServers(Dns4Ray dnsItem)
@@ -245,6 +272,23 @@ public partial class CoreConfigV2rayService
         dnsItem.servers ??= [];
 
         var directDnsTagIndex = 1;
+
+        if (simpleDNSItem.FakeIP == true)
+        {
+            var fakeIPMatchDomain = new HashSet<string>(proxyDomainList);
+            fakeIPMatchDomain.UnionWith(proxyGeositeList);
+            if (simpleDNSItem.GlobalFakeIp != false)
+            {
+                fakeIPMatchDomain.UnionWith(directDomainList);
+                fakeIPMatchDomain.UnionWith(directGeositeList);
+                fakeIPMatchDomain.UnionWith(expectedDomainList);
+            }
+            if (fakeIPMatchDomain.Count > 0)
+            {
+                GenFakeDns();
+                AddDnsServers(["fakedns"], fakeIPMatchDomain.ToList());
+            }
+        }
 
         AddDnsServers(remoteDNSAddress, proxyDomainList);
         AddDnsServers(directDNSAddress, directDomainList, true);
