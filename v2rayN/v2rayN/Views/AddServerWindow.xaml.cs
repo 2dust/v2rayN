@@ -36,6 +36,11 @@ public partial class AddServerWindow
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             var configTypeBindings = new SerialDisposable().DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.Text).DisposeWith(disposables);
@@ -186,11 +191,6 @@ public partial class AddServerWindow
             this.BindCommand(ViewModel, vm => vm.FetchCertCmd, v => v.btnFetchCert).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCertChainCmd, v => v.btnFetchCertChain).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
-                .Subscribe(InitializeData)
-                .DisposeWith(disposables);
         });
 
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);

@@ -38,6 +38,11 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .WhereNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             var configTypeBindings = new SerialDisposable().DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
@@ -188,11 +193,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.BindCommand(ViewModel, vm => vm.FetchCertCmd, v => v.btnFetchCert).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCertChainCmd, v => v.btnFetchCertChain).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
-
-            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
-                .Subscribe(InitializeData)
-                .DisposeWith(disposables);
         });
 
     }
