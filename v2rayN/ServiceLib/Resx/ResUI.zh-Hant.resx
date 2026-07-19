@@ -1827,4 +1827,16 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>僅適用於 v2rayN GUI 的下載與網路請求，不影響核心的憑證驗證</value>
   </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>連線代理解析策略</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>不建議啟用，特殊情況可能造成連線循環</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>啟用 Happy Eyeballs</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>需搭配 UseIP 策略，啟用後會同時嘗試 IPv4 與 IPv6 連線，並自動選擇速度較快的路徑</value>
+  </data>
 </root>
