@@ -17,7 +17,6 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <dialogHost:DialogHost
-        Background="Gray"
         CloseOnClickAway="True"
         DisableOpeningAnimation="True"
         Identifier="dialogHostSub">
