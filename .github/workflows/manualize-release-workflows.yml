@@ -19,9 +19,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Remove automatic push triggers
-        shell: python
+        shell: python {0}
         run: |
           from pathlib import Path
 
