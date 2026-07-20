@@ -1,4 +1,4 @@
-name: Build Windows framework-dependent
+name: Build Windows Light (no .NET, no cores)
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
         working-directory: ./v2rayN
         run: dotnet test ./ServiceLib.Tests/ServiceLib.Tests.csproj -c Release
 
-      - name: Publish v2rayN
+      - name: Publish v2rayN without bundled .NET
         working-directory: ./v2rayN
         run: >-
           dotnet publish ./v2rayN/v2rayN.csproj
@@ -52,7 +52,7 @@ jobs:
           -p:EnableWindowsTargeting=true
           -o "${{ github.workspace }}/publish"
 
-      - name: Publish AmazTool
+      - name: Publish AmazTool without bundled .NET
         working-directory: ./v2rayN
         run: >-
           dotnet publish ./AmazTool/AmazTool.csproj
@@ -68,9 +68,9 @@ jobs:
         shell: pwsh
         run: Get-ChildItem "${{ github.workspace }}/publish" -Filter *.pdb | Remove-Item -Force
 
-      - name: Upload framework-dependent build
+      - name: Upload light build
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: v2rayN-windows-x64-framework-dependent
+          name: v2rayN-windows-x64-light-no-dotnet-no-cores
           path: publish/
           if-no-files-found: error
