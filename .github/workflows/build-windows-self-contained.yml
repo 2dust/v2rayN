@@ -2,9 +2,6 @@ name: Build Windows Medium (.NET, no cores)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
 
 permissions:
   contents: read
