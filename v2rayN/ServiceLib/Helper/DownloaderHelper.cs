@@ -8,7 +8,12 @@ public class DownloaderHelper
     private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
     public static DownloaderHelper Instance => _instance.Value;
 
-    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
+    public async Task<string?> DownloadStringAsync(
+        IWebProxy? webProxy,
+        string url,
+        string? userAgent,
+        int timeout,
+        IReadOnlyDictionary<string, string>? requestHeaders = null)
     {
         if (url.IsNullOrEmpty())
         {
@@ -24,6 +29,7 @@ public class DownloaderHelper
         {
             headers.Add(HttpRequestHeader.Authorization, "Basic " + Utils.Base64Encode(uri.UserInfo));
         }
+        AddRequestHeaders(headers, requestHeaders);
 
         var requestConfiguration = new RequestConfiguration()
         {
@@ -194,6 +200,33 @@ public class DownloaderHelper
         await downloader.DownloadFileTaskAsync(url, fileName, cts.Token);
 
         downloadOpt = null;
+    }
+
+    private static void AddRequestHeaders(
+        WebHeaderCollection target,
+        IReadOnlyDictionary<string, string>? requestHeaders)
+    {
+        if (requestHeaders is not { Count: > 0 })
+        {
+            return;
+        }
+
+        foreach (var header in requestHeaders)
+        {
+            if (header.Key.Equals("User-Agent", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            try
+            {
+                target.Set(header.Key, header.Value);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("DownloaderHelper.AddRequestHeaders", ex);
+            }
+        }
     }
 
     // https://github.com/bezzad/Downloader/blob/a75a6e431acd6cbba6293f7afdcf676544a09174/src/Downloader/SocketClient.cs#L45

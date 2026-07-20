@@ -104,21 +104,29 @@ public class DownloadService
     /// <summary>
     /// Tries to download string content using proxy switch setting.
     /// </summary>
-    public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent)
+    public async Task<string?> TryDownloadString(
+        string url,
+        bool blProxy,
+        string userAgent,
+        IReadOnlyDictionary<string, string>? requestHeaders = null)
     {
         var webProxy = await GetWebProxy(blProxy);
-        return await TryDownloadString(url, webProxy, userAgent);
+        return await TryDownloadString(url, webProxy, userAgent, requestHeaders);
     }
 
     /// <summary>
     /// Tries to download string content with a specified proxy.
     /// </summary>
-    public async Task<string?> TryDownloadString(string url, IWebProxy? webProxy, string userAgent)
+    public async Task<string?> TryDownloadString(
+        string url,
+        IWebProxy? webProxy,
+        string userAgent,
+        IReadOnlyDictionary<string, string>? requestHeaders = null)
     {
         var timeout = 15;
         try
         {
-            var result1 = await DownloadStringAsync(url, webProxy, userAgent, timeout);
+            var result1 = await DownloadStringAsync(url, webProxy, userAgent, timeout, requestHeaders);
             if (result1.IsNotEmpty())
             {
                 return result1;
@@ -136,7 +144,7 @@ public class DownloadService
 
         try
         {
-            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, timeout);
+            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, timeout, requestHeaders);
             if (result2.IsNotEmpty())
             {
                 return result2;
@@ -158,7 +166,12 @@ public class DownloadService
     /// <summary>
     /// Downloads string content via HttpClient.
     /// </summary>
-    private async Task<string?> DownloadStringAsync(string url, IWebProxy? webProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringAsync(
+        string url,
+        IWebProxy? webProxy,
+        string userAgent,
+        int timeout,
+        IReadOnlyDictionary<string, string>? requestHeaders)
     {
         try
         {
@@ -186,6 +199,7 @@ public class DownloadService
                 userAgent = Utils.GetVersion(false);
             }
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
+            ApplyRequestHeaders(client.DefaultRequestHeaders, requestHeaders);
 
             Uri uri = new(url);
             //Authorization Header
@@ -215,7 +229,12 @@ public class DownloadService
     /// <summary>
     /// Downloads string content via DownloaderHelper.
     /// </summary>
-    private async Task<string?> DownloadStringViaDownloader(string url, IWebProxy? webProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringViaDownloader(
+        string url,
+        IWebProxy? webProxy,
+        string userAgent,
+        int timeout,
+        IReadOnlyDictionary<string, string>? requestHeaders)
     {
         try
         {
@@ -223,7 +242,12 @@ public class DownloadService
             {
                 userAgent = Utils.GetVersion(false);
             }
-            var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, timeout);
+            var result = await DownloaderHelper.Instance.DownloadStringAsync(
+                webProxy,
+                url,
+                userAgent,
+                timeout,
+                requestHeaders);
             return result;
         }
         catch (Exception ex)
@@ -236,6 +260,27 @@ public class DownloadService
             }
         }
         return null;
+    }
+
+    private static void ApplyRequestHeaders(
+        HttpRequestHeaders target,
+        IReadOnlyDictionary<string, string>? requestHeaders)
+    {
+        if (requestHeaders is not { Count: > 0 })
+        {
+            return;
+        }
+
+        foreach (var header in requestHeaders)
+        {
+            if (header.Key.Equals("User-Agent", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            target.Remove(header.Key);
+            target.TryAddWithoutValidation(header.Key, header.Value);
+        }
     }
 
     /// <summary>

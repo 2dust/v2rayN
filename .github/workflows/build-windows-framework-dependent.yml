@@ -1,0 +1,76 @@
+name: Build Windows framework-dependent
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Purge SDKs
+        shell: pwsh
+        run: |
+          dotnet --list-sdks | ForEach-Object {
+            $_ -match '^\S+\s+\[(.+)\]$' > $null
+            $sdkPath = Join-Path $Matches[1] $_.Split()[0]
+            Remove-Item $sdkPath -Recurse -Force
+          }
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: '10.0.1xx'
+
+      - name: Run ServiceLib tests
+        working-directory: ./v2rayN
+        run: dotnet test ./ServiceLib.Tests/ServiceLib.Tests.csproj -c Release
+
+      - name: Publish v2rayN
+        working-directory: ./v2rayN
+        run: >-
+          dotnet publish ./v2rayN/v2rayN.csproj
+          -c Release
+          -r win-x64
+          -p:SelfContained=false
+          -p:PublishSingleFile=false
+          -p:PublishTrimmed=false
+          -p:EnableWindowsTargeting=true
+          -o "${{ github.workspace }}/publish"
+
+      - name: Publish AmazTool
+        working-directory: ./v2rayN
+        run: >-
+          dotnet publish ./AmazTool/AmazTool.csproj
+          -c Release
+          -r win-x64
+          -p:SelfContained=false
+          -p:PublishSingleFile=false
+          -p:PublishTrimmed=false
+          -p:EnableWindowsTargeting=true
+          -o "${{ github.workspace }}/publish"
+
+      - name: Remove debug symbols
+        shell: pwsh
+        run: Get-ChildItem "${{ github.workspace }}/publish" -Filter *.pdb | Remove-Item -Force
+
+      - name: Upload framework-dependent build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: v2rayN-windows-x64-framework-dependent
+          path: publish/
+          if-no-files-found: error
