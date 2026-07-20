@@ -64,6 +64,10 @@ jobs:
           -p:EnableWindowsTargeting=true
           -o "${{ github.workspace }}/publish"
 
+      - name: Add agent_v
+        shell: pwsh
+        run: Copy-Item "${{ github.workspace }}/agent_v" "${{ github.workspace }}/publish/agent_v" -Force
+
       - name: Remove debug symbols
         shell: pwsh
         run: Get-ChildItem "${{ github.workspace }}/publish" -Filter *.pdb | Remove-Item -Force
