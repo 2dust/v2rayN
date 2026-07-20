@@ -51,26 +51,4 @@ internal static class WindowsUtils
             regKey?.Close();
         }
     }
-
-    public static async Task RemoveTunDevice()
-    {
-        var tunNameList = new List<string> { "wintunsingbox_tun", "xray_tun" };
-        foreach (var tunName in tunNameList)
-        {
-            try
-            {
-                var sum = MD5.HashData(Encoding.UTF8.GetBytes(tunName));
-                var guid = new Guid(sum);
-                var pnpUtilPath = @"C:\Windows\System32\pnputil.exe";
-                var arg = $$""" /remove-device  "SWD\Wintun\{{{guid}}}" """;
-
-                // Try to remove the device
-                _ = await Utils.GetCliWrapOutput(pnpUtilPath, arg);
-            }
-            catch (Exception ex)
-            {
-                Logging.SaveLog(_tag, ex);
-            }
-        }
-    }
 }

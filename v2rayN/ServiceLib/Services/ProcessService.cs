@@ -72,10 +72,26 @@ public class ProcessService : IDisposable
 
     public async Task StopAsync()
     {
+        int processId;
+        try
+        {
+            processId = _process.Id;
+        }
+        catch
+        {
+            processId = 0;
+        }
+
+        var processName = Path.GetFileName(_process.StartInfo.FileName);
+
         if (_process.HasExited)
         {
+            await LogLifecycleAsync($"Core stop: {processName}, PID={processId} has already exited.");
             return;
         }
+
+        var stopwatch = Stopwatch.StartNew();
+        await LogLifecycleAsync($"Core stop: stopping {processName}, PID={processId}.");
 
         try
         {
@@ -99,20 +115,65 @@ public class ProcessService : IDisposable
                 {
                     _process.Kill(true);
                 }
+                else
+                {
+                    _process.Kill();
+                }
+                await LogLifecycleAsync($"Core stop: kill signal sent to PID={processId}.");
             }
-            catch { }
-
-            try
+            catch (Exception ex)
             {
-                _process.Kill();
+                await LogLifecycleAsync($"Core stop: failed to send kill signal to PID={processId}: {ex.Message}");
             }
-            catch { }
 
-            await Task.Delay(100);
+            if (!_process.HasExited)
+            {
+                using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                try
+                {
+                    await _process.WaitForExitAsync(timeoutCts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    await LogLifecycleAsync($"Core stop: timeout after {stopwatch.ElapsedMilliseconds} ms waiting for PID={processId} to exit.");
+
+                    try
+                    {
+                        if (!_process.HasExited)
+                        {
+                            _process.Kill();
+                            await LogLifecycleAsync($"Core stop: repeated kill signal sent to PID={processId} after timeout.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await LogLifecycleAsync($"Core stop: repeated kill failed for PID={processId}: {ex.Message}");
+                    }
+                }
+            }
+
+            if (_process.HasExited)
+            {
+                await LogLifecycleAsync($"Core stop: PID={processId} exited after {stopwatch.ElapsedMilliseconds} ms, exit code={_process.ExitCode}.");
+            }
+            else
+            {
+                await LogLifecycleAsync($"Core stop: PID={processId} is still running after {stopwatch.ElapsedMilliseconds} ms; restart will continue.");
+            }
         }
         catch (Exception ex)
         {
+            await LogLifecycleAsync($"Core stop: exception while stopping PID={processId}: {ex.Message}");
             await _updateFunc?.Invoke(true, ex.Message);
+        }
+    }
+
+    private async Task LogLifecycleAsync(string message)
+    {
+        Logging.SaveLog(message);
+        if (_updateFunc != null)
+        {
+            await _updateFunc(false, message + Environment.NewLine);
         }
     }
 

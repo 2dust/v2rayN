@@ -16,12 +16,34 @@ public class CoreManager
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
+    private long _loadCoreSequence;
+    private int _tunStartObservationMs = 20000;
     private const string _tag = "CoreHandler";
+
+    private const int TunStartMaxAttempts = 3;
+    private const int TunStartRetryDelayMs = 5000;
+
+    private enum TunStartResult
+    {
+        Success,
+        Failed,
+        Cancelled
+    }
+
+    private enum TunObservationResult
+    {
+        Survived,
+        Exited,
+        Cancelled
+    }
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
+
+        var tunSettings = TunStartupSettings.LoadOrCreate();
+        _tunStartObservationMs = checked(tunSettings.ObservationSeconds * 1000);
 
         //Copy the bin folder to the storage location (for init)
         if (Environment.GetEnvironmentVariable(Global.LocalAppData) == "1")
@@ -64,8 +86,12 @@ public class CoreManager
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
     public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
+        var loadId = Interlocked.Increment(ref _loadCoreSequence);
+        await LogLifecycle(false, $"Core load #{loadId}: request received; TUN={_config.TunModeItem.EnableTun}.");
+
         if (mainContext == null)
         {
+            await LogLifecycle(true, $"Core load #{loadId}: cancelled because the main core context is missing.");
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
@@ -75,25 +101,66 @@ public class CoreManager
         var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
         if (result.Success != true)
         {
+            await LogLifecycle(true, $"Core load #{loadId}: configuration generation failed: {result.Msg}");
             await UpdateFunc(true, result.Msg);
             return;
         }
 
+        await LogLifecycle(false,
+            $"Core load #{loadId}: configuration generated; mainCore={mainContext.RunCoreType}, " +
+            $"preCore={(preContext == null ? "none" : preContext.RunCoreType.ToString())}, TUN={_config.TunModeItem.EnableTun}.");
+
         await UpdateFunc(false, $"{node.GetSummary()}");
         await UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
         await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+
+        await LogLifecycle(false, $"Core load #{loadId}: stopping the previous core process.");
         await CoreStop();
+        await LogLifecycle(false, $"Core load #{loadId}: previous core stop completed.");
         await Task.Delay(100);
 
-        if (Utils.IsWindows() && _config.TunModeItem.EnableTun)
+        var retryTunStart = Utils.IsWindows()
+                            && _config.TunModeItem.EnableTun
+                            && mainContext.RunCoreType is ECoreType.Xray or ECoreType.sing_box;
+
+        bool started;
+        if (retryTunStart)
         {
-            await Task.Delay(100);
-            await WindowsUtils.RemoveTunDevice();
+            var tunStartResult = await StartTunWithRetry(mainContext, loadId);
+            if (tunStartResult == TunStartResult.Cancelled)
+            {
+                await LogLifecycle(false,
+                    $"Core load #{loadId}: TUN startup observation was cancelled because TUN was disabled; " +
+                    "the queued non-TUN reload may continue immediately.");
+                return;
+            }
+
+            started = tunStartResult == TunStartResult.Success;
+        }
+        else
+        {
+            started = await StartMainCoreOnce(mainContext, loadId, _config.TunModeItem.EnableTun);
         }
 
-        await CoreStart(mainContext);
+        if (!started && retryTunStart)
+        {
+            started = await StartWithoutTunFallback(mainContext, preContext, loadId);
+        }
+
+        if (!started || _processService == null)
+        {
+            await LogLifecycle(true, $"Core load #{loadId}: the main core process failed to start.");
+            return;
+        }
+
         await WaitForProxyPort(preContext);
         await CoreStartPreService(preContext);
+
+        if (_processPreService != null)
+        {
+            await LogLifecycle(false,
+                $"Core load #{loadId}: pre-core process started; PID={_processPreService.Id}, core={preContext?.RunCoreType}.");
+        }
 
         AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
 
@@ -101,6 +168,8 @@ public class CoreManager
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
+
+        await LogLifecycle(false, $"Core load #{loadId}: completed; effective TUN={_config.TunModeItem.EnableTun}.");
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
@@ -176,6 +245,180 @@ public class CoreManager
 
     #region Private
 
+    private async Task<bool> StartMainCoreOnce(CoreConfigContext context, long loadId, bool tunEnabled)
+    {
+        await LogLifecycle(false, $"Core load #{loadId}: starting the main core process; TUN={tunEnabled}.");
+        await CoreStart(context);
+
+        if (_processService == null)
+        {
+            await LogLifecycle(true, $"Core load #{loadId}: main core start returned no process; TUN={tunEnabled}.");
+            return false;
+        }
+
+        await LogLifecycle(false,
+            $"Core load #{loadId}: main core process started; PID={_processService.Id}, " +
+            $"core={context.RunCoreType}, TUN={tunEnabled}.");
+        return true;
+    }
+
+    private async Task<TunStartResult> StartTunWithRetry(CoreConfigContext context, long loadId)
+    {
+        var coreName = context.RunCoreType.ToString();
+        var observationSeconds = _tunStartObservationMs / 1000;
+
+        for (var attempt = 1; attempt <= TunStartMaxAttempts; attempt++)
+        {
+            if (!_config.TunModeItem.EnableTun)
+            {
+                return TunStartResult.Cancelled;
+            }
+
+            await LogLifecycle(false,
+                $"Core load #{loadId}: {coreName} TUN start attempt {attempt}/{TunStartMaxAttempts}.");
+
+            await CoreStart(context);
+            var process = _processService;
+
+            if (process == null)
+            {
+                if (!_config.TunModeItem.EnableTun)
+                {
+                    return TunStartResult.Cancelled;
+                }
+
+                await LogLifecycle(true,
+                    $"Core load #{loadId}: {coreName} TUN attempt {attempt} did not create a process.");
+            }
+            else
+            {
+                var pid = process.Id;
+                await LogLifecycle(false,
+                    $"Core load #{loadId}: {coreName} TUN attempt {attempt} started PID={pid}; " +
+                    $"observing it for {observationSeconds} seconds.");
+
+                var observationResult = await ObserveTunStart(process, _tunStartObservationMs);
+                if (observationResult == TunObservationResult.Survived)
+                {
+                    await LogLifecycle(false,
+                        $"Core load #{loadId}: {coreName} TUN attempt {attempt} succeeded; " +
+                        $"PID={pid} remained running for {observationSeconds} seconds.");
+                    return TunStartResult.Success;
+                }
+
+                if (observationResult == TunObservationResult.Cancelled)
+                {
+                    await LogLifecycle(false,
+                        $"Core load #{loadId}: {coreName} TUN observation cancelled because TUN was disabled; " +
+                        $"stopping PID={pid} immediately.");
+                    await CoreStop();
+                    return TunStartResult.Cancelled;
+                }
+
+                await LogLifecycle(true,
+                    $"Core load #{loadId}: {coreName} TUN attempt {attempt} failed; " +
+                    $"PID={pid} exited during startup observation.");
+
+                process.Dispose();
+                if (ReferenceEquals(_processService, process))
+                {
+                    _processService = null;
+                }
+            }
+
+            if (attempt < TunStartMaxAttempts)
+            {
+                await LogLifecycle(false,
+                    $"Core load #{loadId}: waiting {TunStartRetryDelayMs / 1000} seconds before " +
+                    $"{coreName} TUN retry {attempt + 1}.");
+
+                if (!await DelayWhileTunEnabled(TunStartRetryDelayMs))
+                {
+                    await LogLifecycle(false,
+                        $"Core load #{loadId}: {coreName} TUN retry cancelled because TUN was disabled.");
+                    return TunStartResult.Cancelled;
+                }
+            }
+        }
+
+        await LogLifecycle(true,
+            $"Core load #{loadId}: all {TunStartMaxAttempts} {coreName} TUN start attempts failed.");
+        return TunStartResult.Failed;
+    }
+
+    private async Task<bool> StartWithoutTunFallback(
+        CoreConfigContext mainContext,
+        CoreConfigContext? preContext,
+        long loadId)
+    {
+        await LogLifecycle(true,
+            $"Core load #{loadId}: disabling TUN and starting the selected server without TUN as fallback.");
+
+        _config.TunModeItem.EnableTun = false;
+        mainContext.AppConfig.TunModeItem.EnableTun = false;
+        if (preContext != null)
+        {
+            preContext.AppConfig.TunModeItem.EnableTun = false;
+        }
+
+        await ConfigHandler.SaveConfig(_config);
+
+        var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
+        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
+        if (result.Success != true)
+        {
+            await LogLifecycle(true,
+                $"Core load #{loadId}: fallback configuration generation failed: {result.Msg}");
+            return false;
+        }
+
+        return await StartMainCoreOnce(mainContext, loadId, false);
+    }
+
+    private async Task<TunObservationResult> ObserveTunStart(ProcessService process, int observationMs)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        while (stopwatch.ElapsedMilliseconds < observationMs)
+        {
+            if (!_config.TunModeItem.EnableTun)
+            {
+                return TunObservationResult.Cancelled;
+            }
+
+            if (process.HasExited)
+            {
+                return TunObservationResult.Exited;
+            }
+
+            await Task.Delay(100);
+        }
+
+        if (!_config.TunModeItem.EnableTun)
+        {
+            return TunObservationResult.Cancelled;
+        }
+
+        return process.HasExited ? TunObservationResult.Exited : TunObservationResult.Survived;
+    }
+
+    private async Task<bool> DelayWhileTunEnabled(int delayMs)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        while (stopwatch.ElapsedMilliseconds < delayMs)
+        {
+            if (!_config.TunModeItem.EnableTun)
+            {
+                return false;
+            }
+
+            await Task.Delay(100);
+        }
+
+        return _config.TunModeItem.EnableTun;
+    }
+
     private async Task CoreStart(CoreConfigContext context)
     {
         var node = context.Node;
@@ -214,6 +457,12 @@ public class CoreManager
     private async Task UpdateFunc(bool notify, string msg)
     {
         await _updateFunc?.Invoke(notify, msg);
+    }
+
+    private async Task LogLifecycle(bool notify, string message)
+    {
+        Logging.SaveLog(message);
+        await UpdateFunc(notify, message + Environment.NewLine);
     }
 
     private static async Task WaitForProxyPort(CoreConfigContext? preContext, int timeoutMs = 5000)

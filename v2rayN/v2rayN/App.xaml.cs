@@ -10,6 +10,8 @@ public partial class App
 {
     public static EventWaitHandle ProgramStarted;
 
+    private TunDelayStartupOption _tunDelayOption = TunDelayStartupOption.NotSpecified;
+
     public App()
     {
         DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -41,9 +43,17 @@ public partial class App
             return;
         }
 
+        _tunDelayOption = StartupArgumentHelper.ParseTunDelay(e.Args);
+        if (_tunDelayOption.IsSpecified)
+        {
+            // The command-line option always suppresses TUN during the initial startup.
+            AppManager.Instance.Config.TunModeItem.EnableTun = false;
+        }
+
         AppManager.Instance.WindowDialog = new WindowDialog();
 
         AppManager.Instance.InitComponents();
+        LogTunDelayStartupOption();
 
         RxAppBuilder.CreateReactiveUIBuilder()
             .WithWpf()
@@ -58,6 +68,57 @@ public partial class App
         var mainWindow = (MainWindow)viewFor;
         mainWindow.Show();
         MainWindow = mainWindow;
+
+        if (_tunDelayOption.IsSpecified && _tunDelayOption.DelaySeconds > 0)
+        {
+            _ = EnableTunAfterDelayAsync(_tunDelayOption.DelaySeconds);
+        }
+    }
+
+    private void LogTunDelayStartupOption()
+    {
+        if (!_tunDelayOption.IsSpecified)
+        {
+            return;
+        }
+
+        if (_tunDelayOption.ParseError.IsNotEmpty())
+        {
+            Logging.SaveLog($"TUN delay option error: {_tunDelayOption.ParseError} TUN will remain disabled until enabled manually.");
+            return;
+        }
+
+        if (_tunDelayOption.DelaySeconds == 0)
+        {
+            Logging.SaveLog("TUN delay option: TUN is disabled for startup and automatic enable is disabled (-tundelay 0).");
+        }
+        else
+        {
+            Logging.SaveLog($"TUN delay option: TUN is disabled for startup and will be enabled after {_tunDelayOption.DelaySeconds} seconds.");
+        }
+    }
+
+    private async Task EnableTunAfterDelayAsync(int delaySeconds)
+    {
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+            await Dispatcher.InvokeAsync(() =>
+            {
+                if (StatusBarViewModel.Instance.EnableTun)
+                {
+                    Logging.SaveLog($"TUN delay elapsed after {delaySeconds} seconds; TUN is already enabled.");
+                    return;
+                }
+
+                Logging.SaveLog($"TUN delay elapsed after {delaySeconds} seconds; enabling TUN.");
+                StatusBarViewModel.Instance.EnableTun = true;
+            });
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("EnableTunAfterDelayAsync", ex);
+        }
     }
 
     private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
