@@ -1,0 +1,97 @@
+name: Build Windows Full (.NET and cores)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Purge SDKs
+        shell: pwsh
+        run: |
+          dotnet --list-sdks | ForEach-Object {
+            $_ -match '^\S+\s+\[(.+)\]$' > $null
+            $sdkPath = Join-Path $Matches[1] $_.Split()[0]
+            Remove-Item $sdkPath -Recurse -Force
+          }
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: '10.0.1xx'
+
+      - name: Run ServiceLib tests
+        working-directory: ./v2rayN
+        run: dotnet test ./ServiceLib.Tests/ServiceLib.Tests.csproj -c Release
+
+      - name: Publish v2rayN with bundled .NET
+        working-directory: ./v2rayN
+        run: >-
+          dotnet publish ./v2rayN/v2rayN.csproj
+          -c Release
+          -r win-x64
+          -p:SelfContained=true
+          -p:PublishSingleFile=false
+          -p:PublishTrimmed=false
+          -p:EnableWindowsTargeting=true
+          -o "${{ github.workspace }}/publish"
+
+      - name: Publish AmazTool with bundled .NET
+        working-directory: ./v2rayN
+        run: >-
+          dotnet publish ./AmazTool/AmazTool.csproj
+          -c Release
+          -r win-x64
+          -p:SelfContained=true
+          -p:PublishSingleFile=false
+          -p:PublishTrimmed=true
+          -p:EnableWindowsTargeting=true
+          -o "${{ github.workspace }}/publish"
+
+      - name: Add agent_v
+        shell: pwsh
+        run: Copy-Item "${{ github.workspace }}/agent_v" "${{ github.workspace }}/publish/agent_v" -Force
+
+      - name: Remove debug symbols
+        shell: pwsh
+        run: Get-ChildItem "${{ github.workspace }}/publish" -Filter *.pdb | Remove-Item -Force
+
+      - name: Download and unpack cores
+        shell: pwsh
+        run: |
+          $coreZip = "${{ github.workspace }}/v2rayN-windows-64.zip"
+          $fullDir = "${{ github.workspace }}/full"
+          Invoke-WebRequest `
+            -Uri "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-windows-64.zip" `
+            -OutFile $coreZip
+          Expand-Archive -Path $coreZip -DestinationPath $fullDir -Force
+          Copy-Item "${{ github.workspace }}/publish/*" $fullDir -Recurse -Force
+
+      - name: Create full ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "${{ github.workspace }}/full/*" `
+            -DestinationPath "${{ github.workspace }}/v2rayN-windows-x64-full.zip" `
+            -CompressionLevel Fastest `
+            -Force
+
+      - name: Upload full build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: v2rayN-windows-x64-full-dotnet-and-cores
+          path: v2rayN-windows-x64-full.zip
+          if-no-files-found: error
