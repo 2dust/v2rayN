@@ -379,50 +379,6 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Test]
-    public async Task GenerateClientConfigContent_DirectExpectedIPs_ShouldApplyGeoipAndCidrToDirectDnsRule()
-    {
-        var config = CoreConfigTestFactory.CreateConfigWithDirectExpectedIPs(
-            ECoreType.sing_box,
-            "192.168.0.0/16,geoip:cn");
-        CoreConfigTestFactory.BindAppManagerConfig(config);
-
-        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-main", "main");
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
-        {
-            RoutingItem = new RoutingItem
-            {
-                Id = "r-dns-direct-expected",
-                Remarks = "dns-direct-expected",
-                RuleSet = JsonUtils.Serialize(new List<RulesItem>
-                {
-                    new()
-                    {
-                        Enabled = true,
-                        RuleType = ERuleType.DNS,
-                        OutboundTag = Global.DirectTag,
-                        Domain = ["geosite:cn"],
-                    }
-                }),
-                DomainStrategy = Global.AsIs,
-                DomainStrategy4Singbox = string.Empty,
-            }
-        };
-
-        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
-
-        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
-        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
-
-        var hasExpectedRule = cfg.dns.rules?.Any(r =>
-            r.server == Global.SingboxDirectDNSTag
-            && r.ip_cidr?.Contains("192.168.0.0/16") == true
-            && r.rule_set?.Contains("geosite-cn") == true
-            && r.rule_set?.Contains("geoip-cn") == true) ?? false;
-
-        await hasExpectedRule.Should().BeTrue();
-    }
-
-    [Test]
     public async Task GenerateClientConfigContent_BootstrapDNS_ShouldConfigurePureIPResolver()
     {
         var bootstrapDns = "8.8.8.8";
@@ -546,12 +502,16 @@ public class CoreConfigSingboxServiceTests
                 {
                     new()
                     {
+                        Enabled = true, RuleType = ERuleType.DNS, OutboundTag = Global.ProxyTag, Domain = ["geosite:google"],
+                    },
+                    new()
+                    {
                         Enabled = true, RuleType = ERuleType.DNS, OutboundTag = Global.DirectTag, Domain = [domainTag],
-                    }
+                    },
                 }),
                 DomainStrategy = Global.AsIs,
                 DomainStrategy4Singbox = string.Empty,
-            }
+            },
         };
 
         var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
@@ -559,11 +519,14 @@ public class CoreConfigSingboxServiceTests
         await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
         var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
 
-        var hasExpectedRule = cfg.dns.rules?.Any(r =>
-            r.server == Global.SingboxDirectDNSTag
-            && r.ip_cidr?.Contains("192.168.0.0/16") == true
-            && r.rule_set?.Contains(expectedRuleSetTag) == true
-            && r.rule_set?.Contains("geoip-cn") == true) ?? false;
+        var hasExpectedRule = (cfg.dns.rules?.Any(r =>
+                                  r.ip_cidr?.Contains("192.168.0.0/16") == true
+                                  && r.action == "respond"
+                                  && r.rule_set?.Contains("geoip-cn") == true) ?? false)
+                              && (cfg.dns.rules?.Any(r =>
+                                  r.server == Global.SingboxDirectDNSTag
+                                  && r.rule_set?.Contains(expectedRuleSetTag) == true
+                                  && r.action == "evaluate") ?? false);
         await hasExpectedRule.Should().BeTrue();
     }
 
@@ -630,6 +593,60 @@ public class CoreConfigSingboxServiceTests
         await cfg.dns.servers.Should().Contain(s => s.tag == Global.SingboxLocalDNSTag);
         await cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Global));
         await cfg.dns.rules.Should().Contain(r => r.clash_mode == nameof(ERuleMode.Direct));
+    }
+
+    [Test]
+    [Arguments(true)]
+    [Arguments(false)]
+    public async Task GenerateClientConfigContent_MultiDnsServers_ShouldIncludeAllServers(bool parallelQuery)
+    {
+        var config =
+            CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.SimpleDNSItem.ParallelQuery = parallelQuery;
+        config.SimpleDNSItem.DirectDNS = "1.1.1.1,2.2.2.2";
+        config.SimpleDNSItem.RemoteDNS = "3.3.3.3,4.4.4.4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            RoutingItem = new RoutingItem
+            {
+                Id = "r-dns-direct-variant",
+                Remarks = "dns-direct-variant",
+                RuleSet = JsonUtils.Serialize(new List<RulesItem>
+                {
+                    new()
+                    {
+                        Enabled = true,
+                        RuleType = ERuleType.DNS,
+                        OutboundTag = Global.ProxyTag,
+                        Domain = ["geosite:google"],
+                    },
+                    new()
+                    {
+                        Enabled = true,
+                        RuleType = ERuleType.DNS,
+                        OutboundTag = Global.DirectTag,
+                        Domain = ["geosite:cn"],
+                    },
+                }),
+                DomainStrategy = Global.AsIs,
+                DomainStrategy4Singbox = string.Empty,
+            },
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+
+        await cfg.dns.servers.Where(s => s.tag.StartsWith(Global.SingboxDirectDNSTagPrefix)).Should().HaveCount(2);
+        await cfg.dns.servers.Where(s => s.tag.StartsWith(Global.SingboxRemoteDNSTagPrefix)).Should().HaveCount(2);
+        if (parallelQuery)
+        {
+            await cfg.dns.rules.Should().Contain(r => r.race == true);
+        }
     }
 
     [Test]

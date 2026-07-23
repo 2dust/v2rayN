@@ -97,8 +97,12 @@ public class Global
     public const string StringFalse = "false";
     public const int SqliteMaxBatchSize = 10000;
 
-    public const string SingboxDirectDNSTag = "direct-dns";
-    public const string SingboxRemoteDNSTag = "remote-dns";
+    public const string SingboxDirectDNSTagPrefix = "direct-dns-";
+    public const string SingboxRemoteDNSTagPrefix = "remote-dns-";
+    public const string SingboxDirectDNSTag = "direct-dns-1";
+    public const string SingboxRemoteDNSTag = "remote-dns-1";
+    public const string SingboxDirectDNSTagTemplate = "direct-dns-{0}";
+    public const string SingboxRemoteDNSTagTemplate = "remote-dns-{0}";
     public const string SingboxLocalDNSTag = "local-local";
     public const string SingboxHostsDNSTag = "hosts-dns";
     public const string SingboxFakeDNSTag = "fake-dns";
