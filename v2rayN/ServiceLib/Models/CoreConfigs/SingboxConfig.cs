@@ -95,7 +95,10 @@ public class Rule4Sbox
     public bool? rule_set_ip_cidr_accept_empty { get; set; }
     public bool? tls_record_fragment { get; set; }
     public string? preferred_by { get; set; }
-    public bool? match_response { get; set; }
+    public string? match_response { get; set; } // or bool
+    public string? tag { get; set; }
+    public bool? race { get; set; }
+    public bool? speculative { get; set; }
 }
 
 [Serializable]
