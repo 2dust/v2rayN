@@ -494,7 +494,7 @@ public partial class CoreConfigSingboxService
 
     private static Server4Sbox? ParseDnsAddress(string address)
     {
-        var addressFirst = address?.Split(address.Contains(',') ? ',' : ';').FirstOrDefault()?.Trim();
+        var addressFirst = Utils.String2List(address)?.FirstOrDefault()?.Trim();
         if (string.IsNullOrEmpty(addressFirst))
         {
             return null;
