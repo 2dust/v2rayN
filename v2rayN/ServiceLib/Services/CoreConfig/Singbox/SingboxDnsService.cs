@@ -374,7 +374,7 @@ public partial class CoreConfigSingboxService
 
                 if (rule4ExpectedIPs is not null)
                 {
-                    var expectedRuleList = BuildParallelRules(rule4ExpectedIPs, item, directDnsList);
+                    var expectedRuleList = BuildMultiRules(rule4ExpectedIPs, item, directDnsList);
                     foreach (var expectedRule in
                              expectedRuleList.Where(expectedRule => expectedRule.action == "respond"))
                     {
@@ -388,7 +388,7 @@ public partial class CoreConfigSingboxService
                         }
                     }
                     _coreConfig.dns.rules.AddRange(expectedRuleList);
-                    var fallbackRemoteRuleList = BuildParallelRules(rule4ExpectedIPs, item, remoteDnsList);
+                    var fallbackRemoteRuleList = BuildMultiRules(rule4ExpectedIPs, item, remoteDnsList);
                     if (expectedRuleList.LastOrDefault()?.race == true)
                     {
                         foreach (var fallbackRemoteRule in fallbackRemoteRuleList.Where(fallbackRemoteRule =>
@@ -429,11 +429,11 @@ public partial class CoreConfigSingboxService
             _coreConfig.dns.rules.Add(new()
             {
                 server = Global.SingboxFakeDNSTag,
-                query_type = new List<int>
-                {
+                query_type =
+                [
                     1,
                     28,
-                }, // A and AAAA
+                ], // A and AAAA
                 rewrite_ttl = 1,
             });
         }
@@ -445,7 +445,7 @@ public partial class CoreConfigSingboxService
         AddRules(new(), tempRuleItem, useDirectDns ? directDnsList : remoteDnsList);
         return;
 
-        List<Rule4Sbox> BuildParallelRules(Rule4Sbox rule, RulesItem item, List<Server4Sbox> dnsList)
+        static List<Rule4Sbox> BuildParallelRules(Rule4Sbox rule, RulesItem item, List<Server4Sbox> dnsList)
         {
             var evaluateRuleList = new List<Rule4Sbox>();
             var racingMatchingRuleList = new List<Rule4Sbox>();
@@ -462,12 +462,40 @@ public partial class CoreConfigSingboxService
                 var racingMatchingRule = new Rule4Sbox
                 {
                     match_response = evaluateTag,
-                    race = simpleDnsItem.ParallelQuery,
+                    race = true,
                     action = "respond",
                 };
                 racingMatchingRuleList.Add(racingMatchingRule);
             }
             return [.. evaluateRuleList, .. racingMatchingRuleList];
+        }
+
+        static List<Rule4Sbox> BuildSerialRules(Rule4Sbox rule, RulesItem item, List<Server4Sbox> dnsList)
+        {
+            var ruleList = new List<Rule4Sbox>();
+            foreach (var dnsServer in dnsList)
+            {
+                var dnsServerTag = dnsServer.tag;
+                var evaluateRule = JsonUtils.DeepCopy(rule);
+                evaluateRule.action = "evaluate";
+                // Maybe rule index is better than id? Not sure, but id is unique, so use id for now.
+                var evaluateTag = $"{dnsServerTag}-{item.Id}";
+                evaluateRule.tag = evaluateTag;
+                evaluateRule.server = dnsServerTag;
+                ruleList.Add(evaluateRule);
+                var racingMatchingRule = new Rule4Sbox
+                {
+                    match_response = evaluateTag,
+                    action = "respond",
+                };
+                ruleList.Add(racingMatchingRule);
+            }
+            return ruleList;
+        }
+
+        List<Rule4Sbox> BuildMultiRules(Rule4Sbox rule, RulesItem item, List<Server4Sbox> dnsList)
+        {
+            return simpleDnsItem.ParallelQuery == true ? BuildParallelRules(rule, item, dnsList) : BuildSerialRules(rule, item, dnsList);
         }
 
         void AddRules(Rule4Sbox rule, RulesItem item, List<Server4Sbox> dnsList)
@@ -479,7 +507,8 @@ public partial class CoreConfigSingboxService
             }
             else
             {
-                _coreConfig.dns.rules.AddRange(BuildParallelRules(rule, item, dnsList));
+                var ruleList = BuildMultiRules(rule, item, dnsList);
+                _coreConfig.dns.rules.AddRange(ruleList);
             }
         }
     }
