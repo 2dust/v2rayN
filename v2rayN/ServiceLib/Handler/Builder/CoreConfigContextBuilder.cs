@@ -95,6 +95,24 @@ public class CoreConfigContextBuilder
                 context.AllProxiesMap[$"remark:{ruleItem.OutboundTag}"] = actRuleNode;
             }
         }
+
+        // Read Custom Outbound File Content
+        foreach (var profileItem in context.AllProxiesMap.Values.Where(x => x.ConfigType == EConfigType.CustomOutbound))
+        {
+            var addressFileName = profileItem.Address;
+            if (!File.Exists(addressFileName))
+            {
+                addressFileName = Utils.GetConfigPath(addressFileName);
+            }
+            if (!File.Exists(addressFileName))
+            {
+                validatorResult.Errors.Add(string.Format(ResUI.MsgCustomOutboundFileNotFound, profileItem.Remarks, addressFileName));
+                continue;
+            }
+            var fileContent = await File.ReadAllTextAsync(addressFileName);
+            context.CustomOutboundContent[profileItem.IndexId] = fileContent;
+        }
+
         if (context.IsTunEnabled && context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
         {
             var appConfig = JsonUtils.DeepCopy(config);

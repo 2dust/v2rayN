@@ -382,6 +382,13 @@ public static class ConfigHandler
                 {
                 }
             }
+            else if (profileItem.ConfigType == EConfigType.CustomOutbound)
+            {
+                profileItem.Address = Utils.GetConfigPath(profileItem.Address);
+                if (await AddCustomOutboundServer(config, profileItem, false) == 0)
+                {
+                }
+            }
             else
             {
                 await AddServerCommon(config, profileItem, true);
@@ -579,6 +586,44 @@ public static class ConfigHandler
         return 0;
     }
 
+
+    public static async Task<int> AddCustomOutboundServer(Config config, ProfileItem profileItem, bool blDelete)
+    {
+        var fileName = profileItem.Address;
+        if (!File.Exists(fileName))
+        {
+            return -1;
+        }
+        var ext = Path.GetExtension(fileName);
+        var newFileName = $"{Utils.GetGuid()}{ext}";
+        //newFileName = Path.Combine(Utile.GetTempPath(), newFileName);
+
+        try
+        {
+            File.Copy(fileName, Utils.GetConfigPath(newFileName));
+            if (blDelete)
+            {
+                File.Delete(fileName);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return -1;
+        }
+
+        profileItem.Address = newFileName;
+        profileItem.ConfigType = EConfigType.CustomOutbound;
+        if (profileItem.Remarks.IsNullOrEmpty())
+        {
+            profileItem.Remarks = $"import custom outbound@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+        }
+
+        await AddServerCommon(config, profileItem, true);
+
+        return 0;
+    }
+
     /// <summary>
     /// Edit an existing custom server configuration
     /// Updates the server's properties without changing the file
@@ -600,6 +645,8 @@ public static class ConfigHandler
             item.CoreType = profileItem.CoreType;
             item.DisplayLog = profileItem.DisplayLog;
             item.PreSocksPort = profileItem.PreSocksPort;
+
+            item.ProtoExtra = profileItem.ProtoExtra;
         }
 
         if (await SQLiteHelper.Instance.UpdateAsync(item) > 0)
@@ -2078,7 +2125,7 @@ public static class ConfigHandler
         {
             return -1;
         }
-        var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && t.ConfigType == EConfigType.Custom).ToListAsync();
+        var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && (t.ConfigType == EConfigType.Custom || t.ConfigType == EConfigType.CustomOutbound)).ToListAsync();
         if (isSub)
         {
             await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");

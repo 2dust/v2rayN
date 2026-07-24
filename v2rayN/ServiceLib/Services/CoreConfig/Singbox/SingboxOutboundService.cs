@@ -35,6 +35,10 @@ public partial class CoreConfigSingboxService
     {
         var outbound = BuildProxyServer();
         outbound.tag = baseTagName;
+        if (_node.ConfigType == EConfigType.CustomOutbound)
+        {
+            context.CustomOutboundMap[outbound] = _node.IndexId;
+        }
         return outbound;
     }
 
@@ -59,6 +63,20 @@ public partial class CoreConfigSingboxService
         try
         {
             var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
+            if (_node.ConfigType == EConfigType.CustomOutbound)
+            {
+                if (_node.GetProtocolExtra().IsSingboxEndpoint == true)
+                {
+                    var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
+                    return endpoint;
+                }
+                else
+                {
+                    var outbound = JsonUtils.Deserialize<Outbound4Sbox>(txtOutbound);
+                    return outbound;
+                }
+            }
+
             if (_node.ConfigType == EConfigType.WireGuard)
             {
                 var endpoint = JsonUtils.Deserialize<Endpoints4Sbox>(txtOutbound);
@@ -593,7 +611,7 @@ public partial class CoreConfigSingboxService
         {
             type = "selector",
             tag = baseTagName,
-            outbounds = JsonUtils.DeepCopy(proxyTags),
+            outbounds = [.. proxyTags],
             interrupt_exist_connections = false,
         };
         outSelector.outbounds.Insert(0, outUrltest.tag);
@@ -721,9 +739,9 @@ public partial class CoreConfigSingboxService
         return resultOutbounds;
     }
 
-    private static List<BaseServer4Sbox> CloneOutbounds(List<BaseServer4Sbox> source)
+    private List<BaseServer4Sbox> CloneOutbounds(List<BaseServer4Sbox> source)
     {
-        if (source is null || source.Count == 0)
+        if (source is not { Count: > 0 })
         {
             return [];
         }
@@ -740,9 +758,14 @@ public partial class CoreConfigSingboxService
             {
                 clone = JsonUtils.DeepCopy(endpoint);
             }
-            if (clone is not null)
+            if (clone is null)
             {
-                result.Add(clone);
+                continue;
+            }
+            result.Add(clone);
+            if (context.CustomOutboundMap.ContainsKey(item))
+            {
+                context.CustomOutboundMap[clone] = context.CustomOutboundMap[item];
             }
         }
         return result;

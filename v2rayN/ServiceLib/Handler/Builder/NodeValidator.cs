@@ -36,6 +36,24 @@ public class NodeValidator
             return;
         }
 
+        if (item.ConfigType is EConfigType.CustomOutbound)
+        {
+            if (item.CoreType != coreType)
+            {
+                v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, coreType.ToString(), item.ConfigType));
+            }
+            var addressFileName = item.Address;
+            if (!File.Exists(addressFileName))
+            {
+                addressFileName = Utils.GetConfigPath(addressFileName);
+            }
+            if (!File.Exists(addressFileName))
+            {
+                v.Error(string.Format(ResUI.MsgCustomOutboundFileNotFound, item.Remarks, addressFileName));
+            }
+            return;
+        }
+
         if (item.ConfigType.IsGroupType())
         {
             // Group logic is handled in ValidateGroupNode

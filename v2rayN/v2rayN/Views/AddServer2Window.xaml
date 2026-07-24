@@ -41,18 +41,113 @@
             materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto">
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    Style="{StaticResource ModuleTitle}"
+                    Text="{x:Static resx:ResUI.menuServers}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbRemarks}" />
+
+                <TextBox
+                    x:Name="txtRemarks"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MyOutlinedTextBox}" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbAddress}" />
+                <TextBox
+                    x:Name="txtAddress"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="400"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    AcceptsReturn="True"
+                    IsReadOnly="True"
+                    Style="{StaticResource MyOutlinedTextBox}" />
+                <StackPanel
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        x:Name="btnBrowse"
+                        Margin="{StaticResource MarginLeftRight4}"
+                        Content="{x:Static resx:ResUI.TbBrowse}"
+                        Style="{StaticResource DefButton}" />
+                    <Button
+                        x:Name="btnEdit"
+                        Margin="{StaticResource MarginLeftRight4}"
+                        Content="{x:Static resx:ResUI.TbEdit}"
+                        Style="{StaticResource DefButton}" />
+                </StackPanel>
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.TbCoreType}" />
+                <ComboBox
+                    x:Name="cmbCoreType"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left"
+                    MaxDropDownHeight="1000"
+                    Style="{StaticResource MyOutlinedTextComboBox}" />
+
+                <Separator
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0,2"
+                    Style="{DynamicResource MaterialDesignSeparator}" />
+
+                <Grid
+                    x:Name="gridCustomServer"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -67,87 +162,11 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
-                        Style="{StaticResource ModuleTitle}"
-                        Text="{x:Static resx:ResUI.menuServers}" />
-
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbRemarks}" />
-
-                    <TextBox
-                        x:Name="txtRemarks"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        AcceptsReturn="True"
-                        Style="{StaticResource MyOutlinedTextBox}" />
-
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbAddress}" />
-                    <TextBox
-                        x:Name="txtAddress"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="400"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        AcceptsReturn="True"
-                        IsReadOnly="True"
-                        Style="{StaticResource MyOutlinedTextBox}" />
-                    <StackPanel
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <Button
-                            x:Name="btnBrowse"
-                            Margin="{StaticResource MarginLeftRight4}"
-                            Content="{x:Static resx:ResUI.TbBrowse}"
-                            Style="{StaticResource DefButton}" />
-                        <Button
-                            x:Name="btnEdit"
-                            Margin="{StaticResource MarginLeftRight4}"
-                            Content="{x:Static resx:ResUI.TbEdit}"
-                            Style="{StaticResource DefButton}" />
-                    </StackPanel>
-
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbCoreType}" />
-                    <ComboBox
-                        x:Name="cmbCoreType"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left"
-                        MaxDropDownHeight="1000"
-                        Style="{StaticResource MyOutlinedTextComboBox}" />
-
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbDisplayLog}" />
                     <StackPanel
-                        Grid.Row="4"
+                        Grid.Row="0"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         Orientation="Horizontal">
@@ -160,7 +179,7 @@
                     </StackPanel>
 
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="1"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
@@ -168,7 +187,7 @@
                         Text="{x:Static resx:ResUI.TbPreSocksPort}" />
                     <TextBox
                         x:Name="txtPreSocksPort"
-                        Grid.Row="5"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
@@ -176,7 +195,7 @@
                         AcceptsReturn="True"
                         Style="{StaticResource MyOutlinedTextBox}" />
                     <StackPanel
-                        Grid.Row="6"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Grid.ColumnSpan="2">
                         <TextBlock
@@ -193,6 +212,48 @@
                             Text="{x:Static resx:ResUI.CustomServerTips}"
                             TextWrapping="Wrap" />
                     </StackPanel>
+                </Grid>
+
+                <Grid
+                    x:Name="gridCustomOutbound"
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="Sing-Box Endpoint" />
+                    <ToggleButton
+                        x:Name="togSingBoxEndpoint"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Width="500"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbCustomOutboundTip}"
+                        TextWrapping="Wrap" />
                 </Grid>
             </Grid>
         </ScrollViewer>

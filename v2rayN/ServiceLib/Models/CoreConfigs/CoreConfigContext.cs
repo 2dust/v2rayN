@@ -11,6 +11,8 @@ public record CoreConfigContext
     public Config AppConfig { get; init; } = new();
     public FullConfigTemplateItem? FullConfigTemplate { get; init; } = new();
 
+    public Dictionary<string, string> CustomOutboundContent { get; init; } = new();
+
     // Test ServerTestItem Map
     public Dictionary<string, string> ServerTestItemMap { get; init; } = new();
 
@@ -22,4 +24,7 @@ public record CoreConfigContext
 
     public bool IsWindows { get; init; }
     public bool IsMacOS { get; init; }
+
+    // Generation Context
+    public Dictionary<object, string> CustomOutboundMap { get; init; } = new();
 }

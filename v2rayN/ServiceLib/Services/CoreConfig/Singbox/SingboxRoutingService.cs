@@ -558,7 +558,8 @@ public partial class CoreConfigSingboxService
 
         if (node == null
             || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
-            && !node.ConfigType.IsGroupType()))
+            && !node.ConfigType.IsGroupType()
+            && node.ConfigType is not EConfigType.CustomOutbound))
         {
             return Global.ProxyTag;
         }
