@@ -16,7 +16,7 @@ public static class SysProxyHandler
         try
         {
             var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-            var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
+            var exceptions = SanitizeExceptions(config.SystemProxyItem.SystemProxyExceptions);
             if (port <= 0)
             {
                 return false;
@@ -64,6 +64,29 @@ public static class SysProxyHandler
             Logging.SaveLog(_tag, ex);
         }
         return true;
+    }
+
+    /// <summary>
+    /// Normalizes a user-entered proxy exception list (comma-separated, used by the
+    /// Linux and macOS proxy tools). Trims surrounding whitespace on each entry
+    /// (including stray line breaks and tabs), drops empty entries left by trailing
+    /// commas, and strips any remaining inner spaces. A single malformed entry
+    /// (e.g. an embedded newline or a trailing comma) otherwise causes macOS configd
+    /// to reject the whole ExceptionsList silently.
+    /// </summary>
+    private static string SanitizeExceptions(string? exceptions)
+    {
+        if (exceptions.IsNullOrEmpty())
+        {
+            return string.Empty;
+        }
+
+        var items = exceptions
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(item => item.Replace(" ", string.Empty))
+            .Where(item => item.Length > 0);
+
+        return string.Join(',', items);
     }
 
     private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
