@@ -587,7 +587,7 @@ public static class ConfigHandler
     }
 
 
-    public static async Task<int> AddCustomOutboundServer(Config config, ProfileItem profileItem, bool blDelete)
+    public static async Task<int> AddCustomOutboundServer(Config config, ProfileItem profileItem, bool blDelete, bool toFile = true)
     {
         var fileName = profileItem.Address;
         if (!File.Exists(fileName))
@@ -619,7 +619,7 @@ public static class ConfigHandler
             profileItem.Remarks = $"import custom outbound@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
         }
 
-        await AddServerCommon(config, profileItem, true);
+        await AddServerCommon(config, profileItem, toFile);
 
         return 0;
     }
@@ -1884,6 +1884,7 @@ public static class ConfigHandler
                     EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
                     EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
                     EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem, false),
+                    EConfigType.CustomOutbound => await AddCustomOutboundServer(config, profileItem, true, false),
                     _ => -1,
                 };
                 if (addStatus == 0)

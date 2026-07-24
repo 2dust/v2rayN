@@ -54,7 +54,7 @@ public partial class CoreConfigV2rayService
             }
             if (outboundDetour.IsNullOrEmpty())
             {
-                customOutboundObj?.Remove("detour");
+                (customOutboundObj?["streamSettings"]?["sockopt"] as JsonObject)?.Remove("dialerProxy");
             }
 
             var index = coreConfigOutboundsNode
