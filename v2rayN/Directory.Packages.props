@@ -20,7 +20,7 @@
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
     <PackageVersion Include="QRCoder" Version="1.8.0" />
     <PackageVersion Include="ReactiveUI" Version="23.2.28" />
-    <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.1.0" />
     <PackageVersion Include="ReactiveUI.WPF" Version="23.2.28" />
     <PackageVersion Include="Semi.Avalonia" Version="12.1.0" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="12.0.0" />

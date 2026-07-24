@@ -1,11 +1,11 @@
 namespace ServiceLib.ViewModels;
 
-public class SubEditViewModel : MyReactiveObject, ICloseable
+public partial class SubEditViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public SubItem SelectedSource { get; set; }
+    public partial SubItem SelectedSource { get; set; }
 
     public ReactiveCommand<Unit, Unit> SelectPrevProfileCmd { get; }
     public ReactiveCommand<Unit, Unit> SelectNextProfileCmd { get; }
