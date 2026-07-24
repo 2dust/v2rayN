@@ -16,7 +16,6 @@ public static class SysProxyHandler
         try
         {
             var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-            var exceptions = SanitizeExceptions(config.SystemProxyItem.SystemProxyExceptions);
             if (port <= 0)
             {
                 return false;
@@ -24,17 +23,18 @@ public static class SysProxyHandler
             switch (type)
             {
                 case ESysProxyType.ForcedChange when Utils.IsWindows():
-                    {
-                        GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
-                        ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
-                        break;
-                    }
+                    var (strProxy, strExceptions) = GetWindowsProxyString(config, port);
+                    ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
+                    break;
+
                 case ESysProxyType.ForcedChange when Utils.IsLinux():
+                    var exceptions = SanitizeExceptions(config);
                     await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
                     break;
 
                 case ESysProxyType.ForcedChange when Utils.IsMacOS():
-                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
+                    var exceptions2 = SanitizeExceptions(config);
+                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions2);
                     break;
 
                 case ESysProxyType.ForcedClear when Utils.IsWindows():
@@ -66,16 +66,9 @@ public static class SysProxyHandler
         return true;
     }
 
-    /// <summary>
-    /// Normalizes a user-entered proxy exception list (comma-separated, used by the
-    /// Linux and macOS proxy tools). Trims surrounding whitespace on each entry
-    /// (including stray line breaks and tabs), drops empty entries left by trailing
-    /// commas, and strips any remaining inner spaces. A single malformed entry
-    /// (e.g. an embedded newline or a trailing comma) otherwise causes macOS configd
-    /// to reject the whole ExceptionsList silently.
-    /// </summary>
-    private static string SanitizeExceptions(string? exceptions)
+    private static string SanitizeExceptions(Config config)
     {
+        var exceptions = config.SystemProxyItem.SystemProxyExceptions;
         if (exceptions.IsNullOrEmpty())
         {
             return string.Empty;
@@ -89,15 +82,15 @@ public static class SysProxyHandler
         return string.Join(',', items);
     }
 
-    private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
+    private static (string strProxy, string strExceptions) GetWindowsProxyString(Config config, int port)
     {
-        strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
+        var strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
         if (config.SystemProxyItem.NotProxyLocalAddress)
         {
             strExceptions = $"<local>;{strExceptions}";
         }
 
-        strProxy = string.Empty;
+        var strProxy = string.Empty;
         if (config.SystemProxyItem.SystemProxyAdvancedProtocol.IsNullOrEmpty())
         {
             strProxy = $"{Global.Loopback}:{port}";
@@ -109,6 +102,8 @@ public static class SysProxyHandler
                 .Replace("{http_port}", port.ToString())
                 .Replace("{socks_port}", port.ToString());
         }
+
+        return (strProxy, strExceptions);
     }
 
     [SupportedOSPlatform("windows")]
