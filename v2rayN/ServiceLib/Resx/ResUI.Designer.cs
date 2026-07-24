@@ -3349,6 +3349,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Ipv4 Address 的本地化字符串。
+        /// </summary>
+        public static string TbIpv4Address {
+            get {
+                return ResourceManager.GetString("TbIpv4Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ipv6 Address 的本地化字符串。
+        /// </summary>
+        public static string TbIpv6Address {
+            get {
+                return ResourceManager.GetString("TbIpv6Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Most Stable 的本地化字符串。
         /// </summary>
         public static string TbLeastLoad {

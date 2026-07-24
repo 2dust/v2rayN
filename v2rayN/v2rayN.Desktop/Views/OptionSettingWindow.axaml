@@ -961,7 +961,7 @@
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,Auto"
                         DockPanel.Dock="Top"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="2"
@@ -1087,6 +1087,34 @@
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbRouteExcludeAddressTip}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbIpv4Address}" />
+                        <ComboBox
+                            x:Name="cmbIpv4Address"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbIpv6Address}" />
+                        <ComboBox
+                            x:Name="cmbIpv6Address"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

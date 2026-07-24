@@ -1839,4 +1839,10 @@
   <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
     <value>需搭配 UseIP 策略，啟用後會同時嘗試 IPv4 與 IPv6 連線，並自動選擇速度較快的路徑</value>
   </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Ipv6 位址</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Ipv4 位址</value>
+  </data>
 </root>

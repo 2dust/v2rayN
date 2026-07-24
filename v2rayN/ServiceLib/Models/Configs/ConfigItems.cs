@@ -149,6 +149,8 @@ public class TunModeItem
     public string IcmpRouting { get; set; }
     public bool EnableLegacyProtect { get; set; }
     public List<string>? RouteExcludeAddress { get; set; }
+    public string Ipv4Address { get; set; }
+    public string Ipv6Address { get; set; }
 }
 
 [Serializable]
@@ -255,6 +257,7 @@ public class Fragment4RayItem
 
     // For migration from old version, remove those properties in the future
     public string? Length { get; set; }
+
     public string? Interval { get; set; }
     // migration end
 }

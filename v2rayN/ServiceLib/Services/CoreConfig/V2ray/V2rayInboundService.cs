@@ -63,11 +63,16 @@ public partial class CoreConfigV2rayService
                     new Inbounds4Ray();
                 tunInbound.settings.name = context.IsMacOS ? $"utun{new Random().Next(99)}" : "xray_tun";
                 tunInbound.settings.MTU = _config.TunModeItem.Mtu;
-                if (!_config.TunModeItem.EnableIPv6Address)
+
+                var address = _config.TunModeItem.Ipv4Address.NullIfEmpty() ?? Global.TunIpv4Address.First();
+                tunInbound.settings.gateway = [address];
+                if (_config.TunModeItem.EnableIPv6Address == true)
                 {
-                    tunInbound.settings.gateway = ["172.18.0.1/30"];
-                    tunInbound.settings.autoSystemRoutingTable = ["0.0.0.0/0"];
+                    var address6 = _config.TunModeItem.Ipv6Address.NullIfEmpty() ?? Global.TunIpv6Address.First();
+                    tunInbound.settings.gateway.Add(address6);
                 }
+                tunInbound.settings.dns = [address.Split('/').First()];
+                tunInbound.settings.autoSystemRoutingTable = ["0.0.0.0/0"];             
                 var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
                 if (!bindInterface.IsNullOrEmpty())
                 {

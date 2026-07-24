@@ -1842,4 +1842,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
     <value>Requires the UseIP Strategy. When enabled, it attempts IPv4 and IPv6 connections simultaneously and automatically selects the faster available path.</value>
   </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Ipv6 Address</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Ipv4 Address</value>
+  </data>
 </root>
