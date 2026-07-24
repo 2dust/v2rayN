@@ -20,6 +20,7 @@
             <system:Double x:Key="StdFontSize-1">11</system:Double>
 
             <conv:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <conv:FlagImageConverter x:Key="FlagImageConverter" />
             <Thickness
                 x:Key="Margin4"
                 Bottom="4"

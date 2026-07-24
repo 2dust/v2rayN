@@ -208,7 +208,12 @@ public partial class ProfilesView
             return;
         }
 
-        var colName = ((MyDGTextColumn)colHeader.Column).ExName;
+        var colName = colHeader.Column switch
+        {
+            MyDGTextColumn myCol => myCol.ExName,
+            MyDGTemplateColumn tplCol => tplCol.ExName,
+            _ => string.Empty
+        };
         ViewModel?.SortServer(colName);
     }
 
@@ -333,26 +338,33 @@ public partial class ProfilesView
             var displayIndex = 0;
             foreach (var item in lvColumnItem)
             {
-                foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
+                foreach (var col in lstProfiles.Columns)
                 {
-                    if (item2.ExName == item.Name)
+                    var name = col switch
+                    {
+                        MyDGTextColumn myCol => myCol.ExName,
+                        MyDGTemplateColumn tplCol => tplCol.ExName,
+                        _ => null
+                    };
+
+                    if (name != null && name.Equals(item.Name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         if (item.Width < 0)
                         {
-                            item2.Visibility = Visibility.Hidden;
+                            col.Visibility = Visibility.Hidden;
                         }
                         else
                         {
-                            item2.Width = item.Width;
-                            item2.DisplayIndex = displayIndex++;
+                            col.Width = item.Width;
+                            col.DisplayIndex = displayIndex++;
                         }
                         if (item.Name.StartsWith("to", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                            col.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
                         }
                         if (item.Name.Equals("IpInfo", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            item2.Visibility = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() && !_config.UiItem.HideColumnIpInfo ? Visibility.Visible : Visibility.Hidden;
+                            col.Visibility = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() && !_config.UiItem.HideColumnIpInfo ? Visibility.Visible : Visibility.Hidden;
                         }
                     }
                 }
@@ -369,14 +381,24 @@ public partial class ProfilesView
         try
         {
             List<ColumnItem> lvColumnItem = [];
-            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
+            foreach (var col in lstProfiles.Columns)
             {
-                lvColumnItem.Add(new()
+                var name = col switch
                 {
-                    Name = item2.ExName,
-                    Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
-                    Index = item2.DisplayIndex
-                });
+                    MyDGTextColumn myCol => myCol.ExName,
+                    MyDGTemplateColumn tplCol => tplCol.ExName,
+                    _ => null
+                };
+
+                if (name != null)
+                {
+                    lvColumnItem.Add(new()
+                    {
+                        Name = name,
+                        Width = (int)(col.Visibility == Visibility.Visible ? col.ActualWidth : -1),
+                        Index = col.DisplayIndex
+                    });
+                }
             }
             _config.UiItem.MainColumnItem = lvColumnItem;
         }

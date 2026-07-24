@@ -346,12 +346,28 @@
                         ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
 
-                    <base:MyDGTextColumn
+                    <base:MyDGTemplateColumn
                         x:Name="colIpInfo"
-                        Width="100"
-                        Binding="{Binding IpInfo}"
+                        Width="180"
+                        SortMemberPath="IpInfo"
                         ExName="IpInfo"
-                        Header="{x:Static resx:ResUI.LvTestIpInfo}" />
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image
+                                        Width="16"
+                                        Height="12"
+                                        Margin="0,0,6,0"
+                                        Source="{Binding IpInfo, Converter={StaticResource FlagImageConverter}}"
+                                        RenderOptions.BitmapScalingMode="HighQuality" />
+                                    <TextBlock
+                                        Text="{Binding IpInfo}"
+                                        VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </base:MyDGTemplateColumn>
 
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"
