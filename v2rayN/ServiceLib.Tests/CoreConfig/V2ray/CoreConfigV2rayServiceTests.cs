@@ -592,4 +592,43 @@ public class CoreConfigV2rayServiceTests
         tunInbound!.settings.autoSystemRoutingTable.Should().Contain("10.0.0.0/32");
         tunInbound!.settings.autoSystemRoutingTable.Should().Contain("10.0.0.2/31");
     }
+
+    [Fact]
+    public void GenerateClientConfigContent_CustomOutbound_ShouldReplaceWithUserCustomOutboundJson()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom", "custom-xray");
+        var customJsonContent = """
+        {
+          "protocol": "shadowsocks",
+          "settings": {
+            "servers": [
+              {
+                "address": "1.2.3.4",
+                "port": 8388,
+                "method": "aes-128-gcm",
+                "password": "custom_password"
+              }
+            ]
+          }
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        result.Data.Should().NotBeNull();
+
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString());
+        cfg.Should().NotBeNull();
+        var proxyOutbound = cfg!.outbounds.FirstOrDefault(o => o.tag == Global.ProxyTag);
+        proxyOutbound.Should().NotBeNull();
+        proxyOutbound!.protocol.Should().Be("shadowsocks");
+        proxyOutbound.settings.servers.Should().NotBeNull();
+    }
 }
