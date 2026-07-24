@@ -7,9 +7,9 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial SubItem SelectedSource { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SelectPrevProfileCmd { get; }
-    public ReactiveCommand<Unit, Unit> SelectNextProfileCmd { get; }
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SelectPrevProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SelectNextProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public SubEditViewModel(SubItem subItem)
     {

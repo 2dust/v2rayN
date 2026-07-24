@@ -57,7 +57,7 @@ public partial class RoutingRuleSettingWindow
             {
                 var strData = interaction.Input;
                 WindowsUtils.SetClipboardData(strData);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(interaction =>

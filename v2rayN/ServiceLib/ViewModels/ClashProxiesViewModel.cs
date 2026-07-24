@@ -1,4 +1,3 @@
-using System.Reactive.Concurrency;
 using static ServiceLib.Models.Dto.ClashProviders;
 using static ServiceLib.Models.Dto.ClashProxies;
 
@@ -10,8 +9,8 @@ public partial class ClashProxiesViewModel : MyReactiveObject
     private Dictionary<string, ProvidersItem>? _providers;
     private readonly int _delayTimeout = 99999999;
 
-    public IObservableCollection<ClashProxyModel> ProxyGroups { get; } = new ObservableCollectionExtended<ClashProxyModel>();
-    public IObservableCollection<ClashProxyModel> ProxyDetails { get; } = new ObservableCollectionExtended<ClashProxyModel>();
+    public BulkObservableCollection<ClashProxyModel> ProxyGroups { get; } = [];
+    public BulkObservableCollection<ClashProxyModel> ProxyDetails { get; } = [];
 
     [Reactive]
     public partial ClashProxyModel SelectedGroup { get; set; }
@@ -19,10 +18,10 @@ public partial class ClashProxiesViewModel : MyReactiveObject
     [Reactive]
     public partial ClashProxyModel SelectedDetail { get; set; }
 
-    public ReactiveCommand<Unit, Unit> ProxiesReloadCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesDelayTestCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesDelayTestPartCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesSelectActivityCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesReloadCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestPartCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesSelectActivityCmd { get; }
 
     [Reactive]
     public partial int RuleModeSelected { get; set; }
@@ -379,10 +378,9 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             }
 
             var model = new SpeedTestResult() { IndexId = item.Name, Delay = result };
-            RxSchedulers.MainThreadScheduler.Schedule(model, (scheduler, model) =>
+            RxSchedulers.MainThreadScheduler.Schedule(() =>
             {
                 _ = ProxiesDelayTestResult(model);
-                return Disposable.Empty;
             });
             await Task.CompletedTask;
         });

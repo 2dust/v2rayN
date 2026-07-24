@@ -36,7 +36,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial string ProxyDetour4Singbox { get; set; } = string.Empty;
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     #endregion Reactive
 

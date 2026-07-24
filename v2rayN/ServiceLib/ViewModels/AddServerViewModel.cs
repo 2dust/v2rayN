@@ -239,9 +239,9 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         }
     }
 
-    public ReactiveCommand<Unit, Unit> FetchCertCmd { get; }
-    public ReactiveCommand<Unit, Unit> FetchCertChainCmd { get; }
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> FetchCertCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> FetchCertChainCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public AddServerViewModel(ProfileItem profileItem)
     {

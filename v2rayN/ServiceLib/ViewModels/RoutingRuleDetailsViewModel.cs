@@ -25,8 +25,8 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial bool AutoSort { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SelectProfileCmd { get; }
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SelectProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {

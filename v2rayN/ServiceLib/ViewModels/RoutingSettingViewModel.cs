@@ -6,7 +6,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     #region Reactive
 
-    public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
+    public BulkObservableCollection<RoutingItemModel> RoutingItems { get; } = [];
 
     [Reactive]
     public partial RoutingItemModel SelectedSource { get; set; }
@@ -19,10 +19,10 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     [Reactive]
     public partial string DomainStrategy4Singbox { get; set; }
 
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedRemoveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedSetDefaultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedImportRulesCmd { get; }
 
     public bool IsModified { get; set; }
 

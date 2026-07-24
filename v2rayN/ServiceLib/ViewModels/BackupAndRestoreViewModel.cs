@@ -5,9 +5,9 @@ public partial class BackupAndRestoreViewModel : MyReactiveObject
     private readonly string _guiConfigs = "guiConfigs";
     private static string BackupFileName => $"backup_{DateTime.Now:yyyyMMddHHmmss}.zip";
 
-    public ReactiveCommand<Unit, Unit> RemoteBackupCmd { get; }
-    public ReactiveCommand<Unit, Unit> RemoteRestoreCmd { get; }
-    public ReactiveCommand<Unit, Unit> WebDavCheckCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoteBackupCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoteRestoreCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WebDavCheckCmd { get; }
 
     [Reactive]
     public partial WebDavItem SelectedSource { get; set; }

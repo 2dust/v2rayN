@@ -36,9 +36,9 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
 
     public bool IsSimpleDNSEnabled => !(RayCustomDNSEnableCompatible && SBCustomDNSEnableCompatible);
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
-    public ReactiveCommand<Unit, Unit> ImportDefConfig4V2rayCompatibleCmd { get; }
-    public ReactiveCommand<Unit, Unit> ImportDefConfig4SingboxCompatibleCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ImportDefConfig4V2rayCompatibleCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ImportDefConfig4SingboxCompatibleCmd { get; }
 
     public DNSSettingViewModel()
     {

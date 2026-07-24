@@ -2,9 +2,9 @@ namespace ServiceLib.ViewModels;
 
 public partial class StatusBarViewModel : MyReactiveObject
 {
-    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
-    public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
-    public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+    public Interaction<string, RxVoid> SetClipboardDataInteraction { get; } = new();
+    public Interaction<RxVoid, string?> PasswordInputInteraction { get; } = new();
+    public Interaction<RxVoid, RxVoid> DispatcherRefreshIconInteraction { get; } = new();
     public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
     public EventChannel<bool?> ShowHideWindowRequested { get; } = new();
 
@@ -12,15 +12,15 @@ public partial class StatusBarViewModel : MyReactiveObject
     public static StatusBarViewModel Instance => _instance.Value;
 
     public EventChannel<string> SetDefaultServerRequested { get; } = new();
-    public EventChannel<Unit> ReloadRequested { get; } = new();
-    public EventChannel<Unit> AddServerViaScanRequested { get; } = new();
-    public EventChannel<Unit> AddServerViaClipboardRequested { get; } = new();
+    public EventChannel<RxVoid> ReloadRequested { get; } = new();
+    public EventChannel<RxVoid> AddServerViaScanRequested { get; } = new();
+    public EventChannel<RxVoid> AddServerViaClipboardRequested { get; } = new();
 
     #region ObservableCollection
 
-    public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
+    public BulkObservableCollection<RoutingItem> RoutingItems { get; } = [];
 
-    public IObservableCollection<ComboItem> Servers { get; } = new ObservableCollectionExtended<ComboItem>();
+    public BulkObservableCollection<ComboItem> Servers { get; } = [];
 
     [Reactive]
     public partial RoutingItem SelectedRouting { get; set; }
@@ -33,14 +33,14 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     #endregion ObservableCollection
 
-    public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
-    public ReactiveCommand<Unit, Unit> CopyProxyCmdToClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
-    public ReactiveCommand<Unit, Unit> ShowWindowCmd { get; }
-    public ReactiveCommand<Unit, Unit> HideWindowCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaScanCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CopyProxyCmdToClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> NotifyLeftClickCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowWindowCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> HideWindowCmd { get; }
 
     #region System Proxy
 
@@ -56,10 +56,10 @@ public partial class StatusBarViewModel : MyReactiveObject
     [Reactive]
     public partial bool BlSystemProxyPac { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxyNothingCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxyPacCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyClearCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxySetCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyNothingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyPacCmd { get; }
 
     [Reactive]
     public partial bool BlRouting { get; set; }
@@ -349,10 +349,9 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task TestServerAvailabilitySub(string msg)
     {
-        RxSchedulers.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
             _ = TestServerAvailabilityResult(msg);
-            return Disposable.Empty;
         });
         await Task.CompletedTask;
     }
@@ -392,9 +391,9 @@ public partial class StatusBarViewModel : MyReactiveObject
         {
             try
             {
-                await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+                await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
             }
-            catch (UnhandledInteractionException<Unit, Unit>)
+            catch (UnhandledInteractionException<RxVoid, RxVoid>)
             {
                 // Ignore
             }
@@ -433,7 +432,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             ReloadRequested.Publish();
-            await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+            await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
         }
     }
 
@@ -470,7 +469,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                var password = await PasswordInputInteraction.Handle(Unit.Default);
+                var password = await PasswordInputInteraction.Handle(RxVoid.Default);
                 if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;

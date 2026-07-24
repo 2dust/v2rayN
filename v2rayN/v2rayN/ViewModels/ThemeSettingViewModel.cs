@@ -9,8 +9,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 {
     private readonly PaletteHelper _paletteHelper = new();
 
-    private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
-    public IObservableCollection<Swatch> Swatches => _swatches;
+    public BulkObservableCollection<Swatch> Swatches { get; } = [];
 
     [Reactive]
     public partial Swatch SelectedSwatch { get; set; }
@@ -47,10 +46,10 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
     private void BindingUI()
     {
-        _swatches.AddRange(new SwatchesProvider().Swatches);
+        Swatches.AddRange(new SwatchesProvider().Swatches);
         if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
-            SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
+            SelectedSwatch = Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
         }
         CurrentTheme = _config.UiItem.CurrentTheme;
         CurrentFontSize = _config.UiItem.CurrentFontSize;

@@ -4,7 +4,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
 
-    public Interaction<Unit, string?> BrowseConfigFileInteraction { get; } = new();
+    public Interaction<RxVoid, string?> BrowseConfigFileInteraction { get; } = new();
 
     [Reactive]
     public partial ProfileItem SelectedSource { get; set; }
@@ -12,9 +12,9 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial string? CoreType { get; set; }
 
-    public ReactiveCommand<Unit, Unit> BrowseServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> SaveServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> BrowseServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> EditServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveServerCmd { get; }
     public bool IsModified { get; set; }
 
     public AddServer2ViewModel(ProfileItem profileItem)
@@ -23,7 +23,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            var fileName = await BrowseConfigFileInteraction.Handle(Unit.Default);
+            var fileName = await BrowseConfigFileInteraction.Handle(RxVoid.Default);
             if (fileName.IsNullOrEmpty())
             {
                 return;

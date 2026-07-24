@@ -1,6 +1,5 @@
 using Avalonia.VisualTree;
 using DialogHostAvalonia;
-using DynamicData.Binding;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -113,13 +112,13 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             {
                 var strData = interaction.Input;
                 await AvaUtils.SetClipboardData(this, strData);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
             {
                 lstProfiles.Focus();
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ShareServerInteraction.RegisterHandler(async interaction =>
@@ -127,23 +126,23 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 var url = interaction.Input;
                 if (url.IsNullOrEmpty())
                 {
-                    interaction.SetOutput(Unit.Default);
+                    interaction.SetOutput(RxVoid.Default);
                     return;
                 }
                 await ShareServer(url);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
             {
                 Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.AdjustMainLvColWidthInteraction.RegisterHandler(interaction =>
             {
                 //AutofitColumnWidth();
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             AppEvents.AppExitRequested

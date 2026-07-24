@@ -111,13 +111,13 @@ public partial class ProfilesView
             {
                 var strData = interaction.Input;
                 WindowsUtils.SetClipboardData(strData);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
             {
                 lstProfiles.Focus();
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ShareServerInteraction.RegisterHandler(async interaction =>
@@ -125,23 +125,23 @@ public partial class ProfilesView
                 var url = interaction.Input;
                 if (url.IsNullOrEmpty())
                 {
-                    interaction.SetOutput(Unit.Default);
+                    interaction.SetOutput(RxVoid.Default);
                     return;
                 }
                 await ShareServer(url);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
             {
                 Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.AdjustMainLvColWidthInteraction.RegisterHandler(interaction =>
             {
                 AutofitColumnWidth();
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             AppEvents.AppExitRequested

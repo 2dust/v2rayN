@@ -2,7 +2,7 @@ namespace ServiceLib.ViewModels;
 
 public partial class MsgViewModel : MyReactiveObject
 {
-    public Interaction<string, Unit> DispatcherShowMsgInteraction { get; } = new();
+    public Interaction<string, RxVoid> DispatcherShowMsgInteraction { get; } = new();
 
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;

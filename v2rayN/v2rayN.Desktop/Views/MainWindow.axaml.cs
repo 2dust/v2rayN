@@ -1,4 +1,3 @@
-using System.Reactive.Disposables;
 using Avalonia.Controls.Notifications;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
@@ -10,7 +9,7 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly SerialDisposable _layoutBindingsDisposable = new();
+    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
@@ -111,7 +110,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             ViewModel.ShowHideWindowInteraction.RegisterHandler(interaction =>
             {
                 ShowHideWindow(interaction.Input);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             AppEvents.SendSnackMsgRequested
@@ -402,8 +401,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void UpdateLayout(EGirdOrientation orientation)
     {
-        var currentLayoutDisposables = new CompositeDisposable();
-        _layoutBindingsDisposable.Disposable = currentLayoutDisposables;
+        var currentLayoutDisposables = new MultipleDisposable();
+        _layoutBindingsDisposable.Create(currentLayoutDisposables);
 
         gridMain.IsVisible = orientation == EGirdOrientation.Horizontal;
         gridMain1.IsVisible = orientation == EGirdOrientation.Vertical;

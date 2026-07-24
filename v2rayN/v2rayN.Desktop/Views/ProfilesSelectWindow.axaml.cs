@@ -35,7 +35,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
             ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
             {
                 lstProfiles.Focus();
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
         });
     }

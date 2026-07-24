@@ -21,7 +21,7 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                 var msg = interaction.Input;
                 Dispatcher.UIThread.Post(() => ShowMsg(msg),
                     DispatcherPriority.ApplicationIdle);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
         });
 

@@ -6,7 +6,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject, ICloseable
 
     private readonly List<KeyEventItem> _globalHotkeys;
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public GlobalHotkeySettingViewModel()
     {

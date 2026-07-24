@@ -1,4 +1,3 @@
-using System.Reactive.Disposables;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
@@ -10,7 +9,7 @@ namespace v2rayN.Views;
 public partial class MainWindow
 {
     private static Config _config;
-    private readonly SerialDisposable _layoutBindingsDisposable = new();
+    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
 
@@ -120,7 +119,7 @@ public partial class MainWindow
             ViewModel.ShowHideWindowInteraction.RegisterHandler(interaction =>
             {
                 ShowHideWindow(interaction.Input);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             AppEvents.SendSnackMsgRequested
@@ -358,8 +357,8 @@ public partial class MainWindow
 
     private void UpdateLayout(EGirdOrientation orientation)
     {
-        var currentLayoutDisposables = new CompositeDisposable();
-        _layoutBindingsDisposable.Disposable = currentLayoutDisposables;
+        var currentLayoutDisposables = new MultipleDisposable();
+        _layoutBindingsDisposable.Create(currentLayoutDisposables);
 
         gridMain.Visibility = orientation == EGirdOrientation.Horizontal ? Visibility.Visible : Visibility.Collapsed;
         gridMain1.Visibility = orientation == EGirdOrientation.Vertical ? Visibility.Visible : Visibility.Collapsed;

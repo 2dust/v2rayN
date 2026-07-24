@@ -26,7 +26,7 @@ public partial class AddGroupServerWindow
         this.WhenActivated(disposables =>
         {
             this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
+                .KeepNotNull()
                 .Subscribe(InitializeData)
                 .DisposeWith(disposables);
 

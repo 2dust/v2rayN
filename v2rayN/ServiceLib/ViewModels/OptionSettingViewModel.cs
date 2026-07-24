@@ -113,7 +113,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     #endregion CoreType
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public OptionSettingViewModel()
     {
