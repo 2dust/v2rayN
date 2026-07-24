@@ -1447,6 +1447,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
@@ -1506,16 +1507,32 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbCipherSuites}" />
+                    <TextBox
+                        x:Name="txtCipherSuites"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbAllowInsecure}" />
                     <ToggleButton
                         x:Name="togAllowInsecure"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
                     <TextBlock
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
@@ -1523,7 +1540,7 @@
                         Text="{x:Static resx:ResUI.TbEchConfigList}" />
                     <TextBox
                         x:Name="txtEchConfigList"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
@@ -1531,7 +1548,7 @@
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
@@ -1539,7 +1556,7 @@
                         Text="{x:Static resx:ResUI.TbVerifyPeerCertByName}" />
                     <TextBox
                         x:Name="txtVerifyPeerCertByName"
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.Column="1"
                         Width="400"
                         Margin="{StaticResource Margin4}"
@@ -1547,14 +1564,14 @@
                         Style="{StaticResource DefTextBox}" />
 
                     <TextBlock
-                        Grid.Row="7"
+                        Grid.Row="8"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
                         Text="{x:Static resx:ResUI.TbCertPinning}" />
                     <StackPanel
-                        Grid.Row="7"
+                        Grid.Row="8"
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">

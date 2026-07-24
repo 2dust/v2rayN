@@ -585,6 +585,9 @@
   <data name="TbAlterId" xml:space="preserve">
     <value>Alter ID</value>
   </data>
+  <data name="TbCipherSuites" xml:space="preserve">
+    <value>Cipher Suites</value>
+  </data>
   <data name="TbFingerprint" xml:space="preserve">
     <value>Ujjlenyomat</value>
   </data>

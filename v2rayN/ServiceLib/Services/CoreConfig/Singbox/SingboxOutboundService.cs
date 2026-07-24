@@ -426,7 +426,8 @@ public partial class CoreConfigSingboxService
                 tls.fragment = true;
                 tls.record_fragment = true;
             }
-            if (_node.Fingerprint.IsNotEmpty())
+            // "unsafe" is an Xray-only fingerprint; sing-box's uTLS rejects it, so fall back to plain TLS
+            if (_node.Fingerprint.IsNotEmpty() && _node.Fingerprint != "unsafe")
             {
                 tls.utls = new Utls4Sbox()
                 {
@@ -436,6 +437,15 @@ public partial class CoreConfigSingboxService
             }
             if (_node.StreamSecurity == Global.StreamSecurity)
             {
+                if (_node.CipherSuites.IsNotEmpty())
+                {
+                    // Xray stores cipher suites as a colon-separated string; sing-box wants a list of the same Go TLS names
+                    tls.cipher_suites = _node.CipherSuites
+                        .Split([':', ','], StringSplitOptions.RemoveEmptyEntries)
+                        .Select(c => c.Trim())
+                        .Where(c => c.IsNotEmpty())
+                        .ToList();
+                }
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
