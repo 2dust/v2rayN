@@ -16,7 +16,6 @@ public static class SysProxyHandler
         try
         {
             var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-            var exceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
             if (port <= 0)
             {
                 return false;
@@ -24,17 +23,18 @@ public static class SysProxyHandler
             switch (type)
             {
                 case ESysProxyType.ForcedChange when Utils.IsWindows():
-                    {
-                        GetWindowsProxyString(config, port, out var strProxy, out var strExceptions);
-                        ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
-                        break;
-                    }
+                    var (strProxy, strExceptions) = GetWindowsProxyString(config, port);
+                    ProxySettingWindows.SetProxy(strProxy, strExceptions, 2);
+                    break;
+
                 case ESysProxyType.ForcedChange when Utils.IsLinux():
+                    var exceptions = SanitizeExceptions(config);
                     await ProxySettingLinux.SetProxy(Global.Loopback, port, exceptions);
                     break;
 
                 case ESysProxyType.ForcedChange when Utils.IsMacOS():
-                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions);
+                    var exceptions2 = SanitizeExceptions(config);
+                    await ProxySettingOSX.SetProxy(Global.Loopback, port, exceptions2);
                     break;
 
                 case ESysProxyType.ForcedClear when Utils.IsWindows():
@@ -66,15 +66,31 @@ public static class SysProxyHandler
         return true;
     }
 
-    private static void GetWindowsProxyString(Config config, int port, out string strProxy, out string strExceptions)
+    private static string SanitizeExceptions(Config config)
     {
-        strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
+        var exceptions = config.SystemProxyItem.SystemProxyExceptions;
+        if (exceptions.IsNullOrEmpty())
+        {
+            return string.Empty;
+        }
+
+        var items = exceptions
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(item => item.Replace(" ", string.Empty))
+            .Where(item => item.Length > 0);
+
+        return string.Join(',', items);
+    }
+
+    private static (string strProxy, string strExceptions) GetWindowsProxyString(Config config, int port)
+    {
+        var strExceptions = config.SystemProxyItem.SystemProxyExceptions.Replace(" ", "");
         if (config.SystemProxyItem.NotProxyLocalAddress)
         {
             strExceptions = $"<local>;{strExceptions}";
         }
 
-        strProxy = string.Empty;
+        var strProxy = string.Empty;
         if (config.SystemProxyItem.SystemProxyAdvancedProtocol.IsNullOrEmpty())
         {
             strProxy = $"{Global.Loopback}:{port}";
@@ -86,6 +102,8 @@ public static class SysProxyHandler
                 .Replace("{http_port}", port.ToString())
                 .Replace("{socks_port}", port.ToString());
         }
+
+        return (strProxy, strExceptions);
     }
 
     [SupportedOSPlatform("windows")]
