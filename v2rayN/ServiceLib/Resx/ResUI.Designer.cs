@@ -439,6 +439,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Custom configuration core 的本地化字符串。
+        /// </summary>
+        public static string LvCustomCoreType {
+            get {
+                return ResourceManager.GetString("LvCustomCoreType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Custom icon 的本地化字符串。
         /// </summary>
         public static string LvCustomIcon {

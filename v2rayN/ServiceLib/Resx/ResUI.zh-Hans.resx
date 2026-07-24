@@ -1858,4 +1858,7 @@
   <data name="TbCustomOutboundTip" xml:space="preserve">
     <value>仅支持 xray/sing-box 的单个 outbound/endpoin</value>
   </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>自定义配置核心</value>
+  </data>
 </root>

@@ -1724,27 +1724,94 @@ public static class ConfigHandler
         var subItem = await AppManager.Instance.GetSubItem(subid);
         var subRemarks = subItem?.Remarks;
         var preSocksPort = subItem?.PreSocksPort;
+        var customCoreType = subItem?.CustomCoreType;
 
-        List<ProfileItem>? lstProfiles = null;
-        //Is sing-box array configuration
-        if (lstProfiles is null || lstProfiles.Count <= 0)
+        ProfileItem? profileItem = null;
+
+        if (customCoreType is null)
         {
-            lstProfiles = SingboxFmt.ResolveFullArray(strData, subRemarks);
-        }
-        //Is v2ray array configuration
-        if (lstProfiles is null || lstProfiles.Count <= 0)
-        {
-            lstProfiles = V2rayFmt.ResolveFullArray(strData, subRemarks);
-        }
-        if (lstProfiles is { Count: > 0 })
-        {
+            // Safe Mode: Only allow full configuration if it's not from a subscription
+            var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+            if (lstProfiles.Count == 0)
+            {
+                lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            }
+            if (lstProfiles.Count == 0)
+            {
+                return -1;
+            }
             var count = 0;
             foreach (var it in lstProfiles)
             {
                 it.Subid = subid;
                 it.IsSub = isSub;
-                it.PreSocksPort = preSocksPort;
-                if (await AddCustomServer(config, it, true) == 0)
+                if (await AddCustomOutboundServer(config, it, true) == 0)
+                {
+                    count++;
+                }
+            }
+            if (count > 0)
+            {
+                return count;
+            }
+
+            if (HtmlPageFmt.IsHtmlPage(strData))
+            {
+                return -1;
+            }
+            //Is Clash configuration
+            profileItem ??= ClashFmt.ResolveFull(strData, subRemarks);
+            //Is hysteria configuration
+            profileItem ??= Hysteria2Fmt.ResolveFull2(strData, subRemarks);
+            if (profileItem == null)
+            {
+                return -1;
+            }
+            profileItem.Subid = subid;
+            profileItem.IsSub = isSub;
+            profileItem.PreSocksPort = preSocksPort;
+            if (await AddCustomServer(config, profileItem, true) == 0)
+            {
+                return 1;
+            }
+            return -1;
+        }
+
+        if (customCoreType is ECoreType.Xray)
+        {
+            var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+            if (lstProfiles.Count == 0)
+            {
+                return -1;
+            }
+            var count = 0;
+            foreach (var it in lstProfiles)
+            {
+                it.Subid = subid;
+                it.IsSub = isSub;
+                if (await AddCustomOutboundServer(config, it, true) == 0)
+                {
+                    count++;
+                }
+            }
+            if (count > 0)
+            {
+                return count;
+            }
+        }
+        else if (customCoreType is ECoreType.sing_box)
+        {
+            var lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            if (lstProfiles.Count == 0)
+            {
+                return -1;
+            }
+            var count = 0;
+            foreach (var it in lstProfiles)
+            {
+                it.Subid = subid;
+                it.IsSub = isSub;
+                if (await AddCustomOutboundServer(config, it, true) == 0)
                 {
                     count++;
                 }
@@ -1755,28 +1822,36 @@ public static class ConfigHandler
             }
         }
 
-        ProfileItem? profileItem = null;
-        //Is sing-box configuration
-        profileItem ??= SingboxFmt.ResolveFull(strData, subRemarks);
-        //Is v2ray configuration
-        profileItem ??= V2rayFmt.ResolveFull(strData, subRemarks);
-        //Is Html Page
-        if (profileItem is null && HtmlPageFmt.IsHtmlPage(strData))
+        // try getting ext
+        var ext = string.Empty;
+        var jsonNode = JsonUtils.ParseJson(strData);
+        if (jsonNode is JsonObject or JsonArray)
         {
-            return -1;
+            ext = ".json";
         }
-        //Is Clash configuration
-        profileItem ??= ClashFmt.ResolveFull(strData, subRemarks);
-        //Is hysteria configuration
-        profileItem ??= Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-        if (profileItem is null || profileItem.Address.IsNullOrEmpty())
+        if (ext.IsNullOrEmpty())
         {
-            return -1;
+            var yamlNode = YamlUtils.FromYaml<Dictionary<string, object>>(strData);
+            if (yamlNode.Keys.Count > 0)
+            {
+                ext = ".yaml";
+            }
         }
 
-        profileItem.Subid = subid;
-        profileItem.IsSub = isSub;
-        profileItem.PreSocksPort = preSocksPort;
+        var fileName = Utils.GetTempPath($"{Utils.GetGuid(false)}{ext}");
+        await File.WriteAllTextAsync(fileName, strData);
+
+        profileItem ??= new ProfileItem()
+        {
+            CoreType = customCoreType,
+            ConfigType = EConfigType.Custom,
+            Address = fileName,
+            Remarks = subRemarks ?? customCoreType.ToString(),
+            Subid = subid,
+            IsSub = isSub,
+            PreSocksPort = preSocksPort,
+        };
+
         if (await AddCustomServer(config, profileItem, true) == 0)
         {
             return 1;
@@ -2086,6 +2161,7 @@ public static class ConfigHandler
             item.NextProfile = subItem.NextProfile;
             item.PreSocksPort = subItem.PreSocksPort;
             item.Memo = subItem.Memo;
+            item.CustomCoreType = subItem.CustomCoreType;
         }
 
         if (item.Id.IsNullOrEmpty())

@@ -1857,4 +1857,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbCustomOutboundTip" xml:space="preserve">
     <value>Only single outbound/endpoint supported for xray/sing-box</value>
   </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Custom configuration core</value>
+  </data>
 </root>

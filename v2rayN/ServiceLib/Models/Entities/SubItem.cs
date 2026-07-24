@@ -33,4 +33,6 @@ public class SubItem
     public int? PreSocksPort { get; set; }
 
     public string? Memo { get; set; }
+
+    public ECoreType? CustomCoreType { get; set; }
 }
