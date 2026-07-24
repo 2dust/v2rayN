@@ -17,6 +17,7 @@ public partial class CoreConfigSingboxService
             GenDnsRules();
 
             _coreConfig.dns ??= new Dns4Sbox();
+            _coreConfig.dns.optimistic = context.SimpleDnsItem.ServeStale == true ? true : null;
 
             // final dns
             var useDirectDns = UseDirectDns();
