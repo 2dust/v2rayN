@@ -501,6 +501,9 @@
   <data name="menuSpeedServer" xml:space="preserve">
     <value>測試速度 (多選)</value>
   </data>
+  <data name="menuUploadSpeedServer" xml:space="preserve">
+    <value>測試上傳速度 (多選)</value>
+  </data>
   <data name="menuTcpingServer" xml:space="preserve">
     <value>測試延遲 Tcping (多選)</value>
   </data>
@@ -953,6 +956,9 @@
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>測速檔案位址</value>
+  </data>
+  <data name="TbSettingsSpeedUploadTestUrl" xml:space="preserve">
+    <value>上傳測速網址</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>移至上下</value>

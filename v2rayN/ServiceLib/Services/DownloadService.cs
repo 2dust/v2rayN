@@ -40,6 +40,32 @@ public class DownloadService
     }
 
     /// <summary>
+    /// Uploads generated data with the specified proxy and reports progress messages.
+    /// </summary>
+    public async Task<int> UploadDataAsync(string url, IWebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    {
+        try
+        {
+            var progress = new Progress<string>();
+            progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
+
+            await DownloaderHelper.Instance.UploadDataAsync4Speed(webProxy,
+                  url,
+                  progress,
+                  downloadTimeout);
+        }
+        catch (Exception ex)
+        {
+            await updateFunc?.Invoke(false, ex.Message);
+            if (ex.InnerException != null)
+            {
+                await updateFunc?.Invoke(false, ex.InnerException.Message);
+            }
+        }
+        return 0;
+    }
+
+    /// <summary>
     /// Downloads a file and reports progress through events.
     /// </summary>
     public async Task DownloadFileAsync(string url, string fileName, bool blProxy, int downloadTimeout)

@@ -131,6 +131,10 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
         }
+        if (config.SpeedTestItem.SpeedUploadTestUrl.IsNullOrEmpty())
+        {
+            config.SpeedTestItem.SpeedUploadTestUrl = Global.SpeedUploadTestUrls.First();
+        }
         if (config.SpeedTestItem.SpeedPingTestUrl.IsNullOrEmpty())
         {
             config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrls.First();

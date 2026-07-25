@@ -61,6 +61,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey);
                 break;
 
+            case ESpeedActionType.UploadSpeedtest:
+                await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey, blUploadTest: true);
+                break;
+
             case ESpeedActionType.Mixedtest:
                 await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
                 break;
@@ -115,6 +119,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     break;
 
                 case ESpeedActionType.Speedtest:
+                case ESpeedActionType.UploadSpeedtest:
                     await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingWait);
                     ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     break;
@@ -127,7 +132,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
         }
 
-        if (lstSelected.Count > 1 && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.Mixedtest))
+        if (lstSelected.Count > 1 && (actionType == ESpeedActionType.Speedtest || actionType == ESpeedActionType.UploadSpeedtest || actionType == ESpeedActionType.Mixedtest))
         {
             NoticeManager.Instance.Enqueue(ResUI.SpeedtestingPressEscToExit);
         }
@@ -353,7 +358,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
-    private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
+    private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey, bool blUploadTest = false)
     {
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
         var downloadHandle = new DownloadService();
@@ -392,7 +397,14 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
                         if (delay > 0)
                         {
-                            await DoSpeedTest(downloadHandle, it);
+                            if (blUploadTest)
+                            {
+                                await DoUploadSpeedTest(downloadHandle, it);
+                            }
+                            else
+                            {
+                                await DoSpeedTest(downloadHandle, it);
+                            }
                         }
                         else
                         {
@@ -448,6 +460,24 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
         await downloadHandle.DownloadDataAsync(url, webProxy, timeout, async (success, msg) =>
+        {
+            decimal.TryParse(msg, out var dec);
+            if (dec > 0)
+            {
+                ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
+            }
+            await UpdateFunc(it.IndexId, "", msg);
+        });
+    }
+
+    private async Task DoUploadSpeedTest(DownloadService downloadHandle, ServerTestItem it)
+    {
+        await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
+
+        var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
+        var url = _config.SpeedTestItem.SpeedUploadTestUrl;
+        var timeout = _config.SpeedTestItem.SpeedTestTimeout;
+        await downloadHandle.UploadDataAsync(url, webProxy, timeout, async (success, msg) =>
         {
             decimal.TryParse(msg, out var dec);
             if (dec > 0)

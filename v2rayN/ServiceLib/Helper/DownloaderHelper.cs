@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Security.Authentication;
 using Downloader;
 
@@ -7,6 +8,7 @@ public class DownloaderHelper
 {
     private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
     public static DownloaderHelper Instance => _instance.Value;
+    private const long DefaultUploadTestBytes = 10_000_000;
 
     public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
     {
@@ -130,6 +132,45 @@ public class DownloaderHelper
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
 
         downloadOpt = null;
+    }
+
+    public async Task UploadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
+    {
+        if (url.IsNullOrEmpty())
+        {
+            throw new ArgumentNullException(nameof(url));
+        }
+
+        var uploadBytes = GetUploadTestBytes(url);
+        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+        var requestConfiguration = new RequestConfiguration()
+        {
+            ConnectTimeout = connectTimeout * 1000,
+            Proxy = webProxy
+        };
+
+        using var handler = GetSocketsHttpHandler(requestConfiguration);
+        using var client = new HttpClient(handler)
+        {
+            Timeout = Timeout.InfiniteTimeSpan
+        };
+        using var cts = new CancellationTokenSource();
+        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+
+        var content = new SpeedTestUploadContent(uploadBytes, progress);
+        using var request = new HttpRequestMessage(HttpMethod.Post, url)
+        {
+            Content = content
+        };
+        using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+        content.StopTiming();
+        response.EnsureSuccessStatusCode();
+
+        if (content.Elapsed.TotalSeconds > 0)
+        {
+            var speed = uploadBytes / content.Elapsed.TotalSeconds;
+            progress?.Report((speed / 1000 / 1000).ToString("#0.0"));
+        }
     }
 
     public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
@@ -265,5 +306,98 @@ public class DownloaderHelper
         }
 
         return handler;
+    }
+
+    private static long GetUploadTestBytes(string url)
+    {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            return DefaultUploadTestBytes;
+        }
+
+        var query = Utils.ParseQueryString(uri.Query);
+        if (long.TryParse(query["bytes"], out var bytes) && bytes > 0)
+        {
+            return bytes;
+        }
+
+        return DefaultUploadTestBytes;
+    }
+
+    private sealed class SpeedTestUploadContent : HttpContent
+    {
+        private const int BufferSize = 81920;
+        private readonly long _length;
+        private readonly IProgress<string>? _progress;
+        private readonly byte[] _buffer = new byte[BufferSize];
+        private readonly Stopwatch _timer = new();
+
+        public TimeSpan Elapsed => _timer.Elapsed;
+
+        public SpeedTestUploadContent(long length, IProgress<string>? progress)
+        {
+            _length = length;
+            _progress = progress;
+            Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        }
+
+        public void StopTiming()
+        {
+            _timer.Stop();
+        }
+
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context)
+        {
+            return SerializeToStreamAsync(stream, context, CancellationToken.None);
+        }
+
+        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context, CancellationToken cancellationToken)
+        {
+            _timer.Restart();
+            var lastUpdateTime = _timer.Elapsed;
+            long lastUpdateBytes = 0;
+            long written = 0;
+            double maxSpeed = 0;
+
+            while (written < _length)
+            {
+                var count = (int)Math.Min(BufferSize, _length - written);
+                await stream.WriteAsync(_buffer.AsMemory(0, count), cancellationToken);
+                written += count;
+
+                var elapsed = _timer.Elapsed;
+                if ((elapsed - lastUpdateTime).TotalMilliseconds < 1000)
+                {
+                    continue;
+                }
+
+                maxSpeed = ReportSpeed(_progress, written, lastUpdateBytes, elapsed - lastUpdateTime, maxSpeed);
+                lastUpdateBytes = written;
+                lastUpdateTime = elapsed;
+            }
+        }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = _length;
+            return true;
+        }
+
+        private static double ReportSpeed(IProgress<string>? progress, long written, long lastWritten, TimeSpan elapsed, double maxSpeed)
+        {
+            if (elapsed.TotalSeconds <= 0)
+            {
+                return maxSpeed;
+            }
+
+            var speed = (written - lastWritten) / elapsed.TotalSeconds;
+            if (speed > maxSpeed)
+            {
+                maxSpeed = speed;
+            }
+
+            progress?.Report((maxSpeed / 1000 / 1000).ToString("#0.0"));
+            return maxSpeed;
+        }
     }
 }

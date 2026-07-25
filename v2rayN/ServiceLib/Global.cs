@@ -161,6 +161,13 @@ public class Global
         @"https://speed.cloudflare.com/__down?bytes=99999999",
     ];
 
+    public static readonly List<string> SpeedUploadTestUrls =
+    [
+        @"https://speed.cloudflare.com/__up?bytes=10000000",
+        @"https://speed.cloudflare.com/__up?bytes=25000000",
+        @"https://speed.cloudflare.com/__up?bytes=50000000",
+    ];
+
     public static readonly List<string> SpeedPingTestUrls =
     [
         @"https://www.google.com/generate_204",

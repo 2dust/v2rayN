@@ -158,6 +158,7 @@ public class SpeedTestItem
 {
     public int SpeedTestTimeout { get; set; }
     public string SpeedTestUrl { get; set; }
+    public string SpeedUploadTestUrl { get; set; }
     public string SpeedPingTestUrl { get; set; }
     public int MixedConcurrencyCount { get; set; }
     public string IPAPIUrl { get; set; }

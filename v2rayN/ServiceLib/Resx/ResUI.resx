@@ -501,6 +501,9 @@
   <data name="menuSpeedServer" xml:space="preserve">
     <value>Test download speed</value>
   </data>
+  <data name="menuUploadSpeedServer" xml:space="preserve">
+    <value>Test upload speed</value>
+  </data>
   <data name="menuTcpingServer" xml:space="preserve">
     <value>Test tcping</value>
   </data>
@@ -953,6 +956,9 @@
   </data>
   <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
     <value>Speed Test URL</value>
+  </data>
+  <data name="TbSettingsSpeedUploadTestUrl" xml:space="preserve">
+    <value>Upload Speed Test URL</value>
   </data>
   <data name="menuMoveTo" xml:space="preserve">
     <value>Move up and down</value>

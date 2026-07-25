@@ -144,6 +144,10 @@
                             x:Name="menuSpeedServer"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
                             InputGesture="Ctrl+T" />
+                        <MenuItem
+                            x:Name="menuUploadSpeedServer"
+                            Header="{x:Static resx:ResUI.menuUploadSpeedServer}"
+                            InputGesture="Ctrl+U" />
                         <MenuItem x:Name="menuUdpTestServer" Header="{x:Static resx:ResUI.menuUdpTestServer}" />
                         <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />

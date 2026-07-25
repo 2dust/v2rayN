@@ -52,6 +52,7 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public string CurrentFontFamily { get; set; }
     [Reactive] public int SpeedTestTimeout { get; set; }
     [Reactive] public string SpeedTestUrl { get; set; }
+    [Reactive] public string SpeedUploadTestUrl { get; set; }
     [Reactive] public string SpeedPingTestUrl { get; set; }
     [Reactive] public string UdpTestTarget { get; set; }
     [Reactive] public int MixedConcurrencyCount { get; set; }
@@ -182,6 +183,7 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         CurrentFontFamily = _config.UiItem.CurrentFontFamily;
         SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
         SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
+        SpeedUploadTestUrl = _config.SpeedTestItem.SpeedUploadTestUrl;
         MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
@@ -355,6 +357,7 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
         _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
         _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
+        _config.SpeedTestItem.SpeedUploadTestUrl = SpeedUploadTestUrl;
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
         _config.GuiItem.EnableHWA = EnableHWA;

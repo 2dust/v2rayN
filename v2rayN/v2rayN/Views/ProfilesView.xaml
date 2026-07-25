@@ -168,6 +168,11 @@
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
                             InputGestureText="Ctrl+T" />
                         <MenuItem
+                            x:Name="menuUploadSpeedServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuUploadSpeedServer}"
+                            InputGestureText="Ctrl+U" />
+                        <MenuItem
                             x:Name="menuSortServerResult"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSortServerResult}" />

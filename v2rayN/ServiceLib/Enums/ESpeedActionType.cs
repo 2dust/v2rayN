@@ -6,6 +6,7 @@ public enum ESpeedActionType
     Realping,
     UdpTest,
     Speedtest,
+    UploadSpeedtest,
     Mixedtest,
     FastRealping
 }

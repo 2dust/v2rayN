@@ -72,6 +72,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuRealPingServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.UdpTestServerCmd, v => v.menuUdpTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.UploadSpeedServerCmd, v => v.menuUploadSpeedServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuSortServerResult).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveInvalidServerResultCmd, v => v.menuRemoveInvalidServerResult).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FastRealPingCmd, v => v.btnFastRealPing).DisposeWith(disposables);
@@ -269,6 +270,10 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
                 case Key.T:
                     ViewModel?.ServerSpeedtest(ESpeedActionType.Speedtest);
+                    break;
+
+                case Key.U:
+                    ViewModel?.ServerSpeedtest(ESpeedActionType.UploadSpeedtest);
                     break;
 
                 case Key.E:

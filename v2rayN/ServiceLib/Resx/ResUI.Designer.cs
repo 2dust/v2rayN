@@ -1762,6 +1762,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Test upload speed 的本地化字符串。
+        /// </summary>
+        public static string menuUploadSpeedServer {
+            get {
+                return ResourceManager.GetString("menuUploadSpeedServer", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Add 的本地化字符串。
         /// </summary>
         public static string menuSubAdd {
@@ -4635,6 +4644,15 @@ namespace ServiceLib.Resx {
             }
         }
         
+        /// <summary>
+        ///   查找类似 Upload Speed Test URL 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsSpeedUploadTestUrl {
+            get {
+                return ResourceManager.GetString("TbSettingsSpeedUploadTestUrl", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 sing-box ruleset files source (optional) 的本地化字符串。
         /// </summary>
