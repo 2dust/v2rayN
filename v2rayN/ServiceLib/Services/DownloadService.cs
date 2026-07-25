@@ -75,18 +75,19 @@ public class DownloadService
     /// </summary>
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
     {
-        var webRequestHandler = new SocketsHttpHandler
+        var handler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
-            Proxy = await GetWebProxy(blProxy)
+            Proxy = await GetWebProxy(blProxy),
+            ConnectCallback = (context, cancellationToken) => HappyEyeballsConnection.ConnectAsync(context, cancellationToken)
         };
         var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
         if (certificateChainPolicy != null)
         {
-            webRequestHandler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
-            webRequestHandler.SslOptions.RemoteCertificateValidationCallback = null;
+            handler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+            handler.SslOptions.RemoteCertificateValidationCallback = null;
         }
-        using var client = new HttpClient(webRequestHandler);
+        using var client = new HttpClient(handler);
 
         var response = await client.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
@@ -167,7 +168,8 @@ public class DownloadService
             {
                 Proxy = webProxy,
                 UseProxy = webProxy != null,
-                ConnectTimeout = TimeSpan.FromSeconds(connectTimeout)
+                ConnectTimeout = TimeSpan.FromSeconds(connectTimeout),
+                ConnectCallback = (context, cancellationToken) => HappyEyeballsConnection.ConnectAsync(context, cancellationToken)
             };
             var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
             if (certificateChainPolicy != null)
