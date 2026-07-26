@@ -64,11 +64,11 @@ public partial class CoreConfigV2rayService
                 tunInbound.settings.name = context.IsMacOS ? $"utun{new Random().Next(99)}" : "xray_tun";
                 tunInbound.settings.MTU = _config.TunModeItem.Mtu;
 
-                var address = _config.TunModeItem.Ipv4Address.NullIfEmpty() ?? Global.TunIpv4Address.First();
+                var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.settings.gateway = [address];
                 if (_config.TunModeItem.EnableIPv6Address == true)
                 {
-                    var address6 = _config.TunModeItem.Ipv6Address.NullIfEmpty() ?? Global.TunIpv6Address.First();
+                    var address6 = _config.TunModeItem.IPv6Address.NullIfEmpty() ?? Global.TunIPv6Address.First();
                     tunInbound.settings.gateway.Add(address6);
                 }
 

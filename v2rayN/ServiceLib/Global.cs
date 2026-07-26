@@ -745,7 +745,7 @@ public class Global
         MozillaRootProvider,
     ];
 
-    public static readonly IReadOnlyList<string> TunIpv4Address =
+    public static readonly IReadOnlyList<string> TunIPv4Address =
     [
         "172.18.0.1/30",
         "172.31.0.1/30",
@@ -759,7 +759,7 @@ public class Global
 
     // Prefixes must leave room for a peer address (max /126); the sing-box system
     // stack derives a gateway from the first prefix and rejects single-address prefixes.
-    public static readonly IReadOnlyList<string> TunIpv6Address =
+    public static readonly IReadOnlyList<string> TunIPv6Address =
     [
         "fc00::172:18:0:1/126",
         "fc00::172:31:0:1/126",
