@@ -592,4 +592,38 @@ public class CoreConfigSingboxServiceTests
         proxy.realm.stun_servers.Should().Contain("turn.cloudflare.com:3478");
         proxy.server.Should().BeNull();
     }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunSystemStackWithIpv6_ShouldUsePrefixWithPeerAddress()
+    {
+        // Regression test for #9820: sing-box fails with "need one more IPv6 address in
+        // first prefix for system stack" when the TUN inbound uses a /128 IPv6 prefix.
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.Stack = "system";
+        config.TunModeItem.EnableIPv6Address = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var tun = cfg.inbounds.First(i => i.type == "tun");
+
+        tun.address.Should().NotBeNullOrEmpty();
+        foreach (var address in tun.address!)
+        {
+            var prefixLength = int.Parse(address[(address.LastIndexOf('/') + 1)..]);
+            var isIpv6 = address.Contains(':');
+            prefixLength.Should().BeLessThanOrEqualTo(isIpv6 ? 126 : 30,
+                $"'{address}' must leave room for the peer address the system stack derives");
+        }
+    }
+
 }
