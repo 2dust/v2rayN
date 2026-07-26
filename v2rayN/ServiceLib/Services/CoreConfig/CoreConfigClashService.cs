@@ -1,9 +1,11 @@
 namespace ServiceLib.Services.CoreConfig;
 
 /// <summary>
-/// Core configuration file processing class
+/// Core configuration file processing class.
+/// The TUN state is taken as a snapshot so the generated config always agrees
+/// with the launch elevation decision (see CoreManager.ShouldRunAsSudo).
 /// </summary>
-public class CoreConfigClashService(Config config)
+public class CoreConfigClashService(Config config, bool isTunEnabled)
 {
     private static readonly string _tag = "CoreConfigClashService";
 
@@ -102,7 +104,7 @@ public class CoreConfigClashService(Config config)
             }
 
             //enable tun mode
-            if (config.TunModeItem.EnableTun)
+            if (isTunEnabled)
             {
                 var tun = EmbedUtils.GetEmbedText(Global.ClashTunYaml);
                 if (tun.IsNotEmpty())
@@ -171,7 +173,7 @@ public class CoreConfigClashService(Config config)
         }
         foreach (var item in mixinContent)
         {
-            if (!config.TunModeItem.EnableTun && item.Key == "tun")
+            if (!isTunEnabled && item.Key == "tun")
             {
                 continue;
             }

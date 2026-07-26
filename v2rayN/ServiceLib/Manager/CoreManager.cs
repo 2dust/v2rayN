@@ -85,7 +85,7 @@ public class CoreManager
         await CoreStop();
         await Task.Delay(100);
 
-        if (Utils.IsWindows() && _config.TunModeItem.EnableTun)
+        if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
         {
             await Task.Delay(100);
             await WindowsUtils.RemoveTunDevice();
@@ -222,7 +222,7 @@ public class CoreManager
         {
             return;
         }
-        if (!preContext.AppConfig.TunModeItem.EnableTun)
+        if (!preContext.IsTunEnabled)
         {
             return;
         }
