@@ -36,6 +36,11 @@ public partial class MsgViewModel : MyReactiveObject
          .Subscribe(content => _ = AppendQueueMsg(content));
     }
 
+    public void FlushQueueMsg()
+    {
+        _ = AppendQueueMsg(string.Empty);
+    }
+
     private async Task AppendQueueMsg(string msg)
     {
         if (AutoRefresh == false)
@@ -65,7 +70,17 @@ public partial class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await DispatcherShowMsgInteraction.Handle(sb.ToString());
+            if (sb.Length > 0)
+            {
+                try
+                {
+                    await DispatcherShowMsgInteraction.Handle(sb.ToString());
+                }
+                catch (Exception)
+                {
+                    _queueMsg.Enqueue(sb.ToString());
+                }
+            }
         }
         finally
         {
@@ -75,6 +90,11 @@ public partial class MsgViewModel : MyReactiveObject
 
     private void EnqueueQueueMsg(string msg)
     {
+        if (string.IsNullOrEmpty(msg))
+        {
+            return;
+        }
+
         //filter msg
         if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
         {

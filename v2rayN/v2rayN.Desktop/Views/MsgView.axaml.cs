@@ -23,6 +23,8 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                     DispatcherPriority.ApplicationIdle);
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
+
+            ViewModel?.FlushQueueMsg();
         });
 
         TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
