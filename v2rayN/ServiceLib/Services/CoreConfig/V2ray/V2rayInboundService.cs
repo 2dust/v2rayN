@@ -71,7 +71,7 @@ public partial class CoreConfigV2rayService
                     var address6 = _config.TunModeItem.Ipv6Address.NullIfEmpty() ?? Global.TunIpv6Address.First();
                     tunInbound.settings.gateway.Add(address6);
                 }
-                tunInbound.settings.dns = [address.Split('/').First()];
+
                 tunInbound.settings.autoSystemRoutingTable = ["0.0.0.0/0"];
                 var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
                 if (!bindInterface.IsNullOrEmpty())
