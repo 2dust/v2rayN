@@ -147,6 +147,36 @@ public class InnerFmt
 
     private static ProfileItem? ResolveSingle(string str)
     {
+        var profileItem = ResolveSingle4Path(str);
+        profileItem ??= ResolveSingle4Query(str);
+        if (profileItem is null)
+        {
+            return null;
+        }
+        if (profileItem.ConfigVersion != 4)
+        {
+            return null;
+        }
+        // Check Enum.IsDefined
+        if (!Enum.IsDefined(profileItem.ConfigType))
+        {
+            return null;
+        }
+        if (profileItem.CoreType is not (null or ECoreType.Xray or ECoreType.sing_box))
+        {
+            return null;
+        }
+        var protocolExtra = profileItem.GetProtocolExtra();
+        var multipleLoad = protocolExtra.MultipleLoad;
+        if (multipleLoad is not null && !Enum.IsDefined(typeof(EMultipleLoad), multipleLoad))
+        {
+            return null;
+        }
+        return profileItem;
+    }
+
+    private static ProfileItem? ResolveSingle4Path(string str)
+    {
         // format: v2rayn://vless/{url-safe base64 encoded_string}
         var parsedUri = Utils.TryUri(str);
         if (parsedUri is null)
@@ -176,34 +206,89 @@ public class InnerFmt
             jsonObj.Remove("TransportExtraObj");
         }
         var profileItem = JsonUtils.Deserialize<ProfileItem>(JsonUtils.Serialize(jsonObj, false));
-        if (profileItem is null)
+        return profileItem;
+    }
+
+    private static ProfileItem? ResolveSingle4Query(string str)
+    {
+        var parsedUri = Utils.TryUri(str);
+        if (parsedUri is null)
         {
             return null;
         }
-        if (profileItem.ConfigVersion != 4)
+        var query = Utils.ParseQueryString(parsedUri.Query);
+        var jsonObj = new JsonObject();
+        var protoExtraObj = new JsonObject();
+        var transportExtraObj = new JsonObject();
+        var keyObjMap = new Dictionary<string, JsonObject>
         {
-            return null;
-        }
-        // Check Enum.IsDefined
-        if (!Enum.IsDefined(profileItem.ConfigType))
+            { "ProtoExtra.", protoExtraObj },
+            { "TransportExtra.", transportExtraObj },
+        };
+        var boolKeyList = new HashSet<string>
         {
-            return null;
-        }
-        if (profileItem.CoreType is not (null or ECoreType.Xray or ECoreType.sing_box))
+            "DisplayLog",
+            "IsSub",
+            "MuxEnabled",
+            "ProtoExtra.Uot",
+            "ProtoExtra.NaiveQuic",
+        };
+        var intKeyList = new HashSet<string>
         {
-            return null;
-        }
-        var protocolExtra = profileItem.GetProtocolExtra();
-        var multipleLoad = protocolExtra.MultipleLoad;
-        if (multipleLoad is not null && !Enum.IsDefined(typeof(EMultipleLoad), multipleLoad))
+            "ConfigVersion",
+            "ConfigType",
+            "CoreType",
+            "PreSocksPort",
+            "Port",
+            "AlterId",
+            "ProtoExtra.WgMtu",
+            "ProtoExtra.UpMbps",
+            "ProtoExtra.DownMbps",
+            "ProtoExtra.InsecureConcurrency",
+            "ProtoExtra.MultipleLoad",
+            "TransportExtra.KcpMtu",
+        };
+        foreach (var key in query.AllKeys)
         {
-            return null;
+            if (key is null)
+            {
+                continue;
+            }
+            var value = query[key];
+            if (value is null)
+            {
+                continue;
+            }
+            var valueToUse = boolKeyList.Contains(key)
+                ? JsonValue.Create(new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "1", "true", "yes" }.Contains(value))
+                : intKeyList.Contains(key)
+                    ? int.TryParse(value, out var intValue) ? JsonValue.Create(intValue) : JsonValue.Create(0)
+                    : JsonValue.Create(value);
+            var jsonObjToUse = keyObjMap.FirstOrDefault(kvp => key.StartsWith(kvp.Key, StringComparison.OrdinalIgnoreCase)).Value ?? jsonObj;
+            if (jsonObjToUse == protoExtraObj || jsonObjToUse == transportExtraObj)
+            {
+                var subKey = key.Substring(jsonObjToUse == protoExtraObj ? "ProtoExtra.".Length : "TransportExtra.".Length);
+                jsonObjToUse[subKey] = valueToUse;
+            }
+            else
+            {
+                jsonObj[key] = valueToUse;
+            }
         }
+        jsonObj.Remove("ProtoExtraObj");
+        jsonObj.Remove("TransportExtraObj");
+        jsonObj["ProtoExtra"] = JsonUtils.Serialize(protoExtraObj, false);
+        jsonObj["TransportExtra"] = JsonUtils.Serialize(transportExtraObj, false);
+        var profileItem = JsonUtils.Deserialize<ProfileItem>(JsonUtils.Serialize(jsonObj, false));
         return profileItem;
     }
 
     private static string? ToUriSingle(ProfileItem item)
     {
+        if (true)
+        {
+            return ToUriSingle4Query(item);
+        }
         var jsonNode = JsonUtils.ParseJson(JsonUtils.Serialize(item, false));
         if (jsonNode is not JsonObject jsonObj)
         {
@@ -238,6 +323,71 @@ public class InnerFmt
         var jsonStr = JsonUtils.Serialize(jsonObj, false);
         var encodedStr = Utils.Base64Encode(jsonStr).Replace('+', '-').Replace('/', '_').Replace("=", "");
         return $"{Global.InnerUriProtocol}{item.ConfigType.ToString().ToLower()}/{encodedStr}";
+    }
+
+    private static string? ToUriSingle4Query(ProfileItem item)
+    {
+        var jsonNode = JsonUtils.ParseJson(JsonUtils.Serialize(item, false));
+        if (jsonNode is not JsonObject jsonObj)
+        {
+            return null;
+        }
+        // unflatten
+        // move jsonObj.ProtoExtra (string) to jsonObj.ProtoExtraObj
+        // move jsonObj.TransportExtra (string) to jsonObj.TransportExtraObj
+        if (jsonObj.TryGetPropertyValue("ProtoExtra", out var protoExtraNode)
+            && protoExtraNode is JsonValue protoExtraValue
+            && protoExtraValue.TryGetValue<string>(out var protoExtraStr)
+            && !protoExtraStr.IsNullOrEmpty()
+            && JsonUtils.ParseJson(protoExtraStr) is JsonObject protoExtraObj)
+        {
+            jsonObj["ProtoExtraObj"] = protoExtraObj;
+            jsonObj.Remove("ProtoExtra");
+        }
+        if (jsonObj.TryGetPropertyValue("TransportExtra", out var transportExtraNode)
+            && transportExtraNode is JsonValue transportExtraValue
+            && transportExtraValue.TryGetValue<string>(out var transportExtraStr)
+            && !transportExtraStr.IsNullOrEmpty()
+            && JsonUtils.ParseJson(transportExtraStr) is JsonObject transportExtraObj)
+        {
+            jsonObj["TransportExtraObj"] = transportExtraObj;
+            jsonObj.Remove("TransportExtra");
+        }
+        // remove subid and isSub
+        jsonObj.Remove("Subid");
+        jsonObj.Remove("IsSub");
+        // Remove empty properties to reduce the length of the exported string
+        RemoveEmptyJson(jsonObj);
+        var dicQuery = new Dictionary<string, string>();
+        foreach (var property in jsonObj)
+        {
+            if (property.Value is JsonValue valueNode && valueNode.GetValueKind() is JsonValueKind.String or JsonValueKind.Number or JsonValueKind.True or JsonValueKind.False)
+            {
+                dicQuery[property.Key] = Utils.UrlEncode(valueNode.ToString());
+            }
+            else if (property.Value is JsonObject objNode)
+            {
+                var key = property.Key + ".";
+                foreach (var subProperty in objNode)
+                {
+                    if (subProperty.Value is JsonValue subValueNode && subValueNode.TryGetValue<string>(out var subValue))
+                    {
+                        dicQuery[key + subProperty.Key] = Utils.UrlEncode(subValue);
+                    }
+                }
+            }
+        }
+        var queryBuilder = new StringBuilder();
+        queryBuilder.Append('?');
+        foreach (var kv in dicQuery)
+        {
+            queryBuilder.Append(kv.Key);
+            queryBuilder.Append('=');
+            queryBuilder.Append(kv.Value);
+            queryBuilder.Append('&');
+        }
+        var query = queryBuilder.ToString().TrimEnd('&');
+        return $"{Global.InnerUriProtocol}{item.ConfigType.ToString().ToLower()}{query}";
     }
 
     private static string GetReproducibleExportId(string originalIndexId)
