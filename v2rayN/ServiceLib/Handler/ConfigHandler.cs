@@ -382,7 +382,7 @@ public static class ConfigHandler
                 {
                 }
             }
-            else if (profileItem.ConfigType == EConfigType.CustomOutbound)
+            else if (profileItem.ConfigType == EConfigType.Outbound)
             {
                 profileItem.Address = Utils.GetConfigPath(profileItem.Address);
                 if (await AddCustomOutboundServer(config, profileItem, false) == 0)
@@ -613,7 +613,7 @@ public static class ConfigHandler
         }
 
         profileItem.Address = newFileName;
-        profileItem.ConfigType = EConfigType.CustomOutbound;
+        profileItem.ConfigType = EConfigType.Outbound;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
             profileItem.Remarks = $"import custom outbound@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
@@ -1959,7 +1959,7 @@ public static class ConfigHandler
                     EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
                     EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
                     EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem, false),
-                    EConfigType.CustomOutbound => await AddCustomOutboundServer(config, profileItem, true, false),
+                    EConfigType.Outbound => await AddCustomOutboundServer(config, profileItem, true, false),
                     _ => -1,
                 };
                 if (addStatus == 0)
@@ -2202,7 +2202,7 @@ public static class ConfigHandler
         {
             return -1;
         }
-        var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && (t.ConfigType == EConfigType.Custom || t.ConfigType == EConfigType.CustomOutbound)).ToListAsync();
+        var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && (t.ConfigType == EConfigType.Custom || t.ConfigType == EConfigType.Outbound)).ToListAsync();
         if (isSub)
         {
             await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");

@@ -97,7 +97,7 @@ public class CoreConfigContextBuilder
         }
 
         // Read Custom Outbound File Content
-        foreach (var profileItem in context.AllProxiesMap.Values.Where(x => x.ConfigType == EConfigType.CustomOutbound))
+        foreach (var profileItem in context.AllProxiesMap.Values.Where(x => x.ConfigType == EConfigType.Outbound))
         {
             var addressFileName = profileItem.Address;
             if (!File.Exists(addressFileName))

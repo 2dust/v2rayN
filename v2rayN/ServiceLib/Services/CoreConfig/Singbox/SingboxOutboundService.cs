@@ -35,7 +35,7 @@ public partial class CoreConfigSingboxService
     {
         var outbound = BuildProxyServer();
         outbound.tag = baseTagName;
-        if (_node.ConfigType == EConfigType.CustomOutbound)
+        if (_node.ConfigType == EConfigType.Outbound)
         {
             context.CustomOutboundMap[outbound] = _node.IndexId;
         }
@@ -63,7 +63,7 @@ public partial class CoreConfigSingboxService
         try
         {
             var txtOutbound = EmbedUtils.GetEmbedText(Global.SingboxSampleOutbound);
-            if (_node.ConfigType == EConfigType.CustomOutbound)
+            if (_node.ConfigType == EConfigType.Outbound)
             {
                 if (_node.GetProtocolExtra().IsSingboxEndpoint == true)
                 {

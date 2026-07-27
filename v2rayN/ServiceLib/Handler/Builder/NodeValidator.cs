@@ -36,7 +36,7 @@ public class NodeValidator
             return;
         }
 
-        if (item.ConfigType is EConfigType.CustomOutbound)
+        if (item.ConfigType is EConfigType.Outbound)
         {
             if (item.CoreType != coreType)
             {

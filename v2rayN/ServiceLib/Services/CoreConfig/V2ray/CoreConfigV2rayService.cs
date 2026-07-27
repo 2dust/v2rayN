@@ -117,7 +117,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!(Global.XraySupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.CustomOutbound))
+                if (!(Global.XraySupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.Outbound))
                 {
                     continue;
                 }

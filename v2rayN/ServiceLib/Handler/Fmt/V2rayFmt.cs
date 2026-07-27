@@ -123,7 +123,7 @@ public class V2rayFmt : BaseFmt
         var fileName = WriteAllText(JsonUtils.Serialize(jsonObject));
         var profileItem = new ProfileItem
         {
-            ConfigType = EConfigType.CustomOutbound,
+            ConfigType = EConfigType.Outbound,
             CoreType = ECoreType.Xray,
             Address = fileName,
             Remarks = remarks,

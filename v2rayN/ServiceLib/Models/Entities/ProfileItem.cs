@@ -66,7 +66,7 @@ public class ProfileItem
 
     public bool IsValid()
     {
-        if (IsComplex() || ConfigType == EConfigType.CustomOutbound)
+        if (IsComplex() || ConfigType == EConfigType.Outbound)
         {
             return true;
         }

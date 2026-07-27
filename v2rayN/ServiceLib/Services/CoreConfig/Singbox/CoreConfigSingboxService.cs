@@ -104,7 +104,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!(Global.SingboxSupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.CustomOutbound))
+                if (!(Global.SingboxSupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.Outbound))
                 {
                     continue;
                 }

@@ -122,7 +122,7 @@ public class SingboxFmt : BaseFmt
         var fileName = WriteAllText(JsonUtils.Serialize(jsonObject));
         var profileItem = new ProfileItem
         {
-            ConfigType = EConfigType.CustomOutbound,
+            ConfigType = EConfigType.Outbound,
             CoreType = ECoreType.sing_box,
             Address = fileName,
             Remarks = remarks,

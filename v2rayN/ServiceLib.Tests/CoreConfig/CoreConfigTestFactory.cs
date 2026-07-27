@@ -156,7 +156,7 @@ internal static class CoreConfigTestFactory
         return new ProfileItem
         {
             IndexId = indexId,
-            ConfigType = EConfigType.CustomOutbound,
+            ConfigType = EConfigType.Outbound,
             CoreType = coreType,
             Remarks = remarks,
             Address = address,

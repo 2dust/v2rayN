@@ -52,7 +52,7 @@ public partial class CoreConfigV2rayService
     {
         var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
         var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
-        if (_node.ConfigType == EConfigType.CustomOutbound)
+        if (_node.ConfigType == EConfigType.Outbound)
         {
             outbound.tag = baseTagName;
             context.CustomOutboundMap[outbound] = _node.IndexId;

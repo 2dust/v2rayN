@@ -47,7 +47,7 @@ public partial class AddServer2Window : WindowBase<AddServer2ViewModel>
             gridCustomServer.IsVisible = true;
             gridCustomOutbound.IsVisible = false;
         }
-        else if (profileItem.ConfigType is EConfigType.CustomOutbound)
+        else if (profileItem.ConfigType is EConfigType.Outbound)
         {
             Title = ResUI.menuAddCustomOutboundServer;
             cmbCoreType.ItemsSource = Global.CoreTypes;

@@ -206,7 +206,7 @@ public class InnerFmt : BaseFmt
         {
             return null;
         }
-        if (profileItem.ConfigType is EConfigType.CustomOutbound)
+        if (profileItem.ConfigType is EConfigType.Outbound)
         {
             if (customOutboundFilePath.IsNullOrEmpty())
             {
@@ -230,7 +230,7 @@ public class InnerFmt : BaseFmt
         {
             return null;
         }
-        if (item.ConfigType is EConfigType.CustomOutbound)
+        if (item.ConfigType is EConfigType.Outbound)
         {
             var customOutboundFilePath = item.Address;
             if (!File.Exists(customOutboundFilePath))
