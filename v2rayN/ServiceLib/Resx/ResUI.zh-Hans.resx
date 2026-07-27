@@ -1774,7 +1774,11 @@
     <value>有更新</value>
   </data>
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
-    <value>警告：Xray 将在 2026.8.1 禁用跳过证书验证 allowInsecure ，请尽快改用证书固定指纹 pinnedPeerCertSha256。到期后无法使用 </value>
+    <value>当前节点使用未加密连接，您的通信可能会被威权政府掌控的网络中间设施直接查看
+为了安全，此类节点无法通过 26.2.6+ 版本的Xray核心连接
+如果是自建节点请启用 TLS 等安全加密，或固定证书 pinSHA256
+如果机场节点请联系服务商完成技术升级，如服务商拒绝配合，建议更换更重视用户安全的服务商
+更多的信息，请访问 https://github.com/2dust/v2rayN/discussions/9460</value>
   </data>
   <data name="TbVerifyPeerCertByName" xml:space="preserve">
     <value>Verify Peer Cert By Name</value>
