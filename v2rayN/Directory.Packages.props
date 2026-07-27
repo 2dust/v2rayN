@@ -9,12 +9,12 @@
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.0" />
     <PackageVersion Include="Avalonia.Desktop" Version="12.1.0" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
-    <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
+    <PackageVersion Include="AwesomeAssertions" Version="9.5.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="12.0.3" />
     <PackageVersion Include="CliWrap" Version="3.10.2" />
-    <PackageVersion Include="Downloader" Version="5.9.4" />
+    <PackageVersion Include="Downloader" Version="5.9.5" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />

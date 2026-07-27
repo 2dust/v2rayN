@@ -95,6 +95,8 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public string TunIcmpRouting { get; set; }
     [Reactive] public bool TunEnableLegacyProtect { get; set; }
     [Reactive] public string TunRouteExcludeAddress { get; set; }
+    [Reactive] public string TunIPv4Address { get; set; }
+    [Reactive] public string TunIPv6Address { get; set; }
 
     #endregion Tun mode
 
@@ -214,6 +216,8 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         TunIcmpRouting = _config.TunModeItem.IcmpRouting;
         TunEnableLegacyProtect = _config.TunModeItem.EnableLegacyProtect;
         TunRouteExcludeAddress = Utils.List2String(_config.TunModeItem.RouteExcludeAddress, true);
+        TunIPv4Address = _config.TunModeItem.IPv4Address;
+        TunIPv6Address = _config.TunModeItem.IPv6Address;
 
         #endregion Tun mode
 
@@ -378,6 +382,8 @@ public class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.TunModeItem.IcmpRouting = TunIcmpRouting;
         _config.TunModeItem.EnableLegacyProtect = TunEnableLegacyProtect;
         _config.TunModeItem.RouteExcludeAddress = Utils.String2List(TunRouteExcludeAddress);
+        _config.TunModeItem.IPv4Address = TunIPv4Address;
+        _config.TunModeItem.IPv6Address = TunIPv6Address;
 
         //coreType
         await SaveCoreType();

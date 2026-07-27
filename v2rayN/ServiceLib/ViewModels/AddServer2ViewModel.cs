@@ -3,6 +3,7 @@ namespace ServiceLib.ViewModels;
 public class AddServer2ViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
+
     public Interaction<Unit, string?> BrowseConfigFileInteraction { get; } = new();
 
     [Reactive]

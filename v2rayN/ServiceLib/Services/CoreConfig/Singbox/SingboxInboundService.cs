@@ -67,9 +67,13 @@ public partial class CoreConfigSingboxService
                 tunInbound.auto_route = _config.TunModeItem.AutoRoute;
                 tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                 tunInbound.stack = _config.TunModeItem.Stack;
-                if (_config.TunModeItem.EnableIPv6Address == false)
+
+                var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
+                tunInbound.address = [address];
+                if (_config.TunModeItem.EnableIPv6Address == true)
                 {
-                    tunInbound.address = ["172.18.0.1/30"];
+                    var address6 = _config.TunModeItem.IPv6Address.NullIfEmpty() ?? Global.TunIPv6Address.First();
+                    tunInbound.address.Add(address6);
                 }
                 tunInbound.route_exclude_address = _config.TunModeItem.RouteExcludeAddress;
 

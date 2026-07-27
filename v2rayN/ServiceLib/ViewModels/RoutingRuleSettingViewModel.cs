@@ -3,6 +3,7 @@ namespace ServiceLib.ViewModels;
 public class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
+
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
     public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
     public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
