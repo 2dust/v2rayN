@@ -17,7 +17,7 @@ public static class CoreConfigHandler
         {
             result = node.CoreType switch
             {
-                ECoreType.mihomo => await new CoreConfigClashService(config).GenerateClientCustomConfig(node, fileName),
+                ECoreType.mihomo => await new CoreConfigClashService(config, context.IsTunEnabled).GenerateClientCustomConfig(node, fileName),
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
