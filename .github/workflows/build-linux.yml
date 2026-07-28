@@ -234,7 +234,7 @@ jobs:
     - name: Download QEMU prebuild
       run: |
         set -euo pipefail
-        wget -O qemu-linux-arm64-v8.2.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-arm64-v8.2.tar.gz "
+        wget -O qemu-linux-arm64-v8.2.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-arm64-v8.2.tar.gz"
         tar -xzf qemu-linux-arm64-v8.2.tar.gz
         mkdir -p "$HOME/qemu-install"
         rsync -a qemu-linux-arm64-v8.2/ "$HOME/qemu-install/"
