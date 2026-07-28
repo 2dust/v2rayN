@@ -1722,143 +1722,179 @@ public static class ConfigHandler
         }
 
         var subItem = await AppManager.Instance.GetSubItem(subid);
-        var subRemarks = subItem?.Remarks;
-        var preSocksPort = subItem?.PreSocksPort;
-        var customCoreType = subItem?.CustomCoreType;
 
-        ProfileItem? profileItem = null;
-
-        if (customCoreType is null)
+        if (subItem?.CustomCoreType is null)
         {
-            // Safe Mode: Only allow full configuration if it's not from a subscription
-            var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
-            if (lstProfiles.Count == 0)
-            {
-                lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
-            }
-            if (lstProfiles.Count == 0)
-            {
-                return -1;
-            }
-            var count = 0;
-            foreach (var it in lstProfiles)
-            {
-                it.Subid = subid;
-                it.IsSub = isSub;
-                if (await AddCustomOutboundServer(config, it, true) == 0)
-                {
-                    count++;
-                }
-            }
-            if (count > 0)
-            {
-                return count;
-            }
+            return await AddBatchServersDefaultCustom(config, strData, subid, isSub, subItem);
+        }
 
-            if (HtmlPageFmt.IsHtmlPage(strData))
-            {
-                return -1;
-            }
-            //Is Clash configuration
-            profileItem ??= ClashFmt.ResolveFull(strData, subRemarks);
-            //Is hysteria configuration
-            profileItem ??= Hysteria2Fmt.ResolveFull2(strData, subRemarks);
-            if (profileItem == null)
-            {
-                return -1;
-            }
-            profileItem.Subid = subid;
-            profileItem.IsSub = isSub;
-            profileItem.PreSocksPort = preSocksPort;
-            if (await AddCustomServer(config, profileItem, true) == 0)
-            {
-                return 1;
-            }
+        return await AddBatchServersSpecificCustom(config, strData, subid, isSub, subItem);
+    }
+
+    private static async Task<int> AddBatchServersDefaultCustom(
+        Config config,
+        string strData,
+        string subid,
+        bool isSub,
+        SubItem? subItem)
+    {
+        var subRemarks = subItem?.Remarks;
+        // Safe Mode: Only allow full configuration if it's not from a subscription
+        var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+        if (lstProfiles.Count == 0)
+        {
+            lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+        }
+        if (lstProfiles.Count == 0)
+        {
             return -1;
         }
 
-        if (customCoreType is ECoreType.Xray)
+        var count = await AddCustomOutboundServers(config, lstProfiles, subid, isSub);
+        if (count > 0)
         {
-            var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
-            if (lstProfiles.Count == 0)
-            {
-                return -1;
-            }
-            var count = 0;
-            foreach (var it in lstProfiles)
-            {
-                it.Subid = subid;
-                it.IsSub = isSub;
-                if (await AddCustomOutboundServer(config, it, true) == 0)
-                {
-                    count++;
-                }
-            }
-            if (count > 0)
-            {
-                return count;
-            }
+            return count;
         }
-        else if (customCoreType is ECoreType.sing_box)
+
+        if (HtmlPageFmt.IsHtmlPage(strData))
         {
-            var lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            return -1;
+        }
+
+        var profileItem = ClashFmt.ResolveFull(strData, subRemarks)
+            ?? Hysteria2Fmt.ResolveFull2(strData, subRemarks);
+
+        if (profileItem == null)
+        {
+            return -1;
+        }
+
+        profileItem.Subid = subid;
+        profileItem.IsSub = isSub;
+        profileItem.PreSocksPort = subItem?.PreSocksPort;
+
+        return await AddCustomServer(config, profileItem, true) == 0 ? 1 : -1;
+    }
+
+    private static async Task<int> AddBatchServersSpecificCustom(
+        Config config,
+        string strData,
+        string subid,
+        bool isSub,
+        SubItem subItem)
+    {
+        var subRemarks = subItem.Remarks;
+        var customCoreType = subItem.CustomCoreType!.Value;
+
+        List<ProfileItem>? lstProfiles = customCoreType switch
+        {
+            ECoreType.Xray => V2rayFmt.ResolveToCustom(strData, subRemarks),
+            ECoreType.sing_box => SingboxFmt.ResolveToCustom(strData, subRemarks),
+            _ => null
+        };
+
+        if (lstProfiles is not null)
+        {
             if (lstProfiles.Count == 0)
             {
                 return -1;
             }
-            var count = 0;
-            foreach (var it in lstProfiles)
-            {
-                it.Subid = subid;
-                it.IsSub = isSub;
-                if (await AddCustomOutboundServer(config, it, true) == 0)
-                {
-                    count++;
-                }
-            }
+
+            var count = await AddCustomOutboundServers(config, lstProfiles, subid, isSub);
             if (count > 0)
             {
                 return count;
             }
         }
 
-        // try getting ext
-        var ext = string.Empty;
-        var jsonNode = JsonUtils.ParseJson(strData);
-        if (jsonNode is JsonObject or JsonArray)
+        return await SaveCustomRawFileServer(config, strData, subid, isSub, subItem, customCoreType);
+    }
+
+    private static async Task<int> AddCustomOutboundServers(
+        Config config,
+        List<ProfileItem> lstProfiles,
+        string subid,
+        bool isSub)
+    {
+        var count = 0;
+        foreach (var it in lstProfiles)
         {
-            ext = ".json";
-        }
-        if (ext.IsNullOrEmpty())
-        {
-            var yamlNode = YamlUtils.FromYaml<Dictionary<string, object>>(strData);
-            if (yamlNode.Keys.Count > 0)
+            it.Subid = subid;
+            it.IsSub = isSub;
+            if (await AddCustomOutboundServer(config, it, true) == 0)
             {
-                ext = ".yaml";
+                count++;
             }
         }
+        return count;
+    }
 
+    private static async Task<int> SaveCustomRawFileServer(
+        Config config,
+        string strData,
+        string subid,
+        bool isSub,
+        SubItem subItem,
+        ECoreType customCoreType)
+    {
+        var ext = DetectFileExtension(strData);
         var fileName = Utils.GetTempPath($"{Utils.GetGuid(false)}{ext}");
         await File.WriteAllTextAsync(fileName, strData);
 
-        profileItem ??= new ProfileItem()
+        var profileItem = new ProfileItem
         {
             CoreType = customCoreType,
             ConfigType = EConfigType.Custom,
             Address = fileName,
-            Remarks = subRemarks ?? customCoreType.ToString(),
+            Remarks = subItem.Remarks ?? customCoreType.ToString(),
             Subid = subid,
             IsSub = isSub,
-            PreSocksPort = preSocksPort,
+            PreSocksPort = subItem.PreSocksPort,
         };
 
-        if (await AddCustomServer(config, profileItem, true) == 0)
+        return await AddCustomServer(config, profileItem, true) == 0 ? 1 : -1;
+
+        static string DetectFileExtension(string data)
         {
-            return 1;
-        }
-        else
-        {
-            return -1;
+            var trimmed = data.AsSpan().TrimStart();
+            if (trimmed.IsEmpty)
+            {
+                return string.Empty;
+            }
+
+            if (trimmed[0] is '{' or '[')
+            {
+                return ".json";
+            }
+
+            if (trimmed.StartsWith("---"))
+            {
+                return ".yaml";
+            }
+
+            foreach (var line in trimmed.EnumerateLines())
+            {
+                var lineTrimmed = line.TrimStart();
+                if (lineTrimmed.IsEmpty || lineTrimmed.StartsWith("#"))
+                {
+                    continue;
+                }
+
+                var colonIndex = lineTrimmed.IndexOf(':');
+                if (colonIndex > 0)
+                {
+                    var keySpan = lineTrimmed[..colonIndex];
+                    if (!keySpan.Contains(' ') && !keySpan.Contains('\t'))
+                    {
+                        if (colonIndex == lineTrimmed.Length - 1 || lineTrimmed[colonIndex + 1] is ' ' or '\t' or '\r' or '\n')
+                        {
+                            return ".yaml";
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
         }
     }
 
