@@ -118,7 +118,7 @@ public class GroupProfileManager
         return childProfiles?.Where(p =>
                 p != null &&
                 p.IsValid() &&
-                !p.ConfigType.IsComplexType() &&
+                (!p.ConfigType.IsComplexType() || p.ConfigType == EConfigType.Outbound) &&
                 (extra.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extra.Filter))
             )
             .ToList() ?? [];

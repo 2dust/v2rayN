@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ServiceLib.Handler.Builder;
 
 public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeValidatorResult ValidatorResult)
@@ -94,23 +96,6 @@ public class CoreConfigContextBuilder
 
                 context.AllProxiesMap[$"remark:{ruleItem.OutboundTag}"] = actRuleNode;
             }
-        }
-
-        // Read Custom Outbound File Content
-        foreach (var profileItem in context.AllProxiesMap.Values.Where(x => x.ConfigType == EConfigType.Outbound))
-        {
-            var addressFileName = profileItem.Address;
-            if (!File.Exists(addressFileName))
-            {
-                addressFileName = Utils.GetConfigPath(addressFileName);
-            }
-            if (!File.Exists(addressFileName))
-            {
-                validatorResult.Errors.Add(string.Format(ResUI.MsgCustomOutboundFileNotFound, profileItem.Remarks, addressFileName));
-                continue;
-            }
-            var fileContent = await File.ReadAllTextAsync(addressFileName);
-            context.CustomOutboundContent[profileItem.IndexId] = fileContent;
         }
 
         if (context.IsTunEnabled && context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
@@ -340,14 +325,14 @@ public class CoreConfigContextBuilder
         {
             return await RegisterGroupNodeAsync(context, node);
         }
-        return RegisterSingleNodeAsync(context, node);
+        return await RegisterSingleNodeAsync(context, node);
     }
 
     /// <summary>
     ///     Validates a single (non-group) node and, on success, adds it to the proxy map
     ///     and records any domain addresses that should bypass the proxy.
     /// </summary>
-    private static NodeValidatorResult RegisterSingleNodeAsync(CoreConfigContext context, ProfileItem node)
+    private static async Task<NodeValidatorResult> RegisterSingleNodeAsync(CoreConfigContext context, ProfileItem node)
     {
         if (node.ConfigType.IsGroupType())
         {
@@ -355,6 +340,29 @@ public class CoreConfigContextBuilder
         }
 
         var nodeValidatorResult = NodeValidator.Validate(node, context.RunCoreType);
+
+        if (node.ConfigType == EConfigType.Outbound)
+        {
+            var addressFileName = node.Address;
+            if (!File.Exists(addressFileName))
+            {
+                addressFileName = Utils.GetConfigPath(addressFileName);
+            }
+            if (!File.Exists(addressFileName))
+            {
+                nodeValidatorResult.Errors.Add(string.Format(ResUI.MsgCustomOutboundFileNotFound, node.Remarks, addressFileName));
+            }
+            try
+            {
+                var fileContent = await File.ReadAllTextAsync(addressFileName);
+                context.CustomOutboundContent[node.IndexId] = fileContent;
+            }
+            catch
+            {
+                nodeValidatorResult.Errors.Add(string.Format(ResUI.MsgCustomOutboundFileNotFound, node.Remarks, addressFileName));
+            }
+        }
+
         var msgs = new List<string>([.. nodeValidatorResult.Errors, .. nodeValidatorResult.Warnings]);
         if (msgs.Count > 0)
         {
@@ -456,7 +464,7 @@ public class CoreConfigContextBuilder
 
             if (!childNode.ConfigType.IsGroupType())
             {
-                var childNodeResult = RegisterSingleNodeAsync(context, childNode);
+                var childNodeResult = await RegisterSingleNodeAsync(context, childNode);
                 childNodeValidatorResult.Warnings.AddRange(childNodeResult.Warnings.Select(w =>
                     string.Format(ResUI.MsgGroupChildNodeWarning, node.Remarks, childNode.Remarks, w)));
                 childNodeValidatorResult.Errors.AddRange(childNodeResult.Errors.Select(e =>

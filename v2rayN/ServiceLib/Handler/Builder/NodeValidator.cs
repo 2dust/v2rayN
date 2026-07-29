@@ -42,15 +42,6 @@ public class NodeValidator
             {
                 v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, coreType.ToString(), item.ConfigType));
             }
-            var addressFileName = item.Address;
-            if (!File.Exists(addressFileName))
-            {
-                addressFileName = Utils.GetConfigPath(addressFileName);
-            }
-            if (!File.Exists(addressFileName))
-            {
-                v.Error(string.Format(ResUI.MsgCustomOutboundFileNotFound, item.Remarks, addressFileName));
-            }
             return;
         }
 

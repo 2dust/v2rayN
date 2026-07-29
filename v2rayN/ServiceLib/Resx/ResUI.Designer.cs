@@ -439,7 +439,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom configuration core 的本地化字符串。
+        ///   查找类似 Custom config core 的本地化字符串。
         /// </summary>
         public static string LvCustomCoreType {
             get {

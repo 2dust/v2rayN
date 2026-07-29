@@ -11,7 +11,7 @@ public partial class CoreConfigSingboxService
     private List<BaseServer4Sbox> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag, bool withSelector = true)
     {
         var proxyOutboundList = new List<BaseServer4Sbox>();
-        if (!_node.ConfigType.IsComplexType())
+        if (!_node.ConfigType.IsGroupType())
         {
             var outbound = BuildProxyOutbound(baseTagName);
             proxyOutboundList.Add(outbound);

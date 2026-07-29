@@ -1526,7 +1526,7 @@ public static class ConfigHandler
             var matchedChildProfiles = childProfiles?.Where(p =>
                     p != null &&
                     p.IsValid() &&
-                    !p.ConfigType.IsComplexType() &&
+                    (!p.ConfigType.IsComplexType() || p.ConfigType == EConfigType.Outbound) &&
                     (extraItem.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extraItem.Filter))
                 )
                 .ToList() ?? [];
