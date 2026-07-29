@@ -30,11 +30,14 @@ public partial class CoreConfigV2rayService
             }
             var outboundTag = outbound.tag;
             var outboundDetour = outbound.streamSettings?.sockopt?.dialerProxy ?? string.Empty;
+            var outboundBindInterface = outbound.streamSettings?.sockopt?.Interface ?? string.Empty;
             var customOutboundContent = context.CustomOutboundContent[customOutboundIndex];
             var containTagPlaceholder = customOutboundContent.Contains("{{tag}}");
             var containDetourPlaceholder = customOutboundContent.Contains("{{detour}}");
+            var containBindInterfacePlaceholder = customOutboundContent.Contains("{{interface}}");
             customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
             customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
+            customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
             var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
 
             if (!containTagPlaceholder)
@@ -52,9 +55,20 @@ public partial class CoreConfigV2rayService
                     downloadSettings["sockopt"]["dialerProxy"] = outboundDetour;
                 }
             }
-            if (outboundDetour.IsNullOrEmpty())
+            else if (outboundDetour.IsNullOrEmpty())
             {
                 (customOutboundObj?["streamSettings"]?["sockopt"] as JsonObject)?.Remove("dialerProxy");
+            }
+            if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
+            {
+                customOutboundObj!["streamSettings"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"]["interface"] = outboundBindInterface;
+                if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                {
+                    downloadSettings["sockopt"] ??= new JsonObject();
+                    downloadSettings["sockopt"]["interface"] = outboundBindInterface;
+                }
             }
 
             var index = coreConfigOutboundsNode

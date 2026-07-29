@@ -45,11 +45,14 @@ public partial class CoreConfigSingboxService
                 }
                 var outboundTag = outbound.tag;
                 var outboundDetour = outbound.detour ?? string.Empty;
+                var outboundBindInterface = outbound.bind_interface ?? string.Empty;
                 var customOutboundContent = context.CustomOutboundContent[customOutboundIndex];
                 var containTagPlaceholder = customOutboundContent.Contains("{{tag}}");
                 var containDetourPlaceholder = customOutboundContent.Contains("{{detour}}");
+                var containBindInterfacePlaceholder = customOutboundContent.Contains("{{interface}}");
                 customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
                 customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
+                customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
                 var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
 
                 if (!containTagPlaceholder)
@@ -60,9 +63,13 @@ public partial class CoreConfigSingboxService
                 {
                     customOutboundObj?["detour"] = outboundDetour;
                 }
-                if (outboundDetour.IsNullOrEmpty())
+                else if (outboundDetour.IsNullOrEmpty())
                 {
                     customOutboundObj?.Remove("detour");
+                }
+                if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
+                {
+                    customOutboundObj?["bind_interface"] = outboundBindInterface;
                 }
 
                 var index = jsonArrayOutbounds
