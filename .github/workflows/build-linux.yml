@@ -205,7 +205,7 @@ jobs:
   deb-loong64:
     name: build and release deb loong64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-26.04-arm
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
       QCOW2_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/debian13-loong64.qcow2
@@ -234,10 +234,10 @@ jobs:
     - name: Download QEMU prebuild
       run: |
         set -euo pipefail
-        wget -O qemu-linux-x64-v3.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-x64-v3.tar.gz"
-        tar -xzf qemu-linux-x64-v3.tar.gz
+        wget -O qemu-linux-arm64-v8.2.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-arm64-v8.2.tar.gz"
+        tar -xzf qemu-linux-arm64-v8.2.tar.gz
         mkdir -p "$HOME/qemu-install"
-        rsync -a qemu-linux-x64-v3/ "$HOME/qemu-install/"
+        rsync -a qemu-linux-arm64-v8.2/ "$HOME/qemu-install/"
         "$HOME/qemu-install/bin/qemu-system-loongarch64" --version
     - name: Download loong64 qcow2 and EFI firmware
       shell: bash
@@ -355,7 +355,7 @@ jobs:
   rpm-loong64:
     name: build and release rpm loong64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-26.04-arm
     env:
       RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
       QCOW2_URL: https://github.com/xujiegb/fedora-loong64-qcow2/releases/download/43/fedora43-loong64.qcow2
@@ -384,10 +384,10 @@ jobs:
     - name: Download QEMU prebuild
       run: |
         set -euo pipefail
-        wget -O qemu-linux-x64-v3.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-x64-v3.tar.gz"
-        tar -xzf qemu-linux-x64-v3.tar.gz
+        wget -O qemu-linux-arm64-v8.2.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-arm64-v8.2.tar.gz"
+        tar -xzf qemu-linux-arm64-v8.2.tar.gz
         mkdir -p "$HOME/qemu-install"
-        rsync -a qemu-linux-x64-v3/ "$HOME/qemu-install/"
+        rsync -a qemu-linux-arm64-v8.2/ "$HOME/qemu-install/"
         "$HOME/qemu-install/bin/qemu-system-loongarch64" --version
     - name: Download loong64 qcow2 and EFI firmware
       shell: bash

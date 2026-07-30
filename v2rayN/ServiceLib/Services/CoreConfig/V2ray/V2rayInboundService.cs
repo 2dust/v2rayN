@@ -66,13 +66,14 @@ public partial class CoreConfigV2rayService
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.settings.gateway = [address];
+                tunInbound.settings.autoSystemRoutingTable = ["0.0.0.0/0"];
                 if (_config.TunModeItem.EnableIPv6Address == true)
                 {
                     var address6 = _config.TunModeItem.IPv6Address.NullIfEmpty() ?? Global.TunIPv6Address.First();
                     tunInbound.settings.gateway.Add(address6);
+                    tunInbound.settings.autoSystemRoutingTable.Add("::/0");
                 }
-
-                tunInbound.settings.autoSystemRoutingTable = ["0.0.0.0/0"];
+           
                 var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
                 if (!bindInterface.IsNullOrEmpty())
                 {
