@@ -1,0 +1,73 @@
+name: Release CubeVPN for Windows (x64)
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to publish to (e.g. v1.0.0). Leave empty to just build, no release.
+        required: false
+        type: string
+  push:
+    tags:
+      - 'cubevpn-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: '10.0.1xx'
+
+      - name: Publish CubeVPN (WPF, win-x64)
+        shell: bash
+        run: |
+          dotnet publish ./v2rayN/v2rayN/v2rayN.csproj \
+            -c Release -r win-x64 -p:SelfContained=true \
+            -o publish/CubeVPN
+
+      - name: Publish updater helper (win-x64)
+        shell: bash
+        run: |
+          dotnet publish ./v2rayN/AmazTool/AmazTool.csproj \
+            -c Release -r win-x64 -p:SelfContained=true -p:PublishTrimmed=true \
+            -o publish/CubeVPN
+
+      - name: Fetch bundled core (Xray/sing-box) and rule data
+        shell: bash
+        run: |
+          curl -fsSL -o core.zip "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/v2rayN-windows-64.zip"
+          7z x core.zip -opublish/CubeVPN -y
+
+      - name: Remove debug symbols
+        shell: bash
+        run: find publish/CubeVPN -type f -name '*.pdb' -delete
+
+      - name: Package zip
+        shell: bash
+        run: |
+          cd publish
+          7z a -tZip ../CubeVPN-windows-x64.zip CubeVPN
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: CubeVPN-windows-x64
+          path: CubeVPN-windows-x64.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: inputs.release_tag != '' || startsWith(github.ref, 'refs/tags/cubevpn-v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.release_tag || github.ref_name }}
+          files: CubeVPN-windows-x64.zip

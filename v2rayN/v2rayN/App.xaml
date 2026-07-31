@@ -9,9 +9,9 @@
         <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
-                    BaseTheme="Light"
-                    PrimaryColor="Blue"
-                    SecondaryColor="Lime" />
+                    BaseTheme="Dark"
+                    PrimaryColor="Purple"
+                    SecondaryColor="DeepPurple" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <system:Double x:Key="MenuItemHeight">32</system:Double>

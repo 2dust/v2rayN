@@ -10,9 +10,11 @@
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <Nullable>annotations</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Authors>2dust</Authors>
+        <Authors>CubeVPN</Authors>
+        <Company>CubeVPN</Company>
+        <Product>CubeVPN</Product>
         <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
-        <Copyright>Copyright © 2017-$([System.DateTime]::UtcNow.Year) $(Authors)</Copyright>
+        <Copyright>Copyright © 2017-$([System.DateTime]::UtcNow.Year) CubeVPN (derivative of v2rayN by 2dust)</Copyright>
         <InvariantGlobalization>false</InvariantGlobalization>
     </PropertyGroup>
 

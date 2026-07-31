@@ -1,3 +1,20 @@
+# CubeVPN for Windows
+
+This is CubeVPN's Windows desktop client — a privately-distributed, custom-branded
+build of the WPF edition of [v2rayN](https://github.com/2dust/v2rayN) by 2dust,
+kept under the same [GPL-3.0](LICENSE) license as the upstream project. Sign-in
+uses a one-time code sent by the [@cubevvpn_bot](https://t.me/cubevvpn_bot)
+Telegram bot, same as the CubeVPN Android app.
+
+Only the Windows x64, WPF-based build (`v2rayN/v2rayN`) is built/shipped from
+this fork; the cross-platform Avalonia UI (`v2rayN.Desktop`) is left untouched
+upstream code and isn't part of the CubeVPN release process.
+
+---
+
+<details>
+<summary>Original v2rayN README</summary>
+
 # v2rayN
 
 ### A GUI client for Windows, Linux and macOS. Support [Xray](https://github.com/XTLS/Xray-core) and [sing-box](https://github.com/SagerNet/sing-box) and [others](https://github.com/2dust/v2rayN/wiki/List-of-supported-cores)
@@ -76,3 +93,5 @@ Telegram Group / Telegram 群组：
 Telegram Channel / Telegram 频道：
 
 [https://t.me/github_2dust](https://t.me/github_2dust)
+
+</details>
