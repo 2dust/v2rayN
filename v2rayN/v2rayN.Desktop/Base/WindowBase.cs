@@ -35,11 +35,16 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 
             var width = Math.Min(sizeItem.Width, workingArea.Width / scaling);
             var height = Math.Min(sizeItem.Height, workingArea.Height / scaling);
-            var x = workingArea.X + ((workingArea.Width - (width * scaling)) / 2);
-            var y = workingArea.Y + ((workingArea.Height - (height * scaling)) / 2);
 
             Width = width;
             Height = height;
+
+            var frameDiff = (FrameSize ?? ClientSize) - ClientSize;
+            var totalWidth = (width + frameDiff.Width) * scaling;
+            var totalHeight = (height + frameDiff.Height) * scaling;
+
+            var x = workingArea.X + ((workingArea.Width - totalWidth) / 2);
+            var y = workingArea.Y + ((workingArea.Height - totalHeight) / 2);
             Position = new PixelPoint((int)x, (int)y);
         }
         catch { }
