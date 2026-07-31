@@ -1848,4 +1848,64 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbIpv4Address" xml:space="preserve">
     <value>Ipv4 Address</value>
   </data>
+  <data name="menuCubeAccount" xml:space="preserve">
+    <value>CubeVPN Account</value>
+  </data>
+  <data name="menuCubeMyServices" xml:space="preserve">
+    <value>My services</value>
+  </data>
+  <data name="menuCubeSignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="CubeLoginTitle" xml:space="preserve">
+    <value>Sign in to CubeVPN</value>
+  </data>
+  <data name="CubeLoginIdentifierLabel" xml:space="preserve">
+    <value>Phone number or Telegram ID</value>
+  </data>
+  <data name="CubeLoginGetCode" xml:space="preserve">
+    <value>Get code</value>
+  </data>
+  <data name="CubeLoginCodeLabel" xml:space="preserve">
+    <value>Verification code</value>
+  </data>
+  <data name="CubeLoginVerify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="CubeLoginResend" xml:space="preserve">
+    <value>Resend code</value>
+  </data>
+  <data name="CubeLoginResendIn" xml:space="preserve">
+    <value>Resend in {0}s</value>
+  </data>
+  <data name="CubeLoginChangeIdentifier" xml:space="preserve">
+    <value>Change number/ID</value>
+  </data>
+  <data name="CubeLoginOpenBot" xml:space="preserve">
+    <value>Open @cubevvpn_bot</value>
+  </data>
+  <data name="CubeLoginNotConfigured" xml:space="preserve">
+    <value>The account server isn't configured in this build.</value>
+  </data>
+  <data name="CubeServicesTitle" xml:space="preserve">
+    <value>My CubeVPN services</value>
+  </data>
+  <data name="CubeServicesEmpty" xml:space="preserve">
+    <value>No services yet. Once you buy a plan, it'll show up here.</value>
+  </data>
+  <data name="CubeServicesAdd" xml:space="preserve">
+    <value>Add to my servers</value>
+  </data>
+  <data name="CubeServicesAdded" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="CubeServicesRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="CubeServicesCopyLink" xml:space="preserve">
+    <value>Copy subscription link</value>
+  </data>
+  <data name="CubeSignOutConfirm" xml:space="preserve">
+    <value>Sign out of your CubeVPN account on this device?</value>
+  </data>
 </root>

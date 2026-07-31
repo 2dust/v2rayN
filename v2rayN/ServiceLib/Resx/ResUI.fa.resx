@@ -1770,4 +1770,64 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
   </data>
+  <data name="menuCubeAccount" xml:space="preserve">
+    <value>حساب کیوب‌وی‌پی‌ان</value>
+  </data>
+  <data name="menuCubeMyServices" xml:space="preserve">
+    <value>سرویس‌های من</value>
+  </data>
+  <data name="menuCubeSignOut" xml:space="preserve">
+    <value>خروج از حساب</value>
+  </data>
+  <data name="CubeLoginTitle" xml:space="preserve">
+    <value>ورود به کیوب‌وی‌پی‌ان</value>
+  </data>
+  <data name="CubeLoginIdentifierLabel" xml:space="preserve">
+    <value>شماره موبایل یا شناسه تلگرام</value>
+  </data>
+  <data name="CubeLoginGetCode" xml:space="preserve">
+    <value>دریافت کد</value>
+  </data>
+  <data name="CubeLoginCodeLabel" xml:space="preserve">
+    <value>کد تأیید</value>
+  </data>
+  <data name="CubeLoginVerify" xml:space="preserve">
+    <value>تأیید</value>
+  </data>
+  <data name="CubeLoginResend" xml:space="preserve">
+    <value>ارسال دوباره کد</value>
+  </data>
+  <data name="CubeLoginResendIn" xml:space="preserve">
+    <value>ارسال دوباره تا {0} ثانیه دیگر</value>
+  </data>
+  <data name="CubeLoginChangeIdentifier" xml:space="preserve">
+    <value>تغییر شماره/شناسه</value>
+  </data>
+  <data name="CubeLoginOpenBot" xml:space="preserve">
+    <value>باز کردن @cubevvpn_bot</value>
+  </data>
+  <data name="CubeLoginNotConfigured" xml:space="preserve">
+    <value>سرور حساب کاربری هنوز در این نسخه پیکربندی نشده است.</value>
+  </data>
+  <data name="CubeServicesTitle" xml:space="preserve">
+    <value>سرویس‌های کیوب‌وی‌پی‌ان من</value>
+  </data>
+  <data name="CubeServicesEmpty" xml:space="preserve">
+    <value>هنوز سرویسی ندارید. به محض خرید یک پلن، اینجا نمایش داده می‌شود.</value>
+  </data>
+  <data name="CubeServicesAdd" xml:space="preserve">
+    <value>افزودن به سرورهای من</value>
+  </data>
+  <data name="CubeServicesAdded" xml:space="preserve">
+    <value>افزوده شد</value>
+  </data>
+  <data name="CubeServicesRefresh" xml:space="preserve">
+    <value>تازه‌سازی</value>
+  </data>
+  <data name="CubeServicesCopyLink" xml:space="preserve">
+    <value>کپی لینک اشتراک</value>
+  </data>
+  <data name="CubeSignOutConfirm" xml:space="preserve">
+    <value>از حساب کیوب‌وی‌پی‌ان روی این دستگاه خارج شوید؟</value>
+  </data>
 </root>

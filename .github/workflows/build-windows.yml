@@ -6,9 +6,6 @@ on:
       release_tag:
         required: false
         type: string
-  push:
-    branches:
-      - master
 
 permissions:
   contents: write

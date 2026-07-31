@@ -26,6 +26,7 @@ global using ReactiveUI.Fody.Helpers;
 global using ServiceLib;
 global using ServiceLib.Base;
 global using ServiceLib.Common;
+global using ServiceLib.CubeAuth;
 global using ServiceLib.Enums;
 global using ServiceLib.Events;
 global using ServiceLib.Handler;

@@ -41,6 +41,17 @@ public partial class App
             return;
         }
 
+        var cubeToken = AppManager.Instance.Config.CubeAuthItem?.Token;
+        if (cubeToken.IsNullOrEmpty() && CubeApiConfig.BaseUrl.IsNotEmpty())
+        {
+            var loginWindow = new CubeLoginWindow();
+            if (loginWindow.ShowDialog() != true)
+            {
+                Environment.Exit(0);
+                return;
+            }
+        }
+
         AppManager.Instance.WindowDialog = new WindowDialog();
 
         AppManager.Instance.InitComponents();

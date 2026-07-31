@@ -5246,5 +5246,125 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("UpgradeAppNotExistTip", resourceCulture);
             }
         }
+
+        public static string menuCubeAccount {
+            get {
+                return ResourceManager.GetString("menuCubeAccount", resourceCulture);
+            }
+        }
+
+        public static string menuCubeMyServices {
+            get {
+                return ResourceManager.GetString("menuCubeMyServices", resourceCulture);
+            }
+        }
+
+        public static string menuCubeSignOut {
+            get {
+                return ResourceManager.GetString("menuCubeSignOut", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginTitle {
+            get {
+                return ResourceManager.GetString("CubeLoginTitle", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginIdentifierLabel {
+            get {
+                return ResourceManager.GetString("CubeLoginIdentifierLabel", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginGetCode {
+            get {
+                return ResourceManager.GetString("CubeLoginGetCode", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginCodeLabel {
+            get {
+                return ResourceManager.GetString("CubeLoginCodeLabel", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginVerify {
+            get {
+                return ResourceManager.GetString("CubeLoginVerify", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginResend {
+            get {
+                return ResourceManager.GetString("CubeLoginResend", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginResendIn {
+            get {
+                return ResourceManager.GetString("CubeLoginResendIn", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginChangeIdentifier {
+            get {
+                return ResourceManager.GetString("CubeLoginChangeIdentifier", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginOpenBot {
+            get {
+                return ResourceManager.GetString("CubeLoginOpenBot", resourceCulture);
+            }
+        }
+
+        public static string CubeLoginNotConfigured {
+            get {
+                return ResourceManager.GetString("CubeLoginNotConfigured", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesTitle {
+            get {
+                return ResourceManager.GetString("CubeServicesTitle", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesEmpty {
+            get {
+                return ResourceManager.GetString("CubeServicesEmpty", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesAdd {
+            get {
+                return ResourceManager.GetString("CubeServicesAdd", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesAdded {
+            get {
+                return ResourceManager.GetString("CubeServicesAdded", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesRefresh {
+            get {
+                return ResourceManager.GetString("CubeServicesRefresh", resourceCulture);
+            }
+        }
+
+        public static string CubeServicesCopyLink {
+            get {
+                return ResourceManager.GetString("CubeServicesCopyLink", resourceCulture);
+            }
+        }
+
+        public static string CubeSignOutConfirm {
+            get {
+                return ResourceManager.GetString("CubeSignOutConfirm", resourceCulture);
+            }
+        }
     }
 }

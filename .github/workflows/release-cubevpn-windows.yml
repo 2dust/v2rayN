@@ -9,7 +9,7 @@ on:
         type: string
   push:
     tags:
-      - 'cubevpn-v*'
+      - 'v*'
 
 permissions:
   contents: write
@@ -27,6 +27,17 @@ jobs:
         uses: actions/setup-dotnet@v6.0.0
         with:
           dotnet-version: '10.0.1xx'
+
+      - name: Configure account API base URL
+        shell: bash
+        env:
+          CUBE_API_BASE_URL: ${{ secrets.CUBE_API_BASE_URL }}
+        run: |
+          if [ -z "$CUBE_API_BASE_URL" ]; then
+            echo "::warning::CUBE_API_BASE_URL secret is not set — sign-in will be disabled in this build."
+          fi
+          sed -i "s#public const string BaseUrl = \"\";#public const string BaseUrl = \"${CUBE_API_BASE_URL}\";#" \
+            ./v2rayN/ServiceLib/CubeAuth/CubeApiConfig.cs
 
       - name: Publish CubeVPN (WPF, win-x64)
         shell: bash
@@ -66,7 +77,7 @@ jobs:
           if-no-files-found: error
 
       - name: Publish GitHub release
-        if: inputs.release_tag != '' || startsWith(github.ref, 'refs/tags/cubevpn-v')
+        if: inputs.release_tag != '' || startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.release_tag || github.ref_name }}

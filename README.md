@@ -10,6 +10,21 @@ Only the Windows x64, WPF-based build (`v2rayN/v2rayN`) is built/shipped from
 this fork; the cross-platform Avalonia UI (`v2rayN.Desktop`) is left untouched
 upstream code and isn't part of the CubeVPN release process.
 
+## Sign-in
+
+On first launch (when no account is signed in yet) the app shows a sign-in
+window: enter the phone number or Telegram ID used with
+[@cubevvpn_bot](https://t.me/cubevvpn_bot), enter the one-time code the bot
+sends, and you're in. Once signed in, **Account → My services** lists your
+purchased plan(s) with a one-click "Add to my servers" per service — same
+account backend and API contract as the CubeVPN Android app. **Account → Sign
+out** clears the stored session.
+
+The account API base URL is not committed to source control — the release
+workflow (`.github/workflows/release-cubevpn-windows.yml`) injects it from
+the `CUBE_API_BASE_URL` repository secret at publish time. A build without
+that secret set skips the sign-in gate entirely rather than getting stuck.
+
 ---
 
 <details>

@@ -248,6 +248,14 @@ public class CheckUpdateItem
 }
 
 [Serializable]
+public class CubeAuthItem
+{
+    public string? Token { get; set; }
+    public string? Identifier { get; set; }
+    public string? DisplayName { get; set; }
+}
+
+[Serializable]
 public class Fragment4RayItem
 {
     public string? Packets { get; set; }

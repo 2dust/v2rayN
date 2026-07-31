@@ -132,6 +132,29 @@
                         </Menu>
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
+                            <MenuItem Padding="{StaticResource MarginLeftRight8}" AutomationProperties.Name="{x:Static resx:ResUI.menuCubeAccount}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Margin="{StaticResource MarginRight8}"
+                                            VerticalAlignment="Center"
+                                            Kind="Account" />
+                                        <TextBlock Text="{x:Static resx:ResUI.menuCubeAccount}" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                                <MenuItem
+                                    x:Name="menuCubeMyServices"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuCubeMyServices}" />
+                                <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuCubeSignOut"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuCubeSignOut}" />
+                            </MenuItem>
+                        </Menu>
+                        <Separator />
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem Padding="{StaticResource MarginLeftRight8}" AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}">
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">

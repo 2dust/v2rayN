@@ -29,6 +29,8 @@ public partial class MainWindow
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
         btnNewUpdate.Click += MenuCheckUpdate_Click;
         menuBackupAndRestore.Click += MenuBackupAndRestore_Click;
+        menuCubeMyServices.Click += MenuCubeMyServices_Click;
+        menuCubeSignOut.Click += MenuCubeSignOut_Click;
 
         pbTheme.Content ??= new ThemeSettingView();
 
@@ -283,6 +285,30 @@ public partial class MainWindow
         _backupAndRestoreView ??= new BackupAndRestoreView();
         _backupAndRestoreView.ViewModel = ViewModel?.BackupAndRestoreViewModel;
         DialogHost.Show(_backupAndRestoreView, "RootDialog");
+    }
+
+    private void MenuCubeMyServices_Click(object sender, RoutedEventArgs e)
+    {
+        DialogHost.Show(new CubeServicesView(), "RootDialog");
+    }
+
+    private async void MenuCubeSignOut_Click(object sender, RoutedEventArgs e)
+    {
+        if (UI.ShowYesNo(ResUI.CubeSignOutConfirm) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        var token = _config.CubeAuthItem?.Token;
+        _config.CubeAuthItem = new();
+        await ConfigHandler.SaveConfig(_config);
+        if (token.IsNotEmpty())
+        {
+            _ = CubeAuthApi.LogoutAsync(token);
+        }
+
+        UI.Show(ResUI.OperationSuccess);
+        Application.Current.Shutdown();
     }
 
     #endregion Event
