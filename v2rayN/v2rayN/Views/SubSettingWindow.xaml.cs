@@ -40,11 +40,11 @@ public partial class SubSettingWindow
                 var url = interaction.Input;
                 if (url.IsNullOrEmpty())
                 {
-                    interaction.SetOutput(Unit.Default);
+                    interaction.SetOutput(RxVoid.Default);
                     return;
                 }
                 await ShareSub(url);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);

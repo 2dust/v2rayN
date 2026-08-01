@@ -61,7 +61,7 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
             {
                 var strData = interaction.Input;
                 await AvaUtils.SetClipboardData(this, strData);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>

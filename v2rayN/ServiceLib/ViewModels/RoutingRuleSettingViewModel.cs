@@ -1,38 +1,38 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
+public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
 
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
-    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
-    public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
-    public Interaction<Unit, string?> BrowseRulesFileInteraction { get; } = new();
+    public Interaction<string, RxVoid> SetClipboardDataInteraction { get; } = new();
+    public Interaction<RxVoid, string?> ReadTextFromClipboardInteraction { get; } = new();
+    public Interaction<RxVoid, string?> BrowseRulesFileInteraction { get; } = new();
 
     private List<RulesItem> _rules;
 
     [Reactive]
-    public RoutingItem SelectedRouting { get; set; }
+    public partial RoutingItem SelectedRouting { get; set; }
 
-    public IObservableCollection<RulesItemModel> RulesItems { get; } = new ObservableCollectionExtended<RulesItemModel>();
+    public BulkObservableCollection<RulesItemModel> RulesItems { get; } = [];
 
     [Reactive]
-    public RulesItemModel SelectedSource { get; set; }
+    public partial RulesItemModel SelectedSource { get; set; }
 
     public IList<RulesItemModel> SelectedSources { get; set; }
 
-    public ReactiveCommand<Unit, Unit> RuleAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> ImportRulesFromFileCmd { get; }
-    public ReactiveCommand<Unit, Unit> ImportRulesFromClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> ImportRulesFromUrlCmd { get; }
-    public ReactiveCommand<Unit, Unit> RuleRemoveCmd { get; }
-    public ReactiveCommand<Unit, Unit> RuleExportSelectedCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RuleAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ImportRulesFromFileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ImportRulesFromClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ImportRulesFromUrlCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RuleRemoveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RuleExportSelectedCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveTopCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveUpCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveDownCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveBottomCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public RoutingRuleSettingViewModel(RoutingItem routingItem)
     {
@@ -48,7 +48,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         });
         ImportRulesFromFileCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            var fileName = await BrowseRulesFileInteraction.Handle(Unit.Default);
+            var fileName = await BrowseRulesFileInteraction.Handle(RxVoid.Default);
             await ImportRulesFromFileAsync(fileName);
         });
         ImportRulesFromClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -277,7 +277,7 @@ public class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         var stringData = clipboardData;
         if (clipboardData == null)
         {
-            var result = await ReadTextFromClipboardInteraction.Handle(Unit.Default);
+            var result = await ReadTextFromClipboardInteraction.Handle(RxVoid.Default);
             if (result.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationFailed);

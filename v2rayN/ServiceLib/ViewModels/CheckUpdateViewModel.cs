@@ -1,18 +1,18 @@
 namespace ServiceLib.ViewModels;
 
-public class CheckUpdateViewModel : MyReactiveObject
+public partial class CheckUpdateViewModel : MyReactiveObject
 {
     private const string _geo = "GeoFiles";
     private readonly ECoreType _v2rayN = ECoreType.v2rayN;
     private List<CheckUpdateModel> _lstUpdated = [];
     private static readonly string _tag = "CheckUpdateViewModel";
 
-    public EventChannel<Unit> ReloadRequested { get; } = new();
+    public EventChannel<RxVoid> ReloadRequested { get; } = new();
 
-    public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
-    public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
-    public ReactiveCommand<Unit, Unit> CheckOnlyCmd { get; }
-    [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
+    public BulkObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = [];
+    public ReactiveCommand<RxVoid, RxVoid> CheckUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CheckOnlyCmd { get; }
+    [Reactive] public partial bool EnableCheckPreReleaseUpdate { get; set; }
 
     public CheckUpdateViewModel()
     {
@@ -288,10 +288,9 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task UpdateFinishedSub(bool blReload)
     {
-        RxSchedulers.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
             _ = UpdateFinishedResult(blReload);
-            return Disposable.Empty;
         });
         await Task.CompletedTask;
     }
@@ -404,10 +403,9 @@ public class CheckUpdateViewModel : MyReactiveObject
             Remarks = msg,
         };
 
-        RxSchedulers.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
-            _ = UpdateViewResult(model);
-            return Disposable.Empty;
+            _ = UpdateViewResult(item);
         });
         await Task.CompletedTask;
     }

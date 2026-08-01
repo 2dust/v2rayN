@@ -1,10 +1,10 @@
 namespace ServiceLib.ViewModels;
 
-public class StatusBarViewModel : MyReactiveObject
+public partial class StatusBarViewModel : MyReactiveObject
 {
-    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
-    public Interaction<Unit, string?> PasswordInputInteraction { get; } = new();
-    public Interaction<Unit, Unit> DispatcherRefreshIconInteraction { get; } = new();
+    public Interaction<string, RxVoid> SetClipboardDataInteraction { get; } = new();
+    public Interaction<RxVoid, string?> PasswordInputInteraction { get; } = new();
+    public Interaction<RxVoid, RxVoid> DispatcherRefreshIconInteraction { get; } = new();
     public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
     public EventChannel<bool?> ShowHideWindowRequested { get; } = new();
 
@@ -12,94 +12,94 @@ public class StatusBarViewModel : MyReactiveObject
     public static StatusBarViewModel Instance => _instance.Value;
 
     public EventChannel<string> SetDefaultServerRequested { get; } = new();
-    public EventChannel<Unit> ReloadRequested { get; } = new();
-    public EventChannel<Unit> AddServerViaScanRequested { get; } = new();
-    public EventChannel<Unit> AddServerViaClipboardRequested { get; } = new();
+    public EventChannel<RxVoid> ReloadRequested { get; } = new();
+    public EventChannel<RxVoid> AddServerViaScanRequested { get; } = new();
+    public EventChannel<RxVoid> AddServerViaClipboardRequested { get; } = new();
 
     #region ObservableCollection
 
-    public IObservableCollection<RoutingItem> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItem>();
+    public BulkObservableCollection<RoutingItem> RoutingItems { get; } = [];
 
-    public IObservableCollection<ComboItem> Servers { get; } = new ObservableCollectionExtended<ComboItem>();
-
-    [Reactive]
-    public RoutingItem SelectedRouting { get; set; }
+    public BulkObservableCollection<ComboItem> Servers { get; } = [];
 
     [Reactive]
-    public ComboItem SelectedServer { get; set; }
+    public partial RoutingItem SelectedRouting { get; set; }
 
     [Reactive]
-    public bool BlServers { get; set; }
+    public partial ComboItem SelectedServer { get; set; }
+
+    [Reactive]
+    public partial bool BlServers { get; set; }
 
     #endregion ObservableCollection
 
-    public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
-    public ReactiveCommand<Unit, Unit> CopyProxyCmdToClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> NotifyLeftClickCmd { get; }
-    public ReactiveCommand<Unit, Unit> ShowWindowCmd { get; }
-    public ReactiveCommand<Unit, Unit> HideWindowCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaScanCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CopyProxyCmdToClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> NotifyLeftClickCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowWindowCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> HideWindowCmd { get; }
 
     #region System Proxy
 
     [Reactive]
-    public bool BlSystemProxyClear { get; set; }
+    public partial bool BlSystemProxyClear { get; set; }
 
     [Reactive]
-    public bool BlSystemProxySet { get; set; }
+    public partial bool BlSystemProxySet { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyNothing { get; set; }
+    public partial bool BlSystemProxyNothing { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyPac { get; set; }
+    public partial bool BlSystemProxyPac { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SystemProxyClearCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxySetCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxyNothingCmd { get; }
-    public ReactiveCommand<Unit, Unit> SystemProxyPacCmd { get; }
-
-    [Reactive]
-    public bool BlRouting { get; set; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyClearCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxySetCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyNothingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SystemProxyPacCmd { get; }
 
     [Reactive]
-    public int SystemProxySelected { get; set; }
+    public partial bool BlRouting { get; set; }
 
     [Reactive]
-    public bool BlSystemProxyPacVisible { get; set; }
+    public partial int SystemProxySelected { get; set; }
+
+    [Reactive]
+    public partial bool BlSystemProxyPacVisible { get; set; }
 
     #endregion System Proxy
 
     #region UI
 
     [Reactive]
-    public string InboundDisplay { get; set; }
+    public partial string InboundDisplay { get; set; }
 
     [Reactive]
-    public string InboundLanDisplay { get; set; }
+    public partial string InboundLanDisplay { get; set; }
 
     [Reactive]
-    public string RunningServerDisplay { get; set; }
+    public partial string RunningServerDisplay { get; set; }
 
     [Reactive]
-    public string RunningServerToolTipText { get; set; }
+    public partial string RunningServerToolTipText { get; set; }
 
     [Reactive]
-    public string RunningInfoDisplay { get; set; }
+    public partial string RunningInfoDisplay { get; set; }
 
     [Reactive]
-    public string SpeedProxyDisplay { get; set; }
+    public partial string SpeedProxyDisplay { get; set; }
 
     [Reactive]
-    public string SpeedDirectDisplay { get; set; }
+    public partial string SpeedDirectDisplay { get; set; }
 
     [Reactive]
-    public bool EnableTun { get; set; }
+    public partial bool EnableTun { get; set; }
 
     [Reactive]
-    public bool BlIsNonWindows { get; set; }
+    public partial bool BlIsNonWindows { get; set; }
 
     #endregion UI
 
@@ -349,10 +349,9 @@ public class StatusBarViewModel : MyReactiveObject
 
     private async Task TestServerAvailabilitySub(string msg)
     {
-        RxSchedulers.MainThreadScheduler.Schedule(msg, (scheduler, msg) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
             _ = TestServerAvailabilityResult(msg);
-            return Disposable.Empty;
         });
         await Task.CompletedTask;
     }
@@ -392,9 +391,9 @@ public class StatusBarViewModel : MyReactiveObject
         {
             try
             {
-                await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+                await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
             }
-            catch (UnhandledInteractionException<Unit, Unit>)
+            catch (UnhandledInteractionException<RxVoid, RxVoid>)
             {
                 // Ignore
             }
@@ -433,7 +432,7 @@ public class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             ReloadRequested.Publish();
-            await DispatcherRefreshIconInteraction.Handle(Unit.Default);
+            await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
         }
     }
 
@@ -470,7 +469,7 @@ public class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                var password = await PasswordInputInteraction.Handle(Unit.Default);
+                var password = await PasswordInputInteraction.Handle(RxVoid.Default);
                 if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;

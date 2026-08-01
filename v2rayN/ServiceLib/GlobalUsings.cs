@@ -1,11 +1,15 @@
 global using System.Collections.Concurrent;
+global using System.Collections.ObjectModel;
+global using System.Collections.Specialized;
+global using System.ComponentModel;
 global using System.Diagnostics;
 global using System.Net;
 global using System.Net.NetworkInformation;
 global using System.Net.Sockets;
-global using System.Reactive;
-global using System.Reactive.Disposables;
-global using System.Reactive.Linq;
+global using ReactiveUI.Primitives;
+global using ReactiveUI.Primitives.Concurrency;
+global using ReactiveUI.Primitives.Disposables;
+global using ReactiveUI.Primitives.Signals;
 global using System.Reflection;
 global using System.Runtime.InteropServices;
 global using System.Runtime.Versioning;
@@ -16,10 +20,8 @@ global using System.Text.Json;
 global using System.Text.Json.Nodes;
 global using System.Text.Json.Serialization;
 global using System.Text.RegularExpressions;
-global using DynamicData;
-global using DynamicData.Binding;
 global using ReactiveUI;
-global using ReactiveUI.Fody.Helpers;
+global using ReactiveUI.SourceGenerators;
 global using ServiceLib.Base;
 global using ServiceLib.Common;
 global using ServiceLib.Enums;
@@ -39,3 +41,5 @@ global using ServiceLib.Services;
 global using ServiceLib.Services.CoreConfig;
 global using ServiceLib.Services.Statistics;
 global using SQLite;
+
+

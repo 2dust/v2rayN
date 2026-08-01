@@ -1,21 +1,21 @@
 namespace ServiceLib.ViewModels;
 
-public class SubSettingViewModel : MyReactiveObject
+public partial class SubSettingViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
-    public Interaction<string, Unit> ShareSubInteraction { get; } = new();
+    public Interaction<string, RxVoid> ShareSubInteraction { get; } = new();
 
-    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+    public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
     [Reactive]
-    public SubItem SelectedSource { get; set; }
+    public partial SubItem SelectedSource { get; set; }
 
     public IList<SubItem> SelectedSources { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SubAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubDeleteCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubEditCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubDeleteCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubEditCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubShareCmd { get; }
     public bool IsModified { get; set; }
 
     public SubSettingViewModel()

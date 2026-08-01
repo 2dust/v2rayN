@@ -1,20 +1,20 @@
 namespace ServiceLib.ViewModels;
 
-public class ClashConnectionsViewModel : MyReactiveObject
+public partial class ClashConnectionsViewModel : MyReactiveObject
 {
-    public IObservableCollection<ClashConnectionModel> ConnectionItems { get; } = new ObservableCollectionExtended<ClashConnectionModel>();
+    public BulkObservableCollection<ClashConnectionModel> ConnectionItems { get; } = [];
 
     [Reactive]
-    public ClashConnectionModel SelectedSource { get; set; }
+    public partial ClashConnectionModel SelectedSource { get; set; }
 
-    public ReactiveCommand<Unit, Unit> ConnectionCloseCmd { get; }
-    public ReactiveCommand<Unit, Unit> ConnectionCloseAllCmd { get; }
-
-    [Reactive]
-    public string HostFilter { get; set; }
+    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseAllCmd { get; }
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    public partial string HostFilter { get; set; }
+
+    [Reactive]
+    public partial bool AutoRefresh { get; set; }
 
     public ClashConnectionsViewModel()
     {
@@ -55,10 +55,9 @@ public class ClashConnectionsViewModel : MyReactiveObject
             return;
         }
 
-        RxSchedulers.MainThreadScheduler.Schedule(ret?.connections, (scheduler, model) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
-            _ = RefreshConnections(model);
-            return Disposable.Empty;
+            _ = RefreshConnections(ret?.connections);
         });
     }
 
