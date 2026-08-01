@@ -1,13 +1,11 @@
-using System.Reactive.Concurrency;
-
 namespace ServiceLib.ViewModels;
 
-public class MainWindowViewModel : MyReactiveObject
+public partial class MainWindowViewModel : MyReactiveObject
 {
-    public Interaction<Unit, string?> ReadTextFromClipboardInteraction { get; } = new();
-    public Interaction<Unit, byte[]?> ScanScreenInteraction { get; } = new();
-    public Interaction<Unit, string?> BrowseImageFileInteraction { get; } = new();
-    public Interaction<bool?, Unit> ShowHideWindowInteraction { get; } = new();
+    public Interaction<RxVoid, string?> ReadTextFromClipboardInteraction { get; } = new();
+    public Interaction<RxVoid, byte[]?> ScanScreenInteraction { get; } = new();
+    public Interaction<RxVoid, string?> BrowseImageFileInteraction { get; } = new();
+    public Interaction<bool?, RxVoid> ShowHideWindowInteraction { get; } = new();
 
     public bool DesignMode { get; set; }
 
@@ -22,67 +20,67 @@ public class MainWindowViewModel : MyReactiveObject
     #region Menu
 
     //servers
-    public ReactiveCommand<Unit, Unit> AddVmessServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddVmessServerCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> AddVlessServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddShadowsocksServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddSocksServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddHttpServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddTrojanServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddHysteria2ServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddTuicServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddWireguardServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddAnytlsServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddNaiveServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddCustomServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddPolicyGroupServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddProxyChainServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddServerViaClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddServerViaScanCmd { get; }
-    public ReactiveCommand<Unit, Unit> AddServerViaImageCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddVlessServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddShadowsocksServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddSocksServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddHttpServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddTrojanServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddHysteria2ServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddTuicServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddWireguardServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddAnytlsServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddNaiveServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddCustomServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddPolicyGroupServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddProxyChainServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaScanCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddServerViaImageCmd { get; }
 
     //Subscription
-    public ReactiveCommand<Unit, Unit> SubSettingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubSettingCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> SubUpdateCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubUpdateViaProxyCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubGroupUpdateCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubGroupUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateViaProxyCmd { get; }
 
     //Setting
-    public ReactiveCommand<Unit, Unit> OptionSettingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OptionSettingCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> RoutingSettingCmd { get; }
-    public ReactiveCommand<Unit, Unit> DNSSettingCmd { get; }
-    public ReactiveCommand<Unit, Unit> FullConfigTemplateCmd { get; }
-    public ReactiveCommand<Unit, Unit> GlobalHotkeySettingCmd { get; }
-    public ReactiveCommand<Unit, Unit> RebootAsAdminCmd { get; }
-    public ReactiveCommand<Unit, Unit> ClearServerStatisticsCmd { get; }
-    public ReactiveCommand<Unit, Unit> OpenTheFileLocationCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingSettingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> DNSSettingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> FullConfigTemplateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GlobalHotkeySettingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RebootAsAdminCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ClearServerStatisticsCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OpenTheFileLocationCmd { get; }
 
     //Presets
-    public ReactiveCommand<Unit, Unit> RegionalPresetDefaultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RegionalPresetDefaultCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> RegionalPresetRussiaCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RegionalPresetRussiaCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> RegionalPresetIranCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RegionalPresetIranCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> ReloadCmd { get; }
-
-    [Reactive]
-    public bool BlReloadEnabled { get; set; }
+    public ReactiveCommand<RxVoid, RxVoid> ReloadCmd { get; }
 
     [Reactive]
-    public bool ShowClashUI { get; set; }
+    public partial bool BlReloadEnabled { get; set; }
 
     [Reactive]
-    public int TabMainSelectedIndex { get; set; }
+    public partial bool ShowClashUI { get; set; }
 
-    [Reactive] public bool BlIsWindows { get; set; }
+    [Reactive]
+    public partial int TabMainSelectedIndex { get; set; }
 
-    [Reactive] public bool BlNewUpdate { get; set; }
+    [Reactive] public partial bool BlIsWindows { get; set; }
 
-    [Reactive] public EGirdOrientation MainGirdOrientation { get; set; }
+    [Reactive] public partial bool BlNewUpdate { get; set; }
+
+    [Reactive] public partial EGirdOrientation MainGirdOrientation { get; set; }
 
     #endregion Menu
 
@@ -268,7 +266,7 @@ public class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async _ => await RefreshServers());
 
-        var vmReloadRequestedList = new List<IObservable<Unit>>
+        var vmReloadRequestedList = new List<IObservable<RxVoid>>
         {
             ProfilesViewModel.ReloadRequested.AsObservable(),
             StatusBarViewModel.ReloadRequested.AsObservable(),
@@ -407,12 +405,34 @@ public class MainWindowViewModel : MyReactiveObject
 
     private async Task RefreshServersDispatcherAsync()
     {
-        await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
+        //await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
+
+        var uiContext = SynchronizationContext.Current;
+        if (uiContext != null)
+        {
+            var uiSequencer = new SynchronizationContextSequencer(uiContext);
+            uiSequencer.Schedule(() => _ = RefreshServers());
+        }
+        else
+        {
+            await RefreshServers();
+        }
     }
 
     private async Task RefreshSubscriptions()
     {
-        await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
+        //await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
+
+        var uiContext = SynchronizationContext.Current;
+        if (uiContext != null)
+        {
+            var uiSequencer = new SynchronizationContextSequencer(uiContext);
+            uiSequencer.Schedule(() => _ = ProfilesViewModel.RefreshSubscriptions());
+        }
+        else
+        {
+            await ProfilesViewModel.RefreshSubscriptions();
+        }
     }
 
     #endregion Servers && Groups
@@ -459,7 +479,7 @@ public class MainWindowViewModel : MyReactiveObject
         var stringData = clipboardData;
         if (clipboardData == null)
         {
-            var result = await ReadTextFromClipboardInteraction.Handle(Unit.Default);
+            var result = await ReadTextFromClipboardInteraction.Handle(RxVoid.Default);
             if (result.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
@@ -482,7 +502,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaScanAsync()
     {
-        var result = await ScanScreenInteraction.Handle(Unit.Default);
+        var result = await ScanScreenInteraction.Handle(RxVoid.Default);
         await ScanScreenResult(result);
     }
 
@@ -494,7 +514,7 @@ public class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaImageAsync()
     {
-        var imageFileName = await BrowseImageFileInteraction.Handle(Unit.Default);
+        var imageFileName = await BrowseImageFileInteraction.Handle(RxVoid.Default);
         await AddScanResultAsync(imageFileName);
     }
 

@@ -1,17 +1,17 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesViewModel : MyReactiveObject
+public partial class ProfilesViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
     public Interaction<ProfileItem, bool> SaveFileDialogInteraction { get; } = new();
-    public Interaction<string, Unit> SetClipboardDataInteraction { get; } = new();
-    public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
-    public Interaction<string, Unit> ShareServerInteraction { get; } = new();
-    public Interaction<Unit, Unit> DispatcherRefreshServersBizInteraction { get; } = new();
-    public Interaction<Unit, Unit> AdjustMainLvColWidthInteraction { get; } = new();
+    public Interaction<string, RxVoid> SetClipboardDataInteraction { get; } = new();
+    public Interaction<RxVoid, RxVoid> ProfilesFocusInteraction { get; } = new();
+    public Interaction<string, RxVoid> ShareServerInteraction { get; } = new();
+    public Interaction<RxVoid, RxVoid> DispatcherRefreshServersBizInteraction { get; } = new();
+    public Interaction<RxVoid, RxVoid> AdjustMainLvColWidthInteraction { get; } = new();
 
-    public EventChannel<Unit> ReloadRequested { get; } = new();
-    public EventChannel<Unit> RefreshServersRequested { get; } = new();
+    public EventChannel<RxVoid> ReloadRequested { get; } = new();
+    public EventChannel<RxVoid> RefreshServersRequested { get; } = new();
 
     #region private prop
 
@@ -25,69 +25,69 @@ public class ProfilesViewModel : MyReactiveObject
 
     #region ObservableCollection
 
-    public IObservableCollection<ProfileItemModel> ProfileItems { get; } = new ObservableCollectionExtended<ProfileItemModel>();
+    public BulkObservableCollection<ProfileItemModel> ProfileItems { get; } = [];
 
-    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+    public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
     [Reactive]
-    public ProfileItemModel SelectedProfile { get; set; }
+    public partial ProfileItemModel SelectedProfile { get; set; }
 
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
-    public SubItem SelectedSub { get; set; }
+    public partial SubItem SelectedSub { get; set; }
 
     [Reactive]
-    public SubItem SelectedMoveToGroup { get; set; }
+    public partial SubItem SelectedMoveToGroup { get; set; }
 
     [Reactive]
-    public string ServerFilter { get; set; }
+    public partial string ServerFilter { get; set; }
 
     #endregion ObservableCollection
 
     #region Menu
 
     //servers delete
-    public ReactiveCommand<Unit, Unit> EditServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> EditServerCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> RemoveServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> RemoveDuplicateServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> CopyServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> SetDefaultServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> ShareServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupAllServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> GenGroupRegionServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoveServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoveDuplicateServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CopyServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SetDefaultServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShareServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GenGroupAllServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GenGroupRegionServerCmd { get; }
 
     //servers move
-    public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveTopCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
-    public ReactiveCommand<SubItem, Unit> MoveToGroupCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveUpCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveDownCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveBottomCmd { get; }
+    public ReactiveCommand<SubItem, RxVoid> MoveToGroupCmd { get; }
 
     //servers ping
-    public ReactiveCommand<Unit, Unit> MixedTestServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MixedTestServerCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> TcpingServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> RealPingServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> UdpTestServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> SpeedServerCmd { get; }
-    public ReactiveCommand<Unit, Unit> SortServerResultCmd { get; }
-    public ReactiveCommand<Unit, Unit> RemoveInvalidServerResultCmd { get; }
-    public ReactiveCommand<Unit, Unit> FastRealPingCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> TcpingServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RealPingServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> UdpTestServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SpeedServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SortServerResultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoveInvalidServerResultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> FastRealPingCmd { get; }
 
     //servers export
-    public ReactiveCommand<Unit, Unit> Export2ClientConfigCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Export2ClientConfigCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> Export2ClientConfigClipboardCmd { get; }
-    public ReactiveCommand<Unit, Unit> Export2ShareUrlCmd { get; }
-    public ReactiveCommand<Unit, Unit> Export2ShareUrlBase64Cmd { get; }
-    public ReactiveCommand<Unit, Unit> Export2InnerUriCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Export2ClientConfigClipboardCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Export2ShareUrlCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Export2ShareUrlBase64Cmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Export2InnerUriCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> AddSubCmd { get; }
-    public ReactiveCommand<Unit, Unit> EditSubCmd { get; }
-    public ReactiveCommand<Unit, Unit> DeleteSubCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddSubCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> EditSubCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> DeleteSubCmd { get; }
 
     #endregion Menu
 
@@ -347,9 +347,9 @@ public class ProfilesViewModel : MyReactiveObject
 
         try
         {
-            await ProfilesFocusInteraction.Handle(Unit.Default);
+            await ProfilesFocusInteraction.Handle(RxVoid.Default);
         }
-        catch (UnhandledInteractionException<Unit, Unit>)
+        catch (UnhandledInteractionException<RxVoid, RxVoid>)
         {
         }
     }
@@ -397,9 +397,9 @@ public class ProfilesViewModel : MyReactiveObject
 
         try
         {
-            await DispatcherRefreshServersBizInteraction.Handle(Unit.Default);
+            await DispatcherRefreshServersBizInteraction.Handle(RxVoid.Default);
         }
-        catch (UnhandledInteractionException<Unit, Unit>)
+        catch (UnhandledInteractionException<RxVoid, RxVoid>)
         {
         }
     }
@@ -419,7 +419,7 @@ public class ProfilesViewModel : MyReactiveObject
 
     public async Task AdjustMainLvColWidth()
     {
-        await AdjustMainLvColWidthInteraction.Handle(Unit.Default);
+        await AdjustMainLvColWidthInteraction.Handle(RxVoid.Default);
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
@@ -761,10 +761,9 @@ public class ProfilesViewModel : MyReactiveObject
 
         _speedtestService ??= new SpeedtestService(_config, async (SpeedTestResult result) =>
         {
-            RxSchedulers.MainThreadScheduler.Schedule(result, (scheduler, result) =>
+            RxSchedulers.MainThreadScheduler.Schedule(() =>
             {
                 _ = SetSpeedTestResult(result);
-                return Disposable.Empty;
             });
             await Task.CompletedTask;
         });

@@ -36,7 +36,12 @@ public class SimpleViewLocator : IViewLocator
 
     public static SimpleViewLocator Instance => _instance.Value;
 
-    public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract = null) where TViewModel : class
+    public IViewFor<TViewModel>? ResolveView<TViewModel>() where TViewModel : class
+    {
+        return ResolveView<TViewModel>(null);
+    }
+
+    public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract) where TViewModel : class
     {
         if (_mappings.TryGetValue(typeof(TViewModel), out var factory))
         {
@@ -45,7 +50,12 @@ public class SimpleViewLocator : IViewLocator
         return null;
     }
 
-    public IViewFor? ResolveView(object? instance, string? contract = null)
+    public IViewFor? ResolveView(object? instance)
+    {
+        return ResolveView(instance, null);
+    }
+
+    public IViewFor? ResolveView(object? instance, string? contract)
     {
         if (instance == null)
         {

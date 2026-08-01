@@ -22,7 +22,7 @@ public partial class RoutingRuleDetailsWindow : WindowBase<RoutingRuleDetailsVie
         this.WhenActivated(disposables =>
         {
             this.WhenAnyValue(v => v.ViewModel.SelectedSource)
-                .WhereNotNull()
+                .KeepNotNull()
                 .Subscribe(InitializeData)
                 .DisposeWith(disposables);
 

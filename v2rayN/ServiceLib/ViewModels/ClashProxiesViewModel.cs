@@ -1,37 +1,36 @@
-using System.Reactive.Concurrency;
 using static ServiceLib.Models.Dto.ClashProviders;
 using static ServiceLib.Models.Dto.ClashProxies;
 
 namespace ServiceLib.ViewModels;
 
-public class ClashProxiesViewModel : MyReactiveObject
+public partial class ClashProxiesViewModel : MyReactiveObject
 {
     private Dictionary<string, ProxiesItem>? _proxies;
     private Dictionary<string, ProvidersItem>? _providers;
     private readonly int _delayTimeout = 99999999;
 
-    public IObservableCollection<ClashProxyModel> ProxyGroups { get; } = new ObservableCollectionExtended<ClashProxyModel>();
-    public IObservableCollection<ClashProxyModel> ProxyDetails { get; } = new ObservableCollectionExtended<ClashProxyModel>();
+    public BulkObservableCollection<ClashProxyModel> ProxyGroups { get; } = [];
+    public BulkObservableCollection<ClashProxyModel> ProxyDetails { get; } = [];
 
     [Reactive]
-    public ClashProxyModel SelectedGroup { get; set; }
+    public partial ClashProxyModel SelectedGroup { get; set; }
 
     [Reactive]
-    public ClashProxyModel SelectedDetail { get; set; }
+    public partial ClashProxyModel SelectedDetail { get; set; }
 
-    public ReactiveCommand<Unit, Unit> ProxiesReloadCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesDelayTestCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesDelayTestPartCmd { get; }
-    public ReactiveCommand<Unit, Unit> ProxiesSelectActivityCmd { get; }
-
-    [Reactive]
-    public int RuleModeSelected { get; set; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesReloadCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestPartCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesSelectActivityCmd { get; }
 
     [Reactive]
-    public int SortingSelected { get; set; }
+    public partial int RuleModeSelected { get; set; }
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    public partial int SortingSelected { get; set; }
+
+    [Reactive]
+    public partial bool AutoRefresh { get; set; }
 
     public ClashProxiesViewModel()
     {
@@ -379,10 +378,9 @@ public class ClashProxiesViewModel : MyReactiveObject
             }
 
             var model = new SpeedTestResult() { IndexId = item.Name, Delay = result };
-            RxSchedulers.MainThreadScheduler.Schedule(model, (scheduler, model) =>
+            RxSchedulers.MainThreadScheduler.Schedule(() =>
             {
                 _ = ProxiesDelayTestResult(model);
-                return Disposable.Empty;
             });
             await Task.CompletedTask;
         });

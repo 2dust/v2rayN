@@ -1,10 +1,10 @@
 namespace ServiceLib.ViewModels;
 
-public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
+public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
-
-    public Interaction<Unit, Unit> ProfilesFocusInteraction { get; } = new();
+    
+    public Interaction<RxVoid, RxVoid> ProfilesFocusInteraction { get; } = new();
 
     #region private prop
 
@@ -16,34 +16,34 @@ public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
     #endregion private prop
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     #region ObservableCollection
 
-    public IObservableCollection<ProfileItemModel> ProfileItems { get; } = new ObservableCollectionExtended<ProfileItemModel>();
+    public BulkObservableCollection<ProfileItemModel> ProfileItems { get; } = [];
 
-    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+    public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
     [Reactive]
-    public ProfileItemModel SelectedProfile { get; set; }
+    public partial ProfileItemModel SelectedProfile { get; set; }
 
     public IList<ProfileItemModel> SelectedProfiles { get; set; }
 
     [Reactive]
-    public SubItem SelectedSub { get; set; }
+    public partial SubItem SelectedSub { get; set; }
 
     [Reactive]
-    public string ServerFilter { get; set; }
+    public partial string ServerFilter { get; set; }
 
     // Include/Exclude filter for ConfigType
     [Reactive]
-    public List<EConfigType> FilterConfigTypes { get; set; }
+    public partial List<EConfigType> FilterConfigTypes { get; set; }
 
     [Reactive]
-    public bool FilterExclude { get; set; }
+    public partial bool FilterExclude { get; set; }
 
     [Reactive]
-    public bool MultiSelect { get; set; }
+    public partial bool MultiSelect { get; set; }
 
     #endregion ObservableCollection
 
@@ -140,9 +140,9 @@ public class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
         try
         {
-            await ProfilesFocusInteraction.Handle(Unit.Default);
+            await ProfilesFocusInteraction.Handle(RxVoid.Default);
         }
-        catch (UnhandledInteractionException<Unit, Unit>)
+        catch (UnhandledInteractionException<RxVoid, RxVoid>)
         {
         }
     }

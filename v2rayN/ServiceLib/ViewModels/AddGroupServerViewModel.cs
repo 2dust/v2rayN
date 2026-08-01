@@ -1,45 +1,45 @@
 namespace ServiceLib.ViewModels;
 
-public class AddGroupServerViewModel : MyReactiveObject, ICloseable
+public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public ProfileItem SelectedSource { get; set; }
+    public partial ProfileItem SelectedSource { get; set; }
 
     [Reactive]
-    public ProfileItem SelectedChild { get; set; }
+    public partial ProfileItem SelectedChild { get; set; }
 
     [Reactive]
-    public IList<ProfileItem> SelectedChildren { get; set; }
+    public partial IList<ProfileItem> SelectedChildren { get; set; }
 
     [Reactive]
-    public string? CoreType { get; set; }
+    public partial string? CoreType { get; set; }
 
     [Reactive]
-    public string? PolicyGroupType { get; set; }
+    public partial string? PolicyGroupType { get; set; }
 
     [Reactive]
-    public SubItem? SelectedSubItem { get; set; }
+    public partial SubItem? SelectedSubItem { get; set; }
 
     [Reactive]
-    public string? Filter { get; set; }
+    public partial string? Filter { get; set; }
 
-    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+    public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
-    public IObservableCollection<ProfileItem> ChildItemsObs { get; } = new ObservableCollectionExtended<ProfileItem>();
+    public BulkObservableCollection<ProfileItem> ChildItemsObs { get; } = [];
 
-    public IObservableCollection<ProfileItem> AllProfilePreviewItemsObs { get; } = new ObservableCollectionExtended<ProfileItem>();
+    public BulkObservableCollection<ProfileItem> AllProfilePreviewItemsObs { get; } = [];
 
-    public ReactiveCommand<Unit, Unit> AddCmd { get; }
-    public ReactiveCommand<Unit, Unit> RemoveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoveCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> MoveTopCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveUpCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveDownCmd { get; }
-    public ReactiveCommand<Unit, Unit> MoveBottomCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveTopCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveUpCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveDownCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MoveBottomCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public AddGroupServerViewModel(ProfileItem profileItem)
     {

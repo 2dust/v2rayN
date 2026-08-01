@@ -18,8 +18,10 @@ public partial class MsgView
                 {
                     ShowMsg(msg);
                 }, DispatcherPriority.ApplicationIdle);
-                interaction.SetOutput(Unit.Default);
+                interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
+
+            ViewModel?.FlushQueueMsg();
         });
 
         btnCopy.Click += menuMsgViewCopyAll_Click;

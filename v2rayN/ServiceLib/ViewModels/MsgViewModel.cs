@@ -1,8 +1,8 @@
 namespace ServiceLib.ViewModels;
 
-public class MsgViewModel : MyReactiveObject
+public partial class MsgViewModel : MyReactiveObject
 {
-    public Interaction<string, Unit> DispatcherShowMsgInteraction { get; } = new();
+    public Interaction<string, RxVoid> DispatcherShowMsgInteraction { get; } = new();
 
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
@@ -10,10 +10,10 @@ public class MsgViewModel : MyReactiveObject
     public int NumMaxMsg { get; } = 500;
 
     [Reactive]
-    public string MsgFilter { get; set; }
+    public partial string MsgFilter { get; set; }
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    public partial bool AutoRefresh { get; set; }
 
     public MsgViewModel()
     {
@@ -34,6 +34,11 @@ public class MsgViewModel : MyReactiveObject
          .AsObservable()
          //.ObserveOn(RxSchedulers.MainThreadScheduler)
          .Subscribe(content => _ = AppendQueueMsg(content));
+    }
+
+    public void FlushQueueMsg()
+    {
+        _ = AppendQueueMsg(string.Empty);
     }
 
     private async Task AppendQueueMsg(string msg)
@@ -65,7 +70,17 @@ public class MsgViewModel : MyReactiveObject
                 sb.Append(line);
             }
 
-            await DispatcherShowMsgInteraction.Handle(sb.ToString());
+            if (sb.Length > 0)
+            {
+                try
+                {
+                    await DispatcherShowMsgInteraction.Handle(sb.ToString());
+                }
+                catch (Exception)
+                {
+                    _queueMsg.Enqueue(sb.ToString());
+                }
+            }
         }
         finally
         {
@@ -75,6 +90,11 @@ public class MsgViewModel : MyReactiveObject
 
     private void EnqueueQueueMsg(string msg)
     {
+        if (string.IsNullOrEmpty(msg))
+        {
+            return;
+        }
+
         //filter msg
         if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
         {

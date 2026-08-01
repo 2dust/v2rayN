@@ -1,28 +1,28 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingSettingViewModel : MyReactiveObject
+public partial class RoutingSettingViewModel : MyReactiveObject
 {
     public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
 
     #region Reactive
 
-    public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
+    public BulkObservableCollection<RoutingItemModel> RoutingItems { get; } = [];
 
     [Reactive]
-    public RoutingItemModel SelectedSource { get; set; }
+    public partial RoutingItemModel SelectedSource { get; set; }
 
     public IList<RoutingItemModel> SelectedSources { get; set; }
 
     [Reactive]
-    public string DomainStrategy { get; set; }
+    public partial string DomainStrategy { get; set; }
 
     [Reactive]
-    public string DomainStrategy4Singbox { get; set; }
+    public partial string DomainStrategy4Singbox { get; set; }
 
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedRemoveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedSetDefaultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedImportRulesCmd { get; }
 
     public bool IsModified { get; set; }
 
