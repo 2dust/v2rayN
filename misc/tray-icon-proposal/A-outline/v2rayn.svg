@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="22" height="22">
+  <!-- Official v2rayN mark, lineified + optically padded for tray parity -->
+  <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11.000" cy="11.000" r="7.450"/>
+    <path stroke-width="1.2" d="M 6.534 7.251 L 9.272 7.251 L 9.272 10.870 L 12.989 7.251 L 16.183 7.251 L 7.512 15.923 L 7.512 8.262 L 6.534 8.262 Z"/>
+  </g>
+</svg>
