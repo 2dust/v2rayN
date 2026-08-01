@@ -2,6 +2,8 @@ namespace ServiceLib.Handler.Fmt;
 
 public class VLESSFmt : BaseFmt
 {
+    private static readonly List<string> _insecureQueryKeys = new() { "allowInsecure", "insecure" };
+
     public static ProfileItem? Resolve(string str, out string msg)
     {
         msg = ResUI.ConfigurationFormatIncorrect;
@@ -23,6 +25,10 @@ public class VLESSFmt : BaseFmt
         item.Password = Utils.UrlDecode(url.UserInfo);
 
         var query = Utils.ParseQueryString(url.Query);
+        if (_insecureQueryKeys.Any(q => GetQueryValue(query, q) == "1"))
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             VlessEncryption = GetQueryValue(query, "encryption", Global.None),
@@ -47,6 +53,10 @@ public class VLESSFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         var dicQuery = new Dictionary<string, string>();
+        if (item.GetAllowInsecure())
+        {
+            _insecureQueryKeys.ForEach(q => dicQuery.Add(q, "1"));
+        }
         dicQuery.Add("encryption",
             !item.GetProtocolExtra().VlessEncryption.IsNullOrEmpty() ? item.GetProtocolExtra().VlessEncryption : Global.None);
         if (!item.GetProtocolExtra().Flow.IsNullOrEmpty())
