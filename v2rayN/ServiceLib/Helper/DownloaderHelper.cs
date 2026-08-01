@@ -60,7 +60,7 @@ public class DownloaderHelper
         return await reader.ReadToEndAsync(cts.Token);
     }
 
-    public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
+    public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout, CancellationToken token = default)
     {
         if (url.IsNullOrEmpty())
         {
@@ -114,6 +114,10 @@ public class DownloaderHelper
                     var finalSpeed = (maxSpeed / 1000 / 1000).ToString("#0.0");
                     progress.Report(finalSpeed);
                 }
+                else if (token.IsCancellationRequested)
+                {
+                    progress.Report(ResUI.SpeedtestingSkip);
+                }
                 else if (value.Error != null)
                 {
                     progress.Report(value.Error?.Message);
@@ -125,7 +129,7 @@ public class DownloaderHelper
             }
         };
         //progress.Report("......");
-        using var cts = new CancellationTokenSource();
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
         cts.CancelAfter(TimeSpan.FromSeconds(timeout));
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
 

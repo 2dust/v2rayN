@@ -88,9 +88,10 @@ public class UdpTestService
         return (targetServerHost, _udpTest.GetDefaultTargetPort());
     }
 
-    public async Task<TimeSpan> SendUdpRequestAsync(string targetServerHost, int socks5Port, TimeSpan operationTimeout)
+    public async Task<TimeSpan> SendUdpRequestAsync(string targetServerHost, int socks5Port, TimeSpan operationTimeout, CancellationToken token = default)
     {
-        using var cts = new CancellationTokenSource(operationTimeout);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+        cts.CancelAfter(operationTimeout);
         var cancellationToken = cts.Token;
         var udpRequestPacket = _udpTest.BuildUdpRequestPacket();
         if (udpRequestPacket == null || udpRequestPacket.Length == 0)

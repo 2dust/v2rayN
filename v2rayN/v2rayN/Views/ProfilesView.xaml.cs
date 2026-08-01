@@ -75,6 +75,16 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.RemoveInvalidServerResultCmd, v => v.menuRemoveInvalidServerResult).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FastRealPingCmd, v => v.btnFastRealPing).DisposeWith(disposables);
 
+            //toggle the test buttons between "start" and "stop"
+            this.WhenAnyValue(x => x.ViewModel.DelayTestRunning)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(running => SetTestButtonState(btnFastRealPing, icoFastRealPing, running, PackIconKind.LightningBolt, ResUI.menuFastRealPing))
+                .DisposeWith(disposables);
+            this.WhenAnyValue(x => x.ViewModel.SpeedTestRunning)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(running => SetTestButtonState(menuMixedTestServer, icoMixedTestServer, running, PackIconKind.Speedometer, ResUI.menuMixedTestServer))
+                .DisposeWith(disposables);
+
             //servers export
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigCmd, v => v.menuExport2ClientConfig).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
@@ -155,6 +165,14 @@ public partial class ProfilesView
     }
 
     #region Event
+
+    private static void SetTestButtonState(Button button, PackIcon icon, bool running, PackIconKind idleKind, string idleTip)
+    {
+        icon.Kind = running ? PackIconKind.Stop : idleKind;
+        var tip = running ? ResUI.menuSpeedtestStop : idleTip;
+        button.ToolTip = tip;
+        System.Windows.Automation.AutomationProperties.SetName(button, tip);
+    }
 
     public async Task ShareServer(string url)
     {
@@ -252,7 +270,7 @@ public partial class ProfilesView
                     break;
 
                 case Key.E:
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
+                    ViewModel?.ServerSpeedtestToggle(ESpeedActionType.Mixedtest);
                     break;
             }
         }
@@ -286,9 +304,7 @@ public partial class ProfilesView
                     ViewModel?.MoveServer(EMove.Bottom);
                     break;
 
-                case Key.Escape:
-                    ViewModel?.ServerSpeedtestStop();
-                    break;
+                    //Key.Escape is handled at the window level so that it works without grid focus
             }
         }
     }

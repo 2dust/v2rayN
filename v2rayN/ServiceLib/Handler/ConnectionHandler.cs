@@ -66,13 +66,13 @@ public static class ConnectionHandler
     /// <summary>
     /// Measures response time by sending HTTP requests through proxy.
     /// </summary>
-    public static async Task<int> GetRealPingTime(IWebProxy? webProxy, int downloadTimeout = 9)
+    public static async Task<int> GetRealPingTime(IWebProxy? webProxy, int downloadTimeout = 9, CancellationToken token = default)
     {
         var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
         var responseTime = -1;
         try
         {
-            using var cts = new CancellationTokenSource();
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
             cts.CancelAfter(TimeSpan.FromSeconds(downloadTimeout));
             using var client = new HttpClient(new SocketsHttpHandler()
             {

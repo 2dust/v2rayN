@@ -1572,6 +1572,9 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Uji latensi nyata</value>
   </data>
+  <data name="menuSpeedtestStop" xml:space="preserve">
+    <value>Hentikan pengujian</value>
+  </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>Tambahkan otomatis konfigurasi yang difilter dari grup langganan</value>
   </data>

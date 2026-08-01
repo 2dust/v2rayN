@@ -1578,6 +1578,9 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Тест реальной задержки</value>
   </data>
+  <data name="menuSpeedtestStop" xml:space="preserve">
+    <value>Остановить тест</value>
+  </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>Автодобавление отфильтрованных конфигураций из групп подписки</value>
   </data>

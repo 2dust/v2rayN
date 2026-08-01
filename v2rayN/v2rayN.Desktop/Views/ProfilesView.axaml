@@ -84,7 +84,10 @@
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
                         <Button.Content>
-                            <PathIcon Data="{StaticResource SemiIconBolt}" />
+                            <Panel>
+                                <PathIcon Data="{StaticResource SemiIconBolt}" IsVisible="{Binding !DelayTestRunning}" />
+                                <PathIcon Data="{StaticResource building_stop}" IsVisible="{Binding DelayTestRunning}" />
+                            </Panel>
                         </Button.Content>
                     </Button>
                     <Button
@@ -93,7 +96,10 @@
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
                         <Button.Content>
-                            <PathIcon Data="{StaticResource building_ping}" />
+                            <Panel>
+                                <PathIcon Data="{StaticResource building_ping}" IsVisible="{Binding !SpeedTestRunning}" />
+                                <PathIcon Data="{StaticResource building_stop}" IsVisible="{Binding SpeedTestRunning}" />
+                            </Panel>
                         </Button.Content>
                     </Button>
                 </StackPanel>

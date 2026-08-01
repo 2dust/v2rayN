@@ -1105,6 +1105,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Stop the test 的本地化字符串。
+        /// </summary>
+        public static string menuSpeedtestStop {
+            get {
+                return ResourceManager.GetString("menuSpeedtestStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Full Config Template Setting 的本地化字符串。
         /// </summary>
         public static string menuFullConfigTemplate {

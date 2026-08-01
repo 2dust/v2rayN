@@ -23,7 +23,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         _config = AppManager.Instance.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
-        KeyDown += MainWindow_KeyDown;
+        //handle in the tunneling phase so that a focused control cannot swallow the key first
+        AddHandler(KeyDownEvent, MainWindow_KeyDown, RoutingStrategies.Tunnel);
         menuSettingsSetUWP.Click += MenuSettingsSetUWP_Click;
         menuPromotion.Click += MenuPromotion_Click;
         menuCheckUpdate.Click += MenuCheckUpdate_Click;
@@ -233,6 +234,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             if (e.Key == Key.F5)
             {
                 ViewModel?.Reload();
+            }
+            else if (e.Key == Key.Escape)
+            {
+                //stop the tests from anywhere in the window, not only when the profile grid has focus
+                AppEvents.SpeedtestStopRequested.Publish();
             }
         }
     }

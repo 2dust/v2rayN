@@ -1569,6 +1569,9 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Test 1-clic de latence réelle</value>
   </data>
+  <data name="menuSpeedtestStop" xml:space="preserve">
+    <value>Arrêter le test</value>
+  </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>Ajout auto des configs filtrées depuis les groupes d’abonnement</value>
   </data>

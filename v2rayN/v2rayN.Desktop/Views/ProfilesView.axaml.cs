@@ -76,6 +76,16 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.RemoveInvalidServerResultCmd, v => v.menuRemoveInvalidServerResult).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FastRealPingCmd, v => v.btnFastRealPing).DisposeWith(disposables);
 
+            //toggle the test buttons between "start" and "stop"
+            this.WhenAnyValue(x => x.ViewModel.DelayTestRunning)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(running => ToolTip.SetTip(btnFastRealPing, running ? ResUI.menuSpeedtestStop : ResUI.menuFastRealPing))
+                .DisposeWith(disposables);
+            this.WhenAnyValue(x => x.ViewModel.SpeedTestRunning)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(running => ToolTip.SetTip(menuMixedTestServer, running ? ResUI.menuSpeedtestStop : ResUI.menuMixedTestServer))
+                .DisposeWith(disposables);
+
             //servers export
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigCmd, v => v.menuExport2ClientConfig).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
@@ -272,7 +282,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     break;
 
                 case Key.E:
-                    ViewModel?.ServerSpeedtest(ESpeedActionType.Mixedtest);
+                    ViewModel?.ServerSpeedtestToggle(ESpeedActionType.Mixedtest);
                     break;
             }
         }
@@ -306,9 +316,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     ViewModel?.MoveServer(EMove.Bottom);
                     break;
 
-                case Key.Escape:
-                    ViewModel?.ServerSpeedtestStop();
-                    break;
+                    //Key.Escape is handled at the window level so that it works without grid focus
             }
         }
     }

@@ -83,18 +83,26 @@
                     Width="30"
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuFastRealPing}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
+                    <materialDesign:PackIcon
+                        x:Name="icoFastRealPing"
+                        VerticalAlignment="Center"
+                        Kind="LightningBolt" />
                 </Button>
                 <Button
                     x:Name="menuMixedTestServer"
                     Width="30"
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuMixedTestServer}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
-                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
+                    <materialDesign:PackIcon
+                        x:Name="icoMixedTestServer"
+                        VerticalAlignment="Center"
+                        Kind="Speedometer" />
                 </Button>
             </WrapPanel>
             <DataGrid

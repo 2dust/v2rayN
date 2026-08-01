@@ -16,7 +16,7 @@ public class DownloadService
     /// <summary>
     /// Downloads data with the specified proxy and reports progress messages.
     /// </summary>
-    public async Task<int> DownloadDataAsync(string url, IWebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    public async Task<int> DownloadDataAsync(string url, IWebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc, CancellationToken token = default)
     {
         try
         {
@@ -26,7 +26,13 @@ public class DownloadService
             await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
                   url,
                   progress,
-                  downloadTimeout);
+                  downloadTimeout,
+                  token);
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            //cancelled by the caller: the progress callback has already reported the outcome,
+            //so avoid overwriting it with a "task canceled" message
         }
         catch (Exception ex)
         {

@@ -234,6 +234,11 @@ public partial class MainWindow
             {
                 ViewModel?.Reload();
             }
+            else if (e.Key == Key.Escape)
+            {
+                //stop the tests from anywhere in the window, not only when the profile grid has focus
+                AppEvents.SpeedtestStopRequested.Publish();
+            }
         }
     }
 

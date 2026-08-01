@@ -1578,6 +1578,9 @@
   <data name="menuFastRealPing" xml:space="preserve">
     <value>Test real delay</value>
   </data>
+  <data name="menuSpeedtestStop" xml:space="preserve">
+    <value>Stop the test</value>
+  </data>
   <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
     <value>Auto add filtered configuration from subscription groups</value>
   </data>

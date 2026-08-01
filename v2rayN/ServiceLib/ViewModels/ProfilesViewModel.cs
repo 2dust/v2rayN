@@ -43,6 +43,12 @@ public class ProfilesViewModel : MyReactiveObject
     [Reactive]
     public string ServerFilter { get; set; }
 
+    [Reactive]
+    public bool DelayTestRunning { get; set; }
+
+    [Reactive]
+    public bool SpeedTestRunning { get; set; }
+
     #endregion ObservableCollection
 
     #region Menu
@@ -176,11 +182,11 @@ public class ProfilesViewModel : MyReactiveObject
         //servers ping
         FastRealPingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await ServerSpeedtest(ESpeedActionType.FastRealping);
+            await ServerSpeedtestToggle(ESpeedActionType.FastRealping);
         });
         MixedTestServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await ServerSpeedtest(ESpeedActionType.Mixedtest);
+            await ServerSpeedtestToggle(ESpeedActionType.Mixedtest);
         });
         TcpingServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -250,6 +256,11 @@ public class ProfilesViewModel : MyReactiveObject
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async result => await UpdateStatistics(result));
+
+        AppEvents.SpeedtestStopRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(_ => ServerSpeedtestStop());
 
         #endregion AppEvents
 
@@ -737,8 +748,33 @@ public class ProfilesViewModel : MyReactiveObject
         }
     }
 
+    /// <summary>
+    /// Starts the test, or stops it when a test of the same kind is already running.
+    /// </summary>
+    public async Task ServerSpeedtestToggle(ESpeedActionType actionType)
+    {
+        var group = SpeedtestService.GetTestGroup(actionType);
+        if (SpeedtestService.IsRunning(group))
+        {
+            //a button only ever stops its own group
+            ServerSpeedtestStop(group);
+            return;
+        }
+        await ServerSpeedtest(actionType);
+    }
+
     public async Task ServerSpeedtest(ESpeedActionType actionType)
     {
+        var group = SpeedtestService.GetTestGroup(actionType);
+
+        //the two groups are mutually exclusive: the speed group measures delay as well, so
+        //letting them overlap would have both writing delays for the same profiles
+        var other = group == ESpeedTestGroup.Speed ? ESpeedTestGroup.Delay : ESpeedTestGroup.Speed;
+        if (SpeedtestService.IsRunning(other) && _speedtestService is not null)
+        {
+            await _speedtestService.ExitLoopAndWait(other, TimeSpan.FromSeconds(10));
+        }
+
         List<ProfileItem>? lstSelected;
         if (actionType is ESpeedActionType.Mixedtest or ESpeedActionType.FastRealping)
         {
@@ -767,13 +803,48 @@ public class ProfilesViewModel : MyReactiveObject
                 return Disposable.Empty;
             });
             await Task.CompletedTask;
+        }, async (group, running) =>
+        {
+            RxSchedulers.MainThreadScheduler.Schedule((group, running), (scheduler, state) =>
+            {
+                SetSpeedTestRunning(state.group, state.running);
+                return Disposable.Empty;
+            });
+            await Task.CompletedTask;
         });
         _speedtestService?.RunLoop(actionType, lstSelected);
     }
 
+    /// <summary>
+    /// Reflects the running state on the button that owns the group. The two groups are mutually
+    /// exclusive, so each button shows only its own state.
+    /// </summary>
+    private void SetSpeedTestRunning(ESpeedTestGroup group, bool running)
+    {
+        if (group == ESpeedTestGroup.Speed)
+        {
+            SpeedTestRunning = running;
+        }
+        else
+        {
+            DelayTestRunning = running;
+        }
+    }
+
+    /// <summary>
+    /// Stops every running test, used by the Escape shortcut.
+    /// </summary>
     public void ServerSpeedtestStop()
     {
         _speedtestService?.ExitLoop();
+    }
+
+    /// <summary>
+    /// Stops only the running tests of the given group.
+    /// </summary>
+    public void ServerSpeedtestStop(ESpeedTestGroup group)
+    {
+        _speedtestService?.ExitLoop(group);
     }
 
     private async Task Export2ClientConfigAsync(bool blClipboard)
