@@ -9,7 +9,8 @@ public class CoreAdminManager
     public static CoreAdminManager Instance => _instance.Value;
     private Config _config;
     private Func<bool, string, Task>? _updateFunc;
-    private int _linuxSudoPid = -1;
+    private readonly List<int> _linuxSudoPids = new();
+    private readonly object _linuxSudoPidsLock = new();
     private const string _tag = "CoreAdminHandler";
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
@@ -64,14 +65,49 @@ public class CoreAdminManager
         {
             throw new Exception(ResUI.FailedToRunCore);
         }
-        _linuxSudoPid = procService.Id;
+        TrackSudoPid(procService.Id);
 
         return procService;
     }
 
+    /// <summary>
+    ///     Remembers a root-owned launcher PID so it can be terminated later.
+    ///     A TUN launch elevates the main core and then the pre core, so this runs more than once
+    ///     per launch and every PID must be kept: the app itself runs unelevated and can only reach
+    ///     these processes through the sudo helper script.
+    /// </summary>
+    public void TrackSudoPid(int pid)
+    {
+        if (pid < 0)
+        {
+            return;
+        }
+
+        lock (_linuxSudoPidsLock)
+        {
+            _linuxSudoPids.Add(pid);
+        }
+    }
+
+    /// <summary>
+    ///     Returns every tracked PID and clears the list, most recently started first so the pre
+    ///     core is torn down before the main core it depends on.
+    /// </summary>
+    public IReadOnlyList<int> DrainSudoPids()
+    {
+        lock (_linuxSudoPidsLock)
+        {
+            var pids = new List<int>(_linuxSudoPids);
+            pids.Reverse();
+            _linuxSudoPids.Clear();
+            return pids;
+        }
+    }
+
     public async Task KillProcessAsLinuxSudo()
     {
-        if (_linuxSudoPid < 0)
+        var pids = DrainSudoPids();
+        if (pids.Count == 0)
         {
             return;
         }
@@ -84,19 +120,30 @@ public class CoreAdminManager
             {
                 shFilePath = shFilePath.AppendQuotes();
             }
-            var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
-            var result = await Cli.Wrap(Global.LinuxBash)
-                .WithArguments(arg)
-                .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
-                .ExecuteBufferedAsync();
 
-            await UpdateFunc(false, result.StandardOutput.ToString());
+            foreach (var pid in pids)
+            {
+                // Each PID is terminated independently: one failure must not strand the others,
+                // since a surviving root-owned core keeps holding the TUN device and its routes.
+                try
+                {
+                    var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {pid}" };
+                    var result = await Cli.Wrap(Global.LinuxBash)
+                        .WithArguments(arg)
+                        .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
+                        .ExecuteBufferedAsync();
+
+                    await UpdateFunc(false, result.StandardOutput.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog(_tag, ex);
+                }
+            }
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
-
-        _linuxSudoPid = -1;
     }
 }
