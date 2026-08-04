@@ -626,4 +626,36 @@ public class CoreConfigSingboxServiceTests
         }
     }
 
+    [Fact]
+    public void GenerateClientConfigContent_TunEnabled_ShouldKeepEmbeddedTunRules()
+    {
+        // The embedded tun rules reject local-network noise (NetBIOS/mDNS, multicast).
+        // They are deserialized into List<Rule4Sbox>, so a schema mismatch in the
+        // embedded template makes JsonUtils.Deserialize return null and silently
+        // drops every one of them.
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+
+        cfg.route.rules.Should().Contain(
+            r => r.action == "reject"
+                && r.network != null && r.network.Contains("udp")
+                && r.port != null && r.port.Contains(5353),
+            "the embedded tun rules must reject mDNS/NetBIOS noise");
+        cfg.route.rules.Should().Contain(
+            r => r.action == "reject"
+                && r.ip_cidr != null && r.ip_cidr.Contains("224.0.0.0/3"),
+            "the embedded tun rules must reject multicast traffic");
+    }
 }
