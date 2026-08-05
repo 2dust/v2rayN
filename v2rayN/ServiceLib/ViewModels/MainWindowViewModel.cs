@@ -84,6 +84,8 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     #endregion Menu
 
+    private readonly SynchronizationContext _uiContext = SynchronizationContext.Current;
+
     #region Init
 
     public MainWindowViewModel()
@@ -406,33 +408,14 @@ public partial class MainWindowViewModel : MyReactiveObject
     private async Task RefreshServersDispatcherAsync()
     {
         //await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
-
-        var uiContext = SynchronizationContext.Current;
-        if (uiContext != null)
-        {
-            var uiSequencer = new SynchronizationContextSequencer(uiContext);
-            uiSequencer.Schedule(() => _ = RefreshServers());
-        }
-        else
-        {
-            await RefreshServers();
-        }
+        _uiContext?.Post(_ => _ = RefreshServers(), null);
     }
 
     private async Task RefreshSubscriptions()
     {
         //await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
 
-        var uiContext = SynchronizationContext.Current;
-        if (uiContext != null)
-        {
-            var uiSequencer = new SynchronizationContextSequencer(uiContext);
-            uiSequencer.Schedule(() => _ = ProfilesViewModel.RefreshSubscriptions());
-        }
-        else
-        {
-            await ProfilesViewModel.RefreshSubscriptions();
-        }
+        _uiContext?.Post(_ => _ = ProfilesViewModel.RefreshSubscriptions(), null);
     }
 
     #endregion Servers && Groups
