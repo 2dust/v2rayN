@@ -30,6 +30,10 @@ public class TuicFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
+        if (GetQueryValue(query, "allow_insecure") == "1")
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             CongestionControl = GetQueryValue(query, "congestion_control")
@@ -53,7 +57,10 @@ public class TuicFmt : BaseFmt
 
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
-
+        if (item.GetAllowInsecure())
+        {
+            dicQuery.Add("allow_insecure", "1");
+        }
         if (!item.GetProtocolExtra().CongestionControl.IsNullOrEmpty())
         {
             dicQuery.Add("congestion_control", item.GetProtocolExtra().CongestionControl);

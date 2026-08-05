@@ -162,6 +162,10 @@ public class Hysteria2Fmt : BaseFmt
 
     private static void ResolveHy2UriQuery(NameValueCollection query, ref ProfileItem item)
     {
+        if (GetQueryValue(query, "insecure") == "1")
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
         if (item.CertSha.IsNullOrEmpty())
         {
             item.CertSha = GetQueryDecoded(query, "pinSHA256");
@@ -198,6 +202,10 @@ public class Hysteria2Fmt : BaseFmt
 
     private static void ToHy2UriQuery(ProfileItem item, ref Dictionary<string, string> dicQuery)
     {
+        if (item.GetAllowInsecure())
+        {
+            dicQuery.Add("insecure", "1");
+        }
         if (!item.CertSha.IsNullOrEmpty()
             && !item.CertSha.Contains(','))
         {

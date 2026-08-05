@@ -25,6 +25,11 @@ public class AnytlsFmt : BaseFmt
         var query = Utils.ParseQueryString(parsedUrl.Query);
         ResolveUriQuery(query, ref item);
 
+        if (GetQueryValue(query, "insecure") == "1")
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
+
         return item;
     }
 
@@ -41,6 +46,10 @@ public class AnytlsFmt : BaseFmt
         }
         var pw = item.Password;
         var dicQuery = new Dictionary<string, string>();
+        if (item.GetAllowInsecure())
+        {
+            dicQuery.Add("insecure", "1");
+        }
         ToUriQuery(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.Anytls, item.Address, item.Port, pw, dicQuery, remark);
