@@ -64,8 +64,6 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             {
                 ApplyFinalFragment();
             }
-            ApplyOutboundBindInterface();
-            ApplyOutboundSendThrough();
 
             var finalRule = BuildFinalRule();
             if (!string.IsNullOrEmpty(finalRule?.balancerTag))
@@ -75,7 +73,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = ApplyFullConfigTemplate();
+            ret.Data = ApplyFinalConfigModifiers();
             return ret;
         }
         catch (Exception ex)
@@ -119,7 +117,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!(Global.XraySupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType()))
+                if (!(Global.XraySupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.Outbound))
                 {
                     continue;
                 }
@@ -216,7 +214,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             ApplyOutboundSendThrough();
             //ret.Msg =string.Format(ResUI.SuccessfulConfiguration"), node.getSummary());
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(_coreConfig);
+            ret.Data = ApplyCustomOutboundReplace();
             return ret;
         }
         catch (Exception ex)
@@ -293,7 +291,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(_coreConfig);
+            ret.Data = ApplyCustomOutboundReplace();
             return ret;
         }
         catch (Exception ex)

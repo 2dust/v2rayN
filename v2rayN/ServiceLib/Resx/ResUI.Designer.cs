@@ -439,6 +439,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Custom config core 的本地化字符串。
+        /// </summary>
+        public static string LvCustomCoreType {
+            get {
+                return ResourceManager.GetString("LvCustomCoreType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Custom icon 的本地化字符串。
         /// </summary>
         public static string LvCustomIcon {
@@ -732,6 +741,15 @@ namespace ServiceLib.Resx {
         public static string menuAddChildServer {
             get {
                 return ResourceManager.GetString("menuAddChildServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add a custom outbound 的本地化字符串。
+        /// </summary>
+        public static string menuAddCustomOutboundServer {
+            get {
+                return ResourceManager.GetString("menuAddCustomOutboundServer", resourceCulture);
             }
         }
         
@@ -1933,7 +1951,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Warning: Xray will disable allowInsecure (skip certificate verification) in August 2026. Please switch to pinnedPeerCertSha256 (fixed certificate fingerprint) as soon as possible. allowInsecure will not be usable after its expiration. 的本地化字符串。
+        ///   查找类似 The current node uses an unencrypted connection, meaning your communications could be directly monitored by network intermediaries controlled by authoritarian governments. For security reasons, nodes of this type cannot connect via Xray-core versions 26.2.6 or higher. If this is a self-built node, please enable TLS or other secure encryption, or pin the certificate using pinSHA256. If this is an airport/provider node, please contact your service provider for a technical upgrade. If the provider refuses to c [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         public static string MsgAllowInsecureDeprecated {
             get {
@@ -1974,6 +1992,15 @@ namespace ServiceLib.Resx {
         public static string MsgCoreNotSupportProtocolTransport {
             get {
                 return ResourceManager.GetString("MsgCoreNotSupportProtocolTransport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom outbound {0} file not found: {1} 的本地化字符串。
+        /// </summary>
+        public static string MsgCustomOutboundFileNotFound {
+            get {
+                return ResourceManager.GetString("MsgCustomOutboundFileNotFound", resourceCulture);
             }
         }
         
@@ -2922,6 +2949,15 @@ namespace ServiceLib.Resx {
         public static string TbCustomDnsSingbox {
             get {
                 return ResourceManager.GetString("TbCustomDnsSingbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Only single outbound/endpoint supported for xray/sing-box 的本地化字符串。
+        /// </summary>
+        public static string TbCustomOutboundTip {
+            get {
+                return ResourceManager.GetString("TbCustomOutboundTip", resourceCulture);
             }
         }
         

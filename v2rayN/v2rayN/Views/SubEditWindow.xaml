@@ -64,6 +64,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -299,10 +300,25 @@
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
+                    Text="{x:Static resx:ResUI.LvCustomCoreType}" />
+                <ComboBox
+                    x:Name="cmbCustomCoreType"
+                    Grid.Row="11"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    MaxDropDownHeight="1000"
+                    Style="{StaticResource MyOutlinedTextComboBox}" />
+
+                <TextBlock
+                    Grid.Row="12"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
@@ -312,7 +328,7 @@
                     ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -320,7 +336,7 @@
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"

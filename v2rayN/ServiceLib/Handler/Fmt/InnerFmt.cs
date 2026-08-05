@@ -1,6 +1,6 @@
 namespace ServiceLib.Handler.Fmt;
 
-public class InnerFmt
+public class InnerFmt : BaseFmt
 {
     private static readonly Lazy<string> SessionSalt = new(() => Utils.GetGuid(false));
 
@@ -50,19 +50,19 @@ public class InnerFmt
             var protocolExtra = item.GetProtocolExtra();
             // Only allow "self" as a special value for SubChildItems to avoid possible sources of attacks,
             // which means it will be replaced with the subid, otherwise set it to null
-            //if (!protocolExtra.SubChildItems.IsNullOrEmpty())
+            // if (!protocolExtra.SubChildItems.IsNullOrEmpty())
             if (protocolExtra.SubChildItems == "self")
             {
                 protocolExtra = protocolExtra with
                 {
-                    SubChildItems = subid
+                    SubChildItems = subid,
                 };
             }
             else
             {
                 protocolExtra = protocolExtra with
                 {
-                    SubChildItems = null
+                    SubChildItems = null,
                 };
             }
             if (Utils.String2List(protocolExtra.ChildItems) is { Count: > 0 } childIndexIds)
@@ -73,14 +73,14 @@ public class InnerFmt
                     .ToList();
                 protocolExtra = protocolExtra with
                 {
-                    ChildItems = Utils.List2String(newChildIndexIds)
+                    ChildItems = Utils.List2String(newChildIndexIds),
                 };
             }
             else
             {
                 protocolExtra = protocolExtra with
                 {
-                    ChildItems = null
+                    ChildItems = null,
                 };
             }
             item.SetProtocolExtra(protocolExtra);
@@ -120,7 +120,7 @@ public class InnerFmt
                 {
                     protocolExtra = protocolExtra with
                     {
-                        SubChildItems = "self"
+                        SubChildItems = "self",
                     };
                 }
                 if (Utils.String2List(protocolExtra.ChildItems) is { Count: > 0 } childIndexIds)
@@ -131,7 +131,7 @@ public class InnerFmt
                         .ToList();
                     protocolExtra = protocolExtra with
                     {
-                        ChildItems = Utils.List2String(newChildIndexIds)
+                        ChildItems = Utils.List2String(newChildIndexIds),
                     };
                 }
                 itemClone.SetProtocolExtra(protocolExtra);
@@ -175,6 +175,19 @@ public class InnerFmt
             jsonObj["TransportExtra"] = JsonUtils.Serialize(transportExtraObj, false);
             jsonObj.Remove("TransportExtraObj");
         }
+        var customOutboundFilePath = string.Empty;
+        if (jsonObj.TryGetPropertyValue("CustomOutboundObj", out var customOutboundNode)
+            && customOutboundNode is JsonObject customOutboundObj)
+        {
+            var customOutboundContent = JsonUtils.Serialize(customOutboundObj, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
+            customOutboundFilePath = WriteAllText(customOutboundContent);
+            jsonObj.Remove("CustomOutboundObj");
+        }
         var profileItem = JsonUtils.Deserialize<ProfileItem>(JsonUtils.Serialize(jsonObj, false));
         if (profileItem is null)
         {
@@ -193,6 +206,14 @@ public class InnerFmt
         {
             return null;
         }
+        if (profileItem.ConfigType is EConfigType.Outbound)
+        {
+            if (customOutboundFilePath.IsNullOrEmpty())
+            {
+                return null;
+            }
+            profileItem.Address = customOutboundFilePath;
+        }
         var protocolExtra = profileItem.GetProtocolExtra();
         var multipleLoad = protocolExtra.MultipleLoad;
         if (multipleLoad is not null && !Enum.IsDefined(typeof(EMultipleLoad), multipleLoad))
@@ -208,6 +229,26 @@ public class InnerFmt
         if (jsonNode is not JsonObject jsonObj)
         {
             return null;
+        }
+        if (item.ConfigType is EConfigType.Outbound)
+        {
+            var customOutboundFilePath = item.Address;
+            if (!File.Exists(customOutboundFilePath))
+            {
+                customOutboundFilePath = Utils.GetConfigPath(customOutboundFilePath);
+            }
+            if (!File.Exists(customOutboundFilePath))
+            {
+                return null;
+            }
+            if (!customOutboundFilePath.IsNullOrEmpty()
+                && File.Exists(customOutboundFilePath)
+                && File.ReadAllText(customOutboundFilePath) is { Length: > 0 } customOutboundContent
+                && JsonUtils.ParseJson(customOutboundContent) is JsonObject customOutboundObj)
+            {
+                jsonObj["CustomOutboundObj"] = customOutboundObj;
+                jsonObj.Remove("Address");
+            }
         }
         // unflatten
         // move jsonObj.ProtoExtra (string) to jsonObj.ProtoExtraObj
@@ -296,7 +337,7 @@ public class InnerFmt
             JsonValue value when value.TryGetValue<string>(out var str) => string.IsNullOrEmpty(str),
             JsonObject obj => obj.Count == 0,
             JsonArray arr => arr.Count == 0,
-            _ => false
+            _ => false,
         };
     }
 }

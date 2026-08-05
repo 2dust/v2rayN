@@ -103,57 +103,102 @@
                     HorizontalAlignment="Left"
                     MaxDropDownHeight="1000" />
 
-                <TextBlock
+                <Separator
                     Grid.Row="4"
                     Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbDisplayLog}" />
-                <StackPanel
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Margin="{StaticResource Margin4}"
-                    Orientation="Horizontal">
+                    Grid.ColumnSpan="3"
+                    Margin="{StaticResource Margin4}" />
+
+                <Grid
+                    x:Name="gridCustomServer"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    ColumnDefinitions="Auto,Auto,Auto"
+                    RowDefinitions="Auto,Auto,Auto">
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbDisplayLog}" />
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="{StaticResource Margin4}"
+                        Orientation="Horizontal">
+                        <ToggleSwitch
+                            x:Name="togDisplayLog"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            Margin="{StaticResource MarginLr8}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TipDisplayLog}" />
+                    </StackPanel>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbPreSocksPort}" />
+                    <TextBox
+                        x:Name="txtPreSocksPort"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left" />
+                    <StackPanel
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="{StaticResource Margin4}">
+                        <TextBlock
+                            Width="500"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TipPreSocksPort}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Width="500"
+                            Margin="{StaticResource MarginLr8}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.CustomServerTips}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid
+                    x:Name="gridCustomOutbound"
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    ColumnDefinitions="Auto,Auto,Auto"
+                    IsVisible="False"
+                    RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="Sing-Box Endpoint" />
                     <ToggleSwitch
-                        x:Name="togDisplayLog"
+                        x:Name="togSingBoxEndpoint"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
                     <TextBlock
-                        Margin="{StaticResource MarginLr8}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TipDisplayLog}" />
-                </StackPanel>
-
-                <TextBlock
-                    Grid.Row="5"
-                    Grid.Column="0"
-                    Margin="{StaticResource Margin4}"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbPreSocksPort}" />
-                <TextBox
-                    x:Name="txtPreSocksPort"
-                    Grid.Row="5"
-                    Grid.Column="1"
-                    Width="200"
-                    Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
-                <StackPanel
-                    Grid.Row="6"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Margin="{StaticResource Margin4}">
-                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
                         Width="500"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.TipPreSocksPort}"
+                        Text="{x:Static resx:ResUI.TbCustomOutboundTip}"
                         TextWrapping="Wrap" />
-                    <TextBlock
-                        Width="500"
-                        Margin="{StaticResource MarginLr8}"
-                        VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.CustomServerTips}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                </Grid>
             </Grid>
         </ScrollViewer>
     </DockPanel>

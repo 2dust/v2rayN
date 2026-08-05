@@ -92,7 +92,7 @@ public static class Extension
 
     public static bool IsComplexType(this EConfigType configType)
     {
-        return configType is EConfigType.Custom or EConfigType.PolicyGroup or EConfigType.ProxyChain;
+        return configType is EConfigType.Custom or EConfigType.Outbound or EConfigType.PolicyGroup or EConfigType.ProxyChain;
     }
 
     /// <summary>

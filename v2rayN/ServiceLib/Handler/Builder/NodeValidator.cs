@@ -36,6 +36,15 @@ public class NodeValidator
             return;
         }
 
+        if (item.ConfigType is EConfigType.Outbound)
+        {
+            if (item.CoreType != coreType)
+            {
+                v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, coreType.ToString(), item.ConfigType));
+            }
+            return;
+        }
+
         if (item.ConfigType.IsGroupType())
         {
             // Group logic is handled in ValidateGroupNode

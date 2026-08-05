@@ -1848,4 +1848,16 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbIpv4Address" xml:space="preserve">
     <value>Ipv4 Address</value>
   </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>Add a custom outbound</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>Custom outbound {0} file not found: {1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>Only single outbound/endpoint supported for xray/sing-box</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Custom config core</value>
+  </data>
 </root>

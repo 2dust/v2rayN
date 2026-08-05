@@ -188,7 +188,8 @@ public partial class CoreConfigV2rayService
 
         if (node == null
             || (!Global.XraySupportConfigType.Contains(node.ConfigType)
-            && !node.ConfigType.IsGroupType()))
+            && !node.ConfigType.IsGroupType()
+            && node.ConfigType is not EConfigType.Outbound))
         {
             return Global.ProxyTag;
         }
