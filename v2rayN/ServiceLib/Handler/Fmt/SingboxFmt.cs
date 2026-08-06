@@ -76,6 +76,7 @@ public class SingboxFmt : BaseFmt
         var fileName = WriteAllText(JsonUtils.Serialize(jsonObject));
         var profileItem = new ProfileItem
         {
+            ConfigType = EConfigType.Custom,
             CoreType = ECoreType.sing_box,
             Address = fileName,
             Remarks = subRemarks ?? "singbox_custom",
