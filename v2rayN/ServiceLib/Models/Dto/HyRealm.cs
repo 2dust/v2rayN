@@ -42,6 +42,12 @@ public record HyRealm(
             var uri = new Uri(str);
             var token = Utils.UrlDecode(uri.UserInfo);
             var rendezvousHost = uri.Host;
+            // Reject an empty host here; otherwise ToUri() later feeds it to UriBuilder, whose
+            // Uri getter throws UriFormatException ("The hostname could not be parsed").
+            if (rendezvousHost.IsNullOrEmpty())
+            {
+                return false;
+            }
             var rendezvousPort = uri.IsDefaultPort ? (isHttp ? 80 : 443) : uri.Port;
             var realmName = uri.AbsolutePath.TrimStart('/');
             var stunList = new List<string>();
