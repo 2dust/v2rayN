@@ -59,8 +59,8 @@ public class QRCodeUtils
 
         try
         {
-            var image = SKImage.FromEncodedData(fileName);
-            var bitmap = SKBitmap.FromImage(image);
+            using var data = SKData.Create(fileName);
+            var bitmap = DecodeWithinLimit(data);
 
             return ReaderBarcode(bitmap);
         }
@@ -72,15 +72,42 @@ public class QRCodeUtils
         return null;
     }
 
+    // A QR code from a screen capture or an image file is at most a few megapixels. A crafted
+    // image header can declare enormous dimensions (e.g. a 26-byte GIF claiming 4097x65529 =
+    // ~268 MP), making SKBitmap.Decode allocate gigabytes; the reader then scans a flipped copy
+    // too, so the process hangs on ~8s of CPU and multiple GB of RAM. Cap the pixel count well
+    // above any real QR before decoding.
+    private const long MaxBarcodeImagePixels = 4096L * 4096L;
+
+    private static SKBitmap? DecodeWithinLimit(SKData data)
+    {
+        if (data == null)
+        {
+            return null;
+        }
+        using var codec = SKCodec.Create(data);
+        if (codec == null)
+        {
+            return null;
+        }
+        var info = codec.Info;
+        if ((long)info.Width * info.Height > MaxBarcodeImagePixels)
+        {
+            return null;
+        }
+        return SKBitmap.Decode(codec);
+    }
+
     public static string? ParseBarcode(byte[]? bytes)
     {
+        if (bytes == null)
+        {
+            return null;
+        }
         try
         {
-            var bitmap = SKBitmap.Decode(bytes);
-            //using var stream = new FileStream("test2.png", FileMode.Create, FileAccess.Write);
-            //using var image = SKImage.FromBitmap(bitmap);
-            //using var encodedImage = image.Encode();
-            //encodedImage.SaveTo(stream);
+            using var data = SKData.CreateCopy(bytes);
+            var bitmap = DecodeWithinLimit(data);
             return ReaderBarcode(bitmap);
         }
         catch
@@ -93,6 +120,10 @@ public class QRCodeUtils
 
     private static string? ReaderBarcode(SKBitmap? bitmap)
     {
+        if (bitmap == null)
+        {
+            return null;
+        }
         var reader = new BarcodeReader();
         var result = reader.Decode(bitmap);
 
