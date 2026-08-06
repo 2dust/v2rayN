@@ -40,7 +40,12 @@ public class JsonUtils
 
     private static readonly JsonDocumentOptions _defaultDocumentOptions = new()
     {
-        CommentHandling = JsonCommentHandling.Skip
+        CommentHandling = JsonCommentHandling.Skip,
+        // Reject duplicate property names during parsing. Without this, JsonNode.Parse accepts
+        // them and a JsonObject throws ArgumentException lazily when it builds its dictionary on
+        // first property access - outside this try/catch, at the parser call sites. With it, the
+        // failure surfaces here as a JsonException and ParseJson returns null gracefully.
+        AllowDuplicateProperties = false
     };
 
     /// <summary>
