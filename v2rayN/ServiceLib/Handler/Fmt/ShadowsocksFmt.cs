@@ -296,6 +296,12 @@ public class ShadowsocksFmt : BaseFmt
             List<ProfileItem> lst = [];
             foreach (var it in lstSsServer)
             {
+                // A JSON array like [null] deserializes to a list with a null element; skip it
+                // to avoid a NullReferenceException dereferencing it.remarks/server/etc. below.
+                if (it is null)
+                {
+                    continue;
+                }
                 var ssItem = new ProfileItem()
                 {
                     Remarks = it.remarks,
