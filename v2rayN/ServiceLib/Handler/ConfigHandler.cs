@@ -586,7 +586,6 @@ public static class ConfigHandler
         return 0;
     }
 
-
     public static async Task<int> AddCustomOutboundServer(Config config, ProfileItem profileItem, bool blDelete, bool toFile = true)
     {
         var fileName = profileItem.Address;
@@ -1739,8 +1738,16 @@ public static class ConfigHandler
         SubItem? subItem)
     {
         var subRemarks = subItem?.Remarks;
-        // Safe Mode: Only allow full configuration if it's not from a subscription
-        var lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+        // Prioritize using complete custom parsing, followed by custom outbound parsing.
+        var lstProfiles = V2rayFmt.ResolveToCustom(strData, subRemarks);
+        if (lstProfiles.Count == 0)
+        {
+            lstProfiles = SingboxFmt.ResolveToCustom(strData, subRemarks);
+        }
+        if (lstProfiles.Count == 0)
+        {
+            lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+        }
         if (lstProfiles.Count == 0)
         {
             lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
@@ -1750,7 +1757,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        var count = await AddCustomOutboundServers(config, lstProfiles, subid, isSub);
+        var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
         if (count > 0)
         {
             return count;
@@ -1786,7 +1793,7 @@ public static class ConfigHandler
         var subRemarks = subItem.Remarks;
         var customCoreType = subItem.CustomCoreType!.Value;
 
-        List<ProfileItem>? lstProfiles = customCoreType switch
+        var lstProfiles = customCoreType switch
         {
             ECoreType.Xray => V2rayFmt.ResolveToCustom(strData, subRemarks),
             ECoreType.sing_box => SingboxFmt.ResolveToCustom(strData, subRemarks),
@@ -1800,7 +1807,7 @@ public static class ConfigHandler
                 return -1;
             }
 
-            var count = await AddCustomOutboundServers(config, lstProfiles, subid, isSub);
+            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
             if (count > 0)
             {
                 return count;
@@ -1810,7 +1817,7 @@ public static class ConfigHandler
         return await SaveCustomRawFileServer(config, strData, subid, isSub, subItem, customCoreType);
     }
 
-    private static async Task<int> AddCustomOutboundServers(
+    private static async Task<int> AddBatchCustomServers(
         Config config,
         List<ProfileItem> lstProfiles,
         string subid,
@@ -1821,9 +1828,20 @@ public static class ConfigHandler
         {
             it.Subid = subid;
             it.IsSub = isSub;
-            if (await AddCustomOutboundServer(config, it, true) == 0)
+
+            if (it.ConfigType == EConfigType.Custom)
             {
-                count++;
+                if (await AddCustomServer(config, it, true) == 0)
+                {
+                    count++;
+                }
+            }
+            else
+            {
+                if (await AddCustomOutboundServer(config, it, true) == 0)
+                {
+                    count++;
+                }
             }
         }
         return count;

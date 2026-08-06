@@ -77,6 +77,7 @@ public class V2rayFmt : BaseFmt
 
         var profileItem = new ProfileItem
         {
+            ConfigType = EConfigType.Custom,
             CoreType = ECoreType.Xray,
             Address = fileName,
             Remarks = jsonObject["remarks"]?.ToString() ?? subRemarks ?? "v2ray_custom",

@@ -753,11 +753,11 @@ public class Utils
         return false;
     }
 
-    public static int GetFreePort(int defaultPort = 0)
+    public static int GetFreePort(int defaultPort)
     {
         try
         {
-            if (!(defaultPort == 0 || Utils.PortInUse(defaultPort)))
+            if (!PortInUse(defaultPort))
             {
                 return defaultPort;
             }
