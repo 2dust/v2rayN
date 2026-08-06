@@ -596,7 +596,13 @@ public class Utils
     {
         try
         {
-            return new Uri(url);
+            var uri = new Uri(url);
+            // Uri computes the IDN host lazily, so an invalid host (e.g. a soft hyphen U+00AD,
+            // zero-width space U+200B, or replacement char U+FFFD produced by decoding garbage
+            // bytes) does not fail here but throws UriFormatException later at every uri.IdnHost
+            // access. Force the evaluation now so such URIs are rejected in this single guard.
+            _ = uri.IdnHost;
+            return uri;
         }
         catch (UriFormatException)
         {
