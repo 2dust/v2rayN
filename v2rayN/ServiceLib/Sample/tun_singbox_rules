@@ -1,6 +1,8 @@
 [
   {
-    "network": "udp",
+    "network": [
+      "udp"
+    ],
     "port": [
       135,
       137,

@@ -57,13 +57,10 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             ConvertGeo2Ruleset();
 
-            ApplyOutboundBindInterface();
-            ApplyOutboundSendThrough();
-
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
 
-            ret.Data = ApplyFullConfigTemplate();
+            ret.Data = ApplyFinalConfigModifiers();
             return ret;
         }
         catch (Exception ex)
@@ -107,7 +104,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             foreach (var it in selecteds)
             {
-                if (!(Global.SingboxSupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType()))
+                if (!(Global.SingboxSupportConfigType.Contains(it.ConfigType) || it.ConfigType.IsGroupType() || it.ConfigType is EConfigType.Outbound))
                 {
                     continue;
                 }
@@ -174,7 +171,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
             ApplyOutboundBindInterface();
             ApplyOutboundSendThrough();
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(_coreConfig);
+            ret.Data = ApplyCustomOutboundReplace();
             return ret;
         }
         catch (Exception ex)
@@ -236,7 +233,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            ret.Data = JsonUtils.Serialize(_coreConfig);
+            ret.Data = ApplyCustomOutboundReplace();
             return ret;
         }
         catch (Exception ex)

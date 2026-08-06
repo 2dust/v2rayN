@@ -150,6 +150,23 @@ internal static class CoreConfigTestFactory
         };
     }
 
+    public static ProfileItem CreateCustomOutboundNode(ECoreType coreType, string indexId = "node-custom-1",
+        string remarks = "demo-custom-outbound", string address = "custom_outbound.json")
+    {
+        return new ProfileItem
+        {
+            IndexId = indexId,
+            ConfigType = EConfigType.Outbound,
+            CoreType = coreType,
+            Remarks = remarks,
+            Address = address,
+            Port = 0,
+            Network = nameof(ETransport.raw),
+            StreamSecurity = string.Empty,
+            Subid = string.Empty,
+        };
+    }
+
     public static ProfileItem CreatePolicyGroupNode(ECoreType coreType, string indexId, string remarks,
         IEnumerable<string> childIndexIds)
     {

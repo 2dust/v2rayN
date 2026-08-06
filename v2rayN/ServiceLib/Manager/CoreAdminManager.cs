@@ -91,6 +91,8 @@ public class CoreAdminManager
                 .ExecuteBufferedAsync();
 
             await UpdateFunc(false, result.StandardOutput.ToString());
+
+            await Task.Delay(1000); // Wait for a second to ensure the process is killed
         }
         catch (Exception ex)
         {

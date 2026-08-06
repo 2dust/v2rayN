@@ -33,6 +33,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> AddAnytlsServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddNaiveServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddCustomServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddCustomOutboundServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddPolicyGroupServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddProxyChainServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddServerViaClipboardCmd { get; }
@@ -83,6 +84,8 @@ public partial class MainWindowViewModel : MyReactiveObject
     [Reactive] public partial EGirdOrientation MainGirdOrientation { get; set; }
 
     #endregion Menu
+
+    private readonly SynchronizationContext _uiContext = SynchronizationContext.Current;
 
     #region Init
 
@@ -142,6 +145,10 @@ public partial class MainWindowViewModel : MyReactiveObject
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(EConfigType.Custom);
+        });
+        AddCustomOutboundServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(EConfigType.Outbound);
         });
         AddPolicyGroupServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -406,33 +413,14 @@ public partial class MainWindowViewModel : MyReactiveObject
     private async Task RefreshServersDispatcherAsync()
     {
         //await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
-
-        var uiContext = SynchronizationContext.Current;
-        if (uiContext != null)
-        {
-            var uiSequencer = new SynchronizationContextSequencer(uiContext);
-            uiSequencer.Schedule(() => _ = RefreshServers());
-        }
-        else
-        {
-            await RefreshServers();
-        }
+        _uiContext?.Post(_ => _ = RefreshServers(), null);
     }
 
     private async Task RefreshSubscriptions()
     {
         //await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
 
-        var uiContext = SynchronizationContext.Current;
-        if (uiContext != null)
-        {
-            var uiSequencer = new SynchronizationContextSequencer(uiContext);
-            uiSequencer.Schedule(() => _ = ProfilesViewModel.RefreshSubscriptions());
-        }
-        else
-        {
-            await ProfilesViewModel.RefreshSubscriptions();
-        }
+        _uiContext?.Post(_ => _ = ProfilesViewModel.RefreshSubscriptions(), null);
     }
 
     #endregion Servers && Groups
@@ -449,7 +437,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         };
 
         bool? ret = false;
-        if (eConfigType == EConfigType.Custom)
+        if (eConfigType is EConfigType.Custom or EConfigType.Outbound)
         {
             var addServer2ViewModel = new AddServer2ViewModel(item);
             ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServer2ViewModel);

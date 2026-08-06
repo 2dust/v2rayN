@@ -2,54 +2,137 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
 {
-    private string ApplyFullConfigTemplate()
+    private string ApplyFinalConfigModifiers()
+    {
+        ApplyOutboundBindInterface();
+        ApplyOutboundSendThrough();
+
+        var coreConfigContent = ApplyCustomOutboundReplace();
+
+        return ApplyFullConfigTemplate(coreConfigContent);
+    }
+
+    private string ApplyCustomOutboundReplace()
+    {
+        var coreConfigContent = JsonUtils.Serialize(_coreConfig);
+        if (context.CustomOutboundMap.Count == 0)
+        {
+            return coreConfigContent;
+        }
+        var coreConfigNode = JsonNode.Parse(coreConfigContent) as JsonObject;
+        var coreConfigOutboundsNode = coreConfigNode?["outbounds"] as JsonArray ?? [];
+        ReplaceCustomOutbounds(_coreConfig.outbounds, coreConfigOutboundsNode);
+        coreConfigNode!["outbounds"] = coreConfigOutboundsNode;
+        var coreConfigEndpointsNode = coreConfigNode?["endpoints"] as JsonArray ?? [];
+        ReplaceCustomOutbounds(_coreConfig.endpoints, coreConfigEndpointsNode);
+        if (coreConfigEndpointsNode.Count > 0)
+        {
+            coreConfigNode!["endpoints"] = coreConfigEndpointsNode;
+        }
+        else
+        {
+            coreConfigNode?.Remove("endpoints");
+        }
+        return JsonUtils.Serialize(coreConfigNode);
+
+        void ReplaceCustomOutbounds(IReadOnlyList<BaseServer4Sbox>? source, JsonArray jsonArrayOutbounds)
+        {
+            foreach (var outbound in source ?? [])
+            {
+                if (!context.CustomOutboundMap.TryGetValue(outbound, out var customOutboundIndex))
+                {
+                    continue;
+                }
+                var outboundTag = outbound.tag;
+                var outboundDetour = outbound.detour ?? string.Empty;
+                var outboundBindInterface = outbound.bind_interface ?? string.Empty;
+                var customOutboundContent = context.CustomOutboundContent[customOutboundIndex];
+                var containTagPlaceholder = customOutboundContent.Contains("{{tag}}");
+                var containDetourPlaceholder = customOutboundContent.Contains("{{detour}}");
+                var containBindInterfacePlaceholder = customOutboundContent.Contains("{{interface}}");
+                customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
+                customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
+                customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
+                var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
+
+                if (!containTagPlaceholder)
+                {
+                    customOutboundObj?["tag"] = outboundTag;
+                }
+                if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
+                {
+                    customOutboundObj?["detour"] = outboundDetour;
+                }
+                else if (outboundDetour.IsNullOrEmpty())
+                {
+                    customOutboundObj?.Remove("detour");
+                }
+                if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
+                {
+                    customOutboundObj?["bind_interface"] = outboundBindInterface;
+                }
+
+                var index = jsonArrayOutbounds
+                    .Select((node, idx) => new { node, idx })
+                    .FirstOrDefault(x => x.node?["tag"]?.ToString() == outboundTag)?.idx ?? -1;
+                if (index != -1)
+                {
+                    jsonArrayOutbounds[index] = customOutboundObj;
+                }
+            }
+        }
+    }
+
+    private string ApplyFullConfigTemplate(string coreConfigContent)
     {
         var fullConfigTemplate = context.FullConfigTemplate;
         if (fullConfigTemplate is not { Enabled: true })
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         var fullConfigTemplateItem = context.IsTunEnabled ? fullConfigTemplate.TunConfig : fullConfigTemplate.Config;
         if (fullConfigTemplateItem.IsNullOrEmpty())
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
         if (fullConfigTemplateNode == null)
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         // Process outbounds
         var customOutboundsNode = fullConfigTemplateNode["outbounds"] as JsonArray ?? [];
-        foreach (var outbound in _coreConfig.outbounds)
+        var coreConfigNode = JsonNode.Parse(coreConfigContent);
+        var coreConfigOutboundsNode = coreConfigNode?["outbounds"] as JsonArray ?? [];
+        foreach (var outbound in coreConfigOutboundsNode)
         {
-            if (outbound.type.ToLower() is "direct" or "block")
+            if (outbound["type"]?.ToString()?.ToLower() is "direct" or "block")
             {
                 if (fullConfigTemplate.AddProxyOnly == true)
                 {
                     continue;
                 }
             }
-            else if (outbound.detour.IsNullOrEmpty() && !fullConfigTemplate.ProxyDetour.IsNullOrEmpty() && !Utils.IsPrivateNetwork(outbound.server ?? string.Empty))
+            if (outbound["detour"] is null && !fullConfigTemplate.ProxyDetour.IsNullOrEmpty() && !Utils.IsPrivateNetwork(outbound["server"]?.ToString() ?? string.Empty))
             {
-                outbound.detour = fullConfigTemplate.ProxyDetour;
+                outbound["detour"] = fullConfigTemplate.ProxyDetour;
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));
         }
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         // Process endpoints
-        if (_coreConfig.endpoints is { Count: > 0 })
+        if (fullConfigTemplateNode["endpoints"] is JsonArray { Count: > 0 } coreConfigEndpointsNode)
         {
             var customEndpointsNode = fullConfigTemplateNode["endpoints"] as JsonArray ?? [];
-            foreach (var endpoint in _coreConfig.endpoints)
+            foreach (var endpoint in coreConfigEndpointsNode)
             {
-                if (endpoint.detour.IsNullOrEmpty() && !fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
+                if (endpoint["detour"] is null && !fullConfigTemplate.ProxyDetour.IsNullOrEmpty())
                 {
-                    endpoint.detour = fullConfigTemplate.ProxyDetour;
+                    endpoint["detour"] = fullConfigTemplate.ProxyDetour;
                 }
                 customEndpointsNode.Add(JsonUtils.DeepCopy(endpoint));
             }

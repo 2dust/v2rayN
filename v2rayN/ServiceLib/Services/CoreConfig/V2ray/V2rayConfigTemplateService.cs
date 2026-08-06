@@ -2,24 +2,105 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private string ApplyFullConfigTemplate()
+    private string ApplyFinalConfigModifiers()
+    {
+        ApplyOutboundBindInterface();
+        ApplyOutboundSendThrough();
+
+        var coreConfigContent = ApplyCustomOutboundReplace();
+
+        return ApplyFullConfigTemplate(coreConfigContent);
+    }
+
+    private string ApplyCustomOutboundReplace()
+    {
+        var coreConfigContent = JsonUtils.Serialize(_coreConfig);
+        if (context.CustomOutboundMap.Count == 0)
+        {
+            return coreConfigContent;
+        }
+        var coreConfigNode = JsonNode.Parse(coreConfigContent) as JsonObject;
+        var coreConfigOutboundsNode = coreConfigNode?["outbounds"] as JsonArray ?? [];
+
+        foreach (var outbound in _coreConfig.outbounds ?? [])
+        {
+            if (!context.CustomOutboundMap.TryGetValue(outbound, out var customOutboundIndex))
+            {
+                continue;
+            }
+            var outboundTag = outbound.tag;
+            var outboundDetour = outbound.streamSettings?.sockopt?.dialerProxy ?? string.Empty;
+            var outboundBindInterface = outbound.streamSettings?.sockopt?.Interface ?? string.Empty;
+            var customOutboundContent = context.CustomOutboundContent[customOutboundIndex];
+            var containTagPlaceholder = customOutboundContent.Contains("{{tag}}");
+            var containDetourPlaceholder = customOutboundContent.Contains("{{detour}}");
+            var containBindInterfacePlaceholder = customOutboundContent.Contains("{{interface}}");
+            customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
+            customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
+            customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
+            var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
+
+            if (!containTagPlaceholder)
+            {
+                customOutboundObj?["tag"] = outboundTag;
+            }
+            if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
+            {
+                customOutboundObj!["streamSettings"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"]["dialerProxy"] = outboundDetour;
+                if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                {
+                    downloadSettings["sockopt"] ??= new JsonObject();
+                    downloadSettings["sockopt"]["dialerProxy"] = outboundDetour;
+                }
+            }
+            else if (outboundDetour.IsNullOrEmpty())
+            {
+                (customOutboundObj?["streamSettings"]?["sockopt"] as JsonObject)?.Remove("dialerProxy");
+            }
+            if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
+            {
+                customOutboundObj!["streamSettings"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
+                customOutboundObj["streamSettings"]["sockopt"]["interface"] = outboundBindInterface;
+                if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                {
+                    downloadSettings["sockopt"] ??= new JsonObject();
+                    downloadSettings["sockopt"]["interface"] = outboundBindInterface;
+                }
+            }
+
+            var index = coreConfigOutboundsNode
+                .Select((node, idx) => new { node, idx })
+                .FirstOrDefault(x => x.node?["tag"]?.ToString() == outboundTag)?.idx ?? -1;
+            if (index != -1)
+            {
+                coreConfigOutboundsNode[index] = customOutboundObj;
+            }
+        }
+
+        return JsonUtils.Serialize(coreConfigNode);
+    }
+
+    private string ApplyFullConfigTemplate(string coreConfigContent)
     {
         var fullConfigTemplate = context.FullConfigTemplate;
         if (fullConfigTemplate is not { Enabled: true })
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         var fullConfigTemplateItem = context.IsTunEnabled ? fullConfigTemplate.TunConfig : fullConfigTemplate.Config;
         if (fullConfigTemplateItem.IsNullOrEmpty())
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         var fullConfigTemplateNode = JsonNode.Parse(fullConfigTemplateItem);
         if (fullConfigTemplateNode == null)
         {
-            return JsonUtils.Serialize(_coreConfig);
+            return coreConfigContent;
         }
 
         // Handle balancer and rules modifications (for multiple load scenarios)
@@ -74,8 +155,8 @@ public partial class CoreConfigV2rayService
             else
             {
                 var subjectSelector = _coreConfig.observatory.subjectSelector;
-                subjectSelector.AddRange(fullConfigTemplateNode["observatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
-                fullConfigTemplateNode["observatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
+                subjectSelector?.AddRange(fullConfigTemplateNode["observatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["observatory"]?["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector?.Distinct().ToList()));
             }
         }
 
@@ -88,16 +169,18 @@ public partial class CoreConfigV2rayService
             else
             {
                 var subjectSelector = _coreConfig.burstObservatory.subjectSelector;
-                subjectSelector.AddRange(fullConfigTemplateNode["burstObservatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
-                fullConfigTemplateNode["burstObservatory"]["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector.Distinct().ToList()));
+                subjectSelector?.AddRange(fullConfigTemplateNode["burstObservatory"]?["subjectSelector"]?.AsArray()?.Select(x => x?.GetValue<string>()) ?? []);
+                fullConfigTemplateNode["burstObservatory"]?["subjectSelector"] = JsonNode.Parse(JsonUtils.Serialize(subjectSelector?.Distinct().ToList()));
             }
         }
 
         var customOutboundsNode = new JsonArray();
 
-        foreach (var outbound in _coreConfig.outbounds)
+        var coreConfigNode = JsonNode.Parse(coreConfigContent);
+        var coreConfigOutboundsNode = coreConfigNode?["outbounds"] as JsonArray ?? [];
+        foreach (var outbound in coreConfigOutboundsNode)
         {
-            if (outbound.protocol.ToLower() is "blackhole" or "dns" or "freedom")
+            if (outbound?["protocol"]?.ToString()?.ToLower() is "blackhole" or "dns" or "freedom")
             {
                 if (fullConfigTemplate.AddProxyOnly == true)
                 {
@@ -105,14 +188,22 @@ public partial class CoreConfigV2rayService
                 }
             }
             else if (!fullConfigTemplate.ProxyDetour.IsNullOrEmpty()
-                && (outbound.streamSettings?.sockopt?.dialerProxy.IsNullOrEmpty() ?? true))
+                && (outbound["streamSettings"]?["sockopt"]?["dialerProxy"].ToString().IsNullOrEmpty() ?? true))
             {
-                var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
-                    ?? outbound.settings?.vnext?.FirstOrDefault()?.address
+                var outboundAddress = outbound["settings"]?["servers"]?.AsArray()?.FirstOrDefault()?["address"]?.ToString()
+                    ?? outbound["settings"]?["vnext"]?.AsArray()?.FirstOrDefault()?["address"]?.ToString()
                     ?? string.Empty;
                 if (!Utils.IsPrivateNetwork(outboundAddress))
                 {
-                    FillDialerProxy(outbound, fullConfigTemplate.ProxyDetour);
+                    //FillDialerProxy(outbound, fullConfigTemplate.ProxyDetour);
+                    outbound["streamSettings"] ??= new JsonObject();
+                    outbound["streamSettings"]["sockopt"] ??= new JsonObject();
+                    outbound["streamSettings"]["sockopt"]["dialerProxy"] = fullConfigTemplate.ProxyDetour;
+                    if (outbound["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                    {
+                        downloadSettings["sockopt"] ??= new JsonObject();
+                        downloadSettings["sockopt"]["dialerProxy"] = fullConfigTemplate.ProxyDetour;
+                    }
                 }
             }
             customOutboundsNode.Add(JsonUtils.DeepCopy(outbound));

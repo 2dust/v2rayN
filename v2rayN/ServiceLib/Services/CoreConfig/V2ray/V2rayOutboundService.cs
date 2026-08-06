@@ -52,6 +52,12 @@ public partial class CoreConfigV2rayService
     {
         var txtOutbound = EmbedUtils.GetEmbedText(Global.V2raySampleOutbound);
         var outbound = JsonUtils.Deserialize<Outbounds4Ray>(txtOutbound);
+        if (_node.ConfigType == EConfigType.Outbound)
+        {
+            outbound.tag = baseTagName;
+            context.CustomOutboundMap[outbound] = _node.IndexId;
+            return outbound;
+        }
         FillOutbound(outbound);
         outbound.tag = baseTagName;
         return outbound;
@@ -404,7 +410,6 @@ public partial class CoreConfigV2rayService
 
                 TlsSettings4Ray tlsSettings = new()
                 {
-                    allowInsecure = _node.GetAllowInsecure(),
                     alpn = _node.GetAlpn(),
                     cipherSuites = _node.CipherSuites.IsNullOrEmpty() ? null : _node.CipherSuites,
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
@@ -439,12 +444,10 @@ public partial class CoreConfigV2rayService
                     }
                     tlsSettings.certificates = certsettings;
                     tlsSettings.disableSystemRoot = true;
-                    tlsSettings.allowInsecure = false;
                 }
                 else if (!_node.CertSha.IsNullOrEmpty())
                 {
                     tlsSettings.pinnedPeerCertSha256 = _node.CertSha;
-                    tlsSettings.allowInsecure = false;
                 }
                 streamSettings.tlsSettings = tlsSettings;
             }
@@ -789,12 +792,12 @@ public partial class CoreConfigV2rayService
                     }
                     else if (chainStartNodes.Count > 1)
                     {
-                        var existedChainNodes = JsonUtils.DeepCopy(resultOutbounds);
+                        var existedChainNodes = CloneOutbounds(resultOutbounds);
                         resultOutbounds.Clear();
                         var j = 0;
                         foreach (var chainStartNode in chainStartNodes)
                         {
-                            var existedChainNodesClone = JsonUtils.DeepCopy(existedChainNodes);
+                            var existedChainNodesClone = CloneOutbounds(existedChainNodes);
                             foreach (var existedChainNode in existedChainNodesClone)
                             {
                                 var cloneTag = $"{existedChainNode.tag}-clone-{j + 1}";
@@ -955,5 +958,20 @@ public partial class CoreConfigV2rayService
         };
 
         return fragmentMask;
+    }
+
+    private List<Outbounds4Ray> CloneOutbounds(List<Outbounds4Ray> outbounds)
+    {
+        var clonedOutbounds = new List<Outbounds4Ray>();
+        foreach (var outbound in outbounds)
+        {
+            var clonedOutbound = JsonUtils.DeepCopy(outbound);
+            clonedOutbounds.Add(clonedOutbound);
+            if (context.CustomOutboundMap.ContainsKey(outbound))
+            {
+                context.CustomOutboundMap[clonedOutbound] = context.CustomOutboundMap[outbound];
+            }
+        }
+        return clonedOutbounds;
     }
 }

@@ -4,8 +4,6 @@ namespace ServiceLib.Handler.Fmt;
 
 public class BaseFmt
 {
-    private static readonly string[] _allowInsecureArray = new[] { "insecure", "allowInsecure", "allow_insecure" };
-
     private static string UrlEncodeSafe(string? value) => Utils.UrlEncode(value ?? string.Empty);
 
     protected static string GetIpv6(string address)
@@ -71,7 +69,6 @@ public class BaseFmt
             {
                 dicQuery.Add("cs", Utils.UrlEncode(item.CipherSuites));
             }
-            ToUriQueryAllowInsecure(item, ref dicQuery);
         }
         if (item.EchConfigList.IsNotEmpty())
         {
@@ -200,25 +197,6 @@ public class BaseFmt
             dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
         }
 
-        ToUriQueryAllowInsecure(item, ref dicQuery);
-
-        return 0;
-    }
-
-    private static int ToUriQueryAllowInsecure(ProfileItem item, ref Dictionary<string, string> dicQuery)
-    {
-        if (item.GetAllowInsecure())
-        {
-            // Add two for compatibility
-            dicQuery.Add("insecure", "1");
-            dicQuery.Add("allowInsecure", "1");
-        }
-        else
-        {
-            dicQuery.Add("insecure", "0");
-            dicQuery.Add("allowInsecure", "0");
-        }
-
         return 0;
     }
 
@@ -255,19 +233,6 @@ public class BaseFmt
         else
         {
             item.Finalmask = string.Empty;
-        }
-
-        if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "1"))
-        {
-            item.AllowInsecure = Global.StringTrue;
-        }
-        else if (_allowInsecureArray.Any(k => GetQueryDecoded(query, k) == "0"))
-        {
-            item.AllowInsecure = Global.StringFalse;
-        }
-        else
-        {
-            item.AllowInsecure = string.Empty;
         }
 
         var net = GetQueryValue(query, "type", nameof(ETransport.raw));

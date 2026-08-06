@@ -626,4 +626,40 @@ public class CoreConfigSingboxServiceTests
         }
     }
 
+
+    [Fact]
+    public void GenerateClientConfigContent_CustomOutbound_ShouldReplaceWithUserCustomOutboundJson()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.sing_box, "n-custom", "custom-singbox");
+        var customJsonContent = """
+        {
+          "type": "shadowsocks",
+          "server": "1.2.3.4",
+          "server_port": 8388,
+          "method": "aes-128-gcm",
+          "password": "custom_password"
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.sing_box);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        result.Data.Should().NotBeNull();
+
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString());
+        cfg.Should().NotBeNull();
+        var proxyOutbound = cfg!.outbounds.FirstOrDefault(o => o.tag == Global.ProxyTag);
+        proxyOutbound.Should().NotBeNull();
+        proxyOutbound!.type.Should().Be("shadowsocks");
+        proxyOutbound.server.Should().Be("1.2.3.4");
+        proxyOutbound.server_port.Should().Be(8388);
+        proxyOutbound.method.Should().Be("aes-128-gcm");
+        proxyOutbound.password.Should().Be("custom_password");
+    }
 }

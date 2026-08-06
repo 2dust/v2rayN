@@ -43,6 +43,22 @@ public partial class CoreConfigSingboxService
                     _coreConfig.route.rules.AddRange(tunRules);
                 }
 
+                // Traffic addressed to the TUN interface's own addresses must never reach an
+                // outbound. auto_route hijacks the default route, so `direct` writes such a
+                // packet straight back into the TUN, which hands it to the outbound again -
+                // an infinite loop that pins a CPU core. Drop instead of rejecting so no
+                // ICMP unreachable is generated back towards the same addresses.
+                var tunAddresses = _coreConfig.inbounds.FirstOrDefault(i => i.type == "tun")?.address;
+                if (tunAddresses?.Count > 0)
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        ip_cidr = [.. tunAddresses],
+                        action = "reject",
+                        method = "drop",
+                    });
+                }
+
                 var lstDirectExe = BuildRoutingDirectExe();
                 if (lstDirectExe.Count > 0)
                 {
@@ -558,7 +574,8 @@ public partial class CoreConfigSingboxService
 
         if (node == null
             || (!Global.SingboxSupportConfigType.Contains(node.ConfigType)
-            && !node.ConfigType.IsGroupType()))
+            && !node.ConfigType.IsGroupType()
+            && node.ConfigType is not EConfigType.Outbound))
         {
             return Global.ProxyTag;
         }
