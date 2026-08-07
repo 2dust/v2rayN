@@ -178,7 +178,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Failed to import custom configuration Configuration 的本地化字符串。
+        ///   查找类似 Failed to import configuration 的本地化字符串。
         /// </summary>
         public static string FailedImportedCustomServer {
             get {
@@ -268,7 +268,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Please browse to import Configuration configuration 的本地化字符串。
+        ///   查找类似 Please browse to import configuration 的本地化字符串。
         /// </summary>
         public static string FillServerAddressCustom {
             get {
@@ -2653,7 +2653,7 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Custom configuration Configuration imported successfully 的本地化字符串。
+        ///   查找类似 Custom configuration imported successfully 的本地化字符串。
         /// </summary>
         public static string SuccessfullyImportedCustomServer {
             get {
