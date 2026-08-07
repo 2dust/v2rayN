@@ -142,7 +142,7 @@
     <value>Failed to get the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Failed to import custom configuration Configuration</value>
+    <value>Failed to import custom configuration</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
@@ -283,7 +283,7 @@
     <value>Configuration successful. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Custom configuration Configuration imported successfully</value>
+    <value>Custom configuration imported successfully</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
     <value>{0} Configurations have been imported from clipboard</value>
@@ -385,7 +385,7 @@
     <value>All</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Please browse to import Configuration configuration</value>
+    <value>Please browse to import a custom configuration</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Testing...</value>
@@ -895,7 +895,7 @@
     <value>Display Log</value>
   </data>
   <data name="TbEnableTunAs" xml:space="preserve">
-    <value>Enable Tun</value>
+    <value>Tunnel Mode</value>
   </data>
   <data name="TbSettingsNewPort4LAN" xml:space="preserve">
     <value>New Port for LAN</value>
@@ -916,7 +916,7 @@
     <value>Skip test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Edit </value>
+    <value>Edit</value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Double-clicking Configuration makes it active</value>
@@ -1414,7 +1414,7 @@
     <value>Incorrect password, please try again.</value>
   </data>
   <data name="TbMldsa65Verify" xml:space="preserve">
-    <value>Mldsa65Verify</value>
+    <value>ML-DSA-65 Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
     <value>Add [Anytls]</value>
@@ -1537,10 +1537,10 @@
     <value>Add Child</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>Remove Child </value>
+    <value>Remove Child</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Configuration item 1, Auto add from subscription group</value>
+    <value>By Subscription Filter</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Fallback</value>
@@ -1615,7 +1615,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
     <value>macOS displays this in the Dock (requires restart)</value>
   </data>
   <data name="menuServerList2" xml:space="preserve">
-    <value>Configuration Item 2, Select and add from self-built</value>
+    <value>By Manual Selection</value>
   </data>
   <data name="TbEchConfigList" xml:space="preserve">
     <value>EchConfigList</value>

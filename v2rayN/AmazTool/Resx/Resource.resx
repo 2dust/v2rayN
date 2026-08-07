@@ -148,7 +148,7 @@
     <value>Upgrade failed.</value>
   </data>
   <data name="SuccessUpgrade" xml:space="preserve">
-    <value>Upgrade success.</value>
+    <value>Upgrade successful.</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
