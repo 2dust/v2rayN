@@ -50,6 +50,8 @@ Read the Wiki for usage guides and configuration details.
 | Linux | ✅ | - | ✅ | ✅ | ✅ |
 | macOS | ✅ | - | ✅ | - | - |
 
+Minimum OS requirements: [Release files introduction](https://github.com/2dust/v2rayN/wiki/Release-files-introduction) / 最低系统要求：[发布文件介绍](https://github.com/2dust/v2rayN/wiki/Release-files-introduction)
+
 ---
 
 ## GPG Verification / GPG 签名校验
