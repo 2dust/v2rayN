@@ -1501,7 +1501,7 @@
     <value>Выбрать профиль</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, and built-in FakeIP filtering is only built into sing-box</value>
+    <value>Применяется глобально по умолчанию; встроенная фильтрация FakeIP есть только в sing-box</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Добавьте хотя бы одну конфигурацию</value>
