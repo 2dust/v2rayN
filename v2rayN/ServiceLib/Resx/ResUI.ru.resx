@@ -1830,4 +1830,34 @@
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
     <value>Применяется только к загрузкам и сетевым запросам графического интерфейса v2rayN. Не влияет на проверку сертификатов ядром.</value>
   </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>Стратегия разрешения DNS при подключении к прокси</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>Не рекомендуется; может вызвать петли маршрутизации</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>Включить Happy Eyeballs</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>Требуется стратегия UseIP. При включении одновременно устанавливаются соединения по IPv4 и IPv6 и автоматически выбирается более быстрый доступный путь</value>
+  </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Адрес IPv6</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Адрес IPv4</value>
+  </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>Добавить пользовательский outbound</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>Файл пользовательского outbound {0} не найден: {1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>Для xray/sing-box поддерживается только один outbound/endpoint</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Ядро пользовательской конфигурации</value>
+  </data>
 </root>
