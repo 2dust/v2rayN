@@ -268,7 +268,7 @@
     <value>Сначала выберите сервер</value>
   </data>
   <data name="RemoveDuplicateServerResult" xml:space="preserve">
-    <value>Дедупликация конфигураций завершена. Было: {0}, Стало: {1}.</value>
+    <value>Дедупликация конфигураций завершена. Было: {0}, Стало: {1}</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
     <value>Вы уверены, что хотите удалить сервер?</value>
@@ -1048,7 +1048,7 @@
     <value>HTTP-заголовки</value>
   </data>
   <data name="TipHttpOutboundHeaders" xml:space="preserve">
-    <value>Пользовательские заголовки исходящего HTTP-запроса. Введите JSON-объект, значения которого — строка или массив строк.</value>
+    <value>Пользовательские заголовки исходящего HTTP-запроса. Введите JSON-объект, значения которого — строка или массив строк</value>
   </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>Псевдоним предыдущего прокси</value>
@@ -1120,28 +1120,28 @@
     <value>Длина фрагмента</value>
   </data>
   <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
-    <value>Диапазон размера фрагмента в байтах (например, 50-100). Первое значение не больше второго. Пусто = по умолчанию.</value>
+    <value>Диапазон размера фрагмента в байтах (например, 50-100). Первое значение не больше второго. Пусто = по умолчанию</value>
   </data>
   <data name="TbSettingsFragmentInterval" xml:space="preserve">
     <value>Интервал фрагментации</value>
   </data>
   <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
-    <value>Задержка между фрагментами в мс (например, 10-20). Диапазон 1-100. Первое значение не больше второго. Пусто = по умолчанию.</value>
+    <value>Задержка между фрагментами в мс (например, 10-20). Диапазон 1-100. Первое значение не больше второго. Пусто = по умолчанию</value>
   </data>
   <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
     <value>Макс. разделение</value>
   </data>
   <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
-    <value>Максимальное число разделений (0 = без лимита, 0-10000). Только для Xray-core. Пусто = по умолчанию.</value>
+    <value>Максимальное число разделений (0 = без лимита, 0-10000). Только для Xray-core. Пусто = по умолчанию</value>
   </data>
   <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
     <value>Резервная задержка</value>
   </data>
   <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
-    <value>Резервная задержка для TLS-фрагмента. Только для sing-box. Пусто = по умолчанию.</value>
+    <value>Резервная задержка для TLS-фрагмента. Только для sing-box. Пусто = по умолчанию</value>
   </data>
   <data name="FillFragmentParameterError" xml:space="preserve">
-    <value>Неверный формат диапазона. Используйте 'from-to' (например, 50-100).</value>
+    <value>Неверный формат диапазона. Используйте 'from-to' (например, 50-100)</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Включить файл кэша для sing-box (файлы наборов правил)</value>
@@ -1351,7 +1351,7 @@
     <value>Пароль sudo системы</value>
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
-    <value>Пароль sudo будет проверен в терминале. Если из-за ошибки проверки приложение начнёт работать некорректно, перезапустите его. Пароль не сохраняется — его нужно вводить после каждого перезапуска.</value>
+    <value>Пароль sudo будет проверен в терминале. Если из-за ошибки проверки приложение начнёт работать некорректно, перезапустите его. Пароль не сохраняется — его нужно вводить после каждого перезапуска</value>
   </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>XHTTP-режим</value>
@@ -1411,7 +1411,7 @@
     <value>Можно указать псевдоним из конфигурации, убедитесь, что он существует и уникален</value>
   </data>
   <data name="SudoIncorrectPasswordTip" xml:space="preserve">
-    <value>Неверный пароль, попробуйте ещё раз.</value>
+    <value>Неверный пароль, попробуйте ещё раз</value>
   </data>
   <data name="TbMldsa65Verify" xml:space="preserve">
     <value>Mldsa65Verify</value>
@@ -1492,7 +1492,7 @@
     <value>Добавляет только конфигурацию Outbound и Endpoint. Нажмите, чтобы открыть документ</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>Эта функция предназначена для продвинутых пользователей и особых случаев. После включения игнорируются базовые настройки ядра, DNS и маршрутизации. Вы должны самостоятельно корректно задать порт системного прокси, учёт трафика и другие связанные параметры — всё настраивается вручную.</value>
+    <value>Эта функция предназначена для продвинутых пользователей и особых случаев. После включения игнорируются базовые настройки ядра, DNS и маршрутизации. Вы должны самостоятельно корректно задать порт системного прокси, учёт трафика и другие связанные параметры — всё настраивается вручную</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
     <value>Начинается разбор и обработка содержимого подписки</value>
@@ -1501,7 +1501,7 @@
     <value>Выбрать профиль</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, and built-in FakeIP filtering is only built into sing-box.</value>
+    <value>Применяется глобально по умолчанию; встроенная фильтрация FakeIP есть только в sing-box</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Добавьте хотя бы одну конфигурацию</value>
@@ -1588,7 +1588,7 @@
     <value>Привязанный сертификат (заполните любое из полей)
 При указании сертификат будет привязан, а «Пропустить проверку сертификата» отключится.
 
-Получение сертификата может завершиться неудачей при использовании самоподписанного сертификата или при наличии ненадёжного / вредоносного ЦС в системе.</value>
+Получение сертификата может завершиться неудачей при использовании самоподписанного сертификата или при наличии ненадёжного / вредоносного ЦС в системе</value>
   </data>
   <data name="TbFetchCert" xml:space="preserve">
     <value>Получить сертификат</value>
@@ -1642,10 +1642,10 @@
     <value>По умолчанию используется только при разрешении имён в процессе маршрутизации; убедитесь, что удалённый сервер может достичь этого DNS</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>Если не задано или «AsIs», используется системный DNS; иначе — встроенный DNS-модуль.</value>
+    <value>Если не задано или «AsIs», используется системный DNS; иначе — встроенный DNS-модуль</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>Если не задано или «AsIs», разрешение DNS выполняется DNS удалённого сервера; иначе — встроенный DNS-модуль.</value>
+    <value>Если не задано или «AsIs», разрешение DNS выполняется DNS удалённого сервера; иначе — встроенный DNS-модуль</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
     <value>Интервал смены портов (Port Hopping)</value>
@@ -1660,37 +1660,37 @@
     <value>Правило маршрутизации {0}, исходящий узел {1}, предупреждение: {2}</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
-    <value>Правило маршрутизации {0}, исходящий узел {1}, ошибка: {2}. Используется только прокси-узел.</value>
+    <value>Правило маршрутизации {0}, исходящий узел {1}, ошибка: {2}. Используется только прокси-узел</value>
   </data>
   <data name="MsgGroupCycleDependency" xml:space="preserve">
-    <value>Группа {0} имеет циклическую зависимость на дочерний узел {1}. Узел пропущен.</value>
+    <value>Группа {0} имеет циклическую зависимость на дочерний узел {1}. Узел пропущен</value>
   </data>
   <data name="MsgGroupChildNodeWarning" xml:space="preserve">
     <value>Группа {0}: предупреждение дочернего узла {1}: {2}</value>
   </data>
   <data name="MsgGroupChildNodeError" xml:space="preserve">
-    <value>Группа {0}: ошибка дочернего узла {1}: {2}. Узел пропущен.</value>
+    <value>Группа {0}: ошибка дочернего узла {1}: {2}. Узел пропущен</value>
   </data>
   <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
     <value>Группа {0}: предупреждение дочернего узла группы {1}: {2}</value>
   </data>
   <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
-    <value>Группа {0}: ошибка дочернего узла группы {1}: {2}. Узел пропущен.</value>
+    <value>Группа {0}: ошибка дочернего узла группы {1}: {2}. Узел пропущен</value>
   </data>
   <data name="MsgGroupNoValidChildNode" xml:space="preserve">
-    <value>У группы {0} нет допустимых дочерних узлов.</value>
+    <value>У группы {0} нет допустимых дочерних узлов</value>
   </data>
   <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
-    <value>У правила маршрутизации {0} пустой исходящий тег. Используется только прокси-узел.</value>
+    <value>У правила маршрутизации {0} пустой исходящий тег. Используется только прокси-узел</value>
   </data>
   <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
-    <value>Правило маршрутизации {0}, исходящий узел {1} не найден. Используется только прокси-узел.</value>
+    <value>Правило маршрутизации {0}, исходящий узел {1} не найден. Используется только прокси-узел</value>
   </data>
   <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
-    <value>Предыдущий прокси подписки {0} не найден. Пропущено.</value>
+    <value>Предыдущий прокси подписки {0} не найден. Пропущено</value>
   </data>
   <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
-    <value>Следующий прокси подписки {0} не найден. Пропущено.</value>
+    <value>Следующий прокси подписки {0} не найден. Пропущено</value>
   </data>
   <data name="menuGenGroupServer" xml:space="preserve">
     <value>Сгенерировать группу политик</value>
@@ -1756,7 +1756,7 @@
     <value>Привязать интерфейс</value>
   </data>
   <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
-    <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для исходящих подключений. На Linux/macOS работает только при включённом TUN.</value>
+    <value>Для среды с несколькими сетевыми интерфейсами укажите имя интерфейса для исходящих подключений. На Linux/macOS работает только при включённом TUN</value>
   </data>
   <data name="TbPreSharedKey" xml:space="preserve">
     <value>Общий ключ (PSK)</value>
@@ -1780,13 +1780,13 @@
     <value>Доступно обновление</value>
   </data>
   <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
-    <value>Предупреждение: 1 августа 2026 г. Xray отключит пропуск проверки сертификата (allowInsecure). Как можно скорее перейдите на привязанный отпечаток сертификата (pinnedPeerCertSha256). После этой даты allowInsecure использовать будет нельзя.</value>
+    <value>Предупреждение: 1 августа 2026 г. Xray отключит пропуск проверки сертификата (allowInsecure). Как можно скорее перейдите на привязанный отпечаток сертификата (pinnedPeerCertSha256). После этой даты allowInsecure использовать будет нельзя</value>
   </data>
   <data name="TbRouteExcludeAddress" xml:space="preserve">
     <value>Адреса, исключаемые из маршрутизации</value>
   </data>
   <data name="TbRouteExcludeAddressTip" xml:space="preserve">
-    <value>Разделяйте запятыми (,).</value>
+    <value>Разделяйте запятыми (,)</value>
   </data>
   <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
     <value>Недопустимый адрес в списке исключений маршрутизации TUN: {0}</value>
@@ -1798,22 +1798,22 @@
     <value>Включить финальную фрагментацию (Final Fragment)</value>
   </data>
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
-    <value>Разбивать конец пакетов на более мелкие фрагменты при отправке. Это может влиять на пропускную способность и задержку.</value>
+    <value>Разбивать конец пакетов на более мелкие фрагменты при отправке. Это может влиять на пропускную способность и задержку</value>
   </data>
   <data name="TbEnabletDnsViaProxy" xml:space="preserve">
     <value>DNS через Bridge</value>
   </data>
   <data name="MsgInsecureConfiguration" xml:space="preserve">
-    <value>Обнаружена небезопасная конфигурация: AllowInsecure включён, но сертификат не предоставлен. Это может привести к атаке «человек посередине» (MITM).</value>
+    <value>Обнаружена небезопасная конфигурация: AllowInsecure включён, но сертификат не предоставлен. Это может привести к атаке «человек посередине» (MITM)</value>
   </data>
   <data name="TbHy2RealmUrl" xml:space="preserve">
     <value>Realm URL</value>
   </data>
   <data name="InvalidHy2RealmUrl" xml:space="preserve">
-    <value>Некорректный Realm URL.</value>
+    <value>Некорректный Realm URL</value>
   </data>
   <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
-    <value>Введите корректный JSON заголовков HTTP-запроса.</value>
+    <value>Введите корректный JSON заголовков HTTP-запроса</value>
   </data>
   <data name="TbHy2RealmUrlTip" xml:space="preserve">
     <value>Формат: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
@@ -1822,12 +1822,42 @@
     <value>Размер пакета Gecko (мин/макс)</value>
   </data>
   <data name="TbLegacyProtectTip" xml:space="preserve">
-    <value>Если включено, используется sing-box TUN; иначе — xray TUN.</value>
+    <value>Если включено, используется sing-box TUN; иначе — xray TUN</value>
   </data>
   <data name="TbRootCertificateProvider" xml:space="preserve">
     <value>Поставщик корневых сертификатов</value>
   </data>
   <data name="TbRootCertificateProviderTip" xml:space="preserve">
-    <value>Применяется только к загрузкам и сетевым запросам графического интерфейса v2rayN. Не влияет на проверку сертификатов ядром.</value>
+    <value>Применяется только к загрузкам и сетевым запросам графического интерфейса v2rayN. Не влияет на проверку сертификатов ядром</value>
+  </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>Стратегия разрешения DNS при подключении к прокси</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>Не рекомендуется; может вызвать петли маршрутизации</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>Включить Happy Eyeballs</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>Требуется стратегия UseIP. При включении одновременно устанавливаются соединения по IPv4 и IPv6 и автоматически выбирается более быстрый доступный путь</value>
+  </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Адрес IPv6</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Адрес IPv4</value>
+  </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>Добавить пользовательский outbound</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>Файл пользовательского outbound {0} не найден: {1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>Для xray/sing-box поддерживается только один outbound/endpoint</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Ядро пользовательской конфигурации</value>
   </data>
 </root>
