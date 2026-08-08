@@ -1856,7 +1856,7 @@
     <value>自訂出站 {0} 的檔案未找到：{1}</value>
   </data>
   <data name="TbCustomOutboundTip" xml:space="preserve">
-    <value>僅支援 xray/sing-box 的單一 outbound／endpoint</value>
+    <value>僅支援 xray/sing-box 的單一 outbound/endpoint</value>
   </data>
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>自訂設定核心</value>
