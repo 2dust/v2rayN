@@ -193,8 +193,7 @@ public partial class CoreConfigV2rayService
 
         if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
-            expectedIPs = simpleDNSItem.DirectExpectedIPs
-                .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+            expectedIPs = (Utils.String2List(simpleDNSItem.DirectExpectedIPs) ?? [])
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
@@ -331,7 +330,7 @@ public partial class CoreConfigV2rayService
 
         static List<string> ParseDnsAddresses(string? dnsInput, string defaultAddress)
         {
-            var addresses = dnsInput?.Split(dnsInput.Contains(',') ? ',' : ';')
+            var addresses = (Utils.String2List(dnsInput) ?? [])
                 .Select(addr => addr.Trim())
                 .Where(addr => !string.IsNullOrEmpty(addr))
                 .Select(addr => addr.StartsWith("dhcp", StringComparison.OrdinalIgnoreCase) ? "localhost" : addr)
