@@ -146,7 +146,7 @@ jobs:
           $xrayTag = "v$xrayVer"
           $singTag = "v$singVer"
 
-          $xrayUrl = "https://github.com/XTLS/Xray-core/releases/download/$xrayTag/Xray-windows-32.zip"
+          $xrayUrl = "https://github.com/autorepobot/Xray/releases/download/$xrayTag/Xray-windows-32.zip"
           $singUrl = "https://github.com/SagerNet/sing-box/releases/download/$singTag/sing-box-$singVer-windows-386.zip"
 
           Write-Host "Bundled Xray version: $xrayVer"
