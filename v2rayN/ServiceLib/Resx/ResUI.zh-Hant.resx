@@ -1849,4 +1849,16 @@
   <data name="TbIpv4Address" xml:space="preserve">
     <value>Ipv4 位址</value>
   </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>新增自訂出站</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>自訂出站 {0} 的檔案未找到：{1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>僅支援 xray/sing-box 的單一 outbound/endpoint</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>自訂設定核心</value>
+  </data>
 </root>
