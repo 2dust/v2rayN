@@ -21,26 +21,27 @@ public partial class CoreConfigSingboxService
                 };
                 _coreConfig.inbounds.Add(inbound);
 
+                var inboundConf = _config.Inbound.First();
                 inbound.listen_port = listenPort;
 
-                if (_config.Inbound.First().SecondLocalPortEnabled)
+                if (inboundConf.SecondLocalPortEnabled)
                 {
                     var inbound2 = BuildInbound(inbound, EInboundProtocol.socks2, true);
                     _coreConfig.inbounds.Add(inbound2);
                 }
 
-                if (_config.Inbound.First().AllowLANConn)
+                if (inboundConf.AllowLANConn)
                 {
-                    if (_config.Inbound.First().NewPort4LAN)
+                    if (inboundConf.NewPort4LAN)
                     {
                         var inbound3 = BuildInbound(inbound, EInboundProtocol.socks3, true);
                         inbound3.listen = listen;
                         _coreConfig.inbounds.Add(inbound3);
 
                         //auth
-                        if (_config.Inbound.First().User.IsNotEmpty() && _config.Inbound.First().Pass.IsNotEmpty())
+                        if (inboundConf.User.IsNotEmpty() && inboundConf.Pass.IsNotEmpty())
                         {
-                            inbound3.users = new() { new() { username = _config.Inbound.First().User, password = _config.Inbound.First().Pass } };
+                            inbound3.users = new() { new() { username = inboundConf.User, password = inboundConf.Pass } };
                         }
                     }
                     else
