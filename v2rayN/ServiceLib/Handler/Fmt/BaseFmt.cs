@@ -65,6 +65,10 @@ public class BaseFmt
             {
                 dicQuery.Add("alpn", Utils.UrlEncode(item.Alpn));
             }
+            if (item.CipherSuites.IsNotEmpty())
+            {
+                dicQuery.Add("cs", Utils.UrlEncode(item.CipherSuites));
+            }
         }
         if (item.EchConfigList.IsNotEmpty())
         {
@@ -203,6 +207,7 @@ public class BaseFmt
         item.StreamSecurity = GetQueryValue(query, "security");
         item.Sni = GetQueryValue(query, "sni");
         item.Alpn = GetQueryDecoded(query, "alpn");
+        item.CipherSuites = GetQueryDecoded(query, "cs");
         item.Fingerprint = GetQueryDecoded(query, "fp");
         item.PublicKey = GetQueryDecoded(query, "pbk");
         item.ShortId = GetQueryDecoded(query, "sid");
