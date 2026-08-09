@@ -251,4 +251,12 @@ internal static class CoreConfigTestFactory
         config.TunModeItem.RouteExcludeAddress = ["10.0.0.1/32", "192.168.1.0/24", "fc00::/7"];
         return config;
     }
+
+    public static Config CreateConfigWithTun(ECoreType coreType, bool enableIPv6Address)
+    {
+        var config = CreateConfig(coreType);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.EnableIPv6Address = enableIPv6Address;
+        return config;
+    }
 }
