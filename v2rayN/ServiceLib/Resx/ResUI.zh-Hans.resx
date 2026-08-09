@@ -1891,4 +1891,10 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>进程</value>
   </data>
+  <data name="MsgGroupChildNodeChainOnly" xml:space="preserve">
+    <value>节点组 {0} 包含仅限代理链使用的子节点 {1}，该子节点将被跳过。</value>
+  </data>
+  <data name="MsgNodeChainOnly" xml:space="preserve">
+    <value>节点 {0} 仅限代理链使用，不能单独使用。</value>
+  </data>
 </root>

@@ -1899,4 +1899,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Process</value>
   </data>
+  <data name="MsgGroupChildNodeChainOnly" xml:space="preserve">
+    <value>Group {0} contains child node {1}, which is only available for proxy chains. This child node will be skipped.</value>
+  </data>
+  <data name="MsgNodeChainOnly" xml:space="preserve">
+    <value>Node {0} is only available for proxy chains and cannot be used individually.</value>
+  </data>
 </root>

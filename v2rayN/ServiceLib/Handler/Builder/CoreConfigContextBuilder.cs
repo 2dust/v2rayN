@@ -320,6 +320,13 @@ public class CoreConfigContextBuilder
     /// </summary>
     private static async Task<NodeValidatorResult> RegisterNodeAsync(CoreConfigContext context, ProfileItem node)
     {
+        if (node.ChainOnly)
+        {
+            return NodeValidatorResult.Empty() with
+            {
+                Errors = [string.Format(ResUI.MsgNodeChainOnly, node.Remarks)],
+            };
+        }
         if (node.ConfigType.IsGroupType())
         {
             return await RegisterGroupNodeAsync(context, node);
@@ -458,6 +465,13 @@ public class CoreConfigContextBuilder
             if (globalVisitedGroup.Contains(childNode.IndexId))
             {
                 childIndexIdList.Add(childNode.IndexId);
+                continue;
+            }
+
+            if (childNode.ChainOnly && node.ConfigType != EConfigType.ProxyChain)
+            {
+                childNodeValidatorResult.Errors.Add(
+                    string.Format(ResUI.MsgGroupChildNodeChainOnly, node.Remarks, childNode.Remarks));
                 continue;
             }
 

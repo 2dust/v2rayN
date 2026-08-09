@@ -1900,4 +1900,10 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>行程</value>
   </data>
+  <data name="MsgGroupChildNodeChainOnly" xml:space="preserve">
+    <value>節點組 {0} 包含僅限代理鏈使用的子節點 {1}，此子節點將被跳過。</value>
+  </data>
+  <data name="MsgNodeChainOnly" xml:space="preserve">
+    <value>節點 {0} 僅限代理鏈使用，不能單獨使用。</value>
+  </data>
 </root>
