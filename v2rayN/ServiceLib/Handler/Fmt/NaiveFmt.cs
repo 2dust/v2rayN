@@ -42,6 +42,11 @@ public class NaiveFmt : BaseFmt
         var query = Utils.ParseQueryString(parsedUrl.Query);
         ResolveUriQuery(query, ref item);
         var insecureConcurrency = int.TryParse(GetQueryValue(query, "insecure-concurrency"), out var ic) ? ic : 0;
+        protocolExtra = protocolExtra with
+        {
+            Uot = GetQueryValue(query, "uot") == "1" ? true : null,
+            CongestionControl = GetQueryValue(query, "congestion_control"),
+        };
         if (insecureConcurrency > 0)
         {
             protocolExtra = protocolExtra with
@@ -69,6 +74,14 @@ public class NaiveFmt : BaseFmt
         var dicQuery = new Dictionary<string, string>();
         ToUriQuery(item, Global.None, ref dicQuery);
         var protocolExtra = item.GetProtocolExtra();
+        if (protocolExtra.Uot == true)
+        {
+            dicQuery.Add("uot", "1");
+        }
+        if (!protocolExtra.CongestionControl.IsNullOrEmpty())
+        {
+            dicQuery.Add("congestion_control", protocolExtra.CongestionControl);
+        }
         if (protocolExtra.InsecureConcurrency > 0)
         {
             dicQuery.Add("insecure-concurrency", protocolExtra?.InsecureConcurrency.ToString());
