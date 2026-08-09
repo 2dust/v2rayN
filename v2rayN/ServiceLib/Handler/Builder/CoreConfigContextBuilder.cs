@@ -319,6 +319,13 @@ public class CoreConfigContextBuilder
     /// </summary>
     private static async Task<NodeValidatorResult> RegisterNodeAsync(CoreConfigContext context, ProfileItem node)
     {
+        if (node.ChainOnly)
+        {
+            return NodeValidatorResult.Empty() with
+            {
+                Errors = [$"Node '{node.Remarks}' is marked as chain-only and cannot be registered individually."],
+            };
+        }
         if (node.ConfigType.IsGroupType())
         {
             return await RegisterGroupNodeAsync(context, node);
@@ -457,6 +464,15 @@ public class CoreConfigContextBuilder
             if (globalVisitedGroup.Contains(childNode.IndexId))
             {
                 childIndexIdList.Add(childNode.IndexId);
+                continue;
+            }
+
+            if (childNode.ChainOnly && node.ConfigType != EConfigType.ProxyChain)
+            {
+                //childNodeValidatorResult.Errors.Add(
+                //    string.Format(ResUI.MsgGroupChildNodeChainOnly, node.Remarks, childNode.Remarks));
+                childNodeValidatorResult.Errors.Add(
+                    $"Group node '{node.Remarks}' contains child node '{childNode.Remarks}' which is marked as 'ChainOnly'. This child node will be skipped.");
                 continue;
             }
 

@@ -89,6 +89,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 continue;
             }
 
+            if (it.ChainOnly)
+            {
+                continue;
+            }
+
             var profile = profileMap.GetValueOrDefault(it.IndexId, it);
             lstSelected.Add(new ServerTestItem()
             {
