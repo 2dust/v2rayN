@@ -57,6 +57,85 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Fact]
+    public void GenerateClientConfigContent_TunEnabled_ShouldKeepEmbeddedTunRules()
+    {
+        // The embedded tun rules reject local-network noise (NetBIOS/mDNS, multicast).
+        // They are deserialized into List<Rule4Sbox>, so a schema mismatch in the
+        // embedded template makes JsonUtils.Deserialize return null and silently
+        // drops every one of them.
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+
+        cfg.route.rules.Should().Contain(
+            r => r.action == "reject"
+                && r.network != null && r.network.Contains("udp")
+                && r.port != null && r.port.Contains(5353),
+            "the embedded tun rules must reject mDNS/NetBIOS noise");
+        cfg.route.rules.Should().Contain(
+            r => r.action == "reject"
+                && r.ip_cidr != null && r.ip_cidr.Contains("224.0.0.0/3"),
+            "the embedded tun rules must reject multicast traffic");
+    }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunEnabled_ShouldRejectTrafficToTunOwnAddresses()
+    {
+        // Regression test: traffic addressed to the TUN interface's own addresses must
+        // never reach an outbound. auto_route hijacks the default route, so `direct`
+        // writes such a packet straight back into the TUN, which routes it to the
+        // outbound again - an infinite loop that pins a CPU core. Observed in the wild
+        // with WebRTC ICE connectivity checks against the TUN's own fc00::/7 ULA
+        // address, sustaining ~8k packets/s out of the TUN interface.
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.EnableIPv6Address = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var tun = cfg.inbounds.First(i => i.type == "tun");
+        tun.address.Should().NotBeNullOrEmpty();
+
+        foreach (var address in tun.address!)
+        {
+            var self = IPAddress.Parse(address.Split('/').First());
+            var hostBits = self.AddressFamily == AddressFamily.InterNetworkV6 ? 128 : 32;
+            var expected = $"{self}/{hostBits}";
+            cfg.route.rules.Should().Contain(
+                r => r.action == "reject" && r.ip_cidr != null && r.ip_cidr.Contains(expected),
+                $"traffic to the TUN's own address '{address}' must be rejected, not routed");
+        }
+
+        // The match has to stay on the addresses themselves. sing-tun derives the TUN's DNS
+        // entry from the address right after the interface's own, and every prefix offered
+        // here leaves room for it, so a prefix match would drop system name lookups too.
+        var dropRule = cfg.route.rules.First(r =>
+            r.action == "reject" && r.method == "drop" && r.ip_cidr?.Count > 0);
+        dropRule.ip_cidr!.Should().OnlyContain(c =>
+            c.EndsWith("/32", StringComparison.Ordinal) || c.EndsWith("/128", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void GenerateClientConfigContent_BindInterface_ShouldUseDialBindInterface()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
