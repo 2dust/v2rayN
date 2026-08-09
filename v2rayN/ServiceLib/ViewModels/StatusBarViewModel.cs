@@ -305,13 +305,12 @@ public partial class StatusBarViewModel : MyReactiveObject
 
             var item = new ComboItem() { ID = it.IndexId, Text = name };
             models.Add(item);
-            if (_config.IndexId == it.IndexId)
-            {
-                SelectedServer = item;
-            }
         }
         Servers.Clear();
         Servers.AddRange(models);
+
+        // Update the ItemsSource before SelectedItem so a collection reset does not clear the tray selection.
+        SelectedServer = models.FirstOrDefault(it => it.ID == _config.IndexId) ?? new();
     }
 
     private void ServerSelectedChanged(bool c)
