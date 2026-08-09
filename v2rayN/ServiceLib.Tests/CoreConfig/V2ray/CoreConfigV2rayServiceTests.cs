@@ -570,6 +570,51 @@ public class CoreConfigV2rayServiceTests
         directOutbound!.streamSettings.sockopt!.domainStrategy.Should().Be("UseIPv4");
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void GenerateClientConfigContent_Tun_ShouldRouteIPv6IntoTunnel(bool enableIPv6Address)
+    {
+        var config = CoreConfigTestFactory.CreateConfigWithTun(ECoreType.Xray, enableIPv6Address);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        tunInbound.Should().NotBeNull();
+        tunInbound!.settings.autoSystemRoutingTable.Should().Contain("0.0.0.0/0");
+        tunInbound.settings.autoSystemRoutingTable.Should().Contain("::/0");
+
+        // EnableIPv6Address governs the interface address only, never the routing table.
+        tunInbound.settings.gateway.Should().HaveCount(enableIPv6Address ? 2 : 1);
+    }
+
+    [Fact]
+    public void GenerateClientConfigContent_TunRouteExcludeAddress_ShouldIncludeIPv6Ranges()
+    {
+        var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
+        config.TunModeItem.EnableIPv6Address = false;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        tunInbound.Should().NotBeNull();
+        tunInbound!.settings.autoSystemRoutingTable.Should().Contain(x => x.Contains(':'));
+    }
+
     [Fact]
     public void GenerateClientConfigContent_TunRouteExcludeAddress()
     {
