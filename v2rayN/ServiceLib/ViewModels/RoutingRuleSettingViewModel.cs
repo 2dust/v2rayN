@@ -48,7 +48,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         });
         ImportRulesFromFileCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            var fileName = await BrowseRulesFileInteraction.Handle(RxVoid.Default);
+            var fileName = await BrowseRulesFileInteraction.HandleSafe(RxVoid.Default);
             await ImportRulesFromFileAsync(fileName);
         });
         ImportRulesFromClipboardCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -156,7 +156,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
-        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -199,7 +199,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            await SetClipboardDataInteraction.Handle(JsonUtils.Serialize(lst, options));
+            await SetClipboardDataInteraction.HandleSafe(JsonUtils.Serialize(lst, options));
         }
     }
 
@@ -277,7 +277,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         var stringData = clipboardData;
         if (clipboardData == null)
         {
-            var result = await ReadTextFromClipboardInteraction.Handle(RxVoid.Default);
+            var result = await ReadTextFromClipboardInteraction.HandleSafe(RxVoid.Default);
             if (result.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
@@ -315,7 +315,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
     private async Task<int> AddBatchRoutingRulesAsync(RoutingItem routingItem, string? clipboardData)
     {
         var blReplace = false;
-        if (await ShowYesNoInteraction.Handle(ResUI.AddBatchRoutingRulesYesNo) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.AddBatchRoutingRulesYesNo) == false)
         {
             blReplace = true;
         }

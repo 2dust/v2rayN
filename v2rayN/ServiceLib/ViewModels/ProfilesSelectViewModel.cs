@@ -138,13 +138,7 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
         await RefreshServers();
 
-        try
-        {
-            await ProfilesFocusInteraction.Handle(RxVoid.Default);
-        }
-        catch (UnhandledInteractionException<RxVoid, RxVoid>)
-        {
-        }
+        await ProfilesFocusInteraction.HandleSafe(RxVoid.Default);
     }
 
     private async Task ServerFilterChanged(bool c)

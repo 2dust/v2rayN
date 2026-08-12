@@ -243,7 +243,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         sb.AppendLine($"{cmd} HTTPS_PROXY={Global.HttpProtocol}{address}");
         sb.AppendLine($"{cmd} ALL_PROXY={Global.Socks5Protocol}{address}");
 
-        await SetClipboardDataInteraction.Handle(sb.ToString());
+        await SetClipboardDataInteraction.HandleSafe(sb.ToString());
     }
 
     private async Task AddServerViaClipboard()
@@ -389,14 +389,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
         if (blChange)
         {
-            try
-            {
-                await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
-            }
-            catch (UnhandledInteractionException<RxVoid, RxVoid>)
-            {
-                // Ignore
-            }
+            await DispatcherRefreshIconInteraction.HandleSafe(RxVoid.Default);
         }
     }
 
@@ -432,7 +425,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             ReloadRequested.Publish();
-            await DispatcherRefreshIconInteraction.Handle(RxVoid.Default);
+            await DispatcherRefreshIconInteraction.HandleSafe(RxVoid.Default);
         }
     }
 
@@ -469,7 +462,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             }
             else
             {
-                var password = await PasswordInputInteraction.Handle(RxVoid.Default);
+                var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
                 if (password.IsNullOrEmpty())
                 {
                     _config.TunModeItem.EnableTun = false;

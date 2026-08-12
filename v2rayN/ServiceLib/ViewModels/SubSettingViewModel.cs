@@ -40,7 +40,7 @@ public partial class SubSettingViewModel : MyReactiveObject
         }, canEditRemove);
         SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await ShareSubInteraction.Handle(SelectedSource?.Url);
+            await ShareSubInteraction.HandleSafe(SelectedSource?.Url);
         }, canEditRemove);
 
         _ = Init();
@@ -84,7 +84,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
     private async Task DeleteSubAsync()
     {
-        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }

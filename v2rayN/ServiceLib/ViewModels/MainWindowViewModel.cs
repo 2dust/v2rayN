@@ -300,7 +300,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(async blShow =>
             {
-                await ShowHideWindowInteraction.Handle(blShow);
+                await ShowHideWindowInteraction.HandleSafe(blShow);
             });
 
         StatusBarViewModel.SetDefaultServerRequested
@@ -476,7 +476,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         var stringData = clipboardData;
         if (clipboardData == null)
         {
-            var result = await ReadTextFromClipboardInteraction.Handle(RxVoid.Default);
+            var result = await ReadTextFromClipboardInteraction.HandleSafe(RxVoid.Default);
             if (result.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
@@ -499,7 +499,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaScanAsync()
     {
-        var result = await ScanScreenInteraction.Handle(RxVoid.Default);
+        var result = await ScanScreenInteraction.HandleSafe(RxVoid.Default);
         await ScanScreenResult(result);
     }
 
@@ -511,7 +511,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public async Task AddServerViaImageAsync()
     {
-        var imageFileName = await BrowseImageFileInteraction.Handle(RxVoid.Default);
+        var imageFileName = await BrowseImageFileInteraction.HandleSafe(RxVoid.Default);
         await AddScanResultAsync(imageFileName);
     }
 

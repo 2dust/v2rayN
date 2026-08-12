@@ -26,7 +26,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            var fileName = await BrowseConfigFileInteraction.Handle(RxVoid.Default);
+            var fileName = await BrowseConfigFileInteraction.HandleSafe(RxVoid.Default);
             if (fileName.IsNullOrEmpty())
             {
                 return;
