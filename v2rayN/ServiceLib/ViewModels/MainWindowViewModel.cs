@@ -85,8 +85,6 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     #endregion Menu
 
-    private readonly SynchronizationContext _uiContext = SynchronizationContext.Current;
-
     #region Init
 
     public MainWindowViewModel()
@@ -413,14 +411,25 @@ public partial class MainWindowViewModel : MyReactiveObject
     private async Task RefreshServersDispatcherAsync()
     {
         //await Observable.Start(async () => await RefreshServers(), RxSchedulers.MainThreadScheduler);
-        _uiContext?.Post(_ => _ = RefreshServers(), null);
+        await Signal.FromAsync(async () =>
+            {
+                await RefreshServers();
+                return RxVoid.Default;
+            })
+            .SubscribeOn(RxSchedulers.MainThreadScheduler)
+            .ToTask();
     }
 
     private async Task RefreshSubscriptions()
     {
         //await Observable.Start(async () => await ProfilesViewModel.RefreshSubscriptions(), RxSchedulers.MainThreadScheduler);
-
-        _uiContext?.Post(_ => _ = ProfilesViewModel.RefreshSubscriptions(), null);
+        await Signal.FromAsync(async () =>
+            {
+                await ProfilesViewModel.RefreshSubscriptions();
+                return RxVoid.Default;
+            })
+            .SubscribeOn(RxSchedulers.MainThreadScheduler)
+            .ToTask();
     }
 
     #endregion Servers && Groups
@@ -691,10 +700,12 @@ public partial class MainWindowViewModel : MyReactiveObject
                 //{
                 //    await ClashProxiesViewModel.ProxiesReload();
                 //}, RxSchedulers.MainThreadScheduler);
-                RxSchedulers.MainThreadScheduler.Schedule(async () =>
-                {
-                    await ClashProxiesViewModel.ProxiesReload();
-                });
+                await Signal.FromAsync(async () =>
+                    {
+                        await ClashProxiesViewModel.ProxiesReload();
+                        return RxVoid.Default;
+                    }).SubscribeOn(RxSchedulers.MainThreadScheduler)
+                    .ToTask();
             }
 
             ReloadResult(showClashUI);
