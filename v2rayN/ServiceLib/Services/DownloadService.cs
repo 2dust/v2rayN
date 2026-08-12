@@ -42,7 +42,7 @@ public class DownloadService
     /// <summary>
     /// Downloads a file and reports progress through events.
     /// </summary>
-    public async Task DownloadFileAsync(string url, string fileName, bool blProxy, int downloadTimeout)
+    public async Task DownloadFileAsync(string url, string filePath, bool blProxy, int downloadTimeout)
     {
         try
         {
@@ -54,7 +54,56 @@ public class DownloadService
             var webProxy = await GetWebProxy(blProxy);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                 url,
-                fileName,
+                filePath,
+                progress,
+                downloadTimeout);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+
+            Error?.Invoke(this, new ErrorEventArgs(ex));
+            if (ex.InnerException != null)
+            {
+                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+            }
+        }
+    }
+
+    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, int downloadTimeout)
+    {
+        try
+        {
+            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading} 0/{requests.Count}"));
+
+            var progress = new Progress<ReadOnlyMemory<FileDownloadState>>();
+            progress.ProgressChanged += (sender, value) =>
+            {
+                var span = value.Span;
+                var completedCount = 0;
+                var downloadingStates = new List<FileDownloadState>();
+                foreach (ref readonly var item in span)
+                {
+                    if (item.Completed)
+                    {
+                        completedCount++;
+                    }
+                    else if (item.TotalBytes > 0)
+                    {
+                        downloadingStates.Add(item);
+                    }
+                }
+                var totalSpeed = downloadingStates.Sum(x => x.SpeedBytesPerSecond);
+                var totalDownloadedBytes = downloadingStates.Sum(x => x.DownloadedBytes);
+                var totalTotalBytes = downloadingStates.Sum(x => x.TotalBytes);
+                var downloadingFileName = string.Join(", ", downloadingStates.Select(x => x.Request.FileName));
+                var allCompleted = completedCount == span.Length;
+                UpdateCompleted?.Invoke(this, new UpdateResult(allCompleted, $"{completedCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
+            };
+
+            var webProxy = await GetWebProxy(blProxy);
+            await DownloaderHelper.Instance.DownloadSmallFilesAsync(webProxy,
+                requests,
                 progress,
                 downloadTimeout);
         }

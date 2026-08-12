@@ -55,8 +55,6 @@ public class DownloaderHelper
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
         using StreamReader reader = new(stream);
 
-        downloadOpt = null;
-
         return await reader.ReadToEndAsync(cts.Token);
     }
 
@@ -128,33 +126,37 @@ public class DownloaderHelper
         using var cts = new CancellationTokenSource();
         cts.CancelAfter(TimeSpan.FromSeconds(timeout));
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
-
-        downloadOpt = null;
     }
 
-    public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string fileName, IProgress<double> progress, int timeout)
+    public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string filePath, IProgress<double> progress, int timeout)
     {
         if (url.IsNullOrEmpty())
         {
             throw new ArgumentNullException(nameof(url));
         }
-        if (fileName.IsNullOrEmpty())
+        if (filePath.IsNullOrEmpty())
         {
-            throw new ArgumentNullException(nameof(fileName));
+            throw new ArgumentNullException(nameof(filePath));
         }
-        if (File.Exists(fileName))
+        if (File.Exists(filePath))
         {
-            File.Delete(fileName);
+            File.Delete(filePath);
         }
 
         var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
         var requestConfiguration = new RequestConfiguration()
         {
             ConnectTimeout = connectTimeout * 1000,
-            Proxy = webProxy
+            Proxy = webProxy,
         };
         var downloadOpt = new DownloadConfiguration()
         {
+            ChunkCount = 100,
+            MinimumChunkSize = 8 * 1024 * 1024, // 8 MB
+            MinimumSizeOfChunking = 8 * 1024 * 1024, // 8 MB
+            ParallelDownload = true,
+            ParallelCount = 4,
+
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
@@ -191,9 +193,75 @@ public class DownloaderHelper
         };
 
         using var cts = new CancellationTokenSource();
-        await downloader.DownloadFileTaskAsync(url, fileName, cts.Token);
+        await downloader.DownloadFileTaskAsync(url, filePath, cts.Token);
+    }
 
-        downloadOpt = null;
+    public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, IProgress<ReadOnlyMemory<FileDownloadState>> progress, int timeout)
+    {
+        if (requests is not { Count: > 0 })
+        {
+            throw new ArgumentNullException(nameof(requests));
+        }
+
+        var states = new FileDownloadState[requests.Count];
+        for (var i = 0; i < requests.Count; i++)
+        {
+            states[i] = new FileDownloadState
+            {
+                Request = requests[i],
+            };
+        }
+        var readOnlyStates = new ReadOnlyMemory<FileDownloadState>(states);
+
+        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+        var requestConfiguration = new RequestConfiguration()
+        {
+            ConnectTimeout = connectTimeout * 1000,
+            Proxy = webProxy,
+
+            KeepAlive = true,
+        };
+        using var socketsHttpHandler = GetSocketsHttpHandler(requestConfiguration);
+
+        var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4 };
+
+        await Parallel.ForEachAsync(Enumerable.Range(0, requests.Count), parallelOptions, async (index, cancellationToken) =>
+        {
+            var request = requests[index];
+            var downloadOpt = new DownloadConfiguration()
+            {
+                BlockTimeout = timeout * 1000,
+                MaxTryAgainOnFailure = 2,
+                RequestConfiguration = requestConfiguration,
+                // ReSharper disable once AccessToDisposedClosure
+                CustomHttpMessageHandlerFactory = () => socketsHttpHandler,
+            };
+            var downloader = new Downloader.DownloadService(downloadOpt);
+            downloader.DownloadProgressChanged += (sender, value) =>
+            {
+                states[index] = states[index] with
+                {
+                    DownloadedBytes = value.ReceivedBytesSize,
+                    TotalBytes = value.TotalBytesToReceive,
+                    SpeedBytesPerSecond = value.BytesPerSecondSpeed,
+                    Completed = false,
+                };
+                progress.Report(readOnlyStates);
+            };
+            downloader.DownloadFileCompleted += (sender, value) =>
+            {
+                var newState = states[index] with { Completed = true };
+                if (value.Error != null)
+                {
+                    newState = newState with { Error = value.Error };
+                }
+                states[index] = newState;
+                progress?.Report(readOnlyStates);
+            };
+            using var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+            await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, cts.Token);
+        });
     }
 
     // https://github.com/bezzad/Downloader/blob/a75a6e431acd6cbba6293f7afdcf676544a09174/src/Downloader/SocketClient.cs#L45
@@ -213,7 +281,7 @@ public class DownloaderHelper
             PooledConnectionIdleTimeout = config.KeepAliveTimeout,
             PooledConnectionLifetime = Timeout.InfiniteTimeSpan,
             EnableMultipleHttp2Connections = true,
-            ConnectTimeout = TimeSpan.FromMilliseconds(config.ConnectTimeout)
+            ConnectTimeout = TimeSpan.FromMilliseconds(config.ConnectTimeout),
         };
 
         // Set up the SslClientAuthenticationOptions for custom certificate validation
