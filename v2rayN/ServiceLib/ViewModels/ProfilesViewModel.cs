@@ -419,7 +419,13 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public async Task AdjustMainLvColWidth()
     {
-        await AdjustMainLvColWidthInteraction.Handle(RxVoid.Default);
+        try
+        {
+            await AdjustMainLvColWidthInteraction.Handle(RxVoid.Default);
+        }
+        catch (UnhandledInteractionException<RxVoid, RxVoid>)
+        {
+        }
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
