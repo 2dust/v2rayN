@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-
 namespace ServiceLib.Handler.Fmt;
 
 public class Hysteria2Fmt : BaseFmt
@@ -170,6 +168,7 @@ public class Hysteria2Fmt : BaseFmt
         {
             item.CertSha = GetQueryDecoded(query, "pinSHA256");
         }
+        item.EchConfigList = GetQueryDecoded(query, "ech");
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             Ports = GetQueryDecoded(query, "mport"),
@@ -211,6 +210,10 @@ public class Hysteria2Fmt : BaseFmt
         {
             var sha = item.CertSha;
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
+        }
+        if (!item.EchConfigList.IsNullOrEmpty())
+        {
+            dicQuery.Add("ech", Utils.UrlEncode(item.EchConfigList));
         }
         var protocolExtraItem = item.GetProtocolExtra();
         var isGecko = !protocolExtraItem.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtraItem.GeckoMaxPacketSize.IsNullOrEmpty();
