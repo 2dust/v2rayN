@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="DnsClientX" />
 		<PackageReference Include="Downloader" />
 		<PackageReference Include="IPNetwork2" />
 		<PackageReference Include="ReactiveUI">

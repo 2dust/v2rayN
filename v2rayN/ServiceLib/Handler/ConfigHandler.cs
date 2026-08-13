@@ -1,4 +1,5 @@
 using System.Data;
+using DnsClientX;
 
 namespace ServiceLib.Handler;
 
@@ -1633,10 +1634,15 @@ public static class ConfigHandler
         }
 
         var subFilter = string.Empty;
+        var preResolver = string.Empty;
         if (isSub && subid.IsNotEmpty())
         {
             subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
+            preResolver = (await AppManager.Instance.GetSubItem(subid))?.PreResolver ?? "";
         }
+
+        await using var dnsClient = preResolver.IsNullOrEmpty() ? null : new ClientX(preResolver, DnsRequestFormat.DnsOverHttp2);
+        var dnsCache = new Dictionary<string, string>();
 
         var countServers = 0;
         List<ProfileItem> lstAdd = [];
@@ -1672,6 +1678,28 @@ public static class ConfigHandler
             }
             profileItem.Subid = subid;
             profileItem.IsSub = isSub;
+
+            if (dnsClient is not null && profileItem.Address.IsNotEmpty())
+            {
+                if (!dnsCache.TryGetValue(profileItem.Address, out var resolvedAddress))
+                {
+                    var response = await dnsClient.Resolve(profileItem.Address);
+                    foreach (var typedAnswer in response.TypedAnswers!)
+                    {
+                        resolvedAddress = typedAnswer switch
+                        {
+                            ARecord a => a.Address.ToString(),
+                            AAAARecord aaaa => aaaa.Address.ToString(),
+                            _ => string.Empty,
+                        };
+                    }
+                    dnsCache[profileItem.Address] = resolvedAddress;
+                }
+                if (!resolvedAddress.IsNullOrEmpty())
+                {
+                    profileItem.Address = resolvedAddress;
+                }
+            }
 
             var addStatus = profileItem.ConfigType switch
             {
