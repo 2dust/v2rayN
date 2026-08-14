@@ -25,6 +25,21 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial bool AutoSort { get; set; }
 
+    [Reactive]
+    public partial string OutboundTag { get; set; }
+
+    [Reactive]
+    public partial string Remarks { get; set; }
+
+    [Reactive]
+    public partial string Port { get; set; }
+
+    [Reactive]
+    public partial string Network { get; set; }
+
+    [Reactive]
+    public partial bool Enabled { get; set; }
+
     public ReactiveCommand<RxVoid, RxVoid> SelectProfileCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
@@ -57,6 +72,11 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
         IP = Utils.List2String(SelectedSource.Ip, true);
         Process = Utils.List2String(SelectedSource.Process, true);
         RuleType = SelectedSource.RuleType?.ToString();
+        OutboundTag = SelectedSource.OutboundTag;
+        Remarks = SelectedSource.Remarks;
+        Port = SelectedSource.Port;
+        Network = SelectedSource.Network;
+        Enabled = SelectedSource.Enabled;
     }
 
     private async Task SaveRulesAsync()
@@ -80,6 +100,11 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
         SelectedSource.Protocol = ProtocolItems?.ToList();
         SelectedSource.InboundTag = InboundTagItems?.ToList();
         SelectedSource.RuleType = RuleType.IsNullOrEmpty() ? null : Enum.Parse<ERuleType>(RuleType);
+        SelectedSource.OutboundTag = OutboundTag;
+        SelectedSource.Remarks = Remarks;
+        SelectedSource.Port = Port;
+        SelectedSource.Network = Network;
+        SelectedSource.Enabled = Enabled;
 
         var hasRule = SelectedSource.Domain?.Count > 0
           || SelectedSource.Ip?.Count > 0
@@ -110,8 +135,7 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
         var profileItem = await profileSelectViewModel.GetProfileItem();
         if (profileItem != null)
         {
-            SelectedSource.OutboundTag = profileItem.Remarks;
-            SelectedSource = JsonUtils.DeepCopy(SelectedSource);
+            OutboundTag = profileItem.Remarks;
         }
     }
 }
