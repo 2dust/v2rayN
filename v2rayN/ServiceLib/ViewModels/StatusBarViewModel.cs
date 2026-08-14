@@ -297,15 +297,9 @@ public partial class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var models = new List<ComboItem>();
-        BlServers = true;
-        foreach (var it in lstModel)
-        {
-            var name = it.GetSummary();
+        var models = lstModel.Select(it => new ComboItem { ID = it.IndexId, Text = it.GetSummary() }).ToList();
 
-            var item = new ComboItem() { ID = it.IndexId, Text = name };
-            models.Add(item);
-        }
+        BlServers = true;
         Servers.Clear();
         Servers.AddRange(models);
 
