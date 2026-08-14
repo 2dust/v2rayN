@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Aktifkan pengurutan konfigurasi dengan seret dan lepas (perlu mulai ulang)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>Aktifkan backend Wayland native [eksperimental] (perlu mulai ulang)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>Hanya untuk Linux. Jika tema kursor, tray, atau perilaku jendela tidak normal, nonaktifkan opsi ini.</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Muat ulang otomatis</value>
   </data>

@@ -4221,18 +4221,12 @@ namespace ServiceLib.Resx {
             }
         }
 
-        /// <summary>
-        ///   查找类似 Enable native Wayland backend (requires restart) 的本地化字符串。
-        /// </summary>
         public static string TbSettingsEnableLinuxWayland {
             get {
                 return ResourceManager.GetString("TbSettingsEnableLinuxWayland", resourceCulture);
             }
         }
 
-        /// <summary>
-        ///   查找类似 Linux only. Disable it if cursor themes, tray, or window behavior are abnormal. 的本地化字符串。
-        /// </summary>
         public static string TbSettingsEnableLinuxWaylandTip {
             get {
                 return ResourceManager.GetString("TbSettingsEnableLinuxWaylandTip", resourceCulture);

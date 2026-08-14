@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Включить сортировку перетаскиванием сервера (требуется перезапуск)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>Включить нативный бэкенд Wayland [экспериментально] (требуется перезапуск)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>Только для Linux. Если тема курсора, трей или поведение окон работают некорректно, отключите этот параметр.</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Автообновление</value>
   </data>

@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>فعال کردن مرتب‌سازی سرورها با کشیدن و رها کردن (نیاز به راه‌اندازی مجدد)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>فعال‌سازی بک‌اند بومی Wayland [آزمایشی] (نیاز به راه‌اندازی مجدد)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>فقط برای لینوکس. اگر تم نشانگر، سینی یا رفتار پنجره غیرعادی بود، این گزینه را غیرفعال کنید.</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>بازخوانی خودکار</value>
   </data>

@@ -910,10 +910,10 @@
     <value>Enable sorting Configurations by drag-n-drop (requires restart)</value>
   </data>
   <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
-    <value>Enable native Wayland backend (requires restart)</value>
+    <value>Enable native Wayland backend [Experimental] (requires restart)</value>
   </data>
   <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
-    <value>Linux only. Disable it if cursor themes, tray, or window behavior are abnormal.</value>
+    <value>Linux only. If the cursor theme, tray, or window behavior is abnormal, disable this option.</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Auto refresh</value>

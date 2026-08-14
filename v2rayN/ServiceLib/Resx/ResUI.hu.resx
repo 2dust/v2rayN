@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Konfigurációk rendezésének engedélyezése húzással (újraindítást igényel)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>Natív Wayland háttérrendszer engedélyezése [kísérleti] (újraindítást igényel)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>Csak Linuxon. Ha a kurzortéma, a rendszertálca vagy az ablakok viselkedése rendellenes, kapcsold ki ezt az opciót.</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Automatikus frissítés</value>
   </data>

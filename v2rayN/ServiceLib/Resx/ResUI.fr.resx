@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>Activer le tri par glisser-déposer des configurations (redémarrage requis)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>Activer le backend Wayland natif [expérimental] (redémarrage requis)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>Linux uniquement. Si le thème du curseur, la zone de notification ou le comportement des fenêtres est anormal, désactivez cette option.</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>Actualisation automatique</value>
   </data>

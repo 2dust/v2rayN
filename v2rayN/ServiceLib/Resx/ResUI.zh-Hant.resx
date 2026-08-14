@@ -910,10 +910,10 @@
     <value>啟用拖放排序 (需重啟)</value>
   </data>
   <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
-    <value>啟用原生 Wayland 後端 (需重啟)</value>
+    <value>啟用原生 Wayland 後端 [實驗性] (需重啟)</value>
   </data>
   <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
-    <value>僅 Linux 可用。如游標主題、托盤或視窗行為異常，請關閉此項。</value>
+    <value>僅 Linux 可用，若游標主題、托盤或視窗行為異常，請關閉此項。</value>
   </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自動重新整理</value>
