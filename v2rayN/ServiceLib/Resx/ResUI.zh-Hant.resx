@@ -1417,7 +1417,7 @@
     <value>新增 [Anytls] 節點</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
-    <value>遠程 DNS</value>
+    <value>遠端 DNS</value>
   </data>
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>直連 DNS</value>
@@ -1429,16 +1429,16 @@
     <value>代理目標解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
-    <value>新增常用 DNS Hosts</value>
+    <value>新增常用 DNS 主機對應</value>
   </data>
   <data name="TbFakeIP" xml:space="preserve">
     <value>FakeIP</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
-    <value>阻止 SVCB 和 HTTPS 查詢</value>
+    <value>封鎖 SVCB 與 HTTPS 查詢</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS Hosts：（“網域名稱1 ip1 ip2” 一行一個）</value>
+    <value>DNS 主機對應：（每行一組「網域名稱1 ip1 ip2」）</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>DNS 基礎設定</value>
@@ -1447,49 +1447,49 @@
     <value>DNS 進階設定</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>校驗相應地區域名 IP</value>
+    <value>驗證區域網域名稱的 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>配置後，會對相應地區域名（如 geosite:cn - geoip:cn）的返回 IP 進行校驗，僅返回期望 IP</value>
+    <value>設定後，系統會驗證區域網域名稱（例如 geosite:cn - geoip:cn）所傳回的 IP，並只傳回預期的 IP。</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>啟用自訂 DNS</value>
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
-    <value>自訂 DNS 已啟用，此頁面配置將無效</value>
+    <value>已啟用自訂 DNS，此頁面的設定將不會生效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>開啟後將阻止 ECH 和 HTTP/3 可用性查詢</value>
+    <value>啟用後將封鎖 ECH 與 HTTP/3 可用性查詢</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
-    <value>請填寫正確的配置範本</value>
+    <value>請填寫正確的設定範本</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>完整配置範本設定</value>
+    <value>完整設定範本</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>啟用完整配置範本</value>
+    <value>啟用完整設定範本</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
-    <value>v2ray 完整配置範本</value>
+    <value>v2ray 完整設定範本</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>僅添加出站配置，routing.balancers 和 routing.rules.outboundTag，點擊查看文檔</value>
+    <value>僅新增出站設定、routing.balancers 與 routing.rules.outboundTag。點選以查看說明文件</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>不添加非代理協定出站</value>
+    <value>不新增非代理協定出站</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>設定上游代理 tag</value>
+    <value>設定上游代理標籤</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
-    <value>sing-box 完整配置範本</value>
+    <value>sing-box 完整設定範本</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>僅添加出站和端點配置，點擊查看文檔</value>
+    <value>僅新增出站與端點設定。點選以查看說明文件</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>此功能供高級用戶和有特殊需求的用戶使用。 啟用此功能後，將忽略 Core 的基礎設定，DNS 設定 ，路由設定。你需要保證系統代理的埠和流量統計等功能的配置正確，一切都由你來設定。</value>
+    <value>此功能適合進階使用者與有特殊需求的使用者。啟用後，Core 基礎設定、DNS 設定與路由設定將被忽略。請確認系統代理連接埠、流量統計及其他相關設定皆正確；所有項目都必須由您自行設定。</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
     <value>開始解析和處理訂閱內容</value>
@@ -1498,10 +1498,10 @@
     <value>選擇節點</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>默認全局生效，僅在 sing-box 中內置 FakeIP 過濾。</value>
+    <value>預設會套用至全域；內建 FakeIP 過濾僅支援 sing-box。</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
-    <value>請至少添加一個節點</value>
+    <value>請至少新增一個設定檔</value>
   </data>
   <data name="TbConfigTypePolicyGroup" xml:space="preserve">
     <value>策略組</value>
@@ -1627,7 +1627,7 @@
     <value>提供過期快取（Serve Stale）</value>
   </data>
   <data name="TbParallelQuery" xml:space="preserve">
-    <value>并行查詢</value>
+    <value>並行查詢</value>
   </data>
   <data name="TbDomesticDNSTips" xml:space="preserve">
     <value>預設僅在路由期間進行解析時調用</value>
