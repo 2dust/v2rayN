@@ -67,6 +67,11 @@ internal class Program
            .LogToTrace()
            .UseReactiveUI(_ => { });
 
+        if (OperatingSystem.IsLinux() && !Design.IsDesignMode && AppManager.Instance.Config.UiItem.EnableLinuxWayland)
+        {
+            builder = builder.UseWaylandWithFallback();
+        }
+
         if (OperatingSystem.IsMacOS())
         {
             var showInDock = Design.IsDesignMode || AppManager.Instance.Config.UiItem.MacOSShowInDock;

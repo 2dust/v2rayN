@@ -101,6 +101,7 @@ public class UIItem
     public bool AutoHideStartup { get; set; }
     public bool Hide2TrayWhenClose { get; set; }
     public bool MacOSShowInDock { get; set; }
+    public bool EnableLinuxWayland { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }
     public bool HideColumnIpInfo { get; set; }

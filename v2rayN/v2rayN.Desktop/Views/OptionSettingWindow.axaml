@@ -596,6 +596,29 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableLinuxWayland}" />
+                        <ToggleSwitch
+                            x:Name="togEnableLinuxWayland"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding BlIsLinux}" />
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding BlIsLinux}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableLinuxWaylandTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             IsVisible="{Binding BlIsIsMacOS}"
                             Text="{x:Static resx:ResUI.TbSettingsMacOSShowInDock}" />
                         <ToggleSwitch

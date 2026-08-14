@@ -8,6 +8,7 @@
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
     <PackageVersion Include="Avalonia.Desktop" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Wayland" Version="12.1.1" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="AwesomeAssertions" Version="9.5.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />

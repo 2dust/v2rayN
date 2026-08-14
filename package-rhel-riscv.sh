@@ -508,7 +508,9 @@ BugURL:         https://github.com/2dust/v2rayN/issues
 ExclusiveArch:  riscv64
 Source0:        __PKGROOT__.tar.gz
 
-Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
+Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL, mesa-libgbm
+Requires:       libwayland-client, libwayland-cursor, libwayland-egl
+Requires:       libxkbcommon, libdrm, glib2
 Requires:       glibc >= 2.39
 Requires:       fontconfig >= 2.15.0
 Requires:       desktop-file-utils >= 0.26

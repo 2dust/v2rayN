@@ -909,6 +909,12 @@
   <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
     <value>启用配置拖放排序 (需重启)</value>
   </data>
+  <data name="TbSettingsEnableLinuxWayland" xml:space="preserve">
+    <value>启用原生 Wayland 后端 [实验性] (需重启)</value>
+  </data>
+  <data name="TbSettingsEnableLinuxWaylandTip" xml:space="preserve">
+    <value>仅 Linux 可用，若光标主题，托盘或窗口行为异常，请关闭此项。</value>
+  </data>
   <data name="TbAutoRefresh" xml:space="preserve">
     <value>自动刷新</value>
   </data>

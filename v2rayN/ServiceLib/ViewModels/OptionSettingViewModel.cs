@@ -45,6 +45,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool AutoHideStartup { get; set; }
     [Reactive] public partial bool Hide2TrayWhenClose { get; set; }
     [Reactive] public partial bool MacOSShowInDock { get; set; }
+    [Reactive] public partial bool EnableLinuxWayland { get; set; }
     [Reactive] public partial bool EnableDragDropSort { get; set; }
     [Reactive] public partial bool DoubleClick2Activate { get; set; }
     [Reactive] public partial int AutoUpdateInterval { get; set; }
@@ -175,6 +176,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         AutoHideStartup = _config.UiItem.AutoHideStartup;
         Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
         MacOSShowInDock = _config.UiItem.MacOSShowInDock;
+        EnableLinuxWayland = _config.UiItem.EnableLinuxWayland;
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
         AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
@@ -303,6 +305,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
                         || EnableHWA != _config.GuiItem.EnableHWA
+                        || EnableLinuxWayland != _config.UiItem.EnableLinuxWayland
                         || CurrentFontFamily != _config.UiItem.CurrentFontFamily;
 
         //Core
@@ -347,6 +350,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.UiItem.AutoHideStartup = AutoHideStartup;
         _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
         _config.UiItem.MacOSShowInDock = MacOSShowInDock;
+        _config.UiItem.EnableLinuxWayland = EnableLinuxWayland;
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;
         _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
