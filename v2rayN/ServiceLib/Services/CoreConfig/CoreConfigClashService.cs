@@ -1,3 +1,6 @@
+using YamlDotNet.Core;
+using YamlDotNet.RepresentationModel;
+
 namespace ServiceLib.Services.CoreConfig;
 
 /// <summary>
@@ -127,7 +130,27 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
                 Logging.SaveLog($"{_tag}-Mixin", ex);
             }
 
+            // Mihomo parses plain values such as 815458e4 as floats, so quote REALITY short IDs.
+            var originalRealityShortIds = new List<(Dictionary<object, object> RealityOptions, string ShortId)>();
+            if (fileContent.GetValueOrDefault("proxies") is List<object> proxies)
+            {
+                foreach (var proxy in proxies.OfType<Dictionary<object, object>>())
+                {
+                    if (proxy.GetValueOrDefault("reality-opts") is Dictionary<object, object> realityOptions
+                        && realityOptions.GetValueOrDefault("short-id") is string shortId
+                        && !shortId.StartsWith(tagYamlStr2, StringComparison.Ordinal))
+                    {
+                        originalRealityShortIds.Add((realityOptions, shortId));
+                        realityOptions["short-id"] = new YamlScalarNode(shortId) { Style = ScalarStyle.DoubleQuoted };
+                    }
+                }
+            }
+
             var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
+            foreach (var (realityOptions, shortId) in originalRealityShortIds)
+            {
+                realityOptions["short-id"] = shortId;
+            }
             await File.WriteAllTextAsync(fileName, txtFileNew);
             //check again
             if (!File.Exists(fileName))
