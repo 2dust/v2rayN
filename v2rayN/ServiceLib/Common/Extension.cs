@@ -134,4 +134,25 @@ public static class Extension
                     .Replace("\r", replacement)
                     .Replace("\n", replacement);
     }
+
+    public static async Task<TOutput> HandleSafe<TInput, TOutput>(
+        this Interaction<TInput, TOutput> interaction,
+        TInput input,
+        TOutput defaultValue = default!)
+    {
+        try
+        {
+            return await interaction.Handle(input);
+        }
+        catch (UnhandledInteractionException<TInput, TOutput> ex)
+        {
+            Logging.SaveLog($"Unhandled interaction exception for input: {input}", ex);
+            return defaultValue;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog($"Exception occurred while handling interaction for input: {input}", ex);
+            return defaultValue;
+        }
+    }
 }

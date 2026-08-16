@@ -345,13 +345,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
         await RefreshServers();
 
-        try
-        {
-            await ProfilesFocusInteraction.Handle(RxVoid.Default);
-        }
-        catch (UnhandledInteractionException<RxVoid, RxVoid>)
-        {
-        }
+        await ProfilesFocusInteraction.HandleSafe(RxVoid.Default);
     }
 
     private async Task ServerFilterChanged(bool c)
@@ -395,13 +389,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             SelectedProfile = selected ?? lstModel.First();
         }
 
-        try
-        {
-            await DispatcherRefreshServersBizInteraction.Handle(RxVoid.Default);
-        }
-        catch (UnhandledInteractionException<RxVoid, RxVoid>)
-        {
-        }
+        await DispatcherRefreshServersBizInteraction.HandleSafe(RxVoid.Default);
     }
 
     public async Task RefreshSubscriptions()
@@ -419,7 +407,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public async Task AdjustMainLvColWidth()
     {
-        await AdjustMainLvColWidthInteraction.Handle(RxVoid.Default);
+        await AdjustMainLvColWidthInteraction.HandleSafe(RxVoid.Default);
     }
 
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
@@ -535,7 +523,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -556,7 +544,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     private async Task RemoveDuplicateServer()
     {
-        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }
@@ -631,7 +619,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        await ShareServerInteraction.Handle(url);
+        await ShareServerInteraction.HandleSafe(url);
     }
 
     private async Task GenGroupAllServer()
@@ -799,13 +787,13 @@ public partial class ProfilesViewModel : MyReactiveObject
             }
             else
             {
-                await SetClipboardDataInteraction.Handle((string)result.Data);
+                await SetClipboardDataInteraction.HandleSafe((string)result.Data);
                 NoticeManager.Instance.SendMessage(ResUI.OperationSuccess);
             }
         }
         else
         {
-            await SaveFileDialogInteraction.Handle(item);
+            await SaveFileDialogInteraction.HandleSafe(item);
         }
     }
 
@@ -854,11 +842,11 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             if (blEncode)
             {
-                await SetClipboardDataInteraction.Handle(Utils.Base64Encode(sb.ToString()));
+                await SetClipboardDataInteraction.HandleSafe(Utils.Base64Encode(sb.ToString()));
             }
             else
             {
-                await SetClipboardDataInteraction.Handle(sb.ToString());
+                await SetClipboardDataInteraction.HandleSafe(sb.ToString());
             }
             NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
         }
@@ -881,7 +869,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
         if (!result.IsNullOrEmpty())
         {
-            await SetClipboardDataInteraction.Handle(result);
+            await SetClipboardDataInteraction.HandleSafe(result);
             NoticeManager.Instance.SendMessage(ResUI.BatchExportURLSuccessfully);
         }
         else
@@ -925,7 +913,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        if (await ShowYesNoInteraction.Handle(ResUI.RemoveServer) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }
