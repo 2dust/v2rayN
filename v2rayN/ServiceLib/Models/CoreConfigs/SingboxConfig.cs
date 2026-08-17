@@ -24,6 +24,7 @@ public class Dns4Sbox
     public List<Server4Sbox> servers { get; set; }
     public List<Rule4Sbox> rules { get; set; }
     public string? final { get; set; }
+    public bool? optimistic { get; set; }
     public string? strategy { get; set; }
     public bool? disable_cache { get; set; }
     public bool? disable_expire { get; set; }
@@ -94,6 +95,11 @@ public class Rule4Sbox
     public bool? rule_set_ip_cidr_match_source { get; set; }
     public bool? rule_set_ip_cidr_accept_empty { get; set; }
     public bool? tls_record_fragment { get; set; }
+    public string? preferred_by { get; set; }
+    public string? match_response { get; set; } // or bool
+    public string? tag { get; set; }
+    public bool? race { get; set; }
+    public bool? speculative { get; set; }
 }
 
 [Serializable]

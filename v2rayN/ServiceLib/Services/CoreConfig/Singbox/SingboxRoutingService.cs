@@ -244,7 +244,7 @@ public partial class CoreConfigSingboxService
             var resolveRule = new Rule4Sbox
             {
                 action = "resolve",
-                strategy = domainStrategy
+                strategy = domainStrategy,
             };
             if (_config.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
             {
