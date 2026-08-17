@@ -24,7 +24,7 @@
     <PackageVersion Include="Semi.Avalonia" Version="12.1.0.1" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="12.1.0.1" />
-    <PackageVersion Include="NLog" Version="6.1.4" />
+    <PackageVersion Include="NLog" Version="6.2.0" />
     <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
     <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.4.1" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
