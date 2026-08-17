@@ -1,103 +1,99 @@
-using AwesomeAssertions;
-using ServiceLib.Enums;
-using ServiceLib.Handler.Fmt;
-using ServiceLib.Models;
-using Xunit;
-
 namespace ServiceLib.Tests.Fmt;
 
 public class FmtHandlerTests
 {
-    [Fact]
-    public void GetShareUriAndResolveConfig_Vmess_ShouldRoundTripBasicFields()
+    [Test]
+    public async Task GetShareUriAndResolveConfig_Vmess_ShouldRoundTripBasicFields()
     {
         var source = CreateVmessProfile();
 
-        var resolved = ExportThenImport(source);
+        var resolved = await ExportThenImport(source);
 
-        resolved.ConfigType.Should().Be(EConfigType.VMess);
-        resolved.Remarks.Should().Be(source.Remarks);
-        resolved.Address.Should().Be(source.Address);
-        resolved.Port.Should().Be(source.Port);
-        resolved.Password.Should().Be(source.Password);
-        resolved.GetProtocolExtra().AlterId.Should().Be(source.GetProtocolExtra().AlterId);
+        await resolved.ConfigType.Should().BeEqualTo(EConfigType.VMess);
+        await resolved.Remarks.Should().BeEqualTo(source.Remarks);
+        await resolved.Address.Should().BeEqualTo(source.Address);
+        await resolved.Port.Should().BeEqualTo(source.Port);
+        await resolved.Password.Should().BeEqualTo(source.Password);
+        await resolved.GetProtocolExtra().AlterId.Should().BeEqualTo(source.GetProtocolExtra().AlterId);
     }
 
-    [Fact]
-    public void GetShareUriAndResolveConfig_Vless_ShouldRoundTripBasicFields()
+    [Test]
+    public async Task GetShareUriAndResolveConfig_Vless_ShouldRoundTripBasicFields()
     {
         var source = CreateVlessProfile();
 
-        var resolved = ExportThenImport(source);
+        var resolved = await ExportThenImport(source);
 
-        resolved.ConfigType.Should().Be(EConfigType.VLESS);
-        resolved.Remarks.Should().Be(source.Remarks);
-        resolved.Address.Should().Be(source.Address);
-        resolved.Port.Should().Be(source.Port);
-        resolved.Password.Should().Be(source.Password);
-        resolved.GetProtocolExtra().VlessEncryption.Should().Be(Global.None);
+        await resolved.ConfigType.Should().BeEqualTo(EConfigType.VLESS);
+        await resolved.Remarks.Should().BeEqualTo(source.Remarks);
+        await resolved.Address.Should().BeEqualTo(source.Address);
+        await resolved.Port.Should().BeEqualTo(source.Port);
+        await resolved.Password.Should().BeEqualTo(source.Password);
+        await resolved.GetProtocolExtra().VlessEncryption.Should().BeEqualTo(Global.None);
     }
 
-    [Fact]
-    public void GetShareUriAndResolveConfig_Shadowsocks_ShouldRoundTripBasicFields()
+    [Test]
+    public async Task GetShareUriAndResolveConfig_Shadowsocks_ShouldRoundTripBasicFields()
     {
         var source = CreateShadowsocksProfile();
 
-        var resolved = ExportThenImport(source);
+        var resolved = await ExportThenImport(source);
 
-        resolved.ConfigType.Should().Be(EConfigType.Shadowsocks);
-        resolved.Remarks.Should().Be(source.Remarks);
-        resolved.Address.Should().Be(source.Address);
-        resolved.Port.Should().Be(source.Port);
-        resolved.Password.Should().Be(source.Password);
-        resolved.GetProtocolExtra().SsMethod.Should().Be(source.GetProtocolExtra().SsMethod);
+        await resolved.ConfigType.Should().BeEqualTo(EConfigType.Shadowsocks);
+        await resolved.Remarks.Should().BeEqualTo(source.Remarks);
+        await resolved.Address.Should().BeEqualTo(source.Address);
+        await resolved.Port.Should().BeEqualTo(source.Port);
+        await resolved.Password.Should().BeEqualTo(source.Password);
+        await resolved.GetProtocolExtra().SsMethod.Should().BeEqualTo(source.GetProtocolExtra().SsMethod);
     }
 
-    [Fact]
-    public void GetShareUriAndResolveConfig_Socks_ShouldRoundTripBasicFields()
+    [Test]
+    public async Task GetShareUriAndResolveConfig_Socks_ShouldRoundTripBasicFields()
     {
         var source = CreateSocksProfile();
 
-        var resolved = ExportThenImport(source);
+        var resolved = await ExportThenImport(source);
 
-        resolved.ConfigType.Should().Be(EConfigType.SOCKS);
-        resolved.Remarks.Should().Be(source.Remarks);
-        resolved.Address.Should().Be(source.Address);
-        resolved.Port.Should().Be(source.Port);
-        resolved.Username.Should().Be(source.Username);
-        resolved.Password.Should().Be(source.Password);
+        await resolved.ConfigType.Should().BeEqualTo(EConfigType.SOCKS);
+        await resolved.Remarks.Should().BeEqualTo(source.Remarks);
+        await resolved.Address.Should().BeEqualTo(source.Address);
+        await resolved.Port.Should().BeEqualTo(source.Port);
+        await resolved.Username.Should().BeEqualTo(source.Username);
+        await resolved.Password.Should().BeEqualTo(source.Password);
     }
 
-    [Fact]
-    public void ResolveConfig_UnsupportedProtocol_ShouldReturnNull()
+    [Test]
+    public async Task ResolveConfig_UnsupportedProtocol_ShouldReturnNull()
     {
         var resolved = FmtHandler.ResolveConfig("not-a-share-uri", out var msg);
 
-        resolved.Should().BeNull();
-        msg.Should().NotBeNullOrWhiteSpace();
+        await resolved.Should().BeNull();
+        await msg.Should().NotBeNull();
+        await msg.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void GetShareUri_UnsupportedConfigType_ShouldReturnNull()
+    [Test]
+    public async Task GetShareUri_UnsupportedConfigType_ShouldReturnNull()
     {
         var item = new ProfileItem { ConfigType = EConfigType.PolicyGroup, Remarks = "group", };
 
         var uri = FmtHandler.GetShareUri(item);
 
-        uri.Should().BeNull();
+        await uri.Should().BeNull();
     }
 
-    private static ProfileItem ExportThenImport(ProfileItem source)
+    private static async Task<ProfileItem> ExportThenImport(ProfileItem source)
     {
         var uri = FmtHandler.GetShareUri(source);
 
-        uri.Should().NotBeNullOrWhiteSpace();
-        uri!.StartsWith(Global.ProtocolShares[source.ConfigType], StringComparison.OrdinalIgnoreCase).Should()
+        await uri.Should().NotBeNull();
+        await uri.Should().NotBeEmpty();
+        await uri!.StartsWith(Global.ProtocolShares[source.ConfigType], StringComparison.OrdinalIgnoreCase).Should()
             .BeTrue();
 
         var resolved = FmtHandler.ResolveConfig(uri, out var msg);
 
-        resolved.Should().NotBeNull($"uri: {uri}, msg: {msg}");
+        await resolved.Should().NotBeNull().Because($"uri: {uri}, msg: {msg}");
         return resolved!;
     }
 

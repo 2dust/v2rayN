@@ -1,15 +1,11 @@
-using AwesomeAssertions;
-using ServiceLib.Enums;
-using ServiceLib.Handler.Fmt;
 using ServiceLib.Tests.CoreConfig;
-using Xunit;
 
 namespace ServiceLib.Tests.Fmt;
 
 public class InnerFmtTests
 {
-    [Fact]
-    public void ToUriAndResolve_ShouldRoundTripPolicyGroupReferences()
+    [Test]
+    public async Task ToUriAndResolve_ShouldRoundTripPolicyGroupReferences()
     {
         var childA = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "child-a", "child-a");
         var childB = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "child-b", "child-b");
@@ -19,19 +15,20 @@ public class InnerFmtTests
 
         var uri = InnerFmt.ToUri([group, childA, childB]);
 
-        uri.Should().NotBeNullOrWhiteSpace();
+        await uri.Should().NotBeNull();
+        await uri.Should().NotBeEmpty();
 
         var resolved = InnerFmt.Resolve(uri!, "sub-123");
 
-        resolved.Should().NotBeNull();
-        resolved.Should().HaveCount(3);
+        await resolved.Should().NotBeNull();
+        await resolved.Should().HaveCount(3);
 
         var resolvedGroup = resolved!.Single(x => x.Remarks == group.Remarks);
         var resolvedChildA = resolved.Single(x => x.Remarks == childA.Remarks);
         var resolvedChildB = resolved.Single(x => x.Remarks == childB.Remarks);
 
-        resolvedGroup.ConfigType.Should().Be(EConfigType.PolicyGroup);
-        resolvedGroup.GetProtocolExtra().SubChildItems.Should().Be("sub-123");
-        resolvedGroup.GetProtocolExtra().ChildItems.Should().Be($"{resolvedChildA.IndexId},{resolvedChildB.IndexId}");
+        await resolvedGroup.ConfigType.Should().BeEqualTo(EConfigType.PolicyGroup);
+        await resolvedGroup.GetProtocolExtra().SubChildItems.Should().BeEqualTo("sub-123");
+        await resolvedGroup.GetProtocolExtra().ChildItems.Should().BeEqualTo($"{resolvedChildA.IndexId},{resolvedChildB.IndexId}");
     }
 }

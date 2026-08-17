@@ -28,6 +28,8 @@
     <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
     <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.4.1" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
+    <PackageVersion Include="TUnit" Version="1.65.0" />
+    <PackageVersion Include="TUnit.Assertions.Should" Version="1.65.0-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="xunit.v3" Version="4.0.0" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
