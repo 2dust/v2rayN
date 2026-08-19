@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace ServiceLib.Handler.Builder;
 
 public record CoreConfigContextBuilderResult(CoreConfigContext Context, NodeValidatorResult ValidatorResult)
@@ -205,7 +203,7 @@ public class CoreConfigContextBuilder
                 Context = preSocksResult.Context with
                 {
                     ProtectDomainList =
-                    [.. nodeContext.ProtectDomainList ?? [], .. preSocksResult.Context.ProtectDomainList ?? []],
+                    [.. nodeContext.ProtectDomainList, .. preSocksResult.Context.ProtectDomainList],
                     ProtectCoreTypeList = protectCoreTypeList,
                 },
             };
@@ -386,7 +384,7 @@ public class CoreConfigContextBuilder
         {
             var echQuerySni = node.Sni;
             if (node.StreamSecurity == Global.StreamSecurity
-                && node.EchConfigList?.Contains("://") == true)
+                && node.EchConfigList.Contains("://"))
             {
                 var idx = node.EchConfigList.IndexOf('+');
                 echQuerySni = idx > 0 ? node.EchConfigList[..idx] : node.Sni;
