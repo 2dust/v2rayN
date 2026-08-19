@@ -51,11 +51,10 @@ jobs:
           echo "After:"
           dotnet --list-sdks 2>$null; $LASTEXITCODE=0
 
-      - name: Setup .NET
+      - name: Setup .NET 10.0.1xx
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.x'
-          dotnet-quality: 'ga'
+          dotnet-version: 10.0.1xx
 
       - name: Publish ${{ matrix.flavor }} win-x86
         shell: pwsh

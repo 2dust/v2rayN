@@ -9,6 +9,10 @@ on:
       - 'v2rayN/ServiceLib/Handler/Fmt/**'
       - '.github/workflows/test.yml'
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,4 +31,11 @@ jobs:
 
     - name: Test Code
       working-directory: ./v2rayN
-      run: dotnet run --project ./ServiceLib.Tests -c Release
+      run: dotnet test ./ServiceLib.Tests -c Release --no-build --results-directory ./TestResults -- --report-trx
+
+    - name: Comment PR with results
+      if: always()
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: ./v2rayN/TestResults/*.trx
+        comment_mode: failures

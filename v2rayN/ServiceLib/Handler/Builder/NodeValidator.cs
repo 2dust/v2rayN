@@ -115,10 +115,10 @@ public class NodeValidator
 
         if (item.GetNetwork() is nameof(ETransport.ws)
             && item.EchConfigList.IsNullOrEmpty()
-            && item.GetAlpn()?.FirstOrDefault() == "h3")
+            && item.GetAlpn()?.FirstOrDefault() is "h3" or "h2")
         {
             v.Warning(
-                "WebSocket but ALPN is set to h3, the core may ignore the ALPN setting or cause unexpected issues.");
+                $"WebSocket but ALPN is set to {item.Alpn}, the core may ignore the ALPN setting or cause unexpected issues.");
         }
 
         // TLS & Security
@@ -131,14 +131,6 @@ public class NodeValidator
                 isCertProvided = false;
             }
 
-            // Check for deprecated allowInsecure property when TLS is enabled
-            if (item.GetAllowInsecure()
-                && item.Cert.IsNullOrEmpty()
-                && item.CertSha.IsNullOrEmpty())
-            {
-                v.Warning(ResUI.MsgAllowInsecureDeprecated);
-            }
-
             if ((coreType == ECoreType.Xray
                 && item.GetAllowInsecure()
                 && !isCertProvided
@@ -147,6 +139,10 @@ public class NodeValidator
                     && item.GetAllowInsecure()
                     && !isCertProvided))
             {
+                if (coreType == ECoreType.Xray)
+                {
+                    v.Warning(ResUI.MsgAllowInsecureDeprecated);
+                }
                 v.Warning(ResUI.MsgInsecureConfiguration);
             }
         }
