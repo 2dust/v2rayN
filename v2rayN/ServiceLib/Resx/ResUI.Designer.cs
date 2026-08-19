@@ -2861,7 +2861,16 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbCertSha256Tips", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Public key SHA-256 (Base64), sing-box only 的本地化字符串。
+        /// </summary>
+        public static string TbCertPubKeySha256Tips {
+            get {
+                return ResourceManager.GetString("TbCertPubKeySha256Tips", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Clear system proxy 的本地化字符串。
         /// </summary>

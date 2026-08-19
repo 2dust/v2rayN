@@ -1617,6 +1617,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Empreinte du certificat (SHA-256)</value>
   </data>
+  <data name="TbCertPubKeySha256Tips" xml:space="preserve">
+    <value>Clé publique SHA-256 (Base64), sing-box uniquement</value>
+  </data>
   <data name="TbServeStale" xml:space="preserve">
     <value>Cache optimiste</value>
   </data>

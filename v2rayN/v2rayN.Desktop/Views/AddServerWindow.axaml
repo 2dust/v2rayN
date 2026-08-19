@@ -1276,6 +1276,17 @@
                                             Width="400"
                                             Margin="{StaticResource Margin4}"
                                             VerticalAlignment="Center"
+                                            Text="{x:Static resx:ResUI.TbCertPubKeySha256Tips}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtCertPubKeySha256"
+                                            Width="400"
+                                            Margin="{StaticResource Margin4}"
+                                            HorizontalAlignment="Left" />
+                                        <TextBlock
+                                            Width="400"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
                                             Text="{x:Static resx:ResUI.TbFullCertTips}"
                                             TextWrapping="Wrap" />
                                         <TextBox

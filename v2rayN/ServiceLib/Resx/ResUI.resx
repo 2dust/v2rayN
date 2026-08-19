@@ -1629,6 +1629,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbCertSha256Tips" xml:space="preserve">
     <value>Certificate fingerprint (SHA-256)</value>
   </data>
+  <data name="TbCertPubKeySha256Tips" xml:space="preserve">
+    <value>Public key SHA-256 (Base64), sing-box only</value>
+  </data>
   <data name="TbServeStale" xml:space="preserve">
     <value>Serve Stale</value>
   </data>

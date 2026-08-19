@@ -460,6 +460,13 @@ public partial class CoreConfigSingboxService
                     tls.certificate = certs;
                     tls.insecure = false;
                 }
+                else if (!_node.CertPubKeySha.IsNullOrEmpty())
+                {
+                    tls.certificate_public_key_sha256 = _node.CertPubKeySha
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .ToList();
+                    tls.insecure = false;
+                }
             }
             else if (_node.StreamSecurity == Global.StreamSecurityReality)
             {

@@ -137,7 +137,8 @@ public class NodeValidator
                 && item.CertSha.IsNullOrEmpty())
                 || (coreType == ECoreType.sing_box
                     && item.GetAllowInsecure()
-                    && !isCertProvided))
+                    && !isCertProvided
+                    && item.CertPubKeySha.IsNullOrEmpty()))
             {
                 if (coreType == ECoreType.Xray)
                 {

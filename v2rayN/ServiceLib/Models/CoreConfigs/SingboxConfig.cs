@@ -190,6 +190,7 @@ public class Tls4Sbox
     public string? fragment_fallback_delay { get; set; }
     public bool? record_fragment { get; set; }
     public List<string>? certificate { get; set; }
+    public List<string>? certificate_public_key_sha256 { get; set; }
     public Ech4Sbox? ech { get; set; }
 }
 
