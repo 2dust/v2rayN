@@ -1,13 +1,9 @@
-using AwesomeAssertions;
-using ServiceLib.Handler.Fmt;
-using Xunit;
-
 namespace ServiceLib.Tests.Fmt;
 
 public class WireguardFmtTests
 {
-    [Fact]
-    public void ResolveConfig_ShouldParsePeersAndIgnoreInlineComments()
+    [Test]
+    public async Task ResolveConfig_ShouldParsePeersAndIgnoreInlineComments()
     {
         const string config =
             """
@@ -29,19 +25,19 @@ public class WireguardFmtTests
 
         var resolved = WireguardFmt.ResolveConfig(config);
 
-        resolved.Should().NotBeNull();
-        resolved.Should().HaveCount(2);
+        await resolved.Should().NotBeNull();
+        await resolved.Should().HaveCount(2);
 
         var first = resolved![0];
-        first.Address.Should().Be("2001:db8::1");
-        first.Port.Should().Be(51820);
-        first.Password.Should().Be("interface-private-key");
-        first.GetProtocolExtra().WgReserved.Should().Be("1, 2, 3");
-        first.GetProtocolExtra().WgInterfaceAddress.Should().Be("10.0.0.2/32, fd00::2/128");
-        first.GetProtocolExtra().WgMtu.Should().Be(1420);
+        await first.Address.Should().BeEqualTo("2001:db8::1");
+        await first.Port.Should().BeEqualTo(51820);
+        await first.Password.Should().BeEqualTo("interface-private-key");
+        await first.GetProtocolExtra().WgReserved.Should().BeEqualTo("1, 2, 3");
+        await first.GetProtocolExtra().WgInterfaceAddress.Should().BeEqualTo("10.0.0.2/32, fd00::2/128");
+        await first.GetProtocolExtra().WgMtu.Should().BeEqualTo(1420);
 
         var second = resolved[1];
-        second.Address.Should().Be("example.com");
-        second.Port.Should().Be(12345);
+        await second.Address.Should().BeEqualTo("example.com");
+        await second.Port.Should().BeEqualTo(12345);
     }
 }

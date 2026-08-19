@@ -1,18 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AwesomeAssertions" />
-    <PackageReference Include="xunit.v3" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="TUnit" />
+        <PackageReference Include="TUnit.Assertions.Should" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="TUnit.Assertions.Should" />
+        <Using Include="TUnit.Assertions.Should.Extensions" />
+    </ItemGroup>
 
 </Project>
