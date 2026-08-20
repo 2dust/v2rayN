@@ -324,20 +324,22 @@ public partial class StatusBarViewModel : MyReactiveObject
         SetDefaultServerRequested.Publish(SelectedServer.ID);
     }
 
-    public async Task TestServerAvailability()
+    public async Task<string?> TestServerAvailability()
     {
         var item = await ConfigHandler.GetDefaultServer(_config);
         if (item == null)
         {
-            return;
+            return null;
         }
 
         await TestServerAvailabilitySub(ResUI.Speedtesting);
 
-        var msg = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
+        var (time, ip) = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
+        var msg = string.Format(ResUI.TestMeOutput, time, ip);
 
         NoticeManager.Instance.SendMessageEx(msg);
         await TestServerAvailabilitySub(msg);
+        return ip == Global.None ? null : ip;
     }
 
     private async Task TestServerAvailabilitySub(string msg)

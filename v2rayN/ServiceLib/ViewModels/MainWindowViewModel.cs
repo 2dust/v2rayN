@@ -690,7 +690,12 @@ public partial class MainWindowViewModel : MyReactiveObject
             });
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
-                await StatusBarViewModel.TestServerAvailability();
+                var ip = await StatusBarViewModel.TestServerAvailability();
+                if (ip.IsNotEmpty() && !profileItem.IndexId.IsNullOrEmpty())
+                {
+                    ProfileExManager.Instance.SetTestIpInfo(profileItem.IndexId, ip);
+                    await ProfilesViewModel.SetSpeedTestResult(new() { IndexId = profileItem.IndexId, IpInfo = ip });
+                }
             });
 
             var showClashUI = AppManager.Instance.IsRunningCore(ECoreType.sing_box);

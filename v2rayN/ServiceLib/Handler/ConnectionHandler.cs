@@ -5,14 +5,14 @@ public static class ConnectionHandler
     private static readonly string _tag = "ConnectionHandler";
 
     /// <summary>
-    /// Runs ping and IP checks and returns a formatted result string.
+    /// Runs ping and IP checks.
     /// </summary>
-    public static async Task<string> RunAvailabilityCheck()
+    public static async Task<(int Time, string Ip)> RunAvailabilityCheck()
     {
         var time = await GetRealPingTimeInfo();
         var ip = time > 0 ? await GetIPInfo() : Global.None;
 
-        return string.Format(ResUI.TestMeOutput, time, ip);
+        return (time, ip ?? Global.None);
     }
 
     /// <summary>
