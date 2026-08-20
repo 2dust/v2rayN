@@ -1624,7 +1624,7 @@
     <value>证书指纹（SHA-256）</value>
   </data>
   <data name="TbCertPubKeySha256Tips" xml:space="preserve">
-    <value>公钥 SHA-256 (Base64), 仅Sing-box</value>
+    <value>公钥 SHA-256 (Base64), 仅 Sing-box</value>
   </data>
   <data name="TbServeStale" xml:space="preserve">
     <value>乐观缓存</value>
