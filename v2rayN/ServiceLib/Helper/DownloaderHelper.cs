@@ -128,25 +128,26 @@ public class DownloaderHelper
         await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
     }
 
-    public async Task DownloadFileAsync(IWebProxy? webProxy, string url, string filePath, IProgress<double> progress, int timeout)
+    public async Task DownloadFileAsync(IWebProxy? webProxy, FileDownloadRequest request, Action<FileDownloadState> onProgress, TimeSpan connectTimeout, CancellationToken cancellationToken = default)
     {
-        if (url.IsNullOrEmpty())
+        ArgumentNullException.ThrowIfNull(request);
+        if (request.FilePath.IsNullOrEmpty())
         {
-            throw new ArgumentNullException(nameof(url));
+            throw new ArgumentNullException(nameof(request.FilePath));
         }
-        if (filePath.IsNullOrEmpty())
+        if (File.Exists(request.FilePath))
         {
-            throw new ArgumentNullException(nameof(filePath));
-        }
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
+            File.Delete(request.FilePath);
         }
 
-        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
+        var state = new FileDownloadState
+        {
+            Request = request,
+        };
+
         var requestConfiguration = new RequestConfiguration()
         {
-            ConnectTimeout = connectTimeout * 1000,
+            ConnectTimeout = (int)connectTimeout.TotalMilliseconds,
             Proxy = webProxy,
         };
         var downloadOpt = new DownloadConfiguration()
@@ -157,46 +158,43 @@ public class DownloaderHelper
             ParallelDownload = true,
             ParallelCount = 4,
 
-            BlockTimeout = timeout * 1000,
-            MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
             CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
         };
 
-        var progressPercentage = 0;
-        var hasValue = false;
         await using var downloader = new Downloader.DownloadService(downloadOpt);
-        downloader.DownloadStarted += (sender, value) => progress?.Report(0);
+        downloader.DownloadStarted += (sender, value) =>
+        {
+            state = state with
+            {
+                TotalBytes = value.TotalBytesToReceive,
+            };
+            onProgress.Invoke(state);
+        };
         downloader.DownloadProgressChanged += (sender, value) =>
         {
-            hasValue = true;
-            var percent = (int)value.ProgressPercentage;//   Convert.ToInt32((totalRead * 1d) / (total * 1d) * 100);
-            if (progressPercentage != percent && percent % 10 == 0)
+            state = state with
             {
-                progressPercentage = percent;
-                progress.Report(percent);
-            }
+                DownloadedBytes = value.ReceivedBytesSize,
+                TotalBytes = value.TotalBytesToReceive,
+                SpeedBytesPerSecond = value.BytesPerSecondSpeed,
+            };
+            onProgress.Invoke(state);
         };
         downloader.DownloadFileCompleted += (sender, value) =>
         {
-            if (progress != null)
+            state = state with
             {
-                if (hasValue && value.Error == null)
-                {
-                    progress.Report(101);
-                }
-                else if (value.Error != null)
-                {
-                    throw value.Error;
-                }
-            }
+                Completed = true,
+                Error = value.Error,
+            };
+            onProgress.Invoke(state);
         };
 
-        using var cts = new CancellationTokenSource();
-        await downloader.DownloadFileTaskAsync(url, filePath, cts.Token);
+        await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, cancellationToken);
     }
 
-    public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, IProgress<ReadOnlyMemory<FileDownloadState>> progress, int timeout)
+    public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, Action<ReadOnlyMemory<FileDownloadState>> onProgress, TimeSpan connectTimeout, CancellationToken cancellationToken = default)
     {
         if (requests is not { Count: > 0 })
         {
@@ -213,30 +211,42 @@ public class DownloaderHelper
         }
         var readOnlyStates = new ReadOnlyMemory<FileDownloadState>(states);
 
-        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
         var requestConfiguration = new RequestConfiguration()
         {
-            ConnectTimeout = connectTimeout * 1000,
+            ConnectTimeout = (int)connectTimeout.TotalMilliseconds,
             Proxy = webProxy,
 
             KeepAlive = true,
         };
         using var socketsHttpHandler = GetSocketsHttpHandler(requestConfiguration);
 
-        var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4 };
+        var parallelOptions = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = 4,
+            //CancellationToken = cancellationToken,
+        };
 
-        await Parallel.ForEachAsync(Enumerable.Range(0, requests.Count), parallelOptions, async (index, cancellationToken) =>
+        await Parallel.ForEachAsync(Enumerable.Range(0, requests.Count), parallelOptions, async (index, parallelCancellationToken) =>
         {
             var request = requests[index];
             var downloadOpt = new DownloadConfiguration()
             {
-                BlockTimeout = timeout * 1000,
-                MaxTryAgainOnFailure = 2,
                 RequestConfiguration = requestConfiguration,
                 // ReSharper disable once AccessToDisposedClosure
                 CustomHttpMessageHandlerFactory = () => socketsHttpHandler,
             };
-            var downloader = new Downloader.DownloadService(downloadOpt);
+            await using var downloader = new Downloader.DownloadService(downloadOpt);
+            downloader.DownloadStarted += (sender, value) =>
+            {
+                states[index] = states[index] with
+                {
+                    DownloadedBytes = 0,
+                    TotalBytes = value.TotalBytesToReceive,
+                    SpeedBytesPerSecond = 0,
+                    Completed = false,
+                };
+                onProgress.Invoke(readOnlyStates);
+            };
             downloader.DownloadProgressChanged += (sender, value) =>
             {
                 states[index] = states[index] with
@@ -246,7 +256,7 @@ public class DownloaderHelper
                     SpeedBytesPerSecond = value.BytesPerSecondSpeed,
                     Completed = false,
                 };
-                progress.Report(readOnlyStates);
+                onProgress.Invoke(readOnlyStates);
             };
             downloader.DownloadFileCompleted += (sender, value) =>
             {
@@ -256,11 +266,9 @@ public class DownloaderHelper
                     newState = newState with { Error = value.Error };
                 }
                 states[index] = newState;
-                progress?.Report(readOnlyStates);
+                onProgress.Invoke(readOnlyStates);
             };
-            using var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
-            await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, cts.Token);
+            await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, parallelCancellationToken);
         });
     }
 

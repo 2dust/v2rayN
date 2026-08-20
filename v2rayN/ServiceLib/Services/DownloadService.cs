@@ -42,21 +42,22 @@ public class DownloadService
     /// <summary>
     /// Downloads a file and reports progress through events.
     /// </summary>
-    public async Task DownloadFileAsync(string url, string filePath, bool blProxy, int downloadTimeout)
+    public async Task DownloadFileAsync(FileDownloadRequest request, bool blProxy, TimeSpan connectTimeout)
     {
         try
         {
-            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {url}"));
-
-            var progress = new Progress<double>();
-            progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new UpdateResult(value > 100, $"...{value}%"));
+            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {request.FileUrl}"));
 
             var webProxy = await GetWebProxy(blProxy);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
-                url,
-                filePath,
-                progress,
-                downloadTimeout);
+                request,
+                OnProgress,
+                connectTimeout);
+
+            void OnProgress(FileDownloadState state)
+            {
+                UpdateCompleted?.Invoke(this, new UpdateResult(state.Completed, $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s | {Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}"));
+            }
         }
         catch (Exception ex)
         {
@@ -70,16 +71,21 @@ public class DownloadService
         }
     }
 
-    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, int downloadTimeout)
+    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, TimeSpan connectTimeout)
     {
         try
         {
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading} 0/{requests.Count}"));
 
-            var progress = new Progress<ReadOnlyMemory<FileDownloadState>>();
-            progress.ProgressChanged += (sender, value) =>
+            var webProxy = await GetWebProxy(blProxy);
+            await DownloaderHelper.Instance.DownloadSmallFilesAsync(webProxy,
+                requests,
+                OnProgress,
+                connectTimeout);
+
+            void OnProgress(ReadOnlyMemory<FileDownloadState> states)
             {
-                var span = value.Span;
+                var span = states.Span;
                 var completedCount = 0;
                 var downloadingStates = new List<FileDownloadState>();
                 foreach (ref readonly var item in span)
@@ -98,14 +104,26 @@ public class DownloadService
                 var totalTotalBytes = downloadingStates.Sum(x => x.TotalBytes);
                 var downloadingFileName = string.Join(", ", downloadingStates.Select(x => x.Request.FileName));
                 var allCompleted = completedCount == span.Length;
+                if (allCompleted)
+                {
+                    // check and throw errors if any
+                    FileDownloadState? failedState = null;
+                    foreach (ref readonly var item in span)
+                    {
+                        if (!item.IsFailed)
+                        {
+                            continue;
+                        }
+                        failedState = item;
+                        break;
+                    }
+                    if (failedState?.Error != null)
+                    {
+                        throw failedState.Error;
+                    }
+                }
                 UpdateCompleted?.Invoke(this, new UpdateResult(allCompleted, $"{completedCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
-            };
-
-            var webProxy = await GetWebProxy(blProxy);
-            await DownloaderHelper.Instance.DownloadSmallFilesAsync(webProxy,
-                requests,
-                progress,
-                downloadTimeout);
+            }
         }
         catch (Exception ex)
         {
