@@ -42,21 +42,88 @@ public class DownloadService
     /// <summary>
     /// Downloads a file and reports progress through events.
     /// </summary>
-    public async Task DownloadFileAsync(string url, string fileName, bool blProxy, int downloadTimeout)
+    public async Task DownloadFileAsync(FileDownloadRequest request, bool blProxy, TimeSpan connectTimeout)
     {
         try
         {
-            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {url}"));
-
-            var progress = new Progress<double>();
-            progress.ProgressChanged += (sender, value) => UpdateCompleted?.Invoke(this, new UpdateResult(value > 100, $"...{value}%"));
+            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {request.FileUrl}"));
 
             var webProxy = await GetWebProxy(blProxy);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
-                url,
-                fileName,
-                progress,
-                downloadTimeout);
+                request,
+                OnProgress,
+                connectTimeout);
+
+            void OnProgress(FileDownloadState state)
+            {
+                UpdateCompleted?.Invoke(this, new UpdateResult(state.Completed, $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s | {Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}"));
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+
+            Error?.Invoke(this, new ErrorEventArgs(ex));
+            if (ex.InnerException != null)
+            {
+                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+            }
+        }
+    }
+
+    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, TimeSpan connectTimeout)
+    {
+        try
+        {
+            UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading} 0/{requests.Count}"));
+
+            var webProxy = await GetWebProxy(blProxy);
+            await DownloaderHelper.Instance.DownloadSmallFilesAsync(webProxy,
+                requests,
+                OnProgress,
+                connectTimeout);
+
+            void OnProgress(ReadOnlyMemory<FileDownloadState> states)
+            {
+                var span = states.Span;
+                var completedCount = 0;
+                var downloadingStates = new List<FileDownloadState>();
+                foreach (ref readonly var item in span)
+                {
+                    if (item.Completed)
+                    {
+                        completedCount++;
+                    }
+                    else if (item.TotalBytes > 0)
+                    {
+                        downloadingStates.Add(item);
+                    }
+                }
+                var totalSpeed = downloadingStates.Sum(x => x.SpeedBytesPerSecond);
+                var totalDownloadedBytes = downloadingStates.Sum(x => x.DownloadedBytes);
+                var totalTotalBytes = downloadingStates.Sum(x => x.TotalBytes);
+                var downloadingFileName = string.Join(", ", downloadingStates.Select(x => x.Request.FileName));
+                var allCompleted = completedCount == span.Length;
+                if (allCompleted)
+                {
+                    // check and throw errors if any
+                    FileDownloadState? failedState = null;
+                    foreach (ref readonly var item in span)
+                    {
+                        if (!item.IsFailed)
+                        {
+                            continue;
+                        }
+                        failedState = item;
+                        break;
+                    }
+                    if (failedState?.Error != null)
+                    {
+                        throw failedState.Error;
+                    }
+                }
+                UpdateCompleted?.Invoke(this, new UpdateResult(allCompleted, $"{completedCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
+            }
         }
         catch (Exception ex)
         {
