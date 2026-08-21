@@ -31,7 +31,7 @@ jobs:
 
     - name: Test Code
       working-directory: ./v2rayN
-      run: dotnet test ./ServiceLib.Tests -c Release --no-build --results-directory ./TestResults -- --report-trx
+      run: dotnet run --project ./ServiceLib.Tests -c Release -- --report-trx --results-directory ./TestResults
 
     - name: Comment PR with results
       if: always()
