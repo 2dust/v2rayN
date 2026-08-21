@@ -437,8 +437,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     #region Drag and Drop
 
-    private static readonly DataFormat<object> LstProfilesRowFormat =
-        DataFormat.CreateInProcessFormat<object>("LstProfilesRow");
+    private static readonly DataFormat<ProfileItemModel> LstProfilesRowFormat =
+        DataFormat.CreateInProcessFormat<ProfileItemModel>("LstProfilesRow");
     private (Point, PointerPressedEventArgs)? _dragStartPoint;
 
     private void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -492,7 +492,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             e.Handled = true;
 
             var dragData = new DataTransfer();
-            var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext);
+            var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext as ProfileItemModel);
 
             dragData.Add(item);
 
