@@ -66,6 +66,7 @@ public class VmessFmt : BaseFmt
             sni = item.Sni,
             alpn = item.Alpn,
             fp = item.Fingerprint,
+            cs = item.CipherSuites,
             insecure = item.GetAllowInsecure() ? "1" : "0",
             vcn = item.VerifyPeerCertByName,
             pcs = item.CertSha
@@ -142,6 +143,7 @@ public class VmessFmt : BaseFmt
         item.Sni = Utils.ToString(vmessQRCode.sni);
         item.Alpn = Utils.ToString(vmessQRCode.alpn);
         item.Fingerprint = Utils.ToString(vmessQRCode.fp);
+        item.CipherSuites = Utils.ToString(vmessQRCode.cs);
         item.AllowInsecure = vmessQRCode.insecure == "1" ? Global.StringTrue : string.Empty;
         item.VerifyPeerCertByName = Utils.ToString(vmessQRCode.vcn);
         item.CertSha = Utils.ToString(vmessQRCode.pcs);

@@ -411,6 +411,7 @@ public partial class CoreConfigV2rayService
                 TlsSettings4Ray tlsSettings = new()
                 {
                     alpn = _node.GetAlpn(),
+                    cipherSuites = _node.CipherSuites.IsNullOrEmpty() ? null : _node.CipherSuites,
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     echConfigList = _node.EchConfigList.NullIfEmpty(),
                     verifyPeerCertByName = _node.VerifyPeerCertByName.NullIfEmpty(),
