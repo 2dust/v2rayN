@@ -1860,4 +1860,13 @@
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>Ядро пользовательской конфигурации</value>
   </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>Только Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>Блокировать DNS-запросы AAAA</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>При включении блокирует DNS-запросы IPv6</value>
+  </data>
 </root>
