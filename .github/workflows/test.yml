@@ -30,12 +30,11 @@ jobs:
         dotnet-quality: 'ga'
 
     - name: Test Code
-      working-directory: ./v2rayN
-      run: dotnet test ./ServiceLib.Tests -c Release --no-build --results-directory ./TestResults -- --report-trx
+      run: dotnet test --project ./v2rayN/ServiceLib.Tests -c Release --results-directory ./TestResults -- --report-trx
 
     - name: Comment PR with results
       if: always()
       uses: EnricoMi/publish-unit-test-result-action@v2
       with:
-        files: ./v2rayN/TestResults/*.trx
+        files: ./TestResults/*.trx
         comment_mode: failures

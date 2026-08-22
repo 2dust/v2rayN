@@ -9,6 +9,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool FakeIP { get; set; }
     [Reactive] public partial string FakeIPRange { get; set; }
     [Reactive] public partial bool BlockBindingQuery { get; set; }
+    [Reactive] public partial bool BlockAAAAQuery { get; set; }
     [Reactive] public partial string DirectDNS { get; set; }
     [Reactive] public partial string RemoteDNS { get; set; }
     [Reactive] public partial string BootstrapDNS { get; set; }
@@ -74,6 +75,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         FakeIP = item.FakeIP ?? false;
         FakeIPRange = item.FakeIPRange ?? string.Empty;
         BlockBindingQuery = item.BlockBindingQuery ?? false;
+        BlockAAAAQuery = item.BlockAAAAQuery ?? false;
         DirectDNS = item.DirectDNS ?? string.Empty;
         RemoteDNS = item.RemoteDNS ?? string.Empty;
         BootstrapDNS = item.BootstrapDNS ?? string.Empty;
@@ -108,6 +110,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         _config.SimpleDNSItem.FakeIP = FakeIP;
         _config.SimpleDNSItem.FakeIPRange = FakeIPRange;
         _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
+        _config.SimpleDNSItem.BlockAAAAQuery = BlockAAAAQuery;
         _config.SimpleDNSItem.DirectDNS = DirectDNS;
         _config.SimpleDNSItem.RemoteDNS = RemoteDNS;
         _config.SimpleDNSItem.BootstrapDNS = BootstrapDNS;

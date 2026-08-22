@@ -28,6 +28,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             lstProfiles.SetValue(DragDrop.AllowDropProperty, true);
 
             lstProfiles.AddHandler(PointerPressedEvent, LstProfiles_PointerPressed, RoutingStrategies.Bubble, true);
+            lstProfiles.AddHandler(PointerMovedEvent, LstProfiles_PointerMoved, RoutingStrategies.Bubble, true);
+            lstProfiles.AddHandler(PointerReleasedEvent, LstProfiles_PointerReleased, RoutingStrategies.Bubble, true);
             lstProfiles.AddHandler(DragDrop.DragOverEvent, LstProfiles_DragOver, RoutingStrategies.Bubble);
             lstProfiles.AddHandler(DragDrop.DropEvent, LstProfiles_Drop, RoutingStrategies.Bubble);
         }
@@ -435,36 +437,76 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     #region Drag and Drop
 
-    private static readonly DataFormat<object> LstProfilesRowFormat =
-        DataFormat.CreateInProcessFormat<object>("LstProfilesRow");
+    private static readonly DataFormat<ProfileItemModel> LstProfilesRowFormat =
+        DataFormat.CreateInProcessFormat<ProfileItemModel>("LstProfilesRow");
+    private (Point, PointerPressedEventArgs)? _dragStartPoint;
 
-    private async void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var properties = e.GetCurrentPoint(this).Properties;
+        if (properties.IsLeftButtonPressed)
+        {
+            _dragStartPoint = (e.GetPosition(this), e);
+        }
+    }
+
+    private async void LstProfiles_PointerMoved(object? sender, PointerEventArgs e)
     {
         try
         {
-            if (e.Source is not Visual visualSource)
+            if (_dragStartPoint == null)
             {
                 return;
             }
 
+            var properties = e.GetCurrentPoint(this).Properties;
+            if (!properties.IsLeftButtonPressed)
+            {
+                _dragStartPoint = null;
+                return;
+            }
+
+            var currentPoint = e.GetPosition(this);
+            var startPoint = _dragStartPoint.Value.Item1;
+            var delta = startPoint - currentPoint;
+
+            var threshold = new Vector(4, 4);
+
+            if (!(Math.Abs(delta.X) >= threshold.X) && !(Math.Abs(delta.Y) >= threshold.Y))
+            {
+                return;
+            }
+            var dragStartEventArgs = _dragStartPoint.Value.Item2;
+            _dragStartPoint = null;
+
+            if (e.Source is not Visual visualSource)
+            {
+                return;
+            }
             var row = visualSource.FindAncestorOfType<DataGridRow>(true);
             if (row?.DataContext == null)
             {
                 return;
             }
 
-            if (e.GetCurrentPoint(row).Properties.IsLeftButtonPressed)
-            {
-                var dragData = new DataTransfer();
-                var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext);
-                dragData.Add(item);
-                await DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move);
-            }
+            e.Handled = true;
+
+            var dragData = new DataTransfer();
+            var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext as ProfileItemModel);
+
+            dragData.Add(item);
+
+            await DragDrop.DoDragDropAsync(dragStartEventArgs, dragData, DragDropEffects.Move);
         }
         catch
         {
             // Ignore
         }
+    }
+
+    private void LstProfiles_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        _dragStartPoint = null;
     }
 
     private void LstProfiles_DragOver(object? sender, DragEventArgs e)

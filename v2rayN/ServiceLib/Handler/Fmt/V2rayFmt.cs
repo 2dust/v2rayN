@@ -34,9 +34,9 @@ public class V2rayFmt : BaseFmt
         if (!isOutbound)
         {
             var fullProfile = ResolveFull(jsonObject, subRemarks);
-            profileList.Add(fullProfile);
             if (fullProfile is not null)
             {
+                profileList.Add(fullProfile);
                 return profileList;
             }
         }

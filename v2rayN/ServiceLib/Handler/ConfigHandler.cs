@@ -115,6 +115,7 @@ public static class ConfigHandler
         config.ConstItem ??= new ConstItem();
 
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
+        config.SimpleDNSItem.BlockAAAAQuery ??= false;
         config.SimpleDNSItem.FakeIPRange ??= Global.FakeIPRanges.FirstOrDefault();
         config.SimpleDNSItem.GlobalFakeIp ??= true;
         config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
@@ -1800,21 +1801,18 @@ public static class ConfigHandler
         {
             ECoreType.Xray => V2rayFmt.ResolveToCustom(strData, subRemarks),
             ECoreType.sing_box => SingboxFmt.ResolveToCustom(strData, subRemarks),
-            _ => null
+            _ => null,
         };
 
-        if (lstProfiles is not null)
+        if ((lstProfiles?.Count ?? 0) == 0)
         {
-            if (lstProfiles.Count == 0)
-            {
-                return -1;
-            }
+            return -1;
+        }
 
-            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
-            if (count > 0)
-            {
-                return count;
-            }
+        var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
+        if (count > 0)
+        {
+            return count;
         }
 
         return await SaveCustomRawFileServer(config, strData, subid, isSub, subItem, customCoreType);

@@ -279,6 +279,7 @@ public class SimpleDNSItem
     public bool? GlobalFakeIp { get; set; }
     public string? FakeIPRange { get; set; }
     public bool? BlockBindingQuery { get; set; }
+    public bool? BlockAAAAQuery { get; set; }
     public string? DirectDNS { get; set; }
     public string? RemoteDNS { get; set; }
     public string? BootstrapDNS { get; set; }
