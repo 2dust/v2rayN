@@ -1,5 +1,4 @@
 using v2rayN.Desktop.Base;
-using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 

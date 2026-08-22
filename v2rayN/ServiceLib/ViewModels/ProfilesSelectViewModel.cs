@@ -3,7 +3,7 @@ namespace ServiceLib.ViewModels;
 public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 {
     public event EventHandler? RequestClose;
-    
+
     public Interaction<RxVoid, RxVoid> ProfilesFocusInteraction { get; } = new();
 
     #region private prop

@@ -5,6 +5,7 @@ public sealed class EventChannel<T>
     private readonly Signal<T> _signal = new();
     private readonly Lock _gate = new();
     private readonly IObservable<T> _observable;
+
     public EventChannel()
     {
         _observable = _signal.Synchronize(_gate);
