@@ -5,8 +5,12 @@ on:
     branches:
       - master
     paths:
-      - 'v2rayN/ServiceLib/Services/CoreConfig/**'
-      - 'v2rayN/ServiceLib/Handler/Fmt/**'
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.UdpTest/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'global.json'
       - '.github/workflows/test.yml'
 
 permissions:
@@ -19,9 +23,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v7
-      with:
-        submodules: 'recursive'
-        fetch-depth: '0'
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
