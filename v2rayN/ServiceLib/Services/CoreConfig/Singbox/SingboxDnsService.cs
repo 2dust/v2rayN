@@ -282,11 +282,21 @@ public partial class CoreConfigSingboxService
                     {
                         query_type = [1, 28], // A and AAAA
                     },
-                    fakeipFilterRule
-                ]
+                    fakeipFilterRule,
+                ],
             };
 
             _coreConfig.dns.rules.Add(rule4Fake);
+        }
+
+        if (simpleDnsItem.BlockAAAAQuery == true)
+        {
+            _coreConfig.dns.rules.Add(new()
+            {
+                query_type = [28],
+                action = "predefined",
+                rcode = "NOERROR",
+            });
         }
 
         var routing = context.RoutingItem;

@@ -1459,7 +1459,7 @@
     <value>已啟用自訂 DNS，此頁面的設定將不會生效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>啟用後將封鎖 ECH 與 HTTP/3 可用性查詢</value>
+    <value>啟用後將封鎖 ECH 與 HTTP/3 可用性查詢。Xray 固定啟用</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>請填寫正確的設定範本</value>

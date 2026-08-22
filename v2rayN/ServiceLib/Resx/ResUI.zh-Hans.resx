@@ -1459,7 +1459,7 @@
     <value>自定义 DNS 已启用，此页面配置将无效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>开启后将阻止 ECH 和 HTTP/3 可用性查询</value>
+    <value>开启后将阻止 ECH 和 HTTP/3 可用性查询。Xray 固定开启</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>请填写正确的配置模板</value>
@@ -1860,5 +1860,14 @@
   </data>
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>自定义配置核心</value>
+  </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>仅 Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>阻止 AAAA 查询</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>开启后将阻止 IPv6 查询</value>
   </data>
 </root>

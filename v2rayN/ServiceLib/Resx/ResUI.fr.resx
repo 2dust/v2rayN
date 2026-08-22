@@ -1453,7 +1453,7 @@
     <value>DNS personnalisé activé ; la configuration de cette page sera ignorée</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Une fois activé, bloque les requêtes ECH et de disponibilité HTTP/3</value>
+    <value>Block ECH and HTTP/3 availability checks when enabled. Always enabled in Xray</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Veuillez saisir un modèle de configuration valide</value>

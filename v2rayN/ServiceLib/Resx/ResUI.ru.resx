@@ -1462,7 +1462,7 @@
     <value>Включён пользовательский DNS — настройки на этой странице не применяются</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>При включении блокирует проверки доступности ECH и HTTP/3</value>
+    <value>Block ECH and HTTP/3 availability checks when enabled. Always enabled in Xray</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Пожалуйста, заполните корректный шаблон конфигурации</value>
