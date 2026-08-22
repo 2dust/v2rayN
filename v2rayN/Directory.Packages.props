@@ -9,11 +9,10 @@
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
     <PackageVersion Include="Avalonia.Desktop" Version="12.1.1" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
-    <PackageVersion Include="AwesomeAssertions" Version="9.5.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.1" />
-    <PackageVersion Include="CliWrap" Version="3.10.4" />
+    <PackageVersion Include="CliWrap" Version="3.10.5" />
     <PackageVersion Include="Downloader" Version="5.9.5" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
@@ -28,10 +27,9 @@
     <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
     <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.4.1" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-    <PackageVersion Include="TUnit" Version="1.65.0" />
-    <PackageVersion Include="TUnit.Assertions.Should" Version="1.65.0-beta" />
+    <PackageVersion Include="TUnit" Version="1.65.38" />
+    <PackageVersion Include="TUnit.Assertions.Should" Version="1.65.38-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
-    <PackageVersion Include="xunit.v3" Version="4.0.0" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
     <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
