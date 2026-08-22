@@ -15,19 +15,6 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            if (_node == null
-                || !_node.IsValid())
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            if (_node.GetNetwork() is nameof(ETransport.quic))
-            {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
-                return ret;
-            }
-
             ret.Msg = ResUI.InitialConfiguration;
 
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
@@ -127,7 +114,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 }
                 var actIndexId = context.ServerTestItemMap.GetValueOrDefault(it.IndexId, it.IndexId);
                 var item = context.AllProxiesMap.GetValueOrDefault(actIndexId);
-                if (item is null || item.ConfigType is EConfigType.Custom || !item.IsValid())
+                if (item is null || item.ConfigType is EConfigType.Custom)
                 {
                     continue;
                 }
@@ -230,19 +217,6 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            if (_node == null
-                || !_node.IsValid())
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-
-            if (_node.GetNetwork() is nameof(ETransport.quic))
-            {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
-                return ret;
-            }
-
             var result = EmbedUtils.GetEmbedText(Global.V2raySampleClient);
             if (result.IsNullOrEmpty())
             {
