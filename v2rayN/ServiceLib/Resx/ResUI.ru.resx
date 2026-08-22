@@ -1462,7 +1462,7 @@
     <value>Включён пользовательский DNS — настройки на этой странице не применяются</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Block ECH and HTTP/3 availability checks when enabled. Always enabled in Xray</value>
+    <value>При включении блокирует запросы доступности ECH и HTTP/3. В Xray включено всегда</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Пожалуйста, заполните корректный шаблон конфигурации</value>
@@ -1859,5 +1859,14 @@
   </data>
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>Ядро пользовательской конфигурации</value>
+  </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>Только Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>Блокировать DNS-запросы AAAA</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>При включении блокирует DNS-запросы IPv6</value>
   </data>
 </root>
