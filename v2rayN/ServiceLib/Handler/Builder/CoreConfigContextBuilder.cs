@@ -96,74 +96,22 @@ public class CoreConfigContextBuilder
             }
         }
 
-        if (context.IsTunEnabled)
+        if (context.IsTunEnabled && context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
         {
             var appConfig = JsonUtils.DeepCopy(config);
             var routeExcludeAddressList = new List<string>();
-            if (context.AppConfig.TunModeItem.RouteExcludeAddress is { Count: > 0 })
+            foreach (var addr in context.AppConfig.TunModeItem.RouteExcludeAddress)
             {
-                foreach (var addr in context.AppConfig.TunModeItem.RouteExcludeAddress)
+                try
                 {
-                    try
-                    {
-                        IPNetwork2.Parse(addr);
-                        routeExcludeAddressList.Add(addr);
-                    }
-                    catch
-                    {
-                        validatorResult.Warnings.Add(string.Format(ResUI.MsgTunRouteExcludeInvalidAddress, addr));
-                    }
+                    IPNetwork2.Parse(addr);
+                    routeExcludeAddressList.Add(addr);
+                }
+                catch
+                {
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgTunRouteExcludeInvalidAddress, addr));
                 }
             }
-
-            // Exclude proxy server IP addresses from TUN to prevent routing loops
-            var allNodes = context.AllProxiesMap.Values
-                .Append(context.Node)
-                .Where(n => n != null && !n.ConfigType.IsGroupType() && n.ConfigType != EConfigType.Outbound);
-
-            var uniqueAddresses = allNodes
-                .Select(n => n.Address?.Trim().Trim('[', ']'))
-                .Where(a => !string.IsNullOrEmpty(a))
-                .Distinct(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var pAddr in uniqueAddresses)
-            {
-                if (IPAddress.TryParse(pAddr, out var ipAddr))
-                {
-                    if (IsValidExcludableIP(ipAddr))
-                    {
-                        var cidr = ipAddr.AddressFamily == AddressFamily.InterNetworkV6 ? $"{ipAddr}/128" : $"{ipAddr}/32";
-                        if (!routeExcludeAddressList.Contains(cidr))
-                        {
-                            routeExcludeAddressList.Add(cidr);
-                        }
-                    }
-                }
-                else if (Utils.IsDomain(pAddr))
-                {
-                    try
-                    {
-                        using var cts = new CancellationTokenSource(2000);
-                        var addresses = await Dns.GetHostAddressesAsync(pAddr, cts.Token);
-                        foreach (var addr in addresses)
-                        {
-                            if (IsValidExcludableIP(addr))
-                            {
-                                var cidr = addr.AddressFamily == AddressFamily.InterNetworkV6 ? $"{addr}/128" : $"{addr}/32";
-                                if (!routeExcludeAddressList.Contains(cidr))
-                                {
-                                    routeExcludeAddressList.Add(cidr);
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        // Ignore DNS resolution failures at config build time
-                    }
-                }
-            }
-
             appConfig.TunModeItem.RouteExcludeAddress = routeExcludeAddressList;
             context = context with { AppConfig = appConfig };
         }
@@ -556,14 +504,5 @@ public class CoreConfigContextBuilder
         node.SetProtocolExtra(node.GetProtocolExtra() with { ChildItems = Utils.List2String(childIndexIdList) });
         context.AllProxiesMap[node.IndexId] = node;
         return childNodeValidatorResult;
-    }
-
-    private static bool IsValidExcludableIP(IPAddress ipAddr)
-    {
-        return !IPAddress.IsLoopback(ipAddr)
-               && !ipAddr.Equals(IPAddress.Any)
-               && !ipAddr.Equals(IPAddress.IPv6Any)
-               && !ipAddr.Equals(IPAddress.None)
-               && !ipAddr.Equals(IPAddress.IPv6None);
     }
 }
