@@ -1,4 +1,3 @@
-using System.Collections.Specialized;
 using System.Security.Principal;
 using CliWrap;
 using CliWrap.Buffered;

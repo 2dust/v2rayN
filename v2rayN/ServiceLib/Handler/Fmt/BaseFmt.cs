@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-
 namespace ServiceLib.Handler.Fmt;
 
 public class BaseFmt

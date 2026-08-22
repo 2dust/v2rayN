@@ -1,4 +1,3 @@
-using ServiceLib.Models.Entities;
 using System.Diagnostics;
 using v2rayN.Desktop.Manager;
 using v2rayN.Desktop.ViewModels;

@@ -9,6 +9,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
 
     [Reactive]
     public partial string CustomCoreType { get; set; }
+
     [Reactive]
     public partial string PrevProfile { get; set; }
 
