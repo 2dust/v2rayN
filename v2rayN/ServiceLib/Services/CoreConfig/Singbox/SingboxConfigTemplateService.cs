@@ -125,7 +125,8 @@ public partial class CoreConfigSingboxService
         fullConfigTemplateNode["outbounds"] = customOutboundsNode;
 
         // Process endpoints
-        if (fullConfigTemplateNode["endpoints"] is JsonArray { Count: > 0 } coreConfigEndpointsNode)
+        var coreConfigEndpointsNode = coreConfigNode?["endpoints"] as JsonArray ?? [];
+        if (coreConfigEndpointsNode is { Count: > 0 })
         {
             var customEndpointsNode = fullConfigTemplateNode["endpoints"] as JsonArray ?? [];
             foreach (var endpoint in coreConfigEndpointsNode)
