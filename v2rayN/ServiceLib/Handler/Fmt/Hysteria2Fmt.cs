@@ -17,7 +17,11 @@ public class Hysteria2Fmt : BaseFmt
         }
 
         item.Address = url.IdnHost;
-        item.Port = url.Port;
+        // The URI scheme makes the port optional and defaults it to 443. Uri.Port answers -1 for
+        // an unregistered scheme carrying no port, which ProfileItem.IsValid then rejects.
+        // Only -1 means "omitted": an explicit ":0" has to stay 0 and be rejected the way it
+        // always was, instead of being quietly redirected to a server the link never named.
+        item.Port = url.Port == -1 ? 443 : url.Port;
         item.Remarks = url.GetComponents(UriComponents.Fragment, UriFormat.Unescaped);
         item.Password = Utils.UrlDecode(url.UserInfo);
 
