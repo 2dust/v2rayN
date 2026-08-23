@@ -342,8 +342,13 @@ public class BaseFmt
         return query[key] ?? defaultValue;
     }
 
+    /// <summary>
+    /// Values are already unescaped by <see cref="Utils.ParseQueryString" />, so this must not
+    /// unescape them a second time: a value that still holds a valid percent sequence after the
+    /// first pass - an obfuscation password of "ob%41fs", say - would decay into "obAfs".
+    /// </summary>
     protected static string GetQueryDecoded(NameValueCollection query, string key, string defaultValue = "")
     {
-        return Utils.UrlDecode(GetQueryValue(query, key, defaultValue));
+        return GetQueryValue(query, key, defaultValue);
     }
 }

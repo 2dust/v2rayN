@@ -200,7 +200,9 @@ public class Utils
         var parts = query[1..].Split('&', StringSplitOptions.RemoveEmptyEntries);
         foreach (var part in parts)
         {
-            var keyValue = part.Split('=');
+            // Split on the FIRST '=' only: RFC 3986 lists '=' among the sub-delimiters a query
+            // value may carry, so everything after the first one belongs to the value.
+            var keyValue = part.Split('=', 2);
             if (keyValue.Length != 2)
             {
                 continue;
