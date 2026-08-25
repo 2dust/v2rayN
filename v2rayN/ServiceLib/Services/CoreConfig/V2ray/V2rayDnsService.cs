@@ -269,14 +269,18 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        if (context.ProtectDomainList.Count > 0)
-        {
-            directDomainList.AddRange(context.ProtectDomainList);
-        }
-
         dnsItem.servers ??= [];
 
         var directDnsTagIndex = 1;
+
+        if (dnsServerDomains.Count > 0)
+        {
+            AddDnsServers(bootstrapDNSAddress, dnsServerDomains);
+        }
+        if (context.ProtectDomainList.Count > 0)
+        {
+            AddDnsServers(directDNSAddress, context.ProtectDomainList.ToList(), true);
+        }
 
         if (simpleDNSItem.FakeIP == true)
         {
@@ -295,10 +299,6 @@ public partial class CoreConfigV2rayService
             }
         }
 
-        if (dnsServerDomains.Count > 0)
-        {
-            AddDnsServers(bootstrapDNSAddress, dnsServerDomains);
-        }
         AddDnsServers(remoteDNSAddress, proxyDomainList);
         AddDnsServers(directDNSAddress, directDomainList, true);
         AddDnsServers(remoteDNSAddress, proxyGeositeList);
