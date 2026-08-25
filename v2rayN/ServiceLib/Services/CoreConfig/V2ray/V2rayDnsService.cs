@@ -159,16 +159,16 @@ public partial class CoreConfigV2rayService
         var directDNSAddress = ParseDnsAddresses(simpleDNSItem?.DirectDNS, Global.DomainDirectDNSAddress.First());
         var remoteDNSAddress = ParseDnsAddresses(simpleDNSItem?.RemoteDNS, Global.DomainRemoteDNSAddress.First());
 
-        var directDomainList = new List<string>();
-        var directGeositeList = new List<string>();
-        var proxyDomainList = new List<string>();
-        var proxyGeositeList = new List<string>();
-        var expectedDomainList = new List<string>();
-        var expectedIPs = new List<string>();
+        var directDomainList = new HashSet<string>();
+        var directGeositeList = new HashSet<string>();
+        var proxyDomainList = new HashSet<string>();
+        var proxyGeositeList = new HashSet<string>();
+        var expectedDomainList = new HashSet<string>();
+        var expectedIPs = new HashSet<string>();
         var regionName = string.Empty;
 
         var bootstrapDNSAddress = ParseDnsAddresses(simpleDNSItem?.BootstrapDNS, Global.DomainPureIPDNSAddress.First());
-        var dnsServerDomains = new List<string>();
+        var dnsServerDomains = new HashSet<string>();
 
         foreach (var dns in directDNSAddress)
         {
@@ -194,7 +194,6 @@ public partial class CoreConfigV2rayService
                 dnsServerDomains.Add($"full:{domain}");
             }
         }
-        dnsServerDomains = dnsServerDomains.Distinct().ToList();
 
         if (!string.IsNullOrEmpty(simpleDNSItem?.DirectExpectedIPs))
         {
@@ -202,7 +201,7 @@ public partial class CoreConfigV2rayService
                 .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
-                .ToList();
+                .ToHashSet();
 
             foreach (var region in from ip in expectedIPs
                                    where ip.StartsWith(Global.GeoIPPrefix, StringComparison.OrdinalIgnoreCase)
@@ -279,7 +278,7 @@ public partial class CoreConfigV2rayService
         }
         if (context.ProtectDomainList.Count > 0)
         {
-            AddDnsServers(directDNSAddress, context.ProtectDomainList.ToList(), true);
+            AddDnsServers(directDNSAddress, context.ProtectDomainList, true);
         }
 
         if (simpleDNSItem.FakeIP == true)
@@ -295,7 +294,7 @@ public partial class CoreConfigV2rayService
             if (fakeIPMatchDomain.Count > 0)
             {
                 GenFakeDns();
-                AddDnsServers(["fakedns"], fakeIPMatchDomain.ToList());
+                AddDnsServers(["fakedns"], fakeIPMatchDomain);
             }
         }
 
@@ -345,7 +344,7 @@ public partial class CoreConfigV2rayService
             return addresses.Count > 0 ? addresses : new List<string> { defaultAddress };
         }
 
-        static DnsServer4Ray CreateDnsServer(string dnsAddress, List<string> domains, List<string>? expectedIPs = null)
+        static DnsServer4Ray CreateDnsServer(string dnsAddress, HashSet<string> domains, HashSet<string>? expectedIPs = null)
         {
             var (domain, scheme, port, path) = Utils.ParseUrl(dnsAddress);
             var domainFinal = dnsAddress;
@@ -365,13 +364,13 @@ public partial class CoreConfigV2rayService
                 address = domainFinal,
                 port = portFinal,
                 skipFallback = true,
-                domains = domains.Count > 0 ? domains : null,
-                expectedIPs = expectedIPs?.Count > 0 ? expectedIPs : null
+                domains = domains.Count > 0 ? domains.ToList() : null,
+                expectedIPs = expectedIPs?.Count > 0 ? expectedIPs.ToList() : null
             };
             return dnsServer;
         }
 
-        void AddDnsServers(List<string> dnsAddresses, List<string> domains, bool isDirectDns = false, List<string>? expectedIPs = null)
+        void AddDnsServers(List<string> dnsAddresses, HashSet<string> domains, bool isDirectDns = false, HashSet<string>? expectedIPs = null)
         {
             if (domains.Count <= 0)
             {
