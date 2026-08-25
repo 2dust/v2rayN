@@ -295,15 +295,15 @@ public partial class CoreConfigV2rayService
             }
         }
 
+        if (dnsServerDomains.Count > 0)
+        {
+            AddDnsServers(bootstrapDNSAddress, dnsServerDomains);
+        }
         AddDnsServers(remoteDNSAddress, proxyDomainList);
         AddDnsServers(directDNSAddress, directDomainList, true);
         AddDnsServers(remoteDNSAddress, proxyGeositeList);
         AddDnsServers(directDNSAddress, directGeositeList, true);
         AddDnsServers(directDNSAddress, expectedDomainList, true, expectedIPs);
-        if (dnsServerDomains.Count > 0)
-        {
-            AddDnsServers(bootstrapDNSAddress, dnsServerDomains);
-        }
 
         var useDirectDns = false;
 
