@@ -25,8 +25,8 @@ Download the latest release here:
 
 
 > [!TIP]
-> v2rayN is the desktop version. For the mobile version, please visit the v2rayNG \
-> v2rayN 是电脑版，手机版请访问 v2rayNG
+> v2rayN is the desktop version. For the mobile version, please visit v2rayNG: \
+> v2rayN 是电脑版，手机版请访问 v2rayNG：
 >
 > https://github.com/2dust/v2rayNG
 
