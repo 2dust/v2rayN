@@ -39,15 +39,28 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
             Width = width;
             Height = height;
 
-            var frameDiff = (FrameSize ?? ClientSize) - ClientSize;
-            var totalWidth = (width + frameDiff.Width) * scaling;
-            var totalHeight = (height + frameDiff.Height) * scaling;
+            if (sizeItem.Left != null && sizeItem.Top != null &&
+                IsOnScreen(new PixelPoint(sizeItem.Left.Value, sizeItem.Top.Value)))
+            {
+                Position = new PixelPoint(sizeItem.Left.Value, sizeItem.Top.Value);
+            }
+            else
+            {
+                var frameDiff = (FrameSize ?? ClientSize) - ClientSize;
+                var totalWidth = (width + frameDiff.Width) * scaling;
+                var totalHeight = (height + frameDiff.Height) * scaling;
 
-            var x = workingArea.X + ((workingArea.Width - totalWidth) / 2);
-            var y = workingArea.Y + ((workingArea.Height - totalHeight) / 2);
-            Position = new PixelPoint((int)x, (int)y);
+                var x = workingArea.X + ((workingArea.Width - totalWidth) / 2);
+                var y = workingArea.Y + ((workingArea.Height - totalHeight) / 2);
+                Position = new PixelPoint((int)x, (int)y);
+            }
         }
         catch { }
+    }
+
+    private bool IsOnScreen(PixelPoint position)
+    {
+        return Screens.All.Any(s => s.Bounds.Contains(position));
     }
 
     protected override void OnClosed(EventArgs e)
@@ -55,7 +68,10 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
         base.OnClosed(e);
         try
         {
-            ConfigHandler.SaveWindowSizeItem(AppManager.Instance.Config, GetType().Name, Width, Height);
+            if (WindowState == WindowState.Normal)
+            {
+                ConfigHandler.SaveWindowSizeItem(AppManager.Instance.Config, GetType().Name, Width, Height, Position.X, Position.Y);
+            }
         }
         catch { }
     }
