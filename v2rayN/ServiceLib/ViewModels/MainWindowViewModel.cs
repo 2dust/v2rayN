@@ -690,7 +690,26 @@ public partial class MainWindowViewModel : MyReactiveObject
             });
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
-                await StatusBarViewModel.TestServerAvailability();
+                var result = await StatusBarViewModel.TestServerAvailability();
+                if (result == null || profileItem.IndexId.IsNullOrEmpty())
+                {
+                    return;
+                }
+                var ip = result.GetValidIp();
+                if (ip.IsNotEmpty())
+                {
+                    ProfileExManager.Instance.SetTestIpInfo(profileItem.IndexId, ip);
+                }
+                if (result.Time > 0)
+                {
+                    ProfileExManager.Instance.SetTestDelay(profileItem.IndexId, result.Time);
+                }
+                await ProfilesViewModel.SetSpeedTestResult(new()
+                {
+                    IndexId = profileItem.IndexId,
+                    IpInfo = ip,
+                    Delay = result.Time > 0 ? result.Time.ToString() : null
+                });
             });
 
             var showClashUI = AppManager.Instance.IsRunningCore(ECoreType.sing_box);
