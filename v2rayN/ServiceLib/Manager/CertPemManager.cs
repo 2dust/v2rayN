@@ -281,6 +281,37 @@ public class CertPemManager
         }
     }
 
+    public static string GetLeafCertSha256Thumbprint(string pemCertChain, bool includeColon = false)
+    {
+        var certs = ParsePemChain(pemCertChain);
+        if (certs.Count == 0)
+        {
+            return string.Empty;
+        }
+        foreach (var certStr in certs)
+        {
+            try
+            {
+                var cert = X509Certificate2.CreateFromPem(certStr);
+                var extension = cert.Extensions
+                    .OfType<X509BasicConstraintsExtension>()
+                    .FirstOrDefault();
+                var isCa = extension?.CertificateAuthority == true;
+                if (isCa)
+                {
+                    continue;
+                }
+                var thumbprint = cert.GetCertHashString(HashAlgorithmName.SHA256);
+                return includeColon ? string.Join(":", thumbprint.Chunk(2).Select(c => new string(c))) : thumbprint;
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+        return string.Empty;
+    }
+
     private static readonly Lazy<X509Certificate2Collection> _chromeRootCerts = new(() =>
     {
         var pemText = EmbedUtils.GetEmbedText(Global.ChromeRootCertFileName);

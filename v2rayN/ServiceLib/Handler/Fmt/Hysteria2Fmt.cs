@@ -223,6 +223,11 @@ public class Hysteria2Fmt : BaseFmt
             var sha = item.CertSha;
             dicQuery.Add("pinSHA256", Utils.UrlEncode(sha));
         }
+        else if (!item.Cert.IsNullOrEmpty()
+            && CertPemManager.GetLeafCertSha256Thumbprint(item.Cert) is { Length: > 0 } thumbprint)
+        {
+            dicQuery.Add("pinSHA256", Utils.UrlEncode(thumbprint));
+        }
         if (!item.EchConfigList.IsNullOrEmpty())
         {
             dicQuery.Add("ech", Utils.UrlEncode(item.EchConfigList));
