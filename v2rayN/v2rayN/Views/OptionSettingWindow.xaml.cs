@@ -26,6 +26,7 @@ public partial class OptionSettingWindow
         cmbdefFingerprint.ItemsSource = Global.Fingerprints;
         cmbdefUserAgent.ItemsSource = Global.UserAgent;
         cmbmux4SboxProtocol.ItemsSource = Global.SingboxMuxs;
+        cmbmux4RayXudpProxyUDP443.ItemsSource = new[] { "reject", "skip" };
         cmbMtu.ItemsSource = Global.TunMtus;
         cmbStack.ItemsSource = Global.TunStacks;
         cmbIcmpRoutingPolicy.ItemsSource = Global.TunIcmpRoutingPolicies;
@@ -77,6 +78,9 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.DefUserAgent, v => v.cmbdefUserAgent.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SendThrough, v => v.txtsendThrough.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.BindInterface, v => v.txtbindInterface.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Mux4RayConcurrency, v => v.txtmux4RayConcurrency.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Mux4RayXudpConcurrency, v => v.txtmux4RayXudpConcurrency.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Mux4RayXudpProxyUDP443, v => v.cmbmux4RayXudpProxyUDP443.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Mux4SboxProtocol, v => v.cmbmux4SboxProtocol.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableCacheFile4Sbox, v => v.togenableCacheFile4Sbox.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.HyUpMbps, v => v.txtUpMbps.Text).DisposeWith(disposables);

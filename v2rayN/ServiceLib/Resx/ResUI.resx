@@ -1020,6 +1020,15 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux Protocol</value>
   </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux concurrency</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP concurrency</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proxy UDP443</value>
+  </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>Process (Linux/Windows)</value>
   </data>

@@ -22,6 +22,9 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string DefUserAgent { get; set; }
     [Reactive] public partial string SendThrough { get; set; }
     [Reactive] public partial string BindInterface { get; set; }
+    [Reactive] public partial int? Mux4RayConcurrency { get; set; }
+    [Reactive] public partial int? Mux4RayXudpConcurrency { get; set; }
+    [Reactive] public partial string Mux4RayXudpProxyUDP443 { get; set; }
     [Reactive] public partial string Mux4SboxProtocol { get; set; }
     [Reactive] public partial bool EnableCacheFile4Sbox { get; set; }
     [Reactive] public partial int? HyUpMbps { get; set; }
@@ -152,6 +155,9 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         DefUserAgent = _config.CoreBasicItem.DefUserAgent;
         SendThrough = _config.CoreBasicItem.SendThrough ?? string.Empty;
         BindInterface = _config.CoreBasicItem.BindInterface ?? string.Empty;
+        Mux4RayConcurrency = _config.Mux4RayItem.Concurrency;
+        Mux4RayXudpConcurrency = _config.Mux4RayItem.XudpConcurrency;
+        Mux4RayXudpProxyUDP443 = _config.Mux4RayItem.XudpProxyUDP443 ?? string.Empty;
         Mux4SboxProtocol = _config.Mux4SboxItem.Protocol;
         EnableCacheFile4Sbox = _config.CoreBasicItem.EnableCacheFile4Sbox;
         HyUpMbps = _config.HysteriaItem.UpMbps;
@@ -327,6 +333,9 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.CoreBasicItem.DefUserAgent = DefUserAgent;
         _config.CoreBasicItem.SendThrough = SendThrough.TrimEx();
         _config.CoreBasicItem.BindInterface = BindInterface.TrimEx();
+        _config.Mux4RayItem.Concurrency = Mux4RayConcurrency > 0 ? Mux4RayConcurrency : null;
+        _config.Mux4RayItem.XudpConcurrency = Mux4RayXudpConcurrency > 0 ? Mux4RayXudpConcurrency : null;
+        _config.Mux4RayItem.XudpProxyUDP443 = Mux4RayXudpProxyUDP443.NullIfEmpty();
         _config.Mux4SboxItem.Protocol = Mux4SboxProtocol;
         _config.CoreBasicItem.EnableCacheFile4Sbox = EnableCacheFile4Sbox;
         _config.HysteriaItem.UpMbps = HyUpMbps ?? 0;
