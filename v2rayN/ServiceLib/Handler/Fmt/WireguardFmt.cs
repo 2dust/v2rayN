@@ -26,12 +26,12 @@ public class WireguardFmt : BaseFmt
 
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
-            WgPublicKey = GetQueryDecoded(query, "publickey"),
-            WgPresharedKey = GetQueryDecoded(query, "presharedkey"),
-            WgReserved = GetQueryDecoded(query, "reserved"),
-            WgInterfaceAddress = GetQueryDecoded(query, "address"),
-            WgMtu = int.TryParse(GetQueryDecoded(query, "mtu"), out var mtuVal) ? mtuVal : null,
-            WgDns = GetQueryDecoded(query, "dns"),
+            WgPublicKey = GetQueryValue(query, "publickey"),
+            WgPresharedKey = GetQueryValue(query, "presharedkey"),
+            WgReserved = GetQueryValue(query, "reserved"),
+            WgInterfaceAddress = GetQueryValue(query, "address"),
+            WgMtu = int.TryParse(GetQueryValue(query, "mtu"), out var mtuVal) ? mtuVal : null,
+            WgDns = GetQueryValue(query, "dns"),
         });
 
         return item;

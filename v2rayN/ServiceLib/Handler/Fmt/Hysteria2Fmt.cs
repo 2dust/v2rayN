@@ -100,7 +100,7 @@ public class Hysteria2Fmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
-        var authPassword = GetQueryDecoded(query, "auth");
+        var authPassword = GetQueryValue(query, "auth");
         if (authPassword.IsNullOrEmpty())
         {
             return null;
@@ -170,7 +170,7 @@ public class Hysteria2Fmt : BaseFmt
         }
         if (item.CertSha.IsNullOrEmpty())
         {
-            var pinSHA256 = GetQueryDecoded(query, "pinSHA256");
+            var pinSHA256 = GetQueryValue(query, "pinSHA256");
             item.CertSha = pinSHA256;
             if (!pinSHA256.IsNullOrEmpty())
             {
@@ -184,16 +184,16 @@ public class Hysteria2Fmt : BaseFmt
                 item.AllowInsecure = Global.StringTrue;
             }
         }
-        item.EchConfigList = GetQueryDecoded(query, "ech");
+        item.EchConfigList = GetQueryValue(query, "ech");
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
-            Ports = GetQueryDecoded(query, "mport"),
-            SalamanderPass = GetQueryDecoded(query, "obfs-password"),
+            Ports = GetQueryValue(query, "mport"),
+            SalamanderPass = GetQueryValue(query, "obfs-password"),
             // NOTE: The "PacketSize" parameter is not defined by the official URI Scheme, may remove or rename it in the future.
-            GeckoMinPacketSize = GetQueryDecoded(query, "minPacketSize"),
-            GeckoMaxPacketSize = GetQueryDecoded(query, "maxPacketSize"),
+            GeckoMinPacketSize = GetQueryValue(query, "minPacketSize"),
+            GeckoMaxPacketSize = GetQueryValue(query, "maxPacketSize"),
         });
-        if (GetQueryDecoded(query, "obfs") == "gecko")
+        if (GetQueryValue(query, "obfs") == "gecko")
         {
             // Ensure the "PacketSize" parameters are present for gecko obfs.
             var protocolExtraItem = item.GetProtocolExtra();

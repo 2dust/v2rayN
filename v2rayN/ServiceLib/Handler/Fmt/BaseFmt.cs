@@ -200,17 +200,17 @@ public class BaseFmt
 
         item.StreamSecurity = GetQueryValue(query, "security");
         item.Sni = GetQueryValue(query, "sni");
-        item.Alpn = GetQueryDecoded(query, "alpn");
-        item.Fingerprint = GetQueryDecoded(query, "fp");
-        item.PublicKey = GetQueryDecoded(query, "pbk");
-        item.ShortId = GetQueryDecoded(query, "sid");
-        item.SpiderX = GetQueryDecoded(query, "spx");
-        item.Mldsa65Verify = GetQueryDecoded(query, "pqv");
-        item.EchConfigList = GetQueryDecoded(query, "ech");
-        item.VerifyPeerCertByName = GetQueryDecoded(query, "vcn");
-        item.CertSha = GetQueryDecoded(query, "pcs");
+        item.Alpn = GetQueryValue(query, "alpn");
+        item.Fingerprint = GetQueryValue(query, "fp");
+        item.PublicKey = GetQueryValue(query, "pbk");
+        item.ShortId = GetQueryValue(query, "sid");
+        item.SpiderX = GetQueryValue(query, "spx");
+        item.Mldsa65Verify = GetQueryValue(query, "pqv");
+        item.EchConfigList = GetQueryValue(query, "ech");
+        item.VerifyPeerCertByName = GetQueryValue(query, "vcn");
+        item.CertSha = GetQueryValue(query, "pcs");
 
-        var finalmaskDecoded = GetQueryDecoded(query, "fm");
+        var finalmaskDecoded = GetQueryValue(query, "fm");
         if (finalmaskDecoded.IsNotEmpty())
         {
             var node = JsonUtils.ParseJson(finalmaskDecoded);
@@ -245,13 +245,13 @@ public class BaseFmt
                 transport = transport with
                 {
                     RawHeaderType = GetQueryValue(query, "headerType", Global.None),
-                    Host = GetQueryDecoded(query, "host"),
-                    Path = GetQueryDecoded(query, "path"),
+                    Host = GetQueryValue(query, "host"),
+                    Path = GetQueryValue(query, "path"),
                 };
                 break;
 
             case nameof(ETransport.kcp):
-                var kcpSeed = GetQueryDecoded(query, "seed");
+                var kcpSeed = GetQueryValue(query, "seed");
                 var kcpMtuStr = GetQueryValue(query, "mtu");
                 var kcpMtu = int.TryParse(kcpMtuStr, out var mtu) ? mtu : 0;
                 transport = transport with
@@ -266,13 +266,13 @@ public class BaseFmt
             case nameof(ETransport.httpupgrade):
                 transport = transport with
                 {
-                    Host = GetQueryDecoded(query, "host"),
-                    Path = GetQueryDecoded(query, "path", "/"),
+                    Host = GetQueryValue(query, "host"),
+                    Path = GetQueryValue(query, "path", "/"),
                 };
                 break;
 
             case nameof(ETransport.xhttp):
-                var xhttpExtra = GetQueryDecoded(query, "extra");
+                var xhttpExtra = GetQueryValue(query, "extra");
                 if (xhttpExtra.IsNotEmpty())
                 {
                     var node = JsonUtils.ParseJson(xhttpExtra);
@@ -289,9 +289,9 @@ public class BaseFmt
 
                 transport = transport with
                 {
-                    Host = GetQueryDecoded(query, "host"),
-                    Path = GetQueryDecoded(query, "path", "/"),
-                    XhttpMode = GetQueryDecoded(query, "mode"),
+                    Host = GetQueryValue(query, "host"),
+                    Path = GetQueryValue(query, "path", "/"),
+                    XhttpMode = GetQueryValue(query, "mode"),
                     XhttpExtra = xhttpExtra,
                 };
                 break;
@@ -299,9 +299,9 @@ public class BaseFmt
             case nameof(ETransport.grpc):
                 transport = transport with
                 {
-                    GrpcAuthority = GetQueryDecoded(query, "authority"),
-                    GrpcServiceName = GetQueryDecoded(query, "serviceName"),
-                    GrpcMode = GetQueryDecoded(query, "mode", Global.GrpcGunMode),
+                    GrpcAuthority = GetQueryValue(query, "authority"),
+                    GrpcServiceName = GetQueryValue(query, "serviceName"),
+                    GrpcMode = GetQueryValue(query, "mode", Global.GrpcGunMode),
                 };
                 break;
 
@@ -337,18 +337,13 @@ public class BaseFmt
         return $"{Global.ProtocolShares[eConfigType]}{url}{query}{remark}";
     }
 
-    protected static string GetQueryValue(NameValueCollection query, string key, string defaultValue = "")
-    {
-        return query[key] ?? defaultValue;
-    }
-
     /// <summary>
     /// Values are already unescaped by <see cref="Utils.ParseQueryString" />, so this must not
     /// unescape them a second time: a value that still holds a valid percent sequence after the
     /// first pass - an obfuscation password of "ob%41fs", say - would decay into "obAfs".
     /// </summary>
-    protected static string GetQueryDecoded(NameValueCollection query, string key, string defaultValue = "")
+    protected static string GetQueryValue(NameValueCollection query, string key, string defaultValue = "")
     {
-        return GetQueryValue(query, key, defaultValue);
+        return query[key] ?? defaultValue;
     }
 }
