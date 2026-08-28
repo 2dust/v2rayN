@@ -1,6 +1,17 @@
 name: Code Test
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.UdpTest/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'global.json'
+      - '.github/workflows/test.yml'
   pull_request:
     branches:
       - master
