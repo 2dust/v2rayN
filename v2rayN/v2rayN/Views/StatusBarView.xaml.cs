@@ -1,3 +1,4 @@
+using System.Windows.Controls;
 using v2rayN.Manager;
 
 namespace v2rayN.Views;
@@ -14,6 +15,11 @@ public partial class StatusBarView
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
         txtRunningInfoDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
+
+        if (tbNotify.ContextMenu is { } trayMenu)
+        {
+            trayMenu.Opened += TrayMenu_Opened;
+        }
 
         this.WhenActivated(disposables =>
         {
@@ -77,6 +83,29 @@ public partial class StatusBarView
         });
 
         _ = RefreshIcon();
+    }
+
+    // Give the tray menu's first item keyboard focus on open, like native tray menus do;
+    // the popup otherwise opens with focus left on the window.
+    private void TrayMenu_Opened(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ContextMenu menu)
+        {
+            return;
+        }
+        var timer = new DispatcherTimer(DispatcherPriority.Input) { Interval = TimeSpan.FromMilliseconds(150) };
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            if (!menu.IsOpen)
+            {
+                return;
+            }
+            menu.Items.OfType<MenuItem>()
+                .FirstOrDefault(mi => mi.IsEnabled && mi.Visibility == Visibility.Visible)?
+                .Focus();
+        };
+        timer.Start();
     }
 
     private async Task RefreshIcon()
