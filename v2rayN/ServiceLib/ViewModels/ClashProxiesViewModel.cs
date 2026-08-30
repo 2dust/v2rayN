@@ -202,7 +202,11 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         //from api
         foreach (var kv in _proxies)
         {
-            if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
+            if (!Global.allowSelectType.Contains(kv.Value.type?.ToLower()))
+            {
+                continue;
+            }
+            if (kv.Key == "GLOBAL")
             {
                 continue;
             }
@@ -215,7 +219,16 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             {
                 Now = kv.Value.now,
                 Name = kv.Key,
-                Type = kv.Value.type
+                Type = kv.Value.type,
+            });
+        }
+        if (_proxies.TryGetValue("GLOBAL", out var globalProxy))
+        {
+            lstProxyGroups.Add(new ClashProxyModel()
+            {
+                Now = globalProxy.now,
+                Name = "GLOBAL",
+                Type = globalProxy.type,
             });
         }
 
