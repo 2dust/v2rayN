@@ -306,13 +306,31 @@ public partial class MainWindow
                 WindowState = WindowState.Normal;
             }
             this?.Activate();
-            this?.Focus();
+            if (GetProfilesView() is { } profilesView)
+            {
+                profilesView.FocusProfilesList();
+            }
+            else
+            {
+                this?.Focus();
+            }
         }
         else
         {
             this?.Hide();
         }
         AppManager.Instance.ShowInTaskbar = bl;
+    }
+
+    private ProfilesView? GetProfilesView()
+    {
+        return _config.UiItem.MainGirdOrientation switch
+        {
+            EGirdOrientation.Horizontal => tabProfiles.Content as ProfilesView,
+            EGirdOrientation.Vertical => tabProfiles1.Content as ProfilesView,
+            EGirdOrientation.Tab when tabMain2.SelectedItem == tabProfiles2 => tabProfiles2.Content as ProfilesView,
+            _ => null,
+        };
     }
 
     protected override void OnLoaded(object? sender, RoutedEventArgs e)
