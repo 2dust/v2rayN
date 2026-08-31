@@ -2,7 +2,14 @@ namespace ServiceLib.Base;
 
 public class BulkObservableCollection<T> : ObservableCollection<T>
 {
-    private bool _suppressNotification = false;
+    private bool _suppressNotification;
+
+    public BulkObservableCollection()
+    {
+    }
+
+    public BulkObservableCollection(IEnumerable<T> collection) : base(collection) { }
+    public BulkObservableCollection(List<T> list) : base(list) { }
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
@@ -62,5 +69,30 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
             index));
 
         return true;
+    }
+
+    public void ReplaceRange(IEnumerable<T>? collection)
+    {
+        if (collection == null)
+        {
+            return;
+        }
+
+        _suppressNotification = true;
+        try
+        {
+            Items.Clear();
+            foreach (var item in collection)
+            {
+                Items.Add(item);
+            }
+        }
+        finally
+        {
+            _suppressNotification = false;
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
+            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
     }
 }

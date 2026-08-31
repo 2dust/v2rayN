@@ -37,9 +37,11 @@
                 Width="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource DefComboBox}">
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeRule}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeGlobal}" />
-                <ComboBoxItem Content="{x:Static resx:ResUI.menuModeDirect}" />
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <TextBlock
@@ -68,12 +70,12 @@
             </Button>
 
             <Button
-                x:Name="menuProxiesDelaytest"
+                x:Name="menuGroupProxiesDelaytest"
                 Width="24"
                 Height="24"
                 Margin="{StaticResource MarginLeftRight8}"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                ToolTip="{x:Static resx:ResUI.menuProxiesDelaytest}">
+                ToolTip="{x:Static resx:ResUI.menuDelaytest}">
                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
             </Button>
 
@@ -141,7 +143,7 @@
                 Style="{StaticResource MaterialDesignListView}">
                 <ListView.ContextMenu>
                     <ContextMenu Style="{StaticResource DefContextMenu}">
-                        <MenuItem x:Name="menuProxiesDelaytestPart" Header="{x:Static resx:ResUI.menuProxiesDelaytestPart}" />
+                        <MenuItem x:Name="menuProxyDelaytest" Header="{x:Static resx:ResUI.menuDelaytest}" />
                         <MenuItem
                             x:Name="menuProxiesSelectActivity"
                             Header="{x:Static resx:ResUI.menuProxiesSelectActivity}"

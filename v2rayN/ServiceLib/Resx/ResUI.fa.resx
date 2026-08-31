@@ -1215,7 +1215,7 @@
   <data name="menuModeRule" xml:space="preserve">
     <value>قانون</value>
   </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
+  <data name="menuDelaytest" xml:space="preserve">
     <value>تست تأخیر</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">

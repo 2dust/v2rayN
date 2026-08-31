@@ -2,33 +2,18 @@ namespace ServiceLib.ViewModels;
 
 public partial class ClashConnectionsViewModel : MyReactiveObject
 {
-    public BulkObservableCollection<ClashConnectionModel> ConnectionItems { get; } = [];
-
-    [Reactive]
-    public partial ClashConnectionModel SelectedSource { get; set; }
-
-    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseCmd { get; }
-    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseAllCmd { get; }
-
-    [Reactive]
-    public partial string HostFilter { get; set; }
-
-    [Reactive]
-    public partial bool AutoRefresh { get; set; }
-
     public ClashConnectionsViewModel()
     {
         _config = AppManager.Instance.Config;
         AutoRefresh = _config.ClashUIItem.ConnectionsAutoRefresh;
 
         var canEditRemove = this.WhenAnyValue(
-         x => x.SelectedSource,
-         selectedSource => selectedSource != null && selectedSource.Id.IsNotEmpty());
+            x => x.SelectedSource,
+            selectedSource => selectedSource?.Id?.IsNotEmpty() == true);
 
         this.WhenAnyValue(
-           x => x.AutoRefresh,
-           y => y == true)
-               .Subscribe(c => { _config.ClashUIItem.ConnectionsAutoRefresh = AutoRefresh; });
+                x => x.AutoRefresh)
+            .Subscribe(_ => { _config.ClashUIItem.ConnectionsAutoRefresh = AutoRefresh; });
         ConnectionCloseCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ClashConnectionClose(false);
@@ -39,17 +24,28 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
             await ClashConnectionClose(true);
         });
 
-        _ = Init();
+        _ = Task.Factory.StartNew(
+            async () => await GetClashConnectionsTask(),
+            CancellationToken.None,
+            TaskCreationOptions.LongRunning,
+            TaskScheduler.Default
+        );
     }
 
-    private async Task Init()
-    {
-        await DelayTestTask();
-    }
+    public BulkObservableCollection<ClashConnectionModel> ConnectionItems { get; } = [];
+
+    [Reactive] public partial ClashConnectionModel SelectedSource { get; set; }
+
+    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ConnectionCloseAllCmd { get; }
+
+    [Reactive] public partial string HostFilter { get; set; }
+
+    [Reactive] public partial bool AutoRefresh { get; set; }
 
     private async Task GetClashConnections()
     {
-        var ret = await ClashApiManager.Instance.GetClashConnectionsAsync();
+        var ret = await ClashApiManager.Instance.GetConnections();
         if (ret == null)
         {
             return;
@@ -69,7 +65,8 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
         var lstModel = new List<ClashConnectionModel>();
         foreach (var item in connections ?? [])
         {
-            var host = $"{(item.metadata.host.IsNullOrEmpty() ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+            var host =
+                $"{(item.metadata.host.IsNullOrEmpty() ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
             if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
             {
                 continue;
@@ -83,7 +80,7 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
                 Host = host,
                 Time = (dtNow - item.start).TotalSeconds < 0 ? 1 : (dtNow - item.start).TotalSeconds,
                 Elapsed = (dtNow - item.start).ToString(@"hh\:mm\:ss"),
-                Chain = $"{item.rule} , {string.Join("->", item.chains ?? [])}"
+                Chain = $"{item.rule} , {string.Join("->", item.chains ?? [])}",
             };
 
             lstModel.Add(model);
@@ -103,47 +100,39 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
         if (!all)
         {
             var item = SelectedSource;
-            if (item is null)
+            if (string.IsNullOrEmpty(item?.Id))
             {
                 return;
             }
             id = item.Id;
         }
-        else
-        {
-            ConnectionItems.Clear();
-        }
-        await ClashApiManager.Instance.ClashConnectionClose(id);
+        await ClashApiManager.Instance.CloseConnection(id);
         await GetClashConnections();
     }
 
-    public async Task DelayTestTask()
+    public async Task GetClashConnectionsTask()
     {
-        _ = Task.Run(async () =>
+        var numOfExecuted = 1;
+        while (true)
         {
-            var numOfExecuted = 1;
-            while (true)
+            await Task.Delay(1000 * 5);
+            numOfExecuted++;
+            if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar &&
+                  AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
             {
-                await Task.Delay(1000 * 5);
-                numOfExecuted++;
-                if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar && AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
-                {
-                    continue;
-                }
-
-                if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
-                {
-                    continue;
-                }
-
-                if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
-                {
-                    continue;
-                }
-                await GetClashConnections();
+                continue;
             }
-        });
 
-        await Task.CompletedTask;
+            if (_config.ClashUIItem.ConnectionsRefreshInterval <= 0)
+            {
+                continue;
+            }
+
+            if (numOfExecuted % _config.ClashUIItem.ConnectionsRefreshInterval != 0)
+            {
+                continue;
+            }
+            await GetClashConnections();
+        }
     }
 }

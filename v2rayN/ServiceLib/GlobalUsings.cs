@@ -8,6 +8,7 @@ global using System.Net.NetworkInformation;
 global using System.Net.Sockets;
 global using ReactiveUI.Primitives;
 global using ReactiveUI.Primitives.Concurrency;
+global using ReactiveUI.Primitives.Extensions;
 global using ReactiveUI.Primitives.Disposables;
 global using ReactiveUI.Primitives.Signals;
 global using System.Reflection;
@@ -41,5 +42,3 @@ global using ServiceLib.Services;
 global using ServiceLib.Services.CoreConfig;
 global using ServiceLib.Services.Statistics;
 global using SQLite;
-
-

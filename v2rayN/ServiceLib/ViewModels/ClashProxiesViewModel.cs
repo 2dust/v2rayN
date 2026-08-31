@@ -1,36 +1,9 @@
-using static ServiceLib.Models.Dto.ClashProviders;
-using static ServiceLib.Models.Dto.ClashProxies;
-
 namespace ServiceLib.ViewModels;
 
 public partial class ClashProxiesViewModel : MyReactiveObject
 {
-    private Dictionary<string, ProxiesItem>? _proxies;
-    private Dictionary<string, ProvidersItem>? _providers;
     private readonly int _delayTimeout = 99999999;
-
-    public BulkObservableCollection<ClashProxyModel> ProxyGroups { get; } = [];
-    public BulkObservableCollection<ClashProxyModel> ProxyDetails { get; } = [];
-
-    [Reactive]
-    public partial ClashProxyModel SelectedGroup { get; set; }
-
-    [Reactive]
-    public partial ClashProxyModel SelectedDetail { get; set; }
-
-    public ReactiveCommand<RxVoid, RxVoid> ProxiesReloadCmd { get; }
-    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestCmd { get; }
-    public ReactiveCommand<RxVoid, RxVoid> ProxiesDelayTestPartCmd { get; }
-    public ReactiveCommand<RxVoid, RxVoid> ProxiesSelectActivityCmd { get; }
-
-    [Reactive]
-    public partial int RuleModeSelected { get; set; }
-
-    [Reactive]
-    public partial int SortingSelected { get; set; }
-
-    [Reactive]
-    public partial bool AutoRefresh { get; set; }
+    private ClashItem _clashItem = new();
 
     public ClashProxiesViewModel()
     {
@@ -40,173 +13,158 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         {
             await ProxiesReload();
         });
-        ProxiesDelayTestCmd = ReactiveCommand.CreateFromTask(async () =>
+        ProxyDelayTestCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await ProxiesDelayTest(true);
+            if (!string.IsNullOrEmpty(SelectedDetail?.Name))
+            {
+                await TestProxyDelay(SelectedDetail.Name);
+            }
         });
 
-        ProxiesDelayTestPartCmd = ReactiveCommand.CreateFromTask(async () =>
+        GroupProxiesDelayTestCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await ProxiesDelayTest(false);
+            await TestGroupProxiesDelay();
         });
         ProxiesSelectActivityCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SetActiveProxy();
         });
 
-        SelectedGroup = new();
-        SelectedDetail = new();
         AutoRefresh = _config.ClashUIItem.ProxiesAutoRefresh;
         SortingSelected = _config.ClashUIItem.ProxiesSorting;
-        RuleModeSelected = (int)_config.ClashUIItem.RuleMode;
+        RuleModeSelected = nameof(ERuleMode.Rule);
 
         #region WhenAnyValue && ReactiveCommand
 
-        this.WhenAnyValue(
-           x => x.SelectedGroup,
-           y => y != null && y.Name.IsNotEmpty())
-               .Subscribe(RefreshProxyDetails);
+        this.WhenAnyValue(x => x.SelectedGroup)
+            .Where(y => y != null && y.Name.IsNotEmpty())
+            .Subscribe(_ => RefreshProxyDetails());
 
-        this.WhenAnyValue(
-           x => x.RuleModeSelected,
-           y => y >= 0)
-               .Subscribe(async c => await DoRuleModeSelected(c));
+        this.WhenAnyValue(x => x.RuleModeSelected)
+            .Where(y => !string.IsNullOrEmpty(y))
+            .Skip(1)
+            .SubscribeAsync(async x => await SetRuleMode(x));
 
-        this.WhenAnyValue(
-           x => x.SortingSelected,
-           y => y >= 0)
-              .Subscribe(DoSortingSelected);
+        this.WhenAnyValue(x => x.SortingSelected)
+            .Where(y => y >= 0)
+            .Subscribe(_ => DoSortingSelected());
 
-        this.WhenAnyValue(
-        x => x.AutoRefresh,
-        y => y == true)
-            .Subscribe(c => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
+        this.WhenAnyValue(x => x.AutoRefresh)
+            .Where(y => y)
+            .Subscribe(_ => { _config.ClashUIItem.ProxiesAutoRefresh = AutoRefresh; });
 
         #endregion WhenAnyValue && ReactiveCommand
 
-        _ = Init();
+        _ = Task.Factory.StartNew(
+            async () => await GetClashProxiesTask(),
+            CancellationToken.None,
+            TaskCreationOptions.LongRunning,
+            TaskScheduler.Default
+        );
     }
 
-    private async Task Init()
-    {
-        await DelayTestTask();
-    }
+    public BulkObservableCollection<ClashProxyModel> ProxyGroups { get; } = [];
+    public BulkObservableCollection<ClashProxyModel> ProxyDetails { get; } = [];
 
-    private async Task DoRuleModeSelected(bool c)
-    {
-        if (!c)
-        {
-            return;
-        }
-        if (_config.ClashUIItem.RuleMode == (ERuleMode)RuleModeSelected)
-        {
-            return;
-        }
-        await SetRuleModeCheck((ERuleMode)RuleModeSelected);
-    }
+    public BulkObservableCollection<string> ClashModes { get; } = new(Enum.GetNames<ERuleMode>().ToList());
 
-    public async Task SetRuleModeCheck(ERuleMode mode)
-    {
-        if (_config.ClashUIItem.RuleMode == mode)
-        {
-            return;
-        }
-        await SetRuleMode(mode);
-    }
+    [Reactive] public partial ClashProxyModel? SelectedGroup { get; set; }
 
-    private void DoSortingSelected(bool c)
+    [Reactive] public partial ClashProxyModel? SelectedDetail { get; set; }
+
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesReloadCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxyDelayTestCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GroupProxiesDelayTestCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ProxiesSelectActivityCmd { get; }
+
+    [Reactive] public partial string RuleModeSelected { get; set; }
+
+    [Reactive] public partial int SortingSelected { get; set; }
+
+    [Reactive] public partial bool AutoRefresh { get; set; }
+
+    private void DoSortingSelected()
     {
-        if (!c)
-        {
-            return;
-        }
         if (SortingSelected != _config.ClashUIItem.ProxiesSorting)
         {
             _config.ClashUIItem.ProxiesSorting = SortingSelected;
         }
 
-        RefreshProxyDetails(c);
+        RefreshProxyDetails();
     }
 
     public async Task ProxiesReload()
     {
-        await GetClashProxies(true);
-        await ProxiesDelayTest();
+        await GetClashProxies();
+        await GetClashModes();
     }
+
+    #region task
+
+    public async Task GetClashProxiesTask()
+    {
+        var numOfExecuted = 1;
+        while (true)
+        {
+            await Task.Delay(1000 * 60);
+            numOfExecuted++;
+            if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar &&
+                  AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
+            {
+                continue;
+            }
+            if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
+            {
+                continue;
+            }
+            if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
+            {
+                continue;
+            }
+            await GetClashProxies();
+        }
+    }
+
+    #endregion task
 
     #region proxy function
 
-    private async Task SetRuleMode(ERuleMode mode)
+    private async Task SetRuleMode(string mode)
     {
-        _config.ClashUIItem.RuleMode = mode;
-
-        if (mode != ERuleMode.Unchanged)
-        {
-            Dictionary<string, string> headers = new()
-                {
-                    { "mode", mode.ToString().ToLower() }
-                };
-            await ClashApiManager.Instance.ClashConfigUpdate(headers);
-        }
+        await ClashApiManager.Instance.UpdateClashMode(mode);
     }
 
-    private async Task GetClashProxies(bool refreshUI)
+    private async Task GetClashProxies()
     {
-        var ret = await ClashApiManager.Instance.GetClashProxiesAsync();
-        if (ret?.Item1 == null || ret.Item2 == null)
+        var ret = await ClashApiManager.Instance.GetProxies();
+        if (ret?.IsEmpty() != false)
         {
             return;
         }
-        _proxies = ret.Item1.proxies;
-        _providers = ret?.Item2.providers;
+        _clashItem = ret;
 
-        if (refreshUI)
-        {
-            RxSchedulers.MainThreadScheduler.Schedule(() => _ = RefreshProxyGroups());
-        }
+        RxSchedulers.MainThreadScheduler.Schedule(() => _ = RefreshProxyGroups());
     }
 
     public async Task RefreshProxyGroups()
     {
-        if (_proxies == null)
+        if (_clashItem.IsEmpty())
         {
             return;
         }
 
         var selectedName = SelectedGroup?.Name;
-        ProxyGroups.Clear();
 
         var lstProxyGroups = new List<ClashProxyModel>();
-        var proxyGroups = ClashApiManager.Instance.GetClashProxyGroups();
-        if (proxyGroups is { Count: > 0 })
-        {
-            foreach (var it in proxyGroups)
-            {
-                if (it.name.IsNullOrEmpty() || !_proxies.TryGetValue(it.name, out var item))
-                {
-                    continue;
-                }
-                if (!Global.allowSelectType.Contains(item.type.ToLower()))
-                {
-                    continue;
-                }
-                lstProxyGroups.Add(new ClashProxyModel()
-                {
-                    Now = item.now,
-                    Name = item.name,
-                    Type = item.type
-                });
-            }
-        }
 
-        //from api
-        foreach (var kv in _proxies)
+        var globalName = "GLOBAL";
+        foreach (var kv in _clashItem.Proxies)
         {
             if (!Global.allowSelectType.Contains(kv.Value.type?.ToLower()))
             {
                 continue;
             }
-            if (kv.Key == "GLOBAL")
+            if (kv.Key == globalName)
             {
                 continue;
             }
@@ -215,61 +173,49 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             {
                 continue;
             }
-            lstProxyGroups.Add(new ClashProxyModel()
+            lstProxyGroups.Add(new ClashProxyModel
             {
                 Now = kv.Value.now,
                 Name = kv.Key,
                 Type = kv.Value.type,
             });
         }
-        if (_proxies.TryGetValue("GLOBAL", out var globalProxy))
+        if (_clashItem.Proxies.TryGetValue(globalName, out var globalProxy))
         {
-            lstProxyGroups.Add(new ClashProxyModel()
+            lstProxyGroups.Add(new ClashProxyModel
             {
                 Now = globalProxy.now,
-                Name = "GLOBAL",
+                Name = globalName,
                 Type = globalProxy.type,
             });
         }
 
-        ProxyGroups.AddRange(lstProxyGroups);
+        ProxyGroups.ReplaceRange(lstProxyGroups);
 
         if (ProxyGroups is { Count: > 0 })
         {
-            if (selectedName != null && ProxyGroups.Any(t => t.Name == selectedName))
-            {
-                SelectedGroup = ProxyGroups.FirstOrDefault(t => t.Name == selectedName);
-            }
-            else
-            {
-                SelectedGroup = ProxyGroups.First();
-            }
+            SelectedGroup = ProxyGroups.FirstOrDefault(t => t.Name == selectedName) ?? ProxyGroups.First();
         }
         else
         {
-            SelectedGroup = new();
+            SelectedGroup = null;
         }
         await Task.CompletedTask;
     }
 
-    private void RefreshProxyDetails(bool c)
+    private void RefreshProxyDetails()
     {
-        ProxyDetails.Clear();
-        if (!c)
-        {
-            return;
-        }
         var name = SelectedGroup?.Name;
         if (name.IsNullOrEmpty())
         {
             return;
         }
-        if (_proxies == null)
+        if (_clashItem.IsEmpty())
         {
             return;
         }
 
-        _proxies.TryGetValue(name, out var proxy);
+        _clashItem.Proxies.TryGetValue(name, out var proxy);
         if (proxy?.all == null)
         {
             return;
@@ -284,7 +230,7 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             }
             var delay = proxy2.history?.Count > 0 ? proxy2.history.Last().delay : -1;
 
-            lstDetails.Add(new ClashProxyModel()
+            lstDetails.Add(new ClashProxyModel
             {
                 IsActive = item == proxy.now,
                 Name = item,
@@ -293,7 +239,7 @@ public partial class ClashProxiesViewModel : MyReactiveObject
                 DelayName = delay <= 0 ? string.Empty : $"{delay}ms",
             });
         }
-        //sort
+        // sort
         switch (SortingSelected)
         {
             case 0:
@@ -303,101 +249,95 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             case 1:
                 lstDetails = lstDetails.OrderBy(t => t.Name).ToList();
                 break;
-
-            default:
-                break;
         }
-        ProxyDetails.AddRange(lstDetails);
+        ProxyDetails.ReplaceRange(lstDetails);
     }
 
-    private ProxiesItem? TryGetProxy(string name)
+    private ClashProxy? TryGetProxy(string? name)
     {
-        if (_proxies == null)
+        if (name.IsNullOrEmpty())
         {
             return null;
         }
-        _proxies.TryGetValue(name, out var proxy2);
-        if (proxy2 != null)
-        {
-            return proxy2;
-        }
-        //from providers
-        if (_providers != null)
-        {
-            foreach (var kv in _providers)
-            {
-                if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
-                {
-                    var proxy3 = kv.Value.proxies.FirstOrDefault(t => t.name == name);
-                    if (proxy3 != null)
-                    {
-                        return proxy3;
-                    }
-                }
-            }
-        }
-        return null;
+        _clashItem.Proxies.TryGetValue(name, out var proxy2);
+        return proxy2;
     }
 
     public async Task SetActiveProxy()
     {
-        if (SelectedGroup == null || SelectedGroup.Name.IsNullOrEmpty())
+        if (SelectedGroup.Name.IsNullOrEmpty())
         {
             return;
         }
-        if (SelectedDetail == null || SelectedDetail.Name.IsNullOrEmpty())
+        if (SelectedDetail.Name.IsNullOrEmpty())
         {
             return;
         }
-        var name = SelectedGroup.Name;
-        if (name.IsNullOrEmpty())
+        var groupName = SelectedGroup.Name;
+        if (groupName.IsNullOrEmpty())
         {
             return;
         }
-        var nameNode = SelectedDetail.Name;
-        if (nameNode.IsNullOrEmpty())
+        var nodeName = SelectedDetail.Name;
+        if (nodeName.IsNullOrEmpty())
         {
             return;
         }
-        var selectedProxy = TryGetProxy(name);
-        if (selectedProxy == null || selectedProxy.type != "Selector")
+        var selectedProxy = TryGetProxy(groupName);
+        if (selectedProxy is not { type: "Selector" })
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
             return;
         }
 
-        await ClashApiManager.Instance.ClashSetActiveProxy(name, nameNode);
-
-        selectedProxy.now = nameNode;
-        var group = ProxyGroups.FirstOrDefault(it => it.Name == SelectedGroup.Name);
-        if (group != null)
-        {
-            group.Now = nameNode;
-            var group2 = JsonUtils.DeepCopy(group);
-            ProxyGroups.Replace(group, group2);
-
-            SelectedGroup = group2;
-        }
+        await ClashApiManager.Instance.SetActiveProxy(groupName, nodeName);
+        await GetClashProxies();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
     }
 
-    private async Task ProxiesDelayTest(bool blAll = true)
+    private async Task GetClashModes()
     {
-        ClashApiManager.Instance.ClashProxiesDelayTest(blAll, ProxyDetails.ToList(), async (item, result) =>
+        var ret = await ClashApiManager.Instance.GetClashModes();
+        if (ret is not { Count: > 0 })
         {
-            if (item == null || result.IsNullOrEmpty())
-            {
-                return;
-            }
+            return;
+        }
+        ClashModes.ReplaceRange(ret);
+        var currentMode = await ClashApiManager.Instance.GetClashMode();
+        if (currentMode.IsNullOrEmpty())
+        {
+            return;
+        }
+        RuleModeSelected = currentMode;
+    }
 
-            var model = new SpeedTestResult() { IndexId = item.Name, Delay = result };
-            RxSchedulers.MainThreadScheduler.Schedule(() =>
-            {
-                _ = ProxiesDelayTestResult(model);
-            });
-            await Task.CompletedTask;
+    private async Task TestProxyDelay(string name)
+    {
+        var result = await ClashApiManager.Instance.TestDelay(name, _clashItem);
+        var model = new SpeedTestResult
+        {
+            IndexId = name,
+            Delay = result.ToString(),
+        };
+        await ProxiesDelayTestResult(model);
+    }
+
+    private async Task TestGroupProxiesDelay()
+    {
+        var groupProxy = TryGetProxy(SelectedGroup.Name);
+        if (!Global.allowSelectType.Contains(groupProxy?.type))
+        {
+            return;
+        }
+
+        var options = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = 4,
+        };
+        await Parallel.ForEachAsync(groupProxy?.all ?? [], options, async (name, _) =>
+        {
+            await TestProxyDelay(name);
         });
-        await Task.CompletedTask;
     }
 
     public async Task ProxiesDelayTestResult(SpeedTestResult result)
@@ -407,56 +347,10 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
-
-        var dicResult = JsonUtils.Deserialize<Dictionary<string, object>>(result.Delay);
-        if (dicResult != null && dicResult.TryGetValue("delay", out var value))
-        {
-            detail.Delay = Convert.ToInt32(value.ToString());
-            detail.DelayName = $"{detail.Delay}ms";
-        }
-        else if (dicResult != null && dicResult.TryGetValue("message", out var value1))
-        {
-            detail.Delay = _delayTimeout;
-            detail.DelayName = $"{value1}";
-        }
-        else
-        {
-            detail.Delay = _delayTimeout;
-            detail.DelayName = string.Empty;
-        }
+        detail.Delay = Convert.ToInt32(result.Delay);
+        detail.DelayName = $"{detail.Delay}ms";
         await Task.CompletedTask;
     }
 
     #endregion proxy function
-
-    #region task
-
-    public async Task DelayTestTask()
-    {
-        _ = Task.Run(async () =>
-          {
-              var numOfExecuted = 1;
-              while (true)
-              {
-                  await Task.Delay(1000 * 60);
-                  numOfExecuted++;
-                  if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar && AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
-                  {
-                      continue;
-                  }
-                  if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
-                  {
-                      continue;
-                  }
-                  if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
-                  {
-                      continue;
-                  }
-                  await ProxiesDelayTest();
-              }
-          });
-        await Task.CompletedTask;
-    }
-
-    #endregion task
 }

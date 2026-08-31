@@ -94,17 +94,7 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
             fileContent["ipv6"] = config.ClashUIItem.EnableIPv6;
 
             //mode
-            if (!fileContent.ContainsKey("mode"))
-            {
-                fileContent["mode"] = nameof(ERuleMode.Rule).ToLower();
-            }
-            else
-            {
-                if (config.ClashUIItem.RuleMode != ERuleMode.Unchanged)
-                {
-                    fileContent["mode"] = config.ClashUIItem.RuleMode.ToString().ToLower();
-                }
-            }
+            fileContent.TryAdd("mode", nameof(ERuleMode.Rule));
 
             //enable tun mode
             if (isTunEnabled)
@@ -158,8 +148,6 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
                 ret.Msg = ResUI.FailedReadConfiguration + "2";
                 return ret;
             }
-
-            ClashApiManager.Instance.ProfileContent = fileContent;
 
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
             ret.Success = true;

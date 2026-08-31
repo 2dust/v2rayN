@@ -1212,7 +1212,7 @@
   <data name="menuModeRule" xml:space="preserve">
     <value>Règle</value>
   </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
+  <data name="menuDelaytest" xml:space="preserve">
     <value>Test de latence</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
