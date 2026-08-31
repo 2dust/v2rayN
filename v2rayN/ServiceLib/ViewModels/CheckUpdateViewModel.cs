@@ -340,7 +340,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
     {
         foreach (var item in _lstUpdated)
         {
-            if (item.FileName.IsNullOrEmpty() || item.IsGeoFile)
+            if (item.FileName.IsNullOrEmpty() || item.IsGeoFile || item.CoreType == _v2rayN)
             {
                 continue;
             }

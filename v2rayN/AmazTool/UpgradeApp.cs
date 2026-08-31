@@ -40,6 +40,7 @@ internal class UpgradeApp
 
         Console.WriteLine(Resx.Resource.StartUnzipping);
         StringBuilder sb = new();
+        var extracted = false;
         try
         {
             var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
@@ -88,6 +89,7 @@ internal class UpgradeApp
                     sb.Append(ex.StackTrace);
                 }
             }
+            extracted = true;
         }
         catch (Exception ex)
         {
@@ -98,6 +100,18 @@ internal class UpgradeApp
         {
             Console.WriteLine(Resx.Resource.FailedUpgrade + sb.ToString());
             //return;
+        }
+        else if (extracted)
+        {
+            // Extraction succeeded and no other step in the flow removes the package
+            try
+            {
+                File.Delete(fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         Console.WriteLine(Resx.Resource.Restartv2rayN);
