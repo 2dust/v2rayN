@@ -106,6 +106,7 @@ public class Global
     public const string SingboxLocalDNSTag = "local-local";
     public const string SingboxHostsDNSTag = "hosts-dns";
     public const string SingboxFakeDNSTag = "fake-dns";
+    public const string SingboxSrsDownloadHttpClientTag = "srs-download-http-client";
 
     public const int Hysteria2DefaultHopInt = 30;
     public const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";

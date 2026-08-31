@@ -8,6 +8,7 @@ public class SingboxConfig
     public List<Outbound4Sbox> outbounds { get; set; }
     public List<Endpoints4Sbox>? endpoints { get; set; }
     public Route4Sbox route { get; set; }
+    public List<HttpClient4Sbox>? http_clients { get; set; }
     public Experimental4Sbox? experimental { get; set; }
 }
 
@@ -323,9 +324,11 @@ public class Ruleset4Sbox
     public string? format { get; set; }
     public string? path { get; set; }
     public string? url { get; set; }
-    public string? download_detour { get; set; }
+    public string? http_client { get; set; }
     public string? update_interval { get; set; }
 }
+
+public class HttpClient4Sbox : BaseServer4Sbox;
 
 public abstract class DialFields4Sbox
 {
