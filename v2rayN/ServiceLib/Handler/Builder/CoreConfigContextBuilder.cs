@@ -49,6 +49,7 @@ public class CoreConfigContextBuilder
             RoutingItem = await ConfigHandler.GetDefaultRouting(config),
             IsWindows = Utils.IsWindows(),
             IsMacOS = Utils.IsMacOS(),
+            HasGlobalIPv6Address = Utils.HasGlobalIPv6Address(),
             ProtectCoreTypeList = config.TunModeItem.EnableTun ? [ECoreType.Xray, ECoreType.sing_box] : []
         };
         var validatorResult = NodeValidatorResult.Empty();

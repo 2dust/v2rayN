@@ -589,6 +589,53 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
+    [Arguments(true)]
+    [Arguments(false)]
+    public async Task GenerateClientConfigContent_Tun_ShouldSkipIPv6RouteWithoutGlobalIPv6(bool enableIPv6Address)
+    {
+        // A host without a global IPv6 address has no IPv6 traffic that could bypass the tunnel,
+        // while ::/0 would pull IPv6 attempts into a tunnel they cannot leave.
+        var config = CoreConfigTestFactory.CreateConfigWithTun(ECoreType.Xray, enableIPv6Address);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasGlobalIPv6Address: false);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        await tunInbound.Should().NotBeNull();
+        await tunInbound!.settings.autoSystemRoutingTable.Should().Contain("0.0.0.0/0");
+        var ipv6Routes = tunInbound.settings.autoSystemRoutingTable!.Where(x => x.Contains(':')).ToList();
+        await ipv6Routes.Should().BeEmpty();
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_TunRouteExcludeAddress_ShouldSkipIPv6RangesWithoutGlobalIPv6()
+    {
+        var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
+        config.TunModeItem.EnableIPv6Address = false;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasGlobalIPv6Address: false);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        await tunInbound.Should().NotBeNull();
+        await tunInbound!.settings.autoSystemRoutingTable.Should().NotBeEmpty();
+        var ipv6Routes = tunInbound.settings.autoSystemRoutingTable!.Where(x => x.Contains(':')).ToList();
+        await ipv6Routes.Should().BeEmpty();
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_TunRouteExcludeAddress_ShouldIncludeIPv6Ranges()
     {
         var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
