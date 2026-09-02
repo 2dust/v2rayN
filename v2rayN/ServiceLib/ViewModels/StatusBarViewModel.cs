@@ -337,6 +337,16 @@ public partial class StatusBarViewModel : MyReactiveObject
         var result = await Task.Run(ConnectionHandler.RunAvailabilityCheck);
         var msg = string.Format(ResUI.TestMeOutput, result.Time, result.Ip);
 
+        var ip = result.GetValidIp();
+        if (ip.IsNotEmpty())
+        {
+            ProfileExManager.Instance.SetTestIpInfo(item.IndexId, ip);
+        }
+        if (result.Time > 0)
+        {
+            ProfileExManager.Instance.SetTestDelay(item.IndexId, result.Time);
+        }
+
         NoticeManager.Instance.SendMessageEx(msg);
         await TestServerAvailabilitySub(msg);
         return result;

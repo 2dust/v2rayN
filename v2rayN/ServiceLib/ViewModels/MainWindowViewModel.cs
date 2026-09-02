@@ -695,19 +695,11 @@ public partial class MainWindowViewModel : MyReactiveObject
                 {
                     return;
                 }
-                var ip = result.GetValidIp();
-                if (ip.IsNotEmpty())
-                {
-                    ProfileExManager.Instance.SetTestIpInfo(profileItem.IndexId, ip);
-                }
-                if (result.Time > 0)
-                {
-                    ProfileExManager.Instance.SetTestDelay(profileItem.IndexId, result.Time);
-                }
+               
                 await ProfilesViewModel.SetSpeedTestResult(new()
                 {
                     IndexId = profileItem.IndexId,
-                    IpInfo = ip,
+                    IpInfo = result.Ip,
                     Delay = result.Time > 0 ? result.Time.ToString() : null
                 });
             });

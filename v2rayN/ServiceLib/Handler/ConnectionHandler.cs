@@ -12,7 +12,7 @@ public static class ConnectionHandler
         var time = await GetRealPingTimeInfo();
         var ip = time > 0 ? await GetIPInfo() : Global.None;
 
-        return new AvailabilityCheckResult(time, ip ?? Global.None);
+        return new AvailabilityCheckResult(time, ip);
     }
 
     /// <summary>
