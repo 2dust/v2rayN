@@ -15,11 +15,16 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     #region private prop
 
-    private List<ProfileItem> _lstProfile;
+    private List<ProfileItem> _lstProfile = [];
     private string _serverFilter = string.Empty;
     private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
     private string? _pendingSelectIndexId;
+
+    // O(1) IndexId -> model lookup, kept in sync with ProfileItems instead of doing
+    // a linear FirstOrDefault scan on every speedtest / statistics tick (which used
+    // to run several times a second against a collection that can hold thousands of rows).
+    private Dictionary<string, ProfileItemModel> _profileItemsMap = new();
 
     #endregion private prop
 
@@ -280,8 +285,10 @@ public partial class ProfilesViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(result.Delay);
             return;
         }
-        var item = ProfileItems.FirstOrDefault(it => it.IndexId == result.IndexId);
-        if (item == null)
+
+        // Was: ProfileItems.FirstOrDefault(it => it.IndexId == result.IndexId) — an O(n) scan
+        // fired once per completed ping/speed test result. With the map this is O(1).
+        if (!_profileItemsMap.TryGetValue(result.IndexId, out var item) || item == null)
         {
             return;
         }
@@ -313,8 +320,9 @@ public partial class ProfilesViewModel : MyReactiveObject
 
         try
         {
-            var item = ProfileItems.FirstOrDefault(it => it.IndexId == update.IndexId);
-            if (item != null)
+            // Was: ProfileItems.FirstOrDefault(it => it.IndexId == update.IndexId) — an O(n) scan
+            // on a stream of per-connection stat ticks. O(1) via the map instead.
+            if (_profileItemsMap.TryGetValue(update.IndexId, out var item) && item != null)
             {
                 item.TodayDown = Utils.HumanFy(update.TodayDown);
                 item.TodayUp = Utils.HumanFy(update.TodayUp);
@@ -362,9 +370,23 @@ public partial class ProfilesViewModel : MyReactiveObject
     public async Task RefreshServersBiz()
     {
         var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
-        _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
+
+        // Was: JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) — a full
+        // JSON serialize + deserialize round trip to turn the UI projection (ProfileItemModel)
+        // back into ProfileItem, done on every server-list refresh. That is expensive on large
+        // lists and is also lossy (only fields present on ProfileItemModel survive the trip).
+        // AppManager already has the real records and an ordered bulk fetch, so use that instead:
+        // it's both cheaper and returns fully-populated ProfileItem rows.
+        _lstProfile = lstModel is { Count: > 0 }
+            ? (await AppManager.Instance.GetProfileItemsOrderedByIndexIds(lstModel.Select(t => t.IndexId)))?.ToList() ?? []
+            : [];
 
         ProfileItems.ReplaceRange(lstModel ?? []);
+
+        // Keep the IndexId -> model lookup in sync with the collection so hot paths
+        // (speedtest results, statistics ticks) never need a linear scan.
+        _profileItemsMap = (lstModel ?? []).ToDictionary(t => t.IndexId);
+
         if (lstModel?.Count > 0)
         {
             ProfileItemModel? selected = null;
@@ -521,6 +543,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         if (lstSelected.Count == ProfileItems.Count)
         {
             ProfileItems.Clear();
+            _profileItemsMap.Clear();
         }
         await RefreshServers();
         if (exists)
@@ -717,7 +740,11 @@ public partial class ProfilesViewModel : MyReactiveObject
                 actionType = ESpeedActionType.Realping;
             }
 
-            lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort)));
+            // Was: JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort)))
+            // — this serialized the entire visible server list to JSON and back on every single
+            // "test all" click. _lstProfile is already the real ProfileItem list for the current
+            // view, already ordered by Sort (see RefreshServersBiz), so just copy the reference list.
+            lstSelected = _lstProfile.Count > 0 ? new List<ProfileItem>(_lstProfile) : null;
         }
         else
         {
