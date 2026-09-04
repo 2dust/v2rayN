@@ -1171,6 +1171,12 @@ public static class ConfigHandler
             lstProfile.Reverse();
         }
 
+        // Was: `lstKeep.Exists(i => CompareProfileItem(i, item, false))` inside the loop below —
+        // an O(n) scan (with a ~20-field comparison per candidate) for every single item, i.e.
+        // O(n^2) overall. For subscriptions with hundreds/thousands of servers this is the main
+        // reason "remove duplicate servers" feels very slow. Replaced with a single O(n) pass
+        // using a HashSet keyed on the same fields CompareProfileItem used to compare.
+        var seenKeys = new HashSet<string>(StringComparer.Ordinal);
         foreach (var item in lstProfile)
         {
             if (item.IsComplex())
@@ -1179,7 +1185,8 @@ public static class ConfigHandler
                 continue;
             }
 
-            if (lstKeep.Exists(i => CompareProfileItem(i, item, false)))
+            var key = BuildDedupKey(item);
+            if (!seenKeys.Add(key))
             {
                 lstRemove.Add(item);
             }
@@ -1251,137 +1258,157 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Compare two profile items to determine if they represent the same server
-    /// Used for deduplication and server matching
+    /// Build a composite key that captures every field CompareProfileItem(_, _, remarks: false)
+    /// used to decide whether two profiles represent the same server. Two items produce the
+    /// same key if and only if CompareProfileItem would have returned true for them, so a
+    /// HashSet of these keys reproduces the original dedup semantics in O(1) per item instead
+    /// of an O(n) linear comparison scan.
     /// </summary>
-    /// <param name="o">First profile item</param>
-    /// <param name="n">Second profile item</param>
-    /// <param name="remarks">Whether to compare remarks</param>
-    /// <returns>True if the profiles match, false otherwise</returns>
-    private static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
+    private static string BuildDedupKey(ProfileItem item)
     {
-        if (o == null || n == null)
-        {
-            return false;
-        }
+        var pe = item.GetProtocolExtra();
+        var te = item.GetTransportExtra();
 
-        var oProtocolExtra = o.GetProtocolExtra();
-        var nProtocolExtra = n.GetProtocolExtra();
-        var oTransport = o.GetTransportExtra();
-        var nTransport = n.GetTransportExtra();
+        // Trojan ignores StreamSecurity in the comparison (see CompareProfileItem), so fold
+        // it to a constant for that config type just like the original logic did.
+        var streamSecurity = item.ConfigType == EConfigType.Trojan ? string.Empty : (item.StreamSecurity ?? string.Empty);
 
-        return o.ConfigType == n.ConfigType
-               && AreEqual(o.Address, n.Address)
-               && o.Port == n.Port
-               && AreEqual(o.Password, n.Password)
-               && AreEqual(o.Username, n.Username)
-               && AreEqual(oProtocolExtra.VlessEncryption, nProtocolExtra.VlessEncryption)
-               && AreEqual(oProtocolExtra.SsMethod, nProtocolExtra.SsMethod)
-               && AreEqual(oProtocolExtra.VmessSecurity, nProtocolExtra.VmessSecurity)
-               && AreEqual(o.Network, n.Network)
-               && AreEqual(oTransport.RawHeaderType, nTransport.RawHeaderType)
-               && AreEqual(oTransport.Host, nTransport.Host)
-               && AreEqual(oTransport.Path, nTransport.Path)
-               && AreEqual(oTransport.XhttpMode, nTransport.XhttpMode)
-               && AreEqual(oTransport.XhttpExtra, nTransport.XhttpExtra)
-               && AreEqual(oTransport.GrpcAuthority, nTransport.GrpcAuthority)
-               && AreEqual(oTransport.GrpcServiceName, nTransport.GrpcServiceName)
-               && AreEqual(oTransport.GrpcMode, nTransport.GrpcMode)
-               && AreEqual(oTransport.KcpHeaderType, nTransport.KcpHeaderType)
-               && AreEqual(oTransport.KcpSeed, nTransport.KcpSeed)
-               && (o.ConfigType == EConfigType.Trojan || o.StreamSecurity == n.StreamSecurity)
-               && AreEqual(oProtocolExtra.Flow, nProtocolExtra.Flow)
-               && AreEqual(oProtocolExtra.SalamanderPass, nProtocolExtra.SalamanderPass)
-               && AreEqual(o.Sni, n.Sni)
-               && AreEqual(o.Alpn, n.Alpn)
-               && AreEqual(o.Fingerprint, n.Fingerprint)
-               && AreEqual(o.PublicKey, n.PublicKey)
-               && AreEqual(o.ShortId, n.ShortId)
-               && AreEqual(o.Finalmask, n.Finalmask)
-               && (!remarks || o.Remarks == n.Remarks);
-
-        static bool AreEqual(string? a, string? b)
-        {
-            return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
-        }
+        return string.Join('\u0001',
+            item.ConfigType,
+            item.Address ?? string.Empty,
+            item.Port,
+            item.Password ?? string.Empty,
+            item.Username ?? string.Empty,
+            pe.VlessEncryption ?? string.Empty,
+            pe.SsMethod ?? string.Empty,
+            pe.VmessSecurity ?? string.Empty,
+            item.Network ?? string.Empty,
+            te.RawHeaderType ?? string.Empty,
+            te.Host ?? string.Empty,
+            te.Path ?? string.Empty,
+            te.XhttpMode ?? string.Empty,
+            te.XhttpExtra ?? string.Empty,
+            te.GrpcAuthority ?? string.Empty,
+            te.GrpcServiceName ?? string.Empty,
+            te.GrpcMode ?? string.Empty,
+            te.KcpHeaderType ?? string.Empty,
+            te.KcpSeed ?? string.Empty,
+            streamSecurity,
+            pe.Flow ?? string.Empty,
+            pe.SalamanderPass ?? string.Empty,
+            item.Sni ?? string.Empty,
+            item.Alpn ?? string.Empty,
+            item.Fingerprint ?? string.Empty,
+            item.PublicKey ?? string.Empty,
+            item.ShortId ?? string.Empty,
+            item.Finalmask ?? string.Empty);
     }
 
     /// <summary>
-    /// Searches the specified collection for a profile item that matches the target profile item based on a series of
-    /// criteria.
+    /// Precomputed lookup structure used to match profiles between two lists (e.g. matching
+    /// the previously-active/statistics-bearing server against the freshly re-imported
+    /// subscription list) without repeatedly scanning the whole source list per target item.
+    /// Mirrors the tiered matching strategy that FindMatchedProfileItem used to perform with
+    /// FirstOrDefault, but each tier is an O(1) dictionary lookup instead of an O(n) scan.
     /// </summary>
-    /// <remarks>The method attempts to find a match by comparing the target's remarks, address, port, and
-    /// password in various combinations. The search is performed in order of specificity, starting with the most
-    /// detailed comparison. If no match is found at any stage, the method returns null.</remarks>
-    /// <param name="source">An enumerable collection of profile items to search. This parameter can be null.</param>
-    /// <param name="target">The profile item to match against items in the source collection. This parameter can be null.</param>
-    /// <returns>A profile item from the source collection that matches the target item according to defined criteria; otherwise,
-    /// null if no match is found or if either parameter is null.</returns>
-    private static ProfileItem? FindMatchedProfileItem(IEnumerable<ProfileItem>? source, ProfileItem? target)
+    private sealed class ProfileMatchIndex
     {
-        if (source == null || target == null)
+        public Dictionary<string, ProfileItem> ExactWithRemarks { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, ProfileItem> ByRemarks { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, ProfileItem> ByAddressPortPassword { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, ProfileItem> ByAddressPort { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, ProfileItem> ByAddress { get; } = new(StringComparer.Ordinal);
+    }
+
+    private static string NormalizeMatchText(string? s) => (s ?? string.Empty).TrimEx().ToUpperInvariant();
+
+    private static string BuildAddressPortPasswordKey(string? address, int port, string? password)
+        => $"{NormalizeMatchText(address)}\u0001{port}\u0001{NormalizeMatchText(password)}";
+
+    private static string BuildAddressPortKey(string? address, int port)
+        => $"{NormalizeMatchText(address)}\u0001{port}";
+
+    private static ProfileMatchIndex BuildProfileMatchIndex(IEnumerable<ProfileItem>? source)
+    {
+        var index = new ProfileMatchIndex();
+        if (source == null)
+        {
+            return index;
+        }
+
+        // TryAdd (not indexer assignment) so the first occurrence wins, matching the
+        // FirstOrDefault semantics of the original source-order scan.
+        foreach (var item in source)
+        {
+            index.ExactWithRemarks.TryAdd(BuildDedupKey(item) + "\u0001" + (item.Remarks ?? string.Empty), item);
+
+            if (item.Remarks.IsNotEmpty())
+            {
+                index.ByRemarks.TryAdd(item.Remarks, item);
+            }
+
+            if (item.Address.IsNotEmpty() && item.Port > 0 && item.Password.IsNotEmpty())
+            {
+                index.ByAddressPortPassword.TryAdd(BuildAddressPortPasswordKey(item.Address, item.Port, item.Password), item);
+            }
+
+            if (item.Address.IsNotEmpty() && item.Port > 0)
+            {
+                index.ByAddressPort.TryAdd(BuildAddressPortKey(item.Address, item.Port), item);
+            }
+
+            if (item.Address.IsNotEmpty())
+            {
+                index.ByAddress.TryAdd(NormalizeMatchText(item.Address), item);
+            }
+        }
+
+        return index;
+    }
+
+    /// <summary>
+    /// Searches a prebuilt match index for a profile item that matches the target profile item
+    /// based on the same series of criteria as the original FindMatchedProfileItem, but as O(1)
+    /// dictionary lookups instead of repeated O(n) linear scans over the source collection.
+    /// </summary>
+    /// <param name="index">Index built once via BuildProfileMatchIndex over the candidate source list.</param>
+    /// <param name="target">The profile item to match against items represented in the index.</param>
+    /// <returns>A profile item that matches the target item according to the defined criteria; otherwise null.</returns>
+    private static ProfileItem? FindMatchedProfileItemFast(ProfileMatchIndex index, ProfileItem? target)
+    {
+        if (target == null)
         {
             return null;
         }
 
-        var matchedItem = source.FirstOrDefault(t => CompareProfileItem(t, target, true));
-        if (matchedItem != null)
+        if (index.ExactWithRemarks.TryGetValue(BuildDedupKey(target) + "\u0001" + (target.Remarks ?? string.Empty), out var exact))
         {
-            return matchedItem;
+            return exact;
         }
 
-        if (target.Remarks.IsNotEmpty())
+        if (target.Remarks.IsNotEmpty() && index.ByRemarks.TryGetValue(target.Remarks, out var byRemarks))
         {
-            matchedItem = source.FirstOrDefault(t => t.Remarks == target.Remarks);
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
+            return byRemarks;
         }
 
-        if (target.Address.IsNotEmpty() && target.Port > 0 && target.Password.IsNotEmpty())
+        if (target.Address.IsNotEmpty() && target.Port > 0 && target.Password.IsNotEmpty()
+            && index.ByAddressPortPassword.TryGetValue(BuildAddressPortPasswordKey(target.Address, target.Port, target.Password), out var byApp))
         {
-            matchedItem = source.FirstOrDefault(t =>
-                IsSameText(t.Address, target.Address) &&
-                t.Port == target.Port &&
-                IsSameText(t.Password, target.Password));
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
+            return byApp;
         }
 
-        if (target.Address.IsNotEmpty() && target.Port > 0)
+        if (target.Address.IsNotEmpty() && target.Port > 0
+            && index.ByAddressPort.TryGetValue(BuildAddressPortKey(target.Address, target.Port), out var byAp))
         {
-            matchedItem = source.FirstOrDefault(t =>
-                IsSameText(t.Address, target.Address) &&
-                t.Port == target.Port);
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
+            return byAp;
         }
 
-        if (target.Address.IsNotEmpty())
+        if (target.Address.IsNotEmpty() && index.ByAddress.TryGetValue(NormalizeMatchText(target.Address), out var byAddr))
         {
-            matchedItem = source.FirstOrDefault(t => IsSameText(t.Address, target.Address));
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
+            return byAddr;
         }
 
         return null;
-
-        static bool IsSameText(string? left, string? right)
-        {
-            if (left.IsNullOrEmpty() || right.IsNullOrEmpty())
-            {
-                return false;
-            }
-
-            return string.Equals(left.TrimEx(), right.TrimEx(), StringComparison.OrdinalIgnoreCase);
-        }
     }
 
     /// <summary>
@@ -2109,11 +2136,20 @@ public static class ConfigHandler
             counter = await AddBatchServers4Custom(config, strData, subid, isSub);
         }
 
+        // Was: FindMatchedProfileItem(lstSub, activeProfile) and, worse, FindMatchedProfileItem(lstOriSub, item)
+        // called once per item in lstSub inside a foreach loop below — an O(n*m) linear-scan match
+        // (each scan itself doing several field-by-field comparisons) run every time a subscription
+        // with hundreds/thousands of servers gets refreshed. Building the match index once per list
+        // and doing O(1) lookups turns the whole post-processing step into O(n+m).
+        var lstSubForMatch = (activeProfile != null || lstOriSub != null)
+            ? await AppManager.Instance.ProfileItems(subid)
+            : null;
+
         //Select active node
         if (activeProfile != null)
         {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
-            var existItem = FindMatchedProfileItem(lstSub, activeProfile);
+            var activeIndex = BuildProfileMatchIndex(lstSubForMatch);
+            var existItem = FindMatchedProfileItemFast(activeIndex, activeProfile);
             if (existItem != null)
             {
                 await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
@@ -2123,10 +2159,10 @@ public static class ConfigHandler
         //Keep the last traffic statistics
         if (lstOriSub != null)
         {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
-            foreach (var item in lstSub)
+            var oriIndex = BuildProfileMatchIndex(lstOriSub);
+            foreach (var item in lstSubForMatch ?? [])
             {
-                var existItem = FindMatchedProfileItem(lstOriSub, item);
+                var existItem = FindMatchedProfileItemFast(oriIndex, item);
                 if (existItem != null)
                 {
                     await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
