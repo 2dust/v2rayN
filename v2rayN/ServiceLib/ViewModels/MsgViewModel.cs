@@ -7,6 +7,7 @@ public partial class MsgViewModel : MyReactiveObject
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
     private int _showLock = 0; // 0 = unlocked, 1 = locked
+    private long _lastDispatchFailTicks;
     public int NumMaxMsg { get; } = 500;
 
     [Reactive]
@@ -36,6 +37,8 @@ public partial class MsgViewModel : MyReactiveObject
 
     public void FlushQueueMsg()
     {
+        // View activation means the interaction handler is now registered.
+        _lastDispatchFailTicks = 0;
         _ = AppendQueueMsg(string.Empty);
     }
 
@@ -70,12 +73,22 @@ public partial class MsgViewModel : MyReactiveObject
 
             if (sb.Length > 0)
             {
+                // When the UI handler is not yet registered (window closed to tray, view not
+                // activated), back off instead of throwing UnhandledInteractionException in a
+                // tight 500ms loop. Buffered lines are kept and flushed on activation.
+                if (Environment.TickCount64 - _lastDispatchFailTicks < 30_000)
+                {
+                    _queueMsg.Enqueue(sb.ToString());
+                    return;
+                }
                 try
                 {
                     await DispatcherShowMsgInteraction.Handle(sb.ToString());
+                    _lastDispatchFailTicks = 0;
                 }
                 catch
                 {
+                    _lastDispatchFailTicks = Environment.TickCount64;
                     _queueMsg.Enqueue(sb.ToString());
                 }
             }
