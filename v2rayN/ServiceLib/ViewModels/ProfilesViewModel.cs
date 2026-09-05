@@ -362,7 +362,8 @@ public partial class ProfilesViewModel : MyReactiveObject
     public async Task RefreshServersBiz()
     {
         var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
-        _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
+        // MoveServer only consumes IndexId; avoid a full JSON deep copy of every profile on each refresh.
+        _lstProfile = lstModel?.Select(t => new ProfileItem { IndexId = t.IndexId }).ToList() ?? [];
 
         ProfileItems.ReplaceRange(lstModel ?? []);
         if (lstModel?.Count > 0)
