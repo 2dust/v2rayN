@@ -364,19 +364,14 @@ public partial class MainWindowViewModel : MyReactiveObject
             var indexIdOld = _config.IndexId;
             await RefreshServersDispatcherAsync();
 
-            // If indexId changed or subIndexId is empty, directly reload.
-            if (indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
+            // Reload only when the active node actually changed (index switched, node updated
+            // or removed); otherwise every scheduled subscription update needlessly restarts
+            // the core, killing all connections and failing in-flight delay tests.
+            var curNode = await AppManager.Instance.GetProfileItem(_config.IndexId);
+            var curNodeJson = curNode is null ? null : JsonUtils.Serialize(curNode);
+            if (indexIdOld != _config.IndexId || curNodeJson != _lastLoadedNodeJson)
             {
                 await Reload();
-            }
-            else
-            {
-                // The activity config belongs to the current group.
-                var profile = await AppManager.Instance.GetProfileItem(_config.IndexId);
-                if (profile != null && profile.Subid == _config.SubIndexId)
-                {
-                    await Reload();
-                }
             }
 
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
@@ -650,6 +645,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     private bool _hasNextReloadJob = false;
     private readonly SemaphoreSlim _reloadSemaphore = new(1, 1);
+    private string? _lastLoadedNodeJson;
 
     public async Task Reload()
     {
@@ -688,6 +684,7 @@ public partial class MainWindowViewModel : MyReactiveObject
                 await SysProxyHandler.UpdateSysProxy(_config, false);
                 await Task.Delay(1000);
             });
+            _lastLoadedNodeJson = JsonUtils.Serialize(profileItem);
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 var result = await StatusBarViewModel.TestServerAvailability();
