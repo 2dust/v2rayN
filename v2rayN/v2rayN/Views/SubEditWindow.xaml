@@ -65,6 +65,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -230,12 +231,34 @@
                     Grid.Row="8"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Top"
+                    Text="{x:Static resx:ResUI.LvRequestHeaders}" />
+                <StackPanel Grid.Row="8" Grid.Column="1">
+                    <TextBox
+                        x:Name="txtRequestHeaders"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        MinLines="4"
+                        MaxLines="8"
+                        Style="{StaticResource MyOutlinedTextBox}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                    <TextBlock
+                        Margin="{StaticResource Margin4}"
+                        Text="{x:Static resx:ResUI.SubRequestHeadersTips}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <TextBlock
+                    Grid.Row="9"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Style="{StaticResource ToolbarTextBlock}"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
@@ -245,7 +268,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -253,7 +276,7 @@
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -262,7 +285,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -270,7 +293,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -278,7 +301,7 @@
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -287,7 +310,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
                 <Button
                     x:Name="btnSelectNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -295,7 +318,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -303,14 +326,14 @@
                     Text="{x:Static resx:ResUI.LvCustomCoreType}" />
                 <ComboBox
                     x:Name="cmbCustomCoreType"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     MaxDropDownHeight="1000"
                     Style="{StaticResource MyOutlinedTextComboBox}" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -318,7 +341,7 @@
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
@@ -328,7 +351,7 @@
                     ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -336,7 +359,7 @@
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"

@@ -8,7 +8,8 @@ public class DownloaderHelper
     private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
     public static DownloaderHelper Instance => _instance.Value;
 
-    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout)
+    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout,
+        IReadOnlyDictionary<string, string>? requestHeaders = null, string? acceptHeader = null)
     {
         if (url.IsNullOrEmpty())
         {
@@ -28,6 +29,7 @@ public class DownloaderHelper
         var requestConfiguration = new RequestConfiguration()
         {
             Headers = headers,
+            Accept = acceptHeader,
             UserAgent = userAgent,
             ConnectTimeout = connectTimeout * 1000,
             Proxy = webProxy
@@ -37,7 +39,7 @@ public class DownloaderHelper
             BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
-            CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
+            CustomHttpMessageHandlerFactory = () => HttpRequestHeadersHelper.CreateHandler(GetSocketsHttpHandler(requestConfiguration), requestHeaders),
         };
 
         await using var downloader = new Downloader.DownloadService(downloadOpt);

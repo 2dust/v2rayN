@@ -186,79 +186,101 @@
                     Grid.Row="8"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Top"
+                    Text="{x:Static resx:ResUI.LvRequestHeaders}" />
+                <StackPanel Grid.Row="8" Grid.Column="1">
+                    <TextBox
+                        x:Name="txtRequestHeaders"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        MinLines="4"
+                        MaxLines="8"
+                        Classes="TextArea"
+                        TextWrapping="Wrap"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                    <TextBlock
+                        Margin="{StaticResource Margin4}"
+                        Text="{x:Static resx:ResUI.SubRequestHeadersTips}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <TextBlock
+                    Grid.Row="9"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left" />
 
                 <TextBlock
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvCustomCoreType}" />
                 <ComboBox
                     x:Name="cmbCustomCoreType"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}"
@@ -267,14 +289,14 @@
                     ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"

@@ -1864,4 +1864,13 @@
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>自訂設定核心</value>
   </data>
+  <data name="LvRequestHeaders" xml:space="preserve">
+    <value>HTTP 請求標頭 (JSON)</value>
+  </data>
+  <data name="SubRequestHeadersTips" xml:space="preserve">
+    <value>可選，範例：{"X-hwid": "my_device"}。自訂值會覆寫預設標頭，套用於本組所有訂閱位址（包括訂閱轉換服務）。</value>
+  </data>
+  <data name="SubRequestHeadersInvalid" xml:space="preserve">
+    <value>HTTP 請求標頭無效。請使用 JSON 物件，鍵名不能重複，值必須為字串；標頭名稱和值不能包含換行字元。</value>
+  </data>
 </root>

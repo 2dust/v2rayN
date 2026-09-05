@@ -1879,4 +1879,13 @@
   <data name="TbSettingsMux4Ray" xml:space="preserve">
     <value>Xray Mux 设置</value>
   </data>
+  <data name="LvRequestHeaders" xml:space="preserve">
+    <value>HTTP 请求头 (JSON)</value>
+  </data>
+  <data name="SubRequestHeadersTips" xml:space="preserve">
+    <value>可选，示例：{"X-hwid": "my_device"}。自定义值覆盖默认请求头，应用于本组所有订阅地址（包括订阅转换服务）。</value>
+  </data>
+  <data name="SubRequestHeadersInvalid" xml:space="preserve">
+    <value>HTTP 请求头无效。请使用 JSON 对象，键名不能重复，值必须为字符串；请求头名称和值不能包含换行符。</value>
+  </data>
 </root>
