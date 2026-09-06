@@ -1879,4 +1879,7 @@
   <data name="TbSettingsMux4Ray" xml:space="preserve">
     <value>Xray Mux 设置</value>
   </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>进程</value>
+  </data>
 </root>

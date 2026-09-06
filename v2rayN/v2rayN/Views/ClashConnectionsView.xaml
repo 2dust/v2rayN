@@ -101,6 +101,11 @@
                     Header="{x:Static resx:ResUI.TbSortingType}" />
                 <base:MyDGTextColumn
                     Width="100"
+                    Binding="{Binding ProcessPath}"
+                    ExName="ProcessPath"
+                    Header="{x:Static resx:ResUI.TbSortingProcess}" />
+                <base:MyDGTextColumn
+                    Width="100"
                     Binding="{Binding Elapsed}"
                     ExName="Elapsed"
                     Header="{x:Static resx:ResUI.TbSortingTime}" />

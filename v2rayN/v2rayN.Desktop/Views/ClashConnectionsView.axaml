@@ -95,6 +95,11 @@
                     Tag="Type" />
                 <DataGridTextColumn
                     Width="100"
+                    Binding="{Binding ProcessPath}"
+                    Header="{x:Static resx:ResUI.TbSortingProcess}"
+                    Tag="ProcessPath" />
+                <DataGridTextColumn
+                    Width="100"
                     Binding="{Binding Elapsed}"
                     Header="{x:Static resx:ResUI.TbSortingTime}"
                     Tag="Elapsed" />

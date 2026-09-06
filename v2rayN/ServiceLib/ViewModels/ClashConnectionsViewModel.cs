@@ -91,6 +91,7 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
                 Time = (dtNow - item.start).TotalSeconds < 0 ? 1 : (dtNow - item.start).TotalSeconds,
                 Elapsed = (dtNow - item.start).ToString(@"hh\:mm\:ss"),
                 Chain = $"{item.rule} , {string.Join("->", item.chains ?? [])}",
+                ProcessPath = item.metadata.processPath,
             };
 
             lstModel.Add(model);

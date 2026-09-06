@@ -1887,4 +1887,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSettingsMux4Ray" xml:space="preserve">
     <value>Xray Mux setting</value>
   </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>Process</value>
+  </data>
 </root>

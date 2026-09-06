@@ -4238,15 +4238,6 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsEnableCheckPreReleaseUpdate", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   查找类似 Update via proxy 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsEnableUpdateViaProxy {
-            get {
-                return ResourceManager.GetString("TbSettingsEnableUpdateViaProxy", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   查找类似 Enable sorting Configurations by drag-n-drop (requires restart) 的本地化字符串。
@@ -4281,6 +4272,15 @@ namespace ServiceLib.Resx {
         public static string TbSettingsEnableIPv6Address {
             get {
                 return ResourceManager.GetString("TbSettingsEnableIPv6Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update via proxy 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableUpdateViaProxy {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableUpdateViaProxy", resourceCulture);
             }
         }
         
@@ -4992,6 +4992,15 @@ namespace ServiceLib.Resx {
         public static string TbSortingNetwork {
             get {
                 return ResourceManager.GetString("TbSortingNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Process 的本地化字符串。
+        /// </summary>
+        public static string TbSortingProcess {
+            get {
+                return ResourceManager.GetString("TbSortingProcess", resourceCulture);
             }
         }
         
