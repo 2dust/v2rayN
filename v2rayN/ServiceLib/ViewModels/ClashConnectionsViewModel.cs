@@ -63,8 +63,20 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
         var lstModel = new List<ClashConnectionModel>();
         foreach (var item in connections ?? [])
         {
-            var host =
-                $"{(item.metadata.host.IsNullOrEmpty() ? item.metadata.destinationIP : item.metadata.host)}:{item.metadata.destinationPort}";
+            if (item.metadata == null)
+            {
+                continue;
+            }
+            var dest = item.metadata.host.IsNullOrEmpty() ? item.metadata.destinationIP : item.metadata.host;
+            var hostSb = new StringBuilder();
+            hostSb.Append(dest);
+            hostSb.Append($":{item.metadata.destinationPort}");
+            if (!string.IsNullOrEmpty(item.metadata.sniffHost) &&
+                dest?.Equals(item.metadata.sniffHost, StringComparison.OrdinalIgnoreCase) == false)
+            {
+                hostSb.Append($" ({item.metadata.sniffHost})");
+            }
+            var host = hostSb.ToString();
             if (HostFilter.IsNotEmpty() && !host.Contains(HostFilter))
             {
                 continue;
