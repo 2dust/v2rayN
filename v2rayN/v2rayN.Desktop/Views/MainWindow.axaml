@@ -123,6 +123,7 @@
                     <TabControl
                         x:Name="tabMain"
                         Grid.Column="2"
+                        SelectedIndex="0"
                         HorizontalContentAlignment="Left">
                         <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                         <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
@@ -138,6 +139,7 @@
                     <TabControl
                         x:Name="tabMain1"
                         Grid.Row="2"
+                        SelectedIndex="0"
                         TabStripPlacement="Left">
                         <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                         <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
@@ -145,7 +147,7 @@
                     </TabControl>
                 </Grid>
                 <Grid x:Name="gridMain2" IsVisible="False">
-                    <TabControl x:Name="tabMain2" TabStripPlacement="Left">
+                    <TabControl x:Name="tabMain2" SelectedIndex="0" TabStripPlacement="Left">
                         <TabItem x:Name="tabProfiles2" Header="{x:Static resx:ResUI.menuServers}" />
                         <TabItem x:Name="tabMsgView2" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                         <TabItem x:Name="tabClashProxies2" Header="{x:Static resx:ResUI.TbProxies}" />
