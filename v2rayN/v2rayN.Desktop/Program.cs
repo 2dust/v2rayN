@@ -45,6 +45,12 @@ internal class Program
             }
         }
 
+        // https://github.com/2dust/v2rayN/issues/10112
+        // Linux: deterministic SIGSEGV when the system fontconfig (distro rule sets) is used
+        // to render CJK fallback text. Adopt a safe fontconfig profile before Avalonia starts,
+        // unless the user already exported FONTCONFIG_FILE.
+        LinuxFontconfig.ApplyIfNeeded();
+
         if (!AppManager.Instance.InitApp())
         {
             return false;
