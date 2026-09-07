@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace v2rayN.Desktop.Common;
 
 /// <summary>
@@ -67,7 +65,8 @@ public static class LinuxFontconfig
             Directory.CreateDirectory(targetDir);
             var configFile = Path.Combine(targetDir, ConfigFileName);
 
-            if (!File.Exists(configFile))
+            if (!File.Exists(configFile)
+                || File.ReadAllText(configFile) != ConfigContent)
             {
                 File.WriteAllText(configFile, ConfigContent, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             }
