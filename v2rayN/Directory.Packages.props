@@ -11,7 +11,7 @@
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.1" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.2" />
     <PackageVersion Include="CliWrap" Version="3.10.5" />
     <PackageVersion Include="Downloader" Version="5.9.6" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
