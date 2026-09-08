@@ -1740,19 +1740,35 @@ public static class ConfigHandler
         SubItem? subItem)
     {
         var subRemarks = subItem?.Remarks;
-        // Prioritize using complete custom parsing, followed by custom outbound parsing.
-        var lstProfiles = V2rayFmt.ResolveToCustom(strData, subRemarks);
-        if (lstProfiles.Count == 0)
+        List<ProfileItem> lstProfiles;
+        if (isSub)
         {
-            lstProfiles = SingboxFmt.ResolveToCustom(strData, subRemarks);
-        }
-        if (lstProfiles.Count == 0)
-        {
+            // Safe mode for automatically detected subscription content: import
+            // outbounds only. Selecting a custom core explicitly keeps support for
+            // full custom configurations.
             lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+            if (lstProfiles.Count == 0)
+            {
+                lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            }
         }
-        if (lstProfiles.Count == 0)
+        else
         {
-            lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            // Prioritize complete custom parsing for local imports, followed by
+            // custom outbound parsing.
+            lstProfiles = V2rayFmt.ResolveToCustom(strData, subRemarks);
+            if (lstProfiles.Count == 0)
+            {
+                lstProfiles = SingboxFmt.ResolveToCustom(strData, subRemarks);
+            }
+            if (lstProfiles.Count == 0)
+            {
+                lstProfiles = V2rayFmt.ResolveToCustomOutbound(strData, subRemarks);
+            }
+            if (lstProfiles.Count == 0)
+            {
+                lstProfiles = SingboxFmt.ResolveToCustomOutbound(strData, subRemarks);
+            }
         }
         if (lstProfiles.Count > 0)
         {
