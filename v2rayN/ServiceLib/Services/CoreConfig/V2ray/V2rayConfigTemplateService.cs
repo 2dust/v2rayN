@@ -282,9 +282,8 @@ public partial class CoreConfigV2rayService
             return false;
         }
 
-        var outboundAddress = outbound.settings?.servers?.FirstOrDefault()?.address
-                              ?? outbound.settings?.vnext?.FirstOrDefault()?.address
-                              ?? outbound.settings?.address?.ToString()
+        var outboundAddress = outbound.settings?.address?.ToString()
+                              ?? outbound.settings?.peers?.FirstOrDefault()?.endpoint
                               ?? string.Empty;
 
         if (outboundAddress.Equals("localhost", StringComparison.OrdinalIgnoreCase))

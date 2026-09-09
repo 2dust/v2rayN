@@ -15,7 +15,6 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     #region private prop
 
-    private List<ProfileItem> _lstProfile;
     private string _serverFilter = string.Empty;
     private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private SpeedtestService? _speedtestService;
@@ -362,7 +361,6 @@ public partial class ProfilesViewModel : MyReactiveObject
     public async Task RefreshServersBiz()
     {
         var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
-        _lstProfile = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstModel)) ?? [];
 
         ProfileItems.ReplaceRange(lstModel ?? []);
         if (lstModel?.Count > 0)
@@ -677,19 +675,15 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public async Task MoveServer(EMove eMove)
     {
-        var item = _lstProfile.FirstOrDefault(t => t.IndexId == SelectedProfile.IndexId);
-        if (item is null)
+        var lstProfile = ProfileItems?.Select(t => t.IndexId).ToList() ?? [];
+        var index = lstProfile.IndexOf(SelectedProfile.IndexId);
+        if (index < 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
             return;
         }
 
-        var index = _lstProfile.IndexOf(item);
-        if (index < 0)
-        {
-            return;
-        }
-        if (await ConfigHandler.MoveServer(_config, _lstProfile, index, eMove) == 0)
+        if (await ConfigHandler.MoveServer(_config, lstProfile, index, eMove) == 0)
         {
             await RefreshServers();
         }
@@ -700,7 +694,8 @@ public partial class ProfilesViewModel : MyReactiveObject
         var targetIndex = ProfileItems.IndexOf(targetItem);
         if (startIndex >= 0 && targetIndex >= 0 && startIndex != targetIndex)
         {
-            if (await ConfigHandler.MoveServer(_config, _lstProfile, startIndex, EMove.Position, targetIndex) == 0)
+            var lstProfile = ProfileItems?.Select(t => t.IndexId).ToList() ?? [];
+            if (await ConfigHandler.MoveServer(_config, lstProfile, startIndex, EMove.Position, targetIndex) == 0)
             {
                 await RefreshServers();
             }

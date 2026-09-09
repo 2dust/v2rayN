@@ -75,8 +75,6 @@ public class Inboundsettings4Ray
 
     public string? address { get; set; }
 
-    public List<UsersItem4Ray>? clients { get; set; }
-
     public string? decryption { get; set; }
 
     public bool? allowTransparent { get; set; }
@@ -94,21 +92,6 @@ public class Inboundsettings4Ray
     public string? autoOutboundsInterface { get; set; }
 
     public List<string>? dns { get; set; }
-}
-
-public class UsersItem4Ray
-{
-    public string? id { get; set; }
-
-    public int? alterId { get; set; }
-
-    public string? email { get; set; }
-
-    public string? security { get; set; }
-
-    public string? encryption { get; set; }
-
-    public string? flow { get; set; }
 }
 
 public class Sniffing4Ray
@@ -137,10 +120,6 @@ public class Outbounds4Ray
 
 public class Outboundsettings4Ray
 {
-    public List<VnextItem4Ray>? vnext { get; set; }
-
-    public List<ServersItem4Ray>? servers { get; set; }
-
     public Response4Ray? response { get; set; }
 
     public int? userLevel { get; set; }
@@ -174,29 +153,16 @@ public class Outboundsettings4Ray
     public int? version { get; set; }
 
     public List<string>? remoteDNS { get; set; }
-}
 
-public class WireguardPeer4Ray
-{
-    public string endpoint { get; set; }
-    public string publicKey { get; set; }
-    public string? preSharedKey { get; set; }
-}
+    public string? id { get; set; }
 
-public class VnextItem4Ray
-{
-    public string address { get; set; }
+    public int? alterId { get; set; }
 
-    public int port { get; set; }
+    public string? security { get; set; }
 
-    public List<UsersItem4Ray> users { get; set; }
-}
+    public string? encryption { get; set; }
 
-public class ServersItem4Ray
-{
-    public string email { get; set; }
-
-    public string address { get; set; }
+    public string? flow { get; set; }
 
     public string? method { get; set; }
 
@@ -204,24 +170,14 @@ public class ServersItem4Ray
 
     public string? password { get; set; }
 
-    public int port { get; set; }
-
-    public int? level { get; set; }
-
-    public string flow { get; set; }
-
     public bool? uot { get; set; }
-
-    public List<SocksUsersItem4Ray> users { get; set; }
 }
 
-public class SocksUsersItem4Ray
+public class WireguardPeer4Ray
 {
-    public string user { get; set; }
-
-    public string pass { get; set; }
-
-    public int? level { get; set; }
+    public string endpoint { get; set; }
+    public string publicKey { get; set; }
+    public string? preSharedKey { get; set; }
 }
 
 public class Mux4Ray

@@ -1,36 +1,37 @@
 namespace ServiceLib.Models.Dto;
 
-public class ClashConnections
+public record ClashConnections
 {
-    public ulong downloadTotal { get; set; }
-    public ulong uploadTotal { get; set; }
-    public List<ConnectionItem>? connections { get; set; }
+    public ulong downloadTotal { get; init; }
+    public ulong uploadTotal { get; init; }
+    public List<ConnectionItem>? connections { get; init; }
 }
 
-public class ConnectionItem
+public record ConnectionItem
 {
-    public string? id { get; set; }
-    public MetadataItem? metadata { get; set; }
-    public ulong upload { get; set; }
-    public ulong download { get; set; }
-    public DateTime start { get; set; }
-    public List<string>? chains { get; set; }
-    public string? rule { get; set; }
-    public string? rulePayload { get; set; }
+    public string? id { get; init; }
+    public MetadataItem? metadata { get; init; }
+    public ulong upload { get; init; }
+    public ulong download { get; init; }
+    public DateTime start { get; init; }
+    public List<string>? chains { get; init; }
+    public string? rule { get; init; }
+    public string? rulePayload { get; init; }
 }
 
-public class MetadataItem
+public record MetadataItem
 {
-    public string? network { get; set; }
-    public string? type { get; set; }
-    public string? sourceIP { get; set; }
-    public string? destinationIP { get; set; }
-    public string? sourcePort { get; set; }
-    public string? destinationPort { get; set; }
-    public string? host { get; set; }
-    public string? nsMode { get; set; }
-    public object? uid { get; set; }
-    public string? process { get; set; }
-    public string? processPath { get; set; }
-    public string? remoteDestination { get; set; }
+    public string? network { get; init; }
+    public string? type { get; init; }
+    public string? sourceIP { get; init; }
+    public string? destinationIP { get; init; }
+    public string? sourcePort { get; init; }
+    public string? destinationPort { get; init; }
+    public string? host { get; init; }
+    public string? nsMode { get; init; }
+    public object? uid { get; init; }
+    public string? process { get; init; }
+    public string? processPath { get; init; }
+    public string? remoteDestination { get; init; }
+    public string? sniffHost { get; init; }
 }

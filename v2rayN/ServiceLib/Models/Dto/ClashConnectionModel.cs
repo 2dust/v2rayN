@@ -13,4 +13,5 @@ public class ClashConnectionModel
     public double Time { get; set; }
     public string? Elapsed { get; set; }
     public string? Chain { get; set; }
+    public string? ProcessPath { get; set; }
 }
