@@ -2,6 +2,7 @@
     x:Class="v2rayN.Desktop.Views.ProfilesSelectWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,6 +15,10 @@
     Design.DataContext="{x:Static dd:DesignData.ProfilesSelect}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <conv:DelayColorConverter x:Key="DelayColorConverter" />
+    </Window.Resources>
 
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
@@ -121,6 +126,26 @@
                             Binding="{Binding SubRemarks}"
                             Header="{x:Static resx:ResUI.LvSubscription}"
                             Tag="SubRemarks" />
+                        <DataGridTemplateColumn SortMemberPath="Delay" Tag="Delay">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Margin="{StaticResource MarginLr8}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
+                                        Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}"
+                            Tag="Speed" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

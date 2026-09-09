@@ -176,7 +176,10 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
     private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
     {
         var lstModel = await AppManager.Instance.ProfileModels(_subIndexId, filter);
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         lstModel = (from t in lstModel
+                    join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
+                    from t33 in t3b.DefaultIfEmpty()
                     select new ProfileItemModel
                     {
                         IndexId = t.IndexId,
@@ -190,6 +193,12 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
                         Subid = t.Subid,
                         SubRemarks = t.SubRemarks,
                         IsActive = t.IndexId == _config.IndexId,
+                        Sort = t33?.Sort ?? 0,
+                        Delay = t33?.Delay ?? 0,
+                        Speed = t33?.Speed ?? 0,
+                        DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
+                        SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
+                        IpInfo = t33?.IpInfo ?? string.Empty,
                     }).OrderBy(t => t.Sort).ToList();
 
         // Apply ConfigType filter (include or exclude)
