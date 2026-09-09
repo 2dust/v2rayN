@@ -1895,6 +1895,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="SubRequestHeadersInvalid" xml:space="preserve">
     <value>Invalid HTTP headers. Use a JSON object with unique header names and string values. Header names and values must not contain line breaks.</value>
+  </data>
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Process</value>
   </data>

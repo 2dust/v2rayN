@@ -1873,4 +1873,7 @@
   <data name="SubRequestHeadersInvalid" xml:space="preserve">
     <value>HTTP 請求標頭無效。請使用 JSON 物件，鍵名不能重複，值必須為字串；標頭名稱和值不能包含換行字元。</value>
   </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>进程</value>
+  </data>
 </root>

@@ -1887,6 +1887,7 @@
   </data>
   <data name="SubRequestHeadersInvalid" xml:space="preserve">
     <value>HTTP 请求头无效。请使用 JSON 对象，键名不能重复，值必须为字符串；请求头名称和值不能包含换行符。</value>
+  </data>
   <data name="TbSortingProcess" xml:space="preserve">
     <value>进程</value>
   </data>
