@@ -81,6 +81,8 @@
                 Grid.Column="1"
                 Width="120"
                 Margin="{StaticResource Margin8}"
+                DisplayMemberPath="Display"
+                SelectedValuePath="Value"
                 Style="{StaticResource DefComboBox}" />
         </Grid>
     </StackPanel>

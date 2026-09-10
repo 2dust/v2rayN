@@ -489,17 +489,22 @@ public class Global
         "localhost"
     ];
 
+    public static readonly List<LanguageOption> LanguageOptions =
+    [
+        new("zh-Hans", "简体中文"),
+        new("zh-Hant", "繁體中文"),
+        new("en", "English"),
+        new("fa", "فارسی"),
+        new("fr", "Français"),
+        new("ru", "Русский"),
+        new("hu", "Magyar"),
+        new("id", "Bahasa Indonesia"),
+        new("az", "Azərbaycan dili")
+    ];
+
     public static readonly List<string> Languages =
     [
-        "zh-Hans",
-        "zh-Hant",
-        "en",
-        "fa",
-        "fr",
-        "ru",
-        "hu",
-        "id",
-        "az"
+        .. LanguageOptions.Select(t => t.Value)
     ];
 
     public static readonly List<string> Alpns =
