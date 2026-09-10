@@ -1020,6 +1020,15 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路復用協定</value>
   </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux 並行數</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP 並行數</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proxy UDP443</value>
+  </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>行程 (Linux/Windows)</value>
   </data>
@@ -1864,6 +1873,21 @@
   <data name="LvCustomCoreType" xml:space="preserve">
     <value>自訂設定核心</value>
   </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>僅 Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>封鎖 AAAA 查詢</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>啟用後將封鎖 IPv6 查詢</value>
+  </data>
+  <data name="TbDNS" xml:space="preserve">
+    <value>DNS</value>
+  </data>
+  <data name="TbSettingsMux4Ray" xml:space="preserve">
+    <value>Xray Mux 設定</value>
+  </data>
   <data name="LvRequestHeaders" xml:space="preserve">
     <value>HTTP 請求標頭 (JSON)</value>
   </data>
@@ -1874,6 +1898,6 @@
     <value>HTTP 請求標頭無效。請使用 JSON 物件，鍵名不能重複，值必須為字串；標頭名稱和值不能包含換行字元。</value>
   </data>
   <data name="TbSortingProcess" xml:space="preserve">
-    <value>进程</value>
+    <value>行程</value>
   </data>
 </root>
