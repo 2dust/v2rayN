@@ -7,7 +7,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private static readonly string _tag = "SpeedtestService";
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
-    private static readonly ConcurrentBag<string> _lstExitLoop = [];
+    private readonly CancellationTokenSource _stopCts = new();
     private readonly int _speedTestPageSize = config.SpeedTestItem.SpeedTestPageSize ?? Global.SpeedTestPageSize;
     private readonly TimeSpan _delayInterval = TimeSpan.FromSeconds(config.SpeedTestItem.SpeedTestDelayInterval ?? 1);
 
@@ -23,47 +23,48 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     public void ExitLoop()
     {
-        if (!_lstExitLoop.IsEmpty)
-        {
-            _ = UpdateFunc("", ResUI.SpeedtestingStop);
-
-            _lstExitLoop.Clear();
-        }
-    }
-
-    private static bool ShouldStopTest(string exitLoopKey)
-    {
-        return _lstExitLoop.All(p => p != exitLoopKey);
+        _ = UpdateFunc("", ResUI.SpeedtestingStop);
+        _stopCts.Cancel();
     }
 
     private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds)
     {
-        var exitLoopKey = Utils.GetGuid(false);
-        _lstExitLoop.Add(exitLoopKey);
-
         var lstSelected = await GetClearItem(actionType, selecteds);
 
-        switch (actionType)
+        try
         {
-            case ESpeedActionType.Tcping:
-                await RunTcpingAsync(lstSelected, exitLoopKey);
-                break;
+            switch (actionType)
+            {
+                case ESpeedActionType.Tcping:
+                    await RunTcpingAsync(lstSelected, _stopCts.Token);
+                    break;
 
-            case ESpeedActionType.Realping:
-                await RunRealPingBatchAsync(lstSelected, exitLoopKey);
-                break;
+                case ESpeedActionType.Realping:
+                    await RunRealPingBatchAsync(lstSelected, 0, _stopCts.Token);
+                    break;
 
-            case ESpeedActionType.UdpTest:
-                await RunUdpTestBatchAsync(lstSelected, exitLoopKey);
-                break;
+                case ESpeedActionType.UdpTest:
+                    await RunUdpTestBatchAsync(lstSelected, 0, _stopCts.Token);
+                    break;
 
-            case ESpeedActionType.Speedtest:
-                await RunMixedTestAsync(lstSelected, 1, true, exitLoopKey);
-                break;
+                case ESpeedActionType.Speedtest:
+                    await RunMixedTestAsync(lstSelected, 1, true, _stopCts.Token);
+                    break;
 
-            case ESpeedActionType.Mixedtest:
-                await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true, exitLoopKey);
-                break;
+                case ESpeedActionType.Mixedtest:
+                    await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, true,
+                        _stopCts.Token);
+                    break;
+            }
+        }
+        catch (OperationCanceledException) when (_stopCts.IsCancellationRequested)
+        {
+            _ = UpdateFunc("", ResUI.SpeedtestingStop);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            _ = UpdateFunc("", ex.Message);
         }
     }
 
@@ -135,56 +136,40 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return lstSelected;
     }
 
-    private async Task RunTcpingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    private async Task RunTcpingAsync(List<ServerTestItem> selecteds, CancellationToken ct = default)
     {
         var pageSize = Math.Min(selecteds.Count, _speedTestPageSize);
         var lstBatch = GetTestBatchItem(selecteds, pageSize);
 
         foreach (var lst in lstBatch)
         {
-            if (ShouldStopTest(exitLoopKey))
-            {
-                await UpdateFunc("", ResUI.SpeedtestingSkip);
-                return;
-            }
+            ct.ThrowIfCancellationRequested();
 
-            List<Task> tasks = [];
-
-            foreach (var it in lst)
+            var parallelOptions = new ParallelOptions
             {
-                if (ShouldStopTest(exitLoopKey))
+                CancellationToken = ct
+            };
+
+            await Parallel.ForEachAsync(lst, parallelOptions, async (item, innerCt) =>
+            {
+                try
                 {
-                    return;
+                    var responseTime = await GetTcpingTime(item.Address, item.Port, innerCt);
+
+                    ProfileExManager.Instance.SetTestDelay(item.IndexId, responseTime);
+                    await UpdateFunc(item.IndexId, responseTime.ToString());
                 }
-
-                tasks.Add(Task.Run(async () =>
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        var responseTime = await GetTcpingTime(it.Address, it.Port);
+                    Logging.SaveLog(_tag, ex);
+                }
+            });
 
-                        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-                        await UpdateFunc(it.IndexId, responseTime.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.SaveLog(_tag, ex);
-                    }
-                }));
-            }
-
-            await Task.WhenAll(tasks);
-
-            if (ShouldStopTest(exitLoopKey))
-            {
-                return;
-            }
-
-            await Task.Delay(_delayInterval);
+            await Task.Delay(_delayInterval, ct);
         }
     }
 
-    private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
+    private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected, int pageSize = 0, CancellationToken ct = default)
     {
         if (pageSize <= 0)
         {
@@ -195,38 +180,34 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunRealPingAsync(lst, exitLoopKey);
+            var ret = await RunRealPingAsync(lst, ct);
             if (ret == false)
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(_delayInterval);
+            await Task.Delay(_delayInterval, ct);
         }
 
         //Retest the failed part
         var pageSizeNext = pageSize / 2;
         if (lstFailed.Count > 0 && pageSizeNext > 0)
         {
-            if (ShouldStopTest(exitLoopKey))
-            {
-                await UpdateFunc("", ResUI.SpeedtestingSkip);
-                return;
-            }
+            ct.ThrowIfCancellationRequested();
 
             await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
 
             if (pageSizeNext > _config.SpeedTestItem.MixedConcurrencyCount)
             {
-                await RunRealPingBatchAsync(lstFailed, exitLoopKey, pageSizeNext);
+                await RunRealPingBatchAsync(lstFailed, pageSizeNext, ct);
             }
             else
             {
-                await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, false, exitLoopKey);
+                await RunMixedTestAsync(lstSelected, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
             }
         }
     }
 
-    private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, CancellationToken ct = default)
     {
         ProcessService processService = null;
         try
@@ -236,28 +217,25 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 return false;
             }
-            await Task.Delay(1000);
+            await Task.Delay(1000, ct);
 
-            List<Task> tasks = [];
-            foreach (var it in selecteds)
+            var parallelOptions = new ParallelOptions
+            {
+                CancellationToken = ct
+            };
+
+            await Parallel.ForEachAsync(selecteds, parallelOptions, async (it, innerCt) =>
             {
                 if (!it.AllowTest)
                 {
                     await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
-                    continue;
+                    return;
                 }
 
-                if (ShouldStopTest(exitLoopKey))
-                {
-                    return false;
-                }
+                innerCt.ThrowIfCancellationRequested();
 
-                tasks.Add(Task.Run(async () =>
-                {
-                    await DoRealPing(it);
-                }));
-            }
-            await Task.WhenAll(tasks);
+                await DoRealPing(it);
+            });
         }
         catch (Exception ex)
         {
@@ -273,7 +251,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
-    private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
+    private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, int pageSize = 0, CancellationToken ct = default)
     {
         if (pageSize <= 0)
         {
@@ -284,30 +262,26 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunUdpTestAsync(lst, exitLoopKey);
+            var ret = await RunUdpTestAsync(lst, ct);
             if (ret == false)
             {
                 lstFailed.AddRange(lst);
             }
-            await Task.Delay(_delayInterval);
+            await Task.Delay(_delayInterval, ct);
         }
 
         //Retest the failed part
         if (lstFailed.Count > 0)
         {
-            if (ShouldStopTest(exitLoopKey))
-            {
-                await UpdateFunc("", ResUI.SpeedtestingSkip);
-                return;
-            }
+            ct.ThrowIfCancellationRequested();
 
             await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, lstFailed.Count));
 
-            await RunUdpTestAsync(lstFailed, exitLoopKey);
+            await RunUdpTestAsync(lstFailed, ct);
         }
     }
 
-    private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, CancellationToken ct = default)
     {
         ProcessService processService = null;
         try
@@ -317,27 +291,25 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 return false;
             }
-            await Task.Delay(1000);
+            await Task.Delay(1000, ct);
 
-            List<Task> tasks = [];
-            foreach (var it in selecteds)
+            var parallelOptions = new ParallelOptions
+            {
+                CancellationToken = ct
+            };
+
+            await Parallel.ForEachAsync(selecteds, parallelOptions, async (it, innerCt) =>
             {
                 if (!it.AllowTest)
                 {
-                    continue;
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                    return;
                 }
 
-                if (ShouldStopTest(exitLoopKey))
-                {
-                    return false;
-                }
+                innerCt.ThrowIfCancellationRequested();
 
-                tasks.Add(Task.Run(async () =>
-                {
-                    await DoUdpTest(it);
-                }));
-            }
-            await Task.WhenAll(tasks);
+                await DoUdpTest(it);
+            });
         }
         catch (Exception ex)
         {
@@ -353,7 +325,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
-    private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
+    private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, CancellationToken ct = default)
     {
         var downloadHandle = new DownloadService();
 
@@ -364,11 +336,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
         await Parallel.ForEachAsync(selecteds, parallelOptions, async (it, ct) =>
         {
-            if (ShouldStopTest(exitLoopKey))
-            {
-                await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                return;
-            }
+            ct.ThrowIfCancellationRequested();
 
             ProcessService processService = null;
             try
@@ -381,15 +349,12 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 }
 
                 await Task.Delay(1000, ct);
+                ct.ThrowIfCancellationRequested();
 
                 var delay = await DoRealPing(it);
                 if (blSpeedTest)
                 {
-                    if (ShouldStopTest(exitLoopKey))
-                    {
-                        await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                        return;
-                    }
+                    ct.ThrowIfCancellationRequested();
 
                     if (delay > 0)
                     {
@@ -478,13 +443,18 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return responseTime;
     }
 
-    private async Task<int> GetTcpingTime(string url, int port)
+    private async Task<int> GetTcpingTime(string? url, int port, CancellationToken ct = default)
     {
         var responseTime = -1;
 
+        if (url.IsNullOrEmpty() || port <= 0)
+        {
+            return responseTime;
+        }
+
         if (!IPAddress.TryParse(url, out var ipAddress))
         {
-            var ipHostInfo = await Dns.GetHostEntryAsync(url);
+            var ipHostInfo = await Dns.GetHostEntryAsync(url, ct);
             ipAddress = ipHostInfo.AddressList.First();
         }
 
@@ -494,12 +464,14 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var timer = Stopwatch.StartNew();
         try
         {
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            await clientSocket.ConnectAsync(endPoint, cts.Token).ConfigureAwait(false);
+            using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
+            await clientSocket.ConnectAsync(endPoint, linkedCts.Token).ConfigureAwait(false);
             responseTime = (int)timer.ElapsedMilliseconds;
         }
         catch (OperationCanceledException)
         {
+            // Ignored
         }
         finally
         {
