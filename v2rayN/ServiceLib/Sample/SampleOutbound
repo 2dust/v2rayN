@@ -3,13 +3,7 @@
 	"protocol": "vmess",
 	"settings": {
 		"address": "v2ray.cool",
-		"port": 10086,
-		"id": "a3482e88-686a-4a58-8126-99c9df64b7bf",
-		"security": "auto",
-		"method": "chacha20",
-		"ota": false,
-		"password": "123456",
-		"level": 1
+		"port": 10086
 	},
 	"streamSettings": {
 		"network": "tcp"
