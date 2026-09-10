@@ -355,66 +355,68 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
     {
-        using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
         var downloadHandle = new DownloadService();
-        List<Task> tasks = [];
-        foreach (var it in selecteds)
+
+        var parallelOptions = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = concurrencyCount,
+        };
+
+        await Parallel.ForEachAsync(selecteds, parallelOptions, async (it, ct) =>
         {
             if (ShouldStopTest(exitLoopKey))
             {
                 await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                continue;
+                return;
             }
-            await concurrencySemaphore.WaitAsync();
 
-            tasks.Add(Task.Run(async () =>
+            ProcessService processService = null;
+            try
             {
-                ProcessService processService = null;
-                try
+                processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                if (processService is null)
                 {
-                    processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
-                    if (processService is null)
+                    await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                    return;
+                }
+
+                await Task.Delay(1000, ct);
+
+                var delay = await DoRealPing(it);
+                if (blSpeedTest)
+                {
+                    if (ShouldStopTest(exitLoopKey))
                     {
-                        await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                        await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                         return;
                     }
 
-                    await Task.Delay(1000);
-
-                    var delay = await DoRealPing(it);
-                    if (blSpeedTest)
+                    if (delay > 0)
                     {
-                        if (ShouldStopTest(exitLoopKey))
-                        {
-                            await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                            return;
-                        }
-
-                        if (delay > 0)
-                        {
-                            await DoSpeedTest(downloadHandle, it);
-                        }
-                        else
-                        {
-                            await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
-                        }
+                        await DoSpeedTest(downloadHandle, it);
+                    }
+                    else
+                    {
+                        await UpdateFunc(it.IndexId, "", ResUI.SpeedtestingSkip);
                     }
                 }
-                catch (Exception ex)
+            }
+            catch (OperationCanceledException)
+            {
+                // Ignored
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+            }
+            finally
+            {
+                if (processService != null)
                 {
-                    Logging.SaveLog(_tag, ex);
+                    await processService.StopAsync();
                 }
-                finally
-                {
-                    if (processService != null)
-                    {
-                        await processService?.StopAsync();
-                    }
-                    concurrencySemaphore.Release();
-                }
-            }));
-        }
-        await Task.WhenAll(tasks);
+            }
+        });
     }
 
     private async Task<int> DoRealPing(ServerTestItem it)
