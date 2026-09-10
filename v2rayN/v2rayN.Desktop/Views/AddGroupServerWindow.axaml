@@ -23,6 +23,11 @@
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
+                x:Name="btnRefresh"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                IsDefault="False" />
+            <Button
                 x:Name="btnSave"
                 Width="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
@@ -136,6 +141,29 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         IsEditable="True" />
+
+                    <StackPanel
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Margin="{StaticResource Margin4}"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.LvFilterMaxDelay}" />
+                        <TextBox
+                            x:Name="txtFilterMaxDelay"
+                            Width="100"
+                            Margin="{StaticResource MarginLr8}" />
+                        <TextBlock
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.LvFilterMinSpeed}" />
+                        <TextBox
+                            x:Name="txtFilterMinSpeed"
+                            Width="100"
+                            Margin="{StaticResource MarginLr8}" />
+                    </StackPanel>
                 </Grid>
             </TabItem>
 
@@ -147,7 +175,7 @@
                     BorderThickness="1"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
+                    CanUserSortColumns="True"
                     GridLinesVisibility="All"
                     HeadersVisibility="Column"
                     IsReadOnly="True"
@@ -208,6 +236,16 @@
                             Width="100"
                             Binding="{Binding StreamSecurity}"
                             Header="{x:Static resx:ResUI.LvTLS}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding DelayVal}"
+                            Header="{x:Static resx:ResUI.LvTestDelay}"
+                            SortMemberPath="Delay" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}"
+                            SortMemberPath="Speed" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -219,13 +257,17 @@
                     BorderThickness="1"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
+                    CanUserSortColumns="True"
                     GridLinesVisibility="All"
                     HeadersVisibility="Column"
                     IsReadOnly="True"
                     ItemsSource="{Binding AllProfilePreviewItemsObs}"
                     SelectionMode="Extended">
                     <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SourceTag}"
+                            Header="{x:Static resx:ResUI.LvSource}" />
                         <DataGridTextColumn
                             Width="150"
                             Binding="{Binding ConfigType}"
@@ -250,6 +292,16 @@
                             Width="100"
                             Binding="{Binding StreamSecurity}"
                             Header="{x:Static resx:ResUI.LvTLS}" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding DelayVal}"
+                            Header="{x:Static resx:ResUI.LvTestDelay}"
+                            SortMemberPath="Delay" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}"
+                            SortMemberPath="Speed" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

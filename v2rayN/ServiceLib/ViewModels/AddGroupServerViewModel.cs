@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using ServiceLib.Manager;
+using ServiceLib.Models.Dto;
+using ServiceLib.Models.Entities;
+
 namespace ServiceLib.ViewModels;
 
 public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
@@ -8,10 +13,10 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
     public partial ProfileItem SelectedSource { get; set; }
 
     [Reactive]
-    public partial ProfileItem SelectedChild { get; set; }
+    public partial ProfileItemModel SelectedChild { get; set; }
 
     [Reactive]
-    public partial IList<ProfileItem> SelectedChildren { get; set; }
+    public partial IList<ProfileItemModel> SelectedChildren { get; set; }
 
     [Reactive]
     public partial string? CoreType { get; set; }
@@ -25,11 +30,23 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial string? Filter { get; set; }
 
+    [Reactive]
+    public partial string? FilterMaxDelayText { get; set; }
+
+    [Reactive]
+    public partial string? FilterMinSpeedText { get; set; }
+
+    [Reactive]
+    public partial int SelectedTabIndex { get; set; }
+
+    [Reactive]
+    public partial string? ActionButtonText { get; set; }
+
     public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
-    public BulkObservableCollection<ProfileItem> ChildItemsObs { get; } = [];
+    public BulkObservableCollection<ProfileItemModel> ChildItemsObs { get; } = [];
 
-    public BulkObservableCollection<ProfileItem> AllProfilePreviewItemsObs { get; } = [];
+    public BulkObservableCollection<ProfileItemModel> AllProfilePreviewItemsObs { get; } = [];
 
     public ReactiveCommand<RxVoid, RxVoid> AddCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> RemoveCmd { get; }
@@ -40,6 +57,8 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
     public ReactiveCommand<RxVoid, RxVoid> MoveBottomCmd { get; }
 
     public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
+
+    public ReactiveCommand<RxVoid, RxVoid> ActionCmd { get; }
 
     public AddGroupServerViewModel(ProfileItem profileItem)
     {
@@ -77,6 +96,17 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
         {
             await SaveServerAsync();
         });
+        ActionCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await OnActionAsync();
+        });
+
+        this.WhenAnyValue(x => x.SelectedTabIndex)
+            .Subscribe(idx =>
+            {
+                ActionButtonText = idx == 0 ? ResUI.LvAdd : ResUI.LvRefresh;
+            });
+        ActionButtonText = SelectedTabIndex == 0 ? ResUI.LvAdd : ResUI.LvRefresh;
 
         SelectedSource = profileItem.IndexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
         CoreType = (SelectedSource?.CoreType ?? ECoreType.Xray).ToString();
@@ -98,14 +128,22 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
         };
 
         var subs = await AppManager.Instance.SubItems();
+        subs.Insert(0, new SubItem { Id = Global.SubItemAllId, Remarks = ResUI.AllGroupServers });
         subs.Add(new SubItem());
         SubItems.AddRange(subs);
-        SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == protocolExtra?.SubChildItems);
+        SelectedSubItem = (protocolExtra?.SubChildItems.IsNotEmpty() == true
+                            ? SubItems.FirstOrDefault(s => s.Id == protocolExtra.SubChildItems)
+                            : null) ?? SubItems.FirstOrDefault();
         Filter = protocolExtra?.Filter;
 
         var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
         var childItemList = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childIndexIds);
-        ChildItemsObs.AddRange(childItemList);
+        ChildItemsObs.AddRange(await ToProfileItemModels(childItemList));
+
+        FilterMaxDelayText = protocolExtra?.FilterMaxDelay > 0 ? protocolExtra.FilterMaxDelay.ToString() : null;
+        FilterMinSpeedText = protocolExtra?.FilterMinSpeed > 0 ? protocolExtra.FilterMinSpeed.ToString() : null;
+
+        await UpdatePreviewList();
     }
 
     public async Task AddChildAsync()
@@ -119,7 +157,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             return;
         }
         var profiles = await profileSelectViewModel.GetProfileItems() ?? [];
-        ChildItemsObs.AddRange(profiles);
+        ChildItemsObs.AddRange(await ToProfileItemModels(profiles));
     }
 
     public async Task ChildRemoveAsync()
@@ -151,7 +189,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
         {
             return;
         }
-        var selectedChild = JsonUtils.DeepCopy(SelectedChild);
+        var selectedChild = SelectedChild;
         switch (eMove)
         {
             case EMove.Top:
@@ -204,21 +242,106 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList()),
             MultipleLoad = PolicyGroupType switch
             {
-                var s when s == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
-                var s when s == ResUI.TbFallback => EMultipleLoad.Fallback,
-                var s when s == ResUI.TbRandom => EMultipleLoad.Random,
-                var s when s == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
-                var s when s == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
+                var t when t == ResUI.TbLeastPing => EMultipleLoad.LeastPing,
+                var t when t == ResUI.TbFallback => EMultipleLoad.Fallback,
+                var t when t == ResUI.TbRandom => EMultipleLoad.Random,
+                var t when t == ResUI.TbRoundRobin => EMultipleLoad.RoundRobin,
+                var t when t == ResUI.TbLeastLoad => EMultipleLoad.LeastLoad,
                 _ => EMultipleLoad.LeastPing,
             },
             SubChildItems = SelectedSubItem?.Id,
             Filter = Filter,
+            FilterMaxDelay = int.TryParse(FilterMaxDelayText, out var delay) ? delay : 0,
+            FilterMinSpeed = decimal.TryParse(FilterMinSpeedText, out var speed) ? speed : 0,
         };
     }
 
     public async Task UpdatePreviewList()
     {
-        AllProfilePreviewItemsObs.ReplaceRange(await GroupProfileManager.GetChildProfileItemsByProtocolExtra(GetUpdatedProtocolExtra()));
+        var extra = GetUpdatedProtocolExtra();
+        var filterItems = await GroupProfileManager.GetSubChildProfileItems(extra);
+        var selectedItems = await GroupProfileManager.GetSelectedChildProfileItems(extra);
+
+        var filterModels = await ToProfileItemModels(filterItems);
+        filterModels.ForEach(m => m.SourceTag = ResUI.LvSourceFilter);
+        var selectedModels = await ToProfileItemModels(selectedItems);
+        selectedModels.ForEach(m => m.SourceTag = ResUI.LvSourceManual);
+
+        AllProfilePreviewItemsObs.ReplaceRange(filterModels.Concat(selectedModels).ToList());
+    }
+
+    private async Task OnActionAsync()
+    {
+        if (SelectedTabIndex == 0)
+        {
+            await UpdatePreviewList();
+            SelectedTabIndex = 2;
+            if (AllProfilePreviewItemsObs.Count == 0)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.LvPreviewEmptyHint);
+            }
+        }
+        else
+        {
+            await RefreshStatsAsync();
+        }
+    }
+
+    private async Task<List<ProfileItemModel>> ToProfileItemModels(List<ProfileItem> items)
+    {
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
+        return (from t in items
+                join t3 in lstProfileExs on t.IndexId equals t3.IndexId into t3b
+                from t33 in t3b.DefaultIfEmpty()
+                select new ProfileItemModel
+                {
+                    IndexId = t.IndexId,
+                    ConfigType = t.ConfigType,
+                    Remarks = t.Remarks,
+                    Address = t.Address,
+                    Port = t.Port,
+                    Network = t.Network,
+                    StreamSecurity = t.StreamSecurity,
+                    Subid = t.Subid,
+                    Delay = t33?.Delay ?? 0,
+                    Speed = t33?.Speed ?? 0,
+                    DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
+                    SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
+                }).ToList();
+    }
+
+    public async Task RefreshStatsAsync()
+    {
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
+        var exMap = lstProfileExs?
+            .Where(x => x != null)
+            .GroupBy(x => x.IndexId)
+            .ToDictionary(g => g.Key, g => g.First())
+            ?? new Dictionary<string, ProfileExItem>();
+
+        RefreshStats(ChildItemsObs, exMap);
+        RefreshStats(AllProfilePreviewItemsObs, exMap);
+    }
+
+    private static void RefreshStats(BulkObservableCollection<ProfileItemModel> items, Dictionary<string, ProfileExItem> exMap)
+    {
+        foreach (var m in items)
+        {
+            if (exMap.TryGetValue(m.IndexId, out var ex))
+            {
+                m.Delay = ex.Delay;
+                m.Speed = ex.Speed;
+                m.DelayVal = ex.Delay != 0 ? $"{ex.Delay}" : string.Empty;
+                m.SpeedVal = ex.Speed > 0 ? $"{ex.Speed}" : ex.Message ?? string.Empty;
+            }
+            else
+            {
+                m.Delay = 0;
+                m.Speed = 0;
+                m.DelayVal = string.Empty;
+                m.SpeedVal = string.Empty;
+            }
+        }
     }
 
     private async Task SaveServerAsync()

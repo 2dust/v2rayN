@@ -51,6 +51,8 @@ public record ProtocolExtraItem
     public string? ChildItems { get; init; }
     public string? SubChildItems { get; init; }
     public string? Filter { get; init; }
+    public int FilterMaxDelay { get; init; }
+    public decimal FilterMinSpeed { get; init; }
     public EMultipleLoad? MultipleLoad { get; init; }
 
     // custom outbound

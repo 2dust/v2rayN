@@ -1,3 +1,5 @@
+using ServiceLib.Models.Dto;
+
 namespace v2rayN.Views;
 
 public partial class AddGroupServerWindow
@@ -36,6 +38,8 @@ public partial class AddGroupServerWindow
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FilterMaxDelayText, v => v.txtFilterMaxDelay.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FilterMinSpeedText, v => v.txtFilterMinSpeed.Text).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
@@ -50,6 +54,9 @@ public partial class AddGroupServerWindow
             this.BindCommand(ViewModel, vm => vm.MoveBottomCmd, v => v.menuMoveBottom).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedTabIndex, v => v.tabControl.SelectedIndex).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.ActionButtonText, v => v.btnRefresh.Content).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ActionCmd, v => v.btnRefresh).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
@@ -124,7 +131,7 @@ public partial class AddGroupServerWindow
     {
         if (ViewModel != null)
         {
-            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
+            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItemModel>().ToList();
         }
     }
 

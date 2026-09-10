@@ -1899,4 +1899,28 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Process</value>
   </data>
+  <data name="LvRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="LvSource" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="LvSourceFilter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="LvSourceManual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="LvPreviewEmptyHint" xml:space="preserve">
+    <value>No node matched the filter. Check that a subscription group is selected, the filter is not empty, and the delay/speed thresholds are not too strict (nodes without a delay/speed result are excluded).</value>
+  </data>
+  <data name="LvAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="LvFilterMaxDelay" xml:space="preserve">
+    <value>Delay ≤ (ms)</value>
+  </data>
+  <data name="LvFilterMinSpeed" xml:space="preserve">
+    <value>Speed ≥ (MB/s)</value>
+  </data>
 </root>

@@ -619,6 +619,69 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Refresh 的本地化字符串。
+        /// </summary>
+        public static string LvRefresh {
+            get {
+                return ResourceManager.GetString("LvRefresh", resourceCulture);
+            }
+        }
+
+        public static string LvSource {
+            get {
+                return ResourceManager.GetString("LvSource", resourceCulture);
+            }
+        }
+
+        public static string LvSourceFilter {
+            get {
+                return ResourceManager.GetString("LvSourceFilter", resourceCulture);
+            }
+        }
+
+        public static string LvSourceManual {
+            get {
+                return ResourceManager.GetString("LvSourceManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 没有符合过滤条件的节点。请检查：是否已选择订阅组、别名过滤是否为空、延迟/速度阈值是否过严（未测速或未测延迟的节点会被排除）。 的本地化字符串。
+        /// </summary>
+        public static string LvPreviewEmptyHint {
+            get {
+                return ResourceManager.GetString("LvPreviewEmptyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        public static string LvAdd {
+            get {
+                return ResourceManager.GetString("LvAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delay ≤ (ms) 的本地化字符串。
+        /// </summary>
+        public static string LvFilterMaxDelay {
+            get {
+                return ResourceManager.GetString("LvFilterMaxDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Speed ≥ (MB/s) 的本地化字符串。
+        /// </summary>
+        public static string LvFilterMinSpeed {
+            get {
+                return ResourceManager.GetString("LvFilterMinSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 TLS 的本地化字符串。
         /// </summary>
         public static string LvTLS {

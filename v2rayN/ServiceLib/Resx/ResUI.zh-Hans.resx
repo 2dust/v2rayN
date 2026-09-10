@@ -1891,4 +1891,28 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>进程</value>
   </data>
+  <data name="LvRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="LvSource" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="LvSourceFilter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="LvSourceManual" xml:space="preserve">
+    <value>手动</value>
+  </data>
+  <data name="LvPreviewEmptyHint" xml:space="preserve">
+    <value>没有符合过滤条件的节点。请检查：是否已选择订阅组、别名过滤是否为空、延迟/速度阈值是否过严（未测速或未测延迟的节点会被排除）。</value>
+  </data>
+  <data name="LvAdd" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="LvFilterMaxDelay" xml:space="preserve">
+    <value>延迟≤(ms)</value>
+  </data>
+  <data name="LvFilterMinSpeed" xml:space="preserve">
+    <value>速度≥(MB/s)</value>
+  </data>
 </root>

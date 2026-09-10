@@ -89,7 +89,7 @@ public class GroupProfileManager
         return items;
     }
 
-    private static async Task<List<ProfileItem>> GetSelectedChildProfileItems(ProtocolExtraItem? extra)
+    internal static async Task<List<ProfileItem>> GetSelectedChildProfileItems(ProtocolExtraItem? extra)
     {
         if (extra == null || extra.ChildItems.IsNullOrEmpty())
         {
@@ -107,19 +107,35 @@ public class GroupProfileManager
         return ordered;
     }
 
-    private static async Task<List<ProfileItem>> GetSubChildProfileItems(ProtocolExtraItem? extra)
+    internal static async Task<List<ProfileItem>> GetSubChildProfileItems(ProtocolExtraItem? extra)
     {
         if (extra == null || extra.SubChildItems.IsNullOrEmpty())
         {
             return [];
         }
-        var childProfiles = await AppManager.Instance.ProfileItems(extra.SubChildItems ?? string.Empty);
 
-        return childProfiles?.Where(p =>
+        // Sentinel "all": pass an empty subid so ProfileItems returns nodes from every subscription group.
+        var subId = extra.SubChildItems == Global.SubItemAllId ? string.Empty : extra.SubChildItems;
+        var childProfiles = await AppManager.Instance.ProfileItems(subId);
+        if (childProfiles == null)
+        {
+            return [];
+        }
+
+        var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
+        var exMap = lstProfileExs?
+            .Where(x => x != null)
+            .GroupBy(x => x.IndexId)
+            .ToDictionary(g => g.Key, g => g.First())
+            ?? new Dictionary<string, ProfileExItem>();
+
+        return childProfiles.Where(p =>
                 p != null &&
                 p.IsValid() &&
                 (!p.ConfigType.IsComplexType() || p.ConfigType == EConfigType.Outbound) &&
-                (extra.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extra.Filter))
+                (extra.Filter.IsNullOrEmpty() || Regex.IsMatch(p.Remarks, extra.Filter)) &&
+                (extra.FilterMaxDelay == 0 || (exMap.TryGetValue(p.IndexId, out var exDelay) && exDelay.Delay != 0 && exDelay.Delay <= extra.FilterMaxDelay)) &&
+                (extra.FilterMinSpeed == 0 || (exMap.TryGetValue(p.IndexId, out var exSpeed) && exSpeed.Speed > 0 && exSpeed.Speed >= extra.FilterMinSpeed))
             )
             .ToList() ?? [];
     }

@@ -27,6 +27,9 @@ public partial class ProfileItemModel : ReactiveObject
     public partial string SpeedVal { get; set; }
 
     [Reactive]
+    public partial string? SourceTag { get; set; }
+
+    [Reactive]
     public partial string IpInfo { get; set; }
 
     [Reactive]

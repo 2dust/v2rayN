@@ -112,6 +112,10 @@ public class Global
     public const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";
     public const string PolicyGroupDefaultAllFilter = $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*$";
 
+    // Sentinel SubItem.Id meaning "all subscription groups". Keep it non-empty so that
+    // the "at least one server" validation (which rejects empty ids) still passes.
+    public const string SubItemAllId = "all";
+
     public static readonly List<string> PolicyGroupDefaultFilterList =
     [
         // All nodes (exclude traffic/expiry info)
