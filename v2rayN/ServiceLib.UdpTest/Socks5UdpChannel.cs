@@ -11,7 +11,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
     /// <summary>
     /// Send UDP data to a remote endpoint (IP address)
     /// </summary>
-    public async Task SendAsync(IPEndPoint remote, byte[] data)
+    public async Task SendAsync(IPEndPoint remote, byte[] data, CancellationToken ct = default)
     {
         var addrData = new Socks5AddressData
         {
@@ -22,7 +22,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             Port = (ushort)remote.Port
         };
         var packet = BuildSocks5UdpPacket(addrData, data);
-        await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
+        await _udpClient.SendAsync(packet.AsMemory(), _relayEndPoint, ct);
     }
 
     /// <summary>
@@ -31,7 +31,8 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
     /// <param name="host">Domain name or IP address</param>
     /// <param name="port">Port number</param>
     /// <param name="data">Data to send</param>
-    public async Task SendAsync(string host, ushort port, byte[] data)
+    /// <param name="ct">Cancellation token</param>
+    public async Task SendAsync(string host, ushort port, byte[] data, CancellationToken ct = default)
     {
         var addrData = new Socks5AddressData();
 
@@ -53,7 +54,8 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         addrData.Port = port;
 
         var packet = BuildSocks5UdpPacket(addrData, data);
-        await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
+        //await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
+        await _udpClient.SendAsync(packet.AsMemory(), _relayEndPoint, ct);
     }
 
     /// <summary>

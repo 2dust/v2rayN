@@ -66,34 +66,41 @@ public static class ConnectionHandler
     /// <summary>
     /// Measures response time by sending HTTP requests through proxy.
     /// </summary>
-    public static async Task<int> GetRealPingTime(IWebProxy? webProxy, int downloadTimeout = 9)
+    public static async Task<int> GetRealPingTime(IWebProxy? webProxy, CancellationToken cancellationToken = default)
     {
         var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
         var responseTime = -1;
         try
         {
-            using var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(downloadTimeout));
+            using var timeoutCts = new CancellationTokenSource();
+            timeoutCts.CancelAfter(Global.LocalFetch);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+            var linkedToken = linkedCts.Token;
             using var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
                 UseProxy = webProxy != null,
-                ConnectTimeout = TimeSpan.FromSeconds(3)
+                ConnectTimeout = Global.LocalFetch,
             });
 
             List<int> oneTime = [];
             for (var i = 0; i < 2; i++)
             {
                 var timer = Stopwatch.StartNew();
-                await client.GetAsync(url, cts.Token).ConfigureAwait(false);
+                await client.GetAsync(url, linkedToken).ConfigureAwait(false);
                 timer.Stop();
                 oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
-                await Task.Delay(100, cts.Token);
+                await Task.Delay(100, linkedToken);
             }
             responseTime = oneTime.Where(x => x > 0).OrderBy(x => x).FirstOrDefault();
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
         catch
         {
+            // Ignore
         }
         return responseTime;
     }
@@ -101,7 +108,7 @@ public static class ConnectionHandler
     /// <summary>
     /// Gets IP and country information through specified proxy.
     /// </summary>
-    public static async Task<IpInfoResult?> GetIPInfo(IWebProxy? webProxy)
+    public static async Task<IpInfoResult?> GetIPInfo(IWebProxy? webProxy, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -112,7 +119,7 @@ public static class ConnectionHandler
             }
 
             var downloadHandle = new DownloadService();
-            var result = await downloadHandle.TryDownloadString(url, webProxy, "");
+            var result = await downloadHandle.TryDownloadString(url, webProxy, "", cancellationToken);
             if (result == null)
             {
                 return null;
@@ -128,6 +135,10 @@ public static class ConnectionHandler
             var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
 
             return new IpInfoResult(country, ip);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch
         {

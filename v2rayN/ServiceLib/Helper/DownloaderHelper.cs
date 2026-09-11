@@ -8,15 +8,13 @@ public class DownloaderHelper
     private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
     public static DownloaderHelper Instance => _instance.Value;
 
-    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent, int timeout,
-        IReadOnlyDictionary<string, string>? requestHeaders = null, string? acceptHeader = null)
+    public async Task<string?> DownloadStringAsync(IWebProxy? webProxy, string url, string? userAgent,
+        IReadOnlyDictionary<string, string>? requestHeaders = null, string? acceptHeader = null, CancellationToken cancellationToken = default)
     {
         if (url.IsNullOrEmpty())
         {
             return null;
         }
-
-        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
 
         Uri uri = new(url);
         //Authorization Header
@@ -31,12 +29,11 @@ public class DownloaderHelper
             Headers = headers,
             Accept = acceptHeader,
             UserAgent = userAgent,
-            ConnectTimeout = connectTimeout * 1000,
+            ConnectTimeout = GetConnectTimeoutMs(webProxy != null),
             Proxy = webProxy
         };
         var downloadOpt = new DownloadConfiguration()
         {
-            BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
             CustomHttpMessageHandlerFactory = () => HttpRequestHeadersHelper.CreateHandler(GetSocketsHttpHandler(requestConfiguration), requestHeaders),
@@ -51,31 +48,26 @@ public class DownloaderHelper
             }
         };
 
-        using var cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
-
-        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
+        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken);
         using StreamReader reader = new(stream);
 
-        return await reader.ReadToEndAsync(cts.Token);
+        return await reader.ReadToEndAsync(cancellationToken);
     }
 
-    public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, IProgress<string> progress, int timeout)
+    public async Task DownloadDataAsync4Speed(IWebProxy webProxy, string url, Action<string> onProgress, CancellationToken cancellationToken = default)
     {
         if (url.IsNullOrEmpty())
         {
             throw new ArgumentNullException(nameof(url));
         }
 
-        var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
         var requestConfiguration = new RequestConfiguration()
         {
-            ConnectTimeout = connectTimeout * 1000,
+            ConnectTimeout = GetConnectTimeoutMs(true),
             Proxy = webProxy
         };
         var downloadOpt = new DownloadConfiguration()
         {
-            BlockTimeout = timeout * 1000,
             MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
             CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
@@ -88,49 +80,45 @@ public class DownloaderHelper
 
         downloader.DownloadProgressChanged += (sender, value) =>
         {
-            if (progress != null && value.BytesPerSecondSpeed > 0)
+            if (!(value.BytesPerSecondSpeed > 0))
             {
-                hasValue = true;
-                if (value.BytesPerSecondSpeed > maxSpeed)
-                {
-                    maxSpeed = value.BytesPerSecondSpeed;
-                }
+                return;
+            }
+            hasValue = true;
+            if (value.BytesPerSecondSpeed > maxSpeed)
+            {
+                maxSpeed = value.BytesPerSecondSpeed;
+            }
 
-                var ts = DateTime.Now - lastUpdateTime;
-                if (ts.TotalMilliseconds >= 1000)
-                {
-                    lastUpdateTime = DateTime.Now;
-                    var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
-                    progress.Report(speed);
-                }
+            var ts = DateTime.Now - lastUpdateTime;
+            if (ts.TotalMilliseconds >= 1000)
+            {
+                lastUpdateTime = DateTime.Now;
+                var speed = (maxSpeed / 1000 / 1000).ToString("#0.0");
+                onProgress.Invoke(speed);
             }
         };
         downloader.DownloadFileCompleted += (sender, value) =>
         {
-            if (progress != null)
+            if (hasValue && maxSpeed > 0)
             {
-                if (hasValue && maxSpeed > 0)
-                {
-                    var finalSpeed = (maxSpeed / 1000 / 1000).ToString("#0.0");
-                    progress.Report(finalSpeed);
-                }
-                else if (value.Error != null)
-                {
-                    progress.Report(value.Error?.Message);
-                }
-                else
-                {
-                    progress.Report("0");
-                }
+                var finalSpeed = (maxSpeed / 1000 / 1000).ToString("#0.0");
+                onProgress.Invoke(finalSpeed);
+            }
+            else if (value.Error != null)
+            {
+                onProgress.Invoke(value.Error?.Message);
+            }
+            else
+            {
+                onProgress.Invoke("0");
             }
         };
-        //progress.Report("......");
-        using var cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
-        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cts.Token);
+        //progress.Invoke("......");
+        await using var stream = await downloader.DownloadFileTaskAsync(address: url, cancellationToken);
     }
 
-    public async Task DownloadFileAsync(IWebProxy? webProxy, FileDownloadRequest request, Action<FileDownloadState> onProgress, TimeSpan connectTimeout, CancellationToken cancellationToken = default)
+    public async Task DownloadFileAsync(IWebProxy? webProxy, FileDownloadRequest request, Action<FileDownloadState> onProgress, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         if (request.FilePath.IsNullOrEmpty())
@@ -147,9 +135,9 @@ public class DownloaderHelper
             Request = request,
         };
 
-        var requestConfiguration = new RequestConfiguration()
+        var requestConfiguration = new RequestConfiguration
         {
-            ConnectTimeout = (int)connectTimeout.TotalMilliseconds,
+            ConnectTimeout = GetConnectTimeoutMs(webProxy != null),
             Proxy = webProxy,
         };
         var downloadOpt = new DownloadConfiguration()
@@ -196,7 +184,7 @@ public class DownloaderHelper
         await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, cancellationToken);
     }
 
-    public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, Action<ReadOnlyMemory<FileDownloadState>> onProgress, TimeSpan connectTimeout, CancellationToken cancellationToken = default)
+    public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, Action<ReadOnlyMemory<FileDownloadState>> onProgress, CancellationToken cancellationToken = default)
     {
         if (requests is not { Count: > 0 })
         {
@@ -215,7 +203,7 @@ public class DownloaderHelper
 
         var requestConfiguration = new RequestConfiguration()
         {
-            ConnectTimeout = (int)connectTimeout.TotalMilliseconds,
+            ConnectTimeout = GetConnectTimeoutMs(webProxy != null),
             Proxy = webProxy,
 
             KeepAlive = true,
@@ -225,7 +213,7 @@ public class DownloaderHelper
         var parallelOptions = new ParallelOptions
         {
             MaxDegreeOfParallelism = 4,
-            //CancellationToken = cancellationToken,
+            CancellationToken = cancellationToken,
         };
 
         await Parallel.ForEachAsync(Enumerable.Range(0, requests.Count), parallelOptions, async (index, parallelCancellationToken) =>
@@ -343,5 +331,10 @@ public class DownloaderHelper
         }
 
         return handler;
+    }
+
+    private int GetConnectTimeoutMs(bool isProxy)
+    {
+        return (int)(isProxy ? Global.ProxyDownloadConnect : Global.DirectDownloadConnect).TotalMilliseconds;
     }
 }

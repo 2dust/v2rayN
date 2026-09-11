@@ -96,6 +96,11 @@ public class Global
     public const string StringTrue = "true";
     public const string StringFalse = "false";
     public const int SqliteMaxBatchSize = 10000;
+    public static readonly TimeSpan LocalFetch = TimeSpan.FromSeconds(5);
+    public static readonly TimeSpan DirectFetch = TimeSpan.FromSeconds(10);
+    public static readonly TimeSpan ProxyFetch  = TimeSpan.FromSeconds(30);
+    public static readonly TimeSpan DirectDownloadConnect = TimeSpan.FromSeconds(5);
+    public static readonly TimeSpan ProxyDownloadConnect = TimeSpan.FromSeconds(10);
 
     public const string SingboxDirectDNSTagPrefix = "direct-dns-";
     public const string SingboxRemoteDNSTagPrefix = "remote-dns-";
