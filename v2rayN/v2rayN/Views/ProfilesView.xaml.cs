@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -11,10 +12,12 @@ public partial class ProfilesView
 {
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
+    private bool _initialFocusSet;
 
     public ProfilesView()
     {
         InitializeComponent();
+        IsVisibleChanged += ProfilesView_IsVisibleChanged;
         lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
 
         _config = AppManager.Instance.Config;
@@ -155,6 +158,97 @@ public partial class ProfilesView
     }
 
     #region Event
+
+    private void ProfilesView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        // Wait until the view is actually visible; a collapsed control cannot take keyboard focus.
+        if (_initialFocusSet || e.NewValue is not true)
+        {
+            return;
+        }
+        _initialFocusSet = true;
+
+        // Keyboard focus can only be established once the window is active; on the very
+        // first activation WPF has no previously focused element to restore, so set it then.
+        if (Window.GetWindow(this) is { IsActive: false } window)
+        {
+            EventHandler? activatedHandler = null;
+            activatedHandler = (_, _) =>
+            {
+                window.Activated -= activatedHandler;
+                FocusProfilesList();
+            };
+            window.Activated += activatedHandler;
+        }
+        else
+        {
+            FocusProfilesList();
+        }
+
+        if (lstProfiles.Items.Count > 0)
+        {
+            return;
+        }
+
+        // The profile items arrive asynchronously; move focus from the empty grid to the
+        // first row once items land, unless the user has already moved focus elsewhere.
+        NotifyCollectionChangedEventHandler? handler = null;
+        handler = (_, _) =>
+        {
+            if (lstProfiles.Items.Count == 0)
+            {
+                return;
+            }
+            ((INotifyCollectionChanged)lstProfiles.Items).CollectionChanged -= handler;
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (Keyboard.FocusedElement is null or Window || ReferenceEquals(Keyboard.FocusedElement, lstProfiles))
+                {
+                    FocusProfilesList();
+                }
+            }));
+        };
+        ((INotifyCollectionChanged)lstProfiles.Items).CollectionChanged += handler;
+    }
+
+    public void FocusProfilesList()
+    {
+        if (!TryFocusProfilesList())
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => TryFocusProfilesList()));
+        }
+    }
+
+    private bool TryFocusProfilesList()
+    {
+        if (lstProfiles.Items.Count == 0)
+        {
+            return lstProfiles.Focus();
+        }
+
+        if (lstProfiles.SelectedIndex < 0)
+        {
+            lstProfiles.SelectedIndex = 0;
+        }
+        lstProfiles.ScrollIntoView(lstProfiles.SelectedItem, null);
+        lstProfiles.UpdateLayout();
+
+        // DataGrid keyboard navigation is cell-based; focus the current cell so the
+        // arrow keys work immediately, instead of the grid or row container.
+        var column = lstProfiles.Columns
+            .Where(c => c.Visibility == Visibility.Visible)
+            .OrderBy(c => c.DisplayIndex)
+            .FirstOrDefault();
+        if (column != null)
+        {
+            lstProfiles.CurrentCell = new DataGridCellInfo(lstProfiles.SelectedItem, column);
+            if (column.GetCellContent(lstProfiles.SelectedItem) is { Parent: DataGridCell cell })
+            {
+                return cell.Focus();
+            }
+        }
+        return lstProfiles.Focus();
+    }
 
     public async Task ShareServer(string url)
     {
