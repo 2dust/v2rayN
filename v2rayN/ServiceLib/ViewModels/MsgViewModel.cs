@@ -34,6 +34,7 @@ public partial class MsgViewModel : MyReactiveObject
         this.WhenActivated(disposables =>
         {
             Signal.Every(TimeSpan.FromMilliseconds(500))
+                .Where(_ => AutoRefresh)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(_ => FlushQueueToView())
                 .DisposeWith(disposables);
@@ -42,7 +43,7 @@ public partial class MsgViewModel : MyReactiveObject
 
     private void FlushQueueToView()
     {
-        if (_queueMsg.IsEmpty)
+        if (!AutoRefresh || _queueMsg.IsEmpty)
         {
             return;
         }
