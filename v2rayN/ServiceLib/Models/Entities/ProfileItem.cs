@@ -66,6 +66,11 @@ public class ProfileItem
 
     public bool IsValid()
     {
+        if (ChainOnly)
+        {
+            return false;
+        }
+
         if (IsComplex() || ConfigType == EConfigType.Outbound)
         {
             return true;
@@ -169,6 +174,8 @@ public class ProfileItem
     public string Password { get; set; }
     public string Username { get; set; }
     public string Network { get; set; }
+
+    public bool ChainOnly { get; set; }
 
     [Obsolete("Use TransportExtra.RawHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
     public string HeaderType { get; set; }
