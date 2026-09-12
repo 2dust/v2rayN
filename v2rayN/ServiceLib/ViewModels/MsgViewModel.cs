@@ -33,7 +33,7 @@ public partial class MsgViewModel : MyReactiveObject
 
         this.WhenActivated(disposables =>
         {
-            Signal.Every(TimeSpan.FromMilliseconds(500))
+            Signal.Every(TimeSpan.FromSeconds(1))
                 .Where(_ => AutoRefresh && AppManager.Instance.ShowInTaskbar)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(_ => FlushQueueToView())
