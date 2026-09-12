@@ -136,29 +136,23 @@ public static class Extension
                     .Replace("\n", replacement);
     }
 
-    public static async Task<TOutput> HandleSafe<TInput, TOutput>(
-        this Interaction<TInput, TOutput> interaction,
-        TInput input,
+    public static IObservable<TOutput> HandleSafe<TInput, TOutput>(
+        this Interaction<TInput, TOutput> interaction, TInput input,
         TOutput defaultValue = default!,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
     {
-        try
-        {
-            return await interaction.Handle(input);
-        }
-        catch (UnhandledInteractionException<TInput, TOutput> ex)
-        {
-            var title = $"Unhandled interaction exception in {memberName} at {filePath}:{lineNumber}";
-            Logging.SaveLog(title, ex);
-            return defaultValue;
-        }
-        catch (Exception ex)
-        {
-            var title = $"Exception occurred while handling interaction in {memberName} at {filePath}:{lineNumber}, input: {input}";
-            Logging.SaveLog(title, ex);
-            return defaultValue;
-        }
+        return Signal.Defer(() => interaction.Handle(input))
+            .Catch<TOutput, UnhandledInteractionException<TInput, TOutput>>(ex =>
+            {
+                Logging.SaveLog($"Unhandled interaction exception in {memberName} at {filePath}:{lineNumber}", ex);
+                return Signal.Return(defaultValue);
+            })
+            .Catch<TOutput, Exception>(ex =>
+            {
+                Logging.SaveLog($"Exception occurred while handling interaction in {memberName} at {filePath}:{lineNumber}, input: {input}", ex);
+                return Signal.Return(defaultValue);
+            });
     }
 }

@@ -56,7 +56,7 @@ public partial class MsgViewModel : MyReactiveObject
 
         if (sb.Length > 0)
         {
-            ShowMsgInteraction.Handle(sb.ToString()).Subscribe();
+            ShowMsgInteraction.HandleSafe(sb.ToString()).Subscribe();
         }
     }
 
