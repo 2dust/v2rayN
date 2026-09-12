@@ -11,17 +11,12 @@ public partial class MsgView
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
 
-            ViewModel.DispatcherShowMsgInteraction.RegisterHandler(interaction =>
+            ViewModel.ShowMsgInteraction.RegisterHandler(interaction =>
             {
                 var msg = interaction.Input;
-                Application.Current?.Dispatcher.Invoke(() =>
-                {
-                    ShowMsg(msg);
-                }, DispatcherPriority.ApplicationIdle);
+                ShowMsg(msg);
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
-
-            ViewModel?.FlushQueueMsg();
         });
 
         btnCopy.Click += menuMsgViewCopyAll_Click;

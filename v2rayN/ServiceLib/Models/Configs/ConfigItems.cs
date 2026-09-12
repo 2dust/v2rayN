@@ -213,7 +213,7 @@ public class ClashUIItem
     public bool EnableMixinContent { get; set; }
     public int ProxiesSorting { get; set; }
     public bool ProxiesAutoRefresh { get; set; }
-    public int ProxiesAutoDelayTestInterval { get; set; } = 10;
+    public int ProxiesRefreshInterval { get; set; } = 2;
     public bool ConnectionsAutoRefresh { get; set; }
     public int ConnectionsRefreshInterval { get; set; } = 2;
     public List<ColumnItem> ConnectionsColumnItem { get; set; }

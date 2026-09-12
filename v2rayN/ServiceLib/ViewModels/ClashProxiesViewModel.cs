@@ -55,12 +55,19 @@ public partial class ClashProxiesViewModel : MyReactiveObject
 
         #endregion WhenAnyValue && ReactiveCommand
 
-        _ = Task.Factory.StartNew(
-            async () => await GetClashProxiesTask(),
-            CancellationToken.None,
-            TaskCreationOptions.LongRunning,
-            TaskScheduler.Default
-        );
+        this.WhenActivated(disposables =>
+        {
+            var cancelDisposable = new CancellationDisposable();
+            cancelDisposable.DisposeWith(disposables);
+            var token = cancelDisposable.Token;
+
+            Task.Factory.StartNew(
+                async () => await GetClashProxiesTask(token),
+                token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
+        });
     }
 
     public BulkObservableCollection<ClashProxyModel> ProxyGroups { get; } = [];
@@ -101,27 +108,40 @@ public partial class ClashProxiesViewModel : MyReactiveObject
 
     #region task
 
-    public async Task GetClashProxiesTask()
+    public async Task GetClashProxiesTask(CancellationToken token = default)
     {
-        var numOfExecuted = 1;
-        while (true)
+        try
         {
-            await Task.Delay(1000 * 60);
-            numOfExecuted++;
-            if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar &&
-                  AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
+            var numOfExecuted = 1;
+            while (true)
             {
-                continue;
+                await Task.Delay(1000, token);
+                numOfExecuted++;
+                if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar &&
+                      AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
+                {
+                    continue;
+                }
+
+                if (_config.ClashUIItem.ProxiesRefreshInterval <= 0)
+                {
+                    continue;
+                }
+
+                if (numOfExecuted % _config.ClashUIItem.ProxiesRefreshInterval != 0)
+                {
+                    continue;
+                }
+                await GetClashProxies();
             }
-            if (_config.ClashUIItem.ProxiesAutoDelayTestInterval <= 0)
-            {
-                continue;
-            }
-            if (numOfExecuted % _config.ClashUIItem.ProxiesAutoDelayTestInterval != 0)
-            {
-                continue;
-            }
-            await GetClashProxies();
+        }
+        catch (OperationCanceledException)
+        {
+            // Ignored
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("GetClashProxiesTask", ex);
         }
     }
 
