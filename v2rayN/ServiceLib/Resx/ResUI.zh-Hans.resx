@@ -1891,4 +1891,7 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>进程</value>
   </data>
+  <data name="TbDisableBridge" xml:space="preserve">
+    <value>禁用 Bridge</value>
+  </data>
 </root>

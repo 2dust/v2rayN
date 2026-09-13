@@ -3025,6 +3025,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Disable Bridge 的本地化字符串。
+        /// </summary>
+        public static string TbDisableBridge {
+            get {
+                return ResourceManager.GetString("TbDisableBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Display GUI 的本地化字符串。
         /// </summary>
         public static string TbDisplayGUI {

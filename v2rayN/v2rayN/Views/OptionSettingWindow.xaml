@@ -1277,6 +1277,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -1457,6 +1458,20 @@
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left"
                             Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbDisableBridge}" />
+                        <ToggleButton
+                            x:Name="togDisableBridge"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
