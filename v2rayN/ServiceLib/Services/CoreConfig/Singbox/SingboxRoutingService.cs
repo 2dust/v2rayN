@@ -74,11 +74,26 @@ public partial class CoreConfigSingboxService
                         action = "hijack-dns",
                         process_path = lstDirectExe,
                     });
-
+                    if (!_config.TunModeItem.DisableBridge)
+                    {
+                        _coreConfig.route.rules.Add(new()
+                        {
+                            inbound = ["tun"],
+                            process_path = lstDirectExe,
+                            action = "resolve",
+                        });
+                        _coreConfig.route.rules.Add(new()
+                        {
+                            inbound = ["tun"],
+                            process_path = lstDirectExe,
+                            preferred_by = Global.SingboxBridgeTag,
+                            outbound = Global.SingboxBridgeTag,
+                        });
+                    }
                     _coreConfig.route.rules.Add(new()
                     {
-                        outbound = Global.DirectTag,
                         process_path = lstDirectExe,
+                        outbound = Global.DirectTag,
                     });
                 }
 
@@ -90,6 +105,22 @@ public partial class CoreConfigSingboxService
                 }
                 if (icmpRouting == "direct")
                 {
+                    if (!_config.TunModeItem.DisableBridge)
+                    {
+                        _coreConfig.route.rules.Add(new()
+                        {
+                            inbound = ["tun"],
+                            network = ["icmp"],
+                            action = "resolve",
+                        });
+                        _coreConfig.route.rules.Add(new()
+                        {
+                            inbound = ["tun"],
+                            network = ["icmp"],
+                            preferred_by = Global.SingboxBridgeTag,
+                            outbound = Global.SingboxBridgeTag,
+                        });
+                    }
                     _coreConfig.route.rules.Add(new()
                     {
                         network = ["icmp"],
@@ -113,6 +144,64 @@ public partial class CoreConfigSingboxService
                 }
             }
 
+            _coreConfig.route.rules.Add(new()
+            {
+                port = [53],
+                action = "hijack-dns",
+            });
+
+            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
+            var routing = context.RoutingItem;
+            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing?.RuleSet) ?? [];
+
+            if (context.IsTunEnabled && !_config.TunModeItem.DisableBridge)
+            {
+                var bridgeUserRules = new List<RulesItem>();
+                foreach (var item in rules)
+                {
+                    if (!item.Enabled)
+                    {
+                        continue;
+                    }
+                    if (item.RuleType == ERuleType.DNS)
+                    {
+                        continue;
+                    }
+                    if (item.OutboundTag != Global.DirectTag)
+                    {
+                        continue;
+                    }
+                    if (item.Protocol is { Count: > 0 })
+                    {
+                        break;
+                    }
+                    bridgeUserRules.Add(item);
+                }
+                var bridgeRules = new List<Rule4Sbox>();
+                foreach (var item in bridgeUserRules)
+                {
+                    var userRules = BuildRoutingUserRule(item);
+                    foreach (var rule in userRules)
+                    {
+                        var bridgeResolveRule = JsonUtils.DeepCopy(rule);
+                        var bridgeOutboundRule = JsonUtils.DeepCopy(rule);
+
+                        bridgeResolveRule.outbound = null;
+                        bridgeResolveRule.inbound = ["tun"];
+                        bridgeResolveRule.action = "resolve";
+
+                        bridgeOutboundRule.outbound = null;
+                        bridgeOutboundRule.inbound = ["tun"];
+                        bridgeOutboundRule.preferred_by = Global.SingboxBridgeTag;
+                        bridgeOutboundRule.outbound = Global.SingboxBridgeTag;
+
+                        bridgeRules.Add(bridgeResolveRule);
+                        bridgeRules.Add(bridgeOutboundRule);
+                    }
+                }
+                _coreConfig.route.rules.AddRange(bridgeRules);
+            }
+
             if (_config.Inbound.First().SniffingEnabled)
             {
                 _coreConfig.route.rules.Add(new()
@@ -121,14 +210,8 @@ public partial class CoreConfigSingboxService
                 });
                 _coreConfig.route.rules.Add(new()
                 {
-                    type = "logical",
-                    mode = "or",
+                    protocol = ["dns"],
                     action = "hijack-dns",
-                    rules =
-                    [
-                        new() { port = [53] },
-                        new() { protocol = ["dns"] },
-                    ],
                 });
                 if (_config.CoreBasicItem.EnableFinalFragment)
                 {
@@ -142,11 +225,6 @@ public partial class CoreConfigSingboxService
             }
             else
             {
-                _coreConfig.route.rules.Add(new()
-                {
-                    port = [53],
-                    action = "hijack-dns",
-                });
                 if (_config.CoreBasicItem.EnableFinalFragment)
                 {
                     _coreConfig.route.rules.Add(new()
@@ -235,8 +313,6 @@ public partial class CoreConfigSingboxService
                 clash_mode = nameof(ERuleMode.Global)
             });
 
-            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
-            var routing = context.RoutingItem;
             if (routing.DomainStrategy4Singbox.IsNotEmpty())
             {
                 domainStrategy = routing.DomainStrategy4Singbox;
@@ -254,7 +330,6 @@ public partial class CoreConfigSingboxService
             var ipRules = new List<RulesItem>();
             if (routing != null)
             {
-                var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
                 foreach (var item1 in rules ?? [])
                 {
                     if (!item1.Enabled)
@@ -267,7 +342,8 @@ public partial class CoreConfigSingboxService
                         continue;
                     }
 
-                    GenRoutingUserRule(item1);
+                    var userRules = BuildRoutingUserRule(item1);
+                    _coreConfig.route.rules.AddRange(userRules);
 
                     if (item1.Ip?.Count > 0)
                     {
@@ -280,7 +356,8 @@ public partial class CoreConfigSingboxService
                 _coreConfig.route.rules.Add(resolveRule);
                 foreach (var item2 in ipRules)
                 {
-                    GenRoutingUserRule(item2);
+                    var userRules = BuildRoutingUserRule(item2);
+                    _coreConfig.route.rules.AddRange(userRules);
                 }
             }
         }
@@ -332,182 +409,177 @@ public partial class CoreConfigSingboxService
         return directExeSet.ToList();
     }
 
-    private void GenRoutingUserRule(RulesItem? item)
+    private List<Rule4Sbox> BuildRoutingUserRule(RulesItem? item)
     {
-        try
+        if (item == null)
         {
-            if (item == null)
-            {
-                return;
-            }
-            item.OutboundTag = GenRoutingUserRuleOutbound(item.OutboundTag ?? Global.ProxyTag);
-            var rules = _coreConfig.route.rules;
+            return [];
+        }
+        item.OutboundTag = GenRoutingUserRuleOutbound(item.OutboundTag ?? Global.ProxyTag);
+        var rules = new List<Rule4Sbox>();
 
-            var rule = new Rule4Sbox();
-            if (item.OutboundTag == "block")
+        var rule = new Rule4Sbox();
+        if (item.OutboundTag == "block")
+        {
+            rule.action = "reject";
+        }
+        else
+        {
+            rule.outbound = item.OutboundTag;
+        }
+
+        if (item.Port.IsNotEmpty())
+        {
+            var portRanges = item.Port.Split(',').Where(it => it.Contains('-')).Select(it => it.Replace("-", ":")).ToList();
+            var ports = item.Port.Split(',').Where(it => !it.Contains('-')).Select(it => it.ToInt()).ToList();
+
+            rule.port_range = portRanges.Count > 0 ? portRanges : null;
+            rule.port = ports.Count > 0 ? ports : null;
+        }
+        if (item.Network.IsNotEmpty())
+        {
+            rule.network = Utils.String2List(item.Network);
+        }
+        if (item.Protocol?.Count > 0)
+        {
+            rule.protocol = item.Protocol;
+        }
+        if (item.InboundTag?.Count >= 0)
+        {
+            rule.inbound = item.InboundTag;
+        }
+        var rule1 = JsonUtils.DeepCopy(rule);
+        var rule2 = JsonUtils.DeepCopy(rule);
+        var rule3 = JsonUtils.DeepCopy(rule);
+
+        var hasDomainIp = false;
+        if (item.Domain?.Count > 0)
+        {
+            var countDomain = 0;
+            foreach (var it in item.Domain)
             {
-                rule.action = "reject";
+                if (ParseV2Domain(it, rule1))
+                {
+                    countDomain++;
+                }
+            }
+            if (countDomain > 0)
+            {
+                rules.Add(rule1);
+                hasDomainIp = true;
+            }
+        }
+
+        if (item.Ip?.Count > 0)
+        {
+            var countIp = 0;
+            var negativeIpList = item.Ip.Where(it => it.StartsWith('!')).ToList();
+            if (negativeIpList.Count > 0)
+            {
+                var positiveIpList = item.Ip.Except(negativeIpList).ToList();
+                var positiveRule = rule2;
+                positiveRule = JsonUtils.DeepCopy(rule2);
+                positiveRule.outbound = null;
+                positiveRule.action = null;
+                foreach (var it in positiveIpList)
+                {
+                    if (ParseV2Address(it, positiveRule))
+                    {
+                        countIp++;
+                    }
+                }
+                var negativeRule = new Rule4Sbox();
+                foreach (var it in negativeIpList)
+                {
+                    // Remove first '!' and trim spaces
+                    var ip = it[1..].Trim();
+                    if (ParseV2Address(ip, negativeRule))
+                    {
+                        countIp++;
+                    }
+                }
+                negativeRule.invert = true;
+                rule2 = new Rule4Sbox()
+                {
+                    outbound = rule2.outbound,
+                    action = rule2.action,
+                    type = "logical",
+                    mode = "or",
+                    rules = [
+                        positiveRule,
+                        negativeRule,
+                    ],
+                };
             }
             else
             {
-                rule.outbound = item.OutboundTag;
-            }
-
-            if (item.Port.IsNotEmpty())
-            {
-                var portRanges = item.Port.Split(',').Where(it => it.Contains('-')).Select(it => it.Replace("-", ":")).ToList();
-                var ports = item.Port.Split(',').Where(it => !it.Contains('-')).Select(it => it.ToInt()).ToList();
-
-                rule.port_range = portRanges.Count > 0 ? portRanges : null;
-                rule.port = ports.Count > 0 ? ports : null;
-            }
-            if (item.Network.IsNotEmpty())
-            {
-                rule.network = Utils.String2List(item.Network);
-            }
-            if (item.Protocol?.Count > 0)
-            {
-                rule.protocol = item.Protocol;
-            }
-            if (item.InboundTag?.Count >= 0)
-            {
-                rule.inbound = item.InboundTag;
-            }
-            var rule1 = JsonUtils.DeepCopy(rule);
-            var rule2 = JsonUtils.DeepCopy(rule);
-            var rule3 = JsonUtils.DeepCopy(rule);
-
-            var hasDomainIp = false;
-            if (item.Domain?.Count > 0)
-            {
-                var countDomain = 0;
-                foreach (var it in item.Domain)
+                foreach (var it in item.Ip)
                 {
-                    if (ParseV2Domain(it, rule1))
+                    if (ParseV2Address(it, rule2))
                     {
-                        countDomain++;
+                        countIp++;
                     }
                 }
-                if (countDomain > 0)
-                {
-                    rules.Add(rule1);
-                    hasDomainIp = true;
-                }
             }
-
-            if (item.Ip?.Count > 0)
+            if (countIp > 0)
             {
-                var countIp = 0;
-                var negativeIpList = item.Ip.Where(it => it.StartsWith('!')).ToList();
-                if (negativeIpList.Count > 0)
-                {
-                    var positiveIpList = item.Ip.Except(negativeIpList).ToList();
-                    var positiveRule = rule2;
-                    positiveRule = JsonUtils.DeepCopy(rule2);
-                    positiveRule.outbound = null;
-                    positiveRule.action = null;
-                    foreach (var it in positiveIpList)
-                    {
-                        if (ParseV2Address(it, positiveRule))
-                        {
-                            countIp++;
-                        }
-                    }
-                    var negativeRule = new Rule4Sbox();
-                    foreach (var it in negativeIpList)
-                    {
-                        // Remove first '!' and trim spaces
-                        var ip = it[1..].Trim();
-                        if (ParseV2Address(ip, negativeRule))
-                        {
-                            countIp++;
-                        }
-                    }
-                    negativeRule.invert = true;
-                    rule2 = new Rule4Sbox()
-                    {
-                        outbound = rule2.outbound,
-                        action = rule2.action,
-                        type = "logical",
-                        mode = "or",
-                        rules = [
-                            positiveRule,
-                            negativeRule
-                        ]
-                    };
-                }
-                else
-                {
-                    foreach (var it in item.Ip)
-                    {
-                        if (ParseV2Address(it, rule2))
-                        {
-                            countIp++;
-                        }
-                    }
-                }
-                if (countIp > 0)
-                {
-                    rules.Add(rule2);
-                    hasDomainIp = true;
-                }
-            }
-
-            if (item.Process?.Count > 0)
-            {
-                var ruleProcName = JsonUtils.DeepCopy(rule3);
-                ruleProcName.process_name ??= [];
-                var ruleProcPath = JsonUtils.DeepCopy(rule3);
-                ruleProcPath.process_path ??= [];
-                foreach (var process in item.Process)
-                {
-                    // sing-box doesn't support this, fall back to process name match
-                    if (process is "self/" or "xray/")
-                    {
-                        ruleProcName.process_name.Add(Utils.GetExeName("sing-box"));
-                        continue;
-                    }
-
-                    if (process.Contains('/') || process.Contains('\\'))
-                    {
-                        var procPath = process;
-                        if (Utils.IsWindows())
-                        {
-                            procPath = procPath.Replace('/', '\\');
-                        }
-                        ruleProcPath.process_path.Add(procPath);
-                        continue;
-                    }
-
-                    // sing-box strictly matches the exe suffix on Windows
-                    var procName = Utils.GetExeName(process);
-
-                    ruleProcName.process_name.Add(procName);
-                }
-
-                if (ruleProcName.process_name.Count > 0)
-                {
-                    rules.Add(ruleProcName);
-                    hasDomainIp = true;
-                }
-
-                if (ruleProcPath.process_path.Count > 0)
-                {
-                    rules.Add(ruleProcPath);
-                    hasDomainIp = true;
-                }
-            }
-
-            if (!hasDomainIp
-                && (rule.port != null || rule.port_range != null || rule.protocol != null || rule.inbound != null || rule.network != null))
-            {
-                rules.Add(rule);
+                rules.Add(rule2);
+                hasDomainIp = true;
             }
         }
-        catch (Exception ex)
+
+        if (item.Process?.Count > 0)
         {
-            Logging.SaveLog(_tag, ex);
+            var ruleProcName = JsonUtils.DeepCopy(rule3);
+            ruleProcName.process_name ??= [];
+            var ruleProcPath = JsonUtils.DeepCopy(rule3);
+            ruleProcPath.process_path ??= [];
+            foreach (var process in item.Process)
+            {
+                // sing-box doesn't support this, fall back to process name match
+                if (process is "self/" or "xray/")
+                {
+                    ruleProcName.process_name.Add(Utils.GetExeName("sing-box"));
+                    continue;
+                }
+
+                if (process.Contains('/') || process.Contains('\\'))
+                {
+                    var procPath = process;
+                    if (Utils.IsWindows())
+                    {
+                        procPath = procPath.Replace('/', '\\');
+                    }
+                    ruleProcPath.process_path.Add(procPath);
+                    continue;
+                }
+
+                // sing-box strictly matches the exe suffix on Windows
+                var procName = Utils.GetExeName(process);
+
+                ruleProcName.process_name.Add(procName);
+            }
+
+            if (ruleProcName.process_name.Count > 0)
+            {
+                rules.Add(ruleProcName);
+                hasDomainIp = true;
+            }
+
+            if (ruleProcPath.process_path.Count > 0)
+            {
+                rules.Add(ruleProcPath);
+                hasDomainIp = true;
+            }
         }
+
+        if (!hasDomainIp
+            && (rule.port != null || rule.port_range != null || rule.protocol != null || rule.inbound != null || rule.network != null))
+        {
+            rules.Add(rule);
+        }
+
+        return rules;
     }
 
     private static bool ParseV2Domain(string domain, Rule4Sbox rule)

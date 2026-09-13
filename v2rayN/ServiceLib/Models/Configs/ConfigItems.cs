@@ -151,6 +151,7 @@ public class TunModeItem
     public List<string>? RouteExcludeAddress { get; set; }
     public string IPv4Address { get; set; }
     public string IPv6Address { get; set; }
+    public bool DisableBridge { get; set; }
 }
 
 [Serializable]

@@ -5,7 +5,17 @@ public partial class CoreConfigSingboxService
     private void GenOutbounds()
     {
         var proxyOutbounds = BuildAllProxyOutbounds();
-        FillRangeProxy(proxyOutbounds, _coreConfig, true);
+        var outboundList = new List<BaseServer4Sbox>(proxyOutbounds);
+        if (context.IsTunEnabled && !_config.TunModeItem.DisableBridge)
+        {
+            var tunBridgeOutbound = new Outbound4Sbox
+            {
+                type = "bridge",
+                tag = Global.SingboxBridgeTag,
+            };
+            outboundList.Add(tunBridgeOutbound);
+        }
+        FillRangeProxy(outboundList, _coreConfig, true);
     }
 
     private List<BaseServer4Sbox> BuildAllProxyOutbounds(string baseTagName = Global.ProxyTag, bool withSelector = true)
