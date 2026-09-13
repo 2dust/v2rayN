@@ -53,13 +53,25 @@ public class DownloadService
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {request.FileUrl}"));
 
             var webProxy = await GetWebProxy(blProxy);
+            Exception? downloadError = null;
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                 request,
                 OnProgress,
                 connectTimeout);
 
+            // The downloader reports a failed download through the completed state instead of throwing
+            if (downloadError != null)
+            {
+                throw downloadError;
+            }
+
             void OnProgress(FileDownloadState state)
             {
+                if (state.IsFailed)
+                {
+                    downloadError = state.Error;
+                    return;
+                }
                 UpdateCompleted?.Invoke(this, new UpdateResult(state.Completed, $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s | {Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}"));
             }
         }
