@@ -33,337 +33,362 @@ public partial class CoreConfigSingboxService
                 strategy = dialDnsStrategy
             };
 
-            if (context.IsTunEnabled)
-            {
-                _coreConfig.route.auto_detect_interface = true;
-
-                var tunRules = JsonUtils.Deserialize<List<Rule4Sbox>>(EmbedUtils.GetEmbedText(Global.TunSingboxRulesFileName));
-                if (tunRules != null)
-                {
-                    _coreConfig.route.rules.AddRange(tunRules);
-                }
-
-                // Traffic addressed to the TUN interface's own addresses must never reach an
-                // outbound. auto_route hijacks the default route, so `direct` writes such a
-                // packet straight back into the TUN, which hands it to the outbound again -
-                // an infinite loop that pins a CPU core. Drop instead of rejecting so no
-                // ICMP unreachable is generated back towards the same addresses.
-                //
-                // Match each address on its own, not the prefix it carries. On Linux sing-tun
-                // registers Inet4Address[0].Addr().Next() with systemd-resolved as a "~." DNS
-                // upstream, and every prefix offered here is a /30 or /126, so carrying the
-                // prefix through would cover that resolver address too and drop every system
-                // name lookup along with the loop.
-                var tunAddresses = _coreConfig.inbounds.FirstOrDefault(i => i.type == "tun")?.address;
-                if (tunAddresses?.Count > 0)
-                {
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        ip_cidr = [.. tunAddresses.Select(ToSingleAddressPrefix)],
-                        action = "reject",
-                        method = "drop",
-                    });
-                }
-
-                var lstDirectExe = BuildRoutingDirectExe();
-                if (lstDirectExe.Count > 0)
-                {
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        port = [53],
-                        action = "hijack-dns",
-                        process_path = lstDirectExe,
-                    });
-                    if (!_config.TunModeItem.DisableBridge)
-                    {
-                        _coreConfig.route.rules.Add(new()
-                        {
-                            inbound = ["tun"],
-                            process_path = lstDirectExe,
-                            action = "resolve",
-                        });
-                        _coreConfig.route.rules.Add(new()
-                        {
-                            inbound = ["tun"],
-                            process_path = lstDirectExe,
-                            preferred_by = Global.SingboxBridgeTag,
-                            outbound = Global.SingboxBridgeTag,
-                        });
-                    }
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        process_path = lstDirectExe,
-                        outbound = Global.DirectTag,
-                    });
-                }
-
-                // ICMP Routing
-                var icmpRouting = _config.TunModeItem.IcmpRouting ?? "";
-                if (!Global.TunIcmpRoutingPolicies.Contains(icmpRouting))
-                {
-                    icmpRouting = Global.TunIcmpRoutingPolicies.First();
-                }
-                if (icmpRouting == "direct")
-                {
-                    if (!_config.TunModeItem.DisableBridge)
-                    {
-                        _coreConfig.route.rules.Add(new()
-                        {
-                            inbound = ["tun"],
-                            network = ["icmp"],
-                            action = "resolve",
-                        });
-                        _coreConfig.route.rules.Add(new()
-                        {
-                            inbound = ["tun"],
-                            network = ["icmp"],
-                            preferred_by = Global.SingboxBridgeTag,
-                            outbound = Global.SingboxBridgeTag,
-                        });
-                    }
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        network = ["icmp"],
-                        outbound = Global.DirectTag,
-                    });
-                }
-                else if (icmpRouting != "rule")
-                {
-                    var rejectMethod = icmpRouting switch
-                    {
-                        "unreachable" => "default",
-                        "drop" => "drop",
-                        _ => "reply",
-                    };
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        network = ["icmp"],
-                        action = "reject",
-                        method = rejectMethod,
-                    });
-                }
-            }
-
-            _coreConfig.route.rules.Add(new()
-            {
-                port = [53],
-                action = "hijack-dns",
-            });
-
-            var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
-            var routing = context.RoutingItem;
-            var rules = JsonUtils.Deserialize<List<RulesItem>>(routing?.RuleSet) ?? [];
-
-            if (context.IsTunEnabled && !_config.TunModeItem.DisableBridge)
-            {
-                var bridgeUserRules = new List<RulesItem>();
-                foreach (var item in rules)
-                {
-                    if (!item.Enabled)
-                    {
-                        continue;
-                    }
-                    if (item.RuleType == ERuleType.DNS)
-                    {
-                        continue;
-                    }
-                    if (item.OutboundTag != Global.DirectTag)
-                    {
-                        continue;
-                    }
-                    if (item.Protocol is { Count: > 0 })
-                    {
-                        break;
-                    }
-                    bridgeUserRules.Add(item);
-                }
-                var bridgeRules = new List<Rule4Sbox>();
-                foreach (var item in bridgeUserRules)
-                {
-                    var userRules = BuildRoutingUserRule(item);
-                    foreach (var rule in userRules)
-                    {
-                        var bridgeResolveRule = JsonUtils.DeepCopy(rule);
-                        var bridgeOutboundRule = JsonUtils.DeepCopy(rule);
-
-                        bridgeResolveRule.outbound = null;
-                        bridgeResolveRule.inbound = ["tun"];
-                        bridgeResolveRule.action = "resolve";
-
-                        bridgeOutboundRule.outbound = null;
-                        bridgeOutboundRule.inbound = ["tun"];
-                        bridgeOutboundRule.preferred_by = Global.SingboxBridgeTag;
-                        bridgeOutboundRule.outbound = Global.SingboxBridgeTag;
-
-                        bridgeRules.Add(bridgeResolveRule);
-                        bridgeRules.Add(bridgeOutboundRule);
-                    }
-                }
-                _coreConfig.route.rules.AddRange(bridgeRules);
-            }
-
-            if (_config.Inbound.First().SniffingEnabled)
-            {
-                _coreConfig.route.rules.Add(new()
-                {
-                    action = "sniff"
-                });
-                _coreConfig.route.rules.Add(new()
-                {
-                    protocol = ["dns"],
-                    action = "hijack-dns",
-                });
-                if (_config.CoreBasicItem.EnableFinalFragment)
-                {
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        protocol = ["tls"],
-                        action = "route-options",
-                        tls_record_fragment = true,
-                    });
-                }
-            }
-            else
-            {
-                if (_config.CoreBasicItem.EnableFinalFragment)
-                {
-                    _coreConfig.route.rules.Add(new()
-                    {
-                        action = "route-options",
-                        tls_record_fragment = true,
-                    });
-                }
-            }
-
-            var hostsDomains = new List<string>();
-            if (rawDNSItem is not { Enabled: true })
-            {
-                var userHostsMap = Utils.ParseHostsToDictionary(simpleDnsItem.Hosts);
-                hostsDomains.AddRange(userHostsMap.Select(kvp => kvp.Key));
-                if (simpleDnsItem.UseSystemHosts == true)
-                {
-                    var systemHostsMap = Utils.GetSystemHosts();
-                    hostsDomains.AddRange(systemHostsMap.Select(kvp => kvp.Key));
-                }
-            }
-            if (hostsDomains.Count > 0)
-            {
-                var hostsResolveRule = new Rule4Sbox
-                {
-                    action = "resolve",
-                };
-                var hostsCounter = 0;
-                foreach (var host in hostsDomains)
-                {
-                    var domainRule = new Rule4Sbox();
-                    if (!ParseV2Domain(host, domainRule))
-                    {
-                        continue;
-                    }
-                    if (domainRule.domain_keyword?.Count > 0 && !host.Contains(':'))
-                    {
-                        domainRule.domain = domainRule.domain_keyword;
-                        domainRule.domain_keyword = null;
-                    }
-                    if (domainRule.domain?.Count > 0)
-                    {
-                        hostsResolveRule.domain ??= [];
-                        hostsResolveRule.domain.AddRange(domainRule.domain);
-                        hostsCounter++;
-                    }
-                    else if (domainRule.domain_keyword?.Count > 0)
-                    {
-                        hostsResolveRule.domain_keyword ??= [];
-                        hostsResolveRule.domain_keyword.AddRange(domainRule.domain_keyword);
-                        hostsCounter++;
-                    }
-                    else if (domainRule.domain_suffix?.Count > 0)
-                    {
-                        hostsResolveRule.domain_suffix ??= [];
-                        hostsResolveRule.domain_suffix.AddRange(domainRule.domain_suffix);
-                        hostsCounter++;
-                    }
-                    else if (domainRule.domain_regex?.Count > 0)
-                    {
-                        hostsResolveRule.domain_regex ??= [];
-                        hostsResolveRule.domain_regex.AddRange(domainRule.domain_regex);
-                        hostsCounter++;
-                    }
-                    else if (domainRule.geosite?.Count > 0)
-                    {
-                        hostsResolveRule.geosite ??= [];
-                        hostsResolveRule.geosite.AddRange(domainRule.geosite);
-                        hostsCounter++;
-                    }
-                }
-                if (hostsCounter > 0)
-                {
-                    _coreConfig.route.rules.Add(hostsResolveRule);
-                }
-            }
-
-            _coreConfig.route.rules.Add(new()
-            {
-                outbound = Global.DirectTag,
-                clash_mode = nameof(ERuleMode.Direct)
-            });
-            _coreConfig.route.rules.Add(new()
-            {
-                outbound = Global.ProxyTag,
-                clash_mode = nameof(ERuleMode.Global)
-            });
-
-            if (routing.DomainStrategy4Singbox.IsNotEmpty())
-            {
-                domainStrategy = routing.DomainStrategy4Singbox;
-            }
-            var resolveRule = new Rule4Sbox
-            {
-                action = "resolve",
-                strategy = domainStrategy,
-            };
-            if (_config.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
-            {
-                _coreConfig.route.rules.Add(resolveRule);
-            }
-
-            var ipRules = new List<RulesItem>();
-            if (routing != null)
-            {
-                foreach (var item1 in rules ?? [])
-                {
-                    if (!item1.Enabled)
-                    {
-                        continue;
-                    }
-
-                    if (item1.RuleType == ERuleType.DNS)
-                    {
-                        continue;
-                    }
-
-                    var userRules = BuildRoutingUserRule(item1);
-                    _coreConfig.route.rules.AddRange(userRules);
-
-                    if (item1.Ip?.Count > 0)
-                    {
-                        ipRules.Add(item1);
-                    }
-                }
-            }
-            if (_config.RoutingBasicItem.DomainStrategy == Global.IPIfNonMatch)
-            {
-                _coreConfig.route.rules.Add(resolveRule);
-                foreach (var item2 in ipRules)
-                {
-                    var userRules = BuildRoutingUserRule(item2);
-                    _coreConfig.route.rules.AddRange(userRules);
-                }
-            }
+            GenRules();
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private void GenRules()
+    {
+        if (context.IsTunEnabled)
+        {
+            _coreConfig.route.auto_detect_interface = true;
+
+            var tunRules = JsonUtils.Deserialize<List<Rule4Sbox>>(EmbedUtils.GetEmbedText(Global.TunSingboxRulesFileName));
+            if (tunRules != null)
+            {
+                _coreConfig.route.rules.AddRange(tunRules);
+            }
+
+            // Traffic addressed to the TUN interface's own addresses must never reach an
+            // outbound. auto_route hijacks the default route, so `direct` writes such a
+            // packet straight back into the TUN, which hands it to the outbound again -
+            // an infinite loop that pins a CPU core. Drop instead of rejecting so no
+            // ICMP unreachable is generated back towards the same addresses.
+            //
+            // Match each address on its own, not the prefix it carries. On Linux sing-tun
+            // registers Inet4Address[0].Addr().Next() with systemd-resolved as a "~." DNS
+            // upstream, and every prefix offered here is a /30 or /126, so carrying the
+            // prefix through would cover that resolver address too and drop every system
+            // name lookup along with the loop.
+            var tunAddresses = _coreConfig.inbounds.FirstOrDefault(i => i.type == "tun")?.address;
+            if (tunAddresses?.Count > 0)
+            {
+                _coreConfig.route.rules.Add(new()
+                {
+                    ip_cidr = [.. tunAddresses.Select(ToSingleAddressPrefix)],
+                    action = "reject",
+                    method = "drop",
+                });
+            }
+
+            var lstDirectExe = BuildRoutingDirectExe();
+            if (lstDirectExe.Count > 0)
+            {
+                _coreConfig.route.rules.Add(new()
+                {
+                    port = [53],
+                    action = "hijack-dns",
+                    process_path = lstDirectExe,
+                });
+                if (!_config.TunModeItem.DisableBridge)
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        inbound = ["tun"],
+                        process_path = lstDirectExe,
+                        action = "resolve",
+                    });
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        inbound = ["tun"],
+                        process_path = lstDirectExe,
+                        preferred_by = Global.SingboxBridgeTag,
+                        outbound = Global.SingboxBridgeTag,
+                    });
+                }
+                _coreConfig.route.rules.Add(new()
+                {
+                    process_path = lstDirectExe,
+                    outbound = Global.DirectTag,
+                });
+            }
+
+            // ICMP Routing
+            var icmpRouting = _config.TunModeItem.IcmpRouting ?? "";
+            if (!Global.TunIcmpRoutingPolicies.Contains(icmpRouting))
+            {
+                icmpRouting = Global.TunIcmpRoutingPolicies.First();
+            }
+            if (icmpRouting == "direct")
+            {
+                if (!_config.TunModeItem.DisableBridge)
+                {
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        inbound = ["tun"],
+                        network = ["icmp"],
+                        action = "resolve",
+                    });
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        inbound = ["tun"],
+                        network = ["icmp"],
+                        preferred_by = Global.SingboxBridgeTag,
+                        outbound = Global.SingboxBridgeTag,
+                    });
+                }
+                _coreConfig.route.rules.Add(new()
+                {
+                    network = ["icmp"],
+                    outbound = Global.DirectTag,
+                });
+            }
+            else if (icmpRouting != "rule")
+            {
+                var rejectMethod = icmpRouting switch
+                {
+                    "unreachable" => "default",
+                    "drop" => "drop",
+                    _ => "reply",
+                };
+                _coreConfig.route.rules.Add(new()
+                {
+                    network = ["icmp"],
+                    action = "reject",
+                    method = rejectMethod,
+                });
+            }
+        }
+
+        _coreConfig.route.rules.Add(new()
+        {
+            port = [53],
+            action = "hijack-dns",
+        });
+        if (_config.CoreBasicItem.EnableFinalFragment)
+        {
+            _coreConfig.route.rules.Add(new()
+            {
+                action = "route-options",
+                tls_record_fragment = true,
+            });
+        }
+
+        var hostsDomains = new List<string>();
+        var simpleDnsItem = context.SimpleDnsItem;
+        var rawDNSItem = context.RawDnsItem;
+        if (rawDNSItem is not { Enabled: true })
+        {
+            var userHostsMap = Utils.ParseHostsToDictionary(simpleDnsItem.Hosts);
+            hostsDomains.AddRange(userHostsMap.Select(kvp => kvp.Key));
+            if (simpleDnsItem.UseSystemHosts == true)
+            {
+                var systemHostsMap = Utils.GetSystemHosts();
+                hostsDomains.AddRange(systemHostsMap.Select(kvp => kvp.Key));
+            }
+        }
+        if (hostsDomains.Count > 0)
+        {
+            var hostsResolveRule = new Rule4Sbox
+            {
+                action = "resolve",
+            };
+            var hostsCounter = 0;
+            foreach (var host in hostsDomains)
+            {
+                var domainRule = new Rule4Sbox();
+                if (!ParseV2Domain(host, domainRule))
+                {
+                    continue;
+                }
+                if (domainRule.domain_keyword?.Count > 0 && !host.Contains(':'))
+                {
+                    domainRule.domain = domainRule.domain_keyword;
+                    domainRule.domain_keyword = null;
+                }
+                if (domainRule.domain?.Count > 0)
+                {
+                    hostsResolveRule.domain ??= [];
+                    hostsResolveRule.domain.AddRange(domainRule.domain);
+                    hostsCounter++;
+                }
+                else if (domainRule.domain_keyword?.Count > 0)
+                {
+                    hostsResolveRule.domain_keyword ??= [];
+                    hostsResolveRule.domain_keyword.AddRange(domainRule.domain_keyword);
+                    hostsCounter++;
+                }
+                else if (domainRule.domain_suffix?.Count > 0)
+                {
+                    hostsResolveRule.domain_suffix ??= [];
+                    hostsResolveRule.domain_suffix.AddRange(domainRule.domain_suffix);
+                    hostsCounter++;
+                }
+                else if (domainRule.domain_regex?.Count > 0)
+                {
+                    hostsResolveRule.domain_regex ??= [];
+                    hostsResolveRule.domain_regex.AddRange(domainRule.domain_regex);
+                    hostsCounter++;
+                }
+                else if (domainRule.geosite?.Count > 0)
+                {
+                    hostsResolveRule.geosite ??= [];
+                    hostsResolveRule.geosite.AddRange(domainRule.geosite);
+                    hostsCounter++;
+                }
+            }
+            if (hostsCounter > 0)
+            {
+                _coreConfig.route.rules.Add(hostsResolveRule);
+            }
+        }
+
+        if (!_config.TunModeItem.DisableBridge)
+        {
+            _coreConfig.route.rules.Add(new()
+            {
+                inbound = ["tun"],
+                clash_mode = nameof(ERuleMode.Direct),
+                action = "resolve",
+            });
+            _coreConfig.route.rules.Add(new()
+            {
+                inbound = ["tun"],
+                clash_mode = nameof(ERuleMode.Direct),
+                preferred_by = Global.SingboxBridgeTag,
+                outbound = Global.SingboxBridgeTag,
+            });
+        }
+        _coreConfig.route.rules.Add(new()
+        {
+            outbound = Global.DirectTag,
+            clash_mode = nameof(ERuleMode.Direct),
+        });
+        _coreConfig.route.rules.Add(new()
+        {
+            outbound = Global.ProxyTag,
+            clash_mode = nameof(ERuleMode.Global),
+        });
+
+        var domainStrategy = _config.RoutingBasicItem.DomainStrategy4Singbox.NullIfEmpty();
+        var routing = context.RoutingItem;
+        if (routing.DomainStrategy4Singbox.IsNotEmpty())
+        {
+            domainStrategy = routing.DomainStrategy4Singbox;
+        }
+
+        var rules = JsonUtils.Deserialize<List<RulesItem>>(routing?.RuleSet) ?? [];
+
+        var ipRules = new List<RulesItem>();
+        if (routing != null)
+        {
+            foreach (var item1 in rules)
+            {
+                if (!item1.Enabled)
+                {
+                    continue;
+                }
+                if (item1.RuleType == ERuleType.DNS)
+                {
+                    continue;
+                }
+                if (item1.Ip?.Count > 0)
+                {
+                    ipRules.Add(item1);
+                }
+            }
+        }
+
+        var resolveRule = new Rule4Sbox
+        {
+            action = "resolve",
+            strategy = domainStrategy,
+        };
+        var resolveRuleAdded = false;
+
+        if (context.IsTunEnabled && !_config.TunModeItem.DisableBridge)
+        {
+            var bridgeUserRules = new List<RulesItem>();
+            foreach (var item in rules)
+            {
+                if (!item.Enabled)
+                {
+                    continue;
+                }
+                if (item.RuleType == ERuleType.DNS)
+                {
+                    continue;
+                }
+                if (item.OutboundTag != Global.DirectTag)
+                {
+                    continue;
+                }
+                if (item.Protocol is { Count: > 0 })
+                {
+                    break;
+                }
+                bridgeUserRules.Add(item);
+            }
+            var bridgeRules = new List<Rule4Sbox>();
+            foreach (var item in bridgeUserRules)
+            {
+                var userRules = BuildRoutingUserRule(item);
+                foreach (var rule in userRules)
+                {
+                    var bridgeResolveRule = JsonUtils.DeepCopy(rule);
+                    var bridgeOutboundRule = JsonUtils.DeepCopy(rule);
+
+                    bridgeResolveRule.outbound = null;
+                    bridgeResolveRule.inbound = ["tun"];
+                    bridgeResolveRule.action = "resolve";
+
+                    bridgeOutboundRule.outbound = null;
+                    bridgeOutboundRule.inbound = ["tun"];
+                    bridgeOutboundRule.preferred_by = Global.SingboxBridgeTag;
+                    bridgeOutboundRule.outbound = Global.SingboxBridgeTag;
+
+                    bridgeRules.Add(bridgeResolveRule);
+                    bridgeRules.Add(bridgeOutboundRule);
+                }
+            }
+            _coreConfig.route.rules.AddRange(bridgeRules);
+        }
+
+        if (_config.Inbound.First().SniffingEnabled)
+        {
+            _coreConfig.route.rules.Add(new()
+            {
+                action = "sniff",
+            });
+            _coreConfig.route.rules.Add(new()
+            {
+                protocol = ["dns"],
+                action = "hijack-dns",
+            });
+        }
+        if (_config.RoutingBasicItem.DomainStrategy == Global.IPOnDemand)
+        {
+            _coreConfig.route.rules.Add(resolveRule);
+        }
+        foreach (var item in rules)
+        {
+            if (!item.Enabled)
+            {
+                continue;
+            }
+            if (item.RuleType == ERuleType.DNS)
+            {
+                continue;
+            }
+            if (item.Ip?.Count > 0)
+            {
+                continue;
+            }
+            var userRules = BuildRoutingUserRule(item);
+            _coreConfig.route.rules.AddRange(userRules);
+        }
+        if (_config.RoutingBasicItem.DomainStrategy == Global.IPIfNonMatch)
+        {
+            _coreConfig.route.rules.Add(resolveRule);
+            foreach (var item2 in ipRules)
+            {
+                var userRules = BuildRoutingUserRule(item2);
+                _coreConfig.route.rules.AddRange(userRules);
+            }
         }
     }
 
