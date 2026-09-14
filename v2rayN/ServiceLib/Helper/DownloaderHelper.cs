@@ -5,6 +5,12 @@ namespace ServiceLib.Helper;
 
 public class DownloaderHelper
 {
+    /// <summary>
+    /// A file download that receives no data for this long is cancelled and reported as failed.
+    /// It has to outlast Downloader's recovery from a stalled transfer: the 5 s read timeout, a retry that waits for the 100 s HttpClient timeout, and the delays before both retries.
+    /// </summary>
+    public TimeSpan StallTimeout { get; init; } = TimeSpan.FromMinutes(3);
+
     private static readonly Lazy<DownloaderHelper> _instance = new(() => new());
     public static DownloaderHelper Instance => _instance.Value;
 
@@ -164,9 +170,14 @@ public class DownloaderHelper
             CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
         };
 
+        // Downloader retries failed chunks without limit, so cancel the download once data stops arriving
+        using var stallCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        stallCancellation.CancelAfter(StallTimeout);
+
         await using var downloader = new Downloader.DownloadService(downloadOpt);
         downloader.DownloadStarted += (sender, value) =>
         {
+            stallCancellation.CancelAfter(StallTimeout);
             state = state with
             {
                 TotalBytes = value.TotalBytesToReceive,
@@ -175,6 +186,7 @@ public class DownloaderHelper
         };
         downloader.DownloadProgressChanged += (sender, value) =>
         {
+            stallCancellation.CancelAfter(StallTimeout);
             state = state with
             {
                 DownloadedBytes = value.ReceivedBytesSize,
@@ -185,15 +197,16 @@ public class DownloaderHelper
         };
         downloader.DownloadFileCompleted += (sender, value) =>
         {
+            var stalled = value.Cancelled && stallCancellation.IsCancellationRequested && !cancellationToken.IsCancellationRequested;
             state = state with
             {
                 Completed = true,
-                Error = value.Error,
+                Error = stalled ? new TimeoutException($"No data was received for {StallTimeout.TotalSeconds:0} seconds") : value.Error,
             };
             onProgress.Invoke(state);
         };
 
-        await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, cancellationToken);
+        await downloader.DownloadFileTaskAsync(request.FileUrl, request.FilePath, stallCancellation.Token);
     }
 
     public async Task DownloadSmallFilesAsync(IWebProxy? webProxy, List<FileDownloadRequest> requests, Action<ReadOnlyMemory<FileDownloadState>> onProgress, TimeSpan connectTimeout, CancellationToken cancellationToken = default)
