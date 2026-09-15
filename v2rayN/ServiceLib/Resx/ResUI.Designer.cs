@@ -1168,6 +1168,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 By Selected Nodes 的本地化字符串。
+        /// </summary>
+        public static string menuGenGroupSelectedServer {
+            get {
+                return ResourceManager.GetString("menuGenGroupSelectedServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Global Hotkey Setting 的本地化字符串。
         /// </summary>
         public static string menuGlobalHotkeySetting {
@@ -1740,6 +1749,15 @@ namespace ServiceLib.Resx {
         public static string menuSetDefaultServer {
             get {
                 return ResourceManager.GetString("menuSetDefaultServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove from Policy Group 的本地化字符串。
+        /// </summary>
+        public static string menuRemoveProxyFromGroup {
+            get {
+                return ResourceManager.GetString("menuRemoveProxyFromGroup", resourceCulture);
             }
         }
         

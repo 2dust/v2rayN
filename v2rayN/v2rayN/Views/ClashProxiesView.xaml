@@ -148,6 +148,11 @@
                             x:Name="menuProxiesSelectActivity"
                             Header="{x:Static resx:ResUI.menuProxiesSelectActivity}"
                             InputGestureText="Enter" />
+                        <Separator />
+                        <MenuItem x:Name="menuProxyAddChild" Header="{x:Static resx:ResUI.menuAddChildServer}" />
+                        <MenuItem
+                            x:Name="menuProxyRemoveFromGroup"
+                            Header="{x:Static resx:ResUI.menuRemoveProxyFromGroup}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.ItemsPanel>
@@ -157,7 +162,7 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="160" Padding="0">
+                        <Border Width="240" Padding="0">
                             <DockPanel>
                                 <Border
                                     Width="5"
@@ -183,6 +188,12 @@
                                             Foreground="{Binding Path=Delay, Converter={StaticResource DelayColorConverter}}"
                                             Style="{StaticResource ListItemSubTitle2}"
                                             Text="{Binding DelayName}" />
+                                        <TextBlock
+                                            DockPanel.Dock="Right"
+                                            Margin="{StaticResource MarginLeftRight4}"
+                                            Foreground="{DynamicResource MaterialDesign.Brush.Primary.Light}"
+                                            Style="{StaticResource ListItemSubTitle2}"
+                                            Text="{Binding SpeedName}" />
                                         <TextBlock Style="{StaticResource ListItemSubTitle2}" Text="{Binding Type}" />
                                     </DockPanel>
                                 </Grid>

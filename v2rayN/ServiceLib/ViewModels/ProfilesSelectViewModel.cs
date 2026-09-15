@@ -11,6 +11,11 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
     private string _serverFilter = string.Empty;
     private readonly Dictionary<string, bool> _dicHeaderSort = new();
     private string _subIndexId = string.Empty;
+    private string _filterField = ResUI.LvRemarks;
+
+    // IndexIds to exclude from the list (e.g. nodes already in the policy group being edited).
+    // Null = no exclusion (default), so existing callers are unaffected.
+    private HashSet<string>? _excludeIndexIds;
 
     // ConfigType filter state: default include-mode with all types selected
 
@@ -45,6 +50,15 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial bool MultiSelect { get; set; }
 
+    /// <summary>
+    /// Fields the keyword can be matched against. Only remarks is a text search;
+    /// delay and speed are numeric thresholds (delay = upper bound, speed = lower bound).
+    /// </summary>
+    public List<string> FilterFields { get; } = [ResUI.LvRemarks, ResUI.LvTestDelay, ResUI.LvTestSpeed];
+
+    [Reactive]
+    public partial string? FilterField { get; set; }
+
     #endregion ObservableCollection
 
     #region Init
@@ -68,6 +82,10 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
         this.WhenAnyValue(x => x.ServerFilter)
             .Where(y => y != null && _serverFilter != y)
             .SubscribeAsync(async _ => await ServerFilterChanged());
+
+        this.WhenAnyValue(x => x.FilterField)
+            .Where(y => y != null && _filterField != y)
+            .SubscribeAsync(async _ => await FilterFieldChangedAsync());
 
         // React to ConfigType filter changes
         this.WhenAnyValue(x => x.FilterExclude)
@@ -98,6 +116,8 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
         {
             FilterConfigTypes = [];
         }
+
+        FilterField = FilterFields.FirstOrDefault();
 
         await RefreshSubscriptions();
         await RefreshServers();
@@ -135,10 +155,19 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
         await ProfilesFocusInteraction.HandleSafe(RxVoid.Default);
     }
 
+    private async Task FilterFieldChangedAsync()
+    {
+        _filterField = FilterField;
+
+        await RefreshServers();
+    }
+
     private async Task ServerFilterChanged()
     {
         _serverFilter = ServerFilter;
-        if (_serverFilter.IsNullOrEmpty())
+        // Delay/speed are numeric thresholds, refresh as soon as the value changes.
+        // Remarks keeps the original behaviour (refresh when cleared, or on Enter).
+        if (_serverFilter.IsNullOrEmpty() || _filterField != ResUI.LvRemarks)
         {
             await RefreshServers();
         }
@@ -157,7 +186,10 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
     private async Task RefreshServersBiz()
     {
-        var lstModel = await GetProfileItemsEx(_subIndexId, _serverFilter);
+        // Only the remarks keyword can be pushed down to SQL; delay/speed are numeric
+        // and are applied in memory below, together with the ConfigType filter.
+        var keyword = _filterField == ResUI.LvRemarks ? _serverFilter : string.Empty;
+        var lstModel = await GetProfileItemsEx(_subIndexId, keyword);
 
         ProfileItems.ReplaceRange(lstModel);
         if (lstModel.Count > 0)
@@ -218,6 +250,31 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
             {
                 lstModel = lstModel.Where(t => FilterConfigTypes.Contains(t.ConfigType)).ToList();
             }
+        }
+
+        // Apply the numeric filter. Values without a valid measurement (0 = untested,
+        // -1 = failed) and non numeric text are treated as "not matching": otherwise
+        // -1 would satisfy any delay upper bound and failed nodes would be selected.
+        if (_filterField == ResUI.LvTestDelay)
+        {
+            if (int.TryParse(_serverFilter, out var maxDelay))
+            {
+                lstModel = lstModel.Where(t => t.Delay > 0 && t.Delay <= maxDelay).ToList();
+            }
+        }
+        else if (_filterField == ResUI.LvTestSpeed)
+        {
+            if (decimal.TryParse(_serverFilter, out var minSpeed))
+            {
+                lstModel = lstModel.Where(t => t.Speed > 0 && t.Speed >= minSpeed).ToList();
+            }
+        }
+
+        // Exclude nodes that the caller has marked as already present (e.g. already
+        // in the policy group being edited). Applied last so it works with all filter combos.
+        if (_excludeIndexIds is { Count: > 0 })
+        {
+            lstModel = lstModel.Where(t => !_excludeIndexIds.Contains(t.IndexId)).ToList();
         }
 
         return lstModel;
@@ -317,6 +374,18 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
     {
         FilterConfigTypes = types?.Distinct().ToList() ?? [];
         FilterExclude = exclude;
+    }
+
+    /// <summary>
+    /// Marks IndexIds that should be hidden from the list (e.g. nodes already in the
+    /// policy group being edited). Pass null or empty to clear. Must be called before
+    /// or right after construction, before Init() triggers the first RefreshServers.
+    /// </summary>
+    public void SetExcludeIndexIds(IEnumerable<string?>? indexIds)
+    {
+        _excludeIndexIds = indexIds?
+            .Where(t => t.IsNotEmpty())
+            .ToHashSet();
     }
 
     #endregion Public API

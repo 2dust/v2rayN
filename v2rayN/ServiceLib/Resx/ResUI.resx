@@ -489,6 +489,9 @@
   <data name="menuSetDefaultServer" xml:space="preserve">
     <value>Set as active</value>
   </data>
+  <data name="menuRemoveProxyFromGroup" xml:space="preserve">
+    <value>Remove from Policy Group</value>
+  </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
@@ -1712,6 +1715,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>Group by Region</value>
+  </data>
+  <data name="menuGenGroupSelectedServer" xml:space="preserve">
+    <value>By Selected Nodes</value>
   </data>
   <data name="menuEditCopy" xml:space="preserve">
     <value>Copy</value>

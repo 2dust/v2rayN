@@ -489,6 +489,9 @@
   <data name="menuSetDefaultServer" xml:space="preserve">
     <value>設為活動</value>
   </data>
+  <data name="menuRemoveProxyFromGroup" xml:space="preserve">
+    <value>從策略組移除</value>
+  </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>清除所有服務統計資料</value>
   </data>
@@ -1706,6 +1709,9 @@
   </data>
   <data name="menuGenRegionGroup" xml:space="preserve">
     <value>按區域分組</value>
+  </data>
+  <data name="menuGenGroupSelectedServer" xml:space="preserve">
+    <value>按選擇節點</value>
   </data>
   <data name="menuEditCopy" xml:space="preserve">
     <value>複製</value>

@@ -2,6 +2,7 @@
     x:Class="v2rayN.Desktop.Views.AddGroupServerWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,6 +16,10 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <conv:DelayColorConverter x:Key="DelayColorConverter" />
+    </Window.Resources>
 
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
@@ -38,7 +43,7 @@
         <Grid
             ColumnDefinitions="300,Auto,Auto"
             DockPanel.Dock="Top"
-            RowDefinitions="Auto,Auto,Auto,Auto">
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -63,17 +68,46 @@
                 Grid.Column="0"
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.menuMoveToGroup}" />
+            <ComboBox
+                x:Name="cmbSelfSub"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="200"
+                Margin="{StaticResource Margin4}"
+                DisplayMemberBinding="{Binding Remarks}"
+                ItemsSource="{Binding SelfSubItems}" />
+
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
                 Text="{x:Static resx:ResUI.TbCoreType}" />
             <ComboBox
                 x:Name="cmbCoreType"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="1"
                 Width="200"
                 Margin="{StaticResource Margin4}" />
 
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Margin="{StaticResource Margin4}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.TbSettingsDefUserAgent}" />
+            <ComboBox
+                x:Name="cmbUserAgent"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="200"
+                Margin="{StaticResource Margin4}"
+                IsEditable="True" />
+
             <Grid
                 x:Name="gridPolicyGroup"
-                Grid.Row="3"
+                Grid.Row="5"
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
                 ColumnDefinitions="300,Auto,Auto">
@@ -185,29 +219,48 @@
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            Width="150"
+                            Width="120"
                             Binding="{Binding ConfigType}"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <DataGridTextColumn
-                            Width="200"
+                            Width="170"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <DataGridTextColumn
-                            Width="200"
+                            Width="150"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <DataGridTextColumn
-                            Width="100"
+                            Width="90"
                             Binding="{Binding Port}"
                             Header="{x:Static resx:ResUI.LvPort}" />
                         <DataGridTextColumn
-                            Width="100"
+                            Width="90"
                             Binding="{Binding Network}"
                             Header="{x:Static resx:ResUI.LvTransportProtocol}" />
                         <DataGridTextColumn
-                            Width="100"
+                            Width="80"
                             Binding="{Binding StreamSecurity}"
                             Header="{x:Static resx:ResUI.LvTLS}" />
+                        <DataGridTemplateColumn Width="80" SortMemberPath="Delay" Tag="Delay">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Margin="{StaticResource MarginLr8}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
+                                        Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -225,6 +278,14 @@
                     IsReadOnly="True"
                     ItemsSource="{Binding AllProfilePreviewItemsObs}"
                     SelectionMode="Extended">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="menuPreviewRemoveChild" Header="{x:Static resx:ResUI.menuRemoveChildServer}" />
+                            <Separator />
+                            <MenuItem x:Name="menuPreviewMixedTest" Header="{x:Static resx:ResUI.menuMixedTestServer}" />
+                            <MenuItem x:Name="menuPreviewSpeedTest" Header="{x:Static resx:ResUI.menuSpeedServer}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="150"
@@ -250,6 +311,25 @@
                             Width="100"
                             Binding="{Binding StreamSecurity}"
                             Header="{x:Static resx:ResUI.LvTLS}" />
+                        <DataGridTemplateColumn Width="80" SortMemberPath="Delay" Tag="Delay">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Margin="{StaticResource MarginLr8}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
+                                        Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

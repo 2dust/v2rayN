@@ -1258,7 +1258,7 @@ public static class ConfigHandler
     /// <param name="n">Second profile item</param>
     /// <param name="remarks">Whether to compare remarks</param>
     /// <returns>True if the profiles match, false otherwise</returns>
-    private static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
+    internal static bool CompareProfileItem(ProfileItem? o, ProfileItem? n, bool remarks)
     {
         if (o == null || n == null)
         {

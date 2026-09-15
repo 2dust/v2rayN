@@ -69,6 +69,13 @@
                         ToolTip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                         <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowSplitVertical" />
                     </Button>
+                    <ComboBox
+                        x:Name="cmbFilterField"
+                        Width="90"
+                        Margin="{StaticResource MarginLeftRight4}"
+                        VerticalContentAlignment="Center"
+                        AutomationProperties.Name="{x:Static resx:ResUI.LvFilter}"
+                        Style="{StaticResource DefComboBox}" />
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"

@@ -11,6 +11,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
+        lstPreviewChild.SelectionChanged += LstPreviewChild_SelectionChanged;
         tabControl.SelectionChanged += TabControl_SelectionChanged;
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
@@ -23,6 +24,7 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ResUI.TbLeastLoad,
         };
         cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
+        cmbUserAgent.ItemsSource = Global.RawHttpUserAgentTexts.Values.Where(s => s.IsNotEmpty()).ToList();
 
         this.WhenActivated(disposables =>
         {
@@ -33,12 +35,19 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.UserAgent, v => v.cmbUserAgent.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSelfSubItem, v => v.cmbSelfSub.SelectedItem).DisposeWith(disposables);
             //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
+        this.Bind(ViewModel, vm => vm.SelectedPreviewChild, v => v.lstPreviewChild.SelectedItem).DisposeWith(disposables);
+
+        this.BindCommand(ViewModel, vm => vm.PreviewRemoveCmd, v => v.menuPreviewRemoveChild).DisposeWith(disposables);
+        this.BindCommand(ViewModel, vm => vm.PreviewMixedTestCmd, v => v.menuPreviewMixedTest).DisposeWith(disposables);
+        this.BindCommand(ViewModel, vm => vm.PreviewSpeedTestCmd, v => v.menuPreviewSpeedTest).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
@@ -139,7 +148,15 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     {
         if (ViewModel != null)
         {
-            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
+            ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItemModel>().ToList();
+        }
+    }
+
+    private void LstPreviewChild_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.SelectedPreviewChildren = lstPreviewChild.SelectedItems.Cast<ProfileItemModel>().ToList();
         }
     }
 

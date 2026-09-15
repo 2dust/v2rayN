@@ -66,6 +66,11 @@
                         </Button.Content>
                     </Button>
 
+                    <ComboBox
+                        x:Name="cmbFilterField"
+                        Width="90"
+                        Margin="{StaticResource MarginLr4}"
+                        VerticalContentAlignment="Center" />
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"

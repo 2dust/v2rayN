@@ -118,6 +118,11 @@
                             x:Name="menuProxiesSelectActivity"
                             Header="{x:Static resx:ResUI.menuProxiesSelectActivity}"
                             InputGesture="Enter" />
+                        <Separator />
+                        <MenuItem x:Name="menuProxyAddChild" Header="{x:Static resx:ResUI.menuAddChildServer}" />
+                        <MenuItem
+                            x:Name="menuProxyRemoveFromGroup"
+                            Header="{x:Static resx:ResUI.menuRemoveProxyFromGroup}" />
                     </ContextMenu>
                 </ItemsControl.ContextMenu>
                 <ItemsControl.ItemsPanel>
@@ -128,7 +133,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Label
-                            Width="160"
+                            Width="240"
                             Margin="-10,-6"
                             Padding="0"
                             Theme="{DynamicResource TagLabel}">
@@ -147,6 +152,11 @@
                                             DockPanel.Dock="Right"
                                             Foreground="{Binding Path=Delay, Converter={StaticResource DelayColorConverter}}"
                                             Text="{Binding DelayName}" />
+                                        <TextBlock
+                                            DockPanel.Dock="Right"
+                                            Margin="{StaticResource MarginLr4}"
+                                            Foreground="YellowGreen"
+                                            Text="{Binding SpeedName}" />
                                         <TextBlock Text="{Binding Type}" />
                                     </DockPanel>
                                 </Grid>

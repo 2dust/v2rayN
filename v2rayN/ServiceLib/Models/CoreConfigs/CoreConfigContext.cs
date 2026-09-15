@@ -31,4 +31,9 @@ public record CoreConfigContext
 
     // Generation Context
     public Dictionary<object, string> CustomOutboundMap { get; init; } = new();
+
+    // Policy group context: the WebSocket User-Agent configured on the policy group's main form.
+    // Assigned only when a policy group (or proxy chain) generates its child outbounds; a non-empty
+    // value therefore marks the current context as a policy group context.
+    public string? GroupUserAgent { get; init; }
 }

@@ -52,6 +52,8 @@ public record ProtocolExtraItem
     public string? SubChildItems { get; init; }
     public string? Filter { get; init; }
     public EMultipleLoad? MultipleLoad { get; init; }
+    // WebSocket User-Agent configured on the policy group main form.
+    public string? UserAgent { get; init; }
 
     // custom outbound
     public bool? IsSingboxEndpoint { get; init; }

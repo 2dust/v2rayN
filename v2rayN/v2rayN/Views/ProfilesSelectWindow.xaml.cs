@@ -25,6 +25,8 @@ public partial class ProfilesSelectWindow
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.lstGroup.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+            cmbFilterField.ItemsSource = ViewModel.FilterFields;
+            this.Bind(ViewModel, vm => vm.FilterField, v => v.cmbFilterField.SelectedItem).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
 

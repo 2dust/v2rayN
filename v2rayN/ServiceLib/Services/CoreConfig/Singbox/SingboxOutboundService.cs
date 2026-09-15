@@ -542,15 +542,27 @@ public partial class CoreConfigSingboxService
                     }
 
                     transport.path = wsPath.NullIfEmpty();
-                    if (transportExtra.Host.IsNotEmpty())
+
+                    // Policy group context: fall back the WS Host and apply the policy-group UA.
+                    // Measured: adding only Host yields 404, adding only UA fails; both must be
+                    // present at once in order to reach a node that sits behind a CDN.
+                    if (context.GroupUserAgent.IsNotEmpty())
                     {
-                        transport.headers = new()
+                        var wsHost = transportExtra.Host.NullIfEmpty() ?? _node.Sni.NullIfEmpty();
+                        if (wsHost.IsNotEmpty())
                         {
-                            Host = transportExtra.Host
-                        };
+                            transport.headers = new()
+                            {
+                                Host = wsHost
+                            };
+                        }
+
+                        transport.headers ??= new();
+                        transport.headers.UserAgent = context.GroupUserAgent;
                     }
-                    if (!useragentValue.IsNullOrEmpty())
+                    else if (!useragentValue.IsNullOrEmpty())
                     {
+                        // Not a policy group context: keep the pre-change behavior (global DefUserAgent only).
                         transport.headers ??= new();
                         transport.headers.UserAgent = useragentValue;
                     }
@@ -621,6 +633,10 @@ public partial class CoreConfigSingboxService
 
     private List<BaseServer4Sbox> BuildOutboundsList(string baseTagName = Global.ProxyTag)
     {
+        // The policy group's own UA drives its child outbounds; fall back to the built-in chrome UA
+        // so a group works out of the box and the value is always non-empty inside a group context.
+        var groupUserAgent = _node.GetProtocolExtra().UserAgent.NullIfEmpty()
+                             ?? Global.RawHttpUserAgentTexts.GetValueOrDefault("chrome", string.Empty);
         var nodes = new List<ProfileItem>();
         foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
         {
@@ -642,11 +658,11 @@ public partial class CoreConfigSingboxService
 
             if (node.ConfigType.IsGroupType())
             {
-                var childProfiles = new CoreConfigSingboxService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                var childProfiles = new CoreConfigSingboxService(context with { Node = node, GroupUserAgent = groupUserAgent, }).BuildGroupProxyOutbounds(currentTag);
                 resultOutbounds.AddRange(childProfiles);
                 continue;
             }
-            var outbound = new CoreConfigSingboxService(context with { Node = node, }).BuildProxyOutbound();
+            var outbound = new CoreConfigSingboxService(context with { Node = node, GroupUserAgent = groupUserAgent, }).BuildProxyOutbound();
             outbound.tag = currentTag;
             resultOutbounds.Add(outbound);
         }
@@ -655,6 +671,10 @@ public partial class CoreConfigSingboxService
 
     private List<BaseServer4Sbox> BuildChainOutboundsList(string baseTagName = Global.ProxyTag)
     {
+        // The proxy chain's own UA drives its child outbounds; fall back to the built-in chrome UA
+        // so a chain works out of the box and the value is always non-empty inside a chain context.
+        var groupUserAgent = _node.GetProtocolExtra().UserAgent.NullIfEmpty()
+                             ?? Global.RawHttpUserAgentTexts.GetValueOrDefault("chrome", string.Empty);
         var nodes = new List<ProfileItem>();
         foreach (var nodeId in Utils.String2List(_node.GetProtocolExtra().ChildItems) ?? [])
         {
@@ -673,7 +693,7 @@ public partial class CoreConfigSingboxService
             var dialerProxyTag = i != nodesReverse.Count - 1 ? $"chain-{baseTagName}-{i + 1}-{nodesReverse[i + 1].Remarks}" : null;
             if (node.ConfigType.IsGroupType())
             {
-                var childProfiles = new CoreConfigSingboxService(context with { Node = node, }).BuildGroupProxyOutbounds(currentTag);
+                var childProfiles = new CoreConfigSingboxService(context with { Node = node, GroupUserAgent = groupUserAgent, }).BuildGroupProxyOutbounds(currentTag);
                 if (!dialerProxyTag.IsNullOrEmpty())
                 {
                     var chainEndNodes =
@@ -725,7 +745,7 @@ public partial class CoreConfigSingboxService
                 resultOutbounds.AddRange(childProfiles);
                 continue;
             }
-            var outbound = new CoreConfigSingboxService(context with { Node = node, }).BuildProxyOutbound();
+            var outbound = new CoreConfigSingboxService(context with { Node = node, GroupUserAgent = groupUserAgent, }).BuildProxyOutbound();
 
             outbound.tag = currentTag;
 

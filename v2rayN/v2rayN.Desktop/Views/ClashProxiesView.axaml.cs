@@ -21,6 +21,8 @@ public partial class ClashProxiesView : ReactiveUserControl<ClashProxiesViewMode
 
             this.BindCommand(ViewModel, vm => vm.ProxyDelayTestCmd, v => v.menuProxyDelaytest).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ProxiesSelectActivityCmd, v => v.menuProxiesSelectActivity).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ProxyAddChildCmd, v => v.menuProxyAddChild).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.ProxyRemoveFromGroupCmd, v => v.menuProxyRemoveFromGroup).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ClashModes, v => v.cmbRulemode.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RuleModeSelected, v => v.cmbRulemode.SelectedItem).DisposeWith(disposables);

@@ -56,6 +56,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> ShareServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> GenGroupAllServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> GenGroupRegionServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GenGroupSelectedServerCmd { get; }
 
     //servers move
     public ReactiveCommand<RxVoid, RxVoid> MoveTopCmd { get; }
@@ -145,6 +146,10 @@ public partial class ProfilesViewModel : MyReactiveObject
         GenGroupRegionServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await GenGroupRegionServer();
+        }, canEditRemove);
+        GenGroupSelectedServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await GenGroupSelectedServer();
         }, canEditRemove);
 
         //servers move
@@ -630,6 +635,45 @@ public partial class ProfilesViewModel : MyReactiveObject
         var indexIdList = ret.Data as List<string>;
         _pendingSelectIndexId = indexIdList?.FirstOrDefault();
         await RefreshServers();
+    }
+
+    private async Task GenGroupSelectedServer()
+    {
+        var lstSelected = await GetProfileItems(true);
+        if (lstSelected == null || lstSelected.Count <= 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.PleaseSelectServer);
+            return;
+        }
+
+        // Build a fresh PolicyGroup profile with the selected nodes prefilled as ChildItems,
+        // then open the existing AddGroupServer dialog so the user can edit name / core / etc.
+        var childIds = lstSelected
+            .Where(p => p != null && p.IsValid() && p.IndexId.IsNotEmpty())
+            .Select(p => p.IndexId!)
+            .ToList();
+        var profileItem = new ProfileItem
+        {
+            CoreType = ECoreType.Xray,
+            ConfigType = EConfigType.PolicyGroup,
+            Remarks = $"{ResUI.TbConfigTypePolicyGroup} - {childIds.Count}",
+            IsSub = false,
+        };
+        var extraItem = new ProtocolExtraItem
+        {
+            MultipleLoad = EMultipleLoad.LeastPing,
+            GroupType = profileItem.ConfigType.ToString(),
+            ChildItems = Utils.List2String(childIds),
+            Filter = string.Empty,
+        };
+        profileItem.SetProtocolExtra(extraItem);
+
+        var addGroupServerViewModel = new AddGroupServerViewModel(profileItem);
+        var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addGroupServerViewModel);
+        if (ret == true)
+        {
+            await RefreshServers();
+        }
     }
 
     public async Task SortServer(string colName)
