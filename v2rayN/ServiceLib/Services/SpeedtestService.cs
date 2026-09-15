@@ -226,7 +226,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
-    private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+        private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
         ProcessService processService = null;
         try
@@ -234,9 +234,21 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (processService is null)
             {
-                return false;
+                // Batch config failed (e.g., one invalid node poisoned the whole batch).
+                // Fall back to testing each node individually.
+                Logging.SaveLog(_tag, "Batch speedtest config failed, falling back to individual testing");
+                await UpdateFunc("", string.Format(ResUI.SpeedtestingTestFailedPart, selecteds.Count));
+                await RunRealPingIndividuallyAsync(selecteds, exitLoopKey);
+                return true;
             }
-            await Task.Delay(1000);
+
+            // Wait for core to be ready, with a quick port check
+            if (!await WaitForCoreReady(selecteds, 3000))
+            {
+                Logging.SaveLog(_tag, "Core not ready after timeout, falling back to individual testing");
+                await RunRealPingIndividuallyAsync(selecteds, exitLoopKey);
+                return true;
+            }
 
             List<Task> tasks = [];
             foreach (var it in selecteds)
@@ -273,7 +285,87 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
-    private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
+    /// <summary>
+    /// Tests each node individually when batch testing fails.
+    /// This ensures one bad node doesn't block the entire batch.
+    /// </summary>
+    private async Task RunRealPingIndividuallyAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    {
+        foreach (var it in selecteds)
+        {
+            if (!it.AllowTest)
+            {
+                await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                continue;
+            }
+
+            if (ShouldStopTest(exitLoopKey))
+            {
+                await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                continue;
+            }
+
+            ProcessService processService = null;
+            try
+            {
+                processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                if (processService is null)
+                {
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                    await UpdateFunc(it.IndexId, "-1", ResUI.FailedToRunCore);
+                    continue;
+                }
+
+                await Task.Delay(1000);
+                await DoRealPing(it);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                await UpdateFunc(it.IndexId, "-1");
+            }
+            finally
+            {
+                if (processService != null)
+                {
+                    await processService.StopAsync();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Waits for the core process to be ready by checking if the SOCKS proxy port is accessible.
+    /// </summary>
+    private async Task<bool> WaitForCoreReady(List<ServerTestItem> selecteds, int timeoutMs)
+    {
+        var firstItem = selecteds.FirstOrDefault(x => x.AllowTest);
+        if (firstItem == null)
+        {
+            return true;
+        }
+
+        var port = firstItem.Port;
+        using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(timeoutMs));
+
+        while (!cts.Token.IsCancellationRequested)
+        {
+            try
+            {
+                using var client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                await client.ConnectAsync(Global.Loopback, port, cts.Token);
+                return true;
+            }
+            catch
+            {
+                await Task.Delay(200, cts.Token);
+            }
+        }
+        return false;
+    }
+
+        private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected, string exitLoopKey, int pageSize = 0)
     {
         if (pageSize <= 0)
         {
@@ -307,7 +399,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
-    private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+        private async Task<bool> RunUdpTestAsync(List<ServerTestItem> selecteds, string exitLoopKey)
     {
         ProcessService processService = null;
         try
@@ -315,9 +407,19 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (processService is null)
             {
-                return false;
+                // Batch config failed, fall back to individual testing
+                Logging.SaveLog(_tag, "Batch UDP test config failed, falling back to individual testing");
+                await RunUdpTestIndividuallyAsync(selecteds, exitLoopKey);
+                return true;
             }
-            await Task.Delay(1000);
+
+            // Wait for core to be ready
+            if (!await WaitForCoreReady(selecteds, 3000))
+            {
+                Logging.SaveLog(_tag, "Core not ready for UDP test, falling back to individual testing");
+                await RunUdpTestIndividuallyAsync(selecteds, exitLoopKey);
+                return true;
+            }
 
             List<Task> tasks = [];
             foreach (var it in selecteds)
@@ -353,7 +455,54 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         return true;
     }
 
-    private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
+    /// <summary>
+    /// Tests each node individually for UDP when batch testing fails.
+    /// </summary>
+    private async Task RunUdpTestIndividuallyAsync(List<ServerTestItem> selecteds, string exitLoopKey)
+    {
+        foreach (var it in selecteds)
+        {
+            if (!it.AllowTest)
+            {
+                continue;
+            }
+
+            if (ShouldStopTest(exitLoopKey))
+            {
+                continue;
+            }
+
+            ProcessService processService = null;
+            try
+            {
+                processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                if (processService is null)
+                {
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                    await UpdateFunc(it.IndexId, "-1");
+                    continue;
+                }
+
+                await Task.Delay(1000);
+                await DoUdpTest(it);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog(_tag, ex);
+                ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                await UpdateFunc(it.IndexId, "-1");
+            }
+            finally
+            {
+                if (processService != null)
+                {
+                    await processService.StopAsync();
+                }
+            }
+        }
+    }
+
+        private async Task RunMixedTestAsync(List<ServerTestItem> selecteds, int concurrencyCount, bool blSpeedTest, string exitLoopKey)
     {
         using var concurrencySemaphore = new SemaphoreSlim(concurrencyCount);
         var downloadHandle = new DownloadService();
