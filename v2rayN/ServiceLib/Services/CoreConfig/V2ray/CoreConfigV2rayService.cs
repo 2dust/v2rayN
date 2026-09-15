@@ -132,6 +132,17 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                     continue;
                 }
 
+                // Xray rejects the entire config when it contains a plaintext VLESS
+                // outbound to a public IP ("vless without TLS or other encryption is
+                // prohibited unless the server address is a private IP or domain"),
+                // which would fail the whole batch with -1. Skip such nodes here so
+                // the rest of the batch can still be tested; they keep
+                // AllowTest=false and are reported as skipped.
+                if (IsVlessPlaintextToPublicIp(item))
+                {
+                    continue;
+                }
+
                 //find unused port
                 var port = initPort;
                 for (var k = initPort; k < Global.MaxPort; k++)
@@ -303,4 +314,44 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
     }
 
     #endregion public gen function
+
+    /// <summary>
+    /// Xray refuses to start when a VLESS outbound has no TLS/Reality and no
+    /// other encryption to a public IP. In a batched speedtest all nodes share
+    /// one core config, so one such node fails the whole batch. Detect it here
+    /// so callers can skip the node instead of poisoning the batch.
+    /// </summary>
+    public static bool IsVlessPlaintextToPublicIp(ProfileItem item)
+    {
+        if (item.ConfigType != EConfigType.VLESS)
+        {
+            return false;
+        }
+
+        if (item.StreamSecurity is Global.StreamSecurity or Global.StreamSecurityReality)
+        {
+            return false;
+        }
+
+        var encryption = item.GetProtocolExtra().VlessEncryption.TrimEx();
+        if (!encryption.IsNullOrEmpty()
+            && !encryption.Equals(Global.None, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var address = item.Address.TrimEx();
+        if (address.IsNullOrEmpty())
+        {
+            return false;
+        }
+
+        // Xray only allows plaintext VLESS to private IPs or domains.
+        if (!Utils.IsIpAddress(address))
+        {
+            return false;
+        }
+
+        return !Utils.IsPrivateNetwork(address);
+    }
 }
