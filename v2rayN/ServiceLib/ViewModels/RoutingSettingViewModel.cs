@@ -85,7 +85,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     {
         var models = new List<RoutingItemModel>();
 
-        var routings = await AppManager.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems() ?? [];
         foreach (var item in routings)
         {
             var it = new RoutingItemModel()

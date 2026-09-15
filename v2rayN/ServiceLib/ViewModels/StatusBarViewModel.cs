@@ -292,7 +292,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var models = lstModel.Select(it => new ComboItem { ID = it.IndexId, Text = it.GetSummary() }).ToList();
+        var models = (lstModel ?? []).Select(it => new ComboItem { ID = it.IndexId, Text = it.GetSummary() }).ToList();
 
         BlServers = true;
         Servers.ReplaceRange(models);
@@ -390,7 +390,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshRoutingsMenu()
     {
-        var routings = await AppManager.Instance.RoutingItems();
+        var routings = await AppManager.Instance.RoutingItems() ?? [];
 
         RoutingItems.ReplaceRange(routings);
 
