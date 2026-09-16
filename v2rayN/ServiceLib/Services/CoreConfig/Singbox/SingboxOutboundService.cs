@@ -513,35 +513,79 @@ public partial class CoreConfigSingboxService
 
                 case nameof(ETransport.ws):
                     transport.type = nameof(ETransport.ws);
-                    var wsPath = transportExtra.Path;
 
-                    // Parse eh and ed parameters from path using regex
-                    if (!wsPath.IsNullOrEmpty())
+                    var rawPath = transportExtra.Path ?? string.Empty;
+
+                    var pathForSplit = rawPath;
+                    if (!rawPath.Contains('?'))
                     {
-                        var edRegex = new Regex(@"[?&]ed=(\d+)");
-                        var edMatch = edRegex.Match(wsPath);
-                        if (edMatch.Success && int.TryParse(edMatch.Groups[1].Value, out var edValue))
+                        try
                         {
-                            transport.max_early_data = edValue;
-                            transport.early_data_header_name = "Sec-WebSocket-Protocol";
-
-                            wsPath = edRegex.Replace(wsPath, "");
-                            wsPath = wsPath.Replace("?&", "?");
-                            if (wsPath.EndsWith('?'))
+                            var decodedOnce = Uri.UnescapeDataString(rawPath);
+                            if (decodedOnce.Contains('?'))
                             {
-                                wsPath = wsPath.TrimEnd('?');
+                                pathForSplit = decodedOnce;
                             }
                         }
-
-                        var ehRegex = new Regex(@"[?&]eh=([^&]+)");
-                        var ehMatch = ehRegex.Match(wsPath);
-                        if (ehMatch.Success)
-                        {
-                            transport.early_data_header_name = Uri.UnescapeDataString(ehMatch.Groups[1].Value);
-                        }
+                        catch (FormatException) { }
                     }
 
+                    var qIdx = pathForSplit.IndexOf('?');
+                    var basePath = qIdx >= 0 ? pathForSplit[..qIdx] : pathForSplit;
+                    var queryPart = qIdx >= 0 ? pathForSplit[(qIdx + 1)..] : string.Empty;
+  
+                    var remaining = new List<string>();
+                    int? ed = null;
+                    string? eh = null;
+
+                    foreach (var part in queryPart.Split('&', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var kv = part.Split('=', 2);
+                        var rawVal = kv.Length > 1 ? kv[1] : string.Empty;
+
+                        string key;
+                        try { key = Uri.UnescapeDataString(kv[0]); } catch (FormatException) { key = kv[0]; }
+                        string val;
+                        try { val = Uri.UnescapeDataString(rawVal); } catch (FormatException) { val = rawVal; }
+
+                        if (key == "ed")
+                        {
+                            if (val.IsNullOrEmpty())
+                            {
+                                remaining.Add(part);
+                                continue;
+                            }
+                            if (ed is null && int.TryParse(val, out var v) && v > 0)
+                            {
+                                ed = v;
+                            }
+                            continue;
+                        }
+                        if (key == "eh")
+                        {
+                            if (eh is null && !val.IsNullOrEmpty())
+                            {
+                                eh = val;
+                            }
+                            continue;
+                        }
+
+                        remaining.Add(part);
+                    }
+
+                    if (ed is not null)
+                    {
+                        transport.max_early_data = ed.Value;
+                        transport.early_data_header_name = eh ?? "Sec-WebSocket-Protocol";
+                    }
+                    else if (eh is not null)
+                    {
+                        transport.early_data_header_name = eh;
+                    }
+
+                    var wsPath = remaining.Count > 0 ? $"{basePath}?{string.Join("&", remaining)}" : basePath;
                     transport.path = wsPath.NullIfEmpty();
+
                     if (transportExtra.Host.IsNotEmpty())
                     {
                         transport.headers = new()
