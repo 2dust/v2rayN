@@ -317,9 +317,15 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
     /// <summary>
     /// Xray refuses to start when a VLESS outbound has no TLS/Reality and no
-    /// other encryption to a public IP. In a batched speedtest all nodes share
-    /// one core config, so one such node fails the whole batch. Detect it here
-    /// so callers can skip the node instead of poisoning the batch.
+    /// other encryption to a non-private address, which fails the whole
+    /// batched speedtest config (all nodes share one core config). Detect it
+    /// here so callers can skip the node instead of poisoning the batch.
+    /// Mirrors Xray's validateOutboundTransportSecurity: any address that
+    /// requires transport security (public IP, or a domain outside Xray's
+    /// private-domain list) is rejected. Since v2rayN cannot easily replicate
+    /// Xray's private-domain matcher, any domain is treated as requiring
+    /// transport security — matching te225's report that an empty TLS field
+    /// breaks the batch for both IP and domain addresses (#10142).
     /// </summary>
     public static bool IsVlessPlaintextToPublicIp(ProfileItem item)
     {
@@ -346,12 +352,13 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
             return false;
         }
 
-        // Xray only allows plaintext VLESS to private IPs or domains.
-        if (!Utils.IsIpAddress(address))
+        // Private IPs are allowed by Xray; everything else (public IPs and
+        // domains) requires transport security.
+        if (Utils.IsIpAddress(address))
         {
-            return false;
+            return !Utils.IsPrivateNetwork(address);
         }
 
-        return !Utils.IsPrivateNetwork(address);
+        return true;
     }
 }

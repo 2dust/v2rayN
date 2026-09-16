@@ -39,12 +39,14 @@ public class CoreConfigV2raySpeedtestTests
     }
 
     [Test]
-    public async Task IsVlessPlaintextToPublicIp_PlaintextDomain_ShouldBeFalse()
+    public async Task IsVlessPlaintextToPublicIp_PlaintextDomain_ShouldBeTrue()
     {
-        // Xray allows plaintext VLESS to domains, only public IPs are prohibited.
-        var node = CreateVlessNode("domain-1", "example.com", string.Empty);
+        // Per te225's report on #10142, an empty TLS field breaks the batch
+        // for domain addresses too (e.g. www.speedtest.net:80); Xray only
+        // exempts its small private-domain list, so treat domains as rejected.
+        var node = CreateVlessNode("domain-1", "www.speedtest.net", string.Empty);
 
-        await CoreConfigV2rayService.IsVlessPlaintextToPublicIp(node).Should().BeFalse();
+        await CoreConfigV2rayService.IsVlessPlaintextToPublicIp(node).Should().BeTrue();
     }
 
     [Test]
