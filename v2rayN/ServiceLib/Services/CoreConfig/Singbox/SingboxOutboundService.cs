@@ -515,6 +515,23 @@ public partial class CoreConfigSingboxService
                     transport.type = nameof(ETransport.ws);
                     var wsPath = transportExtra.Path;
 
+                    // Subscriptions may store the path URL-encoded (e.g.
+                    // "%2F%3Fed%3D2048" instead of "/?ed=2048", possibly from
+                    // double-encoded sources). Decode once before matching
+                    // ed/eh so sing-box gets a literal path plus
+                    // max_early_data; a no-op for already-decoded paths (#10181).
+                    if (!wsPath.IsNullOrEmpty())
+                    {
+                        try
+                        {
+                            wsPath = Uri.UnescapeDataString(wsPath);
+                        }
+                        catch
+                        {
+                            // keep the original value on malformed escapes
+                        }
+                    }
+
                     // Parse eh and ed parameters from path using regex
                     if (!wsPath.IsNullOrEmpty())
                     {
