@@ -109,6 +109,12 @@ public partial class CoreConfigV2rayService
                     : null,
             },
             tag = balancerTag,
+            // When the strategy yields no candidate (e.g. leastLoad before
+            // burst observatory has data), Xray falls back to the default
+            // handler, i.e. traffic leaks to the default proxy instead of
+            // staying in the group (#10174). Pin the first group member so
+            // the group is sticky from the start.
+            fallbackTag = _coreConfig.outbounds?.FirstOrDefault(o => o.tag.StartsWith(selector))?.tag,
         };
         _coreConfig.routing.balancers ??= [];
         _coreConfig.routing.balancers.Add(balancer);
