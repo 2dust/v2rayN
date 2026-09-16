@@ -726,6 +726,40 @@ public class Utils
         return false;
     }
 
+    /// <summary>
+    /// Regex match with a timeout guard. Filter patterns can come from user
+    /// input or subscription content while the tested text (remarks, log
+    /// messages) is attacker-influenced, so an evil pattern like (a+)+$
+    /// would otherwise hang the caller (ReDoS). On timeout or invalid
+    /// pattern, fail open (return true) so no node/message is silently
+    /// dropped; the incident is logged.
+    /// </summary>
+    public static bool IsRegexMatch(string? input, string? pattern, int timeoutSeconds = 2)
+    {
+        if (pattern.IsNullOrEmpty())
+        {
+            return true;
+        }
+        if (input.IsNullOrEmpty())
+        {
+            return false;
+        }
+        try
+        {
+            return Regex.IsMatch(input, pattern, RegexOptions.None, TimeSpan.FromSeconds(timeoutSeconds));
+        }
+        catch (RegexMatchTimeoutException ex)
+        {
+            Logging.SaveLog("IsRegexMatch timeout", ex);
+            return true;
+        }
+        catch (ArgumentException ex)
+        {
+            Logging.SaveLog("IsRegexMatch invalid pattern", ex);
+            return true;
+        }
+    }
+
     #endregion Data Checks
 
     #region Speed Test
