@@ -31,6 +31,13 @@ public partial class App : Application
             mainWindow.ViewModel = mainWindowViewModel;
             desktop.MainWindow = mainWindow;
 
+            // The tray icon is drawn by the system tray / menu bar, which follows the OS
+            // appearance. Re-resolve the icon when the OS switches between light and dark.
+            if (Current?.PlatformSettings is { } platformSettings)
+            {
+                platformSettings.ColorValuesChanged += OnColorValuesChanged;
+            }
+
             if (OperatingSystem.IsMacOS())
             {
                 Current?.TryGetFeature<IActivatableLifetime>()?.Activated += OnMacOSActivated;
@@ -38,6 +45,11 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private static void OnColorValuesChanged(object? sender, PlatformColorValues e)
+    {
+        Dispatcher.UIThread.Post(() => StatusBarViewModel.Instance.DispatcherRefreshIconInteraction.HandleSafe(RxVoid.Default));
     }
 
     #region MacOS Activation
