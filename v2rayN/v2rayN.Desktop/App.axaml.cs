@@ -49,7 +49,10 @@ public partial class App : Application
 
     private static void OnColorValuesChanged(object? sender, PlatformColorValues e)
     {
-        Dispatcher.UIThread.Post(() => StatusBarViewModel.Instance.DispatcherRefreshIconInteraction.HandleSafe(RxVoid.Default));
+        // HandleSafe returns a cold observable - it only runs once subscribed to.
+        Dispatcher.UIThread.Post(() => StatusBarViewModel.Instance.DispatcherRefreshIconInteraction
+            .HandleSafe(RxVoid.Default)
+            .Subscribe(_ => { }));
     }
 
     #region MacOS Activation
