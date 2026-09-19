@@ -108,7 +108,7 @@ public class UdpTestService
 
         var (targetHost, targetPort) = ParseHostAndPort(targetServerHost);
 
-        byte[] udpReceiveResult = null;
+        byte[]? validUdpReceiveResult = null;
 
         // Get minimum round trip time from two attempts
         var roundTripTime = TimeSpan.MaxValue;
@@ -123,7 +123,11 @@ public class UdpTestService
                 var (_, receiveResult) = await channel.ReceiveAsync(linkedCt).ConfigureAwait(false);
                 stopwatch.Stop();
 
-                udpReceiveResult = receiveResult;
+                if (!_udpTest.VerifyAndExtractUdpResponse(receiveResult))
+                {
+                    continue;
+                }
+                validUdpReceiveResult = receiveResult;
 
                 var currentRoundTripTime = stopwatch.Elapsed;
                 if (currentRoundTripTime < roundTripTime)
@@ -144,12 +148,7 @@ public class UdpTestService
             }
         }
 
-        if ((udpReceiveResult?.Length ?? 0) < 4 + 1 + 4 + 2)
-        {
-            throw new Exception("Received response is too short.");
-        }
-
-        if (udpReceiveResult != null && _udpTest.VerifyAndExtractUdpResponse(udpReceiveResult))
+        if (validUdpReceiveResult != null)
         {
             return roundTripTime;
         }
