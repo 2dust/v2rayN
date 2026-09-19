@@ -680,6 +680,13 @@ public partial class MainWindowViewModel : MyReactiveObject
         {
             SetReloadEnabled(false);
 
+            RxSchedulers.MainThreadScheduler.Schedule(() =>
+            {
+                if (TabMainSelectedIndex < 0)
+                {
+                    TabMainSelectedIndex = 0;
+                }
+            });
             var profileItem = await ConfigHandler.GetDefaultServer(_config);
             if (profileItem == null)
             {
