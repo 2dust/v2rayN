@@ -77,7 +77,7 @@ public partial class MsgViewModel : MyReactiveObject
         {
             try
             {
-                if (!Regex.IsMatch(msg, MsgFilter))
+                if (!Utils.IsRegexMatch(msg, MsgFilter))
                 {
                     return;
                 }
