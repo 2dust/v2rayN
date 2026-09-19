@@ -1018,12 +1018,12 @@ public class Utils
         return new Dictionary<string, string>();
     }
 
-    public static async Task<string?> GetCliWrapOutput(string filePath, string? arg)
+    public static async Task<string?> GetCliWrapOutput(string filePath, string? arg, CancellationToken cancellationToken = default)
     {
-        return await GetCliWrapOutput(filePath, arg != null ? new List<string>() { arg } : null);
+        return await GetCliWrapOutput(filePath, arg != null ? new List<string>() { arg } : null, cancellationToken);
     }
 
-    public static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args)
+    public static async Task<string?> GetCliWrapOutput(string filePath, IEnumerable<string>? args, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -1040,7 +1040,7 @@ public class Utils
                 }
             }
 
-            var result = await cmd.ExecuteBufferedAsync();
+            var result = await cmd.ExecuteBufferedAsync(cancellationToken);
             if (result.IsSuccess)
             {
                 return result.StandardOutput ?? "";

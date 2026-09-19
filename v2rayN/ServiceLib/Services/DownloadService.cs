@@ -20,24 +20,31 @@ public class DownloadService
     /// <summary>
     /// Downloads data with the specified proxy and reports progress messages.
     /// </summary>
-    public async Task<int> DownloadDataAsync(string url, IWebProxy webProxy, int downloadTimeout, Func<bool, string, Task> updateFunc)
+    public async Task<int> DownloadDataAsync(string url, IWebProxy webProxy, Func<bool, string, Task> updateFunc, CancellationToken cancellationToken = default)
     {
         try
         {
-            var progress = new Progress<string>();
-            progress.ProgressChanged += (sender, value) => updateFunc?.Invoke(false, $"{value}");
-
             await DownloaderHelper.Instance.DownloadDataAsync4Speed(webProxy,
                   url,
-                  progress,
-                  downloadTimeout);
+                  OnProgress,
+                  cancellationToken);
+
+            void OnProgress(string message)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                updateFunc.Invoke(false, $"{message}");
+            }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
-            await updateFunc?.Invoke(false, ex.Message);
+            await updateFunc.Invoke(false, ex.Message);
             if (ex.InnerException != null)
             {
-                await updateFunc?.Invoke(false, ex.InnerException.Message);
+                await updateFunc.Invoke(false, ex.InnerException.Message);
             }
         }
         return 0;
@@ -46,22 +53,27 @@ public class DownloadService
     /// <summary>
     /// Downloads a file and reports progress through events.
     /// </summary>
-    public async Task DownloadFileAsync(FileDownloadRequest request, bool blProxy, TimeSpan connectTimeout)
+    public async Task DownloadFileAsync(FileDownloadRequest request, bool blProxy, CancellationToken cancellationToken = default)
     {
         try
         {
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {request.FileUrl}"));
 
-            var webProxy = await GetWebProxy(blProxy);
+            var webProxy = await GetWebProxy(blProxy, cancellationToken);
             await DownloaderHelper.Instance.DownloadFileAsync(webProxy,
                 request,
                 OnProgress,
-                connectTimeout);
+                cancellationToken);
 
             void OnProgress(FileDownloadState state)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 UpdateCompleted?.Invoke(this, new UpdateResult(state.Completed, $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s | {Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}"));
             }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -75,20 +87,21 @@ public class DownloadService
         }
     }
 
-    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, TimeSpan connectTimeout)
+    public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests, bool blProxy, CancellationToken cancellationToken = default)
     {
         try
         {
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading} 0/{requests.Count}"));
 
-            var webProxy = await GetWebProxy(blProxy);
+            var webProxy = await GetWebProxy(blProxy, cancellationToken);
             await DownloaderHelper.Instance.DownloadSmallFilesAsync(webProxy,
                 requests,
                 OnProgress,
-                connectTimeout);
+                cancellationToken);
 
             void OnProgress(ReadOnlyMemory<FileDownloadState> states)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var span = states.Span;
                 var completedCount = 0;
                 var downloadingStates = new List<FileDownloadState>();
@@ -129,6 +142,10 @@ public class DownloadService
                 UpdateCompleted?.Invoke(this, new UpdateResult(allCompleted, $"{completedCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
             }
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
@@ -144,12 +161,12 @@ public class DownloadService
     /// <summary>
     /// Gets redirect target URL without following redirects automatically.
     /// </summary>
-    public async Task<string?> UrlRedirectAsync(string url, bool blProxy)
+    public async Task<string?> UrlRedirectAsync(string url, bool blProxy, CancellationToken cancellationToken = default)
     {
         var webRequestHandler = new SocketsHttpHandler
         {
             AllowAutoRedirect = false,
-            Proxy = await GetWebProxy(blProxy)
+            Proxy = await GetWebProxy(blProxy, cancellationToken)
         };
         var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
         if (certificateChainPolicy != null)
@@ -159,7 +176,7 @@ public class DownloadService
         }
         using var client = new HttpClient(webRequestHandler);
 
-        var response = await client.GetAsync(url);
+        var response = await client.GetAsync(url, cancellationToken);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
         {
             return response.Headers.Location.ToString();
@@ -175,25 +192,28 @@ public class DownloadService
     /// <summary>
     /// Tries to download string content using proxy switch setting.
     /// </summary>
-    public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent)
+    public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent, CancellationToken cancellationToken = default)
     {
-        var webProxy = await GetWebProxy(blProxy);
-        return await TryDownloadString(url, webProxy, userAgent);
+        var webProxy = await GetWebProxy(blProxy, cancellationToken);
+        return await TryDownloadString(url, webProxy, userAgent, cancellationToken);
     }
 
     /// <summary>
     /// Tries to download string content with a specified proxy.
     /// </summary>
-    public async Task<string?> TryDownloadString(string url, IWebProxy? webProxy, string userAgent)
+    public async Task<string?> TryDownloadString(string url, IWebProxy? webProxy, string userAgent, CancellationToken cancellationToken = default)
     {
-        var timeout = 15;
         try
         {
-            var result1 = await DownloadStringAsync(url, webProxy, userAgent, timeout);
+            var result1 = await DownloadStringAsync(url, webProxy, userAgent, cancellationToken);
             if (result1.IsNotEmpty())
             {
                 return result1;
             }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -207,11 +227,15 @@ public class DownloadService
 
         try
         {
-            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, timeout);
+            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, cancellationToken);
             if (result2.IsNotEmpty())
             {
                 return result2;
             }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -229,17 +253,16 @@ public class DownloadService
     /// <summary>
     /// Downloads string content via HttpClient.
     /// </summary>
-    private async Task<string?> DownloadStringAsync(string url, IWebProxy? webProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringAsync(string url, IWebProxy? webProxy, string userAgent, CancellationToken cancellationToken = default)
     {
         try
         {
-            var connectTimeout = Math.Clamp(timeout / 5, 2, 5);
             var handler = new SocketsHttpHandler
             {
                 Proxy = webProxy,
                 UseProxy = webProxy != null,
                 AutomaticDecompression = DecompressionMethods.All,
-                ConnectTimeout = TimeSpan.FromSeconds(connectTimeout)
+                ConnectTimeout = webProxy is null ? Global.DirectDownloadConnect : Global.ProxyDownloadConnect,
             };
             var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
             if (certificateChainPolicy != null)
@@ -248,10 +271,8 @@ public class DownloadService
                 handler.SslOptions.RemoteCertificateValidationCallback = null;
             }
 
-            using var client = new HttpClient(HttpRequestHeadersHelper.CreateHandler(handler, RequestHeaders))
-            {
-                Timeout = Timeout.InfiniteTimeSpan
-            };
+            using var client = new HttpClient(HttpRequestHeadersHelper.CreateHandler(handler, RequestHeaders));
+            client.Timeout = Timeout.InfiniteTimeSpan;
 
             if (userAgent.IsNullOrEmpty())
             {
@@ -270,10 +291,15 @@ public class DownloadService
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Utils.Base64Encode(uri.UserInfo));
             }
 
-            using var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+            using var timeoutCts = new CancellationTokenSource();
+            timeoutCts.CancelAfter(webProxy is null ? Global.DirectFetch : Global.ProxyFetch);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
 
-            return await client.GetStringAsync(url, cts.Token);
+            return await client.GetStringAsync(url, linkedCts.Token);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -291,7 +317,7 @@ public class DownloadService
     /// <summary>
     /// Downloads string content via DownloaderHelper.
     /// </summary>
-    private async Task<string?> DownloadStringViaDownloader(string url, IWebProxy? webProxy, string userAgent, int timeout)
+    private async Task<string?> DownloadStringViaDownloader(string url, IWebProxy? webProxy, string userAgent, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -299,8 +325,12 @@ public class DownloadService
             {
                 userAgent = Utils.GetVersion(false);
             }
-            var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, timeout, RequestHeaders, AcceptHeader);
+            var result = await DownloaderHelper.Instance.DownloadStringAsync(webProxy, url, userAgent, RequestHeaders, AcceptHeader, cancellationToken);
             return result;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -317,14 +347,14 @@ public class DownloadService
     /// <summary>
     /// Creates local SOCKS proxy when proxy switch is enabled.
     /// </summary>
-    private async Task<WebProxy?> GetWebProxy(bool blProxy)
+    private async Task<WebProxy?> GetWebProxy(bool blProxy, CancellationToken cancellationToken = default)
     {
         if (!blProxy)
         {
             return null;
         }
         var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
-        if (await SocketCheck(Global.Loopback, port) == false)
+        if (await SocksPortCheck(Global.Loopback, port, cancellationToken) == false)
         {
             return null;
         }
@@ -335,18 +365,64 @@ public class DownloadService
     /// <summary>
     /// Checks whether the specified TCP endpoint is reachable.
     /// </summary>
-    private async Task<bool> SocketCheck(string ip, int port)
+    private async Task<bool> SocksPortCheck(string ip, int port, CancellationToken cancellationToken = default)
     {
-        try
+        using var rootTimeOutCts = new CancellationTokenSource(Global.LocalFetch);
+        using var rootCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, rootTimeOutCts.Token);
+        var rootToken = rootCts.Token;
+
+        // SOCKS5 client greeting: VER=5, NMETHODS=1, METHOD=0x00 (no auth)
+        ReadOnlyMemory<byte> greeting = new byte[] { 0x05, 0x01, 0x00 };
+        var buf = new byte[2];
+
+        while (!rootToken.IsCancellationRequested)
         {
-            IPEndPoint point = new(IPAddress.Parse(ip), port);
-            using Socket? sock = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            await sock.ConnectAsync(point);
-            return true;
+            using var tcp = new TcpClient();
+            using var attemptCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(rootToken, attemptCts.Token);
+            var linkedToken = linkedCts.Token;
+            try
+            {
+                await tcp.ConnectAsync(ip, port, linkedToken);
+                var stream = tcp.GetStream();
+
+                await stream.WriteAsync(greeting, linkedToken);
+
+                var read = await stream.ReadAsync(buf.AsMemory(0, 2), linkedToken);
+
+                // Server selection: VER=5, METHOD=0x00 — proxy is fully ready
+                if (read == 2 && buf[0] == 0x05)
+                {
+                    return true;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                if (!rootToken.IsCancellationRequested)
+                {
+                    continue;
+                }
+                Logging.SaveLog($"SocksPortCheck Timeout waiting for proxy port {port} to be ready.");
+                return false;
+            }
+            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.ConnectionRefused)
+            {
+                // Connection refused, proxy not ready yet, wait 50ms before retrying
+                try
+                {
+                    await Task.Delay(50, rootToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    Logging.SaveLog($"SocksPortCheck Timeout waiting for proxy port {port} to be ready.");
+                    return false;
+                }
+            }
+            catch
+            {
+                // Ignore other exceptions and continue
+            }
         }
-        catch (Exception)
-        {
-            return false;
-        }
+        return false;
     }
 }

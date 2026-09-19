@@ -88,17 +88,18 @@ public class UdpTestService
         return (targetServerHost, _udpTest.GetDefaultTargetPort());
     }
 
-    public async Task<TimeSpan> SendUdpRequestAsync(string targetServerHost, int socks5Port, TimeSpan operationTimeout)
+    public async Task<TimeSpan> SendUdpRequestAsync(string targetServerHost, int socks5Port, CancellationToken ct = default)
     {
-        using var cts = new CancellationTokenSource(operationTimeout);
-        var cancellationToken = cts.Token;
+        using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
+        var linkedCt = linkedCts.Token;
         var udpRequestPacket = _udpTest.BuildUdpRequestPacket();
         if (udpRequestPacket == null || udpRequestPacket.Length == 0)
         {
             throw new InvalidOperationException("Failed to build UDP request packet.");
         }
         using var channel = new Socks5UdpChannel("127.0.0.1", socks5Port);
-        if (!await channel.EstablishUdpAssociationAsync(cancellationToken).ConfigureAwait(false))
+        if (!await channel.EstablishUdpAssociationAsync(linkedCt).ConfigureAwait(false))
         {
             throw new Exception("Failed to establish UDP association with SOCKS5 proxy.");
         }
@@ -116,8 +117,8 @@ public class UdpTestService
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                await channel.SendAsync(targetHost, targetPort, udpRequestPacket).ConfigureAwait(false);
-                var (_, receiveResult) = await channel.ReceiveAsync(cancellationToken).ConfigureAwait(false);
+                await channel.SendAsync(targetHost, targetPort, udpRequestPacket, linkedCt).ConfigureAwait(false);
+                var (_, receiveResult) = await channel.ReceiveAsync(linkedCt).ConfigureAwait(false);
                 stopwatch.Stop();
 
                 udpReceiveResult = receiveResult;

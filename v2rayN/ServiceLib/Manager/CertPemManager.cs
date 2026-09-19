@@ -28,14 +28,13 @@ public class CertPemManager
     ///     Get certificate in PEM format from a server with CA pinning validation
     /// </summary>
     public async Task<(string?, string?)> GetCertPemAsync(string target, string serverName,
-        List<string>? verifyPeerCertByName = null, int timeout = 4)
+        List<string>? verifyPeerCertByName = null)
     {
         try
         {
             var (domain, _, port, _) = Utils.ParseUrl(target);
 
-            using var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+            using var cts = new CancellationTokenSource(Global.LocalFetch);
 
             using var client = new TcpClient();
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
@@ -63,8 +62,8 @@ public class CertPemManager
         }
         catch (OperationCanceledException)
         {
-            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
-            return (null, $"Connection timeout after {timeout} seconds");
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {Global.LocalFetch.TotalSeconds} seconds"));
+            return (null, $"Connection timeout after {Global.LocalFetch.TotalSeconds} seconds");
         }
         catch (Exception ex)
         {
@@ -77,15 +76,14 @@ public class CertPemManager
     ///     Get certificate chain in PEM format from a server with CA pinning validation
     /// </summary>
     public async Task<(List<string>, string?)> GetCertChainPemAsync(string target, string serverName,
-        List<string>? verifyPeerCertByName = null, int timeout = 4)
+        List<string>? verifyPeerCertByName = null)
     {
         var pemList = new List<string>();
         try
         {
             var (domain, _, port, _) = Utils.ParseUrl(target);
 
-            using var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+            using var cts = new CancellationTokenSource(Global.LocalFetch);
 
             using var client = new TcpClient();
             await client.ConnectAsync(domain, port > 0 ? port : 443, cts.Token);
@@ -116,8 +114,8 @@ public class CertPemManager
         }
         catch (OperationCanceledException)
         {
-            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {timeout} seconds"));
-            return (pemList, $"Connection timeout after {timeout} seconds");
+            Logging.SaveLog(_tag, new TimeoutException($"Connection timeout after {Global.LocalFetch.TotalSeconds} seconds"));
+            return (pemList, $"Connection timeout after {Global.LocalFetch.TotalSeconds} seconds");
         }
         catch (Exception ex)
         {
