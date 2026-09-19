@@ -129,6 +129,10 @@ public class UdpTestService
                     roundTripTime = currentRoundTripTime;
                 }
             }
+            catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
+            {
+                throw;
+            }
             catch
             {
                 if (attempt == 1 && roundTripTime == TimeSpan.MaxValue)
@@ -140,7 +144,7 @@ public class UdpTestService
 
         if ((udpReceiveResult?.Length ?? 0) < 4 + 1 + 4 + 2)
         {
-            throw new Exception("Received NTP response is too short.");
+            throw new Exception("Received response is too short.");
         }
 
         if (udpReceiveResult != null && _udpTest.VerifyAndExtractUdpResponse(udpReceiveResult))

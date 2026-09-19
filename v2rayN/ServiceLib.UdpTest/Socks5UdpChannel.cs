@@ -106,6 +106,11 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             throw new ArgumentException("Invalid SOCKS5 UDP packet: too short");
         }
 
+        if (packet[0] != 0x00 || packet[1] != 0x00)
+        {
+            throw new ArgumentException("Invalid SOCKS5 UDP packet: RSV field must be 0");
+        }
+
         var offset = 0;
 
         // RSV (2 bytes) - Reserved field, skip
@@ -200,8 +205,8 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
     public void Dispose()
     {
-        _tcpClient.Dispose();
-        _udpClient.Dispose();
+        _tcpClient?.Dispose();
+        _udpClient?.Dispose();
     }
 
     #region SOCKS5 Connection Handling
