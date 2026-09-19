@@ -43,9 +43,9 @@ public class McBeService : IUdpTest
     {
         // 0x1c | client alive time in ms (recorded from previous ping) |
         // server GUID | Magic | string length | Edition
-        //
+        // 
         // Edition Example:
-        //
+        // 
         // MCPE;Dedicated Server;527;1.19.1;0;10;13253860892328930865;Bedrock level;Survival;1;19132;19133;
         if (mcbeResponseBytes.Length < 48)
         {
