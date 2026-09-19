@@ -24,6 +24,24 @@ public class WireguardFmt : BaseFmt
 
         var query = Utils.ParseQueryString(url.Query);
 
+        var finalmaskDecoded = GetQueryDecoded(query, "fm");
+        if (finalmaskDecoded.IsNotEmpty())
+        {
+            var node = JsonUtils.ParseJson(finalmaskDecoded);
+            item.Finalmask = node != null
+                ? JsonUtils.Serialize(node, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                })
+                : finalmaskDecoded;
+        }
+        else
+        {
+            item.Finalmask = string.Empty;
+        }
+
         item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             WgPublicKey = GetQueryDecoded(query, "publickey"),
@@ -75,6 +93,19 @@ public class WireguardFmt : BaseFmt
         if (!protoExtra.WgDns.IsNullOrEmpty())
         {
             dicQuery.Add("dns", Utils.UrlEncode(protoExtra.WgDns));
+        }
+        if (item.Finalmask.IsNotEmpty())
+        {
+            var node = JsonUtils.ParseJson(item.Finalmask);
+            var finalmask = node != null
+                ? JsonUtils.Serialize(node, new JsonSerializerOptions
+                {
+                    WriteIndented = false,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                })
+                : item.Finalmask;
+            dicQuery.Add("fm", Utils.UrlEncode(finalmask));
         }
         return ToUri(EConfigType.WireGuard, item.Address, item.Port, item.Password, dicQuery, remark);
     }
