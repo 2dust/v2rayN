@@ -31,10 +31,7 @@ public class StunService : IUdpTest
         if (stunResponseBytes.Length >= 2)
         {
             var messageType = (stunResponseBytes[0] << 8) | stunResponseBytes[1];
-            if (messageType is 0x0101 or 0x0111)
-            {
-                return true;
-            }
+            return messageType is 0x0101 or 0x0111;
         }
 
         return true;

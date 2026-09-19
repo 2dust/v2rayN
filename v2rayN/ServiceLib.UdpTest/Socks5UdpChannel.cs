@@ -2,14 +2,19 @@ namespace ServiceLib.UdpTest;
 
 public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposable
 {
+    private bool _initialized;
+    private IPEndPoint _relayEndPoint;
     private TcpClient _tcpClient;
     private UdpClient _udpClient;
-    private IPEndPoint _relayEndPoint;
 
-    private bool _initialized = false;
+    public void Dispose()
+    {
+        _tcpClient?.Dispose();
+        _udpClient?.Dispose();
+    }
 
     /// <summary>
-    /// Send UDP data to a remote endpoint (IP address)
+    ///     Send UDP data to a remote endpoint (IP address)
     /// </summary>
     public async Task SendAsync(IPEndPoint remote, byte[] data, CancellationToken ct = default)
     {
@@ -19,14 +24,14 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                 ? Socks5AddressData.AddrTypeIPv4
                 : Socks5AddressData.AddrTypeIPv6,
             Host = remote.Address.ToString(),
-            Port = (ushort)remote.Port
+            Port = (ushort)remote.Port,
         };
         var packet = BuildSocks5UdpPacket(addrData, data);
         await _udpClient.SendAsync(packet.AsMemory(), _relayEndPoint, ct);
     }
 
     /// <summary>
-    /// Send UDP data to a remote endpoint (domain name or IP address)
+    ///     Send UDP data to a remote endpoint (domain name or IP address)
     /// </summary>
     /// <param name="host">Domain name or IP address</param>
     /// <param name="port">Port number</param>
@@ -54,12 +59,12 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         addrData.Port = port;
 
         var packet = BuildSocks5UdpPacket(addrData, data);
-        //await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
+        // await _udpClient.SendAsync(packet, packet.Length, _relayEndPoint);
         await _udpClient.SendAsync(packet.AsMemory(), _relayEndPoint, ct);
     }
 
     /// <summary>
-    /// Receive UDP data from remote endpoint
+    ///     Receive UDP data from remote endpoint
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to cancel the receive operation</param>
     /// <returns>Remote endpoint information and received data</returns>
@@ -69,16 +74,6 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         var result = await _udpClient.ReceiveAsync(cancellationToken).ConfigureAwait(false);
         var (remote, payload) = ParseSocks5UdpPacket(result.Buffer);
         return (remote, payload);
-    }
-
-    /// <summary>
-    /// Represents a remote endpoint that can be either an IP address or a domain name
-    /// </summary>
-    public class Socks5RemoteEndpoint(string host, ushort port, bool isDomain)
-    {
-        public string Host { get; set; } = host;
-        public ushort Port { get; set; } = port;
-        public bool IsDomain { get; set; } = isDomain;
     }
 
     private static byte[] BuildSocks5UdpPacket(Socks5AddressData addressData, byte[] data)
@@ -104,6 +99,11 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         if (packet.Length < 10) // Minimum length: RSV(2) + FRAG(1) + ATYP(1) + IPv4(4) + Port(2) = 10
         {
             throw new ArgumentException("Invalid SOCKS5 UDP packet: too short");
+        }
+
+        if (packet[0] != 0x00 || packet[1] != 0x00)
+        {
+            throw new ArgumentException("Invalid SOCKS5 UDP packet: RSV field must be 0");
         }
 
         var offset = 0;
@@ -198,82 +198,33 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
         return (remote, data);
     }
 
-    public void Dispose()
+    /// <summary>
+    ///     Represents a remote endpoint that can be either an IP address or a domain name
+    /// </summary>
+    public class Socks5RemoteEndpoint(string host, ushort port, bool isDomain)
     {
-        _tcpClient.Dispose();
-        _udpClient.Dispose();
+        public string Host { get; set; } = host;
+        public ushort Port { get; set; } = port;
+        public bool IsDomain { get; set; } = isDomain;
     }
-
-    #region SOCKS5 Connection Handling
-
-    private const byte Socks5Version = 0x05;
-    private const byte SocksCmdUdpAssociate = 0x03;
-
-    public async Task<bool> EstablishUdpAssociationAsync(CancellationToken cancellationToken)
-    {
-        if (_initialized)
-        {
-            Dispose();
-            _initialized = false;
-        }
-
-        _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
-        _tcpClient = new TcpClient();
-        try
-        {
-            await _tcpClient.ConnectAsync(socks5Host, socks5TcpPort, cancellationToken).ConfigureAwait(false);
-        }
-        catch (SocketException)
-        {
-            return false;
-        }
-
-        var tcpControlStream = _tcpClient.GetStream();
-
-        byte[] handshakeRequest = [Socks5Version, 0x01, 0x00];
-        await tcpControlStream.WriteAsync(handshakeRequest, cancellationToken).ConfigureAwait(false);
-        var handshakeResponse = new byte[2];
-        if (await tcpControlStream.ReadAsync(handshakeResponse, cancellationToken).ConfigureAwait(false) < 2 ||
-            handshakeResponse[0] != Socks5Version || handshakeResponse[1] != 0x00)
-        {
-            return false;
-        }
-
-        var clientAddrForSocks = new Socks5AddressData
-        {
-            AddressType = Socks5AddressData.AddrTypeIPv4,
-            Host = "0.0.0.0",
-            Port = 0
-        };
-        using var udpAssociateReqMs = new MemoryStream();
-        udpAssociateReqMs.WriteByte(Socks5Version);
-        udpAssociateReqMs.WriteByte(SocksCmdUdpAssociate);
-        udpAssociateReqMs.WriteByte(0x00);
-        udpAssociateReqMs.Write(clientAddrForSocks.ToBytes());
-        await tcpControlStream.WriteAsync(udpAssociateReqMs.ToArray(), cancellationToken).ConfigureAwait(false);
-
-        var verRepRsv = new byte[3];
-        if (await tcpControlStream.ReadAsync(verRepRsv, cancellationToken).ConfigureAwait(false) < 3 ||
-            verRepRsv[0] != Socks5Version || verRepRsv[1] != 0x00)
-        {
-            return false;
-        }
-
-        var proxyRelaySocksAddr =
-            await Socks5AddressData.ParseAsync(tcpControlStream, cancellationToken).ConfigureAwait(false);
-        if (proxyRelaySocksAddr == null || !IPAddress.TryParse(proxyRelaySocksAddr.Host, out var proxyRelayIp))
-        {
-            return false;
-        }
-
-        _relayEndPoint = new IPEndPoint(proxyRelayIp, proxyRelaySocksAddr.Port);
-        _initialized = true;
-        return true;
-    }
-
-    #endregion SOCKS5 Connection Handling
 
     #region SOCKS5 Address Handling
+
+    private static async Task<bool> TryReadExactlyAsync(
+        Stream stream,
+        Memory<byte> buffer,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await stream.ReadExactlyAsync(buffer, cancellationToken).ConfigureAwait(false);
+            return true;
+        }
+        catch (EndOfStreamException)
+        {
+            return false;
+        }
+    }
 
     private class Socks5AddressData
     {
@@ -345,7 +296,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
             var typeByte = new byte[1];
             try
             {
-                if (await stream.ReadAsync(typeByte.AsMemory(0, 1), ct).ConfigureAwait(false) < 1)
+                if (!await TryReadExactlyAsync(stream, typeByte, ct).ConfigureAwait(false))
                 {
                     return null;
                 }
@@ -355,7 +306,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                 {
                     case AddrTypeIPv4:
                         var ipv4Bytes = new byte[4];
-                        if (await stream.ReadAsync(ipv4Bytes.AsMemory(0, 4), ct).ConfigureAwait(false) < 4)
+                        if (!await TryReadExactlyAsync(stream, ipv4Bytes, ct).ConfigureAwait(false))
                         {
                             return null;
                         }
@@ -365,7 +316,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
                     case AddrTypeDomain:
                         var lenByte = new byte[1];
-                        if (await stream.ReadAsync(lenByte.AsMemory(0, 1), ct).ConfigureAwait(false) < 1)
+                        if (!await TryReadExactlyAsync(stream, lenByte, ct).ConfigureAwait(false))
                         {
                             return null;
                         }
@@ -377,8 +328,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                         else
                         {
                             var domainBytes = new byte[lenByte[0]];
-                            if (await stream.ReadAsync(domainBytes.AsMemory(0, domainBytes.Length), ct)
-                                    .ConfigureAwait(false) < domainBytes.Length)
+                            if (!await TryReadExactlyAsync(stream, domainBytes, ct).ConfigureAwait(false))
                             {
                                 return null;
                             }
@@ -390,7 +340,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
 
                     case AddrTypeIPv6:
                         var ipv6Bytes = new byte[16];
-                        if (await stream.ReadAsync(ipv6Bytes.AsMemory(0, 16), ct).ConfigureAwait(false) < 16)
+                        if (!await TryReadExactlyAsync(stream, ipv6Bytes, ct).ConfigureAwait(false))
                         {
                             return null;
                         }
@@ -403,7 +353,7 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
                 }
 
                 var portBytes = new byte[2];
-                if (await stream.ReadAsync(portBytes.AsMemory(0, 2), ct).ConfigureAwait(false) < 2)
+                if (!await TryReadExactlyAsync(stream, portBytes, ct).ConfigureAwait(false))
                 {
                     return null;
                 }
@@ -419,4 +369,73 @@ public class Socks5UdpChannel(string socks5Host, int socks5TcpPort) : IDisposabl
     }
 
     #endregion SOCKS5 Address Handling
+
+    #region SOCKS5 Connection Handling
+
+    private const byte Socks5Version = 0x05;
+    private const byte SocksCmdUdpAssociate = 0x03;
+
+    public async Task<bool> EstablishUdpAssociationAsync(CancellationToken cancellationToken)
+    {
+        if (_initialized)
+        {
+            Dispose();
+            _initialized = false;
+        }
+
+        _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
+        _tcpClient = new TcpClient();
+        try
+        {
+            await _tcpClient.ConnectAsync(socks5Host, socks5TcpPort, cancellationToken).ConfigureAwait(false);
+        }
+        catch (SocketException)
+        {
+            return false;
+        }
+
+        var tcpControlStream = _tcpClient.GetStream();
+
+        byte[] handshakeRequest = [Socks5Version, 0x01, 0x00];
+        await tcpControlStream.WriteAsync(handshakeRequest, cancellationToken).ConfigureAwait(false);
+        var handshakeResponse = new byte[2];
+        if (!await TryReadExactlyAsync(tcpControlStream, handshakeResponse, cancellationToken).ConfigureAwait(false) ||
+            handshakeResponse[0] != Socks5Version || handshakeResponse[1] != 0x00)
+        {
+            return false;
+        }
+
+        var clientAddrForSocks = new Socks5AddressData
+        {
+            AddressType = Socks5AddressData.AddrTypeIPv4,
+            Host = "0.0.0.0",
+            Port = 0,
+        };
+        using var udpAssociateReqMs = new MemoryStream();
+        udpAssociateReqMs.WriteByte(Socks5Version);
+        udpAssociateReqMs.WriteByte(SocksCmdUdpAssociate);
+        udpAssociateReqMs.WriteByte(0x00);
+        udpAssociateReqMs.Write(clientAddrForSocks.ToBytes());
+        await tcpControlStream.WriteAsync(udpAssociateReqMs.ToArray(), cancellationToken).ConfigureAwait(false);
+
+        var verRepRsv = new byte[3];
+        if (!await TryReadExactlyAsync(tcpControlStream, verRepRsv, cancellationToken).ConfigureAwait(false) ||
+            verRepRsv[0] != Socks5Version || verRepRsv[1] != 0x00)
+        {
+            return false;
+        }
+
+        var proxyRelaySocksAddr =
+            await Socks5AddressData.ParseAsync(tcpControlStream, cancellationToken).ConfigureAwait(false);
+        if (proxyRelaySocksAddr == null || !IPAddress.TryParse(proxyRelaySocksAddr.Host, out var proxyRelayIp))
+        {
+            return false;
+        }
+
+        _relayEndPoint = new IPEndPoint(proxyRelayIp, proxyRelaySocksAddr.Port);
+        _initialized = true;
+        return true;
+    }
+
+    #endregion SOCKS5 Connection Handling
 }

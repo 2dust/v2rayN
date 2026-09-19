@@ -17,13 +17,13 @@ public class McBeService : IUdpTest
         0xFD, 0xFD, 0xFD, 0xFD, 0x12, 0x34, 0x56, 0x78,
         // Client GUID (random 16 bytes)
         0x66, 0x0E, 0xAB, 0xBC, 0x61, 0x0D, 0x1F, 0x4E,
-        0xA4, 0x40, 0x8C, 0x65, 0xC1, 0xBE, 0xF5, 0x4B
+        0xA4, 0x40, 0x8C, 0x65, 0xC1, 0xBE, 0xF5, 0x4B,
     ];
 
     private static readonly byte[] McBeMagicBytes =
     [
         0x00, 0xFF, 0xFF, 0x00, 0xFE, 0xFE, 0xFE, 0xFE,
-        0xFD, 0xFD, 0xFD, 0xFD, 0x12, 0x34, 0x56, 0x78
+        0xFD, 0xFD, 0xFD, 0xFD, 0x12, 0x34, 0x56, 0x78,
     ];
 
     private static readonly List<string> ValidGameModes =
@@ -31,7 +31,7 @@ public class McBeService : IUdpTest
         "Survival",
         "Creative",
         "Adventure",
-        "Spectator"
+        "Spectator",
     ];
 
     public byte[] BuildUdpRequestPacket()
@@ -43,9 +43,9 @@ public class McBeService : IUdpTest
     {
         // 0x1c | client alive time in ms (recorded from previous ping) |
         // server GUID | Magic | string length | Edition
-        //
+        // 
         // Edition Example:
-        //
+        // 
         // MCPE;Dedicated Server;527;1.19.1;0;10;13253860892328930865;Bedrock level;Survival;1;19132;19133;
         if (mcbeResponseBytes.Length < 48)
         {
@@ -61,6 +61,10 @@ public class McBeService : IUdpTest
             return false; // Magic bytes do not match
         }
         var stringLength = (ushort)((mcbeResponseBytes[33] << 8) | mcbeResponseBytes[34]);
+        if (mcbeResponseBytes.Length < 35 + stringLength)
+        {
+            return false; // Not enough data for the string
+        }
         var stringData = Encoding.UTF8.GetString(mcbeResponseBytes.Skip(35).Take(stringLength).ToArray());
         var stringParts = stringData.Split(';');
         // check Game Mode str
