@@ -23,11 +23,11 @@
     <PackageVersion Include="Semi.Avalonia" Version="12.1.0.1" />
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="12.1.0.1" />
-    <PackageVersion Include="NLog" Version="6.2.0" />
+    <PackageVersion Include="NLog" Version="6.2.1" />
     <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
     <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.4.1" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
-    <PackageVersion Include="TUnit" Version="1.68.4" />
+    <PackageVersion Include="TUnit" Version="1.68.17" />
     <PackageVersion Include="TUnit.Assertions.Should" Version="1.65.38-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
