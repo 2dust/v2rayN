@@ -8,8 +8,13 @@ public class BulkObservableCollection<T> : ObservableCollection<T>
     {
     }
 
-    public BulkObservableCollection(IEnumerable<T> collection) : base(collection) { }
-    public BulkObservableCollection(List<T> list) : base(list) { }
+    public BulkObservableCollection(IEnumerable<T> collection) : base(collection)
+    {
+    }
+
+    public BulkObservableCollection(List<T> list) : base(list)
+    {
+    }
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {

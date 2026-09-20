@@ -76,7 +76,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             runCts.Dispose();
         }
     }
-    
+
     private async Task RunAsync(ESpeedActionType actionType, List<ProfileItem> selecteds, CancellationToken ct = default)
     {
         var lstSelected = await GetClearItem(actionType, selecteds);
@@ -178,9 +178,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 case ESpeedActionType.UdpTest:
                     await UpdateFunc(it.IndexId, message, "");
                     break;
+
                 case ESpeedActionType.Speedtest:
                     await UpdateFunc(it.IndexId, "", message);
                     break;
+
                 case ESpeedActionType.Mixedtest:
                     await UpdateFunc(it.IndexId, message, message);
                     break;
