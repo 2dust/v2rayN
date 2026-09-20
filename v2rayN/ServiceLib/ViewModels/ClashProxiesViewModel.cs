@@ -113,7 +113,7 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         try
         {
             var numOfExecuted = 1;
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 await Task.Delay(1000, token);
                 numOfExecuted++;
