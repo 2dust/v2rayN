@@ -92,13 +92,14 @@ public class Global
     public const string XrayLocalAsset = "XRAY_LOCATION_ASSET";
     public const string XrayLocalCert = "XRAY_LOCATION_CERT";
     public const int SpeedTestPageSize = 1000;
+    public const int SpeedTestConcurrencyCountMin = 10;
     public const string LinuxBash = "/bin/bash";
     public const string StringTrue = "true";
     public const string StringFalse = "false";
     public const int SqliteMaxBatchSize = 10000;
     public static readonly TimeSpan LocalFetch = TimeSpan.FromSeconds(5);
     public static readonly TimeSpan DirectFetch = TimeSpan.FromSeconds(10);
-    public static readonly TimeSpan ProxyFetch  = TimeSpan.FromSeconds(30);
+    public static readonly TimeSpan ProxyFetch = TimeSpan.FromSeconds(30);
     public static readonly TimeSpan DirectDownloadConnect = TimeSpan.FromSeconds(5);
     public static readonly TimeSpan ProxyDownloadConnect = TimeSpan.FromSeconds(10);
 
