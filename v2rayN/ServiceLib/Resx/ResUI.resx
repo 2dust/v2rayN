@@ -1899,4 +1899,118 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Process</value>
   </data>
+  <data name="AppRoutingTitle" xml:space="preserve">
+    <value>Application routing</value>
+  </data>
+  <data name="AppRoutingActiveProfile" xml:space="preserve">
+    <value>Active profile</value>
+  </data>
+  <data name="AppRoutingProfile" xml:space="preserve">
+    <value>Saved profile (Xray)</value>
+  </data>
+  <data name="AppRoutingInterface" xml:space="preserve">
+    <value>Network interface</value>
+  </data>
+  <data name="AppRoutingExecutable" xml:space="preserve">
+    <value>Executable</value>
+  </data>
+  <data name="AppRoutingDestination" xml:space="preserve">
+    <value>Route through</value>
+  </data>
+  <data name="AppRoutingEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="AppRoutingNew" xml:space="preserve">
+    <value>New rule</value>
+  </data>
+  <data name="AppRoutingSaveRule" xml:space="preserve">
+    <value>Save rule</value>
+  </data>
+  <data name="AppRoutingDelete" xml:space="preserve">
+    <value>Remove rule</value>
+  </data>
+  <data name="AppRoutingClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="AppRoutingHelp" xml:space="preserve">
+    <value>Application routing requires running v2rayN as Administrator. After enabling routing or changing rules, fully exit and restart the routed apps so their new connections use the selected route. Existing connections cannot be moved.</value>
+  </data>
+  <data name="AppRoutingIncludeChildren" xml:space="preserve">
+    <value>Include child processes</value>
+  </data>
+  <data name="AppRoutingChildrenColumn" xml:space="preserve">
+    <value>Children</value>
+  </data>
+  <data name="AppRoutingChildrenHelp" xml:space="preserve">
+    <value>Also route processes started by this app, including their descendants. An explicit rule for a child takes priority. v2rayN and proxy cores remain excluded.</value>
+  </data>
+  <data name="AppRoutingStartupFailed" xml:space="preserve">
+    <value>Application routing could not start. The enabled setting is retained for the next launch</value>
+  </data>
+  <data name="AppRoutingAdminRequired" xml:space="preserve">
+    <value>Restart this copy of v2rayN as administrator to start application routing.</value>
+  </data>
+  <data name="AppRoutingDriverRequired" xml:space="preserve">
+    <value>WinDivert.dll and WinDivert64.sys are missing beside v2rayN.exe. See the application-routing build instructions.</value>
+  </data>
+  <data name="AppRoutingTunConflict" xml:space="preserve">
+    <value>Stop application routing before enabling TUN, or disable TUN before starting application routing.</value>
+  </data>
+  <data name="AppRoutingRouteError" xml:space="preserve">
+    <value>Application routing error</value>
+  </data>
+  <data name="AppRoutingSocksHost" xml:space="preserve">
+    <value>SOCKS5 host</value>
+  </data>
+  <data name="AppRoutingSocksPort" xml:space="preserve">
+    <value>SOCKS5 port</value>
+  </data>
+  <data name="AppRoutingPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="AppRoutingEnable" xml:space="preserve">
+    <value>Enable application routing</value>
+  </data>
+  <data name="AppRoutingNameOnly" xml:space="preserve">
+    <value>Executable name (any location)</value>
+  </data>
+  <data name="AppRoutingFullPath" xml:space="preserve">
+    <value>Full path</value>
+  </data>
+  <data name="AppRoutingMatch" xml:space="preserve">
+    <value>Match</value>
+  </data>
+  <data name="AppRoutingInvalidExecutable" xml:space="preserve">
+    <value>Enter a full .exe path, or enable name matching and enter an executable filename.</value>
+  </data>
+  <data name="AppRoutingNetworkApps" xml:space="preserve">
+    <value>Choose a running network app</value>
+  </data>
+  <data name="AppRoutingChoose" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="AppRoutingNetworkAppsHelp" xml:space="preserve">
+    <value>Apps with TCP connections/listeners or UDP endpoints. System and apps in Windows System32/SysWOW64 are hidden. Select an app and choose Use selected app, or double-click it.</value>
+  </data>
+  <data name="AppRoutingSearchApps" xml:space="preserve">
+    <value>Search by name, PID or path</value>
+  </data>
+  <data name="AppRoutingRefreshApps" xml:space="preserve">
+    <value>Refresh apps</value>
+  </data>
+  <data name="AppRoutingUseApp" xml:space="preserve">
+    <value>Use selected app</value>
+  </data>
+  <data name="AppRoutingLoadingApps" xml:space="preserve">
+    <value>Reading network apps…</value>
+  </data>
+  <data name="AppRoutingNoNetworkApps" xml:space="preserve">
+    <value>No network apps found. Start an app that uses the network, then refresh.</value>
+  </data>
+  <data name="AppRoutingPathUnavailable" xml:space="preserve">
+    <value>Path unavailable — use executable name</value>
+  </data>
+  <data name="AppRoutingApplyBlockingRules" xml:space="preserve">
+    <value>Apply blocking rules</value>
+  </data>
 </root>

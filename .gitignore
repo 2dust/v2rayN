@@ -402,3 +402,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Verified optional native dependencies installed by scripts/Get-WinDivert.ps1
+/v2rayN/WinDivert/

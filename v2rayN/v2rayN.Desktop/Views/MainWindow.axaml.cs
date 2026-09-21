@@ -64,6 +64,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             //setting
             this.BindCommand(ViewModel, vm => vm.OptionSettingCmd, v => v.menuOptionSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingSettingCmd, v => v.menuRoutingSetting).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.AppRoutingCmd, v => v.menuAppRouting).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlIsWindows, v => v.menuAppRouting.IsVisible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.DNSSettingCmd, v => v.menuDNSSetting).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FullConfigTemplateCmd, v => v.menuFullConfigTemplate).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.GlobalHotkeySettingCmd, v => v.menuGlobalHotkeySetting).DisposeWith(disposables);

@@ -226,6 +226,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
     }
 
     public RetResult GenerateClientSpeedtestConfig(int port)
+        => GenerateClientSocksConfig(port, false);
+
+    // A single-profile listener, optionally using the routing rules in its context.
+    internal RetResult GenerateClientSocksConfig(int port, bool useRoutingRules)
     {
         var ret = new RetResult();
         try
@@ -276,6 +280,10 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 },
             });
 
+            if (useRoutingRules)
+            {
+                GenRouting();
+            }
             _coreConfig.routing.rules.Add(BuildFinalRule());
 
             if (_config.CoreBasicItem.EnableFragment)

@@ -65,6 +65,7 @@
                     <MenuItem Header="{x:Static resx:ResUI.menuSetting}">
                         <MenuItem x:Name="menuOptionSetting" Header="{x:Static resx:ResUI.menuOptionSetting}" />
                         <MenuItem x:Name="menuRoutingSetting" Header="{x:Static resx:ResUI.menuRoutingSetting}" />
+                        <MenuItem x:Name="menuAppRouting" Header="{x:Static resx:ResUI.AppRoutingTitle}" />
                         <MenuItem x:Name="menuDNSSetting" Header="{x:Static resx:ResUI.menuDNSSetting}" />
                         <MenuItem x:Name="menuFullConfigTemplate" Header="{x:Static resx:ResUI.menuFullConfigTemplate}" />
                         <MenuItem

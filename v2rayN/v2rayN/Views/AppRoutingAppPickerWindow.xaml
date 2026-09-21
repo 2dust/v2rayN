@@ -1,0 +1,50 @@
+<base:WindowBase
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Base"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    x:Class="v2rayN.Views.AppRoutingAppPickerWindow"
+    x:TypeArguments="vms:AppRoutingViewModel" Style="{StaticResource WindowGlobal}"
+    Title="{x:Static resx:ResUI.AppRoutingNetworkApps}" Width="820" Height="480"
+    MinWidth="640" MinHeight="360" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+            <Button DockPanel.Dock="Right" Content="{x:Static resx:ResUI.AppRoutingRefreshApps}"
+                Command="{Binding RefreshProcessesCmd}" Margin="8,0,0,0" Padding="12,6" Style="{StaticResource DefButton}" />
+            <TextBox x:Name="txtSearch" Text="{Binding ProcessSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DefTextBox}"
+                AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingSearchApps}"
+                ToolTip="{x:Static resx:ResUI.AppRoutingSearchApps}" />
+        </DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+            <TextBlock Text="{Binding ProcessStatus}" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnUseApp" Content="{x:Static resx:ResUI.AppRoutingUseApp}"
+                    IsEnabled="{Binding CanUseProcess}" IsDefault="True" Margin="4,0" Padding="12,6" Style="{StaticResource DefButton}" />
+                <Button x:Name="btnCancel" Content="{x:Static resx:ResUI.TbCancel}"
+                    IsCancel="True" Margin="4,0,0,0" Padding="12,6" Style="{StaticResource DefButton}" />
+            </StackPanel>
+        </StackPanel>
+        <DataGrid x:Name="networkAppsGrid" ItemsSource="{Binding NetworkApps}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay}"
+            RowHeight="NaN" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+            SelectionMode="Single" Style="{StaticResource DefDataGrid}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="{x:Static resx:ResUI.AppRoutingExecutable}" Width="220" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}" TextWrapping="Wrap" Margin="4" ToolTip="{Binding DisplayName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="TCP/UDP" Binding="{Binding DisplayConnections}" SortMemberPath="TotalConnections" Width="SizeToHeader" MinWidth="100" />
+                <DataGridTemplateColumn Header="{x:Static resx:ResUI.AppRoutingFullPath}" Width="*" MinWidth="180">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayPath}" TextWrapping="Wrap" Margin="4" ToolTip="{Binding DisplayPath}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</base:WindowBase>

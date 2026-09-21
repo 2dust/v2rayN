@@ -35,6 +35,7 @@ public class Config
     public List<CoreTypeItem> CoreTypeItem { get; set; }
     public SimpleDNSItem SimpleDNSItem { get; set; }
     public HappyEyeballs4RayItem HappyEyeballs4RayItem { get; set; }
+    public AppRoutingItem AppRouting { get; set; } = new();
 
     #endregion other entities
 }

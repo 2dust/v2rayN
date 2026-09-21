@@ -29,6 +29,29 @@ permissions:
   pull-requests: write
 
 jobs:
+  test-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64, x86]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: '10.0.1xx'
+    - name: Publish native test host
+      run: dotnet publish ./v2rayN/ServiceLib.Tests -c Release -r win-${{ matrix.arch }} --self-contained true -o ./test-host
+    - name: Test Windows process, socket and routing code
+      run: ./test-host/ServiceLib.Tests.exe --results-directory ./TestResults --report-trx
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: tests-windows-${{ matrix.arch }}
+        path: ./TestResults
+
   test:
     runs-on: ubuntu-latest
     steps:

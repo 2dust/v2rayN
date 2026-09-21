@@ -5399,5 +5399,44 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("UpgradeAppNotExistTip", resourceCulture);
             }
         }
+
+        public static string AppRoutingTitle => ResourceManager.GetString("AppRoutingTitle", resourceCulture);
+        public static string AppRoutingActiveProfile => ResourceManager.GetString("AppRoutingActiveProfile", resourceCulture);
+        public static string AppRoutingProfile => ResourceManager.GetString("AppRoutingProfile", resourceCulture);
+        public static string AppRoutingInterface => ResourceManager.GetString("AppRoutingInterface", resourceCulture);
+        public static string AppRoutingExecutable => ResourceManager.GetString("AppRoutingExecutable", resourceCulture);
+        public static string AppRoutingDestination => ResourceManager.GetString("AppRoutingDestination", resourceCulture);
+        public static string AppRoutingEnabled => ResourceManager.GetString("AppRoutingEnabled", resourceCulture);
+        public static string AppRoutingNew => ResourceManager.GetString("AppRoutingNew", resourceCulture);
+        public static string AppRoutingSaveRule => ResourceManager.GetString("AppRoutingSaveRule", resourceCulture);
+        public static string AppRoutingDelete => ResourceManager.GetString("AppRoutingDelete", resourceCulture);
+        public static string AppRoutingClose => ResourceManager.GetString("AppRoutingClose", resourceCulture);
+        public static string AppRoutingHelp => ResourceManager.GetString("AppRoutingHelp", resourceCulture);
+        public static string AppRoutingIncludeChildren => ResourceManager.GetString("AppRoutingIncludeChildren", resourceCulture);
+        public static string AppRoutingChildrenColumn => ResourceManager.GetString("AppRoutingChildrenColumn", resourceCulture);
+        public static string AppRoutingChildrenHelp => ResourceManager.GetString("AppRoutingChildrenHelp", resourceCulture);
+        public static string AppRoutingStartupFailed => ResourceManager.GetString("AppRoutingStartupFailed", resourceCulture);
+        public static string AppRoutingAdminRequired => ResourceManager.GetString("AppRoutingAdminRequired", resourceCulture);
+        public static string AppRoutingDriverRequired => ResourceManager.GetString("AppRoutingDriverRequired", resourceCulture);
+        public static string AppRoutingTunConflict => ResourceManager.GetString("AppRoutingTunConflict", resourceCulture);
+        public static string AppRoutingRouteError => ResourceManager.GetString("AppRoutingRouteError", resourceCulture);
+        public static string AppRoutingSocksHost => ResourceManager.GetString("AppRoutingSocksHost", resourceCulture);
+        public static string AppRoutingSocksPort => ResourceManager.GetString("AppRoutingSocksPort", resourceCulture);
+        public static string AppRoutingPassword => ResourceManager.GetString("AppRoutingPassword", resourceCulture);
+        public static string AppRoutingEnable => ResourceManager.GetString("AppRoutingEnable", resourceCulture);
+        public static string AppRoutingNameOnly => ResourceManager.GetString("AppRoutingNameOnly", resourceCulture);
+        public static string AppRoutingFullPath => ResourceManager.GetString("AppRoutingFullPath", resourceCulture);
+        public static string AppRoutingMatch => ResourceManager.GetString("AppRoutingMatch", resourceCulture);
+        public static string AppRoutingInvalidExecutable => ResourceManager.GetString("AppRoutingInvalidExecutable", resourceCulture);
+        public static string AppRoutingNetworkApps => ResourceManager.GetString("AppRoutingNetworkApps", resourceCulture);
+        public static string AppRoutingChoose => ResourceManager.GetString("AppRoutingChoose", resourceCulture);
+        public static string AppRoutingNetworkAppsHelp => ResourceManager.GetString("AppRoutingNetworkAppsHelp", resourceCulture);
+        public static string AppRoutingSearchApps => ResourceManager.GetString("AppRoutingSearchApps", resourceCulture);
+        public static string AppRoutingRefreshApps => ResourceManager.GetString("AppRoutingRefreshApps", resourceCulture);
+        public static string AppRoutingUseApp => ResourceManager.GetString("AppRoutingUseApp", resourceCulture);
+        public static string AppRoutingLoadingApps => ResourceManager.GetString("AppRoutingLoadingApps", resourceCulture);
+        public static string AppRoutingNoNetworkApps => ResourceManager.GetString("AppRoutingNoNetworkApps", resourceCulture);
+        public static string AppRoutingPathUnavailable => ResourceManager.GetString("AppRoutingPathUnavailable", resourceCulture);
+        public static string AppRoutingApplyBlockingRules => ResourceManager.GetString("AppRoutingApplyBlockingRules", resourceCulture);
     }
 }

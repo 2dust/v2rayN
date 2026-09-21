@@ -128,15 +128,12 @@ public partial class CoreConfigV2rayService
                 it.ip = null;
                 it.process = null;
                 it.type = "field";
-                for (var k = it.domain.Count - 1; k >= 0; k--)
+                it.domain = it.domain.Where(domain => !domain.StartsWith('#'))
+                    .Select(domain => domain.Replace(Global.RoutingRuleComma, ",")).ToList();
+                if (it.domain.Count > 0)
                 {
-                    if (it.domain[k].StartsWith('#'))
-                    {
-                        it.domain.RemoveAt(k);
-                    }
-                    it.domain[k] = it.domain[k].Replace(Global.RoutingRuleComma, ",");
+                    _coreConfig.routing.rules.Add(it);
                 }
-                _coreConfig.routing.rules.Add(it);
                 hasDomainIp = true;
             }
             if (userRule.ip?.Count > 0)

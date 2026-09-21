@@ -1,0 +1,104 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Desktop.Base"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    x:Class="v2rayN.Desktop.Views.AppRoutingWindow"
+    x:DataType="vms:AppRoutingViewModel" x:CompileBindings="False"
+    Title="{x:Static resx:ResUI.AppRoutingTitle}" Width="1020" Height="800"
+    MinWidth="740" MinHeight="560" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="16">
+        <StackPanel DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="{x:Static resx:ResUI.AppRoutingEnable}" VerticalAlignment="Center" Margin="4" />
+                <ToggleSwitch IsChecked="{Binding RoutingEnabled, Mode=TwoWay}" IsEnabled="{Binding CanChangeRouting}"
+                    Margin="8,4" VerticalAlignment="Center" AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingEnable}" />
+            </StackPanel>
+            <TextBlock Text="{x:Static resx:ResUI.AppRoutingHelp}" TextWrapping="Wrap" Margin="4,0,4,12" />
+        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,12,0,0" LastChildFill="False">
+            <Button x:Name="btnClose" DockPanel.Dock="Right" Content="{x:Static resx:ResUI.AppRoutingClose}"
+                Margin="4" Padding="12,6" />
+        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel IsEnabled="{Binding CanEdit}">
+                <DataGrid ItemsSource="{Binding Rules}" SelectedItem="{Binding SelectedRule, Mode=TwoWay}"
+                    Height="190" RowHeight="NaN" AutoGenerateColumns="False" IsReadOnly="True"
+                    SelectionMode="Single" Margin="4,0,4,8">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="{x:Static resx:ResUI.AppRoutingEnabled}" Width="SizeToHeader" MinWidth="95">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Enabled, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding $parent[DataGrid].DataContext.ToggleRuleEnabledCmd}" CommandParameter="{Binding}"
+                                        AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingEnabled}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="{x:Static resx:ResUI.AppRoutingExecutable}" Width="*" MinWidth="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Executable}" TextWrapping="Wrap" Margin="4" ToolTip.Tip="{Binding Executable}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static resx:ResUI.AppRoutingMatch}" Binding="{Binding Match}" Width="150" />
+                        <DataGridTemplateColumn Header="{x:Static resx:ResUI.AppRoutingChildrenColumn}" Width="SizeToHeader" MinWidth="105">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IncludeChildProcesses, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding $parent[DataGrid].DataContext.ToggleRuleChildrenCmd}" CommandParameter="{Binding}"
+                                        AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingChildrenColumn}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static resx:ResUI.AppRoutingDestination}" Binding="{Binding Destination}" Width="190" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="{x:Static resx:ResUI.AppRoutingNew}" Command="{Binding NewCmd}" Margin="4" Padding="12,6" />
+                    <Button Content="{x:Static resx:ResUI.AppRoutingDelete}" Command="{Binding DeleteCmd}" Margin="4" Padding="12,6" />
+                </StackPanel>
+                <DockPanel Margin="4,12,4,4">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <Button Content="{x:Static resx:ResUI.AppRoutingChoose}" Command="{Binding PickProcessCmd}"
+                            Margin="8,0,0,0" Padding="12,6" />
+                        <Button Content="{x:Static resx:ResUI.TbBrowse}" Command="{Binding BrowseCmd}"
+                            Margin="8,0,0,0" Padding="12,6" />
+                    </StackPanel>
+                    <TextBox x:Name="txtExecutable" Text="{Binding Executable, Mode=TwoWay}" TextWrapping="NoWrap"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto" ToolTip.Tip="{Binding Executable}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingExecutable}" />
+                </DockPanel>
+                <CheckBox Content="{x:Static resx:ResUI.AppRoutingNameOnly}" IsChecked="{Binding MatchByName, Mode=TwoWay}" Margin="4,8" />
+                <CheckBox Content="{x:Static resx:ResUI.AppRoutingIncludeChildren}" IsChecked="{Binding IncludeChildProcesses, Mode=TwoWay}" Margin="4,0,4,8"
+                    ToolTip.Tip="{x:Static resx:ResUI.AppRoutingChildrenHelp}" />
+                <TextBlock Text="{x:Static resx:ResUI.AppRoutingDestination}" Margin="4" />
+                <ComboBox ItemsSource="{Binding Destinations}" SelectedItem="{Binding SelectedDestination, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="4"
+                    AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingDestination}" />
+                <StackPanel x:Name="ProfilePanel" IsVisible="{Binding IsProfile}" Margin="4,8">
+                    <ComboBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile, Mode=TwoWay}" HorizontalAlignment="Stretch"
+                        AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingProfile}" />
+                    <CheckBox Content="{x:Static resx:ResUI.AppRoutingApplyBlockingRules}" IsChecked="{Binding ApplyBlockingRules, Mode=TwoWay}" Margin="0,8,0,0" />
+                </StackPanel>
+                <StackPanel x:Name="InterfacePanel" IsVisible="{Binding IsInterface}" Margin="4,8">
+                    <ComboBox ItemsSource="{Binding Interfaces}" SelectedItem="{Binding SelectedInterface, Mode=TwoWay}" HorizontalAlignment="Stretch"
+                        AutomationProperties.Name="{x:Static resx:ResUI.AppRoutingInterface}" />
+                </StackPanel>
+                <StackPanel x:Name="SocksPanel" IsVisible="{Binding IsSocks}" Margin="4,8">
+                    <TextBlock Text="{x:Static resx:ResUI.AppRoutingSocksHost}" Margin="0,4" />
+                    <TextBox Text="{Binding SocksHost, Mode=TwoWay}" />
+                    <TextBlock Text="{x:Static resx:ResUI.AppRoutingSocksPort}" Margin="0,4" />
+                    <TextBox Text="{Binding SocksPort, Mode=TwoWay}" />
+                    <TextBlock Text="{x:Static resx:ResUI.TbUsername}" Margin="0,4" />
+                    <TextBox Text="{Binding SocksUsername, Mode=TwoWay}" />
+                    <TextBlock Text="{x:Static resx:ResUI.AppRoutingPassword}" Margin="0,4" />
+                    <TextBox PasswordChar="●" Text="{Binding SocksPassword, Mode=TwoWay}" />
+                </StackPanel>
+                <Button Content="{x:Static resx:ResUI.AppRoutingSaveRule}" Command="{Binding SaveRuleCmd}"
+                    HorizontalAlignment="Left" Padding="12,6" Margin="4,8" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

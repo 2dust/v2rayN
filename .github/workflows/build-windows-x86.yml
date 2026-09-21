@@ -56,6 +56,10 @@ jobs:
         with:
           dotnet-version: 10.0.1xx
 
+      - name: Prepare application-routing dependencies
+        shell: pwsh
+        run: ./scripts/Get-WinDivert.ps1
+
       - name: Publish ${{ matrix.flavor }} win-x86
         shell: pwsh
         run: |

@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <AppRoutingNativeArchitecture Condition="'$(RuntimeIdentifier)' == 'win-x64'">x64</AppRoutingNativeArchitecture>
+    <AppRoutingNativeArchitecture Condition="'$(RuntimeIdentifier)' == 'win-x86'">x86</AppRoutingNativeArchitecture>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(AppRoutingNativeArchitecture)' != '' And ('$(MSBuildProjectName)' == 'v2rayN' Or '$(MSBuildProjectName)' == 'v2rayN.Desktop')">
+    <Content Include="$(MSBuildThisFileDirectory)WinDivert\$(AppRoutingNativeArchitecture)\*">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+</Project>

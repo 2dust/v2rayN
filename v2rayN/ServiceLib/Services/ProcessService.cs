@@ -10,6 +10,8 @@ public class ProcessService : IDisposable
     public IntPtr Handle => _process.Handle;
     public bool HasExited => _process.HasExited;
 
+    public Task WaitForExitAsync() => _process.WaitForExitAsync();
+
     public ProcessService(
         string fileName,
         string arguments,
