@@ -27,7 +27,7 @@ as the implementation changes.
 | 4 | [RouteAttribution.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteAttribution.cs), [AppRouteMatcher.cs](../v2rayN/ServiceLib/Services/AppRouting/AppRouteMatcher.cs), [RouteOwnerTable.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteOwnerTable.cs), [RouteProcessTree.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteProcessTree.cs) | How does a packet acquire an executable rule? |
 | 5 | [AppRouteEngine.cs](../v2rayN/ServiceLib/Services/AppRouting/AppRouteEngine.cs), [RouteNatTable.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteNatTable.cs) | How do TCP reflection, connection reuse, and shutdown work? |
 | 6 | [RouteUdpSession.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteUdpSession.cs), [RouteConnector.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteConnector.cs) | How are UDP ownership, SOCKS negotiation, and adapter binding handled? |
-| 7 | [RoutePacket.cs](../v2rayN/ServiceLib/Services/AppRouting/RoutePacket.cs), [RouteFragmentBuffer.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteFragmentBuffer.cs), [WinDivertApi.cs](../v2rayN/ServiceLib/Services/AppRouting/WinDivertApi.cs) | Which packet and native-layout assumptions require care? |
+| 7 | [RoutePacket.cs](../v2rayN/ServiceLib/Services/AppRouting/RoutePacket.cs), [RoutePacketBatch.cs](../v2rayN/ServiceLib/Services/AppRouting/RoutePacketBatch.cs), [RouteFragmentBuffer.cs](../v2rayN/ServiceLib/Services/AppRouting/RouteFragmentBuffer.cs), [WinDivertApi.cs](../v2rayN/ServiceLib/Services/AppRouting/WinDivertApi.cs) | Which packet and native-layout assumptions require care? |
 | 8 | [AppRouting tests](../v2rayN/ServiceLib.Tests/AppRouting) | Which behaviors have deterministic coverage, and which require a dedicated Windows host? |
 
 ## 1. Architecture and responsibilities
@@ -319,6 +319,10 @@ Missing processes, inaccessible paths that could match a full-path rule, missing
 socket rows and snapshots older than 500 ms are unresolved. A new TCP SYN requires
 a sample begun at or after its arrival, protecting reconnects against an older
 tuple owner. Unknown packets retain their original arrival time across retries.
+The first deferral copies the borrowed capture slice into owned storage. Later
+retries requeue the same packet and fragments without copying. Each ownership
+snapshot processes only the queue's starting count, so still-unresolved packets
+wait for the next snapshot without an intermediate list or a busy retry loop.
 [RoutePendingPackets](../v2rayN/ServiceLib/Services/AppRouting/RoutePendingPackets.cs)
 allows 512 packets and 4 MiB, counting retained fragments, for at most 250 ms
 before a retry drops the packet and emits a throttled notice. Under load or with
@@ -363,7 +367,32 @@ outbound and !loopback and (tcp or udp or fragment)
 
 Capture uses the NETWORK layer at priority 100. The fragment term includes
 non-initial fragments without TCP/UDP headers. A dedicated long-running worker
-performs blocking receive; accept loops and relay I/O are asynchronous.
+performs synchronous `WinDivertRecvEx` receives of up to 32 packets; accept loops
+and relay I/O are asynchronous. `RoutePacketBatch.ReadLengths` validates the packed
+IP boundaries and the matching 80-byte address records before processing begins.
+Packet parsing and rewriting operate on slices of the reusable receive buffer.
+`Capture` owns native receive/flush and the packet lock. `ProcessCapturedPacket`
+separates ordinary packets, incomplete assemblies, unselected fragment bypass and
+completed assemblies before `Process` applies attribution and TCP/UDP routing.
+
+Immediately forwardable packets are copied into a separate reusable injection
+buffer, preserving their order and metadata. `WinDivertSendEx` flushes at 32 packets,
+when byte capacity is exhausted, or at the end of the available receive batch.
+There is no timer waiting to fill a batch. Separate input/output storage allows
+consumed UDP packets, retained unknown packets, and released fragments to take
+different paths without overwriting unread input. Each arena holds 65,575 bytes,
+enough for one maximum-size IPv6 packet; large packets reduce batch occupancy.
+
+Policy publication remains serialized with packet processing and batch flushing.
+UDP replies and attribution retries use immediate sends. A failed batch is never
+retried wholesale because native injection may have already sent some members.
+If adding a packet forces a flush that fails, the new packet remains queued: it
+was not part of the attempted injection. Checksum preparation and batch packing
+use privately owned buffers outside the send lock; native injections and handle
+shutdown remain serialized. Capture-buffer allocation is inside the worker's
+cleanup-protected block so initialization failure also closes the capture handle.
+Batching amortizes I/O calls but adds an explicit copy into the injection arena;
+its net throughput and latency effects require native measurements.
 
 ### A concrete connection
 
@@ -454,17 +483,34 @@ source addresses must match the session's destination family.
 
 NIC routes use an unconnected socket bound to the selected adapter, with
 `SendToAsync`/`ReceiveFromAsync` for multiple peers. Link-local destinations use
-that adapter's scope. `CreateUdpReply` constructs an inbound packet from the actual
+that adapter's scope. `WriteUdpReply` constructs an inbound packet from the actual
 replying peer to the application's original local endpoint. WinDivert calculates
 checksums and reinjects it with the captured interface metadata; Windows applies
 the application's own connected/unconnected receive semantics.
 
-Engine packet processing serializes producers. `Send` copies accepted payloads
-into a channel limited to 64 datagrams and 64 KiB. `TryWrite` never waits; byte
-budget rejection happens before allocation. Dequeue, failed enqueue and completion
-release their byte reservations. In-flight/framing/receive buffers are outside
-that queue budget. Session setup is limited to 15 seconds and idle time to 60
-seconds. A failed association can be replaced by the next packet.
+Engine packet processing serializes producers. `Send` copies each accepted payload
+once into a rented buffer, including its SOCKS header when applicable, and queues
+the owned frame. Only the actual frame length is sent, never the pool buffer's
+spare capacity. The channel remains limited to 64 datagrams and 64 KiB of payload;
+`TryWrite` never waits and byte-budget rejection happens before renting. Dequeue,
+failed enqueue and completion release byte reservations. Buffers return to the
+pool on failed enqueue, after the asynchronous send finishes, or when completion
+drains unsent frames. Ownership loss and exceptions follow the same return paths.
+A socket `MessageSize` error drops and reports only the oversized datagram;
+the association continues sending subsequent packets. This matters when the
+SOCKS header pushes a valid application datagram over the outer UDP size limit.
+Other send errors still terminate the session through normal supervision.
+
+The reply callback borrows a span of the session's receive buffer for the duration
+of the synchronous call. `CreateUdpSession` keeps ownership/reply callbacks scoped
+to association creation; `SendUdpReply` owns the output buffer's lifetime. The
+engine writes the final IP/UDP packet directly into
+a rented output buffer, clears all header fields, calculates checksums, injects
+the packet, and returns the buffer before the callback completes. Address writing
+uses spans without temporary address arrays. There is no incremental checksum
+optimization. Pool capacity, framing, in-flight packets and receive buffers remain
+outside the queued-payload budget. Session setup is limited to 15 seconds and idle
+time to 60 seconds. A failed association can be replaced by the next packet.
 
 Cleanup removes the exact dictionary key/value it inspected so it cannot remove
 a replacement installed concurrently. A separate task registry retains all live
@@ -618,9 +664,10 @@ cover these boundaries:
 | `AttributionTests.cs` | Indexed lookup cost, ownership changes, bounded deferral, selective TCP retirement and native socket closure. |
 | `RuntimeTests.cs` | Staging/reuse, rollback, cancellation at commitment, failure observation and exclusive capture ownership. |
 | `PacketTests.cs` | Native address layout, IPv4/IPv6 bounds and rewriting, scope, NAT collisions, and SYN/reconnect handling. |
+| `PacketBatchTests.cs` | Mixed IP framing, metadata alignment, maximum packet size, bounded flushing, owned output, and no replay after injection failure. |
 | `FragmentTests.cs` | Out-of-order assembly, early unselected bypass, policy invalidation, SYN/reflection exceptions, overlap and expiry. |
 | `SocksTests.cs` | Current active listener, authentication, split replies, domain bind replies, IPv6, framing, and failed-method behavior. |
-| `UdpSessionTests.cs` | Byte budget and release, queued ownership, stale/reused owners, multi-peer association identity, actual reply peers, domain relay endpoints, and unavailable interfaces. |
+| `UdpSessionTests.cs` | Byte budget and release, pooled buffer ownership on send/rejection/cancellation/failure, exact wire/reply payloads from empty through large datagrams, queued ownership, stale/reused owners, multi-peer association identity, actual reply peers, domain relay endpoints, and unavailable interfaces. |
 | `ShutdownTests.cs` | Accept reset/abort recovery, fatal listener shutdown, cancellation during handshake stages, and late task registration during disposal. |
 
 Most tests use synthetic packet data, injected ownership/runtime operations, or

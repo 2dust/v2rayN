@@ -1,9 +1,10 @@
+using System.Buffers;
 using System.Buffers.Binary;
 
 namespace ServiceLib.Services.AppRouting;
 
 /// <summary>
-/// Windows outbound TCP reflection and UDP relay. Only explicitly selected executable paths are routed.
+/// Windows outbound TCP reflection and UDP relay for applications selected by routing rules.
 /// WinDivert's streamdump example documents the TCP reflection technique; no TLS interception is used.
 /// </summary>
 [SupportedOSPlatform("windows")]
@@ -46,7 +47,7 @@ internal sealed class AppRouteEngine : IRouteEngine
         // through reverse NAT. Existing selected streams keep their chosen route.
         if (flow.Protocol == 6 && (_ports.Values.Contains(flow.LocalPort) || _nat.Find(flow) != null))
         { return RouteDecisionKind.Selected; }
-        return Match(flow, 0, false).Kind;
+        return Match(flow).Kind;
     }
 
     public async Task ApplyAsync(IReadOnlyList<AppRouteRule> rules, IEnumerable<int> excludedProcesses, CancellationToken token)
@@ -127,10 +128,12 @@ internal sealed class AppRouteEngine : IRouteEngine
                     if (!ReferenceEquals(previous.Policy, _routing.Policy))
                     { continue; }
                     Volatile.Write(ref _routing, new(previous.Policy, snapshot));
-                    foreach (var packet in _pending.Drain())
+                    // Retry each packet once per snapshot, even if it must wait again.
+                    for (var remaining = _pending.Count; remaining > 0; remaining--)
                     {
+                        var packet = _pending.Dequeue();
                         try
-                        { Process(packet.Bytes, packet.Bytes.Length, packet.Address, packet.Fragments, packet.Arrived); }
+                        { Process(packet.Bytes, packet.Address, packet.Fragments, packet); }
                         catch (Exception ex) { Report(ex); }
                     }
                 }
@@ -142,31 +145,36 @@ internal sealed class AppRouteEngine : IRouteEngine
 
     private void RequestRefresh()
     {
+        // Callers hold _packetGate; only this method releases, and the worker only consumes.
         if (_refreshRequest.CurrentCount == 0)
         {
-            try
-            { _refreshRequest.Release(); }
-            catch (SemaphoreFullException) { }
+            _refreshRequest.Release();
         }
     }
 
-    private RouteDecision Match(RouteFlow flow, long arrived, bool fresh)
+    private RouteDecision Match(RouteFlow flow, long arrived = 0, bool requireFreshSnapshot = false)
     {
         var snapshot = Volatile.Read(ref _routing).Owners;
-        if (Environment.TickCount64 - snapshot.ReadAt > 500 || fresh && snapshot.ReadAt < arrived)
+        if (Environment.TickCount64 - snapshot.ReadAt > 500 || requireFreshSnapshot && snapshot.ReadAt < arrived)
         {
             return RouteDecision.Unresolved;
         }
         return snapshot.Find(flow);
     }
+
     private void Capture()
     {
-        var bytes = new byte[65575];
         try
         {
+            var bytes = new byte[RoutePacketBatch.MaxPacketLength];
+            var addresses = new DivertAddress[RoutePacketBatch.Capacity];
+            var lengths = new int[RoutePacketBatch.Capacity];
+            var output = new RoutePacketBatch(SendBatch);
             while (!_stop.IsCancellationRequested)
             {
-                if (!WinDivertApi.WinDivertRecv(_handle, bytes, (uint)bytes.Length, out var count, out var address))
+                var addressLength = (uint)(addresses.Length * RoutePacketBatch.AddressSize);
+                if (!WinDivertApi.WinDivertRecvEx(_handle, bytes, (uint)bytes.Length, out var count,
+                    0, addresses, ref addressLength, IntPtr.Zero))
                 {
                     if (_stop.IsCancellationRequested)
                     {
@@ -175,30 +183,22 @@ internal sealed class AppRouteEngine : IRouteEngine
 
                     throw new Win32Exception(Marshal.GetLastWin32Error());
                 }
-                try
+                var packetCount = RoutePacketBatch.ReadLengths(bytes.AsSpan(0, checked((int)count)), addressLength, lengths);
+                lock (_packetGate)
                 {
-                    lock (_packetGate)
+                    var offset = 0;
+                    for (var i = 0; i < packetCount && !_stop.IsCancellationRequested; i++)
                     {
-                        if (_fragments.Add(bytes.AsSpan(0, checked((int)count)), address, out var batch))
-                        {
-                            if (batch != null)
-                            {
-                                if (batch.PassThrough)
-                                {
-                                    foreach (var original in batch.Originals)
-                                    { Send(original.Packet, original.Packet.Length, original.Address, false); }
-                                }
-                                else
-                                { Process(batch.Packet, batch.Packet.Length, batch.Address, batch.Originals); }
-                            }
-                        }
-                        else
-                        {
-                            Process(bytes, checked((int)count), address);
-                        }
+                        var packet = bytes.AsMemory(offset, lengths[i]);
+                        offset += lengths[i];
+                        var address = addresses[i];
+                        try { ProcessCapturedPacket(packet, address, output); }
+                        catch (Exception ex) { Report(ex); } // A failed selected packet never falls back to direct routing.
                     }
+                    // Flush available packets immediately, including a partially filled batch.
+                    try { output.Flush(); }
+                    catch (Exception ex) { Report(ex); }
                 }
-                catch (Exception ex) { Report(ex); } // An attributed packet never falls back to a direct send on failure.
             }
         }
         catch (Exception ex) { Fail(ex); }
@@ -217,22 +217,44 @@ internal sealed class AppRouteEngine : IRouteEngine
         }
     }
 
-    private void Process(byte[] bytes, int count, DivertAddress address,
-        List<(byte[] Packet, DivertAddress Address)>? fragments = null, long? arrival = null)
+    private void ProcessCapturedPacket(Memory<byte> bytes, DivertAddress address, RoutePacketBatch output)
     {
-        var arrived = arrival ?? Environment.TickCount64;
-        bool Defer(RouteDecision decision)
+        if (!_fragments.Add(bytes.Span, address, out var fragments))
+        {
+            Process(bytes, address, output: output);
+            return;
+        }
+        if (fragments == null) { return; } // Buffered or discarded fragment; nothing to forward.
+        if (fragments.PassThrough)
+        {
+            foreach (var original in fragments.Originals)
+            {
+                Send(original.Packet, original.Address, checksum: false, output);
+            }
+            return;
+        }
+        Process(fragments.Packet, fragments.Address, fragments.Originals, output: output);
+    }
+
+    private void Process(Memory<byte> bytes, DivertAddress address,
+        List<(byte[] Packet, DivertAddress Address)>? fragments = null, RoutePendingPackets.Packet? pending = null, RoutePacketBatch? output = null)
+    {
+        var arrived = pending?.Arrived ?? Environment.TickCount64;
+        bool DeferIfUnresolved(RouteDecision decision)
         {
             if (decision.Kind is not (RouteDecisionKind.Unresolved or RouteDecisionKind.Ambiguous))
             { return false; }
             if (decision.Kind == RouteDecisionKind.Ambiguous)
             { throw new IOException("Ambiguous shared endpoint; packet blocked."); }
-            if (Environment.TickCount64 - arrived >= RoutePendingPackets.WaitMilliseconds ||
-                !_pending.Add(bytes.AsSpan(0, count), address, arrived, fragments))
+            var withinDeadline = Environment.TickCount64 - arrived < RoutePendingPackets.WaitMilliseconds;
+            var queued = withinDeadline && (pending == null
+                ? _pending.Add(bytes.Span, address, arrived, fragments)
+                : _pending.Add(pending));
+            if (!queued)
             {
                 throw new IOException("Could not identify the application owning a packet; packet blocked.");
             }
-            if (!arrival.HasValue)
+            if (pending == null)
             { RequestRefresh(); }
             return true;
         }
@@ -240,17 +262,17 @@ internal sealed class AppRouteEngine : IRouteEngine
         {
             if (fragments == null)
             {
-                Send(bytes, count, address, false);
+                Send(bytes, address, checksum: false, output);
             }
             else
             {
                 foreach (var fragment in fragments)
                 {
-                    Send(fragment.Packet, fragment.Packet.Length, fragment.Address, false);
+                    Send(fragment.Packet, fragment.Address, checksum: false, output);
                 }
             }
         }
-        var packet = RoutePacket.Parse(bytes.AsSpan(0, count), address.InterfaceIndex);
+        var packet = RoutePacket.Parse(bytes.Span, address.InterfaceIndex);
         if (packet == null)
         {
             PassThrough();
@@ -268,11 +290,11 @@ internal sealed class AppRouteEngine : IRouteEngine
                 }
 
                 reverse.LastActivity = Environment.TickCount64;
-                packet.Rewrite(bytes, reverse.Flow.RemoteAddress, reverse.Flow.RemotePort, reverse.Flow.LocalAddress, reverse.Flow.LocalPort);
+                packet.Rewrite(bytes.Span, reverse.Flow.RemoteAddress, reverse.Flow.RemotePort, reverse.Flow.LocalAddress, reverse.Flow.LocalPort);
                 address.InterfaceIndex = reverse.OriginalAddress.InterfaceIndex;
                 address.SubInterfaceIndex = reverse.OriginalAddress.SubInterfaceIndex;
                 address.Outbound = false;
-                Send(bytes, count, address, true);
+                Send(bytes, address, checksum: true, output);
                 return;
             }
             var entry = _nat.Find(flow, packet.IsTcpSyn ? packet.TcpSequence : null);
@@ -280,8 +302,8 @@ internal sealed class AppRouteEngine : IRouteEngine
             {
                 // A new connection can reuse a closed tuple. Require a snapshot
                 // begun after its SYN before choosing the route for the stream.
-                var match = Match(flow, arrived, packet.IsTcpSyn);
-                if (Defer(match))
+                var match = Match(flow, arrived, requireFreshSnapshot: packet.IsTcpSyn);
+                if (DeferIfUnresolved(match))
                 { return; }
                 if (match.Kind == RouteDecisionKind.Unselected)
                 {
@@ -298,15 +320,15 @@ internal sealed class AppRouteEngine : IRouteEngine
                 entry.OriginalAddress = address;
             }
             entry.LastActivity = Environment.TickCount64;
-            packet.Rewrite(bytes, flow.RemoteAddress, entry.TranslatedPort, flow.LocalAddress, listenerPort);
+            packet.Rewrite(bytes.Span, flow.RemoteAddress, entry.TranslatedPort, flow.LocalAddress, listenerPort);
             address.Outbound = false;
-            Send(bytes, count, address, true);
+            Send(bytes, address, checksum: true, output);
             return;
         }
         if (flow.Protocol == 17)
         {
-            var match = Match(flow, arrived, false);
-            if (Defer(match))
+            var match = Match(flow);
+            if (DeferIfUnresolved(match))
             { return; }
             if (match.Kind == RouteDecisionKind.Unselected)
             { PassThrough(); return; }
@@ -328,34 +350,58 @@ internal sealed class AppRouteEngine : IRouteEngine
                     throw new IOException("UDP routing session limit reached.");
                 }
 
-                var replyAddress = address;
-                replyAddress.Outbound = false;
-                var owner = new RouteFlowOwner(match.Process!.Value, () =>
-                {
-                    var current = Match(flow, 0, false);
-                    return current.Kind == RouteDecisionKind.Selected && current.Rule?.Id == match.Rule!.Id ? current.Process : null;
-                });
-                session = new(match.Rule!, new(flow.RemoteAddress, flow.RemotePort),
-                    (peer, payload) =>
-                    {
-                        var reply = RoutePacket.CreateUdpReply(flow with { RemoteAddress = peer.Address, RemotePort = (ushort)peer.Port }, payload);
-                        Send(reply, reply.Length, replyAddress, true);
-                    },
-                    _stop.Token, Report, owner.IsCurrent);
+                session = CreateUdpSession(flow, match, address);
                 _udp[key] = session;
                 var id = Interlocked.Increment(ref _connectionId);
                 _sessions[id] = session.Completion;
                 _ = session.Completion.ContinueWith(_ => { _sessions.TryRemove(id, out var ignored); }, TaskScheduler.Default);
             }
-            var payloadLength = BinaryPrimitives.ReadUInt16BigEndian(bytes.AsSpan(packet.TransportOffset + 4)) - 8;
-            session.Send(new(flow.RemoteAddress, flow.RemotePort), bytes.AsSpan(packet.TransportOffset + 8, payloadLength));
+            var payloadLength = BinaryPrimitives.ReadUInt16BigEndian(bytes.Span[(packet.TransportOffset + 4)..]) - 8;
+            session.Send(new(flow.RemoteAddress, flow.RemotePort), bytes.Span.Slice(packet.TransportOffset + 8, payloadLength));
             return;
         }
         PassThrough();
     }
 
-    private void Send(byte[] bytes, int count, DivertAddress address, bool checksum)
+    private RouteUdpSession CreateUdpSession(RouteFlow flow, RouteDecision selected, DivertAddress replyAddress)
     {
+        var rule = selected.Rule!;
+        var owner = new RouteFlowOwner(selected.Process!.Value, () =>
+        {
+            var current = Match(flow);
+            return current.Kind == RouteDecisionKind.Selected && current.Rule?.Id == rule.Id ? current.Process : null;
+        });
+        replyAddress.Outbound = false;
+        return new(rule, new(flow.RemoteAddress, flow.RemotePort),
+            (peer, payload) => SendUdpReply(flow with { RemoteAddress = peer.Address, RemotePort = (ushort)peer.Port }, replyAddress, payload),
+            _stop.Token, Report, owner.IsCurrent);
+    }
+
+    private void SendUdpReply(RouteFlow flow, DivertAddress address, ReadOnlySpan<byte> payload)
+    {
+        var reply = ArrayPool<byte>.Shared.Rent(48 + payload.Length);
+        try
+        {
+            var length = RoutePacket.WriteUdpReply(reply, flow, payload);
+            Send(reply.AsMemory(0, length), address, checksum: true);
+        }
+        finally { ArrayPool<byte>.Shared.Return(reply); }
+    }
+
+    private void Send(Memory<byte> bytes, DivertAddress address, bool checksum, RoutePacketBatch? output = null)
+    {
+        if (_stop.IsCancellationRequested) { return; }
+        if (checksum && !WinDivertApi.WinDivertHelperCalcChecksums(ref MemoryMarshal.GetReference(bytes.Span), (uint)bytes.Length, ref address, 0))
+        {
+            throw new IOException("Could not calculate redirected packet checksums.");
+        }
+        // Packet preparation owns its buffers; only native handle operations
+        // need serialization with other injections and shutdown.
+        if (output != null)
+        {
+            output.Add(bytes.Span, address);
+            return;
+        }
         lock (_sendGate)
         {
             if (_handle == IntPtr.Zero || _stop.IsCancellationRequested)
@@ -363,15 +409,21 @@ internal sealed class AppRouteEngine : IRouteEngine
                 return;
             }
 
-            if (checksum && !WinDivertApi.WinDivertHelperCalcChecksums(bytes, (uint)count, ref address, 0))
-            {
-                throw new IOException("Could not calculate redirected packet checksums.");
-            }
-
-            if (!WinDivertApi.WinDivertSend(_handle, bytes, (uint)count, out _, ref address))
+            if (!WinDivertApi.WinDivertSend(_handle, ref MemoryMarshal.GetReference(bytes.Span), (uint)bytes.Length, out _, ref address))
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
+        }
+    }
+
+    private void SendBatch(Span<byte> packets, Span<DivertAddress> addresses)
+    {
+        lock (_sendGate)
+        {
+            if (_handle == IntPtr.Zero || _stop.IsCancellationRequested) { return; }
+            if (!WinDivertApi.WinDivertSendEx(_handle, ref MemoryMarshal.GetReference(packets), (uint)packets.Length,
+                out _, 0, ref MemoryMarshal.GetReference(addresses), (uint)(addresses.Length * RoutePacketBatch.AddressSize), IntPtr.Zero))
+            { throw new Win32Exception(Marshal.GetLastWin32Error()); }
         }
     }
 

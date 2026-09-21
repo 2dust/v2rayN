@@ -59,6 +59,17 @@ public class SocksTests
     }
 
     [Test]
+    public async Task Ipv4MappedAddressesUseIpv4EncodingInRequestsAndDatagrams()
+    {
+        var endpoint = new IPEndPoint(IPAddress.Parse("::ffff:198.51.100.2"), 443);
+        var address = new byte[] { 1, 198, 51, 100, 2, 1, 187 };
+        await RouteConnector.EncodeAddress(endpoint).SequenceEqual(address).Should().BeTrue();
+        var datagram = RouteConnector.WrapDatagram(endpoint, [42]);
+        await datagram.SequenceEqual(new byte[] { 0, 0, 0 }.Concat(address).Append((byte)42)).Should().BeTrue();
+        await RouteConnector.UnwrapDatagram(datagram, new(IPAddress.Parse("198.51.100.2"), 443)).Should().BeEqualTo(10);
+    }
+
+    [Test]
     [Arguments(false)]
     [Arguments(true)]
     public async Task DatagramFramesRoundTripAndRejectWrongPeerOrFragments(bool ipv6)

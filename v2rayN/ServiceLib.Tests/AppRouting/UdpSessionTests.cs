@@ -1,10 +1,114 @@
 using System.Buffers.Binary;
+using System.Threading.Channels;
 using ServiceLib.Services.AppRouting;
 
 namespace ServiceLib.Tests.AppRouting;
 
 public class UdpSessionTests
 {
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task DatagramRoundTripsPreserveEveryByteAcrossDifferentPayloadSizes(bool ipv6)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        using var tcp = new TcpListener(IPAddress.Loopback, 0);
+        using var udp = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        tcp.Start();
+        var destination = new IPEndPoint(PacketTests.Flow(ipv6).RemoteAddress, 443);
+        var sizes = new[] { 0, 1, 7, 1400, 16_384, 60_000, 3, 0 };
+        var replies = Channel.CreateUnbounded<(IPEndPoint Peer, byte[] Bytes)>();
+        var pool = new TrackingBytePool();
+        var errors = new ConcurrentQueue<Exception>();
+        var completed = false;
+        byte[] Payload(int index) => Enumerable.Range(0, sizes[index]).Select(i => (byte)((i * 31 + index) & 255)).ToArray();
+        var server = Task.Run(async () =>
+        {
+            using var client = await tcp.AcceptTcpClientAsync(timeout.Token);
+            using var stream = client.GetStream();
+            await stream.ReadExactlyAsync(new byte[3], timeout.Token);
+            await stream.WriteAsync(new byte[] { 5, 0 }, timeout.Token);
+            await stream.ReadExactlyAsync(new byte[10], timeout.Token);
+            await stream.WriteAsync(new byte[] { 5, 0, 0 }.Concat(RouteConnector.EncodeAddress((IPEndPoint)udp.Client.LocalEndPoint!)).ToArray(), timeout.Token);
+            IPEndPoint? source = null;
+            for (var index = 0; index < sizes.Length; index++)
+            {
+                var datagram = await udp.ReceiveAsync(timeout.Token);
+                source ??= datagram.RemoteEndPoint;
+                await datagram.RemoteEndPoint.Should().BeEqualTo(source);
+                // Build the expected wire frame independently of the production codec.
+                var expected = new byte[] { 0, 0, 0, ipv6 ? (byte)4 : (byte)1 }
+                    .Concat(destination.Address.GetAddressBytes()).Concat(new byte[] { 1, 187 }).Concat(Payload(index)).ToArray();
+                await datagram.Buffer.SequenceEqual(expected).Should().BeTrue();
+                await udp.SendAsync(datagram.Buffer, source, timeout.Token);
+            }
+            await (await stream.ReadAsync(new byte[1], timeout.Token)).Should().BeEqualTo(0);
+        });
+        using var session = new RouteUdpSession(new() { Kind = AppRouteKind.Socks5, SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port },
+            destination, (peer, payload) => replies.Writer.TryWrite((peer, payload.ToArray())), timeout.Token, errors.Enqueue, () => true, pool);
+        try
+        {
+            for (var index = 0; index < sizes.Length; index++)
+            {
+                var payload = Payload(index);
+                session.Send(destination, payload);
+                payload.AsSpan().Fill(255); // Caller storage can be reused as soon as Send returns.
+                var reply = await replies.Reader.ReadAsync(timeout.Token);
+                await reply.Peer.Should().BeEqualTo(destination);
+                await reply.Bytes.SequenceEqual(Payload(index)).Should().BeTrue();
+            }
+            await session.IsUsable.Should().BeTrue();
+            completed = true;
+        }
+        finally
+        {
+            session.Dispose();
+            await session.Completion.WaitAsync(timeout.Token);
+            if (!completed) { timeout.Cancel(); }
+            try { await server.WaitAsync(timeout.Token); }
+            catch (OperationCanceledException) when (timeout.IsCancellationRequested) { }
+        }
+        await errors.IsEmpty.Should().BeTrue();
+        await pool.Rents.Should().BeEqualTo(sizes.Length);
+        await pool.Outstanding.Should().BeEqualTo(0);
+    }
+
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task QueuedBuffersAreReturnedOnCancellationOrAssociationFailure(bool failAssociation)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        using var tcp = new TcpListener(IPAddress.Loopback, 0);
+        tcp.Start();
+        var queued = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var greetingRead = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var errors = new List<Exception>();
+        var pool = new TrackingBytePool();
+        var server = Task.Run(async () =>
+        {
+            using var client = await tcp.AcceptTcpClientAsync(timeout.Token);
+            using var stream = client.GetStream();
+            await stream.ReadExactlyAsync(new byte[3], timeout.Token);
+            greetingRead.SetResult();
+            await queued.Task.WaitAsync(timeout.Token);
+            if (failAssociation) { await stream.WriteAsync(new byte[] { 5, 255 }, timeout.Token); }
+            else { await (await stream.ReadAsync(new byte[1], timeout.Token)).Should().BeEqualTo(0); }
+        });
+        using var session = new RouteUdpSession(new() { Kind = AppRouteKind.Socks5, SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port },
+            new(IPAddress.Loopback, 443), (_, _) => { }, timeout.Token, errors.Add, () => true, pool);
+        await greetingRead.Task.WaitAsync(timeout.Token);
+        for (var i = 0; i < 65; i++) { session.Send(new(IPAddress.Loopback, 443), [1]); }
+        await pool.Rents.Should().BeEqualTo(65);
+        await pool.Outstanding.Should().BeEqualTo(64); // The full channel returned the rejected buffer immediately.
+        queued.SetResult();
+        if (!failAssociation) { session.Dispose(); }
+        await session.Completion.WaitAsync(timeout.Token);
+        await server.WaitAsync(timeout.Token);
+        await pool.Outstanding.Should().BeEqualTo(0);
+        await errors.Count.Should().BeEqualTo(failAssociation ? 1 : 0);
+    }
+
     [Test]
     [Arguments(false)]
     [Arguments(true)]
@@ -17,6 +121,7 @@ public class UdpSessionTests
         var first = new IPEndPoint(PacketTests.Flow(ipv6).RemoteAddress, 1234);
         var second = new IPEndPoint(first.Address, 5678);
         var replyingPeer = new IPEndPoint(first.Address, 9999);
+        var pool = new TrackingBytePool();
         var received = new TaskCompletionSource<IPEndPoint>(TaskCreationOptions.RunContinuationsAsynchronously);
         var server = Task.Run(async () =>
         {
@@ -31,20 +136,25 @@ public class UdpSessionTests
             await one.RemoteEndPoint.Should().BeEqualTo(two.RemoteEndPoint);
             var offset = RouteConnector.UnwrapDatagram(one.Buffer, first);
             await one.Buffer[offset].Should().BeEqualTo((byte)1);
+            await one.Buffer.Length.Should().BeEqualTo(offset + 1);
             offset = RouteConnector.UnwrapDatagram(two.Buffer, second);
             await two.Buffer[offset].Should().BeEqualTo((byte)2);
+            await two.Buffer.Length.Should().BeEqualTo(offset + 1);
             await udp.SendAsync(RouteConnector.WrapDatagram(replyingPeer, new byte[] { 3 }), one.RemoteEndPoint, timeout.Token);
             await (await stream.ReadAsync(new byte[1], timeout.Token)).Should().BeEqualTo(0);
         });
         using var session = new RouteUdpSession(new() { Kind = AppRouteKind.Socks5, SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port }, first,
-            (peer, _) => received.TrySetResult(peer), timeout.Token, ex => received.TrySetException(ex), () => true);
+            (peer, _) => received.TrySetResult(peer), timeout.Token, ex => received.TrySetException(ex), () => true, pool);
         try
         {
-            session.Send(first, [1]);
+            var payload = new byte[] { 1 };
+            session.Send(first, payload);
+            payload[0] = 255;
             session.Send(second, [2]);
             await (await received.Task.WaitAsync(timeout.Token)).Should().BeEqualTo(replyingPeer);
         }
         finally { session.Dispose(); await session.Completion.WaitAsync(timeout.Token); await server.WaitAsync(timeout.Token); }
+        await pool.Outstanding.Should().BeEqualTo(0);
     }
 
     [Test]
@@ -117,6 +227,60 @@ public class UdpSessionTests
     }
 
     [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task OversizedDatagramDoesNotCloseTheAssociationOrDiscardTheNextPacket(bool ipv6)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        using var tcp = new TcpListener(IPAddress.Loopback, 0);
+        using var udp = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        tcp.Start();
+        var queued = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var received = new TaskCompletionSource<byte>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var pool = new TrackingBytePool();
+        var errors = new List<Exception>();
+        var server = Task.Run(async () =>
+        {
+            using var client = await tcp.AcceptTcpClientAsync(timeout.Token);
+            using var stream = client.GetStream();
+            await stream.ReadExactlyAsync(new byte[3], timeout.Token);
+            await queued.Task.WaitAsync(timeout.Token);
+            await stream.WriteAsync(new byte[] { 5, 0 }, timeout.Token);
+            await stream.ReadExactlyAsync(new byte[10], timeout.Token);
+            await stream.WriteAsync(new byte[] { 5, 0, 0 }.Concat(RouteConnector.EncodeAddress((IPEndPoint)udp.Client.LocalEndPoint!)).ToArray(), timeout.Token);
+            var packet = await udp.ReceiveAsync(timeout.Token);
+            var offset = RouteConnector.UnwrapDatagram(packet.Buffer, out _);
+            received.SetResult(packet.Buffer[offset]);
+            await (await stream.ReadAsync(new byte[1], timeout.Token)).Should().BeEqualTo(0);
+        });
+        var destination = new IPEndPoint(PacketTests.Flow(ipv6).RemoteAddress, 443);
+        using var session = new RouteUdpSession(new() { Kind = AppRouteKind.Socks5, SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port },
+            destination, (_, _) => { }, timeout.Token, errors.Add, () => true, pool);
+        // The SOCKS header makes this too large for the outer IPv4 UDP socket.
+        try
+        {
+            session.Send(destination, new byte[ipv6 ? 65527 : 65507]);
+            session.Send(destination, [1]);
+            queued.SetResult();
+            await Task.WhenAny(received.Task, session.Completion).WaitAsync(timeout.Token);
+            await session.IsUsable.Should().BeTrue();
+            await (await received.Task.WaitAsync(timeout.Token)).Should().BeEqualTo((byte)1);
+        }
+        finally
+        {
+            session.Dispose();
+            await session.Completion.WaitAsync(timeout.Token);
+            if (!received.Task.IsCompleted) { timeout.Cancel(); }
+            try { await server.WaitAsync(timeout.Token); }
+            catch (OperationCanceledException) when (timeout.IsCancellationRequested) { }
+        }
+        await errors.Count.Should().BeEqualTo(1);
+        await (errors[0] is SocketException { SocketErrorCode: SocketError.MessageSize }).Should().BeTrue();
+        await pool.Rents.Should().BeEqualTo(2);
+        await pool.Outstanding.Should().BeEqualTo(0);
+    }
+
+    [Test]
     public async Task PacketsQueuedDuringConnectionAreDroppedWhenTheirOwnerExits()
     {
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
@@ -124,6 +288,7 @@ public class UdpSessionTests
         using var udp = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
         tcp.Start();
         var ownsFlow = 1;
+        var pool = new TrackingBytePool();
         var queued = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var server = Task.Run(async () =>
         {
@@ -146,13 +311,16 @@ public class UdpSessionTests
         {
             Kind = AppRouteKind.Socks5,
             SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port
-        }, new(IPAddress.Loopback, 12345), (_, _) => { }, timeout.Token, errors.Add, () => Volatile.Read(ref ownsFlow) != 0);
+        }, new(IPAddress.Loopback, 12345), (_, _) => { }, timeout.Token, errors.Add, () => Volatile.Read(ref ownsFlow) != 0, pool);
         session.Send(new(IPAddress.Loopback, 12345), [1, 2, 3]);
+        session.Send(new(IPAddress.Loopback, 12345), [4, 5, 6]);
         queued.SetResult();
         await session.Completion.WaitAsync(timeout.Token);
         await server;
         await udp.Available.Should().BeEqualTo(0);
         await errors.Count.Should().BeEqualTo(0);
+        await pool.Rents.Should().BeEqualTo(2);
+        await pool.Outstanding.Should().BeEqualTo(0);
     }
 
     [Test]
@@ -264,7 +432,7 @@ public class UdpSessionTests
                 controlClosed.SetResult();
             });
             using var session = new RouteUdpSession(new AppRouteRule { Kind = AppRouteKind.Socks5, SocksPort = ((IPEndPoint)tcp.LocalEndpoint).Port },
-                destination, (_, data) => done.TrySetResult(data), timeout.Token, ex => done.TrySetException(ex), () => Volatile.Read(ref ownsFlow) != 0);
+                destination, (_, data) => done.TrySetResult(data.ToArray()), timeout.Token, ex => done.TrySetException(ex), () => Volatile.Read(ref ownsFlow) != 0);
             session.Send(destination, payload);
             if (loseOwnership)
             {

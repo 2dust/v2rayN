@@ -120,6 +120,8 @@ internal sealed class RouteNatTable
         lock (_gate)
         {
             var entry = _reverse.GetValueOrDefault(translatedPort);
+            // Reflected listener traffic can carry a different IPv6 scope. Match wire
+            // addresses here; reverse NAT restores the original interface metadata.
             return entry != null && entry.Flow.LocalAddress.GetAddressBytes().AsSpan().SequenceEqual(local.GetAddressBytes()) &&
                 entry.Flow.RemoteAddress.GetAddressBytes().AsSpan().SequenceEqual(remote.GetAddressBytes()) ? entry : null;
         }

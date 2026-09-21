@@ -40,14 +40,58 @@ public class AttributionTests
     }
 
     [Test]
-    public async Task AttributionQueueIsBoundedAndRetainsOriginalArrivalAcrossRetries()
+    public async Task AttributionRetriesPreserveOwnedPacketsAndTheirByteBudget()
     {
         var queue = new RoutePendingPackets();
         for (var i = 0; i < 64; i++) { await queue.Add(new byte[65536], default, 123, null).Should().BeTrue(); }
         await queue.Add([1], default, 123, null).Should().BeFalse();
-        var packets = queue.Drain();
-        await packets.All(p => p.Arrived == 123).Should().BeTrue();
-        await queue.Add([1], default, packets[0].Arrived, null).Should().BeTrue();
+        var first = queue.Dequeue();
+        await queue.Add(first).Should().BeTrue();
+        await queue.Add([1], default, 456, null).Should().BeFalse();
+        // A snapshot retries only the entries present at its start, preserving FIFO order.
+        var retried = 0;
+        for (var remaining = queue.Count; remaining > 0; remaining--)
+        {
+            var packet = queue.Dequeue();
+            await packet.Arrived.Should().BeEqualTo(123L);
+            await queue.Add(packet).Should().BeTrue();
+            if (++retried == 64) { await ReferenceEquals(packet, first).Should().BeTrue(); }
+        }
+        await retried.Should().BeEqualTo(64);
+        while (queue.Count > 0) { queue.Dequeue(); }
+        await queue.Add([1], default, 456, null).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task AttributionCaptureCopiesBorrowedBytesAndCountsRetainedFragments()
+    {
+        var queue = new RoutePendingPackets();
+        var bytes = new byte[] { 1, 2 };
+        var address = new DivertAddress { InterfaceIndex = 7, Timestamp = 100 };
+        var fragments = new List<(byte[] Packet, DivertAddress Address)> { (new byte[4 * 1024 * 1024 - bytes.Length], address) };
+        await queue.Add(bytes, address, 123, fragments).Should().BeTrue();
+        bytes[0] = 99;
+        await queue.Add([1], default, 0, null).Should().BeFalse();
+        var packet = queue.Dequeue();
+        await packet.Bytes[0].Should().BeEqualTo((byte)1);
+        await packet.Address.InterfaceIndex.Should().BeEqualTo(7u);
+        await packet.Address.Timestamp.Should().BeEqualTo(100L);
+        await ReferenceEquals(packet.Fragments, fragments).Should().BeTrue();
+        await queue.Add(packet).Should().BeTrue();
+        await ReferenceEquals(queue.Dequeue(), packet).Should().BeTrue();
+        await queue.Add(new byte[4 * 1024 * 1024], default, 456, null).Should().BeTrue();
+        await queue.Add(packet).Should().BeFalse();
+    }
+
+    [Test]
+    public async Task AttributionQueueRejectsPacketsBeyondTheCountLimit()
+    {
+        var queue = new RoutePendingPackets();
+        for (var i = 0; i < 512; i++) { await queue.Add([1], default, 123, null).Should().BeTrue(); }
+        var packet = queue.Dequeue();
+        await queue.Add(packet).Should().BeTrue();
+        await queue.Add([1], default, 456, null).Should().BeFalse();
+        await queue.Add(packet).Should().BeFalse();
     }
 
     [Test]

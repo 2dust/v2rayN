@@ -156,22 +156,39 @@ internal static class RouteConnector
 
     public static byte[] EncodeAddress(IPEndPoint destination)
     {
-        var ip = destination.Address.IsIPv4MappedToIPv6 ? destination.Address.MapToIPv4() : destination.Address;
-        var raw = ip.GetAddressBytes();
-        var result = new byte[raw.Length + 3];
-        result[0] = raw.Length == 4 ? (byte)1 : (byte)4;
-        raw.CopyTo(result, 1);
-        BinaryPrimitives.WriteUInt16BigEndian(result.AsSpan(raw.Length + 1), (ushort)destination.Port);
+        var result = new byte[EncodedAddressLength(destination)];
+        WriteAddress(destination, result);
         return result;
     }
 
+    private static int WriteAddress(IPEndPoint destination, Span<byte> result)
+    {
+        var ip = destination.Address.IsIPv4MappedToIPv6 ? destination.Address.MapToIPv4() : destination.Address;
+        ip.TryWriteBytes(result[1..], out var length);
+        result[0] = length == 4 ? (byte)1 : (byte)4;
+        BinaryPrimitives.WriteUInt16BigEndian(result[(length + 1)..], (ushort)destination.Port);
+        return length + 3;
+    }
+
+    // ATYP + address + port, shared by CONNECT/ASSOCIATE and UDP framing.
+    private static int EncodedAddressLength(IPEndPoint destination) =>
+        destination.Address.AddressFamily == AddressFamily.InterNetwork || destination.Address.IsIPv4MappedToIPv6 ? 7 : 19;
+
+    internal static int DatagramHeaderLength(IPEndPoint destination) => 3 + EncodedAddressLength(destination); // RSV + FRAG
+
     public static byte[] WrapDatagram(IPEndPoint destination, ReadOnlySpan<byte> payload)
     {
-        var address = EncodeAddress(destination);
-        var result = new byte[3 + address.Length + payload.Length];
-        address.CopyTo(result, 3);
-        payload.CopyTo(result.AsSpan(3 + address.Length));
+        var result = new byte[DatagramHeaderLength(destination) + payload.Length];
+        WriteDatagram(result, destination, payload);
         return result;
+    }
+
+    internal static int WriteDatagram(Span<byte> bytes, IPEndPoint destination, ReadOnlySpan<byte> payload)
+    {
+        bytes[..3].Clear();
+        var header = 3 + WriteAddress(destination, bytes[3..]);
+        payload.CopyTo(bytes[header..]);
+        return header + payload.Length;
     }
 
     public static int UnwrapDatagram(ReadOnlySpan<byte> packet, IPEndPoint expected)

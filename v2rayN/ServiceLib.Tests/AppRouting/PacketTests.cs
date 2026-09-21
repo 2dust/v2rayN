@@ -6,6 +6,27 @@ namespace ServiceLib.Tests.AppRouting;
 public class PacketTests
 {
     [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task ReusedReplyBufferClearsHeadersAndLeavesUnusedCapacityUntouched(bool ipv6)
+    {
+        var bytes = Enumerable.Repeat((byte)0xa5, 100).ToArray();
+        var flow = Flow(ipv6);
+        var length = RoutePacket.WriteUdpReply(bytes, flow, [1, 2, 3]);
+        var expected = RoutePacket.CreateUdpReply(flow, [1, 2, 3]);
+        await bytes.AsSpan(0, length).SequenceEqual(expected).Should().BeTrue();
+        await bytes.Skip(length).All(b => b == 0xa5).Should().BeTrue();
+        var parsed = RoutePacket.Parse(bytes.AsSpan(0, length))!;
+        var header = ipv6 ? 40 : 20;
+        await bytes[header + 6].Should().BeEqualTo((byte)0);
+        await bytes[header + 7].Should().BeEqualTo((byte)0);
+        if (ipv6) { await bytes.AsSpan(1, 3).SequenceEqual(new byte[3]).Should().BeTrue(); }
+        else { await bytes.AsSpan(4, 4).SequenceEqual(new byte[4]).Should().BeTrue(); }
+        parsed.Rewrite(bytes, flow.LocalAddress, flow.LocalPort, flow.RemoteAddress, flow.RemotePort);
+        await RoutePacket.Parse(bytes.AsSpan(0, length))!.Flow.Should().BeEqualTo(flow);
+    }
+
+    [Test]
     public async Task NativeAddressHasCompleteUnion()
     {
         await Marshal.SizeOf<DivertAddress>().Should().BeEqualTo(80);
@@ -118,6 +139,23 @@ public class PacketTests
         table.Expire(old.LastActivity + 150_000);
         await ReferenceEquals(table.Find(flow), fresh).Should().BeTrue();
         await (table.Reverse(flow.LocalAddress, flow.RemoteAddress, old.TranslatedPort) == null).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task ReverseNatMatchesLinkLocalWireAddressesAcrossInterfaceScopes()
+    {
+        var table = new RouteNatTable();
+        var flow = Flow(true) with
+        {
+            Protocol = 6,
+            LocalAddress = IPAddress.Parse("fe80::1%7"),
+            RemoteAddress = IPAddress.Parse("fe80::2%7")
+        };
+        var entry = table.GetOrAdd(flow, new(), 100);
+        await ReferenceEquals(table.Reverse(IPAddress.Parse("fe80::1%99"), IPAddress.Parse("fe80::2%99"), entry.TranslatedPort), entry).Should().BeTrue();
+        await table.Reverse(IPAddress.Parse("fe80::1%99"), IPAddress.Parse("fe80::3%99"), entry.TranslatedPort).Should().BeNull();
+        await entry.Flow.LocalAddress.ScopeId.Should().BeEqualTo(7L);
+        await entry.Flow.RemoteAddress.ScopeId.Should().BeEqualTo(7L);
     }
 
     [Test]

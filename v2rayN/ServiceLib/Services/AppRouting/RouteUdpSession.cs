@@ -1,12 +1,16 @@
+using System.Buffers;
 using System.Threading.Channels;
 
 namespace ServiceLib.Services.AppRouting;
 
 internal sealed class RouteUdpSession : IDisposable
 {
+    // The payload borrows the receive buffer and is valid only during the callback.
+    internal delegate void Reply(IPEndPoint peer, ReadOnlySpan<byte> payload);
     private const int MaxQueuedBytes = 64 * 1024;
     private readonly CancellationTokenSource _stop;
-    private sealed record Datagram(IPEndPoint Destination, byte[] Bytes);
+    private readonly record struct Datagram(IPEndPoint Destination, byte[] Bytes, int Length, int PayloadLength);
+    private readonly ArrayPool<byte> _buffers;
     private readonly Channel<Datagram> _queue = Channel.CreateBounded<Datagram>(new BoundedChannelOptions(64)
     {
         FullMode = BoundedChannelFullMode.Wait,
@@ -17,7 +21,7 @@ internal sealed class RouteUdpSession : IDisposable
     private readonly AppRouteRule _rule;
     public AppRouteRule Rule => _rule;
     private readonly IPEndPoint _destination;
-    private readonly Action<IPEndPoint, byte[]> _reply;
+    private readonly Reply _reply;
     private readonly Func<bool> _ownsFlow;
     private Socket? _socket;
     private Socket? _control;
@@ -29,12 +33,14 @@ internal sealed class RouteUdpSession : IDisposable
     private long _lastActivity = Environment.TickCount64;
     public long LastActivity => Interlocked.Read(ref _lastActivity);
 
-    public RouteUdpSession(AppRouteRule rule, IPEndPoint destination, Action<IPEndPoint, byte[]> reply, CancellationToken token, Action<Exception> error, Func<bool> ownsFlow)
+    public RouteUdpSession(AppRouteRule rule, IPEndPoint destination, Reply reply, CancellationToken token, Action<Exception> error,
+        Func<bool> ownsFlow, ArrayPool<byte>? buffers = null)
     {
         _rule = rule;
         _destination = destination;
         _reply = reply;
         _ownsFlow = ownsFlow;
+        _buffers = buffers ?? ArrayPool<byte>.Shared;
         _stop = CancellationTokenSource.CreateLinkedTokenSource(token);
         Completion = Run(error);
     }
@@ -52,12 +58,18 @@ internal sealed class RouteUdpSession : IDisposable
         {
             return;
         }
-        var bytes = payload.ToArray();
-        Interlocked.Add(ref _queuedBytes, bytes.Length);
-        if (!_queue.Writer.TryWrite(new(destination, bytes)))
+        var header = _rule.Kind == AppRouteKind.Interface ? 0 : RouteConnector.DatagramHeaderLength(destination);
+        var bytes = _buffers.Rent(header + payload.Length);
+        var queued = false;
+        try
         {
-            Interlocked.Add(ref _queuedBytes, -bytes.Length);
+            if (header == 0) { payload.CopyTo(bytes); }
+            else { RouteConnector.WriteDatagram(bytes, destination, payload); }
+            Interlocked.Add(ref _queuedBytes, payload.Length);
+            queued = _queue.Writer.TryWrite(new(destination, bytes, header + payload.Length, payload.Length));
+            if (!queued) { Interlocked.Add(ref _queuedBytes, -payload.Length); }
         }
+        finally { if (!queued) { _buffers.Return(bytes); } }
     }
 
     private async Task Run(Action<Exception> error)
@@ -90,11 +102,12 @@ internal sealed class RouteUdpSession : IDisposable
                 await _socket.ConnectAsync(relay, connectTimeout.Token);
             }
             var receive = Receive();
-            var send = SendLoop();
+            var send = SendLoop(error);
             var control = _control == null ? Task.Delay(Timeout.Infinite, _stop.Token) : WatchControl();
             try
             {
-                await await Task.WhenAny(receive, send, control);
+                var completed = await Task.WhenAny(receive, send, control);
+                await completed; // Observe the first worker's outcome before stopping the others.
             }
             finally
             {
@@ -118,7 +131,8 @@ internal sealed class RouteUdpSession : IDisposable
             _queue.Writer.TryComplete();
             while (_queue.Reader.TryRead(out var pending))
             {
-                Interlocked.Add(ref _queuedBytes, -pending.Bytes.Length);
+                Interlocked.Add(ref _queuedBytes, -pending.PayloadLength);
+                _buffers.Return(pending.Bytes);
             }
             _stop.Dispose();
         }
@@ -131,31 +145,35 @@ internal sealed class RouteUdpSession : IDisposable
         throw new IOException("SOCKS5 UDP association closed.");
     }
 
-    private async Task SendLoop()
+    private async Task SendLoop(Action<Exception> error)
     {
         await foreach (var datagram in _queue.Reader.ReadAllAsync(_stop.Token))
         {
-            var bytes = datagram.Bytes;
-            Interlocked.Add(ref _queuedBytes, -bytes.Length);
-            // An association can take time to open; queued packets must not outlive their owner.
-            if (!_ownsFlow())
+            Interlocked.Add(ref _queuedBytes, -datagram.PayloadLength);
+            try
             {
-                return;
-            }
-            if (_rule.Kind == AppRouteKind.Interface)
-            {
-                var destination = datagram.Destination;
-                if (destination.Address.IsIPv6LinkLocal)
+                // An association can take time to open; queued packets must not outlive their owner.
+                if (!_ownsFlow()) { return; }
+                var bytes = datagram.Bytes.AsMemory(0, datagram.Length);
+                if (_rule.Kind == AppRouteKind.Interface)
                 {
-                    var scope = ((IPEndPoint)_socket!.LocalEndPoint!).Address.ScopeId;
-                    destination = new(new IPAddress(destination.Address.GetAddressBytes(), scope), destination.Port);
+                    var destination = datagram.Destination;
+                    if (destination.Address.IsIPv6LinkLocal)
+                    {
+                        var scope = ((IPEndPoint)_socket!.LocalEndPoint!).Address.ScopeId;
+                        destination = new(new IPAddress(destination.Address.GetAddressBytes(), scope), destination.Port);
+                    }
+                    await _socket!.SendToAsync(bytes, SocketFlags.None, destination, _stop.Token);
                 }
-                await _socket!.SendToAsync(bytes, SocketFlags.None, destination, _stop.Token);
+                else
+                {
+                    await _socket!.SendAsync(bytes, SocketFlags.None, _stop.Token);
+                }
             }
-            else
-            {
-                await _socket!.SendAsync(RouteConnector.WrapDatagram(datagram.Destination, bytes), SocketFlags.None, _stop.Token);
-            }
+            // MessageSize rejects this datagram without damaging the association.
+            // Other socket errors still end the session through Run's supervision.
+            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.MessageSize) { error(ex); }
+            finally { _buffers.Return(datagram.Bytes); }
         }
     }
 
@@ -190,7 +208,7 @@ internal sealed class RouteUdpSession : IDisposable
             }
 
             Interlocked.Exchange(ref _lastActivity, Environment.TickCount64);
-            _reply(peer, bytes.AsSpan(offset, count - offset).ToArray());
+            _reply(peer, bytes.AsSpan(offset, count - offset));
         }
     }
 

@@ -155,8 +155,8 @@ password masking in the editor does not encrypt that file.
   can also drop otherwise unselected traffic.
   Owner-table sampling still has a race with process/socket teardown; this is
   not a security boundary. Native port-reuse stress testing remains necessary.
-- SOCKS5 UDP fragments (`FRAG != 0`) are unsupported; IP fragments are separately
-  handled separately. Known unselected traffic bypasses reassembly after its
+- SOCKS5 UDP fragments (`FRAG != 0`) are unsupported; IP fragments are handled
+  separately. Known unselected traffic bypasses reassembly after its
   first fragment is classified; later parts use a bounded bypass index. Selected
   or unresolved traffic, fragmented SYNs and reflected TCP replies still need
   assembly. Overlapping, incomplete, expired or excessive assemblies are dropped.
@@ -171,6 +171,9 @@ password masking in the editor does not encrypt that file.
   hold at most 64 datagrams and 64 KiB of payload per session, and drop excess
   traffic without blocking packet capture; idle UDP sessions expire
   after 60 seconds. These limits protect memory and do not promise zero loss.
+  A datagram that exceeds the outbound socket's size limit is dropped and reported
+  without closing its UDP association. SOCKS framing reduces the available payload
+  size; application datagrams are not split into SOCKS5 fragments.
   Connection resets during TCP accept are recoverable; a fatal capture/listener
   or maintenance-worker failure, or an unexpected isolated Xray exit, stops and
   cleans up the runtime and reports the error. There is no automatic retry loop;
@@ -245,6 +248,7 @@ the selected interface's address. IPv6 link-local addresses retain their scope.
 
 Automated tests cover the 80-byte WinDivert address ABI, packet bounds and
 rewriting, IPv4/IPv6 fragments, TCP tuple collisions/reconnections, owner matching,
+mixed packet batches, maximum packet sizes, partial-batch flushing and UDP buffer ownership,
 SOCKS5 authentication and split replies (including domain bind addresses),
 cancellation during each handshake stage, shutdown overlapping a final connection,
 UDP multi-peer framing/association/cleanup, missing-interface failure, staged

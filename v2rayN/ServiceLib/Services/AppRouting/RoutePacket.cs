@@ -99,7 +99,8 @@ internal sealed record RoutePacket(RouteFlow Flow, int TransportOffset, int Sour
         IPAddress ReadAddress(ReadOnlySpan<byte> raw)
         {
             var address = new IPAddress(raw);
-            return address.IsIPv6LinkLocal ? new IPAddress(raw, interfaceIndex) : address;
+            if (address.IsIPv6LinkLocal) { address.ScopeId = interfaceIndex; }
+            return address;
         }
         return new(new(protocol, ReadAddress(bytes.Slice(source, length)),
                 BinaryPrimitives.ReadUInt16BigEndian(bytes[transport..]),
@@ -111,17 +112,24 @@ internal sealed record RoutePacket(RouteFlow Flow, int TransportOffset, int Sour
 
     public void Rewrite(Span<byte> bytes, IPAddress source, ushort sourcePort, IPAddress destination, ushort destinationPort)
     {
-        if (source.GetAddressBytes().Length != AddressLength || destination.GetAddressBytes().Length != AddressLength)
+        if (source.AddressFamily != Flow.LocalAddress.AddressFamily || destination.AddressFamily != Flow.RemoteAddress.AddressFamily)
         {
             throw new ArgumentException("Packet address families must match.");
         }
 
-        source.GetAddressBytes().CopyTo(bytes[SourceOffset..]);
-        destination.GetAddressBytes().CopyTo(bytes[DestinationOffset..]);
+        source.TryWriteBytes(bytes.Slice(SourceOffset, AddressLength), out _);
+        destination.TryWriteBytes(bytes.Slice(DestinationOffset, AddressLength), out _);
         BinaryPrimitives.WriteUInt16BigEndian(bytes[TransportOffset..], sourcePort);
         BinaryPrimitives.WriteUInt16BigEndian(bytes[(TransportOffset + 2)..], destinationPort);
     }
     public static byte[] CreateUdpReply(RouteFlow flow, ReadOnlySpan<byte> payload)
+    {
+        var bytes = new byte[(flow.LocalAddress.AddressFamily == AddressFamily.InterNetworkV6 ? 48 : 28) + payload.Length];
+        WriteUdpReply(bytes, flow, payload);
+        return bytes;
+    }
+
+    public static int WriteUdpReply(Span<byte> bytes, RouteFlow flow, ReadOnlySpan<byte> payload)
     {
         var v6 = flow.LocalAddress.AddressFamily == AddressFamily.InterNetworkV6;
         var header = v6 ? 40 : 20;
@@ -130,27 +138,29 @@ internal sealed record RoutePacket(RouteFlow Flow, int TransportOffset, int Sour
             throw new IOException("UDP payload too large.");
         }
 
-        var bytes = new byte[header + 8 + payload.Length];
+        var length = header + 8 + payload.Length;
+        bytes = bytes[..length];
+        bytes[..(header + 8)].Clear(); // Reused storage must not retain old IP/UDP fields.
         bytes[0] = v6 ? (byte)0x60 : (byte)0x45;
         if (v6)
         {
             bytes[6] = 17;
             bytes[7] = 64;
-            BinaryPrimitives.WriteUInt16BigEndian(bytes.AsSpan(4), (ushort)(payload.Length + 8));
+            BinaryPrimitives.WriteUInt16BigEndian(bytes[4..], (ushort)(payload.Length + 8));
         }
         else
         {
             bytes[8] = 64;
             bytes[9] = 17;
-            BinaryPrimitives.WriteUInt16BigEndian(bytes.AsSpan(2), (ushort)bytes.Length);
+            BinaryPrimitives.WriteUInt16BigEndian(bytes[2..], (ushort)bytes.Length);
         }
-        flow.RemoteAddress.GetAddressBytes().CopyTo(bytes, v6 ? 8 : 12);
-        flow.LocalAddress.GetAddressBytes().CopyTo(bytes, v6 ? 24 : 16);
-        BinaryPrimitives.WriteUInt16BigEndian(bytes.AsSpan(header), flow.RemotePort);
-        BinaryPrimitives.WriteUInt16BigEndian(bytes.AsSpan(header + 2), flow.LocalPort);
-        BinaryPrimitives.WriteUInt16BigEndian(bytes.AsSpan(header + 4), (ushort)(payload.Length + 8));
-        payload.CopyTo(bytes.AsSpan(header + 8));
-        return bytes;
+        flow.RemoteAddress.TryWriteBytes(bytes.Slice(v6 ? 8 : 12, v6 ? 16 : 4), out _);
+        flow.LocalAddress.TryWriteBytes(bytes.Slice(v6 ? 24 : 16, v6 ? 16 : 4), out _);
+        BinaryPrimitives.WriteUInt16BigEndian(bytes[header..], flow.RemotePort);
+        BinaryPrimitives.WriteUInt16BigEndian(bytes[(header + 2)..], flow.LocalPort);
+        BinaryPrimitives.WriteUInt16BigEndian(bytes[(header + 4)..], (ushort)(payload.Length + 8));
+        payload.CopyTo(bytes[(header + 8)..]);
+        return length;
     }
 
 }

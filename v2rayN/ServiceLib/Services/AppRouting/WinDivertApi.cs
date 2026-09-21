@@ -22,13 +22,18 @@ internal static class WinDivertApi
     internal static extern IntPtr WinDivertOpen([MarshalAs(UnmanagedType.LPStr)] string filter, int layer, short priority, ulong flags);
     [DllImport(Library, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool WinDivertRecv(IntPtr handle, [Out] byte[] packet, uint length, out uint received, out DivertAddress address);
+    internal static extern bool WinDivertRecvEx(IntPtr handle, [Out] byte[] packet, uint length, out uint received,
+        ulong flags, [Out] DivertAddress[] addresses, ref uint addressLength, IntPtr overlapped);
     [DllImport(Library, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool WinDivertSend(IntPtr handle, byte[] packet, uint length, out uint sent, ref DivertAddress address);
+    internal static extern bool WinDivertSend(IntPtr handle, ref byte packet, uint length, out uint sent, ref DivertAddress address);
     [DllImport(Library, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool WinDivertHelperCalcChecksums([In, Out] byte[] packet, uint length, ref DivertAddress address, ulong flags);
+    internal static extern bool WinDivertSendEx(IntPtr handle, ref byte packet, uint length, out uint sent,
+        ulong flags, ref DivertAddress addresses, uint addressLength, IntPtr overlapped);
+    [DllImport(Library, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool WinDivertHelperCalcChecksums(ref byte packet, uint length, ref DivertAddress address, ulong flags);
     [DllImport(Library, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool WinDivertShutdown(IntPtr handle, uint how);
