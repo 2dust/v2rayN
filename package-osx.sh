@@ -53,6 +53,8 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
   <true/>
   <key>NSHighResolutionCapable</key>
   <true/>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>v2rayN uses the local network to connect directly to local devices and services selected by routing rules.</string>
   <key>LSMinimumSystemVersion</key>
   <string>13.6</string>
 </dict>

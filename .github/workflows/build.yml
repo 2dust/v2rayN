@@ -83,6 +83,15 @@ jobs:
       working-directory: ./v2rayN
       run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $Output
 
+    - name: Prepare macOS app identity
+      if: inputs.target == 'macos'
+      shell: bash
+      run: |
+        python3 .github/scripts/set-macho-uuid.py "$Output/v2rayN"
+        codesign --force --sign - --identifier 2dust.v2rayN "$Output/v2rayN"
+        codesign --verify --verbose=2 "$Output/v2rayN"
+        dwarfdump --uuid "$Output/v2rayN"
+
     - name: Remove Debug Symbols
       shell: bash
       run: |

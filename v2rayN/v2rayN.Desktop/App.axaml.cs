@@ -33,6 +33,7 @@ public partial class App : Application
 
             if (OperatingSystem.IsMacOS())
             {
+                mainWindow.Opened += (_, _) => MacOSLocalNetworkPrivacy.TriggerPrompt();
                 Current?.TryGetFeature<IActivatableLifetime>()?.Activated += OnMacOSActivated;
             }
         }
