@@ -17,6 +17,8 @@ public class CoreManager
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
+    private static readonly Lock _testPortLock = new();
+    private static readonly HashSet<int> _testPorts = [];
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -119,7 +121,16 @@ public class CoreManager
         await UpdateFunc(false, configPath);
 
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false);
+        var process = await RunProcess(coreInfo, fileName, true, false);
+        if (process is null)
+        {
+            File.Delete(configPath);
+        }
+        else
+        {
+            process.OwnTemporaryResources(configPath);
+        }
+        return process;
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(ServerTestItem testItem)
@@ -132,6 +143,10 @@ public class CoreManager
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
+        if (node.ConfigType == EConfigType.Custom)
+        {
+            return await LoadCustomSpeedtest(node, testItem, fileName, configPath);
+        }
         var (context, _) = await CoreConfigContextBuilder.Build(_config, node);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
@@ -141,7 +156,104 @@ public class CoreManager
 
         var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false);
+        var process = await RunProcess(coreInfo, fileName, true, false);
+        if (process is null)
+        {
+            File.Delete(configPath);
+        }
+        else
+        {
+            process.OwnTemporaryResources(configPath);
+        }
+        return process;
+    }
+
+    private async Task<ProcessService?> LoadCustomSpeedtest(ProfileItem node, ServerTestItem testItem,
+        string fileName, string configPath)
+    {
+        var path = File.Exists(node.Address) ? node.Address : Utils.GetConfigPath(node.Address);
+        if (!File.Exists(path))
+        {
+            Logging.SaveLog($"Custom test config not found: {path}");
+            return null;
+        }
+
+        var reservedPorts = new List<int>();
+        try
+        {
+            var content = await File.ReadAllTextAsync(path);
+            var inboundCount = CustomSpeedtestConfig.GetInboundCount(content);
+            for (var i = 0; i < inboundCount; i++)
+            {
+                reservedPorts.Add(ReserveTestPort());
+            }
+            if (!CustomSpeedtestConfig.TryChangePorts(content, testItem.CoreType, reservedPorts,
+                    testItem.RequireUdp, out var testConfig, out var testPort, out var reason))
+            {
+                testItem.TestError = reason;
+                Logging.SaveLog(reason);
+                return null;
+            }
+
+            await File.WriteAllTextAsync(configPath, testConfig);
+            testItem.Port = testPort;
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(testItem.CoreType);
+            var process = await RunProcess(coreInfo, fileName, true, false);
+            if (process is null)
+            {
+                return null;
+            }
+            var ownedPorts = reservedPorts.ToArray();
+            process.OwnTemporaryResources(configPath, () => ReleaseTestPorts(ownedPorts));
+            reservedPorts.Clear();
+            return process;
+        }
+        finally
+        {
+            if (reservedPorts.Count > 0)
+            {
+                ReleaseTestPorts(reservedPorts);
+                if (File.Exists(configPath))
+                {
+                    File.Delete(configPath);
+                }
+            }
+        }
+    }
+
+    private static int ReserveTestPort()
+    {
+        lock (_testPortLock)
+        {
+            for (var attempt = 0; attempt < 100; attempt++)
+            {
+                using var listener = new TcpListener(IPAddress.Loopback, 0);
+                listener.Start();
+                var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+                listener.Stop();
+                if (_testPorts.Add(port))
+                {
+                    return port;
+                }
+            }
+        }
+        throw new InvalidOperationException("Could not reserve a Custom test port.");
+    }
+
+    private static void ReleaseTestPort(int port)
+    {
+        lock (_testPortLock)
+        {
+            _testPorts.Remove(port);
+        }
+    }
+
+    private static void ReleaseTestPorts(IEnumerable<int> ports)
+    {
+        foreach (var port in ports)
+        {
+            ReleaseTestPort(port);
+        }
     }
 
     public async Task CoreStop()
@@ -349,17 +461,24 @@ public class CoreManager
             updateFunc: _updateFunc
         );
 
-        await procService.StartAsync();
-
-        await Task.Delay(100);
-
-        if (procService is null or { HasExited: true })
+        try
         {
-            throw new Exception(ResUI.FailedToRunCore);
-        }
-        AddProcessJob(procService.Handle);
+            await procService.StartAsync();
 
-        return procService;
+            await Task.Delay(100);
+
+            if (procService.HasExited)
+            {
+                throw new Exception(ResUI.FailedToRunCore);
+            }
+            AddProcessJob(procService.Handle);
+            return procService;
+        }
+        catch
+        {
+            procService.Dispose();
+            throw;
+        }
     }
 
     private void AddProcessJob(nint processHandle)

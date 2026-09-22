@@ -125,7 +125,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         var lstSelected = new List<ServerTestItem>(selecteds.Count);
         var ids = selecteds.Where(it => !it.IndexId.IsNullOrEmpty()
-            && it.ConfigType != EConfigType.Custom
+            && (actionType != ESpeedActionType.Tcping || it.ConfigType != EConfigType.Custom)
             && (it.ConfigType.IsComplexType() || it.Port > 0))
             .Select(it => it.IndexId)
             .ToList();
@@ -133,9 +133,19 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         for (var i = 0; i < selecteds.Count; i++)
         {
             var it = selecteds[i];
-            if (it.ConfigType == EConfigType.Custom)
+            if (it.IndexId.IsNullOrEmpty())
             {
                 continue;
+            }
+            if (it.ConfigType == EConfigType.Custom)
+            {
+                if (actionType == ESpeedActionType.Tcping)
+                {
+                    ProfileExManager.Instance.SetTestDelay(it.IndexId, -1);
+                    await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip,
+                        "TCPing is not available for Custom configurations.");
+                    continue;
+                }
             }
 
             if (!it.ConfigType.IsComplexType() && it.Port <= 0)
@@ -144,6 +154,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
 
             var profile = profileMap.GetValueOrDefault(it.IndexId, it);
+            if (it.ConfigType == EConfigType.Custom
+                && actionType is ESpeedActionType.Speedtest or ESpeedActionType.Mixedtest)
+            {
+                ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
+            }
             lstSelected.Add(new ServerTestItem()
             {
                 IndexId = it.IndexId,
@@ -153,6 +168,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 QueueNum = i,
                 Profile = profile,
                 CoreType = AppManager.Instance.GetCoreType(profile, it.ConfigType),
+                RequireUdp = actionType == ESpeedActionType.UdpTest,
             });
         }
 
@@ -232,6 +248,16 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected,
         ConcurrentDictionary<string, byte> completedIds, int pageSize = 0, CancellationToken ct = default)
     {
+        var custom = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+        if (custom.Count > 0)
+        {
+            await RunMixedTestAsync(custom, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
+            lstSelected = lstSelected.Except(custom).ToList();
+        }
+        if (lstSelected.Count == 0)
+        {
+            return;
+        }
         if (pageSize <= 0)
         {
             pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
@@ -319,10 +345,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            if (processService != null)
-            {
-                await processService?.StopAsync();
-            }
+            await StopTestProcessAsync(processService);
         }
         return true;
     }
@@ -330,6 +353,16 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task RunUdpTestBatchAsync(List<ServerTestItem> lstSelected,
         ConcurrentDictionary<string, byte> completedIds, int pageSize = 0, CancellationToken ct = default)
     {
+        var custom = lstSelected.Where(it => it.ConfigType == EConfigType.Custom).ToList();
+        if (custom.Count > 0)
+        {
+            await RunMixedTestAsync(custom, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
+            lstSelected = lstSelected.Except(custom).ToList();
+        }
+        if (lstSelected.Count == 0)
+        {
+            return;
+        }
         if (pageSize <= 0)
         {
             pageSize = Math.Min(lstSelected.Count, _speedTestPageSize);
@@ -409,10 +442,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
         finally
         {
-            if (processService != null)
-            {
-                await processService?.StopAsync();
-            }
+            await StopTestProcessAsync(processService);
         }
         return true;
     }
@@ -439,11 +469,38 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
                 if (processService is null)
                 {
-                    await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                    if (it.ConfigType == EConfigType.Custom)
+                    {
+                        await ReportCustomFailureAsync(it, it.TestError ?? ResUI.FailedToRunCore);
+                    }
+                    else
+                    {
+                        await UpdateFunc(it.IndexId, "", ResUI.FailedToRunCore);
+                    }
+                    completedIds.TryAdd(it.IndexId, 0);
                     return;
                 }
 
                 await Task.Delay(1000, innerCt);
+                if (processService.HasExited)
+                {
+                    if (it.ConfigType == EConfigType.Custom)
+                    {
+                        await ReportCustomFailureAsync(it, ResUI.FailedToRunCore);
+                    }
+                    else
+                    {
+                        await UpdateFunc(it.IndexId, ResUI.SpeedtestingSkip, ResUI.FailedToRunCore);
+                    }
+                    completedIds.TryAdd(it.IndexId, 0);
+                    return;
+                }
+
+                if (it.RequireUdp)
+                {
+                    await DoUdpTest(it, completedIds, innerCt);
+                    return;
+                }
 
                 var delay = await DoRealPing(it, completedIds, innerCt);
                 if (blSpeedTest)
@@ -465,13 +522,22 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             catch (Exception ex)
             {
                 Logging.SaveLog(_tag, ex);
+                if (it.ConfigType == EConfigType.Custom)
+                {
+                    if (completedIds.ContainsKey(it.IndexId))
+                    {
+                        await UpdateFunc(it.IndexId, "", ex.Message);
+                    }
+                    else
+                    {
+                        await ReportCustomFailureAsync(it, ex.Message);
+                    }
+                    completedIds.TryAdd(it.IndexId, 0);
+                }
             }
             finally
             {
-                if (processService != null)
-                {
-                    await processService.StopAsync();
-                }
+                await StopTestProcessAsync(processService);
             }
         });
     }
@@ -506,21 +572,47 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
+        var speedLock = new Lock();
+        decimal measuredSpeed = 0;
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
         using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeout));
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
         var linkedCt = linkedCts.Token;
-        await downloadHandle.DownloadDataAsync(url, webProxy, async (success, msg) =>
+        try
         {
-            decimal.TryParse(msg, out var dec);
-            if (dec > 0)
+            await downloadHandle.DownloadDataAsync(url, webProxy, async (success, msg) =>
             {
-                ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
+                decimal.TryParse(msg, out var dec);
+                if (dec > 0)
+                {
+                    lock (speedLock)
+                    {
+                        measuredSpeed = Math.Max(measuredSpeed, dec);
+                        dec = measuredSpeed;
+                    }
+                    ProfileExManager.Instance.SetTestSpeed(it.IndexId, dec);
+                }
+                await UpdateFunc(it.IndexId, "", msg);
+            }, linkedCt);
+        }
+        catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested && !ct.IsCancellationRequested)
+        {
+            decimal finalSpeed;
+            lock (speedLock)
+            {
+                finalSpeed = measuredSpeed;
             }
-            await UpdateFunc(it.IndexId, "", msg);
-        }, linkedCt);
+            if (finalSpeed > 0)
+            {
+                await UpdateFunc(it.IndexId, "", finalSpeed.ToString());
+            }
+            else
+            {
+                await UpdateFunc(it.IndexId, "", $"{ResUI.TbSettingsSpeedTestTimeout}: {timeout}s");
+            }
+        }
         completedIds.TryAdd(it.IndexId, 0);
     }
 
@@ -572,6 +664,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = [];
+        if (pageSize <= 0)
+        {
+            return lstTest;
+        }
         var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
         var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
 
@@ -599,5 +695,27 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task UpdateIpInfoFunc(string indexId, string ip)
     {
         await _updateFunc?.Invoke(new() { IndexId = indexId, IpInfo = ip });
+    }
+
+    private async Task ReportCustomFailureAsync(ServerTestItem item, string message)
+    {
+        ProfileExManager.Instance.SetTestDelay(item.IndexId, -1);
+        await UpdateFunc(item.IndexId, ResUI.SpeedtestingSkip, message);
+    }
+
+    private static async Task StopTestProcessAsync(ProcessService? processService)
+    {
+        if (processService is null)
+        {
+            return;
+        }
+        try
+        {
+            await processService.StopAsync();
+        }
+        finally
+        {
+            processService.Dispose();
+        }
     }
 }
