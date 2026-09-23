@@ -93,6 +93,7 @@ public partial class SubSettingViewModel : MyReactiveObject
             await ConfigHandler.DeleteSubItem(_config, it.Id);
         }
         await RefreshSubItems();
+        AppEvents.ServerStateChanged.Publish();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
         IsModified = true;
     }
