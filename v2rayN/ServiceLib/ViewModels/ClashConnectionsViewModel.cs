@@ -30,12 +30,7 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
             cancelDisposable.DisposeWith(disposables);
             var token = cancelDisposable.Token;
 
-            Task.Factory.StartNew(
-                async () => await GetClashConnectionsTask(token),
-                token,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default
-            );
+            Task.Run(() => GetClashConnectionsTask(token));
         });
     }
 
@@ -129,9 +124,9 @@ public partial class ClashConnectionsViewModel : MyReactiveObject
         try
         {
             var numOfExecuted = 1;
-            while (!token.IsCancellationRequested)
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            while (await timer.WaitForNextTickAsync(token).ConfigureAwait(false))
             {
-                await Task.Delay(1000, token);
                 numOfExecuted++;
                 if (!(AutoRefresh && AppManager.Instance.ShowInTaskbar &&
                       AppManager.Instance.IsRunningCore(ECoreType.sing_box)))
