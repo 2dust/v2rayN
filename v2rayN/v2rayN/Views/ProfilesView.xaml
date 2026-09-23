@@ -56,6 +56,16 @@
                     ToolTip="{x:Static resx:ResUI.menuSubAdd}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Plus" />
                 </Button>
+                <Button
+                    x:Name="btnWorkflow"
+                    Width="30"
+                    Height="30"
+                    Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuWorkflowSetting}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="{x:Static resx:ResUI.menuWorkflowSetting}">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ScriptTextOutline" />
+                </Button>
 
                 <TextBox
                     x:Name="txtServerFilter"
