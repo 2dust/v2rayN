@@ -15,18 +15,6 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            if (_node == null
-                || !_node.IsValid())
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-            if (_node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
-            {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
-                return ret;
-            }
-
             ret.Msg = ResUI.InitialConfiguration;
 
             var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);
@@ -114,7 +102,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
                 }
                 var actIndexId = context.ServerTestItemMap.GetValueOrDefault(it.IndexId, it.IndexId);
                 var item = context.AllProxiesMap.GetValueOrDefault(actIndexId);
-                if (item is null || item.ConfigType is EConfigType.Custom || !item.IsValid())
+                if (item is null || item.ConfigType is EConfigType.Custom)
                 {
                     continue;
                 }
@@ -187,18 +175,6 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
         var ret = new RetResult();
         try
         {
-            if (_node == null
-                || !_node.IsValid())
-            {
-                ret.Msg = ResUI.CheckServerSettings;
-                return ret;
-            }
-            if (_node.GetNetwork() is nameof(ETransport.kcp) or nameof(ETransport.xhttp))
-            {
-                ret.Msg = ResUI.Incorrectconfiguration + $" - {_node.GetNetwork()}";
-                return ret;
-            }
-
             ret.Msg = ResUI.InitialConfiguration;
 
             var result = EmbedUtils.GetEmbedText(Global.SingboxSampleClient);

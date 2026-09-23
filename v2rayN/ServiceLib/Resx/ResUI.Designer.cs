@@ -2077,6 +2077,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Group {0} contains child node {1}, which is only available for proxy chains. This child node will be skipped. 的本地化字符串。
+        /// </summary>
+        public static string MsgGroupChildNodeChainOnly {
+            get {
+                return ResourceManager.GetString("MsgGroupChildNodeChainOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Group {0} child node {1} error: {2}. Skipping this node. 的本地化字符串。
         /// </summary>
         public static string MsgGroupChildNodeError {
@@ -2149,7 +2158,16 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Not Support 的本地化字符串。
+        ///   查找类似 Node {0} is only available for proxy chains and cannot be used individually. 的本地化字符串。
+        /// </summary>
+        public static string MsgNodeChainOnly {
+            get {
+                return ResourceManager.GetString("MsgNodeChainOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not Supported 的本地化字符串。
         /// </summary>
         public static string MsgNotSupport {
             get {
