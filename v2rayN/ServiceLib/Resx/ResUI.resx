@@ -555,6 +555,75 @@
   <data name="menuSubShare" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="menuWorkflowSetting" xml:space="preserve">
+    <value>Workflow</value>
+  </data>
+  <data name="menuWorkflowAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="menuWorkflowDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="menuWorkflowEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="menuWorkflowRun" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="LvWorkflowRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="LvWorkflowEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="LvWorkflowSort" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="LvWorkflowSteps" xml:space="preserve">
+    <value>Steps</value>
+  </data>
+  <data name="WorkflowStepAdd" xml:space="preserve">
+    <value>Add step</value>
+  </data>
+  <data name="WorkflowStepDelete" xml:space="preserve">
+    <value>Delete step</value>
+  </data>
+  <data name="WorkflowStepUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="WorkflowStepDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="WorkflowStepAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="WorkflowStepParameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="WorkflowStepSub" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="WorkflowStepEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="WorkflowParamHint" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="WorkflowNoStepTip" xml:space="preserve">
+    <value>The workflow has no enabled step</value>
+  </data>
+  <data name="WorkflowStartTip" xml:space="preserve">
+    <value>Workflow started</value>
+  </data>
+  <data name="WorkflowEndTip" xml:space="preserve">
+    <value>Workflow finished</value>
+  </data>
+  <data name="WorkflowStepFailedTip" xml:space="preserve">
+    <value>Step failed</value>
+  </data>
+  <data name="WorkflowRunSelectTip" xml:space="preserve">
+    <value>Please select a workflow</value>
+  </data>
   <data name="LvEnabled" xml:space="preserve">
     <value>Enable update</value>
   </data>
