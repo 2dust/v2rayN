@@ -1,0 +1,142 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.WorkflowEditWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vmd="clr-namespace:ServiceLib.Models.Dto;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuWorkflowSetting}"
+    Width="820"
+    Height="620"
+    x:DataType="vms:WorkflowEditViewModel"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Grid
+        Margin="{StaticResource Margin8}"
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,Auto,*,Auto">
+
+        <StackPanel
+            Grid.Row="0"
+            Margin="{StaticResource Margin4}"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="{StaticResource MarginLr8}"
+                VerticalAlignment="Center"
+                Text="{x:Static resx:ResUI.LvWorkflowRemarks}" />
+            <TextBox
+                x:Name="txtRemarks"
+                Width="320"
+                VerticalAlignment="Center"
+                Text="{Binding SelectedSource.Remarks}" />
+            <CheckBox
+                x:Name="togEnable"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.LvWorkflowEnabled}"
+                IsChecked="{Binding SelectedSource.Enabled}" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="{StaticResource Margin4}"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnAddStep"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.WorkflowStepAdd}" />
+            <Button
+                x:Name="btnDeleteStep"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.WorkflowStepDelete}" />
+            <Button
+                x:Name="btnStepUp"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.WorkflowStepUp}" />
+            <Button
+                x:Name="btnStepDown"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.WorkflowStepDown}" />
+        </StackPanel>
+
+        <DataGrid
+            x:Name="lstSteps"
+            Grid.Row="2"
+            AutoGenerateColumns="False"
+            BorderThickness="1"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False"
+            GridLinesVisibility="All"
+            HeadersVisibility="Column"
+            ItemsSource="{Binding Steps}"
+            SelectedItem="{Binding SelectedStep}">
+            <DataGrid.KeyBindings>
+                <KeyBinding Command="{Binding DeleteStepCmd}" Gesture="Delete" />
+            </DataGrid.KeyBindings>
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn
+                    Width="70"
+                    Binding="{Binding Enabled, Mode=TwoWay}"
+                    Header="{x:Static resx:ResUI.WorkflowStepEnabled}" />
+                <DataGridTemplateColumn
+                    Width="200"
+                    Header="{x:Static resx:ResUI.WorkflowStepAction}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="vmd:WorkflowStep">
+                            <ComboBox
+                                ItemsSource="{Binding $parent[DataGrid].((vms:WorkflowEditViewModel)DataContext).ActionNames}"
+                                SelectedItem="{Binding ActionDisplay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Width="200"
+                    Header="{x:Static resx:ResUI.WorkflowStepSub}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="vmd:WorkflowStep">
+                            <ComboBox
+                                ItemsSource="{Binding $parent[DataGrid].((vms:WorkflowEditViewModel)DataContext).GroupNames}"
+                                SelectedItem="{Binding SubDisplay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Width="*"
+                    Header="{x:Static resx:ResUI.WorkflowStepParameter}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="vmd:WorkflowStep">
+                            <ComboBox
+                                ItemsSource="{Binding ParameterOptions}"
+                                IsEnabled="{Binding HasParameter}"
+                                SelectedItem="{Binding ParameterText, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn
+                    Width="110"
+                    Binding="{Binding BoolParameter, Mode=TwoWay}"
+                    Header="{x:Static resx:ResUI.WorkflowParamHint}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel
+            Grid.Row="3"
+            Margin="{StaticResource Margin4}"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnSave"
+                Width="100"
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
+            <Button
+                x:Name="btnCancel"
+                Width="100"
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

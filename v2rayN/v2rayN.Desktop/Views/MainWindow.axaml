@@ -60,6 +60,8 @@
                         <MenuItem x:Name="menuSubUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubUpdateViaProxy}" />
                         <MenuItem x:Name="menuSubGroupUpdate" Header="{x:Static resx:ResUI.menuSubGroupUpdate}" />
                         <MenuItem x:Name="menuSubGroupUpdateViaProxy" Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
+                        <Separator />
+                        <MenuItem x:Name="menuWorkflow" Header="{x:Static resx:ResUI.menuWorkflowSetting}" />
                     </MenuItem>
 
                     <MenuItem Header="{x:Static resx:ResUI.menuSetting}">
