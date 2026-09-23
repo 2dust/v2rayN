@@ -48,6 +48,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WorkflowCmd { get; }
 
     //Setting
     public ReactiveCommand<RxVoid, RxVoid> OptionSettingCmd { get; }
@@ -197,6 +198,11 @@ public partial class MainWindowViewModel : MyReactiveObject
             await UpdateSubscriptionProcess(_config.SubIndexId, true);
         });
 
+        WorkflowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await WorkflowAsync();
+        });
+
         //Setting
         OptionSettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -268,6 +274,16 @@ public partial class MainWindowViewModel : MyReactiveObject
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(bl => BlNewUpdate = bl);
+
+        AppEvents.ServerStateChanged
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await RefreshServersDispatcherAsync());
+
+        AppEvents.WorkflowRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await WorkflowAsync());
 
         #endregion AppEvents
 
@@ -573,6 +589,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subSettingViewModel) == true)
         {
             await RefreshSubscriptions();
+            await ProfilesViewModel.RefreshServers();
         }
     }
 
@@ -583,6 +600,22 @@ public partial class MainWindowViewModel : MyReactiveObject
             var handler = new SubscriptionHandler(_config, blProxy, UpdateTaskHandler);
             await handler.UpdateProcess(subId);
         });
+    }
+
+    private async Task WorkflowAsync()
+    {
+        RefreshWorkflowRunner();
+        var workflowViewModel = new WorkflowViewModel();
+        await AppManager.Instance.WindowDialog.ShowDialogAsync(workflowViewModel);
+    }
+
+    /// <summary>
+    /// Make the workflow runtime available to the workflow manager window. Uses the
+    /// already built profile view model and the main window update pipeline.
+    /// </summary>
+    private void RefreshWorkflowRunner()
+    {
+        WorkflowRunner.Instance.Register(new WorkflowRuntime(ProfilesViewModel, UpdateSubscriptionProcess));
     }
 
     #endregion Subscription

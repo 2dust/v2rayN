@@ -14,4 +14,10 @@ public static class AppEvents
     public static readonly EventChannel<bool> ShutdownRequested = new();
 
     public static readonly EventChannel<ESysProxyType> SysProxyChangeRequested = new();
+
+    /// <summary>Raised after servers are added, removed or reordered outside the profile view.</summary>
+    public static readonly EventChannel<RxVoid> ServerStateChanged = new();
+
+    /// <summary>Raised to open the workflow manager window.</summary>
+    public static readonly EventChannel<RxVoid> WorkflowRequested = new();
 }
