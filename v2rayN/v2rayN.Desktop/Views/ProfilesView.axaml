@@ -60,6 +60,15 @@
                             <PathIcon Data="{StaticResource SemiIconPlus}" />
                         </Button.Content>
                     </Button>
+                    <Button
+                        x:Name="btnWorkflow"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuWorkflowSetting}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconCopy}" />
+                        </Button.Content>
+                    </Button>
 
                     <TextBox
                         x:Name="txtServerFilter"
