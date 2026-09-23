@@ -12,11 +12,7 @@ public class TaskManager
         _config = config;
         _updateFunc = updateFunc;
 
-        _ = Task.Factory.StartNew(
-            ScheduledTasks,
-            CancellationToken.None,
-            TaskCreationOptions.LongRunning,
-            TaskScheduler.Default);
+        Task.Run(ScheduledTasks);
     }
 
     private async Task ScheduledTasks()
