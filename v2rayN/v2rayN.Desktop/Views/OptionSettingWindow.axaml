@@ -1192,7 +1192,7 @@
                 <Grid
                     Margin="{StaticResource Margin4}"
                     ColumnDefinitions="Auto,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
@@ -1293,6 +1293,19 @@
                     <ComboBox
                         x:Name="cmbCoreType9"
                         Grid.Row="8"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin4}" />
+
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="MASQUE" />
+                    <ComboBox
+                        x:Name="cmbCoreType14"
+                        Grid.Row="9"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}" />
