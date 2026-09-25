@@ -49,6 +49,8 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(Global.SpeedTestConcurrencyCountMin, 20).ToList();
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
+        cmbAutoDelayTestInterval.ItemsSource = new[] { 30, 60, 120, 180, 360, 720, 1440 };
+        cmbAutoSwitchThresholdMs.ItemsSource = new[] { 10, 30, 50, 100, 200 };
         cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
         cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
         cmbUdpTestTarget.ItemsSource = Global.UdpTestTargets;
@@ -112,6 +114,10 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestEnabled, v => v.tglAutoDelayTestEnabled.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestInterval, v => v.cmbAutoDelayTestInterval.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestAutoSwitch, v => v.tglAutoDelayTestAutoSwitch.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoSwitchThresholdMs, v => v.cmbAutoSwitchThresholdMs.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MainGirdOrientation, view => view.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.Text).DisposeWith(disposables);

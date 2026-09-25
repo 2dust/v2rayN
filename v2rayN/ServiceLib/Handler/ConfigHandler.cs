@@ -141,6 +141,14 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
         }
+        if (config.SpeedTestItem.AutoDelayTestInterval <= 0)
+        {
+            config.SpeedTestItem.AutoDelayTestInterval = Global.AutoDelayTestInterval;
+        }
+        if (config.SpeedTestItem.AutoSwitchThresholdMs <= 0)
+        {
+            config.SpeedTestItem.AutoSwitchThresholdMs = Global.AutoSwitchThresholdMs;
+        }
 
         config.Mux4RayItem ??= new()
         {

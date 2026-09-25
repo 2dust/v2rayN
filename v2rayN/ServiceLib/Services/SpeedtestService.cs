@@ -44,6 +44,17 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
+    public bool IsRunning
+    {
+        get
+        {
+            lock (_runLock)
+            {
+                return _runCts is not null;
+            }
+        }
+    }
+
     private async Task RunLoopAsync(ESpeedActionType actionType, List<ProfileItem> selecteds, CancellationTokenSource runCts)
     {
         try

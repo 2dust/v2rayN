@@ -2597,7 +2597,61 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("SpeedtestingPressEscToExit", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查找类似 Auto delay test 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoDelayTest {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoDelayTest", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Auto switch 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoDelayTestAutoSwitch {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoDelayTestAutoSwitch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Switch threshold (ms) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoSwitchThreshold {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoSwitchThreshold", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Interval (minutes) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoDelayTestInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoDelayTestInterval", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Switched to the lowest-latency node: {0} ({1} ms) 的本地化字符串。
+        /// </summary>
+        public static string AutoDelayTestSwitched {
+            get {
+                return ResourceManager.GetString("AutoDelayTestSwitched", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Suggest switching to the lowest-latency node: {0} ({1} ms) 的本地化字符串。
+        /// </summary>
+        public static string AutoDelayTestSuggestSwitch {
+            get {
+                return ResourceManager.GetString("AutoDelayTestSuggestSwitch", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   查找类似 Skip test 的本地化字符串。
         /// </summary>

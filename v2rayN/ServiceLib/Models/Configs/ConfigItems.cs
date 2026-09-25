@@ -164,6 +164,10 @@ public class SpeedTestItem
     public string UdpTestTarget { get; set; }
     public int? SpeedTestPageSize { get; set; }
     public int? SpeedTestDelayInterval { get; set; }
+    public bool AutoDelayTestEnabled { get; set; }
+    public int AutoDelayTestInterval { get; set; }
+    public bool AutoDelayTestAutoSwitch { get; set; }
+    public int AutoSwitchThresholdMs { get; set; }
 }
 
 [Serializable]

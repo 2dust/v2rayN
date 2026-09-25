@@ -6,6 +6,7 @@ public class TaskManager
     public static TaskManager Instance => _instance.Value;
     private Config _config;
     private Func<bool, string, Task>? _updateFunc;
+    private long _lastAutoDelayTestTime;
 
     public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -24,6 +25,7 @@ public class TaskManager
         Logging.SaveLog("Setup Scheduled Tasks");
 
         var numOfExecuted = 1;
+        _lastAutoDelayTestTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
         while (true)
         {
             //1 minute
@@ -37,6 +39,16 @@ public class TaskManager
             catch (Exception ex)
             {
                 Logging.SaveLog("ScheduledTasks - UpdateTaskRunSubscription", ex);
+            }
+
+            //Execute auto delay test by interval
+            try
+            {
+                await UpdateTaskRunAutoDelayTest();
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog("ScheduledTasks - UpdateTaskRunAutoDelayTest", ex);
             }
 
             //Execute once 20 minute
@@ -119,6 +131,26 @@ public class TaskManager
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
+    }
+
+    private async Task UpdateTaskRunAutoDelayTest()
+    {
+        var interval = _config.SpeedTestItem.AutoDelayTestInterval;
+        if (!_config.SpeedTestItem.AutoDelayTestEnabled || interval <= 0)
+        {
+            return;
+        }
+
+        var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+        if (updateTime - _lastAutoDelayTestTime < interval * 60)
+        {
+            return;
+        }
+        _lastAutoDelayTestTime = updateTime;
+
+        Logging.SaveLog("Execute auto delay test");
+
+        await AutoDelayTestManager.Instance.RunOnce();
     }
 
     private async Task UpdateTaskRunGeo(int hours)

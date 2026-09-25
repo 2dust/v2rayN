@@ -271,6 +271,11 @@ public partial class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .SubscribeAsync(async _ => await RefreshServersDispatcherAsync());
 
+        AppEvents.RefreshDelayTestResultsRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await RefreshServersDispatcherAsync());
+
         var vmReloadRequestedList = new List<IObservable<RxVoid>>
         {
             ProfilesViewModel.ReloadRequested.AsObservable(),
@@ -332,6 +337,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
         TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        AutoDelayTestManager.Instance.Init(_config);
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {

@@ -58,6 +58,10 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string SpeedPingTestUrl { get; set; }
     [Reactive] public partial string UdpTestTarget { get; set; }
     [Reactive] public partial int MixedConcurrencyCount { get; set; }
+    [Reactive] public partial bool AutoDelayTestEnabled { get; set; }
+    [Reactive] public partial int AutoDelayTestInterval { get; set; }
+    [Reactive] public partial bool AutoDelayTestAutoSwitch { get; set; }
+    [Reactive] public partial int AutoSwitchThresholdMs { get; set; }
     [Reactive] public partial bool EnableHWA { get; set; }
     [Reactive] public partial string SubConvertUrl { get; set; }
     [Reactive] public partial int MainGirdOrientation { get; set; }
@@ -191,6 +195,10 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         MixedConcurrencyCount = _config.SpeedTestItem.MixedConcurrencyCount;
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
+        AutoDelayTestEnabled = _config.SpeedTestItem.AutoDelayTestEnabled;
+        AutoDelayTestInterval = _config.SpeedTestItem.AutoDelayTestInterval;
+        AutoDelayTestAutoSwitch = _config.SpeedTestItem.AutoDelayTestAutoSwitch;
+        AutoSwitchThresholdMs = _config.SpeedTestItem.AutoSwitchThresholdMs;
         EnableHWA = _config.GuiItem.EnableHWA;
         SubConvertUrl = _config.ConstItem.SubConvertUrl;
         MainGirdOrientation = (int)_config.UiItem.MainGirdOrientation;
@@ -366,6 +374,10 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.SpeedTestItem.SpeedTestUrl = SpeedTestUrl;
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
+        _config.SpeedTestItem.AutoDelayTestEnabled = AutoDelayTestEnabled;
+        _config.SpeedTestItem.AutoDelayTestInterval = AutoDelayTestInterval;
+        _config.SpeedTestItem.AutoDelayTestAutoSwitch = AutoDelayTestAutoSwitch;
+        _config.SpeedTestItem.AutoSwitchThresholdMs = AutoSwitchThresholdMs;
         _config.GuiItem.EnableHWA = EnableHWA;
         _config.ConstItem.SubConvertUrl = SubConvertUrl;
         _config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;

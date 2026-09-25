@@ -93,6 +93,8 @@ public class Global
     public const string XrayLocalCert = "XRAY_LOCATION_CERT";
     public const int SpeedTestPageSize = 1000;
     public const int SpeedTestConcurrencyCountMin = 10;
+    public const int AutoDelayTestInterval = 60;
+    public const int AutoSwitchThresholdMs = 30;
     public const string LinuxBash = "/bin/bash";
     public const string StringTrue = "true";
     public const string StringFalse = "false";

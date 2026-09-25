@@ -978,6 +978,12 @@
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
     <value>Press ESC to terminate the test</value>
   </data>
+  <data name="AutoDelayTestSwitched" xml:space="preserve">
+    <value>Switched to the lowest-latency node: {0} ({1} ms)</value>
+  </data>
+  <data name="AutoDelayTestSuggestSwitch" xml:space="preserve">
+    <value>Suggest switching to the lowest-latency node: {0} ({1} ms)</value>
+  </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
   </data>
@@ -1757,6 +1763,18 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>UDP Test Url</value>
+  </data>
+  <data name="TbSettingsAutoDelayTest" xml:space="preserve">
+    <value>Auto delay test</value>
+  </data>
+  <data name="TbSettingsAutoDelayTestAutoSwitch" xml:space="preserve">
+    <value>Auto switch</value>
+  </data>
+  <data name="TbSettingsAutoSwitchThreshold" xml:space="preserve">
+    <value>Switch threshold (ms)</value>
+  </data>
+  <data name="TbSettingsAutoDelayTestInterval" xml:space="preserve">
+    <value>Interval (minutes)</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
     <value>Local outbound address (SendThrough)</value>

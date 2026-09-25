@@ -978,6 +978,12 @@
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
     <value>按 ESC 可终止测试</value>
   </data>
+  <data name="AutoDelayTestSwitched" xml:space="preserve">
+    <value>已切换至最低延迟节点：{0}（{1} ms）</value>
+  </data>
+  <data name="AutoDelayTestSuggestSwitch" xml:space="preserve">
+    <value>建议切换至最低延迟节点：{0}（{1} ms）</value>
+  </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>当有异常断流时请关闭</value>
   </data>
@@ -1742,6 +1748,18 @@
   </data>
   <data name="TbSettingsUdpTestUrl" xml:space="preserve">
     <value>UDP 测试地址</value>
+  </data>
+  <data name="TbSettingsAutoDelayTest" xml:space="preserve">
+    <value>定时延迟测试</value>
+  </data>
+  <data name="TbSettingsAutoDelayTestAutoSwitch" xml:space="preserve">
+    <value>自动切换</value>
+  </data>
+  <data name="TbSettingsAutoSwitchThreshold" xml:space="preserve">
+    <value>切换阈值 (ms)</value>
+  </data>
+  <data name="TbSettingsAutoDelayTestInterval" xml:space="preserve">
+    <value>更新间隔 (分钟)</value>
   </data>
   <data name="TbSettingsSendThrough" xml:space="preserve">
     <value>本地出站地址 (SendThrough)</value>

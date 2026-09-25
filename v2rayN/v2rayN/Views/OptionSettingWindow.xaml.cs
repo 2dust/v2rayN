@@ -45,6 +45,8 @@ public partial class OptionSettingWindow
 
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(Global.SpeedTestConcurrencyCountMin, 20).ToList();
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();
+        cmbAutoDelayTestInterval.ItemsSource = new[] { 30, 60, 120, 180, 360, 720, 1440 };
+        cmbAutoSwitchThresholdMs.ItemsSource = new[] { 10, 30, 50, 100, 200 };
         cmbSpeedTestUrl.ItemsSource = Global.SpeedTestUrls;
         cmbSpeedPingTestUrl.ItemsSource = Global.SpeedPingTestUrls;
         cmbUdpTestTarget.ItemsSource = Global.UdpTestTargets;
@@ -108,6 +110,10 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestEnabled, v => v.togAutoDelayTestEnabled.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestInterval, v => v.cmbAutoDelayTestInterval.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoDelayTestAutoSwitch, v => v.togAutoDelayTestAutoSwitch.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoSwitchThresholdMs, v => v.cmbAutoSwitchThresholdMs.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableHWA, v => v.togEnableHWA.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);

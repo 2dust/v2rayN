@@ -549,7 +549,7 @@
                     <Grid
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             x:Name="tbAutoRun"
@@ -927,6 +927,49 @@
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="28"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsAutoDelayTest}" />
+                        <StackPanel
+                            Grid.Row="28"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleSwitch
+                                    x:Name="tglAutoDelayTestEnabled"
+                                    Margin="{StaticResource Margin4}" />
+                                <TextBlock
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Static resx:ResUI.TbSettingsAutoDelayTestInterval}" />
+                                <ComboBox
+                                    x:Name="cmbAutoDelayTestInterval"
+                                    Width="120"
+                                    Margin="{StaticResource Margin4}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Static resx:ResUI.TbSettingsAutoDelayTestAutoSwitch}" />
+                                <ToggleSwitch
+                                    x:Name="tglAutoDelayTestAutoSwitch"
+                                    Margin="{StaticResource Margin4}" />
+                                <TextBlock
+                                    Margin="{StaticResource Margin4}"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Static resx:ResUI.TbSettingsAutoSwitchThreshold}" />
+                                <ComboBox
+                                    x:Name="cmbAutoSwitchThresholdMs"
+                                    Width="120"
+                                    Margin="{StaticResource Margin4}" />
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
