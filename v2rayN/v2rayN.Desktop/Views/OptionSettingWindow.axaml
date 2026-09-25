@@ -947,8 +947,8 @@
                                     Margin="{StaticResource Margin4}"
                                     VerticalAlignment="Center"
                                     Text="{x:Static resx:ResUI.TbSettingsAutoDelayTestInterval}" />
-                                <ComboBox
-                                    x:Name="cmbAutoDelayTestInterval"
+                                <TextBox
+                                    x:Name="txtAutoDelayTestInterval"
                                     Width="120"
                                     Margin="{StaticResource Margin4}" />
                             </StackPanel>

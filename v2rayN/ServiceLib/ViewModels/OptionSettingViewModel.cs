@@ -196,7 +196,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
         AutoDelayTestEnabled = _config.SpeedTestItem.AutoDelayTestEnabled;
-        AutoDelayTestInterval = _config.SpeedTestItem.AutoDelayTestInterval;
+        AutoDelayTestInterval = Math.Clamp(_config.SpeedTestItem.AutoDelayTestInterval, 1, 60);
         AutoDelayTestAutoSwitch = _config.SpeedTestItem.AutoDelayTestAutoSwitch;
         AutoSwitchThresholdMs = _config.SpeedTestItem.AutoSwitchThresholdMs;
         EnableHWA = _config.GuiItem.EnableHWA;
@@ -375,7 +375,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
         _config.SpeedTestItem.AutoDelayTestEnabled = AutoDelayTestEnabled;
-        _config.SpeedTestItem.AutoDelayTestInterval = AutoDelayTestInterval;
+        _config.SpeedTestItem.AutoDelayTestInterval = Math.Clamp(AutoDelayTestInterval, 1, 60);
         _config.SpeedTestItem.AutoDelayTestAutoSwitch = AutoDelayTestAutoSwitch;
         _config.SpeedTestItem.AutoSwitchThresholdMs = AutoSwitchThresholdMs;
         _config.GuiItem.EnableHWA = EnableHWA;

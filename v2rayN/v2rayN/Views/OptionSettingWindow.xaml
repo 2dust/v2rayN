@@ -1210,11 +1210,10 @@
                                     VerticalAlignment="Center"
                                     Style="{StaticResource ToolbarTextBlock}"
                                     Text="{x:Static resx:ResUI.TbSettingsAutoDelayTestInterval}" />
-                                <ComboBox
-                                    x:Name="cmbAutoDelayTestInterval"
+                                <TextBox
+                                    x:Name="txtAutoDelayTestInterval"
                                     Width="120"
-                                    Margin="{StaticResource Margin8}"
-                                    Style="{StaticResource DefComboBox}" />
+                                    Margin="{StaticResource Margin8}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock

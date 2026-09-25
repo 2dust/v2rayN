@@ -141,7 +141,7 @@ public static class ConfigHandler
         {
             config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
         }
-        if (config.SpeedTestItem.AutoDelayTestInterval <= 0)
+        if (config.SpeedTestItem.AutoDelayTestInterval is <= 0 or > 60)
         {
             config.SpeedTestItem.AutoDelayTestInterval = Global.AutoDelayTestInterval;
         }
