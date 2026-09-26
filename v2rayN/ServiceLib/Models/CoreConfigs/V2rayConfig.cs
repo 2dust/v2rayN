@@ -315,6 +315,7 @@ public class StreamSettings4Ray
     public GrpcSettings4Ray? grpcSettings { get; set; }
 
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
+    public MasqueSettings4Ray? masqueSettings { get; set; }
 
     public object? finalmask { get; set; }
 
@@ -441,6 +442,12 @@ public class HysteriaSettings4Ray
 {
     public int version { get; set; }
     public string? auth { get; set; }
+}
+
+public class MasqueSettings4Ray
+{
+    public string? path { get; set; }
+    public Dictionary<string, string>? headers { get; set; }
 }
 
 public class UdpHop4Ray

@@ -501,6 +501,31 @@ public class Utils
         };
     }
 
+    public static List<(string, string)> ParseHeaders(string? headers)
+    {
+        var result = new List<(string, string)>();
+        if (headers.IsNullOrEmpty())
+        {
+            return result;
+        }
+        var lines = headers.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (var line in lines)
+        {
+            var parts = line.Split(new[] { ':' }, 2);
+            if (parts.Length != 2)
+            {
+                continue;
+            }
+            var key = parts[0].Trim();
+            var value = parts[1].Trim();
+            if (!string.IsNullOrEmpty(key))
+            {
+                result.Add((key, value));
+            }
+        }
+        return result;
+    }
+
     #endregion Conversion Functions
 
     #region Data Checks
