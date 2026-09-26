@@ -5,33 +5,42 @@ public class StatisticsXrayService
     private const long linkBase = 1024;
     private ServerSpeedItem _serverSpeedItem = new();
     private readonly Config _config;
-    private bool _exitFlag;
+    private CancellationTokenSource? _cts;
     private readonly Func<ServerSpeedItem, Task>? _updateFunc;
     private string Url => $"{Global.HttpProtocol}{Global.Loopback}:{AppManager.Instance.StatePort}/debug/vars";
+    private static readonly string _tag = "StatisticsXrayService";
 
     public StatisticsXrayService(Config config, Func<ServerSpeedItem, Task> updateFunc)
     {
         _config = config;
         _updateFunc = updateFunc;
-        _exitFlag = false;
 
-        _ = Task.Factory.StartNew(
-            Run,
-            CancellationToken.None,
-            TaskCreationOptions.LongRunning,
-            TaskScheduler.Default);
+        Task.Run(Run);
     }
 
     public void Close()
     {
-        _exitFlag = true;
+        try
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
     }
 
     private async Task Run()
     {
-        while (!_exitFlag)
+        Close();
+        _cts = new CancellationTokenSource();
+        var token = _cts.Token;
+
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (await timer.WaitForNextTickAsync(token).ConfigureAwait(false))
         {
-            await Task.Delay(1000);
             try
             {
                 if (AppManager.Instance.RunningCoreType != ECoreType.Xray)
@@ -39,16 +48,20 @@ public class StatisticsXrayService
                     continue;
                 }
 
-                var result = await HttpClientHelper.Instance.TryGetAsync(Url);
+                var result = await HttpClientHelper.Instance.TryGetAsync(Url, token);
                 if (result != null)
                 {
                     var server = ParseOutput(result) ?? new ServerSpeedItem();
-                    await _updateFunc?.Invoke(server);
+                    await _updateFunc!.Invoke(server);
                 }
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested)
+            {
+                break;
             }
             catch
             {
-                // ignored
+                await Task.Delay(3000, token).ConfigureAwait(false);
             }
         }
     }
