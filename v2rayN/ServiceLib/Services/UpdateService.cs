@@ -79,7 +79,8 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         };
 
         await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
-        var result = await CheckUpdateAsync(downloadHandle, type, preRelease, blProxy);
+        var checkPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(type, preRelease, _config?.TunModeItem.EnableTun == true);
+        var result = await CheckUpdateAsync(downloadHandle, type, checkPreRelease, blProxy);
         if (result.Success)
         {
             await UpdateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, type));
@@ -107,7 +108,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         }
 
         var downloadHandle = new DownloadService();
-        var checkPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(type, preRelease);
+        var checkPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(type, preRelease, _config?.TunModeItem.EnableTun == true);
         return await CheckUpdateAsync(downloadHandle, type, checkPreRelease, blProxy, cancellationToken);
     }
 
