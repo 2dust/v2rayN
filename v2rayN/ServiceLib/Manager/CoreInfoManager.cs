@@ -84,12 +84,17 @@ public sealed class CoreInfoManager
         };
     }
 
-    public bool GetCheckPreRelease(ECoreType type, bool preRelease)
+    public bool GetCheckPreRelease(ECoreType type, bool preRelease, bool enableTun)
+    {
+        return ShouldCheckPreRelease(type, preRelease, enableTun, Utils.IsNonWindows());
+    }
+
+    public static bool ShouldCheckPreRelease(ECoreType type, bool preRelease, bool enableTun, bool isNonWindows)
     {
         return type switch
         {
             ECoreType.v2rayN => preRelease,
-            ECoreType.Xray => preRelease,
+            ECoreType.Xray => preRelease || (enableTun && isNonWindows),
             _ => false,
         };
     }
