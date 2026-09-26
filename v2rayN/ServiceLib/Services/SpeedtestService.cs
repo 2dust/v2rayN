@@ -8,7 +8,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private readonly Config? _config = config;
     private readonly Func<SpeedTestResult, Task>? _updateFunc = updateFunc;
     private readonly Lock _runLock = new();
-    private CancellationTokenSource? _runCts;
+    private readonly List<CancellationTokenSource> _runCtsList = [];
     private readonly int _speedTestPageSize = config.SpeedTestItem.SpeedTestPageSize ?? Global.SpeedTestPageSize;
     private readonly TimeSpan _delayInterval = TimeSpan.FromSeconds(config.SpeedTestItem.SpeedTestDelayInterval ?? 1);
 
@@ -18,11 +18,9 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
         lock (_runLock)
         {
-            _runCts?.Cancel();
-
             runCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
 
-            _runCts = runCts;
+            _runCtsList.Add(runCts);
         }
 
         return RunLoopAsync(actionType, selecteds, runCts);
@@ -30,17 +28,30 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     public void ExitLoop()
     {
-        CancellationTokenSource? runCts;
+        var counter = 0;
+        List<CancellationTokenSource> listToCancel;
 
         lock (_runLock)
         {
-            runCts = _runCts;
+            listToCancel = _runCtsList.ToList();
+            counter = listToCancel.Count;
         }
 
-        if (runCts is not null)
+        foreach (var cts in listToCancel)
+        {
+            try
+            {
+                cts.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Ignored
+            }
+        }
+
+        if (counter > 0)
         {
             _ = UpdateFunc("", ResUI.SpeedtestingStop);
-            runCts.Cancel();
         }
     }
 
@@ -67,10 +78,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             lock (_runLock)
             {
-                if (ReferenceEquals(_runCts, runCts))
-                {
-                    _runCts = null;
-                }
+                _runCtsList.Remove(runCts);
             }
 
             runCts.Dispose();
