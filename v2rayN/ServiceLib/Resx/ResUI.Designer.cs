@@ -1859,6 +1859,213 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("menuSubShare", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Workflow 的本地化字符串。
+        /// </summary>
+        public static string menuWorkflowSetting {
+            get {
+                return ResourceManager.GetString("menuWorkflowSetting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        public static string menuWorkflowAdd {
+            get {
+                return ResourceManager.GetString("menuWorkflowAdd", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Delete 的本地化字符串。
+        /// </summary>
+        public static string menuWorkflowDelete {
+            get {
+                return ResourceManager.GetString("menuWorkflowDelete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Edit 的本地化字符串。
+        /// </summary>
+        public static string menuWorkflowEdit {
+            get {
+                return ResourceManager.GetString("menuWorkflowEdit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Run 的本地化字符串。
+        /// </summary>
+        public static string menuWorkflowRun {
+            get {
+                return ResourceManager.GetString("menuWorkflowRun", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Remarks 的本地化字符串。
+        /// </summary>
+        public static string LvWorkflowRemarks {
+            get {
+                return ResourceManager.GetString("LvWorkflowRemarks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Enabled 的本地化字符串。
+        /// </summary>
+        public static string LvWorkflowEnabled {
+            get {
+                return ResourceManager.GetString("LvWorkflowEnabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Order 的本地化字符串。
+        /// </summary>
+        public static string LvWorkflowSort {
+            get {
+                return ResourceManager.GetString("LvWorkflowSort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Steps 的本地化字符串。
+        /// </summary>
+        public static string LvWorkflowSteps {
+            get {
+                return ResourceManager.GetString("LvWorkflowSteps", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Add step 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepAdd {
+            get {
+                return ResourceManager.GetString("WorkflowStepAdd", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Delete step 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepDelete {
+            get {
+                return ResourceManager.GetString("WorkflowStepDelete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Move up 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepUp {
+            get {
+                return ResourceManager.GetString("WorkflowStepUp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Move down 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepDown {
+            get {
+                return ResourceManager.GetString("WorkflowStepDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Action 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepAction {
+            get {
+                return ResourceManager.GetString("WorkflowStepAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Parameter 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepParameter {
+            get {
+                return ResourceManager.GetString("WorkflowStepParameter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Group 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepSub {
+            get {
+                return ResourceManager.GetString("WorkflowStepSub", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Enabled 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepEnabled {
+            get {
+                return ResourceManager.GetString("WorkflowStepEnabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Optional: sort column, test type or proxy mode 的本地化字符串。
+        /// </summary>
+        public static string WorkflowParamHint {
+            get {
+                return ResourceManager.GetString("WorkflowParamHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 The workflow has no enabled step 的本地化字符串。
+        /// </summary>
+        public static string WorkflowNoStepTip {
+            get {
+                return ResourceManager.GetString("WorkflowNoStepTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Workflow started 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStartTip {
+            get {
+                return ResourceManager.GetString("WorkflowStartTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Workflow finished 的本地化字符串。
+        /// </summary>
+        public static string WorkflowEndTip {
+            get {
+                return ResourceManager.GetString("WorkflowEndTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Step failed 的本地化字符串。
+        /// </summary>
+        public static string WorkflowStepFailedTip {
+            get {
+                return ResourceManager.GetString("WorkflowStepFailedTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Please select a workflow 的本地化字符串。
+        /// </summary>
+        public static string WorkflowRunSelectTip {
+            get {
+                return ResourceManager.GetString("WorkflowRunSelectTip", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Update subscriptions without proxy 的本地化字符串。

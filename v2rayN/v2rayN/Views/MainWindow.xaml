@@ -168,6 +168,11 @@
                                     x:Name="menuSubGroupUpdateViaProxy"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
+                                <Separator Margin="-40,5" />
+                                <MenuItem
+                                    x:Name="menuWorkflow"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuWorkflowSetting}" />
                             </MenuItem>
                         </Menu>
                         <Separator />

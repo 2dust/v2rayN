@@ -2311,6 +2311,69 @@ public static class ConfigHandler
 
     #endregion Sub & Group
 
+    #region Workflow
+
+    /// <summary>
+    /// Add or update a workflow item.
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="workflow">Workflow to add or update</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddWorkflowItem(Config config, WorkflowItem workflow)
+    {
+        var item = await AppManager.Instance.GetWorkflowItem(workflow.Id);
+        if (item is null)
+        {
+            item = workflow;
+        }
+        else
+        {
+            item.Remarks = workflow.Remarks;
+            item.Enabled = workflow.Enabled;
+            item.Sort = workflow.Sort;
+            item.Memo = workflow.Memo;
+            item.StepsJson = workflow.StepsJson;
+        }
+
+        if (item.Id.IsNullOrEmpty())
+        {
+            item.Id = Utils.GetGuid(false);
+
+            if (item.Sort <= 0)
+            {
+                var maxSort = 0;
+                if (await SQLiteHelper.Instance.TableAsync<WorkflowItem>().CountAsync() > 0)
+                {
+                    var lstWorkflows = await AppManager.Instance.WorkflowItems();
+                    maxSort = lstWorkflows.LastOrDefault()?.Sort ?? 0;
+                }
+                item.Sort = maxSort + 1;
+            }
+        }
+
+        return await SQLiteHelper.Instance.ReplaceAsync(item) > 0 ? 0 : -1;
+    }
+
+    /// <summary>
+    /// Delete a workflow item.
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="id">Workflow id to delete</param>
+    /// <returns>0 if successful</returns>
+    public static async Task<int> DeleteWorkflowItem(Config config, string id)
+    {
+        var item = await AppManager.Instance.GetWorkflowItem(id);
+        if (item is null)
+        {
+            return 0;
+        }
+        await SQLiteHelper.Instance.DeleteAsync(item);
+
+        return 0;
+    }
+
+    #endregion Workflow
+
     #region Routing
 
     /// <summary>
