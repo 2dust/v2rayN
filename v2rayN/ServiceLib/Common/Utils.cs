@@ -764,7 +764,7 @@ public class Utils
 
     #region Speed Test
 
-    private static bool PortInUse(int port)
+    public static bool PortInUse(int port)
     {
         try
         {

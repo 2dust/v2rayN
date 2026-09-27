@@ -88,9 +88,16 @@ public class CoreAdminManager
             var result = await Cli.Wrap(Global.LinuxBash)
                 .WithArguments(arg)
                 .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
+                .WithValidation(CommandResultValidation.None)
                 .ExecuteBufferedAsync();
 
             await UpdateFunc(false, result.StandardOutput.ToString());
+
+            if (result.ExitCode != 0)
+            {
+                // The elevated core may still be running, so keep the reason in the log
+                Logging.SaveLog(_tag, $"Failed to kill process {_linuxSudoPid}, exit code {result.ExitCode}: {result.StandardError}");
+            }
 
             await Task.Delay(1000); // Wait for a second to ensure the process is killed
         }

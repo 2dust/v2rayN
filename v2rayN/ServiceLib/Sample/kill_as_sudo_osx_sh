@@ -19,24 +19,29 @@ if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
 fi
 
 # Check if the process exists - using kill -0 which is more reliable on macOS
-if ! kill -0 $PID 2>/dev/null; then
+if ! kill -0 "$PID" 2>/dev/null; then
     echo "Warning: No process found with PID $PID"
     exit 0
 fi
 
-# Recursive function to find and kill all descendant processes
-kill_descendants() {
+# Collect the whole descendant tree (deepest first) BEFORE any process is signalled.
+# Once the parent dies its children are re-parented to launchd and can no longer be
+# found by walking the ppid chain, so they would survive and keep holding the ports.
+DESCENDANTS=()
+collect_descendants() {
     local parent=$1
+    local child
     # Use ps -axo for macOS to ensure all processes are included
-    local children=$(ps -axo pid=,ppid= | awk -v ppid=$parent '$2==ppid {print $1}')
+    local children=$(ps -axo pid=,ppid= | awk -v ppid="$parent" '$2==ppid {print $1}')
 
-    echo "Processing children of PID: $parent..."
+    # 'child' must stay local, otherwise the recursive call overwrites the loop
+    # variable of this frame and the direct child is never handled
     for child in $children; do
-        kill_descendants "$child"
-        echo "Terminating child process: $child"
-        kill -9 "$child" 2>/dev/null || true
+        collect_descendants "$child"
+        DESCENDANTS+=("$child")
     done
 }
+collect_descendants "$PID"
 
 echo "============================================"
 echo "Starting termination of process $PID and all its descendants"
@@ -47,26 +52,44 @@ echo "Attempting graceful termination (SIGTERM) of PID: $PID"
 kill -15 "$PID" 2>/dev/null || true
 sleep 1
 
-# If still running, fall back to kill_descendants
-# Use the macOS-native 'kill -0' check
-if kill -0 $PID 2>/dev/null; then
-    echo "Process $PID did not exit after SIGTERM; proceeding with forced termination of its descendants and itself"
-else
-    echo "Process $PID exited cleanly after SIGTERM"
-    exit 0
-fi
-
-# Find and kill all descendant processes
-kill_descendants "$PID"
+# The parent usually exits as soon as the signal is relayed, while the core it launched
+# may still be draining connections. Always terminate the collected descendants so the
+# listening ports are really released, no matter what the parent did.
+for child in "${DESCENDANTS[@]}"; do
+    if kill -0 "$child" 2>/dev/null; then
+        echo "Terminating child process: $child"
+        kill -9 "$child" 2>/dev/null || true
+    fi
+done
 
 # Finally kill the main process
-echo "Terminating main process: $PID"
-kill -9 "$PID" 2>/dev/null || true
+if kill -0 "$PID" 2>/dev/null; then
+    echo "Terminating main process: $PID"
+    kill -9 "$PID" 2>/dev/null || true
+else
+    echo "Process $PID exited after SIGTERM"
+fi
 
 # Wait a little for process/port resources to be fully released
 FINAL_WAIT_SECONDS=1
 echo "Waiting ${FINAL_WAIT_SECONDS}s for resources to settle..."
 sleep "$FINAL_WAIT_SECONDS"
+
+# Verify that nothing survived, otherwise report it as a failure
+FAILED=0
+for child in "$PID" "${DESCENDANTS[@]}"; do
+    if kill -0 "$child" 2>/dev/null; then
+        echo "Error: process $child is still running"
+        FAILED=1
+    fi
+done
+
+if [ "$FAILED" -ne 0 ]; then
+    echo "============================================"
+    echo "Some processes of $PID could not be terminated"
+    echo "============================================"
+    exit 1
+fi
 
 echo "============================================"
 echo "Process $PID and all its descendants have been terminated"

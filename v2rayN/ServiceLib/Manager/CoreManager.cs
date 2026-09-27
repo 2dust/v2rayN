@@ -17,6 +17,7 @@ public class CoreManager
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
+    private const int PortReleaseTimeout = 3000;
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -84,6 +85,7 @@ public class CoreManager
         await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
         await CoreStop();
         await Task.Delay(100);
+        await WaitForPortRelease(AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
 
         if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
         {
@@ -214,6 +216,26 @@ public class CoreManager
     private async Task UpdateFunc(bool notify, string msg)
     {
         await _updateFunc?.Invoke(notify, msg);
+    }
+
+    /// <summary>
+    ///     Waits until the stopped core has really released the local inbound port.
+    ///     A core killed with SIGTERM keeps its listener while it drains existing connections,
+    ///     and a process that survived the kill keeps it indefinitely; in both cases the new core
+    ///     would fail to start with "address already in use".
+    /// </summary>
+    private static async Task WaitForPortRelease(int port)
+    {
+        var sw = Stopwatch.StartNew();
+        while (Utils.PortInUse(port))
+        {
+            if (sw.ElapsedMilliseconds > PortReleaseTimeout)
+            {
+                Logging.SaveLog(_tag, $"Port {port} is still in use after {PortReleaseTimeout}ms, the core may fail to start.");
+                return;
+            }
+            await Task.Delay(100);
+        }
     }
 
     private static async Task WaitForProxyPort(CoreConfigContext? preContext)

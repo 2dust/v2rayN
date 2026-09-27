@@ -19,29 +19,28 @@ if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
 fi
 
 # Check if the process exists
-if ! ps -p $PID > /dev/null; then
+if ! ps -p "$PID" > /dev/null; then
     echo "Warning: No process found with PID $PID"
     exit 0
 fi
 
-# Recursive function to find and kill all child processes
-kill_children() {
+# Collect the whole child tree (deepest first) BEFORE any process is signalled.
+# Once the parent dies its children are re-parented to init and can no longer be
+# found by walking the ppid chain, so they would survive and keep holding the ports.
+DESCENDANTS=()
+collect_children() {
     local parent=$1
+    local child
     local children=$(ps -o pid --no-headers --ppid "$parent")
 
-    # Output information about processes being terminated
-    echo "Processing children of PID: $parent..."
-
-    # Process each child
+    # 'child' must stay local, otherwise the recursive call overwrites the loop
+    # variable of this frame and the direct child is never handled
     for child in $children; do
-        # Recursively find and kill child's children first
-        kill_children "$child"
-
-        # Force kill the child process
-        echo "Terminating child process: $child"
-        kill -9 "$child" 2>/dev/null || true
+        collect_children "$child"
+        DESCENDANTS+=("$child")
     done
 }
+collect_children "$PID"
 
 echo "============================================"
 echo "Starting termination of process $PID and all its children"
@@ -51,25 +50,45 @@ echo "============================================"
 echo "Attempting graceful termination (SIGTERM) of PID: $PID"
 kill -15 "$PID" 2>/dev/null || true
 sleep 1
-# If still running, fall back to kill_children
-if ps -p $PID > /dev/null; then
-    echo "Process $PID did not exit after SIGTERM; proceeding with forced termination of its children and itself"
-else
-    echo "Process $PID exited cleanly after SIGTERM"
-    exit 0
-fi
 
-# Find and kill all child processes
-kill_children "$PID"
+# The parent usually exits as soon as the signal is relayed, while the core it launched
+# may still be draining connections. Always terminate the collected children so the
+# listening ports are really released, no matter what the parent did.
+for child in "${DESCENDANTS[@]}"; do
+    if ps -p "$child" > /dev/null; then
+        echo "Terminating child process: $child"
+        kill -9 "$child" 2>/dev/null || true
+    fi
+done
 
 # Finally kill the main process
-echo "Terminating main process: $PID"
-kill -9 "$PID" 2>/dev/null || true
+if ps -p "$PID" > /dev/null; then
+    echo "Terminating main process: $PID"
+    kill -9 "$PID" 2>/dev/null || true
+else
+    echo "Process $PID exited after SIGTERM"
+fi
 
 # Wait a little for process/port resources to be fully released
 FINAL_WAIT_SECONDS=1
 echo "Waiting ${FINAL_WAIT_SECONDS}s for resources to settle..."
 sleep "$FINAL_WAIT_SECONDS"
+
+# Verify that nothing survived, otherwise report it as a failure
+FAILED=0
+for child in "$PID" "${DESCENDANTS[@]}"; do
+    if ps -p "$child" > /dev/null; then
+        echo "Error: process $child is still running"
+        FAILED=1
+    fi
+done
+
+if [ "$FAILED" -ne 0 ]; then
+    echo "============================================"
+    echo "Some processes of $PID could not be terminated"
+    echo "============================================"
+    exit 1
+fi
 
 echo "============================================"
 echo "Process $PID and all its children have been terminated"
