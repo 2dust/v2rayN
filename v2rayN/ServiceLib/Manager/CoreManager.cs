@@ -18,6 +18,7 @@ public class CoreManager
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
     private const int PortReleaseTimeout = 3000;
+    private const int PortBindableTimeout = 10000;
     private const int CoreStartRetryCount = 2;
     private const int CoreStartRetryDelay = 1500;
 
@@ -234,34 +235,41 @@ public class CoreManager
     }
 
     /// <summary>
-    ///     Waits until the stopped core has really released the local inbound port.
-    ///     A core killed with SIGTERM keeps its listener while it drains existing connections,
-    ///     and a core left over by a previous run keeps it indefinitely; in both cases the new
-    ///     core would fail to start with "address already in use".
+    ///     Waits until the stopped core has really released the local inbound port. A core
+    ///     killed with SIGTERM keeps its listener while it drains existing connections, and a
+    ///     core left over by a previous run keeps it indefinitely; in both cases the new core
+    ///     fails to start with "address already in use".
     /// </summary>
     private static async Task WaitForPortRelease(int port)
     {
-        if (await WaitPortFree(port))
+        if (await WaitPortBindable(port, PortReleaseTimeout))
         {
             return;
         }
 
         await KillLeftoverCores(port);
-        await WaitPortFree(port);
+        await WaitPortBindable(port, PortBindableTimeout);
     }
 
-    private static async Task<bool> WaitPortFree(int port)
+    /// <summary>
+    ///     Asks the kernel whether the port can be bound, until it can or the timeout is up.
+    /// </summary>
+    private static async Task<bool> WaitPortBindable(int port, int timeout)
     {
         var sw = Stopwatch.StartNew();
-        while (Utils.PortInUse(port))
+        while (true)
         {
-            if (sw.ElapsedMilliseconds > PortReleaseTimeout)
+            if (Utils.IsPortBindable(port))
             {
+                return true;
+            }
+            if (sw.ElapsedMilliseconds > timeout)
+            {
+                Logging.SaveLog($"{_tag} Port {port} cannot be bound after waiting {timeout}ms.");
                 return false;
             }
-            await Task.Delay(100);
+            await Task.Delay(200);
         }
-        return true;
     }
 
     /// <summary>

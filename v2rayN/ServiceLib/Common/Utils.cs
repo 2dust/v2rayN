@@ -813,6 +813,26 @@ public class Utils
         return 59090;
     }
 
+    /// <summary>
+    ///     Tries to bind a port the way a core does, so it tells whether the port is really
+    ///     available. Guessing from the socket table can disagree with the kernel, and a core
+    ///     started into a port it cannot bind just exits with "address already in use".
+    /// </summary>
+    public static bool IsPortBindable(int port)
+    {
+        try
+        {
+            var listener = new TcpListener(IPAddress.Loopback, port);
+            listener.Start();
+            listener.Stop();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public static (List<IPEndPoint> endpoints, List<TcpConnectionInformation> connections) GetActiveNetworkInfo()
     {
         var endpoints = new List<IPEndPoint>();
