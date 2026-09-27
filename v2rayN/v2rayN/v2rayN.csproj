@@ -18,7 +18,6 @@
 		<PackageReference Include="H.NotifyIcon.Wpf" />
 		<PackageReference Include="ReactiveUI.SourceGenerators">
 		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="ReactiveUI.WPF" />
 	</ItemGroup>

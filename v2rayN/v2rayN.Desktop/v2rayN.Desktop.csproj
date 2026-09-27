@@ -21,7 +21,6 @@
 		<PackageReference Include="ReactiveUI.Avalonia" />
 		<PackageReference Include="ReactiveUI.SourceGenerators">
 		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Semi.Avalonia" />
 		<PackageReference Include="Semi.Avalonia.AvaloniaEdit" />
