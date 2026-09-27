@@ -96,7 +96,7 @@ public class CoreAdminManager
             if (result.ExitCode != 0)
             {
                 // The elevated core may still be running, so keep the reason in the log
-                Logging.SaveLog(_tag, $"Failed to kill process {_linuxSudoPid}, exit code {result.ExitCode}: {result.StandardError}");
+                Logging.SaveLog($"{_tag} Failed to kill process {_linuxSudoPid}, exit code {result.ExitCode}: {result.StandardError}");
             }
 
             await Task.Delay(1000); // Wait for a second to ensure the process is killed

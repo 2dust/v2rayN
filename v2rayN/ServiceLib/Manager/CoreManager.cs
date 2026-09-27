@@ -231,7 +231,7 @@ public class CoreManager
         {
             if (sw.ElapsedMilliseconds > PortReleaseTimeout)
             {
-                Logging.SaveLog(_tag, $"Port {port} is still in use after {PortReleaseTimeout}ms, the core may fail to start.");
+                Logging.SaveLog($"{_tag} Port {port} is still in use after {PortReleaseTimeout}ms, the core may fail to start.");
                 return;
             }
             await Task.Delay(100);
