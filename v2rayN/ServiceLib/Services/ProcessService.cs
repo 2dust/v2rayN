@@ -2,13 +2,27 @@ namespace ServiceLib.Services;
 
 public class ProcessService : IDisposable
 {
+    private const int RecentOutputLimit = 20;
     private readonly Process _process;
     private readonly Func<bool, string, Task>? _updateFunc;
+    private readonly Queue<string> _recentOutput = new();
     private bool _isDisposed;
 
     public int Id => _process.Id;
     public IntPtr Handle => _process.Handle;
     public bool HasExited => _process.HasExited;
+
+    /// <summary>
+    ///     The last lines written by the process. The output is only shown in the UI, so this is
+    ///     what tells why a core refused to start after the log file has been read.
+    /// </summary>
+    public string GetRecentOutput()
+    {
+        lock (_recentOutput)
+        {
+            return string.Join(Environment.NewLine, _recentOutput);
+        }
+    }
 
     public ProcessService(
         string fileName,
@@ -122,6 +136,14 @@ public class ProcessService : IDisposable
         {
             if (e.Data.IsNotEmpty())
             {
+                lock (_recentOutput)
+                {
+                    _recentOutput.Enqueue(e.Data);
+                    while (_recentOutput.Count > RecentOutputLimit)
+                    {
+                        _recentOutput.Dequeue();
+                    }
+                }
                 _ = _updateFunc?.Invoke(false, e.Data + Environment.NewLine);
             }
         }

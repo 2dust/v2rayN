@@ -775,7 +775,10 @@ public class Utils
                 return true;
             }
 
-            if (lstTcpConns?.FindIndex(it => it.LocalEndPoint.Port == port) >= 0)
+            // A TIME_WAIT socket does not keep the port reserved: a new socket with
+            // SO_REUSEADDR can bind it, which is what the cores do. Counting it would
+            // report every core that just closed connections as a busy port.
+            if (lstTcpConns?.FindIndex(it => it.State != TcpConnectionState.TimeWait && it.LocalEndPoint.Port == port) >= 0)
             {
                 return true;
             }

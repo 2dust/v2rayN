@@ -18,6 +18,8 @@ public class CoreManager
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
     private const int PortReleaseTimeout = 3000;
+    private const int CoreStartRetryCount = 2;
+    private const int CoreStartRetryDelay = 1500;
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -185,12 +187,25 @@ public class CoreManager
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled);
-        if (proc is null)
+
+        for (var attempt = 0; ; attempt++)
         {
-            return;
+            var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled);
+            if (proc is not null)
+            {
+                _processService = proc;
+                return;
+            }
+
+            // The core can lose the race against the one it replaces: the listener of the
+            // previous process is not always gone by the time we start. Retry instead of
+            // leaving the app without a core.
+            if (attempt >= CoreStartRetryCount)
+            {
+                return;
+            }
+            await Task.Delay(CoreStartRetryDelay);
         }
-        _processService = proc;
     }
 
     private async Task CoreStartPreService(CoreConfigContext? preContext)
@@ -447,11 +462,38 @@ public class CoreManager
 
         if (procService is null or { HasExited: true })
         {
+            // The reason is only visible in the UI log, put it in the log file as well
+            Logging.SaveLog($"{_tag} Core exited immediately:{Environment.NewLine}{procService?.GetRecentOutput()}");
+            await LogPortState(AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
             throw new Exception(ResUI.FailedToRunCore);
         }
         AddProcessJob(procService.Handle);
 
         return procService;
+    }
+
+    /// <summary>
+    ///     Dumps the sockets of a port to the log file, to see who holds it when a core
+    ///     refuses to start.
+    /// </summary>
+    private static async Task LogPortState(int port)
+    {
+        if (Utils.IsWindows())
+        {
+            return;
+        }
+
+        var output = await Utils.GetCliWrapOutput("netstat", new List<string>() { "-an" });
+        if (output.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .Where(line => line.Contains($".{port} "))
+            .Select(line => line.TrimEnd())
+            .ToList();
+        Logging.SaveLog($"{_tag} Sockets on port {port}:{Environment.NewLine}{(lines.Count > 0 ? string.Join(Environment.NewLine, lines) : "none")}");
     }
 
     private void AddProcessJob(nint processHandle)
