@@ -221,21 +221,91 @@ public class CoreManager
     /// <summary>
     ///     Waits until the stopped core has really released the local inbound port.
     ///     A core killed with SIGTERM keeps its listener while it drains existing connections,
-    ///     and a process that survived the kill keeps it indefinitely; in both cases the new core
-    ///     would fail to start with "address already in use".
+    ///     and a core left over by a previous run keeps it indefinitely; in both cases the new
+    ///     core would fail to start with "address already in use".
     /// </summary>
     private static async Task WaitForPortRelease(int port)
+    {
+        if (await WaitPortFree(port))
+        {
+            return;
+        }
+
+        await KillLeftoverCores(port);
+        await WaitPortFree(port);
+    }
+
+    private static async Task<bool> WaitPortFree(int port)
     {
         var sw = Stopwatch.StartNew();
         while (Utils.PortInUse(port))
         {
             if (sw.ElapsedMilliseconds > PortReleaseTimeout)
             {
-                Logging.SaveLog($"{_tag} Port {port} is still in use after {PortReleaseTimeout}ms, the core may fail to start.");
-                return;
+                return false;
             }
             await Task.Delay(100);
         }
+        return true;
+    }
+
+    /// <summary>
+    ///     Kills the cores still running our executables. Such a core is not a child of this
+    ///     process (it was re-parented to init after a crash, a force quit or an older build),
+    ///     so it can only be found through its command line.
+    /// </summary>
+    private static async Task KillLeftoverCores(int port)
+    {
+        if (Utils.IsWindows())
+        {
+            return;
+        }
+
+        var pids = await Utils.GetPidsByCmdLine(Utils.GetCoreBinFolderPath());
+        if (pids.Count == 0)
+        {
+            Logging.SaveLog($"{_tag} Port {port} is still in use and no leftover core was found.");
+            return;
+        }
+
+        Logging.SaveLog($"{_tag} Port {port} is held by leftover core(s) {string.Join(",", pids)}, killing them.");
+        if (AppManager.Instance.LinuxSudoPwd.IsNotEmpty())
+        {
+            // An elevated core needs root to be killed
+            await CoreAdminManager.Instance.KillProcessesAsLinuxSudo([.. pids]);
+        }
+        else
+        {
+            await KillOwnedProcesses(pids);
+        }
+    }
+
+    private static async Task KillOwnedProcesses(List<int> pids)
+    {
+        var failed = 0;
+        foreach (var pid in pids)
+        {
+            try
+            {
+                using var proc = Process.GetProcessById(pid);
+                if (!proc.HasExited)
+                {
+                    proc.Kill(true);
+                }
+            }
+            catch
+            {
+                // Most likely an elevated core, which needs root to be killed
+                failed++;
+            }
+        }
+
+        if (failed > 0)
+        {
+            Logging.SaveLog($"{_tag} {failed} leftover core(s) could not be killed. Enable TUN once to enter the sudo password and try again.");
+        }
+
+        await Task.Delay(1000);
     }
 
     private static async Task WaitForProxyPort(CoreConfigContext? preContext)

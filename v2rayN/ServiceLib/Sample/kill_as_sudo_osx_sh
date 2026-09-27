@@ -1,30 +1,40 @@
 #!/bin/bash
 #
 # Process Terminator Script for macOS
-# This script forcibly terminates a process and all its descendant processes
+# This script forcibly terminates one or more processes and all their descendant processes
 #
 
-# Check if PID argument is provided
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <PID>"
+# Check if at least one PID argument is provided
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <PID> [PID...]"
     exit 1
 fi
 
-PID=$1
+PIDS="$@"
 
-# Validate that input is a valid PID (numeric)
-if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
-    echo "Error: The PID must be a numeric value"
-    exit 1
-fi
+# Validate that all inputs are valid PIDs (numeric)
+for PID in $PIDS; do
+    if ! [[ "$PID" =~ ^[0-9]+$ ]]; then
+        echo "Error: The PID must be a numeric value"
+        exit 1
+    fi
+done
 
-# Check if the process exists - using kill -0 which is more reliable on macOS
-if ! kill -0 "$PID" 2>/dev/null; then
-    echo "Warning: No process found with PID $PID"
+# Drop the PIDs that are not running anymore - using kill -0 which is more reliable on macOS
+TARGETS=()
+for PID in $PIDS; do
+    if kill -0 "$PID" 2>/dev/null; then
+        TARGETS+=("$PID")
+    else
+        echo "Warning: No process found with PID $PID"
+    fi
+done
+
+if [ ${#TARGETS[@]} -eq 0 ]; then
     exit 0
 fi
 
-# Collect the whole descendant tree (deepest first) BEFORE any process is signalled.
+# Collect the whole descendant trees (deepest first) BEFORE any process is signalled.
 # Once the parent dies its children are re-parented to launchd and can no longer be
 # found by walking the ppid chain, so they would survive and keep holding the ports.
 DESCENDANTS=()
@@ -41,20 +51,24 @@ collect_descendants() {
         DESCENDANTS+=("$child")
     done
 }
-collect_descendants "$PID"
+for PID in "${TARGETS[@]}"; do
+    collect_descendants "$PID"
+done
 
 echo "============================================"
-echo "Starting termination of process $PID and all its descendants"
+echo "Starting termination of processes ${TARGETS[*]} and all their descendants"
 echo "============================================"
 
 # Try graceful termination first
-echo "Attempting graceful termination (SIGTERM) of PID: $PID"
-kill -15 "$PID" 2>/dev/null || true
+for PID in "${TARGETS[@]}"; do
+    echo "Attempting graceful termination (SIGTERM) of PID: $PID"
+    kill -15 "$PID" 2>/dev/null || true
+done
 sleep 1
 
-# The parent usually exits as soon as the signal is relayed, while the core it launched
+# The parents usually exit as soon as the signal is relayed, while the cores they launched
 # may still be draining connections. Always terminate the collected descendants so the
-# listening ports are really released, no matter what the parent did.
+# listening ports are really released, no matter what the parents did.
 for child in "${DESCENDANTS[@]}"; do
     if kill -0 "$child" 2>/dev/null; then
         echo "Terminating child process: $child"
@@ -62,13 +76,15 @@ for child in "${DESCENDANTS[@]}"; do
     fi
 done
 
-# Finally kill the main process
-if kill -0 "$PID" 2>/dev/null; then
-    echo "Terminating main process: $PID"
-    kill -9 "$PID" 2>/dev/null || true
-else
-    echo "Process $PID exited after SIGTERM"
-fi
+# Finally kill the main processes
+for PID in "${TARGETS[@]}"; do
+    if kill -0 "$PID" 2>/dev/null; then
+        echo "Terminating main process: $PID"
+        kill -9 "$PID" 2>/dev/null || true
+    else
+        echo "Process $PID exited after SIGTERM"
+    fi
+done
 
 # Wait a little for process/port resources to be fully released
 FINAL_WAIT_SECONDS=1
@@ -77,22 +93,22 @@ sleep "$FINAL_WAIT_SECONDS"
 
 # Verify that nothing survived, otherwise report it as a failure
 FAILED=0
-for child in "$PID" "${DESCENDANTS[@]}"; do
-    if kill -0 "$child" 2>/dev/null; then
-        echo "Error: process $child is still running"
+for PID in "${TARGETS[@]}" "${DESCENDANTS[@]}"; do
+    if kill -0 "$PID" 2>/dev/null; then
+        echo "Error: process $PID is still running"
         FAILED=1
     fi
 done
 
 if [ "$FAILED" -ne 0 ]; then
     echo "============================================"
-    echo "Some processes of $PID could not be terminated"
+    echo "Some processes of ${TARGETS[*]} could not be terminated"
     echo "============================================"
     exit 1
 fi
 
 echo "============================================"
-echo "Process $PID and all its descendants have been terminated"
+echo "Processes ${TARGETS[*]} and all their descendants have been terminated"
 echo "============================================"
 
 exit 0

@@ -1090,6 +1090,43 @@ public class Utils
         return null;
     }
 
+    /// <summary>
+    ///     Finds the pids of the running processes whose command line contains
+    ///     <paramref name="keyword" />. Only available on non-Windows platforms.
+    ///     Used to find the cores left over by a previous run: they are no longer children
+    ///     of this process, so the process tree cannot be used to find them.
+    /// </summary>
+    public static async Task<List<int>> GetPidsByCmdLine(string keyword)
+    {
+        var pids = new List<int>();
+        if (keyword.IsNullOrEmpty() || IsWindows())
+        {
+            return pids;
+        }
+
+        var output = await GetCliWrapOutput("ps", new List<string>() { "-axo", "pid=,command=" });
+        if (output.IsNullOrEmpty())
+        {
+            return pids;
+        }
+
+        foreach (var line in output.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var text = line.Trim();
+            var index = text.IndexOf(' ');
+            if (index <= 0 || !int.TryParse(text[..index], out var pid))
+            {
+                continue;
+            }
+            if (text[(index + 1)..].Contains(keyword))
+            {
+                pids.Add(pid);
+            }
+        }
+
+        return pids;
+    }
+
     #endregion Miscellaneous
 
     #region TempPath
@@ -1232,6 +1269,14 @@ public class Utils
             return Path.Combine(tempPath, filename);
         }
     }
+
+    /// <summary>
+    ///     The bin folder of this instance, with a trailing separator. Only processes running an
+    ///     executable from it belong to this instance, so it can be used to recognize the cores
+    ///     left over by a previous run. The trailing separator keeps binConfigs (where the shell
+    ///     scripts are written) out of the match.
+    /// </summary>
+    public static string GetCoreBinFolderPath() => GetBinPath("") + Path.DirectorySeparatorChar;
 
     public static string GetLogPath(string filename = "")
     {

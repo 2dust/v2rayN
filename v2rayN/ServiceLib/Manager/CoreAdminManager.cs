@@ -76,6 +76,27 @@ public class CoreAdminManager
             return;
         }
 
+        // Besides the elevated wrapper we know the pid of, also look for cores still running
+        // from our bin folder: a core left over by a previous run was re-parented to init, so
+        // it is not part of the tree of _linuxSudoPid any more but still holds the local port.
+        var pids = new List<int>() { _linuxSudoPid };
+        pids.AddRange(await Utils.GetPidsByCmdLine(Utils.GetCoreBinFolderPath()));
+        _linuxSudoPid = -1;
+
+        await KillProcessesAsLinuxSudo([.. pids.Distinct()]);
+    }
+
+    /// <summary>
+    ///     Kills the given processes and all their descendants through the kill_as_sudo script.
+    /// </summary>
+    public async Task KillProcessesAsLinuxSudo(List<int> pids)
+    {
+        pids.RemoveAll(x => x <= 0);
+        if (pids.Count == 0)
+        {
+            return;
+        }
+
         try
         {
             var shellFileName = Utils.IsMacOS() ? Global.KillAsSudoOSXShellFileName : Global.KillAsSudoLinuxShellFileName;
@@ -84,7 +105,7 @@ public class CoreAdminManager
             {
                 shFilePath = shFilePath.AppendQuotes();
             }
-            var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {_linuxSudoPid}" };
+            var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {string.Join(" ", pids)}" };
             var result = await Cli.Wrap(Global.LinuxBash)
                 .WithArguments(arg)
                 .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
@@ -96,7 +117,7 @@ public class CoreAdminManager
             if (result.ExitCode != 0)
             {
                 // The elevated core may still be running, so keep the reason in the log
-                Logging.SaveLog($"{_tag} Failed to kill process {_linuxSudoPid}, exit code {result.ExitCode}: {result.StandardError}");
+                Logging.SaveLog($"{_tag} Failed to kill processes {string.Join(",", pids)}, exit code {result.ExitCode}: {result.StandardError}");
             }
 
             await Task.Delay(1000); // Wait for a second to ensure the process is killed
@@ -105,7 +126,5 @@ public class CoreAdminManager
         {
             Logging.SaveLog(_tag, ex);
         }
-
-        _linuxSudoPid = -1;
     }
 }
