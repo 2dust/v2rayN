@@ -9,7 +9,6 @@ namespace v2rayN.Views;
 public partial class MainWindow
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
 
@@ -79,11 +78,12 @@ public partial class MainWindow
 
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.Visibility).DisposeWith(disposables);
 
-            _layoutBindingsDisposable.DisposeWith(disposables);
+            // A disposed container cannot be reused when the window is reactivated.
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
+                .Subscribe(orientation => UpdateLayout(orientation, layoutBindings))
                 .DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.StatusBarViewModel)
@@ -356,10 +356,10 @@ public partial class MainWindow
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable layoutBindings)
     {
         var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
+        layoutBindings.Create(currentLayoutDisposables);
 
         gridMain.Visibility = orientation == EGirdOrientation.Horizontal ? Visibility.Visible : Visibility.Collapsed;
         gridMain1.Visibility = orientation == EGirdOrientation.Vertical ? Visibility.Visible : Visibility.Collapsed;
@@ -380,7 +380,6 @@ public partial class MainWindow
                 this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
                     .Subscribe(vm => ViewHost.Show(tabClashConnections, vm))
                     .DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView.Visibility).DisposeWith(currentLayoutDisposables);
                 this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.Visibility).DisposeWith(currentLayoutDisposables);
                 this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.Visibility).DisposeWith(currentLayoutDisposables);
                 this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(currentLayoutDisposables);
@@ -399,7 +398,6 @@ public partial class MainWindow
                 this.WhenAnyValue(v => v.ViewModel.ClashConnectionsViewModel)
                     .Subscribe(vm => ViewHost.Show(tabClashConnections1, vm))
                     .DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabMsgView1.Visibility).DisposeWith(currentLayoutDisposables);
                 this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.Visibility).DisposeWith(currentLayoutDisposables);
                 this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.Visibility).DisposeWith(currentLayoutDisposables);
                 this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(currentLayoutDisposables);

@@ -27,6 +27,14 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+            <!-- Keep the selected log content without a lone tab heading. -->
+            <ControlTemplate x:Key="LogOnlyTabControlTemplate" TargetType="TabControl">
+                <ContentPresenter
+                    x:Name="PART_SelectedContentHost"
+                    ContentSource="SelectedContent"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </ControlTemplate>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -343,6 +351,15 @@
                             x:Name="tabMain"
                             Grid.Column="2"
                             HorizontalContentAlignment="Left">
+                            <TabControl.Style>
+                                <Style BasedOn="{StaticResource {x:Type TabControl}}" TargetType="TabControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowClashUI}" Value="False">
+                                            <Setter Property="Template" Value="{StaticResource LogOnlyTabControlTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TabControl.Style>
                             <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                             <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
                             <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
@@ -360,8 +377,16 @@
                             x:Name="tabMain1"
                             Grid.Row="2"
                             materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                            Style="{StaticResource MaterialDesignNavigationRailTabControl}"
                             TabStripPlacement="Left">
+                            <TabControl.Style>
+                                <Style BasedOn="{StaticResource MaterialDesignNavigationRailTabControl}" TargetType="TabControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowClashUI}" Value="False">
+                                            <Setter Property="Template" Value="{StaticResource LogOnlyTabControlTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TabControl.Style>
                             <TabItem x:Name="tabMsgView1">
                                 <TabItem.Header>
                                     <StackPanel>
