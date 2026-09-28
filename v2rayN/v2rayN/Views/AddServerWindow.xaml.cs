@@ -150,7 +150,7 @@ public partial class AddServerWindow
                 })
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Path, v => v.txtPathRaw.Text).DisposeWith(disposables);

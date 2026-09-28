@@ -38,35 +38,41 @@ public class SimpleViewLocator : IViewLocator
 
     public IViewFor<TViewModel>? ResolveView<TViewModel>() where TViewModel : class
     {
-        return ResolveView<TViewModel>(null);
-    }
-
-    public IViewFor<TViewModel>? ResolveView<TViewModel>(string? contract) where TViewModel : class
-    {
         if (_mappings.TryGetValue(typeof(TViewModel), out var factory))
         {
-            return factory() as IViewFor<TViewModel>;
+            var view = factory() as IViewFor<TViewModel>;
+            return view;
         }
         return null;
     }
 
-    public IViewFor? ResolveView(object? instance)
+    public IViewFor? ResolveView<TViewModel>(TViewModel viewModel, string? contract) where TViewModel : class
     {
-        return ResolveView(instance, null);
+        return ResolveView<TViewModel>();
     }
 
-    public IViewFor? ResolveView(object? instance, string? contract)
+    public IViewFor? ResolveView(object? viewModel, string? contract)
     {
-        if (instance == null)
+        if (viewModel == null)
         {
             return null;
         }
-        var viewModelType = instance.GetType();
+        var viewModelType = viewModel.GetType();
         if (_mappings.TryGetValue(viewModelType, out var factory))
         {
             return factory();
         }
         return null;
+    }
+
+    public IViewFor? ResolveViewUnsafe(object? viewModel, string? contract)
+    {
+        return ResolveView(viewModel, contract);
+    }
+
+    public IViewFor? ResolveView<TViewModel>(TViewModel instance) where TViewModel : class
+    {
+        return ResolveView(instance, null);
     }
 
     public void Register<TViewModel, TView>(Func<TView> factory)
