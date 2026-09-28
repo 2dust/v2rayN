@@ -14,7 +14,7 @@ public static class ViewHost
             return;
         }
 
-        var view = SimpleViewLocator.Instance.ResolveView(viewModel);
+        var view = SimpleViewLocator.Instance.ResolveView((object?)viewModel, null);
         view?.ViewModel = viewModel;
 
         host.Content = view;
