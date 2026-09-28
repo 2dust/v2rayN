@@ -210,6 +210,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             var parallelOptions = new ParallelOptions
             {
+                MaxDegreeOfParallelism = lst.Count,
                 CancellationToken = ct,
             };
 
@@ -291,6 +292,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             var parallelOptions = new ParallelOptions
             {
+                MaxDegreeOfParallelism = selecteds.Count,
                 CancellationToken = ct,
             };
 
@@ -381,6 +383,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             var parallelOptions = new ParallelOptions
             {
+                MaxDegreeOfParallelism = selecteds.Count,
                 CancellationToken = ct,
             };
 
@@ -569,6 +572,10 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
             await clientSocket.ConnectAsync(endPoint, linkedCts.Token).ConfigureAwait(false);
             responseTime = (int)timer.ElapsedMilliseconds;
+        }
+        catch
+        {
+            // Ignore
         }
         finally
         {
