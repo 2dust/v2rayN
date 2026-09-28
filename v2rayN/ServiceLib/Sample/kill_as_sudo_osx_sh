@@ -34,6 +34,8 @@ if [ ${#TARGETS[@]} -eq 0 ]; then
     exit 0
 fi
 
+sysctl -w net.inet.tcp.msl=3000 >/dev/null 2>&1 || true
+
 # Collect the whole descendant trees (deepest first) BEFORE any process is signalled.
 # Once the parent dies its children are re-parented to launchd and can no longer be
 # found by walking the ppid chain, so they would survive and keep holding the ports.
@@ -59,16 +61,11 @@ echo "============================================"
 echo "Starting termination of processes ${TARGETS[*]} and all their descendants"
 echo "============================================"
 
-# Try graceful termination first
-for PID in "${TARGETS[@]}"; do
-    echo "Attempting graceful termination (SIGTERM) of PID: $PID"
-    kill -15 "$PID" 2>/dev/null || true
-done
-sleep 1
-
-# The parents usually exit as soon as the signal is relayed, while the cores they launched
-# may still be draining connections. Always terminate the collected descendants so the
-# listening ports are really released, no matter what the parents did.
+# Send SIGKILL directly: a SIGTERM leaves the core draining connections while its
+# listener stays open for up to a second, and the port release is instead waited for
+# by the bind probing on the caller side.
+# The collected descendants must be terminated before the parents so the listening
+# ports are really released, no matter what the parents did.
 for child in "${DESCENDANTS[@]}"; do
     if kill -0 "$child" 2>/dev/null; then
         echo "Terminating child process: $child"
@@ -82,7 +79,7 @@ for PID in "${TARGETS[@]}"; do
         echo "Terminating main process: $PID"
         kill -9 "$PID" 2>/dev/null || true
     else
-        echo "Process $PID exited after SIGTERM"
+        echo "Process $PID already exited"
     fi
 done
 

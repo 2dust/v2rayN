@@ -58,16 +58,11 @@ echo "============================================"
 echo "Starting termination of processes ${TARGETS[*]} and all their children"
 echo "============================================"
 
-# Try graceful termination first
-for PID in "${TARGETS[@]}"; do
-    echo "Attempting graceful termination (SIGTERM) of PID: $PID"
-    kill -15 "$PID" 2>/dev/null || true
-done
-sleep 1
-
-# The parents usually exit as soon as the signal is relayed, while the cores they launched
-# may still be draining connections. Always terminate the collected children so the
-# listening ports are really released, no matter what the parents did.
+# Send SIGKILL directly: a SIGTERM leaves the core draining connections while its
+# listener stays open for up to a second, and the port release is instead waited for
+# by the bind probing on the caller side.
+# The collected children must be terminated before the parents so the listening
+# ports are really released, no matter what the parents did.
 for child in "${DESCENDANTS[@]}"; do
     if ps -p "$child" > /dev/null; then
         echo "Terminating child process: $child"
@@ -81,7 +76,7 @@ for PID in "${TARGETS[@]}"; do
         echo "Terminating main process: $PID"
         kill -9 "$PID" 2>/dev/null || true
     else
-        echo "Process $PID exited after SIGTERM"
+        echo "Process $PID already exited"
     fi
 done
 
