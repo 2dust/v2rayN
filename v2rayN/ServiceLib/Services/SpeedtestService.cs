@@ -288,7 +288,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 return false;
             }
-            await Task.Delay(1000, ct);
+            await CoreManager.WaitForSocksReady(selecteds.Where(t => t.AllowTest && t.Port > 0).Select(t => t.Port), TimeSpan.FromSeconds(3), ct);
 
             var parallelOptions = new ParallelOptions
             {
@@ -379,7 +379,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 return false;
             }
-            await Task.Delay(1000, ct);
+            await CoreManager.WaitForSocksReady(selecteds.Where(t => t.AllowTest && t.Port > 0).Select(t => t.Port), TimeSpan.FromSeconds(3), ct);
 
             var parallelOptions = new ParallelOptions
             {
@@ -454,7 +454,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     return;
                 }
 
-                await Task.Delay(1000, innerCt);
+                await CoreManager.WaitForSocksReady(it.Port, TimeSpan.FromSeconds(3), innerCt);
 
                 var delay = await DoRealPing(it, completedIds, innerCt);
                 if (blSpeedTest)

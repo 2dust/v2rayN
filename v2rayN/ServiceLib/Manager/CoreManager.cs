@@ -92,7 +92,16 @@ public class CoreManager
         }
 
         await CoreStart(mainContext);
-        await WaitForProxyPort(preContext);
+        if (preContext is { IsTunEnabled: true })
+        {
+            await WaitForProxyPort(preContext);
+        }
+        else if ((_processService != null || _linuxSudo) && node.ConfigType != EConfigType.Custom)
+        {
+            // Callers used to sleep a fixed second after start; probing the local inbound
+            // returns as soon as the core accepts connections.
+            await WaitForSocksReady(AppManager.Instance.GetLocalPort(EInboundProtocol.socks), TimeSpan.FromSeconds(3));
+        }
         await CoreStartPreService(preContext);
 
         AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
@@ -227,10 +236,24 @@ public class CoreManager
             return;
         }
 
-        using var rootCts = new CancellationTokenSource(Global.LocalFetch);
+        await WaitForSocksReady(preContext.Node.Port, Global.LocalFetch);
+    }
+
+    /// <summary>
+    /// Waits until every port completes a SOCKS5 greeting, or the timeout elapses.
+    /// Used instead of fixed sleeps after launching a core.
+    /// </summary>
+    public static async Task WaitForSocksReady(IEnumerable<int> ports, TimeSpan timeout, CancellationToken cancellationToken = default)
+    {
+        await Task.WhenAll(ports.Distinct().Select(port => WaitForSocksReady(port, timeout, cancellationToken)));
+    }
+
+    public static async Task WaitForSocksReady(int port, TimeSpan timeout, CancellationToken cancellationToken = default)
+    {
+        using var rootCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        rootCts.CancelAfter(timeout);
         var rootToken = rootCts.Token;
 
-        var port = preContext.Node.Port;
         // SOCKS5 client greeting: VER=5, NMETHODS=1, METHOD=0x00 (no auth)
         ReadOnlyMemory<byte> greeting = new byte[] { 0x05, 0x01, 0x00 };
         var buf = new byte[2];
@@ -238,7 +261,7 @@ public class CoreManager
         while (!rootToken.IsCancellationRequested)
         {
             using var tcp = new TcpClient();
-            using var attemptCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            using var attemptCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(200));
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(rootToken, attemptCts.Token);
             var linkedToken = linkedCts.Token;
             try
@@ -250,38 +273,38 @@ public class CoreManager
 
                 var read = await stream.ReadAsync(buf.AsMemory(0, 2), linkedToken);
 
-                // Server selection: VER=5, METHOD=0x00 — proxy is fully ready
+                // Server selection: VER=5 — proxy is fully ready
                 if (read == 2 && buf[0] == 0x05)
                 {
                     return;
                 }
             }
+            catch (OperationCanceledException) when (!rootToken.IsCancellationRequested)
+            {
+                continue;
+            }
             catch (OperationCanceledException)
             {
-                if (!rootToken.IsCancellationRequested)
-                {
-                    continue;
-                }
-                Logging.SaveLog($"WaitForProxyPort Timeout waiting for proxy port {port} to be ready.");
-                return;
-            }
-            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.ConnectionRefused)
-            {
-                // Connection refused, proxy not ready yet, wait 50ms before retrying
-                try
-                {
-                    await Task.Delay(50, rootToken);
-                }
-                catch (OperationCanceledException)
-                {
-                    Logging.SaveLog($"WaitForProxyPort Timeout waiting for proxy port {port} to be ready.");
-                    return;
-                }
+                break;
             }
             catch
             {
-                // Ignore other exceptions and continue
+                // Refused or reset: the core is not listening yet
             }
+
+            try
+            {
+                await Task.Delay(50, rootToken);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+        }
+
+        if (!cancellationToken.IsCancellationRequested)
+        {
+            Logging.SaveLog($"WaitForSocksReady Timeout waiting for proxy port {port} to be ready.");
         }
     }
 
