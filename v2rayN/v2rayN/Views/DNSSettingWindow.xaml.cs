@@ -63,8 +63,8 @@ public partial class DNSSettingWindow
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4V2rayCompatibleCmd, v => v.btnImportDefConfig4V2rayCompatible).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ImportDefConfig4SingboxCompatibleCmd, v => v.btnImportDefConfig4SingboxCompatible).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.txtBasicDNSSettingsInvalid.Visibility, isSimpleDnsEnabled => isSimpleDnsEnabled ? Visibility.Collapsed : Visibility.Visible);
-            this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.txtAdvancedDNSSettingsInvalid.Visibility, isSimpleDnsEnabled => isSimpleDnsEnabled ? Visibility.Collapsed : Visibility.Visible);
+            this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.txtBasicDNSSettingsInvalid.Visibility, isSimpleDnsEnabled => isSimpleDnsEnabled ? Visibility.Collapsed : Visibility.Visible).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.txtAdvancedDNSSettingsInvalid.Visibility, isSimpleDnsEnabled => isSimpleDnsEnabled ? Visibility.Collapsed : Visibility.Visible).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
