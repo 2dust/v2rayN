@@ -738,6 +738,13 @@ public partial class MainWindowViewModel : MyReactiveObject
 
             ReloadResult(showClashUI);
         }
+        catch (Exception ex)
+        {
+            // Without this the exception escalates to the ReactiveUI default handler and
+            // takes the whole app down (or vanishes), right after the core was stopped.
+            Logging.SaveLog("Reload failed", ex);
+            NoticeManager.Instance.Enqueue($"{ResUI.FailedToRunCore} {ex.Message}");
+        }
         finally
         {
             SetReloadEnabled(true);

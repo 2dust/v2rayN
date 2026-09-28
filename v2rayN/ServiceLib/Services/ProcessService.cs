@@ -11,6 +11,7 @@ public class ProcessService : IDisposable
     public int Id => _process.Id;
     public IntPtr Handle => _process.Handle;
     public bool HasExited => _process.HasExited;
+    public int ExitCode => _process.HasExited ? _process.ExitCode : -1;
 
     /// <summary>
     ///     The last lines written by the process. The output is only shown in the UI, so this is

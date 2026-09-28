@@ -106,11 +106,12 @@ public class CoreAdminManager
                 shFilePath = shFilePath.AppendQuotes();
             }
             var arg = new List<string>() { "-c", $"sudo -S {shFilePath} {string.Join(" ", pids)}" };
+            using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             var result = await Cli.Wrap(Global.LinuxBash)
                 .WithArguments(arg)
                 .WithStandardInputPipe(PipeSource.FromString(AppManager.Instance.LinuxSudoPwd))
                 .WithValidation(CommandResultValidation.None)
-                .ExecuteBufferedAsync();
+                .ExecuteBufferedAsync(timeoutCts.Token);
 
             await UpdateFunc(false, result.StandardOutput.ToString());
 

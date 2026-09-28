@@ -818,8 +818,9 @@ public class Utils
     ///     available. Guessing from the socket table can disagree with the kernel, and a core
     ///     started into a port it cannot bind just exits with "address already in use".
     /// </summary>
-    public static bool IsPortBindable(int port)
+    public static bool IsPortBindable(int port, out Exception? failure)
     {
+        failure = null;
         try
         {
             var listener = new TcpListener(IPAddress.Loopback, port);
@@ -827,8 +828,9 @@ public class Utils
             listener.Stop();
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            failure = ex;
             return false;
         }
     }
@@ -1097,7 +1099,10 @@ public class Utils
                 }
             }
 
-            var result = await cmd.ExecuteBufferedAsync(cancellationToken);
+            // A local command (netstat, ps, ...) that never returns would freeze the reload flow
+            using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            timeoutCts.CancelAfter(TimeSpan.FromSeconds(30));
+            var result = await cmd.ExecuteBufferedAsync(timeoutCts.Token);
             if (result.IsSuccess)
             {
                 return result.StandardOutput ?? "";

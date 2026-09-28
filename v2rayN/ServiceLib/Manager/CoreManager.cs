@@ -21,6 +21,9 @@ public class CoreManager
     private const int PortBindableTimeout = 10000;
     private const int CoreStartRetryCount = 2;
     private const int CoreStartRetryDelay = 1500;
+    private const int CoreStartVerifyTimeout = 3000;
+    private const int CoreStartBindRetryTimeout = 75000;
+    private const int CoreStartBindRetryDelay = 2000;
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -68,6 +71,22 @@ public class CoreManager
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
     public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
+        try
+        {
+            await LoadCoreInternal(mainContext, preContext);
+        }
+        catch (Exception ex)
+        {
+            // The reload flow has no catch of its own: without this the exception either
+            // kills the app (ReactiveUI default handler) or disappears without a trace,
+            // leaving the app running with no core at all.
+            Logging.SaveLog($"{_tag} LoadCore failed:{Environment.NewLine}{ex}");
+            await UpdateFunc(true, $"{ResUI.FailedToRunCore} {ex.Message}");
+        }
+    }
+
+    private async Task LoadCoreInternal(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    {
         if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
@@ -86,9 +105,15 @@ public class CoreManager
         await UpdateFunc(false, $"{node.GetSummary()}");
         await UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
         await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
+        Logging.SaveLog($"{_tag} LoadCore: {node.GetSummary()}, coreType={AppManager.Instance.GetCoreType(node, node.ConfigType)}, tun={mainContext.IsTunEnabled}");
         await CoreStop();
+        Logging.SaveLog($"{_tag} CoreStop done");
         await Task.Delay(100);
-        await WaitForPortRelease(AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
+        foreach (var port in CoreListenPorts())
+        {
+            await WaitForPortRelease(port);
+        }
+        Logging.SaveLog($"{_tag} Ports released");
 
         if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
         {
@@ -106,6 +131,7 @@ public class CoreManager
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
+        Logging.SaveLog($"{_tag} LoadCore done, coreRunning={_processService is { HasExited: false }}");
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
@@ -188,24 +214,119 @@ public class CoreManager
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
+        var bindDeadline = Environment.TickCount64 + CoreStartBindRetryTimeout;
+        var fastRetries = 0;
 
         for (var attempt = 0; ; attempt++)
         {
-            var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled);
-            if (proc is not null)
+            var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled, false);
+            if (proc is not null && await VerifyCoreStarted(proc, context.IsTunEnabled, coreType))
             {
                 _processService = proc;
+                Logging.SaveLog($"{_tag} Core started, pid={proc.Id}, coreType={coreType}, tun={context.IsTunEnabled}");
                 return;
+            }
+
+            if (proc is not null)
+            {
+                proc.Dispose();
             }
 
             // The core can lose the race against the one it replaces: the listener of the
             // previous process is not always gone by the time we start. Retry instead of
             // leaving the app without a core.
-            if (attempt >= CoreStartRetryCount)
+            var blocked = false;
+            foreach (var port in CoreListenPorts())
             {
+                if (!Utils.IsPortBindable(port, out _))
+                {
+                    blocked = true;
+                    break;
+                }
+            }
+
+            if (blocked)
+            {
+                if (Environment.TickCount64 >= bindDeadline)
+                {
+                    Logging.SaveLog($"{_tag} CoreStart failed after {attempt + 1} attempts, ports still held after {CoreStartBindRetryTimeout}ms, coreType={coreType}, tun={context.IsTunEnabled}");
+                    await UpdateFunc(true, ResUI.FailedToRunCore);
+                    return;
+                }
+                await Task.Delay(CoreStartBindRetryDelay);
+                continue;
+            }
+
+            if (fastRetries >= CoreStartRetryCount)
+            {
+                Logging.SaveLog($"{_tag} CoreStart failed after {attempt + 1} attempts, coreType={coreType}, tun={context.IsTunEnabled}");
+                await UpdateFunc(true, ResUI.FailedToRunCore);
                 return;
             }
+            fastRetries++;
             await Task.Delay(CoreStartRetryDelay);
+        }
+    }
+
+    /// <summary>
+    ///     Watches a freshly started core for a few seconds: a core that dies right after
+    ///     spawning (port race, bad config, ...) would otherwise leave the app silently
+    ///     without a core, because its output only ever reaches the UI message panel.
+    ///     Non-TUN launches are additionally required to accept a connection on the proxy
+    ///     port within the window; a TUN core may not listen on loopback at all.
+    /// </summary>
+    private async Task<bool> VerifyCoreStarted(ProcessService proc, bool isTunLaunch, ECoreType coreType)
+    {
+        var socksPort = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+        var deadline = Environment.TickCount64 + CoreStartVerifyTimeout;
+
+        while (Environment.TickCount64 < deadline)
+        {
+            if (proc.HasExited)
+            {
+                await LogCoreStartFailure(proc, coreType, isTunLaunch);
+                return false;
+            }
+
+            if (!isTunLaunch && await IsLoopbackPortAccepting(socksPort))
+            {
+                return true;
+            }
+
+            await Task.Delay(250);
+        }
+
+        if (proc.HasExited)
+        {
+            await LogCoreStartFailure(proc, coreType, isTunLaunch);
+            return false;
+        }
+
+        Logging.SaveLog($"{_tag} Core still running after {CoreStartVerifyTimeout}ms without a connection on port {socksPort}, assuming it is up");
+        return true;
+    }
+
+    private async Task LogCoreStartFailure(ProcessService proc, ECoreType coreType, bool isTunLaunch)
+    {
+        Logging.SaveLog($"{_tag} Core exited during startup, exit code {proc.ExitCode}, coreType={coreType}, tun={isTunLaunch}:{Environment.NewLine}{proc.GetRecentOutput()}");
+        foreach (var port in CoreListenPorts())
+        {
+            await LogPortState(port);
+        }
+    }
+
+    private static async Task<bool> IsLoopbackPortAccepting(int port)
+    {
+        try
+        {
+            using var tcp = new TcpClient();
+            using var cts = new CancellationTokenSource(100);
+            await tcp.ConnectAsync(Global.Loopback, port, cts.Token);
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 
@@ -235,6 +356,21 @@ public class CoreManager
     }
 
     /// <summary>
+    ///     Every loopback port a core binds: the proxy port plus the management ports v2rayN
+    ///     hands out to it (xray metrics, clash/sing-box external-controller). A core refuses
+    ///     to start when any of them is taken, not only when the proxy port is.
+    /// </summary>
+    private static List<int> CoreListenPorts()
+    {
+        return
+        [
+            AppManager.Instance.GetLocalPort(EInboundProtocol.socks),
+            AppManager.Instance.StatePort,
+            AppManager.Instance.StatePort2
+        ];
+    }
+
+    /// <summary>
     ///     Waits until the stopped core has really released the local inbound port. A core
     ///     killed with SIGTERM keeps its listener while it drains existing connections, and a
     ///     core left over by a previous run keeps it indefinitely; in both cases the new core
@@ -257,15 +393,28 @@ public class CoreManager
     private static async Task<bool> WaitPortBindable(int port, int timeout)
     {
         var sw = Stopwatch.StartNew();
+        Exception? failure = null;
+        var lastDump = -1000L;
         while (true)
         {
-            if (Utils.IsPortBindable(port))
+            if (Utils.IsPortBindable(port, out failure))
             {
                 return true;
             }
+
+            // Sample while the port is refused, not only after the wait is over: the blocker
+            // may be gone by then, and a snapshot taken at the end cannot explain anything
+            if (sw.ElapsedMilliseconds - lastDump >= 1000)
+            {
+                lastDump = sw.ElapsedMilliseconds;
+                Logging.SaveLog($"{_tag} Port {port} refused after {sw.ElapsedMilliseconds}ms. Probe failed with: {failure?.GetType().Name} {failure?.Message}");
+                await LogPortState(port);
+            }
+
             if (sw.ElapsedMilliseconds > timeout)
             {
-                Logging.SaveLog($"{_tag} Port {port} cannot be bound after waiting {timeout}ms.");
+                Logging.SaveLog($"{_tag} Port {port} cannot be bound after waiting {timeout}ms. Probe failed with: {failure?.GetType().Name} {failure?.Message}");
+                await LogPortState(port);
                 return false;
             }
             await Task.Delay(200);
@@ -417,7 +566,7 @@ public class CoreManager
             && isNonWindows;
     }
 
-    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, bool isTunLaunch = false)
+    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, bool isTunLaunch = false, bool notifyOnFailure = true)
     {
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
@@ -441,7 +590,7 @@ public class CoreManager
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            await UpdateFunc(mayNeedSudo, ex.Message);
+            await UpdateFunc(notifyOnFailure && mayNeedSudo, ex.Message);
             return null;
         }
     }
@@ -472,7 +621,10 @@ public class CoreManager
         {
             // The reason is only visible in the UI log, put it in the log file as well
             Logging.SaveLog($"{_tag} Core exited immediately:{Environment.NewLine}{procService?.GetRecentOutput()}");
-            await LogPortState(AppManager.Instance.GetLocalPort(EInboundProtocol.socks));
+            foreach (var port in CoreListenPorts())
+            {
+                await LogPortState(port);
+            }
             throw new Exception(ResUI.FailedToRunCore);
         }
         AddProcessJob(procService.Handle);
@@ -498,10 +650,43 @@ public class CoreManager
         }
 
         var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-            .Where(line => line.Contains($".{port} "))
+            .Where(line => line.Contains($".{port} ") || line.Contains($" {port} "))
             .Select(line => line.TrimEnd())
             .ToList();
         Logging.SaveLog($"{_tag} Sockets on port {port}:{Environment.NewLine}{(lines.Count > 0 ? string.Join(Environment.NewLine, lines) : "none")}");
+
+        // netstat shows no owner; only lsof tells which process holds the port
+        var lsof = await Utils.GetCliWrapOutput("lsof", new List<string>() { "-nP", $"-iTCP:{port}" });
+        var ownerLines = lsof.IsNullOrEmpty()
+            ? "none"
+            : string.Join(Environment.NewLine, lsof.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(line => line.TrimEnd()));
+        Logging.SaveLog($"{_tag} Processes holding port {port}:{Environment.NewLine}{ownerLines}");
+
+        // Distinguishes the blockers: a SO_REUSEPORT core still listening answers OK here,
+        // while a plain or bound-but-not-listening socket keeps refusing even this bind
+        try
+        {
+            using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            var reusePort = Utils.IsMacOS() ? 512 : 15;   // SO_REUSEPORT: 512 on Darwin, 15 on Linux
+            socket.SetSocketOption(SocketOptionLevel.Socket, (SocketOptionName)reusePort, 1);
+            socket.Bind(new IPEndPoint(IPAddress.Loopback, port));
+            Logging.SaveLog($"{_tag} Bind with SO_REUSEPORT on port {port}: OK");
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog($"{_tag} Bind with SO_REUSEPORT on port {port}: {ex.Message}");
+        }
+
+        // ps sees other users' command lines, lsof does not; a core started outside our bin
+        // path would be missed by the leftover-core scan
+        var ps = await Utils.GetCliWrapOutput("ps", new List<string>() { "-axo", "pid=,user=,command=" });
+        var coreLines = ps.IsNullOrEmpty()
+            ? new List<string>()
+            : ps.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                .Where(line => line.Contains("xray") || line.Contains("sing-box") || line.Contains("mihomo") || line.Contains("run_as_sudo"))
+                .Select(line => line.TrimEnd())
+                .ToList();
+        Logging.SaveLog($"{_tag} Core-like processes:{Environment.NewLine}{(coreLines.Count > 0 ? string.Join(Environment.NewLine, coreLines) : "none")}");
     }
 
     private void AddProcessJob(nint processHandle)
