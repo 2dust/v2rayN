@@ -11,6 +11,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Net.Security.UseNetworkFramework" Value="true" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Avalonia.AvaloniaEdit" />
 		<PackageReference Include="Avalonia.Controls.DataGrid">
 			<TreatAsUsed>true</TreatAsUsed>
