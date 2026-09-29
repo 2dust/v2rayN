@@ -365,9 +365,16 @@ public partial class CoreConfigSingboxService
                         rule4ExpectedIPs = JsonUtils.DeepCopy(rule);
                         rule4ExpectedIPs.geosite = regionGeosite;
                     }
+                    if (rule.geosite?.Count > 0
+                        || rule.domain?.Count > 0
+                        || rule.domain_keyword?.Count > 0
+                        || rule.domain_regex?.Count > 0
+                        || rule.domain_suffix?.Count > 0)
+                    {
+                        AddRules(rule, item, directDnsList);
+                    }
                 }
-
-                if (rule.geosite?.Count > 0 || rule.domain?.Count > 0)
+                else
                 {
                     AddRules(rule, item, directDnsList);
                 }

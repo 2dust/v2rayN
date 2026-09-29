@@ -13,11 +13,11 @@
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.2" />
     <PackageVersion Include="CliWrap" Version="3.10.5" />
-    <PackageVersion Include="Downloader" Version="5.9.6" />
+    <PackageVersion Include="Downloader" Version="5.9.8" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
     <PackageVersion Include="QRCoder" Version="1.8.0" />
-    <PackageVersion Include="ReactiveUI" Version="24.2.0" />
+    <PackageVersion Include="ReactiveUI" Version="24.3.0" />
     <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.2.0" />
     <PackageVersion Include="ReactiveUI.WPF" Version="24.2.0" />
     <PackageVersion Include="Semi.Avalonia" Version="12.1.0.1" />

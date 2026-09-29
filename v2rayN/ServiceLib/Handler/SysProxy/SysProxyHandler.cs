@@ -3,6 +3,7 @@ namespace ServiceLib.Handler.SysProxy;
 public static class SysProxyHandler
 {
     private static readonly string _tag = "SysProxyHandler";
+    private static readonly Lazy<PacManager> _pacManager = new(() => new PacManager());
 
     public static async Task<bool> UpdateSysProxy(Config config, bool forceDisable)
     {
@@ -56,7 +57,7 @@ public static class SysProxyHandler
 
             if (type != ESysProxyType.Pac && Utils.IsWindows())
             {
-                PacManager.Instance.Stop();
+                _pacManager.Value.Stop();
             }
         }
         catch (Exception ex)
@@ -110,7 +111,7 @@ public static class SysProxyHandler
     private static async Task SetWindowsProxyPac(int port)
     {
         var portPac = AppManager.Instance.GetLocalPort(EInboundProtocol.pac);
-        await PacManager.Instance.StartAsync(port, portPac);
+        await _pacManager.Value.StartAsync(port, portPac);
         var strProxy = $"{Global.HttpProtocol}{Global.Loopback}:{portPac}/pac?t={DateTime.Now.Ticks}";
         ProxySettingWindows.SetProxy(strProxy, "", 4);
     }
