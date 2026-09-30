@@ -22,8 +22,12 @@ if [[ -z "$dotnet" || ! -x "$dotnet" ]]; then
 fi
 export NUGET_PACKAGES="${NUGET_PACKAGES:-$web_root/.packages/nuget}"
 
-"$dotnet" test --project "$web_root/Tests/v2rayN.Web.Tests.csproj" --configuration Release
-"$dotnet" test --project "$upstream_root/ServiceLib.Tests/ServiceLib.Tests.csproj" --configuration Release
+"$dotnet" restore "$web_root/v2rayN.Web.csproj"
+"$dotnet" restore "$web_root/Tests/v2rayN.Web.Tests.csproj"
+"$dotnet" restore "$upstream_root/ServiceLib.Tests/ServiceLib.Tests.csproj"
+"$dotnet" build "$web_root/v2rayN.Web.csproj" --configuration Release --no-restore
+"$dotnet" test --project "$web_root/Tests/v2rayN.Web.Tests.csproj" --configuration Release --no-restore
+"$dotnet" test --project "$upstream_root/ServiceLib.Tests/ServiceLib.Tests.csproj" --configuration Release --no-restore
 bash "$web_root/Scripts/publish-native.sh" linux-x64 "$output_dir"
 test -x "$output_dir/v2rayN.Web"
 bash "$web_root/Scripts/test-startup-security.sh" "$output_dir/v2rayN.Web"
