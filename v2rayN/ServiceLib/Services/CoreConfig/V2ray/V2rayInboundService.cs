@@ -90,11 +90,11 @@ public partial class CoreConfigV2rayService
                 // tunInbound.sniffing.routeOnly = inbound.sniffing.routeOnly;
                 tunInbound.sniffing.routeOnly = true;
 
-                if (context.IsWindows)
+                if (context.IsWindows && _config.TunModeItem.StrictRoute == true)
                 {
                     tunInbound.settings.autoSystemWfpBlockLeak = ["dns", "misconfigtun"];
                 }
-                else if (context.IsLinux)
+                if (context.IsLinux)
                 {
                     tunInbound.settings.autoSystemDnsToGateway = true;
                 }
