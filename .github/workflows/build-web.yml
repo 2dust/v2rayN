@@ -1,0 +1,225 @@
+name: build v2rayN.Web API
+
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: false
+        type: string
+        default: ''
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (for example 7.25.4). Empty builds a development API package.'
+        required: false
+        default: ''
+        type: string
+  pull_request:
+    branches: [master]
+    paths:
+      - 'v2rayN/v2rayN.Web/**'
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'v2rayN/v2rayN.slnx'
+      - 'global.json'
+      - '.github/workflows/build-web.yml'
+      - '.github/workflows/build-linux.yml'
+      - '.github/workflows/upload-sign.yml'
+permissions:
+  contents: read
+
+jobs:
+  identity:
+    name: Resolve API build identity
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      tag: ${{ steps.resolve.outputs.tag }}
+      release: ${{ steps.resolve.outputs.release }}
+      build_date: ${{ steps.resolve.outputs.build_date }}
+    steps:
+      - name: Resolve release identity
+        id: resolve
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          build_date="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          if [[ -z "$RELEASE_TAG" ]]; then
+            {
+              echo "version=0.0.0-dev"
+              echo "tag="
+              echo "release=false"
+              echo "build_date=$build_date"
+            } >> "$GITHUB_OUTPUT"
+          else
+            [[ "$RELEASE_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+              echo "Invalid release tag: $RELEASE_TAG" >&2
+              exit 1
+            }
+            {
+              echo "version=$RELEASE_TAG"
+              echo "tag=$RELEASE_TAG"
+              echo "release=true"
+              echo "build_date=$build_date"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+  verify:
+    name: Backend, ServiceLib, package smoke
+    runs-on: ubuntu-24.04
+    env:
+      TUNIT_MAX_PARALLEL_TESTS: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - name: Verify API build, backend and ServiceLib tests, native startup and package boundaries
+        run: bash v2rayN/v2rayN.Web/Scripts/verify.sh "$RUNNER_TEMP/v2rayN.Web-verify"
+      - name: Check patch whitespace
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          if [[ "$BASE_SHA" =~ ^0+$ ]]; then
+            empty_tree="$(git hash-object -t tree -w /dev/null)"
+            git diff --check "$empty_tree" HEAD
+          else
+            git diff --check "$BASE_SHA...HEAD"
+          fi
+
+  native:
+    name: Native API build (${{ matrix.rid }})
+    needs: identity
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: linux-x64
+            runner: ubuntu-24.04
+          - rid: linux-arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    env:
+      RID: ${{ matrix.rid }}
+      V2RAYN_WEB_VERSION: ${{ needs.identity.outputs.version }}
+      V2RAYN_WEB_REPOSITORY: ${{ github.repository }}
+      V2RAYN_WEB_COMMIT: ${{ github.sha }}
+      V2RAYN_WEB_BUILD_DATE: ${{ needs.identity.outputs.build_date }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - name: Publish native API
+        run: bash v2rayN/v2rayN.Web/Scripts/publish-native.sh "$RID"
+      - name: Verify native executable
+        run: test -x "v2rayN/v2rayN.Web/publish/$RID/v2rayN.Web"
+      - name: Add the matching Linux Core bundle
+        if: needs.identity.outputs.release == 'true'
+        run: sh v2rayN/v2rayN.Web/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.Web/publish/$RID/bin"
+      - name: Package API install and self-update ZIPs
+        if: needs.identity.outputs.release == 'true'
+        run: bash v2rayN/v2rayN.Web/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.Web/publish/$RID" dist
+      - name: Smoke-test bundled Cores
+        if: needs.identity.outputs.release == 'true'
+        run: |
+          set -euo pipefail
+          publish="v2rayN/v2rayN.Web/publish/$RID"
+          "$publish/bin/xray/xray" -version
+          "$publish/bin/sing_box/sing-box" version
+          "$publish/bin/mihomo/mihomo" -v
+      - uses: actions/upload-artifact@v7
+        if: needs.identity.outputs.release == 'true'
+        with:
+          name: v2rayN.Web-${{ matrix.rid }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+  container:
+    name: API Containerfile (${{ matrix.rid }})
+    needs: identity
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: linux-x64
+            platform: linux/amd64
+          - rid: linux-arm64
+            platform: linux/arm64
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@v3
+      - name: Build API container (no push)
+        uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
+        with:
+          context: .
+          file: ./v2rayN/v2rayN.Web/Containerfile
+          platforms: ${{ matrix.platform }}
+          tags: v2rayn-web-api:ci
+          build-args: |
+            RID=${{ matrix.rid }}
+            WEB_VERSION=${{ needs.identity.outputs.version }}
+            WEB_REPOSITORY=${{ github.repository }}
+            WEB_COMMIT=${{ github.sha }}
+            WEB_BUILD_DATE=${{ needs.identity.outputs.build_date }}
+          push: false
+
+  release-assets:
+    name: Assemble API release assets
+    if: needs.identity.outputs.release == 'true'
+    needs: [identity, verify, native, container]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: v2rayN.Web-*
+          path: release-assets
+          merge-multiple: true
+      - name: Build and verify web-update.json
+        env:
+          RELEASE_TAG: ${{ needs.identity.outputs.tag }}
+        run: |
+          set -euo pipefail
+          python3 v2rayN/v2rayN.Web/Scripts/web-update-manifest.py write \
+            --version "$RELEASE_TAG" \
+            --repository "${{ github.repository }}" \
+            --commit "${{ github.sha }}" \
+            --build-date "${{ needs.identity.outputs.build_date }}" \
+            --dist release-assets \
+            --output release-assets/web-update.json
+          python3 v2rayN/v2rayN.Web/Scripts/web-update-manifest.py verify \
+            --manifest release-assets/web-update.json \
+            --dist release-assets \
+            --repository "${{ github.repository }}"
+      - name: Smoke-test full API ZIP
+        run: bash v2rayN/v2rayN.Web/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-web.zip
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-release-packages
+          path: release-assets/*.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-release-manifest
+          path: release-assets/web-update.json
+          if-no-files-found: error

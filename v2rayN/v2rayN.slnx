@@ -2,6 +2,7 @@
   <Folder Name="/GitHub Action/">
     <File Path="../.github/workflows/build-all.yml" />
     <File Path="../.github/workflows/build-linux.yml" />
+    <File Path="../.github/workflows/build-web.yml" />
     <File Path="../.github/workflows/build-osx.yml" />
     <File Path="../.github/workflows/build-windows-desktop.yml" />
     <File Path="../.github/workflows/build-windows.yml" />
@@ -21,4 +22,6 @@
   <Project Path="ServiceLib/ServiceLib.csproj" />
   <Project Path="v2rayN.Desktop/v2rayN.Desktop.csproj" />
   <Project Path="v2rayN/v2rayN.csproj" />
+  <Project Path="v2rayN.Web/v2rayN.Web.csproj" />
+  <Project Path="v2rayN.Web/Tests/v2rayN.Web.Tests.csproj" />
 </Solution>
