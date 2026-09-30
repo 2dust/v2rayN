@@ -28,7 +28,7 @@ case "$rid" in
 esac
 
 export NUGET_PACKAGES="${NUGET_PACKAGES:-$web_root/.packages/nuget}"
-# Official release builds pass the upstream release tag (for example 7.25.3) so the Web
+# Official release builds pass the upstream release tag (for example 7.25.4) so the Web
 # build identity follows the same version as the v2rayN Release. Local builds keep a dev identity.
 web_version="${V2RAYN_WEB_VERSION:-0.0.0-dev}"
 web_repository="${V2RAYN_WEB_REPOSITORY:-${GITHUB_REPOSITORY:-2dust/v2rayN}}"

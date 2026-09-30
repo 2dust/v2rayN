@@ -10,7 +10,7 @@ Verification also opens each app-only archive and cross-checks its embedded
 and build identity; user-installed WebUI files are neither packaged nor touched by self-update.
 
 Usage:
-  web-update-manifest.py write --version 7.25.3 --repository 2dust/v2rayN --commit <sha> \
+  web-update-manifest.py write --version 7.25.4 --repository 2dust/v2rayN --commit <sha> \
       --build-date 2026-09-28T00:00:00Z --dist dist --output dist/web-update.json
   web-update-manifest.py verify --manifest dist/web-update.json --dist dist [--repository 2dust/v2rayN]
 """
