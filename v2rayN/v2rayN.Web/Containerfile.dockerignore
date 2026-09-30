@@ -1,0 +1,14 @@
+.git
+.env
+**/.env
+.packages
+**/.packages
+**/.NET
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/publish
+**/.npm-cache
+v2rayN/v2rayN.Web/Tests
+v2rayN/v2rayN.Web/core-bin
