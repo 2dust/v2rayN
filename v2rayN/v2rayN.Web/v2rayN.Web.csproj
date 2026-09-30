@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.NET/**;.packages/**;Tests/**;publish/**</DefaultItemExcludes>
+    <WebVersion Condition="'$(WebVersion)' == ''">0.0.0-dev</WebVersion>
+    <WebCommit Condition="'$(WebCommit)' == ''">unknown</WebCommit>
+    <WebBuildDate Condition="'$(WebBuildDate)' == ''">unknown</WebBuildDate>
+    <WebRepository Condition="'$(WebRepository)' == ''">2dust/v2rayN</WebRepository>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="WebVersion" Value="$(WebVersion)" />
+    <AssemblyMetadata Include="WebCommit" Value="$(WebCommit)" />
+    <AssemblyMetadata Include="WebBuildDate" Value="$(WebBuildDate)" />
+    <AssemblyMetadata Include="WebRepository" Value="$(WebRepository)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" />
+    <ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\web-assets.json" LogicalName="v2rayN.Web.Assets.web-assets.json" />
+    <Content Remove="Assets\web-assets.json" />
+    <Content Remove="TestResults\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Launcher\Locales\zh-CN.json" LogicalName="v2rayN.Web.Launcher.Locales.zh-CN.json" />
+    <EmbeddedResource Include="Launcher\Locales\zh-TW.json" LogicalName="v2rayN.Web.Launcher.Locales.zh-TW.json" />
+    <EmbeddedResource Include="Launcher\Locales\en-US.json" LogicalName="v2rayN.Web.Launcher.Locales.en-US.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ServiceLibBin\.keep"
+             Link="bin\.keep"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

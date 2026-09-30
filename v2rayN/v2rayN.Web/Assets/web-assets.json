@@ -1,0 +1,16 @@
+{
+  "assets": [
+    {
+      "rid": "linux-x64",
+      "arch": "64",
+      "full": "v2rayN-linux-64-web.zip",
+      "update": "v2rayN-linux-64-web-update.zip"
+    },
+    {
+      "rid": "linux-arm64",
+      "arch": "arm64",
+      "full": "v2rayN-linux-arm64-web.zip",
+      "update": "v2rayN-linux-arm64-web-update.zip"
+    }
+  ]
+}
