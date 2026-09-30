@@ -34,7 +34,14 @@ if [ ${#TARGETS[@]} -eq 0 ]; then
     exit 0
 fi
 
+# Shorten the two timers that keep a dead core's port unbindable, before it is killed
+# so the sockets this kill creates already get the short timers:
+#   msl         -> TIME_WAIT lasts 2*msl, when we closed the connection first
+#   fin_timeout -> FIN_WAIT_2 lasts this long, when the peer never sends its FIN back.
+# Clients that keep the proxy connection open (browsers) sit in CLOSE_WAIT and never
+# reply, so the default 60s leaves the port refused long after the core is gone.
 sysctl -w net.inet.tcp.msl=3000 >/dev/null 2>&1 || true
+sysctl -w net.inet.tcp.fin_timeout=3000 >/dev/null 2>&1 || true
 
 # Collect the whole descendant trees (deepest first) BEFORE any process is signalled.
 # Once the parent dies its children are re-parented to launchd and can no longer be
