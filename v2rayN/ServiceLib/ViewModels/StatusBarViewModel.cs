@@ -490,7 +490,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             sb.Append($",{AppManager.Instance.GetLocalPort(EInboundProtocol.socks2)}");
         }
         sb.Append(']');
-        InboundDisplay = $"{ResUI.LabLocal}:{sb}";
+        InboundDisplay = $"Порт:{AppManager.Instance.GetLocalPort(EInboundProtocol.socks)}";
 
         if (_config.Inbound.First().AllowLANConn)
         {
