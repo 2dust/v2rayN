@@ -113,6 +113,10 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
                                 <MenuItem
+                                    x:Name="menuAddMasqueServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddMasqueServer}" />
+                                <MenuItem
                                     x:Name="menuAddSocksServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddSocksServer}" />

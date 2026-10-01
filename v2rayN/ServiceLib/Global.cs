@@ -261,7 +261,8 @@ public class Global
         { EConfigType.TUIC, "tuic" },
         { EConfigType.WireGuard, "wireguard" },
         { EConfigType.Anytls, "anytls" },
-        { EConfigType.Naive, "naive" }
+        { EConfigType.Naive, "naive" },
+        { EConfigType.MASQUE, "masque" },
     };
 
     public static readonly List<string> VmessSecurities =
@@ -371,6 +372,7 @@ public class Global
         EConfigType.Trojan,
         EConfigType.Hysteria2,
         EConfigType.WireGuard,
+        EConfigType.MASQUE,
         EConfigType.SOCKS,
         EConfigType.HTTP,
     ];
@@ -386,6 +388,7 @@ public class Global
         EConfigType.Anytls,
         EConfigType.Naive,
         EConfigType.WireGuard,
+        EConfigType.MASQUE,
         EConfigType.SOCKS,
         EConfigType.HTTP,
     ];

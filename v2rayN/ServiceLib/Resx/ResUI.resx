@@ -1899,4 +1899,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Process</value>
   </data>
+  <data name="menuAddMasqueServer" xml:space="preserve">
+    <value>Add [MASQUE]</value>
+  </data>
 </root>

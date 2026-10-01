@@ -1891,4 +1891,7 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>进程</value>
   </data>
+  <data name="menuAddMasqueServer" xml:space="preserve">
+    <value>添加 [MASQUE]</value>
+  </data>
 </root>
