@@ -92,6 +92,10 @@ public class Inboundsettings4Ray
     public string? autoOutboundsInterface { get; set; }
 
     public List<string>? dns { get; set; }
+
+    public bool? autoSystemDnsToGateway { get; set; }
+
+    public List<string>? autoSystemWfpBlockLeak { get; set; }
 }
 
 public class Sniffing4Ray
