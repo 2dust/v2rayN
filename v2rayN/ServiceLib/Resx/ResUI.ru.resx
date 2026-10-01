@@ -196,10 +196,10 @@
     <value>Трафик ↑</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
-    <value>Всего загружено</value>
+    <value>Всего ↓</value>
   </data>
   <data name="LvTotalUploadDataAmount" xml:space="preserve">
-    <value>Всего отдано</value>
+    <value>Всего ↑</value>
   </data>
   <data name="LvTransportProtocol" xml:space="preserve">
     <value>Протокол</value>
