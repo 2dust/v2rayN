@@ -187,13 +187,13 @@
     <value>Тип</value>
   </data>
   <data name="LvSubscription" xml:space="preserve">
-    <value>Группа подписки</value>
+    <value>Подписки</value>
   </data>
   <data name="LvTodayDownloadDataAmount" xml:space="preserve">
-    <value>Загружено трафика сегодня</value>
+    <value>Трафик ↓</value>
   </data>
   <data name="LvTodayUploadDataAmount" xml:space="preserve">
-    <value>Отправлено сегодня</value>
+    <value>Трафик ↑</value>
   </data>
   <data name="LvTotalDownloadDataAmount" xml:space="preserve">
     <value>Всего загружено</value>
@@ -439,7 +439,7 @@
     <value>Обновить текущую подписку через прокси</value>
   </data>
   <data name="menuSubscription" xml:space="preserve">
-    <value>Группа подписки</value>
+    <value>Подписки</value>
   </data>
   <data name="menuSubSetting" xml:space="preserve">
     <value>Настройки групп подписки</value>
@@ -883,7 +883,7 @@
     <value>Многопоточный тест задержки и скорости (Ctrl+E)</value>
   </data>
   <data name="LvTestDelay" xml:space="preserve">
-    <value>Задержка (мс)</value>
+    <value>Пинг</value>
   </data>
   <data name="LvTestSpeed" xml:space="preserve">
     <value>Скорость (МБ/с)</value>
