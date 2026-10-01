@@ -267,7 +267,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         var running = await ConfigHandler.GetDefaultServer(_config);
         if (running != null)
         {
-            RunningServerDisplay = running.GetSummary();
+            RunningServerDisplay = running.Remarks;
             RunningServerToolTipText = GetRunningServerToolTipText(RunningServerDisplay);
         }
         else
