@@ -1899,4 +1899,7 @@
   <data name="TbSortingProcess" xml:space="preserve">
     <value>Процесс</value>
   </data>
+  <data name="menuAddMasqueServer" xml:space="preserve">
+    <value>Добавить сервер [MASQUE]</value>
+  </data>
 </root>

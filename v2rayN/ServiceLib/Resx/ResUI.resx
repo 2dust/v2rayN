@@ -399,6 +399,9 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>Filter, press Enter to execute</value>
   </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>Check and Update</value>
+  </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Check Update</value>
   </data>
