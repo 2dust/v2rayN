@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - master
-
+      - myFork-v2rayN
 permissions:
   contents: write
   actions: read
