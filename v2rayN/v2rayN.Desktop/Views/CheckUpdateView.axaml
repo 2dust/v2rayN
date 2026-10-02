@@ -55,7 +55,7 @@
                     x:Name="btnCheckUpdate"
                     Width="100"
                     Margin="{StaticResource Margin4}"
-                    Content="{x:Static resx:ResUI.menuCheckUpdate}" />
+                    Content="{x:Static resx:ResUI.menuCheckAndUpdate}" />
             </StackPanel>
         </Border>
 
