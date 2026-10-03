@@ -37,13 +37,13 @@
 
                 <Button
                     x:Name="btnCheckOnly"
-                    Width="100"
+                    MinWidth="100"
                     Margin="{StaticResource Margin4}"
                     Content="{x:Static resx:ResUI.menuCheckOnly}" />
 
                 <Button
                     x:Name="btnCheckUpdate"
-                    Width="100"
+                    MinWidth="100"
                     Margin="{StaticResource Margin4}"
                     Content="{x:Static resx:ResUI.menuCheckAndUpdate}" />
             </StackPanel>

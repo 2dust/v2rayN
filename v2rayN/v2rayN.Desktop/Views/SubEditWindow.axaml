@@ -136,7 +136,8 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}"
+                        TextWrapping="Wrap" />
                 </DockPanel>
 
                 <TextBlock

@@ -30,10 +30,11 @@
                 VerticalAlignment="Center"
                 Theme="{DynamicResource CardBorder}">
 
-                <Grid
-                    Margin="{StaticResource Margin4}"
-                    ColumnDefinitions="300,200"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
+                <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" MinWidth="200" />
+                    </Grid.ColumnDefinitions>
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
@@ -79,10 +80,11 @@
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
                 Theme="{DynamicResource CardBorder}">
-                <Grid
-                    Margin="{StaticResource Margin4}"
-                    ColumnDefinitions="300,200"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" MinWidth="200" />
+                    </Grid.ColumnDefinitions>
                     <StackPanel
                         Grid.Row="0"
                         Grid.Column="0"
