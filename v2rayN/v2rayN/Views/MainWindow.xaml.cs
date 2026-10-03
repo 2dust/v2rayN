@@ -9,7 +9,6 @@ namespace v2rayN.Views;
 public partial class MainWindow
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
 
@@ -80,11 +79,12 @@ public partial class MainWindow
 
             this.OneWayBind(ViewModel, vm => vm.BlNewUpdate, v => v.btnNewUpdate.Visibility).DisposeWith(disposables);
 
-            _layoutBindingsDisposable.DisposeWith(disposables);
+            // A disposed container cannot be reused when the window is reactivated.
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
+                .Subscribe(orientation => UpdateLayout(orientation, layoutBindings))
                 .DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.StatusBarViewModel)
@@ -357,10 +357,10 @@ public partial class MainWindow
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable layoutBindings)
     {
         var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
+        layoutBindings.Create(currentLayoutDisposables);
 
         gridMain.Visibility = orientation == EGirdOrientation.Horizontal ? Visibility.Visible : Visibility.Collapsed;
         gridMain1.Visibility = orientation == EGirdOrientation.Vertical ? Visibility.Visible : Visibility.Collapsed;

@@ -9,7 +9,6 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
@@ -81,11 +80,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
 
-            _layoutBindingsDisposable.DisposeWith(disposables);
+            // A disposed container cannot be reused when the window is reactivated.
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
+                .Subscribe(orientation => UpdateLayout(orientation, layoutBindings))
                 .DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
@@ -401,10 +401,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable layoutBindings)
     {
         var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
+        layoutBindings.Create(currentLayoutDisposables);
 
         ClearLayoutContent();
 
