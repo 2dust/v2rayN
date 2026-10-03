@@ -399,8 +399,11 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>Фильтр, нажмите Enter для выполнения</value>
   </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>Проверить и обновить</value>
+  </data>
   <data name="menuCheckUpdate" xml:space="preserve">
-    <value>Обновить</value>
+    <value>Проверить обновления</value>
   </data>
   <data name="menuClose" xml:space="preserve">
     <value>Закрыть</value>
@@ -1780,7 +1783,7 @@
     <value>Доступна новая версия {0}: {1}</value>
   </data>
   <data name="menuCheckOnly" xml:space="preserve">
-    <value>Проверить</value>
+    <value>Только проверить</value>
   </data>
   <data name="MsgNotSupport" xml:space="preserve">
     <value>Не поддерживается</value>
