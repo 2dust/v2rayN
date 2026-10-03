@@ -40,7 +40,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" MinWidth="300" />
                         <ColumnDefinition Width="Auto" MinWidth="200" />
                     </Grid.ColumnDefinitions>
                     <TextBlock
@@ -98,7 +98,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" MinWidth="300" />
                         <ColumnDefinition Width="Auto" MinWidth="200" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
