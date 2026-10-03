@@ -1,5 +1,3 @@
-//using System.Reactive.Linq;
-
 namespace ServiceLib.Manager;
 
 public class ProfileExManager
@@ -111,7 +109,7 @@ public class ProfileExManager
     public async Task ClearAll()
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
-        _lstProfileEx = new();
+        _lstProfileEx = [];
     }
 
     public async Task SaveTo()
@@ -150,6 +148,14 @@ public class ProfileExManager
         IndexIdEnqueue(indexId);
     }
 
+    public void SetTestIpInfo(string indexId, string ipInfo)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.IpInfo = ipInfo;
+        IndexIdEnqueue(indexId);
+    }
+
     public void SetSort(string indexId, int sort)
     {
         var profileEx = GetProfileExItem(indexId);
@@ -174,6 +180,6 @@ public class ProfileExManager
         {
             return 0;
         }
-        return _lstProfileEx.Max(t => t == null ? 0 : t.Sort);
+        return _lstProfileEx.Max(t => t?.Sort ?? 0);
     }
 }

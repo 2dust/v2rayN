@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    ShutdownMode="OnExplicitShutdown"
-    StartupUri="Views/MainWindow.xaml">
+    ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
             <ResourceDictionary.MergedDictionaries>
@@ -15,7 +14,7 @@
                     SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <system:Double x:Key="MenuItemHeight">26</system:Double>
+            <system:Double x:Key="MenuItemHeight">32</system:Double>
             <system:Double x:Key="StdFontSize">12</system:Double>
             <system:Double x:Key="StdFontSize1">13</system:Double>
             <system:Double x:Key="StdFontSize-1">11</system:Double>

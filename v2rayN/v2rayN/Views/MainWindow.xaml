@@ -11,9 +11,9 @@
     xmlns:view="clr-namespace:v2rayN.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
-    Width="900"
-    Height="700"
-    MinWidth="900"
+    Width="1200"
+    Height="800"
+    MinWidth="800"
     x:TypeArguments="vms:MainWindowViewModel"
     Icon="/Resources/v2rayN.ico"
     ResizeMode="CanResizeWithGrip"
@@ -32,6 +32,7 @@
 
     <materialDesign:DialogHost
         materialDesign:TransitionAssist.DisableTransitions="True"
+        CloseOnClickAway="True"
         Identifier="RootDialog"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}"
         Style="{StaticResource MaterialDesignEmbeddedDialogHost}">
@@ -69,6 +70,7 @@
                                     x:Name="menuAddServerViaImage"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddServerViaImage}" />
+                                <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuAddCustomServer"
                                     Height="{StaticResource MenuItemHeight}"
@@ -81,6 +83,10 @@
                                     x:Name="menuAddProxyChainServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddProxyChainServer}" />
+                                <MenuItem
+                                    x:Name="menuAddCustomOutboundServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
                                     x:Name="menuAddVmessServer"
@@ -99,9 +105,17 @@
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
                                 <MenuItem
+                                    x:Name="menuAddHysteria2Server"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
+                                <MenuItem
                                     x:Name="menuAddWireguardServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                                <MenuItem
+                                    x:Name="menuAddMasqueServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddMasqueServer}" />
                                 <MenuItem
                                     x:Name="menuAddSocksServer"
                                     Height="{StaticResource MenuItemHeight}"
@@ -112,10 +126,6 @@
                                     Header="{x:Static resx:ResUI.menuAddHttpServer}" />
                                 <Separator Margin="-40,5" />
                                 <MenuItem
-                                    x:Name="menuAddHysteria2Server"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
-                                <MenuItem
                                     x:Name="menuAddTuicServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddTuicServer}" />
@@ -123,6 +133,10 @@
                                     x:Name="menuAddAnytlsServer"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                                <MenuItem
+                                    x:Name="menuAddNaiveServer"
+                                    Height="{StaticResource MenuItemHeight}"
+                                    Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -233,23 +247,6 @@
                         <Separator />
                         <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
                             <MenuItem
-                                x:Name="menuReload"
-                                Padding="{StaticResource MarginLeftRight8}"
-                                AutomationProperties.Name="{x:Static resx:ResUI.menuReload}">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon
-                                            Margin="{StaticResource MarginRight8}"
-                                            VerticalAlignment="Center"
-                                            Kind="Reload" />
-                                        <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </Menu>
-                        <Separator />
-                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
-                            <MenuItem
                                 x:Name="menuHelp"
                                 Padding="{StaticResource MarginLeftRight8}"
                                 AutomationProperties.Name="{x:Static resx:ResUI.menuHelp}">
@@ -264,6 +261,23 @@
                                 </MenuItem.Header>
                                 <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
                                 <Separator Margin="-40,5" />
+                            </MenuItem>
+                        </Menu>
+                        <Separator />
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
+                            <MenuItem
+                                x:Name="menuReload"
+                                Padding="{StaticResource MarginLeftRight8}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.menuReload}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Margin="{StaticResource MarginRight8}"
+                                            VerticalAlignment="Center"
+                                            Kind="Reload" />
+                                        <TextBlock Text="{x:Static resx:ResUI.menuReload}" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
                         </Menu>
                         <Separator />
@@ -308,10 +322,17 @@
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
                             <ContentControl x:Name="pbTheme" />
                         </materialDesign:PopupBox>
+
+                        <Button
+                            x:Name="btnNewUpdate"
+                            Margin="{StaticResource MarginLeftRight8}"
+                            Content="{x:Static resx:ResUI.menuNewUpdate}"
+                            Style="{StaticResource DefButton}"
+                            Visibility="Hidden" />
                     </ToolBar>
                 </ToolBarTray>
 
-                <view:StatusBarView DockPanel.Dock="Bottom" />
+                <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
 
                 <Grid>
                     <Grid x:Name="gridMain" Visibility="Collapsed">

@@ -111,8 +111,8 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <Button
+                    x:Name="btnSelectProfile"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}"
                     Style="{StaticResource DefButton}" />
                 <TextBlock

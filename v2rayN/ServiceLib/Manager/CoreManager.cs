@@ -8,7 +8,10 @@ public class CoreManager
     private static readonly Lazy<CoreManager> _instance = new(() => new());
     public static CoreManager Instance => _instance.Value;
     private Config _config;
+
+    [SupportedOSPlatform("windows")]
     private WindowsJobService? _processJob;
+
     private ProcessService? _processService;
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
@@ -57,16 +60,19 @@ public class CoreManager
         }
     }
 
-    public async Task LoadCore(ProfileItem? node)
+    /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
+    /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
+    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
-        if (node == null)
+        if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
             return;
         }
 
+        var node = mainContext.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = await CoreConfigHandler.GenerateClientConfig(node, fileName);
+        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
@@ -79,14 +85,18 @@ public class CoreManager
         await CoreStop();
         await Task.Delay(100);
 
-        if (Utils.IsWindows() && _config.TunModeItem.EnableTun)
+        if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
         {
             await Task.Delay(100);
             await WindowsUtils.RemoveTunDevice();
         }
 
-        await CoreStart(node);
-        await CoreStartPreService(node);
+        await CoreStart(mainContext);
+        await WaitForProxyPort(preContext);
+        await CoreStartPreService(preContext);
+
+        AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
+
         if (_processService != null)
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
@@ -95,7 +105,7 @@ public class CoreManager
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.Any(t => Global.SingboxOnlyConfigType.Contains(t.ConfigType)) ? ECoreType.sing_box : ECoreType.Xray;
+        var coreType = selecteds.FirstOrDefault()?.CoreType == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);
@@ -122,13 +132,14 @@ public class CoreManager
 
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
-        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, node, testItem, configPath);
+        var (context, _) = await CoreConfigContextBuilder.Build(_config, node);
+        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
         if (result.Success != true)
         {
             return null;
         }
 
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
         return await RunProcess(coreInfo, fileName, true, false);
     }
@@ -165,13 +176,14 @@ public class CoreManager
 
     #region Private
 
-    private async Task CoreStart(ProfileItem node)
+    private async Task CoreStart(CoreConfigContext context)
     {
-        var coreType = _config.RunningCoreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var node = context.Node;
+        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
-        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true);
+        var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled);
         if (proc is null)
         {
             return;
@@ -179,27 +191,22 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(ProfileItem node)
+    private async Task CoreStartPreService(CoreConfigContext? preContext)
     {
-        if (_processService != null && !_processService.HasExited)
+        if (_processService is { HasExited: false } && preContext != null)
         {
-            var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
-            var itemSocks = await ConfigHandler.GetPreSocksItem(_config, node, coreType);
-            if (itemSocks != null)
+            var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
+            var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+            var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
+            if (result.Success)
             {
-                var preCoreType = itemSocks.CoreType ?? ECoreType.sing_box;
-                var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-                var result = await CoreConfigHandler.GenerateClientConfig(itemSocks, fileName);
-                if (result.Success)
+                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
+                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, preContext.IsTunEnabled);
+                if (proc is null)
                 {
-                    var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                    var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true);
-                    if (proc is null)
-                    {
-                        return;
-                    }
-                    _processPreService = proc;
+                    return;
                 }
+                _processPreService = proc;
             }
         }
     }
@@ -209,11 +216,93 @@ public class CoreManager
         await _updateFunc?.Invoke(notify, msg);
     }
 
+    private static async Task WaitForProxyPort(CoreConfigContext? preContext)
+    {
+        if (preContext is null)
+        {
+            return;
+        }
+        if (!preContext.IsTunEnabled)
+        {
+            return;
+        }
+
+        using var rootCts = new CancellationTokenSource(Global.LocalFetch);
+        var rootToken = rootCts.Token;
+
+        var port = preContext.Node.Port;
+        // SOCKS5 client greeting: VER=5, NMETHODS=1, METHOD=0x00 (no auth)
+        ReadOnlyMemory<byte> greeting = new byte[] { 0x05, 0x01, 0x00 };
+        var buf = new byte[2];
+
+        while (!rootToken.IsCancellationRequested)
+        {
+            using var tcp = new TcpClient();
+            using var attemptCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(rootToken, attemptCts.Token);
+            var linkedToken = linkedCts.Token;
+            try
+            {
+                await tcp.ConnectAsync(Global.Loopback, port, linkedToken);
+                var stream = tcp.GetStream();
+
+                await stream.WriteAsync(greeting, linkedToken);
+
+                var read = await stream.ReadAsync(buf.AsMemory(0, 2), linkedToken);
+
+                // Server selection: VER=5, METHOD=0x00 — proxy is fully ready
+                if (read == 2 && buf[0] == 0x05)
+                {
+                    return;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                if (!rootToken.IsCancellationRequested)
+                {
+                    continue;
+                }
+                Logging.SaveLog($"WaitForProxyPort Timeout waiting for proxy port {port} to be ready.");
+                return;
+            }
+            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.ConnectionRefused)
+            {
+                // Connection refused, proxy not ready yet, wait 50ms before retrying
+                try
+                {
+                    await Task.Delay(50, rootToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    Logging.SaveLog($"WaitForProxyPort Timeout waiting for proxy port {port} to be ready.");
+                    return;
+                }
+            }
+            catch
+            {
+                // Ignore other exceptions and continue
+            }
+        }
+    }
+
     #endregion Private
 
     #region Process
 
-    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo)
+    /// <summary>
+    ///     Decides whether a core launch must be elevated on non-Windows platforms.
+    ///     The TUN state comes from the immutable <see cref="CoreConfigContext" /> snapshot that
+    ///     generated the config, never from the live mutable config: the generated config and the
+    ///     launch mode must always agree, even if TUN is toggled while a reload is in flight.
+    /// </summary>
+    public static bool ShouldRunAsSudo(bool isTunLaunch, ECoreType? coreType, bool isNonWindows)
+    {
+        return isTunLaunch
+            && coreType is ECoreType.sing_box or ECoreType.mihomo or ECoreType.Xray
+            && isNonWindows;
+    }
+
+    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, bool isTunLaunch = false)
     {
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
@@ -225,9 +314,7 @@ public class CoreManager
         try
         {
             if (mayNeedSudo
-                && _config.TunModeItem.EnableTun
-                && coreInfo.CoreType == ECoreType.sing_box
-                && Utils.IsNonWindows())
+                && ShouldRunAsSudo(isTunLaunch, coreInfo.CoreType, Utils.IsNonWindows()))
             {
                 _linuxSudo = true;
                 await CoreAdminManager.Instance.Init(_config, _updateFunc);

@@ -10,8 +10,6 @@ public partial class StatusBarView
     {
         InitializeComponent();
         _config = AppManager.Instance.Config;
-        ViewModel = StatusBarViewModel.Instance;
-        ViewModel?.InitUpdateView(UpdateViewHandler);
 
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;
@@ -20,10 +18,10 @@ public partial class StatusBarView
         this.WhenActivated(disposables =>
         {
             //system proxy
-            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyClear, v => v.menuSystemProxyClear2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-            this.OneWayBind(ViewModel, vm => vm.BlSystemProxySet, v => v.menuSystemProxySet2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyNothing, v => v.menuSystemProxyNothing2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
-            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyPac, v => v.menuSystemProxyPac2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, vmToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyClear, v => v.menuSystemProxyClear2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, viewModelToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlSystemProxySet, v => v.menuSystemProxySet2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, viewModelToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyNothing, v => v.menuSystemProxyNothing2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, viewModelToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.BlSystemProxyPac, v => v.menuSystemProxyPac2.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, viewModelToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SystemProxyClearCmd, v => v.menuSystemProxyClear).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SystemProxySetCmd, v => v.menuSystemProxySet).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SystemProxyNothingCmd, v => v.menuSystemProxyNothing).DisposeWith(disposables);
@@ -63,31 +61,28 @@ public partial class StatusBarView
             this.OneWayBind(ViewModel, vm => vm.RoutingItems, v => v.cmbRoutings2.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedRouting, v => v.cmbRoutings2.SelectedItem).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.BlRouting, v => v.cmbRoutings2.Visibility).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(interaction =>
+            {
+                var strData = interaction.Input;
+                WindowsUtils.SetClipboardData(strData);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshIconInteraction.RegisterHandler(interaction =>
+            {
+                Application.Current?.Dispatcher.Invoke(async () => await RefreshIcon(), DispatcherPriority.Normal);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
         });
+
+        _ = RefreshIcon();
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
+    private async Task RefreshIcon()
     {
-        switch (action)
-        {
-            case EViewAction.DispatcherRefreshIcon:
-                Application.Current?.Dispatcher.Invoke(async () =>
-                {
-                    tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
-                    Application.Current.MainWindow.Icon = WindowsManager.Instance.GetAppIcon(_config);
-                }, DispatcherPriority.Normal);
-                break;
-
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
-        }
-        return await Task.FromResult(true);
+        tbNotify.Icon = await WindowsManager.Instance.GetNotifyIcon(_config);
+        Application.Current.MainWindow?.Icon = WindowsManager.Instance.GetAppIcon(_config);
     }
 
     private async void menuExit_Click(object sender, RoutedEventArgs e)

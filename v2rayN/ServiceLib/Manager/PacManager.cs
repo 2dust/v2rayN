@@ -2,36 +2,37 @@ namespace ServiceLib.Manager;
 
 public class PacManager
 {
-    private static readonly Lazy<PacManager> _instance = new(() => new PacManager());
-    public static PacManager Instance => _instance.Value;
-
-    private int _httpPort;
+    private const string Tag = "PacManager";
+    private CancellationTokenSource? _cts;
     private int _pacPort;
     private TcpListener? _tcpListener;
-    private byte[] _writeContent;
-    private bool _isRunning;
-    private bool _needRestart = true;
+    private byte[] _writeContent = [];
 
     public async Task StartAsync(int httpPort, int pacPort)
     {
-        _needRestart = httpPort != _httpPort || pacPort != _pacPort || !_isRunning;
+        var content = await InitText(httpPort);
+        _writeContent = content;
 
-        _httpPort = httpPort;
-        _pacPort = pacPort;
-
-        await InitText();
-
-        if (_needRestart)
+        if (_tcpListener is not null && _pacPort == pacPort)
         {
-            Stop();
-            RunListener();
+            return;
         }
+
+        Stop();
+        var cts = new CancellationTokenSource();
+        var listener = TcpListener.Create(pacPort);
+        listener.Start();
+
+        _cts = cts;
+        _pacPort = pacPort;
+        _tcpListener = listener;
+        _ = ListenLoopAsync(listener, cts.Token);
     }
 
-    private async Task InitText()
+    private async Task<byte[]> InitText(int httpPort)
     {
-        var customSystemProxyPacPath = AppManager.Instance.Config.SystemProxyItem?.CustomSystemProxyPacPath;
-        var fileName = (customSystemProxyPacPath.IsNotEmpty() && File.Exists(customSystemProxyPacPath))
+        var customSystemProxyPacPath = AppManager.Instance.Config.SystemProxyItem.CustomSystemProxyPacPath;
+        var fileName = customSystemProxyPacPath.IsNotEmpty() && File.Exists(customSystemProxyPacPath)
             ? customSystemProxyPacPath
             : Path.Combine(Utils.GetConfigPath(), "pac.txt");
 
@@ -45,7 +46,7 @@ public class PacManager
         }
 
         var pacText = await File.ReadAllTextAsync(fileName);
-        pacText = pacText.Replace("__PROXY__", $"PROXY 127.0.0.1:{_httpPort};DIRECT;");
+        pacText = pacText.Replace("__PROXY__", $"PROXY 127.0.0.1:{httpPort};DIRECT;");
 
         var sb = new StringBuilder();
         sb.AppendLine("HTTP/1.0 200 OK");
@@ -54,59 +55,43 @@ public class PacManager
         sb.AppendLine("Content-Length:" + Encoding.UTF8.GetByteCount(pacText));
         sb.AppendLine();
         sb.Append(pacText);
-        _writeContent = Encoding.UTF8.GetBytes(sb.ToString());
+        return Encoding.UTF8.GetBytes(sb.ToString());
     }
 
-    private void RunListener()
+    private async Task ListenLoopAsync(TcpListener listener, CancellationToken token)
     {
-        _tcpListener = TcpListener.Create(_pacPort);
-        _isRunning = true;
-        _tcpListener.Start();
-        Task.Factory.StartNew(async () =>
+        var buffer = new byte[1024];
+        try
         {
-            while (_isRunning)
+            while (!token.IsCancellationRequested)
             {
-                try
-                {
-                    if (!_tcpListener.Pending())
-                    {
-                        await Task.Delay(10);
-                        continue;
-                    }
-
-                    var client = await _tcpListener.AcceptTcpClientAsync();
-                    await Task.Run(() => WriteContent(client));
-                }
-                catch
-                {
-                    // ignored
-                }
+                using var client = await listener.AcceptTcpClientAsync(token).ConfigureAwait(false);
+                await using var stream = client.GetStream();
+                _ = await stream.ReadAsync(buffer, token).ConfigureAwait(false);
+                await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
+                await stream.FlushAsync(token).ConfigureAwait(false);
             }
-        }, TaskCreationOptions.LongRunning);
-    }
-
-    private void WriteContent(TcpClient client)
-    {
-        var stream = client.GetStream();
-        stream.Write(_writeContent, 0, _writeContent.Length);
-        stream.Flush();
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(Tag, ex);
+        }
+        finally
+        {
+            listener.Stop();
+        }
     }
 
     public void Stop()
     {
-        if (_tcpListener == null)
-        {
-            return;
-        }
-        try
-        {
-            _isRunning = false;
-            _tcpListener.Stop();
-            _tcpListener = null;
-        }
-        catch
-        {
-            // ignored
-        }
+        _cts?.Cancel();
+        _tcpListener?.Stop();
+        _cts?.Dispose();
+        _cts = null;
+        _pacPort = 0;
+        _tcpListener = null;
     }
 }

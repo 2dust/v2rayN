@@ -6,18 +6,14 @@ public partial class RoutingSettingWindow
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Closing += RoutingSettingWindow_Closing;
         PreviewKeyDown += RoutingSettingWindow_PreviewKeyDown;
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.MouseDoubleClick += LstRoutings_MouseDoubleClick;
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
-        btnCancel.Click += btnCancel_Click;
-
-        ViewModel = new RoutingSettingViewModel(UpdateViewHandler);
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
-        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Singbox;
+        cmbdomainStrategy4Singbox.ItemsSource = Global.DomainStrategies4Sbox;
 
         this.WhenActivated(disposables =>
         {
@@ -34,40 +30,19 @@ public partial class RoutingSettingWindow
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RoutingAdvancedImportRulesCmd, v => v.menuRoutingAdvancedImportRules2).DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveRules) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.RoutingRuleSettingWindow:
-
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new RoutingRuleSettingWindow((RoutingItem)obj).ShowDialog() ?? false;
-        }
-        return await Task.FromResult(true);
-    }
-
     private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
+        // DomainStrategy is auto-saved reactively; just ensure the caller knows changes were made
         if (ViewModel?.IsModified == true)
         {
             DialogResult = true;
@@ -128,17 +103,5 @@ public partial class RoutingSettingWindow
     private void linkdomainStrategy4Singbox_Click(object sender, RoutedEventArgs e)
     {
         ProcUtils.ProcessStart("https://sing-box.sagernet.org/zh/configuration/route/rule_action/#strategy");
-    }
-
-    private void btnCancel_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-        if (ViewModel?.IsModified == true)
-        {
-            DialogResult = true;
-        }
-        else
-        {
-            Close();
-        }
     }
 }

@@ -17,15 +17,13 @@
       "rule_set": [
         "geosite-google"
       ],
-      "server": "remote",
-      "strategy": "prefer_ipv4"
+      "server": "remote"
     },
     {
       "rule_set": [
         "geosite-cn"
       ],
-      "server": "local",
-      "strategy": "prefer_ipv4"
+      "server": "local"
     }
   ],
   "final": "remote",

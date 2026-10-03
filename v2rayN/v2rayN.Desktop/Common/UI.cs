@@ -1,5 +1,6 @@
 using Avalonia.Platform.Storage;
-using MsBox.Avalonia;
+using v2rayN.Desktop.Manager;
+using v2rayN.Desktop.Views;
 
 namespace v2rayN.Desktop.Common;
 
@@ -7,15 +8,17 @@ internal class UI
 {
     private static readonly string caption = Global.AppName;
 
-    public static async Task<ButtonResult> ShowYesNo(Window owner, string msg)
+    public static async Task<ButtonResult> ShowYesNo(string msg)
     {
-        var box = MessageBoxManager.GetMessageBoxStandard(caption, msg, ButtonEnum.YesNo);
-        return await box.ShowWindowDialogAsync(owner);
+        var owner = WindowDialog.TryGetOwnerWindow();
+        var box = new MessageBoxDialog(caption, msg);
+        var result = await box.ShowDialog<ButtonResult>(owner);
+        return result == ButtonResult.Yes ? ButtonResult.Yes : ButtonResult.No;
     }
 
-    public static async Task<string?> OpenFileDialog(Window owner, FilePickerFileType? filter)
+    public static async Task<string?> OpenFileDialog(FilePickerFileType? filter)
     {
-        var sp = GetStorageProvider(owner);
+        var sp = GetStorageProvider();
         if (sp is null)
         {
             return null;
@@ -31,9 +34,9 @@ internal class UI
         return files.FirstOrDefault()?.TryGetLocalPath();
     }
 
-    public static async Task<string?> SaveFileDialog(Window owner, string filter)
+    public static async Task<string?> SaveFileDialog(string filter)
     {
-        var sp = GetStorageProvider(owner);
+        var sp = GetStorageProvider();
         if (sp is null)
         {
             return null;
@@ -47,8 +50,9 @@ internal class UI
         return files?.TryGetLocalPath();
     }
 
-    private static IStorageProvider? GetStorageProvider(Window owner)
+    private static IStorageProvider? GetStorageProvider()
     {
+        var owner = WindowDialog.TryGetOwnerWindow();
         var topLevel = TopLevel.GetTopLevel(owner);
         return topLevel?.StorageProvider;
     }

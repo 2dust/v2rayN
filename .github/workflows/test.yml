@@ -1,0 +1,52 @@
+name: Code Test
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.UdpTest/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'global.json'
+      - '.github/workflows/test.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.UdpTest/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'global.json'
+      - '.github/workflows/test.yml'
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: '10.x'
+        dotnet-quality: 'ga'
+
+    - name: Test Code
+      run: dotnet test --project ./v2rayN/ServiceLib.Tests -c Release --results-directory ./TestResults -- --report-trx
+
+    - name: Comment PR with results
+      if: always()
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: ./TestResults/*.trx
+        comment_mode: failures

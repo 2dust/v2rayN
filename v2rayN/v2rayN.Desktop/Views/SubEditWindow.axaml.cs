@@ -7,18 +7,12 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
     public SubEditWindow()
     {
         InitializeComponent();
-    }
-
-    public SubEditWindow(SubItem subItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
 
-        ViewModel = new SubEditViewModel(subItem, UpdateViewHandler);
-
         cmbConvertTarget.ItemsSource = Global.SubConvertTargets;
+        cmbCustomCoreType.ItemsSource = Utils.GetEnumNames<ECoreType>().Where(t => t != nameof(ECoreType.v2rayN)).ToList().AppendEmpty();
 
         this.WhenActivated(disposables =>
         {
@@ -28,61 +22,24 @@ public partial class SubEditWindow : WindowBase<SubEditViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource.Enabled, v => v.togEnable.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.AutoUpdateInterval, v => v.txtAutoUpdateInterval.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.UserAgent, v => v.txtUserAgent.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.RequestHeaders, v => v.txtRequestHeaders.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Sort, v => v.txtSort.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Filter, v => v.txtFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.ConvertTarget, v => v.cmbConvertTarget.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.PrevProfile, v => v.txtPrevProfile.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.NextProfile, v => v.txtNextProfile.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.PrevProfile, v => v.txtPrevProfile.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.NextProfile, v => v.txtNextProfile.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.PreSocksPort, v => v.txtPreSocksPort.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Memo, v => v.txtMemo.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.CustomCoreType, v => v.cmbCustomCoreType.SelectedValue).DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.SelectPrevProfileCmd, v => v.btnSelectPrevProfile).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SelectNextProfileCmd, v => v.btnSelectNextProfile).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         txtRemarks.Focus();
-    }
-
-    private async void BtnSelectPrevProfile_Click(object? sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
-        var result = await selectWindow.ShowDialog<bool?>(this);
-        if (result == true)
-        {
-            var profile = await selectWindow.ProfileItem;
-            if (profile != null)
-            {
-                txtPrevProfile.Text = profile.Remarks;
-            }
-        }
-    }
-
-    private async void BtnSelectNextProfile_Click(object? sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
-        var result = await selectWindow.ShowDialog<bool?>(this);
-        if (result == true)
-        {
-            var profile = await selectWindow.ProfileItem;
-            if (profile != null)
-            {
-                txtNextProfile.Text = profile.Remarks;
-            }
-        }
     }
 }

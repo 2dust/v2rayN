@@ -1,7 +1,8 @@
 namespace ServiceLib.Base;
 
-public class MyReactiveObject : ReactiveObject
+public class MyReactiveObject : ReactiveObject, IActivatableViewModel
 {
     protected static Config? _config;
-    protected Func<EViewAction, object?, Task<bool>>? _updateView;
+
+    public ViewModelActivator Activator { get; } = new();
 }

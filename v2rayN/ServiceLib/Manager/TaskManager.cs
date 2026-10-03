@@ -19,12 +19,10 @@ public class TaskManager
     {
         Logging.SaveLog("Setup Scheduled Tasks");
 
+        using var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
         var numOfExecuted = 1;
-        while (true)
+        while (await timer.WaitForNextTickAsync().ConfigureAwait(false))
         {
-            //1 minute
-            await Task.Delay(1000 * 60);
-
             //Execute once 1 minute
             try
             {
@@ -56,9 +54,9 @@ public class TaskManager
             {
                 //Logging.SaveLog("Execute delete expired files");
 
-                FileUtils.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1));
-                FileUtils.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddMonths(-1));
-                FileUtils.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddMonths(-1));
+                FileUtils.DeleteExpiredFiles(Utils.GetBinConfigPath(), DateTime.Now.AddHours(-1), "Test");
+                FileUtils.DeleteExpiredFiles(Utils.GetLogPath(), DateTime.Now.AddDays(-7));
+                FileUtils.DeleteExpiredFiles(Utils.GetTempPath(), DateTime.Now.AddDays(-7));
 
                 try
                 {
@@ -70,6 +68,18 @@ public class TaskManager
                 }
             }
 
+            //Execute once 24 hour
+            if (numOfExecuted % 1440 == 1)
+            {
+                try
+                {
+                    await UpdateTaskRunCheckUpdate();
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog("ScheduledTasks - UpdateTaskRunCheckUpdate", ex);
+                }
+            }
             numOfExecuted++;
         }
     }
@@ -115,6 +125,25 @@ public class TaskManager
             {
                 await _updateFunc?.Invoke(false, msg);
             }).UpdateGeoFileAll();
+        }
+    }
+
+    private async Task UpdateTaskRunCheckUpdate()
+    {
+        Logging.SaveLog("Execute check update");
+
+        var updateService = new UpdateService(_config, async (success, msg) => await Task.CompletedTask);
+
+        var msgs = await updateService.CheckHasUpdateOnlyAll(_config.CheckUpdateItem.UpdateViaProxy);
+        foreach (var msg in msgs)
+        {
+            await _updateFunc?.Invoke(false, msg);
+        }
+        NoticeManager.Instance.Enqueue(string.Join("\n", msgs));
+
+        if (msgs.Count > 0)
+        {
+            AppEvents.HasUpdateNotified.Publish(true);
         }
     }
 }

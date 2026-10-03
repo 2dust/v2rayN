@@ -46,7 +46,7 @@ public static class ProcUtils
         return null;
     }
 
-    public static void RebootAsAdmin(bool blAdmin = true)
+    public static bool RebootAsAdmin(bool blAdmin = true)
     {
         try
         {
@@ -58,11 +58,12 @@ public static class ProcUtils
                 FileName = Utils.GetExePath().AppendQuotes(),
                 Verb = blAdmin ? "runas" : null,
             };
-            _ = Process.Start(startInfo);
+            return Process.Start(startInfo) != null;
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
+            return false;
         }
     }
 }

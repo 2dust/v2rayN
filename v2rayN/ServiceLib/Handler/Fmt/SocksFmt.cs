@@ -33,7 +33,7 @@ public class SocksFmt : BaseFmt
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
         //new
-        var pw = Utils.Base64Encode($"{item.Security}:{item.Id}", true);
+        var pw = Utils.Base64Encode($"{item.Username}:{item.Password}", true);
         return ToUri(EConfigType.SOCKS, item.Address, item.Port, pw, null, remark);
     }
 
@@ -71,16 +71,15 @@ public class SocksFmt : BaseFmt
             return null;
         }
         var arr21 = arr1.First().Split(':');
-        var indexPort = arr1.Last().LastIndexOf(":");
+        var indexPort = arr1.Last().LastIndexOf(':');
         if (arr21.Length != 2 || indexPort < 0)
         {
             return null;
         }
         item.Address = arr1[1][..indexPort];
         item.Port = arr1[1][(indexPort + 1)..].ToInt();
-        item.Security = arr21.First();
-        item.Id = arr21[1];
-
+        item.Username = arr21.First();
+        item.Password = arr21[1];
         return item;
     }
 
@@ -98,15 +97,19 @@ public class SocksFmt : BaseFmt
             Address = parsedUrl.IdnHost,
             Port = parsedUrl.Port,
         };
-
         // parse base64 UserInfo
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
-        var userInfo = Utils.Base64Decode(rawUserInfo);
-        var userInfoParts = userInfo.Split([':'], 2);
-        if (userInfoParts.Length == 2)
+        if (rawUserInfo.IsNotEmpty())
         {
-            item.Security = userInfoParts.First();
-            item.Id = userInfoParts[1];
+            var userInfoParts = rawUserInfo.Contains(':')
+                ? rawUserInfo.Split(":", 2)
+                : Utils.Base64Decode(rawUserInfo).Split(":", 2);
+
+            if (userInfoParts.Length == 2)
+            {
+                item.Username = userInfoParts.First();
+                item.Password = userInfoParts.Last();
+            }
         }
 
         return item;

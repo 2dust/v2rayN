@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
@@ -10,6 +11,7 @@
     Width="900"
     Height="600"
     x:DataType="vms:RoutingSettingViewModel"
+    Design.DataContext="{x:Static dd:DesignData.RoutingSetting}"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -19,24 +21,6 @@
             <MenuItem x:Name="menuRoutingAdvancedAdd2" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
             <MenuItem x:Name="menuRoutingAdvancedImportRules2" Header="{x:Static resx:ResUI.menuRoutingAdvancedImportRules}" />
         </Menu>
-
-        <StackPanel
-            Margin="{StaticResource Margin4}"
-            HorizontalAlignment="Right"
-            DockPanel.Dock="Bottom"
-            Orientation="Horizontal">
-            <Button
-                x:Name="btnSave"
-                Width="100"
-                Content="{x:Static resx:ResUI.TbConfirm}"
-                IsDefault="True" />
-            <Button
-                x:Name="btnCancel"
-                Width="100"
-                Margin="{StaticResource MarginLr8}"
-                Content="{x:Static resx:ResUI.TbCancel}"
-                IsCancel="True" />
-        </StackPanel>
 
         <Grid
             Margin="{StaticResource Margin4}"

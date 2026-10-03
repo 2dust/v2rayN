@@ -17,6 +17,13 @@
     Style="{StaticResource WindowGlobal}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
@@ -43,6 +50,9 @@
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <Grid Margin="{StaticResource Margin8}">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -227,20 +237,6 @@
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
-                            Grid.Row="11"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                        <ToggleButton
-                            x:Name="togmuxEnabled"
-                            Grid.Row="11"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
                             Grid.Row="12"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
@@ -269,20 +265,6 @@
                             Margin="{StaticResource Margin8}"
                             materialDesign:HintAssist.Hint="Level"
                             Style="{StaticResource DefComboBox}" />
-
-                        <TextBlock
-                            Grid.Row="14"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsDefAllowInsecure}" />
-                        <ToggleButton
-                            x:Name="togdefAllowInsecure"
-                            Grid.Row="14"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
 
                         <TextBlock
                             Grid.Row="15"
@@ -391,13 +373,245 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
-                        <TextBlock
+
+                        <materialDesign:PopupBox
                             Grid.Row="20"
                             Grid.Column="2"
+                            HorizontalAlignment="Left"
+                            StaysOpen="True"
+                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                            <StackPanel Margin="{StaticResource Margin8}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="400" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentPackets}"
+                                        TextWrapping="Wrap" />
+                                    <ComboBox
+                                        x:Name="cmbFragmentPackets"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentLength}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentLengths"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="50-100"
+                                        Style="{StaticResource DefTextBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentInterval}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentDelays"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="10-20"
+                                        Style="{StaticResource DefTextBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsFragmentMaxSplit}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtFragmentMaxSplit"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        materialDesign:HintAssist.Hint="0"
+                                        Style="{StaticResource DefTextBox}" />
+                                </Grid>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+
+                        <TextBlock
+                            Grid.Row="21"
+                            Grid.Column="0"
                             Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableFragmentTips}"
+                            Text="{x:Static resx:ResUI.TbEnableFinalFragment}" />
+                        <ToggleButton
+                            x:Name="togenableFinalFragment"
+                            Grid.Row="21"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="21"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbEnableFinalFragmentTip}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
+                        <TextBox
+                            x:Name="txtbindInterface"
+                            Grid.Row="22"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            Style="{StaticResource DefTextBox}" />
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsBindInterfaceTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSendThrough}" />
+                        <TextBox
+                            x:Name="txtsendThrough"
+                            Grid.Row="23"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            materialDesign:HintAssist.Hint="0.0.0.0"
+                            Style="{StaticResource DefTextBox}" />
+                        <TextBlock
+                            Grid.Row="23"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsSendThroughTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="24"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsMux4Ray}" />
+                        <materialDesign:PopupBox
+                            Grid.Row="24"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            StaysOpen="True"
+                            Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                            <StackPanel Margin="{StaticResource Margin8}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="200" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsMux4RayConcurrency}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtmux4RayConcurrency"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        Style="{StaticResource DefTextBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsMux4RayXudpConcurrency}"
+                                        TextWrapping="Wrap" />
+                                    <TextBox
+                                        x:Name="txtmux4RayXudpConcurrency"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        Style="{StaticResource DefTextBox}" />
+
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsMux4RayXudpProxyUDP443}"
+                                        TextWrapping="Wrap" />
+                                    <ComboBox
+                                        x:Name="cmbmux4RayXudpProxyUDP443"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Width="200"
+                                        Margin="{StaticResource Margin8}"
+                                        Style="{StaticResource DefComboBox}" />
+                                </Grid>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -428,7 +642,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
+                        Text="{x:Static resx:ResUI.TbMtu}" />
                     <TextBox Style="{StaticResource DefTextBox}"
                         x:Name="txtKcpmtu"
                         Grid.Row="1"
@@ -552,6 +766,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -643,30 +859,16 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableUpdateSubOnlyRemarksExist}" />
+                            Text="{x:Static resx:ResUI.TbSettingsAutoHideStartup}" />
                         <ToggleButton
-                            x:Name="togEnableUpdateSubOnlyRemarksExist"
+                            x:Name="togAutoHideStartup"
                             Grid.Row="6"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsAutoHideStartup}" />
-                        <ToggleButton
-                            x:Name="togAutoHideStartup"
-                            Grid.Row="8"
-                            Grid.Column="1"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
-                            Grid.Row="10"
+                            Grid.Row="7"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -674,13 +876,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
                         <ToggleButton
                             x:Name="togEnableDragDropSort"
-                            Grid.Row="10"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="11"
+                            Grid.Row="8"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -688,13 +890,13 @@
                             Text="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
                         <ToggleButton
                             x:Name="togDoubleClick2Activate"
-                            Grid.Row="11"
+                            Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
-                            Grid.Row="12"
+                            Grid.Row="9"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -702,10 +904,34 @@
                             Text="{x:Static resx:ResUI.TbSettingsEnableHWA}" />
                         <ToggleButton
                             x:Name="togEnableHWA"
-                            Grid.Row="12"
+                            Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin8}"
                             HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRootCertificateProvider}" />
+                        <ComboBox
+                            x:Name="cmbRootCertificateProvider"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin8}"
+                            MaxDropDownHeight="1000"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRootCertificateProviderTip}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="13"
@@ -831,10 +1057,26 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsUdpTestUrl}" />
+                        <ComboBox
+                            x:Name="cmbUdpTestTarget"
+                            Grid.Row="20"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="22"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsIPAPIUrl}" />
                         <ComboBox
                             x:Name="cmbIPAPIUrl"
-                            Grid.Row="20"
+                            Grid.Row="22"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
@@ -842,7 +1084,7 @@
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="21"
+                            Grid.Row="23"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -850,7 +1092,7 @@
                             Text="{x:Static resx:ResUI.TbSettingsSubConvert}" />
                         <ComboBox
                             x:Name="cmbSubConvertUrl"
-                            Grid.Row="21"
+                            Grid.Row="23"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
@@ -859,7 +1101,7 @@
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="22"
+                            Grid.Row="24"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -867,14 +1109,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsMainGirdOrientation}" />
                         <ComboBox
                             x:Name="cmbMainGirdOrientation"
-                            Grid.Row="22"
+                            Grid.Row="24"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
                             Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
-                            Grid.Row="23"
+                            Grid.Row="25"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -882,14 +1124,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsGeoFilesSource}" />
                         <ComboBox
                             x:Name="cmbGetFilesSourceUrl"
-                            Grid.Row="23"
+                            Grid.Row="25"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
-                            Grid.Row="23"
+                            Grid.Row="25"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -898,7 +1140,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="24"
+                            Grid.Row="26"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -906,14 +1148,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsSrsFilesSource}" />
                         <ComboBox
                             x:Name="cmbSrsFilesSourceUrl"
-                            Grid.Row="24"
+                            Grid.Row="26"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
-                            Grid.Row="24"
+                            Grid.Row="26"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -922,7 +1164,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="25"
+                            Grid.Row="27"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
@@ -930,14 +1172,14 @@
                             Text="{x:Static resx:ResUI.TbSettingsRoutingRulesSource}" />
                         <ComboBox
                             x:Name="cmbRoutingRulesSourceUrl"
-                            Grid.Row="25"
+                            Grid.Row="27"
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin8}"
                             IsEditable="True"
                             Style="{StaticResource DefComboBox}" />
                         <TextBlock
-                            Grid.Row="25"
+                            Grid.Row="27"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -1020,116 +1262,210 @@
             </TabItem>
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsTunMode}">
-                <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <Grid Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunAutoRoute}" />
-                    <ToggleButton
-                        x:Name="togAutoRoute"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTunAutoRoute}" />
+                        <ToggleButton
+                            x:Name="togAutoRoute"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
 
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunStrictRoute}" />
-                    <ToggleButton
-                        x:Name="togStrictRoute"
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTunStrictRoute}" />
+                        <ToggleButton
+                            x:Name="togStrictRoute"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunStack}" />
-                    <ComboBox
-                        x:Name="cmbStack"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left"
-                        Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTunStack}" />
+                        <ComboBox
+                            x:Name="cmbStack"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
 
-                    <TextBlock
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsTunMtu}" />
-                    <ComboBox
-                        x:Name="cmbMtu"
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Width="200"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left"
-                        Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbMtu}" />
+                        <ComboBox
+                            x:Name="cmbMtu"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
 
-                    <TextBlock
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsEnableExInbound}" />
-                    <ToggleButton
-                        x:Name="togEnableExInbound"
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbIcmpRoutingPolicy}" />
+                        <ComboBox
+                            x:Name="cmbIcmpRoutingPolicy"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
 
-                    <TextBlock
-                        Grid.Row="7"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin8}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
-                    <ToggleButton
-                        x:Name="togEnableIPv6Address"
-                        Grid.Row="7"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin8}"
-                        HorizontalAlignment="Left" />
-                </Grid>
+                        <TextBlock
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
+                        <ToggleButton
+                            x:Name="togEnableIPv6Address"
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbLegacyProtect}" />
+                        <ToggleButton
+                            x:Name="togEnableLegacyProtect"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbLegacyProtectTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRouteExcludeAddress}" />
+
+                        <TextBox
+                            x:Name="txtRouteExcludeAddress"
+                            Grid.Row="9"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Stretch"
+                            AcceptsReturn="True"
+                            BorderThickness="1"
+                            MinLines="2"
+                            Style="{StaticResource DefTextBox}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
+                        <TextBlock
+                            Grid.Row="9"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbRouteExcludeAddressTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbIpv4Address}" />
+                        <ComboBox
+                            x:Name="cmbIpv4Address"
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbIpv6Address}" />
+                        <ComboBox
+                            x:Name="cmbIpv6Address"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{x:Static resx:ResUI.TbSettingsCoreType}">
                 <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -1164,7 +1500,7 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="Custom" />
+                        Text="Custom Pre" />
                     <ComboBox
                         x:Name="cmbCoreType2"
                         Grid.Row="2"
@@ -1239,10 +1575,40 @@
                         Margin="{StaticResource Margin8}"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
+                        Text="Hysteria2" />
+                    <ComboBox
+                        x:Name="cmbCoreType7"
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin8}"
+                        Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="8"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
                         Text="Wireguard" />
                     <ComboBox
                         x:Name="cmbCoreType9"
-                        Grid.Row="7"
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="{StaticResource Margin8}"
+                        Style="{StaticResource DefComboBox}" />
+
+                    <TextBlock
+                        Grid.Row="9"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin8}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="MASQUE" />
+                    <ComboBox
+                        x:Name="cmbCoreType14"
+                        Grid.Row="9"
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin8}"

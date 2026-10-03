@@ -3,12 +3,14 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="{x:Static resx:ResUI.menuSubSetting}"
     Width="700"
     Height="600"
+    Design.DataContext="{x:Static dd:DesignData.SubEdit}"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -32,7 +34,7 @@
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 
-            <Grid ColumnDefinitions="Auto,400,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+            <Grid ColumnDefinitions="Auto,400,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                 <TextBlock
                     Grid.Row="0"
@@ -67,16 +69,16 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
+                    TextWrapping="Wrap" />
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
-                    Classes="IconButton"
+                    Margin="{StaticResource MarginLr8}"
                     HorizontalAlignment="Left"
-                    Margin="{StaticResource MarginLr8}">
+                    Classes="IconButton">
                     <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconMore}" >
+                        <PathIcon Data="{StaticResource SemiIconMore}">
                             <PathIcon.RenderTransform>
                                 <RotateTransform Angle="90" />
                             </PathIcon.RenderTransform>
@@ -98,8 +100,8 @@
                                     VerticalAlignment="Center"
                                     Classes="TextArea"
                                     MinLines="4"
-                                    TextWrapping="Wrap"
-                                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
+                                    TextWrapping="Wrap" />
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>
@@ -128,7 +130,7 @@
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Right"
-                        Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                        PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                     <TextBlock
                         Margin="{StaticResource Margin4}"
@@ -149,7 +151,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
                     Grid.Row="6"
@@ -177,93 +179,128 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    TextWrapping="Wrap"
-                    Watermark="{x:Static resx:ResUI.SubUrlTips}" />
+                    PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
+                    TextWrapping="Wrap" />
 
                 <TextBlock
                     Grid.Row="8"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Top"
+                    Text="{x:Static resx:ResUI.LvRequestHeaders}" />
+                <StackPanel Grid.Row="8" Grid.Column="1">
+                    <TextBox
+                        x:Name="txtRequestHeaders"
+                        Margin="{StaticResource Margin4}"
+                        AcceptsReturn="True"
+                        MinLines="4"
+                        MaxLines="8"
+                        Classes="TextArea"
+                        TextWrapping="Wrap"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                    <TextBlock
+                        Margin="{StaticResource Margin4}"
+                        Text="{x:Static resx:ResUI.SubRequestHeadersTips}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <TextBlock
+                    Grid.Row="9"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left" />
 
                 <TextBlock
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
-                    Grid.Row="9"
+                    x:Name="btnSelectPrevProfile"
+                    Grid.Row="10"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectPrevProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
-                    Grid.Row="10"
+                    x:Name="btnSelectNextProfile"
+                    Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
-                    Click="BtnSelectNextProfile_Click"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
-                    Grid.Row="11"
+                    Grid.Row="12"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvCustomCoreType}" />
+                <ComboBox
+                    x:Name="cmbCustomCoreType"
+                    Grid.Row="12"
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="{StaticResource Margin4}"
+                    HorizontalAlignment="Left" />
+
+                <TextBlock
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="11"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}"
-                    Watermark="{x:Static resx:ResUI.TipPreSocksPort}" />
+                    PlaceholderText="{x:Static resx:ResUI.TipPreSocksPort}"
+                    ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="14"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="12"
+                    Grid.Row="14"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     TextWrapping="Wrap" />
-
             </Grid>
         </ScrollViewer>
     </DockPanel>

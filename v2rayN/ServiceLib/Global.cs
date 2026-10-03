@@ -2,8 +2,6 @@ namespace ServiceLib;
 
 public class Global
 {
-    #region const
-
     public const string AppName = "v2rayN";
     public const string GithubUrl = "https://github.com";
     public const string GithubApiUrl = "https://api.github.com/repos";
@@ -15,7 +13,6 @@ public class Global
     public const string CoreConfigFileName = "config.json";
     public const string CorePreConfigFileName = "configPre.json";
     public const string CoreSpeedtestConfigFileName = "configTest{0}.json";
-    public const string CoreMultipleLoadConfigFileName = "configMultipleLoad.json";
     public const string ClashMixinConfigFileName = "Mixin.yaml";
 
     public const string NamespaceSample = "ServiceLib.Sample.";
@@ -25,6 +22,8 @@ public class Global
     public const string V2raySampleHttpResponseFileName = NamespaceSample + "SampleHttpResponse";
     public const string V2raySampleInbound = NamespaceSample + "SampleInbound";
     public const string V2raySampleOutbound = NamespaceSample + "SampleOutbound";
+    public const string V2raySampleTunInbound = NamespaceSample + "SampleTunInbound";
+    public const string V2raySampleTunRules = NamespaceSample + "SampleTunRules";
     public const string SingboxSampleOutbound = NamespaceSample + "SingboxSampleOutbound";
     public const string CustomRoutingFileName = NamespaceSample + "custom_routing_";
     public const string TunSingboxDNSFileName = NamespaceSample + "tun_singbox_dns";
@@ -41,16 +40,25 @@ public class Global
     public const string KillAsSudoOSXShellFileName = NamespaceSample + "kill_as_sudo_osx_sh";
     public const string KillAsSudoLinuxShellFileName = NamespaceSample + "kill_as_sudo_linux_sh";
     public const string SingboxFakeIPFilterFileName = NamespaceSample + "singbox_fakeip_filter";
+    public const string ChromeRootCertFileName = NamespaceSample + "chrome_roots_pem";
+    public const string MozillaRootCertFileName = NamespaceSample + "mozilla_roots_pem";
+
+    public const string ChromeRootProvider = "chrome";
+    public const string MozillaRootProvider = "mozilla";
 
     public const string DefaultSecurity = "auto";
-    public const string DefaultNetwork = "tcp";
-    public const string TcpHeaderHttp = "http";
+    public const string DefaultNetwork = "raw";
+    public const string RawHeaderHttp = "http";
     public const string None = "none";
+    public const string RawNetworkAlias = "tcp";
+    public const string DefaultXhttpMode = "auto";
     public const string ProxyTag = "proxy";
     public const string DirectTag = "direct";
     public const string BlockTag = "block";
+    public const string DnsOutboundTag = "dns";
     public const string DnsTag = "dns-module";
-    public const string BalancerTagSuffix = "-round";
+    public const string DirectDnsTag = "direct-dns";
+    public const string BalancerTagSuffix = "-balancer";
     public const string StreamSecurity = "tls";
     public const string StreamSecurityReality = "reality";
     public const string Loopback = "127.0.0.1";
@@ -59,9 +67,12 @@ public class Global
     public const string HttpsProtocol = "https://";
     public const string SocksProtocol = "socks://";
     public const string Socks5Protocol = "socks5://";
+    public const string InnerUriProtocol = "v2rayn://";
     public const string AsIs = "AsIs";
     public const string IPIfNonMatch = "IPIfNonMatch";
     public const string IPOnDemand = "IPOnDemand";
+    public const string GeoSitePrefix = "geosite:";
+    public const string GeoIPPrefix = "geoip:";
 
     public const string UserEMail = "t@t.tt";
     public const string AutoRunRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -73,6 +84,7 @@ public class Global
     public const string GrpcMultiMode = "multi";
     public const int MaxPort = 65536;
     public const int MinFontSize = 8;
+    public const int MinFontSizeCount = 13;
     public const string RebootAs = "rebootas";
     public const string AvaAssets = "avares://v2rayN/Assets/";
     public const string LocalAppData = "V2RAYN_LOCAL_APPLICATION_DATA_V2";
@@ -80,239 +92,305 @@ public class Global
     public const string XrayLocalAsset = "XRAY_LOCATION_ASSET";
     public const string XrayLocalCert = "XRAY_LOCATION_CERT";
     public const int SpeedTestPageSize = 1000;
+    public const int SpeedTestConcurrencyCountMin = 10;
     public const string LinuxBash = "/bin/bash";
+    public const string StringTrue = "true";
+    public const string StringFalse = "false";
+    public const int SqliteMaxBatchSize = 10000;
+    public static readonly TimeSpan LocalFetch = TimeSpan.FromSeconds(5);
+    public static readonly TimeSpan DirectFetch = TimeSpan.FromSeconds(10);
+    public static readonly TimeSpan ProxyFetch = TimeSpan.FromSeconds(30);
+    public static readonly TimeSpan DirectDownloadConnect = TimeSpan.FromSeconds(5);
+    public static readonly TimeSpan ProxyDownloadConnect = TimeSpan.FromSeconds(10);
 
-    public const string SingboxDirectDNSTag = "direct_dns";
-    public const string SingboxRemoteDNSTag = "remote_dns";
-    public const string SingboxLocalDNSTag = "local_local";
-    public const string SingboxHostsDNSTag = "hosts_dns";
-    public const string SingboxFakeDNSTag = "fake_dns";
+    public const string SingboxDirectDNSTagPrefix = "direct-dns-";
+    public const string SingboxRemoteDNSTagPrefix = "remote-dns-";
+    public const string SingboxDirectDNSTag = "direct-dns-1";
+    public const string SingboxRemoteDNSTag = "remote-dns-1";
+    public const string SingboxDirectDNSTagTemplate = "direct-dns-{0}";
+    public const string SingboxRemoteDNSTagTemplate = "remote-dns-{0}";
+    public const string SingboxLocalDNSTag = "local-local";
+    public const string SingboxHostsDNSTag = "hosts-dns";
+    public const string SingboxFakeDNSTag = "fake-dns";
+    public const string SingboxSrsDownloadHttpClientTag = "srs-download-http-client";
+
+    public const int Hysteria2DefaultHopInt = 30;
+    public const string PolicyGroupExcludeKeywords = @"剩余|过期|到期|重置|[Rr]emaining|[Ee]xpir|[Rr]eset";
+    public const string PolicyGroupDefaultAllFilter = $"^(?!.*(?:{PolicyGroupExcludeKeywords})).*$";
+
+    public static readonly List<string> PolicyGroupDefaultFilterList =
+    [
+        // All nodes (exclude traffic/expiry info)
+        PolicyGroupDefaultAllFilter,
+        // Low multiplier nodes, e.g. ×0.1, 0.5x, 0.1倍
+        @"^.*(?:[×xX✕*]\s*0\.[0-9]+|0\.[0-9]+\s*[×xX✕*倍]).*$",
+        // Dedicated line nodes, e.g. IPLC, IEPL
+        $@"^(?!.*(?:{PolicyGroupExcludeKeywords})).*(?:专线|IPLC|IEPL|中转).*$",
+        // Japan nodes
+        $@"^(?!.*(?:{PolicyGroupExcludeKeywords})).*(?:日本|\\b[Jj][Pp]\\b|🇯🇵|[Jj]apan).*$",
+    ];
 
     public static readonly List<string> IEProxyProtocols =
     [
         "{ip}:{http_port}",
-            "socks={ip}:{socks_port}",
-            "http={ip}:{http_port};https={ip}:{http_port};ftp={ip}:{http_port};socks={ip}:{socks_port}",
-            "http=http://{ip}:{http_port};https=http://{ip}:{http_port}",
-            ""
+        "socks={ip}:{socks_port}",
+        "http={ip}:{http_port};https={ip}:{http_port};ftp={ip}:{http_port};socks={ip}:{socks_port}",
+        "http=http://{ip}:{http_port};https=http://{ip}:{http_port}",
+        ""
     ];
 
     public static readonly List<string> SubConvertUrls =
     [
         @"https://sub.xeton.dev/sub?url={0}",
-            @"https://api.dler.io/sub?url={0}",
-            @"http://127.0.0.1:25500/sub?url={0}",
-            ""
+        @"https://api.dler.io/sub?url={0}",
+        @"http://127.0.0.1:25500/sub?url={0}",
+        ""
     ];
 
     public static readonly List<string> SubConvertConfig =
-        [@"https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online.ini"];
+    [
+        @"https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online.ini"
+    ];
 
     public static readonly List<string> SubConvertTargets =
     [
         "",
-            "mixed",
-            "v2ray",
-            "clash",
-            "ss"
+        "mixed",
+        "v2ray",
+        "clash",
+        "ss"
     ];
 
     public static readonly List<string> SpeedTestUrls =
     [
         @"https://cachefly.cachefly.net/50mb.test",
-            @"https://speed.cloudflare.com/__down?bytes=10000000",
-            @"https://speed.cloudflare.com/__down?bytes=50000000",
-            @"https://speed.cloudflare.com/__down?bytes=100000000",
-        ];
+        @"https://cachefly.cachefly.net/100mb.test",
+        @"https://cachefly.cachefly.net/1mb.test",
+        @"https://cachefly.cachefly.net/10mb.test",
+        @"https://speed.cloudflare.com/__down?bytes=10000000",
+        @"https://speed.cloudflare.com/__down?bytes=50000000",
+        @"https://speed.cloudflare.com/__down?bytes=99999999",
+    ];
 
     public static readonly List<string> SpeedPingTestUrls =
     [
         @"https://www.google.com/generate_204",
-            @"https://www.gstatic.com/generate_204",
-            @"https://www.apple.com/library/test/success.html",
-            @"http://www.msftconnecttest.com/connecttest.txt"
+        @"https://www.youtube.com/generate_204",
+        @"https://www.googlevideo.com/generate_204",
+        @"https://www.gstatic.com/generate_204",
+        @"https://www.apple.com/library/test/success.html",
+        @"http://www.msftconnecttest.com/connecttest.txt"
     ];
 
     public static readonly List<string> GeoFilesSources =
     [
         "",
-            @"https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/{0}.dat",
-            @"https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/{0}.dat"
+        @"https://github.com/runetfreedom/russia-v2ray-rules-dat/releases/latest/download/{0}.dat",
+        @"https://github.com/Chocolate4U/Iran-v2ray-rules/releases/latest/download/{0}.dat"
     ];
 
     public static readonly List<string> SingboxRulesetSources =
-[
-    "",
-    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/release/sing-box/rule-set-{0}/{1}.srs",
-    @"https://raw.githubusercontent.com/chocolate4u/Iran-sing-box-rules/rule-set/{1}.srs"
-];
+    [
+        "",
+        @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-rules-dat/release/sing-box/rule-set-{0}/{1}.srs",
+        @"https://raw.githubusercontent.com/chocolate4u/Iran-sing-box-rules/rule-set/{1}.srs"
+    ];
 
     public static readonly List<string> RoutingRulesSources =
     [
         "",
-    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/template.json",
-    @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/template.json"
+        @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/template.json",
+        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/template.json"
     ];
 
     public static readonly List<string> DNSTemplateSources =
     [
         "",
-    @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/",
-    @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
+        @"https://raw.githubusercontent.com/runetfreedom/russia-v2ray-custom-routing-list/main/v2rayN/",
+        @"https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/main/v2rayN/"
     ];
 
-    public static readonly Dictionary<string, string> UserAgentTexts = new()
-        {
-            {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
-            {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
-            {"safari","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" },
-            {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
-            {"none",""}
-        };
+    public static readonly Dictionary<string, string> RawHttpUserAgentTexts = new()
+    {
+        {"chrome","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36" },
+        {"firefox","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0" },
+        {"safari","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" },
+        {"edge","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.70" },
+        {"none",""},
+        {"golang","Go-http-client/1.1"},
+        {"curl","curl/7.68.0"},
+    };
 
     public const string Hysteria2ProtocolShare = "hy2://";
 
+    public const string Hysteria2RealmProtocolShare = "hysteria2+realm://";
+
+    public const string Hysteria2HttpRealmProtocolShare = "hysteria2+realm+http://";
+
+    public const string NaiveHttpsProtocolShare = "naive+https://";
+
+    public const string NaiveQuicProtocolShare = "naive+quic://";
+
+    public const string SOCKS5Protocol = "socks5://";
+
+    public const string SOCKS4Protocol = "socks4://";
+
     public static readonly Dictionary<EConfigType, string> ProtocolShares = new()
-        {
-            { EConfigType.VMess, "vmess://" },
-            { EConfigType.Shadowsocks, "ss://" },
-            { EConfigType.SOCKS, "socks://" },
-            { EConfigType.VLESS, "vless://" },
-            { EConfigType.Trojan, "trojan://" },
-            { EConfigType.Hysteria2, "hysteria2://" },
-            { EConfigType.TUIC, "tuic://" },
-            { EConfigType.WireGuard, "wireguard://" },
-            { EConfigType.Anytls, "anytls://" }
-        };
+    {
+        { EConfigType.VMess, "vmess://" },
+        { EConfigType.Shadowsocks, "ss://" },
+        { EConfigType.SOCKS, "socks://" },
+        { EConfigType.VLESS, "vless://" },
+        { EConfigType.Trojan, "trojan://" },
+        { EConfigType.Hysteria2, "hysteria2://" },
+        { EConfigType.TUIC, "tuic://" },
+        { EConfigType.WireGuard, "wireguard://" },
+        { EConfigType.Anytls, "anytls://" },
+        { EConfigType.Naive, "naive://" }
+    };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
-        {
-            { EConfigType.VMess, "vmess" },
-            { EConfigType.Shadowsocks, "shadowsocks" },
-            { EConfigType.SOCKS, "socks" },
-            { EConfigType.HTTP, "http" },
-            { EConfigType.VLESS, "vless" },
-            { EConfigType.Trojan, "trojan" },
-            { EConfigType.Hysteria2, "hysteria2" },
-            { EConfigType.TUIC, "tuic" },
-            { EConfigType.WireGuard, "wireguard" },
-            { EConfigType.Anytls, "anytls" }
-        };
+    {
+        { EConfigType.VMess, "vmess" },
+        { EConfigType.Shadowsocks, "shadowsocks" },
+        { EConfigType.SOCKS, "socks" },
+        { EConfigType.HTTP, "http" },
+        { EConfigType.VLESS, "vless" },
+        { EConfigType.Trojan, "trojan" },
+        { EConfigType.Hysteria2, "hysteria2" },
+        { EConfigType.TUIC, "tuic" },
+        { EConfigType.WireGuard, "wireguard" },
+        { EConfigType.Anytls, "anytls" },
+        { EConfigType.Naive, "naive" },
+        { EConfigType.MASQUE, "masque" },
+    };
 
     public static readonly List<string> VmessSecurities =
     [
         "aes-128-gcm",
-            "chacha20-poly1305",
-            "auto",
-            "none",
-            "zero"
+        "chacha20-poly1305",
+        "auto",
+        "none",
+        "zero"
     ];
 
     public static readonly List<string> SsSecurities =
     [
         "aes-256-gcm",
-            "aes-128-gcm",
-            "chacha20-poly1305",
-            "chacha20-ietf-poly1305",
-            "none",
-            "plain"
+        "aes-128-gcm",
+        "chacha20-poly1305",
+        "chacha20-ietf-poly1305",
+        "none",
+        "plain"
     ];
 
     public static readonly List<string> SsSecuritiesInXray =
     [
         "aes-256-gcm",
-            "aes-128-gcm",
-            "chacha20-poly1305",
-            "chacha20-ietf-poly1305",
-            "xchacha20-poly1305",
-            "xchacha20-ietf-poly1305",
-            "none",
-            "plain",
-            "2022-blake3-aes-128-gcm",
-            "2022-blake3-aes-256-gcm",
-            "2022-blake3-chacha20-poly1305"
+        "aes-128-gcm",
+        "chacha20-poly1305",
+        "chacha20-ietf-poly1305",
+        "xchacha20-poly1305",
+        "xchacha20-ietf-poly1305",
+        "none",
+        "plain",
+        "2022-blake3-aes-128-gcm",
+        "2022-blake3-aes-256-gcm",
+        "2022-blake3-chacha20-poly1305"
     ];
 
     public static readonly List<string> SsSecuritiesInSingbox =
     [
         "aes-256-gcm",
-            "aes-192-gcm",
-            "aes-128-gcm",
-            "chacha20-ietf-poly1305",
-            "xchacha20-ietf-poly1305",
-            "none",
-            "2022-blake3-aes-128-gcm",
-            "2022-blake3-aes-256-gcm",
-            "2022-blake3-chacha20-poly1305",
-            "aes-128-ctr",
-            "aes-192-ctr",
-            "aes-256-ctr",
-            "aes-128-cfb",
-            "aes-192-cfb",
-            "aes-256-cfb",
-            "rc4-md5",
-            "chacha20-ietf",
-            "xchacha20"
+        "aes-192-gcm",
+        "aes-128-gcm",
+        "chacha20-ietf-poly1305",
+        "xchacha20-ietf-poly1305",
+        "none",
+        "2022-blake3-aes-128-gcm",
+        "2022-blake3-aes-256-gcm",
+        "2022-blake3-chacha20-poly1305",
+        "aes-128-ctr",
+        "aes-192-ctr",
+        "aes-256-ctr",
+        "aes-128-cfb",
+        "aes-192-cfb",
+        "aes-256-cfb",
+        "rc4-md5",
+        "chacha20-ietf",
+        "xchacha20"
     ];
 
     public static readonly List<string> Flows =
     [
         "",
-            "xtls-rprx-vision",
-            "xtls-rprx-vision-udp443"
+        "xtls-rprx-vision",
+        "xtls-rprx-vision-udp443"
     ];
 
     public static readonly List<string> Networks =
     [
-        "tcp",
-            "kcp",
-            "ws",
-            "httpupgrade",
-            "xhttp",
-            "h2",
-            "quic",
-            "grpc"
+        "raw",
+        "xhttp",
+        "kcp",
+        "grpc",
+        "ws",
+        "httpupgrade"
     ];
 
     public static readonly List<string> KcpHeaderTypes =
     [
         "srtp",
-            "utp",
-            "wechat-video",
-            "dtls",
-            "wireguard",
-            "dns"
+        "utp",
+        "wechat-video",
+        "dtls",
+        "wireguard",
+        "dns"
     ];
+
+    public static readonly Dictionary<string, string> KcpHeaderMaskMap = new()
+    {
+        { "srtp", "srtp" },
+        { "utp", "utp" },
+        { "wechat-video", "wechat" },
+        { "dtls", "dtls" },
+        { "wireguard", "wireguard" },
+        { "dns", "dns" }
+    };
 
     public static readonly List<string> CoreTypes =
     [
         "Xray",
-            "sing_box"
+        "sing_box"
     ];
 
     public static readonly HashSet<EConfigType> XraySupportConfigType =
     [
         EConfigType.VMess,
-            EConfigType.VLESS,
-            EConfigType.Shadowsocks,
-            EConfigType.Trojan,
-            EConfigType.WireGuard,
-            EConfigType.SOCKS,
-            EConfigType.HTTP,
+        EConfigType.VLESS,
+        EConfigType.Shadowsocks,
+        EConfigType.Trojan,
+        EConfigType.Hysteria2,
+        EConfigType.WireGuard,
+        EConfigType.MASQUE,
+        EConfigType.SOCKS,
+        EConfigType.HTTP,
     ];
 
     public static readonly HashSet<EConfigType> SingboxSupportConfigType =
     [
         EConfigType.VMess,
-            EConfigType.VLESS,
-            EConfigType.Shadowsocks,
-            EConfigType.Trojan,
-            EConfigType.Hysteria2,
-            EConfigType.TUIC,
-            EConfigType.Anytls,
-            EConfigType.WireGuard,
-            EConfigType.SOCKS,
-            EConfigType.HTTP,
+        EConfigType.VLESS,
+        EConfigType.Shadowsocks,
+        EConfigType.Trojan,
+        EConfigType.Hysteria2,
+        EConfigType.TUIC,
+        EConfigType.Anytls,
+        EConfigType.Naive,
+        EConfigType.WireGuard,
+        EConfigType.MASQUE,
+        EConfigType.SOCKS,
+        EConfigType.HTTP,
     ];
 
     public static readonly HashSet<EConfigType> SingboxOnlyConfigType = SingboxSupportConfigType.Except(XraySupportConfigType).ToHashSet();
@@ -324,132 +402,138 @@ public class Global
         IPOnDemand
     ];
 
-    public static readonly List<string> DomainStrategies4Singbox =
+    public static readonly List<string> DomainStrategies4Sbox =
     [
+        "",
+        "prefer_ipv4",
+        "prefer_ipv6",
         "ipv4_only",
-            "ipv6_only",
-            "prefer_ipv4",
-            "prefer_ipv6",
-            ""
+        "ipv6_only"
     ];
 
     public static readonly List<string> Fingerprints =
     [
         "chrome",
-            "firefox",
-            "safari",
-            "ios",
-            "android",
-            "edge",
-            "360",
-            "qq",
-            "random",
-            "randomized",
-            ""
+        "firefox",
+        "safari",
+        "ios",
+        "android",
+        "edge",
+        "360",
+        "qq",
+        "random",
+        "randomized",
+        ""
+    ];
+
+    public static readonly List<string> FragmentPacketsOptions =
+    [
+        "tlshello",
+        "1-1",
+        "1-2",
+        "1-3",
+        "1-4",
+        "1-5"
     ];
 
     public static readonly List<string> UserAgent =
     [
         "chrome",
-            "firefox",
-            "safari",
-            "edge",
-            "none"
+        "firefox",
+        "edge",
+        "curl",
+        "golang",
     ];
 
     public static readonly List<string> XhttpMode =
     [
         "auto",
-            "packet-up",
-            "stream-up",
-            "stream-one"
+        "packet-up",
+        "stream-up",
+        "stream-one"
     ];
 
-    public static readonly List<string> AllowInsecure =
-    [
-        "true",
-            "false",
-            ""
-    ];
-
-    public static readonly List<string> DomainStrategy4Freedoms =
+    public static readonly List<string> DomainStrategy =
     [
         "AsIs",
-            "UseIP",
-            "UseIPv4",
-            "UseIPv6",
-            ""
-    ];
-
-    public static readonly List<string> SingboxDomainStrategy4Out =
-    [
-        "",
-            "ipv4_only",
-            "prefer_ipv4",
-            "prefer_ipv6",
-            "ipv6_only"
+        "UseIP",
+        "UseIPv4v6",
+        "UseIPv6v4",
+        "UseIPv4",
+        "UseIPv6",
+        ""
     ];
 
     public static readonly List<string> DomainDirectDNSAddress =
     [
+        "119.29.29.29",
+        "223.5.5.5",
+        "119.29.29.29,223.5.5.5,https://doh.pub/dns-query",
+        "https://doh.pub/dns-query",
         "https://dns.alidns.com/dns-query",
-            "https://doh.pub/dns-query",
-            "223.5.5.5",
-            "119.29.29.29",
-            "localhost"
+        "https://doh.pub/dns-query,https://dns.alidns.com/dns-query",
+        "localhost"
     ];
 
     public static readonly List<string> DomainRemoteDNSAddress =
     [
         "https://cloudflare-dns.com/dns-query",
-            "https://dns.cloudflare.com/dns-query",
-            "https://dns.google/dns-query",
-            "https://doh.dns.sb/dns-query",
-            "https://doh.opendns.com/dns-query",
-            "https://common.dot.dns.yandex.net",
-            "8.8.8.8",
-            "1.1.1.1",
-            "185.222.222.222",
-            "208.67.222.222",
-            "77.88.8.8"
+        "https://dns.google/dns-query",
+        "https://cloudflare-dns.com/dns-query,https://dns.google/dns-query,8.8.8.8",
+        "https://dns.cloudflare.com/dns-query",
+        "https://doh.dns.sb/dns-query",
+        "https://doh.opendns.com/dns-query",
+        "https://common.dot.dns.yandex.net/dns-query",
+        "8.8.8.8",
+        "1.1.1.1",
+        "185.222.222.222",
+        "208.67.222.222",
+        "77.88.8.8"
     ];
 
     public static readonly List<string> DomainPureIPDNSAddress =
     [
+        "119.29.29.29",
         "223.5.5.5",
-            "119.29.29.29",
-            "localhost"
+        "localhost"
+    ];
+
+    public static readonly List<LanguageOption> LanguageOptions =
+    [
+        new("zh-Hans", "简体中文"),
+        new("zh-Hant", "繁體中文"),
+        new("en", "English"),
+        new("fa", "فارسی"),
+        new("fr", "Français"),
+        new("ru", "Русский"),
+        new("hu", "Magyar"),
+        new("id", "Bahasa Indonesia"),
+        new("az", "Azərbaycan dili")
     ];
 
     public static readonly List<string> Languages =
     [
-        "zh-Hans",
-            "zh-Hant",
-            "en",
-            "fa-Ir",
-            "fr",
-            "ru",
-            "hu"
+        .. LanguageOptions.Select(t => t.Value)
     ];
 
     public static readonly List<string> Alpns =
     [
         "h3",
-            "h2",
-            "http/1.1",
-            "h3,h2",
-            "h2,http/1.1",
-            "h3,h2,http/1.1",
-            ""
+        "h2",
+        "http/1.1",
+        "h3,h2",
+        "h2,http/1.1",
+        "h3,h2,http/1.1",
+        ""
     ];
 
     public static readonly List<string> LogLevels =
     [
         "debug",
-            "info",
-            "warning",
-            "error",
-            "none"
+        "info",
+        "warning",
+        "error",
+        "none"
     ];
 
     public static readonly Dictionary<string, string> LogLevelColors = new()
@@ -462,33 +546,33 @@ public class Global
 
     public static readonly List<string> InboundTags =
     [
+        "tun",
         "socks",
-            "socks2",
-            "socks3"
+        "socks2",
+        "socks3"
     ];
 
     public static readonly List<string> RuleProtocols =
     [
         "http",
-            "tls",
-            "bittorrent"
+        "tls",
+        "quic",
+        "bittorrent"
     ];
 
     public static readonly List<string> RuleNetworks =
     [
         "",
-            "tcp",
-            "udp",
-            "tcp,udp"
+        "tcp",
+        "udp",
+        "tcp,udp"
     ];
 
     public static readonly List<string> destOverrideProtocols =
     [
         "http",
-            "tls",
-            "quic",
-            "fakedns",
-            "fakedns+others"
+        "tls",
+        "quic",
     ];
 
     public static readonly List<int> TunMtus =
@@ -504,93 +588,126 @@ public class Global
     public static readonly List<string> TunStacks =
     [
         "gvisor",
-            "system",
-            "mixed"
+        "system",
+        "mixed"
     ];
 
     public static readonly List<string> PresetMsgFilters =
     [
         "proxy",
-            "direct",
-            "block",
-            ""
+        "direct",
+        "block",
+        ""
     ];
 
     public static readonly List<string> SingboxMuxs =
     [
         "h2mux",
-            "smux",
-            "yamux",
-            ""
+        "smux",
+        "yamux",
+        ""
     ];
 
     public static readonly List<string> TuicCongestionControls =
     [
         "cubic",
-            "new_reno",
-            "bbr"
+        "new_reno",
+        "bbr"
+    ];
+
+    public static readonly List<string> NaiveCongestionControls =
+    [
+        "bbr",
+        "bbr2",
+        "cubic",
+        "reno"
     ];
 
     public static readonly List<string> allowSelectType =
     [
         "selector",
-            "urltest",
-            "loadbalance",
-            "fallback"
+        "urltest",
+        "loadbalance",
+        "fallback"
     ];
 
     public static readonly List<string> notAllowTestType =
     [
         "selector",
-            "urltest",
-            "direct",
-            "reject",
-            "compatible",
-            "pass",
-            "loadbalance",
-            "fallback"
+        "urltest",
+        "direct",
+        "reject",
+        "compatible",
+        "pass",
+        "loadbalance",
+        "fallback"
     ];
 
     public static readonly List<string> proxyVehicleType =
     [
         "file",
-            "http"
+        "http"
     ];
 
     public static readonly Dictionary<ECoreType, string> CoreUrls = new()
-        {
-            { ECoreType.v2fly, "v2fly/v2ray-core" },
-            { ECoreType.v2fly_v5, "v2fly/v2ray-core" },
-            { ECoreType.Xray, "XTLS/Xray-core" },
-            { ECoreType.sing_box, "SagerNet/sing-box" },
-            { ECoreType.mihomo, "MetaCubeX/mihomo" },
-            { ECoreType.hysteria, "apernet/hysteria" },
-            { ECoreType.hysteria2, "apernet/hysteria" },
-            { ECoreType.naiveproxy, "klzgrad/naiveproxy" },
-            { ECoreType.tuic, "EAimTY/tuic" },
-            { ECoreType.juicity, "juicity/juicity" },
-            { ECoreType.brook, "txthinking/brook" },
-            { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
-            { ECoreType.shadowquic, "spongebob888/shadowquic" },
-            { ECoreType.mieru, "enfein/mieru" },
-            { ECoreType.v2rayN, "2dust/v2rayN" },
-        };
+    {
+        { ECoreType.v2fly, "v2fly/v2ray-core" },
+        { ECoreType.v2fly_v5, "v2fly/v2ray-core" },
+        { ECoreType.Xray, "XTLS/Xray-core" },
+        { ECoreType.sing_box, "SagerNet/sing-box" },
+        { ECoreType.mihomo, "MetaCubeX/mihomo" },
+        { ECoreType.hysteria, "apernet/hysteria" },
+        { ECoreType.hysteria2, "apernet/hysteria" },
+        { ECoreType.naiveproxy, "klzgrad/naiveproxy" },
+        { ECoreType.tuic, "EAimTY/tuic" },
+        { ECoreType.juicity, "juicity/juicity" },
+        { ECoreType.brook, "txthinking/brook" },
+        { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
+        { ECoreType.shadowquic, "spongebob888/shadowquic" },
+        { ECoreType.mieru, "enfein/mieru" },
+        { ECoreType.v2rayN, "2dust/v2rayN" },
+    };
 
     public static readonly List<string> OtherGeoUrls =
     [
         @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat",
-            @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb",
-            @"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+        @"https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb",
+        @"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
     ];
 
     public static readonly List<string> IPAPIUrls =
     [
-        @"https://speed.cloudflare.com/meta",
         @"https://api.ip.sb/geoip",
         @"https://api-ipv4.ip.sb/geoip",
         @"https://api-ipv6.ip.sb/geoip",
         @"https://api.ipapi.is",
         @""
+    ];
+
+    public static readonly List<string> UdpTestTargets =
+    [
+        "ntp:pool.ntp.org",
+        "ntp:time.google.com",
+        "dns:1.1.1.1",
+        "dns:8.8.8.8",
+        "dns:dns.google",
+        "stun:stun.voztovoice.org",
+        "stun:stun.cloudflare.com",
+        "stun:stun.l.google.com:19302",
+        "mcbe:pms.mc-complex.com",
+        "mcbe:bedrock.opblocks.com",
+        "mcbe:opsucht.net",
+        "mcbe:play.craftersmc.net",
+        "mcbe:mps.lemoncloud.net",
+        "mcbe:bedrock.talonmc.net",
+    ];
+
+    public static readonly List<string> DefaultRealmStunList =
+    [
+        "turn.cloudflare.com:3478",
+        "stun.nextcloud.com:3478",
+        "stun.sip.us:3478",
+        "global.stun.twilio.com:3478",
     ];
 
     public static readonly List<string> OutboundTags =
@@ -601,30 +718,76 @@ public class Global
     ];
 
     public static readonly Dictionary<string, List<string>> PredefinedHosts = new()
-        {
-            { "dns.google", new List<string> { "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844" } },
-            { "dns.alidns.com", new List<string> { "223.5.5.5", "223.6.6.6", "2400:3200::1", "2400:3200:baba::1" } },
-            { "one.one.one.one", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
-            { "1dot1dot1dot1.cloudflare-dns.com", new List<string> { "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001" } },
-            { "cloudflare-dns.com", new List<string> { "104.16.249.249", "104.16.248.249", "2606:4700::6810:f8f9", "2606:4700::6810:f9f9" } },
-            { "dns.cloudflare.com", new List<string> { "104.16.132.229", "104.16.133.229", "2606:4700::6810:84e5", "2606:4700::6810:85e5" } },
-            { "dot.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
-            { "doh.pub", new List<string> { "1.12.12.12", "120.53.53.53" } },
-            { "dns.quad9.net", new List<string> { "9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9" } },
-            { "dns.yandex.net", new List<string> { "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff" } },
-            { "dns.sb", new List<string> { "185.222.222.222", "2a09::" } },
-            { "dns.umbrella.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
-            { "dns.sse.cisco.com", new List<string> { "208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53" } },
-            { "engage.cloudflareclient.com", new List<string> { "162.159.192.1", "2606:4700:d0::a29f:c001" } }
-        };
+    {
+        { "dns.google", ["8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"] },
+        { "dns.alidns.com", ["223.5.5.5", "223.6.6.6", "2400:3200::1", "2400:3200:baba::1"] },
+        { "one.one.one.one", ["1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001"] },
+        { "1dot1dot1dot1.cloudflare-dns.com", ["1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001"] },
+        { "cloudflare-dns.com", ["104.16.249.249", "104.16.248.249", "2606:4700::6810:f8f9", "2606:4700::6810:f9f9"] },
+        { "dns.cloudflare.com", ["162.159.61.8", "172.64.41.8", "2a06:98c1:52::8", "2803:f800:53::8"] },
+        { "dot.pub", ["1.12.12.12", "120.53.53.53"] },
+        { "doh.pub", ["1.12.12.12", "120.53.53.53"] },
+        { "dns.quad9.net", ["9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9"] },
+        { "dns.yandex.net", ["77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"] },
+        { "dns.sb", ["45.11.45.11", "185.222.222.222", "2a09::", "2a11::"] },
+        { "dns.umbrella.com", ["208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53"] },
+        { "dns.sse.cisco.com", ["208.67.220.220", "208.67.222.222", "2620:119:35::35", "2620:119:53::53"] },
+        { "engage.cloudflareclient.com", ["162.159.192.1", "2606:4700:d0::a29f:c001"] }
+    };
 
     public static readonly List<string> ExpectedIPs =
     [
         "geoip:cn",
-            "geoip:ir",
-            "geoip:ru",
-            ""
+        "geoip:ir",
+        "geoip:ru",
+        ""
     ];
 
-    #endregion const
+    public static readonly List<string> TunIcmpRoutingPolicies =
+    [
+        "rule",
+        "direct",
+        "unreachable",
+        "drop",
+        "reply",
+    ];
+
+    public static readonly List<string> FakeIPRanges =
+    [
+        "198.18.0.0/15",
+        "11.0.0.0/8",
+    ];
+
+    public static readonly List<string> RootCertProviders =
+    [
+        "system",
+        ChromeRootProvider,
+        MozillaRootProvider,
+    ];
+
+    public static readonly IReadOnlyList<string> TunIPv4Address =
+    [
+        "172.18.0.1/30",
+        "172.31.0.1/30",
+        "172.20.0.1/30",
+        "172.16.0.1/30",
+        "192.168.100.1/30",
+        "10.10.14.1/30",
+        "10.1.0.1/30",
+        "10.0.0.1/30",
+    ];
+
+    // Prefixes must leave room for a peer address (max /126); the sing-box system
+    // stack derives a gateway from the first prefix and rejects single-address prefixes.
+    public static readonly IReadOnlyList<string> TunIPv6Address =
+    [
+        "fc00::172:18:0:1/126",
+        "fc00::172:31:0:1/126",
+        "fc00::172:20:0:1/126",
+        "fc00::172:16:0:1/126",
+        "fc00::192:168:100:1/126",
+        "fc00::10:10:14:1/126",
+        "fc00::10:1:0:1/126",
+        "fc00::10:0:0:1/126",
+    ];
 }

@@ -63,6 +63,11 @@ kill_descendants "$PID"
 echo "Terminating main process: $PID"
 kill -9 "$PID" 2>/dev/null || true
 
+# Wait a little for process/port resources to be fully released
+FINAL_WAIT_SECONDS=1
+echo "Waiting ${FINAL_WAIT_SECONDS}s for resources to settle..."
+sleep "$FINAL_WAIT_SECONDS"
+
 echo "============================================"
 echo "Process $PID and all its descendants have been terminated"
 echo "============================================"

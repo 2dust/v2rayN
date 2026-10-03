@@ -3,24 +3,22 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
-    xmlns:view="using:v2rayN.Desktop.Views"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Title="v2rayN"
-    Width="1000"
-    Height="600"
-    MinWidth="900"
+    Width="1200"
+    Height="800"
+    MinWidth="600"
     x:DataType="vms:MainWindowViewModel"
+    Design.DataContext="{x:Static dd:DesignData.MainWindow}"
     Icon="/Assets/NotifyIcon1.ico"
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <dialogHost:DialogHost
-        Background="Gray"
-        CloseOnClickAway="True"
-        DisableOpeningAnimation="True">
+    <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <DockPanel>
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
@@ -35,21 +33,25 @@
                             Header="{x:Static resx:ResUI.menuAddServerViaScan}"
                             InputGesture="Ctrl+S" />
                         <MenuItem x:Name="menuAddServerViaImage" Header="{x:Static resx:ResUI.menuAddServerViaImage}" />
+                        <Separator />
                         <MenuItem x:Name="menuAddCustomServer" Header="{x:Static resx:ResUI.menuAddCustomServer}" />
                         <MenuItem x:Name="menuAddPolicyGroupServer" Header="{x:Static resx:ResUI.menuAddPolicyGroupServer}" />
                         <MenuItem x:Name="menuAddProxyChainServer" Header="{x:Static resx:ResUI.menuAddProxyChainServer}" />
+                        <MenuItem x:Name="menuAddCustomOutboundServer" Header="{x:Static resx:ResUI.menuAddCustomOutboundServer}" />
                         <Separator />
                         <MenuItem x:Name="menuAddVmessServer" Header="{x:Static resx:ResUI.menuAddVmessServer}" />
                         <MenuItem x:Name="menuAddVlessServer" Header="{x:Static resx:ResUI.menuAddVlessServer}" />
                         <MenuItem x:Name="menuAddShadowsocksServer" Header="{x:Static resx:ResUI.menuAddShadowsocksServer}" />
                         <MenuItem x:Name="menuAddTrojanServer" Header="{x:Static resx:ResUI.menuAddTrojanServer}" />
+                        <MenuItem x:Name="menuAddHysteria2Server" Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
                         <MenuItem x:Name="menuAddWireguardServer" Header="{x:Static resx:ResUI.menuAddWireguardServer}" />
+                        <MenuItem x:Name="menuAddMasqueServer" Header="{x:Static resx:ResUI.menuAddMasqueServer}" />
                         <MenuItem x:Name="menuAddSocksServer" Header="{x:Static resx:ResUI.menuAddSocksServer}" />
                         <MenuItem x:Name="menuAddHttpServer" Header="{x:Static resx:ResUI.menuAddHttpServer}" />
                         <Separator />
-                        <MenuItem x:Name="menuAddHysteria2Server" Header="{x:Static resx:ResUI.menuAddHysteria2Server}" />
                         <MenuItem x:Name="menuAddTuicServer" Header="{x:Static resx:ResUI.menuAddTuicServer}" />
                         <MenuItem x:Name="menuAddAnytlsServer" Header="{x:Static resx:ResUI.menuAddAnytlsServer}" />
+                        <MenuItem x:Name="menuAddNaiveServer" Header="{x:Static resx:ResUI.menuAddNaiveServer}" />
                     </MenuItem>
 
                     <MenuItem Header="{x:Static resx:ResUI.menuSubscription}">
@@ -90,20 +92,27 @@
                         <MenuItem x:Name="menuOpenTheFileLocation" Header="{x:Static resx:ResUI.menuOpenTheFileLocation}" />
                     </MenuItem>
 
-                    <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}" />
-
                     <MenuItem x:Name="menuHelp" Header="{x:Static resx:ResUI.menuHelp}">
                         <MenuItem x:Name="menuCheckUpdate" Header="{x:Static resx:ResUI.menuCheckUpdate}" />
                         <Separator />
                     </MenuItem>
 
+                    <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}" />
+
                     <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}" />
 
                     <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuExit}" />
                 </Menu>
+
+                <Button
+                    x:Name="btnNewUpdate"
+                    Margin="{StaticResource MarginLr8}"
+                    HorizontalAlignment="Left"
+                    Content="{x:Static resx:ResUI.menuNewUpdate}"
+                    IsVisible="False" />
             </DockPanel>
 
-            <view:StatusBarView DockPanel.Dock="Bottom" />
+            <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
 
             <Grid>
                 <Grid

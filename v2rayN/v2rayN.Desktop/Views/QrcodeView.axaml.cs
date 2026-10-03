@@ -5,6 +5,13 @@ public partial class QrcodeView : UserControl
     public QrcodeView()
     {
         InitializeComponent();
+        if (Design.IsDesignMode)
+        {
+            //const string url = Global.AppName;
+            const string url = Global.SystemProxyExceptionsWindows;
+            txtContent.Text = url;
+            imgQrcode.Source = GetQRCode(url);
+        }
     }
 
     public QrcodeView(string? url)

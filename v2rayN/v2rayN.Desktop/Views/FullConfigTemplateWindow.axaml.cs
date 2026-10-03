@@ -12,13 +12,13 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
 
         _config = AppManager.Instance.Config;
         Loaded += Window_Loaded;
-        btnCancel.Click += (s, e) => Close();
-        ViewModel = new FullConfigTemplateViewModel(UpdateViewHandler);
+        btnCancel.Click += (_, _) => Close();
 
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.EnableFullConfigTemplate4Ray, v => v.rayFullConfigTemplateEnable.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.FullConfigTemplate4Ray, v => v.rayFullConfigTemplate.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.FullTunConfigTemplate4Ray, v => v.rayFullTunConfigTemplate.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AddProxyOnly4Ray, v => v.togAddProxyProtocolOutboundOnly4Ray.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ProxyDetour4Ray, v => v.txtProxyDetour4Ray.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableFullConfigTemplate4Singbox, v => v.sbFullConfigTemplateEnable.IsChecked).DisposeWith(disposables);
@@ -29,17 +29,6 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void linkFullConfigTemplateDoc_Click(object sender, RoutedEventArgs e)

@@ -1,30 +1,30 @@
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 
 namespace v2rayN.ViewModels;
 
-public class ThemeSettingViewModel : MyReactiveObject
+public partial class ThemeSettingViewModel : MyReactiveObject
 {
     private readonly PaletteHelper _paletteHelper = new();
 
-    private IObservableCollection<Swatch> _swatches = new ObservableCollectionExtended<Swatch>();
-    public IObservableCollection<Swatch> Swatches => _swatches;
+    public BulkObservableCollection<Swatch> Swatches { get; } = [];
 
     [Reactive]
-    public Swatch SelectedSwatch { get; set; }
+    public partial Swatch SelectedSwatch { get; set; }
 
-    [Reactive] public string CurrentTheme { get; set; }
+    [Reactive] public partial string CurrentTheme { get; set; }
 
-    [Reactive] public int CurrentFontSize { get; set; }
+    [Reactive] public partial int CurrentFontSize { get; set; }
 
-    [Reactive] public string CurrentLanguage { get; set; }
+    [Reactive] public partial string CurrentLanguage { get; set; }
 
     public ThemeSettingViewModel()
     {
         _config = AppManager.Instance.Config;
 
-        RegisterSystemColorSet(_config, Application.Current.MainWindow, ModifyTheme);
+        RegisterSystemColorSet(_config, ModifyTheme);
 
         BindingUI();
         RestoreUI();
@@ -37,9 +37,7 @@ public class ThemeSettingViewModel : MyReactiveObject
         if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
             var swatch = new SwatchesProvider().Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
-            if (swatch != null
-               && swatch.ExemplarHue != null
-               && swatch.ExemplarHue?.Color != null)
+            if (swatch?.ExemplarHue?.Color is not null)
             {
                 ChangePrimaryColor(swatch.ExemplarHue.Color);
             }
@@ -48,32 +46,30 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void BindingUI()
     {
-        _swatches.AddRange(new SwatchesProvider().Swatches);
+        Swatches.AddRange(new SwatchesProvider().Swatches);
         if (!_config.UiItem.ColorPrimaryName.IsNullOrEmpty())
         {
-            SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
+            SelectedSwatch = Swatches.FirstOrDefault(t => t.Name == _config.UiItem.ColorPrimaryName);
         }
         CurrentTheme = _config.UiItem.CurrentTheme;
         CurrentFontSize = _config.UiItem.CurrentFontSize;
         CurrentLanguage = _config.UiItem.CurrentLanguage;
 
-        this.WhenAnyValue(
-                x => x.CurrentTheme,
-                y => y != null && !y.IsNullOrEmpty())
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentTheme)
+            .Where(y => y != null && !y.IsNullOrEmpty())
+            .SubscribeAsync(async _ =>
              {
                  if (_config.UiItem.CurrentTheme != CurrentTheme)
                  {
                      _config.UiItem.CurrentTheme = CurrentTheme;
                      ModifyTheme();
-                     ConfigHandler.SaveConfig(_config);
+                     await ConfigHandler.SaveConfig(_config);
                  }
              });
 
-        this.WhenAnyValue(
-          x => x.SelectedSwatch,
-          y => y != null && !y.Name.IsNullOrEmpty())
-             .Subscribe(c =>
+        this.WhenAnyValue(x => x.SelectedSwatch)
+             .Where(y => y != null && !y.Name.IsNullOrEmpty())
+             .SubscribeAsync(async _ =>
              {
                  if (SelectedSwatch == null
                  || SelectedSwatch.Name.IsNullOrEmpty()
@@ -86,33 +82,31 @@ public class ThemeSettingViewModel : MyReactiveObject
                  {
                      _config.UiItem.ColorPrimaryName = SelectedSwatch?.Name;
                      ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
-                     ConfigHandler.SaveConfig(_config);
+                     await ConfigHandler.SaveConfig(_config);
                  }
              });
 
-        this.WhenAnyValue(
-           x => x.CurrentFontSize,
-           y => y > 0)
-              .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentFontSize)
+              .Where(y => y > 0)
+              .SubscribeAsync(async _ =>
               {
                   if (_config.UiItem.CurrentFontSize != CurrentFontSize)
                   {
                       _config.UiItem.CurrentFontSize = CurrentFontSize;
                       ModifyFontSize();
-                      ConfigHandler.SaveConfig(_config);
+                      await ConfigHandler.SaveConfig(_config);
                   }
               });
 
-        this.WhenAnyValue(
-         x => x.CurrentLanguage,
-         y => y != null && !y.IsNullOrEmpty())
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentLanguage)
+            .Where(y => y != null && !y.IsNullOrEmpty())
+            .SubscribeAsync(async _ =>
             {
                 if (CurrentLanguage.IsNotEmpty() && _config.UiItem.CurrentLanguage != CurrentLanguage)
                 {
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    ConfigHandler.SaveConfig(_config);
+                    await ConfigHandler.SaveConfig(_config);
                     NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });
@@ -136,7 +130,7 @@ public class ThemeSettingViewModel : MyReactiveObject
 
     private void ModifyFontSize()
     {
-        double size = (long)CurrentFontSize;
+        double size = CurrentFontSize;
         if (size < Global.MinFontSize)
         {
             return;
@@ -158,25 +152,15 @@ public class ThemeSettingViewModel : MyReactiveObject
         _paletteHelper.SetTheme(theme);
     }
 
-    public void RegisterSystemColorSet(Config config, Window window, Action updateFunc)
+    public static void RegisterSystemColorSet(Config config, Action updateFunc)
     {
-        var helper = new WindowInteropHelper(window);
-        var hwndSource = HwndSource.FromHwnd(helper.EnsureHandle());
-        hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+        SystemEvents.UserPreferenceChanged += (s, e) =>
         {
-            if (config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
+            if ((e.Category == UserPreferenceCategory.Color || e.Category == UserPreferenceCategory.General)
+                && config.UiItem.CurrentTheme == nameof(ETheme.FollowSystem))
             {
-                const int WM_SETTINGCHANGE = 0x001A;
-                if (msg == WM_SETTINGCHANGE)
-                {
-                    if (wParam == IntPtr.Zero && Marshal.PtrToStringUni(lParam) == "ImmersiveColorSet")
-                    {
-                        updateFunc?.Invoke();
-                    }
-                }
+                updateFunc?.Invoke();
             }
-
-            return IntPtr.Zero;
-        });
+        };
     }
 }

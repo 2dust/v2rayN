@@ -1,24 +1,26 @@
 namespace ServiceLib.ViewModels;
 
-public class SubSettingViewModel : MyReactiveObject
+public partial class SubSettingViewModel : MyReactiveObject
 {
-    public IObservableCollection<SubItem> SubItems { get; } = new ObservableCollectionExtended<SubItem>();
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+    public Interaction<string, RxVoid> ShareSubInteraction { get; } = new();
+
+    public BulkObservableCollection<SubItem> SubItems { get; } = [];
 
     [Reactive]
-    public SubItem SelectedSource { get; set; }
+    public partial SubItem SelectedSource { get; set; }
 
     public IList<SubItem> SelectedSources { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SubAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubDeleteCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubEditCmd { get; }
-    public ReactiveCommand<Unit, Unit> SubShareCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubDeleteCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubEditCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SubShareCmd { get; }
     public bool IsModified { get; set; }
 
-    public SubSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public SubSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedSource,
@@ -38,7 +40,7 @@ public class SubSettingViewModel : MyReactiveObject
         }, canEditRemove);
         SubShareCmd = ReactiveCommand.CreateFromTask(async () =>
         {
-            await _updateView?.Invoke(EViewAction.ShareSub, SelectedSource?.Url);
+            await ShareSubInteraction.HandleSafe(SelectedSource?.Url);
         }, canEditRemove);
 
         _ = Init();
@@ -53,8 +55,7 @@ public class SubSettingViewModel : MyReactiveObject
 
     public async Task RefreshSubItems()
     {
-        SubItems.Clear();
-        SubItems.AddRange(await AppManager.Instance.SubItems());
+        SubItems.ReplaceRange(await AppManager.Instance.SubItems());
     }
 
     public async Task EditSubAsync(bool blNew)
@@ -72,7 +73,8 @@ public class SubSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await _updateView?.Invoke(EViewAction.SubEditWindow, item) == true)
+        var subEditViewModel = new SubEditViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subEditViewModel) == true)
         {
             await RefreshSubItems();
             IsModified = true;
@@ -81,7 +83,7 @@ public class SubSettingViewModel : MyReactiveObject
 
     private async Task DeleteSubAsync()
     {
-        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }

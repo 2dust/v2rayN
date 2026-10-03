@@ -31,7 +31,7 @@ public static class SubscriptionHandler
                 }
 
                 // Create download handler
-                var downloadHandle = CreateDownloadHandler(hashCode, updateFunc);
+                var downloadHandle = CreateDownloadHandler(item, hashCode, updateFunc);
                 await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                 // Get all subscription content (main subscription + additional subscriptions)
@@ -80,9 +80,18 @@ public static class SubscriptionHandler
         return true;
     }
 
-    private static DownloadService CreateDownloadHandler(string hashCode, Func<bool, string, Task> updateFunc)
+    private static DownloadService CreateDownloadHandler(SubItem item, string hashCode, Func<bool, string, Task> updateFunc)
     {
-        var downloadHandle = new DownloadService();
+        if (!HttpRequestHeadersHelper.TryParse(item.RequestHeaders, out var requestHeaders))
+        {
+            throw new FormatException(ResUI.SubRequestHeadersInvalid);
+        }
+
+        var downloadHandle = new DownloadService
+        {
+            AcceptHeader = "*/*",
+            RequestHeaders = requestHeaders
+        };
         downloadHandle.Error += (sender2, args) =>
         {
             updateFunc?.Invoke(false, $"{hashCode}{args.GetException().Message}");
@@ -133,12 +142,12 @@ public static class SubscriptionHandler
 
             if (!url.Contains("target="))
             {
-                url += string.Format("&target={0}", item.ConvertTarget);
+                url += $"&target={item.ConvertTarget}";
             }
 
             if (!url.Contains("config="))
             {
-                url += string.Format("&config={0}", Global.SubConvertConfig.FirstOrDefault());
+                url += $"&config={Global.SubConvertConfig.FirstOrDefault()}";
             }
         }
 

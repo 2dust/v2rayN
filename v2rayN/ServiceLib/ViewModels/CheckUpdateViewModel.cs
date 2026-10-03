@@ -1,20 +1,23 @@
 namespace ServiceLib.ViewModels;
 
-public class CheckUpdateViewModel : MyReactiveObject
+public partial class CheckUpdateViewModel : MyReactiveObject
 {
     private const string _geo = "GeoFiles";
-    private readonly string _v2rayN = ECoreType.v2rayN.ToString();
+    private readonly ECoreType _v2rayN = ECoreType.v2rayN;
     private List<CheckUpdateModel> _lstUpdated = [];
     private static readonly string _tag = "CheckUpdateViewModel";
 
-    public IObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = new ObservableCollectionExtended<CheckUpdateModel>();
-    public ReactiveCommand<Unit, Unit> CheckUpdateCmd { get; }
-    [Reactive] public bool EnableCheckPreReleaseUpdate { get; set; }
+    public EventChannel<RxVoid> ReloadRequested { get; } = new();
 
-    public CheckUpdateViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public BulkObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = [];
+    public ReactiveCommand<RxVoid, RxVoid> CheckUpdateCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CheckOnlyCmd { get; }
+
+    [Reactive] public partial bool EnableUpdateViaProxy { get; set; }
+
+    public CheckUpdateViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
@@ -23,58 +26,110 @@ public class CheckUpdateViewModel : MyReactiveObject
             _ = UpdateView(_v2rayN, ex.Message);
         });
 
-        EnableCheckPreReleaseUpdate = _config.CheckUpdateItem.CheckPreReleaseUpdate;
-
-        this.WhenAnyValue(
-        x => x.EnableCheckPreReleaseUpdate,
-        y => y == true)
-            .Subscribe(c => _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate);
-
-        RefreshCheckUpdateItems();
-    }
-
-    private void RefreshCheckUpdateItems()
-    {
-        CheckUpdateModels.Clear();
-
-        if (RuntimeInformation.ProcessArchitecture != Architecture.X86)
+        CheckOnlyCmd = ReactiveCommand.CreateFromTask(CheckOnly);
+        CheckOnlyCmd.ThrownExceptions.Subscribe(ex =>
         {
-            CheckUpdateModels.Add(GetCheckUpdateModel(_v2rayN));
-            //Not Windows and under Win10
-            if (!(Utils.IsWindows() && Environment.OSVersion.Version.Major < 10))
-            {
-                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.Xray.ToString()));
-                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.mihomo.ToString()));
-                CheckUpdateModels.Add(GetCheckUpdateModel(ECoreType.sing_box.ToString()));
-            }
-        }
-        CheckUpdateModels.Add(GetCheckUpdateModel(_geo));
+            Logging.SaveLog(_tag, ex);
+            _ = UpdateView(_v2rayN, ex.Message);
+        });
+
+        EnableUpdateViaProxy = _config.CheckUpdateItem.UpdateViaProxy;
+
+        this.WhenAnyValue(x => x.EnableUpdateViaProxy)
+            .Subscribe(c => _ = OnUpdateViaProxyChanged());
+
+        AppEvents.HasUpdateNotified
+         .AsObservable()
+         .ObserveOn(RxSchedulers.MainThreadScheduler)
+         .Subscribe(bl => RefreshCheckUpdateItems(bl));
+
+        RefreshCheckUpdateItems(true);
     }
 
-    private CheckUpdateModel GetCheckUpdateModel(string coreType)
+    private void RefreshCheckUpdateItems(bool hasUpdate)
+    {
+        if (!hasUpdate)
+        {
+            return;
+        }
+
+        var models = CoreInfoManager.Instance.GetCheckUpdateCoreTypes()
+                        .Select(t => GetCheckUpdateModel(t))
+                        .ToList();
+
+        models.Add(GetGeoFileCheckUpdateModel());
+
+        CheckUpdateModels.ReplaceRange(models);
+    }
+
+    private CheckUpdateModel GetCheckUpdateModel(ECoreType coreType)
     {
         if (coreType == _v2rayN && Utils.IsPackagedInstall())
         {
             return new()
             {
                 IsSelected = false,
+                IsCheckPreRelease = false,
+                ShowCheckPreRelease = false,
                 CoreType = coreType,
-                Remarks = ResUI.menuCheckUpdate + " (Not Support)",
+                IsGeoFile = false,
+                Remarks = ResUI.menuCheckUpdate + $" ({ResUI.MsgNotSupport})",
             };
         }
 
+        AppManager.Instance.LastCheckUpdateResults.TryGetValue(coreType, out var lastResult);
         return new()
         {
-            IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType) ?? true,
+            IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType.ToString()) ?? true,
+            IsCheckPreRelease = _config.CheckUpdateItem.CheckPreReleaseCoreTypes?.Contains(coreType.ToString()) ?? false,
+            ShowCheckPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(coreType, true),
             CoreType = coreType,
+            IsGeoFile = false,
+            Remarks = lastResult ?? ResUI.menuCheckUpdate,
+        };
+    }
+
+    private CheckUpdateModel GetGeoFileCheckUpdateModel()
+    {
+        return new()
+        {
+            IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(_geo) ?? true,
+            IsCheckPreRelease = false,
+            ShowCheckPreRelease = false,
+            CoreType = null,
+            IsGeoFile = true,
             Remarks = ResUI.menuCheckUpdate,
         };
     }
 
+    private async Task OnUpdateViaProxyChanged()
+    {
+        if (_config.CheckUpdateItem.UpdateViaProxy == EnableUpdateViaProxy)
+        {
+            return;
+        }
+        _config.CheckUpdateItem.UpdateViaProxy = EnableUpdateViaProxy;
+        await SaveSelectedCoreTypes();
+    }
+
     private async Task SaveSelectedCoreTypes()
     {
-        _config.CheckUpdateItem.SelectedCoreTypes = CheckUpdateModels.Where(t => t.IsSelected == true).Select(t => t.CoreType ?? "").ToList();
+        _config.CheckUpdateItem.SelectedCoreTypes =
+            CheckUpdateModels.Where(t => t.IsSelected == true)
+                            .Select(t => t.CoreTypeForStorage)
+                            .ToList();
+
+        _config.CheckUpdateItem.CheckPreReleaseCoreTypes =
+           CheckUpdateModels.Where(t => t.IsCheckPreRelease == true)
+                           .Select(t => t.CoreTypeForStorage)
+                           .ToList();
+
         await ConfigHandler.SaveConfig(_config);
+    }
+
+    private async Task CheckOnly()
+    {
+        await Task.Run(CheckOnlyTask);
     }
 
     private async Task CheckUpdate()
@@ -82,11 +137,8 @@ public class CheckUpdateViewModel : MyReactiveObject
         await Task.Run(CheckUpdateTask);
     }
 
-    private async Task CheckUpdateTask()
+    private async Task CheckOnlyTask()
     {
-        _lstUpdated.Clear();
-        _lstUpdated = CheckUpdateModels.Where(x => x.IsSelected == true)
-                .Select(x => new CheckUpdateModel() { CoreType = x.CoreType }).ToList();
         await SaveSelectedCoreTypes();
 
         for (var k = CheckUpdateModels.Count - 1; k >= 0; k--)
@@ -98,7 +150,56 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
 
             await UpdateView(item.CoreType, "...");
-            if (item.CoreType == _geo)
+
+            if (item.IsGeoFile || item.CoreType == null)
+            {
+                await UpdateView(item.CoreType, ResUI.menuCheckOnly + $" ({ResUI.MsgNotSupport})");
+                continue;
+            }
+
+            if (item.CoreType == null)
+            {
+                await UpdateView(item.CoreType, ResUI.MsgNotSupport);
+                continue;
+            }
+
+            var updateService = new UpdateService(_config, async (success, msg) => await Task.CompletedTask);
+            var result = await updateService.CheckHasUpdateOnly(item.CoreType.Value, item.IsCheckPreRelease, EnableUpdateViaProxy);
+            if (result.Success && result.Version != null)
+            {
+                await UpdateView(item.CoreType, string.Format(ResUI.MsgCheckUpdateHasNewVersion, item.CoreType, result.Version));
+            }
+            else
+            {
+                await UpdateView(item.CoreType, result.Msg);
+            }
+        }
+    }
+
+    private async Task CheckUpdateTask()
+    {
+        _lstUpdated.Clear();
+        _lstUpdated = CheckUpdateModels
+            .Where(x => x.IsSelected == true)
+            .Select(x => new CheckUpdateModel()
+            {
+                CoreType = x.CoreType,
+                IsGeoFile = x.IsGeoFile
+            })
+            .ToList();
+        await SaveSelectedCoreTypes();
+
+        for (var k = CheckUpdateModels.Count - 1; k >= 0; k--)
+        {
+            var item = CheckUpdateModels[k];
+            if (item.IsSelected != true)
+            {
+                continue;
+            }
+
+            await UpdateView(item.CoreType, "...");
+
+            if (item.IsGeoFile)
             {
                 await CheckUpdateGeo();
             }
@@ -106,25 +207,21 @@ public class CheckUpdateViewModel : MyReactiveObject
             {
                 if (Utils.IsPackagedInstall())
                 {
-                    await UpdateView(_v2rayN, "Not Support");
+                    await UpdateView(_v2rayN, ResUI.MsgNotSupport);
                     continue;
                 }
-                await CheckUpdateN(EnableCheckPreReleaseUpdate);
+                await CheckUpdateN(item.IsCheckPreRelease);
             }
-            else if (item.CoreType == ECoreType.Xray.ToString())
+            else if (item.CoreType.HasValue)
             {
-                await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
-            }
-            else
-            {
-                await CheckUpdateCore(item, false);
+                await CheckUpdateCore(item, item.IsCheckPreRelease);
             }
         }
 
         await UpdateFinished();
     }
 
-    private void UpdatedPlusPlus(string coreType, string fileName)
+    private void UpdatedPlusPlus(ECoreType? coreType, string fileName)
     {
         var item = _lstUpdated.FirstOrDefault(x => x.CoreType == coreType);
         if (item == null)
@@ -142,14 +239,14 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         async Task _updateUI(bool success, string msg)
         {
-            await UpdateView(_geo, msg);
+            await UpdateView(null, msg);
             if (success)
             {
-                UpdatedPlusPlus(_geo, "");
+                UpdatedPlusPlus(null, "");
             }
         }
-        await new UpdateService(_config, _updateUI).UpdateGeoFileAll()
-            .ContinueWith(t => UpdatedPlusPlus(_geo, ""));
+        await new UpdateService(_config, _updateUI).UpdateGeoFileAll(EnableUpdateViaProxy)
+            .ContinueWith(t => UpdatedPlusPlus(null, ""));
     }
 
     private async Task CheckUpdateN(bool preRelease)
@@ -163,7 +260,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
-        await new UpdateService(_config, _updateUI).CheckUpdateGuiN(preRelease)
+        await new UpdateService(_config, _updateUI).CheckUpdateGuiN(preRelease, EnableUpdateViaProxy)
             .ContinueWith(t => UpdatedPlusPlus(_v2rayN, ""));
     }
 
@@ -175,13 +272,15 @@ public class CheckUpdateViewModel : MyReactiveObject
             if (success)
             {
                 await UpdateView(model.CoreType, ResUI.MsgUpdateV2rayCoreSuccessfullyMore);
-
                 UpdatedPlusPlus(model.CoreType, msg);
             }
         }
-        var type = (ECoreType)Enum.Parse(typeof(ECoreType), model.CoreType);
-        await new UpdateService(_config, _updateUI).CheckUpdateCore(type, preRelease)
-            .ContinueWith(t => UpdatedPlusPlus(model.CoreType, ""));
+
+        if (model.CoreType.HasValue)
+        {
+            await new UpdateService(_config, _updateUI).CheckUpdateCore(model.CoreType.Value, preRelease, EnableUpdateViaProxy)
+                .ContinueWith(t => UpdatedPlusPlus(model.CoreType, ""));
+        }
     }
 
     private async Task UpdateFinished()
@@ -204,10 +303,9 @@ public class CheckUpdateViewModel : MyReactiveObject
 
     private async Task UpdateFinishedSub(bool blReload)
     {
-        RxApp.MainThreadScheduler.Schedule(blReload, (scheduler, blReload) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
             _ = UpdateFinishedResult(blReload);
-            return Disposable.Empty;
         });
         await Task.CompletedTask;
     }
@@ -216,7 +314,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         if (blReload)
         {
-            AppEvents.ReloadRequested.Publish();
+            ReloadRequested.Publish();
         }
         else
         {
@@ -257,7 +355,7 @@ public class CheckUpdateViewModel : MyReactiveObject
     {
         foreach (var item in _lstUpdated)
         {
-            if (item.FileName.IsNullOrEmpty())
+            if (item.FileName.IsNullOrEmpty() || item.IsGeoFile)
             {
                 continue;
             }
@@ -267,7 +365,9 @@ public class CheckUpdateViewModel : MyReactiveObject
             {
                 continue;
             }
-            var toPath = Utils.GetBinPath("", item.CoreType);
+
+            var coreTypeStr = item.CoreType?.ToString() ?? "";
+            var toPath = Utils.GetBinPath("", coreTypeStr);
 
             if (fileName.Contains(".tar.gz"))
             {
@@ -284,7 +384,7 @@ public class CheckUpdateViewModel : MyReactiveObject
             }
             else if (fileName.Contains(".gz"))
             {
-                FileUtils.DecompressFile(fileName, toPath, item.CoreType);
+                FileUtils.DecompressFile(fileName, toPath, coreTypeStr);
             }
             else
             {
@@ -296,7 +396,7 @@ public class CheckUpdateViewModel : MyReactiveObject
                 var filesList = new DirectoryInfo(toPath).GetFiles().Select(u => u.FullName).ToList();
                 foreach (var file in filesList)
                 {
-                    await Utils.SetLinuxChmod(Path.Combine(toPath, item.CoreType.ToLower()));
+                    await Utils.SetLinuxChmod(Path.Combine(toPath, coreTypeStr.ToLower()));
                 }
             }
 
@@ -309,25 +409,25 @@ public class CheckUpdateViewModel : MyReactiveObject
         }
     }
 
-    private async Task UpdateView(string coreType, string msg)
+    private async Task UpdateView(ECoreType? coreType, string msg)
     {
         var item = new CheckUpdateModel()
         {
             CoreType = coreType,
+            IsGeoFile = coreType == null,
             Remarks = msg,
         };
 
-        RxApp.MainThreadScheduler.Schedule(item, (scheduler, model) =>
+        RxSchedulers.MainThreadScheduler.Schedule(() =>
         {
-            _ = UpdateViewResult(model);
-            return Disposable.Empty;
+            _ = UpdateViewResult(item);
         });
         await Task.CompletedTask;
     }
 
     public async Task UpdateViewResult(CheckUpdateModel model)
     {
-        var found = CheckUpdateModels.FirstOrDefault(t => t.CoreType == model.CoreType);
+        var found = CheckUpdateModels.FirstOrDefault(t => t.CoreType == model.CoreType && t.IsGeoFile == model.IsGeoFile);
         if (found == null)
         {
             return;

@@ -1,23 +1,54 @@
 namespace ServiceLib.ViewModels;
 
-public class SubEditViewModel : MyReactiveObject
+public partial class SubEditViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     [Reactive]
-    public SubItem SelectedSource { get; set; }
+    public partial SubItem SelectedSource { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    [Reactive]
+    public partial string CustomCoreType { get; set; }
 
-    public SubEditViewModel(SubItem subItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    [Reactive]
+    public partial string PrevProfile { get; set; }
+
+    [Reactive]
+    public partial string NextProfile { get; set; }
+
+    public ReactiveCommand<RxVoid, RxVoid> SelectPrevProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SelectNextProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
+
+    public SubEditViewModel(SubItem subItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
+        SelectPrevProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var profileItem = await SelectProfileAsync();
+            if (profileItem != null)
+            {
+                PrevProfile = profileItem.Remarks;
+            }
+        });
+        SelectNextProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var profileItem = await SelectProfileAsync();
+            if (profileItem != null)
+            {
+                NextProfile = profileItem.Remarks;
+            }
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSubAsync();
         });
 
         SelectedSource = subItem.Id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
+        CustomCoreType = SelectedSource.CustomCoreType?.ToString() ?? string.Empty;
+        PrevProfile = SelectedSource.PrevProfile;
+        NextProfile = SelectedSource.NextProfile;
     }
 
     private async Task SaveSubAsync()
@@ -46,14 +77,37 @@ public class SubEditViewModel : MyReactiveObject
             }
         }
 
+        if (!HttpRequestHeadersHelper.TryParse(SelectedSource.RequestHeaders, out _))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.SubRequestHeadersInvalid);
+            return;
+        }
+
+        SelectedSource.CustomCoreType = Enum.TryParse<ECoreType>(CustomCoreType, out var coreType) ? coreType : null;
+        SelectedSource.PrevProfile = PrevProfile;
+        SelectedSource.NextProfile = NextProfile;
+
         if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
         else
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
         }
+    }
+
+    private async Task<ProfileItem?> SelectProfileAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return null;
+        }
+        var profileItem = await profileSelectViewModel.GetProfileItem();
+        return profileItem;
     }
 }

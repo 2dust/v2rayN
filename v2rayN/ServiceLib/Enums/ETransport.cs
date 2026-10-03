@@ -2,7 +2,7 @@ namespace ServiceLib.Enums;
 
 public enum ETransport
 {
-    tcp,
+    raw,
     kcp,
     ws,
     httpupgrade,

@@ -2,7 +2,9 @@
     x:Class="v2rayN.Desktop.Views.ProfilesSelectWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
@@ -10,32 +12,37 @@
     Width="800"
     Height="450"
     x:DataType="vms:ProfilesSelectViewModel"
+    Design.DataContext="{x:Static dd:DesignData.ProfilesSelect}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
-    <DockPanel Margin="8">
-        <!--  Bottom buttons  -->
+    <Window.Resources>
+        <conv:DelayColorConverter x:Key="DelayColorConverter" />
+    </Window.Resources>
+
+    <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
-            Margin="4"
+            Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
                 Width="100"
-                Click="BtnSave_Click"
-                Content="{x:Static resx:ResUI.TbConfirm}" />
+                Content="{x:Static resx:ResUI.TbConfirm}"
+                IsDefault="True" />
             <Button
                 x:Name="btnCancel"
                 Width="100"
-                Margin="8,0"
-                Content="{x:Static resx:ResUI.TbCancel}" />
+                Margin="{StaticResource MarginLr8}"
+                Content="{x:Static resx:ResUI.TbCancel}"
+                IsCancel="True" />
         </StackPanel>
 
         <Grid>
             <DockPanel>
                 <!--  Top tools  -->
-                <WrapPanel Margin="4" DockPanel.Dock="Top">
+                <WrapPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
                     <ListBox
                         x:Name="lstGroup"
                         Margin="{StaticResource MarginLr4}"
@@ -62,10 +69,10 @@
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"
-                        Margin="8,0"
+                        Margin="{StaticResource MarginLr4}"
                         VerticalContentAlignment="Center"
                         Text="{Binding ServerFilter, Mode=TwoWay}"
-                        Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}" />
                 </WrapPanel>
 
                 <!--  Profiles grid  -->
@@ -90,17 +97,17 @@
                             Header="{x:Static resx:ResUI.LvServiceType}"
                             Tag="ConfigType" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             Header="{x:Static resx:ResUI.LvRemarks}"
                             Tag="Remarks" />
                         <DataGridTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             Header="{x:Static resx:ResUI.LvAddress}"
                             Tag="Address" />
                         <DataGridTextColumn
-                            Width="60"
+                            Width="100"
                             Binding="{Binding Port}"
                             Header="{x:Static resx:ResUI.LvPort}"
                             Tag="Port" />
@@ -119,6 +126,26 @@
                             Binding="{Binding SubRemarks}"
                             Header="{x:Static resx:ResUI.LvSubscription}"
                             Tag="SubRemarks" />
+                        <DataGridTemplateColumn SortMemberPath="Delay" Tag="Delay">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Margin="{StaticResource MarginLr8}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Delay, Converter={StaticResource DelayColorConverter}}"
+                                        Text="{Binding Path=DelayVal, Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}"
+                            Tag="Speed" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

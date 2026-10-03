@@ -1,5 +1,6 @@
 namespace ServiceLib.Handler.SysProxy;
 
+[SupportedOSPlatform("macos")]
 public static class ProxySettingOSX
 {
     private static readonly string _proxySetFileName = $"{Global.ProxySetOSXShellFileName.Replace(Global.NamespaceSample, "")}.sh";

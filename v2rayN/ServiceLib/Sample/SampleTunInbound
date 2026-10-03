@@ -1,0 +1,28 @@
+{
+    "tag": "tun",
+    "protocol": "tun",
+    "settings": {
+        "name": "xray_tun",
+        "MTU": 9000,
+        "gateway": [
+            "172.18.0.1/30",
+            "fdfe:dcba:9876::1/126"
+        ],
+        "dns": [
+            "1.1.1.1",
+            "8.8.8.8"
+        ],
+        "autoSystemRoutingTable": [
+            "0.0.0.0/0",
+            "::/0"
+        ],
+        "autoOutboundsInterface": "auto"
+    },
+    "sniffing": {
+        "enabled": true,
+        "destOverride": [
+            "http",
+            "tls"
+        ]
+    }
+}

@@ -2,12 +2,12 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigSingboxService
 {
-    private async Task<int> GenExperimental(SingboxConfig singboxConfig)
+    private void GenExperimental()
     {
         //if (_config.guiItem.enableStatistics)
         {
-            singboxConfig.experimental ??= new Experimental4Sbox();
-            singboxConfig.experimental.clash_api = new Clash_Api4Sbox()
+            _coreConfig.experimental ??= new Experimental4Sbox();
+            _coreConfig.experimental.clash_api = new Clash_Api4Sbox()
             {
                 external_controller = $"{Global.Loopback}:{AppManager.Instance.StatePort2}",
             };
@@ -15,15 +15,13 @@ public partial class CoreConfigSingboxService
 
         if (_config.CoreBasicItem.EnableCacheFile4Sbox)
         {
-            singboxConfig.experimental ??= new Experimental4Sbox();
-            singboxConfig.experimental.cache_file = new CacheFile4Sbox()
+            _coreConfig.experimental ??= new Experimental4Sbox();
+            _coreConfig.experimental.cache_file = new CacheFile4Sbox()
             {
                 enabled = true,
                 path = Utils.GetBinPath("cache.db"),
-                store_fakeip = _config.SimpleDNSItem.FakeIP == true
+                store_fakeip = context.SimpleDnsItem.FakeIP == true
             };
         }
-
-        return await Task.FromResult(0);
     }
 }

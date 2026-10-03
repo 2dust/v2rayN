@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
@@ -11,11 +12,11 @@
     Width="900"
     Height="600"
     x:DataType="vms:SubSettingViewModel"
+    Design.DataContext="{x:Static dd:DesignData.SubSetting}"
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <dialogHost:DialogHost
-        Background="Gray"
         CloseOnClickAway="True"
         DisableOpeningAnimation="True"
         Identifier="dialogHostSub">
@@ -40,6 +41,14 @@
                 <DataGrid.KeyBindings>
                     <KeyBinding Command="{Binding SubDeleteCmd}" Gesture="Delete" />
                 </DataGrid.KeyBindings>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuSubAdd2" Header="{x:Static resx:ResUI.menuSubAdd}" />
+                        <MenuItem x:Name="menuSubDelete2" Header="{x:Static resx:ResUI.menuSubDelete}" />
+                        <MenuItem x:Name="menuSubEdit2" Header="{x:Static resx:ResUI.menuSubEdit}" />
+                        <MenuItem x:Name="menuSubShare2" Header="{x:Static resx:ResUI.menuSubShare}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"

@@ -1,100 +1,108 @@
 namespace ServiceLib.ViewModels;
 
-public class MsgViewModel : MyReactiveObject
+public partial class MsgViewModel : MyReactiveObject
 {
+    public Interaction<string, RxVoid> ShowMsgInteraction { get; } = new();
+
     private readonly ConcurrentQueue<string> _queueMsg = new();
     private volatile bool _lastMsgFilterNotAvailable;
-    private int _showLock = 0; // 0 = unlocked, 1 = locked
-    public int NumMaxMsg { get; } = 500;
+    public int NumMaxMsg => 500;
 
     [Reactive]
-    public string MsgFilter { get; set; }
+    public partial string MsgFilter { get; set; }
 
     [Reactive]
-    public bool AutoRefresh { get; set; }
+    public partial bool AutoRefresh { get; set; }
 
-    public MsgViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public MsgViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
 
         this.WhenAnyValue(
-           x => x.MsgFilter)
-               .Subscribe(c => DoMsgFilter());
+                x => x.MsgFilter)
+            .Subscribe(c => DoMsgFilter());
 
-        this.WhenAnyValue(
-          x => x.AutoRefresh,
-          y => y == true)
-              .Subscribe(c => _config.MsgUIItem.AutoRefresh = AutoRefresh);
+        this.WhenAnyValue(x => x.AutoRefresh)
+            .Subscribe(_ => _config.MsgUIItem.AutoRefresh = AutoRefresh);
 
         AppEvents.SendMsgViewRequested
-         .AsObservable()
-         //.ObserveOn(RxApp.MainThreadScheduler)
-         .Subscribe(content => _ = AppendQueueMsg(content));
+            .AsObservable()
+            .Subscribe(EnqueueQueueMsg);
+
+        this.WhenActivated(disposables =>
+        {
+            Signal.Every(TimeSpan.FromSeconds(1))
+                .Where(_ => AutoRefresh && AppManager.Instance.ShowInTaskbar)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(_ => FlushQueueToView())
+                .DisposeWith(disposables);
+        });
     }
 
-    private async Task AppendQueueMsg(string msg)
+    private void FlushQueueToView()
     {
-        if (AutoRefresh == false)
+        if (!AutoRefresh || _queueMsg.IsEmpty)
         {
             return;
         }
 
-        EnqueueQueueMsg(msg);
-
-        if (!_config.UiItem.ShowInTaskbar)
+        if (!AppManager.Instance.ShowInTaskbar)
         {
             return;
         }
 
-        if (Interlocked.CompareExchange(ref _showLock, 1, 0) != 0)
+        var sb = new StringBuilder();
+        while (_queueMsg.TryDequeue(out var msg))
         {
-            return;
+            sb.Append(msg);
         }
 
-        try
+        if (sb.Length > 0)
         {
-            await Task.Delay(500).ConfigureAwait(false);
-
-            var sb = new StringBuilder();
-            while (_queueMsg.TryDequeue(out var line))
-            {
-                sb.Append(line);
-            }
-
-            await _updateView?.Invoke(EViewAction.DispatcherShowMsg, sb.ToString());
-        }
-        finally
-        {
-            Interlocked.Exchange(ref _showLock, 0);
+            ShowMsgInteraction.HandleSafe(sb.ToString()).Subscribe();
         }
     }
 
     private void EnqueueQueueMsg(string msg)
     {
+        if (string.IsNullOrEmpty(msg))
+        {
+            return;
+        }
+
         //filter msg
         if (MsgFilter.IsNotEmpty() && !_lastMsgFilterNotAvailable)
         {
             try
             {
-                if (!Regex.IsMatch(msg, MsgFilter))
+                if (!Utils.IsRegexMatch(msg, MsgFilter))
                 {
                     return;
                 }
             }
             catch (Exception ex)
             {
-                _queueMsg.Enqueue(ex.Message);
+                EnqueueWithLimit(ex.Message);
                 _lastMsgFilterNotAvailable = true;
             }
         }
 
-        _queueMsg.Enqueue(msg);
-        if (!msg.EndsWith(Environment.NewLine))
+        var formattedMsg = msg.EndsWith(Environment.NewLine)
+            ? msg
+            : msg + Environment.NewLine;
+
+        EnqueueWithLimit(formattedMsg);
+    }
+
+    private void EnqueueWithLimit(string item)
+    {
+        _queueMsg.Enqueue(item);
+
+        while (_queueMsg.Count > NumMaxMsg)
         {
-            _queueMsg.Enqueue(Environment.NewLine);
+            _queueMsg.TryDequeue(out _);
         }
     }
 

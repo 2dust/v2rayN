@@ -1,35 +1,56 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingRuleDetailsViewModel : MyReactiveObject
+public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
 {
+    public event EventHandler? RequestClose;
+
     public IList<string> ProtocolItems { get; set; }
     public IList<string> InboundTagItems { get; set; }
 
     [Reactive]
-    public RulesItem SelectedSource { get; set; }
+    public partial RulesItem SelectedSource { get; set; }
 
     [Reactive]
-    public string Domain { get; set; }
+    public partial string Domain { get; set; }
 
     [Reactive]
-    public string IP { get; set; }
+    public partial string IP { get; set; }
 
     [Reactive]
-    public string Process { get; set; }
+    public partial string Process { get; set; }
 
     [Reactive]
-    public string? RuleType { get; set; }
+    public partial string? RuleType { get; set; }
 
     [Reactive]
-    public bool AutoSort { get; set; }
+    public partial bool AutoSort { get; set; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
+    [Reactive]
+    public partial string OutboundTag { get; set; }
 
-    public RoutingRuleDetailsViewModel(RulesItem rulesItem, Func<EViewAction, object?, Task<bool>>? updateView)
+    [Reactive]
+    public partial string Remarks { get; set; }
+
+    [Reactive]
+    public partial string Port { get; set; }
+
+    [Reactive]
+    public partial string Network { get; set; }
+
+    [Reactive]
+    public partial bool Enabled { get; set; }
+
+    public ReactiveCommand<RxVoid, RxVoid> SelectProfileCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
+
+    public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
+        SelectProfileCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await SelectProfileAsync();
+        });
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveRulesAsync();
@@ -51,13 +72,18 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         IP = Utils.List2String(SelectedSource.Ip, true);
         Process = Utils.List2String(SelectedSource.Process, true);
         RuleType = SelectedSource.RuleType?.ToString();
+        OutboundTag = SelectedSource.OutboundTag;
+        Remarks = SelectedSource.Remarks;
+        Port = SelectedSource.Port;
+        Network = SelectedSource.Network;
+        Enabled = SelectedSource.Enabled;
     }
 
     private async Task SaveRulesAsync()
     {
         Domain = Utils.Convert2Comma(Domain);
         IP = Utils.Convert2Comma(IP);
-        Process = Utils.Convert2Comma(Process);
+        Process = Utils.ParseProcess(Process);
 
         if (AutoSort)
         {
@@ -73,7 +99,12 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
         }
         SelectedSource.Protocol = ProtocolItems?.ToList();
         SelectedSource.InboundTag = InboundTagItems?.ToList();
-        SelectedSource.RuleType = RuleType.IsNullOrEmpty() ? null : (ERuleType)Enum.Parse(typeof(ERuleType), RuleType);
+        SelectedSource.RuleType = RuleType.IsNullOrEmpty() ? null : Enum.Parse<ERuleType>(RuleType);
+        SelectedSource.OutboundTag = OutboundTag;
+        SelectedSource.Remarks = Remarks;
+        SelectedSource.Port = Port;
+        SelectedSource.Network = Network;
+        SelectedSource.Enabled = Enabled;
 
         var hasRule = SelectedSource.Domain?.Count > 0
           || SelectedSource.Ip?.Count > 0
@@ -88,6 +119,23 @@ public class RoutingRuleDetailsViewModel : MyReactiveObject
             return;
         }
         //NoticeHandler.Instance.Enqueue(ResUI.OperationSuccess);
-        await _updateView?.Invoke(EViewAction.CloseWindow, null);
+        RequestClose?.Invoke(this, EventArgs.Empty);
+        await Task.CompletedTask;
+    }
+
+    private async Task SelectProfileAsync()
+    {
+        var profileSelectViewModel = new ProfilesSelectViewModel();
+        profileSelectViewModel.SetConfigTypeFilter([EConfigType.Custom], exclude: true);
+        var result = await AppManager.Instance.WindowDialog.ShowDialogAsync(profileSelectViewModel);
+        if (result != true)
+        {
+            return;
+        }
+        var profileItem = await profileSelectViewModel.GetProfileItem();
+        if (profileItem != null)
+        {
+            OutboundTag = profileItem.Remarks;
+        }
     }
 }

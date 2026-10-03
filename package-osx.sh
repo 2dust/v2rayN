@@ -22,7 +22,17 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
 <plist version="1.0">
 <dict>
   <key>CFBundleDevelopmentRegion</key>
-  <string>English</string>
+  <string>en</string>
+  <key>CFBundleLocalizations</key>
+  <array>
+    <string>zh-Hans</string>
+    <string>zh-Hant</string>
+    <string>en</string>
+    <string>fa</string>
+    <string>fr</string>
+    <string>ru</string>
+    <string>hu</string>
+  </array>
   <key>CFBundleDisplayName</key>
   <string>v2rayN</string>
   <key>CFBundleExecutable</key>
@@ -44,7 +54,7 @@ cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
   <key>NSHighResolutionCapable</key>
   <true/>
   <key>LSMinimumSystemVersion</key>
-  <string>12.7</string>
+  <string>13.6</string>
 </dict>
 </plist>
 EOF

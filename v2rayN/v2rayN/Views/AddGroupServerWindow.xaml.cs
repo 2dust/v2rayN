@@ -2,17 +2,15 @@ namespace v2rayN.Views;
 
 public partial class AddGroupServerWindow
 {
-    public AddGroupServerWindow(ProfileItem profileItem)
+    public AddGroupServerWindow()
     {
         InitializeComponent();
 
-        Owner = Application.Current.MainWindow;
         Loaded += Window_Loaded;
         PreviewKeyDown += AddGroupServerWindow_PreviewKeyDown;
         lstChild.SelectionChanged += LstChild_SelectionChanged;
         menuSelectAllChild.Click += MenuSelectAllChild_Click;
-
-        ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
+        tabControl.SelectionChanged += TabControl_SelectionChanged;
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -23,31 +21,28 @@ public partial class AddGroupServerWindow
             ResUI.TbRoundRobin,
             ResUI.TbLeastLoad,
         };
-
-        switch (profileItem.ConfigType)
-        {
-            case EConfigType.PolicyGroup:
-                Title = ResUI.TbConfigTypePolicyGroup;
-                break;
-
-            case EConfigType.ProxyChain:
-                Title = ResUI.TbConfigTypeProxyChain;
-                gridPolicyGroup.Visibility = Visibility.Collapsed;
-                break;
-        }
+        cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .KeepNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.Filter, v => v.txtFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm => vm.AllProfilePreviewItemsObs, v => v.lstPreviewChild.ItemsSource).DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
@@ -59,15 +54,23 @@ public partial class AddGroupServerWindow
         WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
     }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
+    private void InitializeData(ProfileItem profileItem)
     {
-        switch (action)
+        switch (profileItem.ConfigType)
         {
-            case EViewAction.CloseWindow:
-                DialogResult = true;
+            case EConfigType.PolicyGroup:
+                Title = ResUI.TbConfigTypePolicyGroup;
+                break;
+
+            case EConfigType.ProxyChain:
+                Title = ResUI.TbConfigTypeProxyChain;
+                gridPolicyGroup.Visibility = Visibility.Collapsed;
+                if (tabControl.Items.Count > 0)
+                {
+                    tabControl.Items.RemoveAt(0);
+                }
                 break;
         }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -117,25 +120,6 @@ public partial class AddGroupServerWindow
         }
     }
 
-    private async void MenuAddChild_Click(object sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        if (ViewModel?.SelectedSource?.ConfigType == EConfigType.PolicyGroup)
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
-        }
-        else
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
-        }
-        selectWindow.AllowMultiSelect(true);
-        if (selectWindow.ShowDialog() == true)
-        {
-            var profiles = await selectWindow.ProfileItems;
-            ViewModel?.ChildItemsObs.AddRange(profiles);
-        }
-    }
-
     private void LstChild_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         if (ViewModel != null)
@@ -147,5 +131,30 @@ public partial class AddGroupServerWindow
     private void MenuSelectAllChild_Click(object sender, RoutedEventArgs e)
     {
         lstChild.SelectAll();
+    }
+
+    private async void TabControl_SelectionChanged(object? sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        try
+        {
+            if (e.Source is not System.Windows.Controls.TabControl tc)
+            {
+                return;
+            }
+            if (!(tc.SelectedIndex == tc.Items.Count - 1 && tc.Items.Count > 0))
+            {
+                return;
+            }
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            await ViewModel.UpdatePreviewList();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 }

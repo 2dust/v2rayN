@@ -1,6 +1,6 @@
 namespace v2rayN.Manager;
 
-public sealed class HotkeyManager
+public sealed partial class HotkeyManager
 {
     private static readonly Lazy<HotkeyManager> _instance = new(() => new());
     public static HotkeyManager Instance = _instance.Value;
@@ -165,11 +165,13 @@ public sealed class HotkeyManager
         }
     }
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool RegisterHotKey(nint hWnd, int id, int fsModifiers, int vlc);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool RegisterHotKey(nint hWnd, int id, int fsModifiers, int vlc);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool UnregisterHotKey(nint hWnd, int id);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool UnregisterHotKey(nint hWnd, int id);
 
     [Flags]
     private enum KeyModifiers

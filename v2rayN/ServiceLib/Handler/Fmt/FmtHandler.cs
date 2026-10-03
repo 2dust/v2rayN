@@ -19,6 +19,7 @@ public class FmtHandler
                 EConfigType.TUIC => TuicFmt.ToUri(item),
                 EConfigType.WireGuard => WireguardFmt.ToUri(item),
                 EConfigType.Anytls => AnytlsFmt.ToUri(item),
+                EConfigType.Naive => NaiveFmt.ToUri(item),
                 _ => null,
             };
 
@@ -52,7 +53,9 @@ public class FmtHandler
             {
                 return ShadowsocksFmt.Resolve(str, out msg);
             }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS]))
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS])
+                    || str.StartsWith(Global.SOCKS5Protocol)
+                    || str.StartsWith(Global.SOCKS4Protocol))
             {
                 return SocksFmt.Resolve(str, out msg);
             }
@@ -64,9 +67,15 @@ public class FmtHandler
             {
                 return VLESSFmt.Resolve(str, out msg);
             }
-            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2]) || str.StartsWith(Global.Hysteria2ProtocolShare))
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Hysteria2])
+                    || str.StartsWith(Global.Hysteria2ProtocolShare))
             {
                 return Hysteria2Fmt.Resolve(str, out msg);
+            }
+            else if (str.StartsWith(Global.Hysteria2RealmProtocolShare)
+                || str.StartsWith(Global.Hysteria2HttpRealmProtocolShare))
+            {
+                return Hysteria2Fmt.ResolveRealm(str, out msg);
             }
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.TUIC]))
             {
@@ -79,6 +88,12 @@ public class FmtHandler
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.Anytls]))
             {
                 return AnytlsFmt.Resolve(str, out msg);
+            }
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.Naive])
+                     || str.StartsWith(Global.NaiveHttpsProtocolShare)
+                     || str.StartsWith(Global.NaiveQuicProtocolShare))
+            {
+                return NaiveFmt.Resolve(str, out msg);
             }
             else
             {

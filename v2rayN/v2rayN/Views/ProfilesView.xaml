@@ -159,6 +159,10 @@
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGestureText="Ctrl+R" />
                         <MenuItem
+                            x:Name="menuUdpTestServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuUdpTestServer}" />
+                        <MenuItem
                             x:Name="menuSpeedServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
@@ -238,34 +242,21 @@
                                 x:Name="menuExport2ShareUrlBase64"
                                 Height="{StaticResource MenuItemHeight}"
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                            <MenuItem
+                                x:Name="menuExport2InnerUri"
+                                Height="{StaticResource MenuItemHeight}"
+                                Header="{x:Static resx:ResUI.menuExport2InnerUri}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
                             <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayRandom"
+                                x:Name="menuGenGroupAllServer"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
+                                Header="{x:Static resx:ResUI.menuAllServers}" />
                             <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayRoundRobin"
+                                x:Name="menuGenGroupRegionServer"
                                 Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerXrayLeastLoad"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerSingBoxLeastPing"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
-                            <MenuItem
-                                x:Name="menuGenGroupMultipleServerSingBoxFallback"
-                                Height="{StaticResource MenuItemHeight}"
-                                Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
+                                Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
@@ -354,6 +345,14 @@
                         Binding="{Binding TodayUp}"
                         ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
+
+                    <base:MyDGTextColumn
+                        x:Name="colIpInfo"
+                        Width="100"
+                        Binding="{Binding IpInfo}"
+                        ExName="IpInfo"
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}" />
+
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"
                         Width="100"

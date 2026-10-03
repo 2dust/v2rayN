@@ -202,7 +202,7 @@ public static class FileUtils
         }
     }
 
-    public static void DeleteExpiredFiles(string sourceDir, DateTime dtLine)
+    public static void DeleteExpiredFiles(string sourceDir, DateTime dtLine, string? contains = null)
     {
         try
         {
@@ -211,6 +211,10 @@ public static class FileUtils
             {
                 var file = new FileInfo(filePath);
                 if (file.CreationTime >= dtLine)
+                {
+                    continue;
+                }
+                if (contains.IsNotEmpty() && !file.Name.Contains(contains))
                 {
                     continue;
                 }

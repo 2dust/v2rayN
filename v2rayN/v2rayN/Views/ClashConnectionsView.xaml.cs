@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using v2rayN.Base;
 
 namespace v2rayN.Views;
 
@@ -7,10 +8,14 @@ namespace v2rayN.Views;
 /// </summary>
 public partial class ClashConnectionsView
 {
+    private static Config _config;
+    private static readonly string _tag = "ClashConnectionsView";
+
     public ClashConnectionsView()
     {
         InitializeComponent();
-        ViewModel = new ClashConnectionsViewModel(UpdateViewHandler);
+        _config = AppManager.Instance.Config;
+
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
         this.WhenActivated(disposables =>
@@ -24,12 +29,15 @@ public partial class ClashConnectionsView
             this.Bind(ViewModel, vm => vm.HostFilter, v => v.txtHostFilter.Text).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ConnectionCloseAllCmd, v => v.btnConnectionCloseAll).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
-        });
-    }
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        return await Task.FromResult(true);
+            AppEvents.AppExitRequested
+                .AsObservable()
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(_ => StorageUI())
+                .DisposeWith(disposables);
+        });
+
+        RestoreUI();
     }
 
     private void BtnAutofitColumnWidth_Click(object sender, RoutedEventArgs e)
@@ -48,7 +56,7 @@ public partial class ClashConnectionsView
         }
         catch (Exception ex)
         {
-            Logging.SaveLog("ClashConnectionsView", ex);
+            Logging.SaveLog(_tag, ex);
         }
     }
 
@@ -56,4 +64,71 @@ public partial class ClashConnectionsView
     {
         ViewModel?.ClashConnectionClose(false);
     }
+
+    #region UI
+
+    private void RestoreUI()
+    {
+        try
+        {
+            var lvColumnItem = _config.ClashUIItem?.ConnectionsColumnItem?.OrderBy(t => t.Index).ToList();
+            if (lvColumnItem == null)
+            {
+                return;
+            }
+
+            var displayIndex = 0;
+            foreach (var item in lvColumnItem)
+            {
+                foreach (var col in lstConnections.Columns.Cast<MyDGTextColumn>())
+                {
+                    if (col.ExName == item.Name)
+                    {
+                        if (item.Width > 0)
+                        {
+                            col.Width = item.Width;
+                        }
+
+                        col.DisplayIndex = displayIndex++;
+                        break;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private void StorageUI()
+    {
+        try
+        {
+            List<ColumnItem> lvColumnItem = [];
+            foreach (var col in lstConnections.Columns.Cast<MyDGTextColumn>())
+            {
+                var name = col.ExName;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    continue;
+                }
+
+                lvColumnItem.Add(new()
+                {
+                    Name = name,
+                    Width = (int)col.ActualWidth,
+                    Index = col.DisplayIndex
+                });
+            }
+
+            _config.ClashUIItem.ConnectionsColumnItem = lvColumnItem;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    #endregion UI
 }

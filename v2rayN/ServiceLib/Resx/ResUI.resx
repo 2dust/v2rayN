@@ -121,7 +121,7 @@
     <value>Export share link to clipboard successfully</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>Please check the Configuration settings first.</value>
+    <value>Invalid configuration, please check or reselect</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>Invalid configuration format.</value>
@@ -142,7 +142,7 @@
     <value>Failed to get the default configuration</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
-    <value>Failed to import custom configuration Configuration</value>
+    <value>Failed to import configuration</value>
   </data>
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
@@ -271,7 +271,7 @@
     <value>Configurations deduplication completed. Old: {0}, New: {1}.</value>
   </data>
   <data name="RemoveServer" xml:space="preserve">
-    <value>Are you sure you want to remove the Configuration?</value>
+    <value>Are you sure you want to remove?</value>
   </data>
   <data name="SaveClientConfigurationIn" xml:space="preserve">
     <value>The client configuration file is saved at: {0}</value>
@@ -283,7 +283,7 @@
     <value>Configuration successful. {0}</value>
   </data>
   <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
-    <value>Custom configuration Configuration imported successfully</value>
+    <value>Custom configuration imported successfully</value>
   </data>
   <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
     <value>{0} Configurations have been imported from clipboard</value>
@@ -343,7 +343,7 @@
     <value>*QUIC key/KCP seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc service name</value>
+    <value>gRPC service name</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http host separated by commas (,)</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC security</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*tcp camouflage type</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*kcp camouflage type</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>kcp camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC camouflage type</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC camouflage type</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*grpc mode</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>gRPC mode</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -385,7 +385,7 @@
     <value>All</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>Please browse to import Configuration configuration</value>
+    <value>Please browse to import configuration</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>Testing...</value>
@@ -397,7 +397,10 @@
     <value>Local</value>
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
-    <value>Configuration filter, press Enter to execute</value>
+    <value>Filter, press Enter to execute</value>
+  </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>Check and Update</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>Check Update</value>
@@ -427,7 +430,7 @@
     <value>Routing Setting</value>
   </data>
   <data name="menuServers" xml:space="preserve">
-    <value>Configurations</value>
+    <value>Configuration</value>
   </data>
   <data name="menuSetting" xml:space="preserve">
     <value>Settings</value>
@@ -478,55 +481,55 @@
     <value>Scan QR code on the screen</value>
   </data>
   <data name="menuCopyServer" xml:space="preserve">
-    <value>Clone selected Configuration</value>
+    <value>Clone selected</value>
   </data>
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
-    <value>Remove duplicate Configurations</value>
+    <value>Remove duplicate</value>
   </data>
   <data name="menuRemoveServer" xml:space="preserve">
-    <value>Remove selected Configurations</value>
+    <value>Remove selected</value>
   </data>
   <data name="menuSetDefaultServer" xml:space="preserve">
-    <value>Set as active Configuration</value>
+    <value>Set as active</value>
   </data>
   <data name="menuClearServerStatistics" xml:space="preserve">
     <value>Clear all service statistics</value>
   </data>
   <data name="menuRealPingServer" xml:space="preserve">
-    <value>Test Configurations real delay</value>
+    <value>Test real delay</value>
   </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Sort by test result</value>
   </data>
   <data name="menuSpeedServer" xml:space="preserve">
-    <value>Test Configurations download speed</value>
+    <value>Test download speed</value>
   </data>
   <data name="menuTcpingServer" xml:space="preserve">
-    <value>Test Configurations with tcping</value>
+    <value>Test tcping</value>
   </data>
   <data name="menuExport2ClientConfig" xml:space="preserve">
-    <value>Export selected Configuration for complete configuration</value>
+    <value>Export selected for complete configuration</value>
   </data>
   <data name="menuExport2ShareUrl" xml:space="preserve">
     <value>Export Share Link to Clipboard</value>
   </data>
   <data name="menuAddCustomServer" xml:space="preserve">
-    <value>Add a custom configuration Configuration</value>
+    <value>Add a custom configuration</value>
   </data>
   <data name="menuAddShadowsocksServer" xml:space="preserve">
-    <value>Add [Shadowsocks] Configuration</value>
+    <value>Add [Shadowsocks]</value>
   </data>
   <data name="menuAddSocksServer" xml:space="preserve">
-    <value>Add [SOCKS] Configuration</value>
+    <value>Add [SOCKS]</value>
   </data>
   <data name="menuAddTrojanServer" xml:space="preserve">
-    <value>Add [Trojan] Configuration</value>
+    <value>Add [Trojan]</value>
   </data>
   <data name="menuAddVlessServer" xml:space="preserve">
-    <value>Add [VLESS] Configuration</value>
+    <value>Add [VLESS]</value>
   </data>
   <data name="menuAddVmessServer" xml:space="preserve">
-    <value>Add [VMess] Configuration</value>
+    <value>Add [VMess]</value>
   </data>
   <data name="menuSelectAll" xml:space="preserve">
     <value>Select all</value>
@@ -606,9 +609,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>Alias (remarks)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>Camouflage domain(host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>Encryption method (security)</value>
   </data>
@@ -619,7 +619,7 @@
     <value>TLS</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*Default value tcp</value>
+    <value>*Default value raw</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core Type</value>
@@ -694,7 +694,10 @@
     <value>Automatically adjust column width after subscription update</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
-    <value>Check for pre-release updates</value>
+    <value>Check for pre-release</value>
+  </data>
+  <data name="TbSettingsEnableUpdateViaProxy" xml:space="preserve">
+    <value>Update via proxy</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
     <value>Exception</value>
@@ -723,9 +726,6 @@
   <data name="TbSettingsPass" xml:space="preserve">
     <value>Auth pass</value>
   </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>Custom DNS (multiple, separated by commas (,))</value>
-  </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>Set Win10 UWP Loopback</value>
   </data>
@@ -748,7 +748,7 @@
     <value>System proxy settings</value>
   </data>
   <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tray right-click menu Configurations display limit</value>
+    <value>Tray right-click menu display limit</value>
   </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Enable UDP</value>
@@ -781,7 +781,7 @@
     <value>PAC mode</value>
   </data>
   <data name="menuShareServer" xml:space="preserve">
-    <value>Share Configuration</value>
+    <value>Share</value>
   </data>
   <data name="menuRouting" xml:space="preserve">
     <value>Routing</value>
@@ -865,7 +865,7 @@
     <value>Rule object Doc</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>Supports DNS Object; Click to view documentation</value>
+    <value>Please fill in DNS Object; Click to view documentation</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>For group please leave blank here</value>
@@ -922,7 +922,7 @@
     <value>Skip test</value>
   </data>
   <data name="menuEditServer" xml:space="preserve">
-    <value>Edit Configuration</value>
+    <value>Edit </value>
   </data>
   <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
     <value>Double-clicking Configuration makes it active</value>
@@ -937,7 +937,7 @@
     <value>User-Agent</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>This parameter is valid only for tcp/http and ws</value>
+    <value>This parameter is valid only for raw/http, ws, gRPC and xhttp</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>Font family (requires restart)</value>
@@ -1026,8 +1026,17 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux Protocol</value>
   </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux concurrency</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP concurrency</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proxy UDP443</value>
+  </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>Full process name (Tun mode)</value>
+    <value>Process (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP or IP CIDR</value>
@@ -1036,7 +1045,7 @@
     <value>Domain</value>
   </data>
   <data name="menuAddHysteria2Server" xml:space="preserve">
-    <value>Add [Hysteria2] Configuration</value>
+    <value>Add [Hysteria2]</value>
   </data>
   <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
     <value>Hysteria Max bandwidth (Up/Down)</value>
@@ -1045,16 +1054,22 @@
     <value>Use System Hosts</value>
   </data>
   <data name="menuAddTuicServer" xml:space="preserve">
-    <value>Add [TUIC] Configuration</value>
+    <value>Add [TUIC]</value>
   </data>
   <data name="TbHeaderType8" xml:space="preserve">
     <value>Congestion control</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP headers</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>Custom HTTP outbound request headers as a JSON object with string or string array values.</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
-    <value>Previous proxy Configuration remarks</value>
+    <value>Previous proxy remarks</value>
   </data>
   <data name="LvNextProfile" xml:space="preserve">
-    <value>Next proxy Configuration remarks</value>
+    <value>Next proxy remarks</value>
   </data>
   <data name="LvPrevProfileTip" xml:space="preserve">
     <value>Please make sure the Configuration remarks exist and are unique</value>
@@ -1068,23 +1083,20 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Stack</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
-  </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>Enable additional Inbound</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>Enable IPv6 Address</value>
   </data>
   <data name="menuAddWireguardServer" xml:space="preserve">
-    <value>Add [WireGuard] Configuration</value>
+    <value>Add [WireGuard]</value>
   </data>
   <data name="TbPrivateKey" xml:space="preserve">
     <value>Private Key</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (IPv4, IPv6)</value>
@@ -1101,23 +1113,50 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>Speed Ping Test URL</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>Updating subscription, only determining if remarks exist</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>Test terminating...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
+    <value>gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
-    <value>Add [HTTP] Configuration</value>
-  </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>which conflicts with the group previous proxy</value>
+    <value>Add [HTTP]</value>
   </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>Enable fragment</value>
+  </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Fragment Packets</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Packets to fragment: tlshello (TLS ClientHello) or 1-1 to 1-5 (first N TCP packets)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Fragment Length</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Fragment size range in bytes (e.g., 50-100). First value must be &lt;= second. Empty = default.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Fragment Interval</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Delay between fragments in ms (e.g., 10-20). Range 1-100. First value must be &lt;= second. Empty = default.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Max Split</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Maximum number of fragments per packet (0-10000, 0 = unlimited). Xray only. Empty = default.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Fallback Delay</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>Fallback delay when ACK detection unavailable (e.g., 500ms). sing-box only. Empty = default.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Invalid range format. Use 'from-to' (e.g., 50-100).</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>Enable cache file for sing-box (ruleset files)</value>
@@ -1197,7 +1236,7 @@
   <data name="menuModeRule" xml:space="preserve">
     <value>Rule</value>
   </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
+  <data name="menuDelaytest" xml:space="preserve">
     <value>Latency Test</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
@@ -1225,7 +1264,7 @@
     <value>Export Base64-encoded Share Links to Clipboard</value>
   </data>
   <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
-    <value>Export selected Configuration for complete configuration to clipboard</value>
+    <value>Export selected for complete configuration to clipboard</value>
   </data>
   <data name="menuShowOrHideMainWindow" xml:space="preserve">
     <value>Show or hide the main window</value>
@@ -1329,11 +1368,11 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp mode</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>xhttp mode</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>XHTTP Extra raw JSON, format: { XHTTP Object }</value>
+    <value>Raw JSON, format: { XHTTP Object }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>Hide to tray when closing the window</value>
@@ -1351,7 +1390,7 @@
     <value>Enable second mixed port</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks: local port, socks2: second local port, socks3: LAN port</value>
+    <value>tun: TUN inbound, socks: local port, socks2: second local port, socks3: LAN port</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>Theme</value>
@@ -1377,26 +1416,8 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>Will cover the port, separate with commas (,)</value>
   </data>
-  <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>Generate Policy Group from Multiple Profiles</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>Multi-Configuration Random by Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>Multi-Configuration RoundRobin by Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>Multi-Configuration LeastPing by Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>Multi-Configuration LeastLoad by Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>Multi-Configuration LeastPing by sing-box</value>
-  </data>
   <data name="menuExportConfig" xml:space="preserve">
-    <value>Export Configuration</value>
+    <value>Export</value>
   </data>
   <data name="TbSettingsIPAPIUrl" xml:space="preserve">
     <value>Current connection info test URL</value>
@@ -1411,7 +1432,7 @@
     <value>Mldsa65Verify</value>
   </data>
   <data name="menuAddAnytlsServer" xml:space="preserve">
-    <value>Add [Anytls] Configuration</value>
+    <value>Add [Anytls]</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
     <value>Remote DNS</value>
@@ -1419,17 +1440,11 @@
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>Domestic DNS</value>
   </data>
-  <data name="TbRemoteDNSTips" xml:space="preserve">
-    <value>Via proxy — please ensure remote availability</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Direct Target Resolution Strategy</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray Freedom Resolution Strategy</value>
-  </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box Direct Resolution Strategy</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box Remote Resolution Strategy</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Proxy Target Resolution Strategy</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
     <value>Add Common DNS Hosts</value>
@@ -1453,7 +1468,7 @@
     <value>Validate Regional Domain IPs</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn), returning only expected IPs</value>
+    <value>When configured, validates IPs returned for regional domains (e.g., geosite:cn - geoip:cn), returning only expected IPs</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>Enable Custom DNS</value>
@@ -1462,7 +1477,7 @@
     <value>Custom DNS Enabled, This Page's Settings Invalid</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>Block ECH and HTTP/3 availability checks when enabled</value>
+    <value>Block ECH and HTTP/3 availability checks when enabled. Always enabled in Xray</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
     <value>Please fill in the correct config template</value>
@@ -1501,7 +1516,7 @@
     <value>Select Profile</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>Applies globally by default, with built-in FakeIP filtering (sing-box only).</value>
+    <value>Applies globally by default, and built-in FakeIP filtering is only built into sing-box.</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
     <value>Please Add At Least One Configuration</value>
@@ -1528,61 +1543,37 @@
     <value>Policy Group Type</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>Add Policy Group Configuration</value>
+    <value>Add Policy Group</value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>Add Proxy Chain Configuration</value>
+    <value>Add Proxy Chain</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>Add Child Configuration</value>
+    <value>Add Child</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
-    <value>Remove Child Configuration</value>
+    <value>Remove Child </value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>Configuration List</value>
+    <value>Configuration item 1, Auto add from subscription group</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>Fallback</value>
   </data>
-  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by sing-box</value>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>Core '{0}' does not support network type '{1}'</value>
   </data>
-  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>Multi-Configuration Fallback by Xray</value>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'</value>
   </data>
-  <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>Core '{0}' does not support network type '{1}'.</value>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>Core '{0}' does not support protocol '{1}'</value>
   </data>
-  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}' when using transport '{2}'.</value>
+  <data name="MsgInvalidProperty" xml:space="preserve">
+    <value>The {0} property is invalid, please check</value>
   </data>
-  <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>Core '{0}' does not support protocol '{1}'.</value>
-  </data>
-  <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>Proxy chained: </value>
-  </data>
-  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>Routing rule outbound: </value>
-  </data>
-  <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>Policy group: </value>
-  </data>
-  <data name="NodeTagNotExist" xml:space="preserve">
-    <value>Node alias '{0}' does not exist.</value>
-  </data>
-  <data name="GroupEmpty" xml:space="preserve">
-    <value>Group '{0}' is empty. Please add at least one node.</value>
-  </data>
-  <data name="InvalidProperty" xml:space="preserve">
-    <value>The {0} property is invalid, please check.</value>
-  </data>
-  <data name="GroupSelfReference" xml:space="preserve">
-    <value>{0} Group cannot reference itself or have a circular reference</value>
-  </data>
-  <data name="NotSupportProtocol" xml:space="preserve">
-    <value>Not support protocol '{0}'.</value>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>Not support protocol '{0}'</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>If the system does not have a tray function, please do not enable it</value>
@@ -1609,7 +1600,7 @@
     <value>Certificate Pinning</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>Server Certificate (PEM format, optional)
+    <value>Pinned certificate (fill in either one)
 When specified, the certificate will be pinned, and "Allow Insecure" will be disabled.
 
 The "Get Certificate" action may fail if a self-signed certificate is used or if the system contains an untrusted or malicious CA.</value>
@@ -1637,5 +1628,281 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
     <value>macOS displays this in the Dock (requires restart)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>Configuration Item 2, Select and add from self-built</value>
+  </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Verify Peer Cert By Name</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>Full certificate (chain), PEM format</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Certificate fingerprint (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Serve Stale</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Parallel Query</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>By default, invoked only during routing for resolution; ensure the remote server can reach this DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution uses the system DNS; otherwise, the internal DNS module is used.</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>If unset or "AsIs", DNS resolution is performed by the remote server's DNS; otherwise, the internal DNS module is used.</value>
+  </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>Port hopping interval</value>
+  </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>Configuration item preview</value>
+  </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} warning: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} error: {2}. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>Group {0} has a cycle dependency on child node {1}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>Group {0} child node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>Group {0} child node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>Group {0} child group node {1} warning: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>Group {0} child group node {1} error: {2}. Skipping this node.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>Group {0} has no valid child node.</value>
+  </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>Routing rule {0} has an empty outbound tag. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>Routing rule {0} outbound node {1} not found. Fallback to proxy node only.</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>Subscription previous proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>Subscription next proxy {0} not found. Skipping.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Generate Policy Group</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>All configurations</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Group by Region</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>Add [NaïveProxy]</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Insecure Concurrency</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP routing policy</value>
+  </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>Legacy TUN Protect</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Camouflage domain</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Test Configurations UDP Delay</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP Test Url</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Local outbound address (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the local machine's IPv4 address</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bind Interface</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>For multi-interface environments, enter the interface name for outbound connections. On Linux/macOS, it only works when TUN mode is enabled.</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>Export v2rayN Internal Share Link to Clipboard</value>
+  </data>
+  <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
+    <value>{0} has a new version available: {1}</value>
+  </data>
+  <data name="menuCheckOnly" xml:space="preserve">
+    <value>Only Check</value>
+  </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>Not Supported</value>
+  </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>IP Info</value>
+  </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>New Update</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>The current node uses an unencrypted connection, meaning your communications could be directly monitored by network intermediaries controlled by authoritarian governments. For security reasons, nodes of this type cannot connect via Xray-core versions 26.2.6 or higher. If this is a self-built node, please enable TLS or other secure encryption, or pin the certificate using pinSHA256. If this is an airport/provider node, please contact your service provider for a technical upgrade. If the provider refuses to cooperate, it is recommended to switch to a service provider that prioritizes user security. For more information, please visit https://github.com/2dust/v2rayN/discussions/9460.</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Route Exclude Address</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Use commas (,) to separate.</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>Invalid address in TUN route exclude list: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>Conflict between {0} and {1}</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Enable Final Fragment</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Split the tail of packets into smaller fragments. This may affect throughput and latency.</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>DNS via Bridge</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>Insecure configuration detected: AllowInsecure is enabled but no certificate is provided. This may cause MITM attacks.</value>
+  </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>Invalid Realm URL.</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>Please enter valid HTTP request headers JSON.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Gecko Packet Size (min/max)</value>
+  </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>If enabled, use sing-box TUN; otherwise, use xray TUN.</value>
+  </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>Root Certificate Provider</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>Only applies to the v2rayN GUI's downloads and network requests. Does not affect the core's certificate validation.</value>
+  </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>Proxy Dial Resolution Strategy</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>Not recommended; may cause routing loops.</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>Enable Happy Eyeballs</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>Requires the UseIP Strategy. When enabled, it attempts IPv4 and IPv6 connections simultaneously and automatically selects the faster available path.</value>
+  </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Ipv6 Address</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Ipv4 Address</value>
+  </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>Add a custom outbound</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>Custom outbound {0} file not found: {1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>Only single outbound/endpoint supported for xray/sing-box</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Custom config core</value>
+  </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>Xray Only</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>Block AAAA Queries</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>Block IPv6 queries when enabled</value>
+  </data>
+  <data name="TbDNS" xml:space="preserve">
+    <value>DNS</value>
+  </data>
+  <data name="TbSettingsMux4Ray" xml:space="preserve">
+    <value>Xray Mux setting</value>
+  </data>
+  <data name="LvRequestHeaders" xml:space="preserve">
+    <value>HTTP headers (JSON)</value>
+  </data>
+  <data name="SubRequestHeadersTips" xml:space="preserve">
+    <value>Optional. Example: {"X-hwid": "my_device"}. Values override default headers for all URLs in this group, including the subscription conversion service.</value>
+  </data>
+  <data name="SubRequestHeadersInvalid" xml:space="preserve">
+    <value>Invalid HTTP headers. Use a JSON object with unique header names and string values. Header names and values must not contain line breaks.</value>
+  </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="menuAddMasqueServer" xml:space="preserve">
+    <value>Add [MASQUE]</value>
   </data>
 </root>

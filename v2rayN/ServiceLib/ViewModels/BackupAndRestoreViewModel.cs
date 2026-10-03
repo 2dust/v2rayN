@@ -1,24 +1,23 @@
 namespace ServiceLib.ViewModels;
 
-public class BackupAndRestoreViewModel : MyReactiveObject
+public partial class BackupAndRestoreViewModel : MyReactiveObject
 {
     private readonly string _guiConfigs = "guiConfigs";
     private static string BackupFileName => $"backup_{DateTime.Now:yyyyMMddHHmmss}.zip";
 
-    public ReactiveCommand<Unit, Unit> RemoteBackupCmd { get; }
-    public ReactiveCommand<Unit, Unit> RemoteRestoreCmd { get; }
-    public ReactiveCommand<Unit, Unit> WebDavCheckCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoteBackupCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RemoteRestoreCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WebDavCheckCmd { get; }
 
     [Reactive]
-    public WebDavItem SelectedSource { get; set; }
+    public partial WebDavItem SelectedSource { get; set; }
 
     [Reactive]
-    public string OperationMsg { get; set; }
+    public partial string OperationMsg { get; set; } = string.Empty;
 
-    public BackupAndRestoreViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public BackupAndRestoreViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         WebDavCheckCmd = ReactiveCommand.CreateFromTask(async () =>
         {

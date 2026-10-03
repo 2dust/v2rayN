@@ -5,28 +5,33 @@
     <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.8" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.8" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.8" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
-    <PackageVersion Include="CliWrap" Version="3.9.0" />
-    <PackageVersion Include="Downloader" Version="4.0.3" />
-    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.3.2" />
-    <PackageVersion Include="MaterialDesignThemes" Version="5.3.0" />
-    <PackageVersion Include="MessageBox.Avalonia" Version="3.3.0" />
-    <PackageVersion Include="QRCoder" Version="1.7.0" />
-    <PackageVersion Include="ReactiveUI" Version="22.2.1" />
-    <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageVersion Include="ReactiveUI.WPF" Version="22.2.1" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.3.7.1" />
-    <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="11.2.0.1" />
-    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="11.3.7.1" />
-    <PackageVersion Include="NLog" Version="6.0.6" />
-    <PackageVersion Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.2" />
+    <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
+    <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
+    <PackageVersion Include="IPNetwork2" Version="4.3.0" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.2" />
+    <PackageVersion Include="CliWrap" Version="3.10.5" />
+    <PackageVersion Include="Downloader" Version="5.9.8" />
+    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
+    <PackageVersion Include="MaterialDesignThemes" Version="5.3.2" />
+    <PackageVersion Include="QRCoder" Version="1.8.0" />
+    <PackageVersion Include="ReactiveUI" Version="24.3.0" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.2.0" />
+    <PackageVersion Include="ReactiveUI.WPF" Version="24.2.0" />
+    <PackageVersion Include="Semi.Avalonia" Version="12.1.0.1" />
+    <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="12.0.0" />
+    <PackageVersion Include="Semi.Avalonia.DataGrid" Version="12.1.0.1" />
+    <PackageVersion Include="NLog" Version="6.2.1" />
+    <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
+    <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.53.4.1" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
+    <PackageVersion Include="TUnit" Version="1.68.17" />
+    <PackageVersion Include="TUnit.Assertions.Should" Version="1.65.38-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
-    <PackageVersion Include="YamlDotNet" Version="16.3.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+    <PackageVersion Include="YamlDotNet" Version="18.1.0" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,1902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BatchExportURLSuccessfully" xml:space="preserve">
+    <value>Paylaşım keçidi mübadilə buferinə uğurla ixrac edildi</value>
+  </data>
+  <data name="CheckServerSettings" xml:space="preserve">
+    <value>Konfiqurasiya yanlışdır, yoxlayın və ya yenidən seçin</value>
+  </data>
+  <data name="ConfigurationFormatIncorrect" xml:space="preserve">
+    <value>Konfiqurasiya formatı yanlışdır.</value>
+  </data>
+  <data name="CustomServerTips" xml:space="preserve">
+    <value>Xüsusi konfiqurasiya tamamilə sizin verdiyiniz konfiqurasiyaya əsaslanır və bütün parametrlərlə işləmir. Sistem proksisindən istifadə etmək istəyirsinizsə, dinləmə portunu əl ilə dəyişdirin.</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Endirilir...</value>
+  </data>
+  <data name="FailedConversionConfiguration" xml:space="preserve">
+    <value>Konfiqurasiya faylını çevirmək mümkün olmadı</value>
+  </data>
+  <data name="FailedGenDefaultConfiguration" xml:space="preserve">
+    <value>Standart konfiqurasiya faylını yaratmaq mümkün olmadı</value>
+  </data>
+  <data name="FailedGetDefaultConfiguration" xml:space="preserve">
+    <value>Standart konfiqurasiyanı əldə etmək mümkün olmadı</value>
+  </data>
+  <data name="FailedImportedCustomServer" xml:space="preserve">
+    <value>Konfiqurasiyanı idxal etmək mümkün olmadı</value>
+  </data>
+  <data name="FailedReadConfiguration" xml:space="preserve">
+    <value>Konfiqurasiya faylını oxumaq mümkün olmadı</value>
+  </data>
+  <data name="FillCorrectServerPort" xml:space="preserve">
+    <value>Portu düzgün formatda daxil edin.</value>
+  </data>
+  <data name="FillLocalListeningPort" xml:space="preserve">
+    <value>Yerli dinləmə portunu daxil edin.</value>
+  </data>
+  <data name="FillPassword" xml:space="preserve">
+    <value>Şifrəni daxil edin.</value>
+  </data>
+  <data name="FillServerAddress" xml:space="preserve">
+    <value>Ünvanı daxil edin.</value>
+  </data>
+  <data name="FillUUID" xml:space="preserve">
+    <value>İstifadəçi identifikatorunu daxil edin.</value>
+  </data>
+  <data name="Incorrectconfiguration" xml:space="preserve">
+    <value>Konfiqurasiya düzgün deyil, yoxlayın</value>
+  </data>
+  <data name="InitialConfiguration" xml:space="preserve">
+    <value>İlkin konfiqurasiya</value>
+  </data>
+  <data name="IsLatestCore" xml:space="preserve">
+    <value>{0} {1} artıq yenidir.</value>
+  </data>
+  <data name="IsLatestN" xml:space="preserve">
+    <value>{0} {1} artıq yenidir.</value>
+  </data>
+  <data name="LvAddress" xml:space="preserve">
+    <value>Ünvan</value>
+  </data>
+  <data name="LvEncryptionMethod" xml:space="preserve">
+    <value>Təhlükəsizlik</value>
+  </data>
+  <data name="LvPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LvServiceType" xml:space="preserve">
+    <value>Növ</value>
+  </data>
+  <data name="LvSubscription" xml:space="preserve">
+    <value>Abunəlik qrupu</value>
+  </data>
+  <data name="LvTodayDownloadDataAmount" xml:space="preserve">
+    <value>Bu gün endirilən trafik</value>
+  </data>
+  <data name="LvTodayUploadDataAmount" xml:space="preserve">
+    <value>Bu gün göndərilən trafik</value>
+  </data>
+  <data name="LvTotalDownloadDataAmount" xml:space="preserve">
+    <value>Ümumi endirilən trafik</value>
+  </data>
+  <data name="LvTotalUploadDataAmount" xml:space="preserve">
+    <value>Ümumi göndərilən trafik</value>
+  </data>
+  <data name="LvTransportProtocol" xml:space="preserve">
+    <value>Ötürmə</value>
+  </data>
+  <data name="MsgDownloadV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Nüvə uğurla endirildi</value>
+  </data>
+  <data name="MsgFailedImportSubscription" xml:space="preserve">
+    <value>Abunəlik məzmununu idxal etmək mümkün olmadı</value>
+  </data>
+  <data name="MsgGetSubscriptionSuccessfully" xml:space="preserve">
+    <value>Abunəlik məzmunu uğurla əldə edildi</value>
+  </data>
+  <data name="MsgNoValidSubscription" xml:space="preserve">
+    <value>Etibarlı abunəlik təyin edilməyib</value>
+  </data>
+  <data name="MsgParsingSuccessfully" xml:space="preserve">
+    <value>{0} uğurla həll edildi</value>
+  </data>
+  <data name="MsgStartGettingSubscriptions" xml:space="preserve">
+    <value>Abunəliklərin əldə edilməsinə başlanıldı</value>
+  </data>
+  <data name="MsgStartUpdating" xml:space="preserve">
+    <value>{0} üçün yeniləmə başladılır...</value>
+  </data>
+  <data name="MsgSubscriptionDecodingFailed" xml:space="preserve">
+    <value>Abunəlik məzmunu yanlışdır</value>
+  </data>
+  <data name="MsgUnpacking" xml:space="preserve">
+    <value>Arxiv açılır...</value>
+  </data>
+  <data name="MsgUpdateSubscriptionEnd" xml:space="preserve">
+    <value>Abunəliyin yenilənməsi başa çatdı</value>
+  </data>
+  <data name="MsgUpdateSubscriptionStart" xml:space="preserve">
+    <value>Abunəliyin yenilənməsi başladı</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfully" xml:space="preserve">
+    <value>Nüvə uğurla yeniləndi</value>
+  </data>
+  <data name="MsgUpdateV2rayCoreSuccessfullyMore" xml:space="preserve">
+    <value>Nüvə uğurla yeniləndi! Xidmət yenidən başladılır...</value>
+  </data>
+  <data name="NonvmessOrssProtocol" xml:space="preserve">
+    <value>VMess və ya SS olmayan protokol</value>
+  </data>
+  <data name="NotFoundCore" xml:space="preserve">
+    <value>Nüvə faylı (fayl adı: {1}) qovluqda ({0}) tapılmadı. Faylı endirib həmin qovluğa yerləşdirin. Endirmə ünvanı: {2}</value>
+  </data>
+  <data name="NoValidQRcodeFound" xml:space="preserve">
+    <value>Skan tamamlandı, etibarlı QR kod tapılmadı</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Əməliyyat uğursuz oldu, yoxlayın və yenidən cəhd edin</value>
+  </data>
+  <data name="PleaseFillRemarks" xml:space="preserve">
+    <value>Qeydləri doldurun</value>
+  </data>
+  <data name="PleaseSelectEncryption" xml:space="preserve">
+    <value>Şifrələmə üsulunu seçin</value>
+  </data>
+  <data name="PleaseSelectProtocol" xml:space="preserve">
+    <value>Protokol seçin</value>
+  </data>
+  <data name="PleaseSelectServer" xml:space="preserve">
+    <value>Əvvəlcə konfiqurasiyanı seçin</value>
+  </data>
+  <data name="RemoveDuplicateServerResult" xml:space="preserve">
+    <value>Təkrarlanan konfiqurasiyalar silindi. Əvvəl: {0}, sonra: {1}.</value>
+  </data>
+  <data name="RemoveServer" xml:space="preserve">
+    <value>Silmək istədiyinizə əminsiniz?</value>
+  </data>
+  <data name="SaveClientConfigurationIn" xml:space="preserve">
+    <value>Müştəri konfiqurasiya faylı burada yadda saxlanılıb: {0}</value>
+  </data>
+  <data name="StartService" xml:space="preserve">
+    <value>Xidmət başladılır ({0})...</value>
+  </data>
+  <data name="SuccessfulConfiguration" xml:space="preserve">
+    <value>Uğurla konfiqurasiya edilib. {0}</value>
+  </data>
+  <data name="SuccessfullyImportedCustomServer" xml:space="preserve">
+    <value>Xüsusi konfiqurasiya uğurla idxal edildi</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaClipboard" xml:space="preserve">
+    <value>{0} konfiqurasiya mübadilə buferindən idxal edildi</value>
+  </data>
+  <data name="SuccessfullyImportedServerViaScan" xml:space="preserve">
+    <value>Paylaşım keçidi uğurla skan və idxal edildi</value>
+  </data>
+  <data name="TestMeOutput" xml:space="preserve">
+    <value>Gecikmə: {0} ms, {1}</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Əməliyyat uğurla tamamlandı</value>
+  </data>
+  <data name="PleaseSelectRules" xml:space="preserve">
+    <value>Qaydaları seçin</value>
+  </data>
+  <data name="RemoveRules" xml:space="preserve">
+    <value>Qaydaları silmək istədiyinizə əminsiniz?</value>
+  </data>
+  <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
+    <value>{0} məcburi sahələrdən biridir.</value>
+  </data>
+  <data name="LvRemarks" xml:space="preserve">
+    <value>Qeydlər</value>
+  </data>
+  <data name="LvUrl" xml:space="preserve">
+    <value>URL (istəyə bağlı)</value>
+  </data>
+  <data name="LvCount" xml:space="preserve">
+    <value>Say</value>
+  </data>
+  <data name="MsgNeedUrl" xml:space="preserve">
+    <value>URL daxil edin</value>
+  </data>
+  <data name="AddBatchRoutingRulesYesNo" xml:space="preserve">
+    <value>Qaydaları əlavə etmək istəyirsiniz? Əlavə etmək üçün bəli, əvəz etmək üçün xeyr seçin.</value>
+  </data>
+  <data name="MsgDownloadGeoFileSuccessfully" xml:space="preserve">
+    <value>Geo faylı uğurla endirildi: {0}</value>
+  </data>
+  <data name="MsgInformationTitle" xml:space="preserve">
+    <value>Məlumat</value>
+  </data>
+  <data name="LvCustomIcon" xml:space="preserve">
+    <value>Xüsusi nişan</value>
+  </data>
+  <data name="FillCorrectDNSText" xml:space="preserve">
+    <value>Düzgün xüsusi DNS daxil edin</value>
+  </data>
+  <data name="TransportPathTip1" xml:space="preserve">
+    <value>*ws/http upgrade/xhttp yolu</value>
+  </data>
+  <data name="TransportPathTip2" xml:space="preserve">
+    <value>*h2 yolu</value>
+  </data>
+  <data name="TransportPathTip3" xml:space="preserve">
+    <value>*QUIC açarı/KCP başlanğıc dəyəri</value>
+  </data>
+  <data name="TransportPathTip4" xml:space="preserve">
+    <value>gRPC xidmət adı</value>
+  </data>
+  <data name="TransportRequestHostTip1" xml:space="preserve">
+    <value>*http hostları vergüllə (,) ayrılır</value>
+  </data>
+  <data name="TransportRequestHostTip2" xml:space="preserve">
+    <value>*ws/http upgrade/xhttp hostu</value>
+  </data>
+  <data name="TransportRequestHostTip3" xml:space="preserve">
+    <value>*h2 hostları vergüllə (,) ayrılır</value>
+  </data>
+  <data name="TransportRequestHostTip4" xml:space="preserve">
+    <value>*QUIC təhlükəsizliyi</value>
+  </data>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw maskalama növü</value>
+  </data>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>kcp maskalama növü</value>
+  </data>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC maskalama növü</value>
+  </data>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>gRPC rejimi</value>
+  </data>
+  <data name="LvTLS" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TransportPathTip5" xml:space="preserve">
+    <value>*kcp başlanğıc dəyəri</value>
+  </data>
+  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
+    <value>Qlobal {0} klaviatura qısayolunu qeydiyyata almaq mümkün olmadı, səbəb: {1}</value>
+  </data>
+  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
+    <value>Qlobal {0} klaviatura qısayolu uğurla qeydiyyata alındı</value>
+  </data>
+  <data name="AllGroupServers" xml:space="preserve">
+    <value>Hamısı</value>
+  </data>
+  <data name="FillServerAddressCustom" xml:space="preserve">
+    <value>Konfiqurasiyanı idxal etmək üçün fayl seçin</value>
+  </data>
+  <data name="Speedtesting" xml:space="preserve">
+    <value>Yoxlanılır...</value>
+  </data>
+  <data name="LabLAN" xml:space="preserve">
+    <value>LAN</value>
+  </data>
+  <data name="LabLocal" xml:space="preserve">
+    <value>Yerli</value>
+  </data>
+  <data name="MsgServerTitle" xml:space="preserve">
+    <value>Süzgəc, tətbiq etmək üçün Enter düyməsini basın</value>
+  </data>
+  <data name="menuCheckUpdate" xml:space="preserve">
+    <value>Yeniləmələri yoxla</value>
+  </data>
+  <data name="menuClose" xml:space="preserve">
+    <value>Bağla</value>
+  </data>
+  <data name="menuExit" xml:space="preserve">
+    <value>Çıx</value>
+  </data>
+  <data name="menuGlobalHotkeySetting" xml:space="preserve">
+    <value>Qlobal klaviatura qısayolu parametrləri</value>
+  </data>
+  <data name="menuHelp" xml:space="preserve">
+    <value>Kömək</value>
+  </data>
+  <data name="menuOptionSetting" xml:space="preserve">
+    <value>Seçim parametrləri</value>
+  </data>
+  <data name="menuPromotion" xml:space="preserve">
+    <value>Tanıtım</value>
+  </data>
+  <data name="menuReload" xml:space="preserve">
+    <value>Yenidən yüklə</value>
+  </data>
+  <data name="menuRoutingSetting" xml:space="preserve">
+    <value>Marşrutlaşdırma parametrləri</value>
+  </data>
+  <data name="menuServers" xml:space="preserve">
+    <value>Konfiqurasiya</value>
+  </data>
+  <data name="menuSetting" xml:space="preserve">
+    <value>Parametrlər</value>
+  </data>
+  <data name="menuSubGroupUpdate" xml:space="preserve">
+    <value>Cari abunəliyi proksisiz yenilə</value>
+  </data>
+  <data name="menuSubGroupUpdateViaProxy" xml:space="preserve">
+    <value>Cari abunəliyi proksi ilə yenilə</value>
+  </data>
+  <data name="menuSubscription" xml:space="preserve">
+    <value>Abunəlik qrupu</value>
+  </data>
+  <data name="menuSubSetting" xml:space="preserve">
+    <value>Abunəlik qrupu parametrləri</value>
+  </data>
+  <data name="menuSubUpdate" xml:space="preserve">
+    <value>Abunəlikləri proksisiz yenilə</value>
+  </data>
+  <data name="menuSubUpdateViaProxy" xml:space="preserve">
+    <value>Abunəlikləri proksi ilə yenilə</value>
+  </data>
+  <data name="menuSystemproxy" xml:space="preserve">
+    <value>Sistem proksisi</value>
+  </data>
+  <data name="menuSystemProxyClear" xml:space="preserve">
+    <value>Sistem proksisini təmizlə</value>
+  </data>
+  <data name="menuSystemProxyNothing" xml:space="preserve">
+    <value>Sistem proksisini dəyişmə</value>
+  </data>
+  <data name="menuSystemProxyPac" xml:space="preserve">
+    <value>PAC rejimi</value>
+  </data>
+  <data name="menuSystemProxySet" xml:space="preserve">
+    <value>Sistem proksisini təyin et</value>
+  </data>
+  <data name="TbSettingsColor" xml:space="preserve">
+    <value>Rəng</value>
+  </data>
+  <data name="TbSettingsLanguage" xml:space="preserve">
+    <value>Dil (yenidən başlatma)</value>
+  </data>
+  <data name="menuAddServerViaClipboard" xml:space="preserve">
+    <value>Paylaşım keçidlərini mübadilə buferindən idxal et</value>
+  </data>
+  <data name="menuAddServerViaScan" xml:space="preserve">
+    <value>Ekrandakı QR kodu skan et</value>
+  </data>
+  <data name="menuCopyServer" xml:space="preserve">
+    <value>Seçilənin surətini yarat</value>
+  </data>
+  <data name="menuRemoveDuplicateServer" xml:space="preserve">
+    <value>Təkrarlananları sil</value>
+  </data>
+  <data name="menuRemoveServer" xml:space="preserve">
+    <value>Seçilənləri sil</value>
+  </data>
+  <data name="menuSetDefaultServer" xml:space="preserve">
+    <value>Aktiv olaraq təyin et</value>
+  </data>
+  <data name="menuClearServerStatistics" xml:space="preserve">
+    <value>Bütün xidmət statistikasını təmizlə</value>
+  </data>
+  <data name="menuRealPingServer" xml:space="preserve">
+    <value>Real gecikməni yoxla</value>
+  </data>
+  <data name="menuSortServerResult" xml:space="preserve">
+    <value>Yoxlama nəticəsinə görə sırala</value>
+  </data>
+  <data name="menuSpeedServer" xml:space="preserve">
+    <value>Endirmə sürətini yoxla</value>
+  </data>
+  <data name="menuTcpingServer" xml:space="preserve">
+    <value>tcping yoxlaması apar</value>
+  </data>
+  <data name="menuExport2ClientConfig" xml:space="preserve">
+    <value>Seçilənləri tam konfiqurasiya kimi ixrac et</value>
+  </data>
+  <data name="menuExport2ShareUrl" xml:space="preserve">
+    <value>Paylaşım keçidini mübadilə buferinə ixrac et</value>
+  </data>
+  <data name="menuAddCustomServer" xml:space="preserve">
+    <value>Xüsusi konfiqurasiya əlavə et</value>
+  </data>
+  <data name="menuAddShadowsocksServer" xml:space="preserve">
+    <value>[Shadowsocks] əlavə et</value>
+  </data>
+  <data name="menuAddSocksServer" xml:space="preserve">
+    <value>[SOCKS] əlavə et</value>
+  </data>
+  <data name="menuAddTrojanServer" xml:space="preserve">
+    <value>[Trojan] əlavə et</value>
+  </data>
+  <data name="menuAddVlessServer" xml:space="preserve">
+    <value>[VLESS] əlavə et</value>
+  </data>
+  <data name="menuAddVmessServer" xml:space="preserve">
+    <value>[VMess] əlavə et</value>
+  </data>
+  <data name="menuSelectAll" xml:space="preserve">
+    <value>Hamısını seç</value>
+  </data>
+  <data name="menuMsgViewClear" xml:space="preserve">
+    <value>Hamısını təmizlə</value>
+  </data>
+  <data name="menuMsgViewCopy" xml:space="preserve">
+    <value>Kopyala</value>
+  </data>
+  <data name="menuMsgViewCopyAll" xml:space="preserve">
+    <value>Hamısını kopyala</value>
+  </data>
+  <data name="menuMsgViewSelectAll" xml:space="preserve">
+    <value>Hamısını seç</value>
+  </data>
+  <data name="menuSubAdd" xml:space="preserve">
+    <value>Əlavə et</value>
+  </data>
+  <data name="menuSubDelete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="menuSubEdit" xml:space="preserve">
+    <value>Redaktə et</value>
+  </data>
+  <data name="menuSubShare" xml:space="preserve">
+    <value>Paylaş</value>
+  </data>
+  <data name="LvEnabled" xml:space="preserve">
+    <value>Yeniləmənin aktivliyi</value>
+  </data>
+  <data name="LvSort" xml:space="preserve">
+    <value>Sıra</value>
+  </data>
+  <data name="LvUserAgent" xml:space="preserve">
+    <value>İstifadəçi agenti</value>
+  </data>
+  <data name="TbCancel" xml:space="preserve">
+    <value>Ləğv et</value>
+  </data>
+  <data name="TbConfirm" xml:space="preserve">
+    <value>Təsdiq et</value>
+  </data>
+  <data name="GbTransport" xml:space="preserve">
+    <value>Ötürmə</value>
+  </data>
+  <data name="TbAddress" xml:space="preserve">
+    <value>Ünvan</value>
+  </data>
+  <data name="TbAllowInsecure" xml:space="preserve">
+    <value>Təhlükəsiz olmayan əlaqəyə icazə ver</value>
+  </data>
+  <data name="TbAlpn" xml:space="preserve">
+    <value>ALPN</value>
+  </data>
+  <data name="TbAlterId" xml:space="preserve">
+    <value>Alternativ identifikator</value>
+  </data>
+  <data name="TbFingerprint" xml:space="preserve">
+    <value>Barmaq izi</value>
+  </data>
+  <data name="TbHeaderType" xml:space="preserve">
+    <value>Maskalama növü</value>
+  </data>
+  <data name="TbId" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbNetwork" xml:space="preserve">
+    <value>Ötürmə protokolu (şəbəkə)</value>
+  </data>
+  <data name="TbPath" xml:space="preserve">
+    <value>Yol</value>
+  </data>
+  <data name="TbPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="TbRemarks" xml:space="preserve">
+    <value>Ləqəb (qeydlər)</value>
+  </data>
+  <data name="TbSecurity" xml:space="preserve">
+    <value>Şifrələmə üsulu (təhlükəsizlik)</value>
+  </data>
+  <data name="TbSNI" xml:space="preserve">
+    <value>SNI</value>
+  </data>
+  <data name="TbStreamSecurity" xml:space="preserve">
+    <value>TLS</value>
+  </data>
+  <data name="TipNetwork" xml:space="preserve">
+    <value>*Standart dəyər raw</value>
+  </data>
+  <data name="TbCoreType" xml:space="preserve">
+    <value>Nüvə növü</value>
+  </data>
+  <data name="TbFlow5" xml:space="preserve">
+    <value>Axın</value>
+  </data>
+  <data name="TbGUID" xml:space="preserve">
+    <value>Yarat</value>
+  </data>
+  <data name="TbId3" xml:space="preserve">
+    <value>Şifrə</value>
+  </data>
+  <data name="TbId4" xml:space="preserve">
+    <value>Şifrə (istəyə bağlı)</value>
+  </data>
+  <data name="TbId5" xml:space="preserve">
+    <value>UUID(id)</value>
+  </data>
+  <data name="TbSecurity3" xml:space="preserve">
+    <value>Şifrələmə</value>
+  </data>
+  <data name="TbSecurity4" xml:space="preserve">
+    <value>İstifadəçi (istəyə bağlı)</value>
+  </data>
+  <data name="TbSecurity5" xml:space="preserve">
+    <value>Şifrələmə</value>
+  </data>
+  <data name="TbPreSocksPort" xml:space="preserve">
+    <value>SOCKS portu</value>
+  </data>
+  <data name="TipPreSocksPort" xml:space="preserve">
+    <value>* Bu dəyər təyin edildikdən sonra sürətin göstərilməsi kimi funksiyaları təmin etmək üçün Xray/sing-box(Tun) vasitəsilə SOCKS xidməti başladılacaq</value>
+  </data>
+  <data name="TbBrowse" xml:space="preserve">
+    <value>Fayl seç</value>
+  </data>
+  <data name="TbEdit" xml:space="preserve">
+    <value>Redaktə et</value>
+  </data>
+  <data name="TbSettingsAdvancedProtocol" xml:space="preserve">
+    <value>Əlavə proksi parametrləri, protokol seçimi (istəyə bağlı)</value>
+  </data>
+  <data name="TbSettingsAllowLAN" xml:space="preserve">
+    <value>LAN şəbəkəsindən əlaqələrə icazə ver</value>
+  </data>
+  <data name="TbSettingsAutoHideStartup" xml:space="preserve">
+    <value>Başlanğıcda avtomatik gizlət</value>
+  </data>
+  <data name="TbSettingsAutoUpdateInterval" xml:space="preserve">
+    <value>Geo fayllarının avtomatik yenilənmə intervalı (saat)</value>
+  </data>
+  <data name="TbSettingsCore" xml:space="preserve">
+    <value>Nüvə: əsas parametrlər</value>
+  </data>
+  <data name="TbCustomDnsRay" xml:space="preserve">
+    <value>V2ray üçün xüsusi DNS</value>
+  </data>
+  <data name="TbSettingsCoreKcp" xml:space="preserve">
+    <value>Nüvə: KCP parametrləri</value>
+  </data>
+  <data name="TbSettingsCoreType" xml:space="preserve">
+    <value>Nüvə növü parametrləri</value>
+  </data>
+  <data name="TbSettingsDefAllowInsecure" xml:space="preserve">
+    <value>Təhlükəsiz olmayan əlaqəyə icazə ver</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Freedom" xml:space="preserve">
+    <value>Freedom çıxışı üçün domen strategiyası</value>
+  </data>
+  <data name="TbSettingsEnableAutoAdjustMainLvColWidth" xml:space="preserve">
+    <value>Abunəlik yeniləndikdən sonra sütun enini avtomatik tənzimlə</value>
+  </data>
+  <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
+    <value>İlkin buraxılışları yoxla</value>
+  </data>
+  <data name="TbSettingsEnableUpdateViaProxy" xml:space="preserve">
+    <value>Proksi vasitəsilə yenilə</value>
+  </data>
+  <data name="TbSettingsException" xml:space="preserve">
+    <value>İstisna</value>
+  </data>
+  <data name="TbSettingsExceptionTip" xml:space="preserve">
+    <value>İstisnalar: aşağıdakılarla başlayan ünvanlar üçün proksi serverdən istifadə etməyin. Girişləri nöqtəli vergüllə (;) ayırın.</value>
+  </data>
+  <data name="TbSettingsDisplayRealTimeSpeed" xml:space="preserve">
+    <value>Sürəti real vaxtda göstər (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="TbSettingsKeepOlderDedupl" xml:space="preserve">
+    <value>Təkrarlananları silərkən köhnə girişləri saxla</value>
+  </data>
+  <data name="TbSettingsLogEnabled" xml:space="preserve">
+    <value>Jurnalı aktiv et</value>
+  </data>
+  <data name="TbSettingsLogLevel" xml:space="preserve">
+    <value>Jurnal səviyyəsi</value>
+  </data>
+  <data name="TbSettingsMuxEnabled" xml:space="preserve">
+    <value>Mux multipleksləşdirməsini aktiv et</value>
+  </data>
+  <data name="TbSettingsN" xml:space="preserve">
+    <value>v2rayN parametrləri</value>
+  </data>
+  <data name="TbSettingsPass" xml:space="preserve">
+    <value>Doğrulama şifrəsi</value>
+  </data>
+  <data name="TbSettingsSetUWP" xml:space="preserve">
+    <value>Win10 UWP geri dövrə girişini təyin et</value>
+  </data>
+  <data name="TbSettingsSniffingEnabled" xml:space="preserve">
+    <value>Trafik aşkarlamasını aktiv et</value>
+  </data>
+  <data name="TbSettingsSocksPort" xml:space="preserve">
+    <value>Qarışıq port</value>
+  </data>
+  <data name="TbSettingsStartBoot" xml:space="preserve">
+    <value>Sistem açılarkən başlat</value>
+  </data>
+  <data name="TbSettingsStatistics" xml:space="preserve">
+    <value>Trafik statistikasını aktiv et (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="TbSettingsSubConvert" xml:space="preserve">
+    <value>Abunəliyin çevrilməsi üçün URL</value>
+  </data>
+  <data name="TbSettingsSystemproxy" xml:space="preserve">
+    <value>Sistem proksisi parametrləri</value>
+  </data>
+  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
+    <value>Sistem panelinin sağ klik menyusunda göstərilən elementlərin həddi</value>
+  </data>
+  <data name="TbSettingsUdpEnabled" xml:space="preserve">
+    <value>UDP-ni aktiv et</value>
+  </data>
+  <data name="TbSettingsUser" xml:space="preserve">
+    <value>Doğrulama istifadəçisi</value>
+  </data>
+  <data name="TbClearSystemProxy" xml:space="preserve">
+    <value>Sistem proksisini təmizlə</value>
+  </data>
+  <data name="TbDisplayGUI" xml:space="preserve">
+    <value>Qrafik interfeysi göstər</value>
+  </data>
+  <data name="TbGlobalHotkeySetting" xml:space="preserve">
+    <value>Qlobal klaviatura qısayolu parametrləri</value>
+  </data>
+  <data name="TbGlobalHotkeySettingTip" xml:space="preserve">
+    <value>Klaviatura düymələrini basaraq birbaşa təyin edin; yenidən başladıldıqdan sonra qüvvəyə minir</value>
+  </data>
+  <data name="TbNotChangeSystemProxy" xml:space="preserve">
+    <value>Sistem proksisini dəyişmə</value>
+  </data>
+  <data name="TbReset" xml:space="preserve">
+    <value>Sıfırla</value>
+  </data>
+  <data name="TbSetSystemProxy" xml:space="preserve">
+    <value>Sistem proksisini təyin et</value>
+  </data>
+  <data name="TbSystemProxyPac" xml:space="preserve">
+    <value>PAC rejimi</value>
+  </data>
+  <data name="menuShareServer" xml:space="preserve">
+    <value>Paylaş</value>
+  </data>
+  <data name="menuRouting" xml:space="preserve">
+    <value>Marşrutlaşdırma</value>
+  </data>
+  <data name="NotRunAsAdmin" xml:space="preserve">
+    <value>Administrator kimi başladılmayıb</value>
+  </data>
+  <data name="RunAsAdmin" xml:space="preserve">
+    <value>Administrator kimi başlat</value>
+  </data>
+  <data name="menuMoveBottom" xml:space="preserve">
+    <value>Ən aşağıya köçür</value>
+  </data>
+  <data name="menuMoveDown" xml:space="preserve">
+    <value>Aşağı köçür</value>
+  </data>
+  <data name="menuMoveTop" xml:space="preserve">
+    <value>Ən yuxarıya köçür</value>
+  </data>
+  <data name="menuMoveUp" xml:space="preserve">
+    <value>Yuxarı köçür</value>
+  </data>
+  <data name="MsgFilterTitle" xml:space="preserve">
+    <value>Süzgəc, müntəzəm ifadələri dəstəkləyir</value>
+  </data>
+  <data name="menuWebsiteItem" xml:space="preserve">
+    <value>{0} veb-saytı</value>
+  </data>
+  <data name="menuRoutingAdvancedAdd" xml:space="preserve">
+    <value>Əlavə et</value>
+  </data>
+  <data name="menuRoutingAdvancedImportRules" xml:space="preserve">
+    <value>Qaydaları idxal et</value>
+  </data>
+  <data name="menuRoutingAdvancedRemove" xml:space="preserve">
+    <value>Seçilənləri sil</value>
+  </data>
+  <data name="menuRoutingAdvancedSetDefault" xml:space="preserve">
+    <value>Aktiv qayda olaraq təyin et</value>
+  </data>
+  <data name="TbdomainStrategy" xml:space="preserve">
+    <value>Domen strategiyası</value>
+  </data>
+  <data name="TbRoutingTabRuleList" xml:space="preserve">
+    <value>Əvvəlcədən təyin edilmiş qayda dəstlərinin siyahısı</value>
+  </data>
+  <data name="TbRoutingTips" xml:space="preserve">
+    <value>*Qaydaları vergüllə (,) ayırın; vergülün özünü yazmaq üçün &lt;COMMA&gt; işarəsindən istifadə edin; qaydanı nəzərə almamaq üçün əvvəlinə # əlavə edin</value>
+  </data>
+  <data name="menuImportRulesFromClipboard" xml:space="preserve">
+    <value>Qaydaları mübadilə buferindən idxal et</value>
+  </data>
+  <data name="menuImportRulesFromFile" xml:space="preserve">
+    <value>Qaydaları fayldan idxal et</value>
+  </data>
+  <data name="menuImportRulesFromUrl" xml:space="preserve">
+    <value>Qaydaları abunəlik URL-indən idxal et</value>
+  </data>
+  <data name="menuRoutingRuleSetting" xml:space="preserve">
+    <value>Qayda parametrləri</value>
+  </data>
+  <data name="menuRuleAdd" xml:space="preserve">
+    <value>Qayda əlavə et</value>
+  </data>
+  <data name="menuRuleExportSelected" xml:space="preserve">
+    <value>Seçilmiş qaydaları ixrac et</value>
+  </data>
+  <data name="menuRuleList" xml:space="preserve">
+    <value>Qayda siyahısı</value>
+  </data>
+  <data name="menuRuleRemove" xml:space="preserve">
+    <value>Qaydanı sil</value>
+  </data>
+  <data name="menuRoutingRuleDetailsSetting" xml:space="preserve">
+    <value>Marşrutlaşdırma qaydasının təfərrüat parametrləri</value>
+  </data>
+  <data name="TbAutoSort" xml:space="preserve">
+    <value>Yadda saxlanarkən domen, IP və proses avtomatik sıralanır</value>
+  </data>
+  <data name="TbRuleobjectDoc" xml:space="preserve">
+    <value>Qayda obyekti sənədləri</value>
+  </data>
+  <data name="TbDnsObjectDoc" xml:space="preserve">
+    <value>DNS obyektini doldurun; sənədlərə baxmaq üçün klikləyin</value>
+  </data>
+  <data name="SubUrlTips" xml:space="preserve">
+    <value>Qrup üçün buranı boş saxlayın</value>
+  </data>
+  <data name="TipChangeRouting" xml:space="preserve">
+    <value>Marşrutlaşdırma parametri dəyişdirildi</value>
+  </data>
+  <data name="TipChangeSystemProxy" xml:space="preserve">
+    <value>Sistem proksisi parametri dəyişdirildi</value>
+  </data>
+  <data name="TbSettingsRouteOnly" xml:space="preserve">
+    <value>Yalnız marşrutlaşdırma</value>
+  </data>
+  <data name="TbSettingsNotProxyLocalAddress" xml:space="preserve">
+    <value>Yerli (intranet) ünvanlar üçün proksi serverlərdən istifadə etmə</value>
+  </data>
+  <data name="menuMixedTestServer" xml:space="preserve">
+    <value>Bir kliklə gecikmə və sürət üzrə çoxsaylı yoxlama apar (Ctrl+E)</value>
+  </data>
+  <data name="LvTestDelay" xml:space="preserve">
+    <value>Gecikmə (ms)</value>
+  </data>
+  <data name="LvTestSpeed" xml:space="preserve">
+    <value>Sürət (MB/s)</value>
+  </data>
+  <data name="FailedToRunCore" xml:space="preserve">
+    <value>Nüvəni başlatmaq mümkün olmadı, bildirişdəki məlumatı yoxlayın</value>
+  </data>
+  <data name="LvFilter" xml:space="preserve">
+    <value>Qeydlər üçün müntəzəm ifadə süzgəci</value>
+  </data>
+  <data name="TbDisplayLog" xml:space="preserve">
+    <value>Jurnalı göstər</value>
+  </data>
+  <data name="TbEnableTunAs" xml:space="preserve">
+    <value>Tun rejimini aktiv et</value>
+  </data>
+  <data name="TbSettingsNewPort4LAN" xml:space="preserve">
+    <value>LAN üçün yeni port</value>
+  </data>
+  <data name="TbSettingsTunMode" xml:space="preserve">
+    <value>Tun rejimi parametrləri</value>
+  </data>
+  <data name="menuMoveToGroup" xml:space="preserve">
+    <value>Qrupa köçür</value>
+  </data>
+  <data name="TbSettingsEnableDragDropSort" xml:space="preserve">
+    <value>Konfiqurasiyaları sürükləyib buraxmaqla sıralamağı aktiv et (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="TbAutoRefresh" xml:space="preserve">
+    <value>Avtomatik yenilə</value>
+  </data>
+  <data name="SpeedtestingSkip" xml:space="preserve">
+    <value>Yoxlamanı ötür</value>
+  </data>
+  <data name="menuEditServer" xml:space="preserve">
+    <value>Profili redaktə et </value>
+  </data>
+  <data name="TbSettingsDoubleClick2Activate" xml:space="preserve">
+    <value>Konfiqurasiyaya iki dəfə kliklədikdə onu aktiv et</value>
+  </data>
+  <data name="SpeedtestingCompleted" xml:space="preserve">
+    <value>Yoxlama tamamlandı</value>
+  </data>
+  <data name="TbSettingsDefFingerprint" xml:space="preserve">
+    <value>Standart TLS barmaq izi</value>
+  </data>
+  <data name="TbSettingsDefUserAgent" xml:space="preserve">
+    <value>İstifadəçi agenti</value>
+  </data>
+  <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
+    <value>Bu parametr yalnız raw/http, ws, gRPC və xhttp üçün tətbiq olunur</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
+    <value>Şrift ailəsi (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyTip" xml:space="preserve">
+    <value>Şriftin TTF/TTC faylını gui Fonts qovluğuna kopyalayın; parametrlər pəncərəsini yenidən açın</value>
+  </data>
+  <data name="TbSettingsSocksPortTip" xml:space="preserve">
+    <value>PAC portu = +3; Xray API portu = +4; mihomo API portu = +5;</value>
+  </data>
+  <data name="TbSettingsStartBootTip" xml:space="preserve">
+    <value>Bunu administrator səlahiyyətləri ilə təyin edin, başlanğıcdan sonra administrator səlahiyyətləri əldə edilir</value>
+  </data>
+  <data name="TbSettingsFontSize" xml:space="preserve">
+    <value>Şrift ölçüsü</value>
+  </data>
+  <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
+    <value>Sürət yoxlamasında hər sınaq üçün gözləmə müddəti</value>
+  </data>
+  <data name="TbSettingsSpeedTestUrl" xml:space="preserve">
+    <value>Sürət yoxlaması URL-i</value>
+  </data>
+  <data name="menuMoveTo" xml:space="preserve">
+    <value>Yuxarı və aşağı köçür</value>
+  </data>
+  <data name="TbPublicKey" xml:space="preserve">
+    <value>Açıq açar</value>
+  </data>
+  <data name="TbShortId" xml:space="preserve">
+    <value>Qısa identifikator</value>
+  </data>
+  <data name="TbSpiderX" xml:space="preserve">
+    <value>Spider X</value>
+  </data>
+  <data name="TbSettingsEnableHWA" xml:space="preserve">
+    <value>Aparat sürətləndirməsini aktiv et (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="SpeedtestingWait" xml:space="preserve">
+    <value>Gözlənilir...</value>
+  </data>
+  <data name="SpeedtestingPressEscToExit" xml:space="preserve">
+    <value>Yoxlamanı dayandırmaq üçün ESC düyməsini basın</value>
+  </data>
+  <data name="TipDisplayLog" xml:space="preserve">
+    <value>Gözlənilməz əlaqə kəsilməsi baş verdikdə söndürün</value>
+  </data>
+  <data name="MsgSkipSubscriptionUpdate" xml:space="preserve">
+    <value>Yeniləmələr aktiv deyil, bu abunəlik ötürülür</value>
+  </data>
+  <data name="menuRebootAsAdmin" xml:space="preserve">
+    <value>Administrator kimi yenidən başlat</value>
+  </data>
+  <data name="LvMoreUrl" xml:space="preserve">
+    <value>Əlavə URL-ləri vergüllə ayırın; abunəliyin çevrilməsi işləməyəcək</value>
+  </data>
+  <data name="SpeedDisplayText" xml:space="preserve">
+    <value>{0} : {1}/s↑ | {2}/s↓</value>
+  </data>
+  <data name="LvAutoUpdateInterval" xml:space="preserve">
+    <value>Avtomatik yenilənmə intervalı (dəqiqə)</value>
+  </data>
+  <data name="TbSettingsLogEnabledToFile" xml:space="preserve">
+    <value>Fayla jurnal yazılmasını aktiv et</value>
+  </data>
+  <data name="LvConvertTarget" xml:space="preserve">
+    <value>Çevrilmənin hədəf növü</value>
+  </data>
+  <data name="LvConvertTargetTip" xml:space="preserve">
+    <value>Çevrilmə tələb olunmursa, boş saxlayın</value>
+  </data>
+  <data name="menuDNSSetting" xml:space="preserve">
+    <value>DNS parametrləri</value>
+  </data>
+  <data name="TbCustomDnsSingbox" xml:space="preserve">
+    <value>sing-box üçün xüsusi DNS</value>
+  </data>
+  <data name="TbDnsSingboxObjectDoc" xml:space="preserve">
+    <value>DNS strukturunu doldurun; sənədə baxmaq üçün klikləyin</value>
+  </data>
+  <data name="TbSettingDnsImportDefConfig" xml:space="preserve">
+    <value>Standart DNS konfiqurasiyasını idxal etmək üçün kliklə</value>
+  </data>
+  <data name="TbdomainStrategy4Singbox" xml:space="preserve">
+    <value>sing-box domen strategiyası</value>
+  </data>
+  <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
+    <value>sing-box Mux protokolu</value>
+  </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux paralellik sayı</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP paralellik sayı</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proksi UDP443</value>
+  </data>
+  <data name="TbRoutingRuleProcess" xml:space="preserve">
+    <value>Proses (Linux/Windows)</value>
+  </data>
+  <data name="TbRoutingRuleIP" xml:space="preserve">
+    <value>IP və ya IP CIDR</value>
+  </data>
+  <data name="TbRoutingRuleDomain" xml:space="preserve">
+    <value>Domen</value>
+  </data>
+  <data name="menuAddHysteria2Server" xml:space="preserve">
+    <value>[Hysteria2] əlavə et</value>
+  </data>
+  <data name="TbSettingsHysteriaBandwidth" xml:space="preserve">
+    <value>Hysteria maksimum ötürmə qabiliyyəti (göndərmə/endirmə)</value>
+  </data>
+  <data name="TbSettingsUseSystemHosts" xml:space="preserve">
+    <value>Sistemin hosts faylından istifadə et</value>
+  </data>
+  <data name="menuAddTuicServer" xml:space="preserve">
+    <value>[TUIC] əlavə et</value>
+  </data>
+  <data name="TbHeaderType8" xml:space="preserve">
+    <value>Şəbəkə sıxlığına nəzarət</value>
+  </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP başlıqları</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>Çıxan HTTP sorğularının xüsusi başlıqları, dəyərləri sətir və ya sətir massivi olan JSON obyekti şəklində.</value>
+  </data>
+  <data name="LvPrevProfile" xml:space="preserve">
+    <value>Əvvəlki proksinin qeydləri</value>
+  </data>
+  <data name="LvNextProfile" xml:space="preserve">
+    <value>Növbəti proksinin qeydləri</value>
+  </data>
+  <data name="LvPrevProfileTip" xml:space="preserve">
+    <value>Konfiqurasiya qeydlərinin mövcud və unikal olduğuna əmin olun</value>
+  </data>
+  <data name="TbSettingsTunAutoRoute" xml:space="preserve">
+    <value>Avtomatik marşrutlaşdırma</value>
+  </data>
+  <data name="TbSettingsTunStrictRoute" xml:space="preserve">
+    <value>Sərt marşrutlaşdırma</value>
+  </data>
+  <data name="TbSettingsTunStack" xml:space="preserve">
+    <value>Stek</value>
+  </data>
+  <data name="TbMtu" xml:space="preserve">
+    <value>MTU</value>
+  </data>
+  <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
+    <value>IPv6 ünvanını aktiv et</value>
+  </data>
+  <data name="menuAddWireguardServer" xml:space="preserve">
+    <value>[WireGuard] əlavə et</value>
+  </data>
+  <data name="TbPrivateKey" xml:space="preserve">
+    <value>Məxfi açar</value>
+  </data>
+  <data name="TbReserved" xml:space="preserve">
+    <value>Ehtiyatda saxlanılmış</value>
+  </data>
+  <data name="TbLocalAddress" xml:space="preserve">
+    <value>Ünvan (IPv4, IPv6)</value>
+  </data>
+  <data name="TbPath7" xml:space="preserve">
+    <value>obfs şifrəsi</value>
+  </data>
+  <data name="TbRuleMatchingTips" xml:space="preserve">
+    <value>(Domen və ya IP və ya proses adı) və port və protokol və giriş etiketi =&gt; çıxış etiketi</value>
+  </data>
+  <data name="TbAutoScrollToEnd" xml:space="preserve">
+    <value>Avtomatik sona sürüşdür</value>
+  </data>
+  <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
+    <value>Sürətli ping yoxlaması URL-i</value>
+  </data>
+  <data name="SpeedtestingStop" xml:space="preserve">
+    <value>Yoxlama dayandırılır...</value>
+  </data>
+  <data name="TransportRequestHostTip5" xml:space="preserve">
+    <value>gRPC xidmət ünvanı</value>
+  </data>
+  <data name="menuAddHttpServer" xml:space="preserve">
+    <value>[HTTP] əlavə et</value>
+  </data>
+  <data name="TbSettingsEnableFragment" xml:space="preserve">
+    <value>Fraqmentləşdirməni aktiv et</value>
+  </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>Fraqmentləşdiriləcək paketlər</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>Fraqmentləşdiriləcək paketlər: tlshello (TLS ClientHello) və ya 1-1 ilə 1-5 arası (ilk N TCP paketi)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>Fraqment uzunluğu</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>Baytla fraqment ölçüsü aralığı (məsələn, 50-100). Birinci dəyər &lt;= ikinci dəyər olmalıdır. Boş = standart.</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>Fraqment intervalı</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>Fraqmentlər arasında ms ilə gecikmə (məsələn, 10-20). Aralıq 1-100. Birinci dəyər &lt;= ikinci dəyər olmalıdır. Boş = standart.</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>Maksimum bölünmə sayı</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>Hər paket üçün maksimum fraqment sayı (0-10000, 0 = məhdudiyyətsiz). Yalnız Xray. Boş = standart.</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>Ehtiyat gecikmə</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>ACK aşkarlaması mümkün olmadıqda ehtiyat gecikmə (məsələn, 500ms). Yalnız sing-box. Boş = standart.</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>Aralıq formatı yanlışdır. &apos;başlanğıc-son&apos; formatından istifadə edin (məsələn, 50-100).</value>
+  </data>
+  <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
+    <value>sing-box üçün keş faylını aktiv et (qayda dəsti faylları)</value>
+  </data>
+  <data name="LvCustomRulesetPath4Singbox" xml:space="preserve">
+    <value>sing-box üçün xüsusi qayda dəsti</value>
+  </data>
+  <data name="NeedRebootTips" xml:space="preserve">
+    <value>Əməliyyat uğurla tamamlandı. Tətbiqi yenidən başlatmaq üçün parametrlər menyusuna klikləyin.</value>
+  </data>
+  <data name="menuOpenTheFileLocation" xml:space="preserve">
+    <value>Saxlama yerini aç</value>
+  </data>
+  <data name="TbSorting" xml:space="preserve">
+    <value>Sıralama</value>
+  </data>
+  <data name="TbSortingChain" xml:space="preserve">
+    <value>Zəncir</value>
+  </data>
+  <data name="TbSortingDefault" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="TbSortingDelay" xml:space="preserve">
+    <value>Gecikmə</value>
+  </data>
+  <data name="TbSortingDownSpeed" xml:space="preserve">
+    <value>Endirmə sürəti</value>
+  </data>
+  <data name="TbSortingDownTraffic" xml:space="preserve">
+    <value>Endirmə trafiki</value>
+  </data>
+  <data name="TbSortingHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TbSortingName" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="TbSortingNetwork" xml:space="preserve">
+    <value>Şəbəkə</value>
+  </data>
+  <data name="TbSortingTime" xml:space="preserve">
+    <value>Vaxt</value>
+  </data>
+  <data name="TbSortingType" xml:space="preserve">
+    <value>Növ</value>
+  </data>
+  <data name="TbSortingUpSpeed" xml:space="preserve">
+    <value>Göndərmə sürəti</value>
+  </data>
+  <data name="TbSortingUpTraffic" xml:space="preserve">
+    <value>Göndərmə trafiki</value>
+  </data>
+  <data name="TbConnections" xml:space="preserve">
+    <value>Əlaqələr</value>
+  </data>
+  <data name="menuConnectionClose" xml:space="preserve">
+    <value>Əlaqəni bağla</value>
+  </data>
+  <data name="menuConnectionCloseAll" xml:space="preserve">
+    <value>Bütün əlaqələri bağla</value>
+  </data>
+  <data name="TbProxies" xml:space="preserve">
+    <value>Proksilər</value>
+  </data>
+  <data name="menuRulemode" xml:space="preserve">
+    <value>Qayda rejimi</value>
+  </data>
+  <data name="menuModeDirect" xml:space="preserve">
+    <value>Birbaşa</value>
+  </data>
+  <data name="menuModeGlobal" xml:space="preserve">
+    <value>Qlobal</value>
+  </data>
+  <data name="menuModeNothing" xml:space="preserve">
+    <value>Dəyişmə</value>
+  </data>
+  <data name="menuModeRule" xml:space="preserve">
+    <value>Qayda</value>
+  </data>
+  <data name="menuDelaytest" xml:space="preserve">
+    <value>Gecikməni yoxla</value>
+  </data>
+  <data name="menuProxiesDelaytestPart" xml:space="preserve">
+    <value>Düyünlərin bir hissəsinin gecikməsini yoxla</value>
+  </data>
+  <data name="menuProxiesReload" xml:space="preserve">
+    <value>Proksiləri yenilə</value>
+  </data>
+  <data name="menuProxiesSelectActivity" xml:space="preserve">
+    <value>Aktiv düyünü seç</value>
+  </data>
+  <data name="TbSettingsDomainStrategy4Out" xml:space="preserve">
+    <value>Çıxış üçün standart domen strategiyası</value>
+  </data>
+  <data name="TbSettingsMainGirdOrientation" xml:space="preserve">
+    <value>Əsas düzümün istiqaməti (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="TbSettingsDomainDNSAddress" xml:space="preserve">
+    <value>Çıxış DNS ünvanı</value>
+  </data>
+  <data name="menuProfileAutofitColumnWidth" xml:space="preserve">
+    <value>Sütun enini avtomatik tənzimlə</value>
+  </data>
+  <data name="menuExport2ShareUrlBase64" xml:space="preserve">
+    <value>Base64 ilə kodlaşdırılmış paylaşım keçidlərini mübadilə buferinə ixrac et</value>
+  </data>
+  <data name="menuExport2ClientConfigClipboard" xml:space="preserve">
+    <value>Seçilənləri tam konfiqurasiya kimi mübadilə buferinə ixrac et</value>
+  </data>
+  <data name="menuShowOrHideMainWindow" xml:space="preserve">
+    <value>Əsas pəncərəni göstər və ya gizlət</value>
+  </data>
+  <data name="TbPreSocksPort4Sub" xml:space="preserve">
+    <value>Xüsusi konfiqurasiyanın SOCKS portu</value>
+  </data>
+  <data name="menuBackupAndRestore" xml:space="preserve">
+    <value>Ehtiyat nüsxə və bərpa</value>
+  </data>
+  <data name="menuLocalBackup" xml:space="preserve">
+    <value>Yerli ehtiyat nüsxə yarat</value>
+  </data>
+  <data name="menuLocalRestore" xml:space="preserve">
+    <value>Yerli nüsxədən bərpa et</value>
+  </data>
+  <data name="menuRemoteBackup" xml:space="preserve">
+    <value>Uzaq serverdə ehtiyat nüsxə yarat (WebDAV)</value>
+  </data>
+  <data name="menuRemoteRestore" xml:space="preserve">
+    <value>Uzaq serverdən bərpa et (WebDAV)</value>
+  </data>
+  <data name="menuLocalBackupAndRestore" xml:space="preserve">
+    <value>Yerli</value>
+  </data>
+  <data name="menuRemoteBackupAndRestore" xml:space="preserve">
+    <value>Uzaq server (WebDAV)</value>
+  </data>
+  <data name="LvWebDavUrl" xml:space="preserve">
+    <value>WebDAV URL-i</value>
+  </data>
+  <data name="LvWebDavUserName" xml:space="preserve">
+    <value>WebDAV istifadəçi adı</value>
+  </data>
+  <data name="LvWebDavPassword" xml:space="preserve">
+    <value>WebDAV şifrəsi</value>
+  </data>
+  <data name="LvWebDavCheck" xml:space="preserve">
+    <value>WebDAV xidmətini yoxla</value>
+  </data>
+  <data name="LvWebDavDirName" xml:space="preserve">
+    <value>Uzaq qovluğun adı (istəyə bağlı)</value>
+  </data>
+  <data name="LocalRestoreInvalidZipTips" xml:space="preserve">
+    <value>Ehtiyat nüsxə faylı yanlışdır</value>
+  </data>
+  <data name="ConnectionsHostFilterTitle" xml:space="preserve">
+    <value>Host süzgəci</value>
+  </data>
+  <data name="TipActiveServer" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="TbSettingsGeoFilesSource" xml:space="preserve">
+    <value>Geo fayllarının mənbəyi (istəyə bağlı)</value>
+  </data>
+  <data name="TbSettingsSrsFilesSource" xml:space="preserve">
+    <value>sing-box qayda dəsti fayllarının mənbəyi (istəyə bağlı)</value>
+  </data>
+  <data name="UpgradeAppNotExistTip" xml:space="preserve">
+    <value>Yeniləmə tətbiqi mövcud deyil</value>
+  </data>
+  <data name="TbSettingsRoutingRulesSource" xml:space="preserve">
+    <value>Marşrutlaşdırma qaydalarının mənbəyi (istəyə bağlı)</value>
+  </data>
+  <data name="menuRegionalPresets" xml:space="preserve">
+    <value>Regional hazır parametr dəstləri</value>
+  </data>
+  <data name="menuRegionalPresetsDefault" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="menuRegionalPresetsRussia" xml:space="preserve">
+    <value>Rusiya</value>
+  </data>
+  <data name="menuRegionalPresetsIran" xml:space="preserve">
+    <value>İran</value>
+  </data>
+  <data name="TbSettingsChinaUserTip" xml:space="preserve">
+    <value>Çin regionundakı istifadəçilər bu bəndi nəzərə almaya bilərlər</value>
+  </data>
+  <data name="menuAddServerViaImage" xml:space="preserve">
+    <value>Şəkildəki QR kodu skan et</value>
+  </data>
+  <data name="InvalidUrlTip" xml:space="preserve">
+    <value>Ünvan (URL) yanlışdır</value>
+  </data>
+  <data name="InsecureUrlProtocol" xml:space="preserve">
+    <value>Təhlükəsiz olmayan HTTP protokollu abunəlik ünvanından istifadə etməyin</value>
+  </data>
+  <data name="TbSettingsCurrentFontFamilyLinuxTip" xml:space="preserve">
+    <value>Şrifti sistemə quraşdırın, şrift adını seçin və ya daxil edin, parametrləri yenidən açın</value>
+  </data>
+  <data name="menuExitTips" xml:space="preserve">
+    <value>Çıxmaq istədiyinizə əminsiniz?</value>
+  </data>
+  <data name="LvMemo" xml:space="preserve">
+    <value>Əlavə qeydlər</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPassword" xml:space="preserve">
+    <value>Sistemin sudo şifrəsi</value>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
+    <value>Şifrə əmr sətri vasitəsilə yoxlanılacaq. Doğrulama xətası tətbiqin işini pozarsa, tətbiqi yenidən başladın. Şifrə saxlanılmayacaq və hər yenidən başlatmadan sonra təkrar daxil edilməlidir.</value>
+  </data>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>xhttp rejimi</value>
+  </data>
+  <data name="TransportExtraTip" xml:space="preserve">
+    <value>Emal edilməmiş JSON, format: { XHTTP obyekti }</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
+    <value>Pəncərəni bağlayarkən sistem panelində gizlət</value>
+  </data>
+  <data name="TbSettingsMixedConcurrencyCount" xml:space="preserve">
+    <value>Çoxsaylı yoxlama zamanı paralel sınaqların sayı</value>
+  </data>
+  <data name="TbSettingsExceptionTip2" xml:space="preserve">
+    <value>İstisnalar: aşağıdakı ünvanlar üçün proksi serverdən istifadə etməyin. Girişləri vergüllə (,) ayırın.</value>
+  </data>
+  <data name="TbSettingsDestOverride" xml:space="preserve">
+    <value>Trafik aşkarlaması növü</value>
+  </data>
+  <data name="TbSettingsSecondLocalPortEnabled" xml:space="preserve">
+    <value>İkinci qarışıq portu aktiv et</value>
+  </data>
+  <data name="TbRoutingInboundTagTips" xml:space="preserve">
+    <value>tun: TUN girişi, socks: yerli port, socks2: ikinci yerli port, socks3: LAN portu</value>
+  </data>
+  <data name="TbSettingsTheme" xml:space="preserve">
+    <value>Mövzu</value>
+  </data>
+  <data name="menuCopyProxyCmdToClipboard" xml:space="preserve">
+    <value>Proksi əmrini mübadilə buferinə kopyala</value>
+  </data>
+  <data name="SpeedtestingTestFailedPart" xml:space="preserve">
+    <value>Uğursuz hissələrin təkrar yoxlanmasına başlanılır, {0} qalıb. Dayandırmaq üçün ESC düyməsini basın...</value>
+  </data>
+  <data name="menuTestServerResult" xml:space="preserve">
+    <value>Yoxlama nəticəsinə görə</value>
+  </data>
+  <data name="menuRemoveInvalidServerResult" xml:space="preserve">
+    <value>Yoxlama nəticələrinə görə yararsızları sil</value>
+  </data>
+  <data name="RemoveInvalidServerResultTip" xml:space="preserve">
+    <value>{0} yararsız yoxlama nəticəsi silindi.</value>
+  </data>
+  <data name="TbPorts7" xml:space="preserve">
+    <value>Konfiqurasiyanın port aralığı</value>
+  </data>
+  <data name="TbPorts7Tips" xml:space="preserve">
+    <value>Portun yerinə tətbiq ediləcək, vergüllə (,) ayırın</value>
+  </data>
+  <data name="menuExportConfig" xml:space="preserve">
+    <value>İxrac et</value>
+  </data>
+  <data name="TbSettingsIPAPIUrl" xml:space="preserve">
+    <value>Cari əlaqə məlumatının yoxlanması üçün URL</value>
+  </data>
+  <data name="TbRuleOutboundTagTip" xml:space="preserve">
+    <value>Konfiqurasiya qeydlərini daxil edə bilərsiniz, onların mövcud və unikal olduğuna əmin olun</value>
+  </data>
+  <data name="SudoIncorrectPasswordTip" xml:space="preserve">
+    <value>Şifrə yanlışdır, yenidən cəhd edin.</value>
+  </data>
+  <data name="TbMldsa65Verify" xml:space="preserve">
+    <value>Mldsa65Verify</value>
+  </data>
+  <data name="menuAddAnytlsServer" xml:space="preserve">
+    <value>[Anytls] əlavə et</value>
+  </data>
+  <data name="TbRemoteDNS" xml:space="preserve">
+    <value>Uzaq DNS</value>
+  </data>
+  <data name="TbDomesticDNS" xml:space="preserve">
+    <value>Daxili DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>Birbaşa hədəfin həlli strategiyası</value>
+  </data>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>Proksi hədəfinin həlli strategiyası</value>
+  </data>
+  <data name="TbAddCommonDNSHosts" xml:space="preserve">
+    <value>Geniş istifadə olunan DNS hostlarını əlavə et</value>
+  </data>
+  <data name="TbFakeIP" xml:space="preserve">
+    <value>FakeIP</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
+    <value>SVCB və HTTPS sorğularını blokla</value>
+  </data>
+  <data name="TbDNSHostsConfig" xml:space="preserve">
+    <value>DNS hostları: (hər sətirdə &quot;domain1 ip1 ip2&quot;)</value>
+  </data>
+  <data name="ThBasicDNSSettings" xml:space="preserve">
+    <value>Əsas DNS parametrləri</value>
+  </data>
+  <data name="ThAdvancedDNSSettings" xml:space="preserve">
+    <value>Əlavə DNS parametrləri</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
+    <value>Regional domen IP-lərini yoxla</value>
+  </data>
+  <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
+    <value>Konfiqurasiya edilibsə, regional domenlər üçün qaytarılan IP-ləri yoxlayır (məsələn, geosite:cn üçün geoip:cn) və yalnız gözlənilən IP-ləri qaytarır</value>
+  </data>
+  <data name="TbCustomDNSEnable" xml:space="preserve">
+    <value>Xüsusi DNS-i aktiv et</value>
+  </data>
+  <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
+    <value>Xüsusi DNS aktivdir, bu səhifənin parametrləri tətbiq olunmur</value>
+  </data>
+  <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
+    <value>Aktiv olduqda ECH və HTTP/3 mövcudluq yoxlamalarını bloklayır. Xray-də həmişə aktivdir</value>
+  </data>
+  <data name="FillCorrectConfigTemplateText" xml:space="preserve">
+    <value>Düzgün konfiqurasiya şablonu daxil edin</value>
+  </data>
+  <data name="menuFullConfigTemplate" xml:space="preserve">
+    <value>Tam konfiqurasiya şablonu parametrləri</value>
+  </data>
+  <data name="TbFullConfigTemplateEnable" xml:space="preserve">
+    <value>Tam konfiqurasiya şablonunu aktiv et</value>
+  </data>
+  <data name="TbRayFullConfigTemplate" xml:space="preserve">
+    <value>v2ray tam konfiqurasiya şablonu</value>
+  </data>
+  <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
+    <value>Yalnız çıxış konfiqurasiyasını, routing.balancers və routing.rules.outboundTag parametrlərini əlavə edin; sənədə baxmaq üçün klikləyin</value>
+  </data>
+  <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
+    <value>Proksi olmayan protokol çıxışını əlavə etmə</value>
+  </data>
+  <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
+    <value>Yuxarı səviyyəli proksi etiketini təyin et</value>
+  </data>
+  <data name="TbSBFullConfigTemplate" xml:space="preserve">
+    <value>sing-box tam konfiqurasiya şablonu</value>
+  </data>
+  <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
+    <value>Yalnız çıxış və son nöqtə konfiqurasiyasını əlavə edin; sənədə baxmaq üçün klikləyin</value>
+  </data>
+  <data name="TbFullConfigTemplateDesc" xml:space="preserve">
+    <value>Bu funksiya təcrübəli və xüsusi tələbləri olan istifadəçilər üçün nəzərdə tutulub. Aktiv edildikdə nüvənin əsas parametrləri, DNS parametrləri və marşrutlaşdırma parametrləri nəzərə alınmayacaq. Sistem proksisi portunun, trafik statistikasının və digər əlaqəli konfiqurasiyaların düzgün təyin edildiyinə əmin olmalısınız. Bütün konfiqurasiyanı özünüz quracaqsınız.</value>
+  </data>
+  <data name="MsgStartParsingSubscription" xml:space="preserve">
+    <value>Abunəlik məzmununun təhlilinə və emalına başlanılır</value>
+  </data>
+  <data name="TbSelectProfile" xml:space="preserve">
+    <value>Profil seç</value>
+  </data>
+  <data name="TbFakeIPTips" xml:space="preserve">
+    <value>Standart olaraq qlobal tətbiq edilir və daxili FakeIP süzgəci yalnız sing-box-da mövcuddur.</value>
+  </data>
+  <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
+    <value>Ən azı bir konfiqurasiya əlavə edin</value>
+  </data>
+  <data name="TbConfigTypePolicyGroup" xml:space="preserve">
+    <value>Siyasət qrupu</value>
+  </data>
+  <data name="TbConfigTypeProxyChain" xml:space="preserve">
+    <value>Proksi zənciri</value>
+  </data>
+  <data name="TbLeastPing" xml:space="preserve">
+    <value>Ən aşağı gecikmə</value>
+  </data>
+  <data name="TbRandom" xml:space="preserve">
+    <value>Təsadüfi</value>
+  </data>
+  <data name="TbRoundRobin" xml:space="preserve">
+    <value>Növbəli seçim</value>
+  </data>
+  <data name="TbLeastLoad" xml:space="preserve">
+    <value>Ən sabit</value>
+  </data>
+  <data name="TbPolicyGroupType" xml:space="preserve">
+    <value>Siyasət qrupunun növü</value>
+  </data>
+  <data name="menuAddPolicyGroupServer" xml:space="preserve">
+    <value>Siyasət qrupu əlavə et</value>
+  </data>
+  <data name="menuAddProxyChainServer" xml:space="preserve">
+    <value>Proksi zənciri əlavə et</value>
+  </data>
+  <data name="menuAddChildServer" xml:space="preserve">
+    <value>Alt element əlavə et</value>
+  </data>
+  <data name="menuRemoveChildServer" xml:space="preserve">
+    <value>Alt elementi sil </value>
+  </data>
+  <data name="menuServerList" xml:space="preserve">
+    <value>Konfiqurasiya elementi 1, abunəlik qrupundan avtomatik əlavə etmə</value>
+  </data>
+  <data name="TbFallback" xml:space="preserve">
+    <value>Ehtiyat seçim</value>
+  </data>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>&apos;{0}&apos; nüvəsi &apos;{1}&apos; şəbəkə növünü dəstəkləmir</value>
+  </data>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>'{0}' nüvəsi '{1}' protokolunu '{2}' ötürmə protokolu ilə dəstəkləmir</value>
+  </data>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>&apos;{0}&apos; nüvəsi &apos;{1}&apos; protokolunu dəstəkləmir</value>
+  </data>
+  <data name="MsgInvalidProperty" xml:space="preserve">
+    <value>{0} xassəsi yanlışdır, yoxlayın</value>
+  </data>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>&apos;{0}&apos; protokolu dəstəklənmir</value>
+  </data>
+  <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
+    <value>Sistemdə sistem paneli funksiyası yoxdursa, bunu aktiv etməyin</value>
+  </data>
+  <data name="TbRuleTypeTips" xml:space="preserve">
+    <value>Marşrutlaşdırma və DNS üçün ayrı qaydalar təyin edə və ya hər ikisinə tətbiq etmək üçün &quot;ALL&quot; seçə bilərsiniz</value>
+  </data>
+  <data name="TbRuleType" xml:space="preserve">
+    <value>Qayda növü</value>
+  </data>
+  <data name="TbBootstrapDNS" xml:space="preserve">
+    <value>İlkin DNS</value>
+  </data>
+  <data name="TbBootstrapDNSTips" xml:space="preserve">
+    <value>DNS serverlərinin domenlərini həll edir, IP tələb olunur</value>
+  </data>
+  <data name="menuFastRealPing" xml:space="preserve">
+    <value>Real gecikməni yoxla</value>
+  </data>
+  <data name="TbPolicyGroupSubChildTip" xml:space="preserve">
+    <value>Abunəlik qruplarından süzgəcdən keçirilmiş konfiqurasiyaları avtomatik əlavə et</value>
+  </data>
+  <data name="TbCertPinning" xml:space="preserve">
+    <value>Sertifikatın sabitlənməsi</value>
+  </data>
+  <data name="TbCertPinningTips" xml:space="preserve">
+    <value>Sabitlənmiş sertifikat (variantlardan birini doldurun)
+Təyin edildikdə sertifikat sabitlənəcək və "Təhlükəsiz olmayan əlaqəyə icazə ver" söndürüləcək.
+
+Özünün imzaladığı sertifikatdan istifadə edilirsə və ya sistemdə etibarsız və ya zərərli sertifikat mərkəzi (CA) varsa, "Sertifikatı əldə et" əməliyyatı uğursuz ola bilər.</value>
+  </data>
+  <data name="TbFetchCert" xml:space="preserve">
+    <value>Sertifikatı əldə et</value>
+  </data>
+  <data name="TbFetchCertChain" xml:space="preserve">
+    <value>Sertifikat zəncirini əldə et</value>
+  </data>
+  <data name="ServerNameMustBeValidDomain" xml:space="preserve">
+    <value>Etibarlı domen təyin edin</value>
+  </data>
+  <data name="CertNotSet" xml:space="preserve">
+    <value>Sertifikat təyin edilməyib</value>
+  </data>
+  <data name="CertSet" xml:space="preserve">
+    <value>Sertifikat təyin edilib</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyPacPath" xml:space="preserve">
+    <value>Xüsusi PAC faylının yolu</value>
+  </data>
+  <data name="TbSettingsCustomSystemProxyScriptPath" xml:space="preserve">
+    <value>Xüsusi sistem proksisi skript faylının yolu</value>
+  </data>
+  <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
+    <value>macOS sistemində Dock panelində göstər (yenidən başlatma tələb olunur)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>Konfiqurasiya elementi 2, öz yaratdıqlarınızdan seçib əlavə etmə</value>
+  </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Qarşı tərəfin sertifikatını ada görə yoxla</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>Tam sertifikat (zənciri), PEM formatı</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>Sertifikatın barmaq izi (SHA-256)</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>Köhnəlmiş keşdən cavab ver</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>Paralel sorğu</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>Standart olaraq yalnız marşrutlaşdırma zamanı həll üçün çağırılır</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>Standart olaraq yalnız marşrutlaşdırma zamanı həll üçün çağırılır; uzaq serverin bu DNS-ə çata bildiyinə əmin olun</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>Təyin edilməyibsə və ya &quot;AsIs&quot; seçilibsə, DNS həlli sistem DNS-indən istifadə edir; əks halda daxili DNS modulu istifadə olunur.</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>Təyin edilməyibsə və ya &quot;AsIs&quot; seçilibsə, DNS həlli uzaq serverin DNS-i tərəfindən aparılır; əks halda daxili DNS modulu istifadə olunur.</value>
+  </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>Port dəyişmə intervalı</value>
+  </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>Konfiqurasiya elementinin önbaxışı</value>
+  </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>Marşrutlaşdırma qaydası {0}, çıxış düyünü {1} üçün xəbərdarlıq: {2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>Marşrutlaşdırma qaydası {0}, çıxış düyünü {1} üçün xəta: {2}. Ehtiyat olaraq yalnız proksi düyünü istifadə ediləcək.</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>{0} qrupunun {1} alt düyünü ilə dövri asılılığı var. Bu düyün ötürülür.</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>{0} qrupu, {1} alt düyünü üçün xəbərdarlıq: {2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>{0} qrupu, {1} alt düyünü üçün xəta: {2}. Bu düyün ötürülür.</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>{0} qrupu, {1} alt qrup düyünü üçün xəbərdarlıq: {2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>{0} qrupu, {1} alt qrup düyünü üçün xəta: {2}. Bu düyün ötürülür.</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>{0} qrupunda etibarlı alt düyün yoxdur.</value>
+  </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>{0} marşrutlaşdırma qaydasının çıxış etiketi boşdur. Ehtiyat olaraq yalnız proksi düyünü istifadə ediləcək.</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>{0} marşrutlaşdırma qaydasının {1} çıxış düyünü tapılmadı. Ehtiyat olaraq yalnız proksi düyünü istifadə ediləcək.</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>Abunəliyin əvvəlki proksisi {0} tapılmadı. Ötürülür.</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>Abunəliyin növbəti proksisi {0} tapılmadı. Ötürülür.</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>Siyasət qrupu yarat</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>Bütün konfiqurasiyalar</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>Regiona görə qruplaşdır</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>Kopyala</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>Hamısını seç</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>Yapışdır</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>Formatla</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>TCP üzərindən UDP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>[NaïveProxy] əlavə et</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>Təhlükəsiz olmayan paralellik</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>İstifadəçi adı</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP marşrutlaşdırma siyasəti</value>
+  </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>Köhnə TUN qoruması</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>Maskalama domeni</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP əlavə parametrləri</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>Konfiqurasiyaların UDP gecikməsini yoxla</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP yoxlaması URL-i</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>Yerli çıxış ünvanı (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>Bir neçə şəbəkə interfeysi olan mühitlərdə yerli kompüterin IPv4 ünvanını daxil edin</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>Bağlanacaq interfeys</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>Bir neçə şəbəkə interfeysi olan mühitlərdə çıxış əlaqələri üçün interfeys adını daxil edin. Linux/macOS sistemlərində yalnız TUN rejimi aktiv olduqda işləyir.</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>Əvvəlcədən paylaşılmış açar</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>v2rayN daxili paylaşım keçidini mübadilə buferinə ixrac et</value>
+  </data>
+  <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
+    <value>{0} üçün yeni versiya mövcuddur: {1}</value>
+  </data>
+  <data name="menuCheckOnly" xml:space="preserve">
+    <value>Yalnız yoxla</value>
+  </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>Dəstəklənmir</value>
+  </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>IP məlumatı</value>
+  </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>Yeni yeniləmə</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>Cari düyün şifrələnməmiş əlaqədən istifadə edir. Bu, rabitənizin avtoritar hökumətlərin nəzarətində olan şəbəkə vasitəçiləri tərəfindən birbaşa izlənə biləcəyi deməkdir. Təhlükəsizlik səbəbilə bu növ düyünlər Xray-core 26.2.6 və daha yeni versiyalar vasitəsilə qoşula bilmir. Düyünü özünüz qurmusunuzsa, TLS və ya başqa təhlükəsiz şifrələməni aktiv edin, yaxud pinSHA256 vasitəsilə sertifikatı sabitləyin. Düyün proksi xidməti provayderinə məxsusdursa, texniki yeniləmə üçün xidmət provayderinizlə əlaqə saxlayın. Provayder əməkdaşlıqdan imtina edərsə, istifadəçi təhlükəsizliyinə üstünlük verən xidmət provayderinə keçmək tövsiyə olunur. Ətraflı məlumat üçün https://github.com/2dust/v2rayN/discussions/9460 səhifəsinə baxın.</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>Marşrutlaşdırmadan istisna edilən ünvan</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>Ayırmaq üçün vergüldən (,) istifadə edin.</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>TUN marşrutlaşdırma istisnaları siyahısında yanlış ünvan: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>{0} və {1} arasında ziddiyyət var</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>Son hissənin fraqmentləşdirilməsini aktiv et</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>Paketlərin son hissəsini daha kiçik fraqmentlərə bölür. Bu, ötürmə qabiliyyətinə və gecikməyə təsir edə bilər.</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>Körpü vasitəsilə DNS</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>Təhlükəsiz olmayan konfiqurasiya aşkarlandı: AllowInsecure aktivdir, lakin sertifikat verilməyib. Bu, araya girən vasitəçi (MITM) hücumlarına səbəb ola bilər.</value>
+  </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL-i</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL-i yanlışdır.</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP sorğu başlıqlarını düzgün JSON formatında daxil edin.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>Format: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Gecko paket ölçüsü (min/maks)</value>
+  </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>Aktiv olduqda sing-box TUN, əks halda xray TUN istifadə edilir.</value>
+  </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>Kök sertifikat təminatçısı</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>Yalnız v2rayN qrafik interfeysinin endirmələrinə və şəbəkə sorğularına tətbiq edilir. Nüvənin sertifikat yoxlamasına təsir etmir.</value>
+  </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>Proksiyə qoşularkən ünvanın həlli strategiyası</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>Tövsiyə edilmir; marşrutlaşdırma dövrlərinə səbəb ola bilər.</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>Happy Eyeballs funksiyasını aktiv et</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>UseIP strategiyası tələb olunur. Aktiv olduqda IPv4 və IPv6 əlaqələrini eyni vaxtda qurmağa cəhd edir və mövcud yollardan daha sürətlisini avtomatik seçir.</value>
+  </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>IPv6 ünvanı</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>IPv4 ünvanı</value>
+  </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>Xüsusi çıxış əlavə et</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>Xüsusi çıxışın {0} faylı tapılmadı: {1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>xray/sing-box üçün yalnız bir çıxış/son nöqtə dəstəklənir</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>Xüsusi konfiqurasiyanın nüvəsi</value>
+  </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>Yalnız Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>AAAA sorğularını blokla</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>Aktiv olduqda IPv6 sorğularını bloklayır</value>
+  </data>
+  <data name="TbDNS" xml:space="preserve">
+    <value>DNS</value>
+  </data>
+  <data name="TbSettingsMux4Ray" xml:space="preserve">
+    <value>Xray Mux parametrləri</value>
+  </data>
+  <data name="LvRequestHeaders" xml:space="preserve">
+    <value>HTTP başlıqları (JSON)</value>
+  </data>
+  <data name="SubRequestHeadersTips" xml:space="preserve">
+    <value>İstəyə bağlıdır. Nümunə: {&quot;X-hwid&quot;: &quot;my_device&quot;}. Dəyərlər abunəlik çevirmə xidməti də daxil olmaqla, bu qrupdakı bütün URL-lər üçün standart başlıqları əvəz edir.</value>
+  </data>
+  <data name="SubRequestHeadersInvalid" xml:space="preserve">
+    <value>HTTP başlıqları yanlışdır. Unikal başlıq adları və sətir dəyərləri olan JSON obyektindən istifadə edin. Başlıq adlarında və dəyərlərində sətirsonu simvolları olmamalıdır.</value>
+  </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>Proses</value>
+  </data>
+</root>

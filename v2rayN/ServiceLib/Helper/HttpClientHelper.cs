@@ -22,7 +22,7 @@ public class HttpClientHelper
         this.httpClient = httpClient;
     }
 
-    public async Task<string?> TryGetAsync(string url)
+    public async Task<string?> TryGetAsync(string url, CancellationToken cancellationToken = default)
     {
         if (url.IsNullOrEmpty())
         {
@@ -31,8 +31,12 @@ public class HttpClientHelper
 
         try
         {
-            var response = await httpClient.GetAsync(url);
-            return await response.Content.ReadAsStringAsync();
+            var response = await httpClient.GetAsync(url, cancellationToken);
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch
         {

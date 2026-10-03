@@ -4,12 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:Name="Root"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vms:ProfilesViewModel"
+    Design.DataContext="{x:Static dd:DesignData.Profiles}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
@@ -28,62 +31,72 @@
                             <WrapPanel />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="menuSubEdit" Header="{x:Static resx:ResUI.menuSubEdit}" />
+                            <MenuItem x:Name="menuSubAdd" Header="{x:Static resx:ResUI.menuSubAdd}" />
+                            <MenuItem x:Name="menuSubDelete" Header="{x:Static resx:ResUI.menuSubDelete}" />
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
 
-                <Button
-                    x:Name="btnEditSub"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="IconButton Success"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconEdit}" />
-                    </Button.Content>
-                </Button>
-                <Button
-                    x:Name="btnAddSub"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="IconButton Success"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconPlus}" />
-                    </Button.Content>
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        x:Name="btnEditSub"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconEdit}" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        x:Name="btnAddSub"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconPlus}" />
+                        </Button.Content>
+                    </Button>
 
-                <TextBox
-                    x:Name="txtServerFilter"
-                    Width="200"
-                    Margin="{StaticResource MarginLr4}"
-                    VerticalContentAlignment="Center"
-                    Watermark="{x:Static resx:ResUI.MsgServerTitle}" />
+                    <TextBox
+                        x:Name="txtServerFilter"
+                        Width="200"
+                        Margin="{StaticResource MarginLr4}"
+                        VerticalContentAlignment="Center"
+                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}" />
 
-                <Button
-                    x:Name="btnAutofitColumnWidth"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="IconButton Success"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconExpand}" />
-                    </Button.Content>
-                </Button>
+                    <Button
+                        x:Name="btnAutofitColumnWidth"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconExpand}" />
+                        </Button.Content>
+                    </Button>
 
-                <Button
-                    x:Name="btnFastRealPing"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="IconButton Success"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource SemiIconBolt}" />
-                    </Button.Content>
-                </Button>
-                <Button
-                    x:Name="menuMixedTestServer"
-                    Margin="{StaticResource MarginLr4}"
-                    Classes="IconButton Success"
-                    ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
-                    <Button.Content>
-                        <PathIcon Data="{StaticResource building_ping}" />
-                    </Button.Content>
-                </Button>
+                    <Button
+                        x:Name="btnFastRealPing"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconBolt}" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        x:Name="menuMixedTestServer"
+                        Margin="{StaticResource MarginLr4}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource building_ping}" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
 
             </WrapPanel>
             <DataGrid
@@ -131,21 +144,21 @@
                             x:Name="menuSpeedServer"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
                             InputGesture="Ctrl+T" />
+                        <MenuItem x:Name="menuUdpTestServer" Header="{x:Static resx:ResUI.menuUdpTestServer}" />
                         <MenuItem x:Name="menuSortServerResult" Header="{x:Static resx:ResUI.menuSortServerResult}" />
                         <Separator />
-                        <MenuItem x:Name="menuMoveToGroup" Header="{x:Static resx:ResUI.menuMoveToGroup}">
-                            <MenuItem>
-                                <MenuItem.Header>
-                                    <DockPanel>
-                                        <ComboBox
-                                            x:Name="cmbMoveToGroup"
-                                            Width="200"
-                                            DisplayMemberBinding="{Binding Remarks}"
-                                            ItemsSource="{Binding SubItems}"
-                                            ToolTip.Tip="{x:Static resx:ResUI.menuSubscription}" />
-                                    </DockPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
+                        <MenuItem
+                            x:Name="menuMoveToGroup"
+                            Header="{x:Static resx:ResUI.menuMoveToGroup}"
+                            ItemsSource="{Binding DataContext.SubItems, ElementName=Root}">
+                            <MenuItem.ItemTemplate>
+                                <DataTemplate>
+                                    <MenuItem
+                                        Command="{Binding DataContext.MoveToGroupCmd, ElementName=Root}"
+                                        CommandParameter="{Binding}"
+                                        Header="{Binding Remarks}" />
+                                </DataTemplate>
+                            </MenuItem.ItemTemplate>
                         </MenuItem>
                         <MenuItem Header="{x:Static resx:ResUI.menuMoveTo}">
                             <MenuItem
@@ -183,16 +196,12 @@
                                 Header="{x:Static resx:ResUI.menuExport2ShareUrl}"
                                 InputGesture="Ctrl+C" />
                             <MenuItem x:Name="menuExport2ShareUrlBase64" Header="{x:Static resx:ResUI.menuExport2ShareUrlBase64}" />
+                            <MenuItem x:Name="menuExport2InnerUri" Header="{x:Static resx:ResUI.menuExport2InnerUri}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupMultipleServer}">
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRandom" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRandom}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayRoundRobin" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayRoundRobin}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastPing}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerXrayLeastLoad" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerXrayLeastLoad}" />
-                            <Separator />
-                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxLeastPing" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxLeastPing}" />
-                            <MenuItem x:Name="menuGenGroupMultipleServerSingBoxFallback" Header="{x:Static resx:ResUI.menuGenGroupMultipleServerSingBoxFallback}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuGenGroupServer}">
+                            <MenuItem x:Name="menuGenGroupAllServer" Header="{x:Static resx:ResUI.menuAllServers}" />
+                            <MenuItem x:Name="menuGenGroupRegionServer" Header="{x:Static resx:ResUI.menuGenRegionGroup}" />
                         </MenuItem>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
@@ -271,6 +280,20 @@
                         Binding="{Binding SpeedVal}"
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
                         Tag="SpeedVal" />
+
+                    <DataGridTemplateColumn SortMemberPath="IpInfo" Tag="IpInfo">
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="{x:Static resx:ResUI.LvTestIpInfo}" />
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <SelectableTextBlock
+                                    Margin="{StaticResource MarginLr8}"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Path=IpInfo, Mode=OneWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTextColumn
                         Width="100"

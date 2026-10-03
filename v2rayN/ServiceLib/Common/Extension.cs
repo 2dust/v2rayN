@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace ServiceLib.Common;
 
@@ -6,17 +7,17 @@ public static class Extension
 {
     public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
     {
-        return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
-    }
-
-    public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string? value)
-    {
-        return string.IsNullOrWhiteSpace(value);
+        return string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value);
     }
 
     public static bool IsNotEmpty([NotNullWhen(false)] this string? value)
     {
-        return !string.IsNullOrEmpty(value);
+        return !string.IsNullOrWhiteSpace(value);
+    }
+
+    public static string? NullIfEmpty(this string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value;
     }
 
     public static bool BeginWithAny(this string s, IEnumerable<char> chars)
@@ -47,7 +48,7 @@ public static class Extension
 
     public static string TrimEx(this string? value)
     {
-        return value == null ? string.Empty : value.Trim();
+        return value?.Trim() ?? string.Empty;
     }
 
     public static string RemovePrefix(this string value, char prefix)
@@ -92,6 +93,66 @@ public static class Extension
 
     public static bool IsComplexType(this EConfigType configType)
     {
-        return configType is EConfigType.Custom or EConfigType.PolicyGroup or EConfigType.ProxyChain;
+        return configType is EConfigType.Custom or EConfigType.Outbound or EConfigType.PolicyGroup or EConfigType.ProxyChain;
+    }
+
+    /// <summary>
+    /// Safely adds elements from a collection to the list. Does nothing if the source is null.
+    /// </summary>
+    public static void AddRangeSafe<T>(this ICollection<T> destination, IEnumerable<T>? source)
+    {
+        ArgumentNullException.ThrowIfNull(destination);
+
+        if (source is null)
+        {
+            return;
+        }
+
+        if (destination is List<T> list)
+        {
+            list.AddRange(source);
+            return;
+        }
+
+        foreach (var item in source)
+        {
+            destination.Add(item);
+        }
+    }
+
+    /// <summary>
+    /// Replace all cross-platform newline characters with the specified string
+    /// </summary>
+    public static string ReplaceLineBreaks(this string input, string replacement)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        // You must replace \r\n first, and then replace the single characters \r and \n.
+        return input.Replace("\r\n", replacement)
+                    .Replace("\r", replacement)
+                    .Replace("\n", replacement);
+    }
+
+    public static IObservable<TOutput> HandleSafe<TInput, TOutput>(
+        this Interaction<TInput, TOutput> interaction, TInput input,
+        TOutput defaultValue = default!,
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string filePath = "",
+        [CallerLineNumber] int lineNumber = 0)
+    {
+        return Signal.Defer(() => interaction.Handle(input))
+            .Catch<TOutput, UnhandledInteractionException<TInput, TOutput>>(ex =>
+            {
+                Logging.SaveLog($"Unhandled interaction exception in {memberName} at {filePath}:{lineNumber}", ex);
+                return Signal.Return(defaultValue);
+            })
+            .Catch<TOutput, Exception>(ex =>
+            {
+                Logging.SaveLog($"Exception occurred while handling interaction in {memberName} at {filePath}:{lineNumber}, input: {input}", ex);
+                return Signal.Return(defaultValue);
+            });
     }
 }

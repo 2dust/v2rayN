@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:v2rayN.Base"
+    xmlns:conv="clr-namespace:v2rayN.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,6 +18,10 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
+    <Window.Resources>
+        <conv:DelayColorConverter x:Key="DelayColorConverter" />
+    </Window.Resources>
+
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
@@ -26,7 +31,6 @@
             <Button
                 x:Name="btnSave"
                 Width="100"
-                Click="BtnSave_Click"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
@@ -119,17 +123,17 @@
                             ExName="ConfigType"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
                         <base:MyDGTextColumn
-                            Width="150"
+                            Width="200"
                             Binding="{Binding Remarks}"
                             ExName="Remarks"
                             Header="{x:Static resx:ResUI.LvRemarks}" />
                         <base:MyDGTextColumn
-                            Width="120"
+                            Width="200"
                             Binding="{Binding Address}"
                             ExName="Address"
                             Header="{x:Static resx:ResUI.LvAddress}" />
                         <base:MyDGTextColumn
-                            Width="60"
+                            Width="100"
                             Binding="{Binding Port}"
                             ExName="Port"
                             Header="{x:Static resx:ResUI.LvPort}" />
@@ -148,6 +152,30 @@
                             Binding="{Binding SubRemarks}"
                             ExName="SubRemarks"
                             Header="{x:Static resx:ResUI.LvSubscription}" />
+                        <base:MyDGTextColumn
+                            Width="100"
+                            Binding="{Binding DelayVal}"
+                            ExName="Delay"
+                            Header="{x:Static resx:ResUI.LvTestDelay}"
+                            SortMemberPath="Delay">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                    <Setter Property="Foreground" Value="{Binding Delay, Converter={StaticResource DelayColorConverter}}" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </base:MyDGTextColumn>
+                        <base:MyDGTextColumn
+                            Width="100"
+                            Binding="{Binding SpeedVal}"
+                            ExName="Speed"
+                            Header="{x:Static resx:ResUI.LvTestSpeed}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </base:MyDGTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

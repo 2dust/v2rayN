@@ -10,6 +10,7 @@ namespace v2rayN.Views;
 public partial class ProfilesView
 {
     private static Config _config;
+    private static readonly string _tag = "ProfilesView";
 
     public ProfilesView()
     {
@@ -34,8 +35,6 @@ public partial class ProfilesView
             lstProfiles.Drop += LstProfiles_Drop;
         }
 
-        ViewModel = new ProfilesViewModel(UpdateViewHandler);
-
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel, vm => vm.ProfileItems, v => v.lstProfiles.ItemsSource).DisposeWith(disposables);
@@ -54,12 +53,8 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.CopyServerCmd, v => v.menuCopyServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SetDefaultServerCmd, v => v.menuSetDefaultServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.ShareServerCmd, v => v.menuShareServer).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayRandomCmd, v => v.menuGenGroupMultipleServerXrayRandom).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayRoundRobinCmd, v => v.menuGenGroupMultipleServerXrayRoundRobin).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayLeastPingCmd, v => v.menuGenGroupMultipleServerXrayLeastPing).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerXrayLeastLoadCmd, v => v.menuGenGroupMultipleServerXrayLeastLoad).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerSingBoxLeastPingCmd, v => v.menuGenGroupMultipleServerSingBoxLeastPing).DisposeWith(disposables);
-            this.BindCommand(ViewModel, vm => vm.GenGroupMultipleServerSingBoxFallbackCmd, v => v.menuGenGroupMultipleServerSingBoxFallback).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.GenGroupAllServerCmd, v => v.menuGenGroupAllServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.GenGroupRegionServerCmd, v => v.menuGenGroupRegionServer).DisposeWith(disposables);
 
             //servers move
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbMoveToGroup.ItemsSource).DisposeWith(disposables);
@@ -74,6 +69,7 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuRealPingServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.UdpTestServerCmd, v => v.menuUdpTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuSortServerResult).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveInvalidServerResultCmd, v => v.menuRemoveInvalidServerResult).DisposeWith(disposables);
@@ -84,18 +80,75 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.Export2ClientConfigClipboardCmd, v => v.menuExport2ClientConfigClipboard).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.Export2InnerUriCmd, v => v.menuExport2InnerUri).DisposeWith(disposables);
+
+            ViewModel.ShowYesNoInteraction.RegisterHandler(interaction =>
+            {
+                var message = interaction.Input;
+                var result = UI.ShowYesNo(message) != MessageBoxResult.No;
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
+
+            ViewModel.SaveFileDialogInteraction.RegisterHandler(async interaction =>
+            {
+                var viewModel = ViewModel;
+                if (viewModel is null)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                var profileItem = interaction.Input;
+                if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
+                {
+                    interaction.SetOutput(false);
+                    return;
+                }
+                await viewModel.Export2ClientConfigResult(fileName, profileItem);
+                interaction.SetOutput(true);
+            }).DisposeWith(disposables);
+
+            ViewModel.SetClipboardDataInteraction.RegisterHandler(interaction =>
+            {
+                var strData = interaction.Input;
+                WindowsUtils.SetClipboardData(strData);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ProfilesFocusInteraction.RegisterHandler(interaction =>
+            {
+                lstProfiles.Focus();
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.ShareServerInteraction.RegisterHandler(async interaction =>
+            {
+                var url = interaction.Input;
+                if (url.IsNullOrEmpty())
+                {
+                    interaction.SetOutput(RxVoid.Default);
+                    return;
+                }
+                await ShareServer(url);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
+            {
+                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
+
+            ViewModel.AdjustMainLvColWidthInteraction.RegisterHandler(interaction =>
+            {
+                AutofitColumnWidth();
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
 
             AppEvents.AppExitRequested
               .AsObservable()
-              .ObserveOn(RxApp.MainThreadScheduler)
+              .ObserveOn(RxSchedulers.MainThreadScheduler)
               .Subscribe(_ => StorageUI())
               .DisposeWith(disposables);
-
-            AppEvents.AdjustMainLvColWidthRequested
-                .AsObservable()
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(_ => AutofitColumnWidth())
-                .DisposeWith(disposables);
         });
 
         RestoreUI();
@@ -103,93 +156,7 @@ public partial class ProfilesView
 
     #region Event
 
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.SetClipboardData:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                WindowsUtils.SetClipboardData((string)obj);
-                break;
-
-            case EViewAction.ProfilesFocus:
-                lstProfiles.Focus();
-                break;
-
-            case EViewAction.ShowYesNo:
-                if (UI.ShowYesNo(ResUI.RemoveServer) == MessageBoxResult.No)
-                {
-                    return false;
-                }
-                break;
-
-            case EViewAction.SaveFileDialog:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                if (UI.SaveFileDialog(out var fileName, "Config|*.json") != true)
-                {
-                    return false;
-                }
-                ViewModel?.Export2ClientConfigResult(fileName, (ProfileItem)obj);
-                break;
-
-            case EViewAction.AddServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddServer2Window:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddServer2Window((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.AddGroupServerWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new AddGroupServerWindow((ProfileItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.ShareServer:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                ShareServer((string)obj);
-                break;
-
-            case EViewAction.SubEditWindow:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                return new SubEditWindow((SubItem)obj).ShowDialog() ?? false;
-
-            case EViewAction.DispatcherRefreshServersBiz:
-                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
-                break;
-        }
-
-        return await Task.FromResult(true);
-    }
-
-    public async void ShareServer(string url)
+    public async Task ShareServer(string url)
     {
         var img = QRCodeWindowsUtils.GetQRCode(url);
         var dialog = new QrcodeView()
@@ -236,8 +203,7 @@ public partial class ProfilesView
 
     private void LstProfiles_ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        var colHeader = sender as DataGridColumnHeader;
-        if (colHeader == null || colHeader.TabIndex < 0 || colHeader.Column == null)
+        if (sender is not DataGridColumnHeader colHeader || colHeader.TabIndex < 0 || colHeader.Column == null)
         {
             return;
         }
@@ -343,7 +309,7 @@ public partial class ProfilesView
         }
         catch (Exception ex)
         {
-            Logging.SaveLog("ProfilesView", ex);
+            Logging.SaveLog(_tag, ex);
         }
     }
 
@@ -361,46 +327,63 @@ public partial class ProfilesView
 
     private void RestoreUI()
     {
-        var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
-        var displayIndex = 0;
-        foreach (var item in lvColumnItem)
+        try
         {
-            foreach (MyDGTextColumn item2 in lstProfiles.Columns)
+            var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+            var displayIndex = 0;
+            foreach (var item in lvColumnItem)
             {
-                if (item2.ExName == item.Name)
+                foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
                 {
-                    if (item.Width < 0)
+                    if (item2.ExName == item.Name)
                     {
-                        item2.Visibility = Visibility.Hidden;
-                    }
-                    else
-                    {
-                        item2.Width = item.Width;
-                        item2.DisplayIndex = displayIndex++;
-                    }
-                    if (item.Name.ToLower().StartsWith("to"))
-                    {
-                        item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                        if (item.Width < 0)
+                        {
+                            item2.Visibility = Visibility.Hidden;
+                        }
+                        else
+                        {
+                            item2.Width = item.Width;
+                            item2.DisplayIndex = displayIndex++;
+                        }
+                        if (item.Name.StartsWith("to", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            item2.Visibility = _config.GuiItem.EnableStatistics ? Visibility.Visible : Visibility.Hidden;
+                        }
+                        if (item.Name.Equals("IpInfo", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            item2.Visibility = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() && !_config.UiItem.HideColumnIpInfo ? Visibility.Visible : Visibility.Hidden;
+                        }
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
         }
     }
 
     private void StorageUI()
     {
-        List<ColumnItem> lvColumnItem = new();
-        foreach (var t in lstProfiles.Columns)
+        try
         {
-            var item2 = (MyDGTextColumn)t;
-            lvColumnItem.Add(new()
+            List<ColumnItem> lvColumnItem = [];
+            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
             {
-                Name = item2.ExName,
-                Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
-                Index = item2.DisplayIndex
-            });
+                lvColumnItem.Add(new()
+                {
+                    Name = item2.ExName,
+                    Width = (int)(item2.Visibility == Visibility.Visible ? item2.ActualWidth : -1),
+                    Index = item2.DisplayIndex
+                });
+            }
+            _config.UiItem.MainColumnItem = lvColumnItem;
         }
-        _config.UiItem.MainColumnItem = lvColumnItem;
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
     }
 
     #endregion UI
@@ -409,7 +392,7 @@ public partial class ProfilesView
 
     private Point startPoint = new();
     private int startIndex = -1;
-    private string formatData = "ProfileItemModel";
+    private readonly string formatData = "ProfileItemModel";
 
     /// <summary>
     /// Helper to search up the VisualTree

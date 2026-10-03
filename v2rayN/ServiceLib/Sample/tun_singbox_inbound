@@ -1,6 +1,6 @@
 {
   "type": "tun",
-  "tag": "tun-in",
+  "tag": "tun",
   "interface_name": "singbox_tun",
   "address": [
     "172.18.0.1/30",

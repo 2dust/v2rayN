@@ -10,6 +10,7 @@ public sealed class AppManager
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
     public Config Config => _config;
+    public IWindowDialog WindowDialog { get; set; } = null!;
 
     public int StatePort
     {
@@ -30,6 +31,30 @@ public sealed class AppManager
     }
 
     public string LinuxSudoPwd { get; set; }
+
+    public bool ShowInTaskbar { get; set; }
+
+    public ECoreType RunningCoreType { get; set; }
+
+    public bool IsRunningCore(ECoreType type)
+    {
+        switch (type)
+        {
+            case ECoreType.Xray when RunningCoreType is ECoreType.Xray or ECoreType.v2fly or ECoreType.v2fly_v5:
+            case ECoreType.sing_box when RunningCoreType is ECoreType.sing_box or ECoreType.mihomo:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    public Dictionary<ECoreType, string> LastCheckUpdateResults { get; set; } = new();
+
+    public void SetLastCheckUpdateResult(ECoreType coreType, string result)
+    {
+        LastCheckUpdateResults[coreType] = result;
+    }
 
     #endregion Property
 
@@ -64,7 +89,9 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+#pragma warning disable CS0618
         SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
+#pragma warning restore CS0618
         return true;
     }
 
@@ -76,6 +103,11 @@ public sealed class AppManager
         //First determine the port value
         _ = StatePort;
         _ = StatePort2;
+
+        Task.Run(async () =>
+        {
+            await MigrateProfileExtra();
+        }).Wait();
 
         return true;
     }
@@ -167,10 +199,17 @@ public sealed class AppManager
         return (await ProfileItems(subid))?.Select(t => t.IndexId)?.ToList();
     }
 
-    public async Task<List<ProfileItemModel>?> ProfileItems(string subid, string filter)
+    public async Task<List<ProfileItemModel>?> ProfileModels(string subid, string filter)
     {
-        var sql = @$"select a.*
-                           ,b.remarks subRemarks
+        var sql = @$"select a.IndexId
+                           ,a.ConfigType
+                           ,a.Remarks
+                           ,a.Address
+                           ,a.Port
+                           ,a.Network
+                           ,a.StreamSecurity
+                           ,a.Subid
+                           ,b.remarks as subRemarks
                         from ProfileItem a
                         left join SubItem b on a.subid = b.id
                         where 1=1 ";
@@ -199,6 +238,52 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
     }
 
+    public async Task<List<ProfileItem>> GetProfileItemsByIndexIds(IEnumerable<string> indexIds)
+    {
+        var ids = indexIds.Where(id => !id.IsNullOrEmpty()).Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        if (ids.Count <= Global.SqliteMaxBatchSize)
+        {
+            return await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+                .Where(it => ids.Contains(it.IndexId))
+                .ToListAsync();
+        }
+
+        var items = new List<ProfileItem>();
+        for (var size = 0; size < ids.Count; size += Global.SqliteMaxBatchSize)
+        {
+            var chunk = ids.Skip(size).Take(Global.SqliteMaxBatchSize).ToList();
+            var chunkItems = await SQLiteHelper.Instance.TableAsync<ProfileItem>()
+                .Where(it => chunk.Contains(it.IndexId))
+                .ToListAsync();
+
+            items.AddRange(chunkItems);
+        }
+
+        return items;
+    }
+
+    public async Task<Dictionary<string, ProfileItem>> GetProfileItemsByIndexIdsAsMap(IEnumerable<string> indexIds)
+    {
+        var items = await GetProfileItemsByIndexIds(indexIds);
+        return items.ToDictionary(it => it.IndexId);
+    }
+
+    public async Task<List<ProfileItem>> GetProfileItemsOrderedByIndexIds(IEnumerable<string> indexIds)
+    {
+        var ids = indexIds.Where(id => !id.IsNullOrEmpty()).Distinct().ToList();
+        var items = await GetProfileItemsByIndexIds(ids);
+        var itemMap = items.ToDictionary(it => it.IndexId);
+
+        return ids.Select(itemMap.GetValueOrDefault)
+            .Where(item => item != null)
+            .ToList();
+    }
+
     public async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
     {
         if (remarks.IsNullOrEmpty())
@@ -206,15 +291,6 @@ public sealed class AppManager
             return null;
         }
         return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
-    }
-
-    public async Task<ProfileGroupItem?> GetProfileGroupItem(string indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return null;
-        }
-        return await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
     }
 
     public async Task<List<RoutingItem>?> RoutingItems()
@@ -247,6 +323,325 @@ public sealed class AppManager
         return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
     }
 
+#pragma warning disable CS0618
+
+    public async Task MigrateProfileExtra()
+    {
+        await MigrateProfileExtraGroupV2ToV3();
+
+        await MigrateProfileExtraV2ToV3();
+
+        await MigrateProfileTransportV3ToV4();
+    }
+
+    private async Task MigrateProfileExtraV2ToV3()
+    {
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem " +
+                $"WHERE ConfigVersion < 3 " +
+                $"AND ConfigType NOT IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain}) " +
+                $"LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var batchSuccessCount = await MigrateProfileExtraV2ToV3Sub(batch);
+
+            // Only increment offset by the number of failed items that remain in the result set
+            // Successfully updated items are automatically excluded from future queries due to ConfigVersion = 3
+            offset += batch.Count - batchSuccessCount;
+        }
+
+        //await ProfileGroupItemManager.Instance.ClearAll();
+    }
+
+    private async Task MigrateProfileTransportV3ToV4()
+    {
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion = 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var updateProfileItems = new List<ProfileItem>();
+            foreach (var item in batch)
+            {
+                try
+                {
+                    if (item.Network == Global.RawNetworkAlias)
+                    {
+                        item.Network = nameof(ETransport.raw);
+                    }
+                    var transport = item.GetTransportExtra();
+                    var network = item.GetNetwork();
+
+                    switch (network)
+                    {
+                        case nameof(ETransport.raw):
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.ws):
+                        case nameof(ETransport.httpupgrade):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.xhttp):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                                XhttpMode = item.HeaderType.NullIfEmpty(),
+                                XhttpExtra = item.Extra.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.grpc):
+                            transport = transport with
+                            {
+                                GrpcAuthority = item.RequestHost.NullIfEmpty(),
+                                GrpcServiceName = item.Path.NullIfEmpty(),
+                                GrpcMode = item.HeaderType.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.kcp):
+                            transport = transport with
+                            {
+                                KcpHeaderType = item.HeaderType.NullIfEmpty(),
+                                KcpSeed = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        default:
+                            item.Network = Global.DefaultNetwork;
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                            };
+                            break;
+                    }
+
+                    item.SetTransportExtra(transport);
+                    item.ConfigVersion = 4;
+                    updateProfileItems.Add(item);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 Error: {ex}");
+                }
+            }
+
+            if (updateProfileItems.Count > 0)
+            {
+                try
+                {
+                    var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                    offset += batch.Count - count;
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 update error: {ex}");
+                    offset += batch.Count;
+                }
+            }
+            else
+            {
+                offset += batch.Count;
+            }
+        }
+    }
+
+    private async Task<int> MigrateProfileExtraV2ToV3Sub(List<ProfileItem> batch)
+    {
+        var updateProfileItems = new List<ProfileItem>();
+
+        foreach (var item in batch)
+        {
+            try
+            {
+                var extra = item.GetProtocolExtra();
+                switch (item.ConfigType)
+                {
+                    case EConfigType.Shadowsocks:
+                        extra = extra with { SsMethod = item.Security.NullIfEmpty() };
+                        break;
+
+                    case EConfigType.VMess:
+                        extra = extra with
+                        {
+                            AlterId = item.AlterId.ToString(),
+                            VmessSecurity = item.Security.NullIfEmpty(),
+                        };
+                        break;
+
+                    case EConfigType.VLESS:
+                        extra = extra with
+                        {
+                            Flow = item.Flow.NullIfEmpty(),
+                            VlessEncryption = item.Security,
+                        };
+                        break;
+
+                    case EConfigType.Hysteria2:
+                        extra = extra with
+                        {
+                            SalamanderPass = item.Path.NullIfEmpty(),
+                            Ports = item.Ports.NullIfEmpty(),
+                            UpMbps = _config.HysteriaItem.UpMbps,
+                            DownMbps = _config.HysteriaItem.DownMbps,
+                            HopInterval = _config.HysteriaItem.HopInterval.ToString(),
+                        };
+                        break;
+
+                    case EConfigType.TUIC:
+                        extra = extra with { CongestionControl = item.HeaderType.NullIfEmpty(), };
+                        item.Username = item.Id;
+                        item.Id = item.Security;
+                        item.Password = item.Security;
+                        break;
+
+                    case EConfigType.HTTP:
+                    case EConfigType.SOCKS:
+                        item.Username = item.Security;
+                        break;
+
+                    case EConfigType.WireGuard:
+                        extra = extra with
+                        {
+                            WgPublicKey = item.PublicKey.NullIfEmpty(),
+                            WgInterfaceAddress = item.RequestHost.NullIfEmpty(),
+                            WgReserved = item.Path.NullIfEmpty(),
+                            WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
+                        };
+                        break;
+                }
+
+                item.SetProtocolExtra(extra);
+
+                item.Password = item.Id;
+
+                item.ConfigVersion = 3;
+
+                updateProfileItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtra Error: {ex}");
+            }
+        }
+
+        if (updateProfileItems.Count > 0)
+        {
+            try
+            {
+                var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                return count;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup update error: {ex}");
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    private async Task<bool> MigrateProfileExtraGroupV2ToV3()
+    {
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
+
+        var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 AND ConfigType IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain})";
+        var items = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+
+        if (items is null || items.Count == 0)
+        {
+            Logging.SaveLog("MigrateProfileExtraGroup: No items to migrate.");
+            return true;
+        }
+
+        Logging.SaveLog($"MigrateProfileExtraGroup: Found {items.Count} group items to migrate.");
+
+        var updateProfileItems = new List<ProfileItem>();
+
+        foreach (var item in items)
+        {
+            try
+            {
+                var extra = item.GetProtocolExtra();
+
+                extra = extra with { GroupType = nameof(item.ConfigType) };
+                groupItems.TryGetValue(item.IndexId, out var groupItem);
+                if (groupItem != null && !groupItem.NotHasChild())
+                {
+                    extra = extra with
+                    {
+                        ChildItems = groupItem.ChildItems,
+                        SubChildItems = groupItem.SubChildItems,
+                        Filter = groupItem.Filter,
+                        MultipleLoad = groupItem.MultipleLoad,
+                    };
+                }
+
+                item.SetProtocolExtra(extra);
+
+                item.ConfigVersion = 3;
+                updateProfileItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup item error [{item.IndexId}]: {ex}");
+            }
+        }
+
+        if (updateProfileItems.Count > 0)
+        {
+            try
+            {
+                var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                Logging.SaveLog($"MigrateProfileExtraGroup: Successfully updated {updateProfileItems.Count} items.");
+                return updateProfileItems.Count == count;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup update error: {ex}");
+                return false;
+            }
+        }
+
+        return true;
+
+        //await ProfileGroupItemManager.Instance.ClearAll();
+    }
+
+#pragma warning restore CS0618
+
     #endregion SqliteHelper
 
     #region Core Type
@@ -268,7 +663,7 @@ public sealed class AppManager
         return Global.SsSecuritiesInSingbox;
     }
 
-    public ECoreType GetCoreType(ProfileItem profileItem, EConfigType eConfigType)
+    public ECoreType GetCoreType(ProfileItem? profileItem, EConfigType eConfigType)
     {
         if (profileItem?.CoreType != null)
         {

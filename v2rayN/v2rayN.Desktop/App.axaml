@@ -8,7 +8,7 @@
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Name="v2rayN"
     x:DataType="vms:StatusBarViewModel"
-    RequestedThemeVariant="Default">    
+    RequestedThemeVariant="Default">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,6 +22,14 @@
         <StyleInclude Source="Assets/GlobalStyles.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
         <dialogHost:DialogHostStyles />
+
+        <Style Selector="dialogHost|DialogHost">
+            <Setter Property="OverlayBackground" Value="{DynamicResource SemiColorOverlayBackground}" />
+            <Setter Property="Background" Value="{DynamicResource SemiColorFill0}" />
+
+            <Setter Property="dialogHost:DialogHostStyle.BoxShadow" Value="{DynamicResource SemiShadowElevated}" />
+            <Setter Property="dialogHost:DialogHostStyle.CornerRadius" Value="6" />
+        </Style>
     </Application.Styles>
 
     <TrayIcon.Icons>

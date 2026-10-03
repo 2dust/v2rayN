@@ -1,5 +1,24 @@
 #!/bin/bash
 
+trim() {
+    local -n ref=$1
+    ref="${ref#"${ref%%[![:space:]]*}"}"
+    ref="${ref%"${ref##*[![:space:]]}"}"
+}
+
+build_gsettings_array() {
+    [[ -z "$1" ]] && echo "[]" && return
+    local host joined hosts=()
+    IFS=',' read -ra parts <<< "$1"
+    for host in "${parts[@]}"; do
+        trim host
+        [[ -n "$host" ]] && hosts+=("$host")
+    done
+    [[ ${#hosts[@]} -eq 0 ]] && echo "[]" && return
+    printf -v joined "'%s'," "${hosts[@]}"
+    echo "[${joined%,}]"
+}
+
 # Function to set proxy for GNOME
 set_gnome_proxy() {
     local MODE=$1
@@ -21,7 +40,7 @@ set_gnome_proxy() {
         done
 
         # Set ignored hosts
-        gsettings set org.gnome.system.proxy ignore-hosts "['$IGNORE_HOSTS']"
+        gsettings set org.gnome.system.proxy ignore-hosts "$(build_gsettings_array "$IGNORE_HOSTS")"
 
         echo "GNOME: Manual proxy settings applied."
         echo "Proxy IP: $PROXY_IP"

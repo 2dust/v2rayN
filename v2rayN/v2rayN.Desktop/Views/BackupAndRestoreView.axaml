@@ -3,10 +3,12 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Design.DataContext="{x:Static dd:DesignData.BackupAndRestore}"
     mc:Ignorable="d">
     <UserControl.Styles>
         <Style Selector="Button">
@@ -18,8 +20,8 @@
         <StackPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Bottom">
             <TextBlock
                 Name="txtMsg"
-                HorizontalAlignment="Left"
-                Margin="{StaticResource Margin4}" />
+                Margin="{StaticResource Margin4}"
+                HorizontalAlignment="Left" />
         </StackPanel>
 
         <StackPanel>
@@ -41,15 +43,15 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.menuLocalBackup}" />
                     <Button
                         Name="menuLocalBackup"
                         Grid.Row="1"
                         Grid.Column="1"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuLocalBackup}" />
 
                     <Separator
@@ -61,15 +63,15 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.menuLocalRestore}" />
                     <Button
                         Name="menuLocalRestore"
                         Grid.Row="3"
                         Grid.Column="1"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuLocalRestore}" />
                 </Grid>
             </Border>
@@ -87,11 +89,9 @@
                         Orientation="Horizontal">
                         <TextBlock Margin="{StaticResource Margin4}" Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
-                        <Button
-                            Classes="IconButton"
-                            Margin="{StaticResource MarginLr8}">
+                        <Button Margin="{StaticResource MarginLr8}" Classes="IconButton">
                             <Button.Content>
-                                <PathIcon Data="{StaticResource SemiIconMore}" >
+                                <PathIcon Data="{StaticResource SemiIconMore}">
                                     <PathIcon.RenderTransform>
                                         <RotateTransform Angle="90" />
                                     </PathIcon.RenderTransform>
@@ -104,67 +104,67 @@
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="0"
-                                                VerticalAlignment="Center"
                                                 Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.LvWebDavUrl}" />
 
                                             <TextBox
                                                 x:Name="txtWebDavUrl"
                                                 Grid.Row="0"
                                                 Grid.Column="1"
-                                                VerticalAlignment="Center"
                                                 Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center"
                                                 TextWrapping="Wrap" />
 
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Grid.Column="0"
-                                                VerticalAlignment="Center"
                                                 Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.LvWebDavUserName}" />
 
                                             <TextBox
                                                 x:Name="txtWebDavUserName"
                                                 Grid.Row="1"
                                                 Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                Margin="{StaticResource Margin4}" />
+                                                Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center" />
 
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Grid.Column="0"
-                                                VerticalAlignment="Center"
                                                 Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.LvWebDavPassword}" />
 
                                             <TextBox
                                                 x:Name="txtWebDavPassword"
                                                 Grid.Row="2"
                                                 Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                Margin="{StaticResource Margin4}" />
+                                                Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center" />
 
                                             <TextBlock
                                                 Grid.Row="3"
                                                 Grid.Column="0"
-                                                VerticalAlignment="Center"
                                                 Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center"
                                                 Text="{x:Static resx:ResUI.LvWebDavDirName}" />
 
                                             <TextBox
                                                 x:Name="txtWebDavDirName"
                                                 Grid.Row="3"
                                                 Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                Margin="{StaticResource Margin4}" />
+                                                Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center" />
 
                                             <Button
                                                 x:Name="menuWebDavCheck"
                                                 Grid.Row="4"
                                                 Grid.Column="1"
+                                                Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
-                                                Margin="{StaticResource Margin4}"
                                                 Content="{x:Static resx:ResUI.LvWebDavCheck}" />
                                         </Grid>
                                     </StackPanel>
@@ -177,15 +177,15 @@
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.menuRemoteBackup}" />
                     <Button
                         Name="menuRemoteBackup"
                         Grid.Row="1"
                         Grid.Column="1"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuRemoteBackup}" />
 
                     <Separator
@@ -196,15 +196,15 @@
                     <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Text="{x:Static resx:ResUI.menuRemoteRestore}" />
                     <Button
                         Name="menuRemoteRestore"
                         Grid.Row="3"
                         Grid.Column="1"
-                        VerticalAlignment="Center"
                         Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
                         Content="{x:Static resx:ResUI.menuRemoteRestore}" />
                 </Grid>
             </Border>

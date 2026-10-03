@@ -1,9 +1,12 @@
+using v2rayN.Manager;
+using v2rayN.Views;
+
 namespace v2rayN;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App
 {
     public static EventWaitHandle ProgramStarted;
 
@@ -22,7 +25,7 @@ public partial class App : Application
     {
         var exePathKey = Utils.GetMd5(Utils.GetExePath());
 
-        var rebootas = (e.Args ?? Array.Empty<string>()).Any(t => t == Global.RebootAs);
+        var rebootas = e.Args.Any(t => t == Global.RebootAs);
         ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, exePathKey, out var bCreatedNew);
         if (!rebootas && !bCreatedNew)
         {
@@ -38,8 +41,23 @@ public partial class App : Application
             return;
         }
 
+        AppManager.Instance.WindowDialog = new WindowDialog();
+
         AppManager.Instance.InitComponents();
+
+        RxAppBuilder.CreateReactiveUIBuilder()
+            .WithWpf()
+            .BuildApp();
+
         base.OnStartup(e);
+
+        var mainWindowViewModel = new MainWindowViewModel();
+        var viewFor = SimpleViewLocator.Instance.ResolveView(mainWindowViewModel);
+        viewFor!.ViewModel = mainWindowViewModel;
+
+        var mainWindow = (MainWindow)viewFor;
+        mainWindow.Show();
+        MainWindow = mainWindow;
     }
 
     private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

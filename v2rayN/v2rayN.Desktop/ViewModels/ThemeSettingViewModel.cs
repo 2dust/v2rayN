@@ -5,13 +5,13 @@ using Semi.Avalonia;
 
 namespace v2rayN.Desktop.ViewModels;
 
-public class ThemeSettingViewModel : MyReactiveObject
+public partial class ThemeSettingViewModel : MyReactiveObject
 {
-    [Reactive] public string CurrentTheme { get; set; }
+    [Reactive] public partial string CurrentTheme { get; set; }
 
-    [Reactive] public int CurrentFontSize { get; set; }
+    [Reactive] public partial int CurrentFontSize { get; set; }
 
-    [Reactive] public string CurrentLanguage { get; set; }
+    [Reactive] public partial string CurrentLanguage { get; set; }
 
     public ThemeSettingViewModel()
     {
@@ -35,39 +35,38 @@ public class ThemeSettingViewModel : MyReactiveObject
         CurrentLanguage = _config.UiItem.CurrentLanguage;
 
         this.WhenAnyValue(x => x.CurrentTheme)
-            .Subscribe(c =>
+            .Where(y => y.IsNotEmpty())
+            .SubscribeAsync(async _ =>
             {
                 if (_config.UiItem.CurrentTheme != CurrentTheme)
                 {
                     _config.UiItem.CurrentTheme = CurrentTheme;
                     ModifyTheme();
-                    ConfigHandler.SaveConfig(_config);
+                    await ConfigHandler.SaveConfig(_config);
                 }
             });
 
-        this.WhenAnyValue(
-                x => x.CurrentFontSize,
-                y => y > 0)
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentFontSize)
+            .Where(y => y > 0)
+            .SubscribeAsync(async _ =>
             {
                 if (_config.UiItem.CurrentFontSize != CurrentFontSize && CurrentFontSize >= Global.MinFontSize)
                 {
                     _config.UiItem.CurrentFontSize = CurrentFontSize;
                     ModifyFontSize();
-                    ConfigHandler.SaveConfig(_config);
+                    await ConfigHandler.SaveConfig(_config);
                 }
             });
 
-        this.WhenAnyValue(
-                x => x.CurrentLanguage,
-                y => y != null && !y.IsNullOrEmpty())
-            .Subscribe(c =>
+        this.WhenAnyValue(x => x.CurrentLanguage)
+            .Where(y => !y.IsNullOrEmpty())
+            .SubscribeAsync(async _ =>
             {
                 if (CurrentLanguage.IsNotEmpty() && _config.UiItem.CurrentLanguage != CurrentLanguage)
                 {
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    ConfigHandler.SaveConfig(_config);
+                    await ConfigHandler.SaveConfig(_config);
                     NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });

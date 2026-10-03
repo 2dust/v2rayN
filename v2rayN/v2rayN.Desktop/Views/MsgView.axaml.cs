@@ -10,35 +10,24 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
     {
         InitializeComponent();
         txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
-        ViewModel = new MsgViewModel(UpdateViewHandler);
 
         this.WhenActivated(disposables =>
         {
             this.Bind(ViewModel, vm => vm.MsgFilter, v => v.cmbMsgFilter.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoRefresh, v => v.togAutoRefresh.IsChecked).DisposeWith(disposables);
+
+            ViewModel.ShowMsgInteraction.RegisterHandler(interaction =>
+            {
+                var msg = interaction.Input;
+                ShowMsg(msg);
+                interaction.SetOutput(RxVoid.Default);
+            }).DisposeWith(disposables);
         });
 
         TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
                 kv => kv.Key,
                 kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
             ));
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.DispatcherShowMsg:
-                if (obj is null)
-                {
-                    return false;
-                }
-
-                Dispatcher.UIThread.Post(() => ShowMsg(obj),
-                    DispatcherPriority.ApplicationIdle);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void ShowMsg(object msg)
@@ -58,6 +47,14 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
         if (togScrollToEnd.IsChecked ?? true)
         {
             txtMsg.ScrollToEnd();
+            // Let layout finish without a nested dispatcher loop during a native window drag.
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (togScrollToEnd.IsChecked ?? true)
+                {
+                    txtMsg.ScrollTo(txtMsg.LineCount, 0, AvaloniaEdit.Rendering.VisualYPosition.TextBottom, txtMsg.Bounds.Height, 0);
+                }
+            }, DispatcherPriority.Background);
         }
     }
 

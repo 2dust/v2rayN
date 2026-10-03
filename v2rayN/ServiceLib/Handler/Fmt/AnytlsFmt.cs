@@ -20,10 +20,15 @@ public class AnytlsFmt : BaseFmt
             Port = parsedUrl.Port,
         };
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
-        item.Id = rawUserInfo;
+        item.Password = rawUserInfo;
 
         var query = Utils.ParseQueryString(parsedUrl.Query);
         ResolveUriQuery(query, ref item);
+
+        if (GetQueryValue(query, "insecure") == "1")
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
 
         return item;
     }
@@ -39,8 +44,12 @@ public class AnytlsFmt : BaseFmt
         {
             remark = "#" + Utils.UrlEncode(item.Remarks);
         }
-        var pw = item.Id;
+        var pw = item.Password;
         var dicQuery = new Dictionary<string, string>();
+        if (item.GetAllowInsecure())
+        {
+            dicQuery.Add("insecure", "1");
+        }
         ToUriQuery(item, Global.None, ref dicQuery);
 
         return ToUri(EConfigType.Anytls, item.Address, item.Port, pw, dicQuery, remark);

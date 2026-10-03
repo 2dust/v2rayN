@@ -1,36 +1,36 @@
 namespace ServiceLib.ViewModels;
 
-public class RoutingSettingViewModel : MyReactiveObject
+public partial class RoutingSettingViewModel : MyReactiveObject
 {
+    public Interaction<string, bool> ShowYesNoInteraction { get; } = new();
+
     #region Reactive
 
-    public IObservableCollection<RoutingItemModel> RoutingItems { get; } = new ObservableCollectionExtended<RoutingItemModel>();
+    public BulkObservableCollection<RoutingItemModel> RoutingItems { get; } = [];
 
     [Reactive]
-    public RoutingItemModel SelectedSource { get; set; }
+    public partial RoutingItemModel SelectedSource { get; set; }
 
     public IList<RoutingItemModel> SelectedSources { get; set; }
 
     [Reactive]
-    public string DomainStrategy { get; set; }
+    public partial string DomainStrategy { get; set; }
 
     [Reactive]
-    public string DomainStrategy4Singbox { get; set; }
+    public partial string DomainStrategy4Singbox { get; set; }
 
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedAddCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedRemoveCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedSetDefaultCmd { get; }
-    public ReactiveCommand<Unit, Unit> RoutingAdvancedImportRulesCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedAddCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedRemoveCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedSetDefaultCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RoutingAdvancedImportRulesCmd { get; }
 
-    public ReactiveCommand<Unit, Unit> SaveCmd { get; }
     public bool IsModified { get; set; }
 
     #endregion Reactive
 
-    public RoutingSettingViewModel(Func<EViewAction, object?, Task<bool>>? updateView)
+    public RoutingSettingViewModel()
     {
         _config = AppManager.Instance.Config;
-        _updateView = updateView;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedSource,
@@ -53,12 +53,19 @@ public class RoutingSettingViewModel : MyReactiveObject
             await RoutingAdvancedImportRules();
         });
 
-        SaveCmd = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await SaveRoutingAsync();
-        });
-
         _ = Init();
+
+        // Auto-save DomainStrategy when changed
+        this.WhenAnyValue(
+            x => x.DomainStrategy,
+            x => x.DomainStrategy4Singbox)
+            .Skip(1)
+            .DistinctUntilChanged()
+            .SubscribeAsync(async x =>
+            {
+                IsModified = true;
+                await SaveSettingsAsync();
+            });
     }
 
     private async Task Init()
@@ -76,7 +83,7 @@ public class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RefreshRoutingItems()
     {
-        RoutingItems.Clear();
+        var models = new List<RoutingItemModel>();
 
         var routings = await AppManager.Instance.RoutingItems();
         foreach (var item in routings)
@@ -92,24 +99,19 @@ public class RoutingSettingViewModel : MyReactiveObject
                 CustomRulesetPath4Singbox = item.CustomRulesetPath4Singbox,
                 Sort = item.Sort,
             };
-            RoutingItems.Add(it);
+            models.Add(it);
         }
+        RoutingItems.ReplaceRange(models);
     }
 
-    private async Task SaveRoutingAsync()
+    /// <summary>
+    /// Save DomainStrategy settings
+    /// </summary>
+    public async Task SaveSettingsAsync()
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-
-        if (await ConfigHandler.SaveConfig(_config) == 0)
-        {
-            NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
-            _updateView?.Invoke(EViewAction.CloseWindow, null);
-        }
-        else
-        {
-            NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
-        }
+        await ConfigHandler.SaveConfig(_config);
     }
 
     #endregion Refresh Save
@@ -129,7 +131,8 @@ public class RoutingSettingViewModel : MyReactiveObject
                 return;
             }
         }
-        if (await _updateView?.Invoke(EViewAction.RoutingRuleSettingWindow, item) == true)
+        var routingRuleSettingViewModel = new RoutingRuleSettingViewModel(item);
+        if (await AppManager.Instance.WindowDialog.ShowDialogAsync(routingRuleSettingViewModel) == true)
         {
             await RefreshRoutingItems();
             IsModified = true;
@@ -143,7 +146,7 @@ public class RoutingSettingViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);
             return;
         }
-        if (await _updateView?.Invoke(EViewAction.ShowYesNo, null) == false)
+        if (await ShowYesNoInteraction.HandleSafe(ResUI.RemoveServer) == false)
         {
             return;
         }

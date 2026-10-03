@@ -121,13 +121,13 @@
     <value>匯出分享連結至剪貼簿成功</value>
   </data>
   <data name="CheckServerSettings" xml:space="preserve">
-    <value>請先檢查設定</value>
+    <value>配置項目無效，請檢查或重新選擇</value>
   </data>
   <data name="ConfigurationFormatIncorrect" xml:space="preserve">
     <value>設定格式不正確</value>
   </data>
   <data name="CustomServerTips" xml:space="preserve">
-    <value>注意，自訂設定完全依賴您自己的設定，不能使用所有設定功能。如需使用系統代理請手動修改偵聽埠。</value>
+    <value>注意，自訂設定完全依賴您自行輸入的內容，部分功能可能無法使用。如需啟用系統代理，請手動調整監聽埠。</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>下載開始...</value>
@@ -139,7 +139,7 @@
     <value>生成預設設定檔失敗</value>
   </data>
   <data name="FailedGetDefaultConfiguration" xml:space="preserve">
-    <value>獲取預設設定失敗</value>
+    <value>取得預設設定失敗</value>
   </data>
   <data name="FailedImportedCustomServer" xml:space="preserve">
     <value>匯入自訂設定失敗</value>
@@ -148,7 +148,7 @@
     <value>讀取設定失敗</value>
   </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
-    <value>請填寫正確格式的埠</value>
+    <value>請填寫有效的埠號</value>
   </data>
   <data name="FillLocalListeningPort" xml:space="preserve">
     <value>請填寫本機偵聽埠</value>
@@ -247,7 +247,7 @@
     <value>非 VMess 或 SS 協定</value>
   </data>
   <data name="NotFoundCore" xml:space="preserve">
-    <value>在資料夾 ({0}) 下未找到 Core 檔案 (檔案名: {1})，請下載後放入資料夾，下載網址: {2}</value>
+    <value>在資料夾 ({0}) 中找不到 Core 檔案（檔名：{1}）。請下載後放入該資料夾。下載網址：{2}</value>
   </data>
   <data name="NoValidQRcodeFound" xml:space="preserve">
     <value>掃描完成，未發現有效二維碼</value>
@@ -304,7 +304,7 @@
     <value>是否確定移除規則？</value>
   </data>
   <data name="RoutingRuleDetailRequiredTips" xml:space="preserve">
-    <value>{0}，必填其中一項.</value>
+    <value>{0}，至少需填寫其中一項。</value>
   </data>
   <data name="LvRemarks" xml:space="preserve">
     <value>別名</value>
@@ -343,7 +343,7 @@
     <value>*QUIC 加密金鑰</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
-    <value>*grpc serviceName</value>
+    <value>gRPC serviceName</value>
   </data>
   <data name="TransportRequestHostTip1" xml:space="preserve">
     <value>*http host 中間逗號 (,) 分隔</value>
@@ -357,17 +357,17 @@
   <data name="TransportRequestHostTip4" xml:space="preserve">
     <value>*QUIC 加密方式</value>
   </data>
-  <data name="TransportHeaderTypeTip1" xml:space="preserve">
-    <value>*TCP 偽裝類型</value>
+  <data name="TransportHeaderType1" xml:space="preserve">
+    <value>raw 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip2" xml:space="preserve">
-    <value>*KCP 偽裝類型</value>
+  <data name="TransportHeaderType2" xml:space="preserve">
+    <value>KCP 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip3" xml:space="preserve">
-    <value>*QUIC 偽裝類型</value>
+  <data name="TransportHeaderType3" xml:space="preserve">
+    <value>QUIC 偽裝類型</value>
   </data>
-  <data name="TransportHeaderTypeTip4" xml:space="preserve">
-    <value>*GRPC 模式</value>
+  <data name="TransportHeaderType4" xml:space="preserve">
+    <value>gRPC 模式</value>
   </data>
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
@@ -385,7 +385,7 @@
     <value>所有</value>
   </data>
   <data name="FillServerAddressCustom" xml:space="preserve">
-    <value>請瀏覽匯入設定</value>
+    <value>請選擇要匯入的設定檔</value>
   </data>
   <data name="Speedtesting" xml:space="preserve">
     <value>測試中...</value>
@@ -398,6 +398,9 @@
   </data>
   <data name="MsgServerTitle" xml:space="preserve">
     <value>過濾器，按 Enter 執行</value>
+  </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>檢查並更新</value>
   </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>檢查更新</value>
@@ -472,7 +475,7 @@
     <value>語言 (需重啟)</value>
   </data>
   <data name="menuAddServerViaClipboard" xml:space="preserve">
-    <value>從剪貼簿導入分享連結</value>
+    <value>從剪貼簿匯入分享連結</value>
   </data>
   <data name="menuAddServerViaScan" xml:space="preserve">
     <value>掃描螢幕上的二維碼</value>
@@ -606,9 +609,6 @@
   <data name="TbRemarks" xml:space="preserve">
     <value>別名 (remarks)</value>
   </data>
-  <data name="TbRequestHost" xml:space="preserve">
-    <value>偽裝域名 (host)</value>
-  </data>
   <data name="TbSecurity" xml:space="preserve">
     <value>加密方式 (security)</value>
   </data>
@@ -616,10 +616,10 @@
     <value>SNI</value>
   </data>
   <data name="TbStreamSecurity" xml:space="preserve">
-    <value>傳輸層安全 (TLS)</value>
+    <value>傳輸層安全性 (TLS)</value>
   </data>
   <data name="TipNetwork" xml:space="preserve">
-    <value>*預設 TCP，選錯會無法連接</value>
+    <value>*預設 raw，選錯會無法連線</value>
   </data>
   <data name="TbCoreType" xml:space="preserve">
     <value>Core 類型</value>
@@ -652,7 +652,7 @@
     <value>SOCKS 埠</value>
   </data>
   <data name="TipPreSocksPort" xml:space="preserve">
-    <value>*自訂設定的 Socks 埠值，可不設定；當設定此值後，將使用 Xray/sing-box (Tun) 額外啟動一個前置 Socks 服務，提供分流和速度顯示等功能</value>
+    <value>*自訂設定的 Socks 埠值，可留空；當設定此值後，將使用 Xray/sing-box (Tun) 額外啟動一個前置 Socks 服務，提供分流和速度顯示等功能</value>
   </data>
   <data name="TbBrowse" xml:space="preserve">
     <value>瀏覽</value>
@@ -694,7 +694,10 @@
     <value>在更新訂閱後自動調整列寬</value>
   </data>
   <data name="TbSettingsEnableCheckPreReleaseUpdate" xml:space="preserve">
-    <value>檢查 Pre-Release 更新 (請謹慎啟用)</value>
+    <value>檢查 Pre-Release</value>
+  </data>
+  <data name="TbSettingsEnableUpdateViaProxy" xml:space="preserve">
+    <value>透過代理更新</value>
   </data>
   <data name="TbSettingsException" xml:space="preserve">
     <value>例外</value>
@@ -722,9 +725,6 @@
   </data>
   <data name="TbSettingsPass" xml:space="preserve">
     <value>認證密碼</value>
-  </data>
-  <data name="TbSettingsRemoteDNS" xml:space="preserve">
-    <value>自訂 DNS (可多個，用逗號 (,) 分隔)</value>
   </data>
   <data name="TbSettingsSetUWP" xml:space="preserve">
     <value>解除 Win10 UWP 應用回環代理限制</value>
@@ -865,7 +865,7 @@
     <value>規則詳細說明檔案</value>
   </data>
   <data name="TbDnsObjectDoc" xml:space="preserve">
-    <value>支援填寫 DnsObject，JSON 格式，點擊查看說明</value>
+    <value>請填寫 DnsObject，JSON 格式，點擊查看說明</value>
   </data>
   <data name="SubUrlTips" xml:space="preserve">
     <value>普通分組此處請留空</value>
@@ -937,7 +937,7 @@
     <value>使用者代理 (User-Agent)</value>
   </data>
   <data name="TbSettingsDefUserAgentTips" xml:space="preserve">
-    <value>僅對 TCP/HTTP、WS 協定生效</value>
+    <value>僅對 raw/HTTP、WS、gRPC、XHTTP 生效</value>
   </data>
   <data name="TbSettingsCurrentFontFamily" xml:space="preserve">
     <value>目前字型 (需重啟)</value>
@@ -1023,8 +1023,17 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路復用協定</value>
   </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux 並行數</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP 並行數</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proxy UDP443</value>
+  </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
-    <value>行程名全稱 (Tun 模式)</value>
+    <value>行程 (Linux/Windows)</value>
   </data>
   <data name="TbRoutingRuleIP" xml:space="preserve">
     <value>IP 或 IP CIDR</value>
@@ -1047,6 +1056,12 @@
   <data name="TbHeaderType8" xml:space="preserve">
     <value>擁塞控制算法</value>
   </data>
+  <data name="TbHttpOutboundHeaders" xml:space="preserve">
+    <value>HTTP 請求頭</value>
+  </data>
+  <data name="TipHttpOutboundHeaders" xml:space="preserve">
+    <value>自訂 HTTP 出站請求頭，請輸入值為字串或字串陣列的 JSON 物件。</value>
+  </data>
   <data name="LvPrevProfile" xml:space="preserve">
     <value>前置代理節點別名</value>
   </data>
@@ -1065,11 +1080,8 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>協定堆疊</value>
   </data>
-  <data name="TbSettingsTunMtu" xml:space="preserve">
+  <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
-  </data>
-  <data name="TbSettingsEnableExInbound" xml:space="preserve">
-    <value>啟用額外偵聽連接埠</value>
   </data>
   <data name="TbSettingsEnableIPv6Address" xml:space="preserve">
     <value>啟用 IPv6</value>
@@ -1081,7 +1093,7 @@
     <value>PrivateKey</value>
   </data>
   <data name="TbReserved" xml:space="preserve">
-    <value>Reserved (2,3,4)</value>
+    <value>Reserved</value>
   </data>
   <data name="TbLocalAddress" xml:space="preserve">
     <value>Address (Ipv4,Ipv6)</value>
@@ -1098,23 +1110,50 @@
   <data name="TbSettingsSpeedPingTestUrl" xml:space="preserve">
     <value>真連線測試位址</value>
   </data>
-  <data name="TbSettingsEnableUpdateSubOnlyRemarksExist" xml:space="preserve">
-    <value>更新訂閱時只判斷別名是否存在</value>
-  </data>
   <data name="SpeedtestingStop" xml:space="preserve">
     <value>測試終止中...</value>
   </data>
   <data name="TransportRequestHostTip5" xml:space="preserve">
-    <value>*grpc Authority</value>
+    <value>gRPC Authority</value>
   </data>
   <data name="menuAddHttpServer" xml:space="preserve">
     <value>新增 [HTTP] 節點</value>
   </data>
-  <data name="TbSettingsEnableFragmentTips" xml:space="preserve">
-    <value>和分組前置代理衝突</value>
-  </data>
   <data name="TbSettingsEnableFragment" xml:space="preserve">
     <value>啟用分片（Fragment）</value>
+  </data>
+  <data name="TbSettingsFragmentPackets" xml:space="preserve">
+    <value>分片封包類型</value>
+  </data>
+  <data name="TbSettingsFragmentPacketsTip" xml:space="preserve">
+    <value>要分片的封包類型：tlshello (TLS ClientHello) 或 1-1 到 1-5 (前 N 個 TCP 封包)</value>
+  </data>
+  <data name="TbSettingsFragmentLength" xml:space="preserve">
+    <value>分片長度</value>
+  </data>
+  <data name="TbSettingsFragmentLengthTip" xml:space="preserve">
+    <value>分片大小範圍(位元組)，如 50-100。第一個值必須 &lt;= 第二個值。留空使用預設值。</value>
+  </data>
+  <data name="TbSettingsFragmentInterval" xml:space="preserve">
+    <value>分片間隔</value>
+  </data>
+  <data name="TbSettingsFragmentIntervalTip" xml:space="preserve">
+    <value>分片間延遲(毫秒)，如 10-20。範圍 1-100。第一個值必須 &lt;= 第二個值。留空使用預設值。</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplit" xml:space="preserve">
+    <value>最大分片數</value>
+  </data>
+  <data name="TbSettingsFragmentMaxSplitTip" xml:space="preserve">
+    <value>每個封包最大分片數 (0-10000, 0=無限制)。僅 Xray。留空使用預設值。</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelay" xml:space="preserve">
+    <value>回退延遲</value>
+  </data>
+  <data name="TbSettingsFragmentFallbackDelayTip" xml:space="preserve">
+    <value>ACK 偵測不可用時的回退延遲 (如 500ms)。僅 sing-box。留空使用預設值。</value>
+  </data>
+  <data name="FillFragmentParameterError" xml:space="preserve">
+    <value>無效的範圍格式。請使用 'from-to' (如 50-100)。</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>啟用 sing-box（規則集檔案）的快取檔案</value>
@@ -1194,7 +1233,7 @@
   <data name="menuModeRule" xml:space="preserve">
     <value>規則</value>
   </data>
-  <data name="menuProxiesDelaytest" xml:space="preserve">
+  <data name="menuDelaytest" xml:space="preserve">
     <value>延遲測試</value>
   </data>
   <data name="menuProxiesDelaytestPart" xml:space="preserve">
@@ -1315,7 +1354,7 @@
     <value>安裝字體到系統中，選擇或填入字體名稱，重新啟動後生效</value>
   </data>
   <data name="menuExitTips" xml:space="preserve">
-    <value>是否確定退出？</value>
+    <value>確定要退出嗎？</value>
   </data>
   <data name="LvMemo" xml:space="preserve">
     <value>備註備忘</value>
@@ -1326,11 +1365,11 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密碼將調用命令行校驗，如果因為校驗錯誤導致無法正常運行時，請重啟本應用。密碼不會存儲，每次重啟後都需要再次輸入。</value>
   </data>
-  <data name="TransportHeaderTypeTip5" xml:space="preserve">
-    <value>*xhttp 模式</value>
+  <data name="TransportHeaderType5" xml:space="preserve">
+    <value>xhttp 模式</value>
   </data>
   <data name="TransportExtraTip" xml:space="preserve">
-    <value>XHTTP Extra 原始 JSON，格式： { XHTTPObject }</value>
+    <value>原始 JSON，格式： { XHTTPObject }</value>
   </data>
   <data name="TbSettingsHide2TrayWhenClose" xml:space="preserve">
     <value>關閉視窗時隱藏至托盤</value>
@@ -1348,7 +1387,7 @@
     <value>開啟第二個本機監聽埠</value>
   </data>
   <data name="TbRoutingInboundTagTips" xml:space="preserve">
-    <value>socks：本地埠，socks2：第二個本地埠，socks3：區域網路埠</value>
+    <value>Tun：TUN 入站，Socks：本機連接埠，Socks2：第二個本機連接埠，Socks3：區域網路連接埠</value>
   </data>
   <data name="TbSettingsTheme" xml:space="preserve">
     <value>主題</value>
@@ -1374,24 +1413,6 @@
   <data name="TbPorts7Tips" xml:space="preserve">
     <value>會覆蓋埠，多組時用逗號 (,) 隔開</value>
   </data>
-  <data name="menuGenGroupMultipleServer" xml:space="preserve">
-    <value>多選生成策略組</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRandom" xml:space="preserve">
-    <value>多選隨機 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayRoundRobin" xml:space="preserve">
-    <value>多選負載平衡 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastPing" xml:space="preserve">
-    <value>多選最低延遲 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerXrayLeastLoad" xml:space="preserve">
-    <value>多選最穩定 Xray</value>
-  </data>
-  <data name="menuGenGroupMultipleServerSingBoxLeastPing" xml:space="preserve">
-    <value>多選最低延遲 sing-box</value>
-  </data>
   <data name="menuExportConfig" xml:space="preserve">
     <value>匯出</value>
   </data>
@@ -1411,34 +1432,28 @@
     <value>新增 [Anytls] 節點</value>
   </data>
   <data name="TbRemoteDNS" xml:space="preserve">
-    <value>遠程 DNS</value>
+    <value>遠端 DNS</value>
   </data>
   <data name="TbDomesticDNS" xml:space="preserve">
     <value>直連 DNS</value>
   </data>
-  <data name="TbRemoteDNSTips" xml:space="preserve">
-   <value>通过代理，请确保远程可用</value>
+  <data name="TbDirectResolveStrategy" xml:space="preserve">
+    <value>直連目標解析策略</value>
   </data>
-  <data name="TbXrayFreedomStrategy" xml:space="preserve">
-    <value>xray freedom 解析策略</value>
-  </data>
-  <data name="TbSBDirectResolveStrategy" xml:space="preserve">
-    <value>sing-box 直連解析策略</value>
-  </data>
-  <data name="TbSBRemoteResolveStrategy" xml:space="preserve">
-    <value>sing-box 遠程解析策略</value>
+  <data name="TbRemoteResolveStrategy" xml:space="preserve">
+    <value>代理目標解析策略</value>
   </data>
   <data name="TbAddCommonDNSHosts" xml:space="preserve">
-    <value>新增常用 DNS Hosts</value>
+    <value>新增常用 DNS 主機對應</value>
   </data>
   <data name="TbFakeIP" xml:space="preserve">
     <value>FakeIP</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueries" xml:space="preserve">
-    <value>阻止 SVCB 和 HTTPS 查詢</value>
+    <value>封鎖 SVCB 與 HTTPS 查詢</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS Hosts：（“網域名稱1 ip1 ip2” 一行一個）</value>
+    <value>DNS 主機對應：（每行一組「網域名稱1 ip1 ip2」）</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>DNS 基礎設定</value>
@@ -1447,49 +1462,49 @@
     <value>DNS 進階設定</value>
   </data>
   <data name="TbValidateDirectExpectedIPs" xml:space="preserve">
-    <value>校驗相應地區域名 IP</value>
+    <value>驗證區域網域名稱的 IP</value>
   </data>
   <data name="TbValidateDirectExpectedIPsDesc" xml:space="preserve">
-    <value>配置後，會對相應地區域名（如 geosite:cn）的返回 IP 進行校驗，僅返回期望 IP</value>
+    <value>設定後，系統會驗證區域網域名稱（例如 geosite:cn - geoip:cn）所傳回的 IP，並只傳回預期的 IP。</value>
   </data>
   <data name="TbCustomDNSEnable" xml:space="preserve">
     <value>啟用自訂 DNS</value>
   </data>
   <data name="TbCustomDNSEnabledPageInvalid" xml:space="preserve">
-    <value>自訂 DNS 已啟用，此頁面配置將無效</value>
+    <value>已啟用自訂 DNS，此頁面的設定將不會生效</value>
   </data>
   <data name="TbBlockSVCBHTTPSQueriesTips" xml:space="preserve">
-    <value>開啟後將阻止 ECH 和 HTTP/3 可用性查詢</value>
+    <value>啟用後將封鎖 ECH 與 HTTP/3 可用性查詢。Xray 固定啟用</value>
   </data>
   <data name="FillCorrectConfigTemplateText" xml:space="preserve">
-    <value>請填寫正確的配置範本</value>
+    <value>請填寫正確的設定範本</value>
   </data>
   <data name="menuFullConfigTemplate" xml:space="preserve">
-    <value>完整配置範本設定</value>
+    <value>完整設定範本</value>
   </data>
   <data name="TbFullConfigTemplateEnable" xml:space="preserve">
-    <value>啟用完整配置範本</value>
+    <value>啟用完整設定範本</value>
   </data>
   <data name="TbRayFullConfigTemplate" xml:space="preserve">
-    <value>v2ray 完整配置範本</value>
+    <value>v2ray 完整設定範本</value>
   </data>
   <data name="TbRayFullConfigTemplateDesc" xml:space="preserve">
-    <value>僅添加出站配置，routing.balancers 和 routing.rules.outboundTag，點擊查看文檔</value>
+    <value>僅新增出站設定、routing.balancers 與 routing.rules.outboundTag。點選以查看說明文件</value>
   </data>
   <data name="TbAddProxyProtocolOutboundOnly" xml:space="preserve">
-    <value>不添加非代理協定出站</value>
+    <value>不新增非代理協定出站</value>
   </data>
   <data name="TbSetUpstreamProxyDetour" xml:space="preserve">
-    <value>設定上游代理 tag</value>
+    <value>設定上游代理標籤</value>
   </data>
   <data name="TbSBFullConfigTemplate" xml:space="preserve">
-    <value>sing-box 完整配置範本</value>
+    <value>sing-box 完整設定範本</value>
   </data>
   <data name="TbSBFullConfigTemplateDesc" xml:space="preserve">
-    <value>僅添加出站和端點配置，點擊查看文檔</value>
+    <value>僅新增出站與端點設定。點選以查看說明文件</value>
   </data>
   <data name="TbFullConfigTemplateDesc" xml:space="preserve">
-    <value>此功能供高級用戶和有特殊需求的用戶使用。 啟用此功能後，將忽略 Core 的基礎設定，DNS 設定 ，路由設定。你需要保證系統代理的埠和流量統計等功能的配置正確，一切都由你來設定。</value>
+    <value>此功能適合進階使用者與有特殊需求的使用者。啟用後，Core 基礎設定、DNS 設定與路由設定將被忽略。請確認系統代理連接埠、流量統計及其他相關設定皆正確；所有項目都必須由您自行設定。</value>
   </data>
   <data name="MsgStartParsingSubscription" xml:space="preserve">
     <value>開始解析和處理訂閱內容</value>
@@ -1498,10 +1513,10 @@
     <value>選擇節點</value>
   </data>
   <data name="TbFakeIPTips" xml:space="preserve">
-    <value>默認全域生效，內置 FakeIP 過濾，僅在 sing-box 中生效</value>
+    <value>預設會套用至全域；內建 FakeIP 過濾僅支援 sing-box。</value>
   </data>
   <data name="PleaseAddAtLeastOneServer" xml:space="preserve">
-    <value>請至少添加一個節點</value>
+    <value>請至少新增一個設定檔</value>
   </data>
   <data name="TbConfigTypePolicyGroup" xml:space="preserve">
     <value>策略組</value>
@@ -1525,61 +1540,37 @@
     <value>策略組類型</value>
   </data>
   <data name="menuAddPolicyGroupServer" xml:space="preserve">
-    <value>添加策略組</value>
+    <value>新增策略組</value>
   </data>
   <data name="menuAddProxyChainServer" xml:space="preserve">
-    <value>添加鏈式代理</value>
+    <value>新增鏈式代理</value>
   </data>
   <data name="menuAddChildServer" xml:space="preserve">
-    <value>添加子配置</value>
+    <value>新增子配置</value>
   </data>
   <data name="menuRemoveChildServer" xml:space="preserve">
     <value>刪除子配置</value>
   </data>
   <data name="menuServerList" xml:space="preserve">
-    <value>子配置項</value>
+    <value>子配置項目一，從訂閱分組中自動新增</value>
   </data>
   <data name="TbFallback" xml:space="preserve">
     <value>容錯移轉</value>
   </data>
-  <data name="menuGenGroupMultipleServerSingBoxFallback" xml:space="preserve">
-    <value>多選容錯移轉 sing-box</value>
+  <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
+    <value>核心 '{0}' 不支援網路類型 '{1}'</value>
   </data>
-  <data name="menuGenGroupMultipleServerXrayFallback" xml:space="preserve">
-    <value>多選容錯移轉 Xray</value>
+  <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
+    <value>核心 '{0}' 在使用傳輸方式 '{2}' 時不支援協定 '{1}'</value>
   </data>
-  <data name="CoreNotSupportNetwork" xml:space="preserve">
-    <value>核心 '{0}' 不支援網路類型 '{1}'.</value>
+  <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
+    <value>核心 '{0}' 不支援協定 '{1}'</value>
   </data>
-  <data name="CoreNotSupportProtocolTransport" xml:space="preserve">
-    <value>核心 '{0}' 在使用傳輸方式 '{2}' 時不支援協定 '{1}'.</value>
+  <data name="MsgInvalidProperty" xml:space="preserve">
+    <value>{0} 屬性無效，請檢查</value>
   </data>
-  <data name="CoreNotSupportProtocol" xml:space="preserve">
-    <value>核心 '{0}' 不支援協定 '{1}'.</value>
-  </data>
-  <data name="ProxyChainedPrefix" xml:space="preserve">
-    <value>代理鏈： </value>
-  </data>
-  <data name="RoutingRuleOutboundPrefix" xml:space="preserve">
-    <value>路由規則出站： </value>
-  </data>
-  <data name="PolicyGroupPrefix" xml:space="preserve">
-    <value>策略組： </value>
-  </data>
-  <data name="NodeTagNotExist" xml:space="preserve">
-    <value>別名 '{0}' 不存在。</value>
-  </data>
-  <data name="GroupEmpty" xml:space="preserve">
-    <value>組“{0}”為空.請至少添加一個配置。</value>
-  </data>
-  <data name="InvalidProperty" xml:space="preserve">
-    <value>{0}屬性無效，請檢查</value>
-  </data>
-  <data name="GroupSelfReference" xml:space="preserve">
-    <value>{0} 分組不能引用自身或循環引用</value>
-  </data>
-  <data name="NotSupportProtocol" xml:space="preserve">
-    <value>不支援協定 '{0}'.</value>
+  <data name="MsgNotSupportProtocol" xml:space="preserve">
+    <value>不支援協定 '{0}'</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>如果系統沒有託盤功能，請不要開啟</value>
@@ -1606,7 +1597,7 @@
     <value>憑證綁定</value>
   </data>
   <data name="TbCertPinningTips" xml:space="preserve">
-    <value>伺服器憑證（PEM 格式，可選）
+    <value>固定憑證（二選一填寫即可）
 若已指定，憑證將會被綁定，並且「跳過憑證驗證」將被停用。
 
 若使用自簽憑證，或系統中存在不受信任或惡意的 CA，「取得憑證」動作可能會失敗。</value>
@@ -1634,5 +1625,282 @@
   </data>
   <data name="TbSettingsMacOSShowInDock" xml:space="preserve">
     <value>macOS 在 Dock 欄顯示 (需重啟)</value>
+  </data>
+  <data name="menuServerList2" xml:space="preserve">
+    <value>子配置項二，從自建中選擇新增</value>
+  </data>
+  <data name="TbEchConfigList" xml:space="preserve">
+    <value>EchConfigList</value>
+  </data>
+  <data name="TbFullCertTips" xml:space="preserve">
+    <value>完整憑證（鏈），PEM 格式</value>
+  </data>
+  <data name="TbCertSha256Tips" xml:space="preserve">
+    <value>憑證指紋（SHA-256）</value>
+  </data>
+  <data name="TbServeStale" xml:space="preserve">
+    <value>提供過期快取（Serve Stale）</value>
+  </data>
+  <data name="TbParallelQuery" xml:space="preserve">
+    <value>並行查詢</value>
+  </data>
+  <data name="TbDomesticDNSTips" xml:space="preserve">
+    <value>預設僅在路由期間進行解析時調用</value>
+  </data>
+  <data name="TbRemoteDNSTips" xml:space="preserve">
+    <value>預設僅在路由期間進行解析時調用；請確保遠端伺服器能連線至此 DNS</value>
+  </data>
+  <data name="TbDirectResolveStrategyTips" xml:space="preserve">
+    <value>若未設定或為 "AsIs"，使用系統 DNS 解析；否則將使用內建 DNS 模組。</value>
+  </data>
+  <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
+    <value>若未設定或為 "AsIs"，由遠端伺服器的 DNS 解析；否則將使用內建 DNS 模組。</value>
+  </data>
+  <data name="TbHopInt7" xml:space="preserve">
+    <value>連接埠跳轉間隔</value>
+  </data>
+  <data name="menuServerListPreview" xml:space="preserve">
+    <value>子配置項預覽</value>
+  </data>
+  <data name="TbFinalmask" xml:space="preserve">
+    <value>Finalmask</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeWarning" xml:space="preserve">
+    <value>路由規則 {0} 的出站節點 {1} 發出警告：{2}</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeError" xml:space="preserve">
+    <value>路由規則 {0} 的出站節點 {1} 發生錯誤：{2}。已回退為僅使用代理節點。</value>
+  </data>
+  <data name="MsgGroupCycleDependency" xml:space="preserve">
+    <value>節點組 {0} 與子節點 {1} 存在循環依賴。已跳過此節點。</value>
+  </data>
+  <data name="MsgGroupChildNodeWarning" xml:space="preserve">
+    <value>節點組 {0} 的子節點 {1} 發出警告：{2}</value>
+  </data>
+  <data name="MsgGroupChildNodeError" xml:space="preserve">
+    <value>節點組 {0} 的子節點 {1} 發生錯誤：{2}。已跳過此節點。</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeWarning" xml:space="preserve">
+    <value>節點組 {0} 的子節點組 {1} 發出警告：{2}</value>
+  </data>
+  <data name="MsgGroupChildGroupNodeError" xml:space="preserve">
+    <value>節點組 {0} 的子節點組 {1} 發生錯誤：{2}。已跳過此節點。</value>
+  </data>
+  <data name="MsgGroupNoValidChildNode" xml:space="preserve">
+    <value>節點組 {0} 沒有可用的有效子節點。</value>
+  </data>
+  <data name="MsgRoutingRuleEmptyOutboundTag" xml:space="preserve">
+    <value>路由規則 {0} 的出站標籤為空。已回退為僅使用代理節點。</value>
+  </data>
+  <data name="MsgRoutingRuleOutboundNodeNotFound" xml:space="preserve">
+    <value>找不到路由規則 {0} 的出站節點 {1}。已回退為僅使用代理節點。</value>
+  </data>
+  <data name="MsgSubscriptionPrevProfileNotFound" xml:space="preserve">
+    <value>找不到訂閱的前一個代理 {0}。已跳過。</value>
+  </data>
+  <data name="MsgSubscriptionNextProfileNotFound" xml:space="preserve">
+    <value>找不到訂閱的下一個代理 {0}。已跳過。</value>
+  </data>
+  <data name="menuGenGroupServer" xml:space="preserve">
+    <value>生成策略組</value>
+  </data>
+  <data name="menuAllServers" xml:space="preserve">
+    <value>所有配置項</value>
+  </data>
+  <data name="menuGenRegionGroup" xml:space="preserve">
+    <value>按區域分組</value>
+  </data>
+  <data name="menuEditCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="menuEditSelectAll" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="menuEditPaste" xml:space="preserve">
+    <value>貼上</value>
+  </data>
+  <data name="menuEditFormat" xml:space="preserve">
+    <value>格式化</value>
+  </data>
+  <data name="TbUot" xml:space="preserve">
+    <value>UDP over TCP</value>
+  </data>
+  <data name="menuAddNaiveServer" xml:space="preserve">
+    <value>新增 [NaïveProxy] 節點</value>
+  </data>
+  <data name="TbInsecureConcurrency" xml:space="preserve">
+    <value>不安全的並行處理</value>
+  </data>
+  <data name="TbUsername" xml:space="preserve">
+    <value>使用者名稱</value>
+  </data>
+  <data name="TbIcmpRoutingPolicy" xml:space="preserve">
+    <value>ICMP 路由策略</value>
+  </data>
+  <data name="TbLegacyProtect" xml:space="preserve">
+    <value>舊版 TUN 保護</value>
+  </data>
+  <data name="TbCamouflageDomain" xml:space="preserve">
+    <value>偽裝域名</value>
+  </data>
+  <data name="TbHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="TransportExtra" xml:space="preserve">
+    <value>XHTTP Extra</value>
+  </data>
+  <data name="menuUdpTestServer" xml:space="preserve">
+    <value>測試 UDP 延遲（多選）</value>
+  </data>
+  <data name="TbSettingsUdpTestUrl" xml:space="preserve">
+    <value>UDP 測試網址</value>
+  </data>
+  <data name="TbSettingsSendThrough" xml:space="preserve">
+    <value>本機出站位址 (SendThrough)</value>
+  </data>
+  <data name="TbSettingsSendThroughTip" xml:space="preserve">
+    <value>適用於多網路介面環境，請填寫本機 IPv4 位址</value>
+  </data>
+  <data name="TbSettingsBindInterface" xml:space="preserve">
+    <value>綁定網路介面</value>
+  </data>
+  <data name="TbSettingsBindInterfaceTip" xml:space="preserve">
+    <value>適用於多網路介面環境，請填寫要綁定的介面名稱；Windows 系統有效，其他系統僅在 TUN 模式下生效</value>
+  </data>
+  <data name="TbPreSharedKey" xml:space="preserve">
+    <value>PreSharedKey</value>
+  </data>
+  <data name="menuExport2InnerUri" xml:space="preserve">
+    <value>匯出 v2rayN 內部分享連結至剪貼簿（多選）</value>
+  </data>
+  <data name="MsgCheckUpdateHasNewVersion" xml:space="preserve">
+    <value>{0} 有新版本可用：{1}</value>
+  </data>
+  <data name="menuCheckOnly" xml:space="preserve">
+    <value>僅檢查</value>
+  </data>
+  <data name="MsgNotSupport" xml:space="preserve">
+    <value>不支援</value>
+  </data>
+  <data name="LvTestIpInfo" xml:space="preserve">
+    <value>IP 資訊</value>
+  </data>
+  <data name="menuNewUpdate" xml:space="preserve">
+    <value>有更新</value>
+  </data>
+  <data name="MsgAllowInsecureDeprecated" xml:space="preserve">
+    <value>目前節點使用未加密連接，您的通訊可能會被威權政府掌控的網路中間設施直接查看
+為了安全，此類節點無法透過 26.2.6+ 版本的Xray核心連接
+如果是自建節點請啟用 TLS 等安全加密，或固定憑證 pinSHA256
+若機場節點請聯絡服務商完成技術升級，如服務商拒絕配合，建議更換更重視用戶安全的服務商
+更多的信息，請訪問 https://github.com/2dust/v2rayN/discussions/9460</value>
+  </data>
+  <data name="TbVerifyPeerCertByName" xml:space="preserve">
+    <value>Verify Peer Cert By Name</value>
+  </data>
+  <data name="TbRouteExcludeAddress" xml:space="preserve">
+    <value>路由排除位址</value>
+  </data>
+  <data name="TbRouteExcludeAddressTip" xml:space="preserve">
+    <value>使用逗號 (,) 分隔</value>
+  </data>
+  <data name="MsgTunRouteExcludeInvalidAddress" xml:space="preserve">
+    <value>TUN 路由排除清單中的位址無效: {0}</value>
+  </data>
+  <data name="MsgOptionsConflict" xml:space="preserve">
+    <value>{0} 與 {1} 發生衝突</value>
+  </data>
+  <data name="TbEnableFinalFragment" xml:space="preserve">
+    <value>啟用末端分片</value>
+  </data>
+  <data name="TbEnableFinalFragmentTip" xml:space="preserve">
+    <value>將封包末端拆分為更小的片段進行傳送，可能會影響吞吐量與延遲</value>
+  </data>
+  <data name="TbEnabletDnsViaProxy" xml:space="preserve">
+    <value>DNS 透過 Bridge</value>
+  </data>
+  <data name="MsgInsecureConfiguration" xml:space="preserve">
+    <value>偵測到不安全的設定：已啟用 AllowInsecure，但未提供憑證。這可能導致中間人攻擊（MITM）</value>
+  </data>
+  <data name="TbHy2RealmUrl" xml:space="preserve">
+    <value>Realm URL</value>
+  </data>
+  <data name="InvalidHy2RealmUrl" xml:space="preserve">
+    <value>無效的 Realm URL.</value>
+  </data>
+  <data name="TbHy2RealmUrlTip" xml:space="preserve">
+    <value>格式: realm://&lt;token&gt;@&lt;rendezvous-host&gt;[:port]/&lt;realm-name&gt;?stun=&lt;stun-host&gt;[:port]</value>
+  </data>
+  <data name="TbGeckoPacketSize" xml:space="preserve">
+    <value>Gecko 封包大小 (min/max)</value>
+  </data>
+  <data name="TbLegacyProtectTip" xml:space="preserve">
+    <value>啟用則使用 sing-box TUN ,否則使用 xray TUN</value>
+  </data>
+  <data name="InvalidHttpOutboundHeaders" xml:space="preserve">
+    <value>請填寫合法的HTTP請求頭JSON。</value>
+  </data>
+  <data name="TbRootCertificateProvider" xml:space="preserve">
+    <value>根憑證提供者</value>
+  </data>
+  <data name="TbRootCertificateProviderTip" xml:space="preserve">
+    <value>僅適用於 v2rayN GUI 的下載與網路請求，不影響核心的憑證驗證</value>
+  </data>
+  <data name="TbProxyDialResolveStrategy" xml:space="preserve">
+    <value>連線代理解析策略</value>
+  </data>
+  <data name="TbProxyDialResolveStrategyTip" xml:space="preserve">
+    <value>不建議啟用，特殊情況可能造成連線循環</value>
+  </data>
+  <data name="TbEnableHappyEyeballs" xml:space="preserve">
+    <value>啟用 Happy Eyeballs</value>
+  </data>
+  <data name="TbEnableHappyEyeballsTip" xml:space="preserve">
+    <value>需搭配 UseIP 策略，啟用後會同時嘗試 IPv4 與 IPv6 連線，並自動選擇速度較快的路徑</value>
+  </data>
+  <data name="TbIpv6Address" xml:space="preserve">
+    <value>Ipv6 位址</value>
+  </data>
+  <data name="TbIpv4Address" xml:space="preserve">
+    <value>Ipv4 位址</value>
+  </data>
+  <data name="menuAddCustomOutboundServer" xml:space="preserve">
+    <value>新增自訂出站</value>
+  </data>
+  <data name="MsgCustomOutboundFileNotFound" xml:space="preserve">
+    <value>自訂出站 {0} 的檔案未找到：{1}</value>
+  </data>
+  <data name="TbCustomOutboundTip" xml:space="preserve">
+    <value>僅支援 xray/sing-box 的單一 outbound/endpoint</value>
+  </data>
+  <data name="LvCustomCoreType" xml:space="preserve">
+    <value>自訂設定核心</value>
+  </data>
+  <data name="TbXrayOnly" xml:space="preserve">
+    <value>僅 Xray</value>
+  </data>
+  <data name="TbBlockAAAAQueries" xml:space="preserve">
+    <value>封鎖 AAAA 查詢</value>
+  </data>
+  <data name="TbBlockAAAAQueriesTips" xml:space="preserve">
+    <value>啟用後將封鎖 IPv6 查詢</value>
+  </data>
+  <data name="TbDNS" xml:space="preserve">
+    <value>DNS</value>
+  </data>
+  <data name="TbSettingsMux4Ray" xml:space="preserve">
+    <value>Xray Mux 設定</value>
+  </data>
+  <data name="LvRequestHeaders" xml:space="preserve">
+    <value>HTTP 請求標頭 (JSON)</value>
+  </data>
+  <data name="SubRequestHeadersTips" xml:space="preserve">
+    <value>可選，範例：{"X-hwid": "my_device"}。自訂值會覆寫預設標頭，套用於本組所有訂閱位址（包括訂閱轉換服務）。</value>
+  </data>
+  <data name="SubRequestHeadersInvalid" xml:space="preserve">
+    <value>HTTP 請求標頭無效。請使用 JSON 物件，鍵名不能重複，值必須為字串；標頭名稱和值不能包含換行字元。</value>
+  </data>
+  <data name="TbSortingProcess" xml:space="preserve">
+    <value>行程</value>
   </data>
 </root>

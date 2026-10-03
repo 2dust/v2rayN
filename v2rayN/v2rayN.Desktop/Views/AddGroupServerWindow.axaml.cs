@@ -7,17 +7,11 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     public AddGroupServerWindow()
     {
         InitializeComponent();
-    }
-
-    public AddGroupServerWindow(ProfileItem profileItem)
-    {
-        InitializeComponent();
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         lstChild.SelectionChanged += LstChild_SelectionChanged;
-
-        ViewModel = new AddGroupServerViewModel(profileItem, UpdateViewHandler);
+        tabControl.SelectionChanged += TabControl_SelectionChanged;
 
         cmbCoreType.ItemsSource = Global.CoreTypes;
         cmbPolicyGroupType.ItemsSource = new List<string>
@@ -28,31 +22,25 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
             ResUI.TbRoundRobin,
             ResUI.TbLeastLoad,
         };
-
-        switch (profileItem.ConfigType)
-        {
-            case EConfigType.PolicyGroup:
-                Title = ResUI.TbConfigTypePolicyGroup;
-                break;
-
-            case EConfigType.ProxyChain:
-                Title = ResUI.TbConfigTypeProxyChain;
-                gridPolicyGroup.IsVisible = false;
-                break;
-        }
+        cmbFilter.ItemsSource = Global.PolicyGroupDefaultFilterList;
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(v => v.ViewModel.SelectedSource)
+                .KeepNotNull()
+                .Subscribe(InitializeData)
+                .DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType, v => v.cmbCoreType.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PolicyGroupType, v => v.cmbPolicyGroupType.SelectedValue).DisposeWith(disposables);
             //this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.cmbSubChildItems.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSubItem, v => v.cmbSubChildItems.SelectedItem).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.Filter, v => v.txtFilter.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Filter, v => v.cmbFilter.Text).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.ChildItemsObs, v => v.lstChild.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedChild, v => v.lstChild.SelectedItem).DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.AddCmd, v => v.menuAddChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RemoveCmd, v => v.menuRemoveChildServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveTopCmd, v => v.menuMoveTop).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.MoveUpCmd, v => v.menuMoveUp).DisposeWith(disposables);
@@ -63,7 +51,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         });
 
         // Context menu actions that require custom logic (Add, SelectAll)
-        menuAddChildServer.Click += MenuAddChild_Click;
         menuSelectAllChild.Click += (s, e) => lstChild.SelectAll();
 
         // Keyboard shortcuts when focus is within grid
@@ -71,20 +58,28 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         lstChild.LoadingRow += LstChild_LoadingRow;
     }
 
+    private void InitializeData(ProfileItem profileItem)
+    {
+        switch (profileItem.ConfigType)
+        {
+            case EConfigType.PolicyGroup:
+                Title = ResUI.TbConfigTypePolicyGroup;
+                break;
+
+            case EConfigType.ProxyChain:
+                Title = ResUI.TbConfigTypeProxyChain;
+                gridPolicyGroup.IsVisible = false;
+                if (tabControl.Items.Count > 0)
+                {
+                    tabControl.Items.RemoveAt(0);
+                }
+                break;
+        }
+    }
+
     private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)
     {
         e.Row.Header = $" {e.Row.Index + 1}";
-    }
-
-    private async Task<bool> UpdateViewHandler(EViewAction action, object? obj)
-    {
-        switch (action)
-        {
-            case EViewAction.CloseWindow:
-                Close(true);
-                break;
-        }
-        return await Task.FromResult(true);
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
@@ -140,31 +135,36 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
         }
     }
 
-    private async void MenuAddChild_Click(object? sender, RoutedEventArgs e)
-    {
-        var selectWindow = new ProfilesSelectWindow();
-        if (ViewModel?.SelectedSource?.ConfigType == EConfigType.PolicyGroup)
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom }, exclude: true);
-        }
-        else
-        {
-            selectWindow.SetConfigTypeFilter(new[] { EConfigType.Custom, EConfigType.PolicyGroup, EConfigType.ProxyChain }, exclude: true);
-        }
-        selectWindow.AllowMultiSelect(true);
-        var result = await selectWindow.ShowDialog<bool?>(this);
-        if (result == true)
-        {
-            var profiles = await selectWindow.ProfileItems;
-            ViewModel?.ChildItemsObs.AddRange(profiles);
-        }
-    }
-
     private void LstChild_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (ViewModel != null)
         {
             ViewModel.SelectedChildren = lstChild.SelectedItems.Cast<ProfileItem>().ToList();
+        }
+    }
+
+    private async void TabControl_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        try
+        {
+            if (e.Source is not TabControl tc)
+            {
+                return;
+            }
+            if (!(tc.SelectedIndex == tc.Items.Count - 1 && tc.Items.Count > 0))
+            {
+                return;
+            }
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            await ViewModel.UpdatePreviewList();
+        }
+        catch
+        {
+            // ignored
         }
     }
 }

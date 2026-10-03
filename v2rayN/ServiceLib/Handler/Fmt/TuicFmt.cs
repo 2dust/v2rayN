@@ -24,13 +24,20 @@ public class TuicFmt : BaseFmt
         var userInfoParts = rawUserInfo.Split(new[] { ':' }, 2);
         if (userInfoParts.Length == 2)
         {
-            item.Id = userInfoParts.First();
-            item.Security = userInfoParts.Last();
+            item.Username = userInfoParts.First();
+            item.Password = userInfoParts.Last();
         }
 
         var query = Utils.ParseQueryString(url.Query);
         ResolveUriQuery(query, ref item);
-        item.HeaderType = GetQueryValue(query, "congestion_control");
+        if (GetQueryValue(query, "allow_insecure") == "1")
+        {
+            item.AllowInsecure = Global.StringTrue;
+        }
+        item.SetProtocolExtra(item.GetProtocolExtra() with
+        {
+            CongestionControl = GetQueryValue(query, "congestion_control")
+        });
 
         return item;
     }
@@ -50,9 +57,15 @@ public class TuicFmt : BaseFmt
 
         var dicQuery = new Dictionary<string, string>();
         ToUriQueryLite(item, ref dicQuery);
+        if (item.GetAllowInsecure())
+        {
+            dicQuery.Add("allow_insecure", "1");
+        }
+        if (!item.GetProtocolExtra().CongestionControl.IsNullOrEmpty())
+        {
+            dicQuery.Add("congestion_control", item.GetProtocolExtra().CongestionControl);
+        }
 
-        dicQuery.Add("congestion_control", item.HeaderType);
-
-        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Id}:{item.Security}", dicQuery, remark);
+        return ToUri(EConfigType.TUIC, item.Address, item.Port, $"{item.Username ?? ""}:{item.Password}", dicQuery, remark);
     }
 }
