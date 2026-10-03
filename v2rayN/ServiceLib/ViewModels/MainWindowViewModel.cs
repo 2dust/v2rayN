@@ -32,6 +32,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> AddWireguardServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddAnytlsServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddNaiveServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddMasqueServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddCustomServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddCustomOutboundServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddPolicyGroupServerCmd { get; }
@@ -139,6 +140,10 @@ public partial class MainWindowViewModel : MyReactiveObject
         AddNaiveServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(EConfigType.Naive);
+        });
+        AddMasqueServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(EConfigType.MASQUE);
         });
         AddCustomServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {

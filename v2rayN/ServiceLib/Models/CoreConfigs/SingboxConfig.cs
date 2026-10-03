@@ -128,8 +128,6 @@ public class User4Sbox
 
 public class Outbound4Sbox : BaseServer4Sbox
 {
-    public string? server { get; set; }
-    public int? server_port { get; set; }
     public List<string>? server_ports { get; set; }
     public string? uuid { get; set; }
     public string? security { get; set; }
@@ -171,6 +169,10 @@ public class Endpoints4Sbox : BaseServer4Sbox
     public string? udp_timeout { get; set; }
     public int? workers { get; set; }
     public List<Peer4Sbox> peers { get; set; }
+    public string? username { get; set; }
+    public string? password { get; set; }
+    public string? path { get; set; }
+    public Dictionary<string, List<string>>? headers { get; set; }
 }
 
 public class Peer4Sbox
@@ -271,10 +273,8 @@ public class Server4Sbox : BaseServer4Sbox
     public string? inet4_range { get; set; }
     public string? inet6_range { get; set; }
     public string? client_subnet { get; set; }
-    public string? server { get; set; }
     public new string? domain_resolver { get; set; }
     [JsonPropertyName("interface")] public string? Interface { get; set; }
-    public int? server_port { get; set; }
     public string? path { get; set; }
     public Headers4Sbox? headers { get; set; }
 
@@ -359,4 +359,6 @@ public abstract class BaseServer4Sbox : DialFields4Sbox
 {
     public string type { get; set; }
     public string tag { get; set; }
+    public string? server { get; set; }
+    public int? server_port { get; set; }
 }

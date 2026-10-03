@@ -14,7 +14,9 @@
     x:TypeArguments="vms:CheckUpdateViewModel"
     Style="{StaticResource ViewGlobal}"
     mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </UserControl.Resources>
     <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin8}"
@@ -32,16 +34,6 @@
                 Margin="{StaticResource Margin8}"
                 HorizontalAlignment="Left" />
 
-            <TextBlock
-                Margin="{StaticResource Margin8}"
-                VerticalAlignment="Center"
-                Style="{StaticResource ToolbarTextBlock}"
-                Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
-            <ToggleButton
-                x:Name="togEnableCheckPreReleaseUpdate"
-                Margin="{StaticResource Margin8}"
-                HorizontalAlignment="Left" />
-
             <Button
                 x:Name="btnCheckOnly"
                 Width="100"
@@ -53,7 +45,7 @@
                 x:Name="btnCheckUpdate"
                 Width="100"
                 Margin="{StaticResource Margin8}"
-                Content="{x:Static resx:ResUI.menuCheckUpdate}"
+                Content="{x:Static resx:ResUI.menuCheckAndUpdate}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
         </StackPanel>
@@ -71,7 +63,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border
-                            Width="500"
+                            Width="660"
                             Margin="{StaticResource Margin8}"
                             Padding="0"
                             VerticalAlignment="Center">
@@ -81,6 +73,7 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
@@ -91,12 +84,31 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
-                                <TextBlock
+
+                                <StackPanel
                                     Grid.Column="1"
+                                    Margin="{StaticResource MarginLeftRight4}"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding ShowCheckPreRelease, Converter={StaticResource BoolToVisConverter}}">
+                                    <ToggleButton
+                                        Margin="{StaticResource Margin4}"
+                                        HorizontalAlignment="Left"
+                                        IsChecked="{Binding IsCheckPreRelease}" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
+                                </StackPanel>
+
+                                <TextBlock
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
                                     Style="{StaticResource ListItemTitle}"
                                     Text="{Binding CoreTypeForStorage}" />
                                 <TextBlock
-                                    Grid.Column="2"
+                                    Grid.Column="3"
+                                    VerticalAlignment="Center"
                                     Style="{StaticResource ListItemSubTitle}"
                                     Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />

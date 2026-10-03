@@ -111,7 +111,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         return await CheckUpdateAsync(downloadHandle, type, checkPreRelease, blProxy, cancellationToken);
     }
 
-    public async Task<List<string>> CheckHasUpdateOnlyAll(bool preRelease, bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task<List<string>> CheckHasUpdateOnlyAll(bool blProxy = true, CancellationToken cancellationToken = default)
     {
         var msgs = new List<string>();
         foreach (var type in CoreInfoManager.Instance.GetCheckUpdateCoreTypes())
@@ -121,6 +121,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                 continue;
             }
 
+            var preRelease = _config.CheckUpdateItem.CheckPreReleaseCoreTypes?.Contains(type.ToString()) ?? false;
             var result = await CheckHasUpdateOnly(type, preRelease, blProxy, cancellationToken);
             if (result.Success && result.Version != null)
             {

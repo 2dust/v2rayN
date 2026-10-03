@@ -113,6 +113,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string CoreType6 { get; set; }
     [Reactive] public partial string CoreType7 { get; set; }
     [Reactive] public partial string CoreType9 { get; set; }
+    [Reactive] public partial string CoreType14 { get; set; }
 
     #endregion CoreType
 
@@ -283,6 +284,10 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
                 case 9:
                     CoreType9 = type;
                     break;
+
+                case 14:
+                    CoreType14 = type;
+                    break;
             }
         });
         await Task.CompletedTask;
@@ -449,6 +454,10 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
                 case 9:
                     type = CoreType9;
+                    break;
+
+                case 14:
+                    type = CoreType14;
                     break;
 
                 default:
