@@ -12,7 +12,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
     public BulkObservableCollection<CheckUpdateModel> CheckUpdateModels { get; } = [];
     public ReactiveCommand<RxVoid, RxVoid> CheckUpdateCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> CheckOnlyCmd { get; }
-    [Reactive] public partial bool EnableCheckPreReleaseUpdate { get; set; }
+
     [Reactive] public partial bool EnableUpdateViaProxy { get; set; }
 
     public CheckUpdateViewModel()
@@ -33,11 +33,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
             _ = UpdateView(_v2rayN, ex.Message);
         });
 
-        EnableCheckPreReleaseUpdate = _config.CheckUpdateItem.CheckPreReleaseUpdate;
         EnableUpdateViaProxy = _config.CheckUpdateItem.UpdateViaProxy;
-
-        this.WhenAnyValue(x => x.EnableCheckPreReleaseUpdate)
-            .SubscribeAsync(async _ => await OnCheckPreReleaseUpdateChanged());
 
         this.WhenAnyValue(x => x.EnableUpdateViaProxy)
             .Subscribe(c => _ = OnUpdateViaProxyChanged());
@@ -73,6 +69,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
             return new()
             {
                 IsSelected = false,
+                IsCheckPreRelease = false,
+                ShowCheckPreRelease = false,
                 CoreType = coreType,
                 IsGeoFile = false,
                 Remarks = ResUI.menuCheckUpdate + $" ({ResUI.MsgNotSupport})",
@@ -83,6 +81,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
         return new()
         {
             IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(coreType.ToString()) ?? true,
+            IsCheckPreRelease = _config.CheckUpdateItem.CheckPreReleaseCoreTypes?.Contains(coreType.ToString()) ?? false,
+            ShowCheckPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(coreType, true),
             CoreType = coreType,
             IsGeoFile = false,
             Remarks = lastResult ?? ResUI.menuCheckUpdate,
@@ -94,20 +94,12 @@ public partial class CheckUpdateViewModel : MyReactiveObject
         return new()
         {
             IsSelected = _config.CheckUpdateItem.SelectedCoreTypes?.Contains(_geo) ?? true,
+            IsCheckPreRelease = false,
+            ShowCheckPreRelease = false,
             CoreType = null,
             IsGeoFile = true,
             Remarks = ResUI.menuCheckUpdate,
         };
-    }
-
-    private async Task OnCheckPreReleaseUpdateChanged()
-    {
-        if (_config.CheckUpdateItem.CheckPreReleaseUpdate == EnableCheckPreReleaseUpdate)
-        {
-            return;
-        }
-        _config.CheckUpdateItem.CheckPreReleaseUpdate = EnableCheckPreReleaseUpdate;
-        await SaveSelectedCoreTypes();
     }
 
     private async Task OnUpdateViaProxyChanged()
@@ -126,6 +118,11 @@ public partial class CheckUpdateViewModel : MyReactiveObject
             CheckUpdateModels.Where(t => t.IsSelected == true)
                             .Select(t => t.CoreTypeForStorage)
                             .ToList();
+
+        _config.CheckUpdateItem.CheckPreReleaseCoreTypes =
+           CheckUpdateModels.Where(t => t.IsCheckPreRelease == true)
+                           .Select(t => t.CoreTypeForStorage)
+                           .ToList();
 
         await ConfigHandler.SaveConfig(_config);
     }
@@ -167,7 +164,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
             }
 
             var updateService = new UpdateService(_config, async (success, msg) => await Task.CompletedTask);
-            var result = await updateService.CheckHasUpdateOnly(item.CoreType.Value, EnableCheckPreReleaseUpdate, EnableUpdateViaProxy);
+            var result = await updateService.CheckHasUpdateOnly(item.CoreType.Value, item.IsCheckPreRelease, EnableUpdateViaProxy);
             if (result.Success && result.Version != null)
             {
                 await UpdateView(item.CoreType, string.Format(ResUI.MsgCheckUpdateHasNewVersion, item.CoreType, result.Version));
@@ -213,15 +210,11 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                     await UpdateView(_v2rayN, ResUI.MsgNotSupport);
                     continue;
                 }
-                await CheckUpdateN(EnableCheckPreReleaseUpdate);
-            }
-            else if (item.CoreType is ECoreType.Xray or ECoreType.sing_box)
-            {
-                await CheckUpdateCore(item, EnableCheckPreReleaseUpdate);
+                await CheckUpdateN(item.IsCheckPreRelease);
             }
             else if (item.CoreType.HasValue)
             {
-                await CheckUpdateCore(item, false);
+                await CheckUpdateCore(item, item.IsCheckPreRelease);
             }
         }
 

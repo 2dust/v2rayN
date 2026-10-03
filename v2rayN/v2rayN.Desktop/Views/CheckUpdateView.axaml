@@ -35,16 +35,6 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left" />
 
-                <TextBlock
-                    Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
-                <ToggleSwitch
-                    x:Name="togEnableCheckPreReleaseUpdate"
-                    Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
-
                 <Button
                     x:Name="btnCheckOnly"
                     Width="100"
@@ -75,8 +65,8 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Panel Width="500" VerticalAlignment="Center">
-                            <Grid ColumnDefinitions="1*,1*,3*" RowDefinitions="Auto">
+                        <Panel Width="680" VerticalAlignment="Center">
+                            <Grid ColumnDefinitions="1*,3*,1*,3*" RowDefinitions="Auto">
                                 <ToggleSwitch
                                     x:Name="togAutoRefresh"
                                     Grid.Column="0"
@@ -84,13 +74,31 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
-                                <TextBlock
+
+                                <StackPanel
                                     Grid.Column="1"
+                                    Margin="{StaticResource Margin4}"
+                                    IsVisible="{Binding ShowCheckPreRelease}"
+                                    Orientation="Horizontal">
+                                    <ToggleSwitch
+                                        Margin="{StaticResource Margin4}"
+                                        HorizontalAlignment="Left"
+                                        IsChecked="{Binding IsCheckPreRelease}"
+                                        OffContent=""
+                                        OnContent="" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
+                                </StackPanel>
+
+                                <TextBlock
+                                    Grid.Column="2"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding CoreTypeForStorage}" />
                                 <TextBlock
-                                    Grid.Column="2"
+                                    Grid.Column="3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding Remarks}"
