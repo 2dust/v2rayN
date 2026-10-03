@@ -231,7 +231,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
                     Grid.Row="10"
@@ -251,7 +252,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
-                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}" />
+                    PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectNextProfile"
                     Grid.Row="11"

@@ -283,7 +283,8 @@
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
                     Grid.Row="10"
@@ -308,7 +309,8 @@
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectNextProfile"
                     Grid.Row="11"

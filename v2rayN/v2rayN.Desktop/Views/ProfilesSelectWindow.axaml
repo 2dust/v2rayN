@@ -72,7 +72,8 @@
                         Margin="{StaticResource MarginLr4}"
                         VerticalContentAlignment="Center"
                         Text="{Binding ServerFilter, Mode=TwoWay}"
-                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}" />
+                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
+                        ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
                 </WrapPanel>
 
                 <!--  Profiles grid  -->
