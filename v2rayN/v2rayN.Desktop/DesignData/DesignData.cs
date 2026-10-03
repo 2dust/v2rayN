@@ -59,6 +59,10 @@ public static class DesignData
 
     public static SubEditViewModel? SubEdit { get; } = SafeCreate(() => new SubEditViewModel(new SubItem { Remarks = "Design Subscription", Url = "https://example.com/sub" }));
 
+    public static WorkflowViewModel? Workflow { get; } = SafeCreate(() => new WorkflowViewModel());
+
+    public static WorkflowEditViewModel? WorkflowEdit { get; } = SafeCreate(() => new WorkflowEditViewModel(new WorkflowItem { Remarks = "Design Workflow" }));
+
     // ── Helper factories ───────────────────────────────────────────────────
 
     private static MainWindowViewModel CreateMainWindow()
