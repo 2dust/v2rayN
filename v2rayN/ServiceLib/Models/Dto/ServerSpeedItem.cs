@@ -1,6 +1,5 @@
 namespace ServiceLib.Models.Dto;
 
-[Serializable]
 public class ServerSpeedItem : ServerStatItem
 {
     public long ProxyUp { get; set; }
@@ -12,7 +11,6 @@ public class ServerSpeedItem : ServerStatItem
     public long DirectDown { get; set; }
 }
 
-[Serializable]
 public class TrafficItem
 {
     public ulong Up { get; set; }
