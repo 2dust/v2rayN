@@ -1,6 +1,5 @@
 using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.RepresentationModel;
 
 namespace ServiceLib.Common;
 
@@ -13,45 +12,57 @@ public class YamlUtils
     /// <summary>
     /// Deserialize
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static T FromYaml<T>(string str)
+    public static YamlMappingNode FromYaml(string str)
     {
-        var deserializer = new DeserializerBuilder()
-            .WithNamingConvention(PascalCaseNamingConvention.Instance)
-            .Build();
+        //var deserializer = new DeserializerBuilder()
+        //    .WithNamingConvention(PascalCaseNamingConvention.Instance)
+        //    .Build();
+        //try
+        //{
+        //    var obj = deserializer.Deserialize<T>(str);
+        //    return obj;
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logging.SaveLog(_tag, ex);
+        //    return deserializer.Deserialize<T>("");
+        //}
         try
         {
-            var obj = deserializer.Deserialize<T>(str);
-            return obj;
+            var yaml = new YamlStream();
+            using var reader = new StringReader(str);
+            yaml.Load(reader);
+            var rootNode = (YamlMappingNode)yaml.Documents[0].RootNode;
+            return rootNode;
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-            return deserializer.Deserialize<T>("");
+            return new YamlMappingNode();
         }
     }
 
     /// <summary>
     /// Serialize
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="node"></param>
     /// <returns></returns>
-    public static string ToYaml(object? obj)
+    public static string ToYaml(YamlMappingNode? node)
     {
         var result = string.Empty;
-        if (obj == null)
+        if (node == null)
         {
             return result;
         }
-        var serializer = new SerializerBuilder()
-                .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .Build();
-
         try
         {
-            result = serializer.Serialize(obj);
+            var doc = new YamlDocument(node);
+            var stream = new YamlStream(doc);
+            using var writer = new StringWriter();
+            stream.Save(writer, assignAnchors: false);
+            result = writer.ToString();
         }
         catch (Exception ex)
         {
@@ -64,9 +75,15 @@ public class YamlUtils
     {
         try
         {
-            var mergingParser = new MergingParser(new Parser(new StringReader(str)));
-            var obj = new DeserializerBuilder().Build().Deserialize(mergingParser);
-            return ToYaml(obj);
+            using var reader = new StringReader(str);
+            var parser = new Parser(reader);
+            var mergingParser = new MergingParser(parser);
+            var yamlStream = new YamlStream();
+            yamlStream.Load(mergingParser);
+            using var writer = new StringWriter();
+            yamlStream.Save(writer, assignAnchors: false);
+
+            return writer.ToString();
         }
         catch (Exception ex)
         {
