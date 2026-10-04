@@ -7,8 +7,6 @@ namespace v2rayN.Desktop.Views;
 
 public partial class JsonEditor : UserControl
 {
-    private static readonly JsonSerializerOptions SIndentedOptions = new() { WriteIndented = true };
-
     private static readonly Lazy<IHighlightingDefinition> SHighlightingDark =
         new(() => BuildHighlighting(dark: true), isThreadSafe: true);
 
@@ -88,7 +86,7 @@ public partial class JsonEditor : UserControl
         try
         {
             var obj = JsonUtils.ParseJson(Editor.Text);
-            Editor.Text = JsonUtils.Serialize(obj, SIndentedOptions);
+            Editor.Text = JsonUtils.Serialize(obj, indented: true, nullValue: true);
         }
         catch
         {
